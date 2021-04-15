@@ -43,6 +43,10 @@ container to communicate with those services.
 
 ### Getting started
 
+#### Create `.env`
+
+`cp .env.example .env`
+
 #### Docker
 
 ##### Build containers
