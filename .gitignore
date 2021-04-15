@@ -1,0 +1,33 @@
+# environment file
+.env
+
+# sqlite databases
+*.sqlite3
+
+# Python cache files
+__pycache__
+.mypy_cache
+*.pyc
+
+# macOS desktop services store.
+.DS_Store
+
+# Ignore the contents of template/static/ but keep the directory
+templates/static/*
+!templates/static/.gitkeep
+
+# Ignore the contents of /static but keep the directory
+/static/*
+!/static/.gitkeep
+
+# Ignore the contents of /media but keep the directory
+/media/*
+!/media/.gitkeep
+
+# Database backups
+/db/
+
+# Editor configuration files
+.devcontainer
+*.code-workspace
+.vscode/
