@@ -41,30 +41,32 @@ Our `web` container
 on both the `db` and `elasticsearch` containers in order for the `web`
 container to communicate with those services.
 
-#### Getting started
+### Getting started
 
-*Build containers*
+#### Docker
+
+##### Build containers
 
 `docker-compose build`
 
-*Run containers*
+##### Run containers
 
 `docker-compose up`
 
-### Database
+#### Database
 
-*Run migrations*
+##### Run migrations
 
 `docker-compose exec web poetry run python manage.py migrate`
 
-### User management
+#### User management
 
 `docker-compose exec web poetry run python manage.py createsuperuser --username sysadmin`
 
-Access site:
+##### Access site
 
 <http://127.0.0.1:8000>
 
-Access site admin:
+##### Access site admin
 
 <http://127.0.0.1:8000/admin/>
