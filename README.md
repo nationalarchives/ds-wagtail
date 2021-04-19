@@ -53,9 +53,9 @@ container to communicate with those services.
 
 `docker-compose build`
 
-##### Run containers
+##### Run containers (in background)
 
-`docker-compose up`
+`docker-compose up --detach`
 
 #### Database
 
