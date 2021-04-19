@@ -73,4 +73,6 @@ container to communicate with those services.
 
 ##### Access site admin
 
+Log in using `sysadmin`, along with the password set with `createsuperuser` command.
+
 <http://127.0.0.1:8000/admin/>
