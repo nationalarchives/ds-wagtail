@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {{ page.introduction }}
+
+    {% with children=page.get_children %}
+        {% if children %}
+            <ul>
+            {% for child in children %}
+                <li>
+                    <a href="{{ child.url }}">{{ child.title }}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+{% endblock %}
