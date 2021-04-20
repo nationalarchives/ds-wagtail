@@ -31,3 +31,4 @@ templates/static/*
 .devcontainer
 *.code-workspace
 .vscode/
+.idea/
