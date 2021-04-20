@@ -12,3 +12,15 @@ class ExplorerPage(Page):
     content_panels = Page.content_panels + [FieldPanel("introduction")]
 
     parent_page_types = ["home.HomePage"]
+    subpage_types = ["collections.CategoryPage"]
+
+
+class CategoryPage(Page):
+    """Category page."""
+
+    introduction = models.CharField(max_length=200, blank=False)
+
+    content_panels = Page.content_panels + [FieldPanel("introduction")]
+
+    parent_page_types = ["collections.ExplorerPage", "collections.CategoryPage"]
+    subpage_types = ["collections.CategoryPage"]
