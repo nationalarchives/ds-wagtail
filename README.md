@@ -71,7 +71,7 @@ container to communicate with those services.
 
 <http://127.0.0.1:8000>
 
-*Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section*
+**Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section**
 
 ##### Access site admin
 
@@ -83,5 +83,5 @@ Log in using `sysadmin`, along with the password set with `createsuperuser` comm
 
 - Ensure you have NodeJS & NPM installed.
 - Install SASS globally by running `npm install -g sass`.
-- To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
+- To watch and build the SASS, run `sass --watch sass/etna.scss:static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.
