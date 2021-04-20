@@ -23,4 +23,19 @@ class CategoryPage(Page):
     content_panels = Page.content_panels + [FieldPanel("introduction")]
 
     parent_page_types = ["collections.ExplorerPage", "collections.CategoryPage"]
-    subpage_types = ["collections.CategoryPage"]
+    subpage_types = ["collections.CategoryPage", "collections.ResultsPage"]
+
+
+class ResultsPage(Page):
+    """Results page.
+
+    This page is a placeholder for the results page at the end of a user's
+    journey through the collection explorer.
+
+    Eventually, this page will run an editor-defined query against the
+    collections API and display the results.
+    """
+
+    max_count_per_parent = 1
+    parent_page_types = ["collections.CategoryPage"]
+    subpage_types = []
