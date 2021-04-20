@@ -5,6 +5,7 @@ from wagtail.core.models import Page
 
 
 class ExplorerPage(Page):
+
     """Collection Explorer landing page.
 
     This page is the starting point for a user's journey through the collection
@@ -16,6 +17,7 @@ class ExplorerPage(Page):
     content_panels = Page.content_panels + [FieldPanel("introduction")]
 
     parent_page_types = ["home.HomePage"]
+
     subpage_types = ["collections.CategoryPage"]
 
 
