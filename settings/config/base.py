@@ -142,7 +142,7 @@ STATICFILES_FINDERS = [
 ]
 
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, 'templates', 'static'),
+    os.path.join(BASE_DIR, 'templates', 'static'),
 ]
 
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
