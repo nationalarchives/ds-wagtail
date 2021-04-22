@@ -18,23 +18,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/etna.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/libraries/tna-toolkit.0.0.1.css' %}">
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
-    </head>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <body class="{% block body_class %}{% endblock %}">
-        {% wagtailuserbar %}
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet">
+</head>
 
-        {% block content %}{% endblock %}
+<body class="{% block body_class %}{% endblock %}">
+{% wagtailuserbar %}
 
-        {# Global javascript #}
-        <script type="text/javascript" src="{% static 'js/etna.js' %}"></script>
+{% include 'includes/header.html' %}
 
-        {% block extra_js %}
-            {# Override this in templates to add extra javascript #}
-        {% endblock %}
-    </body>
+<main>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10" id="content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+</main>
+
+{% include 'includes/footer.html' %}
+
+{% block extra_js %}
+    {# Override this in templates to add extra javascript #}
+{% endblock %}
+</body>
 </html>
