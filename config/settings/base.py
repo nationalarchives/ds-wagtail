@@ -29,6 +29,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 INSTALLED_APPS = [
     'etna.collections',
     'etna.home',
+    'etna.records',
     'etna.search',
     'etna.teasers',
 
