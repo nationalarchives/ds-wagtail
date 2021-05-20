@@ -2,4 +2,38 @@
 {% load static %}
 
 {% block content %}
+    <dl>
+        <dt>Title</dt>
+        <dd>{{ page.title }}</dd>
+        <dt>Reference</dt>
+        <dd>{{ page.reference_number }}</dd>
+        <dt>Record created</dt>
+        <dd>{{ page.date_range }}</dd>
+    </dl>
+
+    <h3>Key information</h3>
+    <dl>
+        <dt>Available to download</dt>
+        <dd>Not found</dd>
+        <dt>Description quality</dt>
+        <dd>Not found</dd>
+        <dt>Created by</dt>
+        <dd>{{ page.created_by }}</dd>
+        <dt>Held by</dt>
+        <dd>Not found</dd>
+    </dl>
+
+    <h3>Record details</h3>
+    <dl>
+        <dt>Reference</dt>
+        <dd>{{ page.reference_number }}</dd>
+        <dt>Record description</dt>
+        <dd>{{ page.description }}</dd>
+        <dt>Held by</dt>
+        <dd>Not found</dd>
+        <dt>Legal status</dt>
+        <dd>{{ page.legal_status }}</dd>
+        <dt>Closure status</dt>
+        <dd>{{ page.closure_status }}</dd>
+    </dl>
 {% endblock content %}
