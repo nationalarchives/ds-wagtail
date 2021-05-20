@@ -1,0 +1,397 @@
+{
+  "took": 85,
+  "timed_out": false,
+  "_shards": {
+    "total": 2,
+    "successful": 2,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 230,
+      "relation": "eq"
+    },
+    "max_score": 14.217057,
+    "hits": [
+      {
+        "_index": "ciim",
+        "_type": "data",
+        "_id": "mongo-c140",
+        "_score": 14.217057,
+        "_source": {
+          "@admin": {
+            "added": 1618156174581,
+            "addedFormatted": "2021-04-11 16:49:34",
+            "available": true,
+            "checksum": {
+              "metadata": 695956444
+            },
+            "complete": true,
+            "id": "C140",
+            "information": [
+              {
+                "description": "Unterminated HTML character: \"&#34\"",
+                "external": true,
+                "message": "Resolved invalid data in scope and content"
+              }
+            ],
+            "pkey": 12311342,
+            "previous_status": "valid and published",
+            "primary": true,
+            "process": "TNA Mongo Processor",
+            "processed": 1618468281063,
+            "processedFormatted": "2021-04-15 07:31:21",
+            "processed_data_id": 34876203,
+            "published": true,
+            "sequence": 34876078,
+            "source": "mongo",
+            "source_data_id": 34875853,
+            "source_doc_id": 33544854,
+            "status": "valid and published",
+            "stream": "tna-mongodb",
+            "uid": "mongo-c140",
+            "uuid": "2841d730-6a29-3611-ada8-1d87f30fc93a",
+            "valid": "true",
+            "version": 5
+          },
+          "access": {
+            "closure": {
+              "code": "30",
+              "type": "N"
+            },
+            "conditions": "Open unless otherwise stated"
+          },
+          "archive": [
+            {
+              "@admin": {
+                "available": true,
+                "id": "A13530124",
+                "status": "valid and published",
+                "uuid": "30db474e-7e2f-3e59-bd7b-52801554859e"
+              },
+              "@link": {
+                "qualifier": "association",
+                "relationship": [
+                  {
+                    "value": "hierarchical"
+                  }
+                ],
+                "role": [
+                  {
+                    "value": "parent"
+                  }
+                ],
+                "type": "reference"
+              }
+            },
+            {
+              "@admin": {
+                "available": true,
+                "id": "C8597",
+                "status": "valid and published",
+                "uuid": "cd9b19f8-4770-34cc-94b1-53be1426ba60"
+              },
+              "@link": {
+                "qualifier": "association",
+                "relationship": [
+                  {
+                    "value": "related"
+                  }
+                ],
+                "role": [
+                  {
+                    "value": "scope and content"
+                  }
+                ],
+                "type": "reference"
+              }
+            },
+            {
+              "@admin": {
+                "available": true,
+                "id": "C1511",
+                "status": "valid and published",
+                "uuid": "2c6ae851-f12e-3c22-91e2-a4fe034f1633"
+              },
+              "@link": {
+                "qualifier": "association",
+                "relationship": [
+                  {
+                    "value": "related"
+                  }
+                ],
+                "role": [
+                  {
+                    "value": "scope and content"
+                  }
+                ],
+                "type": "reference"
+              }
+            },
+            {
+              "@admin": {
+                "available": true,
+                "id": "C134",
+                "status": "valid and published",
+                "uuid": "f0a475d7-aa8e-3430-8189-9f438f5194fa"
+              },
+              "@link": {
+                "note": {
+                  "value": "For records of Nature Conservancy and successors see"
+                },
+                "qualifier": "association",
+                "relationship": [
+                  {
+                    "value": "related"
+                  }
+                ],
+                "type": "reference"
+              }
+            }
+          ],
+          "availability": {
+            "digitised": false
+          },
+          "dbase": {
+            "collection": {
+              "name": {
+                "value": "Records"
+              }
+            },
+            "name": {
+              "value": "iadata"
+            }
+          },
+          "description": [
+            {
+              "type": "scope and content",
+              "value": "<span class=\"head\">description</span>"
+            }
+          ],
+          "identifier": [
+            {
+              "primary": true,
+              "reference_number": "HA",
+              "type": "reference number",
+              "value": "HA"
+            },
+            {
+              "catalogue_id": "140",
+              "type": "catalogue id",
+              "value": "140"
+            },
+            {
+              "iaid": "C140",
+              "type": "iaid",
+              "value": "C140"
+            },
+            {
+              "batch_id": "316",
+              "type": "batch id",
+              "value": "316"
+            }
+          ],
+          "language": [
+            {
+              "value": "English"
+            }
+          ],
+          "legal": {
+            "status": "Public Record(s)"
+          },
+          "level": {
+            "code": 1,
+            "value": "Lettercode"
+          },
+          "measurements": {
+            "display": "39 series",
+            "extent": "39",
+            "form": "series"
+          },
+          "origination": {
+            "creator": [
+              {
+                "date": {
+                  "earliest": 1965
+                },
+                "@link": {
+                  "type": "literal"
+                },
+                "name": [
+                  {
+                    "value": "Natural Environment Research Council"
+                  }
+                ],
+                "@type": {
+                  "base": "agent",
+                  "type": "organisation"
+                }
+              }
+            ],
+            "date": {
+              "earliest": 1998,
+              "latest": 2013,
+              "value": "1998-2013"
+            },
+            "description": [
+              {
+                "type": "administrative background",
+                "value": ""
+              }
+            ]
+          },
+          "parent": [
+            {
+              "@admin": {
+                "available": true,
+                "id": "A13530124",
+                "status": "valid and published",
+                "uuid": "30db474e-7e2f-3e59-bd7b-52801554859e"
+              },
+              "@link": {
+                "qualifier": "association",
+                "relationship": [
+                  {
+                    "value": "hierarchical"
+                  }
+                ],
+                "role": [
+                  {
+                    "value": "browse parent"
+                  }
+                ],
+                "type": "reference"
+              }
+            }
+          ],
+          "sort": "01 0 HA",
+          "@summary": {
+            "title": "Records of the Natural Environment Research Council"
+          },
+          "title": [
+            {
+              "value": "Records of the Natural Environment Research Council"
+            }
+          ],
+          "@type": {
+            "base": "archive"
+          },
+          "@graph": {
+            "count": 5,
+            "edges": [
+              {
+                "@admin": {
+                  "available": true,
+                  "id": "A13530124",
+                  "status": "valid and published",
+                  "uuid": "30db474e-7e2f-3e59-bd7b-52801554859e"
+                },
+                "@link": {
+                  "qualifier": "association",
+                  "relationship": [
+                    {
+                      "value": "hierarchical"
+                    }
+                  ],
+                  "role": [
+                    {
+                      "value": "browse parent"
+                    }
+                  ],
+                  "type": "reference"
+                }
+              },
+              {
+                "@admin": {
+                  "available": true,
+                  "id": "A13530124",
+                  "status": "valid and published",
+                  "uuid": "30db474e-7e2f-3e59-bd7b-52801554859e"
+                },
+                "@link": {
+                  "qualifier": "association",
+                  "relationship": [
+                    {
+                      "value": "hierarchical"
+                    }
+                  ],
+                  "role": [
+                    {
+                      "value": "parent"
+                    }
+                  ],
+                  "type": "reference"
+                }
+              },
+              {
+                "@admin": {
+                  "available": true,
+                  "id": "C134",
+                  "status": "valid and published",
+                  "uuid": "f0a475d7-aa8e-3430-8189-9f438f5194fa"
+                },
+                "@link": {
+                  "note": {
+                    "value": "For records of Nature Conservancy and successors see"
+                  },
+                  "qualifier": "association",
+                  "relationship": [
+                    {
+                      "value": "related"
+                    }
+                  ],
+                  "type": "reference"
+                }
+              },
+              {
+                "@admin": {
+                  "available": true,
+                  "id": "C1511",
+                  "status": "valid and published",
+                  "uuid": "2c6ae851-f12e-3c22-91e2-a4fe034f1633"
+                },
+                "@link": {
+                  "qualifier": "association",
+                  "relationship": [
+                    {
+                      "value": "related"
+                    }
+                  ],
+                  "role": [
+                    {
+                      "value": "scope and content"
+                    }
+                  ],
+                  "type": "reference"
+                }
+              },
+              {
+                "@admin": {
+                  "available": true,
+                  "id": "C8597",
+                  "status": "valid and published",
+                  "uuid": "cd9b19f8-4770-34cc-94b1-53be1426ba60"
+                },
+                "@link": {
+                  "qualifier": "association",
+                  "relationship": [
+                    {
+                      "value": "related"
+                    }
+                  ],
+                  "role": [
+                    {
+                      "value": "scope and content"
+                    }
+                  ],
+                  "type": "reference"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ]
+  }
+}
