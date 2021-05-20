@@ -21,10 +21,7 @@ def record_page_view(request, catalogue_id):
     I haven't yet decided whether this object should be a concrete page type,
     or - in the spirit of Python - something that looks like a page.
     """
-    # TODO: Fetch data from Kong
-
-    # Stub page to populate with record data from Kong
-    page = RecordPage()
+    page = RecordPage.search.get(catalogue_id)
 
     return render(
         request,

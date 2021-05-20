@@ -1,4 +1,8 @@
+from django.db import models
+
 from wagtail.core.models import Page
+
+from ..ciim.models import SearchManager
 
 
 class RecordPage(Page):
