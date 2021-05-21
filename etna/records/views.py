@@ -3,7 +3,7 @@ from django.shortcuts import render
 from .models import RecordPage
 
 
-def record_page_view(request, catalogue_id):
+def record_page_view(request, iaid):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -21,7 +21,7 @@ def record_page_view(request, catalogue_id):
     I haven't yet decided whether this object should be a concrete page type,
     or - in the spirit of Python - something that looks like a page.
     """
-    page = RecordPage.search.get(catalogue_id)
+    page = RecordPage.search.get(iaid)
 
     return render(
         request,

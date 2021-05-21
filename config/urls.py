@@ -18,7 +18,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
 
     re_path(
-        r"record/(?P<catalogue_id>\w+)/$",
+        r"record/(?P<iaid>\w+)/$",
         records_views.record_page_view,
         name="record_page_view",
     ),
