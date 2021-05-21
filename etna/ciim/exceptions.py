@@ -26,5 +26,5 @@ class MultipleObjectsReturned(SearchManagerException):
     """Raised if single item is requested but multiple returned"""
 
 
-class InvalidCatalogueIdMatch(SearchManagerException):
+class InvalidIAIDMatch(SearchManagerException):
     """Raised if item fetched isn't item requested"""

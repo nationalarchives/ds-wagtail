@@ -8,7 +8,7 @@ from ..models import SearchManager
 from ..exceptions import (
     DoesNotExist,
     MultipleObjectsReturned,
-    InvalidCatalogueIdMatch,
+    InvalidIAIDMatch,
     KongException,
 )
 from ...records.models import RecordPage
@@ -30,7 +30,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(DoesNotExist):
-            self.manager.get(catalogue_id="C140")
+            self.manager.get(iaid="C140")
 
     @responses.activate
     def test_raises_multiple_objects_returned(self):
@@ -41,10 +41,10 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.manager.get(catalogue_id="C140")
+            self.manager.get(iaid="C140")
 
     @responses.activate
-    def test_raises_invalid_catalogue_id_match(self):
+    def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
             "https://kong.test/search",
@@ -58,8 +58,8 @@ class ManagerExceptionTest(TestCase):
             },
         )
 
-        with self.assertRaises(InvalidCatalogueIdMatch):
-            self.manager.get(catalogue_id="C140")
+        with self.assertRaises(InvalidIAIDMatch):
+            self.manager.get(iaid="C140")
 
 
 @override_settings(
@@ -70,7 +70,7 @@ class KongExceptionTest(TestCase):
         self.manager = SearchManager("records.RecordPage")
 
     @responses.activate
-    def test_raises_invalid_catalogue_id_match(self):
+    def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
             "https://kong.test/search",
@@ -78,7 +78,7 @@ class KongExceptionTest(TestCase):
         )
 
         with self.assertRaises(KongException):
-            self.manager.get(catalogue_id="C140")
+            self.manager.get(iaid="C140")
 
 
 @override_settings(
@@ -93,10 +93,10 @@ class ModelTranslationTest(TestCase):
 
         manager = SearchManager("records.RecordPage")
 
-        cls.record_page = manager.get(catalogue_id="C140")
+        cls.record_page = manager.get(iaid="C140")
 
-    def test_catalogue_id(self):
-        self.assertEqual(self.record_page.catalogue_id, "C140")
+    def test_iaid(self):
+        self.assertEqual(self.record_page.iaid, "C140")
 
     def test_title(self):
         self.assertEqual(

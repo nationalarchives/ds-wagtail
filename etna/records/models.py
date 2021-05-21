@@ -15,7 +15,7 @@ class RecordPage(Page):
     """
     is_creatable = False
 
-    catalogue_id = models.IntegerField()
+    iaid = models.IntegerField()
     reference_number = models.IntegerField()
     closure_status = models.TextField()
     created_by = models.TextField()

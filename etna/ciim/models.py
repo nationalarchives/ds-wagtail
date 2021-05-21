@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.html import strip_tags
 
 from .client import KongClient
-from .exceptions import DoesNotExist, MultipleObjectsReturned, InvalidCatalogueIdMatch
+from .exceptions import DoesNotExist, MultipleObjectsReturned, InvalidIAIDMatch
 from .utils import value_from_dictionary_in_list
 
 
@@ -15,7 +15,7 @@ def translate_result(result):
     source = result["_source"]
 
     if identifier := source.get("identifier"):
-        data["catalogue_id"] = value_from_dictionary_in_list(identifier, "iaid")
+        data["iaid"] = value_from_dictionary_in_list(identifier, "iaid")
         data["reference_number"] = value_from_dictionary_in_list(
             identifier, "reference_number"
         )
@@ -23,7 +23,7 @@ def translate_result(result):
     if title := source.get("title"):
         data["title"] = title[0]["value"]
 
-    # rename catalogue_id to iaid
+    # rename iaid to iaid
     # parse out relationships
     data['closure_status'] = result['_source']['access']['conditions']
     data["created_by"] = result['_source']['origination']['creator'][0]['name'][0]['value']
@@ -53,8 +53,8 @@ class SearchManager:
         # TODO this returns one item!
         return apps.get_model(self.model)(**data)
 
-    def get(self, catalogue_id=None):
-        response = self.client.search(term=catalogue_id)
+    def get(self, iaid=None):
+        response = self.client.search(term=iaid)
 
         results = response["hits"]["hits"]
         results_count = response['hits']['total']['value']
@@ -64,8 +64,8 @@ class SearchManager:
             raise MultipleObjectsReturned
 
         result = results[0]
-        if result["_source"]["@admin"]["id"] != catalogue_id:
-            raise InvalidCatalogueIdMatch
+        if result["_source"]["@admin"]["id"] != iaid:
+            raise InvalidIAIDMatch
 
         data = translate_result(result)
 
