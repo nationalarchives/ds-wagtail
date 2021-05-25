@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path, re_path
+from django.urls import include, path, re_path, register_converter
 from django.contrib import admin
 
 from wagtail.admin import urls as wagtailadmin_urls
@@ -7,7 +7,10 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 from etna.search import views as search_views
+from etna.records import converters
 from etna.records import views as records_views
+
+register_converter(converters.ReferenceNumberConverter, "reference_number")
 
 # fmt: off
 urlpatterns = [
@@ -18,11 +21,22 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
 
     re_path(
-        r"record/(?P<iaid>\w+)/$",
+        r"catalogue/(?P<iaid>C\d+)/",
         records_views.record_page_view,
-        name="record_page_view",
+        name="details-page-machine-readable",
+    ),
+    path(
+        r"catalogue/<reference_number:reference_number>/",
+        records_views.record_page_view,
+        name="details-page-human-readable",
+    ),
+    path(
+        r"catalogue/<reference_number:reference_number>/~<int:pseudo_reference>/",
+        records_views.record_page_view,
+        name="details-page-human-readable-with-pseudo-reference",
     ),
 ]
+# fmt: on
 
 
 if settings.DEBUG:
