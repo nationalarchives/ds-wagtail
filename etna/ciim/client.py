@@ -15,6 +15,7 @@ def mock_response_from_file(filename, term=""):
             r
             for r in response["hits"]["hits"]
             if value_from_dictionary_in_list(r["_source"]["identifier"], "iaid") == term
+            or value_from_dictionary_in_list(r["_source"]["identifier"], "reference_number") == term
         ]
         response["hits"]["total"]["value"] = len(response["hits"]["hits"])
         return response
