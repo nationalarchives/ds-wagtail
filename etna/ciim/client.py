@@ -24,6 +24,29 @@ class KongClient:
     def __init__(self, base_url):
         self.base_url = base_url
 
+    def fetch(self, **kwargs):
+        if settings.KONG_CLIENT_TEST_MODE:
+            return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
+
+        kwargs["ref"] = kwargs.pop("reference_number", None)
+        kwargs["from"] = kwargs.pop("start", 0)
+        kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
+
+        response = requests.get(self.base_url + "/fetch", params=kwargs, timeout=5)
+
+        if not response.ok:
+            raise InvalidResponse("Invalid response.")
+
+        json = response.json()
+
+        if "message" in json:
+            raise KubernetesError(json["message"])
+
+        if "error" in json:
+            raise KongError(f"Kong returned status {json['status']}")
+
+        return json
+
     def search(self, **kwargs):
 
         if settings.KONG_CLIENT_TEST_MODE:
