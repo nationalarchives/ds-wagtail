@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils.html import strip_tags
 
 from .client import KongClient
-from .exceptions import DoesNotExist, MultipleObjectsReturned, InvalidIAIDMatch
+from .exceptions import DoesNotExist, MultipleObjectsReturned
 from .utils import value_from_dictionary_in_list
 
 
@@ -58,19 +58,17 @@ class SearchManager:
 
         return [apps.get_model(self.model)(**r) for r in translated_results]
 
-    def get(self, iaid=None):
-        response = self.client.search(term=iaid)
+    def get(self, iaid=None, reference_number=None):
+        response = self.client.fetch(iaid=iaid, reference_number=reference_number)
 
         results = response["hits"]["hits"]
-        results_count = response['hits']['total']['value']
+        results_count = response["hits"]["total"]["value"]
         if results_count == 0:
             raise DoesNotExist
         if results_count > 1:
             raise MultipleObjectsReturned
 
         result = results[0]
-        if result["_source"]["@admin"]["id"] != iaid:
-            raise InvalidIAIDMatch
 
         data = translate_result(result)
 
