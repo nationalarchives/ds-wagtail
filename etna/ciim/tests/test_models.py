@@ -24,7 +24,7 @@ class ManagerExceptionTest(TestCase):
     def test_raises_does_not_exist(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/fetch",
             json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
         )
 
@@ -35,29 +35,11 @@ class ManagerExceptionTest(TestCase):
     def test_raises_multiple_objects_returned(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/fetch",
             json={"hits": {"total": {"value": 2, "relation": "eq"}, "hits": [{}, {}]}},
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.manager.get(iaid="C140")
-
-    @responses.activate
-    def test_raises_invalid_iaid_match(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/search",
-            json={
-                "hits": {
-                    "total": {"value": 1, "relation": "eq"},
-                    "hits": [
-                        {"_source": {"@admin": {"id": "invalid"}}},
-                    ],
-                }
-            },
-        )
-
-        with self.assertRaises(InvalidIAIDMatch):
             self.manager.get(iaid="C140")
 
 
@@ -72,7 +54,7 @@ class KongExceptionTest(TestCase):
     def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/fetch",
             status=500,
         )
 
