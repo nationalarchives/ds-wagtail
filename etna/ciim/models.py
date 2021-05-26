@@ -54,10 +54,9 @@ class SearchManager:
 
         results = response["hits"]["hits"]
 
-        data = [translate_result(r) for r in results]
+        translated_results = [translate_result(r) for r in results]
 
-        # TODO this returns one item!
-        return apps.get_model(self.model)(**data)
+        return [apps.get_model(self.model)(**r) for r in translated_results]
 
     def get(self, iaid=None):
         response = self.client.search(term=iaid)

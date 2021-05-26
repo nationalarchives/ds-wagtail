@@ -8,7 +8,6 @@ from ..models import SearchManager
 from ..exceptions import (
     DoesNotExist,
     MultipleObjectsReturned,
-    InvalidIAIDMatch,
     KongException,
 )
 from ...records.models import RecordPage
