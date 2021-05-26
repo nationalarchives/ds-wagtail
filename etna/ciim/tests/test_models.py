@@ -46,6 +46,92 @@ class ManagerExceptionTest(TestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
 )
+class SearchManagerFilterTest(TestCase):
+    def setUp(self):
+        self.manager = SearchManager("records.RecordPage")
+
+    @responses.activate
+    def test_no_hits_returns_empty_list(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
+        )
+
+        results = self.manager.filter(iaid="C140")
+
+        self.assertEqual(results, [])
+
+    @responses.activate
+    def test_hits_returns_list(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json={
+                "hits": {
+                    "total": {"value": 2, "relation": "eq"},
+                    "hits": [
+                        {
+                            "_source": {
+                                "@admin": {
+                                    "id": "invalid",
+                                },
+                                "access": {"conditions": "open"},
+                                "identifier": [
+                                    {"iaid": "C4122893"},
+                                    {"reference_number": "ADM 223/3"},
+                                ],
+                                "origination": {
+                                    "creator": [{"name": [{"value": "test"}]}],
+                                    "date": {
+                                        "earliest": "1900",
+                                        "latest": "2100",
+                                        "value": "1900-2100",
+                                    },
+                                },
+                                "description": [{"value": "description"}],
+                                "legal": {"status": "Open"},
+                            }
+                        },
+                        {
+                            "_source": {
+                                "@admin": {
+                                    "id": "invalid",
+                                },
+                                "access": {"conditions": "open"},
+                                "identifier": [
+                                    {"iaid": "C4122894"},
+                                    {"reference_number": "ADM 223/3"},
+                                ],
+                                "origination": {
+                                    "creator": [{"name": [{"value": "test"}]}],
+                                    "date": {
+                                        "earliest": "1900",
+                                        "latest": "2100",
+                                        "value": "1900-2100",
+                                    },
+                                },
+                                "description": [{"value": "description"}],
+                                "legal": {"status": "Open"},
+                            }
+                        },
+                    ],
+                }
+            },
+        )
+
+        results = self.manager.filter(reference_number="ADM 223/3")
+
+        self.assertEqual(len(results), 2)
+        self.assertTrue(isinstance(results[0], RecordPage))
+        self.assertTrue(isinstance(results[1], RecordPage))
+        self.assertEqual(results[0].iaid, "C4122893")
+        self.assertEqual(results[1].iaid, "C4122894")
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+)
 class KongExceptionTest(TestCase):
     def setUp(self):
         self.manager = SearchManager("records.RecordPage")
