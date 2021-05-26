@@ -13,32 +13,38 @@ def translate_result(result):
     data = {}
 
     source = result["_source"]
+    identifier = source.get("identifier")
 
-    if identifier := source.get("identifier"):
-        data["iaid"] = value_from_dictionary_in_list(identifier, "iaid")
-        data["reference_number"] = value_from_dictionary_in_list(
-            identifier, "reference_number"
-        )
+    data["iaid"] = value_from_dictionary_in_list(identifier, "iaid")
+    data["reference_number"] = value_from_dictionary_in_list(
+        identifier, "reference_number"
+    )
 
     if title := source.get("title"):
         data["title"] = title[0]["value"]
 
-    # rename iaid to iaid
-    # parse out relationships
-    data['closure_status'] = result['_source']['access']['conditions']
-    data["created_by"] = result['_source']['origination']['creator'][0]['name'][0]['value']
-    # Strip SCOPE AND CONTENT, Resolve linkes
-    data["description"] = source["description"][0]["value"]
-    data["date_start"] = source["origination"]["date"]["earliest"]
-    data["date_end"] = source["origination"]["date"]["latest"]
-    data["date_range"] = source["origination"]["date"]["value"]
-    data["legal_status"] = source["legal"]["status"]
+    if access := source.get("access"):
+        data["closure_status"] = access.get("conditions")
+
+    if origination := source.get("@origination"):
+        try:
+            data["created_by"] = origination["creator"][0]["name"][0]["value"]
+        except KeyError:
+            ...
+        data["date_start"] = origination["date"]["earliest"]["from"]
+        data["date_end"] = origination["date"]["latest"]["to"]
+        data["date_range"] = origination["date"]["value"]
+
+    if description := source.get("description"):
+        data["description"] = description[0]["value"]
+
+    if legal := source.get("legal"):
+        data["legal_status"] = legal["status"]
 
     return data
 
 
 class SearchManager:
-
     def __init__(self, model):
         self.model = model
         self.client = KongClient(settings.KONG_CLIENT_BASE_URL)
