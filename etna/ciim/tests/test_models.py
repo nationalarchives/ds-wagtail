@@ -152,6 +152,60 @@ class KongExceptionTest(TestCase):
     KONG_CLIENT_TEST_MODE=True,
     KONG_CLIENT_TEST_FILENAME=Path(Path(__file__).parent, "fixtures/record.json"),
 )
+class SearchManagerTestModeTest(TestCase):
+    def setUp(self):
+        self.manager = SearchManager("records.RecordPage")
+
+    def test_get_success(self):
+        record_page = self.manager.get(iaid="C10297")
+
+        self.assertTrue(isinstance(record_page, RecordPage))
+        self.assertEquals(record_page.iaid, "C10297")
+
+    def test_get_fail(self):
+        with self.assertRaises(DoesNotExist):
+            record_page = self.manager.get(iaid="fail")
+
+    @override_settings(
+        KONG_CLIENT_TEST_FILENAME=Path(
+            Path(__file__).parent,
+            "fixtures/multiple_records_with_matching_reference_numbers.json",
+        ),
+    )
+    def test_filter_on_iaid_success(self):
+        results = self.manager.filter(iaid="C30549")
+
+        self.assertTrue(isinstance(results[0], RecordPage))
+        self.assertEquals(results[0].iaid, "C30549")
+
+    @override_settings(
+        KONG_CLIENT_TEST_FILENAME=Path(
+            Path(__file__).parent,
+            "fixtures/multiple_records_with_matching_reference_numbers.json",
+        ),
+    )
+    def test_filter_on_referecen_number_success(self):
+        results = self.manager.filter(reference_number="ADM 223/3")
+
+        self.assertTrue(isinstance(results[0], RecordPage))
+        self.assertEquals(results[0].iaid, "C7171681")
+
+    @override_settings(
+        KONG_CLIENT_TEST_FILENAME=Path(
+            Path(__file__).parent,
+            "fixtures/multiple_records_with_matching_reference_numbers.json",
+        ),
+    )
+    def test_filter_fail(self):
+        results = self.manager.filter(iaid="fail")
+
+        self.assertEquals(len(results), 0)
+
+
+@override_settings(
+    KONG_CLIENT_TEST_MODE=True,
+    KONG_CLIENT_TEST_FILENAME=Path(Path(__file__).parent, "fixtures/record.json"),
+)
 class ModelTranslationTest(TestCase):
     @classmethod
     @responses.activate
