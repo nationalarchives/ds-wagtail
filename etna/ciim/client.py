@@ -8,14 +8,21 @@ from .exceptions import InvalidResponse, KubernetesError, KongError
 from .utils import value_from_dictionary_in_list
 
 
-def mock_response_from_file(filename, term=""):
+def mock_response_from_file(filename, **kwargs):
+
+    # Mimic Kong's behaviour by searching multiple fields with the 'term' param
+    term = kwargs.get('iaid') or kwargs.get('reference_number') or kwargs.get('term')
+
     with open(filename) as f:
         response = json.loads(f.read())
         response["hits"]["hits"] = [
             r
             for r in response["hits"]["hits"]
             if value_from_dictionary_in_list(r["_source"]["identifier"], "iaid") == term
-            or value_from_dictionary_in_list(r["_source"]["identifier"], "reference_number") == term
+            or value_from_dictionary_in_list(
+                r["_source"]["identifier"], "reference_number"
+            )
+            == term
         ]
         response["hits"]["total"]["value"] = len(response["hits"]["hits"])
         return response
