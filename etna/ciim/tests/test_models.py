@@ -92,33 +92,37 @@ class ModelTranslationTest(TestCase):
 
         manager = SearchManager("records.RecordPage")
 
-        cls.record_page = manager.get(iaid="C140")
+        cls.record_page = manager.get(iaid="C10297")
+
+    def test_instance(self):
+        self.assertTrue(isinstance(self.record_page, RecordPage))
 
     def test_iaid(self):
-        self.assertEqual(self.record_page.iaid, "C140")
+        self.assertEqual(self.record_page.iaid, "C10297")
 
     def test_title(self):
         self.assertEqual(
             self.record_page.title,
-            "Records of the Natural Environment Research Council",
+            "Law Officers' Department: Registered Files",
         )
 
     def test_reference_number(self):
-        self.assertEqual(self.record_page.reference_number, "HA")
+        self.assertEqual(self.record_page.reference_number, "LO 2")
 
     def test_description(self):
         self.assertEqual(
-            self.record_page.description, '<span class="head">description</span>'
+            self.record_page.description,
+            '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General\'s General Fiat for leave to appeal to the House of Lords in criminal cases.</span><span class="p">Also included are a number of opinions, more of which can be found in <span class="extref" link="$link(C10298)">LO 3</span></span></span>',
         )
 
     def test_date_start(self):
-        self.assertEqual(self.record_page.date_start, 1998)
+        self.assertEqual(self.record_page.date_start, "1885-01-01")
 
     def test_date_end(self):
-        self.assertEqual(self.record_page.date_end, 2013)
+        self.assertEqual(self.record_page.date_end, "1979-12-31")
 
     def test_date_range(self):
-        self.assertEqual(self.record_page.date_range, "1998-2013")
+        self.assertEqual(self.record_page.date_range, "1885-1979")
 
     def test_legal_status(self):
         self.assertEqual(self.record_page.legal_status, "Public Record(s)")
