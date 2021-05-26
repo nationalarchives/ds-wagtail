@@ -208,7 +208,6 @@ class SearchManagerTestModeTest(TestCase):
 )
 class ModelTranslationTest(TestCase):
     @classmethod
-    @responses.activate
     def setUpClass(cls):
         super().setUpClass()
 
