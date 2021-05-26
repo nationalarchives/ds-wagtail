@@ -1,4 +1,5 @@
-{% load static %}
+{% load static  menu_tags %}
+
 <footer class="tna-footer">
 
     <div class="tna-footer__heading tna-bg--dark">
@@ -10,6 +11,18 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    {% comment %}
+        Example footer flat menus - modify as required.
+        Depends on flat menus being configured with the appropriate "handles";
+        "footer_menu_column_one", "footer_menu_column_two", etc.
+    {% endcomment %}
+    <div class='tna-footer__block--menus tna-bg--dark'>
+        {% flat_menu 'footer_menu_column_one' max_levels=1 %}
+        {% flat_menu 'footer_menu_column_two' max_levels=1 %}
+        {% flat_menu 'footer_menu_column_three' max_levels=1 %}
+        {% flat_menu 'footer_menu_column_four' max_levels=1 %}
     </div>
 
     <div class="tna-footer__base tna-bg--dark pb-3">
