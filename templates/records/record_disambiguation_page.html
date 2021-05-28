@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <ul>
+        {% for page in pages %}
+            <li>
+                <a href="{% url 'details-page-machine-readable' page.iaid %}">{{ page.iaid }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}
