@@ -1,0 +1,85 @@
+.card-group {
+
+  &-secondary-nav {
+
+    display: inline-block;
+
+    &__link {
+      @extend .tna-card__link;
+      @include explorer-link;
+    }
+
+    &__image {
+      @extend .tna-card__image;
+      border: 0.0625rem solid $color__black;
+      &-fallback {
+        width: 100%;
+      }
+    }
+
+    @media only screen and (min-width: $screen__lg) {
+      display: block;
+    }
+
+  }
+
+  &-record-summary {
+
+    display: inline-block;
+
+    &__image {
+      @extend .tna-card__image;
+      border: 0.0625rem solid $color__black;
+      &-fallback {
+        width: 100%;
+      }
+    }
+
+    &__link {
+      @extend .tna-card__link;
+      @include explorer-link;
+
+      text-decoration: underline;
+    }
+
+    &__body {
+      margin-top: 1rem;
+    }
+
+  }
+
+  &-promo {
+    padding: 1rem;
+    margin-bottom: 1rem;
+
+    &--dark {
+      @extend .card-group-promo;
+      background-color: $color__dark;
+      color: $color__white;
+      padding: 1rem 2rem;
+
+      a, hr {
+        color: $color__white;
+      }
+
+    }
+
+    &__card {
+      &-image {
+        width: 100%;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        display: block;
+      }
+
+      &-heading {
+        font-weight: 400;
+        font-size: 1.5rem;
+      }
+    }
+
+    &__heading {
+      margin: 0;
+    }
+  }
+}

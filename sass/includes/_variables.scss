@@ -1,0 +1,51 @@
+// Screen sizes
+$screen__sm: 30rem;
+$screen__md: 48rem;
+$screen__lg: 62rem;
+$screen__xl: 75rem;
+
+/* Fonts */
+$font__open-sans: 'Open Sans', sans-serif;
+$font__roboto: 'Roboto', sans-serif;
+$font__body: $font__open-sans;
+$font__heading: $font__roboto;
+
+/* Colours */
+$color__text: #26262a;
+$color__text-secondary: #6f777b;
+
+$color__black: #000000;
+$color__dark: #26262a;
+$color__white: #ffffff;
+$color__yellow: #fbe2bc;
+$color__green: #dde5d5;
+$color__pink: #fad3d4;
+$color__blue_2: #1e1e2a;
+$color__blue_3: #134571;
+$color__blue_4: #1d70b8;
+$color__blue_5: #8EC0EC;;
+$color__purple: #4c2c92;
+
+$color__grey-5: #efefef;
+$color__grey-4: #dddddd;
+$color__grey-3: #6f777b;
+$color__grey-2: #26262a;
+
+$color__alert: $color__yellow;
+$color__success: $color__green;
+$color__error: $color__pink;
+
+$color__link: $color__blue_4;
+$color__link-hover: $color__blue_3;
+$color__link-visited: $color__purple;
+$color__link-active: $color__blue_2;
+$color__card-hover: $color__dark;
+
+$color__focus-blue-outline-light-bg: $color__link;
+$color__focus-blue-outline-dark-bg: $color__blue_5;
+
+$default__border: 0.125rem solid $color__black;
+
+$transition_duration: 0.5s;
+
+

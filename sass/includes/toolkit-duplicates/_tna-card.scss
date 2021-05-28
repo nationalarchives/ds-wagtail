@@ -1,0 +1,28 @@
+// This is a copy-paste from the toolkit for the purposes of using @extend in other components - please do not edit.
+
+.tna-card {
+
+  &__link {
+    position: relative;
+    display: block;
+    text-decoration: none;
+
+    .tna-card__heading {
+      text-decoration: underline;
+    }
+
+    &:hover {
+      .tna-card__heading {
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__image {
+    overflow: hidden;
+
+    img {
+      max-width: 100%;
+    }
+  }
+}

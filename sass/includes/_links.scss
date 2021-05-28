@@ -1,0 +1,36 @@
+a {
+  transition: background-color $transition_duration, color $transition_duration;
+  &:focus {
+    outline: 0.313rem solid $color__focus-blue-outline-light-bg;
+  }
+}
+
+[class*="--dark"] {
+  a {
+    &:focus {
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+    }
+  }
+}
+
+@mixin explorer-link {
+  color: $color__black;
+
+  &:visited {
+    color: $color__black;
+  }
+  &:hover {
+    outline: 0.312rem solid $color__card-hover;
+    background: $color__card-hover;
+    color: $color__white;
+  }
+  &:focus {
+    background: $color__focus-blue-outline-light-bg;
+    h2,h3,h4 {
+      text-decoration: none;
+    }
+  }
+  &:hover, &:focus {
+    color: $color__white;
+  }
+}

@@ -96,5 +96,5 @@ And then **import**:
 
 - Ensure you have NodeJS & NPM installed.
 - Install SASS globally by running `npm install -g sass`.
-- To watch and build the SASS, run `sass --watch sass/etna.scss:static/css/dist/etna.css`
+- To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.

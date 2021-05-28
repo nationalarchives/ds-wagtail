@@ -1,0 +1,22 @@
+.cta-banner-newsletter {
+    &__heading {
+        font-size: 1.55rem;
+        @media only screen and (max-width: $screen__md) {
+            font-size: 1.4rem;
+        }
+        margin-top: 0;
+        font-weight: 400;
+    }
+
+    &__heading, &__description {
+        margin-bottom: .5rem;
+    }
+
+    &__icon {
+        @media only screen and (max-width: $screen__lg) {
+            display: none;
+        }
+        height: 3.75rem;
+    }
+
+}

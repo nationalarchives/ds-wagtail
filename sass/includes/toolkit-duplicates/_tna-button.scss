@@ -1,0 +1,53 @@
+// This is a copy-paste from the toolkit for the purposes of using @extend in other components - please do not edit.
+
+.tna-button {
+    background-color: #26262a !important;
+    color: #ffffff !important;
+    border: 0.125rem solid #000000;
+    padding: 0.5rem 0.9rem;
+    display: inline-block;
+    min-width: 1.625rem;
+    text-align: center;
+  }
+  .tna-button:visited, .tna-button:active {
+    background-color: #26262a !important;
+    color: #ffffff !important;
+  }
+  .tna-button:hover {
+    background-color: #ffffff !important;
+    color: #26262a !important;
+    text-decoration: none;
+  }
+  .tna-button:focus {
+    outline: 0.312rem solid #1d70b8;
+    outline-offset: 0;
+    z-index: 999;
+  }
+  .tna-button--primary {
+    background-color: #ffffff !important;
+    color: #26262a !important;
+  }
+  .tna-button--primary:visited, .tna-button--primary:active {
+    background-color: #ffffff !important;
+    color: #26262a !important;
+  }
+  .tna-button--primary:hover {
+    background-color: #26262a !important;
+    color: #ffffff !important;
+    text-decoration: none;
+  }
+  .tna-button--secondary {
+    border-color: #efefef !important;
+    background-color: #efefef !important;
+    color: #000000;
+  }
+  .tna-button--secondary:visited, .tna-button--secondary:active {
+    background-color: #efefef !important;
+    color: #000000 !important;
+  }
+  .tna-button--secondary:hover {
+    border-color: #000000 !important;
+    background-color: #000000 !important;
+    color: #ffffff;
+    text-decoration: none;
+  }
