@@ -5,7 +5,6 @@ from wagtail.core.models import Page
 
 
 class ExplorerPage(Page):
-
     """Collection Explorer landing page.
 
     This page is the starting point for a user's journey through the collection

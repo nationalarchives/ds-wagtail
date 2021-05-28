@@ -31,8 +31,8 @@ templates/static/*
 .devcontainer
 *.code-workspace
 .vscode/
+<<<<<<< HEAD
 .idea/
 
 # SASS
 .sass-cache
-
