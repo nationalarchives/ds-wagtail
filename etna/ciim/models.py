@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from django.apps import apps
 from django.conf import settings
 from django.utils.html import strip_tags
+from django.utils.functional import cached_property
 
 from .client import KongClient
 from .exceptions import DoesNotExist, MultipleObjectsReturned
@@ -47,7 +48,11 @@ def translate_result(result):
 class SearchManager:
     def __init__(self, model):
         self.model = model
-        self.client = KongClient(settings.KONG_CLIENT_BASE_URL)
+
+    @cached_property
+    def client(self):
+        """Lazy-load client to allow tests to overwrite base url."""
+        return KongClient(settings.KONG_CLIENT_BASE_URL)
 
     def filter(self, **kwargs):
         response = self.client.search(**kwargs)
