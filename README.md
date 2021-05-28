@@ -79,6 +79,19 @@ Log in using `sysadmin`, along with the password set with `createsuperuser` comm
 
 <http://127.0.0.1:8000/admin/>
 
+##### Copying content to another development instance
+
+To copy uploaded files, zip up your `/media` directory and replace the second
+site's `/media` with the contents of the zip.
+
+To copy your CMS's content, **export** the database:
+
+`docker-compose exec db pg_dump postgres -U postgres --clean > <database-dump>`
+
+And then **import**:
+
+`cat <database-dump> |  docker-compose exec  -T db psql -U postgres postgres`
+
 ##### Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
