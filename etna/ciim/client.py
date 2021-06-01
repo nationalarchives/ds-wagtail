@@ -11,17 +11,24 @@ from .utils import value_from_dictionary_in_list
 def mock_response_from_file(filename, **kwargs):
 
     # Mimic Kong's behaviour by searching multiple fields with the 'term' param
-    term = kwargs.get('iaid') or kwargs.get('reference_number') or kwargs.get('term')
+    term = (
+        kwargs.get("iaid") or kwargs.get("reference_number") or kwargs.get("term") or ""
+    )
+    # Convert to lower case to match Kong's case insensitive matching on IDs
+    term = term.lower()
 
     with open(filename) as f:
         response = json.loads(f.read())
         response["hits"]["hits"] = [
             r
             for r in response["hits"]["hits"]
-            if value_from_dictionary_in_list(r["_source"]["identifier"], "iaid") == term
+            if value_from_dictionary_in_list(
+                r["_source"]["identifier"], "iaid", default=""
+            ).lower()
+            == term
             or value_from_dictionary_in_list(
-                r["_source"]["identifier"], "reference_number"
-            )
+                r["_source"]["identifier"], "reference_number", default=""
+            ).lower()
             == term
         ]
         response["hits"]["total"]["value"] = len(response["hits"]["hits"])
