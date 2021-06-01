@@ -7,7 +7,7 @@ from django.utils.functional import cached_property
 
 from .client import KongClient
 from .exceptions import DoesNotExist, MultipleObjectsReturned
-from .utils import value_from_dictionary_in_list
+from .utils import value_from_dictionary_in_list, format_description_markup
 
 
 def translate_result(result):
@@ -37,7 +37,7 @@ def translate_result(result):
         data["date_range"] = origination["date"]["value"]
 
     if description := source.get("description"):
-        data["description"] = description[0]["value"]
+        data["description"] = format_description_markup(description[0]["value"])
 
     if legal := source.get("legal"):
         data["legal_status"] = legal["status"]
