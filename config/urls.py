@@ -21,7 +21,7 @@ urlpatterns = [
     path("search/", search_views.search, name="search"),
 
     re_path(
-        r"catalogue/(?P<iaid>C\d+)/",
+        r"catalogue/(?P<iaid>[Cc]\d+)/",
         records_views.record_page_view,
         name="details-page-machine-readable",
     ),
