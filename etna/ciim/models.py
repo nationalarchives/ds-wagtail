@@ -1,8 +1,5 @@
-from dataclasses import dataclass
-
 from django.apps import apps
 from django.conf import settings
-from django.utils.html import strip_tags
 from django.utils.functional import cached_property
 
 from .client import KongClient
