@@ -63,17 +63,17 @@
         }
 
         &-chevron-next {
-            background-image: url('/images/fontawesome-svgs/chevron-right.svg');
+            background-image: url('../../images/fontawesome-svgs/chevron-right.svg');
             &:hover, &:focus {
-                background-image: url('/images/fontawesome-svgs/chevron-right-white.svg');
+                background-image: url('../../images/fontawesome-svgs/chevron-right-white.svg');
                 outline-color: $color__focus-blue-outline-dark-bg;
             }
         }
 
         &-chevron-previous {
-            background-image: url('/images/fontawesome-svgs/chevron-left.svg');
+            background-image: url('../../images/fontawesome-svgs/chevron-left.svg');
             &:hover, &:focus {
-                background-image: url('/images/fontawesome-svgs/chevron-left-white.svg');
+                background-image: url('../../images/fontawesome-svgs/chevron-left-white.svg');
                 outline-color: $color__focus-blue-outline-dark-bg;
             }
         }
