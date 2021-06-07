@@ -1,17 +1,38 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    {{ page.introduction }}
+    {% include 'includes/generic-intro--dark.html' %}
 
-    {% with children=page.get_children %}
-        {% if children %}
-            <ul>
-            {% for child in children %}
-                <li>
-                    <a href="{{ child.url }}">{{ child.title }}</a>
-                </li>
-            {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" id="content">
+                <h2>Collection highlights</h2>
+                <p>From the well-known to the unusual, browse highlights from The National Archives arts and culture
+                    collections.</p>
+                <div class="row">
+                    {% with children=page.get_children %}
+                        {% if children %}
+                            {% for child in children %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                {% include 'includes/card-group-promo--dark.html' %}
+
+                <h2>More Arts and Culture</h2>
+                <p>Find out more about Arts and culture at The National Archives..</p>
+                <div class="row">
+                    {% with children=page.get_children %}
+                        {% if children %}
+                            {% for child in children %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

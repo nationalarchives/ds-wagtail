@@ -79,9 +79,23 @@ Log in using `sysadmin`, along with the password set with `createsuperuser` comm
 
 <http://127.0.0.1:8000/admin/>
 
+##### Copying content to another development instance
+
+To copy uploaded files, zip up your `/media` directory and replace the second
+site's `/media` with the contents of the zip.
+
+To copy your CMS's content, **export** the database:
+
+`docker-compose exec db pg_dump postgres -U postgres --clean > <database-dump>`
+
+And then **import**:
+
+`cat <database-dump> |  docker-compose exec  -T db psql -U postgres postgres`
+
 ##### Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
 - Install SASS globally by running `npm install -g sass`.
-- To watch and build the SASS, run `sass --watch sass/etna.scss:static/css/dist/etna.css`
+- Download `tna-toolkit.0.0.1.css` into `/templates/static/css/libraries/`. [Download link is here.](https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css)
+- To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.
