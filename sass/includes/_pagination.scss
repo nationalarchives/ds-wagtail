@@ -67,6 +67,10 @@
             &:hover, &:focus {
                 background-image: url($fa_chevron_right_white);
                 outline-color: $color__focus-blue-outline-light-bg;
+                outline-offset: 0.125rem;
+            }
+
+            &:focus {
                 box-shadow: -.6rem 0 $color__white;
             }
         }
@@ -76,6 +80,10 @@
             &:hover, &:focus {
                 background-image: url($fa_chevron_left_white);
                 outline-color: $color__focus-blue-outline-light-bg;
+                outline-offset: 0.125rem;
+            }
+
+            &:focus {
                 box-shadow: .6rem 0 $color__white;
             }
         }
