@@ -4,13 +4,13 @@ $screen__md: 48rem;
 $screen__lg: 62rem;
 $screen__xl: 75rem;
 
-/* Fonts */
+// Fonts
 $font__open-sans: 'Open Sans', sans-serif;
 $font__roboto: 'Roboto', sans-serif;
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
 
-/* Colours */
+// Colours
 $color__text: #26262a;
 $color__text-secondary: #6f777b;
 
@@ -44,8 +44,18 @@ $color__card-hover: $color__dark;
 $color__focus-blue-outline-light-bg: $color__link;
 $color__focus-blue-outline-dark-bg: $color__blue_5;
 
+// Borders
 $default__border: 0.125rem solid $color__black;
 
+// Transitions
 $transition_duration: 0.5s;
 
+// Paths
+$fa_path: '../../images/fontawesome-svgs/';
 
+// Images
+$fa_chevron_right: '#{$fa_path}chevron-right.svg';
+$fa_chevron_right_white: '#{$fa_path}chevron-right-white.svg';
+
+$fa_chevron_left: '#{$fa_path}chevron-left.svg';
+$fa_chevron_left_white: '#{$fa_path}chevron-left-white.svg';
