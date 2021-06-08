@@ -37,16 +37,20 @@ class TestRecordPageDisambiguationView(TestCase):
                     "hits": [
                         {
                             "_source": {
+                                "@admin": {
+                                    "id": "C4122893",
+                                },
                                 "identifier": [
-                                    {"iaid": "C4122893"},
                                     {"reference_number": "ADM 223/3"},
                                 ],
                             }
                         },
                         {
                             "_source": {
+                                "@admin": {
+                                    "id": "C4122893",
+                                },
                                 "identifier": [
-                                    {"iaid": "C4122893"},
                                     {"reference_number": "ADM 223/3"},
                                 ],
                             }
@@ -75,8 +79,8 @@ class TestRecordPageDisambiguationView(TestCase):
                     "hits": [
                         {
                             "_source": {
+                                "@admin": {"id": "C4122893"},
                                 "identifier": [
-                                    {"iaid": "C4122893"},
                                     {"reference_number": "ADM 223/3"},
                                 ],
                             }
@@ -125,8 +129,8 @@ class TestRecordPageView(TestCase):
                     "hits": [
                         {
                             "_source": {
+                                "@admin": {"id": "C4122893"},
                                 "identifier": [
-                                    {"iaid": "C4122893"},
                                     {"reference_number": "ADM 223/3"},
                                 ],
                             }

@@ -22,10 +22,7 @@ def mock_response_from_file(filename, **kwargs):
         response["hits"]["hits"] = [
             r
             for r in response["hits"]["hits"]
-            if value_from_dictionary_in_list(
-                r["_source"]["identifier"], "iaid", default=""
-            ).lower()
-            == term
+            if r["_source"]["@admin"]["id"].lower() == term
             or value_from_dictionary_in_list(
                 r["_source"]["identifier"], "reference_number", default=""
             ).lower()
