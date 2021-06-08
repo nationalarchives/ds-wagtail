@@ -1,0 +1,18 @@
+{% load wagtailcore_tags %}
+
+{% if items %}
+    <div class="breadcrumbs">
+        <ol class="breadcrumbs__list">
+            {% for item in items %}
+                <li class="breadcrumbs__list-item">
+                    <a href="{% pageurl item %}">{{ item.title|truncatechars:70 }}</a>
+                </li>
+            {% endfor %}
+            <li class="breadcrumbs__list-item">
+                <span class="breadcrumbs__current">
+                    {{ page.title|truncatechars:70 }}
+                </span>
+            </li>
+        </ol>
+    </div>
+{% endif %}

@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'etna.collections',
     'etna.home',
     'etna.search',
+    'etna.breadcrumbs',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',

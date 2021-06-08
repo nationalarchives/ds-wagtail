@@ -1,8 +1,10 @@
+{% load breadcrumbs_tags %}
+
 <div class="generic-intro generic-intro--dark">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {% include 'includes/breadcrumbs.html' %}
+                {% breadcrumbs %}
                 <h1 class="generic-intro__title">{{ self.title }}</h1>
                 <p>{{ page.introduction }}</p>
             </div>
