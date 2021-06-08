@@ -247,3 +247,6 @@ class ModelTranslationTest(TestCase):
 
     def test_legal_status(self):
         self.assertEqual(self.record_page.legal_status, "Public Record(s)")
+
+    def test_is_digitised(self):
+        self.assertEqual(self.record_page.is_digitised, True)

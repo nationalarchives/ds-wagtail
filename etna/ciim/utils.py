@@ -37,6 +37,8 @@ def translate_result(result):
     if legal := source.get("legal"):
         data["legal_status"] = legal["status"]
 
+    data["is_digitised"] = source.get("digitised", False)
+
     return data
 
 
