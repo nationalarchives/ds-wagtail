@@ -10,14 +10,13 @@ def translate_result(result):
 
     source = result["_source"]
     identifier = source.get("identifier")
+    summary = source.get("@summary")
 
     data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = value_from_dictionary_in_list(
         identifier, "reference_number"
     )
-
-    if title := source.get("title"):
-        data["title"] = title[0]["value"]
+    data["title"] = summary.get("title")
 
     if access := source.get("access"):
         data["closure_status"] = access.get("conditions")

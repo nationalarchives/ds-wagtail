@@ -89,6 +89,9 @@ class SearchManagerFilterTest(TestCase):
                                         "value": "1900-2100",
                                     },
                                 },
+                                "@summary": {
+                                    "title": "Title",
+                                },
                                 "description": [{"value": "description"}],
                                 "legal": {"status": "Open"},
                             }
@@ -110,6 +113,9 @@ class SearchManagerFilterTest(TestCase):
                                         "latest": "2100",
                                         "value": "1900-2100",
                                     },
+                                },
+                                "@summary": {
+                                    "title": "Title",
                                 },
                                 "description": [{"value": "description"}],
                                 "legal": {"status": "Open"},
