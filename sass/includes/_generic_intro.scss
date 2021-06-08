@@ -1,0 +1,22 @@
+.generic-intro {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  &--dark {
+    background-color: $color__grey-2;
+    color: $color__white;
+
+    a {
+      color: $color__white;
+    }
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 4rem;
+    @media (max-width: $screen__md) {
+      font-size: 2.5rem;
+    }
+  }
+}

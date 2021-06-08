@@ -1,0 +1,26 @@
+.tna-footer {
+
+    &__body {
+        .tna-footer__list-item {
+            margin-bottom: .25rem;
+        }
+        &-heading {
+            font-size: 1.16rem;
+        }
+    }
+
+    &__social-media-links {
+        .tna-footer__social-media-icon {
+            height: 2.187rem;
+            padding: .5rem;
+            box-sizing: content-box;
+        }
+    }
+
+    &__heading {
+        &-main-title {
+            font-size: 1.6rem;
+        }
+    }
+}
+

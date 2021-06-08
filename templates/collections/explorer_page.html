@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'includes/generic-intro--dark.html' %}
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" id="content">
+                <h2>Explore by topic</h2>
+                <p>Discover highlights of The National Archives’ collections.</p>
+                <div class="row">
+                    {% with children=page.get_children %}
+                        {% if children %}
+                            {% for child in children %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+
+                <h2>Explore by time period</h2>
+                <p>The National Archives contains over 1,000 years of British historical records. Select a time period
+                    to start exploring.</p>
+                <div class="row">
+                    {% with children=page.get_children %}
+                        {% if children %}
+                            {% for child in children %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

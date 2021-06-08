@@ -1,0 +1,7 @@
+.tna-button {
+
+    &--no-underline {
+        @extend .tna-button;
+        text-decoration: none;
+    }
+}

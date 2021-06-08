@@ -1,0 +1,42 @@
+.breadcrumbs {
+
+    .breadcrumbs__list {
+        list-style-type: none;
+        padding-left: 0;
+
+        .breadcrumbs__list-item {
+            display: inline-block;
+            position: relative;
+            margin-left: 0.75rem;
+
+            &:first-child {
+                margin-left: 0;
+                &::before {
+                    content: none;
+                }
+            }
+
+            &::before {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 0.188rem;
+                bottom: 0;
+                left: -0.813rem;
+                width: 0.438rem;
+                height: 0.438rem;
+                margin: auto 0;
+                -webkit-transform: rotate(45deg);
+                -ms-transform: rotate(45deg);
+                transform: rotate(45deg);
+                border: 0.063rem solid currentcolor;
+                border-bottom-width: 0;
+                border-left-width: 0;
+            }
+
+            .breadcrumbs__current {
+                text-decoration: none;
+            }
+        }
+    }
+}

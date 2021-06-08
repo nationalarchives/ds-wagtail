@@ -1,0 +1,29 @@
+{% extends 'base.html' %} 
+{% load static %}
+
+{% block content %} 
+
+    {% include 'includes/generic-intro--dark.html' %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12" id="content">
+                <div class="generic-intro">
+                    <p>Design registers features a selection of fascinating designs registered by designers, individuals and companies from the mid-Victorian period, in order to obtain copyright protection. Whether the designs submitted were detailed line drawings or examples using early photography, they show marvellous examples of jugs, plates and other treasures (including urinals!).</p>
+                </div>
+                <div class="results">
+                    <h2 class="sr-only">Results</h2>
+                    <h3 class="sr-only">Options</h3>
+                    {% include 'includes/results-options.html' %}
+                    <div class="row">
+                    <h3 class="sr-only">Items</h3>
+                    {% include 'includes/card-group-record-summary.html' %}
+                    {% include 'includes/card-group-record-summary.html' %}
+                    {% include 'includes/card-group-record-summary.html' %}
+                    </div>
+                    <h3 class="sr-only">Pagination</h3>
+                    {% include 'includes/pagination.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

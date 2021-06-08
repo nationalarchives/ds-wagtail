@@ -18,8 +18,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/libraries/tna-toolkit.0.0.1.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -38,14 +38,8 @@
 
 {% include 'includes/header.html' %}
 
-<main>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-10" id="content">
-                {% block content %}{% endblock %}
-            </div>
-        </div>
-    </div>
+<main id="maincontent">
+    {% block content %}{% endblock %}
 </main>
 
 {% include 'includes/footer.html' %}
