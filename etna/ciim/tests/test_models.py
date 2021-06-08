@@ -74,7 +74,7 @@ class SearchManagerFilterTest(TestCase):
                         {
                             "_source": {
                                 "@admin": {
-                                    "id": "invalid",
+                                    "id": "C4122893",
                                 },
                                 "access": {"conditions": "open"},
                                 "identifier": [
@@ -96,7 +96,7 @@ class SearchManagerFilterTest(TestCase):
                         {
                             "_source": {
                                 "@admin": {
-                                    "id": "invalid",
+                                    "id": "C4122894",
                                 },
                                 "access": {"conditions": "open"},
                                 "identifier": [

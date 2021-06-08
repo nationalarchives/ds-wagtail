@@ -11,7 +11,7 @@ def translate_result(result):
     source = result["_source"]
     identifier = source.get("identifier")
 
-    data["iaid"] = value_from_dictionary_in_list(identifier, "iaid")
+    data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = value_from_dictionary_in_list(
         identifier, "reference_number"
     )
