@@ -4,42 +4,11 @@ from django.utils.functional import cached_property
 
 from .client import KongClient
 from .exceptions import DoesNotExist, MultipleObjectsReturned
-from .utils import value_from_dictionary_in_list, format_description_markup
-
-
-def translate_result(result):
-    data = {}
-
-    source = result["_source"]
-    identifier = source.get("identifier")
-
-    data["iaid"] = value_from_dictionary_in_list(identifier, "iaid")
-    data["reference_number"] = value_from_dictionary_in_list(
-        identifier, "reference_number"
-    )
-
-    if title := source.get("title"):
-        data["title"] = title[0]["value"]
-
-    if access := source.get("access"):
-        data["closure_status"] = access.get("conditions")
-
-    if origination := source.get("@origination"):
-        try:
-            data["created_by"] = origination["creator"][0]["name"][0]["value"]
-        except KeyError:
-            ...
-        data["date_start"] = origination["date"]["earliest"]["from"]
-        data["date_end"] = origination["date"]["latest"]["to"]
-        data["date_range"] = origination["date"]["value"]
-
-    if description := source.get("description"):
-        data["description"] = format_description_markup(description[0]["value"])
-
-    if legal := source.get("legal"):
-        data["legal_status"] = legal["status"]
-
-    return data
+from .utils import (
+    value_from_dictionary_in_list,
+    format_description_markup,
+    translate_result,
+)
 
 
 class SearchManager:
