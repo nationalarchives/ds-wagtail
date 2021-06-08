@@ -1,0 +1,256 @@
+[
+    {
+        "model": "wagtailmenus.flatmenu",
+        "pk": 1,
+        "fields": {
+            "site": 2,
+            "title": "Find out more",
+            "handle": "footer_menu_column_one",
+            "heading": "Find out more",
+            "max_levels": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenu",
+        "pk": 2,
+        "fields": {
+            "site": 2,
+            "title": "Site help",
+            "handle": "footer_menu_column_two",
+            "heading": "Site help",
+            "max_levels": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenu",
+        "pk": 3,
+        "fields": {
+            "site": 2,
+            "title": "Websites",
+            "handle": "footer_menu_column_three",
+            "heading": "Websites",
+            "max_levels": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenu",
+        "pk": 4,
+        "fields": {
+            "site": 2,
+            "title": "Legal",
+            "handle": "footer_menu_column_four",
+            "heading": "Legal",
+            "max_levels": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 1,
+        "fields": {
+            "sort_order": 0,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/contact-us/",
+            "url_append": "",
+            "handle": "contact-us",
+            "link_text": "Contact us",
+            "allow_subnav": false,
+            "menu": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 2,
+        "fields": {
+            "sort_order": 1,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/about/press-room/",
+            "url_append": "",
+            "handle": "press-room",
+            "link_text": "Press room",
+            "allow_subnav": false,
+            "menu": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 3,
+        "fields": {
+            "sort_order": 2,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/about/jobs/",
+            "url_append": "",
+            "handle": "jobs-and-careers",
+            "link_text": "Jobs and careers",
+            "allow_subnav": false,
+            "menu": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 4,
+        "fields": {
+            "sort_order": 3,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/about/get-involved/friends-of-the-national-archives/",
+            "url_append": "",
+            "handle": "friends-of-the-national-archives",
+            "link_text": "Friends of The National Archives",
+            "allow_subnav": false,
+            "menu": 1
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 5,
+        "fields": {
+            "sort_order": 0,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/help/",
+            "url_append": "",
+            "handle": "help",
+            "link_text": "Help",
+            "allow_subnav": false,
+            "menu": 2
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 6,
+        "fields": {
+            "sort_order": 1,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/help/a-to-z/",
+            "url_append": "",
+            "handle": "website-a-z-index",
+            "link_text": "Website A-Z index",
+            "allow_subnav": false,
+            "menu": 2
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 7,
+        "fields": {
+            "sort_order": 2,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/help/web-accessibility/",
+            "url_append": "",
+            "handle": "accessibility",
+            "link_text": "Accessibility",
+            "allow_subnav": false,
+            "menu": 2
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 8,
+        "fields": {
+            "sort_order": 0,
+            "link_page": null,
+            "link_url": "https://blog.nationalarchives.gov.uk/",
+            "url_append": "",
+            "handle": "blog",
+            "link_text": "Blog",
+            "allow_subnav": false,
+            "menu": 3
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 9,
+        "fields": {
+            "sort_order": 1,
+            "link_page": null,
+            "link_url": "https://media.nationalarchives.gov.uk/",
+            "url_append": "",
+            "handle": "podcasts-and-videos",
+            "link_text": "Podcasts and videos",
+            "allow_subnav": false,
+            "menu": 3
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 10,
+        "fields": {
+            "sort_order": 2,
+            "link_page": null,
+            "link_url": "https://shop.nationalarchives.gov.uk/",
+            "url_append": "",
+            "handle": "shop",
+            "link_text": "Shop",
+            "allow_subnav": false,
+            "menu": 3
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 11,
+        "fields": {
+            "sort_order": 3,
+            "link_page": null,
+            "link_url": "https://images.nationalarchives.gov.uk/",
+            "url_append": "",
+            "handle": "image-library",
+            "link_text": "Image library",
+            "allow_subnav": false,
+            "menu": 3
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 12,
+        "fields": {
+            "sort_order": 0,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/legal/",
+            "url_append": "",
+            "handle": "terms-of-use",
+            "link_text": "Terms of use",
+            "allow_subnav": false,
+            "menu": 4
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 13,
+        "fields": {
+            "sort_order": 1,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/legal/privacy.htm",
+            "url_append": "",
+            "handle": "privacy-policy",
+            "link_text": "Privacy policy",
+            "allow_subnav": false,
+            "menu": 4
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 14,
+        "fields": {
+            "sort_order": 2,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/legal/cookies/",
+            "url_append": "",
+            "handle": "cookies",
+            "link_text": "Cookies",
+            "allow_subnav": false,
+            "menu": 4
+        }
+    },
+    {
+        "model": "wagtailmenus.flatmenuitem",
+        "pk": 15,
+        "fields": {
+            "sort_order": 3,
+            "link_page": null,
+            "link_url": "https://nationalarchives.gov.uk/legal/our-fees.htm",
+            "url_append": "",
+            "handle": "our-fees",
+            "link_text": "Our fees",
+            "allow_subnav": false,
+            "menu": 4
+        }
+    }
+]
