@@ -56,6 +56,36 @@ class ClientSearchTest(TestCase):
             "https://kong.test/search?from=0&pretty=false",
         )
 
+    @responses.activate
+    def test_search_with_reference_number(self):
+        self.client.search(reference_number="ADM 223/3")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
+        )
+
+    @responses.activate
+    def test_search_with_iaid(self):
+        self.client.search(iaid="C10297")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/search?term=C10297&from=0&pretty=false",
+        )
+
+    @responses.activate
+    def test_search_with_term(self):
+        self.client.search(term="Egypt")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/search?term=Egypt&from=0&pretty=false",
+        )
+
 
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientFetchTest(TestCase):
