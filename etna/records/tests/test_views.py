@@ -43,6 +43,9 @@ class TestRecordPageDisambiguationView(TestCase):
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
                                 ],
+                                "@summary": {
+                                    "title": "Title",
+                                },
                             }
                         },
                         {
@@ -53,6 +56,9 @@ class TestRecordPageDisambiguationView(TestCase):
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
                                 ],
+                                "@summary": {
+                                    "title": "Title",
+                                },
                             }
                         },
                     ],
@@ -83,6 +89,9 @@ class TestRecordPageDisambiguationView(TestCase):
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
                                 ],
+                                "@summary": {
+                                    "title": "Title",
+                                },
                             }
                         },
                     ],
@@ -133,6 +142,9 @@ class TestRecordPageView(TestCase):
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
                                 ],
+                                "@summary": {
+                                    "title": "Title",
+                                },
                             }
                         },
                     ],

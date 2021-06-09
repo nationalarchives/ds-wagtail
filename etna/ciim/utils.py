@@ -13,8 +13,8 @@ def translate_result(result):
     summary = source.get("@summary")
 
     data["iaid"] = source["@admin"]["id"]
-    data["reference_number"] = value_from_dictionary_in_list(
-        identifier, "reference_number"
+    data["reference_number"] = pluck(
+        identifier, accessor=lambda i: i.get("reference_number")
     )
     data["title"] = summary.get("title")
 
@@ -22,10 +22,9 @@ def translate_result(result):
         data["closure_status"] = access.get("conditions")
 
     if origination := source.get("@origination"):
-        try:
-            data["created_by"] = origination["creator"][0]["name"][0]["value"]
-        except KeyError:
-            ...
+        data["created_by"] = pluck(
+            origination, accessor=lambda i: i["creator"][0]["name"][0]["value"]
+        )
         data["date_start"] = origination["date"]["earliest"]["from"]
         data["date_end"] = origination["date"]["latest"]["to"]
         data["date_range"] = origination["date"]["value"]
@@ -38,11 +37,96 @@ def translate_result(result):
 
     data["is_digitised"] = source.get("digitised", False)
 
+    if parent := find(
+        source.get("association"),
+        predicate=lambda i: i["@link"]["role"][0]["value"] == "parent",
+    ):
+        data["parent"] = {
+            "iaid": parent["@admin"]["id"],
+            "title": parent["@summary"]["title"],
+        }
+
     return data
 
 
-def value_from_dictionary_in_list(dictionaries, key, default=None):
-    return next((i for i in dictionaries if key in i), {}).get(key, default)
+def pluck(collection, accessor=lambda: False, default=None):
+    """Fetch a value from within a nested data structure.
+
+    Given the list:
+
+    "galaxies" = [{
+        "name": "Milky Way",
+        "planets": [{
+            "name": "Jupiter",
+            "moon_count": 79
+        }, {
+            "name": "Saturn",
+            "moon_count": 82
+        }]
+    }]
+
+    We're able to fetch the dict for a given planet:
+
+    >>> pluck(planets, accessor=lambda i: i["planets"][0])
+    {
+        "name": "Jupiter",
+        "moon_count": 79
+    }
+
+    Note that the result of the accessor function is the returned value so the
+    following might be unexpected:
+
+    >>> find(planets, accessor=lambda i: i["moon_count"] > 0)
+    True
+
+    Exceptions raised when querying the data structure are comsumed by this function.
+    """
+    try:
+        return accessor(find(collection, accessor))
+    except (KeyError, IndexError, TypeError, AttributeError):
+        # Catch any error that may be raised when querying data structure with
+        # accessor and return fallback
+        return default
+
+
+def find(collection, predicate=lambda: False):
+    """Find an item from a nested data structure.
+
+    Given the list:
+
+    planets = [{
+        "name": "Jupiter",
+        "moon_count": 79
+    }, {
+        "name": "Saturn",
+        "moon_count": 82
+    }]
+
+    We're able to fetch the dict for a given planet:
+
+    >>> find(planets, predicate=lambda i: i["name"] == "Jupiter")
+    {
+        "name": "Jupiter",
+        "moon_count": 79
+    }
+
+    Note that only the first match is returned so predicates with multiple
+    matches should be avoided:
+
+    >>> find(planets, predicate=lambda i: i["moon_count"] > 0)
+    {
+        "name": "Jupiter",
+        "moon_count": 79
+    }
+
+    Exceptions raised when querying the data structure are comsumed by this function.
+    """
+    try:
+        return next(filter(predicate, collection), None)
+    except (KeyError, IndexError, TypeError, AttributeError):
+        # Catch any error that may be raised when querying data structure with
+        # predicate and return fallback
+        return None
 
 
 def format_description_markup(markup):
