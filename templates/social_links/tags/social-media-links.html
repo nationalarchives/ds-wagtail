@@ -1,0 +1,63 @@
+{% load static %}
+
+<div class="tna-footer__social-media-links tna-bg--dark">
+    <div class="container pb-3">
+        <div class="row justify-content-md-center text-center">
+
+            {% if twitter_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ twitter_url }}" class="d-inline-block" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static '/images/fontawesome-svgs/twitter.svg' %}" class="tna-footer__social-media-icon" alt="Follow us on Twitter - Opens a new window"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if youtube_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ youtube_url }}" class="d-inline-block" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static '/images/fontawesome-svgs/youtube.svg' %}" class="tna-footer__social-media-icon" alt="Follow us on YouTube - Opens a new window"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if flickr_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ flickr_url }}" class="d-inline-block" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static '/images/fontawesome-svgs/flickr.svg' %}" class="tna-footer__social-media-icon" alt="Follow us on Flickr - Opens a new window"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if facebook_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ facebook_url }}" class="d-inline-block" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static '/images/fontawesome-svgs/facebook.svg' %}" class="tna-footer__social-media-icon" alt="Follow us on Facebook - Opens a new window"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if instagram_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ instagram_url }}" class="d-inline-block" target="_blank" rel="noopener noreferrer">
+                    <img src="{% static '/images/fontawesome-svgs/instagram.svg' %}" class="tna-footer__social-media-icon" alt="Follow us on Instagram - Opens a new window"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+            {% if rss_url %}
+            <div class="col-4 col-sm-4 col-md-1">
+                <a href="{{ rss_url }}" class="d-inline-block">
+                    <img src="{% static '/images/fontawesome-svgs/rss.svg' %}" class="tna-footer__social-media-icon" alt="Follow us via RSS"/>
+                    <span class="sr-only">Opens a new window</span>
+                </a>
+            </div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
