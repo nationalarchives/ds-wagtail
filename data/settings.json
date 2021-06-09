@@ -1,0 +1,24 @@
+[
+    {
+        "model": "site_info.siteinformation",
+        "pk": 1,
+        "fields": {
+            "site": 2,
+            "site_name": "The National Archive",
+            "site_address": "Kew, Richmond TW9 4DU"
+        }
+    },
+    {
+        "model": "social_links.sociallinks",
+        "pk": 1,
+        "fields": {
+            "site": 2,
+            "twitter": "https://twitter.com/UKNatArchives",
+            "youtube": "https://www.youtube.com/c/TheNationalArchivesUK",
+            "flickr": "https://www.flickr.com/photos/nationalarchives",
+            "facebook": "https://www.facebook.com/TheNationalArchives",
+            "instagram": "https://www.instagram.com/nationalarchivesuk/",
+            "rss": "https://www.nationalarchives.gov.uk/rss/"
+        }
+    }
+]
