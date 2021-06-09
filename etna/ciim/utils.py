@@ -150,10 +150,12 @@ def resolve_links(markup):
     document = pq(markup)
 
     def link_from_span(span):
-        link = pq(span).attr("link")
-        if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group("iaid"):
-            url = reverse("details-page-machine-readable", kwargs={"iaid": iaid})
-            return pq(f'<a href="{url}">{pq(span).text()}</a>')
+        if link := pq(span).attr("link"):
+            if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group("iaid"):
+                url = reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+                return pq(f'<a href="{url}">{pq(span).text()}</a>')
+        if link := pq(span).attr("href"):
+            return pq(f'<a href="{link}">{pq(span).text()}</a>')
 
     document(".extref").each(lambda _, e: pq(e).replace_with(link_from_span(e)))
 
