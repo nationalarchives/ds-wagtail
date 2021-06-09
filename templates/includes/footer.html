@@ -21,8 +21,13 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-center">
-                    <h3 class="tna-footer__heading-main-title"><span class="sr-only">Address for </span>The National Archives</h3>
-                    <p>Kew, Richmond TW9 4DU</p>
+                    {% with site_name=settings.site_info.SiteInformation.site_name site_address=settings.site_info.SiteInformation.site_address %}
+                        <h3 class="tna-footer__heading-main-title">
+                            {% if site_address %}<span class="sr-only">Address for </span>{% endif %}
+                            {% if site_name %}{{ site_name }}{% else %}{{ self.get_site.site_name }}{% endif %}
+                        </h3>
+                        {% if site_address %}<p>{{ site_address }}</p>{% endif %}
+                    {% endwith %}
                 </div>
             </div>
         </div>
