@@ -4,11 +4,7 @@ from django.utils.functional import cached_property
 
 from .client import KongClient
 from .exceptions import DoesNotExist, MultipleObjectsReturned
-from .utils import (
-    value_from_dictionary_in_list,
-    format_description_markup,
-    translate_result,
-)
+from .utils import translate_result
 
 
 class SearchManager:

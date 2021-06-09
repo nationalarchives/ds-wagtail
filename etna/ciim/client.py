@@ -5,7 +5,7 @@ from django.conf import settings
 import requests
 
 from .exceptions import InvalidResponse, KubernetesError, KongError
-from .utils import value_from_dictionary_in_list
+from .utils import pluck
 
 
 def mock_response_from_file(filename, **kwargs):
@@ -23,8 +23,8 @@ def mock_response_from_file(filename, **kwargs):
             r
             for r in response["hits"]["hits"]
             if r["_source"]["@admin"]["id"].lower() == term
-            or value_from_dictionary_in_list(
-                r["_source"]["identifier"], "reference_number", default=""
+            or pluck(
+                r["_source"]["identifier"], accessor=lambda i: i["reference_number"], default=""
             ).lower()
             == term
         ]
