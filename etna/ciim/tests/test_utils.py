@@ -1,6 +1,66 @@
 from django.test import SimpleTestCase
 
-from ..utils import pluck, find
+from ..utils import format_description_markup, pluck, find
+
+
+# http://adb64ece119d042fcaaa54b1ddcdd687-df4cb78551b008e8.elb.eu-west-2.amazonaws.com/search?term=C11996678
+class TestResolveLinks(SimpleTestCase):
+    def test_test(self):
+        markup = (
+            '<span><span class="extref" link="$link(C11996672)">link text</span></span>'
+        )
+
+        stripped_markup = format_description_markup(markup)
+
+        self.assertEquals(
+            '<span><a href="/catalogue/C11996672/">link text</a></span>',
+            stripped_markup,
+        )
+
+    def test_no_links(self):
+        markup = "<span></span>"
+
+        stripped_markup = format_description_markup(markup)
+
+        self.assertEquals("<span/>", stripped_markup)
+
+    def test_multiple_links(self):
+        markup = (
+            "<span>"
+            '<span class="extref" link="$link(C11996672)">link text one</span>'
+            '<span class="extref" link="$link(C11996673)">link text two</span>'
+            "</span>"
+        )
+
+        stripped_markup = format_description_markup(markup)
+
+        self.assertEquals(
+            (
+                "<span>"
+                '<a href="/catalogue/C11996672/">link text one</a>'
+                '<a href="/catalogue/C11996673/">link text two</a>'
+                "</span>"
+            ),
+            stripped_markup,
+        )
+
+    def test_external_link(self):
+        markup = (
+            "<span>"
+            '<span class="extref" href="http://example.com/">link text one</span>'
+            "</span>"
+        )
+
+        stripped_markup = format_description_markup(markup)
+
+        self.assertEquals(
+            (
+                "<span>"
+                '<a href="http://example.com/">link text one</a>'
+                "</span>"
+            ),
+            stripped_markup,
+        )
 
 
 class TestPluck(SimpleTestCase):
