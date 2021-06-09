@@ -181,6 +181,7 @@ class SettingsMenuOrder(IntEnum):
     """Enum used to order custom setting menu items. Reorder items within the
     Enum to change the menu order"""
 
+    SITE_INFO = auto()
     SOCIAL_MEDIA = auto()
 
 
