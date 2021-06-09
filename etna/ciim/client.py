@@ -24,7 +24,9 @@ def mock_response_from_file(filename, **kwargs):
             for r in response["hits"]["hits"]
             if r["_source"]["@admin"]["id"].lower() == term
             or pluck(
-                r["_source"]["identifier"], accessor=lambda i: i["reference_number"], default=""
+                r["_source"]["identifier"],
+                accessor=lambda i: i["reference_number"],
+                default="",
             ).lower()
             == term
         ]
@@ -47,7 +49,7 @@ class KongClient:
         response = requests.get(self.base_url + "/fetch", params=kwargs, timeout=5)
 
         if not response.ok:
-            raise InvalidResponse("Invalid response.")
+            raise InvalidResponse("Invalid response")
 
         json = response.json()
 
@@ -60,6 +62,14 @@ class KongClient:
         return json
 
     def search(self, **kwargs):
+
+        if term := (
+            kwargs.pop("iaid", None)
+            or kwargs.pop("reference_number", None)
+            or kwargs.pop("term", None)
+            or ""
+        ):
+            kwargs['term'] = term
 
         if settings.KONG_CLIENT_TEST_MODE:
             return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
