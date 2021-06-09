@@ -256,3 +256,12 @@ class ModelTranslationTest(TestCase):
 
     def test_is_digitised(self):
         self.assertEqual(self.record_page.is_digitised, True)
+
+    def test_parent(self):
+        self.assertEqual(
+            self.record_page.parent,
+            {
+                "iaid": "C199",
+                "title": "Records created or inherited by the Law Officers' Department",
+            },
+        )

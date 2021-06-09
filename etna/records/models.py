@@ -25,5 +25,6 @@ class RecordPage(Page):
     date_range = models.TextField()
     legal_status = models.TextField()
     is_digitised = models.BooleanField(default=False)
+    parent = models.JSONField(null=True)
 
     search = SearchManager("records.RecordPage")
