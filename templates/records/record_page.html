@@ -16,13 +16,13 @@
         <dt>Is digitised</dt>
         <dd>{{ page.is_digitised|yesno|title }}</dd>
         <dt>Available to download</dt>
-        <dd>Not found</dd>
+        <dd>To be added to payload</dd>
         <dt>Description quality</dt>
-        <dd>Not found</dd>
+        <dd>To be added to payload</dd>
         <dt>Created by</dt>
         <dd>{{ page.created_by }}</dd>
         <dt>Held by</dt>
-        <dd>Not found</dd>
+        <dd>To be added to payload</dd>
     </dl>
 
     <h3>Record details</h3>
@@ -30,12 +30,24 @@
         <dt>Reference</dt>
         <dd>{{ page.reference_number }}</dd>
         <dt>Record description</dt>
-        <dd>{{ page.description | safe }}</dd>
+        <dd>{{ page.description|safe }}</dd>
+        <dt>Arrangement</dt>
+        <dd>{{ page.arrangement|safe }}</dd>
         <dt>Held by</dt>
-        <dd>Not found</dd>
+        <dd>To be added to payload</dd>
         <dt>Legal status</dt>
         <dd>{{ page.legal_status }}</dd>
         <dt>Closure status</dt>
         <dd>{{ page.closure_status }}</dd>
+    </dl>
+
+    <h3>Hierarchy</h3>
+    <dl>
+        <dt>parent</dt>
+        {% if page.parent %}
+            <dd><a href="{% url 'details-page-machine-readable' page.parent.iaid %}">{{ page.parent.title }}</a></dd>
+        {% else %}
+            <dd>No parent page</dd>
+        {% endif %}
     </dl>
 {% endblock content %}
