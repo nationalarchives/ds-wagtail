@@ -32,6 +32,9 @@ def translate_result(result):
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
 
+    if arrangement := source.get("arrangement"):
+        data["arrangement"] = format_description_markup(arrangement["value"])
+
     if legal := source.get("legal"):
         data["legal_status"] = legal["status"]
 

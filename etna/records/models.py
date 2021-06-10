@@ -20,6 +20,7 @@ class RecordPage(Page):
     closure_status = models.TextField()
     created_by = models.TextField()
     description = models.TextField()
+    arrangement = models.TextField(blank=True)
     date_start = models.IntegerField()
     date_end = models.IntegerField()
     date_range = models.TextField()
