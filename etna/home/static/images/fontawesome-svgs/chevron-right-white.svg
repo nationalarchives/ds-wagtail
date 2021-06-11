@@ -1,1 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" fill="white"><!-- Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) The fill colour of this SVG has been modified. --><path d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"/></svg>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Font Awesome Free 5.15.3 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License). The stroke of this SVG has been modified. -->
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 320 512" style="enable-background:new 0 0 320 512;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:#FFFFFF;stroke:#000000;stroke-width:5;stroke-miterlimit:10;}
+</style>
+<path class="st0" d="M285.5,273L91.1,467.3c-9.4,9.4-24.6,9.4-33.9,0l-22.7-22.7c-9.4-9.4-9.4-24.5,0-33.9l154-154.7l-154-154.7
+	c-9.3-9.4-9.3-24.5,0-33.9l22.7-22.7c9.4-9.4,24.6-9.4,33.9,0L285.5,239C294.8,248.4,294.8,263.6,285.5,273z"/>
+</svg>
