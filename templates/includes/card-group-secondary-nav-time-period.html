@@ -1,15 +1,6 @@
 <div class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-secondary-nav">
         <a href='{{ child.url }}' class="card-group-secondary-nav__link">
-            <div class="card-group-secondary-nav__image">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="https://via.placeholder.com/543x325.png?text=Placeholder">
-                    <source media="(max-width: 991px)" srcset="https://via.placeholder.com/328x196.png?text=Placeholder">
-                    <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/288x172.png?text=Placeholder">
-                    <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x208.png?text=Placeholder">
-                    <img src="https://via.placeholder.com/288x172.png?text=Placeholder" alt="Placeholder alt text" class="card-group-secondary-nav__image-fallback">
-                </picture>
-            </div>
             <div class="card-group-secondary-nav__body">
                 <h3 class="tna-card__heading">
                     {# Visible on screen but hidden from assistive technology #}
@@ -18,6 +9,15 @@
                     <span class="sr-only">{{ child.title }}. Covering years <time datetime="974">974</time> to <time datetime="2010">2010</time>.</span>
                 </h3>
                 <p>Description</p>
+            </div>
+            <div class="card-group-secondary-nav__image">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="https://via.placeholder.com/543x325.png?text=Placeholder">
+                    <source media="(max-width: 991px)" srcset="https://via.placeholder.com/328x196.png?text=Placeholder">
+                    <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/288x172.png?text=Placeholder">
+                    <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x208.png?text=Placeholder">
+                    <img src="https://via.placeholder.com/288x172.png?text=Placeholder" alt="Placeholder alt text" class="card-group-secondary-nav__image-fallback">
+                </picture>
             </div>
         </a>
     </div>
