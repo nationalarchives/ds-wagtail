@@ -8,20 +8,20 @@
             <div class="col-md-12" id="content">
                 <h2>Explore by topic</h2>
                 <p>Discover highlights of The National Archives’ collections.</p>
-                <div class="row">
-                    {% with children=page.get_children %}
-                        {% if children %}
-                            {% for child in children %}
-                                {% include 'includes/card-group-secondary-nav.html' %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-                </div>
+                    <ul class="row card-group">
+                        {% with children=page.get_children %}
+                            {% if children %}
+                                {% for child in children %}
+                                    {% include 'includes/card-group-secondary-nav.html' %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                    </ul>
 
                 <h2>Explore by time period</h2>
                 <p>The National Archives contains over 1,000 years of British historical records. Select a time period
                     to start exploring.</p>
-                <div class="row">
+                <ul class="row card-group">
                     {% with children=page.get_children %}
                         {% if children %}
                             {% for child in children %}
@@ -29,7 +29,7 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                </div>
+                </ul>
             </div>
         </div>
     </div>
