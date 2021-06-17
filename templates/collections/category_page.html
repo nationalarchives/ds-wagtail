@@ -9,7 +9,7 @@
                 <h2>Collection highlights</h2>
                 <p>From the well-known to the unusual, browse highlights from The National Archives arts and culture
                     collections.</p>
-                <div class="row">
+                <ul class="row card-group">
                     {% with children=page.get_children %}
                         {% if children %}
                             {% for child in children %}
@@ -17,12 +17,13 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                </div>
+                </ul>
+                <ul class="card-group">
                 {% include 'includes/card-group-promo--dark.html' %}
-
+                </ul>
                 <h2>More Arts and Culture</h2>
                 <p>Find out more about Arts and culture at The National Archives..</p>
-                <div class="row">
+                <ul class="row card-group">
                     {% with children=page.get_children %}
                         {% if children %}
                             {% for child in children %}
@@ -30,7 +31,7 @@
                             {% endfor %}
                         {% endif %}
                     {% endwith %}
-                </div>
+                </ul>
             </div>
         </div>
     </div>
