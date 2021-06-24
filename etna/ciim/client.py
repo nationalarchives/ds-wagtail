@@ -29,6 +29,8 @@ def mock_response_from_file(filename, **kwargs):
                 default="",
             ).lower()
             == term
+            or term in r["_source"]["description"][0]["value"].lower()
+            or term in r["_source"]["@summary"]["title"].lower()
         ]
         response["hits"]["total"]["value"] = len(response["hits"]["hits"])
         return response
@@ -69,7 +71,7 @@ class KongClient:
             or kwargs.pop("term", None)
             or ""
         ):
-            kwargs['term'] = term
+            kwargs["term"] = term
 
         if settings.KONG_CLIENT_TEST_MODE:
             return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
