@@ -1,10 +1,14 @@
 from django.db import models
 from django.utils.functional import cached_property
 
-from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.core.models import Page
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.core.models import Page, Orderable
+
+from modelcluster.fields import ParentalKey
 
 from ..teasers.models import TeaserImageMixin
+from ..records.models import RecordPage
+from ..records.widgets import RecordChooser
 
 
 class ExplorerIndexPage(TeaserImageMixin, Page):
@@ -148,6 +152,28 @@ class ResultsPage(TeaserImageMixin, Page):
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
+    content_panels = [
+        InlinePanel("records"),
+    ]
+
+    def get_context(self, request):
+        """Fetch RecordPage instances from Kong and add to context."""
+        context = super().get_context(request)
+
+        record_iaids = self.records.values_list("record_iaid", flat=True)
+        context["results"] = RecordPage.search.get_multiple(iaid=record_iaids)
+
+        return context
+
     max_count_per_parent = 1
     parent_page_types = []
     subpage_types = []
+
+
+class ResultsPageRecordPage(Orderable, models.Model):
+    """Map orderable records data to ResultsPage"""
+
+    page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
+    record_iaid = models.TextField()
+
+    panels = [FieldPanel("record_iaid", widget=RecordChooser)]

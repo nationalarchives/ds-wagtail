@@ -16,13 +16,10 @@
                     {% include 'includes/results-options.html' %}
                     <ul class="row card-group">
                         <h3 class="sr-only">Items</h3>
-                            {% include 'includes/card-group-record-summary.html' %}
-                            {% include 'includes/card-group-record-summary.html' %}
-                            {% include 'includes/card-group-record-summary.html' %}
-                            {% include 'includes/card-group-record-summary.html' %}
-                            {% include 'includes/card-group-record-summary.html' %}
-                            {% include 'includes/card-group-record-summary.html' %}
-                        </ul>
+                        {% for record in results %}
+                            {% include 'includes/card-group-record-summary.html' with page=record %}
+                        {% endfor %}
+                    </ul>
                     <h3 class="sr-only">Pagination</h3>
                     {% include 'includes/pagination.html' %}
                 </div>
