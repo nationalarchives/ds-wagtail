@@ -1,7 +1,7 @@
-<li class="col-sm-12 col-md-6 col-lg-4">
+<div class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href='/' class="card-group-record-summary__link">
-            <h4>Record Title</h4>
+        <a href="{% url 'details-page-machine-readable' iaid=record.iaid %}" class="card-group-record-summary__link">
+            <h4>{{ page.title }}</h4>
             <figure>
                 <div class="card-group-record-summary__image">
                     <picture>
@@ -13,9 +13,9 @@
                     </picture>
                 </div>
                 <div class="card-group-record-summary__body">
-                    <figcaption>Record Description</figcaption>
+                    <figcaption>{{ record.description }}</figcaption>
                 </div>
             </figure>
         </a>
     </div>
-</li>
+</div>
