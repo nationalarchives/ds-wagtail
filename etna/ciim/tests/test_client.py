@@ -235,17 +235,25 @@ class TestClientTestMode(TestCase):
 
             mock_request.assert_not_called()
 
-    def test_test_response_returns_correct_count(self):
+    def test_match_in_title(self):
+        response = self.client.search(term="legal")
+
+        self.assertEqual(response["hits"]["total"]["value"], 1)
+
+    def test_match_on_iaid(self):
         response = self.client.search(term="C10297")
 
         self.assertEqual(response["hits"]["total"]["value"], 1)
 
-    def test_test_response_returns_correct_result(self):
-        response = self.client.search(term="C10297")
+    def test_match_on_reference_number(self):
+        response = self.client.search(term="LO 2")
 
-        self.assertEqual(
-            response["hits"]["hits"][0]["_source"]["identifier"][2]["iaid"], "C10297"
-        )
+        self.assertEqual(response["hits"]["total"]["value"], 1)
+
+    def test_match_on_description(self):
+        response = self.client.search(term="law")
+
+        self.assertEqual(response["hits"]["total"]["value"], 1)
 
     @override_settings(KONG_CLIENT_TEST_FILENAME="missing.json")
     def test_missing_test_file(self):
