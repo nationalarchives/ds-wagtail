@@ -1,6 +1,8 @@
 class KongException(Exception):
     """Exception to group exceptions received from Kong client."""
 
+class ConnectionError(KongException):
+    """Raised if Kong isn't accessible"""
 
 class InvalidResponse(KongException):
     """Raised if Kong returns non-200 reponse"""

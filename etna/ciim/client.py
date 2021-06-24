@@ -4,7 +4,7 @@ from django.conf import settings
 
 import requests
 
-from .exceptions import InvalidResponse, KubernetesError, KongError
+from .exceptions import InvalidResponse, KubernetesError, KongError, ConnectionError
 from .utils import pluck
 
 
@@ -48,7 +48,10 @@ class KongClient:
         kwargs["from"] = kwargs.pop("start", 0)
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
-        response = requests.get(self.base_url + "/fetch", params=kwargs, timeout=5)
+        try:
+            response = requests.get(self.base_url + "/fetch", params=kwargs, timeout=5)
+        except requests.exceptions.ConnectionError as e:
+            raise ConnectionError from e
 
         if not response.ok:
             raise InvalidResponse("Invalid response")
@@ -76,11 +79,14 @@ class KongClient:
         if settings.KONG_CLIENT_TEST_MODE:
             return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
 
-        # from isn't a valid kwargs
+        # from isn'ca valid kwargs
         kwargs["from"] = kwargs.pop("start", 0)
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
-        response = requests.get(self.base_url + "/search", params=kwargs, timeout=5)
+        try:
+            response = requests.get(self.base_url + "/search", params=kwargs, timeout=5)
+        except requests.exceptions.ConnectionError as e:
+            raise ConnectionError from e
 
         if not response.ok:
             raise InvalidResponse("Invalid response.")
