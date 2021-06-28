@@ -1,6 +1,6 @@
 .alert-message {
 
-    padding: 0.5rem;
+    padding: 0.5em;
 
     &--high {
         @extend .alert-message;
@@ -20,11 +20,11 @@
     &__label {
         display: inline-block;
         background-color: $color__white;
-        padding-top: 0.2rem;
-        padding-bottom: 0.2rem;
-        padding-left: 0.4rem;
-        padding-right: 0.4rem;
-        margin-right: 0.4rem;
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+        padding-left: 0.4em;
+        padding-right: 0.4em;
+        margin-right: 0.4em;
     }
 
     &__description {
