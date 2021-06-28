@@ -1,0 +1,38 @@
+.alert-message {
+
+    padding: 0.5rem;
+
+    &--high {
+        @extend .alert-message;
+        background-color: $color__pink;
+    }
+
+    &--medium {
+        @extend .alert-message;
+        background-color: $color__yellow;
+    }
+
+    &--low {
+        @extend .alert-message;
+        background-color: $color__grey-4;
+    }
+
+    &__label {
+        display: inline-block;
+        background-color: $color__white;
+        padding-top: 0.2rem;
+        padding-bottom: 0.2rem;
+        padding-left: 0.4rem;
+        padding-right: 0.4rem;
+        margin-right: 0.4rem;
+    }
+
+    &__description {
+        margin-bottom: 0;
+        display: inline-block;
+    }
+
+    &__link {
+        color: $color__link-hover;
+    }
+}
