@@ -14,7 +14,7 @@
 <div class="container pt-4">
     <h2 class="sr-only">A subheading for the cards (for accessibility purposes)</h2>
     <ul class="row card-group">
-        {% with children=page.get_children %}
+        {% with children=page.get_children.specific %}
             {% if children %}
                 {% for child in children %}
                     {% include 'includes/card-group-secondary-nav.html' %}
