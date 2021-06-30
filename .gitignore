@@ -35,3 +35,6 @@ templates/static/*
 
 # SASS
 .sass-cache
+
+# coverage.py
+.coverage
