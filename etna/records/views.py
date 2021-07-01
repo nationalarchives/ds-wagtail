@@ -4,7 +4,7 @@ from django.shortcuts import render, Http404
 from generic_chooser.views import ModelChooserViewSet, ModelChooserMixin, BaseChosenView
 
 from .models import RecordPage
-from ..ciim.exceptions import DoesNotExist, KongError
+from ..ciim.exceptions import DoesNotExist, KongException
 
 
 def record_page_disambiguation_view(request, reference_number):
@@ -108,7 +108,7 @@ class KongChosenView(BaseChosenView):
         """
         try:
             return super().get(request, pk)
-        except KongError:
+        except KongException:
             raise Http404
 
 
