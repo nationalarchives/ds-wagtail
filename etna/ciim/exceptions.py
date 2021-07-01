@@ -28,3 +28,7 @@ class DoesNotExist(SearchManagerException):
 
 class MultipleObjectsReturned(SearchManagerException):
     """Raised if single item is requested but multiple returned"""
+
+
+class UnsupportedSlice(ValueError):
+    """Raised if unsupported slice is attempted on a SearchManager result set"""
