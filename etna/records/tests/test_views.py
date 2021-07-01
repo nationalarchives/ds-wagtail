@@ -3,6 +3,7 @@ from django.test import TestCase, override_settings, RequestFactory
 import responses
 
 from .. import views
+from ...ciim.tests.factories import create_record, create_response
 
 
 @override_settings(
@@ -14,9 +15,7 @@ class TestRecordPageDisambiguationView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
-            responses.GET,
-            "https://kong.test/search",
-            json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
+            responses.GET, "https://kong.test/search", json=create_response(records=[])
         )
 
         response = self.client.get("/catalogue/AD/2/2/")
@@ -31,41 +30,12 @@ class TestRecordPageDisambiguationView(TestCase):
         responses.add(
             responses.GET,
             "https://kong.test/search",
-            json={
-                "hits": {
-                    "total": {"value": 2, "relation": "eq"},
-                    "hits": [
-                        {
-                            "_source": {
-                                "@admin": {
-                                    "id": "C4122893",
-                                },
-                                "identifier": [
-                                    {"reference_number": "ADM 223/3"},
-                                    {"iaid": "C4122893"},
-                                ],
-                                "@summary": {
-                                    "title": "Title",
-                                },
-                            }
-                        },
-                        {
-                            "_source": {
-                                "@admin": {
-                                    "id": "C4122893",
-                                },
-                                "identifier": [
-                                    {"reference_number": "ADM 223/3"},
-                                    {"iaid": "C4122893"},
-                                ],
-                                "@summary": {
-                                    "title": "Title",
-                                },
-                            }
-                        },
-                    ],
-                }
-            },
+            json=create_response(
+                records=[
+                    create_record(reference_number="ADM 223/3"),
+                    create_record(reference_number="ADM 223/3"),
+                ]
+            ),
         )
 
         response = self.client.get("/catalogue/ADM/223/3/")
@@ -81,24 +51,11 @@ class TestRecordPageDisambiguationView(TestCase):
         responses.add(
             responses.GET,
             "https://kong.test/search",
-            json={
-                "hits": {
-                    "total": {"value": 1, "relation": "eq"},
-                    "hits": [
-                        {
-                            "_source": {
-                                "@admin": {"id": "C4122893"},
-                                "identifier": [
-                                    {"reference_number": "ADM 223/3"},
-                                ],
-                                "@summary": {
-                                    "title": "Title",
-                                },
-                            }
-                        },
-                    ],
-                }
-            },
+            json=create_response(
+                records=[
+                    create_record(reference_number="ADM 223/3"),
+                ]
+            ),
         )
 
         response = self.client.get("/catalogue/ADM/223/3/")
@@ -119,9 +76,7 @@ class TestRecordPageView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
-            responses.GET,
-            "https://kong.test/fetch",
-            json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
+            responses.GET, "https://kong.test/fetch", json=create_response(records=[])
         )
 
         response = self.client.get("/catalogue/C123456/")
@@ -134,24 +89,11 @@ class TestRecordPageView(TestCase):
         responses.add(
             responses.GET,
             "https://kong.test/fetch",
-            json={
-                "hits": {
-                    "total": {"value": 1, "relation": "eq"},
-                    "hits": [
-                        {
-                            "_source": {
-                                "@admin": {"id": "C4122893"},
-                                "identifier": [
-                                    {"reference_number": "ADM 223/3"},
-                                ],
-                                "@summary": {
-                                    "title": "Title",
-                                },
-                            }
-                        },
-                    ],
-                }
-            },
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456"),
+                ]
+            ),
         )
 
         response = self.client.get("/catalogue/C123456/")
