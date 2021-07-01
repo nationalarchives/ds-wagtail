@@ -50,7 +50,7 @@ class TestTopicExplorerPages(TestCase):
         )
         self.explorer_page.add_child(instance=topic_page)
 
-        self.assertEquals(self.explorer_page.topic_pages.count(), 1)
+        self.assertEquals(self.explorer_page.topic_pages.count(), 0)
 
 
 class TestTimePeriodExplorerPages(TestCase):
