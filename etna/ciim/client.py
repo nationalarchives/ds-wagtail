@@ -10,6 +10,49 @@ from .utils import pluck
 
 def mock_response_from_file(filename, **kwargs):
 
+    def match(record, term):
+        """Emulate Kong's search.
+
+        If data is missing from response, skip and try the next comparison.
+
+        Refactor as soon as possible (potentially using 3.10's Structural
+        Pattern Matching)
+        """
+        try:
+            if success := record["_source"]["@admin"]["id"].lower() == term:
+                return success
+        except KeyError:
+            # Try next comparison
+            ...
+
+        try:
+            if success := pluck(
+                record["_source"]["identifier"],
+                accessor=lambda i: i["reference_number"],
+                default="",
+            ).lower() == term:
+                return success
+        except KeyError:
+            # Try next comparison
+            ...
+
+        try:
+            if success := term in record["_source"]["description"][0]["value"].lower():
+                return success
+        except (KeyError, IndexError):
+            # Try next comparison
+            ...
+
+        try:
+            if success := term in record["_source"]["@summary"]["title"].lower():
+                return success
+        except KeyError:
+            # Try next comparison
+            ...
+
+        return False
+
+
     # Mimic Kong's behaviour by searching multiple fields with the 'term' param
     term = (
         kwargs.get("iaid") or kwargs.get("reference_number") or kwargs.get("term") or ""
@@ -19,19 +62,7 @@ def mock_response_from_file(filename, **kwargs):
 
     with open(filename) as f:
         response = json.loads(f.read())
-        response["hits"]["hits"] = [
-            r
-            for r in response["hits"]["hits"]
-            if r["_source"]["@admin"]["id"].lower() == term
-            or pluck(
-                r["_source"]["identifier"],
-                accessor=lambda i: i["reference_number"],
-                default="",
-            ).lower()
-            == term
-            or term in r["_source"]["description"][0]["value"].lower()
-            or term in r["_source"]["@summary"]["title"].lower()
-        ]
+        response["hits"]["hits"] = [r for r in response["hits"]["hits"] if match(r, term)]
         response["hits"]["total"]["value"] = len(response["hits"]["hits"])
         return response
 
