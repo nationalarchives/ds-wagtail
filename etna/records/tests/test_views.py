@@ -42,6 +42,7 @@ class TestRecordPageDisambiguationView(TestCase):
                                 },
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
+                                    {"iaid": "C4122893"},
                                 ],
                                 "@summary": {
                                     "title": "Title",
@@ -55,6 +56,7 @@ class TestRecordPageDisambiguationView(TestCase):
                                 },
                                 "identifier": [
                                     {"reference_number": "ADM 223/3"},
+                                    {"iaid": "C4122893"},
                                 ],
                                 "@summary": {
                                     "title": "Title",
@@ -66,7 +68,7 @@ class TestRecordPageDisambiguationView(TestCase):
             },
         )
 
-        response = self.client.get("/catalogue/AD/2/2/")
+        response = self.client.get("/catalogue/ADM/223/3/")
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
@@ -99,7 +101,7 @@ class TestRecordPageDisambiguationView(TestCase):
             },
         )
 
-        response = self.client.get("/catalogue/AD/2/2/")
+        response = self.client.get("/catalogue/ADM/223/3/")
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
