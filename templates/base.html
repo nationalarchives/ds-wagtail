@@ -1,4 +1,5 @@
 {% load static wagtailuserbar %}
+{% load alert_tags %}
 
 <!DOCTYPE html>
 <html class="no-js" lang="en">
@@ -34,9 +35,7 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
-{% include 'includes/alert-message--high.html' %}
-{% include 'includes/alert-message--medium.html' %}
-{% include 'includes/alert-message--low.html' %}
+{% alerts page=page %}
 {% include 'includes/header.html' %}
 
 <main id="maincontent">
