@@ -17,7 +17,7 @@ class Alert(models.Model):
     title = models.CharField(max_length=100)
     message = BasicRichTextField()
     active = models.BooleanField(default=False)
-    cascade = models.BooleanField(default=False, verbose_name='Show on this and all child pages')
+    cascade = models.BooleanField(default=False, verbose_name='Show on current and all child pages')
     alert_level = models.CharField(max_length=6, choices=ALERT_LEVEL_CHOICES, default='low')
 
     panels = [
