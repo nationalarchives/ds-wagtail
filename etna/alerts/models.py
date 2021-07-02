@@ -8,6 +8,26 @@ from ..text_formats.fields import BasicRichTextField
 
 @register_snippet
 class Alert(models.Model):
+    """Alert snippet.
+
+    Alerts are preconfigured pieces of content that can be selected
+    to display on pages with an alert field defined.
+
+    The title and message fields are self-explanatory.
+
+    active: Only active alerts will be displayed. Alert snippets can
+    be pre-prepared ready to be activated when required.
+
+    cascade: Enables an alert to be displayed on the current page and
+    all child pages of the current page.
+    A global alert can be set by selecting it on the Home page and
+    setting cascade to True.
+    It is possible, through inheritance, for multiple alerts to display
+    on a single page. These will be listed in heirarchical order.
+
+    alert_level: The level of importance of the alert. Choices are
+    "Low", "Medium" and "High". The default is "Low".
+    """
     ALERT_LEVEL_CHOICES = [
         ('low', 'Low'),
         ('medium', 'Medium'),
