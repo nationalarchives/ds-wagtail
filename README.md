@@ -99,3 +99,14 @@ And then **import**:
 - Download `tna-toolkit.0.0.1.css` into `/templates/static/css/libraries/`. [Download link is here.](https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css)
 - To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.
+
+##### Working with JavaScript
+
+Webpack is used for JavaScript module bundling with entry points and outputs defined within `webpack.config.js`. When defining new
+entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required. 
+
+Webpack
+
+- Install dependencies with `npm install`
+- **For development**: Kick off a Webpack watch task with `npm start`. This will produce development assets (by overriding the production mode set in `webpack.config.js`).
+- **For production**: bundle assets with `npx webpack --config webpack.config.js`

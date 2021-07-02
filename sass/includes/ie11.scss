@@ -1,0 +1,14 @@
+@media all and (-ms-high-contrast: none) {
+
+  .image-browse__listing {
+    padding-top: 1rem;
+
+    > li {
+      display: inline-block;
+      width: 24%;
+      height: 24vw;
+      margin-left: 0.5%;
+      margin-bottom: 1%;
+    }
+  }
+}

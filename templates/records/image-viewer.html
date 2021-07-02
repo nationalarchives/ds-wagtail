@@ -1,0 +1,69 @@
+{% extends 'base-images.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="image-viewer">
+        <div class="image-viewer__header">
+            <div class="image-viewer__reference">
+                <h1><strong>CAB 23/78</strong> <span>- Image 1 of 39</span></h1>
+            </div>
+            <div class="image-viewer__toolbar" id="js-viewer-toolbar">
+                <button id="zoom-in" aria-controls="js-image-viewer">Zoom in</button>
+                <button id="zoom-out" aria-controls="js-image-viewer">Zoom out</button>
+                <button id="home" aria-controls="js-image-viewer">Reset</button>
+                <button id="full-page" aria-controls="js-image-viewer">Full screen</button>
+            </div>
+        </div>
+        <div class="image-viewer__viewer" id="js-image-viewer"></div>
+
+        {% comment %}
+            This noscript tag is used to provide a static image
+            to users should JavaScript be unavailable for any reason.
+        {% endcomment %}
+
+        <noscript>
+            <img src="https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/default1.jpg"
+                 alt="CAB 23/78 - Image 1 of 39">
+        </noscript>
+
+        <div class="image-viewer__footer">
+            <nav class="image-viewer__navigation" aria-label="Explore this record">
+
+                {% comment %}
+
+                Development note:
+
+                Where there are multiple images associated with a record the 'nav > ul > li > a' pattern would be used.
+                Where there is one record there be a single link rather than two links within a list 'nav a' as below
+
+                <a href="#">Record details</a>
+
+                {% endcomment %}
+
+                <ul>
+                    <li><a href="#">Record details</a></li>
+                    <li><a href="#">All 39 images</a></li>
+                </ul>
+            </nav>
+            <nav class="image-viewer__pagination" aria-label="Pagination">
+                <ul>
+                    <li><a href="#">Previous</a></li>
+                    <li><a href="#">Next</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    </main>
+
+{% endblock %}
+
+{% block extra_js %}
+
+    <script>
+        var image_source = "https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/default1.jpg";
+    </script>
+
+    <script src="{% static 'scripts/image_viewer.js' %}"></script>
+
+{% endblock %}

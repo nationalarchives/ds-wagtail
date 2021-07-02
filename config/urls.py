@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from django.views.generic.base import TemplateView
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -15,6 +16,10 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
 
     path('search/', search_views.search, name='search'),
+
+    path('image-viewer/', TemplateView.as_view(template_name='records/image-viewer.html')),
+
+    path('image-browse/', TemplateView.as_view(template_name='records/image-browse.html'))
 
 ]
 
