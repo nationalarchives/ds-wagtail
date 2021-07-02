@@ -25,7 +25,7 @@ def get_page_alert(page):
         return None
 
 
-@register.inclusion_tag('alerts/tags/alerts.html', takes_context=False)
+@register.inclusion_tag('alerts/tags/alerts.html')
 def alerts(page):
     """
     Return alerts from current page as well as those cascaded from ancestors.
