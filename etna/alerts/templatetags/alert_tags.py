@@ -32,19 +32,18 @@ def alerts(page):
     """
     alerts = []
 
+    # Iterate through current page ancestors.
+    # If page has alert and "cascade" is true, add to alerts list.
+    for ancestor in Page.objects.ancestor_of(page).specific():
+        alert = get_page_alert(ancestor)
+        if alert and alert.cascade:
+            alerts.append(alert)
+
     # Get alert for current page, if any.
+    # This needs to be done separately because cascade might not be set.
     alert = get_page_alert(page)
     if alert:
-        alerts.insert(0, alert)
-
-    # Get current page ancestors.
-    branch = Page.objects.ancestor_of(page).specific()
-    # Iterate backwards and, if page has alert and "cascade" is true,
-    # add to alerts list.
-    for i in reversed(range(branch.count())):
-        alert = get_page_alert(branch[i])
-        if alert and alert.cascade:
-            alerts.insert(0, alert)
+        alerts.append(alert)
 
     return {
         'alerts': alerts
