@@ -25,11 +25,17 @@
         padding-left: 0.4rem;
         padding-right: 0.4rem;
         margin-right: 0.4rem;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     &__description {
         margin-bottom: 0;
         display: inline-block;
+    }
+
+    &__description a {
+        color: $color__link-hover;
     }
 
     &__link {
