@@ -1,4 +1,4 @@
-def create_record(iaid="C0000000", reference_number="ADM 223/3"):
+def create_record(iaid="C0000000", reference_number="ADM 223/3", title="Title"):
     """Return a sample response for a record.
 
     Useful for tidying up tests where response needs to be mocked
@@ -22,7 +22,7 @@ def create_record(iaid="C0000000", reference_number="ADM 223/3"):
                 },
             },
             "@summary": {
-                "title": "Title",
+                "title": title,
             },
             "description": [{"value": "description"}],
             "legal": {"status": "Open"},
