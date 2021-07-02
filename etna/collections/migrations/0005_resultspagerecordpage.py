@@ -8,7 +8,7 @@ import modelcluster.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0004_create_explorer_pages_20210616_1433'),
+        ('collections', '0004_create_explorer_pages'),
     ]
 
     operations = [
