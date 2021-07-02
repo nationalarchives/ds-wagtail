@@ -1,9 +1,9 @@
 from http import HTTPStatus
-from pathlib import Path
 import json
 
-from django.conf import settings
-from django.test import TestCase, override_settings
+import responses
+
+from django.test import override_settings
 from django.urls import reverse
 
 from wagtail.core.models import Site
@@ -11,15 +11,43 @@ from wagtail.tests.utils import WagtailPageTests
 from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
 from ..models import ExplorerIndexPage, TopicExplorerPage, ResultsPage
+from ...ciim.tests.factories import create_record, create_response
 
 
 @override_settings(
-    KONG_CLIENT_TEST_MODE=True,
-    KONG_CLIENT_TEST_FILENAME=Path(
-        settings.BASE_DIR, "etna", "ciim", "tests/fixtures/record.json"
-    ),
+    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
 )
 class TestRecordChooseView(WagtailPageTests):
+    def setUp(self):
+        super().setUp()
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C10297",
+                        title="Law Officers' Department: Registered Files",
+                    ),
+                ]
+            ),
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C10297",
+                        title="Law Officers' Department: Registered Files",
+                    ),
+                ]
+            ),
+        )
+
+    @responses.activate
     def test_get(self):
         response = self.client.get("/admin/record-chooser/")
 
@@ -28,6 +56,7 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(content["step"], "choose")
 
+    @responses.activate
     def test_search(self):
         response = self.client.get("/admin/record-chooser/?q=law&result=true")
 
@@ -41,6 +70,7 @@ class TestRecordChooseView(WagtailPageTests):
             content["html"],
         )
 
+    @responses.activate
     def test_select(self):
         response = self.client.get("/admin/record-chooser/C10297/")
 
@@ -57,7 +87,10 @@ class TestRecordChooseView(WagtailPageTests):
             },
         )
 
+    @responses.activate
     def test_select_failed(self):
+        responses.reset()
+
         response = self.client.get("/admin/record-chooser/invalid/")
 
         self.assertEqual(response.status_code, 404)
@@ -121,14 +154,15 @@ class TestEditResultsPage(WagtailPageTests):
                             "id": "",
                             "record_iaid": "C10297",
                         }
-                    ], initial=1
+                    ],
+                    initial=1,
                 ),
                 "action-publish": "Publish",
                 "search_description": "",
             }
         )
-        data['records-0-DELETE'] = '1'
-        data['records-0-id'] = self.results_page.records.first().id
+        data["records-0-DELETE"] = "1"
+        data["records-0-id"] = self.results_page.records.first().id
 
         response = self.client.post(
             reverse("wagtailadmin_pages:edit", args=(self.results_page.id,)), data
