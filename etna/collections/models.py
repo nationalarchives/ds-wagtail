@@ -9,12 +9,13 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 
 from modelcluster.fields import ParentalKey
 
+from ..alerts.models import AlertMixin
 from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
 
 
-class ExplorerIndexPage(TeaserImageMixin, Page):
+class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
     """Collection Explorer landing page.
 
     This page is the starting point for a user's journey through the collection
@@ -23,7 +24,9 @@ class ExplorerIndexPage(TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    content_panels = (
+        AlertMixin.content_panels + Page.content_panels + [FieldPanel("introduction")]
+    )
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     parent_page_types = ["home.HomePage"]
@@ -63,7 +66,7 @@ class ExplorerIndexPage(TeaserImageMixin, Page):
         )
 
 
-class TopicExplorerPage(TeaserImageMixin, Page):
+class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
     """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
@@ -76,7 +79,9 @@ class TopicExplorerPage(TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    content_panels = (
+        AlertMixin.content_panels + Page.content_panels + [FieldPanel("introduction")]
+    )
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     @property
@@ -98,7 +103,7 @@ class TopicExplorerPage(TeaserImageMixin, Page):
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
 
-class TimePeriodExplorerPage(TeaserImageMixin, Page):
+class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     """Time period page.
 
     This page represents one of the many categories a user may select in the
@@ -113,11 +118,15 @@ class TimePeriodExplorerPage(TeaserImageMixin, Page):
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
-    content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
-        FieldPanel("start_year"),
-        FieldPanel("end_year"),
-    ]
+    content_panels = (
+        AlertMixin.content_panels
+        + Page.content_panels
+        + [
+            FieldPanel("introduction"),
+            FieldPanel("start_year"),
+            FieldPanel("end_year"),
+        ]
+    )
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     @property
@@ -139,7 +148,7 @@ class TimePeriodExplorerPage(TeaserImageMixin, Page):
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
 
-class ResultsPage(TeaserImageMixin, Page):
+class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     """Results page.
 
     This page is a placeholder for the results page at the end of a user's
@@ -151,9 +160,13 @@ class ResultsPage(TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
-    ]
+    content_panels = (
+        AlertMixin.content_panels
+        + Page.content_panels
+        + [
+            FieldPanel("introduction"),
+        ]
+    )
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     content_panels = [
@@ -176,7 +189,6 @@ class ResultsPage(TeaserImageMixin, Page):
                 )
             except ObjectDoesNotExist:
                 continue
-
 
         return context
 

@@ -1,7 +1,10 @@
 from django.db import models
 
+from wagtail.core.models import Page
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.snippets.models import register_snippet
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
+
 
 from ..text_formats.fields import BasicRichTextField
 
@@ -50,3 +53,24 @@ class Alert(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class AlertMixin(Page):
+    """Alert mixin.
+
+    Add this mixin to pages that require an alert field.
+    """
+    alert = models.ForeignKey(
+        'alerts.Alert',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='+'
+    )
+
+    content_panels = Page.content_panels + [
+        SnippetChooserPanel('alert'),
+    ]
+
+    class Meta:
+        abstract = True
