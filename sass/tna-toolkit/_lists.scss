@@ -1,0 +1,58 @@
+.tna-ul {
+
+  &--no-bullet {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  &--menu {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      padding: 0;
+      margin: 0;
+
+      a {
+        display: block;
+        border-top: 1px solid $color__grey-light;
+        padding: 0.3em 0.2em;
+        margin: 0;
+      }
+
+      a:hover {
+        background-color: $color__grey-light;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &--menu-disc {
+    list-style-type: none;
+    padding: 0;
+
+    li {
+      margin: 0;
+      display: inline-block;
+    }
+
+    a {
+      display: block;
+      color: $color__white;
+      background-color: $color__black;
+      text-align: center;
+      border: $default__border;
+      font-size: 1.25em;
+      line-height: 44px;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+    }
+
+    a:hover {
+      text-decoration: none;
+      background-color: $color__white;
+      color: $color__black;
+    }
+  }
+}
