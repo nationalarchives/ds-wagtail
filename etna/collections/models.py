@@ -145,6 +145,7 @@ class ResultsPage(TeaserImageMixin, Page):
     Eventually this page will run an editor-defined query against the
     collections API and display the results.
     """
+
     introduction = models.CharField(max_length=200, blank=False)
 
     content_panels = Page.content_panels + [
@@ -153,7 +154,7 @@ class ResultsPage(TeaserImageMixin, Page):
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     content_panels = [
-        InlinePanel("records"),
+        InlinePanel("records", heading="Records"),
     ]
 
     def get_context(self, request):
@@ -174,6 +175,6 @@ class ResultsPageRecordPage(Orderable, models.Model):
     """Map orderable records data to ResultsPage"""
 
     page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
-    record_iaid = models.TextField()
+    record_iaid = models.TextField(verbose_name="Record")
 
     panels = [FieldPanel("record_iaid", widget=RecordChooser)]
