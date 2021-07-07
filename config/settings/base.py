@@ -29,6 +29,8 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 INSTALLED_APPS = [
     'etna.collections',
     'etna.home',
+    'etna.quotes',
+    'etna.richtexts',
     'etna.search',
 
     'wagtail.contrib.forms',
