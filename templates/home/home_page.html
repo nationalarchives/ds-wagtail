@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+{% block content %}
+
+{% include 'includes/generic-intro--dark.html' %}
+
+<div class="container pt-4">
+    <h2 class="sr-only">A subheading for the cards (for accessibility purposes)</h2>
+    <ul class="row card-group">
+        {% with related_content=page.related_content.all %}
+            {% if related_content %}
+                {% for related_page in related_content %}
+                    {% with promoted_page=related_page.related.specific %}
+                        {% include 'includes/card-group-secondary-nav.html' %}
+                    {% endwith %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            {{ page.information|richtext }}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
