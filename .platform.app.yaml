@@ -35,6 +35,21 @@ hooks:
     poetry config virtualenvs.in-project true
     poetry install --no-dev
 
+
+    unset NPM_CONFIG_PREFIX
+    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    wget https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css --directory-prefix templates/static/css/libraries/
+
+    nvm install v14.17.3
+    nvm use v14.17.3
+    npm install -g sass
+    sass sass/etna.scss:templates/static/css/dist/etna.css
+
+    python manage.py collectstatic --no-input
+
   deploy: |
     python manage.py migrate
 

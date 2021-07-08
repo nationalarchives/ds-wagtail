@@ -16,6 +16,14 @@ __pycache__
 templates/static/*
 !templates/static/.gitkeep
 
+templates/static/css/*
+!templates/static/css
+!templates/static/css/.gitkeep
+
+templates/static/css/libraries/*
+!templates/static/css/libraries
+!templates/static/css/libraries/.gitkeep
+
 # Ignore the contents of /static but keep the directory
 /static/*
 !/static/.gitkeep
