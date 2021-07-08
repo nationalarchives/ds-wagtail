@@ -1,7 +1,10 @@
 from .base import *
 
 from platformshconfig import Config
-from platformshconfig.config import BuildTimeVariableAccessException
+from platformshconfig.config import (
+    BuildTimeVariableAccessException,
+    NotValidPlatformException,
+)
 from urllib.parse import urlparse
 
 
@@ -74,9 +77,10 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 try:
     email_host = config.smtpHost
-except BuildTimeVariableAccessException:
+except (BuildTimeVariableAccessException, NotValidPlatformException):
     # Relationships aren't available during build-time. Unfortunately, this
     # file needs to be accessed during collectstatic
+    # NotValidPlatformException raised if outgoing emails are disabled
     email_host = None
 
 if email_host:
