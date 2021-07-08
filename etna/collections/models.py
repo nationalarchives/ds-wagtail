@@ -1,8 +1,11 @@
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.core.models import Page, Orderable
+from wagtail.images import get_image_model_string, get_image_model
+from wagtail.images.edit_handlers import ImageChooserPanel
 
 from modelcluster.fields import ParentalKey
 
@@ -161,8 +164,19 @@ class ResultsPage(TeaserImageMixin, Page):
         """Fetch RecordPage instances from Kong and add to context."""
         context = super().get_context(request)
 
-        record_iaids = self.records.values_list("record_iaid", flat=True)
-        context["results"] = RecordPage.search.get_multiple(iaid=record_iaids)
+        context["results"] = []
+        record_with_image = self.records.values_list("record_iaid", "teaser_image")
+        for record_iaid, image_id in record_with_image:
+            try:
+                context["results"].append(
+                    (
+                        RecordPage.search.get(iaid=record_iaid),
+                        get_image_model().objects.get(pk=image_id),
+                    )
+                )
+            except ObjectDoesNotExist:
+                continue
+
 
         return context
 
@@ -176,5 +190,15 @@ class ResultsPageRecordPage(Orderable, models.Model):
 
     page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
     record_iaid = models.TextField(verbose_name="Record")
+    teaser_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
 
-    panels = [FieldPanel("record_iaid", widget=RecordChooser)]
+    panels = [
+        FieldPanel("record_iaid", widget=RecordChooser),
+        ImageChooserPanel("teaser_image"),
+    ]
