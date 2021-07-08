@@ -20,8 +20,10 @@
                             {% include 'includes/card-group-record-summary.html' with record=record teaser_image=teaser_image only %}
                         {% endfor %}
                     </ul>
-                    <h3 class="sr-only">Pagination</h3>
-                    {% include 'includes/pagination.html' %}
+                    {% comment %}
+                        <h3 class="sr-only">Pagination</h3>
+                        {% include 'includes/pagination.html' %}
+                    {% endcomment %}
                 </div>
             </div>
         </div>
