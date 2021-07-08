@@ -2,52 +2,54 @@
 {% load static %}
 
 {% block content %}
-    <dl>
-        <dt>Title</dt>
-        <dd>{{ page.title }}</dd>
-        <dt>Reference</dt>
-        <dd>{{ page.reference_number }}</dd>
-        <dt>Record created</dt>
-        <dd>{{ page.date_range }}</dd>
-    </dl>
+    <div class="container">
+        <dl>
+            <dt>Title</dt>
+            <dd>{{ page.title }}</dd>
+            <dt>Reference</dt>
+            <dd>{{ page.reference_number }}</dd>
+            <dt>Record created</dt>
+            <dd>{{ page.date_range }}</dd>
+        </dl>
 
-    <h3>Key information</h3>
-    <dl>
-        <dt>Is digitised</dt>
-        <dd>{{ page.is_digitised|yesno|title }}</dd>
-        <dt>Available to download</dt>
-        <dd>To be added to payload</dd>
-        <dt>Description quality</dt>
-        <dd>To be added to payload</dd>
-        <dt>Created by</dt>
-        <dd>{{ page.created_by }}</dd>
-        <dt>Held by</dt>
-        <dd>To be added to payload</dd>
-    </dl>
+        <h3>Key information</h3>
+        <dl>
+            <dt>Is digitised</dt>
+            <dd>{{ page.is_digitised|yesno|title }}</dd>
+            <dt>Available to download</dt>
+            <dd>To be added to payload</dd>
+            <dt>Description quality</dt>
+            <dd>To be added to payload</dd>
+            <dt>Created by</dt>
+            <dd>{{ page.created_by }}</dd>
+            <dt>Held by</dt>
+            <dd>To be added to payload</dd>
+        </dl>
 
-    <h3>Record details</h3>
-    <dl>
-        <dt>Reference</dt>
-        <dd>{{ page.reference_number }}</dd>
-        <dt>Record description</dt>
-        <dd>{{ page.description|safe }}</dd>
-        <dt>Arrangement</dt>
-        <dd>{{ page.arrangement|safe }}</dd>
-        <dt>Held by</dt>
-        <dd>To be added to payload</dd>
-        <dt>Legal status</dt>
-        <dd>{{ page.legal_status }}</dd>
-        <dt>Closure status</dt>
-        <dd>{{ page.closure_status }}</dd>
-    </dl>
+        <h3>Record details</h3>
+        <dl>
+            <dt>Reference</dt>
+            <dd>{{ page.reference_number }}</dd>
+            <dt>Record description</dt>
+            <dd>{{ page.description|safe }}</dd>
+            <dt>Arrangement</dt>
+            <dd>{{ page.arrangement|safe }}</dd>
+            <dt>Held by</dt>
+            <dd>To be added to payload</dd>
+            <dt>Legal status</dt>
+            <dd>{{ page.legal_status }}</dd>
+            <dt>Closure status</dt>
+            <dd>{{ page.closure_status }}</dd>
+        </dl>
 
-    <h3>Hierarchy</h3>
-    <dl>
-        <dt>parent</dt>
-        {% if page.parent %}
-            <dd><a href="{% url 'details-page-machine-readable' page.parent.iaid %}">{{ page.parent.title }}</a></dd>
-        {% else %}
-            <dd>No parent page</dd>
-        {% endif %}
-    </dl>
+        <h3>Hierarchy</h3>
+        <dl>
+            <dt>parent</dt>
+            {% if page.parent %}
+                <dd><a href="{% url 'details-page-machine-readable' page.parent.iaid %}">{{ page.parent.title }}</a></dd>
+            {% else %}
+                <dd>No parent page</dd>
+            {% endif %}
+        </dl>
+    </div>
 {% endblock content %}
