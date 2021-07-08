@@ -16,7 +16,7 @@ class RecordPage(Page):
 
     is_creatable = False
 
-    iaid = models.IntegerField()
+    iaid = models.TextField()
     reference_number = models.TextField()
     closure_status = models.TextField()
     created_by = models.TextField()
