@@ -181,3 +181,12 @@ KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 KONG_CLIENT_TEST_MODE = strtobool(os.getenv("KONG_CLIENT_TEST_MODE", "False"))
 KONG_CLIENT_TEST_FILENAME = os.getenv("KONG_CLIENT_TEST_FILENAME")
 KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+
+
+# Rich Text Features
+# https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
+INLINE_RICH_TEXT_FEATURES = [
+    "bold",
+    "italic",
+    "link",
+]
