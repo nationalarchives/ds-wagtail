@@ -24,9 +24,9 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
     explorer.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    content_panels = Page.content_panels + [FieldPanel("sub_heading")]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
@@ -78,12 +78,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
     single ResultsPage (to output the results of their selection).
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
+        FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
@@ -119,12 +119,12 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     single ResultsPage (to output the results of their selection).
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
     content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
+        FieldPanel("sub_heading"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
@@ -160,17 +160,16 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     collections API and display the results.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
+    introduction = models.TextField(blank=False)
 
     content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("introduction"),
+        InlinePanel("records", heading="Records"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
-
-    content_panels = [
-        InlinePanel("records", heading="Records"),
-    ]
 
     def get_context(self, request):
         """Fetch RecordPage instances from Kong and add to context."""

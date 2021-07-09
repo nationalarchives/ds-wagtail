@@ -103,21 +103,25 @@ class TestEditResultsPage(WagtailPageTests):
         root = Site.objects.get().root_page
 
         explorer_page = ExplorerIndexPage(
-            title="Explorer Index Page", introduction="Introduction"
+            title="Explorer Index Page", sub_heading="Sub Heading"
         )
         root.add_child(instance=explorer_page)
 
-        self.topic_page = TopicExplorerPage(title="Topic", introduction="Introduction")
+        self.topic_page = TopicExplorerPage(title="Topic", sub_heading="Sub Heading")
         explorer_page.add_child(instance=self.topic_page)
 
-        self.results_page = ResultsPage(title="Results")
+        self.results_page = ResultsPage(
+            title="Results", introduction="Introduction", sub_heading="Sub Heading"
+        )
         self.topic_page.add_child(instance=self.results_page)
 
     def test_add_records(self):
         data = nested_form_data(
             {
-                "seo_title": "Results",
+                "title": "Results",
                 "slug": "results",
+                "sub_heading": "Sub Heading",
+                "introduction": "Introduction",
                 "records": inline_formset(
                     [
                         {
@@ -146,8 +150,10 @@ class TestEditResultsPage(WagtailPageTests):
 
         data = nested_form_data(
             {
-                "seo_title": "Results",
+                "title": "Results",
                 "slug": "results",
+                "sub_heading": "Sub Heading",
+                "introduction": "Introduction",
                 "records": inline_formset(
                     [
                         {
