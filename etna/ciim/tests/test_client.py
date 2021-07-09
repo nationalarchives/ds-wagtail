@@ -12,7 +12,7 @@ from ..exceptions import InvalidResponse, KubernetesError, KongError
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientSearchTest(TestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test")
+        self.client = KongClient("https://kong.test", api_key="")
 
         responses.add(responses.GET, "https://kong.test/search", json={})
 
@@ -90,7 +90,7 @@ class ClientSearchTest(TestCase):
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientFetchTest(TestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test")
+        self.client = KongClient("https://kong.test", api_key="")
 
         responses.add(responses.GET, "https://kong.test/fetch", json={})
 
@@ -145,10 +145,11 @@ class ClientFetchTest(TestCase):
             "https://kong.test/fetch?iaid=C198022&from=0&pretty=false",
         )
 
+
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientFetchReponse(TestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test")
+        self.client = KongClient("https://kong.test", api_key="")
 
     @responses.activate
     def test_test_mode_doesnt_use_requests(self):
@@ -215,7 +216,7 @@ class TestClientFetchReponse(TestCase):
 
 class ClientReponseTest(TestCase):
     def setUp(self):
-        self.client = KongClient("")
+        self.client = KongClient("", api_key="")
 
 
 @override_settings(
@@ -224,7 +225,7 @@ class ClientReponseTest(TestCase):
 )
 class TestClientTestMode(TestCase):
     def setUp(self):
-        self.client = KongClient("")
+        self.client = KongClient("", api_key='')
 
     def test_empty_search(self):
         self.client.search()
@@ -264,7 +265,7 @@ class TestClientTestMode(TestCase):
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientSearchReponse(TestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test")
+        self.client = KongClient("https://kong.test", api_key='')
 
     @responses.activate
     def test_test_mode_doesnt_use_requests(self):
