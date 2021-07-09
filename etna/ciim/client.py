@@ -68,14 +68,16 @@ def mock_response_from_file(filename, **kwargs):
 
 
 class KongClient:
-    def __init__(self, base_url, api_key):
+    def __init__(self, base_url, api_key, test_mode=False, test_file_path=None):
         self.base_url = base_url
         self.session = requests.Session()
         self.session.headers.update({'apikey': api_key})
+        self.test_mode = test_mode
+        self.test_file_path = test_file_path
 
     def fetch(self, **kwargs):
-        if settings.KONG_CLIENT_TEST_MODE:
-            return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
+        if self.test_mode:
+            return mock_response_from_file(self.test_file_path, **kwargs)
 
         kwargs["ref"] = kwargs.pop("reference_number", None)
         kwargs["from"] = kwargs.pop("start", 0)
@@ -109,8 +111,8 @@ class KongClient:
         ):
             kwargs["term"] = term
 
-        if settings.KONG_CLIENT_TEST_MODE:
-            return mock_response_from_file(settings.KONG_CLIENT_TEST_FILENAME, **kwargs)
+        if self.test_mode:
+            return mock_response_from_file(self.test_file_path, **kwargs)
 
         # from isn'ca valid kwargs
         kwargs["from"] = kwargs.pop("start", 0)

@@ -42,7 +42,12 @@ class SearchManager:
     @property
     def client(self):
         """Lazy-load client to allow tests to overwrite base url."""
-        return KongClient(settings.KONG_CLIENT_BASE_URL, api_key=settings.KONG_CLIENT_KEY)
+        return KongClient(
+            settings.KONG_CLIENT_BASE_URL,
+            api_key=settings.KONG_CLIENT_KEY,
+            test_mode=settings.KONG_CLIENT_TEST_MODE,
+            test_file_path=settings.KONG_CLIENT_TEST_FILENAME,
+        )
 
     def filter(self, **kwargs):
         self._query = kwargs

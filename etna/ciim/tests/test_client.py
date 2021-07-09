@@ -219,13 +219,14 @@ class ClientReponseTest(TestCase):
         self.client = KongClient("", api_key="")
 
 
-@override_settings(
-    KONG_CLIENT_TEST_MODE=True,
-    KONG_CLIENT_TEST_FILENAME=Path(Path(__file__).parent, "fixtures/record.json"),
-)
 class TestClientTestMode(TestCase):
     def setUp(self):
-        self.client = KongClient("", api_key='')
+        self.client = KongClient(
+            "",
+            api_key="",
+            test_mode=True,
+            test_file_path=Path(Path(__file__).parent, "fixtures/record.json"),
+        )
 
     def test_empty_search(self):
         self.client.search()
@@ -256,8 +257,10 @@ class TestClientTestMode(TestCase):
 
         self.assertEqual(response["hits"]["total"]["value"], 1)
 
-    @override_settings(KONG_CLIENT_TEST_FILENAME="missing.json")
     def test_missing_test_file(self):
+
+        self.client.test_file_path = "missing.json"
+
         with self.assertRaises(FileNotFoundError):
             self.client.search()
 
@@ -265,7 +268,7 @@ class TestClientTestMode(TestCase):
 @override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientSearchReponse(TestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key='')
+        self.client = KongClient("https://kong.test", api_key="")
 
     @responses.activate
     def test_test_mode_doesnt_use_requests(self):
