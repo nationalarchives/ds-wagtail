@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 from wagtail.core.models import Page
@@ -5,8 +6,7 @@ from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.snippets.models import register_snippet
 from wagtail.snippets.edit_handlers import SnippetChooserPanel
 
-
-from ..text_formats.fields import BasicRichTextField
+from wagtail.core.fields import RichTextField
 
 
 @register_snippet
@@ -31,45 +31,51 @@ class Alert(models.Model):
     alert_level: The level of importance of the alert. Choices are
     "Low", "Medium" and "High". The default is "Low".
     """
+
     ALERT_LEVEL_CHOICES = [
-        ('low', 'Low'),
-        ('medium', 'Medium'),
-        ('high', 'High'),
+        ("low", "Low"),
+        ("medium", "Medium"),
+        ("high", "High"),
     ]
 
     title = models.CharField(max_length=100)
-    message = BasicRichTextField()
+    message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
     active = models.BooleanField(default=False)
-    cascade = models.BooleanField(default=False, verbose_name='Show on current and all child pages')
-    alert_level = models.CharField(max_length=6, choices=ALERT_LEVEL_CHOICES, default='low')
+    cascade = models.BooleanField(
+        default=False, verbose_name="Show on current and all child pages"
+    )
+    alert_level = models.CharField(
+        max_length=6, choices=ALERT_LEVEL_CHOICES, default="low"
+    )
 
     panels = [
-        FieldPanel('title'),
-        FieldPanel('message'),
-        FieldPanel('active'),
-        FieldPanel('cascade'),
-        FieldPanel('alert_level'),
+        FieldPanel("title"),
+        FieldPanel("message"),
+        FieldPanel("active"),
+        FieldPanel("cascade"),
+        FieldPanel("alert_level"),
     ]
 
     def __str__(self):
         return self.title
 
 
-class AlertMixin(Page):
+class AlertMixin(models.Model):
     """Alert mixin.
 
     Add this mixin to pages that require an alert field.
     """
+
     alert = models.ForeignKey(
-        'alerts.Alert',
+        "alerts.Alert",
         null=True,
         blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+",
     )
 
-    content_panels = Page.content_panels + [
-        SnippetChooserPanel('alert'),
+    settings_panels = [
+        SnippetChooserPanel("alert"),
     ]
 
     class Meta:

@@ -6,6 +6,9 @@ from ..alerts.models import AlertMixin
 
 
 class HomePage(AlertMixin, Page):
+
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+
     def get_context(self, request):
         context = super().get_context(request)
 
