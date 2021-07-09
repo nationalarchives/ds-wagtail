@@ -705,6 +705,18 @@ python-versions = "*"
 requests = ">=2.11.1,<3.0"
 
 [[package]]
+name = "wagtailfontawesome"
+version = "1.2.1"
+description = "Add FontAwesome icons to StreamField."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+Django = ">=1.7.1"
+wagtail = ">=1.4.0"
+
+[[package]]
 name = "wcwidth"
 version = "0.2.5"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -760,7 +772,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "80682eedb3fb5bad9591f198cc85389b6a697de8198ea2b385e7891c5edc0f52"
+content-hash = "91d5b758a36bd991156302b42abcffbe24cb4d6fdf787574859b42768bf8cd0b"
 
 [metadata.files]
 anyascii = [
@@ -1204,6 +1216,10 @@ wagtail = [
 wagtail-generic-chooser = [
     {file = "wagtail-generic-chooser-0.2.1.tar.gz", hash = "sha256:b65769cfd324e2531997245a9f0a64f5961da88587392d79353a1458314c5aa3"},
     {file = "wagtail_generic_chooser-0.2.1-py3-none-any.whl", hash = "sha256:8d8c5eaf3613744d9d5af2ca679b0fec121d4019442683d7adbb774467763b01"},
+]
+wagtailfontawesome = [
+    {file = "wagtailfontawesome-1.2.1-py2.py3-none-any.whl", hash = "sha256:76b1c64c4f1042d468a83e4352f74b57bda4a4aa09cdfeeb8663dead5ed632be"},
+    {file = "wagtailfontawesome-1.2.1.tar.gz", hash = "sha256:6c1bd2d6061880848de6374ceb75d38a8c9b0debb1d4aef8a2fdc9d565a8f417"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},
