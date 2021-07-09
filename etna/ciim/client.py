@@ -68,8 +68,10 @@ def mock_response_from_file(filename, **kwargs):
 
 
 class KongClient:
-    def __init__(self, base_url):
+    def __init__(self, base_url, api_key):
         self.base_url = base_url
+        self.session = requests.Session()
+        self.session.headers.update({'apikey': api_key})
 
     def fetch(self, **kwargs):
         if settings.KONG_CLIENT_TEST_MODE:
@@ -80,7 +82,7 @@ class KongClient:
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
         try:
-            response = requests.get(self.base_url + "/fetch", params=kwargs, timeout=5)
+            response = self.session.get(self.base_url + "/fetch", params=kwargs, timeout=5)
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 
@@ -115,7 +117,7 @@ class KongClient:
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
         try:
-            response = requests.get(self.base_url + "/search", params=kwargs, timeout=5)
+            response = self.session.get(self.base_url + "/search", params=kwargs, timeout=5)
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 

@@ -99,3 +99,10 @@ And then **import**:
 - Download `tna-toolkit.0.0.1.css` into `/templates/static/css/libraries/`. [Download link is here.](https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css)
 - To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.
+
+### Kong
+
+To fetch data from the Kong API during development, a valid API key
+needs to be added to `.env` (`KONG_CLIENT_KEY`). This will allow your container
+to fetch the external data required to render explorer result and details
+pages.
