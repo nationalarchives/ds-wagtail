@@ -17,7 +17,7 @@ class InsightsIndexPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        insights_pages = self.get_children().live()
+        insights_pages = self.get_children().live().public().specific()
         context['insights_pages'] = insights_pages
         return context
 
@@ -34,11 +34,11 @@ class InsightsPage(Page):
     The InsightsPage model.
     """
     introduction = models.CharField(max_length=200, blank=False)
-    content = StreamField(InsightsPageStreamBlock, blank=True, null=True)
+    body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('introduction'),
-        StreamFieldPanel('content'),
+        StreamFieldPanel('body'),
     ]
 
     parent_page_types = ['insights.InsightsIndexPage']
