@@ -2,7 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.core.fields import StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.images import get_image_model_string, get_image_model
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -13,6 +14,7 @@ from ..alerts.models import AlertMixin
 from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
+from .blocks import TopicExplorerPageStreamBlock
 
 
 class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
@@ -78,7 +80,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+        StreamFieldPanel("body"),
+    ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 

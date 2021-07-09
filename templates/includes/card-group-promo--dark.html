@@ -1,25 +1,33 @@
+{% load wagtailimages_tags %}
+
+{% image page.teaser_image fill-314x253 as teaser_image_extra_small %}
+{% image page.teaser_image fill-340x274 as teaser_image_small %}
+{% image page.teaser_image fill-357x288 as teaser_image_medium %}
+{% image page.teaser_image fill-478x385 as teaser_image_large %}
+{% image page.teaser_image fill-513x413 as teaser_image_extra_large %}
+
 <li class="card-group-promo--dark">
-    <h2 class="card-group-promo__heading">Heading</h2>
+    <h2 class="card-group-promo__heading">{{ heading }}</h2>
 
     <div class="card-group-promo__card">
         <div class="row">
             <div class="col-md-6 col-lg-5 col-xl-4">
-                <a href="/" tabindex="-1">
+                <a href="{{ page.url }}" tabindex="-1">
                     <picture>
-                        <source media="(max-width: 576px)" srcset="https://via.placeholder.com/513x413.png?text=Placeholder">
-                        <source media="(max-width: 768px)" srcset="https://via.placeholder.com/478x385.png?text=Placeholder">
-                        <source media="(max-width: 991px)" srcset="https://via.placeholder.com/314x253.png?text=Placeholder">
-                        <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/357x288.png?text=Placeholder">
-                        <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/340x274.png?text=Placeholder">
-                        <img src="https://via.placeholder.com/314x253.png?text=Placeholder"
-                             alt="Placeholder alt text."
+                        <source media="(max-width: 576px)" srcset="{{ teaser_image_extra_large.url }}">
+                        <source media="(max-width: 768px)" srcset="{{ teaser_image_large.url }}">
+                        <source media="(max-width: 991px)" srcset="{{ teaser_image_extra_small.url }}">
+                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_medium.url }}">
+                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_small.url }}">
+                        <img src="{{ teaser_image_extra_small.url }}"
+                             alt="{{ page.teaser_image.title }}"
                              class="card-group-promo__card-image">
                     </picture>
                 </a>
             </div>
             <div class="col-md-6 col-lg-7 col-xl-8">
-                <h3 class="card-group-promo__card-heading"><a href="/">Heading</a></h3>
-                <p>Description.</p>
+                <h3 class="card-group-promo__card-heading"><a href="/">{{ page.title }}</a></h3>
+                <p>{{ page.search_description }}</p>
             </div>
         </div>
     </div>
