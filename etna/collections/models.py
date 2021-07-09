@@ -24,10 +24,9 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = (
-        AlertMixin.content_panels + Page.content_panels + [FieldPanel("introduction")]
-    )
+    content_panels = Page.content_panels + [FieldPanel("introduction")]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -79,10 +78,9 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = (
-        AlertMixin.content_panels + Page.content_panels + [FieldPanel("introduction")]
-    )
+    content_panels = Page.content_panels + [FieldPanel("introduction")]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     @property
     def results_pages(self):
@@ -118,16 +116,13 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
-    content_panels = (
-        AlertMixin.content_panels
-        + Page.content_panels
-        + [
-            FieldPanel("introduction"),
-            FieldPanel("start_year"),
-            FieldPanel("end_year"),
-        ]
-    )
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+        FieldPanel("start_year"),
+        FieldPanel("end_year"),
+    ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     @property
     def results_pages(self):
@@ -160,14 +155,11 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
 
     introduction = models.CharField(max_length=200, blank=False)
 
-    content_panels = (
-        AlertMixin.content_panels
-        + Page.content_panels
-        + [
-            FieldPanel("introduction"),
-        ]
-    )
+    content_panels = Page.content_panels + [
+        FieldPanel("introduction"),
+    ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     content_panels = [
         InlinePanel("records", heading="Records"),
