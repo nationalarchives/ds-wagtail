@@ -5,7 +5,7 @@ from wagtail.core.models import Site
 from ..alerts.models import Alert
 from ..alerts.templatetags import alert_tags
 from ..home.models import HomePage
-from ..collections.models import ExplorerPage, CategoryPage
+from ..collections.models import ExplorerIndexPage, TopicExplorerPage
 
 
 def rich_text_msg(level):
@@ -42,21 +42,21 @@ class AlertTestCase(TestCase):
         )
         self.root.add_child(instance=self.home_page)
 
-        self.explorer_page = ExplorerPage(
+        self.explorer_index_page = ExplorerIndexPage(
             title="Explorer page",
             introduction="Introduction text.",
             live=True,
             alert=self.alert_medium
         )
-        self.home_page.add_child(instance=self.explorer_page)
+        self.home_page.add_child(instance=self.explorer_index_page)
 
-        self.category_page = CategoryPage(
+        self.topic_explorer_page = TopicExplorerPage(
             title="Category page",
             introduction="Introduction text.",
             live=True,
             alert=self.alert_low
         )
-        self.explorer_page.add_child(instance=self.category_page)
+        self.explorer_index_page.add_child(instance=self.topic_explorer_page)
 
     def test_current_page_alerts(self):
         # Ensure cascade is off
@@ -77,21 +77,21 @@ class AlertTestCase(TestCase):
         # Test explorer page - currently asigned medium alert
         # .. inactive
         self.alert_medium.active = False
-        alerts = alert_tags.alerts(self.explorer_page)["alerts"]
+        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
         self.assertEqual(len(alerts), 0)
         # .. active
         self.alert_medium.active = True
-        alerts = alert_tags.alerts(self.explorer_page)["alerts"]
+        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
         # Test category page - currently asigned low alert
         # .. inactive
         self.alert_low.active = False
-        alerts = alert_tags.alerts(self.category_page)["alerts"]
+        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 0)
         # .. active
         self.alert_low.active = True
-        alerts = alert_tags.alerts(self.category_page)["alerts"]
+        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
     def test_cascading_page_alerts(self):
@@ -108,10 +108,10 @@ class AlertTestCase(TestCase):
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 0)
 
-        alerts = alert_tags.alerts(self.explorer_page)["alerts"]
+        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
         self.assertEqual(len(alerts), 0)
 
-        alerts = alert_tags.alerts(self.category_page)["alerts"]
+        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 0)
 
         # Activate all alerts
@@ -123,10 +123,10 @@ class AlertTestCase(TestCase):
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
-        alerts = alert_tags.alerts(self.explorer_page)["alerts"]
+        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
-        alerts = alert_tags.alerts(self.category_page)["alerts"]
+        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
         # Enable cascade
@@ -143,8 +143,8 @@ class AlertTestCase(TestCase):
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
-        alerts = alert_tags.alerts(self.explorer_page)["alerts"]
+        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
         self.assertEqual(len(alerts), 2)
 
-        alerts = alert_tags.alerts(self.category_page)["alerts"]
+        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 3)
