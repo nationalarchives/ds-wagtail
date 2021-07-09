@@ -60,9 +60,9 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
         return (
             self.get_children()
             .type(TimePeriodExplorerPage)
-            .order_by("title")
             .live()
             .public()
+            .order_by("timeperiodexplorerpage__start_year")
             .specific()
         )
 
