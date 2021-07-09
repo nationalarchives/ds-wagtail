@@ -1,0 +1,40 @@
+.tna-bg {
+  background-color: $color__grey-light;
+
+  &--dark {
+    background-color: $color__dark;
+    color: $color__white;
+
+    a {
+      color: $color__white;
+      &:hover, &:visited, &:active {
+        color: $color__white;
+      }
+    }
+  }
+
+  &--green {
+    background-color: $color__green;
+  }
+
+  &--pink {
+    background-color: $color__pink;
+  }
+}
+
+.tna-text {
+  color: $color__text;
+
+  &--default {
+    color: $color__text;
+  }
+
+  &--white {
+    color: $color__white;
+  }
+
+  &--grey {
+    color: $color__text-secondary;
+  }
+}
+

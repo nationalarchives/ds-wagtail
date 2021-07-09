@@ -1,15 +1,40 @@
+/*
+
+==============
+Toolkit styles
+==============
+
+When a change to a toolkit is required, change it in the toolkit SASS file. In this way we can perform a diff between
+any candidate styles created for Etna and those within the toolkit. If we were to use @extend it will be harder to
+identify how the code is intended to change.
+
+This was discussed in an Etna developers meeting on 5 July 2021.
+
+*/
+
+
+@import 'tna-toolkit/tna-toolkit';
+
+
+/*
+
+==============
+Etna styles
+==============
+
+These are Etna specific components, created using BEM and following our guidelines.
+
+*/
+
 @import "includes/variables";
 @import 'includes/global';
 @import 'includes/generic_intro';
 @import 'includes/header';
 @import 'includes/links';
 @import 'includes/typography';
-@import 'includes/toolkit-duplicates/tna-card';
 @import 'includes/card-groups';
 @import 'includes/footer';
 @import 'includes/cta-banner-newsletter';
-@import 'includes/toolkit-duplicates/tna-button';
-@import 'includes/buttons';
 @import 'includes/results-options';
 @import 'includes/pagination';
 @import 'includes/alert-message';
