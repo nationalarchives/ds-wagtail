@@ -14,7 +14,7 @@ from ..alerts.models import AlertMixin
 from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
-from .blocks import TopicExplorerPageStreamBlock
+from .blocks import TimePeriodExplorerPageStreamBlock, TopicExplorerPageStreamBlock
 
 
 class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
@@ -120,11 +120,13 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
     content_panels = Page.content_panels + [
         FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]

@@ -45,6 +45,19 @@ class PromotedPagesBlock(blocks.StructBlock):
         icon = "fa-th-large"
 
 
+class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
+    collection_highlights = CollectionHighlightsBlock()
+    featured_page = FeaturedPageBlock()
+    promoted_pages = PromotedPagesBlock()
+
+    class Meta:
+        block_counts = {
+            "collection_highlights": {"min_num": 1, "max_num": 1},
+            "featured_page": {"max_num": 1},
+            "promoted_pages": {"max_num": 1},
+        }
+
+
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     collection_highlights = CollectionHighlightsBlock()
     featured_page = FeaturedPageBlock()
