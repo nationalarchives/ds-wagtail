@@ -193,7 +193,3 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-
-IMAGE_EMBED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
-    "image"
-]
