@@ -22,9 +22,7 @@ class FeaturedPageBlock(blocks.StructBlock):
 
 
 class PromotedItemBlock(blocks.StructBlock):
-    url = blocks.URLBlock(
-        label="external URL", help_text="URL for the external page"
-    )
+    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
     teaser_image = ImageChooserBlock(
         help_text="An image used to create a teaser for the promoted page"
@@ -43,6 +41,43 @@ class PromotedPagesBlock(blocks.StructBlock):
         template = "collections/blocks/promoted_pages.html"
         help_text = "Block used promote external pages"
         icon = "fa-th-large"
+
+
+class TopicExplorerBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100, default="Explore by topic")
+    sub_heading = blocks.CharBlock(
+        max_length=200,
+        default="Discover highlights of The National Archives’ collections.",
+    )
+
+    class Meta:
+        template = "collections/blocks/topic_explorer_pages.html"
+        help_text = "Outputs all topic child pages"
+        icon = "fa-th-large"
+
+
+class TimePeriodExplorerBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100, default="Explore by time period")
+    sub_heading = blocks.CharBlock(
+        max_length=200,
+        default="The National Archives contains over 1,000 years of British historical records. Select a time period to start exploring.",
+    )
+
+    class Meta:
+        template = "collections/blocks/time_period_explorer_pages.html"
+        help_text = "Outputs all time period child pages"
+        icon = "fa-th-large"
+
+
+class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
+    time_period_explorer = TimePeriodExplorerBlock()
+    topic_explorer_explorer = TopicExplorerBlock()
+
+    class Meta:
+        block_counts = {
+            "time_period_explorer": {"min_num": 1, "max_num": 1},
+            "topic_explorer_explorer": {"min_num": 1, "max_num": 1},
+        }
 
 
 class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):

@@ -1,29 +1,17 @@
 {% extends 'base.html' %}
 
+{% load wagtailcore_tags %}
+
 {% block content %}
     {% include 'includes/generic-intro--dark.html' %}
 
     <div class="container">
         <div class="row">
             <div class="col-md-12" id="content">
-                <h2>Explore by topic</h2>
-                <p>Discover highlights of The National Archives’ collections.</p>
-                <ul class="row card-group">
-                    {% for child in page.topic_pages %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
-                    {% endfor %}
-                </ul>
-                <h2>Explore by time period</h2>
-                <p>The National Archives contains over 1,000 years of British historical records. Select a time period
-                    to start exploring.</p>
-                <ul class="row card-group">
-                    {% for child in page.time_period_pages %}
-                        {% include 'includes/card-group-secondary-nav-time-period.html' with page=child.specific %}
-                    {% endfor %}
-                </ul>
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
             </div>
         </div>
     </div>
-
-
 {% endblock %}
