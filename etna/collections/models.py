@@ -181,25 +181,6 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
-    def get_context(self, request):
-        """Fetch RecordPage instances from Kong and add to context."""
-        context = super().get_context(request)
-
-        context["results"] = []
-        record_with_image = self.records.values_list("record_iaid", "teaser_image")
-        for record_iaid, image_id in record_with_image:
-            try:
-                context["results"].append(
-                    (
-                        RecordPage.search.get(iaid=record_iaid),
-                        get_image_model().objects.get(pk=image_id),
-                    )
-                )
-            except ObjectDoesNotExist:
-                continue
-
-        return context
-
     max_count_per_parent = 1
     parent_page_types = []
     subpage_types = []
@@ -217,8 +198,18 @@ class ResultsPageRecordPage(Orderable, models.Model):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    description = models.TextField(
+        help_text="Optional field to override the description for this record in the teaser.",
+        blank=True,
+    )
+
+    @cached_property
+    def record_page(self):
+        """Fetch associated record page"""
+        return RecordPage.search.get(iaid=self.record_iaid)
 
     panels = [
         FieldPanel("record_iaid", widget=RecordChooser),
         ImageChooserPanel("teaser_image"),
+        FieldPanel("description"),
     ]

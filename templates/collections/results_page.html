@@ -16,8 +16,8 @@
                     {% include 'includes/results-options.html' %}
                     <ul class="row card-group">
                         <h3 class="sr-only">Items</h3>
-                        {% for record, teaser_image in results %}
-                            {% include 'includes/card-group-record-summary.html' with record=record teaser_image=teaser_image only %}
+                        {% for record_page_result in page.records.all %}
+                            {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
                         {% endfor %}
                     </ul>
                     {% comment %}
