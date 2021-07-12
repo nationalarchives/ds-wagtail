@@ -30,6 +30,12 @@ def alerts(page):
     """
     Return alerts from current page as well as those cascaded from ancestors.
     """
+
+    if not page:
+        # Return early if no page is passed to tag
+        # This can happen on view-based pages like the record disambiguation page.
+        return None
+
     alerts = []
 
     # Iterate through current page ancestors.
