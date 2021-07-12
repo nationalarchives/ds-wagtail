@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     'etna.paragraphs',
     'etna.quotes',
     'etna.records',
-    'etna.search',
     'etna.teasers',
 
     'wagtail.contrib.forms',
