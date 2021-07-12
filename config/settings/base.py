@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'etna.ciim',
     'etna.home',
     'etna.insights',
+    'etna.paragraphs',
     'etna.quotes',
     'etna.records',
     'etna.search',
