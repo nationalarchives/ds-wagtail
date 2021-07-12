@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'etna.ciim',
     'etna.home',
     'etna.insights',
+    'etna.paragraphs',
     'etna.quotes',
     'etna.records',
     'etna.search',
@@ -191,4 +192,8 @@ INLINE_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+]
+
+IMAGE_EMBED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
+    "image"
 ]
