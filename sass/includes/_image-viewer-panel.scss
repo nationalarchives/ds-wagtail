@@ -1,0 +1,29 @@
+.image-viewer-panel {
+  margin-top: 1rem;
+  text-align: center;
+  width: 100%;
+  background-color: $color__dark;
+  padding: 2.5rem 0 0;
+
+  figure {
+    margin: 0;
+
+    img {
+      height: 25rem;
+      display: block;
+      margin: 0 auto;
+    }
+
+    a {
+      padding: 2rem 1rem 2rem 2.5rem;
+      display: inline-block;
+      color: $color__white;
+      background: url($fa_search_plus) no-repeat center left;
+      background-size: 1.75rem;
+      text-align: center;
+      font-weight: bold;
+      vertical-align: top;
+      font-size: 1.1rem;
+    }
+  }
+}

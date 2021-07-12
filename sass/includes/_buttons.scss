@@ -1,4 +1,10 @@
 .tna-button {
+    text-decoration: none;
+    background-color: $color__link !important;
+    color: $color__white;
+    border: 0;
+    padding: 1rem;
+    margin: 0.5rem;
 
     &--no-underline {
         @extend .tna-button;

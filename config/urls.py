@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import include, path, re_path, register_converter
 from django.contrib import admin
+from django.views.generic.base import TemplateView
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -35,6 +36,7 @@ urlpatterns = [
         records_views.record_page_disambiguation_view,
         name="details-page-human-readable-with-pseudo-reference",
     ),
+    path("details-page-front-end/", TemplateView.as_view(template_name="records/details-page-front-end.html")),
 ]
 # fmt: on
 
