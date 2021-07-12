@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0007_topicexplorerpage_body'),
+        ('collections', '0008_topicexplorerpage_body'),
     ]
 
     operations = [

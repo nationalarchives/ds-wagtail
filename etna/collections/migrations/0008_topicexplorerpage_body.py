@@ -9,7 +9,7 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0006_add_record_teaser_image'),
+        ('collections', '0007_add_alerts'),
     ]
 
     operations = [

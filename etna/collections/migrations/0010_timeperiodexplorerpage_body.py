@@ -9,7 +9,7 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0008_rename_introduction'),
+        ('collections', '0009_rename_introduction'),
     ]
 
     operations = [
