@@ -1,0 +1,56 @@
+.callout {
+  background-color: $color__blue_3;
+  padding: 2rem 0;
+  width: 100vw;
+  position: relative;
+  left: calc(-50vw + 50%);
+
+  &__standfirst {
+    color: $color__white;
+    font-family: $font__roboto;
+    font-size: 1.4rem;
+    margin-bottom: 3rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+ &__list-item {
+   background-color: $color__dark;
+   margin-bottom: 1rem;
+   padding: 1rem;
+   border-left: 1.25rem solid $color__grey-6;
+ }
+
+ &__link {
+   text-decoration: none;
+   transition: none;
+   color: $color__white !important;
+
+   &:hover {
+     text-decoration: underline;
+     color: $color__white;
+   }
+
+   &:focus {
+     outline: 0.313rem solid $color__blue_5;
+     outline-offset: .25rem;
+   }
+ }
+
+ &__link-heading {
+   margin-top: 0;
+   font-size: 1.625rem;
+ }
+
+ &__link-text {
+   color: $color__grey-4;
+   margin-bottom: 0;
+ }
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+}

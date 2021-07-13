@@ -1,0 +1,86 @@
+.record-embed {
+  width: 100vw;
+  position: relative;
+  left: calc(-50vw + 50%);
+
+  &__image-container {
+    background-color: $color__black;
+    text-align: center;
+    padding:  2rem 0;
+  }
+
+  &__heading {
+    font-size: 2rem;
+    font-weight: 400;
+    text-align: left;
+    border-bottom: 0.3125rem solid $color__grey-3;
+    padding-bottom: 0.625rem;
+    margin-bottom: 2rem;
+  }
+
+  &__image {
+    max-width: 25rem;
+  }
+
+  &__button {
+    display: inline-block;
+    margin: 0 1rem 1rem 0;
+  }
+
+ &__description {
+   background-color: $color__grey-2;
+   padding: 2rem 0;
+ }
+
+ &__image-viewer-link, &__image-viewer-link:visited {
+   padding: 2rem 1rem 2rem 2.5rem;
+   display: inline-block;
+   color: $color__white;
+   background: url($search_plus) no-repeat center left;
+   background-size: 1.75rem;
+   text-align: center;
+   font-weight: bold;
+   vertical-align: top;
+   font-size: 1.1rem;
+   transition: none;
+ }
+
+ &__image-viewer-link:hover {
+   color: $color__white !important;
+ }
+}
+
+.record-embed__text, .record-embed__text--roboto-mono {
+  font-size: 1.1rem;
+}
+
+.record-embed__text, a.record-embed__text:visited, .record-embed__heading {
+  color: $color__white;
+}
+
+.no-margin-top {
+  margin-top: 0;
+}
+
+.tna-button-secondary--no-underline {
+  background-color: $color__white !important;
+  color: $color__black !important;
+  border: 0.125rem solid $color__white;
+  padding: 0.5rem 0.9rem;
+  display: inline-block;
+  min-width: 1.625rem;
+  text-align: center;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $color__black !important;
+    color: $color__white !important;
+    border: 0.125rem solid $color__black;
+  }
+}
+
+@media only screen and (max-width: $screen__md)  {
+  .record-embed__image {
+    width: 20rem;
+  }
+}
