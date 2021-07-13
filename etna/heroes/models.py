@@ -18,4 +18,4 @@ class HeroImageMixin(models.Model):
     class Meta:
         abstract = True
 
-    promote_panels = [ImageChooserPanel("hero_image")]
+    content_panels = [ImageChooserPanel("hero_image")]
