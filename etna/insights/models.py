@@ -2,7 +2,7 @@ from django.db import models
 
 from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel, MultiFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 
 from ..heroes.models import HeroImageMixin
 
@@ -37,8 +37,7 @@ class InsightsPage(HeroImageMixin, Page):
     introduction = models.CharField(max_length=200, blank=False)
     body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
 
-    content_panels = Page.content_panels + [
-        MultiFieldPanel(HeroImageMixin.content_panels, heading='Hero'),
+    content_panels = Page.content_panels + HeroImageMixin.content_panels + [
         FieldPanel('introduction'),
         StreamFieldPanel('body'),
     ]
