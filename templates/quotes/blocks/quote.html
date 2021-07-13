@@ -1,7 +1,20 @@
-<blockquote class='c-quote'>
-    <h3>{{ value.heading }}</h3>
-    <p class='c-quote__body'>{{ value.quote }}</p>
-    <footer class='c-quote__meta'>
-        <cite>{{ value.attribution }}</cite>
-    </footer>
-</blockquote>
+<div class="quote">
+    <img class="quote__icon" src="/etna/home/static/images/fontawesome-svgs/quote-icon.svg" alt="" />
+    <h3 class="sr-only">{{ value.heading }}</h3>
+
+    {% if value.attribution !== null or value.attribution !== undefined %}
+    <figure>
+        <blockquote class="quote__container">
+            <p class="quote__text">{{ value.quote }}</p>
+        </blockquote>
+        <figcaption class="quote__citation">
+            <cite>{{ value.attribution }}</cite>
+        </figcaption>
+    </figure>
+    {% else %}
+    <blockquote class="quote__container">
+        <p class="quote__text">{{ value.quote }}</p>
+    </blockquote>
+    {% endif %}
+
+</div>
