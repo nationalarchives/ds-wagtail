@@ -3,32 +3,32 @@
 
 {% block content %}
 
-    {% include "includes/hierarchy-local.html" %}
+    {% include "includes/records/hierarchy-local.html" %}
 
     <div class="row no-gutters">
 
         <div class="col-xl-3 order-xl-2 specific-border-bottom-lg specific-sticky specific-bg-grey-5">
-              {% include "includes/hierarchy-global.html" %}
+              {% include "includes/records/hierarchy-global.html" %}
         </div>
 
         <div class="col-xl-9 order-xl-1 specific-padding-bottom-lg">
-            {% include "includes/record-title.html" %}
+            {% include "includes/records/record-title.html" %}
             <div class="container">
-                {% include "includes/key-facts.html" %}
+                {% include "includes/records/key-facts.html" %}
 
                 <h2>How to view this record</h2>
 
-                {% include "includes/image-viewer-panel.html" %}
+                {% include "includes/records/image-viewer-panel.html" %}
 
-                {% include "includes/record-access-options.html" %}
+                {% include "includes/records/record-access-options.html" %}
 
                 <h2>Description and record details</h2>
 
-                {% include "includes/record-details.html" %}
+                {% include "includes/records/record-details.html" %}
 
                 <h2>Topics covered in this record</h2>
 
-                {% include "includes/taxonomy-tags.html" %}
+                {% include "includes/records/taxonomy-tags.html" %}
             </div>
         </div>
     </div>
