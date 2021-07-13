@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% load wagtailcore_tags %}
+
+{% block content %}
+    {% include 'includes/generic-intro--dark.html' %}
+
+    <div class="container">
+        <div class="row">
+            <ul class="row card-group">
+                {% for child in page.time_period_explorer_pages %}
+                    {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

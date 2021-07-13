@@ -40,16 +40,38 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
-        "collections.TopicExplorerPage",
-        "collections.TimePeriodExplorerPage",
+        "collections.TopicExplorerIndexPage",
+        "collections.TimePeriodExplorerIndexPage",
     ]
 
-    @cached_property
-    def topic_pages(self):
-        """Fetch child topic explorer pages.
 
-        Result should be suitable for rendering on the front end.
-        """
+class TopicExplorerIndexPage(TeaserImageMixin, Page):
+    """Topic explorer page.
+
+    This page lists all child TopicExplorerPages
+    """
+
+    sub_heading = models.CharField(max_length=200, blank=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+    ]
+    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+
+    @cached_property
+    def featured_pages(self):
+        """Return a sample of child pages for rendering in teaser."""
+        return (
+            self.get_children()
+            .type(TopicExplorerPage)
+            .order_by("?")
+            .live()
+            .public()
+            .specific()[:3]
+        )
+
+    def topic_explorer_pages(self):
+        """Fetch all child public TopicExplorerPages for display in list."""
         return (
             self.get_children()
             .type(TopicExplorerPage)
@@ -59,20 +81,11 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
             .specific()
         )
 
-    @cached_property
-    def time_period_pages(self):
-        """Fetch child time period explorer pages.
-
-        Result should be suitable for rendering on the front end.
-        """
-        return (
-            self.get_children()
-            .type(TimePeriodExplorerPage)
-            .live()
-            .public()
-            .order_by("timeperiodexplorerpage__start_year")
-            .specific()
-        )
+    max_count = 1
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "collections.TopicExplorerPage",
+    ]
 
 
 class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
@@ -110,10 +123,53 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
         )
 
     parent_page_types = [
-        "collections.ExplorerIndexPage",
+        "collections.TopicExplorerIndexPage",
         "collections.TopicExplorerPage",
     ]
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
+
+
+class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
+    """Time period explorer page.
+
+    This page lists all child TimePeriodExplorerPage
+    """
+
+    sub_heading = models.CharField(max_length=200, blank=False)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+    ]
+    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+
+    @cached_property
+    def featured_pages(self):
+        """Return a sample of child pages for rendering in teaser."""
+        return (
+            self.get_children()
+            .type(TimePeriodExplorerPage)
+            .order_by("?")
+            .live()
+            .public()
+            .specific()[:3]
+        )
+
+    def time_period_explorer_pages(self):
+        """Fetch all child public TimePeriodExplorerPages for display in list."""
+        return (
+            self.get_children()
+            .type(TimePeriodExplorerPage)
+            .order_by("title")
+            .live()
+            .public()
+            .specific()
+        )
+
+    max_count = 1
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "collections.TimePeriodExplorerPage",
+    ]
 
 
 class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
@@ -154,7 +210,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
         )
 
     parent_page_types = [
-        "collections.ExplorerIndexPage",
+        "collections.TimePeriodExplorerIndexPage",
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]

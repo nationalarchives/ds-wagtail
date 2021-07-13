@@ -1,7 +1,0 @@
-<h2>{{ value.heading }}</h2>
-<p>{{ value.sub_heading }}</p>
-<ul class="row card-group">
-    {% for child in page.topic_pages %}
-        {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
-    {% endfor %}
-</ul>
