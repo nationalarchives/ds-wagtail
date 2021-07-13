@@ -73,12 +73,12 @@ class TimePeriodExplorerIndexBlock(blocks.StructBlock):
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
     time_period_explorer_index = TimePeriodExplorerIndexBlock()
-    topic_explorer_explorer_index = TopicExplorerIndexBlock()
+    topic_explorer_index = TopicExplorerIndexBlock()
 
     class Meta:
         block_counts = {
-            "time_period_explorer": {"min_num": 1, "max_num": 1},
-            "topic_explorer_explorer": {"min_num": 1, "max_num": 1},
+            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
+            "topic_explorer_index": {"min_num": 1, "max_num": 1},
         }
 
 
@@ -95,6 +95,15 @@ class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
         }
 
 
+class TimePeriodExplorerIndexPageStreamBlock(blocks.StreamBlock):
+    topic_explorer_index = TopicExplorerIndexBlock()
+
+    class Meta:
+        block_counts = {
+            "topic_explorer_index": {"min_num": 1, "max_num": 1},
+        }
+
+
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     collection_highlights = CollectionHighlightsBlock()
     featured_page = FeaturedPageBlock()
@@ -105,4 +114,13 @@ class TopicExplorerPageStreamBlock(blocks.StreamBlock):
             "collection_highlights": {"min_num": 1, "max_num": 1},
             "featured_page": {"max_num": 1},
             "promoted_pages": {"max_num": 1},
+        }
+
+
+class TopicExplorerIndexPageStreamBlock(blocks.StreamBlock):
+    time_period_explorer_index = TimePeriodExplorerIndexBlock()
+
+    class Meta:
+        block_counts = {
+            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
         }

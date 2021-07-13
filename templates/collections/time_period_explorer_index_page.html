@@ -13,5 +13,12 @@
                 {% endfor %}
             </ul>
         </div>
+        <div class="row">
+            <div class="col-md-12" id="content">
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
     </div>
 {% endblock %}

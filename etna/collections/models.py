@@ -17,7 +17,9 @@ from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     TimePeriodExplorerPageStreamBlock,
+    TimePeriodExplorerIndexPageStreamBlock,
     TopicExplorerPageStreamBlock,
+    TopicExplorerIndexPageStreamBlock,
 )
 
 
@@ -52,9 +54,11 @@ class TopicExplorerIndexPage(TeaserImageMixin, Page):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
@@ -136,9 +140,11 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
