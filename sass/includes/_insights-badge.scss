@@ -1,0 +1,32 @@
+.insights-badge {
+  width: 16rem;
+
+  &__heading {
+    text-transform: uppercase;
+    font-family: "Roboto", sans-serif;
+    font-size: 1.8rem;
+  }
+
+  &__top, &__middle, &__bottom {
+    border: 0.1875rem solid $color__black;
+    border-bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 5.625rem;
+    background: $color__white;
+    color: $color__dark;
+  }
+
+  &__middle {
+    font-size: 2.5rem;
+    font-weight: bolder;
+  }
+
+  &__bottom {
+    border-bottom: 0.1875rem solid $color__black;
+    background: $color__dark;
+    color: $color__white;
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,40 @@
+.key-facts__author {
+  background-color: $color__grey_4;
+  padding: 2rem 0;
+  width: 100vw;
+  position: relative;
+  left: calc(-50vw + 50%);
+
+  &-image-container {
+    text-align: center;
+  }
+
+  &-info {
+    text-align: left;
+    margin-right: 4rem;
+  }
+
+  &-info-heading, &-info-text {
+    color: $color__black;
+  }
+
+  @media screen and (max-width: $screen__lg) {
+    &-info {
+      margin-left: 3rem;
+    }
+  }
+
+  @media screen and (max-width: $screen__md) {
+    &-image-container {
+      text-align: left;
+    }
+
+    &-info {
+      margin-left: 0;
+    }
+  }
+
+  &-info--no-margin-left {
+    margin-left: 0;
+  }
+}

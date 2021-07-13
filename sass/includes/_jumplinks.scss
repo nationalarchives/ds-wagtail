@@ -1,0 +1,33 @@
+.jumplinks {
+  background-color: $color__blue_3;
+  padding: 2rem;
+
+  &__heading {
+    margin-bottom: 2rem;
+  }
+
+  &__list {
+    padding-left: 1rem;
+  }
+
+  &__list-item {
+    margin: 0 1rem 1rem 1.2rem;
+  }
+
+  .jumplink {
+    transition: none;
+
+    &:focus {
+      outline: 0.313rem solid $color__white;
+    }
+
+    &:hover {
+      color: $color__white !important;
+    }
+  }
+}
+
+.jumplinks__heading, .jumplinks__list-item, .jumplink, .jumplink:visited {
+  color: #fff;
+  font-family: $font__roboto;
+}

@@ -1,0 +1,41 @@
+.quote {
+  position: relative;
+  margin: 2rem 0;
+
+  &__icon {
+    position: absolute;
+    top: 0.625rem;
+    height: 3.125rem;
+    width: 3.125rem;
+  }
+
+  &__container {
+    padding: 2rem 2rem 0 2rem;
+
+    &::before {
+      content: "";
+      display: block;
+      margin: 0 0 3rem 3rem;
+      border-top: 0.3125rem solid $color__black;
+      width: 40%;
+    }
+
+    &::after {
+      content: "";
+      display: block;
+      margin-left: 60%;
+      border-bottom: 0.3125rem solid $color__black;
+      width: 40%;
+    }
+  }
+
+  &__text {
+    font-family: $font__roboto;
+    font-size: 1.4rem;
+  }
+
+  &__citation {
+    text-align: right;
+    padding-right: 2rem;
+  }
+}
