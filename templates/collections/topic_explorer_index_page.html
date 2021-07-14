@@ -8,6 +8,7 @@
     <div class="container">
         <div class="row">
             <ul class="row card-group">
+                <h2 class="sr-only">Select a topic</h2>
                 {% for child in page.topic_explorer_pages %}
                     {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
                 {% endfor %}
@@ -15,6 +16,7 @@
         </div>
         <div class="row">
             <div class="col-md-12" id="content">
+                <h2>More ways to explore</h2>
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}

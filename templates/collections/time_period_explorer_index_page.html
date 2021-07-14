@@ -7,6 +7,7 @@
 
     <div class="container">
         <div class="row">
+            <h2 class="sr-only">Select a time period</h2>
             <ul class="row card-group">
                 {% for child in page.time_period_explorer_pages %}
                     {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
@@ -15,6 +16,7 @@
         </div>
         <div class="row">
             <div class="col-md-12" id="content">
+                <h2>More ways to explore</h2>
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}
