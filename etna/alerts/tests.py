@@ -44,7 +44,7 @@ class AlertTestCase(TestCase):
 
         self.explorer_index_page = ExplorerIndexPage(
             title="Explorer page",
-            introduction="Introduction text.",
+            sub_heading="Sub heading",
             live=True,
             alert=self.alert_medium
         )
@@ -52,7 +52,7 @@ class AlertTestCase(TestCase):
 
         self.topic_explorer_page = TopicExplorerPage(
             title="Category page",
-            introduction="Introduction text.",
+            sub_heading="Sub heading",
             live=True,
             alert=self.alert_low
         )

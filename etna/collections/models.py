@@ -74,6 +74,7 @@ class TopicExplorerIndexPage(TeaserImageMixin, Page):
             .specific()[:3]
         )
 
+    @cached_property
     def topic_explorer_pages(self):
         """Fetch all child public TopicExplorerPages for display in list."""
         return (
@@ -160,6 +161,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
             .specific()[:3]
         )
 
+    @cached_property
     def time_period_explorer_pages(self):
         """Fetch all child public TimePeriodExplorerPages for display in list."""
         return (
