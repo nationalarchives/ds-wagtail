@@ -9,6 +9,10 @@
 
   &__text {
     font-size: 1.3rem;
+
+    p {
+      margin-bottom: 0;
+    }
   }
 
   &--bordered {
