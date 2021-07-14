@@ -1,0 +1,87 @@
+/* -
+
+This file holds styles that are needed in very specific circumstances and will rarely be re-used (if ever).
+These are typically styles that aren't component-specific (using BEM) and aren't included in the Boostrap grid.
+When adding a style, ensure it is within the pre-pended with 'specific' class to identify it correctly and write an accompanying description in the comments to explain:
+  - what it is doing
+  - where it is used
+
+- */
+
+.specific {
+
+    /*
+
+    Purpose: Adds a left border to the hierarchy once the screen size passes a certain break point
+    Used on: Details page - */
+
+    &-border-left-lg {
+
+      @media only screen and (min-width: $screen__xl) {
+        border-left: 2px solid $color__grey-4;
+      }
+
+    }
+
+    /*
+
+    Purpose: Adds a top border to the hierarchy once the screen size passes a certain break point
+    Used on: Details page - */
+
+    &-border-top-lg {
+
+      @media only screen and (min-width: $screen__xl) {
+        border-top: 2px solid $color__grey-4;
+      }
+
+    }
+
+    /*
+
+    Purpose: Adds a bottom border to the hierarchy once the screen size passes a certain break point
+    Used on: Details page - */
+
+    &-border-bottom-lg {
+
+      @media only screen and (min-width: $screen__xl) {
+        border-bottom: 2px solid $color__grey-4;
+      }
+
+    }
+
+    /*
+
+    Purpose: Adds a grey-5 background colour
+    Used on: Details page - */
+
+    &-bg-grey-5 {
+      background-color: $color__grey-5;
+    }
+
+    /*
+
+    Purpose: Adds top margin on screen sizes up to lg (removes margin on lg and above)
+    Used on: Details page - */
+
+    &-margin-top-sm-to-lg {
+
+      margin: 2rem 0 0;
+
+      @media only screen and (min-width: $screen__lg) {
+        margin: 0;
+      }
+
+    }
+
+    /*
+
+    Purpose: Adds bottom padding to the main content column to give breathing space
+    Used on: Details page - */
+
+    &-padding-bottom-lg {
+
+      padding-bottom: 5rem;
+
+    }
+
+}

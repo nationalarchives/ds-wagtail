@@ -1,0 +1,98 @@
+.hierarchy-global {
+
+  position: sticky;
+  top: 2em;
+
+  details {
+
+    summary {
+      padding: 1rem;
+      text-align: center;
+      margin: 1.5rem 0;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &:focus {
+        outline: 0.312rem solid $color__link;
+      }
+    }
+
+  }
+
+  &__heading {
+    display: inline;
+
+    h2 {
+      font-size: 1.3rem;
+      padding-left: 0.5rem;
+      display: inline;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    background: $color__white;
+
+    @media only screen and (min-width: $screen__xl) {
+      max-height: 30rem;
+      border-top: 3px solid $color__grey-4;
+      border-bottom: 3px solid $color__grey-4;
+      overflow-y: auto;
+      margin: 0.75rem;
+    }
+  }
+
+  &__list-item {
+    background: url($fa_arrow_down) no-repeat 1rem 2.25rem;
+    background-size: 0.9rem;
+    border-bottom: 1px solid $color__grey-4;
+    padding: 2rem 2rem 2rem 3rem;
+
+    @media only screen and (min-width: $screen__lg) {
+      background: url($fa_arrow_down) no-repeat 1rem 1.75rem;
+      background-size: 0.9rem;
+      padding: 1.5rem 1.5rem 1.5rem 3rem;
+    }
+
+    &:first-child {
+      border-top: 1px solid $color__grey-4;
+    }
+
+    &--current-item {
+      background: $color__link url($fa_arrow_right) no-repeat 1rem 2.25rem;
+      background-size: 0.9rem;
+      color: $color__white;
+      border-bottom: 0;
+
+      @media only screen and (min-width: $screen__lg) {
+        background: $color__link url($fa_arrow_right) no-repeat 1rem 1.75rem;
+        background-size: 0.9rem;
+      }
+    }
+  }
+
+  &__reference {
+    display: block;
+    color: $color__black;
+    font-weight: bold;
+
+    &--white {
+      color: $color__white;
+    }
+  }
+
+  &__location {
+    color: $color__white;
+    display: block;
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+  }
+}

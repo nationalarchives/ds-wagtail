@@ -1,0 +1,18 @@
+.record-details {
+
+  &__table {
+    width: 100%;
+    margin: 1rem 0 5rem;
+
+    th, td {
+      padding: 0.75em;
+      border: 3px solid $color__grey-4;
+      vertical-align: top;
+    }
+
+    th {
+      font-weight: bold;
+    }
+  }
+
+}
