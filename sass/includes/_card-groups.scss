@@ -24,6 +24,9 @@
 
     &__body {
       display: table-footer-group;
+    }
+
+    &__heading, &__paragraph {
       padding-left: 0.3rem;
       padding-right: 0.3rem;
     }
