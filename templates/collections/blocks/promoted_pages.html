@@ -3,7 +3,7 @@
 <h2>{{ value.heading }}</h2>
 <p>{{ value.sub_heading }}</p>
 
-<ul class="row card-group">
+<ul class="row card-group--list-style-none">
     {% for promoted_item in value.promoted_items %}
 
         {% image promoted_item.teaser_image fill-288x172 as teaser_image_small %}

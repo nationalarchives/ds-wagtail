@@ -7,7 +7,7 @@
 
     <div class="container mt-4">
             <h2 class="sr-only">Select a time period</h2>
-            <ul class="row card-group">
+            <ul class="row card-group--list-style-none">
                 {% for child in page.time_period_explorer_pages %}
                     {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
                 {% endfor %}

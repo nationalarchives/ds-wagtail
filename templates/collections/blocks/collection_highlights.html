@@ -1,7 +1,7 @@
 <h2>Collection highlights</h2>
 <p>{{ page.introduction }}</p>
 
-<ul class="row card-group">
+<ul class="row card-group--list-style-none">
     {% for child in page.results_pages %}
         {% include 'includes/card-group-secondary-nav.html' with page=child %}
     {% endfor %}
