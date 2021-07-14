@@ -28,8 +28,11 @@ These are Etna specific components, created using BEM and following our guidelin
 
 @import "includes/variables";
 @import 'includes/global';
+@import 'includes/buttons';
 @import 'includes/generic_intro';
 @import 'includes/header';
+@import 'includes/hero-image';
+@import 'includes/jumplinks';
 @import 'includes/links';
 @import 'includes/typography';
 @import 'includes/card-groups';
@@ -47,3 +50,15 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/taxonomy-tags';
 @import 'includes/record-title';
 @import 'includes/specifics';
+@import 'includes/content-block';
+@import 'includes/quote';
+@import 'includes/callout';
+@import 'includes/media-embed';
+@import 'includes/record-embed';
+@import 'includes/record-embed__no-image';
+@import 'includes/research-resources';
+@import 'includes/blog-embed';
+@import 'includes/related-content';
+@import 'includes/key-facts__author';
+@import 'includes/section-separator';
+@import 'includes/insights-badge';

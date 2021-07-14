@@ -5,10 +5,33 @@
 
 {% block content %}
     {% include 'includes/generic-intro--dark.html' %}
+    {% include 'includes/hero-img.html' %}
+    {% include 'includes/jumplinks.html' %}
 
     <div class="container">
+        {% include 'includes/section-separator.html' %}
+        {% include 'includes/content-block.html' %}
+        {% include 'includes/content-block--bordered.html' %}
+        {% include 'includes/content-block.html' %}
+
         {% for block in page.body %}
             {% include_block block %}
         {% endfor %}
+
+        {% include 'includes/callout.html' %}
+        {% include 'includes/section-separator.html' %}
+        {% include 'includes/record-embed--no-image.html' %}
+        {% include 'includes/media-embed--audio.html' %}
+        {% include 'includes/research-resources.html' %}
+        {% include 'includes/record-embed.html' %}
+        {% include 'includes/section-separator.html' %}
+        {% include 'includes/blog-embed.html' %}
+        {% include 'includes/media-embed--video.html' %}
+
+        <h3 class="related-content__heading">Explore our other content about Shakespeare</h3>
+        <p>Find out more about Shakespeare at The National Archives.</p>
+        {% include 'includes/related-content.html' %}
+        {% include 'includes/key-facts--author.html' %}
+
     </div>
 {% endblock %}
