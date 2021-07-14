@@ -4,6 +4,7 @@ from wagtail.core.models import Page
 from wagtail.core.fields import StreamField
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 
+from ..heroes.models import HeroImageMixin
 
 from .blocks import InsightsPageStreamBlock
 
@@ -28,7 +29,7 @@ class InsightsIndexPage(Page):
     subpage_types = ['insights.InsightsPage']
 
 
-class InsightsPage(Page):
+class InsightsPage(HeroImageMixin, Page):
     """InsightsPage
 
     The InsightsPage model.
@@ -36,7 +37,7 @@ class InsightsPage(Page):
     introduction = models.CharField(max_length=200, blank=False)
     body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = Page.content_panels + HeroImageMixin.content_panels + [
         FieldPanel('introduction'),
         StreamFieldPanel('body'),
     ]
