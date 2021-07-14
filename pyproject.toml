@@ -13,6 +13,7 @@ platformshconfig = "^2.4.0"
 pyquery = "^1.4.3"
 wagtail-generic-chooser = "^0.2.1"
 psycopg2 = "^2.9.1"
+wagtailfontawesome = "^1.2.1"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"

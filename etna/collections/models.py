@@ -2,7 +2,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.core.fields import StreamField
 from wagtail.core.models import Page, Orderable
 from wagtail.images import get_image_model_string, get_image_model
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -13,6 +14,13 @@ from ..alerts.models import AlertMixin
 from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
+from .blocks import (
+    ExplorerIndexPageStreamBlock,
+    TimePeriodExplorerPageStreamBlock,
+    TimePeriodExplorerIndexPageStreamBlock,
+    TopicExplorerPageStreamBlock,
+    TopicExplorerIndexPageStreamBlock,
+)
 
 
 class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
@@ -22,24 +30,52 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
     explorer.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
+    ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
-        "collections.TopicExplorerPage",
-        "collections.TimePeriodExplorerPage",
+        "collections.TopicExplorerIndexPage",
+        "collections.TimePeriodExplorerIndexPage",
     ]
 
-    @cached_property
-    def topic_pages(self):
-        """Fetch child topic explorer pages.
 
-        Result should be suitable for rendering on the front end.
-        """
+class TopicExplorerIndexPage(TeaserImageMixin, Page):
+    """Topic explorer page.
+
+    This page lists all child TopicExplorerPages
+    """
+
+    sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
+    ]
+    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+
+    @cached_property
+    def featured_pages(self):
+        """Return a sample of child pages for rendering in teaser."""
+        return (
+            self.get_children()
+            .type(TopicExplorerPage)
+            .order_by("?")
+            .live()
+            .public()
+            .specific()[:3]
+        )
+
+    def topic_explorer_pages(self):
+        """Fetch all child public TopicExplorerPages for display in list."""
         return (
             self.get_children()
             .type(TopicExplorerPage)
@@ -49,20 +85,11 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
             .specific()
         )
 
-    @cached_property
-    def time_period_pages(self):
-        """Fetch child time period explorer pages.
-
-        Result should be suitable for rendering on the front end.
-        """
-        return (
-            self.get_children()
-            .type(TimePeriodExplorerPage)
-            .order_by("title")
-            .live()
-            .public()
-            .specific()
-        )
+    max_count = 1
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "collections.TopicExplorerPage",
+    ]
 
 
 class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
@@ -76,9 +103,14 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
     single ResultsPage (to output the results of their selection).
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
 
-    content_panels = Page.content_panels + [FieldPanel("introduction")]
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
+    ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
@@ -95,10 +127,55 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
         )
 
     parent_page_types = [
-        "collections.ExplorerIndexPage",
+        "collections.TopicExplorerIndexPage",
         "collections.TopicExplorerPage",
     ]
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
+
+
+class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
+    """Time period explorer page.
+
+    This page lists all child TimePeriodExplorerPage
+    """
+
+    sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
+    ]
+    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+
+    @cached_property
+    def featured_pages(self):
+        """Return a sample of child pages for rendering in teaser."""
+        return (
+            self.get_children()
+            .type(TimePeriodExplorerPage)
+            .order_by("?")
+            .live()
+            .public()
+            .specific()[:3]
+        )
+
+    def time_period_explorer_pages(self):
+        """Fetch all child public TimePeriodExplorerPages for display in list."""
+        return (
+            self.get_children()
+            .type(TimePeriodExplorerPage)
+            .order_by("title")
+            .live()
+            .public()
+            .specific()
+        )
+
+    max_count = 1
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "collections.TimePeriodExplorerPage",
+    ]
 
 
 class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
@@ -112,12 +189,14 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     single ResultsPage (to output the results of their selection).
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
     content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
+        FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
@@ -137,7 +216,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
         )
 
     parent_page_types = [
-        "collections.ExplorerIndexPage",
+        "collections.TimePeriodExplorerIndexPage",
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
@@ -153,36 +232,16 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     collections API and display the results.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
+    introduction = models.TextField(blank=False)
 
     content_panels = Page.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("introduction"),
+        InlinePanel("records", heading="Records"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
-
-    content_panels = [
-        InlinePanel("records", heading="Records"),
-    ]
-
-    def get_context(self, request):
-        """Fetch RecordPage instances from Kong and add to context."""
-        context = super().get_context(request)
-
-        context["results"] = []
-        record_with_image = self.records.values_list("record_iaid", "teaser_image")
-        for record_iaid, image_id in record_with_image:
-            try:
-                context["results"].append(
-                    (
-                        RecordPage.search.get(iaid=record_iaid),
-                        get_image_model().objects.get(pk=image_id),
-                    )
-                )
-            except ObjectDoesNotExist:
-                continue
-
-        return context
 
     max_count_per_parent = 1
     parent_page_types = []
@@ -201,8 +260,18 @@ class ResultsPageRecordPage(Orderable, models.Model):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    description = models.TextField(
+        help_text="Optional field to override the description for this record in the teaser.",
+        blank=True,
+    )
+
+    @cached_property
+    def record_page(self):
+        """Fetch associated record page"""
+        return RecordPage.search.get(iaid=self.record_iaid)
 
     panels = [
         FieldPanel("record_iaid", widget=RecordChooser),
         ImageChooserPanel("teaser_image"),
+        FieldPanel("description"),
     ]

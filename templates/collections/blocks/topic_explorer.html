@@ -1,0 +1,37 @@
+{% load wagtailimages_tags %}
+
+{% image value.page.specific.teaser_image fill-446x273 as teaser_image_small %}
+{% image value.page.specific.teaser_image fill-492x301 as teaser_image_medium %}
+{% image value.page.specific.teaser_image fill-508x311 as teaser_image_large %}
+{% image value.page.specific.teaser_image fill-626x383 as teaser_image_extra_large %}
+
+<div class="card-group-promo--green">
+    <div class="card-group-promo__card">
+        <div class="row">
+            <div class="col-md-12 col-lg-7 col-xl-6">
+                <a href="{{ value.page.url }}" class="card-group-promo__card-link">
+                    <picture class="mt-auto">
+                        <source media="(max-width: 576px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(max-width: 768px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(max-width: 991px)" srcset="{{ teaser_image_extra_large.url }}">
+                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_medium.url }}">
+                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                        <img src="{{ teaser_image_small.url }}" alt="{{ image.title }}" class="card-group-promo__card-image">
+                    </picture>
+                </a>
+            </div>
+            <div class="col-md-12 col-lg-5 col-xl-6">
+                <h3 class="card-group-promo__card-heading"><a href="{{ value.page.url }}">{{ value.heading }}</a></h3>
+                <p class="card-group-promo__card-paragraph">{{ value.sub_heading }}</p>
+                <ul class="card-group-promo__card-list">
+                    {% for child in value.page.specific.featured_pages %}
+                        <li class="card-group-promo__card-list-item"><a href="{{ child.url }}">{{ child.title }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                <a href="{{ page.time_period_index_page.url }}">View all topics</a>
+                <p></p>
+            </div>
+        </div>
+    </div>
+</div>
