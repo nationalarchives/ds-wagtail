@@ -1,10 +1,18 @@
 .results-options {
-  text-align: right;
+  background-color: $color__green;
+  padding: 1em;
+
+  &__count {
+    margin-bottom: 0;
+  }
 
   &__select {
     padding: 0.2rem;
     border-radius: 0;
-    margin-left: .3rem;
+
+    @media only screen and (max-width: 575px) {
+      margin-top: 1em;
+    }
 
     &:focus {
       outline: 0.313rem solid $color__focus-blue-outline-light-bg;
