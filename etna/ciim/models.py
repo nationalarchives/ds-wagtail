@@ -67,6 +67,7 @@ class SearchManager:
         result = results[0]
 
         data = translate_result(result)
+        data['_debug_kong_result'] = result
 
         return apps.get_model(self.model)(**data)
 
