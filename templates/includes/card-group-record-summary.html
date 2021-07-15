@@ -8,7 +8,7 @@
 <div class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
         <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link">
-            <h4>{{ record_page.title }}</h4>
+            <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
             <figure>
                 <div class="card-group-record-summary__image">
                     <picture>
@@ -16,7 +16,7 @@
                         <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
                         <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
                         <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                        <img src="{{ teaser_image_small.url }}" alt="Record Alt" class="card-group-record-summary__image-fallback">
+                        <img src="{{ teaser_image_extra_large.url }}" alt="Record Alt" class="card-group-record-summary__image-fallback">
                     </picture>
                 </div>
                 <div class="card-group-record-summary__body">

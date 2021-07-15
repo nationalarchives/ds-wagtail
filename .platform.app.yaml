@@ -35,7 +35,6 @@ hooks:
     poetry config virtualenvs.in-project true
     poetry install --no-dev
 
-
     unset NPM_CONFIG_PREFIX
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
     export NVM_DIR="$HOME/.nvm"
@@ -48,6 +47,9 @@ hooks:
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
 
+    npm install
+    npx webpack --config webpack.config.js
+
     python manage.py collectstatic --no-input
 
   deploy: |
@@ -57,7 +59,7 @@ web:
   upstream:
     socket_family: unix
   commands:
-    start: gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py
+    start: gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
   locations:
     "/":
       root: ""

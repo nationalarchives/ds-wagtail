@@ -5,13 +5,14 @@
 {% block content %}
     {% include 'includes/generic-intro--dark.html' %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12" id="content">
+    <div class="container mt-4">
+       <div class="row">
+        <h2 class="sr-only">Select a way to explore</h2>
+            <ul class="card-group--no-flex">
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}
-            </div>
-        </div>
+            </ul>
+       </div>
     </div>
 {% endblock %}

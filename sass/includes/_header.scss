@@ -1,9 +1,48 @@
 .tna-header {
+  padding: 1rem 3rem 0 3rem;
+
+  @media only screen and (max-width: $screen__md) {
+  padding: 1rem 1rem 1rem 1rem;
+
+  }
+
+  &__home-link {
+    width: 100%;
+    max-width: 8.938rem;
+  }
 
   &__logo {
 
     &--beta {
       max-width: 8.938rem;
+    }
+  }
+
+  &__description {
+    font-size: 1.2rem;
+    margin-left: auto;
+    margin-top: auto;
+    margin-bottom: 0;
+    padding-top: 1rem;
+    
+    &-heading {
+      font-weight: bold;
+    }
+  }
+
+  @media only screen and (min-width: $screen__md) {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+
+    &__description {
+      padding-top: 0;
+      padding-left: 5rem;
+      max-width: 37.5rem;
+      text-align: right;
+      &-heading {
+        text-align: right;
+      }
     }
   }
 }

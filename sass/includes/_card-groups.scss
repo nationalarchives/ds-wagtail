@@ -1,12 +1,23 @@
 .card-group {
   padding-left: 0;
-  li {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  
+  &--list-style-none {
+    @extend .card-group;
     list-style: none;
   }
+
+  &--no-flex {
+    @extend .card-group;
+    display: block;
+    flex-wrap: unset;
+  }
+
   &-secondary-nav {
-
     display: inline-block;
-
+    width: 100%;
     &__link {
       @extend .tna-card__link;
       @include explorer-link;
@@ -26,15 +37,20 @@
       display: table-footer-group;
     }
 
+    &__heading, &__paragraph {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+    }
+
     @media only screen and (min-width: $screen__lg) {
       display: block;
     }
   }
 
   &-record-summary {
-
+    list-style: none;
     display: inline-block;
-
+    width: 100%;
     &__image {
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
@@ -47,17 +63,39 @@
       @extend .tna-card__link;
       @include explorer-link;
 
-      text-decoration: underline;
+      text-decoration: none;
     }
 
     &__body {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
       margin-top: 1rem;
+      text-decoration: underline;
+    }
+
+    &__heading {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+      text-decoration: underline;
     }
   }
 
   &-promo {
+    list-style: none;
     padding: 1rem;
     margin-bottom: 1rem;
+    width: 100%;
+    &--green {
+      @extend .card-group-promo;
+      background-color: $color__green;
+      color: $color__black;
+      padding: 1rem 2rem;
+
+      a, hr {
+        color: $color__black;
+      }
+
+    }
 
     &--dark {
       @extend .card-group-promo;
@@ -79,8 +117,24 @@
       }
 
       &-heading {
-        font-weight: 400;
+        font-weight: 800;
         font-size: 1.5rem;
+      }
+
+      &-paragraph {
+        margin-bottom: 1rem;
+      }
+
+      &-list {
+        padding-left: 1rem;
+        margin-bottom: 1rem;
+        &-item {
+            list-style-type: '- ';
+        }
+      }
+
+      &-link {
+        display: block;
       }
     }
 

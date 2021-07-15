@@ -7,6 +7,9 @@ import requests
 from .exceptions import InvalidResponse, KubernetesError, KongError, ConnectionError
 from .utils import pluck
 
+import logging
+logger = logging.getLogger(__name__)
+
 
 def mock_response_from_file(filename, **kwargs):
 
@@ -93,6 +96,8 @@ class KongClient:
 
         json = response.json()
 
+        logger.debug(f'Response from Kong: {json}')
+
         if "message" in json:
             raise KubernetesError(json["message"])
 
@@ -127,6 +132,8 @@ class KongClient:
             raise InvalidResponse("Invalid response.")
 
         json = response.json()
+
+        logger.debug(f'Response from Kong: {json}')
 
         if "message" in json:
             raise KubernetesError(json["message"])
