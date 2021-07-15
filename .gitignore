@@ -44,5 +44,9 @@ templates/static/css/libraries/*
 # SASS
 .sass-cache
 
+# Node
+/node_modules/
+
 # coverage.py
 .coverage
+

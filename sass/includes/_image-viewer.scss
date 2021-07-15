@@ -1,0 +1,169 @@
+.no-js {
+  .image-viewer {
+    &__toolbar {
+      display: none;
+    }
+
+    &__viewer {
+      display: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      margin: auto;
+    }
+  }
+}
+
+.js {
+  .image-viewer {
+    height: 100vh;
+
+    &__header {
+      position: absolute;
+      top: 0;
+    }
+
+    &__footer {
+      position: absolute;
+      bottom: 0;
+    }
+  }
+}
+
+.image-viewer {
+  background-color: $color__black;
+  color: $color__white;
+
+  &__header {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    z-index: 1;
+    background-color: $color__black;
+  }
+
+  &__reference {
+
+    h1 {
+      font-size: 1.3rem;
+      margin-left: 1.3rem;
+      margin-bottom: 1.3rem;
+
+      span {
+        display: inline-block;
+      }
+
+      @media (max-width: $screen__sm) {
+        font-size: 1rem;
+        margin: 0.2rem;
+      }
+    }
+  }
+
+  &__toolbar {
+    margin: 1.3rem;
+    text-align: right;
+
+    &.fullpage {
+      background-color: $color__black;
+      margin: 0;
+      padding: 0.5rem;
+    }
+
+    @media (max-width: $screen__sm) {
+      margin: 0.2rem;
+    }
+
+    > div {
+      // This is necessary to address an issue relating to a div which is inserted
+      // by OpenSeadragon. At high zoom levels (300% +) this obscures the image_number and
+      // prevents pointer events from being picked up.
+      pointer-events: none;
+    }
+
+    button {
+      border: none;
+      background-color: transparent;
+      text-decoration: underline;
+      border-radius: 0;
+      cursor: pointer;
+      color: $color__white;
+
+      &:focus {
+        outline: 5px solid $color__focus-blue-outline-dark-bg;
+        text-decoration: none;
+      }
+    }
+  }
+
+  &__viewer {
+    width: 100vw;
+    height: 100vh;
+    background-color: $color__black;
+  }
+
+  &__footer {
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    background-color: $color__black;
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline-block;
+    }
+
+    a {
+      color: $color__white;
+    }
+  }
+
+  &__navigation {
+    background-color: $color__green;
+    padding: 1rem;
+
+    @media (max-width: $screen__sm) {
+      padding: 0.2rem;
+    }
+
+    li:first-child a {
+      margin-right: 1rem;
+    }
+
+    a {
+      color: $color__black;
+      padding: 0 0.2rem;
+
+      &:focus {
+        text-decoration: none;
+        outline-color: $color__focus-blue-outline-light-bg;
+      }
+    }
+  }
+
+  &__pagination {
+    padding: 1rem;
+    text-align: right;
+
+    @media (max-width: $screen__sm) {
+      padding: 0.2rem;
+    }
+
+    a {
+      margin-right: 1rem;
+      padding: 0 0.2rem;
+
+      &:focus {
+        text-decoration: none;
+        color: $color__white;
+        outline-color: $color__focus-blue-outline-dark-bg;
+      }
+    }
+  }
+}
