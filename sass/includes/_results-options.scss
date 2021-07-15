@@ -6,6 +6,10 @@
     margin-bottom: 0;
   }
 
+  &__sort {
+    text-align: right;
+  }
+
   &__select {
     padding: 0.2rem;
     border-radius: 0;
@@ -20,11 +24,15 @@
   }
 
   &__submit {
-    @extend .tna-button;
+    @extend .tna-button--dark;
+    border: none;
     cursor: pointer;
     &:focus {
       outline: 0.313rem solid $color__focus-blue-outline-light-bg;
     }
+    padding: 0.5rem;
+    margin-left: 0rem;
+    margin-top: 0.5rem;
   }
 
   &__loading-message {
