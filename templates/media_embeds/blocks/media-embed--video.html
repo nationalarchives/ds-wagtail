@@ -13,9 +13,9 @@
             {{ value.heading }}
         </h3>
 
-        {% if value.datetime %}
+        {% if value.date %}
             <p class="media-embed__date">
-                <time datetime="{{ value.datetime|date:'Y-m-d'}}">{{ value.datetime|date:"l j F Y" }}</time>
+                <time datetime="{{ value.date|date:'Y-m-d'}}">{{ value.date|date:"l j F Y" }}</time>
             </p>
         {% endif %}
 
