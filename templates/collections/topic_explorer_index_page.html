@@ -6,18 +6,22 @@
     {% include 'includes/generic-intro--dark.html' %}
 
     <div class="container mt-4">
-            <ul class="row card-group--list-style-none">
-                <h2 class="sr-only">Select a topic</h2>
-                {% for child in page.topic_explorer_pages %}
-                    {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
-                {% endfor %}
-            </ul>
+        <div class="row">
+            <ul class="card-group--list-style-none">
+                    <h2 class="sr-only">Select a topic</h2>
+                    {% for child in page.topic_explorer_pages %}
+                        {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
+                    {% endfor %}
+                </ul>
+            </div>
         <div class="row">
             <div class="col-md-12" id="content">
                 <h2>More ways to explore</h2>
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
+                <ul class="card-group--no-flex">
+                    {% for block in page.body %}
+                        {% include_block block %}
+                    {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

@@ -1,14 +1,23 @@
 .card-group {
   padding-left: 0;
-
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  
   &--list-style-none {
     @extend .card-group;
     list-style: none;
   }
 
+  &--no-flex {
+    @extend .card-group;
+    display: block;
+    flex-wrap: unset;
+  }
+
   &-secondary-nav {
     display: inline-block;
-
+    width: 100%;
     &__link {
       @extend .tna-card__link;
       @include explorer-link;
