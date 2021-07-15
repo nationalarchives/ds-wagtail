@@ -22,10 +22,11 @@ $color__green: #dde5d5;
 $color__pink: #fad3d4;
 $color__blue_2: #1e1e2a;
 $color__blue_3: #134571;
-$color__blue_4: #1d70b8;
-$color__blue_5: #8EC0EC;;
+$color__blue_4: #1A67A2;
+$color__blue_5: #8EC0EC;
 $color__purple: #4c2c92;
 
+$color__grey-6: #333333;
 $color__grey-5: #efefef;
 $color__grey-4: #dddddd;
 $color__grey-3: #6f777b;
@@ -54,8 +55,14 @@ $transition_duration: 0.5s;
 $fa_path: '../../images/fontawesome-svgs/';
 
 // Images
+$fa_chevron_up: '#{$fa_path}chevron-up.svg';
 $fa_chevron_right: '#{$fa_path}chevron-right.svg';
 $fa_chevron_right_white: '#{$fa_path}chevron-right-white.svg';
-
+$fa_chevron_down: '#{$fa_path}chevron-down.svg';
 $fa_chevron_left: '#{$fa_path}chevron-left.svg';
 $fa_chevron_left_white: '#{$fa_path}chevron-left-white.svg';
+
+$fa_arrow_down: '#{$fa_path}arrow-down.svg';
+$fa_arrow_right: '#{$fa_path}arrow-right.svg';
+
+$fa_search_plus: '#{$fa_path}search-plus-white.svg';

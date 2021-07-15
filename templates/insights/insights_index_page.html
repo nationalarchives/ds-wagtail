@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% load wagtailcore_tags %}
+
+{% block content %}
+    {% include 'includes/generic-intro--dark.html' %}
+
+    <div class="container">
+        {% for insights_page in insights_pages %}
+        <div class="row">
+            <div class="col-md-12">
+            {% with insights_page=insights_page.specific %}
+                <h2><a href="{% pageurl insights_page %}">{{ insights_page.title }}</a></h2>
+
+                <p>{{ insights_page.introduction }}</p>
+            {% endwith %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

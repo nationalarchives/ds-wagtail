@@ -1,0 +1,8 @@
+{% load wagtailcore_tags %}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>{{ value.heading }}</h2>
+        {{ value.paragraph|richtext }}
+    </div>
+</div>

@@ -1,18 +1,67 @@
+/*
+
+==============
+Toolkit styles
+==============
+
+When a change to a toolkit is required, change it in the toolkit SASS file. In this way we can perform a diff between
+any candidate styles created for Etna and those within the toolkit. If we were to use @extend it will be harder to
+identify how the code is intended to change.
+
+This was discussed in an Etna developers meeting on 5 July 2021.
+
+*/
+
+
+@import 'tna-toolkit/tna-toolkit';
+
+
+/*
+
+==============
+Etna styles
+==============
+
+These are Etna specific components, created using BEM and following our guidelines.
+
+*/
+
 @import "includes/variables";
 @import 'includes/global';
+@import 'includes/buttons';
 @import 'includes/generic_intro';
 @import 'includes/header';
+@import 'includes/hero-image';
+@import 'includes/jumplinks';
 @import 'includes/links';
 @import 'includes/typography';
-@import 'includes/toolkit-duplicates/tna-card';
 @import 'includes/card-groups';
 @import 'includes/footer';
 @import 'includes/cta-banner-newsletter';
-@import 'includes/toolkit-duplicates/tna-button';
-@import 'includes/buttons';
 @import 'includes/results-options';
 @import 'includes/pagination';
 @import 'includes/alert-message';
 @import 'includes/image-viewer';
 @import 'includes/image-browse';
 @import 'includes/ie11';
+@import 'includes/hierarchy-global-nav';
+@import 'includes/hierarchy-local-nav';
+@import 'includes/key-facts';
+@import 'includes/image-viewer-panel';
+@import 'includes/record-access-options';
+@import 'includes/record-details';
+@import 'includes/taxonomy-tags';
+@import 'includes/record-title';
+@import 'includes/specifics';
+@import 'includes/content-block';
+@import 'includes/quote';
+@import 'includes/callout';
+@import 'includes/media-embed';
+@import 'includes/record-embed';
+@import 'includes/record-embed__no-image';
+@import 'includes/research-resources';
+@import 'includes/blog-embed';
+@import 'includes/related-content';
+@import 'includes/key-facts__author';
+@import 'includes/section-separator';
+@import 'includes/insights-badge';

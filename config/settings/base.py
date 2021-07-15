@@ -27,9 +27,16 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 # Application definition
 
 INSTALLED_APPS = [
+    'etna.alerts',
     'etna.collections',
+    'etna.ciim',
+    'etna.heroes',
     'etna.home',
-    'etna.search',
+    'etna.insights',
+    'etna.paragraphs',
+    'etna.quotes',
+    'etna.records',
+    'etna.teasers',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -43,6 +50,8 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail.core',
 
+    'wagtailfontawesome',
+    'generic_chooser',
     'modelcluster',
     'taggit',
 
@@ -168,3 +177,20 @@ WAGTAIL_SITE_NAME = "etna"
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
+
+
+# Kong client
+
+KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
+KONG_CLIENT_TEST_MODE = strtobool(os.getenv("KONG_CLIENT_TEST_MODE", "False"))
+KONG_CLIENT_TEST_FILENAME = os.getenv("KONG_CLIENT_TEST_FILENAME")
+KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+
+
+# Rich Text Features
+# https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
+INLINE_RICH_TEXT_FEATURES = [
+    "bold",
+    "italic",
+    "link",
+]

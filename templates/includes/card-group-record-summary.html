@@ -1,21 +1,28 @@
-<li class="col-sm-12 col-md-6 col-lg-4">
+{% load wagtailimages_tags %}
+
+{% image teaser_image fill-288x292 as teaser_image_small %}
+{% image teaser_image fill-328x322 as teaser_image_medium %}
+{% image teaser_image fill-348x352 as teaser_image_large %}
+{% image teaser_image fill-543x549 as teaser_image_extra_large %}
+
+<div class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href='/' class="card-group-record-summary__link">
-            <h4>Record Title</h4>
+        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link">
+            <h4>{{ record_page.title }}</h4>
             <figure>
                 <div class="card-group-record-summary__image">
                     <picture>
-                        <source media="(max-width: 768px)" srcset="https://via.placeholder.com/543x549.png?text=Placeholder">
-                        <source media="(max-width: 991px)" srcset="https://via.placeholder.com/328x322.png?text=Placeholder">
-                        <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/288x292.png?text=Placeholder">
-                        <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x352.png?text=Placeholder">
-                        <img src="https://via.placeholder.com/543x549.png?text=Placeholder" alt="Record Alt" class="card-group-record-summary__image-fallback">
+                        <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+                        <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                        <img src="{{ teaser_image_small.url }}" alt="Record Alt" class="card-group-record-summary__image-fallback">
                     </picture>
                 </div>
                 <div class="card-group-record-summary__body">
-                    <figcaption>Record Description</figcaption>
+                    <figcaption>{{ description_override|default:record_page.description|safe }}</figcaption>
                 </div>
             </figure>
         </a>
     </div>
-</li>
+</div>

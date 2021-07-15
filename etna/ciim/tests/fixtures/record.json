@@ -1,0 +1,188 @@
+{
+  "took" : 2,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 2,
+    "successful" : 2,
+    "skipped" : 0,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : {
+      "value" : 1,
+      "relation" : "eq"
+    },
+    "max_score" : 14.33563,
+    "hits" : [
+      {
+        "_index" : "ciim",
+        "_type" : "data",
+        "_id" : "mongo-c10297",
+        "_score" : 14.33563,
+        "_source" : {
+          "@admin" : {
+            "added" : 1621605950861,
+            "checksum" : {
+              "metadata" : 2854542254
+            },
+            "group" : "LO 2",
+            "id" : "C10297",
+            "indexed" : 1621777768550,
+            "processed" : 1621639833102,
+            "sequence" : 1681833,
+            "source" : "mongo",
+            "stream" : "evidential",
+            "uid" : "mongo-c10297",
+            "uuid" : "963a50eb-54bb-3ac7-ae03-317f4bb95d17",
+            "version" : 1
+          },
+          "access" : {
+            "closure" : {
+              "code" : "30",
+              "type" : "N"
+            }
+          },
+          "arrangement" : {
+            "value" : "<span class=\"arrangement\"><span class=\"head\">Arrangement</span><span class=\"p\">The files are registered in a numbered series according to their subject and these numbers are listed in the appendix to the series list.</span></span>"
+          },
+          "association" : [
+            {
+              "@entity" : "reference",
+              "@admin" : {
+                "available" : true,
+                "id" : "C199",
+                "uuid" : "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+              },
+              "@link" : {
+                "qualifier" : "association",
+                "relationship" : {
+                  "value" : "hierarchical"
+                },
+                "role" : [
+                  {
+                    "value" : "parent"
+                  }
+                ]
+              },
+              "@summary" : {
+                "title" : "Records created or inherited by the Law Officers' Department"
+              }
+            }
+          ],
+          "dbase" : {
+            "collection" : {
+              "name" : {
+                "value" : "Records"
+              }
+            },
+            "name" : {
+              "value" : "iadata"
+            }
+          },
+          "description" : [
+            {
+              "type" : "scope and content",
+              "value" : "<span class=\"scopecontent\"><span class=\"head\">Scope and Content</span><span class=\"p\">This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General's General Fiat for leave to appeal to the House of Lords in criminal cases.</span><span class=\"p\">Also included are a number of opinions, more of which can be found in <span class=\"extref\" link=\"$link(C10298)\">LO 3</span></span></span>"
+            }
+          ],
+          "digitised" : true,
+          "identifier" : [
+            {
+              "primary" : true,
+              "reference_number" : "LO 2",
+              "type" : "reference number",
+              "value" : "LO 2"
+            },
+            {
+              "catalogue_id" : "9062",
+              "type" : "catalogue id",
+              "value" : "9062"
+            },
+            {
+              "iaid" : "C10297",
+              "type" : "iaid",
+              "value" : "C10297"
+            },
+            {
+              "batch_id" : "327",
+              "type" : "batch id",
+              "value" : "327"
+            },
+            {
+              "part_reference" : "2",
+              "type" : "part reference",
+              "value" : "2"
+            }
+          ],
+          "language" : [
+            {
+              "value" : "English"
+            }
+          ],
+          "legal" : {
+            "status" : "Public Record(s)"
+          },
+          "level" : {
+            "code" : 3,
+            "value" : "Series"
+          },
+          "measurements" : {
+            "display" : "1180 file(s)",
+            "extent" : "1180",
+            "form" : "file(s)"
+          },
+          "@origination" : {
+            "date" : {
+              "earliest" : {
+                "from" : "1885-01-01"
+              },
+              "latest" : {
+                "to" : "1979-12-31"
+              },
+              "value" : "1885-1979"
+            }
+          },
+          "parent" : [
+            {
+              "@entity" : "reference",
+              "@admin" : {
+                "available" : true,
+                "id" : "C199",
+                "uuid" : "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+              },
+              "@link" : {
+                "qualifier" : "association",
+                "relationship" : {
+                  "value" : "hierarchical"
+                },
+                "role" : [
+                  {
+                    "value" : "browse parent"
+                  }
+                ]
+              },
+              "@summary" : {
+                "title" : "Records created or inherited by the Law Officers' Department"
+              }
+            }
+          ],
+          "sort" : "03 0 LO 02 0",
+          "source" : {
+            "value" : "CAT"
+          },
+          "@summary" : {
+            "title" : "Law Officers' Department: Registered Files"
+          },
+          "title" : [
+            {
+              "value" : "Law Officers' Department: Registered Files"
+            }
+          ],
+          "@type" : {
+            "base" : "archive"
+          }
+        }
+      }
+    ]
+  }
+}

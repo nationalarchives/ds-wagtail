@@ -1,0 +1,45 @@
+.tna-header {
+  padding: 15px 0;
+
+  &__logo {
+    max-width: 90px;
+  }
+
+  &__nav {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding: .5em 0;
+  }
+
+  &__nav-list {
+    display: flex;
+    flex-direction: row;
+    padding-left: 0;
+    margin-bottom: 0;
+    list-style: none;
+  }
+
+  &__nav-link {
+    padding: .5em .7em;
+    text-decoration: none;
+
+    span {
+      margin-right: .3em;
+
+      @media (max-width: 480px) {
+        display: none;
+      }
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  &__nav-primary {
+    font-size: 1.2em;
+  }
+}

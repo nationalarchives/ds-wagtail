@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.urls import include, path
+from django.urls import include, path, re_path, register_converter
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 
@@ -7,21 +7,41 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
-from etna.search import views as search_views
+from etna.records import converters
+from etna.records import views as records_views
 
+register_converter(converters.ReferenceNumberConverter, "reference_number")
+
+# fmt: off
 urlpatterns = [
-    path('django-admin/', admin.site.urls),
+    path("django-admin/", admin.site.urls),
+    path("admin/", include(wagtailadmin_urls)),
 
-    path('admin/', include(wagtailadmin_urls)),
-    path('documents/', include(wagtaildocs_urls)),
+    path("documents/", include(wagtaildocs_urls)),
 
-    path('search/', search_views.search, name='search'),
+    re_path(
+        r"catalogue/(?P<iaid>[Cc]\d+)/",
+        records_views.record_page_view,
+        name="details-page-machine-readable",
+    ),
+    path(
+        r"catalogue/<reference_number:reference_number>/",
+        records_views.record_page_disambiguation_view,
+        name="details-page-human-readable",
+    ),
+    path(
+        r"catalogue/<reference_number:reference_number>/~<int:pseudo_reference>/",
+        records_views.record_page_disambiguation_view,
+        name="details-page-human-readable-with-pseudo-reference",
+    ),
+    path("details-page-front-end/", TemplateView.as_view(template_name="records/details-page-front-end.html")),
 
     path('image-viewer/', TemplateView.as_view(template_name='records/image-viewer.html')),
 
-    path('image-browse/', TemplateView.as_view(template_name='records/image-browse.html'))
+    path('image-browse/', TemplateView.as_view(template_name='records/image-browse.html')),
 
 ]
+# fmt: on
 
 
 if settings.DEBUG:
@@ -37,7 +57,6 @@ urlpatterns = urlpatterns + [
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:
     path("", include(wagtail_urls)),
-
     # Alternatively, if you want Wagtail pages to be served from a subpath
     # of your site, rather than the site root:
     #    path("pages/", include(wagtail_urls)),

@@ -9,6 +9,34 @@
 
 {% block content %}
 
-<h1>{{ self.title }}</h1>
+{% include 'includes/generic-intro--dark.html' %}
+
+<div class="container pt-4">
+    <h2 class="sr-only">A subheading for the cards (for accessibility purposes)</h2>
+    <ul class="row card-group">
+            {% for page in etna_index_pages %}
+                {% include 'includes/card-group-secondary-nav.html' %}
+            {% endfor %}
+    </ul>
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Thank you for taking part in this Beta program</h2>
+            <p>A few things to remember before you get started: 
+                <ul>
+                    <li>
+                        You will be viewing an early Beta version of our new website. While we hope everything works you may find some things don't. <a href="#">Tell us</a> if you find a broken link or error page.
+                    </li>
+                    <li>
+                        Please provide regular feedback via the survey links at the top of the page.
+                    </li>
+                    <li>
+                        For any other issues, incuding login problems, please <a href="#">contact us</a> directly.
+                    </li>
+                </ul>
+            </p>
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %}

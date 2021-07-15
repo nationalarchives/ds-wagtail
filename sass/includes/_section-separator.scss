@@ -1,0 +1,13 @@
+.section-separator {
+  width: 100vw;
+  position: relative;
+  left: calc(-50vw + 50%);
+
+  &__heading {
+    font-size: 2.5rem;
+    color: $color__dark;
+    text-align: center;
+    margin-top: 0;
+    padding: 3rem 0;
+  }
+}
