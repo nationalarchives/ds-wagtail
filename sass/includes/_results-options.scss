@@ -7,7 +7,7 @@
   }
 
   &__sort {
-    @media only screen and (min-width: 575px) {
+    @media only screen and (min-width: $screen__sm) {
      text-align: right;
     }
   }
@@ -16,7 +16,7 @@
     padding: 0.2rem;
     border-radius: 0;
 
-    @media only screen and (max-width: 575px) {
+    @media only screen and (max-width: $screen__sm) {
       margin-top: 1em;
     }
 
@@ -34,6 +34,9 @@
     }
     padding: 0.5rem;
     margin-left: 0rem;
+    @media only screen and (max-width: $screen__md) {
+      margin-left: 0.3rem;
+    }
     margin-top: 0.5rem;
   }
 
