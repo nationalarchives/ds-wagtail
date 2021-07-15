@@ -15,8 +15,8 @@
                     <h3 class="sr-only">Options</h3>
                     {% include 'includes/results-options.html' %}
                     <div class="row">
+                        <h3 class="sr-only">Items</h3>
                         <ul class="card-group--list-style-none">
-                            <h3 class="sr-only">Items</h3>
                             {% for record_page_result in page.records.all %}
                                 {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
                             {% endfor %}

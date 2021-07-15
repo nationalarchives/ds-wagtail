@@ -6,14 +6,14 @@
     {% include 'includes/generic-intro--dark.html' %}
 
     <div class="container mt-4">
+        <div class="row">
             <h2 class="sr-only">Select a time period</h2>
-            <div class="row">
-                <ul class="card-group--list-style-none">
-                    {% for child in page.time_period_explorer_pages %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
-                    {% endfor %}
-                </ul>
-            </div>
+            <ul class="card-group--list-style-none">
+                {% for child in page.time_period_explorer_pages %}
+                    {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
+                {% endfor %}
+            </ul>
+        </div>
         <div class="row">
             <div class="col-md-12" id="content">
                 <h2>More ways to explore</h2>

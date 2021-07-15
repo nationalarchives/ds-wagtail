@@ -7,8 +7,8 @@
 
     <div class="container mt-4">
        <div class="row">
+        <h2 class="sr-only">Select a way to explore</h2>
             <ul class="card-group--no-flex">
-                <h2 class="sr-only">Select a way to explore</h2>
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}
