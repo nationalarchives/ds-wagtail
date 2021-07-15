@@ -1,5 +1,5 @@
 .tna-header {
-  padding: 1rem 3rem 0rem 3rem;
+  padding: 1rem 3rem 0 3rem;
 
   @media only screen and (max-width: $screen__md) {
   padding: 1rem 1rem 1rem 1rem;
@@ -19,7 +19,7 @@
   }
 
   &__description {
-    font-size: 1.2em;
+    font-size: 1.2rem;
     margin-left: auto;
     margin-top: auto;
     margin-bottom: 0;
@@ -37,8 +37,8 @@
 
     &__description {
       padding-top: 0;
-      padding-left: 5em;
-      max-width: 600px;
+      padding-left: 5rem;
+      max-width: 37.5rem;
       text-align: right;
       &-heading {
         text-align: right;
