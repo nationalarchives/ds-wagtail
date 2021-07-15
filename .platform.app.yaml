@@ -59,7 +59,7 @@ web:
   upstream:
     socket_family: unix
   commands:
-    start: gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py
+    start: gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
   locations:
     "/":
       root: ""
