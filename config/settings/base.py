@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'etna.heroes',
     'etna.home',
     'etna.insights',
+    'etna.media_embeds',
     'etna.paragraphs',
     'etna.quotes',
     'etna.records',
