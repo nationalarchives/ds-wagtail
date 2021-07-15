@@ -1,3 +1,5 @@
+{% load wagtailimages_tags %}
+
 <div class="hero-image__container">
-    <img class="hero-image" src="https://via.placeholder.com/1897x514" alt="A portrait of Shakespeare">
+    {% image page.hero_image fill-1897x514 class="hero-image" %}
 </div>
