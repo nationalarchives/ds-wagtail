@@ -63,13 +63,20 @@
       @extend .tna-card__link;
       @include explorer-link;
 
-      text-decoration: underline;
+      text-decoration: none;
     }
 
     &__body {
       padding-left: 0.3rem;
       padding-right: 0.3rem;
       margin-top: 1rem;
+      text-decoration: underline;
+    }
+
+    &__heading {
+      padding-left: 0.3rem;
+      padding-right: 0.3rem;
+      text-decoration: underline;
     }
   }
 
