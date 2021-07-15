@@ -1,55 +1,37 @@
 {% extends "base.html" %}
+
 {% load static %}
 
 {% block content %}
-    <div class="container">
-        <dl>
-            <dt>Title</dt>
-            <dd>{{ page.title }}</dd>
-            <dt>Reference</dt>
-            <dd>{{ page.reference_number }}</dd>
-            <dt>Record created</dt>
-            <dd>{{ page.date_range }}</dd>
-        </dl>
 
-        <h3>Key information</h3>
-        <dl>
-            <dt>Is digitised</dt>
-            <dd>{{ page.is_digitised|yesno|title }}</dd>
-            <dt>Available to download</dt>
-            <dd>To be added to payload</dd>
-            <dt>Description quality</dt>
-            <dd>To be added to payload</dd>
-            <dt>Created by</dt>
-            <dd>{{ page.created_by }}</dd>
-            <dt>Held by</dt>
-            <dd>To be added to payload</dd>
-        </dl>
+    {% include "includes/records/hierarchy-local.html" %}
 
-        <h3>Record details</h3>
-        <dl>
-            <dt>Reference</dt>
-            <dd>{{ page.reference_number }}</dd>
-            <dt>Record description</dt>
-            <dd>{{ page.description|safe }}</dd>
-            <dt>Arrangement</dt>
-            <dd>{{ page.arrangement|safe }}</dd>
-            <dt>Held by</dt>
-            <dd>To be added to payload</dd>
-            <dt>Legal status</dt>
-            <dd>{{ page.legal_status }}</dd>
-            <dt>Closure status</dt>
-            <dd>{{ page.closure_status }}</dd>
-        </dl>
+    <div class="row no-gutters">
 
-        <h3>Hierarchy</h3>
-        <dl>
-            <dt>parent</dt>
-            {% if page.parent %}
-                <dd><a href="{% url 'details-page-machine-readable' page.parent.iaid %}">{{ page.parent.title }}</a></dd>
-            {% else %}
-                <dd>No parent page</dd>
-            {% endif %}
-        </dl>
+        <div class="col-xl-3 order-xl-2 specific-border-bottom-lg specific-sticky specific-bg-grey-5">
+              {% include "includes/records/hierarchy-global.html" %}
+        </div>
+
+        <div class="col-xl-9 order-xl-1 specific-padding-bottom-lg">
+            {% include "includes/records/record-title.html" %}
+            <div class="container">
+                {% include "includes/records/key-facts.html" %}
+
+                <h2>How to view this record</h2>
+
+                {% include "includes/records/image-viewer-panel.html" %}
+
+                {% include "includes/records/record-access-options.html" %}
+
+                <h2>Description and record details</h2>
+
+                {% include "includes/records/record-details.html" %}
+
+                <h2>Topics covered in this record</h2>
+
+                {% include "includes/records/taxonomy-tags.html" %}
+            </div>
+        </div>
     </div>
-{% endblock content %}
+
+{% endblock %}

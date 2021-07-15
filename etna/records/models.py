@@ -31,5 +31,21 @@ class RecordPage(Page):
 
     search = SearchManager("records.RecordPage")
 
+    def __init__(self, *args, **kwargs):
+        """Override to add Kong response data to instance for debugging.
+
+        The Django docs advice against overriding the __init__ method, due to
+        the risk of the object not being persiable.
+
+        This risk is mitagated due to the use of the RecordPage as a container
+        to hold external data and should never be editable in the admin.
+
+        https://docs.djangoproject.com/en/3.2/ref/models/instances/
+        """
+        self._debug_kong_result = kwargs.pop('_debug_kong_result', None)
+
+        super().__init__(*args, **kwargs)
+
+
     def __str__(self):
         return f"{self.title} ({self.iaid})"
