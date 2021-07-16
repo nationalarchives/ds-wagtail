@@ -11,17 +11,18 @@
     <div class="card-group-promo__card">
         <div class="row">
             <div class="col-md-12 col-lg-7 col-xl-6">
-                <picture>
-                    <source media="(max-width: 576px)" srcset="{{ teaser_image_small.url }}">
-                    <source media="(max-width: 768px)" srcset="{{ teaser_image_small.url }}">
-                    <source media="(max-width: 991px)" srcset="{{ teaser_image_extra_large.url }}">
-                    <source media="(max-width: 1199px)" srcset="{{ teaser_image_medium.url }}">
-                    <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                    <img src="{{ teaser_image_extra_large.url }}"
-                         alt=""
-                         role="presentation"
-                         class="card-group-promo__card-image">
-                </picture>
+                <a href="{{ page.url }}" tabindex="-1" class="card-group-promo__card-link" tabindex="-1">
+                    <picture>
+                        <source media="(max-width: 576px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(max-width: 768px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(max-width: 991px)" srcset="{{ teaser_image_extra_large.url }}">
+                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_medium.url }}">
+                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                        <img src="{{ teaser_image_extra_large.url }}"
+                             alt="{{ page.teaser_image.title }}"
+                             class="card-group-promo__card-image">
+                    </picture>
+                </a>
             </div>
             <div class="col-md-12 col-lg-5 col-xl-6">
                 <h3 class="card-group-promo__card-heading"><a href="{{ page.url }}">{{ page.title }}</a></h3>
