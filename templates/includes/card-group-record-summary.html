@@ -5,7 +5,7 @@
 {% image teaser_image fill-348x352 as teaser_image_large %}
 {% image teaser_image fill-543x549 as teaser_image_extra_large %}
 
-<div class="col-sm-12 col-md-6 col-lg-4">
+<li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
         <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link">
             <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
@@ -25,4 +25,4 @@
             </figure>
         </a>
     </div>
-</div>
+</li>
