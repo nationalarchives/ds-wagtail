@@ -25,13 +25,15 @@
             </p>
         {% endif %}
 
-        <div class="media-embed__audio-container">
-            <audio controls="">
-                <source src="https://www.nationalarchives.gov.uk/documents/tourist-guide-to-shakespeare-london.mp3" type="audio/mp3">
-                <p>Your browser doesn't support HTML5 audio. Here is a <a href="https://www.nationalarchives.gov.uk/documents/tourist-guide-to-shakespeare-london.mp3">link to the audio</a>
-                    instead.</p>
-            </audio>
-        </div>
+        {% if value.media_file_url %}
+            <div class="media-embed__audio-container">
+                <audio controls="">
+                    <source src="{{ value.media_file_url }}" type="audio/mp3">
+                    <p>Your browser doesn't support HTML5 audio. Here is a <a href="{{ value.media_file_url }}">link to the audio</a>
+                        instead.</p>
+                </audio>
+            </div>
+        {% endif %}
 
         {% if value.transcript %}
             <div class="media-embed__transcript">

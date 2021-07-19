@@ -25,13 +25,15 @@
             </p>
         {% endif %}
 
-        <div class="media-embed__video-container">
-            <video class="media-embed__video" controls="">
-                <source src="" type="video/mp4">
-                <p>Your browser doesn't support HTML5 video. Here is a <a href="">link to the video</a>
-                    instead.</p>
-            </video>
-        </div>
+        {% if value.media_file_url %}
+            <div class="media-embed__video-container">
+                <video class="media-embed__video" controls="">
+                    <source src="{{ value.media_file_url }}" type="video/mp4">
+                    <p>Your browser doesn't support HTML5 video. Here is a <a href="{{ value.media_file_url }}">link to the video</a>
+                        instead.</p>
+                </video>
+            </div>
+        {% endif %}
 
         {% if value.transcript %}
             <div class="media-embed__transcript">
