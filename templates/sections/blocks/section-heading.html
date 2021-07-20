@@ -1,0 +1,7 @@
+<div id="{% if value.section_id %}{{ value.section_id|slugify }}{% else %}{{ value.heading|slugify }}{% endif %}" class="section-separator">
+    <div class="container">
+        <h2 class="section-separator__heading">
+            {{ value.heading }}
+        </h2>
+    </div>
+</div>
