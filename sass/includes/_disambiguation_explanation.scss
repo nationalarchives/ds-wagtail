@@ -1,0 +1,11 @@
+.disambiguation-explanation {
+    background-color: $color__blue_3;
+    color: $color__white;
+    padding: 2rem;
+    
+    &__introductory-sentence {
+        font-size: 1.3rem;
+        font-weight: 800;
+        margin-bottom: 1rem;
+    }
+}

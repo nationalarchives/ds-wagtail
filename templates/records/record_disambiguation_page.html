@@ -2,13 +2,50 @@
 
 {% load static %}
 
+
+
 {% block content %}
-    <h2>Disambiguation Page</h2>
-    <ul>
-        {% for page in pages %}
-            <li>
-                <a href="{% url 'details-page-machine-readable' page.iaid %}">{{ page.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
+    {% include 'includes/generic-intro--dark.html'  with self="Several records share this reference" only %}
+    {% with reference="MAF 42/8" %} 
+        {% include 'includes/disambiguation-explanation.html' %}
+    {% endwith %}
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-12 mb-4">
+               
+            </div>
+        </div>
+        <div class="row">
+            <h2 class="sr-only">Associated records</h2>
+
+            <ul class="card-group--list-style-none">
+
+                {% for i in '012345678'|make_list %}
+                    {# !!!!!!!! Please change this to a include of card-group-secondary-nav-no-image during implementation !!!!!!! #}
+                    <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
+                        <div class="card-group-secondary-nav">
+                            <a href='{{ page.url }}' class="card-group-secondary-nav__link">
+                                <div class="card-group-secondary-nav__body">
+                                    <h3 class="card-group-secondary-nav__heading">The record's title {{forloop.counter}}</h3>
+                                    <p class="card-group-secondary-nav__paragraph">Date: <time datetime="1916">1916</time> <br /> Reference: MAF 42/8</p>
+                                    
+                                </div>
+                                <div class="card-group-secondary-nav__image">
+                                    <picture>
+                                        <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+                                        <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+                                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+                                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                                        <img src="{{ teaser_image_extra_large.url }}" alt="" role="presentation" class="card-group-secondary-nav__image-fallback">
+                                    </picture>
+                                </div>
+                            </a>
+                        </div>
+                    </li>
+                {% endfor %}
+
+            </ul>
+        </div>
+    </div>
+
 {% endblock content %}
