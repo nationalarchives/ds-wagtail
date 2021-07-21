@@ -104,7 +104,7 @@ And then **import**:
 ##### Working with JavaScript
 
 Webpack is used for JavaScript module bundling with entry points and outputs defined within `webpack.config.js`. When defining new
-entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required. 
+entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required.
 
 Webpack
 
@@ -119,3 +119,10 @@ needs to be added to `.env` (`KONG_CLIENT_KEY`). This will allow your container
 to fetch the external data required to render explorer result and details
 pages.
 
+### Categories
+
+The icons used by the categories snippets can be selected from a list of the svg files in the path `static/images/category-svgs/` under the categories app itself.
+
+The reason for this is to protect from potential 500 errors should a file be deleted or renamed.
+
+If additional category icons are required, they should be added to the directory above. Once added, icons should not be renamed or removed unless it is **absolutely certain** they are not in use by any category snippet.

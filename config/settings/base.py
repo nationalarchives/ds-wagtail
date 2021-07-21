@@ -188,7 +188,6 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-CATEGORIES_ICON_PATH = STATIC_ROOT + '/images/fontawesome-svgs/'
 
 # Wagtail settings
 
