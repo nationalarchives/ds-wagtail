@@ -3,7 +3,6 @@ from django.conf import settings
 
 from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.images.edit_handlers import ImageChooserPanel
 
 
 @register_snippet
