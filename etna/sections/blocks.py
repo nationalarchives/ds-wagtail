@@ -2,8 +2,10 @@ from wagtail.core import blocks
 
 
 class SectionHeadingBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(required=True, max_length=100)
-    section_id = blocks.CharBlock(required=False, max_length=50)
+    heading = blocks.CharBlock(
+        required=True,
+        max_length=100,
+        help_text="Section headings must be unique within the page.")
 
     class Meta:
         icon = 'fa-header'
