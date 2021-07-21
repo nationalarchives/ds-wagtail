@@ -1,9 +1,6 @@
-.callout {
+.box-out {
   background-color: $color__blue_3;
   padding: 2rem 0;
-  width: 100vw;
-  position: relative;
-  left: calc(-50vw + 50%);
 
   &__standfirst {
     color: $color__white;

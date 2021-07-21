@@ -1,9 +1,7 @@
 .media-embed {
   background-size: cover;
   min-height: 37.5rem;
-  width: 100vw;
   position: relative;
-  left: calc(-50vw + 50%);
 
   &__overlay {
     background-color: $color__black;
