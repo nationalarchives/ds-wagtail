@@ -1,9 +1,7 @@
 .media-embed {
   background-size: cover;
   min-height: 37.5rem;
-  width: 100vw;
   position: relative;
-  left: calc(-50vw + 50%);
 
   &__overlay {
     background-color: $color__black;
@@ -25,6 +23,12 @@
     border-radius: 50%;
     margin-bottom: 1rem;
     padding: 1rem;
+    width: 5rem;
+    height: 5rem;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 3rem;
   }
 
   &__icon-label {
