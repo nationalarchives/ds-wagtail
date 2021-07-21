@@ -28,6 +28,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
 INSTALLED_APPS = [
     'etna.alerts',
+    'etna.categories',
     'etna.collections',
     'etna.ciim',
     'etna.heroes',
@@ -187,6 +188,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+CATEGORIES_ICON_PATH = STATIC_ROOT + '/images/fontawesome-svgs/'
 
 # Wagtail settings
 
