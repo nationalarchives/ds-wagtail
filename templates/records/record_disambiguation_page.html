@@ -8,9 +8,8 @@
 
 {% block content %}
     {% include 'includes/generic-intro--dark.html'  with self="Several records share this reference" only %}
-    {% with reference="MAF 42/8" %} 
-        {% include 'includes/disambiguation-explanation.html' %}
-    {% endwith %}
+    {% include 'includes/disambiguation-explanation.html' with reference="MAF 42/8" %}
+
     <div class="container mt-4">
         <div class="row">
             <h3 class="sr-only">Associated records</h3>
