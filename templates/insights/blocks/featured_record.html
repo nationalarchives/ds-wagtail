@@ -1,0 +1,39 @@
+<article class="record-embed">
+    <div class="record-embed__image-container">
+        <div class="container">
+            <h3 class="record-embed__heading no-margin-top">{{ value.record.title }}</h3>
+        </div>
+        <figure>
+            <img class="record-embed__image" src="https://via.placeholder.com/400x550" alt="A portrait of Shakespeare">
+            <figcaption>
+                <a class="record-embed__image-viewer-link" href="">
+                    Open in our image viewer
+                </a>
+            </figcaption>
+        </figure>
+    </div>
+    <div class="record-embed__description">
+        <div class="container">
+            {% if value.record.reference_number %}
+                <p class="record-embed__text">Reference: {{ value.record.reference_number }}</p>
+            {% endif %}
+            {% if value.record.date_start %}
+                <p class="record-embed__text">
+                Date created: <time datetime="{{ value.record.date_start }}">{{ value.record.date_start }}</time>
+                </p>
+            {% endif %}
+
+            {% if value.record.description %}
+                <div class="record-embed__text">
+                    {{ value.record.description|safe }}
+                </div>
+            {% endif %}
+
+            {% if value.record.reference_number %}
+                <span class="record-embed__button"><a class="tna-button-secondary--no-underline" href="{% url 'details-page-human-readable' value.record.reference_number %}">View in the catalogue</a></span>
+            {% elif value.record.iaid %}
+                <span class="record-embed__button"><a class="tna-button-secondary--no-underline" href="{% url 'details-page-machine-readable' value.record.iaid %}">View in the catalogue</a></span>
+            {% endif %}
+        </div>
+    </div>
+</article>
