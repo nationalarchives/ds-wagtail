@@ -5,18 +5,14 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
-    <div class="container">
-        {% for insights_page in insights_pages %}
-        <div class="row">
-            <div class="col-md-12">
-            {% with insights_page=insights_page.specific %}
-                <h2><a href="{% pageurl insights_page %}">{{ insights_page.title }}</a></h2>
-
-                <p>{{ insights_page.introduction }}</p>
-            {% endwith %}
-            </div>
-        </div>
-    {% endfor %}
+    <div class="container mt-4" data-container-name="{{ page.title }}">
+        <ul class="card-group--list-style-none">
+            {% for insights_page in insights_pages %}
+                {% with page=insights_page.specific %}
+                    {% include 'includes/card-group-secondary-nav.html' %}
+                {% endwith %}
+            {% endfor %}
+        </ul>
     </div>
 
 {% endblock %}
