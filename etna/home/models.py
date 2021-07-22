@@ -15,17 +15,17 @@ class HomePage(AlertMixin, Page):
         context["etna_index_pages"] = [
             {
                 "title": "Collection Explorer",
-                "introduction": "A new way to discover collections at The National Archives, through records hand-picked by our experts.",
+                "sub_heading": "A new way to discover collections at The National Archives, through records hand-picked by our experts.",
                 "url": "#",
             },
             {
                 "title": "Collection Insights",
-                "introduction": "Learn about the people, themes and events featured in our records, told through words, pictures and audio - discover the human stories behind the collection.",
+                "sub_heading": "Learn about the people, themes and events featured in our records, told through words, pictures and audio - discover the human stories behind the collection.",
                 "url": "#",
             },
             {
                 "title": "Collection Details",
-                "introduction": "View and navigate records from The National Archives catalogue.",
+                "sub_heading": "View and navigate records from The National Archives catalogue.",
                 "url": "#",
             },
         ]
