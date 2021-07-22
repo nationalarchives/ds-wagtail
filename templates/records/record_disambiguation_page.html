@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block analytics_json %}
+    {% include 'includes/disambiguation-analytics-json.html' %}
+{% endblock %}
+
 {% block content %}
     {% include 'includes/generic-intro--dark.html'  with self="Several records share this reference" only %}
     {% with reference="MAF 42/8" %} 
