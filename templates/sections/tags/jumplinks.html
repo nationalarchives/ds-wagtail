@@ -1,22 +1,13 @@
-<nav class="jumplinks">
-    <div class="container">
-        <h2 class="jumplinks__heading">On this page</h2>
-        <ol class="jumplinks__list">
-            <li class="jumplinks__list-item">
-                <a class="jumplink" href="#section-1">
-                    Section 1: Lorem ipsum dolor sit amet
-                </a>
-            </li>
-            <li class="jumplinks__list-item">
-                <a class="jumplink" href="#section-2">
-                    Section 2: Lorem ipsum dolor sit amet
-                </a>
-            </li>
-            <li class="jumplinks__list-item">
-                <a class="jumplink" href="#section-3">
-                    Section 3: Lorem ipsum dolor sit amet
-                </a>
-            </li>
-        </ol>
-    </div>
-</nav>
+{% if sections %}
+    <nav class="jumplinks">
+        <div class="container">
+            <h2 class="jumplinks__heading">On this page</h2>
+            <ol class="jumplinks__list">
+            {% for section in sections %}
+                <li class="jumplinks__list-item">
+                    <a class="jumplink" href="#{{ section.heading|slugify }}">{{ section.heading }}</a>
+                </li>
+            {% endfor %}
+        </div>
+    </nav>
+{% endif %}
