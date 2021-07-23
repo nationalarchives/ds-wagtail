@@ -1,14 +1,11 @@
 .generic-intro {
   padding-top: 1rem;
   padding-bottom: 1rem;
+  background-color: $color__grey-2;
+  color: $color__white;
 
-  &--dark {
-    background-color: $color__grey-2;
+  a {
     color: $color__white;
-
-    a {
-      color: $color__white;
-    }
   }
 
   &__title {
