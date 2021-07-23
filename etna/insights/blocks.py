@@ -5,7 +5,7 @@ from wagtail.core import blocks
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
-from ..sections.blocks import SectionHeadingBlock
+from ..sections.blocks import SectionBlock
 
 
 class FeaturedRecordBlock(blocks.StructBlock):
@@ -31,6 +31,6 @@ class FeaturedRecordsBlock(blocks.StructBlock):
 class InsightsPageStreamBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     paragraph_with_heading = ParagraphWithHeading()
-    section_heading = SectionHeadingBlock()
+    section = SectionBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
