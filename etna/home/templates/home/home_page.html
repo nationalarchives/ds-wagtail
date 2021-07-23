@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block analytics_json %}
+    {% include 'includes/etna-homepage-analytics-json.html' %}
+{% endblock %}
+
 {% block body_class %}template-homepage{% endblock %}
 
 {% block extra_css %}
@@ -23,7 +27,7 @@
     <div class="row">
         <div class="col-md-12">
             <h2>Thank you for taking part in this Beta program</h2>
-            <p>A few things to remember before you get started: 
+            <p>A few things to remember before you get started:
                 <ul>
                     <li>
                         You will be viewing an early Beta version of our new website. While we hope everything works you may find some things don't. <a href="#">Tell us</a> if you find a broken link or error page.
