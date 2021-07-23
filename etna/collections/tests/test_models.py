@@ -1,6 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from wagtail.core.models import Site, PageViewRestriction
+
+import responses
 
 from ..models import (
     TopicExplorerIndexPage,
@@ -10,6 +12,8 @@ from ..models import (
     ExplorerIndexPage,
     ResultsPage,
 )
+
+from ...ciim.tests.factories import create_record, create_response
 
 
 class TestTopicExplorerIndexPages(TestCase):
@@ -137,3 +141,48 @@ class TestTimePeriodExplorerIndexPages(TestCase):
 class TestRecordDescriptionOverride(TestCase):
     def setUp(self):
         self.results_page = ResultsPage()
+
+
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+class TestRecordDescriptionOverride(TestCase):
+    def setUp(self):
+        root_page = Site.objects.get().root_page
+
+        self.results_page = ResultsPage(
+            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+        )
+
+        root_page.add_child(instance=self.results_page)
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456", description="This is the description from Kong"
+                    )
+                ]
+            ),
+        )
+
+    @responses.activate
+    def test_description_from_kong_is_rendered(self):
+        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.save()
+
+        response = self.client.get("/results-page/")
+
+        self.assertContains(response, "This is the description from Kong")
+
+    @responses.activate
+    def test_override_description_is_rendered(self):
+        self.results_page.records.create(
+            record_iaid="C123456", description="This is the overridden description"
+        )
+        self.results_page.save()
+
+        response = self.client.get("/results-page/")
+
+        self.assertNotContains(response, "This is the description from Kong")
+        self.assertContains(response, "This is the overridden description")
