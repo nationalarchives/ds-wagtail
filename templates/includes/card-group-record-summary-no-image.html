@@ -1,0 +1,17 @@
+{% load wagtailimages_tags %}
+
+{% image teaser_image fill-288x292 as teaser_image_small %}
+{% image teaser_image fill-328x322 as teaser_image_medium %}
+{% image teaser_image fill-348x352 as teaser_image_large %}
+{% image teaser_image fill-543x549 as teaser_image_extra_large %}
+
+<li class="col-sm-12 col-md-6 col-lg-4">
+    <div class="card-group-record-summary">
+        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link">
+            <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
+            <div class="card-group-record-summary__body">
+                <p>{{ description_override|default:record_page.description|safe }}</p>
+            </div>
+        </a>
+    </div>
+</li>
