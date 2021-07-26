@@ -10,7 +10,7 @@ from ..teasers.models import TeaserImageMixin
 from .blocks import InsightsPageStreamBlock
 
 
-class InsightsIndexPage(Page, TeaserImageMixin):
+class InsightsIndexPage(TeaserImageMixin, Page):
     """InsightsIndexPage
 
     This page lists the InsightsPage objects that are children of this page.
