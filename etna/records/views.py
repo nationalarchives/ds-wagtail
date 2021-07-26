@@ -75,7 +75,9 @@ class KongModelChooserMixinIn(ModelChooserMixin):
         object_list = self.get_unfiltered_object_list()
 
         if search_term:
-            object_list = self.model.search.filter(term=search_term)
+            object_list = self.model.search.filter(
+                term=search_term, stream="evidential"
+            )
 
         return object_list
 

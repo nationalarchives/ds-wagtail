@@ -70,6 +70,16 @@ class TestRecordChooseView(WagtailPageTests):
             content["html"],
         )
 
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/search?stream=evidential&term=law&from=0&pretty=false",
+        )
+        self.assertEqual(
+            responses.calls[1].request.url,
+            "https://kong.test/search?stream=evidential&size=1&term=law&from=0&pretty=false",
+        )
+
     @responses.activate
     def test_select(self):
         response = self.client.get("/admin/record-chooser/C10297/")
