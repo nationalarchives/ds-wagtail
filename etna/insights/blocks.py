@@ -2,6 +2,7 @@ from django.conf import settings
 
 from wagtail.core import blocks
 
+from ..authors.blocks import AuthorBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
@@ -29,8 +30,9 @@ class FeaturedRecordsBlock(blocks.StructBlock):
 
 
 class InsightsPageStreamBlock(blocks.StreamBlock):
-    quote = QuoteBlock()
+    author = AuthorBlock()
     paragraph_with_heading = ParagraphWithHeading()
-    section = SectionBlock()
+    quote = QuoteBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
+    section = SectionBlock()
