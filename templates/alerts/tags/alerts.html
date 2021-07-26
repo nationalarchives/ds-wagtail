@@ -5,8 +5,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <span class="alert-message__label">{{ alert.title }}</span>
-                <span class="alert-message__description">{{ alert.message|richtext }}</span>
+                <span class="alert-message__label" data-alert-title="{{ alert.title }}">{{ alert.title }}</span>
+                <span class="alert-message__description" data-alert-message="{{ alert.message|striptags }}">{{ alert.message|richtext }}</span>
             </div>
         </div>
     </div>
