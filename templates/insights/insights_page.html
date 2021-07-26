@@ -1,14 +1,13 @@
 {% extends 'base.html' %}
 
 {% load wagtailcore_tags %}
-
+{% load sections_tags %}
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
     {% include 'includes/hero-img.html' %}
-    {% include 'includes/jumplinks.html' %}
+    {% jumplinks page %}
 
-        {% include 'includes/section-separator.html' %}
         {% include 'includes/content-block.html' %}
         {% include 'includes/content-block--bordered.html' %}
         {% include 'includes/content-block.html' %}
@@ -17,11 +16,9 @@
             {% include_block block %}
         {% endfor %}
 
-        {% include 'includes/section-separator.html' %}
         {% include 'includes/record-embed--no-image.html' %}
         {% include 'includes/media-embed--audio.html' %}
         {% include 'includes/research-resources.html' %}
-        {% include 'includes/section-separator.html' %}
         {% include 'includes/blog-embed.html' %}
         {% include 'includes/media-embed--video.html' %}
         <div class="container">
