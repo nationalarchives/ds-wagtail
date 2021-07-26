@@ -1,0 +1,8 @@
+{% load wagtailcore_tags %}
+
+<h2 class="sr-only">A subheading for the cards (for accessibility purposes)</h2>
+<ul class="card-group--list-style-none">
+    {% for block in value.0 %}
+        {% include_block block %}
+    {% endfor %}
+</ul>
