@@ -19,7 +19,7 @@ class CategoriesTestCase(TestCase):
     def test_discover_icon(self):
         category = Category.objects.get(name="Discover our records")
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(
             path, "/app/etna/categories/static/images/category-svgs/search-white.svg"
@@ -28,7 +28,7 @@ class CategoriesTestCase(TestCase):
     def test_research_icon(self):
         category = Category.objects.get(name="Research")
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(
             path, "/app/etna/categories/static/images/category-svgs/book-open-white.svg"
@@ -37,7 +37,7 @@ class CategoriesTestCase(TestCase):
     def test_podcast_icon(self):
         category = Category.objects.get(name="Podcasts")
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(
             path,
@@ -47,7 +47,7 @@ class CategoriesTestCase(TestCase):
     def test_video_icon(self):
         category = Category.objects.get(name="Video")
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(
             path, "/app/etna/categories/static/images/category-svgs/video-white.svg"
@@ -56,7 +56,7 @@ class CategoriesTestCase(TestCase):
     def test_blog_icon(self):
         category = Category.objects.get(name="Blog")
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(
             path, "/app/etna/categories/static/images/category-svgs/comment-white.svg"
@@ -67,6 +67,6 @@ class CategoriesTestCase(TestCase):
             name="Unknown", icon=f"{CATEGORIES_ICON_PATH}/unknown.svg"
         )
 
-        path = finders.find(category.icon_static_path())
+        path = finders.find(category.icon_static_path)
 
         self.assertEqual(path, None)

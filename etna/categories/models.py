@@ -23,12 +23,13 @@ class Category(models.Model):
 
     panels = [FieldPanel("name"), FieldPanel("icon")]
 
+    @property
     def icon_static_path(self):
         """icon_static_path
 
         The path to the icon required by the static template tag.
         """
-        return CATEGORIES_STATIC_PATH + os.path.basename(self.icon)
+        return f"{CATEGORIES_STATIC_PATH}{os.path.basename(self.icon)}"
 
     def __str__(self):
         return self.name
