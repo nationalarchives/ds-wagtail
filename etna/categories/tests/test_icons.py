@@ -5,15 +5,8 @@ from django.apps import apps
 
 from wagtail.core.models import Site
 
-from ..models import Category
+from ..models import Category, CATEGORIES_ICON_PATH
 from ...insights.models import InsightsIndexPage, InsightsPage
-from ...insights.blocks import PromotedItemBlock
-
-
-# The path to where the static template tag will expect to find an image.
-CATEGORIES_STATIC_PATH = 'images/category-svgs/'
-# The actual location of the image file within the system.
-CATEGORIES_ICON_PATH = apps.get_app_config("categories").path + "/static/" + CATEGORIES_STATIC_PATH
 
 
 class CategoriesTestCase(TestCase):
@@ -36,9 +29,9 @@ class CategoriesTestCase(TestCase):
     def test_category_icon_discover(self):
         # Create category snippet
         category = Category.objects.create(
-                name = "Discover our records",
-                icon = CATEGORIES_ICON_PATH + "book-open-white.svg"
-            )
+            name="Discover our records",
+            icon=CATEGORIES_ICON_PATH + "book-open-white.svg",
+        )
 
         # Body field JSON
         body_data = [
@@ -52,8 +45,8 @@ class CategoriesTestCase(TestCase):
                     "cta_label": "CTA label",
                     "teaser_image": None,
                     "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text"
-                }
+                    "description": "Description text",
+                },
             }
         ]
 
@@ -62,7 +55,7 @@ class CategoriesTestCase(TestCase):
         self.insights_page.save()
 
         client = Client()
-        response = client.get('/insights-index-page/insights-page/')
+        response = client.get("/insights-index-page/insights-page/")
 
         print(response.status_code)
         self.assertEqual(response.status_code, 200)
@@ -70,9 +63,8 @@ class CategoriesTestCase(TestCase):
     def test_category_icon_blog(self):
         # Create category snippet
         category = Category.objects.create(
-                name = "Blog",
-                icon = CATEGORIES_ICON_PATH + "comment-white.svg"
-            )
+            name="Blog", icon=CATEGORIES_ICON_PATH + "comment-white.svg"
+        )
 
         # Body field JSON
         body_data = [
@@ -86,8 +78,8 @@ class CategoriesTestCase(TestCase):
                     "cta_label": "CTA label",
                     "teaser_image": None,
                     "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text"
-                }
+                    "description": "Description text",
+                },
             }
         ]
 
@@ -96,7 +88,7 @@ class CategoriesTestCase(TestCase):
         self.insights_page.save()
 
         client = Client()
-        response = client.get('/insights-index-page/insights-page/')
+        response = client.get("/insights-index-page/insights-page/")
 
         print(response.status_code)
         self.assertEqual(response.status_code, 200)
@@ -110,9 +102,8 @@ class CategoriesTestCase(TestCase):
     def test_category_icon_unknown(self):
         # Create category snippet
         category = Category.objects.create(
-                name = "Unknown",
-                icon = CATEGORIES_ICON_PATH + "unknown.svg"
-            )
+            name="Unknown", icon=CATEGORIES_ICON_PATH + "unknown.svg"
+        )
 
         # Body field JSON
         body_data = [
@@ -126,8 +117,8 @@ class CategoriesTestCase(TestCase):
                     "cta_label": "CTA label",
                     "teaser_image": None,
                     "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text"
-                }
+                    "description": "Description text",
+                },
             }
         ]
 
@@ -136,7 +127,7 @@ class CategoriesTestCase(TestCase):
         self.insights_page.save()
 
         client = Client()
-        response = client.get('/insights-index-page/insights-page/')
+        response = client.get("/insights-index-page/insights-page/")
 
         print(response)
         self.assertEqual(response.status_code, 200)
