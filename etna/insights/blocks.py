@@ -52,10 +52,39 @@ class PromotedItemBlock(blocks.StructBlock):
         icon = "fa-star"
 
 
+class PromotedListItemBlock(blocks.StructBlock):
+    """
+    Items for promoted list block.
+    """
+    heading = blocks.CharBlock(required=True, max_length=100)
+    summary = blocks.RichTextBlock(required=False, features=settings.INLINE_RICH_TEXT_FEATURES)
+    url = blocks.URLBlock(required=True)
+
+    class Meta:
+        icon = 'fa-external-link'
+
+
+class PromotedListBlock(blocks.StructBlock):
+    """
+    Streamfield for collating a series of links for research or interesting pages.
+    """
+    heading = blocks.CharBlock(required=True, max_length=100)
+    category = SnippetChooserBlock("categories.Category")
+    summary = blocks.RichTextBlock(required=False, features=settings.INLINE_RICH_TEXT_FEATURES)
+    promoted_items = blocks.ListBlock(PromotedListItemBlock())
+
+    class Meta:
+        icon = "fa-list"
+        label = "Promoted item list"
+        template = "insights/blocks/promoted_list_block.html"
+
+
 class InsightsPageStreamBlock(blocks.StreamBlock):
     author = AuthorBlock()
     paragraph_with_heading = ParagraphWithHeading()
     promoted_item = PromotedItemBlock()
+    promoted_list = PromotedListBlock()
+    quote = QuoteBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     section = SectionBlock()
