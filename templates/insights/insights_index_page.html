@@ -5,18 +5,35 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
+    <div class="container mt-4" data-container-name="{{ page.title }}">
+        <ul class="card-group--list-style-none">
+            {% for insights_page in insights_pages %}
+                {% with page=insights_page.specific %}
+                    {% include 'includes/card-group-secondary-nav.html' %}
+                {% endwith %}
+            {% endfor %}
+        </ul>
+    </div>
+
     <div class="container">
-        {% for insights_page in insights_pages %}
         <div class="row">
             <div class="col-md-12">
-            {% with insights_page=insights_page.specific %}
-                <h2><a href="{% pageurl insights_page %}">{{ insights_page.title }}</a></h2>
-
-                <p>{{ insights_page.introduction }}</p>
-            {% endwith %}
+                <h2>Thank you for taking part in this Beta program</h2>
+                <p>A few things to remember before you get started:
+                <ul>
+                    <li>
+                        You will be viewing an early Beta version of our new website. While we hope everything works you may find some things don't. <a href="#">Tell us</a> if you find a broken link or error page.
+                    </li>
+                    <li>
+                        Please provide regular feedback via the survey links at the top of the page.
+                    </li>
+                    <li>
+                        For any other issues, incuding login problems, please <a href="#">contact us</a> directly.
+                    </li>
+                </ul>
+                </p>
             </div>
         </div>
-    {% endfor %}
     </div>
 
 {% endblock %}
