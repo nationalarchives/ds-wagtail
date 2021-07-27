@@ -8,7 +8,14 @@
 
 {% block content %}
     {% include 'includes/generic-intro.html'  with self="Several records share this reference" only %}
-    {% include 'includes/disambiguation-explanation.html' with reference="MAF 42/8" %}
+
+    <div class="disambiguation-explanation">
+        <div class="container">
+            <h2 class="disambiguation-explanation__subheading">Several records share the reference {{ queried_reference_number }}. </h2>
+            <p>Very occasionally (less than 1% of the time) a record shares its catalogue reference with other records in the catalogue, usually with its own sub-records. This is the case with reference {{ queried_reference_number }}.</p>
+            <p class="mb-0">Its associated records are listed below.</p>
+        </div>
+    </div>
 
     <div class="container mt-4">
         <div class="row">
@@ -17,19 +24,8 @@
 
                 <ul class="card-group--list-style-none">
 
-                    {% for i in '012345678'|make_list %}
-                        {# !!!!!!!! Please change this to a include of card-group-record-summary-no-image during implementation !!!!!!! #}
-
-                        <li class="col-sm-12 col-md-6 col-lg-4">
-                            <div class="card-group-record-summary">
-                                <a href="#" class="card-group-record-summary__link">
-                                    <h4 class="card-group-record-summary__heading">The record's title {{forloop.counter}}</h4>
-                                    <div class="card-group-record-summary__body">
-                                        <p>Date: <time datetime="1916">1916</time> <br /> Reference: MAF 42/8</p>
-                                    </div>
-                                </a>
-                            </div>
-                        </li>
+                    {% for page in pages %}
+                        {% include 'includes/card-group-record-summary-no-image.html' with record_page=page %}
                     {% endfor %}
 
                 </ul>
