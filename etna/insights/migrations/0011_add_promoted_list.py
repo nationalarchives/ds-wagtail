@@ -11,7 +11,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0009_auto_20210727_1030'),
+        ('insights', '0010_add_promoted_item'),
     ]
 
     operations = [
