@@ -2,132 +2,86 @@ import json
 
 from django.test import TestCase, Client
 from django.apps import apps
+from django.templatetags.static import static
+from django.contrib.staticfiles import finders
+
 
 from wagtail.core.models import Site
 
 from ..models import Category, CATEGORIES_ICON_PATH
-from ...insights.models import InsightsIndexPage, InsightsPage
 
 
 class CategoriesTestCase(TestCase):
-    def setUp(self):
-        # Create page structure
-        self.root = Site.objects.get().root_page
+    """Smoke tests to ensure that the static assets for each
+    category type exists on disk and can be found with the static
+    templatetag."""
 
-        self.insights_index_page = InsightsIndexPage(
-            title="Insights index page",
-            introduction="Here is some intro text.",
+    def test_discover_icon(self):
+        category = Category.objects.create(
+            name="Discover our records",
+            icon=CATEGORIES_ICON_PATH + "search-white.svg",
         )
-        self.root.add_child(instance=self.insights_index_page)
 
-        self.insights_page = InsightsPage(
-            title="Insights page",
-            introduction="Here is some insightful intro text.",
+        path = finders.find(category.icon_static_path())
+
+        self.assertEqual(
+            path, "/app/etna/categories/static/images/category-svgs/search-white.svg"
         )
-        self.insights_index_page.add_child(instance=self.insights_page)
 
-    def test_category_icon_discover(self):
-        # Create category snippet
+    def test_research_icon(self):
         category = Category.objects.create(
             name="Discover our records",
             icon=CATEGORIES_ICON_PATH + "book-open-white.svg",
         )
 
-        # Body field JSON
-        body_data = [
-            {
-                "type": "promoted_item",
-                "value": {
-                    "title": "test_category_icon_discover",
-                    "category": category.id,
-                    "publication_date": "2021-07-22",
-                    "url": "http://google.co.uk",
-                    "cta_label": "CTA label",
-                    "teaser_image": None,
-                    "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text",
-                },
-            }
-        ]
+        path = finders.find(category.icon_static_path())
 
-        # Update body field
-        self.insights_page.body = json.dumps(body_data)
-        self.insights_page.save()
-
-        client = Client()
-        response = client.get("/insights-index-page/insights-page/")
-
-        print(response.status_code)
-        self.assertEqual(response.status_code, 200)
-
-    def test_category_icon_blog(self):
-        # Create category snippet
-        category = Category.objects.create(
-            name="Blog", icon=CATEGORIES_ICON_PATH + "comment-white.svg"
+        self.assertEqual(
+            path, "/app/etna/categories/static/images/category-svgs/book-open-white.svg"
         )
 
-        # Body field JSON
-        body_data = [
-            {
-                "type": "promoted_item",
-                "value": {
-                    "title": "test_category_icon_blog",
-                    "category": category.id,
-                    "publication_date": "2021-07-22",
-                    "url": "http://google.co.uk",
-                    "cta_label": "CTA label",
-                    "teaser_image": None,
-                    "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text",
-                },
-            }
-        ]
+    def test_podcast_icon(self):
+        category = Category.objects.create(
+            name="Blog",
+            icon=CATEGORIES_ICON_PATH + "headphones-white.svg",
+        )
 
-        # Update body field
-        self.insights_page.body = json.dumps(body_data)
-        self.insights_page.save()
+        path = finders.find(category.icon_static_path())
 
-        client = Client()
-        response = client.get("/insights-index-page/insights-page/")
+        self.assertEqual(
+            path, "/app/etna/categories/static/images/category-svgs/headphones-white.svg"
+        )
 
-        print(response.status_code)
-        self.assertEqual(response.status_code, 200)
+    def test_video_icon(self):
+        category = Category.objects.create(
+            name="Video",
+            icon=CATEGORIES_ICON_PATH + "video-white.svg",
+        )
 
-    # def test_category_icon_podcast(self):
+        path = finders.find(category.icon_static_path())
 
-    # def test_category_icon_research(self):
+        self.assertEqual(
+            path, "/app/etna/categories/static/images/category-svgs/video-white.svg"
+        )
 
-    # def test_category_icon_video(self):
+    def test_blog_icon(self):
+        category = Category.objects.create(
+            name="Blog",
+            icon=CATEGORIES_ICON_PATH + "comment-white.svg",
+        )
+
+        path = finders.find(category.icon_static_path())
+
+        self.assertEqual(
+            path, "/app/etna/categories/static/images/category-svgs/comment-white.svg"
+        )
 
     def test_category_icon_unknown(self):
-        # Create category snippet
         category = Category.objects.create(
-            name="Unknown", icon=CATEGORIES_ICON_PATH + "unknown.svg"
+            name="Unknown",
+            icon=CATEGORIES_ICON_PATH + "unknown.svg",
         )
 
-        # Body field JSON
-        body_data = [
-            {
-                "type": "promoted_item",
-                "value": {
-                    "title": "test_category_icon_unknown",
-                    "category": category.id,
-                    "publication_date": "2021-07-22",
-                    "url": "http://google.co.uk",
-                    "cta_label": "CTA label",
-                    "teaser_image": None,
-                    "teaser_alt_text": "Teaser alt text",
-                    "description": "Description text",
-                },
-            }
-        ]
+        path = finders.find(category.icon_static_path())
 
-        # Update body field
-        self.insights_page.body = json.dumps(body_data)
-        self.insights_page.save()
-
-        client = Client()
-        response = client.get("/insights-index-page/insights-page/")
-
-        print(response)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(path, None)
