@@ -129,7 +129,7 @@ class KongClient:
             raise ConnectionError from e
 
         if not response.ok:
-            raise InvalidResponse("Invalid response.")
+            raise InvalidResponse("Invalid response.", json=response.json())
 
         json = response.json()
 
