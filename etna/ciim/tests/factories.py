@@ -35,14 +35,21 @@ def create_record(
     }
 
 
-def create_response(records=None):
-    """Create a sample Elasticsearch response for provided records.  """
+def create_response(records=None, total_count=None):
+    """Create a sample Elasticsearch response for provided records. 
+
+    If testing pagination or batch fetches, the total count can be optionally
+    modified.
+    """
     if not records:
         records = []
 
+    if not total_count:
+        total_count = len(records)
+
     return {
         "hits": {
-            "total": {"value": len(records), "relation": "eq"},
+            "total": {"value": total_count, "relation": "eq"},
             "hits": [r for r in records],
         }
     }
