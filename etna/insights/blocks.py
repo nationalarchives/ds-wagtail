@@ -56,8 +56,12 @@ class PromotedListItemBlock(blocks.StructBlock):
     """
     Items for promoted list block.
     """
-    heading = blocks.CharBlock(required=True, max_length=100)
-    summary = blocks.RichTextBlock(required=False, features=settings.INLINE_RICH_TEXT_FEATURES)
+    title = blocks.CharBlock(required=True, max_length=100, help_text="Title of the promoted page")
+    description = blocks.RichTextBlock(
+        required=False,
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        help_text="A description of the promoted page"
+    )
     url = blocks.URLBlock(required=True)
 
     class Meta:
