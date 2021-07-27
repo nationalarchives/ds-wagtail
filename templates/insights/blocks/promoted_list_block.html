@@ -5,44 +5,46 @@
 {# Class names have been left with the "research-resources" prefix, but should be changed to something more generic #}
 {# as the category heading and icon are specified in the block's category field. #}
 
-<div class="research-resources">
-    {% if value.category.icon %}
+<div class="container">
+    <div class="research-resources">
+        {% if value.category.icon %}
         {% static value.category.icon_static_path as bg_image %}
         <div class="blog-embed__icon" style="background-image: url('{{ bg_image }}');"></div>
-    {% endif %}
-    <p class="research-resources__icon-label" role="presentation" aria-hidden="true">
-        {{ value.category.name }}
-    </p>
+        {% endif %}
+        <p class="research-resources__icon-label" role="presentation" aria-hidden="true">
+            {{ value.category.name }}
+        </p>
 
-    <h3 class="research-resources__heading">
-        {{ value.heading }}
-        <span class="sr-only">{{ value.heading }}</span>
-    </h3>
+        <h3 class="research-resources__heading">
+            {{ value.heading }}
+            <span class="sr-only">{{ value.heading }}</span>
+        </h3>
 
-    {% if value.summary %}
+        {% if value.summary %}
         <p class="research-resources__description">
             {{ value.summary|richtext }}
         </p>
-    {% endif %}
+        {% endif %}
 
-    {% if value.promoted_items %}
+        {% if value.promoted_items %}
         <dl class="research-resources__list">
             {% for item in value.promoted_items %}
-                <div class="research-resources__list-item">
-                    <dt>
-                        <h4 class="research-resources__link-heading">
-                            <a class="research-resources__link" href="{{ item.url }}">
-                                {{ item.title }}
-                            </a>
-                        </h4>
-                    </dt>
-                    {% if item.summary %}
-                        <dd class="research-resources__link-text">
-                            {{ item.description }}
-                        </dd>
-                    {% endif %}
-                </div>
+            <div class="research-resources__list-item">
+                <dt>
+                    <h4 class="research-resources__link-heading">
+                        <a class="research-resources__link" href="{{ item.url }}">
+                            {{ item.title }}
+                        </a>
+                    </h4>
+                </dt>
+                {% if item.summary %}
+                <dd class="research-resources__link-text">
+                    {{ item.description }}
+                </dd>
+                {% endif %}
+            </div>
             {% endfor %}
         </dl>
-    {% endif %}
+        {% endif %}
+    </div>
 </div>
