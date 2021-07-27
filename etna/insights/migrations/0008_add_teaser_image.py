@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('wagtailimages', '0023_add_choose_permissions'),
-        ('insights', '0006_record_embed_blocks'),
+        ('insights', '0007_add_section_block'),
     ]
 
     operations = [
