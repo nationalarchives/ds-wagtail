@@ -1,4 +1,6 @@
+from functools import partial
 from pathlib import Path
+import json
 
 from django.test import TestCase, override_settings
 
@@ -12,7 +14,7 @@ from ..exceptions import (
     UnsupportedSlice,
 )
 from ...records.models import RecordPage
-from .factories import create_record, create_response
+from .factories import create_record, create_response, paginate_records_callback
 
 
 @override_settings(
@@ -85,15 +87,17 @@ class SearchManagerFilterTest(TestCase):
 
     @responses.activate
     def test_comprehension_returns_model_instances(self):
-        responses.add(
+
+        records = [
+            create_record(iaid="C4122893", reference_number="ADM 223/3"),
+            create_record(iaid="C4122894", reference_number="ADM 223/3"),
+        ]
+
+        responses.reset()
+        responses.add_callback(
             responses.GET,
             "https://kong.test/search",
-            json=create_response(
-                records=[
-                    create_record(iaid="C4122893", reference_number="ADM 223/3"),
-                    create_record(iaid="C4122894", reference_number="ADM 223/3"),
-                ],
-            ),
+            callback=partial(paginate_records_callback, records),
         )
 
         results = [r for r in self.manager.filter(reference_number="ADM 223/3")]
@@ -132,10 +136,14 @@ class SearchManagerKongCount(TestCase):
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
         self.manager = SearchManager("records.RecordPage")
-        responses.add(
+
+        records = [create_record() for r in range(0, 15)]
+
+        responses.reset()
+        responses.add_callback(
             responses.GET,
             "https://kong.test/search",
-            json=create_response(records=[create_record()]),
+            callback=partial(paginate_records_callback, records),
         )
 
     @responses.activate

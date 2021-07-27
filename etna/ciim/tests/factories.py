@@ -1,3 +1,6 @@
+import json
+
+
 def create_record(
     iaid="C0000000",
     reference_number="ADM 223/3",
@@ -36,7 +39,7 @@ def create_record(
 
 
 def create_response(records=None, total_count=None):
-    """Create a sample Elasticsearch response for provided records. 
+    """Create a sample Elasticsearch response for provided records.
 
     If testing pagination or batch fetches, the total count can be optionally
     modified.
@@ -53,3 +56,28 @@ def create_response(records=None, total_count=None):
             "hits": [r for r in records],
         }
     }
+
+
+def paginate_records_callback(records, request):
+    """Responses callback to simulate paginating through results.
+
+    Page through records, responding with a all or a single record if
+    requested or nothing if requested record doesn't exist."""
+    start = int(request.params.get("from", 0))
+    size = request.params.get(
+        "size",
+    )
+    stop = start + int(size) if size else None
+
+    try:
+        response_records = records[start:stop]
+    except TypeError:
+        response_records = records[start:]
+    except IndexError:
+        response_records = []
+
+    return (
+        200,
+        {},
+        json.dumps(create_response(records=response_records, total_count=len(records))),
+    )
