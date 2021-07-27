@@ -15,9 +15,12 @@ class Author(models.Model):
     Model to store author details. Including image and a link to
     an external biography page.
     """
+
     name = models.CharField(blank=False, null=False, max_length=100)
     role = models.CharField(blank=True, null=True, max_length=100)
-    summary = RichTextField(blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES)
+    summary = RichTextField(
+        blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
     image = models.ForeignKey(
         get_image_model_string(),
         blank=True,
@@ -26,8 +29,12 @@ class Author(models.Model):
         related_name="+",
     )
 
-    bio_link = models.URLField(blank=False, null=False, help_text="Link to external bio page")
-    bio_link_label = models.CharField(blank=False, null=False, help_text="Button text for bio link", max_length=50)
+    bio_link = models.URLField(
+        blank=False, null=False, help_text="Link to external bio page"
+    )
+    bio_link_label = models.CharField(
+        blank=False, null=False, help_text="Button text for bio link", max_length=50
+    )
 
     panels = [
         FieldPanel("name"),
