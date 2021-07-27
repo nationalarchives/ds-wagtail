@@ -11,7 +11,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0008_add_teaser_image'),
+        ('insights', '0009_add_author_block'),
     ]
 
     operations = [
