@@ -1,4 +1,6 @@
+from functools import partial
 from pathlib import Path
+import json
 
 from django.test import TestCase, override_settings
 
@@ -12,7 +14,7 @@ from ..exceptions import (
     UnsupportedSlice,
 )
 from ...records.models import RecordPage
-from .factories import create_record, create_response
+from .factories import create_record, create_response, paginate_records_callback
 
 
 @override_settings(
@@ -85,15 +87,17 @@ class SearchManagerFilterTest(TestCase):
 
     @responses.activate
     def test_comprehension_returns_model_instances(self):
-        responses.add(
+
+        records = [
+            create_record(iaid="C4122893", reference_number="ADM 223/3"),
+            create_record(iaid="C4122894", reference_number="ADM 223/3"),
+        ]
+
+        responses.reset()
+        responses.add_callback(
             responses.GET,
             "https://kong.test/search",
-            json=create_response(
-                records=[
-                    create_record(iaid="C4122893", reference_number="ADM 223/3"),
-                    create_record(iaid="C4122894", reference_number="ADM 223/3"),
-                ],
-            ),
+            callback=partial(paginate_records_callback, records),
         )
 
         results = [r for r in self.manager.filter(reference_number="ADM 223/3")]
@@ -132,10 +136,14 @@ class SearchManagerKongCount(TestCase):
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
         self.manager = SearchManager("records.RecordPage")
-        responses.add(
+
+        records = [create_record() for r in range(0, 15)]
+
+        responses.reset()
+        responses.add_callback(
             responses.GET,
             "https://kong.test/search",
-            json=create_response(records=[create_record()]),
+            callback=partial(paginate_records_callback, records),
         )
 
     @responses.activate
@@ -144,9 +152,9 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         result = self.manager.filter(reference_number="ADM 223/3")[0]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=1&term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
         )
 
     @responses.activate
@@ -154,9 +162,9 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         result = self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=1&term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
@@ -164,44 +172,48 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         result = self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=1&term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
     def test_url_for_subscript_for_first_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[0:10]
+        result = self.manager.filter(reference_number="ADM 223/3")[0:5]
+
+        results = result[0]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=10&term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
         )
 
     @responses.activate
     def test_url_for_subscript_for_second_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[10:20]
+        result = self.manager.filter(reference_number="ADM 223/3")[5:10]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=10&term=ADM+223%2F3&from=10&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
         )
 
     @responses.activate
     def test_url_for_subscript_for_third_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[20:30]
+        result = self.manager.filter(reference_number="ADM 223/3")[10:15]
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?size=10&term=ADM+223%2F3&from=20&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
         )
 
     @responses.activate
     def test_slicing_with_step_raises_slice_error(self):
-        with self.assertRaisesMessage(UnsupportedSlice, "Slicing with step is not supported"):
+        with self.assertRaisesMessage(
+            UnsupportedSlice, "Slicing with step is not supported"
+        ):
             result = self.manager.filter(reference_number="ADM 223/3")[0:1:1]
 
     @responses.activate
@@ -221,25 +233,25 @@ class SearchManagerKongClientIntegrationTest(TestCase):
             result = self.manager.filter(reference_number="ADM 223/3")[:]
 
     @responses.activate
-    def test_len_performs_fetch(self):
+    def test_len_performs_fetch_for_zero_results(self):
         result = self.manager.filter(reference_number="ADM 223/3")
         count = result.count()
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
-    def test_count_performs_fetch(self):
+    def test_count_performs_fetch_for_zero_results(self):
         result = self.manager.filter(reference_number="ADM 223/3")
         count = len(result)
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
+        self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
@@ -247,32 +259,27 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         for result in self.manager.filter(reference_number="ADM 223/3"):
             ...
 
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
-        )
+        self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_comprehension_performs_fetch(self):
         result = [r for r in self.manager.filter(reference_number="ADM 223/3")]
 
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
-        )
+        self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_cast_to_list_performs_fetch(self):
         result = list(self.manager.filter(reference_number="ADM 223/3"))
 
-        # SAME CALL IS MADE THREE TIMES. FIX
-        self.assertEqual(len(responses.calls), 3)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
-        )
+        self.assertTrue(len(responses.calls) > 0)
+
+    @responses.activate
+    def test_iterator(self):
+
+        pages = self.manager.filter(reference_number="ADM 223/3")
+
+        self.assertEquals(len(pages), 15)
+        self.assertEquals(len([p for p in pages]), 15)
 
 
 @override_settings(

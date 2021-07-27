@@ -271,14 +271,27 @@ class TestClientSearchReponse(TestCase):
         self.client = KongClient("https://kong.test", api_key="")
 
     @responses.activate
-    def test_test_mode_doesnt_use_requests(self):
+    def test_500_raises_invalid_response(self):
         responses.add(
             responses.GET,
             "https://kong.test/search",
             status=500,
+            json={},
         )
 
         with self.assertRaises(InvalidResponse):
+            self.client.search()
+
+    @responses.activate
+    def test_500_with_reason_raises_invalid_response(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            status=500,
+            json={"error": {"root_cause": [{"reason": "Test Error"}]}},
+        )
+
+        with self.assertRaisesMessage(InvalidResponse, "Reason: Test Error"):
             self.client.search()
 
     @responses.activate

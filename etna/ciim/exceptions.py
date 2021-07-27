@@ -9,6 +9,19 @@ class ConnectionError(KongException):
 class InvalidResponse(KongException):
     """Raised if Kong returns non-200 reponse"""
 
+    def __init__(self, message, *args, **kwargs):
+        """Attempt to parse out error message from ES."""
+
+        self.json = kwargs.pop("json", {})
+
+        try:
+            reason = self.json['error']['root_cause'][0]['reason']
+            message = f'{message} Reason: {reason}'
+        except (IndexError, KeyError):
+            """Failed to find error message, raise without message"""
+
+        super().__init__(message, *args, **kwargs)
+
 
 class KubernetesError(KongException):
     """Raised if kubernetes returns an error instead of results"""
