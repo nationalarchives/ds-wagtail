@@ -17,10 +17,7 @@ class CategoriesTestCase(TestCase):
     templatetag."""
 
     def test_discover_icon(self):
-        category = Category.objects.create(
-            name="Discover our records",
-            icon=CATEGORIES_ICON_PATH + "search-white.svg",
-        )
+        category = Category.objects.get(name="Discover our records")
 
         path = finders.find(category.icon_static_path())
 
@@ -29,10 +26,7 @@ class CategoriesTestCase(TestCase):
         )
 
     def test_research_icon(self):
-        category = Category.objects.create(
-            name="Discover our records",
-            icon=CATEGORIES_ICON_PATH + "book-open-white.svg",
-        )
+        category = Category.objects.get(name="Research")
 
         path = finders.find(category.icon_static_path())
 
@@ -41,22 +35,17 @@ class CategoriesTestCase(TestCase):
         )
 
     def test_podcast_icon(self):
-        category = Category.objects.create(
-            name="Blog",
-            icon=CATEGORIES_ICON_PATH + "headphones-white.svg",
-        )
+        category = Category.objects.get(name="Podcasts")
 
         path = finders.find(category.icon_static_path())
 
         self.assertEqual(
-            path, "/app/etna/categories/static/images/category-svgs/headphones-white.svg"
+            path,
+            "/app/etna/categories/static/images/category-svgs/headphones-white.svg",
         )
 
     def test_video_icon(self):
-        category = Category.objects.create(
-            name="Video",
-            icon=CATEGORIES_ICON_PATH + "video-white.svg",
-        )
+        category = Category.objects.get(name="Video")
 
         path = finders.find(category.icon_static_path())
 
@@ -65,10 +54,7 @@ class CategoriesTestCase(TestCase):
         )
 
     def test_blog_icon(self):
-        category = Category.objects.create(
-            name="Blog",
-            icon=CATEGORIES_ICON_PATH + "comment-white.svg",
-        )
+        category = Category.objects.get(name="Blog")
 
         path = finders.find(category.icon_static_path())
 
@@ -78,8 +64,7 @@ class CategoriesTestCase(TestCase):
 
     def test_category_icon_unknown(self):
         category = Category.objects.create(
-            name="Unknown",
-            icon=CATEGORIES_ICON_PATH + "unknown.svg",
+            name="Unknown", icon=f"{CATEGORIES_ICON_PATH}/unknown.svg"
         )
 
         path = finders.find(category.icon_static_path())
