@@ -166,6 +166,32 @@
               }
             }
           ],
+          "repository" : {
+            "@entity" : "reference",
+            "@admin" : {
+              "available" : true,
+              "id" : "A13530124",
+              "uuid" : "30db474e-7e2f-3e59-bd7b-52801554859e"
+            },
+            "identifier" : [
+              {
+                "primary" : true,
+                "reference_number" : "66",
+                "type" : "reference number",
+                "value" : "66"
+              },
+              {
+                "type" : "Archon number",
+                "value" : "66"
+              }
+            ],
+            "name" : {
+              "value" : "The National Archives, Kew"
+            },
+            "@summary" : {
+              "title" : "The National Archives"
+            }
+          },
           "sort" : "03 0 LO 02 0",
           "source" : {
             "value" : "CAT"

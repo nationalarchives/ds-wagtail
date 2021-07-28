@@ -6,7 +6,9 @@
         {% if page.created_by %}
             <li><span>Record created by:</span><b>{{ page.created_by }}</b></li>
         {% endif %}
-        <li><span>Record now held at:</span><b>The National Archives, UK</b></li>
+        {% if page.held_by %}
+            <li><span>Record now held at:</span><b>{{ page.held_by }}</b></li>
+        {% endif %}
     </ul>
     <p class="key-facts__link"><a href="#">See the full description</a></p>
 </div>
