@@ -119,8 +119,9 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGOUT_ON_GET = False       # Bypass logout confirmation form
 ACCOUNT_USERNAME_REQUIRED = False   # Register using email only
 ACCOUNT_SESSION_REMEMBER = False    # True|False disables "Remember me?" checkbox"
-LOGIN_URL = "/login/"
+LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
+WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
