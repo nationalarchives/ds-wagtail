@@ -7,11 +7,19 @@
 
 {% block content %}
 
-    {% include 'includes/generic-intro.html' %}
-    {% include 'includes/hero-img.html' %}
+    <div class="generic-intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="generic-intro__title">
+                        {% trans "Login" %}
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container pt-4">
-        <h1>{% trans "Login" %}</h1>
         <form class="login" method="POST" action="{% url 'account_login' %}">
             {% csrf_token %}
             {{ form.as_p }}
