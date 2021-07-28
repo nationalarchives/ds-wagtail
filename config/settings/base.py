@@ -116,7 +116,9 @@ AUTHENTICATION_BACKENDS = [
 # django-allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGOUT_ON_GET = False       # Bypass logout confirmation form
+ACCOUNT_USERNAME_REQUIRED = False   # Register using email only
+ACCOUNT_SESSION_REMEMBER = False    # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/"
 
