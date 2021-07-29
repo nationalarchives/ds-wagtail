@@ -1,0 +1,11 @@
+{% load wagtailcore_tags %}
+
+<div class="container">
+    <h3 class="related-content__heading">{{ value.heading }}</h3>
+    <p>{{ value.description }}</p>
+    <ul class="card-group--list-style-none">
+        {% for related_item in value.related_items %}
+            {% include_block related_item %}
+        {% endfor %}
+    </ul>
+</div>
