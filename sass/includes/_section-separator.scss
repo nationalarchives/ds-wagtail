@@ -1,10 +1,12 @@
 .section-separator {
+  text-align: center;
 
   &__heading {
     font-size: 2.5rem;
     color: $color__dark;
-    text-align: center;
-    margin-top: 0;
-    padding: 3rem 0;
+    margin: 3rem auto 2rem;
+    display: inline-block;
+    border-bottom: 0.375rem solid $color__dark;
+    padding: 1rem 2rem 0.75rem 2rem;
   }
 }
