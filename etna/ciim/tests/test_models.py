@@ -427,6 +427,9 @@ class ModelTranslationTest(TestCase):
     def test_legal_status(self):
         self.assertEqual(self.record_page.legal_status, "Public Record(s)")
 
+    def test_held_by(self):
+        self.assertEqual(self.record_page.held_by, "The National Archives, Kew")
+
     def test_is_digitised(self):
         self.assertEqual(self.record_page.is_digitised, True)
 

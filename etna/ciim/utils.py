@@ -38,6 +38,9 @@ def translate_result(result):
     if legal := source.get("legal"):
         data["legal_status"] = legal["status"]
 
+    if repository := source.get('repository'):
+        data['held_by'] = repository['name']['value']
+
     data["is_digitised"] = source.get("digitised", False)
 
     if parent := find(

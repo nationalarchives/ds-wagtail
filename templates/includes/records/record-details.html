@@ -19,10 +19,12 @@
                     <td>{{ page.date_start }}</td>
                 </tr>
             {% endif %}
-            <tr>
-                <th scope="row">Held by</th>
-                <td>The National Archives, Kew</td>
-            </tr>
+            {% if page.held_by %}
+                <tr>
+                    <th scope="row">Held by</th>
+                    <td>{{ page.held_by }}</td>
+                </tr>
+            {% endif %}
             {% if page.legal_status %}
                 <tr>
                     <th scope="row">Legal status</th>
