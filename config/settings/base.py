@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'etna.records',
     'etna.sections',
     'etna.teasers',
+    'etna.users',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -122,6 +123,8 @@ ACCOUNT_SESSION_REMEMBER = False    # True|False disables "Remember me?" checkbo
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
+# Custom adapter to prevent self-signup
+ACCOUNT_ADAPTER = "etna.users.adapter.NoSelfSignupAccountAdapter"
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
