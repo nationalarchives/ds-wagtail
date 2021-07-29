@@ -2,6 +2,7 @@ from django.conf import settings
 from django.urls import include, path, re_path, register_converter
 from django.contrib import admin
 from django.views.generic.base import TemplateView
+from django.contrib.auth.decorators import login_required
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -21,24 +22,34 @@ urlpatterns = [
 
     re_path(
         r"catalogue/(?P<iaid>[Cc]\d+)/",
-        records_views.record_page_view,
+        login_required(records_views.record_page_view),
         name="details-page-machine-readable",
     ),
     path(
         r"catalogue/<reference_number:reference_number>/",
-        records_views.record_page_disambiguation_view,
+        login_required(records_views.record_page_disambiguation_view),
         name="details-page-human-readable",
     ),
     path(
         r"catalogue/<reference_number:reference_number>/~<int:pseudo_reference>/",
-        records_views.record_page_disambiguation_view,
+        login_required(records_views.record_page_disambiguation_view),
         name="details-page-human-readable-with-pseudo-reference",
     ),
-    path("details-page-front-end/", TemplateView.as_view(template_name="records/details-page-front-end.html")),
 
-    path('image-viewer/', TemplateView.as_view(template_name='records/image-viewer.html')),
+    path(
+        "details-page-front-end/",
+        login_required(TemplateView.as_view(template_name="records/details-page-front-end.html"))
+    ),
 
-    path('image-browse/', TemplateView.as_view(template_name='records/image-browse.html')),
+    path(
+        'image-viewer/',
+        login_required(TemplateView.as_view(template_name='records/image-viewer.html'))
+    ),
+
+    path(
+        'image-browse/',
+        login_required(TemplateView.as_view(template_name='records/image-browse.html'))
+    ),
 
 ]
 # fmt: on
