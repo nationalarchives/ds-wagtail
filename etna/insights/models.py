@@ -16,7 +16,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
     This page lists the InsightsPage objects that are children of this page.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -25,7 +25,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
         return context
 
     content_panels = Page.content_panels + [
-        FieldPanel("introduction"),
+        FieldPanel("sub_heading"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
@@ -38,14 +38,14 @@ class InsightsPage(HeroImageMixin, Page):
     The InsightsPage model.
     """
 
-    introduction = models.CharField(max_length=200, blank=False)
+    sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
 
     content_panels = (
         Page.content_panels
         + HeroImageMixin.content_panels
         + [
-            FieldPanel("introduction"),
+            FieldPanel("sub_heading"),
             StreamFieldPanel("body"),
         ]
     )
