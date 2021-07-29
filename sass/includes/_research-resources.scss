@@ -28,6 +28,10 @@
     font-weight: 400;
   }
 
+  &__description {
+    font-size: 1.2rem;
+  }
+
   &__list {
     list-style: none;
     padding-left: 0;
@@ -59,6 +63,10 @@
   &__link-heading {
     margin-top: 0;
     font-size: 1.625rem;
+  }
+
+  &__link-text {
+    font-size: 1.2rem;
   }
 
   &__link, &__link-text {

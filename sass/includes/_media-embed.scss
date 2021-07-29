@@ -49,7 +49,8 @@
   }
 
   &__description {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    text-align: left;
   }
 
   &__audio-container {
@@ -62,7 +63,8 @@
   }
 
   &__transcript {
-    background-color: $color__grey-2;
+    background-color: $color__dark;
+    font-size: 1.2rem;
     margin-top: 2rem;
     padding: 2rem;
   }

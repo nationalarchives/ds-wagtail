@@ -50,10 +50,15 @@
     }
   }
 
-  &__text--inline {
-    display: inline-block;
-    font-size: 1.1rem;
-    margin: 0 1rem 1rem 1rem;
+  &__text {
+    text-align: left;
+    font-size: 1.2rem;
+
+    &--inline {
+      display: inline-block;
+      font-size: 1.2rem;
+      margin: 0 1rem 1rem 1rem;
+    }
   }
 
   &__link-heading {
