@@ -36,14 +36,18 @@ class PromotedItemBlock(blocks.StructBlock):
     category = SnippetChooserBlock("categories.Category")
     publication_date = blocks.DateBlock()
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
-    cta_label = blocks.CharBlock(label="CTA label", max_length=50, help_text="The button label")
+    cta_label = blocks.CharBlock(
+        label="CTA label", max_length=50, help_text="The button label"
+    )
     teaser_image = ImageChooserBlock(
         help_text="An image used to create a teaser for the promoted page"
     )
-    teaser_alt_text = blocks.CharBlock(max_length=100, help_text="Alt text of the teaser image")
+    teaser_alt_text = blocks.CharBlock(
+        max_length=100, help_text="Alt text of the teaser image"
+    )
     description = blocks.RichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page"
+        help_text="A description of the promoted page",
     )
 
     class Meta:
@@ -56,25 +60,31 @@ class PromotedListItemBlock(blocks.StructBlock):
     """
     Items for promoted list block.
     """
-    title = blocks.CharBlock(required=True, max_length=100, help_text="Title of the promoted page")
+
+    title = blocks.CharBlock(
+        required=True, max_length=100, help_text="Title of the promoted page"
+    )
     description = blocks.RichTextBlock(
         required=False,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page"
+        help_text="A description of the promoted page",
     )
     url = blocks.URLBlock(required=True)
 
     class Meta:
-        icon = 'fa-external-link'
+        icon = "fa-external-link"
 
 
 class PromotedListBlock(blocks.StructBlock):
     """
     Streamfield for collating a series of links for research or interesting pages.
     """
+
     heading = blocks.CharBlock(required=True, max_length=100)
     category = SnippetChooserBlock("categories.Category")
-    summary = blocks.RichTextBlock(required=False, features=settings.INLINE_RICH_TEXT_FEATURES)
+    summary = blocks.RichTextBlock(
+        required=False, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
@@ -83,12 +93,46 @@ class PromotedListBlock(blocks.StructBlock):
         template = "insights/blocks/promoted_list_block.html"
 
 
+class RelatedItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
+    description = blocks.TextBlock(
+        help_text="A description of the promoted page",
+    )
+    teaser_image = ImageChooserBlock(
+        help_text="An image used to create a teaser for the promoted page"
+    )
+    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
+
+    class Meta:
+        help_text = "Block used promote an external page"
+        icon = "fa-external-link"
+        template = "insights/blocks/related_item.html"
+
+
+class RelatedItemsBlock(blocks.StructBlock):
+    """
+    Items for promoted list block.
+    """
+
+    heading = blocks.CharBlock(required=True, max_length=100)
+    description = blocks.CharBlock(required=True, max_length=100)
+    related_items = blocks.ListBlock(RelatedItemBlock)
+
+    class Meta:
+        icon = "fa-chain"
+        template = "insights/blocks/related_items.html"
+        block_counts = {
+            "related_items": {"min_num": 1, "max_num": 1},
+        }
+
+
 class InsightsPageStreamBlock(blocks.StreamBlock):
     author = AuthorBlock()
+    featured_record = FeaturedRecordBlock()
+    featured_records = FeaturedRecordsBlock()
     paragraph_with_heading = ParagraphWithHeading()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     quote = QuoteBlock()
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
+    related_items = RelatedItemsBlock()
     section = SectionBlock()
