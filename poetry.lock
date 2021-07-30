@@ -160,6 +160,14 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
+name = "ddt"
+version = "1.4.2"
+description = "Data-Driven/Decorated Tests"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "decorator"
 version = "5.0.7"
 description = "Decorators for Humans"
@@ -893,7 +901,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0f0ac474724f863fcd4e3f250e7e5888d00f6f386ff8a74b92d1a90f873b056c"
+content-hash = "d2d462aa4239879627a880f9996c00515cc79ec8f0c1fb7ecef6ad1ec08e95c0"
 
 [metadata.files]
 anyascii = [
@@ -1058,6 +1066,10 @@ cryptography = [
 cssselect = [
     {file = "cssselect-1.1.0-py2.py3-none-any.whl", hash = "sha256:f612ee47b749c877ebae5bb77035d8f4202c6ad0f0fc1271b3c18ad6c4468ecf"},
     {file = "cssselect-1.1.0.tar.gz", hash = "sha256:f95f8dedd925fd8f54edb3d2dfb44c190d9d18512377d3c1e2388d16126879bc"},
+]
+ddt = [
+    {file = "ddt-1.4.2-py2.py3-none-any.whl", hash = "sha256:39a8bfe0a8a75ebd209a5abd0da7895532548c9f6d7bd97714d2d5d2bfa6d844"},
+    {file = "ddt-1.4.2.tar.gz", hash = "sha256:64a67366a2715e636b88694cc6075cc02db292f01098b8e385397c894d395378"},
 ]
 decorator = [
     {file = "decorator-5.0.7-py3-none-any.whl", hash = "sha256:945d84890bb20cc4a2f4a31fc4311c0c473af65ea318617f13a7257c9a58bc98"},
