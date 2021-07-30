@@ -34,9 +34,11 @@
             {% image value.teaser_image min-690x260 alt=value.teaser_alt_text class="blog-embed__image" %}
         </div>
 
-        <p class="blog-embed__text">
-            {{ value.description|richtext }}
-        </p>
+        <div class="blog-embed__text">
+            <p>
+                {{ value.description|richtext }}
+            </p>
+        </div>
 
         <a class="tna-button--dark" href="{{ value.url }}">{{ value.cta_label }}</a>
     </div>
