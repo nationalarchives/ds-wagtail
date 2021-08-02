@@ -14,7 +14,9 @@
                     <p class="author-occupation">{{ value.author.role }}</p>
                 {% endif %}
                 {% if value.author.summary %}
-                    <p class="author-info">{{ value.author.summary|richtext }}</p>
+                    <div class="author-info">
+                        {{ value.author.summary|richtext }}
+                    </div>
                 {% endif %}
                 <a class="button-inverted" href="{{ value.author.bio_link }}" target="_blank" rel="noopener noreferrer">{{ value.author.bio_link_label }}</a>
             </div>
