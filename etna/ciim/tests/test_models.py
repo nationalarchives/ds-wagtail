@@ -442,6 +442,18 @@ class ModelTranslationTest(TestCase):
             },
         )
 
+    def test_hierarchy(self):
+        self.assertEqual(
+            self.record_page.hierarchy,
+            [
+                {
+                    "reference_number": "FCO 13",
+                    "title": "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:...",
+                }
+            ],
+        )
+
+
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
 )

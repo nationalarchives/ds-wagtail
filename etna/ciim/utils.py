@@ -53,6 +53,15 @@ def translate_result(result):
             "title": parent["@summary"]["title"],
         }
 
+    if hierarchy := source.get("hierarchy"):
+        data['hierarchy'] = [
+            {
+                "reference_number": i["identifier"][0]["reference_number"],
+                "title": i["@summary"]["title"],
+            }
+            for i in hierarchy[0][:-1]
+        ]
+
     return data
 
 

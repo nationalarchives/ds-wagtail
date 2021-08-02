@@ -8,28 +8,14 @@
         </summary>
 
         <ul class="hierarchy-global__list">
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">C</span><a href="/journey/record/C">Records created, acquired, and inherited by Chancery, and also of the Wardrobe, Royal Household, Exchequer and various commissions</a>
-            </li>
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">Division within C</span><a href="/journey/record/C/~15">Records of Equity Side: the Six Clerks</a>
-            </li>
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">C 5</span><a href="/journey/record/C/5">Court of Chancery: Six Clerks Office: Pleadings before 1714, Bridges</a>
-            </li>
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">C 5</span><a href="/journey/record/C/5">Court of Chancery: Six Clerks Office: Pleadings before 1714, Bridges</a>
-            </li>
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">C 5</span><a href="/journey/record/C/5">Court of Chancery: Six Clerks Office: Pleadings before 1714, Bridges</a>
-            </li>
-            <li class="hierarchy-global__list-item">
-                <span class="hierarchy-global__reference">C 5</span><a href="/journey/record/C/5">Court of Chancery: Six Clerks Office: Pleadings before 1714, Bridges</a>
-            </li>
-            <li class="hierarchy-global__list-item hierarchy-global__list-item--current-item">
-                <span class="hierarchy-global__location">You are here:</span>
-                <span class="hierarchy-global__reference hierarchy-global__reference--white">C 5/139/35</span> Short title: Frisby v Frisby. Plaintiffs: John Frisby, William Frisby, and
-            </li>
+            {% for item in page.hierarchy %}
+                <li class="hierarchy-global__list-item">
+                    <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
+                    <a href="{% url 'details-page-human-readable' item.reference_number %}">
+                        {{ item.title }}
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </details>
 </nav>

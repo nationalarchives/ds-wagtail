@@ -29,6 +29,7 @@ class RecordPage(Page):
     held_by = models.TextField(blank=True)
     is_digitised = models.BooleanField(default=False)
     parent = models.JSONField(null=True)
+    hierarchy = models.JSONField(null=True)
 
     search = SearchManager("records.RecordPage")
 
