@@ -54,11 +54,13 @@ def translate_result(result):
         }
 
     if hierarchy := source.get("hierarchy"):
-        data['hierarchy'] = [
+        data["hierarchy"] = [
             {
                 "reference_number": i["identifier"][0]["reference_number"],
                 "title": i["@summary"]["title"],
             }
+            # The last record in the hierarchy is the current record.
+            # Exclude from parsed data
             for i in hierarchy[0][:-1]
         ]
 
