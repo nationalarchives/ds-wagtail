@@ -12,7 +12,7 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         root = Site.objects.get().root_page
 
         self.insights_page = InsightsPage(
-            title="Insights page", introduction="Introduction"
+            title="Insights page", sub_heading="Introduction"
         )
         self.insights_page.body = json.dumps(
             [

@@ -38,13 +38,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         self.insights_index_page = InsightsIndexPage(
             title="Insights Index Page",
-            introduction="Introduction",
+            sub_heading="Introduction",
         )
         root.add_child(instance=self.insights_index_page)
 
         self.insights_page = InsightsPage(
             title="Insights page",
-            introduction="Introduction",
+            sub_heading="Introduction",
         )
         self.insights_index_page.add_child(instance=self.insights_page)
 
@@ -54,7 +54,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             {
                 "title": "Insights page changed",
                 "slug": "insights-page",
-                "introduction": "Introduction",
+                "sub_heading": "Introduction",
                 "body": streamfield(
                     [
                         ("featured_record", {"record": "C123456"}),
@@ -106,7 +106,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             {
                 "title": "Insights page changed",
                 "slug": "insights-page",
-                "introduction": "Introduction",
+                "sub_heading": "Introduction",
                 "body": streamfield([]),
                 "action-publish": "Publish",
             }
@@ -198,13 +198,13 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
 
         self.insights_index_page = InsightsIndexPage(
             title="Insights Index Page",
-            introduction="Introduction",
+            sub_heading="Introduction",
         )
         root.add_child(instance=self.insights_index_page)
 
         self.insights_page = InsightsPage(
             title="Insights page",
-            introduction="Introduction",
+            sub_heading="Introduction",
         )
         self.insights_index_page.add_child(instance=self.insights_page)
 
@@ -214,7 +214,7 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
             {
                 "title": "Insights page changed",
                 "slug": "insights-page",
-                "introduction": "Introduction",
+                "sub_heading": "Introduction",
                 "body": streamfield(
                     [
                         (
@@ -282,7 +282,7 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
             {
                 "title": "Insights page changed",
                 "slug": "insights-page",
-                "introduction": "Introduction",
+                "sub_heading": "Introduction",
                 "body": streamfield([]),
                 "action-publish": "Publish",
             }
