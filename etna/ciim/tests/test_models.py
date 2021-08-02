@@ -441,3 +441,33 @@ class ModelTranslationTest(TestCase):
                 "title": "Records created or inherited by the Law Officers' Department",
             },
         )
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+)
+class ModelTranslationDateTest(TestCase):
+    """In addition to the perfect-world ModelTranslationTest, this is a
+    test case containing the exceptions we've found while parsing date fields
+    """
+
+    @responses.activate
+    def setUp(self):
+        # Simulate the response from featured record: C1383820
+        record = create_record(iaid="C1383820")
+        record["_source"]["@origination"]["date"] = {"value": "undated"}
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(records=[record]),
+        )
+
+        manager = SearchManager("records.RecordPage")
+
+        self.record_page = manager.get(iaid="C1383820")
+
+    def test_no_date_start(self):
+        self.assertEquals(self.record_page.date_start, None)
+
+    def test_no_date_end(self):
+        self.assertEquals(self.record_page.date_end, None)

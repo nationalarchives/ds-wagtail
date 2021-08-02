@@ -6,6 +6,8 @@ def create_record(
     reference_number="ADM 223/3",
     title="Title",
     description="description",
+    earliest="1900",
+    latest="2100",
 ):
     """Return a sample response for a record.
 
@@ -21,12 +23,12 @@ def create_record(
                 {"iaid": iaid},
                 {"reference_number": reference_number},
             ],
-            "origination": {
+            "@origination": {
                 "creator": [{"name": [{"value": "test"}]}],
                 "date": {
-                    "earliest": "1900",
-                    "latest": "2100",
-                    "value": "1900-2100",
+                    "earliest": {"from": earliest},
+                    "latest": {"to": latest},
+                    "value": "{earliest}-{latest}",
                 },
             },
             "@summary": {
