@@ -1,4 +1,12 @@
 .hero-image {
   width: 100%;
   height: auto;
+
+  @media only screen and (max-width: $screen__sm){
+    height: 21.875rem;
+  }
+
+  @media only screen and (min-width: $screen__sm){
+    height: 25rem;
+  }
 }
