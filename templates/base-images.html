@@ -26,10 +26,15 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap"
           rel="stylesheet">
+
+    {% include 'includes/gtm-script.html' %}
+
     <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
+
+{% include 'includes/gtm-no-script.html' %}
 
 <main id="maincontent">
     {% block content %}{% endblock %}

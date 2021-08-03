@@ -1,11 +1,13 @@
-<h2>Collection highlights</h2>
-<p>{{ page.introduction }}</p>
+<div data-container-name="collection-highlights" id="analytics-collection-highlights">
+    <h2>Collection highlights</h2>
+    <p>{{ page.introduction }}</p>
 
-<div class="row">
-    <ul class="card-group--list-style-none">
-        {% for child in page.results_pages %}
-            {% include 'includes/card-group-secondary-nav.html' with page=child %}
-        {% endfor %}
-    </ul>
+    <div class="row">
+        <ul class="card-group--list-style-none">
+            {% for child in page.results_pages %}
+                {% include 'includes/card-group-secondary-nav.html' with page=child %}
+            {% endfor %}
+        </ul>
+    </div>
 </div>
 

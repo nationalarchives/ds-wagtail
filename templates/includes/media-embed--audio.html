@@ -1,4 +1,6 @@
-<div class="media-embed" style="background: url(/static/images/media-embed-bg.png)">
+{% load static %}
+
+<div class="media-embed" style="background: url({% static 'images/media-embed-bg.png' %})" data-container-name="media-embed-audio">
     <div class="media-embed__overlay"></div>
     <div class="container">
         <div class="media-embed__content-panel">

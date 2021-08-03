@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-    <div class="image-browse">
+    <div class="image-browse" data-container-name="image-browse">
         <div class="image-browse__header">
             <div class="image-browse__reference_and_count">
                 <h1><strong>CAB 24/95/8</strong>
@@ -166,4 +166,8 @@
             </li>
         </ul>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/image_browse.js' %}"></script>
 {% endblock %}

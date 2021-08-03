@@ -2,7 +2,7 @@
 
 <h2>{{ value.heading }}</h2>
 <p>{{ value.sub_heading }}</p>
-<div class="row">
+<div class="row" data-container-name="promoted-pages" id="analytics-promoted-pages">
     <ul class="card-group--list-style-none">
         {% for promoted_item in value.promoted_items %}
 
@@ -23,7 +23,7 @@
 
             <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
                 <div class="card-group-secondary-nav">
-                    <a href="{{ promoted_item.promoted_item.url }}" class="card-group-secondary-nav__link">
+                    <a href="{{ promoted_item.promoted_item.url }}" class="card-group-secondary-nav__link" data-card-type="card-group-secondary-nav__link" data-card-title="{{ promoted_item.title }}">
                         <div class="card-group-secondary-nav__body">
                             <h3 class="card-group-secondary-nav__heading">{{ promoted_item.title }}</h3>
                             <p class="card-group-secondary-nav__paragraph">{{ promoted_item.description }}</p>

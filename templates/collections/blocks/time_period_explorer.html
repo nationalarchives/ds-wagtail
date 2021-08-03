@@ -6,7 +6,7 @@
 {% image value.page.specific.teaser_image fill-626x383 as teaser_image_extra_large %}
 
 <li class="card-group-promo--green">
-    <div class="card-group-promo__card">
+    <div class="card-group-promo__card" data-card-type="card-group-promo__card" data-card-title="{{ value.heading }}">
         <div class="row">
             <div class="col-md-12 col-lg-7 col-xl-6">
                 <picture>
@@ -19,15 +19,15 @@
                 </picture>
             </div>
             <div class="col-md-12 col-lg-5 col-xl-6">
-                <h3 class="card-group-promo__card-heading"><a href="{{ value.page.url }}">{{ value.heading }}</a></h3>
+                <h3 class="card-group-promo__card-heading"><a href="{{ value.page.url }}" data-link="{{ value.heading }}">{{ value.heading }}</a></h3>
                 <p class="card-group-promo__card-paragraph">{{ value.sub_heading }}</p>
                 <ul class="card-group-promo__card-list">
                     {% for child in value.page.specific.featured_pages %}
-                        <li class="card-group-promo__card-list-item"><a href="{{ child.url }}">{{ child.title }}</a></li>
+                        <li class="card-group-promo__card-list-item"><a href="{{ child.url }}" data-link="{{ child.title }}">{{ child.title }}</a></li>
                     {% endfor %}
                 </ul>
 
-                <a href="{{ page.time_period_index_page.url }}">View all topics</a>
+                <a href="{{ page.time_period_index_page.url }}" data-link="View all topics">View all topics</a>
                 <p></p>
             </div>
         </div>
