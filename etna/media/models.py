@@ -5,7 +5,6 @@ from wagtail.core.fields import RichTextField
 from wagtailmedia.models import AbstractMedia
 
 
-
 class EtnaMedia(AbstractMedia):
     """
     Extend wagtailmedia model.

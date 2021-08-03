@@ -1,0 +1,47 @@
+{% load wagtailcore_tags wagtailimages_tags static %}
+
+<div class="media-embed" style="background: url(/static/images/media-embed-bg.png)">
+    <div class="media-embed__overlay"></div>
+    <div class="container">
+        <div class="media-embed__content-panel">
+            <div class="media-embed__icon" style="background-image: url('/static/images/fontawesome-svgs/headphones-white.svg');"></div>
+            <p class="media-embed__icon-label" role="presentation" aria-hidden="true">
+                Listen
+            </p>
+
+            <h3 class="media-embed__heading">
+                <span class="sr-only">Listen.</span>
+                {{ value.title }}
+            </h3>
+
+            {% if value.date %}
+            <p class="media-embed__date">
+                <time datetime="{{ value.date|date:'Y-m-d' }}">{{ value.date|date:'l j F Y' }}</time>
+            </p>
+            {% endif %}
+
+            {% if value.description %}
+            <div class="media-embed__description">
+                {{ value.description|richtext }}
+            </div>
+            {% endif %}
+
+            <div class="media-embed__audio-container">
+                <audio controls="">
+                    <source src="{{ src }}" type="{{ type }}">
+                    <p>Your browser doesn't support HTML5 audio. Here is a <a href="{{ src }}">link to the audio</a>
+                        instead.</p>
+                </audio>
+            </div>
+
+            {% if value.transcript %}
+            <div class="media-embed__transcript">
+                <h4 class="media-embed__transcript-heading">Transcript</h4>
+                <div class="media-embed__transcript-text">
+                    {{ value.transcript|richtext }}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

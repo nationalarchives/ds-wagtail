@@ -1,5 +1,6 @@
 from django.forms.utils import flatatt
 from django.utils.html import format_html, format_html_join
+from django.template.loader import render_to_string
 
 from wagtail.core import blocks
 from wagtailmedia.blocks import ChooserBlock, AbstractMediaChooserBlock
@@ -10,7 +11,7 @@ class MediaBlock(blocks.StructBlock):
     media = ChooserBlock()
 
     class Meta:
-        icon = 'fa-media'
+        icon = 'fa-play'
         label = 'Media'
         template = 'media/blocks/media-block.html'
 
@@ -18,30 +19,28 @@ class MediaBlock(blocks.StructBlock):
 class EtnaMediaBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
         if not value:
-            return ''
+            return ""
 
-        if value.type == 'video':
-            player_code = '''
-            <div>
-                <video width="320" height="240" controls>
-                    {0}
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-            '''
+        context = {
+            "value": value,
+            "src": value.sources[0]["src"],
+            "type": value.sources[0]["type"],
+        }
+
+        # Check for empty rich text fields.
+        if value.description == "<p></p>":
+            value.description = None
+
+        if value.transcript == "<p></p>":
+            value.transcript = None
+
+        # Render using the appropriate template.
+        if value.type == "audio":
+            return render_to_string("media/blocks/media-block--audio.html", context)
+        elif value.type == "video":
+            return render_to_string("media/blocks/media-block--video.html", context)
         else:
-            player_code = '''
-            <div>
-                <audio controls>
-                    {0}
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-            '''
+            return ""
 
-        return format_html(player_code, format_html_join(
-            '\n', "<source{0}>",
-            [[flatatt(s)] for s in value.sources]
-        ))
-
-
+    class Meta:
+        icon = "fa-play"
