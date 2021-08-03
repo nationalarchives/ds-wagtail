@@ -5,7 +5,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from ..authors.blocks import AuthorBlock
-from ..media.blocks import MediaBlock, EtnaMediaBlock
+from ..media.blocks import EtnaMediaBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock

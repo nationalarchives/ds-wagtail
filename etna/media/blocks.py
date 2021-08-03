@@ -6,16 +6,6 @@ from wagtail.core import blocks
 from wagtailmedia.blocks import ChooserBlock, AbstractMediaChooserBlock
 
 
-class MediaBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(required=True, max_length=100)
-    media = ChooserBlock()
-
-    class Meta:
-        icon = 'fa-play'
-        label = 'Media'
-        template = 'media/blocks/media-block.html'
-
-
 class EtnaMediaBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
         if not value:
