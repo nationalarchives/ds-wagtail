@@ -6,7 +6,7 @@
     {% include 'includes/generic-intro.html' %}
 
     <div class="container mt-4">
-        <div class="row">
+        <div class="row" data-container-name="select-a-time-period" id="analytics-select-a-time-period">
             <h2 class="sr-only">Select a time period</h2>
             <ul class="card-group--list-style-none">
                 {% for child in page.time_period_explorer_pages %}
@@ -15,7 +15,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-md-12" id="content">
+            <div class="col-md-12" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
                 <h2>More ways to explore</h2>
                 <ul class="card-group--no-flex">
                     {% for block in page.body %}
@@ -25,4 +25,8 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/explorer.js' %}"></script>
 {% endblock %}

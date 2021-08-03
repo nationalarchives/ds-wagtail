@@ -3,16 +3,16 @@
 
 {% block content %}
 
-    <div class="image-viewer">
+    <div class="image-viewer" data-container-name="image-viewer">
         <div class="image-viewer__header">
             <div class="image-viewer__reference">
                 <h1><strong>CAB 23/78</strong> <span>- Image 1 of 39</span></h1>
             </div>
             <div class="image-viewer__toolbar" id="js-viewer-toolbar">
-                <button id="zoom-in" aria-controls="js-image-viewer">Zoom in</button>
-                <button id="zoom-out" aria-controls="js-image-viewer">Zoom out</button>
-                <button id="home" aria-controls="js-image-viewer">Reset</button>
-                <button id="full-page" aria-controls="js-image-viewer">Full screen</button>
+                <button id="zoom-in" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom in">Zoom in</button>
+                <button id="zoom-out" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom out">Zoom out</button>
+                <button id="home" aria-controls="js-image-viewer" data-image-viewer-controls="Reset">Reset</button>
+                <button id="full-page" aria-controls="js-image-viewer" data-image-viewer-controls="Full screen">Full screen</button>
             </div>
         </div>
         <div class="image-viewer__viewer" id="js-image-viewer"></div>

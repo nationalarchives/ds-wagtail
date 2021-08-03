@@ -5,15 +5,15 @@
             {{ value.introduction }}
         </p>
 
-        <dl class="box-out__list">
+        <dl class="box-out__list" data-container-name="featured-records" id="analytics-featured-records">
             {% for record in value.records %}
                 <div class="box-out__list-item">
                     <dt>
                         <h4 class="box-out__link-heading">
                             {% if record.reference_number %}
-                                <a class="box-out__link" href="{% url 'details-page-human-readable' record.reference_number %}">{{ record.title }}</a>
+                                <a class="box-out__link" href="{% url 'details-page-human-readable' record.reference_number %}" data-link="{{ record.title }}">{{ record.title }}</a>
                             {% elif record.iaid %}
-                                <a class="box-outt__link" href="{% url 'details-page-machine-readable' record.iaid %}">{{ record.title }}</a>
+                                <a class="box-out__link" href="{% url 'details-page-machine-readable' record.iaid %}" data-link="{{ record.title }}">{{ record.title }}</a>
                             {% endif %}
                         </h4>
                     </dt>

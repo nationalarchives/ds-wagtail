@@ -1,6 +1,6 @@
 {% load records_tags %}
 
-<nav class="hierarchy-global">
+<nav class="hierarchy-global" data-container-name="hierarchy-global" id="analytics-hierarchy-global">
 
     <details id="js-hierarchy-global" open>
         <summary>
@@ -18,7 +18,7 @@
                         <span class="hierarchy-global__reference hierarchy-global__reference--white">{{ item.reference_number }}</span> {{ item.title }}
                     </li>
                 {% else %}
-                    <li class="hierarchy-global__list-item">
+                    <li class="hierarchy-global__list-item" data-link="{{ forloop.counter0 }}: {{ item.reference_number }}">
                         <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
                         <a href="{% url 'details-page-human-readable' item.reference_number %}">
                             {{ item.title }}
