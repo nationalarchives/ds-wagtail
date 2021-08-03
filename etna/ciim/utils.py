@@ -25,9 +25,10 @@ def translate_result(result):
         data["created_by"] = pluck(
             origination, accessor=lambda i: i["creator"][0]["name"][0]["value"]
         )
-        data["date_start"] = origination["date"]["earliest"]["from"]
-        data["date_end"] = origination["date"]["latest"]["to"]
-        data["date_range"] = origination["date"]["value"]
+        if origination["date"]["value"] != "undated":
+            data["date_start"] = origination["date"]["earliest"]["from"]
+            data["date_end"] = origination["date"]["latest"]["to"]
+            data["date_range"] = origination["date"]["value"]
 
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
@@ -38,8 +39,8 @@ def translate_result(result):
     if legal := source.get("legal"):
         data["legal_status"] = legal["status"]
 
-    if repository := source.get('repository'):
-        data['held_by'] = repository['name']['value']
+    if repository := source.get("repository"):
+        data["held_by"] = repository["name"]["value"]
 
     data["is_digitised"] = source.get("digitised", False)
 
@@ -51,6 +52,15 @@ def translate_result(result):
             "iaid": parent["@admin"]["id"],
             "title": parent["@summary"]["title"],
         }
+
+    if hierarchy := source.get("hierarchy"):
+        data["hierarchy"] = [
+            {
+                "reference_number": i["identifier"][0]["reference_number"],
+                "title": i["@summary"]["title"],
+            }
+            for i in hierarchy[0]
+        ]
 
     return data
 
