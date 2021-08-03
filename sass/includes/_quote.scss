@@ -16,16 +16,16 @@
       content: "";
       display: block;
       margin: 0 0 3rem 3rem;
-      border-top: 0.3125rem solid $color__black;
-      width: 40%;
+      border-top: 0.2rem solid $color__black;
+      width: 10%;
     }
 
     &::after {
       content: "";
       display: block;
-      margin-left: 60%;
-      border-bottom: 0.3125rem solid $color__black;
-      width: 40%;
+      margin-left: 90%;
+      border-bottom: 0.2rem solid $color__black;
+      width: 10%;
     }
   }
 

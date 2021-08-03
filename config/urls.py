@@ -34,11 +34,21 @@ urlpatterns = [
         records_views.record_page_disambiguation_view,
         name="details-page-human-readable-with-pseudo-reference",
     ),
-    path("details-page-front-end/", TemplateView.as_view(template_name="records/details-page-front-end.html")),
 
-    path('image-viewer/', TemplateView.as_view(template_name='records/image-viewer.html')),
+    path(
+        "details-page-front-end/",
+        TemplateView.as_view(template_name="records/details-page-front-end.html")
+    ),
 
-    path('image-browse/', TemplateView.as_view(template_name='records/image-browse.html')),
+    path(
+        'image-viewer/',
+        TemplateView.as_view(template_name='records/image-viewer.html')
+    ),
+
+    path(
+        'image-browse/',
+        TemplateView.as_view(template_name='records/image-browse.html')
+    ),
 
 ]
 # fmt: on
@@ -53,6 +63,8 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns = urlpatterns + [
+    path('accounts/', include('allauth.urls')),
+
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's page serving mechanism. This should be the last pattern in
     # the list:

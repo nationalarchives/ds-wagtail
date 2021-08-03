@@ -1,13 +1,20 @@
 .research-resources {
   text-align: center;
-  margin: 2rem 0;
+  margin: 0 0 2rem 0;
   padding: 2rem 0;
+  border-top: 0.5rem solid $color__grey-7;
 
   &__icon {
     background-color: $color__blue_3;
     border-radius: 50%;
     margin-bottom: 1rem;
     padding: 1rem;
+    width: 5rem;
+    height: 5rem;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 3rem;
   }
 
   &__icon-label {
@@ -20,6 +27,10 @@
   &__heading {
     font-size: 2rem;
     font-weight: 400;
+  }
+
+  &__description {
+    font-size: 1.2rem;
   }
 
   &__list {
@@ -53,6 +64,10 @@
   &__link-heading {
     margin-top: 0;
     font-size: 1.625rem;
+  }
+
+  &__link-text {
+    font-size: 1.2rem;
   }
 
   &__link, &__link-text {

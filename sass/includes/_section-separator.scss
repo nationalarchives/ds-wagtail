@@ -1,13 +1,12 @@
 .section-separator {
-  width: 100vw;
-  position: relative;
-  left: calc(-50vw + 50%);
+  text-align: center;
 
   &__heading {
     font-size: 2.5rem;
+    font-weight: 500;
     color: $color__dark;
-    text-align: center;
-    margin-top: 0;
-    padding: 3rem 0;
+    margin: 3rem auto 2rem;
+    display: inline-block;
+    padding: 1rem 2rem 0.75rem 2rem;
   }
 }

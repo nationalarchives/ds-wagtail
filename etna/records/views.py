@@ -21,22 +21,29 @@ def record_page_disambiguation_view(request, reference_number):
 
     https://discovery.nationalarchives.gov.uk/browse/r/h/C4122893
     """
-    pages = RecordPage.search.filter(reference_number=reference_number)
+    pages = RecordPage.search.filter(ref=reference_number, pretty=True)
+
     if len(pages) == 0:
         raise Http404
 
-    if len(pages) > 1:
-        return render(
-            request, "records/record_disambiguation_page.html", {"pages": pages}
-        )
+    # if the results contain a single record page, render the details page.
+    if len(pages) == 1:
+        page = pages[0]
 
-    page = pages[0]
+        return render(
+            request,
+            page.get_template(request),
+            {
+                "page": page,
+            },
+        )
 
     return render(
         request,
-        page.get_template(request),
+        "records/record_disambiguation_page.html",
         {
-            "page": page,
+            "pages": pages,
+            "queried_reference_number": reference_number,
         },
     )
 
@@ -75,7 +82,9 @@ class KongModelChooserMixinIn(ModelChooserMixin):
         object_list = self.get_unfiltered_object_list()
 
         if search_term:
-            object_list = self.model.search.filter(term=search_term)
+            object_list = self.model.search.filter(
+                term=search_term, stream="evidential"
+            )
 
         return object_list
 

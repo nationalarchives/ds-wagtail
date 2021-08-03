@@ -24,6 +24,9 @@ templates/static/css/libraries/*
 !templates/static/css/libraries
 !templates/static/css/libraries/.gitkeep
 
+# Allow images within static
+!templates/static/images
+
 # Ignore the contents of /static but keep the directory
 /static/*
 !/static/.gitkeep

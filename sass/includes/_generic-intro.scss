@@ -1,0 +1,30 @@
+.generic-intro {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: $color__grey-2;
+  color: $color__white;
+
+  a {
+    color: $color__white;
+  }
+
+  &__title {
+    margin-top: 0;
+    margin-bottom: 0;
+    font-size: 4rem;
+    @media (max-width: $screen__md) {
+      font-size: 2.5rem;
+    }
+
+    &-prefix {
+      display: block;
+      @media (max-width: $screen__md) {
+        font-size: 1.25rem;
+        line-height: 1.3rem;
+      }
+      font-size: 2rem;
+      line-height: 0.3rem;
+      margin-top: 1rem;
+    }
+  }
+}

@@ -1,7 +1,4 @@
 .record-embed {
-  width: 100vw;
-  position: relative;
-  left: calc(-50vw + 50%);
 
   &__image-container {
     background-color: $color__black;
@@ -41,7 +38,7 @@
    text-align: center;
    font-weight: bold;
    vertical-align: top;
-   font-size: 1.1rem;
+   font-size: 1.2rem;
    transition: none;
  }
 
@@ -51,7 +48,7 @@
 }
 
 .record-embed__text, .record-embed__text--roboto-mono {
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 }
 
 .record-embed__text, a.record-embed__text:visited, .record-embed__heading {

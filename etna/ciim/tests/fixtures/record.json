@@ -86,6 +86,46 @@
             }
           ],
           "digitised" : true,
+          "hierarchy" : [
+            [
+              {
+                "@entity" : "reference",
+                "@admin" : {
+                  "id" : "C7252",
+                  "uuid" : "aca31602-787d-3943-aed3-5f604073d8f7"
+                },
+                "identifier" : [
+                  {
+                    "primary" : true,
+                    "reference_number" : "FCO 13",
+                    "type" : "reference number",
+                    "value" : "FCO 13"
+                  }
+                ],
+                "@summary" : {
+                  "title" : "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:..."
+                }
+              },
+              {
+                "@entity" : "reference",
+                "@admin" : {
+                  "id" : "C11285946",
+                  "uuid" : "04ea879e-49ce-3a8e-a66b-c84c5f55f3e5"
+                },
+                "identifier" : [
+                  {
+                    "primary" : true,
+                    "reference_number" : "FCO 13/775",
+                    "type" : "reference number",
+                    "value" : "FCO 13/775"
+                  }
+                ],
+                "@summary" : {
+                  "title" : "Centrepiece for celebrations of bicentenary of USA in 1976: loan of Magna Carta from..."
+                }
+              }
+            ]
+          ],
           "identifier" : [
             {
               "primary" : true,
@@ -166,6 +206,32 @@
               }
             }
           ],
+          "repository" : {
+            "@entity" : "reference",
+            "@admin" : {
+              "available" : true,
+              "id" : "A13530124",
+              "uuid" : "30db474e-7e2f-3e59-bd7b-52801554859e"
+            },
+            "identifier" : [
+              {
+                "primary" : true,
+                "reference_number" : "66",
+                "type" : "reference number",
+                "value" : "66"
+              },
+              {
+                "type" : "Archon number",
+                "value" : "66"
+              }
+            ],
+            "name" : {
+              "value" : "The National Archives, Kew"
+            },
+            "@summary" : {
+              "title" : "The National Archives"
+            }
+          },
           "sort" : "03 0 LO 02 0",
           "source" : {
             "value" : "CAT"

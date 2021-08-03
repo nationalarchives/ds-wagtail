@@ -1,9 +1,7 @@
 .media-embed {
   background-size: cover;
   min-height: 37.5rem;
-  width: 100vw;
   position: relative;
-  left: calc(-50vw + 50%);
 
   &__overlay {
     background-color: $color__black;
@@ -14,7 +12,7 @@
   }
 
   &__content-panel {
-    padding: 3rem 3rem 0 3rem;
+    padding: 3rem 0;
     position: relative;
     text-align: center;
     z-index: 999;
@@ -25,6 +23,12 @@
     border-radius: 50%;
     margin-bottom: 1rem;
     padding: 1rem;
+    width: 5rem;
+    height: 5rem;
+    margin: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 3rem;
   }
 
   &__icon-label {
@@ -45,7 +49,8 @@
   }
 
   &__description {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    text-align: left;
   }
 
   &__audio-container {
@@ -58,7 +63,8 @@
   }
 
   &__transcript {
-    background-color: $color__grey-2;
+    background-color: $color__dark;
+    font-size: 1.2rem;
     margin-top: 2rem;
     padding: 2rem;
   }

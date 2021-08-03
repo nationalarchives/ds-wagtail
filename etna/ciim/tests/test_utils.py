@@ -3,7 +3,6 @@ from django.test import SimpleTestCase
 from ..utils import format_description_markup, pluck, find
 
 
-# http://adb64ece119d042fcaaa54b1ddcdd687-df4cb78551b008e8.elb.eu-west-2.amazonaws.com/search?term=C11996678
 class TestResolveLinks(SimpleTestCase):
     def test_test(self):
         markup = (

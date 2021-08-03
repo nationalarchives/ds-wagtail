@@ -28,6 +28,8 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
 INSTALLED_APPS = [
     'etna.alerts',
+    'etna.authors',
+    'etna.categories',
     'etna.collections',
     'etna.ciim',
     'etna.heroes',
@@ -37,7 +39,9 @@ INSTALLED_APPS = [
     'etna.paragraphs',
     'etna.quotes',
     'etna.records',
+    'etna.sections',
     'etna.teasers',
+    'etna.users',
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
@@ -62,8 +66,14 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
+
+    'allauth',
+    'allauth.account',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -96,6 +106,27 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# django-allauth configuration
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGOUT_ON_GET = False       # Bypass logout confirmation form
+ACCOUNT_USERNAME_REQUIRED = False   # Register using email only
+ACCOUNT_SESSION_REMEMBER = False    # True|False disables "Remember me?" checkbox"
+LOGIN_URL = "/accounts/login"
+LOGIN_REDIRECT_URL = "/"
+WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
+# Custom adapter to prevent self-signup
+ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
+
 
 WSGI_APPLICATION = 'config.wsgi.application'
 

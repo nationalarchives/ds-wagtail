@@ -1,6 +1,6 @@
 .content-block {
-  margin: 2rem 0;
-  padding: 2rem 0;
+  margin: 1rem 0;
+  padding: 0.5rem 0;
 
   &__heading {
     font-size: 2rem;
@@ -8,19 +8,12 @@
   }
 
   &__text {
-    font-size: 1.3rem;
-
-    p {
-      margin-bottom: 0;
-    }
+    font-size: 1.2rem;
   }
 
   &--bordered {
     border-top: 0.3125rem solid $color__grey-4;
     border-bottom: 0.3125rem solid $color__grey-4;
     padding: 2rem 0;
-    width: 100vw;
-    position: relative;
-    left: calc(-50vw + 50%);
   }
 }

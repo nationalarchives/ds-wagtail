@@ -1,4 +1,14 @@
-def create_record(iaid="C0000000", reference_number="ADM 223/3", title="Title"):
+import json
+
+
+def create_record(
+    iaid="C0000000",
+    reference_number="ADM 223/3",
+    title="Title",
+    description="description",
+    earliest="1900",
+    latest="2100",
+):
     """Return a sample response for a record.
 
     Useful for tidying up tests where response needs to be mocked
@@ -13,31 +23,63 @@ def create_record(iaid="C0000000", reference_number="ADM 223/3", title="Title"):
                 {"iaid": iaid},
                 {"reference_number": reference_number},
             ],
-            "origination": {
+            "@origination": {
                 "creator": [{"name": [{"value": "test"}]}],
                 "date": {
-                    "earliest": "1900",
-                    "latest": "2100",
-                    "value": "1900-2100",
+                    "earliest": {"from": earliest},
+                    "latest": {"to": latest},
+                    "value": "{earliest}-{latest}",
                 },
             },
             "@summary": {
                 "title": title,
             },
-            "description": [{"value": "description"}],
+            "description": [{"value": description}],
             "legal": {"status": "Open"},
         }
     }
 
 
-def create_response(records=None):
-    """Create a sample Elasticsearch response for provided records.  """
+def create_response(records=None, total_count=None):
+    """Create a sample Elasticsearch response for provided records.
+
+    If testing pagination or batch fetches, the total count can be optionally
+    modified.
+    """
     if not records:
         records = []
 
+    if not total_count:
+        total_count = len(records)
+
     return {
         "hits": {
-            "total": {"value": len(records), "relation": "eq"},
+            "total": {"value": total_count, "relation": "eq"},
             "hits": [r for r in records],
         }
     }
+
+
+def paginate_records_callback(records, request):
+    """Responses callback to simulate paginating through results.
+
+    Page through records, responding with a all or a single record if
+    requested or nothing if requested record doesn't exist."""
+    start = int(request.params.get("from", 0))
+    size = request.params.get(
+        "size",
+    )
+    stop = start + int(size) if size else None
+
+    try:
+        response_records = records[start:stop]
+    except TypeError:
+        response_records = records[start:]
+    except IndexError:
+        response_records = []
+
+    return (
+        200,
+        {},
+        json.dumps(create_response(records=response_records, total_count=len(records))),
+    )
