@@ -1,3 +1,5 @@
+{% load records_tags %}
+
 <nav class="hierarchy-global">
 
     <details id="js-hierarchy-global" open>
@@ -9,12 +11,20 @@
 
         <ul class="hierarchy-global__list">
             {% for item in page.hierarchy %}
-                <li class="hierarchy-global__list-item">
-                    <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
-                    <a href="{% url 'details-page-human-readable' item.reference_number %}">
-                        {{ item.title }}
-                    </a>
-                </li>
+                {% is_page_current_item_in_hierarchy page item as is_current_item %}
+                {% if is_current_item %}
+                    <li class="hierarchy-global__list-item hierarchy-global__list-item--current-item">
+                        <span class="hierarchy-global__location">You are here:</span>
+                        <span class="hierarchy-global__reference hierarchy-global__reference--white">{{ item.reference_number }}</span> {{ item.title }}
+                    </li>
+                {% else %}
+                    <li class="hierarchy-global__list-item">
+                        <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
+                        <a href="{% url 'details-page-human-readable' item.reference_number %}">
+                            {{ item.title }}
+                        </a>
+                    </li>
+                {% endif %}
             {% endfor %}
         </ul>
     </details>

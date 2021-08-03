@@ -59,9 +59,7 @@ def translate_result(result):
                 "reference_number": i["identifier"][0]["reference_number"],
                 "title": i["@summary"]["title"],
             }
-            # The last record in the hierarchy is the current record.
-            # Exclude from parsed data
-            for i in hierarchy[0][:-1]
+            for i in hierarchy[0]
         ]
 
     return data
