@@ -15,7 +15,7 @@ class MediaBlock(blocks.StructBlock):
         template = 'media/blocks/media-block.html'
 
 
-class TestMediaBlock(AbstractMediaChooserBlock):
+class EtnaMediaBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
         if not value:
             return ''
