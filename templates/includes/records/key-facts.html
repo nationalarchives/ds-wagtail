@@ -1,4 +1,4 @@
-<div class="key-facts">
+<div class="key-facts" data-container-name="key-facts" id="analytics-key-facts">
     <ul class="key-facts__list">
         {% if page.date_start %}
             <li><span>Date created:</span><b>{{ page.date_start }}</b></li>
@@ -10,5 +10,5 @@
             <li><span>Record now held at:</span><b>{{ page.held_by }}</b></li>
         {% endif %}
     </ul>
-    <p class="key-facts__link"><a href="#">See the full description</a></p>
+    <p class="key-facts__link"><a href="#" data-link="See the full description">See the full description</a></p>
 </div>

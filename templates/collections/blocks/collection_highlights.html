@@ -2,7 +2,7 @@
 <p>{{ page.introduction }}</p>
 
 <div class="row">
-    <ul class="card-group--list-style-none">
+    <ul class="card-group--list-style-none" data-container-name="collection-highlights" id="analytics-collection-highlights">
         {% for child in page.results_pages %}
             {% include 'includes/card-group-secondary-nav.html' with page=child %}
         {% endfor %}

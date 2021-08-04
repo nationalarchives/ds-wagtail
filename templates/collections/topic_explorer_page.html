@@ -5,9 +5,9 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
-    <div class="container">
+    <div class="container" data-container-name="topic-explorer" id="analytics-topic-explorer">
         <div class="row">
-            <div class="col-md-12" id="content">
+            <div class="col-md-12">
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}
@@ -16,3 +16,8 @@
     </div>
 
 {% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/explorer.js' %}"></script>
+{% endblock %}
+

@@ -3,7 +3,7 @@
 <div class="container">
     <h3 class="related-content__heading">{{ value.heading }}</h3>
     <p>{{ value.description }}</p>
-    <ul class="card-group--list-style-none">
+    <ul class="card-group--list-style-none" data-container-name="related-items" id="analytics-related-items">
         {% for related_item in value.related_items %}
             {% include_block related_item %}
         {% endfor %}
