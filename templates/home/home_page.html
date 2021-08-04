@@ -2,6 +2,15 @@
 
 {% load static %}
 {% load wagtailcore_tags %}
+{% load datalayer_tags %}
+
+{% block extra_gtm_js %}
+{{ page | datalayer_data | json_script:"datalayer-data" }}
+
+<script>
+    dataLayer = [JSON.parse(document.getElementById('datalayer-data').textContent)];
+</script>
+{% endblock extra_gtm_js %}
 
 {% block body_class %}template-homepage{% endblock %}
 

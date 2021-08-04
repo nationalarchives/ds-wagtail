@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'etna.categories',
     'etna.collections',
     'etna.ciim',
+    'etna.datalayers',
     'etna.heroes',
     'etna.home',
     'etna.insights',

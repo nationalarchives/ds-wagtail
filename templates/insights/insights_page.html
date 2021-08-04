@@ -1,7 +1,15 @@
 {% extends 'base.html' %}
 
 {% load wagtailcore_tags %}
-{% load sections_tags %}
+{% load datalayer_tags sections_tags %}
+
+{% block extra_gtm_js %}
+{{ page | datalayer_data | json_script:"datalayer-data" }}
+
+<script>
+    dataLayer = [JSON.parse(document.getElementById('datalayer-data').textContent)];
+</script>
+{% endblock extra_gtm_js %}
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
