@@ -119,7 +119,7 @@ class KongClient:
         if self.test_mode:
             return mock_response_from_file(self.test_file_path, **kwargs)
 
-        # from isn'ca valid kwargs
+        # In Python 'from' cannot be a kwargs. Map 'start' to 'from' before making request
         kwargs["from"] = kwargs.pop("start", 0)
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 

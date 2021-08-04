@@ -42,6 +42,18 @@ urlpatterns = [
         name="image-serve",
     ),
 
+    path(
+        r"image-viewer/<iaid:iaid>/location/<path:location>",
+        records_views.image_viewer,
+        name="image-viewer",
+    ),
+
+    path(
+        r"image-browse/<iaid:iaid>/",
+        records_views.image_browse,
+        name="image-browse",
+    ),
+
 ]
 # fmt: on
 

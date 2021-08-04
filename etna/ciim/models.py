@@ -9,6 +9,7 @@ from .exceptions import (
     MultipleObjectsReturned,
     KongError,
     UnsupportedSlice,
+    InvalidQuery,
 )
 
 
@@ -19,8 +20,11 @@ class SearchManager:
         self.model = model
 
     def filter(self, **kwargs):
-        query = kwargs
-        return SearchQuery(self.model, query)
+        # Check we're making a meaningful query before contacting Kong
+        if any({k: v for k, v in kwargs.items() if v is None}):
+            raise InvalidQuery("Query to Kong must at least one clause")
+
+        return SearchQuery(self.model, kwargs)
 
     def get(self, iaid=None, reference_number=None):
         return FetchQuery(self.model).get(iaid=iaid, reference_number=reference_number)

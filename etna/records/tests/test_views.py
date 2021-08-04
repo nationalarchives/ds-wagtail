@@ -197,3 +197,143 @@ class TestImageServeView(TestCase):
         self.assertEquals(response["content-type"], "image/jpeg")
         self.assertEquals(response.status_code, 200)
         self.assertTrue(response.streaming)
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_TEST_MODE=False,
+)
+class TestImageBrowseView(TestCase):
+    @responses.activate
+    def test_image_browse_non_digitised_record(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=False),
+                ]
+            ),
+        )
+        response = self.client.get("/image-browse/C123456/")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_image_browse_record_with_no_media(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456", is_digitised=True, media_reference_id=None
+                    ),
+                ]
+            ),
+        )
+        response = self.client.get("/image-browse/C123456/")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_success(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/media",
+            body="",
+            stream=True,
+        )
+
+        response = self.client.get("/image-browse/C123456/")
+
+        self.assertEquals(response.status_code, 200)
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_TEST_MODE=False,
+)
+class TestImageViewerView(TestCase):
+    @responses.activate
+    def test_image_browse_non_digitised_record(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=False),
+                ]
+            ),
+        )
+        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_image_browse_record_with_no_media(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456", is_digitised=True, media_reference_id=None
+                    ),
+                ]
+            ),
+        )
+        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_success(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/previous-image.jpeg"),
+                    create_media(location="path/to/image.jpeg"),
+                    create_media(location="path/to/next-image.jpeg"),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/media",
+            body="",
+            stream=True,
+        )
+
+        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+
+        self.assertEquals(response.status_code, 200)
