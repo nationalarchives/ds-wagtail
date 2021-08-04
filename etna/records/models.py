@@ -30,6 +30,7 @@ class RecordPage(Page):
     is_digitised = models.BooleanField(default=False)
     parent = models.JSONField(null=True)
     hierarchy = models.JSONField(null=True)
+    media_reference_id = models.UUIDField(null=True)
 
     search = SearchManager("records.RecordPage")
 
