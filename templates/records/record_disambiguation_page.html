@@ -19,17 +19,15 @@
 
     <div class="container mt-4">
         <div class="row">
-            <div data-container-name="associated-records">
-                <h3 class="sr-only">Associated records</h3>
+            <h3 class="sr-only">Associated records</h3>
 
-                <ul class="card-group--list-style-none">
+            <ul class="card-group--list-style-none" data-container-name="associated-records" id="analytics-associated-records">
 
-                    {% for page in pages %}
-                        {% include 'includes/card-group-record-summary-no-image.html' with record_page=page %}
-                    {% endfor %}
+                {% for page in pages %}
+                    {% include 'includes/card-group-record-summary-no-image.html' with record_page=page %}
+                {% endfor %}
 
-                </ul>
-            </div>
+            </ul>
         </div>
     </div>
 
