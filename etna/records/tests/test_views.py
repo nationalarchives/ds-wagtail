@@ -3,7 +3,7 @@ from django.test import TestCase, override_settings, RequestFactory
 import responses
 
 from .. import views
-from ...ciim.tests.factories import create_record, create_response
+from ...ciim.tests.factories import create_record, create_media, create_response
 
 
 @override_settings(
@@ -101,3 +101,58 @@ class TestRecordPageView(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.resolver_match.func, views.record_page_view)
         self.assertTemplateUsed(response, "records/record_page.html")
+
+    @responses.activate
+    def test_record_page_renders_for_record_with_no_image(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+
+        response = self.client.get("/catalogue/C123456/")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.func, views.record_page_view)
+        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
+
+    @responses.activate
+    def test_record_page_renders_for_record_with_image(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(),
+                ]
+            ),
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/media",
+            body="",
+            stream=True,
+        )
+
+        response = self.client.get("/catalogue/C123456/")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.func, views.record_page_view)
+        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")

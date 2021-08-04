@@ -3,7 +3,7 @@ from django.shortcuts import render, Http404
 
 from generic_chooser.views import ModelChooserViewSet, ModelChooserMixin, BaseChosenView
 
-from .models import RecordPage
+from .models import Image, RecordPage
 from ..ciim.exceptions import DoesNotExist, KongException
 
 
@@ -60,11 +60,14 @@ def record_page_view(request, iaid):
     except DoesNotExist:
         raise Http404
 
+    image = Image.search.filter(rid=page.media_reference_id).first()
+
     return render(
         request,
         page.get_template(request),
         {
             "page": page,
+            "image": image,
         },
     )
 

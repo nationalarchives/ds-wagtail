@@ -183,6 +183,13 @@ class SearchQuery(Query):
     def __iter__(self):
         return SearchQueryIterator(self)
 
+    def first(self):
+        """Return the first item in resultset without or None if nothing is found."""
+        try:
+            return self[0]
+        except IndexError:
+            return None
+
 
 class FetchQuery(Query):
     """Support queries to Kong's /fetch method.
