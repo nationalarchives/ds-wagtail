@@ -11,6 +11,7 @@ from etna.records import converters
 from etna.records import views as records_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
+register_converter(converters.IAIDConverter, "iaid")
 
 # fmt: off
 urlpatterns = [
@@ -19,8 +20,8 @@ urlpatterns = [
 
     path("documents/", include(wagtaildocs_urls)),
 
-    re_path(
-        r"catalogue/(?P<iaid>[Cc]\d+)/",
+    path(
+        r"catalogue/<iaid:iaid>/",
         records_views.record_page_view,
         name="details-page-machine-readable",
     ),
