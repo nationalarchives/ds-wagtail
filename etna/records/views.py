@@ -61,7 +61,13 @@ def record_page_view(request, iaid):
     except DoesNotExist:
         raise Http404
 
-    image = Image.search.filter(rid=page.media_reference_id).first()
+    image = None
+
+    try:
+        if page.is_digitised:
+            image = Image.search.filter(rid=page.media_reference_id).first()
+    except InvalidQuery:
+        image = None
 
     return render(
         request,
@@ -84,7 +90,11 @@ def image_viewer(request, iaid, location):
     if not page.is_digitised:
         raise Http404
 
-    images = Image.search.filter(rid=page.media_reference_id)
+    try:
+        images = Image.search.filter(rid=page.media_reference_id)
+    except InvalidQuery:
+        # Raised if the RecordPage doesn't have a media_reference_id
+        raise Http404
 
     try:
         # Find the requested image within the image set
