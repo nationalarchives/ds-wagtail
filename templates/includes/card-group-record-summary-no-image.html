@@ -6,7 +6,7 @@
 {% image teaser_image fill-543x549 as teaser_image_extra_large %}
 
 <li class="col-sm-12 col-md-6 col-lg-4">
-    <div class="card-group-record-summary" data-container-name="card-group-record-summary-no-image">
+    <div class="card-group-record-summary" data-container-name="card-group-record-summary-no-image" id="analytics-card-group-record-summary-no-image">
         <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record_page.title }}">
             <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
             <div class="card-group-record-summary__body">
