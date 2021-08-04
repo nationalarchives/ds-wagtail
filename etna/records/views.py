@@ -1,6 +1,6 @@
 from django.conf.urls import url
 from django.http import FileResponse
-from django.shortcuts import render, Http404
+from django.shortcuts import render, redirect, Http404
 
 from generic_chooser.views import ModelChooserViewSet, ModelChooserMixin, BaseChosenView
 
@@ -27,17 +27,10 @@ def record_page_disambiguation_view(request, reference_number):
     if len(pages) == 0:
         raise Http404
 
-    # if the results contain a single record page, render the details page.
+    # if the results contain a single record page, redirect to the details page.
     if len(pages) == 1:
         page = pages[0]
-
-        return render(
-            request,
-            page.get_template(request),
-            {
-                "page": page,
-            },
-        )
+        return redirect('details-page-machine-readable', iaid=page.iaid)
 
     return render(
         request,
