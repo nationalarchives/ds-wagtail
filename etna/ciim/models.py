@@ -235,3 +235,23 @@ class FetchQuery(Query):
             records.append(instance)
 
         return records
+
+
+class MediaQuery(Query):
+    """Support queries to Kong's /media method."""
+
+    def __init__(self, model):
+        self.model = model
+
+    def serve(self, location):
+        return self.client.media(location=location)
+
+
+class MediaManager:
+    """A model.Manager/QuerySet-like object to serve images though Kong's media service."""
+
+    def __init__(self, model):
+        self.model = model
+
+    def serve(self, location):
+        return MediaQuery(self.model).serve(location=location)

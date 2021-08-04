@@ -37,18 +37,9 @@ urlpatterns = [
     ),
 
     path(
-        "details-page-front-end/",
-        TemplateView.as_view(template_name="records/details-page-front-end.html")
-    ),
-
-    path(
-        'image-viewer/',
-        TemplateView.as_view(template_name='records/image-viewer.html')
-    ),
-
-    path(
-        'image-browse/',
-        TemplateView.as_view(template_name='records/image-browse.html')
+        "records/media/<path:location>",
+        records_views.image_serve,
+        name="image-serve",
     ),
 
 ]

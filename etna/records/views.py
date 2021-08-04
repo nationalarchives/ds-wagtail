@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.http import FileResponse
 from django.shortcuts import render, Http404
 
 from generic_chooser.views import ModelChooserViewSet, ModelChooserMixin, BaseChosenView
@@ -69,6 +70,20 @@ def record_page_view(request, iaid):
             "page": page,
             "image": image,
         },
+    )
+
+
+def image_serve(request, location):
+    """Relay content served from Kong's /media endpoint"""
+    response = Image.media.serve(location)
+
+    if not response.ok:
+        raise Http404
+
+    return FileResponse(
+        response.raw,
+        content_type="image/jpeg",
+        reason=response.reason,
     )
 
 

@@ -1,4 +1,7 @@
-from django.test import TestCase, override_settings, RequestFactory
+import io
+import re
+
+from django.test import TestCase, override_settings
 
 import responses
 
@@ -68,7 +71,6 @@ class TestRecordPageDisambiguationView(TestCase):
 
 
 @override_settings(
-    STATICFILES_STORAGE="django.contrib.staticfiles.storage.StaticFilesStorage",
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_CLIENT_TEST_MODE=False,
 )
@@ -156,3 +158,42 @@ class TestRecordPageView(TestCase):
         self.assertEquals(response.resolver_match.func, views.record_page_view)
         self.assertTemplateUsed(response, "records/record_page.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_TEST_MODE=False,
+)
+class TestImageServeView(TestCase):
+    def test_no_location_404s(self):
+        response = self.client.get("/records/media/")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_404_response_from_kong_is_forwarded(self):
+        responses.add(
+            responses.GET,
+            re.compile("^https://kong.test/media"),
+            status=404,
+        )
+
+        response = self.client.get("/records/missing/image.jpeg")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_success(self):
+        responses.add(
+            responses.GET,
+            re.compile("^https://kong.test/media"),
+            body=io.BufferedReader(io.BytesIO(b"test byte stream")),
+            content_type="application/octet-stream",
+            stream=True,
+        )
+
+        response = self.client.get("/records/media/valid/path.jpg")
+
+        self.assertEquals(response["content-type"], "image/jpeg")
+        self.assertEquals(response.status_code, 200)
+        self.assertTrue(response.streaming)

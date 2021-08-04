@@ -4,7 +4,7 @@ from django.db import models
 
 from wagtail.core.models import Page
 
-from ..ciim.models import SearchManager
+from ..ciim.models import SearchManager, MediaManager
 from .transforms import transform_record_page_result, transform_image_result
 
 
@@ -82,4 +82,5 @@ Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
 Image.search = SearchManager(Image)
+Image.media = MediaManager(Image)
 Image.transform = transform_image_result
