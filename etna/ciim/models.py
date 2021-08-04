@@ -10,7 +10,6 @@ from .exceptions import (
     KongError,
     UnsupportedSlice,
 )
-from .utils import translate_result
 
 
 class SearchManager:
@@ -166,12 +165,12 @@ class SearchQuery(Query):
                 self._fetch(start=key.start, size=self.BATCH_SIZE)
                 result = self._results[key.start]
 
-            translated_result = translate_result(result)
-            return apps.get_model(self.model)(**translated_result)
+            transformed_result = self.model.transform(result)
+            return self.model(**transformed_result)
 
         self._fetch(start=key.start, size=count)
-        translated_results = [translate_result(r) for r in self._results[key]]
-        return [apps.get_model(self.model)(**r) for r in translated_results]
+        translated_results = [self.model.transform(r) for r in self._results[key]]
+        return [self.model(**r) for r in translated_results]
 
     def __len__(self):
         """Support len()"""
@@ -207,10 +206,10 @@ class FetchQuery(Query):
 
         result = results[0]
 
-        data = translate_result(result)
+        data = self.model.transform(result)
         data["_debug_kong_result"] = result
 
-        return apps.get_model(self.model)(**data)
+        return self.model(**data)
 
     def get_multiple(self, iaid=None):
         """Temporary method created to fetch multiple items.
