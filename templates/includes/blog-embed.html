@@ -1,6 +1,8 @@
+{% load static %}
+
 <div class="blog-embed" data-container-name="blog-embed" id="analytics-blog-embed">
     <div class="container">
-        <div class="blog-embed__icon"style="background-image: url('/static/images/fontawesome-svgs/comment-white.svg');"></div>
+        <div class="blog-embed__icon"style="background-image: url({% static 'images/fontawesome-svgs/comment-white.svg' %});"></div>
         <p class="blog-embed__icon-label" role="presentation" aria-hidden="true">
             Blog
         </p>
