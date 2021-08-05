@@ -1,0 +1,13 @@
+.login-status {
+
+  border-bottom: 0.06rem dotted $color__grey-7;
+  text-align: right;
+  padding: 0.5rem 1rem 0.5rem 1rem;
+
+  &__link {
+    font-weight: bold;
+    &:visited {
+      color: $color__link;
+    }
+  }
+}

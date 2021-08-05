@@ -6,6 +6,8 @@
     <head>
         <meta charset="utf-8" />
         <title>
+            {% if form.errors %}Error: {% endif %}
+
             {% block title %}
                 {% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}
             {% endblock %}
