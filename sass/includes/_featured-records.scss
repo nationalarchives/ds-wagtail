@@ -42,8 +42,16 @@
  }
 
  &__link-text {
-   color: $color__grey-4;
+   color: $color__white;
    margin-bottom: 0;
+
+   a {
+     color: $color__white;
+
+     &:focus {
+       outline: 0.313rem solid $color__blue_5;
+     }
+   }
  }
 
   p:last-child {
