@@ -30,9 +30,9 @@ def datalayer_data(page) -> dict:
 
     return {
         "contentGroup1": getContentGroup(page),         # The name of the content group - [Always has a value]
-		"customDimension1": "offsite",                  # The reader type (options are "offsite", "onsite_public", "onsite_staff", "subscription")
-		"customDimension2": "",                         # The user type and is private beta specific - the user ID for participants. Left blank in this example because format unknown.
-		"customDimension3": page.get_verbose_name(),    # The page type - [Always has a value]
+        "customDimension1": "offsite",                  # The reader type (options are "offsite", "onsite_public", "onsite_staff", "subscription")
+        "customDimension2": "",                         # The user type and is private beta specific - the user ID for participants. Left blank in this example because format unknown.
+        "customDimension3": page.get_verbose_name(),    # The page type - [Always has a value]
     }
 
 register.filter("datalayer_data", datalayer_data)
