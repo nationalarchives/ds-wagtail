@@ -52,7 +52,7 @@ class ManagerExceptionTest(TestCase):
 )
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
     @responses.activate
     def test_hits_returns_list(self):
@@ -135,7 +135,7 @@ class SearchManagerKongCount(TestCase):
 )
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
         records = [create_record() for r in range(0, 15)]
 
@@ -307,7 +307,7 @@ class KongExceptionTest(TestCase):
 )
 class SearchManagerTestModeTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
     def test_get_success(self):
         record_page = self.manager.get(iaid="C10297")
@@ -390,7 +390,7 @@ class ModelTranslationTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        manager = SearchManager("records.RecordPage")
+        manager = RecordPage.search
 
         cls.record_page = manager.get(iaid="C10297")
 
@@ -449,7 +449,11 @@ class ModelTranslationTest(TestCase):
                 {
                     "reference_number": "FCO 13",
                     "title": "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:...",
-                }
+                },
+                {
+                    "reference_number": "FCO 13/775",
+                    "title": "Centrepiece for celebrations of bicentenary of USA in 1976: loan of Magna Carta from...",
+                },
             ],
         )
 
@@ -474,7 +478,7 @@ class ModelTranslationDateTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        manager = SearchManager("records.RecordPage")
+        manager = RecordPage.search
 
         self.record_page = manager.get(iaid="C1383820")
 

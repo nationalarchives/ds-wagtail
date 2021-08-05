@@ -11,6 +11,7 @@ from etna.records import converters
 from etna.records import views as records_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
+register_converter(converters.IAIDConverter, "iaid")
 
 # fmt: off
 urlpatterns = [
@@ -19,8 +20,8 @@ urlpatterns = [
 
     path("documents/", include(wagtaildocs_urls)),
 
-    re_path(
-        r"catalogue/(?P<iaid>[Cc]\d+)/",
+    path(
+        r"catalogue/<iaid:iaid>/",
         records_views.record_page_view,
         name="details-page-machine-readable",
     ),
@@ -36,18 +37,21 @@ urlpatterns = [
     ),
 
     path(
-        "details-page-front-end/",
-        TemplateView.as_view(template_name="records/details-page-front-end.html")
+        "records/media/<path:location>",
+        records_views.image_serve,
+        name="image-serve",
     ),
 
     path(
-        'image-viewer/',
-        TemplateView.as_view(template_name='records/image-viewer.html')
+        r"image-viewer/<iaid:iaid>/location/<path:location>",
+        records_views.image_viewer,
+        name="image-viewer",
     ),
 
     path(
-        'image-browse/',
-        TemplateView.as_view(template_name='records/image-browse.html')
+        r"image-browse/<iaid:iaid>/",
+        records_views.image_browse,
+        name="image-browse",
     ),
 
 ]

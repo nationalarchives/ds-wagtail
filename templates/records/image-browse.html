@@ -2,170 +2,29 @@
 {% load static %}
 
 {% block content %}
+    {% with images_count=images|length %}
     <div class="image-browse">
         <div class="image-browse__header">
             <div class="image-browse__reference_and_count">
-                <h1><strong>CAB 24/95/8</strong>
-                    <span>- 30 images</span>
+                <h1><strong>{{ page.reference_number }}</strong>
+                    <span>- {{ images_count }} images</span>
                 </h1>
             </div>
             <div class="image-browse__details_navigation">
-                <a href="#">View catalogue details</a>
+                <a href="{% url 'details-page-human-readable' page.reference_number %}">View catalogue details</a>
             </div>
         </div>
         <ul class="image-browse__listing">
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb1.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 1 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb2.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 2 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb3.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 3 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb4.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 4 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb5.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 5 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb6.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 6 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb7.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 7 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb8.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 8 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb9.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 9 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb10.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 10 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb11.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 11 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb12.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 12 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb13.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 13 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb14.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 14 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb15.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 15 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb16.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 16 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb17.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 17 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb18.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 18 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb19.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 19 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb20.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 20 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb21.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 21 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb22.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 22 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb23.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 23 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb24.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 24 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb25.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 25 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb26.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 26 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb27.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 27 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb28.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 28 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb29.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 29 of 30</span>
-                </a>
-            </li>
-            <li style="background-image:url(https://ds-wagtail-frontend.herokuapp.com/images/image-viewer/thumb30.jpg)">
-                <a href="/image-viewer/">
-                    <span>Image 30 of 30</span>
-                </a>
-            </li>
+            {% for image in images %}
+                <li style="background-image:url({% url 'image-serve' location=image.location %})">
+                    <a href="{% url 'image-viewer' page.iaid image.location %}">
+                        <span>Image {{ forloop.counter }} of {{ images_count }}</span>
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
+    {% endwith %}
 {% endblock %}
 
 {% block extra_js %}

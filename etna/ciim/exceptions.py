@@ -15,8 +15,8 @@ class InvalidResponse(KongException):
         self.json = kwargs.pop("json", {})
 
         try:
-            reason = self.json['error']['root_cause'][0]['reason']
-            message = f'{message} Reason: {reason}'
+            reason = self.json["error"]["root_cause"][0]["reason"]
+            message = f"{message} Reason: {reason}"
         except (IndexError, KeyError):
             """Failed to find error message, raise without message"""
 
@@ -33,6 +33,10 @@ class KongError(KongException):
 
 class SearchManagerException(KongException):
     """Exception to group exceptions raised by SearchManager"""
+
+
+class InvalidQuery(SearchManagerException):
+    """Raised if query to Kong contains no clauses"""
 
 
 class DoesNotExist(SearchManagerException):

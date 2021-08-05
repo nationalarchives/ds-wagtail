@@ -1,8 +1,11 @@
+from dataclasses import dataclass
+
 from django.db import models
 
 from wagtail.core.models import Page
 
-from ..ciim.models import SearchManager
+from ..ciim.models import SearchManager, MediaManager
+from .transforms import transform_record_page_result, transform_image_result
 
 
 class RecordPage(Page):
@@ -30,8 +33,7 @@ class RecordPage(Page):
     is_digitised = models.BooleanField(default=False)
     parent = models.JSONField(null=True)
     hierarchy = models.JSONField(null=True)
-
-    search = SearchManager("records.RecordPage")
+    media_reference_id = models.UUIDField(null=True)
 
     def __init__(self, *args, **kwargs):
         """Override to add Kong response data to instance for debugging.
@@ -44,10 +46,41 @@ class RecordPage(Page):
 
         https://docs.djangoproject.com/en/3.2/ref/models/instances/
         """
-        self._debug_kong_result = kwargs.pop('_debug_kong_result', None)
+        self._debug_kong_result = kwargs.pop("_debug_kong_result", None)
 
         super().__init__(*args, **kwargs)
 
-
     def __str__(self):
         return f"{self.title} ({self.iaid})"
+
+
+"""Assign a search manager to the RecordPage
+
+SearchManager exposes a similar interface to Django's model.Manager but 
+results are fetched from the Kong API instead of from a DB
+
+Transform function is used to transform a raw Elasticsearch response into a 
+dictionary to pass to the Model's __init__.
+"""
+RecordPage.search = SearchManager(RecordPage)
+RecordPage.transform = transform_record_page_result
+
+
+@dataclass
+class Image:
+    """Represents an image item returned by Kong."""
+
+    location: str
+
+
+"""Assign a search manager to the Image
+
+SearchManager exposes a similar interface to Django's model.Manager but 
+results are fetched from the Kong API instead of from a DB
+
+Transform function is used to transform a raw Elasticsearch response into a 
+dictionary to pass to the Model's __init__.
+"""
+Image.search = SearchManager(Image)
+Image.media = MediaManager(Image)
+Image.transform = transform_image_result
