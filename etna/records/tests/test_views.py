@@ -50,7 +50,7 @@ class TestRecordPageDisambiguationView(TestCase):
         self.assertTemplateUsed(response, "records/record_disambiguation_page.html")
 
     @responses.activate
-    def test_redirect_for_single_result(self):
+    def test_rendering_deferred_to_details_page_view(self):
         responses.add(
             responses.GET,
             "https://kong.test/search",
@@ -73,9 +73,11 @@ class TestRecordPageDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ADM/223/3/", follow=False)
 
-        self.assertRedirects(
-            response, reverse("details-page-machine-readable", args=("C123456",))
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(
+            response.resolver_match.func, views.record_page_disambiguation_view
         )
+        self.assertTemplateUsed(response, "records/record_page.html")
 
 
 @override_settings(

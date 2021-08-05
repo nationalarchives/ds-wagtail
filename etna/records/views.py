@@ -30,7 +30,7 @@ def record_page_disambiguation_view(request, reference_number):
     # if the results contain a single record page, redirect to the details page.
     if len(pages) == 1:
         page = pages[0]
-        return redirect('details-page-machine-readable', iaid=page.iaid)
+        return record_page_view(request, page.iaid)
 
     return render(
         request,
