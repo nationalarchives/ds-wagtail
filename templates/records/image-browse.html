@@ -2,29 +2,51 @@
 {% load static %}
 
 {% block content %}
-    {% with images_count=images|length %}
-    <div class="image-browse">
-        <div class="image-browse__header">
-            <div class="image-browse__reference_and_count">
-                <h1><strong>{{ page.reference_number }}</strong>
-                    <span>- {{ images_count }} images</span>
-                </h1>
+    {% with images_count=images.paginator.count %}
+        <div class="image-browse">
+            <div class="image-browse__header">
+                <div class="image-browse__reference_and_count">
+                    <h1><strong>{{ page.reference_number }}</strong>
+                        <span>- {{ images_count }} images</span>
+                    </h1>
+                </div>
+                <div class="image-browse__details_navigation">
+                    <a href="{% url 'details-page-human-readable' page.reference_number %}">View catalogue details</a>
+                </div>
             </div>
-            <div class="image-browse__details_navigation">
-                <a href="{% url 'details-page-human-readable' page.reference_number %}">View catalogue details</a>
-            </div>
+            <ul class="image-browse__listing">
+                {% for image in images %}
+                    <li style="background-image:url({% url 'image-serve' location=image.location %})">
+                        <a href="{% url 'image-viewer' page.iaid image.location %}">
+                            <span>Image {{ images.start_index|add:forloop.counter0 }} of {{ images_count }}</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-        <ul class="image-browse__listing">
-            {% for image in images %}
-                <li style="background-image:url({% url 'image-serve' location=image.location %})">
-                    <a href="{% url 'image-viewer' page.iaid image.location %}">
-                        <span>Image {{ forloop.counter }} of {{ images_count }}</span>
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-    </div>
     {% endwith %}
+
+    {% if images.has_other_pages %}
+        <ul class="pagination">
+            {% if images.has_previous %}
+                <li><a href="?page={{ images.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in images.paginator.page_range %}
+                {% if images.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if images.has_next %}
+                    <li><a href="?page={{ images.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.http import FileResponse
 from django.shortcuts import render, Http404
 
@@ -63,12 +64,17 @@ def image_browse(request, iaid):
         # Raised if the RecordPage doesn't have a media_reference_id
         raise Http404
 
+    page_number = request.GET.get('page', 1)
+    paginator = Paginator(images, 20)
+    images = paginator.get_page(page_number)
+
     return render(
         request,
         "records/image-browse.html",
         {
             "page": page,
             "images": images,
+            "paginator": paginator,
         },
     )
 
