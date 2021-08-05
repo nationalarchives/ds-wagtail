@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'etna.heroes',
     'etna.home',
     'etna.insights',
+    'etna.media',
     'etna.paragraphs',
     'etna.quotes',
     'etna.records',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
     'wagtail.core',
 
     'wagtailfontawesome',
+    'wagtailmedia',
     'generic_chooser',
     'modelcluster',
     'taggit',
@@ -218,6 +220,7 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
+WAGTAILMEDIA_MEDIA_MODEL = 'media.EtnaMedia'
 
 # Wagtail settings
 
