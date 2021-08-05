@@ -4,7 +4,7 @@
 {% load datalayer_tags sections_tags %}
 
 {% block extra_gtm_js %}
-{{ page | datalayer_data | json_script:"datalayer-data" }}
+{{ page | datalayer_data:request.user | json_script:"datalayer-data" }}
 
 <script>
     dataLayer = [JSON.parse(document.getElementById('datalayer-data').textContent)];

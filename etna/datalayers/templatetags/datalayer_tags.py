@@ -81,7 +81,14 @@ def get_availability_condition_category(page):
     return categories.get(availability_condition, "")
 
 
-def datalayer_data(page) -> dict:
+def get_user_info(user):
+    if user.is_authenticated:
+        return user.email
+    else:
+        return "anonymous"
+
+
+def datalayer_data(page, user) -> dict:
     """
     Return Datalayer data for a Page object.
 
@@ -91,7 +98,7 @@ def datalayer_data(page) -> dict:
     return {
         "contentGroup1": getContentGroup(page),         # The name of the content group - [Always has a value]
         "customDimension1": "offsite",                  # The reader type (options are "offsite", "onsite_public", "onsite_staff", "subscription")
-        "customDimension2": "",                         # The user type and is private beta specific - the user ID for participants. Left blank in this example because format unknown.
+        "customDimension2": get_user_info(user),        # The user type and is private beta specific - the user ID for participants. Left blank in this example because format unknown.
         "customDimension3": page.get_verbose_name(),    # The page type - [Always has a value]
         'customDimension4': "",     # Taxonomy topics for the page, delineated by semi-colons. Empty string if no value.
         'customDimension5': "",     # This is the taxonomy sub topic where applicable. Empty string if not applicable.
