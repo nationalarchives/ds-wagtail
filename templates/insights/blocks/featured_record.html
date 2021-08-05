@@ -19,13 +19,6 @@
             </p>
         {% endif %}
 
-        {% comment %}
-        {# Images not yet returned by kong #}
-        <div class="blog-embed__image-container">
-            {% image value.teaser_image min-690x260 alt=value.teaser_alt_text class="blog-embed__image" %}
-        </div>
-        {% endcomment %}
-
         <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>
         <!-- Buttons to be placed in a for loop in case there are more than one e.g. view in the catalogue and read more in our blog -->
         {% if value.record.reference_number %}
