@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.http import FileResponse
 from django.shortcuts import render, Http404
+from django.views.decorators.cache import cache_control
 
 from ..models import Image, RecordPage
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
@@ -79,6 +80,8 @@ def image_browse(request, iaid):
     )
 
 
+# Cache assets for a day or indefinitely if browser supports it
+@cache_control(max_age='259200', public=True, immutable=True)
 def image_serve(request, location):
     """Relay content served from Kong's /media endpoint"""
     response = Image.media.serve(location)
