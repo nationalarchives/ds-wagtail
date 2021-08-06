@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% load wagtailcore_tags %}
 {% load datalayer_tags sections_tags %}
 
@@ -22,3 +23,7 @@
 
     {% include 'includes/key-facts--author.html' %}
 {% endblock %}
+
+{% block extra_js %}
+     <script src="{% static 'scripts/insights.js' %}"></script>
+ {% endblock %}

@@ -4,6 +4,11 @@ module.exports = {
     mode: 'production',
     entry: {
         image_viewer: './scripts/src/image-viewer.js',
+        home_page: './scripts/src/home-page.js',
+        explorer: './scripts/src/explorer.js',
+        insights: './scripts/src/insights.js',
+        image_browse: './scripts/src/image-browse.js',
+        details: './scripts/src/details.js'
     },
     output: {
         filename: '[name].js',

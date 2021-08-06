@@ -7,7 +7,7 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link">
+        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record_page.title }}">
             <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
             <figure>
                 <div class="card-group-record-summary__image">

@@ -19,19 +19,19 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(resolver.kwargs["reference_number"], "cp")
 
-    def test_resolves_reference_number_with_space(self):
+    def test_resolves_reference_number(self):
         resolver = resolve("/catalogue/PROB/1/4/")
 
         self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
-        self.assertEqual(resolver.kwargs["reference_number"], "PROB 1/4")
+        self.assertEqual(resolver.kwargs["reference_number"], "PROB/1/4")
 
-    def test_resolves_lower_case_reference_number_with_space(self):
+    def test_resolves_lower_case_reference_number(self):
         resolver = resolve("/catalogue/prob/1/4/")
 
         self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
-        self.assertEqual(resolver.kwargs["reference_number"], "prob 1/4")
+        self.assertEqual(resolver.kwargs["reference_number"], "prob/1/4")
 
     def test_resolves_with_longest_reference_number(self):
         resolver = resolve(
@@ -42,7 +42,7 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(
             resolver.kwargs["reference_number"],
-            "LAB 2/1782/SandER106/1934/Part25and27-28and30to32",
+            "LAB/2/1782/SandER106/1934/Part25and27-28and30to32",
         )
 
     def test_resolves_lower_case_with_longest_reference_number(self):
@@ -54,7 +54,7 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(
             resolver.kwargs["reference_number"],
-            "lab 2/1782/sander106/1934/part25and27-28and30to32",
+            "lab/2/1782/sander106/1934/part25and27-28and30to32",
         )
 
 
@@ -64,7 +64,7 @@ class TestHumanReadableDetailsURL(TestCase):
 
         self.assertEqual(url, "/catalogue/CP/")
 
-    def test_reverse_reference_number_with_space(self):
+    def test_reverse_reference_number(self):
         url = reverse(
             "details-page-human-readable", kwargs={"reference_number": "PROB 1/4"}
         )
@@ -94,13 +94,13 @@ class TestHumanReadableDetailsWithPseudoReferenceRouteResolution(TestCase):
         self.assertEqual(resolver.kwargs["reference_number"], "CP")
         self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
 
-    def test_resolves_reference_number_with_space(self):
+    def test_resolves_reference_number(self):
         resolver = resolve("/catalogue/PROB/1/4/~3/")
 
         self.assertEqual(
             resolver.view_name, "details-page-human-readable-with-pseudo-reference"
         )
-        self.assertEqual(resolver.kwargs["reference_number"], "PROB 1/4")
+        self.assertEqual(resolver.kwargs["reference_number"], "PROB/1/4")
         self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
 
     def test_resolves_with_longest_reference_number(self):
@@ -113,7 +113,7 @@ class TestHumanReadableDetailsWithPseudoReferenceRouteResolution(TestCase):
         )
         self.assertEqual(
             resolver.kwargs["reference_number"],
-            "LAB 2/1782/SandER106/1934/Part25and27-28and30to32",
+            "LAB/2/1782/SandER106/1934/Part25and27-28and30to32",
         )
         self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
 
@@ -127,7 +127,7 @@ class TestHumanReadableDetailsWithPseudoReferenceURL(TestCase):
 
         self.assertEqual(url, "/catalogue/CP/~3/")
 
-    def test_reverse_reference_number_with_space(self):
+    def test_reverse_reference_number(self):
         url = reverse(
             "details-page-human-readable-with-pseudo-reference",
             kwargs={"reference_number": "PROB 1/4", "pseudo_reference": 3},
@@ -162,6 +162,14 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
         self.assertEquals(resolver.func, views.record_page_view)
         self.assertEquals(resolver.view_name, "details-page-machine-readable")
+        self.assertEqual(resolver.kwargs["iaid"], "c123456")
+
+    def test_iaid_with_non_standard_prefix(self):
+        resolver = resolve("/catalogue/d123456/")
+
+        self.assertEquals(resolver.func, views.record_page_view)
+        self.assertEquals(resolver.view_name, "details-page-machine-readable")
+        self.assertEqual(resolver.kwargs["iaid"], "d123456")
 
 
 class TestMachineReadableDetailsURL(TestCase):

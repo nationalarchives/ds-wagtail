@@ -1,3 +1,6 @@
+from django.urls.converters import StringConverter
+
+
 class ReferenceNumberConverter:
     """Converter used to extract a reference number from human-readable details route.
 
@@ -19,8 +22,19 @@ class ReferenceNumberConverter:
 
     def to_python(self, value):
         """Convert captured router parameters to reference number."""
-        return value.replace("/", " ", 1)
+        return value
 
     def to_url(self, value):
         """Convert reference number to create router parameter."""
         return value.replace(" ", "/")
+
+
+class IAIDConverter(StringConverter):
+    """Converter used to extract an IAID from a URL.
+
+    Extracts C11285946 from:
+
+    https://beta.nationalarchives.gov.uk/C11285946/
+    """
+
+    regex = r"(\w\d+)"

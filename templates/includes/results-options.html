@@ -7,7 +7,7 @@
         </div>
         <div class="col-xl-3 col-lg-4 col-md-5 col-sm-6">
             <div class="results-options__sort">
-                    <form action="">
+                    <form action="" id="analytics-sort-results">
                         <label for="sort">Sort by:</label>
                         <select class="results-options__select" name="sort" id="sort">
                             <option value="importance">Publication date</option>

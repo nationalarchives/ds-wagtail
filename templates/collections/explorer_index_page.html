@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% load wagtailcore_tags %}
 {% load datalayer_tags %}
 
@@ -14,7 +15,7 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
-    <div class="container mt-4">
+    <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
        <div class="row">
         <h2 class="sr-only">Select a way to explore</h2>
             <ul class="card-group--no-flex">
@@ -24,4 +25,8 @@
             </ul>
        </div>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/explorer.js' %}"></script>
 {% endblock %}

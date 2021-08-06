@@ -22,6 +22,8 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    {% include 'includes/gtm-script.html' %}
+
     {# Google Fonts #}
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,700;1,400;1,700&display=swap"
@@ -30,6 +32,8 @@
 </head>
 
 <body class="{% block body_class %}{% endblock %}">
+
+{% include 'includes/gtm-no-script.html' %}
 
 <main id="maincontent">
     {% block content %}{% endblock %}

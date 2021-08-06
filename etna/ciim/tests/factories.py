@@ -8,6 +8,8 @@ def create_record(
     description="description",
     earliest="1900",
     latest="2100",
+    is_digitised=False,
+    media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
 ):
     """Return a sample response for a record.
 
@@ -31,11 +33,35 @@ def create_record(
                     "value": "{earliest}-{latest}",
                 },
             },
+            "digitised": is_digitised,
             "@summary": {
                 "title": title,
             },
+            "multimedia": [
+                {
+                    "@entity": "reference",
+                    "@admin": {
+                        "id": media_reference_id,
+                    },
+                }
+            ],
             "description": [{"value": description}],
             "legal": {"status": "Open"},
+        }
+    }
+
+
+def create_media(location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg"):
+    return {
+        "_source": {
+            "processed": {
+                "original": {
+                    "location": location,
+                    "public": True,
+                    "resizable": True,
+                    "@type": "image",
+                }
+            },
         }
     }
 

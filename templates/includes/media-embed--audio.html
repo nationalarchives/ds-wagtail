@@ -1,8 +1,10 @@
-<div class="media-embed" style="background: url(/static/images/media-embed-bg.png)">
+{% load static %}
+
+<div class="media-embed" style="background-image: url({% static 'images/media-embed-bg.png' %})" data-container-name="media-embed-audio" id="analytics-media-embed-audio">
     <div class="media-embed__overlay"></div>
     <div class="container">
         <div class="media-embed__content-panel">
-            <div class="media-embed__icon" style="background-image: url('/static/images/fontawesome-svgs/headphones-white.svg');"></div>
+            <div class="media-embed__icon" style="background-image: url({% static 'images/fontawesome-svgs/headphones-white.svg' %})"></div>
             <p class="media-embed__icon-label" role="presentation" aria-hidden="true">
                 Podcast
             </p>

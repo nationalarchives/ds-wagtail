@@ -1,8 +1,10 @@
-<div class="image-viewer-panel">
+<div class="image-viewer-panel" data-container-name="image-viewer-panel" id="analytics-image-viewer-panel">
     <div class="container">
         <figure>
-            <img src="../images/details/dummy-image.png" alt="">
-            <figcaption><a href="#" title="#">Open in our image viewer</a></figcaption>
+            <img src="{% url 'image-serve' location=image.location %}" alt="">
+            <figcaption>
+                <a href="{% url 'image-browse' iaid=page.iaid %}" title="#">Open in our image viewer</a>
+            </figcaption>
         </figure>
     </div>
 </div>
