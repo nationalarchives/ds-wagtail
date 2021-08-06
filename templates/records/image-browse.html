@@ -27,25 +27,43 @@
     {% endwith %}
 
     {% if images.has_other_pages %}
-        <ul class="pagination">
-            {% if images.has_previous %}
-                <li><a href="?page={{ images.previous_page_number }}">&laquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&laquo;</span></li>
-            {% endif %}
-            {% for i in images.paginator.page_range %}
-                {% if images.number == i %}
-                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        <nav class="pagination" role="navigation" aria-label="Results pagination" data-container-name="Pagination" id="analytics-pagination">
+            <ul class="pagination__list">
+                {% if images.has_previous %}
+                    <li class="pagination__list-item">
+                        <a class="pagination__page-chevron-previous" href="?page={{ images.previous_page_number }}"></a>
+                        <span class="sr-only" data-link="Previous page">Previous page</span>
+                    </li>
                 {% else %}
-                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    <li class="pagination__list-item">
+                        <span class="pagination__page-chevron-previous--disabled"></span>
+                    </li>
                 {% endif %}
-            {% endfor %}
-            {% if images.has_next %}
-                    <li><a href="?page={{ images.next_page_number }}">&raquo;</a></li>
-            {% else %}
-                <li class="disabled"><span>&raquo;</span></li>
-            {% endif %}
-        </ul>
+                <li class="pagination__list-pages" aria-label="Page numbers">
+                    <ol>
+                {% for i in images.paginator.page_range %}
+                        {% if images.number == i %}
+                            <li class="pagination__list-item">
+                                <a class="pagination__page-link-current" href="#" aria-label="Current page, Page {{ i }}" aria-current="true" data-link="{{ i }}"><span class="sr-only">Current page </span>{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="pagination__list-item"><a class="pagination__page-link" href="?page={{ i }}" aria-label="Go to page {{ i }}"  data-link="{{ i }}"><span class="sr-only">Page </span>{{ i }}</a>
+                            </li>
+                        {% endif %}
+                {% endfor %}
+                    </ol>
+                </li>
+                {% if images.has_next %}
+                    <li class="pagination__list-item">
+                        <a class="pagination__page-chevron-next" href="?page={{ images.next_page_number }}" data-link="Next page"><span class="sr-only">Next page</span></a>
+                    </li>
+                {% else %}
+                    <li class="pagination__list-item">
+                        <span class="pagination__page-chevron-next--disabled"></span>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
     {% endif %}
 {% endblock %}
 
