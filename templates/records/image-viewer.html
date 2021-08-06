@@ -3,11 +3,13 @@
 
 {% block content %}
 
-    {% with images_count=images|length %}
+{{ images.has_other_pages }}
+
+    {% with images_count=paginator.count %}
         <div class="image-viewer" data-container-name="image-viewer" id="analytics-image-viewer">
             <div class="image-viewer__header">
                 <div class="image-viewer__reference">
-                    <h1><strong>{{ page.reference_number }}</strong> <span>- Image {{ index|add:'1' }} of {{ images_count }}</span></h1>
+                    <h1>{{ images.has_other_pages }} {{ images.count }} {{ images.paginator.count }}<strong>{{ page.reference_number }}</strong> <span>- Image {{ index|add:'1' }} of {{ images_count }}</span></h1>
                 </div>
                 <div class="image-viewer__toolbar" id="js-viewer-toolbar">
                     <button id="zoom-in" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom in">Zoom in</button>
@@ -56,6 +58,30 @@
             </div>
         </div>
     {% endwith %}
+
+    {{ images.has_other_pages }}
+
+    {% if images.has_other_pages %}
+        <ul class="pagination">
+            {% if images.has_previous %}
+                <li><a href="?page={{ images.previous_page_number }}">&laquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&laquo;</span></li>
+            {% endif %}
+            {% for i in images.paginator.page_range %}
+                {% if images.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+            {% if images.has_next %}
+                    <li><a href="?page={{ images.next_page_number }}">&raquo;</a></li>
+            {% else %}
+                <li class="disabled"><span>&raquo;</span></li>
+            {% endif %}
+        </ul>
+    {% endif %}
     </main>
 
 {% endblock %}

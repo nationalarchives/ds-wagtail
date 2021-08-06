@@ -72,6 +72,24 @@
             &:focus {
                 box-shadow: -.6rem 0 $color__white;
             }
+
+            &--disabled {
+                background-color: $color__green;
+                background-image: url($fa_chevron_right_disabled);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 40%;
+                width: 3.125rem;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+
+                &:hover, &:focus {
+                    background-image: url($fa_chevron_right_disabled);
+                    outline-color: transparent;
+                    outline-offset: 0;
+                }
+            }
         }
 
         &-chevron-previous {
@@ -84,6 +102,24 @@
 
             &:focus {
                 box-shadow: .6rem 0 $color__white;
+            }
+
+            &--disabled {
+                background-color: $color__green;
+                background-image: url($fa_chevron_left_disabled);
+                background-repeat: no-repeat;
+                background-position: center;
+                background-size: 40%;
+                width: 3.125rem;
+                height: 100%;
+                display: flex;
+                justify-content: center;
+
+                &:hover, &:focus {
+                    background-image: url($fa_chevron_left_disabled);
+                    outline-color: transparent;
+                    outline-offset: 0;
+                }
             }
         }
 
