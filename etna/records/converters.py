@@ -37,4 +37,4 @@ class IAIDConverter(StringConverter):
     https://beta.nationalarchives.gov.uk/C11285946/
     """
 
-    regex = r"([Cc]\d+)"
+    regex = r"(\w\d+)"

@@ -37,6 +37,9 @@ def pluck(collection, accessor=lambda: False, default=None):
 
     Exceptions raised when querying the data structure are comsumed by this function.
     """
+    if isinstance(collection, dict):
+        collection = [collection]
+
     try:
         return accessor(find(collection, accessor))
     except (KeyError, IndexError, TypeError, AttributeError):

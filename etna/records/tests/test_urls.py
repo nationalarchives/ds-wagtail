@@ -162,6 +162,14 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
         self.assertEquals(resolver.func, views.record_page_view)
         self.assertEquals(resolver.view_name, "details-page-machine-readable")
+        self.assertEqual(resolver.kwargs["iaid"], "c123456")
+
+    def test_iaid_with_non_standard_prefix(self):
+        resolver = resolve("/catalogue/d123456/")
+
+        self.assertEquals(resolver.func, views.record_page_view)
+        self.assertEquals(resolver.view_name, "details-page-machine-readable")
+        self.assertEqual(resolver.kwargs["iaid"], "d123456")
 
 
 class TestMachineReadableDetailsURL(TestCase):
