@@ -69,6 +69,41 @@
               }
             }
           ],
+          "availability" : {
+            "access": {
+              "closure": {
+                "code": "30",
+                "display": {
+                  "label": {
+                    "type": "label",
+                    "value": "Open Document, Open Description"
+                  }
+                },
+                "status": "O",
+                "type": "N"
+              },
+              "display": {
+                "label": {
+                  "type": "label",
+                  "value": "NO \"Access conditions\" STATED"
+                }
+              }
+            },
+            "delivery": {
+              "condition": {"value": "DigitizedDiscovery"
+              },
+              "surrogate": [
+                {
+                  "type": "surrogate",
+                  "value": "<a target=\"_blank\" href=\"http://www.thegenealogist.co.uk/non-conformist-records\">The Genealogist</a>"
+                },
+                {
+                  "type": "surrogate",
+                  "value": "<a target=\"_blank\" href=\"http://search.ancestry.co.uk/search/db.aspx?dbid=5111\">Ancestry</a>"
+                }
+              ]
+            }
+          },
           "dbase" : {
             "collection" : {
               "name" : {

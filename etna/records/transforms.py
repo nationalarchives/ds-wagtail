@@ -60,6 +60,18 @@ def transform_record_page_result(result):
             for i in hierarchy[0]
         ]
 
+    if availability := source.get("availability"):
+        if access := availability.get("access"):
+            data["availablility_access_display_label"] = access["display"]["label"][
+                "value"
+            ]
+            data["availablility_access_closure_label"] = pluck(
+                access["closure"], accessor=lambda i: i["display"]["label"]["value"]
+            )
+        if delivery := availability.get("delivery"):
+            data["availablility_delivery_condition"] = delivery["condition"]["value"]
+            data["availablility_delivery_surrogates"] = delivery.get("surrogate")
+
     data["media_reference_id"] = pluck(
         source.get("multimedia"), accessor=lambda i: i["@admin"]["id"]
     )

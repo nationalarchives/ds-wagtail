@@ -457,6 +457,41 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    def test_is_digitised(self):
+        self.assertEqual(self.record_page.is_digitised, True)
+
+    def test_availablility_access_display_label(self):
+        self.assertEqual(
+            self.record_page.availablility_access_display_label,
+            'NO "Access conditions" STATED',
+        )
+
+    def test_availablility_access_closure_label(self):
+        self.assertEqual(
+            self.record_page.availablility_access_closure_label,
+            "Open Document, Open Description",
+        )
+
+    def test_availablility_delivery_condition(self):
+        self.assertEqual(
+            self.record_page.availablility_delivery_condition, "DigitizedDiscovery"
+        )
+
+    def test_availablility_delivery_surrogates(self):
+        self.assertEqual(
+            self.record_page.availablility_delivery_surrogates,
+            [
+                {
+                    "type": "surrogate",
+                    "value": '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">The Genealogist</a>',
+                },
+                {
+                    "type": "surrogate",
+                    "value": '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">Ancestry</a>',
+                },
+            ],
+        )
+
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False

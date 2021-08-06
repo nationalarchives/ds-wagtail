@@ -34,6 +34,10 @@ class RecordPage(Page):
     parent = models.JSONField(null=True)
     hierarchy = models.JSONField(null=True)
     media_reference_id = models.UUIDField(null=True)
+    availablility_access_display_label = models.TextField()
+    availablility_access_closure_label = models.TextField()
+    availablility_delivery_condition = models.TextField()
+    availablility_delivery_surrogates = models.JSONField(null=True)
 
     def __init__(self, *args, **kwargs):
         """Override to add Kong response data to instance for debugging.
