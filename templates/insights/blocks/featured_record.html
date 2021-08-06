@@ -2,7 +2,7 @@
 
 <div class="record-embed-no-image" data-container-name="record-embed-no-image" id="analytics-record-embed-no-image">
     <div class="container">
-        <div class="record-embed-no-image__icon" style="background-image: url({% static '/images/fontawesome-svgs/search-white.svg' %});"></div>
+        <div class="record-embed-no-image__icon" style="background-image: url({% static 'images/fontawesome-svgs/search-white.svg' %});"></div>
         <p class="record-embed-no-image__icon-label" role="presentation" aria-hidden="true">
             Discover our records
         </p>
@@ -18,13 +18,6 @@
             Date created: <time datetime="{{ value.record.date_start }}">{{ value.record.date_start }}</time>
             </p>
         {% endif %}
-
-        {% comment %}
-        {# Images not yet returned by kong #}
-        <div class="blog-embed__image-container">
-            {% image value.teaser_image min-690x260 alt=value.teaser_alt_text class="blog-embed__image" %}
-        </div>
-        {% endcomment %}
 
         <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>
         <!-- Buttons to be placed in a for loop in case there are more than one e.g. view in the catalogue and read more in our blog -->

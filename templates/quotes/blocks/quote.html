@@ -1,6 +1,8 @@
+{% load static %}
+
 <div class="quote">
     <div class="container">
-        <img class="quote__icon" src="/static/images/fontawesome-svgs/quote-left.svg" alt="" />
+        <img class="quote__icon" src="{% static 'images/fontawesome-svgs/quote-left.svg' %}" alt="" />
         <h3 class="sr-only">{{ value.heading }}</h3>
 
         {% if value.attribution %}

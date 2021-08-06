@@ -9,8 +9,8 @@ from .exceptions import (
     MultipleObjectsReturned,
     KongError,
     UnsupportedSlice,
+    InvalidQuery,
 )
-from .utils import translate_result
 
 
 class SearchManager:
@@ -20,8 +20,11 @@ class SearchManager:
         self.model = model
 
     def filter(self, **kwargs):
-        query = kwargs
-        return SearchQuery(self.model, query)
+        # Check we're making a meaningful query before contacting Kong
+        if any({k: v for k, v in kwargs.items() if v is None}):
+            raise InvalidQuery("Query to Kong must at least one clause")
+
+        return SearchQuery(self.model, kwargs)
 
     def get(self, iaid=None, reference_number=None):
         return FetchQuery(self.model).get(iaid=iaid, reference_number=reference_number)
@@ -166,12 +169,12 @@ class SearchQuery(Query):
                 self._fetch(start=key.start, size=self.BATCH_SIZE)
                 result = self._results[key.start]
 
-            translated_result = translate_result(result)
-            return apps.get_model(self.model)(**translated_result)
+            transformed_result = self.model.transform(result)
+            return self.model(**transformed_result)
 
         self._fetch(start=key.start, size=count)
-        translated_results = [translate_result(r) for r in self._results[key]]
-        return [apps.get_model(self.model)(**r) for r in translated_results]
+        translated_results = [self.model.transform(r) for r in self._results[key]]
+        return [self.model(**r) for r in translated_results]
 
     def __len__(self):
         """Support len()"""
@@ -183,6 +186,13 @@ class SearchQuery(Query):
 
     def __iter__(self):
         return SearchQueryIterator(self)
+
+    def first(self):
+        """Return the first item in resultset without or None if nothing is found."""
+        try:
+            return self[0]
+        except IndexError:
+            return None
 
 
 class FetchQuery(Query):
@@ -207,10 +217,10 @@ class FetchQuery(Query):
 
         result = results[0]
 
-        data = translate_result(result)
+        data = self.model.transform(result)
         data["_debug_kong_result"] = result
 
-        return apps.get_model(self.model)(**data)
+        return self.model(**data)
 
     def get_multiple(self, iaid=None):
         """Temporary method created to fetch multiple items.
@@ -229,3 +239,23 @@ class FetchQuery(Query):
             records.append(instance)
 
         return records
+
+
+class MediaQuery(Query):
+    """Support queries to Kong's /media method."""
+
+    def __init__(self, model):
+        self.model = model
+
+    def serve(self, location):
+        return self.client.media(location=location)
+
+
+class MediaManager:
+    """A model.Manager/QuerySet-like object to serve images though Kong's media service."""
+
+    def __init__(self, model):
+        self.model = model
+
+    def serve(self, location):
+        return MediaQuery(self.model).serve(location=location)

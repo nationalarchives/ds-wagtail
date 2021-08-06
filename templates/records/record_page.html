@@ -4,7 +4,9 @@
 
 {% block content %}
 
-    {% include "includes/records/hierarchy-local.html" %}
+    {% if page.parent %}
+        {% include "includes/records/hierarchy-local.html" %}
+    {% endif %}
 
     <div class="row no-gutters">
 
@@ -19,8 +21,9 @@
 
                 <h2>How to view this record</h2>
 
-                {% include "includes/records/image-viewer-panel.html" %}
-
+                {% if page.is_digitised and image %}
+                    {% include "includes/records/image-viewer-panel.html" %}
+                {% endif %}
                 {% include "includes/records/record-access-options.html" %}
 
                 <h2>Description and record details</h2>
@@ -34,4 +37,8 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/details.js' %}"></script>
 {% endblock %}

@@ -52,7 +52,7 @@ class ManagerExceptionTest(TestCase):
 )
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
     @responses.activate
     def test_hits_returns_list(self):
@@ -135,7 +135,7 @@ class SearchManagerKongCount(TestCase):
 )
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
         records = [create_record() for r in range(0, 15)]
 
@@ -307,7 +307,7 @@ class KongExceptionTest(TestCase):
 )
 class SearchManagerTestModeTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = RecordPage.search
 
     def test_get_success(self):
         record_page = self.manager.get(iaid="C10297")
@@ -390,7 +390,7 @@ class ModelTranslationTest(TestCase):
     def setUpClass(cls):
         super().setUpClass()
 
-        manager = SearchManager("records.RecordPage")
+        manager = RecordPage.search
 
         cls.record_page = manager.get(iaid="C10297")
 
@@ -438,6 +438,7 @@ class ModelTranslationTest(TestCase):
             self.record_page.parent,
             {
                 "iaid": "C199",
+                "reference_number": "HO 42",
                 "title": "Records created or inherited by the Law Officers' Department",
             },
         )
@@ -449,7 +450,46 @@ class ModelTranslationTest(TestCase):
                 {
                     "reference_number": "FCO 13",
                     "title": "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:...",
-                }
+                },
+                {
+                    "reference_number": "FCO 13/775",
+                    "title": "Centrepiece for celebrations of bicentenary of USA in 1976: loan of Magna Carta from...",
+                },
+            ],
+        )
+
+    def test_is_digitised(self):
+        self.assertEqual(self.record_page.is_digitised, True)
+
+    def test_availablility_access_display_label(self):
+        self.assertEqual(
+            self.record_page.availablility_access_display_label,
+            'NO "Access conditions" STATED',
+        )
+
+    def test_availablility_access_closure_label(self):
+        self.assertEqual(
+            self.record_page.availablility_access_closure_label,
+            "Open Document, Open Description",
+        )
+
+    def test_availablility_delivery_condition(self):
+        self.assertEqual(
+            self.record_page.availablility_delivery_condition, "DigitizedDiscovery"
+        )
+
+    def test_availablility_delivery_surrogates(self):
+        self.assertEqual(
+            self.record_page.availablility_delivery_surrogates,
+            [
+                {
+                    "type": "surrogate",
+                    "value": '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">The Genealogist</a>',
+                },
+                {
+                    "type": "surrogate",
+                    "value": '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">Ancestry</a>',
+                },
             ],
         )
 
@@ -474,7 +514,7 @@ class ModelTranslationDateTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        manager = SearchManager("records.RecordPage")
+        manager = RecordPage.search
 
         self.record_page = manager.get(iaid="C1383820")
 
