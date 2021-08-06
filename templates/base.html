@@ -36,8 +36,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
           rel="stylesheet">
     <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
-    {% block analytics_json %}
-            {# Override this in templates to add an analytics json #}
+
+    {% block extra_gtm_js %}
+        {# Override this in templates to add extra javascript to be used by GTM #}
     {% endblock %}
 </head>
 

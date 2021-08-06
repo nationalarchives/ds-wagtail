@@ -1,6 +1,16 @@
 {% extends "base.html" %}
 
-{% load wagtailcore_tags static %}
+{% load static %}
+{% load wagtailcore_tags %}
+{% load datalayer_tags %}
+
+{% block extra_gtm_js %}
+{{ page | datalayer:request | json_script:"datalayer" }}
+
+<script>
+    dataLayer = JSON.parse(document.getElementById('datalayer').textContent);
+</script>
+{% endblock extra_gtm_js %}
 
 {% block body_class %}template-homepage{% endblock %}
 
