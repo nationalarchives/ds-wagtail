@@ -236,6 +236,14 @@
                   }
                 ]
               },
+              "identifier" : [
+                {
+                  "primary" : true,
+                  "reference_number" : "HO 42",
+                  "type" : "reference number",
+                  "value" : "HO 42"
+                }
+              ],
               "@summary" : {
                 "title" : "Records created or inherited by the Law Officers' Department"
               }

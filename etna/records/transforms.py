@@ -42,13 +42,14 @@ def transform_record_page_result(result):
 
     data["is_digitised"] = source.get("digitised", False)
 
-    if parent := find(
-        source.get("association"),
-        predicate=lambda i: i["@link"]["role"][0]["value"] == "parent",
-    ):
+    if parent := source.get("parent"):
         data["parent"] = {
-            "iaid": parent["@admin"]["id"],
-            "title": parent["@summary"]["title"],
+            "iaid": pluck(parent, accessor=lambda i: i["@admin"]["id"]),
+            "reference_number": pluck(
+                parent,
+                accessor=lambda i: i["identifier"][0]["reference_number"],
+            ),
+            "title": pluck(parent, accessor=lambda i: i["@summary"]["title"]),
         }
 
     if hierarchy := source.get("hierarchy"):
