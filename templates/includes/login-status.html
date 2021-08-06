@@ -1,0 +1,7 @@
+<div class="login-status">
+    {% if request.user.is_authenticated %}
+        <a href="{% url 'account_logout' %}" class="login-status__link">Sign out</a>
+    {% else %}
+        <a href="{% url 'account_login' %}" class="login-status__link">Sign in</a>
+    {% endif %}
+</div>

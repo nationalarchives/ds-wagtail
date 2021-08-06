@@ -12,23 +12,69 @@
             <div class="row">
                 <div class="col-12">
                     <h1 class="generic-intro__title">
-                        {% trans "Login" %}
+                        {% trans "Sign in" %}
                     </h1>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="container pt-4">
-        <form class="login" method="POST" action="{% url 'account_login' %}">
-            {% csrf_token %}
-            {{ form.as_p }}
-            {% if redirect_field_value %}
-            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-            {% endif %}
-            <!-- <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a> -->
-            <button class="primaryAction" type="submit">{% trans "Login" %}</button>
-        </form>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col">
+                <form class="tna-form {% if form.errors %}tna-form--error{% endif %}" method="POST"
+                      action="{% url 'account_login' %}">
+                    {% csrf_token %}
+
+                    {% if form.errors %}
+                        <div class="tna-form__error-summary" role="alert">
+                            <h2>There is a problem.</h2>
+                            <p>Check the highlighted fields below.</p>
+                        </div>
+                    {% endif %}
+
+                    <div class="tna-form__row {% if form.login.errors %}tna-form__row--error{% endif %}">
+                        <label for="id_login" id="email_label">Email</label>
+                        <input type="email" name="login" autocomplete="email" aria-required="true"
+                               id="id_login" {% if form.login.errors %}aria-invalid="true"
+                               aria-describedby="email_label email_errors"{% endif %}>
+
+                        {% if form.login.errors %}
+                            <ul class="tna-form__error-messages" id="email_errors">
+                                {% for error in form.login.errors %}
+                                    <li>{{ error|escape }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    <div class="tna-form__row {% if form.password.errors %}tna-form__row--error{% endif %}">
+                        <label for="id_password" id="password_label">Password</label>
+                        <input type="password" name="password" autocomplete="current-password" id="id_password" aria-required="true"
+                               {% if form.password.errors %}aria-invalid="true" aria-describedby="password_label password_errors"{% endif %}
+                               {% if form.password.errors %}class="error"{% endif %}>
+
+                        {% if form.password.errors %}
+                            <ul class="tna-form__error-messages" id="password_errors">
+                                {% for error in form.password.errors %}
+                                    <li>{{ error|escape }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                    </div>
+
+                    {% if redirect_field_value %}
+                        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+                    {% endif %}
+
+                    <div class="tna-form__row">
+                        <input type="submit" class="tna-button" value="{% trans "Sign in" %}">
+                    </div>
+
+                    {# <a href="{% url 'account_reset_password' %}">{% trans "Forgotten your password?" %}</a> #}
+                </form>
+            </div>
+        </div>
     </div>
 
 {% endblock %}

@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-12">
                     <h1 class="generic-intro__title">
-                        {% trans "Log out" %}
+                        {% trans "Sign out" %}
                     </h1>
                 </div>
             </div>
@@ -19,14 +19,17 @@
     </div>
 
     <div class="container pt-4">
-        <p>{% trans 'Are you sure you want to log out?' %}</p>
+        <p>{% trans 'Are you sure you want to sign out?' %}</p>
 
         <form method="post" action="{% url 'account_logout' %}">
             {% csrf_token %}
             {% if redirect_field_value %}
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
             {% endif %}
-            <button type="submit">{% trans 'Log out' %}</button>
+
+            <div class="tna-form__row">
+                <input type="submit" class="tna-button" value="{% trans 'Sign out' %}">
+            </div>
         </form>
     </div>
 
