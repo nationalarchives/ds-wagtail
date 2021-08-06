@@ -438,6 +438,7 @@ class ModelTranslationTest(TestCase):
             self.record_page.parent,
             {
                 "iaid": "C199",
+                "reference_number": "HO 42",
                 "title": "Records created or inherited by the Law Officers' Department",
             },
         )

@@ -4,7 +4,9 @@
 
 {% block content %}
 
-    {% include "includes/records/hierarchy-local.html" %}
+    {% if page.parent %}
+        {% include "includes/records/hierarchy-local.html" %}
+    {% endif %}
 
     <div class="row no-gutters">
 
