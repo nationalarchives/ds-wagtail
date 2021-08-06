@@ -22,6 +22,13 @@ def getContentGroup(page):
     return groups.get(appname, page.title)
 
 
+def get_user_info(user):
+    if user.is_authenticated:
+        return user.id
+    else:
+        return "anonymous"
+
+
 def get_availability_condition(page):
     """
     Return the page's availablility condition value (if applicable).
@@ -79,13 +86,6 @@ def get_availability_condition_category(page):
         "Unfit": "Not viewable online",
     }
     return categories.get(availability_condition, "")
-
-
-def get_user_info(user):
-    if user.is_authenticated:
-        return user.email
-    else:
-        return "anonymous"
 
 
 def datalayer_data(page, user) -> dict:
