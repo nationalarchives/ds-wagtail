@@ -3,10 +3,10 @@
 {% load datalayer_tags %}
 
 {% block extra_gtm_js %}
-{{ page | datalayer_data:request.user | json_script:"datalayer-data" }}
+{{ page | datalayer:request | json_script:"datalayer" }}
 
 <script>
-    dataLayer = [JSON.parse(document.getElementById('datalayer-data').textContent)];
+    dataLayer = JSON.parse(document.getElementById('datalayer').textContent);
 </script>
 {% endblock extra_gtm_js %}
 
