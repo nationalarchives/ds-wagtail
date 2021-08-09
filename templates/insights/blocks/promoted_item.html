@@ -31,7 +31,22 @@
         </p>
 
         <div class="blog-embed__image-container">
-            {% image value.teaser_image min-690x260 alt=value.teaser_alt_text class="blog-embed__image" %}
+            <picture>
+                {% image value.teaser_image fill-800x500 as teaser %}
+                <source media="(max-width: 480px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x500 as teaser %}
+                <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x450 as teaser %}
+                <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x350 as teaser %}
+                <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x350 as teaser %}
+                <source media="(max-width: 1199px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x300 as teaser %}
+                <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
+                {% image value.teaser_image fill-800x300 as teaser %}
+                <img src="{{ teaser.url }}" alt="{{ teaser.alt }}" class="blog-embed__image" />
+            </picture>
         </div>
 
         <div class="blog-embed__text">
