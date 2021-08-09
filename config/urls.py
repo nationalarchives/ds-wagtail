@@ -37,15 +37,15 @@ urlpatterns = [
     ),
 
     path(
-        "records/media/<path:location>",
-        records_views.image_serve,
-        name="image-serve",
+        r"image-viewer/<iaid:iaid>/<str:sort>/",
+        records_views.image_viewer,
+        name="image-viewer",
     ),
 
     path(
-        r"image-viewer/<iaid:iaid>/location/<path:location>",
-        records_views.image_viewer,
-        name="image-viewer",
+        "records/media/<path:location>",
+        records_views.image_serve,
+        name="image-serve",
     ),
 
     path(

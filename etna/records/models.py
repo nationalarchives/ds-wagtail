@@ -75,6 +75,9 @@ class Image:
     """Represents an image item returned by Kong."""
 
     location: str
+    # Sort position of this image. Used to create the image-viewer URL
+    # and to fetch this particular image from a series of images.
+    sort: int
 
 
 """Assign a search manager to the Image

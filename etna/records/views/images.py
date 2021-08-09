@@ -7,7 +7,7 @@ from ..models import Image, RecordPage
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
 
 
-def image_viewer(request, iaid, location):
+def image_viewer(request, iaid, sort):
     """View to render a single image for a record."""
 
     try:
@@ -27,7 +27,7 @@ def image_viewer(request, iaid, location):
     try:
         # Find the requested image within the image set
         index, image = next(
-            (index, i) for index, i in enumerate(images) if i.location == location
+            (index, i) for index, i in enumerate(images) if i.sort == sort
         )
     except StopIteration:
         # The image can't be found.
@@ -42,10 +42,10 @@ def image_viewer(request, iaid, location):
         {
             "page": page,
             "image": image,
+            "images": images,
             "index": index,
             "next_image": next_image,
             "previous_image": previous_image,
-            "location": location,
         },
     )
 
