@@ -415,14 +415,8 @@ class ModelTranslationTest(TestCase):
             '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General\'s General Fiat for leave to appeal to the House of Lords in criminal cases.</span><span class="p">Also included are a number of opinions, more of which can be found in <a href="/catalogue/C10298/">LO 3</a></span></span>',
         )
 
-    def test_date_start(self):
-        self.assertEqual(self.record_page.date_start, "1885-01-01")
-
-    def test_date_end(self):
-        self.assertEqual(self.record_page.date_end, "1979-12-31")
-
-    def test_date_range(self):
-        self.assertEqual(self.record_page.date_range, "1885-1979")
+    def test_origination_date(self):
+        self.assertEqual(self.record_page.origination_date, "1885-1979")
 
     def test_legal_status(self):
         self.assertEqual(self.record_page.legal_status, "Public Record(s)")
@@ -492,34 +486,3 @@ class ModelTranslationTest(TestCase):
                 },
             ],
         )
-
-
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
-)
-class ModelTranslationDateTest(TestCase):
-    """In addition to the perfect-world ModelTranslationTest, this is a
-    test case containing the exceptions we've found while parsing date fields
-    """
-
-    @responses.activate
-    def setUp(self):
-        # Simulate the response from featured record: C1383820
-        record = create_record(iaid="C1383820")
-        record["_source"]["@origination"]["date"] = {"value": "undated"}
-
-        responses.add(
-            responses.GET,
-            "https://kong.test/fetch",
-            json=create_response(records=[record]),
-        )
-
-        manager = RecordPage.search
-
-        self.record_page = manager.get(iaid="C1383820")
-
-    def test_no_date_start(self):
-        self.assertEquals(self.record_page.date_start, None)
-
-    def test_no_date_end(self):
-        self.assertEquals(self.record_page.date_end, None)

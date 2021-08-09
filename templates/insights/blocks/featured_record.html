@@ -13,9 +13,9 @@
         {% if value.record.reference_number %}
             <p class="record-embed-no-image__text--inline">Reference: {{ value.record.reference_number }}</p>
         {% endif %}
-        {% if value.record.date_start %}
+        {% if value.record.origination_date %}
             <p class="record-embed-no-image__text--inline">
-            Date created: <time datetime="{{ value.record.date_start }}">{{ value.record.date_start }}</time>
+            Date created: <time datetime="{{ value.record.origination_date }}">{{ value.record.origination_date }}</time>
             </p>
         {% endif %}
 
