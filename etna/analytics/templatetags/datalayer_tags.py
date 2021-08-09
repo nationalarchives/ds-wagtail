@@ -51,7 +51,7 @@ def datalayer(page, request) -> dict:
     https://developers.google.com/tag-manager/devguide
     """
 
-    return [{
+    return {
         "contentGroup1": get_content_group(page),       # The name of the content group - [Always has a value]
         "customDimension1": "offsite",                  # The reader type (options are "offsite", "onsite_public", "onsite_staff", "subscription")
         "customDimension2": request.user.id,            # The user type and is private beta specific - the user ID for participants.
@@ -71,6 +71,6 @@ def datalayer(page, request) -> dict:
         "customDimension16": get_availability_condition_category(page), # This is the availability condition category where applicable. Empty string if not applicable.
         "customDimension17": get_availability_condition(page),          # This is the availability condition where applicable. Empty string if not applicable.
         "customDimension18": "",    # The number of images shown in browse where applicable. Empty string if not applicable.
-    }]
+    }
 
 register.filter("datalayer", datalayer)
