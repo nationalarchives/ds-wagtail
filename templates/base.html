@@ -29,6 +29,10 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    {% block extra_gtm_js %}
+        {# Override this in templates to add extra javascript to be used by GTM #}
+    {% endblock %}
+
     {% include 'includes/gtm-script.html' %}
 
     {# Google Fonts #}
@@ -36,10 +40,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
           rel="stylesheet">
     <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
-
-    {% block extra_gtm_js %}
-        {# Override this in templates to add extra javascript to be used by GTM #}
-    {% endblock %}
 </head>
 
 <body class="{% block body_class %}{% endblock %}">

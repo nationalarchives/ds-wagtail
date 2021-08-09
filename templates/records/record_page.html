@@ -7,7 +7,8 @@
 {{ page | datalayer:request | json_script:"datalayer" }}
 
 <script>
-    dataLayer = JSON.parse(document.getElementById('datalayer').textContent);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
 </script>
 {% endblock extra_gtm_js %}
 
