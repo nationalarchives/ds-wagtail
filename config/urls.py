@@ -37,23 +37,22 @@ urlpatterns = [
     ),
 
     path(
-        r"image-viewer/<iaid:iaid>/<str:sort>/",
-        records_views.image_viewer,
-        name="image-viewer",
-    ),
-
-    path(
-        "records/media/<path:location>",
+        "records/image/<path:location>",
         records_views.image_serve,
         name="image-serve",
     ),
 
     path(
-        r"image-browse/<iaid:iaid>/",
+        r"records/images/<iaid:iaid>/<str:sort>/",
+        records_views.image_viewer,
+        name="image-viewer",
+    ),
+
+    path(
+        r"records/images/<iaid:iaid>/",
         records_views.image_browse,
         name="image-browse",
     ),
-
 ]
 # fmt: on
 

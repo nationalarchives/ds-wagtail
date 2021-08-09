@@ -51,7 +51,9 @@ def create_record(
     }
 
 
-def create_media(location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg"):
+def create_media(
+    location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg", sort="01"
+):
     return {
         "_source": {
             "processed": {
@@ -62,6 +64,7 @@ def create_media(location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg"):
                     "@type": "image",
                 }
             },
+            "sort": sort,
         }
     }
 
