@@ -16,7 +16,7 @@ class FeaturedExternalPageBlock(blocks.StructBlock):
 
     class Meta:
         template = "home/blocks/featured_external_page.html"
-        help_text = "Block used feature a page external to Wagtail or a RecordPage"
+        help_text = "Block used to feature a page external to Wagtail or a RecordPage"
         icon = "fa-star-o"
 
 
@@ -31,7 +31,7 @@ class FeaturedPageBlock(blocks.StructBlock):
 
     class Meta:
         template = "home/blocks/featured_page.html"
-        help_text = "Block used feature a page from within Wagtail"
+        help_text = "Block used to feature a page from within Wagtail"
         icon = "fa-star-o"
 
 
@@ -49,7 +49,7 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
     class Meta:
         template = "home/blocks/featured_items.html"
-        help_text = "Block used feature a pages from within and external to Wagtail"
+        help_text = "Block used to feature pages from within and external to Wagtail"
         icon = "fa-list"
 
 
