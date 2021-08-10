@@ -5,7 +5,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from ..authors.blocks import AuthorBlock
-from ..media.blocks import EtnaMediaBlock
+from ..media.blocks import MediaBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
@@ -131,7 +131,7 @@ class InsightsPageStreamBlock(blocks.StreamBlock):
     author = AuthorBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
-    media = EtnaMediaBlock()
+    media = MediaBlock()
     paragraph_with_heading = ParagraphWithHeading()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()

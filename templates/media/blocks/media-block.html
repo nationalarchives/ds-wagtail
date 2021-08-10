@@ -1,0 +1,21 @@
+{% load wagtailimages_tags %}
+{% load media_tags %}
+
+{% image value.background_image fill-800x700 as bg_image %}
+
+<div class="media-embed" style="background: url('{{ bg_image.url }}');">
+    <div class="media-embed__overlay"></div>
+    <div class="container">
+        <div class="media-embed__content-panel">
+
+        {% with value.media as media %}
+            {% if media.type == "audio"%}
+                {% audio media %}
+            {% else %}
+                {% video media %}
+            {% endif %}
+        {% endwith %}
+
+        </div>
+    </div>
+</div>

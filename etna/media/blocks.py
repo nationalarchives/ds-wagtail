@@ -3,34 +3,31 @@ from django.utils.html import format_html, format_html_join
 from django.template.loader import render_to_string
 
 from wagtail.core import blocks
-from wagtailmedia.blocks import ChooserBlock, AbstractMediaChooserBlock
+from wagtail.images.blocks import ImageChooserBlock
+from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 
-class EtnaMediaBlock(AbstractMediaChooserBlock):
+class MediaChooserBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
-        if not value:
-            return ""
+        """
+        AbstractMediaChooserBlock requires this method to be defined
+        even though it is only called if no template is specified.
 
-        context = {
-            "value": value,
-            "src": value.sources[0]["src"],
-            "type": value.sources[0]["type"],
-        }
+        https://github.com/wagtail/wagtail/blob/8413d00bdd03c447900019961d604186e17d2870/wagtail/core/blocks/base.py#L206
+        """
+        pass
 
-        # Check for empty rich text fields.
-        if value.description == "<p></p>":
-            value.description = None
 
-        if value.transcript == "<p></p>":
-            value.transcript = None
-
-        # Render using the appropriate template.
-        if value.type == "audio":
-            return render_to_string("media/blocks/media-block--audio.html", context)
-        elif value.type == "video":
-            return render_to_string("media/blocks/media-block--video.html", context)
-        else:
-            return ""
+class MediaBlock(blocks.StructBlock):
+    """
+    Embedded media block with a selectable background image.
+    """
+    background_image = ImageChooserBlock(
+        help_text="A background image for the media block"
+    )
+    media = MediaChooserBlock()
 
     class Meta:
+        template = "media/blocks/media-block.html"
+        help_text = "An embedded audio or video block"
         icon = "fa-play"
