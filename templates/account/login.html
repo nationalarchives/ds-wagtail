@@ -26,10 +26,17 @@
                       action="{% url 'account_login' %}" id="analytics-sign-in">
                     {% csrf_token %}
 
-                    {% if form.errors %}
+                    {% if form.non_field_errors or form.errors %}
                         <div class="tna-form__error-summary" role="alert" id="analytics-error-message">
                             <h2>There is a problem.</h2>
-                            <p>Check the highlighted fields below.</p>
+                            {% if not form.non_field_errors %}
+                                <p>Check the highlighted fields below.</p>
+                            {% endif %}
+                            {% if form.non_field_errors %}
+                                {% for error in form.non_field_errors %}
+                                    <p>{{ error|escape }}</p>
+                                {% endfor %}
+                            {% endif %}
                         </div>
                     {% endif %}
 
@@ -50,8 +57,10 @@
 
                     <div class="tna-form__row {% if form.password.errors %}tna-form__row--error{% endif %}">
                         <label for="id_password" id="password_label">Password</label>
-                        <input type="password" name="password" autocomplete="current-password" id="id_password" aria-required="true"
-                               {% if form.password.errors %}aria-invalid="true" aria-describedby="password_label password_errors"{% endif %}
+                        <input type="password" name="password" autocomplete="current-password" id="id_password"
+                               aria-required="true"
+                               {% if form.password.errors %}aria-invalid="true"
+                               aria-describedby="password_label password_errors"{% endif %}
                                {% if form.password.errors %}class="error"{% endif %}>
 
                         {% if form.password.errors %}
