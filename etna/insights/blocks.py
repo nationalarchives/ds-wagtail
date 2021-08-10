@@ -4,7 +4,6 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from ..authors.blocks import AuthorBlock
 from ..media.blocks import MediaBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
@@ -128,7 +127,6 @@ class RelatedItemsBlock(blocks.StructBlock):
 
 
 class InsightsPageStreamBlock(blocks.StreamBlock):
-    author = AuthorBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     media = MediaBlock()
