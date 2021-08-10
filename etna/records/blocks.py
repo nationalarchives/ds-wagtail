@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from wagtail.core.blocks import ChooserBlock
@@ -59,13 +60,21 @@ class RecordChooserBlock(ChooserBlock):
         value is found within the passed queryset. Unfortunately, this
         isn't possible using externally-held data.
 
-        We can safely assume that if record can be selected then therefore it's
-        a valid choice for this chooser.
+        Raise Validation error if form is submitted without a value.
         """
+        if not value:
+            raise ValidationError("Field must contain a valid record")
+
         return value
 
     def value_from_form(self, value):
         """Convert the stored IAID into a RecordPage"""
+
+        if not value:
+            # if there's no value in the form, return None, the error will be
+            # picked up in self.clean()
+            return value
+
         try:
             return self.target_model.search.get(iaid=value)
         except KongError:
