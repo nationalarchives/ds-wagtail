@@ -7,17 +7,23 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 
-class EtnaMediaBlock(AbstractMediaChooserBlock):
+class MediaChooserBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
+        """
+        AbstractMediaChooserBlock requires this method to be defined
+        even though it is only called if no template is specified.
+        """
         pass
 
 
 class MediaBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, required=True)
+    """
+    Embedded media block with a selectable background image.
+    """
     background_image = ImageChooserBlock(
         help_text="A background image for the media block"
     )
-    media = EtnaMediaBlock()
+    media = MediaChooserBlock()
 
     class Meta:
         template = "media/blocks/media-block.html"
