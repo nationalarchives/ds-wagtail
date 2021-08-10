@@ -12,6 +12,8 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         """
         AbstractMediaChooserBlock requires this method to be defined
         even though it is only called if no template is specified.
+
+        https://github.com/wagtail/wagtail/blob/8413d00bdd03c447900019961d604186e17d2870/wagtail/core/blocks/base.py#L206
         """
         pass
 
