@@ -487,9 +487,9 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
-    def test_taxonomy(self):
+    def test_topics(self):
         self.assertEqual(
-            self.record_page.taxonomy,
+            self.record_page.topics,
             [
                 {
                     "title": "Taxonomy One",
