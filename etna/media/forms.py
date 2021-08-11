@@ -3,7 +3,6 @@ import magic
 from django import forms
 from django.core.exceptions import ValidationError
 
-from wagtail import VERSION as WAGTAIL_VERSION
 from wagtail.admin import widgets
 
 from wagtailmedia.permissions import permission_policy as media_permission_policy
