@@ -1,5 +1,5 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render, Http404
-
 
 from ..models import Image, RecordPage
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
@@ -28,6 +28,10 @@ def record_page_disambiguation_view(request, reference_number):
     if len(pages) == 1:
         page = pages[0]
         return record_page_view(request, page.iaid)
+
+    page_number = request.GET.get("page", 1)
+    paginator = Paginator(pages, 20)
+    pages = paginator.get_page(page_number)
 
     return render(
         request,
