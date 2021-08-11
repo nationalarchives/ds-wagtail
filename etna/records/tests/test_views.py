@@ -194,9 +194,10 @@ class TestImageServeView(TestCase):
             status=404,
         )
 
-        response = self.client.get("/records/missing/image.jpeg")
+        response = self.client.get("/records/image/missing/image.jpeg")
 
         self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.resolver_match.url_name, "image-serve")
 
     @responses.activate
     def test_success(self):
@@ -208,7 +209,7 @@ class TestImageServeView(TestCase):
             stream=True,
         )
 
-        response = self.client.get("/records/media/valid/path.jpg")
+        response = self.client.get("/records/image/valid/path.jpg")
 
         self.assertEquals(response["content-type"], "image/jpeg")
         self.assertEquals(response.status_code, 200)
@@ -231,9 +232,10 @@ class TestImageBrowseView(TestCase):
                 ]
             ),
         )
-        response = self.client.get("/image-browse/C123456/")
+        response = self.client.get("/records/images/C123456/")
 
         self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.resolver_match.url_name, "image-browse")
 
     @responses.activate
     def test_image_browse_record_with_no_media(self):
@@ -248,9 +250,10 @@ class TestImageBrowseView(TestCase):
                 ]
             ),
         )
-        response = self.client.get("/image-browse/C123456/")
+        response = self.client.get("/records/images/C123456/")
 
         self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.resolver_match.url_name, "image-browse")
 
     @responses.activate
     def test_success(self):
@@ -279,9 +282,10 @@ class TestImageBrowseView(TestCase):
             stream=True,
         )
 
-        response = self.client.get("/image-browse/C123456/")
+        response = self.client.get("/records/images/C123456/")
 
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.url_name, "image-browse")
 
 
 @override_settings(
@@ -300,9 +304,10 @@ class TestImageViewerView(TestCase):
                 ]
             ),
         )
-        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+        response = self.client.get("/records/images/C123456/01/")
 
         self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.resolver_match.url_name, "image-viewer")
 
     @responses.activate
     def test_image_browse_record_with_no_media(self):
@@ -317,9 +322,10 @@ class TestImageViewerView(TestCase):
                 ]
             ),
         )
-        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+        response = self.client.get("/records/images/C123456/01/")
 
         self.assertEquals(response.status_code, 404)
+        self.assertEquals(response.resolver_match.url_name, "image-viewer")
 
     @responses.activate
     def test_success(self):
@@ -350,6 +356,7 @@ class TestImageViewerView(TestCase):
             stream=True,
         )
 
-        response = self.client.get("/image-viewer/C123456/location/path/to/image.jpeg")
+        response = self.client.get("/records/images/C123456/01/")
 
         self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.url_name, "image-viewer")

@@ -5,7 +5,7 @@
 
 {{ images.has_other_pages }}
 
-    {% with images_count=paginator.count %}
+    {% with images_count=images.count %}
         <div class="image-viewer" data-container-name="image-viewer" id="analytics-image-viewer">
             <div class="image-viewer__header">
                 <div class="image-viewer__reference">
@@ -51,8 +51,8 @@
                 </nav>
                 <nav class="image-viewer__pagination" aria-label="Pagination">
                     <ul>
-                        <li><a href="{% url 'image-viewer' page.iaid previous_image.location %}">Previous</a></li>
-                        <li><a href="{% url 'image-viewer' page.iaid next_image.location %}">Next</a></li>
+                        <li><a href="{% url 'image-viewer' page.iaid previous_image.sort %}">Previous</a></li>
+                        <li><a href="{% url 'image-viewer' page.iaid next_image.sort %}">Next</a></li>
                     </ul>
                 </nav>
             </div>

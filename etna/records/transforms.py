@@ -83,5 +83,6 @@ def transform_image_result(result):
     data = {}
 
     data["location"] = result["_source"]["processed"]["original"]["location"]
+    data["sort"] = result["_source"]["sort"]
 
     return data
