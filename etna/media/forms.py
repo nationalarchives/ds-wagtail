@@ -33,8 +33,16 @@ class BaseMediaForm(BaseCollectionMemberForm):
 
     def clean_file(self):
         error_messages = {
-            "mime_type": "%(filename)s is not a valid %(type)s file.",
+            "mime_type": "%(filename)s (%(mime_type)s) is not an allowed %(type)s file.",
         }
+
+        audio_types = [
+            "audio/mpeg",
+        ]
+
+        video_types = [
+            "video/mp4",
+        ]
 
         data = self.cleaned_data['file']
         mime_type = magic.from_buffer(data.read(), mime=True)
@@ -42,15 +50,16 @@ class BaseMediaForm(BaseCollectionMemberForm):
 
         params = {
             "filename": data,
+            "mime_type": mime_type,
             "type": self.instance.type,
         }
 
         # Ensure file is a valid type for the current instance.
         if self.instance.type == "audio":
-            if mime_type != "audio/mpeg":
+            if mime_type not in audio_types:
                 raise ValidationError(error_messages["mime_type"], params=params)
         else:
-            if mime_type != "video/mp4":
+            if mime_type not in video_types:
                 raise ValidationError(error_messages["mime_type"], params=params)
 
         return data
