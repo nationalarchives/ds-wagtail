@@ -1,4 +1,4 @@
-import Openseadragon  from "openseadragon"
+import Openseadragon from "openseadragon"
 
 if (image_source) {
     const seadragon_options = {
