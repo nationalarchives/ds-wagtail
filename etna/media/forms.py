@@ -9,6 +9,8 @@ from wagtail.admin import widgets
 from wagtailmedia.permissions import permission_policy as media_permission_policy
 from wagtail.admin.forms.collections import BaseCollectionMemberForm, collection_member_permission_formset_factory
 
+from django.forms.models import modelform_factory
+
 
 class BaseMediaForm(BaseCollectionMemberForm):
     class Meta:
@@ -16,7 +18,6 @@ class BaseMediaForm(BaseCollectionMemberForm):
             "date": widgets.AdminDateInput,
             "tags": widgets.AdminTagWidget,
             "file": forms.FileInput,
-            "thumbnail": forms.ClearableFileInput,
         }
 
     permission_policy = media_permission_policy
@@ -24,8 +25,8 @@ class BaseMediaForm(BaseCollectionMemberForm):
     def __init__(self, *args, **kwargs):
         super(BaseMediaForm, self).__init__(*args, **kwargs)
 
-        # Remove unused width & height fields.
-        for name in ("width", "height"):
+        # Remove unused fields.
+        for name in ("width", "height", "thumbnail"):
             # these fields might be editable=False so verify before accessing
             if name in self.fields:
                 del self.fields[name]
