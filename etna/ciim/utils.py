@@ -116,7 +116,7 @@ def resolve_links(markup):
         if link := pq(span).attr("href"):
             return pq(f'<a href="{link}">{pq(span).text()}</a>')
 
-        return ''
+        return ""
 
     document(".extref").each(lambda _, e: pq(e).replace_with(link_from_span(e)))
 
