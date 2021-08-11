@@ -23,10 +23,7 @@ def transform_record_page_result(result):
         data["created_by"] = pluck(
             origination, accessor=lambda i: i["creator"][0]["name"][0]["value"]
         )
-        if origination["date"]["value"] != "undated":
-            data["date_start"] = origination["date"]["earliest"]["from"]
-            data["date_end"] = origination["date"]["latest"]["to"]
-            data["date_range"] = origination["date"]["value"]
+        data["origination_date"] = origination["date"]["value"]
 
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
