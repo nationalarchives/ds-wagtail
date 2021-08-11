@@ -1,4 +1,4 @@
-import {add_analytics_data_card_position} from './modules/analytics_card_position'
+import add_analytics_data_card_position from './modules/analytics/card_position'
 
 add_analytics_data_card_position('.card-group-promo--green');
 add_analytics_data_card_position('.card-group-secondary-nav__link');
