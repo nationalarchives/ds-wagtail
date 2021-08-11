@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% load static %}
+{% load i18n %}
 {% load datalayer_tags %}
+
+{% block title %}
+    {{ page.title }} - {% trans 'The National Archives' %}
+{% endblock %}
 
 {% block extra_gtm_js %}
 {{ page | datalayer:request | json_script:"datalayer" }}
