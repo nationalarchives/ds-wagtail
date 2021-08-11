@@ -37,5 +37,9 @@
   &__citation {
     text-align: right;
     padding-right: 2rem;
+
+    cite {
+      font-style: normal;
+    }
   }
 }
