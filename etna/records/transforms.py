@@ -23,7 +23,9 @@ def transform_record_page_result(result):
         data["created_by"] = pluck(
             origination, accessor=lambda i: i["creator"][0]["name"][0]["value"]
         )
-        data["origination_date"] = origination["date"]["value"]
+        data["origination_date"] = pluck(
+            origination, accessor=lambda i: i["date"]["value"]
+        )
 
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
@@ -55,7 +57,7 @@ def transform_record_page_result(result):
                 "reference_number": i["identifier"][0]["reference_number"],
                 "title": i["@summary"]["title"],
             }
-            for i in hierarchy[0]
+            for i in hierarchy[0] if 'identifier' in i
         ]
 
     if availability := source.get("availability"):

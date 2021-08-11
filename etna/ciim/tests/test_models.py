@@ -487,9 +487,9 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
-    def test_taxonomy(self):
+    def test_topics(self):
         self.assertEqual(
-            self.record_page.taxonomy,
+            self.record_page.topics,
             [
                 {
                     "title": "Taxonomy One",
@@ -502,3 +502,53 @@ class ModelTranslationTest(TestCase):
                 },
             ],
         )
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+)
+class UnexpectedParsingIssueTest(TestCase):
+    """A collection of tests verifying fixes for real-world (but unexpected)
+    issues with data returned by Kong"""
+
+    @responses.activate
+    def test_hierarchy_with_no_identifier_is_skipped(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456",
+                        hierarchy=[
+                            {
+                                "@summary": {
+                                    "title": "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:..."
+                                },
+                            },
+                        ],
+                    ),
+                ]
+            ),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        self.assertEqual(record_page.hierarchy, [])
+
+    @responses.activate
+    def test_record_with_origination_but_no_date(self):
+        record = create_record(
+            iaid="C123456",
+        )
+        del record['_source']['@origination']['date']
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(records=[record]),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        self.assertEqual(record_page.origination_date, None)

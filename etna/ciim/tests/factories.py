@@ -10,7 +10,11 @@ def create_record(
     latest="2100",
     is_digitised=False,
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
+    hierarchy=None,
 ):
+    if not hierarchy:
+        hierarchy = []
+
     """Return a sample response for a record.
 
     Useful for tidying up tests where response needs to be mocked
@@ -34,6 +38,7 @@ def create_record(
                 },
             },
             "digitised": is_digitised,
+            "hierarchy" : [hierarchy],
             "@summary": {
                 "title": title,
             },

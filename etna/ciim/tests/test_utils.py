@@ -61,6 +61,23 @@ class TestResolveLinks(SimpleTestCase):
             stripped_markup,
         )
 
+    def test_invalid_link(self):
+        # C3829405 contains an span.extref with no href
+        markup = (
+            "<span>"
+            '<span class="extref">Invalid link</span>'
+            "</span>"
+        )
+
+        stripped_markup = format_description_markup(markup)
+
+        self.assertEquals(
+            (
+                '<span></span>'
+            ),
+            stripped_markup,
+        )
+
 
 class TestPluck(SimpleTestCase):
     def test_pluck_from_dict_in_list(self):
