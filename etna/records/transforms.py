@@ -70,6 +70,14 @@ def transform_record_page_result(result):
             data["availablility_delivery_condition"] = delivery["condition"]["value"]
             data["availablility_delivery_surrogates"] = delivery.get("surrogate")
 
+    if topics := source.get("topic"):
+        data["topics"] = [
+            {
+                "title": i["@summary"]["title"],
+            }
+            for i in topics
+        ]
+
     data["media_reference_id"] = pluck(
         source.get("multimedia"), accessor=lambda i: i["@admin"]["id"]
     )

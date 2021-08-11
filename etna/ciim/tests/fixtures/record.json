@@ -217,6 +217,23 @@
               "value" : "1885-1979"
             }
           },
+          "topic" : [
+            {
+              "@summary": {
+                "title" : "Taxonomy One"
+              }
+            },
+            {
+              "@summary": {
+                "title" : "Taxonomy Two"
+              }
+            },
+            {
+              "@summary": {
+                "title" : "Taxonomy Three"
+              }
+            }
+          ],
           "parent" : [
             {
               "@entity" : "reference",

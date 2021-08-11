@@ -40,9 +40,10 @@
 
                 {% include "includes/records/record-details.html" %}
 
-                <h2>Topics covered in this record</h2>
-
-                {% include "includes/records/taxonomy-tags.html" %}
+                {% if page.topics %}
+                    <h2>Topics covered in this record</h2>
+                    {% include "includes/records/taxonomy-tags.html" %}
+                {% endif %}
             </div>
         </div>
     </div>
