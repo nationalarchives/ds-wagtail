@@ -32,7 +32,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
     subpage_types = ["insights.InsightsPage"]
 
 
-class InsightsPage(HeroImageMixin, Page):
+class InsightsPage(HeroImageMixin, TeaserImageMixin, Page):
     """InsightsPage
 
     The InsightsPage model.
@@ -49,6 +49,8 @@ class InsightsPage(HeroImageMixin, Page):
             StreamFieldPanel("body"),
         ]
     )
+
+    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
     parent_page_types = ["insights.InsightsIndexPage"]
     subpage_types = []
