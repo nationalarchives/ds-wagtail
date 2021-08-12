@@ -10,7 +10,7 @@
         <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record_page.title }}">
             <h4 class="card-group-record-summary__heading">{{ record_page.title }}</h4>
             <div class="card-group-record-summary__body">
-                <p>{{ description_override|default:record_page.description|striptags }}</p>
+                <p>{{ description_override|default:record_page.description|striptags|truncatewords:40 }}</p>
             </div>
         </a>
     </div>
