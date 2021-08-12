@@ -247,6 +247,12 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
+RESTRICTED_RICH_TEXT_FEATURES = [
+    "bold",
+    "italic",
+    "link",
+    "ul",
+]
 
 
 # Analytics
