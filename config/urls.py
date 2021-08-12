@@ -30,11 +30,6 @@ urlpatterns = [
         records_views.record_page_disambiguation_view,
         name="details-page-human-readable",
     ),
-    path(
-        r"catalogue/<reference_number:reference_number>/~<int:pseudo_reference>/",
-        records_views.record_page_disambiguation_view,
-        name="details-page-human-readable-with-pseudo-reference",
-    ),
 
     path(
         "records/image/<path:location>",
