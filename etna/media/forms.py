@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from wagtail.admin import widgets
 
 from wagtailmedia.permissions import permission_policy as media_permission_policy
-from wagtail.admin.forms.collections import BaseCollectionMemberForm, collection_member_permission_formset_factory
+from wagtail.admin.forms.collections import BaseCollectionMemberForm
 
 from django.forms.models import modelform_factory
 
