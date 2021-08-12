@@ -34,8 +34,13 @@ class FeaturedRecordsBlock(blocks.StructBlock):
 class PromotedItemBlock(blocks.StructBlock):
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
     category = SnippetChooserBlock("categories.Category")
-    publication_date = blocks.DateBlock()
-    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
+    duration = blocks.CharBlock(
+        required=False,
+        max_length=50,
+        label="Duration/Read time",
+        help_text="Podcast or video duration. Or estimated read time of article."
+    )
+    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     cta_label = blocks.CharBlock(
         label="CTA label", max_length=50, help_text="The button label"
     )

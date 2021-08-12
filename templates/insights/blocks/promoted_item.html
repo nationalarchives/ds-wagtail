@@ -26,9 +26,11 @@
             {{ value.title }}
         </h3>
 
-        <p class="blog-embed__date">
-            Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+        {% if value.duration %}
+        <p class="blog-embed__text">
+            {{ value.duration }}
         </p>
+        {% endif %}
 
         <div class="blog-embed__image-container">
             <picture>
