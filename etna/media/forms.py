@@ -26,7 +26,6 @@ class BaseMediaForm(BaseCollectionMemberForm):
 
         # Remove unused fields.
         for name in ("width", "height", "thumbnail"):
-            # these fields might be editable=False so verify before accessing
             if name in self.fields:
                 del self.fields[name]
 
