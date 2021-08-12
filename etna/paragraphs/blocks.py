@@ -8,7 +8,7 @@ class ParagraphWithHeading(blocks.StructBlock):
     Paragraph with heading streamfield component.
     """
     heading = blocks.CharBlock(required=True, max_length=100)
-    paragraph = blocks.RichTextBlock(required=True, features=settings.INLINE_RICH_TEXT_FEATURES)
+    paragraph = blocks.RichTextBlock(required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
     class Meta:
         icon = 'fa-paragraph'

@@ -16,6 +16,10 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
+    {% for block in page.body %}
+        {% include_block block %}
+    {% endfor %}
+
     <div class="container mt-4" data-container-name="{{ page.title }}">
         <ul class="card-group--list-style-none">
             {% for insights_page in insights_pages %}

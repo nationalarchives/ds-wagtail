@@ -126,6 +126,10 @@ class RelatedItemsBlock(blocks.StructBlock):
         }
 
 
+class InsightsIndexPageStreamBlock(blocks.StreamBlock):
+    paragraph = ParagraphWithHeading()
+
+
 class InsightsPageStreamBlock(blocks.StreamBlock):
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()

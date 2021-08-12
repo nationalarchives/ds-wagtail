@@ -7,7 +7,7 @@ from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 
-from .blocks import InsightsPageStreamBlock
+from .blocks import InsightsIndexPageStreamBlock, InsightsPageStreamBlock
 
 
 class InsightsIndexPage(TeaserImageMixin, Page):
@@ -17,6 +17,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(InsightsIndexPageStreamBlock, blank=True, null=True)
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -26,6 +27,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("sub_heading"),
+        StreamFieldPanel("body"),
     ]
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
 
