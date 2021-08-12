@@ -88,59 +88,49 @@ class TestHumanReadableDetailsWithPseudoReferenceRouteResolution(TestCase):
     def test_resolves_reference_number_lettercode(self):
         resolver = resolve("/catalogue/CP/~3/")
 
-        self.assertEqual(
-            resolver.view_name, "details-page-human-readable-with-pseudo-reference"
-        )
-        self.assertEqual(resolver.kwargs["reference_number"], "CP")
-        self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
+        self.assertEqual(resolver.view_name, "details-page-human-readable")
+        self.assertEqual(resolver.kwargs["reference_number"], "CP/~3")
 
     def test_resolves_reference_number(self):
         resolver = resolve("/catalogue/PROB/1/4/~3/")
 
-        self.assertEqual(
-            resolver.view_name, "details-page-human-readable-with-pseudo-reference"
-        )
-        self.assertEqual(resolver.kwargs["reference_number"], "PROB/1/4")
-        self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
+        self.assertEqual(resolver.view_name, "details-page-human-readable")
+        self.assertEqual(resolver.kwargs["reference_number"], "PROB/1/4/~3")
 
     def test_resolves_with_longest_reference_number(self):
         resolver = resolve(
             "/catalogue/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3/"
         )
 
-        self.assertEqual(
-            resolver.view_name, "details-page-human-readable-with-pseudo-reference"
-        )
+        self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(
             resolver.kwargs["reference_number"],
-            "LAB/2/1782/SandER106/1934/Part25and27-28and30to32",
+            "LAB/2/1782/SandER106/1934/Part25and27-28and30to32/~3",
         )
-        self.assertEqual(resolver.kwargs["pseudo_reference"], 3)
 
 
 class TestHumanReadableDetailsWithPseudoReferenceURL(TestCase):
     def test_reverse_reference_number_lettercode(self):
         url = reverse(
-            "details-page-human-readable-with-pseudo-reference",
-            kwargs={"reference_number": "CP", "pseudo_reference": 3},
+            "details-page-human-readable",
+            kwargs={"reference_number": "CP/~3"},
         )
 
         self.assertEqual(url, "/catalogue/CP/~3/")
 
     def test_reverse_reference_number(self):
         url = reverse(
-            "details-page-human-readable-with-pseudo-reference",
-            kwargs={"reference_number": "PROB 1/4", "pseudo_reference": 3},
+            "details-page-human-readable",
+            kwargs={"reference_number": "PROB 1/4/~3"},
         )
 
         self.assertEqual(url, "/catalogue/PROB/1/4/~3/")
 
     def test_reverse_with_longest_reference_number(self):
         url = reverse(
-            "details-page-human-readable-with-pseudo-reference",
+            "details-page-human-readable",
             kwargs={
-                "reference_number": "LAB 2/1782/SandER106/1934/Part25and27-28and30to32",
-                "pseudo_reference": 3,
+                "reference_number": "LAB 2/1782/SandER106/1934/Part25and27-28and30to32/~3",
             },
         )
 
@@ -177,7 +167,9 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
         self.assertEquals(resolver.func, views.record_page_view)
         self.assertEqual(resolver.view_name, "details-page-machine-readable")
-        self.assertEqual(resolver.kwargs["iaid"], "43f766a9-e968-4b82-93dc-8cf11a841d41")
+        self.assertEqual(
+            resolver.kwargs["iaid"], "43f766a9-e968-4b82-93dc-8cf11a841d41"
+        )
 
 
 class TestMachineReadableDetailsURL(TestCase):
@@ -187,6 +179,9 @@ class TestMachineReadableDetailsURL(TestCase):
         self.assertEqual(url, "/catalogue/C7810139/")
 
     def test_reverse_uuid(self):
-        url = reverse("details-page-machine-readable", kwargs={"iaid": "43f766a9-e968-4b82-93dc-8cf11a841d41"})
+        url = reverse(
+            "details-page-machine-readable",
+            kwargs={"iaid": "43f766a9-e968-4b82-93dc-8cf11a841d41"},
+        )
 
         self.assertEqual(url, "/catalogue/43f766a9-e968-4b82-93dc-8cf11a841d41/")

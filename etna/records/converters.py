@@ -18,7 +18,7 @@ class ReferenceNumberConverter:
 
     """
 
-    regex = r"(\w|/|-)+"
+    regex = r"(\w|/|-|~)+"
 
     def to_python(self, value):
         """Convert captured router parameters to reference number."""
