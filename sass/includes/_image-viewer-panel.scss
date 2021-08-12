@@ -13,17 +13,31 @@
       display: block;
       margin: 0 auto;
     }
+  }
 
-    a {
-      padding: 2rem 1rem 2rem 2.5rem;
-      display: inline-block;
+  &__text-link {
+    padding: 2rem 1rem 2rem 2.5rem;
+    display: inline-block;
+    color: $color__white;
+    background: url($fa_search_plus) no-repeat center left;
+    background-size: 1.75rem;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: top;
+    font-size: 1.1rem;
+
+    &:visited {
       color: $color__white;
-      background: url($fa_search_plus) no-repeat center left;
-      background-size: 1.75rem;
-      text-align: center;
-      font-weight: bold;
-      vertical-align: top;
-      font-size: 1.1rem;
+    }
+
+    &:focus {
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+    }
+  }
+
+  &__image-link:hover, &__image-link:focus {
+    img {
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
     }
   }
 }
