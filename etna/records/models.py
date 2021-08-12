@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from django.db import models
 
-from wagtail.core.models import Page
+from wagtail.core.models import Page, Site
 
 from ..ciim.models import SearchManager, MediaManager
 from .transforms import transform_record_page_result, transform_image_result
@@ -52,6 +52,13 @@ class RecordPage(Page):
         self._debug_kong_result = kwargs.pop("_debug_kong_result", None)
 
         super().__init__(*args, **kwargs)
+
+    def get_site(self):
+        """Override to return the Site instance despite this page not belonging to the CMS.
+
+        Site is used by base.html to add the site name to the page's <title>
+        """
+        return Site.objects.first()
 
     def __str__(self):
         return f"{self.title} ({self.iaid})"
