@@ -138,11 +138,6 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
 
 
-class TestRecordDescriptionOverride(TestCase):
-    def setUp(self):
-        self.results_page = ResultsPage()
-
-
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class TestRecordDescriptionOverride(TestCase):
     def setUp(self):
@@ -186,3 +181,60 @@ class TestRecordDescriptionOverride(TestCase):
 
         self.assertNotContains(response, "This is the description from Kong")
         self.assertContains(response, "This is the overridden description")
+
+
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+class TestResultsPageIntegration(TestCase):
+    def setUp(self):
+        root_page = Site.objects.get().root_page
+
+        self.results_page = ResultsPage(
+            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+        )
+
+        root_page.add_child(instance=self.results_page)
+
+    @responses.activate
+    def test_failed_result_fetch_due_to_404(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            status=404
+        )
+
+        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.save()
+
+        response = self.client.get("/results-page/")
+
+        self.assertEquals(200, response.status_code)
+
+    @responses.activate
+    def test_failed_result_fetch_due_to_500(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            status=500
+        )
+
+        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.save()
+
+        response = self.client.get("/results-page/")
+
+        self.assertEquals(200, response.status_code)
+
+    @responses.activate
+    def test_failed_result_fetch_due_to_empty_result_set(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response()
+        )
+
+        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.save()
+
+        response = self.client.get("/results-page/")
+
+        self.assertEquals(200, response.status_code)

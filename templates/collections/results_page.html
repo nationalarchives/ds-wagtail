@@ -28,7 +28,15 @@
                         <h3 class="sr-only">Items</h3>
                         <ul class="card-group--list-style-none" id="analytics-explorer-results" data-container-name="explorer-results">
                             {% for record_page_result in page.records.all %}
-                                {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
+                                {% comment %}
+                                 It's possible for the request for record data from Kong could fail
+                                 resulting in no record page being associated with ResultsPageRecordPage.
+
+                                 If so, skip the record.
+                                {% endcomment %}
+                                {% if record_page_result.record_page %}
+                                    {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
+                                {% endif %}
                             {% endfor %}
                         </ul>
                     </div>
