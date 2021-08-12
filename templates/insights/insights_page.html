@@ -5,12 +5,12 @@
 {% load datalayer_tags sections_tags %}
 
 {% block extra_gtm_js %}
-{{ page | datalayer:request | json_script:"datalayer" }}
+    {{ page | datalayer:request | json_script:"datalayer" }}
 
-<script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
-</script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
+    </script>
 {% endblock extra_gtm_js %}
 
 {% block content %}

@@ -44,6 +44,7 @@ def get_availability_condition_category(page):
     return settings.AVAILABILITY_CONDITION_CATEGORIES.get(availability_condition, "")
 
 
+@register.filter
 def datalayer(page, request) -> dict:
     """
     Return Datalayer data for a Page object.
@@ -70,7 +71,19 @@ def datalayer(page, request) -> dict:
         "customDimension15": "",    # This is the catalogueDataSource where applicable. Empty string if not applicable.
         "customDimension16": get_availability_condition_category(page), # This is the availability condition category where applicable. Empty string if not applicable.
         "customDimension17": get_availability_condition(page),          # This is the availability condition where applicable. Empty string if not applicable.
-        "customDimension18": "",    # The number of images shown in browse where applicable. Empty string if not applicable.
     }
 
-register.filter("datalayer", datalayer)
+
+@register.simple_tag(takes_context=True)
+def image_browse_datalayer(context) -> dict:
+    """Custom tag for image browse datalayer.
+
+    Image browse isn't a page served by Wagtail, therefore we're unable to
+    query the page object to populate the datalayer.
+    """
+    return {
+        "contentGroup1": "TNA catalogue",
+        "customDimension1": "offsite",
+        "customDimension2": context['request'].user.id,  # The user type and is private beta specific - the user ID for participants.
+        "customDimension18": context.get("images_count", ''),
+    }

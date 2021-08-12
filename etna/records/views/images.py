@@ -75,7 +75,10 @@ def image_browse(request, iaid):
         {
             "page": page,
             "images": images,
-            "paginator": paginator,
+            # Obtaining the count requires a network request.
+            # Pass the value to the template to prevent 
+            # unexpected performance issues
+            "images_count": paginator.count, 
         },
     )
 

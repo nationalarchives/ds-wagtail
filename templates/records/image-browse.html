@@ -1,30 +1,39 @@
 {% extends 'base-images.html' %}
+
 {% load static %}
+{% load datalayer_tags %}
+
+{% block extra_gtm_js %}
+    {% image_browse_datalayer as datalayer %}
+    {{ datalayer | json_script:"datalayer" }}
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
+    </script>
+{% endblock extra_gtm_js %}
 
 {% block content %}
-    {% with images_count=images.paginator.count %}
-        <div class="image-browse">
-            <div class="image-browse__header">
-                <div class="image-browse__reference_and_count">
-                    <h1><strong>{{ page.reference_number }}</strong>
-                        <span>- {{ images_count }} images</span>
-                    </h1>
-                </div>
-                <div class="image-browse__details_navigation">
-                    <a href="{% url 'details-page-human-readable' page.reference_number %}">View catalogue details</a>
-                </div>
+    <div class="image-browse">
+        <div class="image-browse__header">
+            <div class="image-browse__reference_and_count">
+                <h1><strong>{{ page.reference_number }}</strong>
+                    <span>- {{ images_count }} images</span>
+                </h1>
             </div>
-            <ul class="image-browse__listing">
-                {% for image in images %}
-                    <li style="background-image:url({% url 'image-serve' location=image.location %})">
-                        <a href="{% url 'image-viewer' page.iaid image.sort %}">
-                            <span>Image {{ images.start_index|add:forloop.counter0 }} of {{ images_count }}</span>
-                        </a>
-                    </li>
-                {% endfor %}
-            </ul>
+            <div class="image-browse__details_navigation">
+                <a href="{% url 'details-page-human-readable' page.reference_number %}">View catalogue details</a>
+            </div>
         </div>
-    {% endwith %}
+        <ul class="image-browse__listing">
+            {% for image in images %}
+                <li style="background-image:url({% url 'image-serve' location=image.location %})">
+                    <a href="{% url 'image-viewer' page.iaid image.sort %}">
+                        <span>Image {{ images.start_index|add:forloop.counter0 }} of {{ images_count }}</span>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
 
     {% if images.has_other_pages %}
         <nav class="pagination" role="navigation" aria-label="Results pagination" data-container-name="Pagination" id="analytics-pagination">
