@@ -615,6 +615,14 @@ cssselect = ">0.7.9"
 lxml = ">=2.1"
 
 [[package]]
+name = "python-magic"
+version = "0.4.24"
+description = "File type identification using libmagic"
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+
+[[package]]
 name = "python3-openid"
 version = "3.2.0"
 description = "OpenID support for modern servers and consumers."
@@ -915,7 +923,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "b5f99995405cede4e690a7baadb82722e653f7f03efd55d4c0007a33e87b323c"
+content-hash = "43614b0f188bf022ecc662b849dafd30a64abb7f36956916e0fc8f049db32dc6"
 
 [metadata.files]
 anyascii = [
@@ -1073,8 +1081,10 @@ cryptography = [
     {file = "cryptography-3.4.7-cp36-abi3-win_amd64.whl", hash = "sha256:de4e5f7f68220d92b7637fc99847475b59154b7a1b3868fb7385337af54ac9ca"},
     {file = "cryptography-3.4.7-pp36-pypy36_pp73-manylinux2010_x86_64.whl", hash = "sha256:26965837447f9c82f1855e0bc8bc4fb910240b6e0d16a664bb722df3b5b06873"},
     {file = "cryptography-3.4.7-pp36-pypy36_pp73-manylinux2014_x86_64.whl", hash = "sha256:eb8cc2afe8b05acbd84a43905832ec78e7b3873fb124ca190f574dca7389a87d"},
+    {file = "cryptography-3.4.7-pp37-pypy37_pp73-macosx_10_10_x86_64.whl", hash = "sha256:b01fd6f2737816cb1e08ed4807ae194404790eac7ad030b34f2ce72b332f5586"},
     {file = "cryptography-3.4.7-pp37-pypy37_pp73-manylinux2010_x86_64.whl", hash = "sha256:7ec5d3b029f5fa2b179325908b9cd93db28ab7b85bb6c1db56b10e0b54235177"},
     {file = "cryptography-3.4.7-pp37-pypy37_pp73-manylinux2014_x86_64.whl", hash = "sha256:ee77aa129f481be46f8d92a1a7db57269a2f23052d5f2433b4621bb457081cc9"},
+    {file = "cryptography-3.4.7-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:bf40af59ca2465b24e54f671b2de2c59257ddc4f7e5706dbd6930e26823668d3"},
     {file = "cryptography-3.4.7.tar.gz", hash = "sha256:3d10de8116d25649631977cb37da6cbdd2d6fa0e0281d014a5b7d337255ca713"},
 ]
 cssselect = [
@@ -1315,6 +1325,10 @@ pyjwt = [
 pyquery = [
     {file = "pyquery-1.4.3-py3-none-any.whl", hash = "sha256:1fc33b7699455ed25c75282bc8f80ace1ac078b0dda5a933dacbd8b1c1f83963"},
     {file = "pyquery-1.4.3.tar.gz", hash = "sha256:a388eefb6bc4a55350de0316fbd97cda999ae669b6743ae5b99102ba54f5aa72"},
+]
+python-magic = [
+    {file = "python-magic-0.4.24.tar.gz", hash = "sha256:de800df9fb50f8ec5974761054a708af6e4246b03b4bdaee993f948947b0ebcf"},
+    {file = "python_magic-0.4.24-py2.py3-none-any.whl", hash = "sha256:4fec8ee805fea30c07afccd1592c0f17977089895bdfaae5fec870a84e997626"},
 ]
 python3-openid = [
     {file = "python3-openid-3.2.0.tar.gz", hash = "sha256:33fbf6928f401e0b790151ed2b5290b02545e8775f982485205a066f874aaeaf"},
