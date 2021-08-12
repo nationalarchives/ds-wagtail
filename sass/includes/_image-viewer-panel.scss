@@ -31,13 +31,13 @@
     }
 
     &:focus {
-      outline: 0.313rem solid $color__blue_5;
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
     }
   }
 
   &__image-link:hover, &__image-link:focus {
     img {
-      outline: 0.313rem solid $color__blue_5;
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
     }
   }
 }
