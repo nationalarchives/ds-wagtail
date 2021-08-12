@@ -11,6 +11,7 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from modelcluster.fields import ParentalKey
 
 from ..alerts.models import AlertMixin
+from ..ciim.exceptions import KongException
 from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
@@ -269,8 +270,15 @@ class ResultsPageRecordPage(Orderable, models.Model):
 
     @cached_property
     def record_page(self):
-        """Fetch associated record page"""
-        return RecordPage.search.get(iaid=self.record_iaid)
+        """Fetch associated record page.
+
+        Capture any exception thrown by KongClient and return None so we can
+        skip this record on the results page.
+        """
+        try:
+            return RecordPage.search.get(iaid=self.record_iaid)
+        except KongException:
+            return None
 
     panels = [
         FieldPanel("record_iaid", widget=RecordChooser),
