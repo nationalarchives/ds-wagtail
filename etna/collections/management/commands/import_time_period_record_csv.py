@@ -1,5 +1,4 @@
-from tempfile import gettempdir
-from contextlib import contextmanager
+from collections import defaultdict
 from pathlib import Path
 from urllib.parse import urlparse
 import csv
@@ -63,13 +62,14 @@ def download_image(url):
 
 
 class Command(BaseCommand):
-
     def add_arguments(self, parser):
         parser.add_argument("path_to_csv", help="Path to CSV file")
 
     def handle(self, *args, path_to_csv=None, **options):
 
         time_period_explorer_index_page = TimePeriodExplorerIndexPage.objects.get()
+
+        result_page_iaids = defaultdict(list)
 
         for row in get_row(path_to_csv):
             try:
@@ -134,3 +134,11 @@ class Command(BaseCommand):
                 results_page.save()
 
             results_page_record.save()
+
+            result_page_iaids[row["result_page_name"]].append(row["iaid"])
+
+        # Check that no records have been removed from results
+        for title, iaids in result_page_iaids.items():
+            results_page = ResultsPage(title=title)
+            if results_page.records.exclude(record_iaid__in=iaids).exists():
+                print("Warning records have been removed.")
