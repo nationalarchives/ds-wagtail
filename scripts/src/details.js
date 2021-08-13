@@ -1,6 +1,10 @@
-import manage_details_element from './modules/manage_details_element'
+import manage_details_element from './modules/manage_details_element';
+import scroll_to_bottom from "./scroll_to_bottom";
 
 const summary_element = document.querySelector('#js-hierarchy-global summary');
+const hierarchy_list = document.querySelector('.hierarchy-global__list');
+
+scroll_to_bottom(hierarchy_list);
 
 summary_element.addEventListener('click', e => {
 
@@ -17,4 +21,3 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("resize", () => {
     manage_details_element();
 });
-
