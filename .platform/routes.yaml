@@ -1,12 +1,19 @@
 # Each route describes how an incoming URL is going to be processed by Platform.sh.
-"https://www.{default}/":
-    type: upstream
-    upstream: "app:http"
 
 "https://{default}/":
-    type: redirect
-    to: "https://www.{default}/"
+    type: upstream
+    upstream: "app:http"
+    cache:
+        enabled: true
+        default_ttl: 300
+        cookies:
+            - sessionid
+            - csrftoken
+            - messages
+        headers:
+            - Accept
+            - Vary
 
 "https://es.{default}":
-  type: upstream
-  upstream: search:elasticsearch
+    type: upstream
+    upstream: search:elasticsearch
