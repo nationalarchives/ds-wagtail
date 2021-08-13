@@ -13,7 +13,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0016_remove_author_block'),
+        ('insights', '0017_alter_richtext_features'),
     ]
 
     operations = [
