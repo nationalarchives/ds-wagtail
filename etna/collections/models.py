@@ -168,7 +168,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
         return (
             self.get_children()
             .type(TimePeriodExplorerPage)
-            .order_by("title")
+            .order_by("timeperiodexplorerpage__start_year")
             .live()
             .public()
             .specific()
