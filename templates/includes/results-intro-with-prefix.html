@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="generic-intro__title">
-                    <span class="generic-intro__title-prefix">Selected highlights of</span>
+                    {% if page.title_prefix %}<span class="generic-intro__title-prefix">{{ page.title_prefix }}</span>{% endif %}
                     {{ self.title }}
                 </h1>
                 {% if page.sub_heading %}
