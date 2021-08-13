@@ -361,6 +361,33 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         )
 
     @responses.activate
+    def test_view_edit_page_with_featured_record_not_in_kong(self):
+        """Ensure that even if a record associated with this page doesn't
+        exist, we're still able to render its edit page."""
+
+        responses.add(responses.GET, "https://kong.test/fetch", json=create_response())
+
+        self.insights_page.body = json.dumps(
+            [
+                {
+                    "type": "featured_records",
+                    "value": {
+                        "heading": "This is a heading",
+                        "introduction": "This is some text",
+                        "records": ["C123456"],
+                    },
+                }
+            ]
+        )
+        self.insights_page.save()
+
+        response = self.client.get(
+            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
+        )
+
+        self.assertEquals(response.status_code, 200)
+
+    @responses.activate
     def test_view_page_with_featured_record(self):
         self.insights_page.body = json.dumps(
             [
