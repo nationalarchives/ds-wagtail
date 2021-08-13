@@ -69,6 +69,28 @@ if search_config:
     }
 
 
+# Redis
+#
+# https://docs.platform.sh/configuration/services/redis.html
+
+try:
+    redis_config = config.credentials("redis")
+except BuildTimeVariableAccessException:
+    # Relationships aren't available during build-time. Unfortunately, this
+    # file needs to be accessed during collectstatic
+    redis_config = None
+
+if redis_config:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
+            'OPTIONS': {
+                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            }
+        }
+    }
+
 # Email
 #
 # https://docs.platform.sh/administration/web/email.html
