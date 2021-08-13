@@ -235,10 +235,12 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     collections API and display the results.
     """
 
+    title_prefix = models.CharField(max_length=200, blank=True)
     sub_heading = models.CharField(max_length=200, blank=False)
     introduction = models.TextField(blank=False)
 
     content_panels = Page.content_panels + [
+        FieldPanel("title_prefix"),
         FieldPanel("sub_heading"),
         FieldPanel("introduction"),
         InlinePanel("records", heading="Records"),
