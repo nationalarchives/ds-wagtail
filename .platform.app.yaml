@@ -28,6 +28,8 @@ disk: 2048
 relationships:
     db: 'db:postgresql'
     elasticsearch: 'search:elasticsearch'
+    redis: "redis:redis"
+
 
 hooks:
   build: |
