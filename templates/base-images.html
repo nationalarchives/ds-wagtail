@@ -22,6 +22,10 @@
     <meta name="description" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    {% block extra_gtm_js %}
+        {# Override this in templates to add extra javascript to be used by GTM #}
+    {% endblock %}
+
     {% include 'includes/gtm-script.html' %}
 
     {# Google Fonts #}
