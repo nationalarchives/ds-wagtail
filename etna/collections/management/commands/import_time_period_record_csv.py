@@ -48,6 +48,11 @@ def get_row(file_name):
 
             row.update(matches)
 
+            # Titles on UAT differ slightly from the CSV. Reformat name to match title.
+            row[
+                "time_period_name"
+            ] = f"{row['time_period_name']} ({row['start_year']}-{row['end_year']})"
+
             yield row
 
 
