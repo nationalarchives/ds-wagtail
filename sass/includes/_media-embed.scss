@@ -68,8 +68,8 @@
     padding: 1rem;
 
     details {
+      text-align: left;
       summary{
-        text-align: left;
         padding: 1rem;
 
         &:focus {
@@ -90,7 +90,6 @@
 
   &__transcript-text {
     color: $color__white;
-    text-align: left;
     margin-top: 2rem;
   }
 }
