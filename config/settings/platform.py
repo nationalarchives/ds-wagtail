@@ -87,7 +87,12 @@ if redis_config:
             'LOCATION': f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
             'OPTIONS': {
                 'CLIENT_CLASS': 'django_redis.client.DefaultClient',
-            }
+            },
+        },
+        'renditions': {
+            'BACKEND': 'django_redis.cache.RedisCache',
+            'LOCATION': f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
+            'KEY_PREFIX': 'renditions',
         }
     }
 
