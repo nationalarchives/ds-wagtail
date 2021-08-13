@@ -65,12 +65,33 @@
     background-color: $color__dark;
     font-size: 1.2rem;
     margin-top: 2rem;
-    padding: 2rem;
+    padding: 1rem;
+
+    details {
+      summary{
+        text-align: left;
+        padding: 1rem;
+
+        &:focus {
+          outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+        }
+      }
+
+      summary::marker {
+        color: $color__white;
+      }
+    }
   }
 
-  &__transcript-heading, &__transcript-text {
+  &__transcript-heading {
+    color: $color__white;
+    display: inline;
+  }
+
+  &__transcript-text {
     color: $color__white;
     text-align: left;
+    margin-top: 2rem;
   }
 }
 

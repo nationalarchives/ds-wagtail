@@ -35,9 +35,13 @@
 
 {% if value.transcript %}
 <div class="media-embed__transcript">
-    <h4 class="media-embed__transcript-heading">Transcript</h4>
-    <div class="media-embed__transcript-text">
-        {{ value.transcript|richtext }}
-    </div>
+    <details>
+        <summary>
+            <h4 class="media-embed__transcript-heading">Transcript</h4>
+        </summary>
+        <div class="media-embed__transcript-text">
+            {{ value.transcript|richtext }}
+        </div>
+    </details>
 </div>
 {% endif %}
