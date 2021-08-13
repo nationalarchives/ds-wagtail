@@ -13,9 +13,9 @@ from ..sections.blocks import SectionBlock
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
-    image = ImageChooserBlock(
+    teaser_image = ImageChooserBlock(
         required=False,
-        help_text="Add an image to be displayd with the selected record.")
+        help_text="Add an image to be displayed with the selected record.")
 
     class Meta:
         icon = "fa-archive"
