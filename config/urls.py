@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import include, path, re_path, register_converter
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views.generic.base import TemplateView
 
 from wagtail.admin import urls as wagtailadmin_urls
@@ -22,30 +23,30 @@ urlpatterns = [
 
     path(
         r"catalogue/<iaid:iaid>/",
-        records_views.record_page_view,
+        login_required(records_views.record_page_view),
         name="details-page-machine-readable",
     ),
     path(
         r"catalogue/<reference_number:reference_number>/",
-        records_views.record_page_disambiguation_view,
+        login_required(records_views.record_page_disambiguation_view),
         name="details-page-human-readable",
     ),
 
     path(
         "records/image/<path:location>",
-        records_views.image_serve,
+        login_required(records_views.image_serve),
         name="image-serve",
     ),
 
     path(
         r"records/images/<iaid:iaid>/<str:sort>/",
-        records_views.image_viewer,
+        login_required(records_views.image_viewer),
         name="image-viewer",
     ),
 
     path(
         r"records/images/<iaid:iaid>/",
-        records_views.image_browse,
+        login_required(records_views.image_browse),
         name="image-browse",
     ),
 ]
