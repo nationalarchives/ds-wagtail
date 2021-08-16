@@ -9,8 +9,8 @@ User = get_user_model()
 def get_users(filename):
     with open(filename, "r") as f:
         for email in f.read().splitlines():
-            first_name, domain = email.split("@")
-            last_name = "Beta tester"
+            username, domain = email.split("@")
+            first_name, last_name = username.split(".")
 
             yield first_name, last_name, email
 
