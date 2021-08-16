@@ -1,8 +1,13 @@
 import io
 import re
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 from django.test import TestCase, override_settings
 from django.urls import reverse
+
+from wagtail.core.models import Group
 
 import responses
 
@@ -15,6 +20,16 @@ from ...ciim.tests.factories import create_record, create_media, create_response
     KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageDisambiguationView(TestCase):
+    def setUp(self):
+        private_beta_user = User(
+            username="private-beta@email.com", email="private-beta@email.com"
+        )
+        private_beta_user.set_password("password")
+        private_beta_user.save()
+        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
+
+        self.client.login(email="private-beta@email.com", password="password")
+
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
@@ -23,10 +38,8 @@ class TestRecordPageDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/AD/2/2/")
 
+        self.assertEquals(response.resolver_match.view_name, 'details-page-human-readable')
         self.assertEquals(response.status_code, 404)
-        self.assertEquals(
-            response.resolver_match.func, views.record_page_disambiguation_view
-        )
 
     @responses.activate
     def test_disambiguation_page_rendered_for_multiple_results(self):
@@ -43,10 +56,7 @@ class TestRecordPageDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ADM/223/3/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
-            response.resolver_match.func, views.record_page_disambiguation_view
-        )
+        self.assertEquals(response.resolver_match.view_name, 'details-page-human-readable')
         self.assertTemplateUsed(response, "records/record_disambiguation_page.html")
 
     @responses.activate
@@ -74,9 +84,7 @@ class TestRecordPageDisambiguationView(TestCase):
         response = self.client.get("/catalogue/ADM/223/3/", follow=False)
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(
-            response.resolver_match.func, views.record_page_disambiguation_view
-        )
+        self.assertEquals(response.resolver_match.view_name, 'details-page-human-readable')
         self.assertTemplateUsed(response, "records/record_page.html")
 
 
@@ -85,6 +93,16 @@ class TestRecordPageDisambiguationView(TestCase):
     KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageView(TestCase):
+    def setUp(self):
+        private_beta_user = User(
+            username="private-beta@email.com", email="private-beta@email.com"
+        )
+        private_beta_user.set_password("password")
+        private_beta_user.save()
+        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
+
+        self.client.login(email="private-beta@email.com", password="password")
+
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
@@ -94,7 +112,7 @@ class TestRecordPageView(TestCase):
         response = self.client.get("/catalogue/C123456/")
 
         self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.func, views.record_page_view)
+        self.assertEquals(response.resolver_match.view_name, 'details-page-machine-readable')
 
     @responses.activate
     def test_record_page_rendered_for_single_result(self):
@@ -111,7 +129,7 @@ class TestRecordPageView(TestCase):
         response = self.client.get("/catalogue/C123456/")
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.func, views.record_page_view)
+        self.assertEquals(response.resolver_match.view_name, 'details-page-machine-readable')
         self.assertTemplateUsed(response, "records/record_page.html")
 
     @responses.activate
@@ -135,7 +153,7 @@ class TestRecordPageView(TestCase):
         response = self.client.get("/catalogue/C123456/")
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.func, views.record_page_view)
+        self.assertEquals(response.resolver_match.view_name, 'details-page-machine-readable')
         self.assertTemplateUsed(response, "records/record_page.html")
         self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
 
@@ -171,7 +189,6 @@ class TestRecordPageView(TestCase):
         response = self.client.get("/catalogue/C123456/")
 
         self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.func, views.record_page_view)
         self.assertTemplateUsed(response, "records/record_page.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
@@ -221,6 +238,16 @@ class TestImageServeView(TestCase):
     KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageBrowseView(TestCase):
+    def setUp(self):
+        private_beta_user = User(
+            username="private-beta@email.com", email="private-beta@email.com"
+        )
+        private_beta_user.set_password("password")
+        private_beta_user.save()
+        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
+
+        self.client.login(email="private-beta@email.com", password="password")
+
     @responses.activate
     def test_image_browse_non_digitised_record(self):
         responses.add(
@@ -293,6 +320,16 @@ class TestImageBrowseView(TestCase):
     KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageViewerView(TestCase):
+    def setUp(self):
+        private_beta_user = User(
+            username="private-beta@email.com", email="private-beta@email.com"
+        )
+        private_beta_user.set_password("password")
+        private_beta_user.save()
+        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
+
+        self.client.login(email="private-beta@email.com", password="password")
+
     @responses.activate
     def test_image_browse_non_digitised_record(self):
         responses.add(

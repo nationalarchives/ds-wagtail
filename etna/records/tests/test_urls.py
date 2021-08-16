@@ -8,28 +8,24 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
     def test_resolves_reference_number_lettercode(self):
         resolver = resolve("/catalogue/CP/")
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(resolver.kwargs["reference_number"], "CP")
 
     def test_resolves_lower_case_reference_number_lettercode(self):
         resolver = resolve("/catalogue/cp/")
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(resolver.kwargs["reference_number"], "cp")
 
     def test_resolves_reference_number(self):
         resolver = resolve("/catalogue/PROB/1/4/")
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(resolver.kwargs["reference_number"], "PROB/1/4")
 
     def test_resolves_lower_case_reference_number(self):
         resolver = resolve("/catalogue/prob/1/4/")
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(resolver.kwargs["reference_number"], "prob/1/4")
 
@@ -38,7 +34,6 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
             "/catalogue/LAB/2/1782/SandER106/1934/Part25and27-28and30to32/"
         )
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(
             resolver.kwargs["reference_number"],
@@ -50,7 +45,6 @@ class TestHumanReadableDetailsRouteResolution(TestCase):
             "/catalogue/lab/2/1782/sander106/1934/part25and27-28and30to32/"
         )
 
-        self.assertEquals(resolver.func, views.record_page_disambiguation_view)
         self.assertEqual(resolver.view_name, "details-page-human-readable")
         self.assertEqual(
             resolver.kwargs["reference_number"],
@@ -143,21 +137,18 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
     def test_resolves_iaid(self):
         resolver = resolve("/catalogue/C7810139/")
 
-        self.assertEquals(resolver.func, views.record_page_view)
         self.assertEqual(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(resolver.kwargs["iaid"], "C7810139")
 
     def test_lower_case_iaid(self):
         resolver = resolve("/catalogue/c123456/")
 
-        self.assertEquals(resolver.func, views.record_page_view)
         self.assertEquals(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(resolver.kwargs["iaid"], "c123456")
 
     def test_iaid_with_non_standard_prefix(self):
         resolver = resolve("/catalogue/d123456/")
 
-        self.assertEquals(resolver.func, views.record_page_view)
         self.assertEquals(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(resolver.kwargs["iaid"], "d123456")
 
@@ -165,7 +156,6 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
         # Some IAIDs are UUIDs. Tested IAID is a real example
         resolver = resolve("/catalogue/43f766a9-e968-4b82-93dc-8cf11a841d41/")
 
-        self.assertEquals(resolver.func, views.record_page_view)
         self.assertEqual(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(
             resolver.kwargs["iaid"], "43f766a9-e968-4b82-93dc-8cf11a841d41"

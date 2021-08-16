@@ -34,7 +34,7 @@ def create_record(
                 "date": {
                     "earliest": {"from": earliest},
                     "latest": {"to": latest},
-                    "value": "{earliest}-{latest}",
+                    "value": f"{earliest}-{latest}",
                 },
             },
             "digitised": is_digitised,
