@@ -26,6 +26,12 @@
             {{ value.title }}
         </h3>
 
+        {% if value.publication_date %}
+        <p class="blog-embed__date">
+            Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+        </p>
+        {% endif %}
+
         {% if value.duration %}
         <p class="blog-embed__text">
             {{ value.duration }}
