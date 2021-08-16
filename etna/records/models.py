@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
+from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 from wagtail.core.models import Page, Site
 
@@ -86,6 +88,15 @@ class Image:
     # sort is an str that contains an int with a leading zero if less
     # than ten.
     sort: str
+    thumbnail_location: str
+
+    @property
+    def thumbnail_url(self):
+        """Use thumbnail URL is available, otherwise fallback to image-serve."""
+        if self.thumbnail_location:
+            return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
+        elif self.location:
+            return reverse("image-serve", kwargs={"location": self.location})
 
 
 """Assign a search manager to the Image
