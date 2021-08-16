@@ -34,7 +34,7 @@ urlpatterns = [
 
     path(
         "records/image/<path:location>",
-        login_required(records_views.image_serve),
+        records_views.image_serve,
         name="image-serve",
     ),
 
