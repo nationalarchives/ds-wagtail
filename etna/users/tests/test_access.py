@@ -10,7 +10,7 @@ import responses
 
 from ddt import ddt, data, unpack
 
-from ...ciim.tests.factories import create_record, create_response
+from ...ciim.tests.factories import create_record, create_media, create_response
 from ...collections.models import ExplorerIndexPage, TopicExplorerPage, ResultsPage
 from ...home.models import HomePage
 from ...insights.models import InsightsIndexPage, InsightsPage
@@ -255,7 +255,13 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
             responses.GET,
             "https://kong.test/search",
             json=create_response(
-                records=[create_record(reference_number="test 1/2/3")]
+                records=[
+                    # Return multiple records to prevent an additional
+                    # call /fetch due to deferring the rendering to
+                    # record_page_view
+                    create_record(reference_number="test 1/2/3"),
+                    create_record(reference_number="test 1/2/3"),
+                ]
             ),
         )
 
@@ -267,12 +273,46 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
 
 
 @ddt
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_TEST_MODE=False,
+)
 class TestImageViewerRoutes(UserAccessTestCase, TestCase):
     """Ensure that the image viewer pages are accessible to the appropriate users.
 
     Unlike similar tests for CMSable pages, these test can assure us that
     routes are only accessible to the appropriate users"""
+    def setUp(self):
+        super().setUp()
 
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/previous-image.jpeg"),
+                    create_media(location="path/to/image.jpeg"),
+                    create_media(location="path/to/next-image.jpeg"),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/media",
+            body="",
+            stream=True,
+        )
+
+    @responses.activate
     @unpack
     @data(
         ("admin@email.com", 200),
@@ -282,12 +322,14 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
         (None, 302),
     )
     def test_browse_route(self, email, expected_status_code):
+
         self.client.login(email=email, password="password")
 
-        response = self.client.get("/image-browse/")
+        response = self.client.get("/records/images/C123456/")
 
         self.assertEquals(expected_status_code, response.status_code)
 
+    @responses.activate
     @unpack
     @data(
         ("admin@email.com", 200),
@@ -299,6 +341,6 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
     def test_viewer_route(self, email, expected_status_code):
         self.client.login(email=email, password="password")
 
-        response = self.client.get("/image-viewer/")
+        response = self.client.get("/records/images/C123456/01/")
 
         self.assertEquals(expected_status_code, response.status_code)
