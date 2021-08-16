@@ -71,19 +71,17 @@ class TopicExplorerIndexPage(TeaserImageMixin, Page):
             .type(TopicExplorerPage)
             .order_by("?")
             .live()
-            .public()
             .specific()[:3]
         )
 
     @cached_property
     def topic_explorer_pages(self):
-        """Fetch all child public TopicExplorerPages for display in list."""
+        """Fetch all child TopicExplorerPages for display in list."""
         return (
             self.get_children()
             .type(TopicExplorerPage)
             .order_by("title")
             .live()
-            .public()
             .specific()
         )
 
@@ -119,14 +117,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
-        return (
-            self.get_children()
-            .type(ResultsPage)
-            .order_by("title")
-            .live()
-            .public()
-            .specific()
-        )
+        return self.get_children().type(ResultsPage).order_by("title").live().specific()
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -158,19 +149,17 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
             .type(TimePeriodExplorerPage)
             .order_by("?")
             .live()
-            .public()
             .specific()[:3]
         )
 
     @cached_property
     def time_period_explorer_pages(self):
-        """Fetch all child public TimePeriodExplorerPages for display in list."""
+        """Fetch all child TimePeriodExplorerPages for display in list."""
         return (
             self.get_children()
             .type(TimePeriodExplorerPage)
             .order_by("timeperiodexplorerpage__start_year")
             .live()
-            .public()
             .specific()
         )
 
@@ -209,14 +198,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
-        return (
-            self.get_children()
-            .type(ResultsPage)
-            .order_by("title")
-            .live()
-            .public()
-            .specific()
-        )
+        return self.get_children().type(ResultsPage).order_by("title").live().specific()
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",

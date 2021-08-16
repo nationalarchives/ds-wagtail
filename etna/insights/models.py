@@ -21,7 +21,7 @@ class InsightsIndexPage(TeaserImageMixin, Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        insights_pages = self.get_children().live().public().specific()
+        insights_pages = self.get_children().live().specific()
         context["insights_pages"] = insights_pages
         return context
 

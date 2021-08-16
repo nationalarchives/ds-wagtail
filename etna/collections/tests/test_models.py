@@ -1,3 +1,4 @@
+import unittest
 from django.test import TestCase, override_settings
 
 from wagtail.core.models import Site, PageViewRestriction
@@ -41,6 +42,9 @@ class TestTopicExplorerIndexPages(TestCase):
             self.topic_explorer_index_page.topic_explorer_pages.count(), 0
         )
 
+    @unittest.skip(
+        "Disabled test due to all child pages on home being private during beta."
+    )
     def test_private_page_excluded(self):
         private_topic_page = TopicExplorerPage(
             title="Private Topic Page", sub_heading="Introduction"
@@ -102,6 +106,9 @@ class TestTimePeriodExplorerIndexPages(TestCase):
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 0
         )
 
+    @unittest.skip(
+        "Disabled test due to all child pages on home being private during beta."
+    )
     def test_private_page_excluded(self):
         private_topic_page = TimePeriodExplorerPage(
             title="Private Time Period Page",
