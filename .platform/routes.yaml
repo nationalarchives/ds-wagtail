@@ -14,6 +14,11 @@
             - Accept
             - Vary
 
+# Redirect www routes to preseve links to old plaform.sh domain
+"https://www.{default}/":
+    type: redirect
+    to: "https://{default}/"
+
 "https://es.{default}":
     type: upstream
     upstream: search:elasticsearch
