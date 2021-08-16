@@ -1,12 +1,24 @@
 # Each route describes how an incoming URL is going to be processed by Platform.sh.
-"https://www.{default}/":
-    type: upstream
-    upstream: "app:http"
 
 "https://{default}/":
+    type: upstream
+    upstream: "app:http"
+    cache:
+        enabled: true
+        default_ttl: 300
+        cookies:
+            - sessionid
+            - csrftoken
+            - messages
+        headers:
+            - Accept
+            - Vary
+
+# Redirect www routes to preseve links to old plaform.sh domain
+"https://www.{default}/":
     type: redirect
-    to: "https://www.{default}/"
+    to: "https://{default}/"
 
 "https://es.{default}":
-  type: upstream
-  upstream: search:elasticsearch
+    type: upstream
+    upstream: search:elasticsearch

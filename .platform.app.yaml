@@ -28,6 +28,8 @@ disk: 2048
 relationships:
     db: 'db:postgresql'
     elasticsearch: 'search:elasticsearch'
+    redis: "redis:redis"
+
 
 hooks:
   build: |
@@ -98,6 +100,26 @@ mounts:
 
 
 crons:
-  import_events:
-    spec: 0 2 * * *
-    cmd: python manage.py update_index --chunk-size 5
+  # Publish scheduled pages once an hour
+  # https://docs.wagtail.io/en/stable/reference/management_commands.html#publish-scheduled-pages
+  publish_scheduled_pages:
+    spec: 0 * * * *
+    cmd: pipenv run python manage.py publish_scheduled_pages
+
+  # Take snapshot at 5am every morning
+  # https://docs.platform.sh/administration/snapshot-and-restore.html#automated-snapshots
+  snapshot:
+    spec: '0 5 * * *'
+    cmd: |
+      if [ "$PLATFORM_BRANCH" = master ]; then
+        platform backup:create --yes --no-wait
+      fi
+
+  # Renew cert by forcing a redeploy at 4 am (UTC) on the 1st and 15th of every month.
+  # https://docs.platform.sh/configuration/routes/https.html#automatic-ssl-certificate-renewal
+  renewcert:
+    spec: '0 4 1,15 * *'
+    cmd: |
+      if [ "$PLATFORM_BRANCH" = master ]; then
+        platform redeploy --yes --no-wait
+      fi
