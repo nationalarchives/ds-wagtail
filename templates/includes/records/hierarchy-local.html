@@ -7,10 +7,15 @@
                 <p class="hierarchy-local__nav-item">
                     <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--up"></span>
                     <span class="hierarchy-local__nav-label">This record is in</span>
-                    <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level">
-                        {{ page.parent.reference_number }}
-                        <span class="hierarchy-local__nav-link">{{ page.parent.title }}</span>
-                    </a>
+                    {% if page.parent.reference_number %}
+                        <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level">
+                            <span class="hierarchy-local__nav-link">{{ page.parent.title }}</span>
+                        </a>
+                    {% elif page.parent.iaid %}
+                        <a href="{% url 'details-page-machine-readable' page.parent.iaid %}" data-link="Series level">
+                            <span class="hierarchy-local__nav-link">{{ page.parent.title }}</span>
+                        </a>
+                    {% endif %}
                 </p>
             </div>
             <div class="col-4 col-md-2">
