@@ -72,7 +72,7 @@ def image_browse(request, iaid):
         # Raised if the RecordPage doesn't have a media_reference_id
         raise Http404
 
-    page_number = request.GET.get('page', 1)
+    page_number = request.GET.get("page", 1)
     paginator = Paginator(images, 20)
     images = paginator.get_page(page_number)
 
@@ -85,13 +85,13 @@ def image_browse(request, iaid):
             # Obtaining the count requires a network request.
             # Pass the value to the template to prevent
             # unexpected performance issues
-            "images_count": paginator.count, 
+            "images_count": paginator.count,
         },
     )
 
 
 # Cache assets for a day or indefinitely if browser supports it
-@cache_control(max_age='259200', public=True, immutable=True)
+@cache_control(max_age="259200", public=True, immutable=True)
 def image_serve(request, location):
     """Relay content served from Kong's /media endpoint"""
     response = Image.media.serve(location)
