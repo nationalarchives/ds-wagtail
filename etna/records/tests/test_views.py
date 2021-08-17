@@ -380,9 +380,9 @@ class TestImageViewerView(TestCase):
             "https://kong.test/search",
             json=create_response(
                 records=[
-                    create_media(location="path/to/previous-image.jpeg"),
-                    create_media(location="path/to/image.jpeg"),
-                    create_media(location="path/to/next-image.jpeg"),
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
+                    create_media(location="path/to/image.jpeg", sort="02"),
+                    create_media(location="path/to/next-image.jpeg", sort="03"),
                 ]
             ),
         )
@@ -393,7 +393,78 @@ class TestImageViewerView(TestCase):
             stream=True,
         )
 
+        response = self.client.get("/records/images/C123456/02/")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.url_name, "image-viewer")
+        self.assertEquals(
+            response.context["previous_image"].location, "path/to/previous-image.jpeg"
+        )
+        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEquals(
+            response.context["next_image"].location, "path/to/next-image.jpeg"
+        )
+
+    @responses.activate
+    def test_no_next_image(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
+                    create_media(location="path/to/image.jpeg", sort="02"),
+                ]
+            ),
+        )
+
+        response = self.client.get("/records/images/C123456/02/")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.resolver_match.url_name, "image-viewer")
+        self.assertEquals(
+            response.context["previous_image"].location, "path/to/previous-image.jpeg"
+        )
+        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEquals(response.context["next_image"], None)
+
+    @responses.activate
+    def test_no_previous_image(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/image.jpeg", sort="01"),
+                    create_media(location="path/to/next-image.jpeg", sort="02"),
+                ]
+            ),
+        )
+
         response = self.client.get("/records/images/C123456/01/")
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(response.resolver_match.url_name, "image-viewer")
+        self.assertEquals(response.context["previous_image"], None)
+        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEquals(
+            response.context["next_image"].location, "path/to/next-image.jpeg"
+        )

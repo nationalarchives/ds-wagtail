@@ -4,7 +4,7 @@ from django.shortcuts import render, Http404
 from django.views.decorators.cache import cache_control
 
 from ..models import Image, RecordPage
-from ...ciim.exceptions import DoesNotExist, InvalidQuery
+from ...ciim.exceptions import DoesNotExist, InvalidQuery, UnsupportedSlice
 
 
 def image_viewer(request, iaid, sort):
@@ -33,8 +33,15 @@ def image_viewer(request, iaid, sort):
         # The image can't be found.
         raise Http404
 
-    previous_image = images[max(index - 1, 0)]
-    next_image = images[min(index + 1, len(images))]
+    try:
+        previous_image = images[index - 1]
+    except (IndexError, UnsupportedSlice):
+        previous_image = None
+
+    try:
+        next_image = images[index + 1]
+    except IndexError:
+        next_image = None
 
     return render(
         request,
