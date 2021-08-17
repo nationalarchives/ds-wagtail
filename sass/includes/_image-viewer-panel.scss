@@ -12,6 +12,11 @@
       height: 25rem;
       display: block;
       margin: 0 auto;
+
+      @media only screen and (max-width: $screen__md) {
+        height: auto;
+        width: 100%;
+      }
     }
   }
 
@@ -33,6 +38,11 @@
     &:focus {
       outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
     }
+
+    &:hover {
+      color: $color__white;
+      text-decoration: none;
+    }
   }
 
   &__image-link:hover, &__image-link:focus {
@@ -41,3 +51,4 @@
     }
   }
 }
+
