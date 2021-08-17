@@ -29,7 +29,7 @@ class FeaturedPageBlock(blocks.StructBlock):
 
 
 class PromotedItemBlock(blocks.StructBlock):
-    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
+    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
     teaser_image = ImageChooserBlock(
         help_text="An image used to create a teaser for the promoted page"
