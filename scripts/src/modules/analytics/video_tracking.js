@@ -36,6 +36,7 @@ const video_tracking = () => {
                 stored_percentage_video = percentage;
 
                 push_to_data_layer({
+                    'event': 'media',
                     'media_type': 'video',
                     'data_media_controls': 'progress',
                     'data_media_title': `Filename: ${filename}`,
@@ -47,6 +48,7 @@ const video_tracking = () => {
             case 'play':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'media_type': 'video',
                     'data_media_controls': 'play',
                     'data_media_title': `Filename: ${filename}`,
@@ -58,6 +60,7 @@ const video_tracking = () => {
             case 'pause':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'media_type': 'video',
                     'data_media_title': `Filename: ${filename}`,
                     'data_media_controls': 'pause',
@@ -69,6 +72,7 @@ const video_tracking = () => {
             case'ended':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'data_media_title': `Filename: ${filename}`,
                     'data_media_controls': 'ended'
                 });

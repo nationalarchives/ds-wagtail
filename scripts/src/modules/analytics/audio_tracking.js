@@ -36,6 +36,7 @@ const audio_tracking = () => {
                 stored_percentage = percentage;
 
                 push_to_data_layer({
+                    'event': 'media',
                     'media_type': 'audio',
                     'data_media_controls': 'progress',
                     'data_media_title': `Filename: ${filename}`,
@@ -47,6 +48,7 @@ const audio_tracking = () => {
             case 'play':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'media_type': 'audio',
                     'data_media_controls': 'play',
                     'data_media_title': `Filename: ${filename}`,
@@ -58,6 +60,7 @@ const audio_tracking = () => {
             case 'pause':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'data_media_title': `Filename: ${filename}`,
                     'data_media_controls': 'pause',
                     'data_audio_value': `Paused at ${Math.floor(e.target.currentTime)} seconds`
@@ -68,6 +71,7 @@ const audio_tracking = () => {
             case'ended':
 
                 push_to_data_layer({
+                    'event': 'media',
                     'data_media_title': `Filename: ${filename}`,
                     'data_media_controls': 'ended'
                 });
