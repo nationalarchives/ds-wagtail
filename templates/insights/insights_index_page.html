@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load static %}
+{% load i18n %}
 {% load wagtailcore_tags %}
 {% load datalayer_tags %}
 
@@ -15,6 +16,8 @@
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
+
+    <h2>{% trans "Explore insights into the collection" %}</h2>
 
     {% for block in page.body %}
         {% include_block block %}
