@@ -230,8 +230,10 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = Page.settings_panels + AlertMixin.settings_panels
 
-    max_count_per_parent = 1
-    parent_page_types = []
+    parent_page_types = [
+        "collections.TimePeriodExplorerPage",
+        "collections.TopicExplorerPage",
+    ]
     subpage_types = []
 
 
