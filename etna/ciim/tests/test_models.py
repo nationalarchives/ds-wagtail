@@ -503,6 +503,29 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    def test_related_records(self):
+        self.assertEqual(
+            self.record_page.related_records,
+            [
+                {
+                    "reference_number": "ZBOX 1/92/4",
+                    "title": "[1580-1688]. Notes (cards) from State Papers Foreign, Royal "
+                    "Letters, SP 102/61. Manuscript.",
+                }
+            ],
+        )
+
+    def test_related_articles(self):
+        self.assertEqual(
+            self.record_page.related_articles,
+            [
+                {
+                    "title": "Irish maps c.1558-c.1610",
+                    "url": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/irish-maps-c1558-c1610/",
+                }
+            ],
+        )
+
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
