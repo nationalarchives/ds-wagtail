@@ -1,0 +1,36 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% load i18n %}
+{% load wagtailusers_tags %}
+{% load wagtailadmin_tags %}
+
+{% block titletag %}{% trans "Beta Tester Users" %}{% endblock %}
+
+{% block content %}
+    {% trans "Users" as users_str %}
+
+    {% include "wagtailadmin/shared/header.html" with subtitle=group.name title=users_str icon="user" %}
+
+    <div class="nice-padding">
+        <div id="user-results" class="users">
+            <table class="listing">
+                <thead>
+                    <tr>
+                        <th class="id">{% trans "ID" %}</th>
+                        <th class="email">{% trans "Email" %}</th>
+                        <th class="last-login">{% trans "Last Login" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td class="id" valign="top">{{ user.id }}</td>
+                            <td class="email" valign="top">{{ user.email }}</td>
+                            <td {% if user.last_login %} class="human-readable-date" title="{{ user.last_login|date:"d M Y H:i" }}"{% endif %}>{% if user.last_login %}{% blocktrans with time_period=user.last_login|timesince %}{{ time_period }} ago{% endblocktrans %}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
