@@ -24,24 +24,22 @@
         {% endif %}
 
         {% if value.promoted_items %}
-        <dl class="related-resources__list">
+        <ul class="related-resources__list">
             {% for item in value.promoted_items %}
-            <div class="related-resources__list-item">
-                <dt>
-                    <h4 class="related-resources__link-heading">
-                        <a class="related-resources__link" href="{{ item.url }}" data-link="{{ item.title }}">
-                            {{ item.title }}
-                        </a>
-                    </h4>
-                </dt>
+            <li class="related-resources__list-item">
+                <h4 class="related-resources__link-heading">
+                    <a class="related-resources__link" href="{{ item.url }}" data-link="{{ item.title }}">
+                        {{ item.title }}
+                    </a>
+                </h4>
                 {% if item.description %}
-                <dd class="related-resources__link-text">
+                <div class="related-resources__link-text">
                     {{ item.description }}
-                </dd>
+                </div>
                 {% endif %}
-            </div>
+            </li>
             {% endfor %}
-        </dl>
+        </ul>
         {% endif %}
     </div>
 </div>
