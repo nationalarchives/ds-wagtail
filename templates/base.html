@@ -26,8 +26,6 @@
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
-    <meta name="description" content=""/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
     {% block extra_gtm_js %}
         {# Override this in templates to add extra javascript to be used by GTM #}
@@ -44,6 +42,7 @@
 
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
+<a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 {% alerts page=page %}
 {% include 'includes/gtm-no-script.html' %}
 {% include 'includes/header.html' %}

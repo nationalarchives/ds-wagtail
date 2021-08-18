@@ -3,11 +3,12 @@
         <div class="container">
             <h2 class="jumplinks__heading">On this page</h2>
             <ol class="jumplinks__list">
-            {% for section in sections %}
-                <li class="jumplinks__list-item">
-                    <a class="jumplink" href="#{{ section.heading|slugify }}">{{ section.heading }}</a>
-                </li>
-            {% endfor %}
+                {% for section in sections %}
+                    <li class="jumplinks__list-item">
+                        <a class="jumplink" href="#{{ section.heading|slugify }}">{{ section.heading }}</a>
+                    </li>
+                {% endfor %}
+            </ol>
         </div>
     </nav>
 {% endif %}
