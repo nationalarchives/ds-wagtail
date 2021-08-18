@@ -33,6 +33,9 @@ relationships:
 
 hooks:
   build: |
+    # Add platform CLI
+    curl -sS https://platform.sh/cli/installer | php
+
     poetry config virtualenvs.create false
     poetry config virtualenvs.in-project true
     poetry install --no-dev
