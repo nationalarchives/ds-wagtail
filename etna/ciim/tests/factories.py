@@ -38,7 +38,7 @@ def create_record(
                 },
             },
             "digitised": is_digitised,
-            "hierarchy" : [hierarchy],
+            "hierarchy": [hierarchy],
             "@summary": {
                 "title": title,
             },
@@ -57,7 +57,9 @@ def create_record(
 
 
 def create_media(
-    location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg", sort="01"
+    location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg",
+    thumbnail_location="66/COPY/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg",
+    sort="01",
 ):
     return {
         "_source": {
@@ -67,7 +69,13 @@ def create_media(
                     "public": True,
                     "resizable": True,
                     "@type": "image",
-                }
+                },
+                "preview": {
+                    "location": thumbnail_location,
+                    "public": True,
+                    "resizable": True,
+                    "@type": "image",
+                },
             },
             "sort": sort,
         }
