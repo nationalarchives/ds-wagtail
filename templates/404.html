@@ -1,9 +1,31 @@
-{% extends "base.html" %}
+{% load static %}
 
-{% block body_class %}template-404{% endblock %}
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <title>Page not found - The National Archives</title>
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-{% block content %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
+    <meta name="description" content=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
+    {% include 'includes/gtm-script.html' %}
+
+    {# Google Fonts #}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+          rel="stylesheet">
+    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
+</head>
+
+<body class="template-404">
+{% include 'includes/gtm-no-script.html' %}
+{% include 'includes/header.html' %}
+
+<main id="maincontent">
     <div class="generic-intro">
         <div class="container">
             <div class="row">
@@ -23,5 +45,9 @@
             </div>
         </div>
     </div>
+</main>
 
-{% endblock %}
+{% include 'includes/footer.html' %}
+
+</body>
+</html>
