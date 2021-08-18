@@ -77,7 +77,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             self.insights_page.body.stream_data[0]["type"], "featured_record"
         )
         self.assertEqual(
-            self.insights_page.body.stream_data[0]["value"], {"record": "C123456"}
+            self.insights_page.body.stream_data[0]["value"],
+            {"record": "C123456", "teaser_image": None},
         )
 
         self.assertEqual(len(responses.calls), 2)
