@@ -28,11 +28,11 @@
             {% for item in value.promoted_items %}
             <div class="related-resources__list-item">
                 <dt>
-                    <h4 class="related-resources__link-heading">
+                    <div class="related-resources__link-heading">
                         <a class="related-resources__link" href="{{ item.url }}" data-link="{{ item.title }}">
                             {{ item.title }}
                         </a>
-                    </h4>
+                    </div>
                 </dt>
                 {% if item.description %}
                 <dd class="related-resources__link-text">
