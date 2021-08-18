@@ -70,7 +70,7 @@ def find(collection, predicate=lambda: False):
     }
 
     Note that only the first match is returned so predicates with multiple
-    matches should be avoided:
+    matches should be avoided or use find_all:
 
     >>> find(planets, predicate=lambda i: i["moon_count"] > 0)
     {
@@ -80,13 +80,41 @@ def find(collection, predicate=lambda: False):
 
     Exceptions raised when querying the data structure are comsumed by this function.
     """
-    try:
-        return next(filter(predicate, collection), None)
-    except (KeyError, IndexError, TypeError, AttributeError):
-        # Catch any error that may be raised when querying data structure with
-        # predicate and return fallback
-        return None
+    return next(find_all(collection, predicate), None)
 
+
+def find_all(collection, predicate=lambda: False):
+    """Find all items from a nested data structure.
+
+    Given the list:
+
+    planets = [{
+        "name": "Jupiter",
+        "moon_count": 79
+    }, {
+        "name": "Saturn",
+        "moon_count": 82
+    }]
+
+    We're able to fetch the dict for a given planet:
+
+    >>> find(planets, predicate=lambda i: i["moon_count"] > 80)
+    {
+        "name": "Saturn",
+        "moon_count": 82
+    }
+
+    Exceptions raised when querying the data structure are comsumed by this function.
+    """
+    if not collection:
+        collection = []
+
+    for item in collection:
+        try:
+            if predicate(item):
+                yield item
+        except (KeyError, IndexError, TypeError, AttributeError):
+            continue
 
 def format_description_markup(markup):
     markup = resolve_links(markup)
