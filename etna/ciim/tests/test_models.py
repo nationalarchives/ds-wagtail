@@ -17,9 +17,7 @@ from ...records.models import RecordPage
 from .factories import create_record, create_response, paginate_records_callback
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
-)
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class ManagerExceptionTest(TestCase):
     def setUp(self):
         self.manager = SearchManager("records.RecordPage")
@@ -47,9 +45,7 @@ class ManagerExceptionTest(TestCase):
             self.manager.get(iaid="C140")
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
-)
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
         self.manager = RecordPage.search
@@ -110,7 +106,7 @@ class SearchManagerFilterTest(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+    KONG_CLIENT_BASE_URL="https://kong.test", 
 )
 class SearchManagerKongCount(TestCase):
     def setUp(self):
@@ -131,7 +127,7 @@ class SearchManagerKongCount(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+    KONG_CLIENT_BASE_URL="https://kong.test", 
 )
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
@@ -283,7 +279,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class KongExceptionTest(TestCase):
     def setUp(self):
@@ -543,9 +539,7 @@ class ModelTranslationTest(TestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
-)
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(TestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
     issues with data returned by Kong"""
