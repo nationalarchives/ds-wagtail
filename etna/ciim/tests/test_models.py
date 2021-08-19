@@ -298,93 +298,22 @@ class KongExceptionTest(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_TEST_MODE=True,
-    KONG_CLIENT_TEST_FILENAME=Path(Path(__file__).parent, "fixtures/record.json"),
-)
-class SearchManagerTestModeTest(TestCase):
-    def setUp(self):
-        self.manager = RecordPage.search
-
-    def test_get_success(self):
-        record_page = self.manager.get(iaid="C10297")
-
-        self.assertTrue(isinstance(record_page, RecordPage))
-        self.assertEquals(record_page.iaid, "C10297")
-
-    def test_get_fail(self):
-        with self.assertRaises(DoesNotExist):
-            record_page = self.manager.get(iaid="fail")
-
-    @override_settings(
-        KONG_CLIENT_TEST_FILENAME=Path(
-            Path(__file__).parent,
-            "fixtures/multiple_records_with_matching_reference_numbers.json",
-        ),
-    )
-    def test_filter_on_iaid_success(self):
-        results = self.manager.filter(iaid="C30549")
-
-        self.assertTrue(isinstance(results[0], RecordPage))
-        self.assertEquals(results[0].iaid, "C30549")
-
-    @override_settings(
-        KONG_CLIENT_TEST_FILENAME=Path(
-            Path(__file__).parent,
-            "fixtures/multiple_records_with_matching_reference_numbers.json",
-        ),
-    )
-    def test_filter_on_referecen_number_success(self):
-        results = self.manager.filter(reference_number="ADM 223/3")
-
-        self.assertTrue(isinstance(results[0], RecordPage))
-        self.assertEquals(results[0].iaid, "C7171681")
-
-    @override_settings(
-        KONG_CLIENT_TEST_FILENAME=Path(
-            Path(__file__).parent,
-            "fixtures/multiple_records_with_matching_reference_numbers.json",
-        ),
-    )
-    def test_filter_fail(self):
-        results = self.manager.filter(iaid="fail")
-
-        self.assertEquals(len(results), 0)
-
-    @override_settings(
-        KONG_CLIENT_TEST_FILENAME=Path(
-            Path(__file__).parent,
-            "fixtures/multiple_records_with_matching_reference_numbers.json",
-        ),
-    )
-    def test_filter_on_multiple_iaids(self):
-        results = self.manager.get_multiple(iaid=["C30549", "C7171681"])
-
-        self.assertEquals(len(results), 2)
-        self.assertEquals(results[0].iaid, "C30549")
-        self.assertEquals(results[1].iaid, "C7171681")
-
-    @override_settings(
-        KONG_CLIENT_TEST_FILENAME=Path(
-            Path(__file__).parent,
-            "fixtures/multiple_records_with_matching_reference_numbers.json",
-        ),
-    )
-    def test_failed_fetch_skips_record(self):
-        results = self.manager.get_multiple(iaid=["C30549", "invalid", "C7171681"])
-
-        self.assertEquals(len(results), 2)
-        self.assertEquals(results[0].iaid, "C30549")
-        self.assertEquals(results[1].iaid, "C7171681")
-
-
-@override_settings(
-    KONG_CLIENT_TEST_MODE=True,
-    KONG_CLIENT_TEST_FILENAME=Path(Path(__file__).parent, "fixtures/record.json"),
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class ModelTranslationTest(TestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
+    @responses.activate
+    def setUp(cls):
+
+        path = Path(
+            Path(__file__).parent,
+            "fixtures/record.json",
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/fetch",
+                json=json.loads(f.read()),
+            )
 
         manager = RecordPage.search
 
@@ -535,7 +464,7 @@ class UnexpectedParsingIssueTest(TestCase):
         record = create_record(
             iaid="C123456",
         )
-        del record['_source']['@origination']['date']
+        del record["_source"]["@origination"]["date"]
 
         responses.add(
             responses.GET,

@@ -29,7 +29,9 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        self.assertEquals(image.thumbnail_url, "https://media.preview/path/to/thumbnail.jpeg")
+        self.assertEquals(
+            image.thumbnail_url, "https://media.preview/path/to/thumbnail.jpeg"
+        )
 
     @responses.activate
     def test_thumbnail_url_fallback(self):
