@@ -96,8 +96,6 @@ class Query(ABC):
         return KongClient(
             settings.KONG_CLIENT_BASE_URL,
             api_key=settings.KONG_CLIENT_KEY,
-            test_mode=settings.KONG_CLIENT_TEST_MODE,
-            test_file_path=settings.KONG_CLIENT_TEST_FILENAME,
         )
 
 
