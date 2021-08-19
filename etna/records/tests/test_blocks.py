@@ -17,7 +17,7 @@ from ...ciim.tests.factories import create_record, create_response
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestFeaturedRecordBlockIntegration(WagtailPageTests):
     def setUp(self):
@@ -205,7 +205,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
+    KONG_CLIENT_BASE_URL="https://kong.test", 
 )
 class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
     def setUp(self):

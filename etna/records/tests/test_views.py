@@ -17,7 +17,6 @@ from ...ciim.tests.factories import create_record, create_media, create_response
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageDisambiguationView(TestCase):
     def setUp(self):
@@ -96,7 +95,6 @@ class TestRecordPageDisambiguationView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageView(TestCase):
     def setUp(self):
@@ -207,7 +205,6 @@ class TestRecordPageView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageServeView(TestCase):
     def test_no_location_404s(self):
@@ -247,7 +244,6 @@ class TestImageServeView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageBrowseView(TestCase):
     def setUp(self):
@@ -329,7 +325,6 @@ class TestImageBrowseView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageViewerView(TestCase):
     def setUp(self):

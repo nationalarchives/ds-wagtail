@@ -9,7 +9,6 @@ from ..client import KongClient
 from ..exceptions import InvalidResponse, KubernetesError, KongError
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientSearchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
@@ -87,7 +86,6 @@ class ClientSearchTest(TestCase):
         )
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientFetchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
@@ -146,7 +144,6 @@ class ClientFetchTest(TestCase):
         )
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientFetchReponse(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
