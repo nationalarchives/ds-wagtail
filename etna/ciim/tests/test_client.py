@@ -233,58 +233,6 @@ class TestClientFetchReponse(TestCase):
         self.assertEqual(response, valid_response)
 
 
-class ClientReponseTest(TestCase):
-    def setUp(self):
-        self.client = KongClient("", api_key="")
-
-
-class TestClientTestMode(TestCase):
-    def setUp(self):
-        self.client = KongClient(
-            "",
-            api_key="",
-            test_mode=True,
-            test_file_path=Path(Path(__file__).parent, "fixtures/record.json"),
-        )
-
-    def test_empty_search(self):
-        self.client.search()
-
-    def test_test_mode_doesnt_use_requests(self):
-        with patch("requests.get") as mock_request:
-            self.client.search()
-
-            mock_request.assert_not_called()
-
-    def test_match_in_title(self):
-        response = self.client.search(term="legal")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_iaid(self):
-        response = self.client.search(term="C10297")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_reference_number(self):
-        response = self.client.search(term="LO 2")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_description(self):
-        response = self.client.search(term="law")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_missing_test_file(self):
-
-        self.client.test_file_path = "missing.json"
-
-        with self.assertRaises(FileNotFoundError):
-            self.client.search()
-
-
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientSearchReponse(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
