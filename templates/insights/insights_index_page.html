@@ -16,8 +16,9 @@
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
-
-    <h2>{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
+    <div class="container">
+        <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
+    </div>
 
     {% for block in page.body %}
         {% include_block block %}
