@@ -84,6 +84,12 @@ def transform_record_page_result(result):
         source.get("multimedia"), accessor=lambda i: i["@admin"]["id"]
     )
 
+    if next_record := source.get("@next"):
+        data["next_record"] = {"iaid": next_record["@admin"]["id"]}
+
+    if previous_record := source.get("@previous"):
+        data["previous_record"] = {"iaid": previous_record["@admin"]["id"]}
+
     return data
 
 

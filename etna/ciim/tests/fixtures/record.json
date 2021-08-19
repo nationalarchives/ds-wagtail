@@ -206,6 +206,25 @@
             "extent" : "1180",
             "form" : "file(s)"
           },
+          "@next": {
+            "@admin": {
+              "id": "C441750",
+              "source": "mongo"
+            },
+            "@entity": "reference",
+            "@summary": {
+              "title": "Next"
+            }
+          },
+          "@previous": {
+            "@admin": {
+              "id": "C441748", "source": "mongo"
+            },
+            "@entity": "reference",
+            "@summary": {
+              "title": "Previous"
+            }
+          },
           "@origination" : {
             "date" : {
               "earliest" : {

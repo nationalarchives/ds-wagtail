@@ -2,6 +2,13 @@
     <div class="container">
         <div class="row">
             <div class="col-4 col-md-2">
+                {% if page.previous_record %}
+                    <p class="hierarchy-local__nav-item">
+                        <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--left"></span>
+                        <span class="hierarchy-local__nav-label">Previous</span>
+                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}" data-link="Previous">{{ page.previous_record.iaid }}</a>
+                    </p>
+                {% endif %}
             </div>
             <div class="col-4 col-md-8">
                 <p class="hierarchy-local__nav-item">
@@ -19,6 +26,13 @@
                 </p>
             </div>
             <div class="col-4 col-md-2">
+                {% if page.next_record %}
+                    <p class="hierarchy-local__nav-item">
+                        <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--right"></span>
+                        <span class="hierarchy-local__nav-label">Next</span>
+                        <a href="{% url 'details-page-machine-readable' page.next_record.iaid %}" data-link="Next">{{ page.next_record.iaid }}</a>
+                    </p>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -503,6 +503,22 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    def test_next_record(self):
+        self.assertEqual(
+            self.record_page.next_record,
+            {
+                "iaid": "C441750",
+            },
+        )
+
+    def test_previous_record(self):
+        self.assertEqual(
+            self.record_page.previous_record,
+            {
+                "iaid": "C441748",
+            },
+        )
+
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
