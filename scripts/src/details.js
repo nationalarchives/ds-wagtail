@@ -1,5 +1,6 @@
 import manage_details_element from './modules/manage_details_element';
 import scroll_to_bottom from "./modules/scroll_to_bottom";
+import push_reference_and_series from "./modules/analytics/push_reference_and_series";
 
 const summary_element = document.querySelector('#js-hierarchy-global summary');
 const hierarchy_list = document.querySelector('.hierarchy-global__list');
@@ -16,6 +17,7 @@ summary_element.addEventListener('click', e => {
 document.addEventListener("DOMContentLoaded", () => {
     manage_details_element();
     scroll_to_bottom(hierarchy_list);
+    push_reference_and_series();
 });
 
 window.addEventListener("resize", () => {
