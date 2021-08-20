@@ -1,6 +1,7 @@
 import manage_details_element from './modules/manage_details_element';
 import scroll_to_bottom from "./modules/scroll_to_bottom";
 import push_reference_and_series from "./modules/analytics/push_reference_and_series";
+import add_unique_ids from "./modules/analytics/add_unique_ids";
 
 const summary_element = document.querySelector('#js-hierarchy-global summary');
 const hierarchy_list = document.querySelector('.hierarchy-global__list');
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     manage_details_element();
     scroll_to_bottom(hierarchy_list);
     push_reference_and_series();
+    add_unique_ids();
 });
 
 window.addEventListener("resize", () => {
