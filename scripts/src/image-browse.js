@@ -4,12 +4,14 @@ import calc_scroll_percent_increment from "./modules/analytics/scroll_tracking/c
 import update_scroll_obj from "./modules/analytics/scroll_tracking/update_scroll_obj";
 import get_scroll_percentage from "./modules/analytics/scroll_tracking/get_scroll_percentage";
 
-add_data_link('.image-browse__listing a');
-
 let scrollObj = {
     'event': 'image-viewer-browse',
     highestScrollPercentage: get_scroll_percentage()
 };
+
+document.addEventListener('DOMContentLoaded', () => {
+    add_data_link('.image-browse__listing a');
+});
 
 document.addEventListener('scroll', e => {
     const percentageIncrement = calc_scroll_percent_increment();
