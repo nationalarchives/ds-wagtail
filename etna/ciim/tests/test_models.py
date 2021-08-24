@@ -524,7 +524,7 @@ class ModelTranslationTest(TestCase):
             self.record_page.related_records,
             [
                 {
-                    "reference_number": "ZBOX 1/92/4",
+                    "iaid": "C8981250",
                     "title": "[1580-1688]. Notes (cards) from State Papers Foreign, Royal "
                     "Letters, SP 102/61. Manuscript.",
                 }
@@ -580,7 +580,7 @@ class UnexpectedParsingIssueTest(TestCase):
         record = create_record(
             iaid="C123456",
         )
-        del record['_source']['@origination']['date']
+        del record["_source"]["@origination"]["date"]
 
         responses.add(
             responses.GET,
@@ -591,3 +591,78 @@ class UnexpectedParsingIssueTest(TestCase):
         record_page = RecordPage.search.get(iaid="C123456")
 
         self.assertEqual(record_page.origination_date, None)
+
+    @responses.activate
+    def test_related_record_with_no_identifier(self):
+        record = create_record(
+            related=[
+                {
+                    "@admin": {
+                        "id": "C568",
+                        "uuid": "216d37d3-eb15-3e76-99d2-bc9ee99104ce",
+                    },
+                    "@entity": "reference",
+                    "@link": {
+                        "note": {
+                            "value": "For records originating in the Exchequer see"
+                        },
+                        "qualifier": "association",
+                        "relationship": {"value": "related"},
+                    },
+                    "@summary": {
+                        "title": "Records of the Office of First Fruits and Tenths"
+                    },
+                }
+            ],
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(records=[record]),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        # Related records with no 'Aidentifer' and therefore no
+        # reference_nubmers were skipped but now we're linking to the details
+        # page using the iaid, these records should be present
+        self.assertEqual(
+            record_page.related_records,
+            [
+                {
+                    "iaid": "C568",
+                    "title": "Records of the Office of First Fruits and Tenths",
+                }
+            ],
+        )
+
+    @responses.activate
+    def test_related_article_with_no_title(self):
+        record = create_record(
+            iaid="C123456",
+            related=[
+                {
+                    "@admin": {
+                        "id": "rg-1582",
+                        "source": "wagtail-es",
+                        "uuid": "890bc89e-9c9d-37a8-bdd4-1213bad92a33",
+                    },
+                    "@entity": "reference",
+                    "@type": {"base": "media", "type": "research guide"},
+                    "source": {
+                        "location": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/famous-wills-1552-1854/"
+                    },
+                }
+            ],
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/fetch",
+            json=create_response(records=[record]),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        self.assertEqual(record_page.related_articles, [])

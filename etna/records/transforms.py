@@ -90,10 +90,9 @@ def transform_record_page_result(result):
         data["related_records"] = [
             {
                 "title": i["@summary"]["title"],
-                "reference_number": i["identifier"][0]["reference_number"],
+                "iaid": i["@admin"]["id"],
             }
             for i in related_records
-            if "@summary" in i and "identifier" in i
         ]
 
         related_articles = find_all(
