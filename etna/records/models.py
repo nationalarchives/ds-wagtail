@@ -41,6 +41,8 @@ class RecordPage(Page):
     topics = models.JSONField(null=True)
     next_record = models.JSONField(null=True)
     previous_record = models.JSONField(null=True)
+    related_records = models.JSONField(null=True)
+    related_articles = models.JSONField(null=True)
 
     def __init__(self, *args, **kwargs):
         """Override to add Kong response data to instance for debugging.
