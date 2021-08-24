@@ -84,11 +84,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -174,11 +174,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -200,7 +200,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
 
@@ -283,11 +283,11 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -354,11 +354,11 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -411,5 +411,5 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
