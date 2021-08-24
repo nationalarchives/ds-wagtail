@@ -146,6 +146,6 @@ class KongClient:
 
     def media(self, location=None):
         try:
-            return self.session.get(f"{self.base_url}/media/{location}", stream=True, timeout=5)
+            return self.session.get(f"{self.base_url}/media/media/{location}", stream=True, timeout=5)
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
