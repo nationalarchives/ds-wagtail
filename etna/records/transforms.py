@@ -93,6 +93,7 @@ def transform_record_page_result(result):
                 "reference_number": i["identifier"][0]["reference_number"],
             }
             for i in related_records
+            if '@summary' in i
         ]
 
         related_articles = find_all(
@@ -101,6 +102,7 @@ def transform_record_page_result(result):
         data["related_articles"] = [
             {"title": i["@summary"]["title"], "url": i["source"]["location"]}
             for i in related_articles
+            if '@summary' in i
         ]
 
     data["media_reference_id"] = pluck(
