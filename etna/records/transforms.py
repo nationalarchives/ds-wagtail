@@ -93,7 +93,7 @@ def transform_record_page_result(result):
                 "reference_number": i["identifier"][0]["reference_number"],
             }
             for i in related_records
-            if '@summary' in i
+            if "@summary" in i and "identifier" in i
         ]
 
         related_articles = find_all(
