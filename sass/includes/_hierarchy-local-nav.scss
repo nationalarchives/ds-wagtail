@@ -6,10 +6,6 @@
 
   &__nav-item {
     margin: 0;
-
-    a {
-      display: block;
-    }
   }
 
   &__nav-indicator {
@@ -32,11 +28,19 @@
   }
 
 
-  &__nav-label, &__nav-link {
+  &__nav-label, &__nav-link-span {
     display: none;
 
     @media only screen and (min-width: $screen__lg) {
       display: inline;
+    }
+  }
+
+  &__nav-link {
+    display: none;
+
+    @media only screen and (min-width: $screen__lg) {
+      display: block;
     }
   }
 }
