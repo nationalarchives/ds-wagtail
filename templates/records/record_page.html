@@ -47,26 +47,12 @@
 
                 {% if page.related_records %}
                     <h2>Related records</h2>
-                    <ul>
-                        {# limit output to three related records #}
-                        {% for record in page.related_records|slice:":3" %}
-                            <li>
-                                <a href="{% url 'details-page-human-readable' record.reference_number %}">{{ record.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {% include "includes/records/record-related-records.html" %}
                 {% endif %}
 
                 {% if page.related_articles %}
-                    <h2>Related articles</h2>
-                    <ul>
-                        {# limit output to three related articles #}
-                        {% for article in page.related_articles|slice:":3"  %}
-                            <li>
-                                <a href="{{ article.url }}">{{ article.title }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    <h2>Related content</h2>
+                    {% include "includes/records/record-related-content.html" %}
                 {% endif %}
             </div>
         </div>

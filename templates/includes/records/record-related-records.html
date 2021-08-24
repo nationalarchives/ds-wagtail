@@ -1,0 +1,11 @@
+<div class="details-related-records">
+    <p>You might be interested in these records in our archives as they may have meaningful or useful associations with this one.</p>
+    <ul class="details-related-records__list">
+        {# limit output to three related records #}
+        {% for record in page.related_records|slice:":3" %}
+            <li>
+                <a href="{% url 'details-page-human-readable' record.reference_number %}">{{ record.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
