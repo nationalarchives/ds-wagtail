@@ -44,6 +44,16 @@
                     <h2>Topics covered in this record</h2>
                     {% include "includes/records/taxonomy-tags.html" %}
                 {% endif %}
+
+                {% if page.related_records %}
+                    <h2>Related records</h2>
+                    {% include "includes/records/record-related-records.html" %}
+                {% endif %}
+
+                {% if page.related_articles %}
+                    <h2>Related content</h2>
+                    {% include "includes/records/record-related-content.html" %}
+                {% endif %}
             </div>
         </div>
     </div>
