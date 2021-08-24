@@ -158,7 +158,7 @@ class TestRecordDescriptionOverride(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -203,11 +203,7 @@ class TestResultsPageIntegration(TestCase):
 
     @responses.activate
     def test_failed_result_fetch_due_to_404(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/fetch",
-            status=404
-        )
+        responses.add(responses.GET, "https://kong.test/data/fetch", status=404)
 
         self.results_page.records.create(record_iaid="C123456")
         self.results_page.save()
@@ -218,11 +214,7 @@ class TestResultsPageIntegration(TestCase):
 
     @responses.activate
     def test_failed_result_fetch_due_to_500(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/fetch",
-            status=500
-        )
+        responses.add(responses.GET, "https://kong.test/data/fetch", status=500)
 
         self.results_page.records.create(record_iaid="C123456")
         self.results_page.save()
@@ -234,9 +226,7 @@ class TestResultsPageIntegration(TestCase):
     @responses.activate
     def test_failed_result_fetch_due_to_empty_result_set(self):
         responses.add(
-            responses.GET,
-            "https://kong.test/fetch",
-            json=create_response()
+            responses.GET, "https://kong.test/data/fetch", json=create_response()
         )
 
         self.results_page.records.create(record_iaid="C123456")

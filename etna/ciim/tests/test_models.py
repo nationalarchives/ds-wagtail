@@ -28,7 +28,7 @@ class ManagerExceptionTest(TestCase):
     def test_raises_does_not_exist(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
         )
 
@@ -39,7 +39,7 @@ class ManagerExceptionTest(TestCase):
     def test_raises_multiple_objects_returned(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={"hits": {"total": {"value": 2, "relation": "eq"}, "hits": [{}, {}]}},
         )
 
@@ -58,7 +58,7 @@ class SearchManagerFilterTest(TestCase):
     def test_hits_returns_list(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[create_record(iaid="C4122893"), create_record(iaid="C4122894")]
             ),
@@ -76,7 +76,7 @@ class SearchManagerFilterTest(TestCase):
     def test_fetch_for_record_out_of_bounds_raises_key_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(records=[create_record()]),
         )
 
@@ -96,7 +96,7 @@ class SearchManagerFilterTest(TestCase):
         responses.reset()
         responses.add_callback(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             callback=partial(paginate_records_callback, records),
         )
 
@@ -118,7 +118,7 @@ class SearchManagerKongCount(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(records=[create_record()]),
         )
 
@@ -142,7 +142,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         responses.reset()
         responses.add_callback(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             callback=partial(paginate_records_callback, records),
         )
 
@@ -154,7 +154,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
         )
 
     @responses.activate
@@ -164,7 +164,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
@@ -174,7 +174,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
@@ -186,7 +186,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
         )
 
     @responses.activate
@@ -196,7 +196,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
         )
 
     @responses.activate
@@ -206,7 +206,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
         )
 
     @responses.activate
@@ -240,7 +240,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
@@ -251,7 +251,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
@@ -293,7 +293,7 @@ class KongExceptionTest(TestCase):
     def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             status=500,
         )
 
@@ -554,7 +554,7 @@ class UnexpectedParsingIssueTest(TestCase):
     def test_hierarchy_with_no_identifier_is_skipped(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -584,7 +584,7 @@ class UnexpectedParsingIssueTest(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(records=[record]),
         )
 
@@ -618,7 +618,7 @@ class UnexpectedParsingIssueTest(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(records=[record]),
         )
 
@@ -659,7 +659,7 @@ class UnexpectedParsingIssueTest(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(records=[record]),
         )
 

@@ -33,7 +33,9 @@ class TestRecordPageDisambiguationView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
-            responses.GET, "https://kong.test/search", json=create_response(records=[])
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_response(records=[]),
         )
 
         response = self.client.get("/catalogue/AD/2/2/")
@@ -47,7 +49,7 @@ class TestRecordPageDisambiguationView(TestCase):
     def test_disambiguation_page_rendered_for_multiple_results(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_record(reference_number="ADM 223/3"),
@@ -67,7 +69,7 @@ class TestRecordPageDisambiguationView(TestCase):
     def test_rendering_deferred_to_details_page_view(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", reference_number="ADM 223/3"),
@@ -77,7 +79,7 @@ class TestRecordPageDisambiguationView(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", reference_number="ADM 223/3"),
@@ -112,7 +114,9 @@ class TestRecordPageView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
-            responses.GET, "https://kong.test/fetch", json=create_response(records=[])
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[]),
         )
 
         response = self.client.get("/catalogue/C123456/")
@@ -126,7 +130,7 @@ class TestRecordPageView(TestCase):
     def test_record_page_rendered_for_single_result(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456"),
@@ -146,7 +150,7 @@ class TestRecordPageView(TestCase):
     def test_record_page_renders_for_record_with_no_image(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -156,7 +160,7 @@ class TestRecordPageView(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(records=[]),
         )
 
@@ -173,7 +177,7 @@ class TestRecordPageView(TestCase):
     def test_record_page_renders_for_record_with_image(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -183,7 +187,7 @@ class TestRecordPageView(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(),
@@ -264,7 +268,7 @@ class TestImageBrowseView(TestCase):
     def test_image_browse_non_digitised_record(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=False),
@@ -280,7 +284,7 @@ class TestImageBrowseView(TestCase):
     def test_image_browse_record_with_no_media(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -298,7 +302,7 @@ class TestImageBrowseView(TestCase):
     def test_success(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -307,7 +311,7 @@ class TestImageBrowseView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(),
@@ -346,7 +350,7 @@ class TestImageViewerView(TestCase):
     def test_image_browse_non_digitised_record(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=False),
@@ -362,7 +366,7 @@ class TestImageViewerView(TestCase):
     def test_image_browse_record_with_no_media(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -380,7 +384,7 @@ class TestImageViewerView(TestCase):
     def test_success(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -389,7 +393,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg", sort="01"),
@@ -421,7 +425,7 @@ class TestImageViewerView(TestCase):
     def test_no_next_image(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -430,7 +434,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg", sort="01"),
@@ -453,7 +457,7 @@ class TestImageViewerView(TestCase):
     def test_no_previous_image(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -462,7 +466,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/image.jpeg", sort="01"),

@@ -88,7 +88,7 @@ class KongClient:
         kwargs["expand"] = "true" if kwargs.pop("expand", False) else "false"
 
         try:
-            response = self.session.get(self.base_url + "/fetch", params=kwargs, timeout=5)
+            response = self.session.get(self.base_url + "/data/fetch", params=kwargs, timeout=5)
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 
@@ -125,7 +125,7 @@ class KongClient:
         kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
         try:
-            response = self.session.get(self.base_url + "/search", params=kwargs, timeout=5)
+            response = self.session.get(self.base_url + "/data/search", params=kwargs, timeout=5)
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 

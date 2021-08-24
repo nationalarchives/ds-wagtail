@@ -231,7 +231,7 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
     def test_machine_readable_route(self, email, expected_status_code):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(records=[create_record(iaid="c123456")]),
         )
 
@@ -253,11 +253,11 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
     def test_human_readable_route(self, email, expected_status_code):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     # Return multiple records to prevent an additional
-                    # call /fetch due to deferring the rendering to
+                    # call /data/fetch due to deferring the rendering to
                     # record_page_view
                     create_record(reference_number="test 1/2/3"),
                     create_record(reference_number="test 1/2/3"),
@@ -282,12 +282,13 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
 
     Unlike similar tests for CMSable pages, these test can assure us that
     routes are only accessible to the appropriate users"""
+
     def setUp(self):
         super().setUp()
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -296,7 +297,7 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg"),
