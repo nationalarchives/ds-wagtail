@@ -1,6 +1,12 @@
 from django.test import SimpleTestCase
 
-from ..utils import format_description_markup, pluck, find, find_all
+from ..utils import (
+    format_description_markup,
+    pluck,
+    find,
+    find_all,
+    convert_sort_key_to_index,
+)
 
 
 class TestResolveLinks(SimpleTestCase):
@@ -226,3 +232,54 @@ class TestFindAll(SimpleTestCase):
         result = find_all(items, lambda i: i[10])
 
         self.assertEqual(list(result), [])
+
+
+class TestConvertSortKeyToIndex(SimpleTestCase):
+    def test_none(self):
+        sort = None
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 0)
+
+    def test_empty_string(self):
+        sort = None
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 0)
+
+    def test_converts_sort_key_with_leading_zero(self):
+        sort = "01"
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 0)
+
+    def test_converts_sort_key_at_three_digit_boundary(self):
+        sort = "31000"
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 999)
+
+    def test_converts_sort_key_at_four_digit_boundary(self):
+        sort = "31001"
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 1000)
+
+    def test_index_is_zero_for_invalid_sort_key(self):
+        sort = "10000"
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 0)
+
+    def test_index_is_zero_for_non_int_sort_key(self):
+        sort = "NaN"
+
+        index = convert_sort_key_to_index(sort)
+
+        self.assertEquals(index, 0)
