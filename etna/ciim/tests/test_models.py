@@ -28,7 +28,7 @@ class ManagerExceptionTest(TestCase):
     def test_raises_does_not_exist(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
         )
 
@@ -39,7 +39,7 @@ class ManagerExceptionTest(TestCase):
     def test_raises_multiple_objects_returned(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={"hits": {"total": {"value": 2, "relation": "eq"}, "hits": [{}, {}]}},
         )
 
@@ -58,7 +58,7 @@ class SearchManagerFilterTest(TestCase):
     def test_hits_returns_list(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(
                 records=[create_record(iaid="C4122893"), create_record(iaid="C4122894")]
             ),
@@ -76,7 +76,7 @@ class SearchManagerFilterTest(TestCase):
     def test_fetch_for_record_out_of_bounds_raises_key_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(records=[create_record()]),
         )
 
@@ -96,7 +96,7 @@ class SearchManagerFilterTest(TestCase):
         responses.reset()
         responses.add_callback(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             callback=partial(paginate_records_callback, records),
         )
 
@@ -118,7 +118,7 @@ class SearchManagerKongCount(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json=create_response(records=[create_record()]),
         )
 
@@ -142,7 +142,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         responses.reset()
         responses.add_callback(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             callback=partial(paginate_records_callback, records),
         )
 
@@ -154,7 +154,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
         )
 
     @responses.activate
@@ -164,7 +164,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
@@ -174,7 +174,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
         )
 
     @responses.activate
@@ -186,7 +186,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
         )
 
     @responses.activate
@@ -196,7 +196,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
         )
 
     @responses.activate
@@ -206,7 +206,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
         )
 
     @responses.activate
@@ -240,7 +240,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
@@ -251,7 +251,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
         )
 
     @responses.activate
@@ -293,7 +293,7 @@ class KongExceptionTest(TestCase):
     def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             status=500,
         )
 
@@ -503,6 +503,45 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    def test_next_record(self):
+        self.assertEqual(
+            self.record_page.next_record,
+            {
+                "iaid": "C441750",
+            },
+        )
+
+    def test_previous_record(self):
+        self.assertEqual(
+            self.record_page.previous_record,
+            {
+                "iaid": "C441748",
+            },
+        )
+
+    def test_related_records(self):
+        self.assertEqual(
+            self.record_page.related_records,
+            [
+                {
+                    "iaid": "C8981250",
+                    "title": "[1580-1688]. Notes (cards) from State Papers Foreign, Royal "
+                    "Letters, SP 102/61. Manuscript.",
+                }
+            ],
+        )
+
+    def test_related_articles(self):
+        self.assertEqual(
+            self.record_page.related_articles,
+            [
+                {
+                    "title": "Irish maps c.1558-c.1610",
+                    "url": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/irish-maps-c1558-c1610/",
+                }
+            ],
+        )
+
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test", KONG_CLIENT_TEST_MODE=False
@@ -515,7 +554,7 @@ class UnexpectedParsingIssueTest(TestCase):
     def test_hierarchy_with_no_identifier_is_skipped(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -541,14 +580,89 @@ class UnexpectedParsingIssueTest(TestCase):
         record = create_record(
             iaid="C123456",
         )
-        del record['_source']['@origination']['date']
+        del record["_source"]["@origination"]["date"]
 
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json=create_response(records=[record]),
         )
 
         record_page = RecordPage.search.get(iaid="C123456")
 
         self.assertEqual(record_page.origination_date, None)
+
+    @responses.activate
+    def test_related_record_with_no_identifier(self):
+        record = create_record(
+            related=[
+                {
+                    "@admin": {
+                        "id": "C568",
+                        "uuid": "216d37d3-eb15-3e76-99d2-bc9ee99104ce",
+                    },
+                    "@entity": "reference",
+                    "@link": {
+                        "note": {
+                            "value": "For records originating in the Exchequer see"
+                        },
+                        "qualifier": "association",
+                        "relationship": {"value": "related"},
+                    },
+                    "@summary": {
+                        "title": "Records of the Office of First Fruits and Tenths"
+                    },
+                }
+            ],
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[record]),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        # Related records with no 'Aidentifer' and therefore no
+        # reference_nubmers were skipped but now we're linking to the details
+        # page using the iaid, these records should be present
+        self.assertEqual(
+            record_page.related_records,
+            [
+                {
+                    "iaid": "C568",
+                    "title": "Records of the Office of First Fruits and Tenths",
+                }
+            ],
+        )
+
+    @responses.activate
+    def test_related_article_with_no_title(self):
+        record = create_record(
+            iaid="C123456",
+            related=[
+                {
+                    "@admin": {
+                        "id": "rg-1582",
+                        "source": "wagtail-es",
+                        "uuid": "890bc89e-9c9d-37a8-bdd4-1213bad92a33",
+                    },
+                    "@entity": "reference",
+                    "@type": {"base": "media", "type": "research guide"},
+                    "source": {
+                        "location": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/famous-wills-1552-1854/"
+                    },
+                }
+            ],
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[record]),
+        )
+
+        record_page = RecordPage.search.get(iaid="C123456")
+
+        self.assertEqual(record_page.related_articles, [])

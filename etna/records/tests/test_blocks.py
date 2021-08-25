@@ -32,7 +32,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             ]
         )
         responses.add(responses.GET, "https://kong.test/search", json=response)
-        responses.add(responses.GET, "https://kong.test/fetch", json=response)
+        responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
 
         root = Site.objects.get().root_page
 
@@ -84,11 +84,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -174,11 +174,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -200,7 +200,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
 
@@ -220,7 +220,7 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
             ]
         )
         responses.add(responses.GET, "https://kong.test/search", json=response)
-        responses.add(responses.GET, "https://kong.test/fetch", json=response)
+        responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
 
         root = Site.objects.get().root_page
 
@@ -283,11 +283,11 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -354,11 +354,11 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -366,7 +366,9 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         """Ensure that even if a record associated with this page doesn't
         exist, we're still able to render its edit page."""
 
-        responses.add(responses.GET, "https://kong.test/fetch", json=create_response())
+        responses.add(
+            responses.GET, "https://kong.test/data/fetch", json=create_response()
+        )
 
         self.insights_page.body = json.dumps(
             [
@@ -411,5 +413,5 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C123456&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )

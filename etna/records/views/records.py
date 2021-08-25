@@ -55,7 +55,7 @@ def record_page_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        page = RecordPage.search.get(iaid)
+        page = RecordPage.search.get(iaid, expand=True)
     except DoesNotExist:
         raise Http404
 

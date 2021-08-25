@@ -1,4 +1,4 @@
-from ..ciim.utils import format_description_markup, pluck, find
+from ..ciim.utils import format_description_markup, pluck, find, find_all
 
 
 def transform_record_page_result(result):
@@ -57,7 +57,8 @@ def transform_record_page_result(result):
                 "reference_number": i["identifier"][0]["reference_number"],
                 "title": i["@summary"]["title"],
             }
-            for i in hierarchy[0] if 'identifier' in i
+            for i in hierarchy[0]
+            if "identifier" in i
         ]
 
     if availability := source.get("availability"):
@@ -80,9 +81,38 @@ def transform_record_page_result(result):
             for i in topics
         ]
 
+    if related := source.get("related"):
+
+        related_records = find_all(
+            related,
+            predicate=lambda i: i["@link"]["relationship"]["value"] == "related",
+        )
+        data["related_records"] = [
+            {
+                "title": i["@summary"]["title"],
+                "iaid": i["@admin"]["id"],
+            }
+            for i in related_records
+        ]
+
+        related_articles = find_all(
+            related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
+        )
+        data["related_articles"] = [
+            {"title": i["@summary"]["title"], "url": i["source"]["location"]}
+            for i in related_articles
+            if '@summary' in i
+        ]
+
     data["media_reference_id"] = pluck(
         source.get("multimedia"), accessor=lambda i: i["@admin"]["id"]
     )
+
+    if next_record := source.get("@next"):
+        data["next_record"] = {"iaid": next_record["@admin"]["id"]}
+
+    if previous_record := source.get("@previous"):
+        data["previous_record"] = {"iaid": previous_record["@admin"]["id"]}
 
     return data
 
@@ -92,7 +122,9 @@ def transform_image_result(result):
 
     data = {}
 
-    data['thumbnail_location'] = pluck(result['_source'], accessor=lambda i: i['processed']['preview']['location'])
+    data["thumbnail_location"] = pluck(
+        result["_source"], accessor=lambda i: i["processed"]["preview"]["location"]
+    )
     data["location"] = result["_source"]["processed"]["original"]["location"]
     data["sort"] = result["_source"]["sort"]
 

@@ -39,6 +39,10 @@ class RecordPage(Page):
     availablility_delivery_condition = models.TextField()
     availablility_delivery_surrogates = models.JSONField(null=True)
     topics = models.JSONField(null=True)
+    next_record = models.JSONField(null=True)
+    previous_record = models.JSONField(null=True)
+    related_records = models.JSONField(null=True)
+    related_articles = models.JSONField(null=True)
 
     def __init__(self, *args, **kwargs):
         """Override to add Kong response data to instance for debugging.

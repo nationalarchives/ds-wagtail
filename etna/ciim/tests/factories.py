@@ -11,9 +11,13 @@ def create_record(
     is_digitised=False,
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
+    related=None,
 ):
     if not hierarchy:
         hierarchy = []
+
+    if not related:
+        related = []
 
     """Return a sample response for a record.
 
@@ -50,6 +54,7 @@ def create_record(
                     },
                 }
             ],
+            "related": related,
             "description": [{"value": description}],
             "legal": {"status": "Open"},
         }

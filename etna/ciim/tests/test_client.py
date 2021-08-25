@@ -14,7 +14,7 @@ class ClientSearchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
 
-        responses.add(responses.GET, "https://kong.test/search", json={})
+        responses.add(responses.GET, "https://kong.test/data/search", json={})
 
     @responses.activate
     def test_default_parameters(self):
@@ -23,7 +23,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?from=0&pretty=false",
+            "https://kong.test/data/search?from=0&pretty=false",
         )
 
     @responses.activate
@@ -33,7 +33,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?from=10&pretty=false",
+            "https://kong.test/data/search?from=10&pretty=false",
         )
 
     @responses.activate
@@ -43,7 +43,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?from=0&pretty=true",
+            "https://kong.test/data/search?from=0&pretty=true",
         )
 
     @responses.activate
@@ -53,7 +53,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?from=0&pretty=false",
+            "https://kong.test/data/search?from=0&pretty=false",
         )
 
     @responses.activate
@@ -63,7 +63,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&pretty=false",
         )
 
     @responses.activate
@@ -73,7 +73,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=C10297&from=0&pretty=false",
+            "https://kong.test/data/search?term=C10297&from=0&pretty=false",
         )
 
     @responses.activate
@@ -83,7 +83,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/search?term=Egypt&from=0&pretty=false",
+            "https://kong.test/data/search?term=Egypt&from=0&pretty=false",
         )
 
 
@@ -92,7 +92,7 @@ class ClientFetchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
 
-        responses.add(responses.GET, "https://kong.test/fetch", json={})
+        responses.add(responses.GET, "https://kong.test/data/fetch", json={})
 
     @responses.activate
     def test_default_parameters(self):
@@ -102,7 +102,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?from=0&pretty=false",
+            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -112,7 +112,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?ref=PROD+1%2F4&from=0&pretty=false",
+            "https://kong.test/data/fetch?ref=PROD+1%2F4&from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -122,7 +122,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?from=0&pretty=true",
+            "https://kong.test/data/fetch?from=0&pretty=true&expand=false",
         )
 
     @responses.activate
@@ -132,7 +132,27 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?from=0&pretty=false",
+            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
+        )
+
+    @responses.activate
+    def test_expand_parameter_conversion_true(self):
+        self.client.fetch(expand=True)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/fetch?from=0&pretty=false&expand=true",
+        )
+
+    @responses.activate
+    def test_expand_parameter_conversion_false(self):
+        self.client.fetch(expand=False)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
         )
 
     @responses.activate
@@ -142,7 +162,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/fetch?iaid=C198022&from=0&pretty=false",
+            "https://kong.test/data/fetch?iaid=C198022&from=0&pretty=false&expand=false",
         )
 
 
@@ -155,7 +175,7 @@ class TestClientFetchReponse(TestCase):
     def test_test_mode_doesnt_use_requests(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             status=500,
         )
 
@@ -166,7 +186,7 @@ class TestClientFetchReponse(TestCase):
     def test_raises_kubernetes_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={"message": "failure to get a peer from the ring-balancer"},
         )
 
@@ -177,7 +197,7 @@ class TestClientFetchReponse(TestCase):
     def test_raises_kong_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/fetch",
+            "https://kong.test/data/fetch",
             json={
                 "error": {
                     "root_cause": [],
@@ -207,7 +227,9 @@ class TestClientFetchReponse(TestCase):
             },
         }
 
-        responses.add(responses.GET, "https://kong.test/fetch", json=valid_response)
+        responses.add(
+            responses.GET, "https://kong.test/data/fetch", json=valid_response
+        )
 
         response = self.client.fetch()
 
@@ -274,7 +296,7 @@ class TestClientSearchReponse(TestCase):
     def test_500_raises_invalid_response(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             status=500,
             json={},
         )
@@ -286,7 +308,7 @@ class TestClientSearchReponse(TestCase):
     def test_500_with_reason_raises_invalid_response(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             status=500,
             json={"error": {"root_cause": [{"reason": "Test Error"}]}},
         )
@@ -298,7 +320,7 @@ class TestClientSearchReponse(TestCase):
     def test_raises_kubernetes_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json={"message": "failure to get a peer from the ring-balancer"},
         )
 
@@ -309,7 +331,7 @@ class TestClientSearchReponse(TestCase):
     def test_raises_kong_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/search",
+            "https://kong.test/data/search",
             json={
                 "error": {
                     "root_cause": [],
@@ -339,7 +361,9 @@ class TestClientSearchReponse(TestCase):
             },
         }
 
-        responses.add(responses.GET, "https://kong.test/search", json=valid_response)
+        responses.add(
+            responses.GET, "https://kong.test/data/search", json=valid_response
+        )
 
         response = self.client.search()
 

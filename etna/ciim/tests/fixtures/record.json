@@ -161,6 +161,44 @@
               }
             ]
           ],
+          "related": [
+            {
+                "@admin": {
+                    "id": "rg-1624",
+                    "source": "wagtail-es",
+                    "uuid": "3c2ba4d8-ee0e-38a1-b55d-3cf3d7e98230"
+                },
+                "@entity": "reference",
+                "@summary": {"title": "Irish maps c.1558-c.1610"},
+                "@type": {"base": "media", "type": "research guide"},
+                "source": {
+                    "location": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/irish-maps-c1558-c1610/"
+                }
+            },
+            {
+                "@admin": {
+                    "id": "C8981250",
+                    "uuid": "87bcab5a-d5dd-3fa8-97fd-9679060bddeb"
+                },
+                "@entity": "reference",
+                "@link": {
+                    "note": {"value": "additional finding aid"},
+                    "qualifier": "association",
+                    "relationship": {"value": "related"}
+                },
+                "@summary": {
+                    "title": "[1580-1688]. Notes (cards) from State Papers Foreign, Royal Letters, SP 102/61. Manuscript."
+                },
+                "identifier": [
+                    {
+                        "primary": "true",
+                        "reference_number": "ZBOX 1/92/4",
+                        "type": "reference number",
+                        "value": "ZBOX 1/92/4"
+                    }
+                ]
+            }
+          ],
           "identifier" : [
             {
               "primary" : true,
@@ -205,6 +243,25 @@
             "display" : "1180 file(s)",
             "extent" : "1180",
             "form" : "file(s)"
+          },
+          "@next": {
+            "@admin": {
+              "id": "C441750",
+              "source": "mongo"
+            },
+            "@entity": "reference",
+            "@summary": {
+              "title": "Next"
+            }
+          },
+          "@previous": {
+            "@admin": {
+              "id": "C441748", "source": "mongo"
+            },
+            "@entity": "reference",
+            "@summary": {
+              "title": "Previous"
+            }
           },
           "@origination" : {
             "date" : {

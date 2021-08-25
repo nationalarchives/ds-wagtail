@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 
-from ..utils import format_description_markup, pluck, find
+from ..utils import format_description_markup, pluck, find, find_all
 
 
 class TestResolveLinks(SimpleTestCase):
@@ -172,3 +172,57 @@ class TestFind(SimpleTestCase):
         result = find(items, lambda i: i[10])
 
         self.assertEqual(result, None)
+
+
+class TestFindAll(SimpleTestCase):
+    def test_find_from_dict_in_list(self):
+        items = [
+            {"name": "Mercury", "moon_count": 0},
+            {"name": "Jupiter", "moon_count": 79},
+            {"name": "Saturn", "moon_count": 82},
+        ]
+
+        result = find_all(items, predicate=lambda i: i["moon_count"] > 1)
+
+        self.assertEqual(
+            list(result),
+            [
+                {"name": "Jupiter", "moon_count": 79},
+                {"name": "Saturn", "moon_count": 82},
+            ],
+        )
+
+    def test_find_from_list(self):
+        items = [["Jupiter"], ["Saturn"]]
+
+        result = find_all(items, predicate=lambda i: i[0].startswith("J"))
+
+        self.assertEqual(list(result), [["Jupiter"]])
+
+    def test_find_with_no_predicate(self):
+        items = [["Jupiter"], ["Saturn"]]
+
+        result = find_all(items)
+
+        self.assertEqual(list(result), [])
+
+    def test_find_type_error_returns_empty_list(self):
+        items = None
+
+        result = find_all(items, predicate=lambda i: i[0])
+
+        self.assertEqual(list(result), [])
+
+    def test_key_error_returns_empty_list(self):
+        items = None
+
+        result = find_all(items, lambda i: i["invalid_key"])
+
+        self.assertEqual(list(result), [])
+
+    def test_index_error_returns_empty_list(self):
+        items = None
+
+        result = find_all(items, lambda i: i[10])
+
+        self.assertEqual(list(result), [])
