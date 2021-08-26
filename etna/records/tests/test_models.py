@@ -9,7 +9,6 @@ from ..models import Image
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class ImageTestCase(TestCase):
     @responses.activate
