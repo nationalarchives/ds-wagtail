@@ -43,6 +43,10 @@
     margin: 0;
     background: $color__white;
 
+    &:focus {
+      outline: 5px solid $color__focus-blue-outline-light-bg;
+    }
+
     @media only screen and (min-width: $screen__xl) {
       max-height: 30rem;
       border-top: 3px solid $color__grey-4;
