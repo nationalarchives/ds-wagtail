@@ -208,7 +208,25 @@ class TestClientFetchReponse(TestCase):
             },
         )
 
-        with self.assertRaises(KongError):
+        with self.assertRaises(KongError) as e:
+            self.client.fetch()
+
+    @responses.activate
+    def test_raises_java_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json={
+                "timestamp": "2021-08-26T09:07:31.688+00:00",
+                "status": 400,
+                "error": "Bad Request",
+                "message": "Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: \"999999999999999999\"",
+                "path": "/search",
+            },
+            status=400,
+        )
+
+        with self.assertRaises(InvalidResponse):
             self.client.fetch()
 
     @responses.activate
