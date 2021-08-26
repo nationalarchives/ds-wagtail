@@ -37,9 +37,13 @@
       display: table-footer-group;
     }
 
-    &__heading, &__paragraph {
+    &__heading, &__paragraph, &__span {
       padding-left: 0.3rem;
       padding-right: 0.3rem;
+    }
+
+    &__span {
+      display: block;
     }
 
     @media only screen and (min-width: $screen__lg) {
