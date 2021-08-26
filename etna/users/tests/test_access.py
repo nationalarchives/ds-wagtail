@@ -210,7 +210,6 @@ class TestCollectionsPages(UserAccessTestCase, TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 @ddt
 class TestRecordPageRoutes(UserAccessTestCase, TestCase):
@@ -275,7 +274,6 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
 @ddt
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageViewerRoutes(UserAccessTestCase, TestCase):
     """Ensure that the image viewer pages are accessible to the appropriate users.

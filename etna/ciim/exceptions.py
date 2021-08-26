@@ -17,7 +17,7 @@ class InvalidResponse(KongException):
         try:
             reason = self.json["error"]["root_cause"][0]["reason"]
             message = f"{message} Reason: {reason}"
-        except (IndexError, KeyError):
+        except (IndexError, KeyError, TypeError):
             """Failed to find error message, raise without message"""
 
         super().__init__(message, *args, **kwargs)

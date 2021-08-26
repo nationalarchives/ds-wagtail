@@ -9,7 +9,6 @@ from ..client import KongClient
 from ..exceptions import InvalidResponse, KubernetesError, KongError
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientSearchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
@@ -87,7 +86,6 @@ class ClientSearchTest(TestCase):
         )
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class ClientFetchTest(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
@@ -166,7 +164,6 @@ class ClientFetchTest(TestCase):
         )
 
 
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientFetchReponse(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
@@ -211,7 +208,25 @@ class TestClientFetchReponse(TestCase):
             },
         )
 
-        with self.assertRaises(KongError):
+        with self.assertRaises(KongError) as e:
+            self.client.fetch()
+
+    @responses.activate
+    def test_raises_java_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json={
+                "timestamp": "2021-08-26T09:07:31.688+00:00",
+                "status": 400,
+                "error": "Bad Request",
+                "message": "Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: \"999999999999999999\"",
+                "path": "/search",
+            },
+            status=400,
+        )
+
+        with self.assertRaises(InvalidResponse):
             self.client.fetch()
 
     @responses.activate
@@ -236,58 +251,6 @@ class TestClientFetchReponse(TestCase):
         self.assertEqual(response, valid_response)
 
 
-class ClientReponseTest(TestCase):
-    def setUp(self):
-        self.client = KongClient("", api_key="")
-
-
-class TestClientTestMode(TestCase):
-    def setUp(self):
-        self.client = KongClient(
-            "",
-            api_key="",
-            test_mode=True,
-            test_file_path=Path(Path(__file__).parent, "fixtures/record.json"),
-        )
-
-    def test_empty_search(self):
-        self.client.search()
-
-    def test_test_mode_doesnt_use_requests(self):
-        with patch("requests.get") as mock_request:
-            self.client.search()
-
-            mock_request.assert_not_called()
-
-    def test_match_in_title(self):
-        response = self.client.search(term="legal")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_iaid(self):
-        response = self.client.search(term="C10297")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_reference_number(self):
-        response = self.client.search(term="LO 2")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_match_on_description(self):
-        response = self.client.search(term="law")
-
-        self.assertEqual(response["hits"]["total"]["value"], 1)
-
-    def test_missing_test_file(self):
-
-        self.client.test_file_path = "missing.json"
-
-        with self.assertRaises(FileNotFoundError):
-            self.client.search()
-
-
-@override_settings(KONG_CLIENT_TEST_MODE=False)
 class TestClientSearchReponse(TestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")

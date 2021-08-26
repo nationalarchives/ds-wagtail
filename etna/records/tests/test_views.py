@@ -17,7 +17,6 @@ from ...ciim.tests.factories import create_record, create_media, create_response
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageDisambiguationView(TestCase):
     def setUp(self):
@@ -98,7 +97,6 @@ class TestRecordPageDisambiguationView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestRecordPageView(TestCase):
     def setUp(self):
@@ -211,7 +209,6 @@ class TestRecordPageView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageServeView(TestCase):
     def test_no_location_404s(self):
@@ -251,7 +248,6 @@ class TestImageServeView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageBrowseView(TestCase):
     def setUp(self):
@@ -333,7 +329,6 @@ class TestImageBrowseView(TestCase):
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_CLIENT_TEST_MODE=False,
 )
 class TestImageViewerView(TestCase):
     def setUp(self):
@@ -484,3 +479,61 @@ class TestImageViewerView(TestCase):
         self.assertEquals(
             response.context["next_image"].location, "path/to/next-image.jpeg"
         )
+
+    @responses.activate
+    def test_previous_image_but_no_selected_image(self):
+        """Modifying the URL to attempt to display image_count + 1 image should 404."""
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
+                ]
+            ),
+        )
+
+        response = self.client.get("/records/images/C123456/02/")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
+    def test_invalid_response_from_kong_raises_404(self):
+        """It's possible for us to pass a very long offset to Kong that returns a 400.
+
+        In such an event, ensure that we gracefully handle the error."""
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "timestamp": "2021-08-26T09:07:31.688+00:00",
+                "status": 400,
+                "error": "Bad Request",
+                "message": "Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: \"999999999999999999\"",
+                "path": "/search",
+            },
+            status=400,
+        )
+
+        response = self.client.get("/records/images/C123456/11000000000000000000/")
+
+        self.assertEquals(response.status_code, 404)
