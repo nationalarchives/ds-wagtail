@@ -24,7 +24,7 @@
    text-decoration: none;
    transition: none;
    color: $color__white !important;
-
+   display: inline-block;
    &:hover {
      text-decoration: underline;
      color: $color__white;
@@ -38,13 +38,14 @@
 
  &__link-heading {
    margin-top: 0;
+   margin-bottom: 0;
    font-size: 1.625rem;
  }
 
  &__link-text {
    color: $color__white;
    margin-bottom: 0;
-
+   margin-top: 0.5rem;
    a {
      color: $color__white;
 
