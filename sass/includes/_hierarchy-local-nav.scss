@@ -28,7 +28,7 @@
   }
 
 
-  &__nav-label, &__nav-link-span {
+  &__nav-label {
     display: none;
 
     @media only screen and (min-width: $screen__lg) {
@@ -36,7 +36,7 @@
     }
   }
 
-  &__nav-link {
+  &__nav-link-span {
     display: none;
 
     @media only screen and (min-width: $screen__lg) {
