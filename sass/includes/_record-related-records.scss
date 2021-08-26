@@ -14,7 +14,7 @@
       a {
         text-decoration: underline;
         color: $color__link;
-
+        display: inline-block;
         &:hover {
           text-decoration: none;
         }

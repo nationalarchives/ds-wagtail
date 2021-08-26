@@ -9,13 +9,17 @@
             {% for record in value.records %}
                 <div class="featured-records__list-item">
                     <dt>
-                        <h4 class="featured-records__link-heading">
-                            {% if record.reference_number %}
-                                <a class="featured-records__link" href="{% url 'details-page-human-readable' record.reference_number %}" data-link="{{ record.title }}">{{ record.title }}</a>
-                            {% elif record.iaid %}
-                                <a class="featured-records__link" href="{% url 'details-page-machine-readable' record.iaid %}" data-link="{{ record.title }}">{{ record.title }}</a>
-                            {% endif %}
-                        </h4>
+                        {% if record.reference_number %}
+                        <a class="featured-records__link" href="{% url 'details-page-human-readable' record.reference_number %}"
+                            data-link="{{ record.title }}">
+                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
+                        </a>
+                        {% elif record.iaid %}
+                        <a class="featured-records__link" href="{% url 'details-page-machine-readable' record.iaid %}"
+                            data-link="{{ record.title }}">
+                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
+                        </a>
+                        {% endif %}
                     </dt>
                     {% if record.description %}
                         <dd class="featured-records__link-text">{{ record.description|safe }}</dd>

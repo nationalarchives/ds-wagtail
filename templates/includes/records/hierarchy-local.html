@@ -15,13 +15,17 @@
                     <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--up"></span>
                     <span class="hierarchy-local__nav-label">This record is in</span>
                     {% if page.parent.reference_number %}
-                        <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level" class="hierarchy-local__nav-link">
-                            <span class="hierarchy-local__nav-link-span">{{ page.parent.title }}</span>
+                    <span class="hierarchy-local__nav-link-span">
+                        <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level">
+                            {{ page.parent.title }}
                         </a>
+                    </span>
                     {% elif page.parent.iaid %}
-                        <a href="{% url 'details-page-machine-readable' page.parent.iaid %}" data-link="Series level" class="hierarchy-local__nav-link">
-                            <span class="hierarchy-local__nav-link-span">{{ page.parent.title }}</span>
+                    <span class="hierarchy-local__nav-link-span">
+                        <a href="{% url 'details-page-machine-readable' page.parent.iaid %}" data-link="Series level">
+                            {{ page.parent.title }}
                         </a>
+                    </span>
                     {% endif %}
                 </p>
             </div>
