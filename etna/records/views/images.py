@@ -46,7 +46,10 @@ def image_viewer(request, iaid, sort):
         # If the query isn't valid, this is where the exception will be raised..
         raise Http404
 
-    image = images[index]
+    try:
+        image = images[index]
+    except IndexError:
+        raise Http404
 
     try:
         next_image = images[index + 1]

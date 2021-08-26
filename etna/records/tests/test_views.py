@@ -481,6 +481,33 @@ class TestImageViewerView(TestCase):
         )
 
     @responses.activate
+    def test_previous_image_but_no_selected_image(self):
+        """Modifying the URL to attempt to display image_count + 1 image should 404."""
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456", is_digitised=True),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_response(
+                records=[
+                    create_media(location="path/to/previous-image.jpeg", sort="01"),
+                ]
+            ),
+        )
+
+        response = self.client.get("/records/images/C123456/02/")
+
+        self.assertEquals(response.status_code, 404)
+
+    @responses.activate
     def test_invalid_response_from_kong_raises_404(self):
         """It's possible for us to pass a very long offset to Kong that returns a 400.
 
