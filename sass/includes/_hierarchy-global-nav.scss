@@ -12,6 +12,10 @@
       text-align: center;
       margin: 1.5rem 0;
 
+      @media only screen and (min-width: $screen__xl) {
+        cursor: auto;
+      }
+
       &:hover {
         text-decoration: none;
       }
