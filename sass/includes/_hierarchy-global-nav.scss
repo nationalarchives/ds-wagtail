@@ -24,21 +24,12 @@
         outline: 0.312rem solid $color__link;
       }
     }
-
   }
 
   &__heading {
     display: inline;
-
-    h2 {
-      font-size: 1.3rem;
-      padding-left: 0.5rem;
-      display: inline;
-    }
-
-    p {
-      margin: 0;
-    }
+    font-size: 1.3rem;
+    padding-left: 0.5rem;
   }
 
   &__list {
