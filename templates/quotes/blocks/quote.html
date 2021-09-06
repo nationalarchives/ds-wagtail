@@ -3,7 +3,9 @@
 <div class="quote">
     <div class="container">
         <img class="quote__icon" src="{% static 'images/fontawesome-svgs/quote-left.svg' %}" alt="" />
-        <h3 class="sr-only">{{ value.heading }}</h3>
+        {% if value.heading %}
+            <h3 class="sr-only">{{ value.heading }}</h3>
+        {% endif %}
 
         {% if value.attribution %}
             <figure>
