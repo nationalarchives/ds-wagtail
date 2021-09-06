@@ -21,9 +21,8 @@
                     <p>{{ page.introduction }}</p>
                 </div>
                 <div class="results">
-                    <h2 class="sr-only">Results</h2>
                     <div class="row">
-                        <h3 class="sr-only">Items</h3>
+                        <h2 class="sr-only">Items</h2>
                         <ul class="card-group--list-style-none" id="analytics-explorer-results" data-container-name="explorer-results">
                             {% for record_page_result in page.records.all %}
                                 {% comment %}
