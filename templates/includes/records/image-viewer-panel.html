@@ -2,6 +2,7 @@
     <div class="container">
         <figure>
             <a class="image-viewer-panel__image-link" href="{% url 'image-browse' iaid=page.iaid %}">
+                <span class="sr-only">Open in our image viewer</span>
                 <img src="{% url 'image-serve' location=image.location %}" alt="">
             </a>
             <figcaption>

@@ -8,7 +8,15 @@
             The title should vary depending on whether this layout is being applied to the image viewer or browse
             and contain the same text as is in the h1 for those pages
         {% endcomment %}
-        <title>CAB 23/78</title>
+        <title>
+            {{ page.reference_number }}
+            {% if images_count %}
+                - {{ images_count }} Images
+
+            {% else %}
+                - Image {{ index|add:'1' }} of {{ images.count }}
+            {% endif %}
+        </title>
         <meta name="description" content="" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
