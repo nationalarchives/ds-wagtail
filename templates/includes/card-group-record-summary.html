@@ -22,9 +22,7 @@
                         </picture>
                     </div>
                 {% endif %}
-                <div class="card-group-record-summary__body">
-                    <figcaption>{{ description_override|default:record_page.description|safe }}</figcaption>
-                </div>
+                    <figcaption class="card-group-record-summary__body">{{ description_override|default:record_page.description|safe }}</figcaption>
             </figure>
         </a>
     </div>
