@@ -40,7 +40,7 @@ if (image_source) {
         }
     });
 
-    if(canvas) {
+    try {
         canvas.addEventListener("focus", () => {
             header.style.borderBottom = "solid 0.3125rem #8EC0EC";
             footer.style.borderTop = "solid 0.3125rem #8EC0EC";
@@ -50,5 +50,8 @@ if (image_source) {
             header.style.borderBottom = "none";
             footer.style.borderTop = "none";
         });
+    }
+    catch (e) {
+        console.error(e);
     }
 }
