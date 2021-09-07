@@ -40,13 +40,16 @@ if (image_source) {
         }
     });
 
-    canvas.addEventListener("focus", () => {
-        header.style.borderBottom = "solid 0.3125rem #8EC0EC";
-        footer.style.borderTop = "solid 0.3125rem #8EC0EC";
-    });
+    if(canvas) {
+        canvas.addEventListener("focus", () => {
+            header.style.borderBottom = "solid 0.3125rem #8EC0EC";
+            footer.style.borderTop = "solid 0.3125rem #8EC0EC";
+        });
 
-    canvas.addEventListener("blur", () => {
-        header.style.borderBottom = "none";
-        footer.style.borderTop = "none";
-    });
+        canvas.addEventListener("blur", () => {
+
+            header.style.borderBottom = "none";
+            footer.style.borderTop = "none";
+        });
+    }
 }
