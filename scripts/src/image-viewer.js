@@ -47,7 +47,6 @@ if (image_source) {
         });
 
         canvas.addEventListener("blur", () => {
-
             header.style.borderBottom = "none";
             footer.style.borderTop = "none";
         });
