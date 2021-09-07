@@ -166,4 +166,26 @@
       }
     }
   }
+
+  .openseadragon-canvas {
+    &:focus {
+      border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
+    }
+    &:focus-visible {
+      outline: none;
+    }
+  }
+
+  &__viewer.fullpage {
+    .openseadragon-canvas {
+      height: 95% !important;
+
+      &:focus {
+        border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
+      }
+      &:focus-visible {
+        outline: none;
+      }
+    }
+  }
 }

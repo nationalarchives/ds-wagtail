@@ -22,6 +22,9 @@ if (image_source) {
     };
 
     const viewer = Openseadragon(seadragon_options);
+    const canvas = document.getElementsByClassName("openseadragon-canvas")[0];
+    const header = document.getElementsByClassName("image-viewer__header")[0];
+    const footer = document.getElementsByClassName("image-viewer__footer")[0];
 
     viewer.addHandler("full-page", data => {
 
@@ -36,4 +39,19 @@ if (image_source) {
             full_screen_button.focus();
         }
     });
+
+    try {
+        canvas.addEventListener("focus", () => {
+            header.style.borderBottom = "solid 0.3125rem #8EC0EC";
+            footer.style.borderTop = "solid 0.3125rem #8EC0EC";
+        });
+
+        canvas.addEventListener("blur", () => {
+            header.style.borderBottom = "none";
+            footer.style.borderTop = "none";
+        });
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
