@@ -6,9 +6,10 @@ import add_unique_ids from "./modules/analytics/add_unique_ids";
 document.addEventListener("DOMContentLoaded", () => {
 
     const hierarchy_list = document.querySelector('.hierarchy-global__list');
+    const hierarchy_list_current_item = document.querySelector(".hierarchy-global__list-item--current-item");
 
     manage_details_element();
-    scroll_to_bottom(hierarchy_list);
+    scroll_to_bottom(hierarchy_list_current_item, hierarchy_list);
     push_reference_and_series();
     add_unique_ids();
 
