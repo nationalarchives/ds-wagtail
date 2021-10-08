@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import manage_focus_if_error_message_found from "./manage_focus_if_error_message_found";
+import focus_element_if_found from "./focus_element_if_found";
 
 test('handles various inputs', () => {
 
@@ -13,10 +13,10 @@ test('handles various inputs', () => {
     </div>
     `;
 
-    expect(manage_focus_if_error_message_found('tna-form__error-summary')).toBe(true);
-    expect(manage_focus_if_error_message_found('non-existent-class')).toBe(false);
-    expect(manage_focus_if_error_message_found('')).toBe(false);
-    expect(manage_focus_if_error_message_found()).toBe(false);
+    expect(focus_element_if_found('tna-form__error-summary')).toBe(true);
+    expect(focus_element_if_found('non-existent-class')).toBe(false);
+    expect(focus_element_if_found('')).toBe(false);
+    expect(focus_element_if_found()).toBe(false);
 });
 
 test('updates the DOM as expected', () => {
@@ -28,7 +28,7 @@ test('updates the DOM as expected', () => {
     </div>
     `;
 
-    expect(manage_focus_if_error_message_found('tna-form__error-summary')).toBe(true);
+    expect(focus_element_if_found('tna-form__error-summary')).toBe(true);
     expect(document.getElementsByClassName('tna-form__error-summary')[0].getAttribute('tabindex')).toBe('-1');
     expect(document.activeElement.getAttribute('id')).toBe('error-message');
 });
