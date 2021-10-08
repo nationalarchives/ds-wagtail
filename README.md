@@ -92,24 +92,29 @@ And then **import**:
 
 `cat <database-dump> |  docker-compose exec  -T db psql -U postgres postgres`
 
-##### Working with SASS/CSS
+### Front end development
+
+#### Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
 - Install SASS globally by running `npm install -g sass`.
 - To watch and build the SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
 - To modify styles, navigate to the `sass` folder in your editor.
 
-
-##### Working with JavaScript
+#### Working with JavaScript
 
 Webpack is used for JavaScript module bundling with entry points and outputs defined within `webpack.config.js`. When defining new
 entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required.
 
-Webpack
-
 - Install dependencies with `npm install`
-- **For development**: Kick off a Webpack watch task with `npm start`. This will produce development assets (by overriding the production mode set in `webpack.config.js`).
-- **For production**: bundle assets with `npx webpack --config webpack.config.js`
+    - _For development_: Kick off a Webpack watch task with `npm start`. This will produce development assets (by overriding the production mode set in `webpack.config.js`).
+    - _For production_: bundle assets with `npx webpack --config webpack.config.js`
+
+##### JavaScript testing
+
+Jest is used for JavaScript testing. Tests should be added as siblings of the target file and given the same name with a `.test.js` suffix. Let's aim for 100% coverage. Where necessary Jest can be set to run in a browser-like environment by setting the Jest environment to `jsdom` via a docblock at the top of the file.
+
+- Run Jest unit tests with `npm test`
 
 ### Kong
 
