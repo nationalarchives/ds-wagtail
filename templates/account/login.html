@@ -38,14 +38,14 @@
                                 {% if form.login.errors %}
                                     {% for error in form.login.errors %}
                                         <li>
-                                            <a href="#id_login">{{ error|escape }}</a>
+                                            <a href="#id_login" id="analytics-login-error">{{ error|escape }}</a>
                                         </li>
                                     {% endfor %}
                                 {% endif %}
                                 {% if form.password.errors %}
                                     {% for error in form.password.errors %}
                                         <li>
-                                            <a href="#id_password">{{ error|escape }}</a>
+                                            <a href="#id_password" id="analytics-password-error">{{ error|escape }}</a>
                                         </li>
                                     {% endfor %}
                                 {% endif %}
