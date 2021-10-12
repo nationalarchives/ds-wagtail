@@ -4,10 +4,10 @@
 
     <details id="js-hierarchy-global" open>
         <summary id="analytics-hierarchy-link">
-            <h2 class="hierarchy-global__heading">Where am I in the catalogue?</h2>
+            <h2 class="hierarchy-global__heading" id="hierarchy-label">Where am I in the catalogue?</h2>
         </summary>
 
-        <ul class="hierarchy-global__list">
+        <ol class="hierarchy-global__list" aria-labelledby="hierarchy-label">
             {% for item in page.hierarchy %}
                 {% is_page_current_item_in_hierarchy page item as is_current_item %}
                 {% if is_current_item %}
@@ -24,6 +24,6 @@
                     </li>
                 {% endif %}
             {% endfor %}
-        </ul>
+        </ol>
     </details>
 </nav>
