@@ -8,7 +8,8 @@ module.exports = {
         explorer: './scripts/src/explorer.js',
         insights: './scripts/src/insights.js',
         image_browse: './scripts/src/image-browse.js',
-        details: './scripts/src/details.js'
+        details: './scripts/src/details.js',
+        sign_in: './scripts/src/sign-in.js'
     },
     output: {
         filename: '[name].js',

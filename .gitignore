@@ -53,3 +53,4 @@ templates/static/css/libraries/*
 # coverage.py
 .coverage
 
+/coverage/

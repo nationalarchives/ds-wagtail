@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load account %}
+{% load static %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
@@ -86,4 +87,8 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/sign_in.js' %}"></script>
 {% endblock %}
