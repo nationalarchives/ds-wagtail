@@ -28,3 +28,17 @@ class MediaBlock(blocks.StructBlock):
         template = "media/blocks/media-block.html"
         help_text = "An embedded audio or video block"
         icon = "fa-play"
+
+class ImageBlock(blocks.StructBlock):
+    """
+    An image block which supports accessibility-first design.
+    """
+    image = ImageChooserBlock(required=True)
+    decorative = blocks.BooleanBlock(label="Is this image decorative?")
+    alt_text = blocks.CharBlock(max_length=100, help_text="Guidance for alt text.")
+    caption = blocks.CharBlock(help_text="An optional caption which will be displayed below the image.", label="Caption (Optional)")
+
+    class Meta:
+        template = "media/blocks/image-block.html"
+        help_text = "An image block which supports accessibility-first design."
+        icon = "fa-image"
