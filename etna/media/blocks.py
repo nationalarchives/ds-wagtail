@@ -35,61 +35,16 @@ class MediaBlock(blocks.StructBlock):
         help_text = "An embedded audio or video block"
         icon = "fa-play"
 
-
-
 class ImageBlock(blocks.StructBlock):
     """
-    An image block which allows editors to ensure accessibility is reflected on the page.
+    An image block which supports accessibility-first design.
     """
     image = ImageChooserBlock(required=True)
-    decorative = blocks.BooleanBlock( 
-    label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
-    "Is this image decorative?",
-    "Tick the box if 'yes'"   
-    )), 
-    help_text=
-    format_html("%s <a href=%s target=%s>%s</a>." % (
-            "Decorative images are used for visual effect and do not add information to the content of a page.",
-            "https://www.w3.org/WAI/tutorials/images/decorative/",
-            "_blank",
-            "Check the guidance to see if your image is decorative"
-        )), required=False, default=False)
-
-    alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text=
-    format_html("%s <a href=%s target=%s>%s</a>." % (
-            "Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text.",
-            "https://html.spec.whatwg.org/multipage/images.html#alt",
-            "_blank",
-            "Check the guidance for tips on writing alt text"
-    )), required=False)
-
-    caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)", required=False)
-
-    def clean(self, value):
-        decorative = value.get("decorative")
-        alt_text = value.get("alt_text")
-        caption = value.get("caption")
-
-        errors = {}
-
-        if not decorative and not alt_text:
-            message = "Non-decorative images must contain alt text."
-            errors["alt_text"] = ErrorList([message])  
-
-        if decorative and alt_text:
-            message = "Decorative images should not contain alt text."
-            errors["alt_text"] = ErrorList([message]) 
-            
-        if decorative and caption:
-            message = "Decorative images should not contain a caption to prevent confusing users of assistive technologies."
-            errors["caption"] = ErrorList([message]) 
-
-        if errors:
-            raise ValidationError("There was a validation error with your image.", params=errors)
-
-        return super().clean(value)
+    decorative = blocks.BooleanBlock(label="Is this image decorative?")
+    alt_text = blocks.CharBlock(max_length=100, help_text="Guidance for alt text.")
+    caption = blocks.CharBlock(help_text="An optional caption which will be displayed below the image.", label="Caption (Optional)")
 
     class Meta:
-        template = "media/blocks/image-block-default.html"
-        help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
+        template = "media/blocks/image-block.html"
+        help_text = "An image block which supports accessibility-first design."
         icon = "fa-image"
