@@ -11,26 +11,6 @@
                 <div class="image-viewer__reference">
                     <h1>{{ images.has_other_pages }}<strong>{{ page.reference_number }}</strong> <span>- Image {{ index|add:'1' }} of {{ images_count }}</span></h1>
                 </div>
-                <div class="image-viewer__toolbar" id="js-viewer-toolbar">
-                    <button id="zoom-in" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom in">Zoom in</button>
-                    <button id="zoom-out" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom out">Zoom out</button>
-                    <button id="home" aria-controls="js-image-viewer" data-image-viewer-controls="Reset">Reset</button>
-                    <button id="full-page" aria-controls="js-image-viewer" data-image-viewer-controls="Full screen">Full screen</button>
-                </div>
-            </div>
-            <div class="image-viewer__viewer" id="js-image-viewer" role="region" aria-label="Image viewer"></div>
-
-            {% comment %}
-                This noscript tag is used to provide a static image
-                to users should JavaScript be unavailable for any reason.
-            {% endcomment %}
-
-            <noscript>
-                <img src="{% url 'image-serve' location=image.location %}"
-                     alt="CAB 23/78 - Image {{ index|add:'1' }} of {{ images_count }}">
-            </noscript>
-
-            <div class="image-viewer__footer">
                 <nav class="image-viewer__navigation" aria-label="Explore this record">
 
                     {% comment %}
@@ -45,10 +25,31 @@
                     {% endcomment %}
 
                     <ul>
-                        <li><a href="{% url 'details-page-machine-readable' page.iaid %}">Record details</a></li>
                         <li><a href="{% url 'image-browse' page.iaid %}">All {{ images_count }} images</a></li>
+                        <li><a href="{% url 'details-page-machine-readable' page.iaid %}">Record details</a></li>
                     </ul>
                 </nav>
+            </div>
+            <div class="image-viewer__viewer" id="js-image-viewer" role="region" aria-label="Image viewer"></div>
+
+            {% comment %}
+                This noscript tag is used to provide a static image
+                to users should JavaScript be unavailable for any reason.
+            {% endcomment %}
+
+            <noscript>
+                <img src="{% url 'image-serve' location=image.location %}"
+                     alt="CAB 23/78 - Image {{ index|add:'1' }} of {{ images_count }}">
+            </noscript>
+
+            <div class="image-viewer__footer">
+                <div class="image-viewer__toolbar" id="js-viewer-toolbar">
+                    <button id="zoom-in" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom in">Zoom in</button>
+                    <button id="zoom-out" aria-controls="js-image-viewer" data-image-viewer-controls="Zoom out">Zoom out</button>
+                    <button id="home" aria-controls="js-image-viewer" data-image-viewer-controls="Reset">Reset</button>
+                    <button id="full-page" aria-controls="js-image-viewer" data-image-viewer-controls="Full screen">Full screen</button>
+                </div>
+
                 {% if next_image or previous_image %}
                     <nav class="image-viewer__pagination" aria-label="Pagination">
                         <ul>
