@@ -126,6 +126,7 @@ LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
+ACCOUNT_FORMS = {'login': 'etna.users.forms.EtnaLoginForm'}
 
 
 WSGI_APPLICATION = 'config.wsgi.application'
