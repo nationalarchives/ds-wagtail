@@ -69,8 +69,12 @@
 
     &.fullpage {
       background-color: $color__black;
+      position: absolute !important;
       margin: 0;
+      bottom: 0;
       padding: 0.5rem;
+      text-align: left;
+      z-index: 999;
     }
 
     @media (max-width: $screen__sm) {
