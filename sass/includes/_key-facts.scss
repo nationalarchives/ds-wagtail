@@ -27,5 +27,6 @@
     background: url($fa_chevron_down) no-repeat;
     background-size: 1.25rem;
     padding-left: 2.5rem;
+    @extend .link--bold;
   }
 }
