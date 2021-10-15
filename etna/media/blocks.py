@@ -41,9 +41,9 @@ class ImageBlock(blocks.StructBlock):
     An image block which encourages accessibility-first design.
     """
     image = ImageChooserBlock(required=True)
-    decorative = blocks.BooleanBlock(label="Is this image decorative?", help_text="Decorative images are used for visual enhancement, and do not add context to the page. Guidance for determining wether your image is decorative: https://www.w3.org/WAI/tutorials/images/decorative/")
-    alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text="Used to describe images when they fail to load, or for users of assistive technologies. Enter text between 10-100 characters. Required if your image is not decorative. Guidance for writing alt text: https://html.spec.whatwg.org/multipage/images.html#alt")
-    caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)")
+    decorative = blocks.BooleanBlock(label="Is this image decorative?", help_text="Decorative images are used for visual enhancement, and do not add context to the page. Guidance for determining wether your image is decorative: https://www.w3.org/WAI/tutorials/images/decorative/", required=False, default=False)
+    alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text="Used to describe images when they fail to load, or for users of assistive technologies. Enter text between 10-100 characters. Required if your image is not decorative. Guidance for writing alt text: https://html.spec.whatwg.org/multipage/images.html#alt", required=False)
+    caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)", required=False)
 
     def clean(self, value):
         decorative = value.get("decorative")
