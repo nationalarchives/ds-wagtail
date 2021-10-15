@@ -2,9 +2,9 @@
 
 <div class="content-block">
     <div class="container">
-        <{% include_block value.heading_tag %} class="content-block__heading">
+        <{% include_block value.heading_level %} class="content-block__heading">
             {{ value.heading }}
-        </{% include_block value.heading_tag %}>
+        </{% include_block value.heading_level %}>
         <div class="content-block__text">
             {{ value.paragraph|richtext }}
         </div>
