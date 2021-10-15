@@ -1,16 +1,16 @@
 {% load wagtailimages_tags %}
-{% image value.image as block_image %}
+{% image value.image original as block_image %}
 
 {% if value.caption %}
     <figure>
         <picture>
-            <img src="{{block_image.url}}" alt={{value.alt_text}} />
+            <img src="{{block_image.url}}" alt="{{value.alt_text}}" />
         </picture>
         <figcaption>{{value.caption}}</figcaption>
     </figure>
 {% else %}
 
-    {% if value.deocrative %}
+    {% if value.decorative %}
         <img src="{{block_image.url}}" alt=""/>
     {% else %}
         <img src="{{block_image.url}}" alt="{{value.alt_text}}"/>

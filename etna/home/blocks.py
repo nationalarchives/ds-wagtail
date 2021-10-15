@@ -2,7 +2,7 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from ..paragraphs.blocks import ParagraphWithHeading
-
+from ..media.blocks import ImageBlock
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
@@ -56,3 +56,4 @@ class FeaturedItemsBlock(blocks.ListBlock):
 class HomePageStreamBlock(blocks.StreamBlock):
     featured_items = FeaturedItemsBlock()
     paragraph_with_heading = ParagraphWithHeading()
+    image_block = ImageBlock()
