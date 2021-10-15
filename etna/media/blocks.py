@@ -7,7 +7,6 @@ from django.utils.html import format_html
 
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
-
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -35,16 +34,42 @@ class MediaBlock(blocks.StructBlock):
         help_text = "An embedded audio or video block"
         icon = "fa-play"
 
+
+
 class ImageBlock(blocks.StructBlock):
     """
-    An image block which supports accessibility-first design.
+    An image block which encourages accessibility-first design.
     """
     image = ImageChooserBlock(required=True)
-    decorative = blocks.BooleanBlock(label="Is this image decorative?")
-    alt_text = blocks.CharBlock(max_length=100, help_text="Guidance for alt text.")
-    caption = blocks.CharBlock(help_text="An optional caption which will be displayed below the image.", label="Caption (Optional)")
+    decorative = blocks.BooleanBlock(label="Is this image decorative?", help_text="Decorative images are used for visual enhancement, and do not add context to the page. Guidance for determining wether your image is decorative: https://www.w3.org/WAI/tutorials/images/decorative/")
+    alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text="Used to describe images when they fail to load, or for users of assistive technologies. Enter text between 10-100 characters. Required if your image is not decorative. Guidance for writing alt text: https://html.spec.whatwg.org/multipage/images.html#alt")
+    caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)")
+
+    def clean(self, value):
+        decorative = value.get("decorative")
+        alt_text = value.get("alt_text")
+        caption = value.get("caption")
+
+        errors = {}
+
+        if not decorative and not alt_text:
+            message = "Non-decorative images must contain alt-text"
+            errors["alt_text"] = ErrorList([message])
+        
+        if not decorative and len(alt_text) < 10:
+            message = "Alt-text must be at least 10 characters long."
+            errors["alt_text"] = ErrorList([message])        
+        
+        if decorative and caption:
+            message = "Decorative images should not contain captions to prevent confusing users of assistive technologies."
+            errors["caption"] = ErrorList([message]) 
+
+        if errors:
+            raise ValidationError("There was a validation error with your image.", params=errors)
+
+        return super().clean(value)
 
     class Meta:
         template = "media/blocks/image-block.html"
-        help_text = "An image block which supports accessibility-first design."
+        help_text = "An image block which encourages accessibility-first design."
         icon = "fa-image"
