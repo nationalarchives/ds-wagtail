@@ -64,12 +64,16 @@
 
   &__toolbar {
     margin: 1.3rem;
-    text-align: right;
+    text-align: left;
+    line-height: 1rem;
 
     &.fullpage {
       background-color: $color__black;
+      position: absolute !important;
       margin: 0;
-      padding: 0.5rem;
+      bottom: 0;
+      text-align: left;
+      z-index: 999;
     }
 
     @media (max-width: $screen__sm) {
@@ -90,6 +94,7 @@
       border-radius: 0;
       cursor: pointer;
       color: $color__white;
+      margin: 0.5rem;
 
       &:focus {
         outline: 5px solid $color__focus-blue-outline-dark-bg;
@@ -110,6 +115,7 @@
     justify-content: space-between;
     background-color: $color__black;
 
+
     ul {
       margin: 0;
       padding: 0;
@@ -126,7 +132,17 @@
 
   &__navigation {
     background-color: $color__green;
-    padding: 1rem;
+    padding: 1.3rem 2rem;
+
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+
+    li {
+      display: inline-block;
+      padding: 0.5rem;
+    }
 
     @media (max-width: $screen__sm) {
       padding: 0.2rem;
@@ -150,14 +166,18 @@
   &__pagination {
     padding: 1rem;
     text-align: right;
+    line-height: 1rem;
 
     @media (max-width: $screen__sm) {
       padding: 0.2rem;
     }
 
+    li {
+      margin: 0.5rem;
+    }
+
     a {
       margin-right: 1rem;
-      padding: 0 0.2rem;
 
       &:focus {
         text-decoration: none;

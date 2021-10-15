@@ -43,9 +43,6 @@
 
                     <div class="tna-form__row {% if form.login.errors %}tna-form__row--error{% endif %}">
                         <label for="id_login" id="email_label">Email</label>
-                        <input type="email" name="login" autocomplete="email" aria-required="true"
-                               id="id_login" {% if form.login.errors %}aria-invalid="true"
-                               aria-describedby="email_label email_errors"{% endif %}>
 
                         {% if form.login.errors %}
                             <ul class="tna-form__error-messages" id="email_errors">
@@ -54,15 +51,14 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
+
+                        <input type="email" name="login" autocomplete="email" aria-required="true"
+                               id="id_login" {% if form.login.errors %}aria-invalid="true"
+                               aria-describedby="email_label email_errors"{% endif %}>
                     </div>
 
                     <div class="tna-form__row {% if form.password.errors %}tna-form__row--error{% endif %}">
                         <label for="id_password" id="password_label">Password</label>
-                        <input type="password" name="password" autocomplete="current-password" id="id_password"
-                               aria-required="true"
-                               {% if form.password.errors %}aria-invalid="true"
-                               aria-describedby="password_label password_errors"{% endif %}
-                               {% if form.password.errors %}class="error"{% endif %}>
 
                         {% if form.password.errors %}
                             <ul class="tna-form__error-messages" id="password_errors">
@@ -71,6 +67,12 @@
                                 {% endfor %}
                             </ul>
                         {% endif %}
+
+                        <input type="password" name="password" autocomplete="current-password" id="id_password"
+                               aria-required="true"
+                               {% if form.password.errors %}aria-invalid="true"
+                               aria-describedby="password_label password_errors"{% endif %}
+                               {% if form.password.errors %}class="error"{% endif %}>
                     </div>
 
                     {% if redirect_field_value %}

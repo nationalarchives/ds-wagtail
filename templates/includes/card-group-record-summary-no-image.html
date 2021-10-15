@@ -8,7 +8,14 @@
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
         <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record_page.title }}">
-            <h3 class="card-group-record-summary__heading">{{ record_page.title }}</h3>
+            <p class="card-group-record-summary__heading">
+                {% if record_page.reference_number %}
+                <span class="sr-only">
+                    {{ record_page.reference_number }} - 
+                </span>
+                {% endif %}
+                {{ record_page.title }}
+            </p>
             <div class="card-group-record-summary__body">
                 <p>{{ description_override|default:record_page.description|striptags|truncatewords:40 }}</p>
             </div>

@@ -23,7 +23,7 @@ class FeaturedRecordBlock(blocks.StructBlock):
 
 
 class FeaturedRecordsBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, required=True)
+    heading = blocks.CharBlock(max_length=100, required=True, label="Heading (heading level 3)")
     introduction = blocks.CharBlock(max_length=200, required=True)
     records = blocks.ListBlock(
         RecordChooserBlock,
@@ -35,7 +35,7 @@ class FeaturedRecordsBlock(blocks.StructBlock):
 
 
 class PromotedItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
+    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page", label="Title (heading level 3)")
     category = SnippetChooserBlock("categories.Category")
     publication_date = blocks.DateBlock(
         required=False
@@ -73,7 +73,7 @@ class PromotedListItemBlock(blocks.StructBlock):
     """
 
     title = blocks.CharBlock(
-        required=True, max_length=100, help_text="Title of the promoted page"
+        required=True, max_length=100, help_text="Title of the promoted page", label="Heading (heading level 4)"
     )
     description = blocks.RichTextBlock(
         required=False,
@@ -91,7 +91,7 @@ class PromotedListBlock(blocks.StructBlock):
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    heading = blocks.CharBlock(required=True, max_length=100)
+    heading = blocks.CharBlock(required=True, max_length=100, label="Heading (heading level 3)")
     category = SnippetChooserBlock("categories.Category")
     summary = blocks.RichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -105,7 +105,7 @@ class PromotedListBlock(blocks.StructBlock):
 
 
 class RelatedItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
+    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page", label="Heading (heading level 3)")
     description = blocks.TextBlock(
         help_text="A description of the promoted page",
     )
@@ -125,7 +125,7 @@ class RelatedItemsBlock(blocks.StructBlock):
     Items for promoted list block.
     """
 
-    heading = blocks.CharBlock(required=True, max_length=100)
+    heading = blocks.CharBlock(required=True, max_length=100, label="Heading (heading level 3)")
     description = blocks.CharBlock(required=True, max_length=100)
     related_items = blocks.ListBlock(RelatedItemBlock)
 

@@ -6,7 +6,7 @@ class SectionBlock(blocks.StructBlock):
     heading = blocks.CharBlock(
         required=True,
         max_length=100,
-        help_text="Section headings must be unique within the page.",
+        label="Section heading (heading level 2)"
     )
 
     class Meta:
