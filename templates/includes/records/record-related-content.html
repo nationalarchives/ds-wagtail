@@ -4,7 +4,7 @@
         {# limit output to three related articles #}
         {% for article in page.related_articles|slice:":3"  %}
             <li>
-                <a href="{{ article.url }}" data-link="{{ article.title }}">{{ article.title }}</a>
+                <a href="{{ article.url }}" data-link="{{ article.title }}" class="link--bold">{{ article.title }}</a>
             </li>
         {% endfor %}
     </ul>

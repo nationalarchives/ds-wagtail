@@ -34,3 +34,9 @@ a {
     color: $color__white;
   }
 }
+
+.link {
+  &--bold {
+    font-weight: bold;
+  }
+}
