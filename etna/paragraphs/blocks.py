@@ -18,7 +18,7 @@ class ParagraphWithHeading(blocks.StructBlock):
     heading_level = blocks.ChoiceBlock(
         required=True,
         choices=heading_tags,
-        help_text=mark_safe("%s <a href=%s target=%s>%s<a>" % (
+        help_text=mark_safe("%s <a href=%s target=%s>%s</a>" % (
             escape("Use this field to select the appropriate heading tag. Check where this component will sit in the page to ensure that it follows the correct heading order and avoids skipping levels e.g. an <h4> should not follow an <h2>. For further information, see:"),
             escape("https://www.w3.org/WAI/tutorials/page-structure/headings"),
             escape("_blank"),
