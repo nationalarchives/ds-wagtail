@@ -56,4 +56,4 @@ class FeaturedItemsBlock(blocks.ListBlock):
 class HomePageStreamBlock(blocks.StreamBlock):
     featured_items = FeaturedItemsBlock()
     paragraph_with_heading = ParagraphWithHeading()
-    image_block = ImageBlock()
+    image_block = ImageBlock(template="media/blocks/image-block-default.html")
