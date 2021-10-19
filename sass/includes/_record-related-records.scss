@@ -9,18 +9,18 @@
       background-color: $color__grey-5;
       margin-bottom: 1rem;
       padding: 1rem;
-      border-left: 1.25rem solid $color__link;
+      border-left: 1.25rem solid $color__blue_3;
 
       a {
         text-decoration: underline;
-        color: $color__link;
+        color: $color__blue_3;
         display: inline-block;
         &:hover {
           text-decoration: none;
         }
 
         &:focus {
-          outline: 0.313rem solid $color__link;
+          outline: 0.313rem solid $color__blue_3;
           outline-offset: .25rem;
         }
       }
