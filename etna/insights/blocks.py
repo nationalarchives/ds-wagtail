@@ -15,8 +15,7 @@ from ..media.blocks import ImageBlock
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
-    image = ImageBlock(
-        label='Teaser image',
+    teaser_image = ImageBlock(
         required=False,
         help_text="Add an image to be displayed with the selected record.",
         template="insights/blocks/images/blog-embed__image-container.html")

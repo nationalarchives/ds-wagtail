@@ -38,12 +38,12 @@ class MediaBlock(blocks.StructBlock):
 
 class ImageBlock(blocks.StructBlock):
     """
-    An image block which encourages accessibility-first design.
+    An image block which allows editors to ensure accessibility is reflected on the page.
     """
     image = ImageChooserBlock(required=True)
     decorative = blocks.BooleanBlock(label="Is this image decorative?", help_text=
     mark_safe("%s <a href=%s target=%s>%s</a>" % (
-            escape("Decorative images are used for visual enhancement, and do not add context to the page. Guidance for determining wether your image is decorative: "),
+            escape("Decorative images are used for visual enhancement, and do not add content to the page. Guidance for determining wether your image is decorative: "),
             escape("https://www.w3.org/WAI/tutorials/images/decorative/"),
             escape("_blank"),
             escape("https://www.w3.org/WAI/tutorials/images/decorative/")
@@ -66,12 +66,12 @@ class ImageBlock(blocks.StructBlock):
 
         if not decorative and not alt_text:
             message = "Non-decorative images must contain alt-text"
-            errors["alt_text"] = ErrorList([message])
-        
-        if not decorative and len(alt_text) < 10:
-            message = "Alt-text must be at least 10 characters long."
-            errors["alt_text"] = ErrorList([message])        
-        
+            errors["alt_text"] = ErrorList([message])  
+
+        if decorative and alt_text:
+            message = "Decorative images should not contain alt-text"
+            errors["alt_text"] = ErrorList([message]) 
+            
         if decorative and caption:
             message = "Decorative images should not contain captions to prevent confusing users of assistive technologies."
             errors["caption"] = ErrorList([message]) 
