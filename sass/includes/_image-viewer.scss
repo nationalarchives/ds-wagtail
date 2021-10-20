@@ -137,11 +137,16 @@
     ul {
       margin: 0;
       padding: 0;
+
+      @media (max-width: $screen__md) {
+        display: flex;
+        justify-content: space-between;
+      }
     }
 
     li {
       display: inline-block;
-      padding: 0.5rem;
+      padding: 0 0.5rem;
     }
 
     @media (max-width: $screen__sm) {
@@ -155,6 +160,10 @@
     a {
       color: $color__black;
       padding: 0 0.2rem;
+
+      @media (max-width: $screen__md) {
+        padding: 0;
+      }
 
       &:focus {
         text-decoration: none;
