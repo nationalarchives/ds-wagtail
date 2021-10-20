@@ -1,5 +1,6 @@
 {% load static %}
 {% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
 
 <div class="record-embed-no-image" data-container-name="record-embed-no-image">
     <div class="container">
@@ -21,25 +22,7 @@
         {% endif %}
 
         {% if value.teaser_image %}
-        <div class="blog-embed__image-container">
-            <picture>
-                {% image value.teaser_image fill-800x500 as teaser_image %}
-                <source media="(max-width: 480px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x500 as teaser_image %}
-                <source media="(max-width: 640px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x450 as teaser_image %}
-                <source media="(max-width: 768px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x350 as teaser_image %}
-                <source media="(max-width: 991px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x350 as teaser_image %}
-                <source media="(max-width: 1199px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x300 as teaser_image %}
-                <source media="(max-width: 1200px)" srcset="{{ teaser_image.url }}">
-                {% image value.teaser_image fill-800x300 as teaser_image %}
-                <img src="{{ teaser_image.url }}" alt="{{ teaser_image.alt }}" class="blog-embed__image" />
-            </picture>
-        </div>
-
+            {% include_block value.teaser_image %}
         {% endif %}
 
         <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>

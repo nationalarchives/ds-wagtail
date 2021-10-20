@@ -10,13 +10,15 @@ from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
 from ..sections.blocks import SectionBlock
+from ..media.blocks import ImageBlock
 
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
-    teaser_image = ImageChooserBlock(
+    teaser_image = ImageBlock(
         required=False,
-        help_text="Add an image to be displayed with the selected record.")
+        help_text="Add an image to be displayed with the selected record.",
+        template="insights/blocks/images/blog-embed__image-container.html")
 
     class Meta:
         icon = "fa-archive"
