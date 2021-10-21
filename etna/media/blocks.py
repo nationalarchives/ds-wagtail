@@ -50,7 +50,7 @@ class ImageBlock(blocks.StructBlock):
         )), required=False, default=False)
     alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text=
     mark_safe("%s <a href=%s target=%s>%s</a>" % (
-            escape("Used to describe images when they fail to load, or for users of assistive technologies. Enter text between 10-100 characters. Required if your image is not decorative. Guidance for writing alt text: "),
+            escape("Used to describe images when they fail to load, or for users of assistive technologies. Enter a maximum of 100 characters. Required if your image is not decorative. Guidance for writing alt text: "),
             escape("https://html.spec.whatwg.org/multipage/images.html#alt"),
             escape("_blank"),
             escape("https://html.spec.whatwg.org/multipage/images.html#alt")
