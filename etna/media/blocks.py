@@ -73,7 +73,7 @@ class ImageBlock(blocks.StructBlock):
             errors["alt_text"] = ErrorList([message]) 
             
         if decorative and caption:
-            message = "Decorative images should not contain captions to prevent confusing users of assistive technologies."
+            message = "Decorative images should not contain a caption to prevent confusing users of assistive technologies."
             errors["caption"] = ErrorList([message]) 
 
         if errors:
@@ -83,5 +83,5 @@ class ImageBlock(blocks.StructBlock):
 
     class Meta:
         template = "media/blocks/image-block-default.html"
-        help_text = "An image block which encourages accessibility-first design."
+        help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
         icon = "fa-image"
