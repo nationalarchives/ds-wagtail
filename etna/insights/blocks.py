@@ -63,11 +63,9 @@ class PromotedItemBlock(blocks.StructBlock):
             "about Shakespeare on YouTube"
         ))
     )
-    teaser_image = ImageChooserBlock(
-        help_text="An image used to create a teaser for the promoted page"
-    )
-    teaser_alt_text = blocks.CharBlock(
-        max_length=100, help_text="Alt text of the teaser image"
+    teaser_image = ImageBlock(
+        help_text="An image used to create a teaser for the promoted page",
+        template="insights/blocks/images/blog-embed__image-container.html"
     )
     description = blocks.RichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
