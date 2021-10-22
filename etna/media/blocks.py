@@ -41,19 +41,27 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
     image = ImageChooserBlock(required=True)
-    decorative = blocks.BooleanBlock(label="Is this image decorative?", help_text=
-    mark_safe("%s <a href=%s target=%s>%s</a>" % (
-            escape("Decorative images are used for visual enhancement, and do not add content to the page. Guidance for determining wether your image is decorative: "),
+    decorative = blocks.BooleanBlock(
+        
+    label=mark_safe("%s <p style='font-size: 11px;'>%s</p>" % (
+    
+    escape("Is this image decorative?"),
+    escape("Tick the box if 'yes'")
+    
+    )), 
+    help_text=
+    mark_safe("%s <a href=%s target=%s>%s</a>." % (
+            escape("Decorative images are used for visual effect and do not add information to the content of a page."),
             escape("https://www.w3.org/WAI/tutorials/images/decorative/"),
             escape("_blank"),
-            escape("https://www.w3.org/WAI/tutorials/images/decorative/")
+            escape("Check the guidance to see if your image is decorative")
         )), required=False, default=False)
     alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text=
-    mark_safe("%s <a href=%s target=%s>%s</a>" % (
-            escape("Used to describe images when they fail to load, or for users of assistive technologies. Enter a maximum of 100 characters. Required if your image is not decorative. Guidance for writing alt text: "),
+    mark_safe("%s <a href=%s target=%s>%s</a>." % (
+            escape("Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text."),
             escape("https://html.spec.whatwg.org/multipage/images.html#alt"),
             escape("_blank"),
-            escape("https://html.spec.whatwg.org/multipage/images.html#alt")
+            escape("Check the guidance for tips on writing alt text")
     )), required=False)
     caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)", required=False)
 
@@ -69,7 +77,7 @@ class ImageBlock(blocks.StructBlock):
             errors["alt_text"] = ErrorList([message])  
 
         if decorative and alt_text:
-            message = "Decorative images should not contain alt-text."
+            message = "Decorative images should not contain alt text."
             errors["alt_text"] = ErrorList([message]) 
             
         if decorative and caption:
