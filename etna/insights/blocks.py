@@ -15,7 +15,8 @@ from ..media.blocks import ImageBlock
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
-    teaser_image = ImageBlock(
+    image = ImageBlock(
+        label='Teaser image',
         required=False,
         help_text="Add an image to be displayed with the selected record.",
         template="insights/blocks/images/blog-embed__image-container.html")
@@ -63,7 +64,8 @@ class PromotedItemBlock(blocks.StructBlock):
             "about Shakespeare on YouTube"
         ))
     )
-    teaser_image = ImageBlock(
+    image = ImageBlock(
+        label = 'Teaser image',
         help_text="An image used to create a teaser for the promoted page",
         template="insights/blocks/images/blog-embed__image-container.html"
     )
