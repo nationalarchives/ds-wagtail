@@ -21,8 +21,8 @@
             </p>
         {% endif %}
 
-        {% if value.teaser_image %}
-            {% include_block value.teaser_image %}
+        {% if value.image %}
+            {% include_block value.image %}
         {% endif %}
 
         <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>
