@@ -239,7 +239,7 @@ Django = ">=2.2"
 
 [[package]]
 name = "django-modelcluster"
-version = "5.1"
+version = "5.2"
 description = "Django extension to allow working with 'clusters' of models as a single unit, independently of the database"
 category = "main"
 optional = false
@@ -599,18 +599,18 @@ python-versions = ">=3.5"
 
 [[package]]
 name = "pyjwt"
-version = "2.1.0"
+version = "2.3.0"
 description = "JSON Web Token implementation in Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-cryptography = {version = ">=3.3.1,<4.0.0", optional = true, markers = "extra == \"crypto\""}
+cryptography = {version = ">=3.3.1", optional = true, markers = "extra == \"crypto\""}
 
 [package.extras]
-crypto = ["cryptography (>=3.3.1,<4.0.0)"]
-dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1,<4.0.0)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
+crypto = ["cryptography (>=3.3.1)"]
+dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
 docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
@@ -773,6 +773,17 @@ xlsx = ["openpyxl (>=2.6.0)"]
 yaml = ["pyyaml"]
 
 [[package]]
+name = "telepath"
+version = "0.2"
+description = "A library for exchanging data between Python and JavaScript"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.extras]
+docs = ["mkdocs (>=1.1,<1.2)", "mkdocs-material (>=6.2,<6.3)"]
+
+[[package]]
 name = "toml"
 version = "0.10.2"
 description = "Python Library for Tom's Obvious, Minimal Language"
@@ -825,7 +836,7 @@ brotli = ["brotlipy (>=0.6.0)"]
 
 [[package]]
 name = "wagtail"
-version = "2.12.3"
+version = "2.14.2"
 description = "A Django content management system."
 category = "main"
 optional = false
@@ -833,10 +844,10 @@ python-versions = ">=3.6"
 
 [package.dependencies]
 anyascii = ">=0.1.5"
-beautifulsoup4 = ">=4.8,<4.9"
-Django = ">=2.2,<3.2"
+beautifulsoup4 = ">=4.8,<4.10"
+Django = ">=3.0,<3.3"
 django-filter = ">=2.2,<3.0"
-django-modelcluster = ">=5.1,<6.0"
+django-modelcluster = ">=5.2,<6.0"
 django-taggit = ">=1.0,<2.0"
 django-treebeard = ">=4.2.0,<4.5 || >4.5,<5.0"
 djangorestframework = ">=3.11.1,<4.0"
@@ -846,16 +857,17 @@ l18n = ">=2018.5"
 Pillow = ">=4.0.0,<9.0.0"
 requests = ">=2.11.1,<3.0"
 tablib = {version = ">=0.14.0", extras = ["xls", "xlsx"]}
+telepath = ">=0.1.1,<1"
 Willow = ">=1.4,<1.5"
 xlsxwriter = ">=1.2.8,<2.0"
 
 [package.extras]
-docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-rtd-theme (>=0.1.9)"]
-testing = ["python-dateutil (>=2.2)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=2.8,<3.0)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "openpyxl (>=2.6.4)", "Unidecode (>=0.04.14,<2.0)", "coverage (>=3.7.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-print (==2.0.2)", "doc8 (==0.8.1)", "jinjalint (>=0.5)", "docutils (==0.15)", "django-taggit (>=1.3.0,<2.0)"]
+docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==5.0.4)", "recommonmark (>=0.7.1)"]
+testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=2.11,<3.0)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "openpyxl (>=2.6.4)", "Unidecode (>=0.04.14,<2.0)", "coverage (>=3.7.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-print (==2.0.2)", "doc8 (==0.8.1)", "jinjalint (>=0.5)", "docutils (==0.15)", "django-taggit (>=1.3.0,<2.0)"]
 
 [[package]]
 name = "wagtail-generic-chooser"
-version = "0.2.1"
+version = "0.3"
 description = "A toolkit for custom chooser popups in Wagtail"
 category = "main"
 optional = false
@@ -946,7 +958,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "1f28ad638443a2f863245ad7e700c53563801cfe5e5ecfd6ec402d2e63e5324c"
+content-hash = "b5a347a565bd93beb9d1866032944eabe3f0c67aa151891aae6942c3e4b9978e"
 
 [metadata.files]
 anyascii = [
@@ -1142,8 +1154,8 @@ django-filter = [
     {file = "django_filter-2.4.0-py3-none-any.whl", hash = "sha256:e00d32cebdb3d54273c48f4f878f898dced8d5dfaad009438fe61ebdf535ace1"},
 ]
 django-modelcluster = [
-    {file = "django-modelcluster-5.1.tar.gz", hash = "sha256:783d177f7bf5c8f30fe365c347b9a032920de371fe1c63d955d7b283684d4c08"},
-    {file = "django_modelcluster-5.1-py2.py3-none-any.whl", hash = "sha256:d4a0f90e85ae1a193f417e149b6b01d0b2a867dcf97f7fae1d34a4363a9d7baa"},
+    {file = "django-modelcluster-5.2.tar.gz", hash = "sha256:e541a46a0a899ef4778a4708be22e71cac3efacc09a6ff44bc065c5c9194c054"},
+    {file = "django_modelcluster-5.2-py2.py3-none-any.whl", hash = "sha256:767084078b9e172540b271454ecc73cb320927131ca4b2c5f276daf771f9542f"},
 ]
 django-redis = [
     {file = "django-redis-5.0.0.tar.gz", hash = "sha256:048f665bbe27f8ff2edebae6aa9c534ab137f1e8fa7234147ef470df3f3aa9b8"},
@@ -1200,6 +1212,7 @@ jedi = [
     {file = "jedi-0.18.0.tar.gz", hash = "sha256:92550a404bad8afed881a137ec9a461fed49eca661414be45059329614ed0707"},
 ]
 l18n = [
+    {file = "l18n-2020.6.1-py3-none-any.whl", hash = "sha256:6906b2041a95b3e05d3cce3654476b6eb917e46617c9aa0de2d0e277621116fb"},
     {file = "l18n-2020.6.1.tar.gz", hash = "sha256:ea7a65b2f0935b14601a3295f2c5e5e8b54126dd1e6a7fef4e44d2b8dd5b695a"},
 ]
 lxml = [
@@ -1210,6 +1223,8 @@ lxml = [
     {file = "lxml-4.6.3-cp27-cp27m-win_amd64.whl", hash = "sha256:8157dadbb09a34a6bd95a50690595e1fa0af1a99445e2744110e3dca7831c4ee"},
     {file = "lxml-4.6.3-cp27-cp27mu-manylinux1_i686.whl", hash = "sha256:7728e05c35412ba36d3e9795ae8995e3c86958179c9770e65558ec3fdfd3724f"},
     {file = "lxml-4.6.3-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:4bff24dfeea62f2e56f5bab929b4428ae6caba2d1eea0c2d6eb618e30a71e6d4"},
+    {file = "lxml-4.6.3-cp310-cp310-manylinux_2_12_i686.manylinux2010_i686.manylinux_2_24_i686.whl", hash = "sha256:64812391546a18896adaa86c77c59a4998f33c24788cadc35789e55b727a37f4"},
+    {file = "lxml-4.6.3-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.manylinux_2_24_x86_64.whl", hash = "sha256:c1a40c06fd5ba37ad39caa0b3144eb3772e813b5fb5b084198a985431c2f1e8d"},
     {file = "lxml-4.6.3-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:74f7d8d439b18fa4c385f3f5dfd11144bb87c1da034a466c5b5577d23a1d9b51"},
     {file = "lxml-4.6.3-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:f90ba11136bfdd25cae3951af8da2e95121c9b9b93727b1b896e3fa105b2f586"},
     {file = "lxml-4.6.3-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:4c61b3a0db43a1607d6264166b230438f85bfed02e8cff20c22e564d0faff354"},
@@ -1346,8 +1361,8 @@ pygments = [
     {file = "Pygments-2.8.1.tar.gz", hash = "sha256:2656e1a6edcdabf4275f9a3640db59fd5de107d88e8663c5d4e9a0fa62f77f94"},
 ]
 pyjwt = [
-    {file = "PyJWT-2.1.0-py3-none-any.whl", hash = "sha256:934d73fbba91b0483d3857d1aff50e96b2a892384ee2c17417ed3203f173fca1"},
-    {file = "PyJWT-2.1.0.tar.gz", hash = "sha256:fba44e7898bbca160a2b2b501f492824fc8382485d3a6f11ba5d0c1937ce6130"},
+    {file = "PyJWT-2.3.0-py3-none-any.whl", hash = "sha256:e0c4bb8d9f0af0c7f5b1ec4c5036309617d03d56932877f2f7a0beeb5318322f"},
+    {file = "PyJWT-2.3.0.tar.gz", hash = "sha256:b888b4d56f06f6dcd777210c334e69c737be74755d3e5e9ee3fe67dc18a0ee41"},
 ]
 pyquery = [
     {file = "pyquery-1.4.3-py3-none-any.whl", hash = "sha256:1fc33b7699455ed25c75282bc8f80ace1ac078b0dda5a933dacbd8b1c1f83963"},
@@ -1441,6 +1456,10 @@ tablib = [
     {file = "tablib-3.0.0-py3-none-any.whl", hash = "sha256:41aa40981cddd7ec4d1fabeae7c38d271601b306386bd05b5c3bcae13e5aeb20"},
     {file = "tablib-3.0.0.tar.gz", hash = "sha256:f83cac08454f225a34a305daa20e2110d5e6335135d505f93bc66583a5f9c10d"},
 ]
+telepath = [
+    {file = "telepath-0.2-py35-none-any.whl", hash = "sha256:801615094d3d964e178183099bf04020f4ff9c84ec43945d40b096df0a5767ee"},
+    {file = "telepath-0.2.tar.gz", hash = "sha256:ef4cf2a45ed1908c58639c346756955f8a73ae79002a8116d596b3fd702bf84c"},
+]
 toml = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
@@ -1491,12 +1510,12 @@ urllib3 = [
     {file = "urllib3-1.26.4.tar.gz", hash = "sha256:e7b021f7241115872f92f43c6508082facffbd1c048e3c6e2bb9c2a157e28937"},
 ]
 wagtail = [
-    {file = "wagtail-2.12.3-py3-none-any.whl", hash = "sha256:28a7f8d1363891c3bbf16726f1dc1ef0fa2487153e6a4b71e8eb9bc31b0f355c"},
-    {file = "wagtail-2.12.3.tar.gz", hash = "sha256:15bdca888410fae0586767eedddf0205ee676653171da2d45792a739814d3587"},
+    {file = "wagtail-2.14.2-py3-none-any.whl", hash = "sha256:c13283dd19dc4fc6c46867bff21bf1813ccd42a8faa322db4ac711715bc3af44"},
+    {file = "wagtail-2.14.2.tar.gz", hash = "sha256:fe6632e6e232977ea59d5c2ac5197691596095d9771ff35b5294a481126fe901"},
 ]
 wagtail-generic-chooser = [
-    {file = "wagtail-generic-chooser-0.2.1.tar.gz", hash = "sha256:b65769cfd324e2531997245a9f0a64f5961da88587392d79353a1458314c5aa3"},
-    {file = "wagtail_generic_chooser-0.2.1-py3-none-any.whl", hash = "sha256:8d8c5eaf3613744d9d5af2ca679b0fec121d4019442683d7adbb774467763b01"},
+    {file = "wagtail-generic-chooser-0.3.tar.gz", hash = "sha256:7733228591e899c560c8b4eb54113a13364cac03884e539802491a21d9d5df55"},
+    {file = "wagtail_generic_chooser-0.3-py3-none-any.whl", hash = "sha256:1896af6a4442aa39ef504248865439253972c47dfcdbb1d720c87643fe88ad5e"},
 ]
 wagtailfontawesome = [
     {file = "wagtailfontawesome-1.2.1-py2.py3-none-any.whl", hash = "sha256:76b1c64c4f1042d468a83e4352f74b57bda4a4aa09cdfeeb8663dead5ed632be"},
