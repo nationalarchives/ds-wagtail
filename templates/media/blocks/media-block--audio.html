@@ -26,11 +26,14 @@
 {% endif %}
 
 <div class="media-embed__audio-container">
-    <audio controls="" {% if value.transcript %}aria-label="Transcript provided below"{% endif %}>
+    <audio controls="" {% if value.transcript %}aria-describedby="media-embed-transcript-label"{% endif %}>
         <source src="{{ src }}" type="{{ type }}">
         <p>Your browser doesn't support HTML5 audio. Here is a <a href="{{ src }}">link to the audio</a>
             instead.</p>
     </audio>
+    {% if value.transcript %}
+        <p id="media-embed-transcript-label" class="sr-only">Transcript provided below</p>    
+    {% endif %}
 </div>
 
 {% if value.transcript %}
