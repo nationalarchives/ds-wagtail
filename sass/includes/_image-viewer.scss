@@ -85,6 +85,7 @@
       // by OpenSeadragon. At high zoom levels (300% +) this obscures the image_number and
       // prevents pointer events from being picked up.
       pointer-events: none;
+      display: none;
     }
 
     button {
@@ -137,16 +138,16 @@
     ul {
       margin: 0;
       padding: 0;
-
-      @media (max-width: $screen__md) {
-        display: flex;
-        justify-content: space-between;
-      }
     }
 
     li {
       display: inline-block;
       padding: 0 0.5rem;
+
+      @media (max-width: $screen__md) {        
+        text-align: center;
+        width: 48%;
+      }
     }
 
     @media (max-width: $screen__sm) {
@@ -155,6 +156,10 @@
 
     li:first-child a {
       margin-right: 1rem;
+
+      @media (max-width: $screen__md) {
+        margin-right: 0;
+      }
     }
 
     a {
@@ -173,7 +178,7 @@
   }
 
   &__pagination {
-    padding: 1rem;
+    padding: 1.3rem;
     text-align: right;
     line-height: 1rem;
 
