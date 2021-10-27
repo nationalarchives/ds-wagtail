@@ -25,7 +25,8 @@ a {
     color: $color__white;
   }
   &:focus {
-    background: $color__focus-blue-outline-light-bg;
+    background: $color__blue_3;
+    outline: 0.313rem solid $color__blue_3;
     h2,h3,h4 {
       text-decoration: none;
     }
