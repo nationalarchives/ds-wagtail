@@ -6,7 +6,7 @@
     <div class="container">
         {% if value.category.icon %}
         {% static value.category.icon_static_path as bg_image %}
-        <div class="blog-embed__icon" style="background-image: url('{{ bg_image }}');"></div>
+        <div class="promoted-item__icon" style="background-image: url('{{ bg_image }}');"></div>
         {% endif %}
         <p class="related-resources__icon-label" role="presentation" aria-hidden="true">
             {{ value.category.name }}

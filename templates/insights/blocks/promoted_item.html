@@ -3,7 +3,6 @@
 
 {# This template has been developed based on includes/blog-embed.html #}
 
-{# Class names have been left with the "blog-" prefix, but should be changed to something more generic #}
 {# as the category heading and icon are from the block's category field. #}
 
 {# The description field is richtext and can contain repeating <p> tags. #}
@@ -13,32 +12,32 @@
 {# the relevant items should be wrapped in {% if %}{% endif %} statements. #}
 
 
-<div class="blog-embed" data-container-name="blog-embed">
+<div class="promoted-item" data-container-name="promoted-item">
     <div class="container">
         {% static value.category.icon_static_path as bg_image %}
-        <div class="blog-embed__icon" style="background-image: url('{{ bg_image }}');"></div>
-        <p class="blog-embed__icon-label" role="presentation" aria-hidden="true">
+        <div class="promoted-item__icon" style="background-image: url('{{ bg_image }}');"></div>
+        <p class="promoted-item_icon-label" role="presentation" aria-hidden="true">
             {{ value.category.name }}
         </p>
 
-        <h3 class="blog-embed__heading">
+        <h3 class="promoted-item__heading">
             <span class="sr-only">{{ value.category.name }}</span>
             {{ value.title }}
         </h3>
 
         {% if value.publication_date %}
-        <p class="blog-embed__date">
+        <p class="promoted-item__date">
             Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
         </p>
         {% endif %}
 
         {% if value.duration %}
-        <p class="blog-embed__text">
+        <p class="promoted-item__text">
             {{ value.duration }}
         </p>
         {% endif %}
 
-        <div class="blog-embed__image-container">
+        <div class="promoted-item__image-container">
             <picture>
                 {% image value.teaser_image fill-800x500 as teaser %}
                 <source media="(max-width: 480px)" srcset="{{ teaser.url }}">
@@ -53,11 +52,11 @@
                 {% image value.teaser_image fill-800x300 as teaser %}
                 <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
                 {% image value.teaser_image fill-800x300 as teaser %}
-                <img src="{{ teaser.url }}" alt="{{ teaser.alt }}" class="blog-embed__image" />
+                <img src="{{ teaser.url }}" alt="{{ teaser.alt }}" class="promoted-item__image" />
             </picture>
         </div>
 
-        <div class="blog-embed__text">
+        <div class="promoted-item__text">
             {{ value.description|richtext }}
         </div>
 
