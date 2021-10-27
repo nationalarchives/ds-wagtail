@@ -61,6 +61,11 @@
             {{ value.description|richtext }}
         </div>
 
+        {% if value.target_blank %}
+        <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">Opens in a new window.</span></a>
+        {% else %}
         <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}">{{ value.cta_label }}</a>
+        {% endif %}
+
     </div>
 </div>

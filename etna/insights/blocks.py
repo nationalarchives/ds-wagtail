@@ -10,6 +10,7 @@ from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
 from ..sections.blocks import SectionBlock
 
+from django.utils.html import format_html
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
@@ -47,8 +48,16 @@ class PromotedItemBlock(blocks.StructBlock):
         help_text="Podcast or video duration. Or estimated read time of article."
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
+    target_blank = blocks.BooleanBlock(label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
+    "Should this URL open in a new tab?",
+    "Tick the box if 'yes'"   
+    )))
     cta_label = blocks.CharBlock(
-        label="CTA label", max_length=50, help_text="The button label"
+        label="Call to action label", max_length=50,
+        help_text=format_html("%s <strong>%s</strong>'." % (
+    "The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site they will land on, and what they will find on this page. For example 'Watch our short film ",
+    "about Shakespeare on YouTube"   
+    ))
     )
     teaser_image = ImageChooserBlock(
         help_text="An image used to create a teaser for the promoted page"
