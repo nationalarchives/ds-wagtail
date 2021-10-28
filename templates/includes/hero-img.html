@@ -1,20 +1,32 @@
 {% load wagtailimages_tags %}
 
 <div class="hero-image__container">
-    <picture>
-        {% image page.hero_image fill-800x700 as hero %}
-        <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x550 as hero %}
-        <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x475 as hero %}
-        <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x400 as hero %}
-        <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x325 as hero %}
-        <source media="(max-width: 1199px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x250 as hero %}
-        <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-        {% image page.hero_image fill-800x250 as hero %}
-        <img src="{{ hero.url }}" alt="" class="hero-image" />
-    </picture>
+    {% if page.hero_image_caption %}
+    <figure>
+    {% endif %}
+        <picture>
+            {% image page.hero_image fill-800x700 as hero %}
+            <source media="(max-width: 480px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x550 as hero %}
+            <source media="(max-width: 640px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x475 as hero %}
+            <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x400 as hero %}
+            <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x325 as hero %}
+            <source media="(max-width: 1199px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x250 as hero %}
+            <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+            {% image page.hero_image fill-800x250 as hero %}
+
+            {% if page.hero_image_decorative %}
+                <img src="{{ hero.url }}" alt="" class="hero-image" />
+            {% else %}
+                <img src="{{ hero.url }}" alt="{{page.hero_image_alt_text}}" class="hero-image" />
+            {% endif %}
+        </picture>
+    {% if page.hero_image_caption %}
+        <figcaption class="hero-image__figcaption">{{page.hero_image_caption|safe}}</figcaption>
+    </figure>
+    {% endif %}
 </div>
