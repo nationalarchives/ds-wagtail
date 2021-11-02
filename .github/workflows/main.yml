@@ -40,3 +40,12 @@ jobs:
       - name: Check for missing migrations
         run: |
           docker-compose exec -T web poetry run ./manage.py makemigrations --check
+
+  test-javascript:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm modules
+        run: npm install
+      - name: Run jest tests
+        run: npm test
