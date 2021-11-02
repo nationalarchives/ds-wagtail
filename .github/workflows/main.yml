@@ -24,7 +24,7 @@ jobs:
       - name: Install isort
         run: python -m pip install isort
       - name: Run isort
-        run: isort .
+        run: isort -c .
 
   test-python:
     runs-on: ubuntu-latest
