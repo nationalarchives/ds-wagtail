@@ -25,3 +25,15 @@ jobs:
         run: python -m pip install isort
       - name: Run isort
         run: isort .
+
+  test-python:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create env file
+        run: cp .env.example .env
+      - name: Start containers
+        run: docker-compose up -d
+      - name: Run tests
+        run: |
+          docker-compose exec -T web poetry run ./manage.py test
