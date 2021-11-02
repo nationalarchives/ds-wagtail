@@ -1,12 +1,5 @@
-import json
-
-from django.test import TestCase, Client
-from django.apps import apps
-from django.templatetags.static import static
+from django.test import TestCase
 from django.contrib.staticfiles import finders
-
-
-from wagtail.core.models import Site
 
 from ..models import Category, CATEGORIES_ICON_PATH
 

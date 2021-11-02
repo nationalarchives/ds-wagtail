@@ -205,7 +205,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", 
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
     def setUp(self):

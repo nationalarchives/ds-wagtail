@@ -66,7 +66,11 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(content["step"], "choose")
         self.assertIn("Choose a record", content["html"])
         self.assertInHTML(
-            '<a class="item-choice" href="/admin/record-chooser/C10297/">Law Officers&#x27; Department: Registered Files (C10297)</a>',
+            (
+                '<a class="item-choice" href="/admin/record-chooser/C10297/">'
+                'Law Officers&#x27; Department: Registered Files (C10297'
+                '</a>'
+            ),
             content["html"],
         )
 

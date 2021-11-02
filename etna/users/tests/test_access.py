@@ -1,12 +1,10 @@
-from django.contrib.auth import get_user_model
+import responses
 
-User = get_user_model()
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.test import TestCase, override_settings
 
-from wagtail.core.models import GroupPagePermission, PageViewRestriction
-
-import responses
+from wagtail.core.models import PageViewRestriction
 
 from ddt import ddt, data, unpack
 
@@ -14,6 +12,8 @@ from ...ciim.tests.factories import create_record, create_media, create_response
 from ...collections.models import ExplorerIndexPage, TopicExplorerPage, ResultsPage
 from ...home.models import HomePage
 from ...insights.models import InsightsIndexPage, InsightsPage
+
+User = get_user_model()
 
 
 class UserAccessTestCase:

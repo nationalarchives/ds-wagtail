@@ -10,7 +10,6 @@ from ..models import (
     TopicExplorerPage,
     TimePeriodExplorerIndexPage,
     TimePeriodExplorerPage,
-    ExplorerIndexPage,
     ResultsPage,
 )
 

@@ -1,8 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse, resolve
 
-from .. import views
-
 
 class TestHumanReadableDetailsRouteResolution(TestCase):
     def test_resolves_reference_number_lettercode(self):

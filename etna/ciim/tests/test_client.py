@@ -1,7 +1,4 @@
-from pathlib import Path
-from unittest.mock import patch
-
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
 import responses
 
@@ -208,7 +205,7 @@ class TestClientFetchReponse(TestCase):
             },
         )
 
-        with self.assertRaises(KongError) as e:
+        with self.assertRaises(KongError):
             self.client.fetch()
 
     @responses.activate
@@ -220,7 +217,12 @@ class TestClientFetchReponse(TestCase):
                 "timestamp": "2021-08-26T09:07:31.688+00:00",
                 "status": 400,
                 "error": "Bad Request",
-                "message": "Failed to convert value of type 'java.lang.String' to required type 'java.lang.Integer'; nested exception is java.lang.NumberFormatException: For input string: \"999999999999999999\"",
+                "message": (
+                    "Failed to convert value of type 'java.lang.String' "
+                    "to required type 'java.lang.Integer'; "
+                    "nested exception is java.lang.NumberFormatException: "
+                    "For input string: \"999999999999999999\""
+                ),
                 "path": "/search",
             },
             status=400,
