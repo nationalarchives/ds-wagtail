@@ -1,11 +1,6 @@
-import json
-
-from django.conf import settings
-
 import requests
 
 from .exceptions import InvalidResponse, KubernetesError, KongError, ConnectionError
-from .utils import pluck
 
 import logging
 

@@ -1,4 +1,4 @@
-from .base import *
+from .base import *  # noqa: F401
 
 from platformshconfig import Config
 from platformshconfig.config import (
@@ -59,7 +59,10 @@ if search_config:
         "default": {
             "BACKEND": "wagtail.search.backends.elasticsearch7",
             "URLS": [
-                f"{search_config['scheme']}://{search_config['username']}:{search_config['password']}@{search_config['host']}:{search_config['port']}"
+                (
+                    f"{search_config['scheme']}://{search_config['username']}:"
+                    f"{search_config['password']}@{search_config['host']}:{search_config['port']}"
+                )
             ],
             "INDEX": "wagtail",
             "TIMEOUT": 5,

@@ -1,8 +1,8 @@
 from django import template
 
-register = template.Library()
-
 from ..models import RecordPage
+
+register = template.Library()
 
 
 @register.simple_tag

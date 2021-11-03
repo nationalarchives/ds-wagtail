@@ -2,8 +2,6 @@ from django import template
 
 from wagtail.core.models import Page
 
-from ..models import Alert
-
 # Alert snippets
 
 register = template.Library()

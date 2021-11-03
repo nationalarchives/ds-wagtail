@@ -72,10 +72,10 @@ class RecordPage(Page):
 
 """Assign a search manager to the RecordPage
 
-SearchManager exposes a similar interface to Django's model.Manager but 
+SearchManager exposes a similar interface to Django's model.Manager but
 results are fetched from the Kong API instead of from a DB
 
-Transform function is used to transform a raw Elasticsearch response into a 
+Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
 RecordPage.search = SearchManager(RecordPage)
@@ -105,10 +105,10 @@ class Image:
 
 """Assign a search manager to the Image
 
-SearchManager exposes a similar interface to Django's model.Manager but 
+SearchManager exposes a similar interface to Django's model.Manager but
 results are fetched from the Kong API instead of from a DB
 
-Transform function is used to transform a raw Elasticsearch response into a 
+Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
 Image.search = SearchManager(Image)

@@ -9,8 +9,6 @@ import requests
 from wagtail.core.models import Page
 from wagtail.images import get_image_model
 
-Image = get_image_model()
-
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
@@ -20,6 +18,8 @@ from ...models import (
     ResultsPage,
     ResultsPageRecordPage,
 )
+
+Image = get_image_model()
 
 
 def get_row(file_name):

@@ -4,7 +4,7 @@ from django.shortcuts import Http404
 from generic_chooser.views import ModelChooserViewSet, ModelChooserMixin, BaseChosenView
 
 from ..models import RecordPage
-from ...ciim.exceptions import KongException 
+from ...ciim.exceptions import KongException
 
 
 class KongModelChooserMixinIn(ModelChooserMixin):

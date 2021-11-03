@@ -80,7 +80,7 @@ class RecordChooserBlock(ChooserBlock):
         except KongError:
             # If there's a connection issue with Kong, return a stub RecordPage
             # so we have something to render on the ResultsPage edit form.
-            return RecordPage(iaid=value)
+            return self.target_model(iaid=value)
 
     class Meta:
         icon = "fa-archive"

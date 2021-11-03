@@ -1,4 +1,3 @@
-from django.utils.functional import cached_property
 from wagtail.core import blocks
 
 
