@@ -1,13 +1,14 @@
 import io
 import re
-import responses
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
 from wagtail.core.models import Group
 
-from ...ciim.tests.factories import create_record, create_media, create_response
+import responses
+
+from ...ciim.tests.factories import create_media, create_record, create_response
 
 User = get_user_model()
 

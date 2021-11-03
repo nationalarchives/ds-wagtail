@@ -1,13 +1,12 @@
-import magic
-
 from django import forms
 from django.core.exceptions import ValidationError
 
 from wagtail.admin import widgets
-
-from wagtailmedia.permissions import permission_policy as media_permission_policy
 from wagtail.admin.forms.collections import BaseCollectionMemberForm
 
+import magic
+
+from wagtailmedia.permissions import permission_policy as media_permission_policy
 
 # Valid audio/video media types - https://www.iana.org/assignments/media-types/media-types.xhtml
 ALLOWED_AUDIO_MIME_TYPES = ["audio/mpeg", ]

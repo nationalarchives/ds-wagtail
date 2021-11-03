@@ -1,10 +1,10 @@
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.shortcuts import render, Http404
+from django.shortcuts import Http404, render
 from django.views.decorators.cache import cache_control
 
-from ..models import Image, RecordPage
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
+from ..models import Image, RecordPage
 
 
 @cache_control(max_age=settings.CACHE_MIDDLEWARE_SECONDS, public=True)

@@ -1,16 +1,16 @@
 from django.core.paginator import Paginator
 from django.http import FileResponse
-from django.shortcuts import render, Http404
+from django.shortcuts import Http404, render
 from django.views.decorators.cache import cache_control
 
-from ..models import Image, RecordPage
 from ...ciim.exceptions import (
     DoesNotExist,
     InvalidQuery,
-    UnsupportedSlice,
     KongException,
+    UnsupportedSlice,
 )
 from ...ciim.utils import convert_sort_key_to_index
+from ..models import Image, RecordPage
 
 
 def image_viewer(request, iaid, sort):

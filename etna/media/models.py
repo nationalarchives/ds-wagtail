@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.core.fields import RichTextField
+
 from wagtailmedia.models import AbstractMedia
 
 

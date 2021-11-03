@@ -1,11 +1,11 @@
 from django.test import SimpleTestCase
 
 from ..utils import (
-    format_description_markup,
-    pluck,
+    convert_sort_key_to_index,
     find,
     find_all,
-    convert_sort_key_to_index,
+    format_description_markup,
+    pluck,
 )
 
 

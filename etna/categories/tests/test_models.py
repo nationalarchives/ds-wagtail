@@ -1,7 +1,7 @@
-from django.test import TestCase
 from django.contrib.staticfiles import finders
+from django.test import TestCase
 
-from ..models import Category, CATEGORIES_ICON_PATH
+from ..models import CATEGORIES_ICON_PATH, Category
 
 
 class CategoriesTestCase(TestCase):

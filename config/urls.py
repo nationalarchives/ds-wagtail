@@ -1,7 +1,7 @@
 from django.conf import settings
-from django.urls import include, path, register_converter
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.urls import include, path, register_converter
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls

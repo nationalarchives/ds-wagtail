@@ -1,19 +1,20 @@
+import json
+
 from functools import partial
 from pathlib import Path
-import json
 
 from django.test import TestCase, override_settings
 
 import responses
 
-from ..models import SearchManager
+from ...records.models import RecordPage
 from ..exceptions import (
     DoesNotExist,
-    MultipleObjectsReturned,
     KongException,
+    MultipleObjectsReturned,
     UnsupportedSlice,
 )
-from ...records.models import RecordPage
+from ..models import SearchManager
 from .factories import create_record, create_response, paginate_records_callback
 
 

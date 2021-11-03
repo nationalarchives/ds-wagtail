@@ -6,8 +6,8 @@ from django.urls import reverse
 
 from wagtail.core.models import Page, Site
 
-from ..ciim.models import SearchManager, MediaManager
-from .transforms import transform_record_page_result, transform_image_result
+from ..ciim.models import MediaManager, SearchManager
+from .transforms import transform_image_result, transform_record_page_result
 
 
 class RecordPage(Page):

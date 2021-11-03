@@ -1,8 +1,8 @@
+import logging
+
 import requests
 
-from .exceptions import InvalidResponse, KubernetesError, KongError, ConnectionError
-
-import logging
+from .exceptions import ConnectionError, InvalidResponse, KongError, KubernetesError
 
 logger = logging.getLogger(__name__)
 

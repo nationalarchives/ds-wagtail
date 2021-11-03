@@ -1,7 +1,6 @@
-from http import HTTPStatus
 import json
 
-import responses
+from http import HTTPStatus
 
 from django.test import override_settings
 from django.urls import reverse
@@ -10,8 +9,10 @@ from wagtail.core.models import Site
 from wagtail.tests.utils import WagtailPageTests
 from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
-from ..models import ExplorerIndexPage, TopicExplorerPage, ResultsPage
+import responses
+
 from ...ciim.tests.factories import create_record, create_response
+from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
 
 @override_settings(

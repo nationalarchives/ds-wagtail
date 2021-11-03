@@ -2,7 +2,7 @@ from django.test import TestCase, override_settings
 
 import responses
 
-from ...ciim.tests.factories import create_response, create_media
+from ...ciim.tests.factories import create_media, create_response
 from ..models import Image
 
 

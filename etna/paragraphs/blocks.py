@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.utils.html import mark_safe, escape
+from django.utils.html import escape, mark_safe
 
 from wagtail.core import blocks
 

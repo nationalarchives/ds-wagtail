@@ -2,10 +2,9 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.admin.edit_handlers import FieldPanel
-from wagtail.snippets.models import register_snippet
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
-
 from wagtail.core.fields import RichTextField
+from wagtail.snippets.edit_handlers import SnippetChooserPanel
+from wagtail.snippets.models import register_snippet
 
 
 @register_snippet

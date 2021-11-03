@@ -1,7 +1,7 @@
 from generic_chooser.widgets import AdminChooser
 
-from .models import RecordPage
 from ..ciim.exceptions import KongException
+from .models import RecordPage
 
 
 class RecordChooser(AdminChooser):

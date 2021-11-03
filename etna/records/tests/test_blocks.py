@@ -1,19 +1,16 @@
 import json
 
-import responses
-
 from django.test import override_settings
 from django.urls import reverse
 
 from wagtail.core.models import Site
 from wagtail.tests.utils import WagtailPageTests
-from wagtail.tests.utils.form_data import (
-    nested_form_data,
-    streamfield,
-)
+from wagtail.tests.utils.form_data import nested_form_data, streamfield
 
-from ...insights.models import InsightsIndexPage, InsightsPage
+import responses
+
 from ...ciim.tests.factories import create_record, create_response
+from ...insights.models import InsightsIndexPage, InsightsPage
 
 
 @override_settings(

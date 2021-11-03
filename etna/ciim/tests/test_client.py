@@ -3,7 +3,7 @@ from django.test import TestCase
 import responses
 
 from ..client import KongClient
-from ..exceptions import InvalidResponse, KubernetesError, KongError
+from ..exceptions import InvalidResponse, KongError, KubernetesError
 
 
 class ClientSearchTest(TestCase):

@@ -5,10 +5,10 @@ from django.conf import settings
 from .client import KongClient
 from .exceptions import (
     DoesNotExist,
-    MultipleObjectsReturned,
-    KongError,
-    UnsupportedSlice,
     InvalidQuery,
+    KongError,
+    MultipleObjectsReturned,
+    UnsupportedSlice,
 )
 
 

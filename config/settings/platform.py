@@ -1,12 +1,12 @@
-from .base import *  # noqa: F401
+from urllib.parse import urlparse
 
 from platformshconfig import Config
 from platformshconfig.config import (
     BuildTimeVariableAccessException,
     NotValidPlatformException,
 )
-from urllib.parse import urlparse
 
+from .base import *  # noqa: F401
 
 config = Config()
 

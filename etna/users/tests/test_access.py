@@ -1,15 +1,15 @@
-import responses
-
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase, override_settings
 
 from wagtail.core.models import PageViewRestriction
 
-from ddt import ddt, data, unpack
+import responses
 
-from ...ciim.tests.factories import create_record, create_media, create_response
-from ...collections.models import ExplorerIndexPage, TopicExplorerPage, ResultsPage
+from ddt import data, ddt, unpack
+
+from ...ciim.tests.factories import create_media, create_record, create_response
+from ...collections.models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 from ...home.models import HomePage
 from ...insights.models import InsightsIndexPage, InsightsPage
 
