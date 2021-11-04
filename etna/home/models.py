@@ -1,11 +1,10 @@
-from django.db import models
-
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import StreamFieldPanel
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page
 
 from ..alerts.models import AlertMixin
 from .blocks import HomePageStreamBlock
+
 
 class HomePage(AlertMixin, Page):
 
@@ -22,12 +21,18 @@ class HomePage(AlertMixin, Page):
         context["etna_index_pages"] = [
             {
                 "title": "Collection Explorer",
-                "introduction": "A new way to discover collections at The National Archives, through records hand-picked by our experts.",
+                "introduction": (
+                    "A new way to discover collections at The National Archives, "
+                    "through records hand-picked by our experts."
+                ),
                 "url": "#",
             },
             {
                 "title": "Collection Insights",
-                "introduction": "Learn about the people, themes and events featured in our records, told through words, pictures and audio - discover the human stories behind the collection.",
+                "introduction": (
+                    "Learn about the people, themes and events featured in our records, "
+                    "told through words, pictures and audio - discover the human stories behind the collection."
+                ),
                 "url": "#",
             },
             {

@@ -4,8 +4,8 @@ from wagtail.core.models import Site
 
 from ..alerts.models import Alert
 from ..alerts.templatetags import alert_tags
-from ..home.models import HomePage
 from ..collections.models import ExplorerIndexPage, TopicExplorerPage
+from ..home.models import HomePage
 
 
 def rich_text_msg(level):

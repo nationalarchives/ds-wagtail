@@ -1,13 +1,8 @@
-import json
-
-from django.conf import settings
+import logging
 
 import requests
 
-from .exceptions import InvalidResponse, KubernetesError, KongError, ConnectionError
-from .utils import pluck
-
-import logging
+from .exceptions import ConnectionError, InvalidResponse, KongError, KubernetesError
 
 logger = logging.getLogger(__name__)
 

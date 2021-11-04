@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from wagtail.core import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
 

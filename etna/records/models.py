@@ -6,8 +6,8 @@ from django.urls import reverse
 
 from wagtail.core.models import Page, Site
 
-from ..ciim.models import SearchManager, MediaManager
-from .transforms import transform_record_page_result, transform_image_result
+from ..ciim.models import MediaManager, SearchManager
+from .transforms import transform_image_result, transform_record_page_result
 
 
 class RecordPage(Page):
@@ -72,10 +72,10 @@ class RecordPage(Page):
 
 """Assign a search manager to the RecordPage
 
-SearchManager exposes a similar interface to Django's model.Manager but 
+SearchManager exposes a similar interface to Django's model.Manager but
 results are fetched from the Kong API instead of from a DB
 
-Transform function is used to transform a raw Elasticsearch response into a 
+Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
 RecordPage.search = SearchManager(RecordPage)
@@ -105,10 +105,10 @@ class Image:
 
 """Assign a search manager to the Image
 
-SearchManager exposes a similar interface to Django's model.Manager but 
+SearchManager exposes a similar interface to Django's model.Manager but
 results are fetched from the Kong API instead of from a DB
 
-Transform function is used to transform a raw Elasticsearch response into a 
+Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
 Image.search = SearchManager(Image)

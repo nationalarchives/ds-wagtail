@@ -1,19 +1,20 @@
+import json
+
 from functools import partial
 from pathlib import Path
-import json
 
 from django.test import TestCase, override_settings
 
 import responses
 
-from ..models import SearchManager
+from ...records.models import RecordPage
 from ..exceptions import (
     DoesNotExist,
-    MultipleObjectsReturned,
     KongException,
+    MultipleObjectsReturned,
     UnsupportedSlice,
 )
-from ...records.models import RecordPage
+from ..models import SearchManager
 from .factories import create_record, create_response, paginate_records_callback
 
 
@@ -106,7 +107,7 @@ class SearchManagerFilterTest(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", 
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class SearchManagerKongCount(TestCase):
     def setUp(self):
@@ -127,7 +128,7 @@ class SearchManagerKongCount(TestCase):
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test", 
+    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
@@ -145,7 +146,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
     @responses.activate
     def test_url_for_with_subscript_for_first_result(self):
 
-        result = self.manager.filter(reference_number="ADM 223/3")[0]
+        self.manager.filter(reference_number="ADM 223/3")[0]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -155,7 +156,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_url_for_subscript_for_first_result_with_limit(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[0:1]
+        self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -165,7 +166,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_url_for_subscript_for_second_result_with_limit(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[0:1]
+        self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -175,9 +176,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_url_for_subscript_for_first_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[0:5]
-
-        results = result[0]
+        self.manager.filter(reference_number="ADM 223/3")[0:5]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -187,7 +186,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_url_for_subscript_for_second_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[5:10]
+        self.manager.filter(reference_number="ADM 223/3")[5:10]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -197,7 +196,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_url_for_subscript_for_third_page(self):
-        result = self.manager.filter(reference_number="ADM 223/3")[10:15]
+        self.manager.filter(reference_number="ADM 223/3")[10:15]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -210,7 +209,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         with self.assertRaisesMessage(
             UnsupportedSlice, "Slicing with step is not supported"
         ):
-            result = self.manager.filter(reference_number="ADM 223/3")[0:1:1]
+            self.manager.filter(reference_number="ADM 223/3")[0:1:1]
 
     @responses.activate
     def test_slicing_with_negative_index_raises_slice_error(self):
@@ -226,12 +225,11 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         with self.assertRaisesMessage(
             UnsupportedSlice, "Slicing to return all records ([:]) is not supported"
         ):
-            result = self.manager.filter(reference_number="ADM 223/3")[:]
+            self.manager.filter(reference_number="ADM 223/3")[:]
 
     @responses.activate
     def test_len_performs_fetch_for_zero_results(self):
-        result = self.manager.filter(reference_number="ADM 223/3")
-        count = result.count()
+        len(self.manager.filter(reference_number="ADM 223/3"))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -241,8 +239,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_count_performs_fetch_for_zero_results(self):
-        result = self.manager.filter(reference_number="ADM 223/3")
-        count = len(result)
+        self.manager.filter(reference_number="ADM 223/3").count()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
@@ -252,20 +249,20 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_iteration_performs_fetch(self):
-        for result in self.manager.filter(reference_number="ADM 223/3"):
+        for _ in self.manager.filter(reference_number="ADM 223/3"):
             ...
 
         self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_comprehension_performs_fetch(self):
-        result = [r for r in self.manager.filter(reference_number="ADM 223/3")]
+        [r for r in self.manager.filter(reference_number="ADM 223/3")]
 
         self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_cast_to_list_performs_fetch(self):
-        result = list(self.manager.filter(reference_number="ADM 223/3"))
+        list(self.manager.filter(reference_number="ADM 223/3"))
 
         self.assertTrue(len(responses.calls) > 0)
 
@@ -337,7 +334,14 @@ class ModelTranslationTest(TestCase):
     def test_description(self):
         self.assertEqual(
             self.record_page.description,
-            '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General\'s General Fiat for leave to appeal to the House of Lords in criminal cases.</span><span class="p">Also included are a number of opinions, more of which can be found in <a href="/catalogue/C10298/">LO 3</a></span></span>',
+            (
+                '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">'
+                'This series contains papers concering a wide variety of legal matters referred to the '
+                'Law Officers for their advice or approval and includes applications for the Attorney '
+                'General\'s General Fiat for leave to appeal to the House of Lords in criminal cases.'
+                '</span><span class="p">Also included are a number of opinions, more of which can be '
+                'found in <a href="/catalogue/C10298/">LO 3</a></span></span>'
+            ),
         )
 
     def test_origination_date(self):
@@ -348,9 +352,6 @@ class ModelTranslationTest(TestCase):
 
     def test_held_by(self):
         self.assertEqual(self.record_page.held_by, "The National Archives, Kew")
-
-    def test_is_digitised(self):
-        self.assertEqual(self.record_page.is_digitised, True)
 
     def test_parent(self):
         self.assertEqual(
@@ -403,11 +404,19 @@ class ModelTranslationTest(TestCase):
             [
                 {
                     "type": "surrogate",
-                    "value": '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">The Genealogist</a>',
+                    "value": (
+                        '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">'
+                        'The Genealogist'
+                        '</a>'
+                    ),
                 },
                 {
                     "type": "surrogate",
-                    "value": '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">Ancestry</a>',
+                    "value": (
+                        '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">'
+                        'Ancestry'
+                        '</a>'
+                    ),
                 },
             ],
         )
@@ -462,7 +471,10 @@ class ModelTranslationTest(TestCase):
             [
                 {
                     "title": "Irish maps c.1558-c.1610",
-                    "url": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/irish-maps-c1558-c1610/",
+                    "url": (
+                        "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/"
+                        "irish-maps-c1558-c1610/"
+                    ),
                 }
             ],
         )
@@ -485,7 +497,10 @@ class UnexpectedParsingIssueTest(TestCase):
                         hierarchy=[
                             {
                                 "@summary": {
-                                    "title": "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:..."
+                                    "title": (
+                                        "Foreign and Commonwealth Office and predecessors: "
+                                        "Cultural Relations Departments:..."
+                                    )
                                 },
                             },
                         ],
@@ -574,7 +589,10 @@ class UnexpectedParsingIssueTest(TestCase):
                     "@entity": "reference",
                     "@type": {"base": "media", "type": "research guide"},
                     "source": {
-                        "location": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/famous-wills-1552-1854/"
+                        "location": (
+                            "http://www.nationalarchives.gov.uk/"
+                            "help-with-your-research/research-guides/famous-wills-1552-1854/"
+                        )
                     },
                 }
             ],

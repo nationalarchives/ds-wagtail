@@ -1,25 +1,26 @@
-from collections import defaultdict
-from pathlib import Path
-from urllib.parse import urlparse
 import csv
 import json
 
-import requests
+from collections import defaultdict
+from pathlib import Path
+from urllib.parse import urlparse
+
+from django.conf import settings
+from django.core.management.base import BaseCommand
 
 from wagtail.core.models import Page
 from wagtail.images import get_image_model
 
-Image = get_image_model()
-
-from django.core.management.base import BaseCommand
-from django.conf import settings
+import requests
 
 from ...models import (
-    TopicExplorerIndexPage,
-    TopicExplorerPage,
     ResultsPage,
     ResultsPageRecordPage,
+    TopicExplorerIndexPage,
+    TopicExplorerPage,
 )
+
+Image = get_image_model()
 
 
 def get_row(file_name):

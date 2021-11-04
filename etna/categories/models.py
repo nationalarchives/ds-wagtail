@@ -3,9 +3,8 @@ import os
 from django.apps import apps
 from django.db import models
 
-from wagtail.snippets.models import register_snippet
 from wagtail.admin.edit_handlers import FieldPanel
-
+from wagtail.snippets.models import register_snippet
 
 # The path to where the static template tag will expect to find an image.
 CATEGORIES_STATIC_PATH = "images/category-svgs/"

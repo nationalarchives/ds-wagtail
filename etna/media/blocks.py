@@ -1,9 +1,6 @@
-from django.forms.utils import flatatt
-from django.utils.html import format_html, format_html_join
-from django.template.loader import render_to_string
-
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
+
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 

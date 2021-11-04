@@ -1,26 +1,24 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.utils.functional import cached_property
 
+from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Page, Orderable
-from wagtail.images import get_image_model_string, get_image_model
+from wagtail.core.models import Orderable, Page
+from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
-
-from modelcluster.fields import ParentalKey
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongException
-from ..teasers.models import TeaserImageMixin
 from ..records.models import RecordPage
 from ..records.widgets import RecordChooser
+from ..teasers.models import TeaserImageMixin
 from .blocks import (
     ExplorerIndexPageStreamBlock,
-    TimePeriodExplorerPageStreamBlock,
     TimePeriodExplorerIndexPageStreamBlock,
-    TopicExplorerPageStreamBlock,
+    TimePeriodExplorerPageStreamBlock,
     TopicExplorerIndexPageStreamBlock,
+    TopicExplorerPageStreamBlock,
 )
 
 

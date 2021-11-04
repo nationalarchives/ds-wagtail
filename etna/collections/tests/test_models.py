@@ -1,20 +1,19 @@
 import unittest
+
 from django.test import TestCase, override_settings
 
-from wagtail.core.models import Site, PageViewRestriction
+from wagtail.core.models import PageViewRestriction, Site
 
 import responses
 
+from ...ciim.tests.factories import create_record, create_response
 from ..models import (
-    TopicExplorerIndexPage,
-    TopicExplorerPage,
+    ResultsPage,
     TimePeriodExplorerIndexPage,
     TimePeriodExplorerPage,
-    ExplorerIndexPage,
-    ResultsPage,
+    TopicExplorerIndexPage,
+    TopicExplorerPage,
 )
-
-from ...ciim.tests.factories import create_record, create_response
 
 
 class TestTopicExplorerIndexPages(TestCase):

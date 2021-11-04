@@ -1,7 +1,6 @@
 from django import template
 from django.conf import settings
 
-
 register = template.Library()
 
 
@@ -28,7 +27,7 @@ def get_availability_condition(page):
     Return the page's availablility condition value (if applicable).
     """
     try:
-        return  page.availablility_delivery_condition
+        return page.availablility_delivery_condition
     except AttributeError:
         return ""
 
@@ -54,8 +53,10 @@ def datalayer(page, request) -> dict:
 
     return {
         "contentGroup1": get_content_group(page),       # The name of the content group - [Always has a value]
-        "customDimension1": "offsite",                  # The reader type (options are "offsite", "onsite_public", "onsite_staff", "subscription")
-        "customDimension2": request.user.id,            # The user type and is private beta specific - the user ID for participants.
+        "customDimension1": "offsite",                  # The reader type (options are "offsite",
+                                                        # "onsite_public", "onsite_staff", "subscription")
+        "customDimension2": request.user.id,            # The user type and is private beta specific
+                                                        # - the user ID for participants.
         "customDimension3": page.get_verbose_name(),    # The page type - [Always has a value]
         "customDimension4": "",     # Taxonomy topics for the page, delineated by semi-colons. Empty string if no value.
         "customDimension5": "",     # This is the taxonomy sub topic where applicable. Empty string if not applicable.
@@ -69,8 +70,12 @@ def datalayer(page, request) -> dict:
         "customDimension13": "",    # This is the catalogue series where applicable. Empty string if not applicable.
         "customDimension14": "",    # This is the catalogue reference where applicable. Empty string if not applicable.
         "customDimension15": "",    # This is the catalogueDataSource where applicable. Empty string if not applicable.
-        "customDimension16": get_availability_condition_category(page), # This is the availability condition category where applicable. Empty string if not applicable.
-        "customDimension17": get_availability_condition(page),          # This is the availability condition where applicable. Empty string if not applicable.
+        "customDimension16": get_availability_condition_category(page),  # This is the availability condition category
+                                                                         # where applicable.
+                                                                         # Empty string if not applicable.
+        "customDimension17": get_availability_condition(page),           # This is the availability condition
+                                                                         # where applicable.
+                                                                         # Empty string if not applicable.
     }
 
 
@@ -84,6 +89,7 @@ def image_browse_datalayer(context) -> dict:
     return {
         "contentGroup1": "TNA catalogue",
         "customDimension1": "offsite",
-        "customDimension2": context['request'].user.id,  # The user type and is private beta specific - the user ID for participants.
+        # The user type and is private beta specific - the user ID for participants.
+        "customDimension2": context['request'].user.id,
         "customDimension18": context.get("images_count", ''),
     }
