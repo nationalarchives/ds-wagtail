@@ -18,28 +18,40 @@
   &-secondary-nav {
     display: inline-block;
     width: 100%;
-    &__link {
+    &__image-link {
       @extend .tna-card__link;
       @include explorer-link;
-      display: table;
+    }
+
+    &__title-link {
+      @extend .tna-card__link;
+
+      display: inline;
+      color: #134571;
+      &:hover {
+        color: #134571;
+      }
+      &:focus {
+        outline-offset: .2rem;
+      }
+    }
+
+    &__heading {
+      display: inline;
     }
 
     &__image {
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
-      display: table-header-group;
       &-fallback {
         width: 100%;
       }
     }
 
     &__body {
-      display: table-footer-group;
-    }
-
-    &__heading, &__paragraph, &__span {
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
+      padding-left: 0.28rem;
+      padding-right: 0.28rem;
+      padding-top: 0.28rem;
     }
 
     &__span {
