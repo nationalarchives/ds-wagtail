@@ -82,5 +82,8 @@ class RecordChooserBlock(ChooserBlock):
             # so we have something to render on the ResultsPage edit form.
             return RecordPage(iaid=value)
 
+    def get_form_state(self, value):
+        return self.widget.get_value_data(value)
+
     class Meta:
         icon = "fa-archive"
