@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.utils.html import format_html
 
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
@@ -9,8 +10,6 @@ from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
 from ..sections.blocks import SectionBlock
-
-from django.utils.html import format_html
 
 
 class FeaturedRecordBlock(blocks.StructBlock):
