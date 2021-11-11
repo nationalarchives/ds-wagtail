@@ -11,6 +11,17 @@ class RecordChooser(AdminChooser):
     model = RecordPage
     choose_modal_url_name = "record_chooser:choose"
 
+    def get_value_data(self, value):
+        if self.model and isinstance(value, self.model):
+            instance = value
+            value = value.iaid
+            return {
+                'value': value,
+                'title': self.get_title(instance),
+                'edit_item_url': self.get_edit_item_url(instance),
+            }
+        return super().get_value_data(value)
+
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
         try:
