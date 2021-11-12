@@ -53,10 +53,9 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 "slug": "insights-page",
                 "sub_heading": "Introduction",
                 "body": streamfield([
-                        ("featured_record",
-                         {"record": "C123456"}
-                         ),
-                    ]
+                    ("featured_record",
+                     {"record": "C123456"}
+                     ), ]
                 ),
                 "action-publish": "Publish",
             }
@@ -173,17 +172,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
         )
 
-       # self.assertContains(response, "Test record")
+        self.assertContains(response, "Test record")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
-        # self.assertEqual(
-        #     responses.calls[1].request.url,
-        #     "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
-        # )
 
     @responses.activate
     def test_view_page_with_featured_record(self):
@@ -199,7 +194,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         response = self.client.get(self.insights_page.get_url())
 
-       # self.assertContains(response, "Test record")
+        self.assertContains(response, "Test record")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -268,10 +263,10 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         )
         self.insights_page.refresh_from_db()
 
-        # self.assertRedirects(
-        #     response,
-        #     reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
-        # )
+        self.assertRedirects(
+            response,
+            reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
+        )
         self.assertEqual(
             self.insights_page.body[0].block_type, "featured_records"
         )
@@ -357,17 +352,13 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
             reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
         )
 
-       # self.assertContains(response, "Test record")
+        self.assertContains(response, "Test record")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
         )
-        # self.assertEqual(
-        #     responses.calls[1].request.url,
-        #     "https://kong.test/data/fetch?iaid=C123456&from=0&pretty=false&expand=false",
-        # )
 
     @responses.activate
     def test_view_edit_page_with_featured_record_not_in_kong(self):
