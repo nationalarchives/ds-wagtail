@@ -16,9 +16,9 @@
                 {% endif %}
                 {{ record_page.title }}
             </p>
-            <div class="card-group-record-summary__body">
-                <p>{{ description_override|default:record_page.description|striptags|truncatewords:40 }}</p>
-            </div>
         </a>
+        <div class="card-group-record-summary__body">
+            <p>{{ description_override|default:record_page.description|striptags|truncatewords:40 }}</p>
+        </div>
     </div>
 </li>
