@@ -23,7 +23,7 @@
 
             <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
                 <div class="card-group-secondary-nav">
-                    <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav__link" data-card-title="{{ promoted_item.title }}" aria-hidden="true" tabindex="-1">
+                    <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-card-title="{{ promoted_item.title }}" aria-hidden="true" tabindex="-1">
                             <div class="card-group-secondary-nav__image">
                                 <picture>
                                     <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
@@ -35,7 +35,7 @@
                             </div>
                         </a>
                         <div class="card-group-secondary-nav__body">
-                            <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav__link" data-card-title="{{ promoted_item.title }}">
+                            <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-card-title="{{ promoted_item.title }}">
                                 <h3 class="card-group-secondary-nav__heading">{{ promoted_item.title }}</h3>
                             </a>
                             <p class="card-group-secondary-nav__paragraph">{{ promoted_item.description }}</p>
