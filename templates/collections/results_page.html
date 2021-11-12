@@ -32,7 +32,11 @@
                                  If so, skip the record.
                                 {% endcomment %}
                                 {% if record_page_result.record_page %}
-                                    {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
+                                    {% if record_page_result.teaser_image %}
+                                        {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
+                                    {% else %}
+                                        {% include 'includes/card-group-record-summary-no-image.html' with record_page=record_page_result.record_page description_override=record_page_result.description only %}
+                                    {% endif %}
                                 {% endif %}
                             {% endfor %}
                         </ul>
