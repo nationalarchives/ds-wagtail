@@ -55,9 +55,9 @@ class PromotedItemBlock(blocks.StructBlock):
     cta_label = blocks.CharBlock(
         label="Call to action label", max_length=50,
         help_text=format_html("%s <strong>%s</strong>'." % (
-            "The text displayed on the button for your URL. If your URL links to an external site, please add the "
-            "name of the site users will land on, and what they will find on this page. For example 'Watch our short "
-            "film ",
+            "The text displayed on the button for your URL. If your URL links to an external site, "
+            + "please add the name of the site users will land on, and what they will find on this page. "
+            + "For example 'Watch our short film ",
             "about Shakespeare on YouTube"
         ))
     )
