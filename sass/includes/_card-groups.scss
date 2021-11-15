@@ -27,9 +27,9 @@
       @extend .tna-card__link;
 
       display: inline;
-      color: #134571;
-      &:hover {
-        color: #134571;
+      color: $color__blue_3;
+      &:hover, &:active {
+        color: $color__blue_3;
       }
       &:focus {
         outline-offset: .2rem;
@@ -82,11 +82,14 @@
     &__link {
       @extend .tna-card__link;
       display: inline;
-      color: #134571;
+      color: $color__blue_3;
       text-decoration: underline;
       margin-left: 0.5rem;
+      &:active {
+        color: $color__blue_3;
+      }
       &:hover {
-        color: #134571;
+        color: $color__blue_3;
         text-decoration: none;
       }
       &:focus {
