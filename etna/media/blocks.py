@@ -1,10 +1,11 @@
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
-from django.utils.html import format_html
 from django.templatetags.static import static
+from django.utils.html import format_html
 
 from wagtail.core import blocks, hooks
 from wagtail.images.blocks import ImageChooserBlock
+
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 

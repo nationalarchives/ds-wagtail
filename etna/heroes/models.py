@@ -1,10 +1,10 @@
 from django.db import models
+from django.utils.html import format_html
 
+from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel
+from wagtail.core.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
-from wagtail.core.fields import RichTextField
-from django.utils.html import format_html
-from wagtail.admin.edit_handlers import MultiFieldPanel, FieldPanel
 
 from .forms import PageWithHeroMixinForm
 
