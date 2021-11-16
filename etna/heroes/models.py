@@ -1,5 +1,4 @@
 from django.db import models
-from django.db.models.fields import Field
 
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -8,6 +7,7 @@ from django.utils.html import format_html
 from wagtail.admin.edit_handlers import MultiFieldPanel, FieldPanel
 
 from .forms import PageWithHeroMixinForm
+
 
 class HeroImageMixin(models.Model):
     """Mixin to add hero_image attribute to a Page."""
@@ -41,9 +41,9 @@ class HeroImageMixin(models.Model):
             "%s <a href=%s target=%s>%s</a>."
             % (
                 """Alternative (alt) text describes images when they fail to load,
-        and is read aloud by assistive technologies.
-        Use a maximum of 100 characters to describe your image.
-        Decorative images do not require alt text.""",
+                and is read aloud by assistive technologies.
+                Use a maximum of 100 characters to describe your image.
+                Decorative images do not require alt text.""",
                 "https://html.spec.whatwg.org/multipage/images.html#alt",
                 "_blank",
                 "Check the guidance for tips on writing alt text",

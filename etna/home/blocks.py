@@ -3,6 +3,7 @@ from wagtail.images.blocks import ImageChooserBlock
 
 from ..paragraphs.blocks import ParagraphWithHeading
 
+
 class FeaturedExternalPageBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")

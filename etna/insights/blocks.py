@@ -65,7 +65,7 @@ class PromotedItemBlock(blocks.StructBlock):
         ))
     )
     image = ImageBlock(
-        label = "Teaser image",
+        label="Teaser image",
         help_text="An image used to create a teaser for the promoted page",
         template="insights/blocks/images/blog-embed__image-container.html"
     )
