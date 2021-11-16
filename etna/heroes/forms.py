@@ -29,7 +29,8 @@ class PageWithHeroMixinForm(WagtailAdminPageForm):
                 self.add_error('hero_image_decorative', message)
 
             if hero_image_decorative and hero_image_caption:
-                message = "Decorative images should not contain a caption to prevent confusing users of assistive technologies."
+                message = """Decorative images should not contain a caption
+                 to prevent confusing users of assistive technologies."""
                 self.add_error('hero_image_caption', message)
 
         return cleaned_data

@@ -7,12 +7,13 @@ from wagtail.core import blocks, hooks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
-@hooks.register('insert_editor_css')
+
+@hooks.register("insert_editor_css")
 def editor_css():
     return format_html(
-        '<link rel="stylesheet" href="{}">',
-        static('/css/dist/etna-wagtail-editor.css')
+        '<link rel="stylesheet" href="{}">', static("/css/dist/etna-wagtail-editor.css")
     )
+
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
@@ -29,6 +30,7 @@ class MediaBlock(blocks.StructBlock):
     """
     Embedded media block with a selectable background image.
     """
+
     background_image = ImageChooserBlock(
         help_text="A background image for the media block"
     )
@@ -44,27 +46,50 @@ class ImageBlock(blocks.StructBlock):
     """
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
+
     image = ImageChooserBlock(required=True)
     decorative = blocks.BooleanBlock(
-        label=format_html("%s <p class='field-title__subheading'>%s</p>" % (
-            "Is this image decorative?",
-            "Tick the box if 'yes'"
-        )),
-        help_text=format_html("%s <a href=%s target=%s>%s</a>." % (
-            "Decorative images are used for visual effect and do not add information to the content of a page.",
-            "https://www.w3.org/WAI/tutorials/images/decorative/",
-            "_blank",
-            "Check the guidance to see if your image is decorative"
-        )), required=False, default=False)
+        label=format_html(
+            "%s <p class='field-title__subheading'>%s</p>"
+            % ("Is this image decorative?", "Tick the box if 'yes'")
+        ),
+        help_text=format_html(
+            "%s <a href=%s target=%s>%s</a>."
+            % (
+                """Decorative images are used for visual effect
+             and do not add information to the content of a page.""",
+                "https://www.w3.org/WAI/tutorials/images/decorative/",
+                "_blank",
+                "Check the guidance to see if your image is decorative",
+            )
+        ),
+        required=False,
+        default=False,
+    )
 
-    alt_text = blocks.CharBlock(max_length=100, label="Image alternative text", help_text=format_html("%s <a href=%s target=%s>%s</a>." % (
-        "Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text.",
-        "https://html.spec.whatwg.org/multipage/images.html#alt",
-        "_blank",
-        "Check the guidance for tips on writing alt text"
-    )), required=False)
+    alt_text = blocks.CharBlock(
+        max_length=100,
+        label="Image alternative text",
+        help_text=format_html(
+            "%s <a href=%s target=%s>%s</a>."
+            % (
+                """Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies.
+         Use a maximum of 100 characters to describe your image. Decorative images do not require alt text.""",
+                "https://html.spec.whatwg.org/multipage/images.html#alt",
+                "_blank",
+                "Check the guidance for tips on writing alt text",
+            )
+        ),
+        required=False,
+    )
 
-    caption = blocks.RichTextBlock(features=['link'], help_text="An optional caption for non-decorative images, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.", label="Caption (optional)", required=False)
+    caption = blocks.RichTextBlock(
+        features=["link"],
+        help_text="""An optional caption for non-decorative images, which will be displayed directly below the image.
+         This could be used for image sources or for other useful metadata.""",
+        label="Caption (optional)",
+        required=False,
+    )
 
     def clean(self, value):
         decorative = value.get("decorative")
@@ -82,11 +107,14 @@ class ImageBlock(blocks.StructBlock):
             errors["alt_text"] = ErrorList([message])
 
         if decorative and caption:
-            message = "Decorative images should not contain a caption to prevent confusing users of assistive technologies."
+            message = """Decorative images should not
+             contain a caption to prevent confusing users of assistive technologies."""
             errors["caption"] = ErrorList([message])
 
         if errors:
-            raise ValidationError("There was a validation error with your image.", params=errors)
+            raise ValidationError(
+                "There was a validation error with your image.", params=errors
+            )
 
         return super().clean(value)
 

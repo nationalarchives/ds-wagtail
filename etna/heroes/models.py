@@ -63,6 +63,16 @@ class HeroImageMixin(models.Model):
     class Meta:
         abstract = True
 
-    content_panels = [MultiFieldPanel([ImageChooserPanel("hero_image"), FieldPanel("hero_image_decorative"), FieldPanel("hero_image_alt_text"), FieldPanel("hero_image_caption")], heading="Hero image (optional)")]
+    content_panels = [
+        MultiFieldPanel(
+            [
+                ImageChooserPanel("hero_image"),
+                FieldPanel("hero_image_decorative"),
+                FieldPanel("hero_image_alt_text"),
+                FieldPanel("hero_image_caption"),
+            ],
+            heading="Hero image (optional)",
+        )
+    ]
 
     base_form_class = PageWithHeroMixinForm
