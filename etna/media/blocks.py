@@ -1,11 +1,18 @@
 from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from django.utils.html import format_html
+from django.templatetags.static import static
 
-from wagtail.core import blocks
+from wagtail.core import blocks, hooks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
+@hooks.register('insert_editor_css')
+def editor_css():
+    return format_html(
+        '<link rel="stylesheet" href="{}">',
+        static('/css/dist/etna-wagtail-editor.css')
+    )
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
@@ -39,7 +46,7 @@ class ImageBlock(blocks.StructBlock):
     """
     image = ImageChooserBlock(required=True)
     decorative = blocks.BooleanBlock(
-        label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
+        label=format_html("%s <p class='field-title__subheading'>%s</p>" % (
             "Is this image decorative?",
             "Tick the box if 'yes'"
         )),
