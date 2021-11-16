@@ -54,7 +54,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 "sub_heading": "Introduction",
                 "body": streamfield([
                     ("featured_record",
-                     {"record": "C123456"}
+                     {"record": "C123456"},
+                     {"teaser_image": ""}
                      ), ]
                 ),
                 "action-publish": "Publish",
@@ -162,7 +163,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             [
                 {
                     "type": "featured_record",
-                    "value": {"record": "C123456"},
+                    "value": {"record": "C123456", "tester_image": ""},
                 }
             ]
         )
