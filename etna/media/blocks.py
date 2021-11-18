@@ -48,7 +48,7 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = ImageChooserBlock(required=True)
+    image = ImageChooserBlock(required=False)
     decorative = blocks.BooleanBlock(
         label=format_html(
             "%s <p class='field-title__subheading'>%s</p>"
@@ -93,24 +93,26 @@ class ImageBlock(blocks.StructBlock):
     )
 
     def clean(self, value):
+        image = value.get("image")
         decorative = value.get("decorative")
         alt_text = value.get("alt_text")
         caption = value.get("caption")
 
         errors = {}
+        if image:
 
-        if not decorative and not alt_text:
-            message = "Non-decorative images must contain alt text."
-            errors["alt_text"] = ErrorList([message])
+            if not decorative and not alt_text:
+                message = "Non-decorative images must contain alt text."
+                errors["alt_text"] = ErrorList([message])
 
-        if decorative and alt_text:
-            message = "Decorative images should not contain alt text."
-            errors["alt_text"] = ErrorList([message])
+            if decorative and alt_text:
+                message = "Decorative images should not contain alt text."
+                errors["alt_text"] = ErrorList([message])
 
-        if decorative and caption:
-            message = """Decorative images should not
-             contain a caption to prevent confusing users of assistive technologies."""
-            errors["caption"] = ErrorList([message])
+            if decorative and caption:
+                message = """Decorative images should not
+                contain a caption to prevent confusing users of assistive technologies."""
+                errors["caption"] = ErrorList([message])
 
         if errors:
             raise StructBlockValidationError(

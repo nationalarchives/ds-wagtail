@@ -1,19 +1,20 @@
 {% load wagtailimages_tags %}
 {% image value.image width-600 as block_image %}
-
-{% if value.caption %}
-    <figure>
-        <picture>
-            <img src="{{block_image.url}}" alt="{{value.alt_text}}" />
-        </picture>
-        <figcaption>{{value.caption}}</figcaption>
-    </figure>
-{% else %}
-
-    {% if value.decorative %}
-        <img src="{{block_image.url}}" alt=""/>
+{% if value.image %}
+    {% if value.caption %}
+        <figure>
+            <picture>
+                <img src="{{block_image.url}}" alt="{{value.alt_text}}" />
+            </picture>
+            <figcaption>{{value.caption}}</figcaption>
+        </figure>
     {% else %}
-        <img src="{{block_image.url}}" alt="{{value.alt_text}}"/>
-    {% endif %}
 
+        {% if value.decorative %}
+            <img src="{{block_image.url}}" alt=""/>
+        {% else %}
+            <img src="{{block_image.url}}" alt="{{value.alt_text}}"/>
+        {% endif %}
+
+    {% endif %}
 {% endif %}
