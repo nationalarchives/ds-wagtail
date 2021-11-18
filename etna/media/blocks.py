@@ -1,9 +1,9 @@
-from django.core.exceptions import ValidationError
 from django.forms.utils import ErrorList
 from django.templatetags.static import static
 from django.utils.html import format_html
 
 from wagtail.core import blocks, hooks
+from wagtail.core.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
@@ -113,8 +113,8 @@ class ImageBlock(blocks.StructBlock):
             errors["caption"] = ErrorList([message])
 
         if errors:
-            raise ValidationError(
-                "There was a validation error with your image.", params=errors
+            raise StructBlockValidationError(
+                errors
             )
 
         return super().clean(value)
