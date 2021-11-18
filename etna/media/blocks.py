@@ -125,3 +125,4 @@ class ImageBlock(blocks.StructBlock):
         template = "media/blocks/image-block-default.html"
         help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
         icon = "fa-image"
+        form_template = "form_templates/default-form-with-safe-label.html"
