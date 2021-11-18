@@ -492,7 +492,7 @@ plugins = ["setuptools"]
 
 [[package]]
 name = "jedi"
-version = "0.18.1"
+version = "0.18.0"
 description = "An autocompletion tool for Python that can be used for text editors."
 category = "dev"
 optional = false
@@ -779,7 +779,7 @@ python-versions = ">=3.6"
 deprecated = "*"
 
 [package.extras]
-hiredis = ["hiredis (>=1.0.0)"]
+hiredis = ["hiredis (>=0.1.3)"]
 
 [[package]]
 name = "regex"
@@ -984,6 +984,14 @@ docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx
 testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=2.11,<3.0)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "openpyxl (>=2.6.4)", "Unidecode (>=0.04.14,<2.0)", "coverage (>=3.7.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-print (==2.0.2)", "doc8 (==0.8.1)", "jinjalint (>=0.5)", "docutils (==0.15)", "django-taggit (>=1.3.0,<2.0)", "polib (>=1.1,<2.0)"]
 
 [[package]]
+name = "wagtail-font-awesome-svg"
+version = "0.0.2"
+description = "Font Awesome icons as SVG for Wagtail"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[[package]]
 name = "wagtail-generic-chooser"
 version = "0.3.1"
 description = "A toolkit for custom chooser popups in Wagtail"
@@ -995,30 +1003,18 @@ python-versions = "*"
 requests = ">=2.11.1,<3.0"
 
 [[package]]
-name = "wagtailfontawesome"
-version = "1.2.1"
-description = "Add FontAwesome icons to StreamField."
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-Django = ">=1.7.1"
-wagtail = ">=1.4.0"
-
-[[package]]
 name = "wagtailmedia"
-version = "0.8.0"
+version = "0.7.1"
 description = "A module for Wagtail that provides functionality similar to wagtail.documents module, but for audio and video files."
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-wagtail = ">=2.11"
+wagtail = ">=2.7"
 
 [package.extras]
-testing = ["mock (>=1.0.0)", "coverage (>=3.7.0)", "tox (==3.23.1)"]
+testing = ["mock (>=1.0.0)", "coverage (>=3.7.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "tox (==3.9.0)", "psycopg2-binary", "django-redis-cache"]
 
 [[package]]
 name = "wcwidth"
@@ -1275,10 +1271,6 @@ decorator = [
 defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
     {file = "defusedxml-0.7.1.tar.gz", hash = "sha256:1bb3032db185915b62d7c6209c5a8792be6a32ab2fedacc84e01b52c51aa3e69"},
-]
-deprecated = [
-    {file = "Deprecated-1.2.13-py2.py3-none-any.whl", hash = "sha256:64756e3e14c8c5eea9795d93c524551432a0be75629f8f29e67ab8caf076c76d"},
-    {file = "Deprecated-1.2.13.tar.gz", hash = "sha256:43ac5335da90c31c24ba028af536a91d41d53f9e6901ddb021bcc572ce44e38d"},
 ]
 django = [
     {file = "Django-3.2.9-py3-none-any.whl", hash = "sha256:e22c9266da3eec7827737cde57694d7db801fedac938d252bf27377cec06ed1b"},
@@ -1709,17 +1701,17 @@ wagtail = [
     {file = "wagtail-2.15.1-py3-none-any.whl", hash = "sha256:6f1bc7960a7028a6e665a0f5a15ef2ba89faad66060bc4b3952a922fbef1713b"},
     {file = "wagtail-2.15.1.tar.gz", hash = "sha256:97eb520db0056d576b698e832de2ecfa3d795e9ed12e4b9ab738623c1b6277a0"},
 ]
+wagtail-font-awesome-svg = [
+    {file = "wagtail-font-awesome-svg-0.0.2.tar.gz", hash = "sha256:5b329c1c8ef78f118a57197fcbfe5cde78d58bcee27571a6d26584cd07553455"},
+    {file = "wagtail_font_awesome_svg-0.0.2-py3-none-any.whl", hash = "sha256:cf57cc9be4d2f929f8b5af0b4e03a5ba1ae75d56984208afae2b345e5091988a"},
+]
 wagtail-generic-chooser = [
     {file = "wagtail-generic-chooser-0.3.1.tar.gz", hash = "sha256:2757d762f8c4dae26f93e25a23c0c6373dbca9934c0f08e7e3655a17d18994a4"},
     {file = "wagtail_generic_chooser-0.3.1-py3-none-any.whl", hash = "sha256:abae0e98a103fc339f16e86b0c9b8ca37fd61c110a7b04e805711abf0edd19c5"},
 ]
-wagtailfontawesome = [
-    {file = "wagtailfontawesome-1.2.1-py2.py3-none-any.whl", hash = "sha256:76b1c64c4f1042d468a83e4352f74b57bda4a4aa09cdfeeb8663dead5ed632be"},
-    {file = "wagtailfontawesome-1.2.1.tar.gz", hash = "sha256:6c1bd2d6061880848de6374ceb75d38a8c9b0debb1d4aef8a2fdc9d565a8f417"},
-]
 wagtailmedia = [
-    {file = "wagtailmedia-0.8.0-py2.py3-none-any.whl", hash = "sha256:79313a9565f8b737304412bbf297c3975274e104a2ea005f8a8e1499c3ef743f"},
-    {file = "wagtailmedia-0.8.0.tar.gz", hash = "sha256:550b41f60c546276fb79eac69630364efb82d40389ddb7f64242ff9eaef621ef"},
+    {file = "wagtailmedia-0.7.1-py2.py3-none-any.whl", hash = "sha256:e045dfe71305a8fc96212a6edbdabf85af98cfaa1c14b5272e80a0e3aacfd2f1"},
+    {file = "wagtailmedia-0.7.1.tar.gz", hash = "sha256:ae579029818925367f9ce6a74269bd707278062caf1223a81b77a03645577e45"},
 ]
 wcwidth = [
     {file = "wcwidth-0.2.5-py2.py3-none-any.whl", hash = "sha256:beb4802a9cebb9144e99086eff703a642a13d6a0052920003a230f3294bbe784"},

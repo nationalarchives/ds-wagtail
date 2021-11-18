@@ -55,8 +55,7 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-
-    'wagtailfontawesome',
+    'wagtailfontawesomesvg',
     'wagtailmedia',
     'generic_chooser',
     'modelcluster',
