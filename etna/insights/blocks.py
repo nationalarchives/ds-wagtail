@@ -53,7 +53,7 @@ class PromotedItemBlock(blocks.StructBlock):
     target_blank = blocks.BooleanBlock(label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
         "Should this URL open in a new tab?",
         "Tick the box if 'yes'"
-    )))
+    )), required=False)
     cta_label = blocks.CharBlock(
         label="Call to action label", max_length=50,
         help_text=format_html("%s <strong>%s</strong>'." % (
