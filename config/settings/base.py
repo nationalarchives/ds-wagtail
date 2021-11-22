@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     'etna.sections',
     'etna.teasers',
     'etna.users',
-
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -57,6 +56,7 @@ INSTALLED_APPS = [
     'wagtail.core',
     'wagtailfontawesomesvg',
     'wagtailmedia',
+    'wagtail.contrib.styleguide',
     'generic_chooser',
     'modelcluster',
     'taggit',

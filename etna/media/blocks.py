@@ -27,4 +27,4 @@ class MediaBlock(blocks.StructBlock):
     class Meta:
         template = "media/blocks/media-block.html"
         help_text = "An embedded audio or video block"
-        icon = "fa-play"
+        icon = "play"

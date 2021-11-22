@@ -9,6 +9,6 @@ class SectionBlock(blocks.StructBlock):
     )
 
     class Meta:
-        icon = "fa-header"
+        icon = "heading"
         label = "Section heading"
         template = "sections/blocks/section.html"

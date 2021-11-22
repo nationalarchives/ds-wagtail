@@ -35,6 +35,6 @@ class ParagraphWithHeading(blocks.StructBlock):
     paragraph = blocks.RichTextBlock(required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
     class Meta:
-        icon = 'fa-paragraph'
+        icon = 'paragraph'
         label = 'Paragraph with heading'
         template = 'paragraphs/blocks/paragraph-with-heading.html'
