@@ -5,7 +5,8 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from ..media.blocks import ImageBlock, MediaBlock
+from ..images.blocks import ImageBlock
+from ..media.blocks import MediaBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
