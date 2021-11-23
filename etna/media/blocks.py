@@ -1,17 +1,7 @@
-from django.templatetags.static import static
-from django.utils.html import format_html
-
-from wagtail.core import blocks, hooks
+from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
-
-
-@hooks.register("insert_editor_css")
-def editor_css():
-    return format_html(
-        '<link rel="stylesheet" href="{}">', static("/css/dist/etna-wagtail-editor.css")
-    )
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
