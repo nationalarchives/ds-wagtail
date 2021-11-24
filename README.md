@@ -45,41 +45,53 @@ container to communicate with those services.
 
 #### Create `.env`
 
-`cp .env.example .env`
+```console
+$ cp .env.example .env
+```
 
-#### Docker
+#### Build Docker containers
 
-##### Build containers
+```console
+$ fab build
+```
 
-`docker-compose build`
+#### Run Docker containers
 
-##### Run containers (in background)
+```console
+$ fab start
+```
 
-`docker-compose up --detach`
+#### Access a container shell
 
-#### Database
+```console
+$ fab sh
+```
 
-##### Run migrations
+#### Run database migrations
 
-`docker-compose exec web poetry run python manage.py migrate`
+```console
+$ python manage.py migrate
+```
 
-#### User management
-
-`docker-compose exec web poetry run python manage.py createsuperuser --username sysadmin`
-
-##### Access site
+#### Access site
 
 <http://127.0.0.1:8000>
 
 **Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section**
 
-##### Access site admin
+#### Access the admin site
 
-Log in using `sysadmin`, along with the password set with `createsuperuser` command.
+From a container shell, first create a Django user for yourself using:
+
+```console
+$ python manage.py createsuperuser
+```
+
+Now, navigate to the admin URL in your browser, and sign in using the username/password combination you chose for your user:
 
 <http://127.0.0.1:8000/admin/>
 
-##### Copying content to another development instance
+### Copying content to another development instance
 
 To copy uploaded files, zip up your `/media` directory and replace the second
 site's `/media` with the contents of the zip.
@@ -91,6 +103,26 @@ To copy your CMS's content, **export** the database:
 And then **import**:
 
 `cat <database-dump> |  docker-compose exec  -T db psql -U postgres postgres`
+
+### Generating database migrations
+
+To run any Django management command, first access the shell using:
+
+```console
+$ fab sh
+```
+
+To make migrations for a new app:
+
+```console
+$ python manage.py makemigrations [appname]
+```
+
+To make migrations for an existing app, use the `-n` argument to provide a meaninful name to help your peers understand what the migration does:
+
+```console
+$ python manage.py makemigrations [appname] -n meaningful_name_here
+```
 
 ### Front end development
 
