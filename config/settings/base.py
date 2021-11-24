@@ -72,6 +72,7 @@ INSTALLED_APPS = [
 
     'allauth',
     'allauth.account',
+    'birdbath',
 ]
 
 SITE_ID = 1
@@ -294,3 +295,6 @@ AVAILABILITY_CONDITION_CATEGORIES = {
     "Unavailable": "Not viewable online",
     "Unfit": "Not viewable online",
 }
+
+# Don't anonymise data by default, so we don't accidentally lose production data
+BIRDBATH_REQUIRED = False

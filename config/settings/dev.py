@@ -11,6 +11,10 @@ ALLOWED_HOSTS = ['*']
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
+# Force data anonymisation
+BIRDBATH_REQUIRED = True
+
+BIRDBATH_PROCESSORS = ['etna.users.anonymisation.UserAnonymiser']
 
 try:
     from .local import *  # noqa: F401

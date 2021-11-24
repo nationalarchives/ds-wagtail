@@ -18,6 +18,7 @@ wagtailmedia = "^0.8.0"
 django-allauth = "^0.45.0"
 python-magic = "^0.4.24"
 django-redis = "^5.0.0"
+django-birdbath = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 black = "^20.8b1"
