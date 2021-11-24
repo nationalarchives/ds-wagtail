@@ -43,6 +43,7 @@ templates/static/css/libraries/*
 *.code-workspace
 .vscode/
 .idea/
+.vs/
 
 # SASS
 .sass-cache
