@@ -43,6 +43,8 @@ container to communicate with those services.
 
 ### Getting started
 
+NOTE: For any of the following commands to work, you must first [install Fabric](https://www.fabfile.org/installing.html). Once installed, you can type `fab -l` to see a list of available commands.
+
 #### Create `.env`
 
 ```console
@@ -73,7 +75,7 @@ $ fab sh
 $ python manage.py migrate
 ```
 
-#### Access site
+#### Access the site
 
 <http://127.0.0.1:8000>
 
@@ -90,6 +92,24 @@ $ python manage.py createsuperuser
 Now, navigate to the admin URL in your browser, and sign in using the username/password combination you chose for your user:
 
 <http://127.0.0.1:8000/admin/>
+
+### Working with production data locally
+
+NOTE: For any of the following commands to work, you must first install the [Platform.sh CLI](https://docs.platform.sh/development/cli.html), and run the CLI's `platform` command to sign into an account with access to the relevant project.
+
+#### Download production data
+
+NOTE: Data is automatically anonymised after downloading to protect sensitive data.
+
+`fab pull-production-data`
+
+#### Download all production media
+
+`fab pull-production-media`
+
+#### Download production images only
+
+`fab pull-production-images`
 
 ### Copying content to another development instance
 
