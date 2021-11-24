@@ -45,9 +45,9 @@
         <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>
         <!-- Buttons to be placed in a for loop in case there are more than one e.g. view in the catalogue and read more in our blog -->
         {% if value.record.reference_number %}
-            <a class="tna-button--dark" href="{% url 'details-page-human-readable' value.record.reference_number %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span>in the catalogue</a>
+            <a class="tna-button--dark" href="{% url 'details-page-human-readable' value.record.reference_number %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
         {% elif value.record.iaid %}
-            <a class="tna-button--dark" href="{% url 'details-page-machine-readable' value.record.iaid %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span>in the catalogue</a>
+            <a class="tna-button--dark" href="{% url 'details-page-machine-readable' value.record.iaid %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
         {% endif %}
     </div>
 </div>
