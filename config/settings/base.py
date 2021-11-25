@@ -298,3 +298,4 @@ AVAILABILITY_CONDITION_CATEGORIES = {
 
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
+BIRDBATH_PROCESSORS = ['etna.users.anonymisation.UserAnonymiser']
