@@ -8,7 +8,7 @@ def update_structblock_value(current_value, forwards=True):
         # If running forwards, we want to add 'image' StructBlock values
         # from 'teaser_image' and 'teaser_alt_text' values
         current_value["image"] = {
-            "image": current_value.pop("teaser_image", None),
+            "image": current_value.get("teaser_image", None),
             "decorative": True,
             "alt_text": current_value.get("teaser_alt_text", ""),
             "caption": "",
