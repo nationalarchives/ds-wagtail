@@ -18,4 +18,8 @@ def register_icons(icons):
         'wagtailfontawesomesvg/solid/play.svg',
         'wagtailfontawesomesvg/solid/paragraph.svg',
         'wagtailfontawesomesvg/solid/heading.svg',
+        'wagtailfontawesomesvg/solid/user-circle.svg',
+        'wagtailfontawesomesvg/solid/th.svg',
+        'wagtailfontawesomesvg/solid/arrow-up.svg',
+        'wagtailfontawesomesvg/solid/th-large.svg',
     ]
