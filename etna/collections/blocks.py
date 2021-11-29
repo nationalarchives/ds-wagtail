@@ -8,7 +8,7 @@ class CollectionHighlightsBlock(blocks.StructBlock):
     class Meta:
         template = "collections/blocks/collection_highlights.html"
         help_text = "Block used to output the list of collection highlights"
-        icon = "fa-th"
+        icon = "th"
 
 
 class FeaturedPageBlock(blocks.StructBlock):
@@ -23,7 +23,7 @@ class FeaturedPageBlock(blocks.StructBlock):
     class Meta:
         template = "collections/blocks/featured_page.html"
         help_text = "Block used feature a page from within Wagtail"
-        icon = "fa-arrow-up"
+        icon = "arrow-up"
 
 
 class PromotedItemBlock(blocks.StructBlock):
@@ -45,7 +45,7 @@ class PromotedPagesBlock(blocks.StructBlock):
     class Meta:
         template = "collections/blocks/promoted_pages.html"
         help_text = "Block used promote external pages"
-        icon = "fa-th-large"
+        icon = "th-large"
 
 
 class TopicExplorerIndexBlock(blocks.StructBlock):
@@ -59,7 +59,7 @@ class TopicExplorerIndexBlock(blocks.StructBlock):
     class Meta:
         template = "collections/blocks/topic_explorer.html"
         help_text = "Outputs all topic child pages"
-        icon = "fa-th-large"
+        icon = "th-large"
 
 
 class TimePeriodExplorerIndexBlock(blocks.StructBlock):
@@ -73,7 +73,7 @@ class TimePeriodExplorerIndexBlock(blocks.StructBlock):
     class Meta:
         template = "collections/blocks/time_period_explorer.html"
         help_text = "Outputs all time period child pages"
-        icon = "fa-th-large"
+        icon = "th-large"
 
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
