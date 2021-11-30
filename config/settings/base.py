@@ -222,8 +222,10 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-WAGTAILMEDIA_MEDIA_MODEL = 'media.EtnaMedia'
-WAGTAILMEDIA_MEDIA_FORM_BASE = 'etna.media.forms.BaseMediaForm'
+WAGTAILMEDIA = {
+    "MEDIA_MODEL": "media.EtnaMedia",
+    "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
+}
 
 # Wagtail settings
 
