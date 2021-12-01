@@ -86,4 +86,4 @@ class RecordChooserBlock(ChooserBlock):
         return self.widget.get_value_data(value)
 
     class Meta:
-        icon = "fa-archive"
+        icon = "archive"

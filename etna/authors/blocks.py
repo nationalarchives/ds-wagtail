@@ -6,5 +6,5 @@ class AuthorBlock(blocks.StructBlock):
     author = SnippetChooserBlock("authors.Author")
 
     class Meta:
-        icon = "fa-user-circle "
+        icon = "user-circle "
         template = "authors/blocks/author.html"

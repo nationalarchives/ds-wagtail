@@ -22,7 +22,7 @@ class FeaturedRecordBlock(blocks.StructBlock):
         template="insights/blocks/images/blog-embed__image-container.html")
 
     class Meta:
-        icon = "fa-archive"
+        icon = "archive"
         template = "insights/blocks/featured_record.html"
 
 
@@ -34,7 +34,7 @@ class FeaturedRecordsBlock(blocks.StructBlock):
     )
 
     class Meta:
-        icon = "fa-archive"
+        icon = "archive"
         template = "insights/blocks/featured_records.html"
 
 
@@ -77,8 +77,7 @@ class PromotedItemBlock(blocks.StructBlock):
     class Meta:
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
-        icon = "fa-star"
-        form_template = "form_templates/default-form-with-safe-label.html"
+        icon = "star"
 
 
 class PromotedListItemBlock(blocks.StructBlock):
@@ -97,7 +96,7 @@ class PromotedListItemBlock(blocks.StructBlock):
     url = blocks.URLBlock(required=True)
 
     class Meta:
-        icon = "fa-external-link"
+        icon = "star"
 
 
 class PromotedListBlock(blocks.StructBlock):
@@ -113,7 +112,7 @@ class PromotedListBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "fa-list"
+        icon = "list"
         label = "Promoted item list"
         template = "insights/blocks/promoted_list_block.html"
 
@@ -129,8 +128,8 @@ class RelatedItemBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
 
     class Meta:
+        icon = "external-link-alt"
         help_text = "Block used promote an external page"
-        icon = "fa-external-link"
         template = "insights/blocks/related_item.html"
 
 
@@ -144,7 +143,7 @@ class RelatedItemsBlock(blocks.StructBlock):
     related_items = blocks.ListBlock(RelatedItemBlock)
 
     class Meta:
-        icon = "fa-chain"
+        icon = "external-link-alt"
         template = "insights/blocks/related_items.html"
         block_counts = {
             "related_items": {"min_num": 1, "max_num": 1},

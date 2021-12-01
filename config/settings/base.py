@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     'etna.sections',
     'etna.teasers',
     'etna.users',
-
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
     'wagtail.embeds',
@@ -56,9 +55,9 @@ INSTALLED_APPS = [
     'wagtail.search',
     'wagtail.admin',
     'wagtail.core',
-
-    'wagtailfontawesome',
+    'wagtailfontawesomesvg',
     'wagtailmedia',
+    'wagtail.contrib.styleguide',
     'generic_chooser',
     'modelcluster',
     'taggit',
@@ -224,8 +223,10 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-WAGTAILMEDIA_MEDIA_MODEL = 'media.EtnaMedia'
-WAGTAILMEDIA_MEDIA_FORM_BASE = 'etna.media.forms.BaseMediaForm'
+WAGTAILMEDIA = {
+    "MEDIA_MODEL": "media.EtnaMedia",
+    "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
+}
 
 # Wagtail settings
 
@@ -299,3 +300,4 @@ AVAILABILITY_CONDITION_CATEGORIES = {
 
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
+BIRDBATH_PROCESSORS = ['etna.users.anonymisation.UserAnonymiser']

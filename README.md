@@ -103,6 +103,8 @@ NOTE: Data is automatically anonymised after downloading to protect sensitive da
 
 `fab pull-production-data`
 
+**NOTE:** Any Django users you were using before running this command will no longer exist. You may want to run `python manage.py createsuperuser` from a container shell to create yourself a new one.
+
 #### Download all production media
 
 `fab pull-production-media`
