@@ -81,7 +81,7 @@
 
     &__link {
       @extend .tna-card__link;
-      display: inline;
+      display: inline-block;
       color: $color__blue_3;
       text-decoration: underline;
       margin-left: 0.5rem;
