@@ -18,28 +18,40 @@
   &-secondary-nav {
     display: inline-block;
     width: 100%;
-    &__link {
+    &__image-link {
       @extend .tna-card__link;
       @include explorer-link;
-      display: table;
+    }
+
+    &__title-link {
+      @extend .tna-card__link;
+
+      display: inline;
+      color: $color__blue_3;
+      &:hover, &:active {
+        color: $color__blue_3;
+      }
+      &:focus {
+        outline-offset: .2rem;
+      }
+    }
+
+    &__heading {
+      display: inline;
     }
 
     &__image {
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
-      display: table-header-group;
       &-fallback {
         width: 100%;
       }
     }
 
     &__body {
-      display: table-footer-group;
-    }
-
-    &__heading, &__paragraph, &__span {
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
+      padding-left: 0.28rem;
+      padding-right: 0.28rem;
+      padding-top: 0.28rem;
     }
 
     &__span {
@@ -58,31 +70,42 @@
     &__image {
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
+      margin-top: 0.7rem;
       &-fallback {
         width: 100%;
+      }
+      &:hover {
+        outline: 0.313rem solid $color__black;
       }
     }
 
     &__link {
       @extend .tna-card__link;
-      @include explorer-link;
-
-      text-decoration: none;
+      display: inline;
+      color: $color__blue_3;
+      text-decoration: underline;
+      margin-left: 0.5rem;
+      &:active {
+        color: $color__blue_3;
+      }
+      &:hover {
+        color: $color__blue_3;
+        text-decoration: none;
+      }
+      &:focus {
+        outline-offset: .2rem;
+      }
     }
 
     &__body {
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
-      margin-top: 1rem;
-      text-decoration: underline;
+      margin-left: 0.5rem;
+      margin-top: 0.5rem;
     }
-
+ 
     &__heading {
       font-size: 1.3rem;
       font-weight: 700;
-      padding-left: 0.3rem;
-      padding-right: 0.3rem;
-      text-decoration: underline;
+      display: inline;
     }
   }
 
