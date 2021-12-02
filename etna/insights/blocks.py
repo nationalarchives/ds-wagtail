@@ -78,6 +78,7 @@ class PromotedItemBlock(blocks.StructBlock):
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
+        form_template = "form_templates/default-form-with-safe-label.html"
 
 
 class PromotedListItemBlock(blocks.StructBlock):
