@@ -6,7 +6,7 @@
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--left"></span>
                         <span class="hierarchy-local__nav-label">Previous</span>
-                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}" data-link="Previous" class="link--bold">{{ page.previous_record.iaid }}</a>
+                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}" data-link="Previous" class="link--bold"><span class="sr-only">Previous</span> {{ page.previous_record.iaid }}</a>
                     </p>
                 {% endif %}
             </div>
@@ -17,13 +17,13 @@
                     {% if page.parent.reference_number %}
                     <span class="hierarchy-local__nav-link-span">
                         <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level" class="link--bold">
-                            {{ page.parent.title }}
+                            <span class="sr-only">This record is in</span> {{ page.parent.title }}
                         </a>
                     </span>
                     {% elif page.parent.iaid %}
                     <span class="hierarchy-local__nav-link-span">
                         <a href="{% url 'details-page-machine-readable' page.parent.iaid %}" data-link="Series level" class="link--bold">
-                            {{ page.parent.title }}
+                            <span class="sr-only">This record is in</span> {{ page.parent.title }}
                         </a>
                     </span>
                     {% endif %}
@@ -34,7 +34,7 @@
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--right"></span>
                         <span class="hierarchy-local__nav-label">Next</span>
-                        <a href="{% url 'details-page-machine-readable' page.next_record.iaid %}" data-link="Next" class="link--bold">{{ page.next_record.iaid }}</a>
+                        <a href="{% url 'details-page-machine-readable' page.next_record.iaid %}" data-link="Next" class="link--bold"><span class="sr-only">Next</span> {{ page.next_record.iaid }}</a>
                     </p>
                 {% endif %}
             </div>
