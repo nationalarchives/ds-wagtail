@@ -37,24 +37,9 @@
         </p>
         {% endif %}
 
-        <div class="promoted-item__image-container">
-            <picture>
-                {% image value.teaser_image fill-800x500 as teaser %}
-                <source media="(max-width: 480px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x500 as teaser %}
-                <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x450 as teaser %}
-                <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x350 as teaser %}
-                <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x350 as teaser %}
-                <source media="(max-width: 1199px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x300 as teaser %}
-                <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
-                {% image value.teaser_image fill-800x300 as teaser %}
-                <img src="{{ teaser.url }}" alt="{{ teaser.alt }}" class="promoted-item__image" />
-            </picture>
-        </div>
+        {% if value.image %}
+            {% include_block value.image %}
+        {% endif %}
 
         <div class="promoted-item__text">
             {{ value.description|richtext }}

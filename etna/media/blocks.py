@@ -19,6 +19,7 @@ class MediaBlock(blocks.StructBlock):
     """
     Embedded media block with a selectable background image.
     """
+
     background_image = ImageChooserBlock(
         help_text="A background image for the media block"
     )

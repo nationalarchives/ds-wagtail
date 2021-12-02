@@ -80,7 +80,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             "C123456"
         )
         self.assertEqual(
-            self.insights_page.body[0].value["teaser_image"],
+            self.insights_page.body[0].value["image"]["image"],
             None
         )
 

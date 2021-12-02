@@ -5,6 +5,7 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
+from ..images.blocks import ImageBlock
 from ..media.blocks import MediaBlock
 from ..paragraphs.blocks import ParagraphWithHeading
 from ..quotes.blocks import QuoteBlock
@@ -14,9 +15,11 @@ from ..sections.blocks import SectionBlock
 
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
-    teaser_image = ImageChooserBlock(
+    image = ImageBlock(
+        label='Teaser image',
         required=False,
-        help_text="Add an image to be displayed with the selected record.")
+        help_text="Add an image to be displayed with the selected record.",
+        template="insights/blocks/images/blog-embed__image-container.html")
 
     class Meta:
         icon = "archive"
@@ -51,7 +54,7 @@ class PromotedItemBlock(blocks.StructBlock):
     target_blank = blocks.BooleanBlock(label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
         "Should this URL open in a new tab?",
         "Tick the box if 'yes'"
-    )))
+    )), required=False)
     cta_label = blocks.CharBlock(
         label="Call to action label", max_length=50,
         help_text=format_html("%s <strong>%s</strong>'." % (
@@ -61,11 +64,10 @@ class PromotedItemBlock(blocks.StructBlock):
             "about Shakespeare on YouTube"
         ))
     )
-    teaser_image = ImageChooserBlock(
-        help_text="An image used to create a teaser for the promoted page"
-    )
-    teaser_alt_text = blocks.CharBlock(
-        max_length=100, help_text="Alt text of the teaser image"
+    image = ImageBlock(
+        label="Teaser image",
+        help_text="An image used to create a teaser for the promoted page",
+        template="insights/blocks/images/blog-embed__image-container.html"
     )
     description = blocks.RichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
@@ -76,6 +78,7 @@ class PromotedItemBlock(blocks.StructBlock):
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
+        form_template = "form_templates/default-form-with-safe-label.html"
 
 
 class PromotedListItemBlock(blocks.StructBlock):
