@@ -103,8 +103,9 @@ def image_browse(request, iaid):
     )
 
 
-# Cache assets for a day or indefinitely if browser supports it
-@cache_control(max_age="259200", public=True, immutable=True)
+# Cache assets indefinitely if browser supports it
+# NOTE: core.cache_control.apply_default_cache_control will add to this
+@cache_control(max_age="259200", immutable=True)
 def image_serve(request, location):
     """Relay content served from Kong's /media endpoint"""
     response = Image.media.serve(location)

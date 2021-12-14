@@ -1,13 +1,10 @@
-from django.conf import settings
 from django.core.paginator import Paginator
 from django.shortcuts import Http404, render
-from django.views.decorators.cache import cache_control
 
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
 from ..models import Image, RecordPage
 
 
-@cache_control(max_age=settings.CACHE_MIDDLEWARE_SECONDS, public=True)
 def record_page_disambiguation_view(request, reference_number):
     """View to render a record's details page or disambiguation page if multiple records are found.
 
@@ -46,7 +43,6 @@ def record_page_disambiguation_view(request, reference_number):
     )
 
 
-@cache_control(max_age=settings.CACHE_MIDDLEWARE_SECONDS, public=True)
 def record_page_view(request, iaid):
     """View for rendering a record's details page.
 
