@@ -2,14 +2,15 @@ from django.db import models
 
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Page
+
+from etna.core.models import BasePage
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 from .blocks import InsightsIndexPageStreamBlock, InsightsPageStreamBlock
 
 
-class InsightsIndexPage(TeaserImageMixin, Page):
+class InsightsIndexPage(TeaserImageMixin, BasePage):
     """InsightsIndexPage
 
     This page lists the InsightsPage objects that are children of this page.
@@ -24,16 +25,16 @@ class InsightsIndexPage(TeaserImageMixin, Page):
         context["insights_pages"] = insights_pages
         return context
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
     subpage_types = ["insights.InsightsPage"]
 
 
-class InsightsPage(HeroImageMixin, TeaserImageMixin, Page):
+class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
     """InsightsPage
 
     The InsightsPage model.
@@ -43,7 +44,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, Page):
     body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
 
     content_panels = (
-        Page.content_panels
+        BasePage.content_panels
         + HeroImageMixin.content_panels
         + [
             FieldPanel("sub_heading"),
@@ -51,7 +52,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, Page):
         ]
     )
 
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
     parent_page_types = ["insights.InsightsIndexPage"]
     subpage_types = []
