@@ -1,8 +1,4 @@
-from django.contrib import messages
-from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
-
-from axes.utils import reset_request
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.models import Group
 from django.template.response import TemplateResponse
@@ -46,7 +42,11 @@ def login_view(request):
             else:
                 form.add_errors(request=request)
                 return render(request, 'account/login.html', {'form': form})
-        except:
+        except BaseException as error:
+            print('An exception occurred: {}'.format(error))
+            if form is None:
+                form = AxesLoginForm(request.POST or None, request.FILES or None)
             form.add_errors(request=request)
+            return render(request, 'account/login.html', {'form': form})
 
     return render(request, 'account/login.html')
