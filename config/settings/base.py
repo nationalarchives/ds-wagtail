@@ -15,9 +15,9 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from distutils.util import strtobool
 
+
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
@@ -68,10 +68,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-
+    'axes',
     'allauth',
     'allauth.account',
     'birdbath',
+    # Axes app can be in any position in the INSTALLED_APPS list.
+
 ]
 
 SITE_ID = 1
@@ -86,6 +88,12 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
+    # AxesMiddleware should be the last middleware in the MIDDLEWARE list.
+    # It only formats user lockout messages and renders Axes lockout responses
+    # on failed user authentication attempts from login views.
+    # If you do not want Axes to override the authentication response
+    # you can skip installing the middleware and use your own views.
+    'etna.etnaxes.etnaxesmiddleware.AxesEtnaMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -109,29 +117,34 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = [
+    # AxesBackend should be the first backend in the AUTHENTICATION_BACKENDS list.
+    'axes.backends.AxesBackend',
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',
+
 ]
+# Axes
+AXES_ENABLED = True
+AXES_HANDLER = "axes.handlers.database.AxesDatabaseHandler"
+AXES_USERNAME_FORM_FIELD = 'login'
 
 # django-allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_LOGOUT_ON_GET = False       # Bypass logout confirmation form
-ACCOUNT_USERNAME_REQUIRED = False   # Register using email only
-ACCOUNT_SESSION_REMEMBER = False    # True|False disables "Remember me?" checkbox"
-LOGIN_URL = "/accounts/login"
+ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
+ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
+ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
+# LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
-WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
+# WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
-ACCOUNT_FORMS = {'login': 'etna.users.forms.EtnaLoginForm'}
-
+# ACCOUNT_FORMS = {'login': 'etna.users.forms.AxesLoginForm'}
 
 WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
@@ -150,7 +163,6 @@ LOGGING = {
     },
 }
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -164,7 +176,6 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -184,7 +195,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -197,7 +207,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -233,13 +242,11 @@ WAGTAIL_SITE_NAME = "etna"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = 'http://example.com'
 
-
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
 KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
-
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -254,7 +261,6 @@ RESTRICTED_RICH_TEXT_FEATURES = [
     "link",
     "ul",
 ]
-
 
 # Analytics
 AVAILABILITY_CONDITION_CATEGORIES = {
