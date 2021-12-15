@@ -48,5 +48,5 @@ def login_view(request):
                 form = AxesLoginForm(request.POST or None, request.FILES or None)
             form.add_errors(request=request)
             return render(request, 'account/login.html', {'form': form})
-
+    # Get request
     return render(request, 'account/login.html')

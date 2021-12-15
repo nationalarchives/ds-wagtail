@@ -1,8 +1,6 @@
 from allauth.account import app_settings
 from allauth.account.forms import LoginForm
 from allauth.account.utils import perform_login
-from django import forms
-from django.contrib.auth import authenticate
 
 
 class AxesLoginForm(LoginForm):
@@ -52,4 +50,3 @@ class AxesLoginForm(LoginForm):
                 self.add_error(None, "Invalid username or password")
         else:
             self.add_error(None, "Error")
-
