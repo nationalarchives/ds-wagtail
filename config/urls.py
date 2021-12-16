@@ -6,18 +6,14 @@ from django.urls import include, path, register_converter
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
-from django.utils.decorators import method_decorator
-from allauth.account.views import LoginView
-from axes.decorators import axes_form_invalid
+
 from etna.records import converters
 from etna.records import views as records_views
-from django.contrib.auth import views as auth_views
 
 from etna.users.views import login_view
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
-LoginView.form_invalid = method_decorator(axes_form_invalid)(LoginView.form_invalid)
 
 # fmt: off
 urlpatterns = [
@@ -56,9 +52,6 @@ urlpatterns = [
     ),
     path('accounts/login/', login_view),
     path('accounts/', include('allauth.urls')),
-
-
-
 
 ]
 # fmt: on
