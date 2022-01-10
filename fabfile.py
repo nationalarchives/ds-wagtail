@@ -259,6 +259,7 @@ def pull_database_from_platform(c, environment_name):
     )
 
     print("Replacing local database with downloaded version")
+    start(c, "db")
     delete_db(c)
     restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
     local(f"rm {LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
