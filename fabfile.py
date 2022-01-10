@@ -2,8 +2,6 @@ import datetime
 import os
 import subprocess
 
-from shlex import quote
-
 from invoke import run as local
 from invoke.tasks import task
 
@@ -34,7 +32,7 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 
 
 def container_exec(cmd, container_name="web"):
-    return local(f"docker-compose exec -T {container_name} bash -c {quote(cmd)}")
+    return subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
 
 
 def db_exec(cmd):
