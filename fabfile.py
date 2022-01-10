@@ -243,7 +243,7 @@ def enable_platform_ssh(c):
     known_hosts = os.path.expanduser("~/.ssh/known_hosts")
     for hostname in ('ssh.uk-1.platform.sh', 'git.uk-1.platform.sh'):
         # Remove existing keys for this hostname
-        local(f"ssh-keygen -q -R {hostname} >> {known_hosts}")
+        local(f"ssh-keygen -q -R {hostname}")
         # Add new ones
         local(f"ssh-keyscan {hostname} >> {known_hosts}")
 
