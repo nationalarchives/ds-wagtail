@@ -95,15 +95,19 @@ Now, navigate to the admin URL in your browser, and sign in using the username/p
 
 ### Working with production data locally
 
-NOTE: For any of the following commands to work, you must first install the [Platform.sh CLI](https://docs.platform.sh/development/cli.html), and run the CLI's `platform` command to sign into an account with access to the relevant project.
+#### Prerequisites
+
+The following steps must be completed before you can pull data from an evironment:
+
+1. Ask on the `#ds-etna` or `#dev-etna` channels to be granted access to Platform.sh.
+2. Once you have access, [follow these instructions](https://docs.platform.sh/development/ssh.html#authenticate-with-ssh-keys) to add your SSH key to your Platform account.
+3. Install the Platform.sh CLI, authenticate, and try out some of the commands, by [following these instructions](https://docs.platform.sh/development/cli.html). **For Windows users**: The CLI requires PHP to run. If you haven't done so already, you may also need to [install PHP](https://www.sitepoint.com/how-to-install-php-on-windows/#installphp) before the CLI will work.
 
 #### Download production data
 
-NOTE: Data is automatically anonymised after downloading to protect sensitive data.
-
 `fab pull-production-data`
 
-**NOTE:** Any Django users you were using before running this command will no longer exist. You may want to run `python manage.py createsuperuser` from a container shell to create yourself a new one.
+**NOTE:** Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. Also, any Django users you created locally before running the command will no longer exist. You can run `python manage.py createsuperuser` from a container shell to create yourself a new one.
 
 #### Download all production media
 
