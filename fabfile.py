@@ -2,8 +2,6 @@ import datetime
 import os
 import subprocess
 
-from shlex import quote
-
 from invoke import run as local
 from invoke.tasks import task
 
@@ -34,7 +32,7 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 
 
 def container_exec(cmd, container_name="web"):
-    return local(f"docker-compose exec -T {container_name} bash -c {quote(cmd)}")
+    return subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
 
 
 def db_exec(cmd):
@@ -240,8 +238,12 @@ def pull_staging_images(c):
 
 
 def enable_platform_ssh(c):
-    local("ssh-keyscan 'ssh.uk-1.platform.sh' >> $HOME/.ssh/known_hosts")
-    local("ssh-keyscan 'git.uk-1.platform.sh' >> $HOME/.ssh/known_hosts")
+    known_hosts = os.path.expanduser("~/.ssh/known_hosts")
+    for hostname in ('ssh.uk-1.platform.sh', 'git.uk-1.platform.sh'):
+        # Remove existing keys for this hostname
+        local(f"ssh-keygen -q -R {hostname}")
+        # Add new ones
+        local(f"ssh-keyscan {hostname} >> {known_hosts}")
 
 
 def pull_database_from_platform(c, environment_name):
@@ -257,6 +259,7 @@ def pull_database_from_platform(c, environment_name):
     )
 
     print("Replacing local database with downloaded version")
+    start(c, "db")
     delete_db(c)
     restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
     local(f"rm {LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
