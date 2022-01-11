@@ -1,6 +1,15 @@
 .content-block {
-  margin: 1rem 0;
+  margin: 1rem auto;
   padding: 0.5rem 0;
+  width: 65%;
+
+  @media (max-width: $screen__lg) {
+    width: 70%;
+  }
+
+  @media (max-width: $screen__md) {
+    width: 80%;
+  }
 
   &__heading {
     font-size: 2rem;

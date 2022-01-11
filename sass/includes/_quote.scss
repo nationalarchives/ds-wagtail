@@ -1,6 +1,11 @@
 .quote {
   position: relative;
-  margin: 2rem 0;
+  margin: 2rem auto;
+  width: 70%;
+
+  @media (max-width: $screen__md) {
+    width: 80%;
+  }
 
   &__icon {
     position: absolute;
