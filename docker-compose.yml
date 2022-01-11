@@ -43,3 +43,9 @@ services:
     tty: true
     env_file:
       - .env
+  cli:
+    build: platformsh-cli
+    volumes:
+      - ./:/app
+    env_file:
+      - .env
