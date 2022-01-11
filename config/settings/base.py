@@ -31,8 +31,9 @@ INSTALLED_APPS = [
     'etna.alerts',
     'etna.analytics',
     'etna.categories',
-    'etna.collections',
     'etna.ciim',
+    'etna.collections',
+    'etna.core',
     'etna.heroes',
     'etna.home',
     'etna.images',
@@ -301,3 +302,21 @@ AVAILABILITY_CONDITION_CATEGORIES = {
 # Don't anonymise data by default, so we don't accidentally lose production data
 BIRDBATH_REQUIRED = False
 BIRDBATH_PROCESSORS = ['etna.users.anonymisation.UserAnonymiser']
+
+# -----------------------------------------------------------------------------
+# Default cache-control settings
+# -----------------------------------------------------------------------------
+
+# Set s-max-age header that is used by reverse proxy/front end cache.
+# See core.cache_control.get_default_cache_control_kwargs()
+# The default value is 3 hours.
+try:
+    CACHE_CONTROL_S_MAXAGE = int(os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3))
+except ValueError:
+    pass
+
+# Give front-end cache 30 second to revalidate the cache to avoid hitting the backend.
+# See core.cache_control.get_default_cache_control_kwargs()
+CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
+    os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
+)
