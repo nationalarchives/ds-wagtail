@@ -8,7 +8,8 @@ WORKDIR /app/
 
 COPY poetry.lock /app/
 COPY pyproject.toml /app/
-RUN pip install poetry
+RUN python -m pip install pip==21.3.1
+RUN pip install poetry==1.1.12
 RUN poetry install
 
 EXPOSE 8000
