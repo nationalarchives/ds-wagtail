@@ -41,6 +41,10 @@ Our `web` container
 on both the `db` and `elasticsearch` containers in order for the `web`
 container to communicate with those services.
 
+#### `cli`
+
+A service with the Platform.sh CLI, PHP and few other packages to help with copying of data and media from the environments running in Platform.sh
+
 ### Getting started
 
 NOTE: For any of the following commands to work, you must first [install Fabric](https://www.fabfile.org/installing.html). Once installed, you can type `fab -l` to see a list of available commands.
@@ -99,9 +103,9 @@ Now, navigate to the admin URL in your browser, and sign in using the username/p
 
 The following steps must be completed before you can pull data from an evironment:
 
-1. Ask on the `#ds-etna` or `#dev-etna` channels to be granted access to Platform.sh.
-2. Once you have access, [follow these instructions](https://docs.platform.sh/development/ssh.html#authenticate-with-ssh-keys) to add your SSH key to your Platform account.
-3. Install the Platform.sh CLI, authenticate, and try out some of the commands, by [following these instructions](https://docs.platform.sh/development/cli.html). **For Windows users**: The CLI requires PHP to run. If you haven't done so already, you may also need to [install PHP](https://www.sitepoint.com/how-to-install-php-on-windows/#installphp) before the CLI will work.
+1. [Register for a Platform.sh account](https://auth.api.platform.sh/register) using your work email.
+2. On the `#ds-etna` or `#dev-etna` Slack channels, request for someone to grant you access to the Etna project.
+3. Once you have access, [generate an API token](https://docs.platform.sh/development/cli/api-tokens.html#get-a-token) for your account (The name **Local CLI** will do nicely), and add it your local `.env` file as `PLATFORMSH_CLI_TOKEN`.
 
 #### Download production data
 
@@ -109,13 +113,9 @@ The following steps must be completed before you can pull data from an evironmen
 
 **NOTE:** Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. Also, any Django users you created locally before running the command will no longer exist. You can run `python manage.py createsuperuser` from a container shell to create yourself a new one.
 
-#### Download all production media
+#### Download production media
 
 `fab pull-production-media`
-
-#### Download production images only
-
-`fab pull-production-images`
 
 ### Copying content to another development instance
 
