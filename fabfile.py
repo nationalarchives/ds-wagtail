@@ -258,6 +258,7 @@ def pull_database_from_platform(c, environment_name):
         "shell to create yourself a new one."
     )
 
+
 def pull_media_from_platform(
     c,
     environment_name,
