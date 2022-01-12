@@ -1,3 +1,4 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
@@ -20,11 +21,19 @@ class RecordChooserBlock(ChooserBlock):
 
     @cached_property
     def field(self):
-        """ModelChoiceField configured to use a RecordPage's iaid to present
-        the selected record in the admin"""
-        field = super().field
-        field.to_field_name = "iaid"
-        return field
+        """Return the associated field to pick a RecordPage.
+
+        ChooserBlock.field returns a ModelChoiceField. RecordPage data is
+        held externally and populated via an API call to Kong and not the
+        database.
+        """
+        return forms.ChoiceField(
+            choices=[],
+            widget=self.widget,
+            required=self._required,
+            validators=self._validators,
+            help_text=self._help_text,
+        )
 
     @cached_property
     def target_model(self):
