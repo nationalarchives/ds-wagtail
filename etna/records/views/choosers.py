@@ -1,13 +1,13 @@
 from django.conf.urls import url
 from django.shortcuts import Http404
 
-from generic_chooser.views import BaseChosenView, ModelChooserMixin, ModelChooserViewSet
+from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.exceptions import KongException
 from ..models import RecordPage
 
 
-class KongModelChooserMixinIn(ModelChooserMixin):
+class KongModelChooserMixinIn(ChooserMixin):
     """Chooser source to allow filtering and selection of Kong model data.
 
     Similar to the DFRDRFChooserMixin:
@@ -15,16 +15,15 @@ class KongModelChooserMixinIn(ModelChooserMixin):
     https://github.com/wagtail/wagtail-generic-chooser/blob/9ec9db937fe40311c67ed055e1b3f0dcd1b86908/generic_chooser/views.py#L223
     """
 
+    # Model belonging to this chooser, set via <model>ChooserViewSet.
+    model = None
+
+    # Allow models to be searched via chooser. Hides the search box if False
+    is_searchable = True
+
     def get_object_list(self, search_term=""):
         """Filter object list by user's search term"""
-        object_list = self.get_unfiltered_object_list()
-
-        if search_term:
-            object_list = self.model.search.filter(
-                term=search_term, stream="evidential"
-            )
-
-        return object_list
+        return self.model.search.filter(term=search_term, stream="evidential")
 
     def get_object(self, pk):
         """Fetch selected object"""
@@ -59,7 +58,7 @@ class KongChosenView(BaseChosenView):
             raise Http404
 
 
-class RecordChooserViewSet(ModelChooserViewSet):
+class RecordChooserViewSet(ChooserViewSet):
     """Custom chooser to allow users to filter and select records."""
 
     base_chosen_view_class = KongChosenView
@@ -68,8 +67,20 @@ class RecordChooserViewSet(ModelChooserViewSet):
     model = RecordPage
     page_title = "Choose a record"
     per_page = 10
-    order_by = "iaid"
-    fields = ["iaid", "title"]
+
+    def get_choose_view_attrs(self):
+        attrs = super().get_choose_view_attrs()
+        if hasattr(self, "model"):
+            attrs["model"] = self.model
+
+        return attrs
+
+    def get_chosen_view_attrs(self):
+        attrs = super().get_chosen_view_attrs()
+        if hasattr(self, "model"):
+            attrs["model"] = self.model
+
+        return attrs
 
     def get_urlpatterns(self):
         """Define patterns for chooser and chosen views.
