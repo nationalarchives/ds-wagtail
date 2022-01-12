@@ -186,6 +186,7 @@ def restore_db(c, filename, delete_dump_after=False):
     db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}")
     print(f"Database restored from: {filename}")
     if delete_dump_after:
+        print("Deleting dump file: {filename}")
         db_exec(f"rm {filename}")
     start(c, "web")
 
