@@ -24,7 +24,7 @@ services:
     ports:
      - "5432:5432"
     volumes:
-     - .:/app:ro
+     - ./database_dumps:/app/database_dumps
   web:
     build: .
     volumes:
@@ -46,6 +46,7 @@ services:
   cli:
     build: platformsh-cli
     volumes:
-      - ./:/app
+      - ./media:/app/media
+      - ./database_dumps:/app/database_dumps
     env_file:
       - .env
