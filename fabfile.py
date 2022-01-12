@@ -176,7 +176,7 @@ def dump_db(c, filename):
 
 
 @task
-def restore_db(c, filename):
+def restore_db(c, filename, delete_dump_after=False):
     """Restore the database from a snapshot in the db container"""
     print("Stopping 'web' to sever DB connection")
     stop(c, "web")
@@ -185,6 +185,8 @@ def restore_db(c, filename):
     delete_db(c)
     db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}")
     print(f"Database restored from: {filename}")
+    if delete_dump_after:
+        db_exec(f"rm {filename}")
     start(c, "web")
 
 
@@ -242,8 +244,7 @@ def pull_database_from_platform(c, environment_name):
     print("Replacing local database with downloaded version")
     start(c, "db")
     delete_db(c)
-    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
-    local(f"rm {LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
+    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_after=True)
 
     print("Applying migrations from local environment")
     run_management_command(c, "migrate")
