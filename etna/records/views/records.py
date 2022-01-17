@@ -65,7 +65,7 @@ def record_page_view(request, iaid):
 
     return render(
         request,
-        page.get_template(request),
+        "records/record_page.html",
         {
             "page": page,
             "image": image,
