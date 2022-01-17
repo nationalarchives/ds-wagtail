@@ -1,16 +1,16 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from django.conf import settings
-from django.db import models
 from django.urls import reverse
 
-from wagtail.core.models import Page, Site
+from wagtail.core.models import Site
 
 from ..ciim.models import MediaManager, SearchManager
 from .transforms import transform_image_result, transform_record_page_result
 
 
-class RecordPage(Page):
+@dataclass
+class RecordPage:
     """Non-creatable page used to render record data in templates.
 
     This stub page allows us to use common templates to render external record
@@ -19,45 +19,32 @@ class RecordPage(Page):
     see: views.record_page_view
     """
 
-    is_creatable = False
+    iaid: str
+    title: str
+    reference_number: str
+    legal_status: str
 
-    iaid = models.TextField()
-    reference_number = models.TextField()
-    closure_status = models.TextField()
-    created_by = models.TextField()
-    description = models.TextField()
-    arrangement = models.TextField(blank=True)
-    origination_date = models.TextField()
-    legal_status = models.TextField()
-    held_by = models.TextField(blank=True)
-    is_digitised = models.BooleanField(default=False)
-    parent = models.JSONField(null=True)
-    hierarchy = models.JSONField(null=True)
-    media_reference_id = models.UUIDField(null=True)
-    availability_access_display_label = models.TextField()
-    availability_access_closure_label = models.TextField()
-    availability_delivery_condition = models.TextField()
-    availability_delivery_surrogates = models.JSONField(null=True)
-    topics = models.JSONField(null=True)
-    next_record = models.JSONField(null=True)
-    previous_record = models.JSONField(null=True)
-    related_records = models.JSONField(null=True)
-    related_articles = models.JSONField(null=True)
+    created_by: str = ''
+    description: str = ''
+    origination_date: str = ''
+    closure_status: str = ""
+    availability_access_display_label: str = ""
+    availability_access_closure_label: str = ""
+    availability_delivery_condition: str = ""
+    arrangement: str = ""
+    held_by: str = ""
+    is_digitised: bool = False
+    parent: dict = field(default_factory=dict)
+    hierarchy: dict = field(default_factory=dict)
+    media_reference_id: str = ""
+    availability_delivery_surrogates: dict = field(default_factory=dict)
+    topics: dict = field(default_factory=dict)
+    next_record: dict = field(default_factory=dict)
+    previous_record: dict = field(default_factory=dict)
+    related_records: dict = field(default_factory=dict)
+    related_articles: dict = field(default_factory=dict)
 
-    def __init__(self, *args, **kwargs):
-        """Override to add Kong response data to instance for debugging.
-
-        The Django docs advice against overriding the __init__ method, due to
-        the risk of the object not being persiable.
-
-        This risk is mitagated due to the use of the RecordPage as a container
-        to hold external data and should never be editable in the admin.
-
-        https://docs.djangoproject.com/en/3.2/ref/models/instances/
-        """
-        self._debug_kong_result = kwargs.pop("_debug_kong_result", None)
-
-        super().__init__(*args, **kwargs)
+    _debug_kong_result: dict = field(default_factory=dict)
 
     def get_site(self):
         """Override to return the Site instance despite this page not belonging to the CMS.
