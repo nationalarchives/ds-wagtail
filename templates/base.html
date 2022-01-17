@@ -47,7 +47,7 @@
 <body class="{% block body_class %}{% endblock %}">
 {% wagtailuserbar %}
 <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
-{% alerts page=page %}
+{% block alerts %}{% alerts page=page %}{% endblock %}
 {% include 'includes/gtm-no-script.html' %}
 {% include 'includes/header.html' %}
 
