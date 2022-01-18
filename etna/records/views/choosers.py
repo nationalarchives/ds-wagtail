@@ -4,7 +4,7 @@ from django.shortcuts import Http404
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.exceptions import KongException
-from ..models import RecordPage
+from ..models import Record
 
 
 class KongModelChooserMixinIn(ChooserMixin):
@@ -64,7 +64,7 @@ class RecordChooserViewSet(ChooserViewSet):
     base_chosen_view_class = KongChosenView
     chooser_mixin_class = KongModelChooserMixinIn
     icon = "form"
-    model = RecordPage
+    model = Record
     page_title = "Choose a record"
     per_page = 10
 

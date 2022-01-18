@@ -6,11 +6,11 @@ from django.urls import reverse
 from wagtail.core.models import Site
 
 from ..ciim.models import MediaManager, SearchManager
-from .transforms import transform_image_result, transform_record_page_result
+from .transforms import transform_image_result, transform_record_result
 
 
 @dataclass
-class RecordPage:
+class Record:
     """Non-creatable page used to render record data in templates.
 
     This stub page allows us to use common templates to render external record
@@ -57,7 +57,7 @@ class RecordPage:
         return f"{self.title} ({self.iaid})"
 
 
-"""Assign a search manager to the RecordPage
+"""Assign a search manager to Record
 
 SearchManager exposes a similar interface to Django's model.Manager but
 results are fetched from the Kong API instead of from a DB
@@ -65,8 +65,8 @@ results are fetched from the Kong API instead of from a DB
 Transform function is used to transform a raw Elasticsearch response into a
 dictionary to pass to the Model's __init__.
 """
-RecordPage.search = SearchManager(RecordPage)
-RecordPage.transform = transform_record_page_result
+Record.search = SearchManager(Record)
+Record.transform = transform_record_result
 
 
 @dataclass

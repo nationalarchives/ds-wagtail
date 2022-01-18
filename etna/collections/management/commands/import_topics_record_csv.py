@@ -15,7 +15,7 @@ import requests
 
 from ...models import (
     ResultsPage,
-    ResultsPageRecordPage,
+    ResultsPageRecord,
     TopicExplorerIndexPage,
     TopicExplorerPage,
 )
@@ -104,7 +104,7 @@ class Command(BaseCommand):
 
             try:
                 results_page_record = results_page.records.get(record_iaid=row["iaid"])
-            except ResultsPageRecordPage.DoesNotExist:
+            except ResultsPageRecord.DoesNotExist:
                 results_page_record = results_page.records.create(
                     record_iaid=row["iaid"], page=results_page
                 )

@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import Http404, render
 
 from ...ciim.exceptions import DoesNotExist, InvalidQuery
-from ..models import Image, RecordPage
+from ..models import Image, Record
 
 
 def record_page_disambiguation_view(request, reference_number):
@@ -19,7 +19,7 @@ def record_page_disambiguation_view(request, reference_number):
 
     https://discovery.nationalarchives.gov.uk/browse/r/h/C4122893
     """
-    pages = RecordPage.search.filter(ref=reference_number, pretty=True)
+    pages = Record.search.filter(ref=reference_number, pretty=True)
 
     if len(pages) == 0:
         raise Http404
@@ -51,7 +51,7 @@ def record_page_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        page = RecordPage.search.get(iaid, expand=True)
+        page = Record.search.get(iaid, expand=True)
     except DoesNotExist:
         raise Http404
 
