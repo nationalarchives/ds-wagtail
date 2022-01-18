@@ -97,7 +97,7 @@ def image_browse_datalayer(context) -> dict:
 
 
 @register.simple_tag(takes_context=True)
-def record_page_datalayer(context) -> dict:
+def record_datalayer(context) -> dict:
     """Custom tag for image browse datalayer.
 
     Image browse isn't a page served by Wagtail, therefore we're unable to

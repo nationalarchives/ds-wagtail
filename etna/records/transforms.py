@@ -1,8 +1,8 @@
 from ..ciim.utils import find_all, format_description_markup, pluck
 
 
-def transform_record_page_result(result):
-    """Fetch data from an Elasticsearch response to pass to RecordPage.__init__"""
+def transform_record_result(result):
+    """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
 

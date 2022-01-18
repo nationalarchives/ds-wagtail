@@ -7,7 +7,7 @@ from django.test import TestCase, override_settings
 
 import responses
 
-from ...records.models import RecordPage
+from ...records.models import Record
 from ..exceptions import (
     DoesNotExist,
     KongException,
@@ -21,7 +21,7 @@ from .factories import create_record, create_response, paginate_records_callback
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class ManagerExceptionTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = SearchManager("records.Record")
 
     @responses.activate
     def test_raises_does_not_exist(self):
@@ -49,7 +49,7 @@ class ManagerExceptionTest(TestCase):
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
-        self.manager = RecordPage.search
+        self.manager = Record.search
 
     @responses.activate
     def test_hits_returns_list(self):
@@ -64,8 +64,8 @@ class SearchManagerFilterTest(TestCase):
         results = self.manager.filter(reference_number="ADM 223/3")
 
         self.assertEqual(len(results), 2)
-        self.assertTrue(isinstance(results[0], RecordPage))
-        self.assertTrue(isinstance(results[1], RecordPage))
+        self.assertTrue(isinstance(results[0], Record))
+        self.assertTrue(isinstance(results[1], Record))
         self.assertEqual(results[0].iaid, "C4122893")
         self.assertEqual(results[1].iaid, "C4122894")
 
@@ -100,8 +100,8 @@ class SearchManagerFilterTest(TestCase):
         results = [r for r in self.manager.filter(reference_number="ADM 223/3")]
 
         self.assertEqual(len(results), 2)
-        self.assertTrue(isinstance(results[0], RecordPage))
-        self.assertTrue(isinstance(results[1], RecordPage))
+        self.assertTrue(isinstance(results[0], Record))
+        self.assertTrue(isinstance(results[1], Record))
         self.assertEqual(results[0].iaid, "C4122893")
         self.assertEqual(results[1].iaid, "C4122894")
 
@@ -111,7 +111,7 @@ class SearchManagerFilterTest(TestCase):
 )
 class SearchManagerKongCount(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = SearchManager("records.Record")
 
         responses.add(
             responses.GET,
@@ -132,7 +132,7 @@ class SearchManagerKongCount(TestCase):
 )
 class SearchManagerKongClientIntegrationTest(TestCase):
     def setUp(self):
-        self.manager = RecordPage.search
+        self.manager = Record.search
 
         records = [create_record() for r in range(0, 15)]
 
@@ -280,7 +280,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 )
 class KongExceptionTest(TestCase):
     def setUp(self):
-        self.manager = SearchManager("records.RecordPage")
+        self.manager = SearchManager("records.Record")
 
     @responses.activate
     def test_raises_invalid_iaid_match(self):
@@ -312,28 +312,28 @@ class ModelTranslationTest(TestCase):
                 json=json.loads(f.read()),
             )
 
-        manager = RecordPage.search
+        manager = Record.search
 
-        cls.record_page = manager.get(iaid="C10297")
+        cls.record = manager.get(iaid="C10297")
 
     def test_instance(self):
-        self.assertTrue(isinstance(self.record_page, RecordPage))
+        self.assertTrue(isinstance(self.record, Record))
 
     def test_iaid(self):
-        self.assertEqual(self.record_page.iaid, "C10297")
+        self.assertEqual(self.record.iaid, "C10297")
 
     def test_title(self):
         self.assertEqual(
-            self.record_page.title,
+            self.record.title,
             "Law Officers' Department: Registered Files",
         )
 
     def test_reference_number(self):
-        self.assertEqual(self.record_page.reference_number, "LO 2")
+        self.assertEqual(self.record.reference_number, "LO 2")
 
     def test_description(self):
         self.assertEqual(
-            self.record_page.description,
+            self.record.description,
             (
                 '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">'
                 "This series contains papers concering a wide variety of legal matters referred to the "
@@ -345,17 +345,17 @@ class ModelTranslationTest(TestCase):
         )
 
     def test_origination_date(self):
-        self.assertEqual(self.record_page.origination_date, "1885-1979")
+        self.assertEqual(self.record.origination_date, "1885-1979")
 
     def test_legal_status(self):
-        self.assertEqual(self.record_page.legal_status, "Public Record(s)")
+        self.assertEqual(self.record.legal_status, "Public Record(s)")
 
     def test_held_by(self):
-        self.assertEqual(self.record_page.held_by, "The National Archives, Kew")
+        self.assertEqual(self.record.held_by, "The National Archives, Kew")
 
     def test_parent(self):
         self.assertEqual(
-            self.record_page.parent,
+            self.record.parent,
             {
                 "iaid": "C199",
                 "reference_number": "HO 42",
@@ -365,7 +365,7 @@ class ModelTranslationTest(TestCase):
 
     def test_hierarchy(self):
         self.assertEqual(
-            self.record_page.hierarchy,
+            self.record.hierarchy,
             [
                 {
                     "reference_number": "FCO 13",
@@ -379,28 +379,28 @@ class ModelTranslationTest(TestCase):
         )
 
     def test_is_digitised(self):
-        self.assertEqual(self.record_page.is_digitised, True)
+        self.assertEqual(self.record.is_digitised, True)
 
     def test_availability_access_display_label(self):
         self.assertEqual(
-            self.record_page.availability_access_display_label,
+            self.record.availability_access_display_label,
             'NO "Access conditions" STATED',
         )
 
     def test_availability_access_closure_label(self):
         self.assertEqual(
-            self.record_page.availability_access_closure_label,
+            self.record.availability_access_closure_label,
             "Open Document, Open Description",
         )
 
     def test_availability_delivery_condition(self):
         self.assertEqual(
-            self.record_page.availability_delivery_condition, "DigitizedDiscovery"
+            self.record.availability_delivery_condition, "DigitizedDiscovery"
         )
 
     def test_availability_delivery_surrogates(self):
         self.assertEqual(
-            self.record_page.availability_delivery_surrogates,
+            self.record.availability_delivery_surrogates,
             [
                 {
                     "type": "surrogate",
@@ -423,7 +423,7 @@ class ModelTranslationTest(TestCase):
 
     def test_topics(self):
         self.assertEqual(
-            self.record_page.topics,
+            self.record.topics,
             [
                 {
                     "title": "Taxonomy One",
@@ -439,7 +439,7 @@ class ModelTranslationTest(TestCase):
 
     def test_next_record(self):
         self.assertEqual(
-            self.record_page.next_record,
+            self.record.next_record,
             {
                 "iaid": "C441750",
             },
@@ -447,7 +447,7 @@ class ModelTranslationTest(TestCase):
 
     def test_previous_record(self):
         self.assertEqual(
-            self.record_page.previous_record,
+            self.record.previous_record,
             {
                 "iaid": "C441748",
             },
@@ -455,7 +455,7 @@ class ModelTranslationTest(TestCase):
 
     def test_related_records(self):
         self.assertEqual(
-            self.record_page.related_records,
+            self.record.related_records,
             [
                 {
                     "iaid": "C8981250",
@@ -467,7 +467,7 @@ class ModelTranslationTest(TestCase):
 
     def test_related_articles(self):
         self.assertEqual(
-            self.record_page.related_articles,
+            self.record.related_articles,
             [
                 {
                     "title": "Irish maps c.1558-c.1610",
@@ -509,9 +509,9 @@ class UnexpectedParsingIssueTest(TestCase):
             ),
         )
 
-        record_page = RecordPage.search.get(iaid="C123456")
+        record = Record.search.get(iaid="C123456")
 
-        self.assertEqual(record_page.hierarchy, [])
+        self.assertEqual(record.hierarchy, [])
 
     @responses.activate
     def test_record_with_origination_but_no_date(self):
@@ -526,9 +526,9 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record_page = RecordPage.search.get(iaid="C123456")
+        record = Record.search.get(iaid="C123456")
 
-        self.assertEqual(record_page.origination_date, None)
+        self.assertEqual(record.origination_date, None)
 
     @responses.activate
     def test_related_record_with_no_identifier(self):
@@ -560,13 +560,13 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record_page = RecordPage.search.get(iaid="C123456")
+        record = Record.search.get(iaid="C123456")
 
         # Related records with no 'Aidentifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
         # page using the iaid, these records should be present
         self.assertEqual(
-            record_page.related_records,
+            record.related_records,
             [
                 {
                     "iaid": "C568",
@@ -604,6 +604,6 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record_page = RecordPage.search.get(iaid="C123456")
+        record = Record.search.get(iaid="C123456")
 
-        self.assertEqual(record_page.related_articles, [])
+        self.assertEqual(record.related_articles, [])

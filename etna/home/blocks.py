@@ -16,7 +16,7 @@ class FeaturedExternalPageBlock(blocks.StructBlock):
 
     class Meta:
         template = "home/blocks/featured_external_page.html"
-        help_text = "Block used to feature a page external to Wagtail or a RecordPage"
+        help_text = "Block used to feature a page external to Wagtail or a Record"
         icon = "star"
 
 

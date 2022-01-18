@@ -16,7 +16,7 @@ User = get_user_model()
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class TestRecordPageDisambiguationView(TestCase):
+class TestRecordDisambiguationView(TestCase):
     def setUp(self):
         private_beta_user = User(
             username="private-beta@email.com", email="private-beta@email.com"
@@ -96,7 +96,7 @@ class TestRecordPageDisambiguationView(TestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class TestRecordPageView(TestCase):
+class TestRecordView(TestCase):
     def setUp(self):
         private_beta_user = User(
             username="private-beta@email.com", email="private-beta@email.com"
@@ -123,7 +123,7 @@ class TestRecordPageView(TestCase):
         )
 
     @responses.activate
-    def test_record_page_rendered_for_single_result(self):
+    def test_record_rendered_for_single_result(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -143,7 +143,7 @@ class TestRecordPageView(TestCase):
         self.assertTemplateUsed(response, "records/record_page.html")
 
     @responses.activate
-    def test_record_page_renders_for_record_with_no_image(self):
+    def test_record_renders_for_record_with_no_image(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -170,7 +170,7 @@ class TestRecordPageView(TestCase):
         self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
 
     @responses.activate
-    def test_record_page_renders_for_record_with_image(self):
+    def test_record_renders_for_record_with_image(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",

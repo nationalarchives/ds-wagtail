@@ -4,7 +4,7 @@
 {% load datalayer_tags %}
 
 {% block extra_gtm_js %}
-    {% record_page_datalayer as datalayer %}
+    {% record_datalayer as datalayer %}
     {{ datalayer | json_script:"datalayer" }}
     <script>
         window.dataLayer = window.dataLayer || [];

@@ -212,7 +212,7 @@ class TestCollectionsPages(UserAccessTestCase, TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 @ddt
-class TestRecordPageRoutes(UserAccessTestCase, TestCase):
+class TestRecordRoutes(UserAccessTestCase, TestCase):
     """Ensure that the record pages are accessible to the appropriate users.
 
     Unlike similar tests for CMSable pages, these test can assure us that
