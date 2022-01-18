@@ -16,7 +16,7 @@ class Record:
     This stub page allows us to use common templates to render external record
     data as though the data was fetched from the CMS.
 
-    see: views.record_page_view
+    see: views.record_detail_view
     """
 
     iaid: str
