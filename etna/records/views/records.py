@@ -5,7 +5,7 @@ from ...ciim.exceptions import DoesNotExist, InvalidQuery
 from ..models import Image, Record
 
 
-def record_page_disambiguation_view(request, reference_number):
+def record_disambiguation_view(request, reference_number):
     """View to render a record's details page or disambiguation page if multiple records are found.
 
     Details pages differ from all other page types within Etna in that their
@@ -27,7 +27,7 @@ def record_page_disambiguation_view(request, reference_number):
     # if the results contain a single record page, redirect to the details page.
     if len(pages) == 1:
         page = pages[0]
-        return record_page_view(request, page.iaid)
+        return record_detail_view(request, page.iaid)
 
     page_number = request.GET.get("page", 1)
     paginator = Paginator(pages, 20)
@@ -43,7 +43,7 @@ def record_page_disambiguation_view(request, reference_number):
     )
 
 
-def record_page_view(request, iaid):
+def record_detail_view(request, iaid):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -65,7 +65,7 @@ def record_page_view(request, iaid):
 
     return render(
         request,
-        "records/record_page.html",
+        "records/record_detail.html",
         {
             "page": page,
             "image": image,
