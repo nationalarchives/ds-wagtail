@@ -90,7 +90,7 @@ class TestRecordDisambiguationView(TestCase):
         self.assertEquals(
             response.resolver_match.view_name, "details-page-human-readable"
         )
-        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateUsed(response, "records/record_detail.html")
 
 
 @override_settings(
@@ -140,7 +140,7 @@ class TestRecordView(TestCase):
         self.assertEquals(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
-        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateUsed(response, "records/record_detail.html")
 
     @responses.activate
     def test_record_renders_for_record_with_no_image(self):
@@ -166,7 +166,7 @@ class TestRecordView(TestCase):
         self.assertEquals(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
-        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
 
     @responses.activate
@@ -201,7 +201,7 @@ class TestRecordView(TestCase):
         response = self.client.get("/catalogue/C123456/")
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, "records/record_page.html")
+        self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
 

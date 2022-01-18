@@ -257,7 +257,7 @@ class TestRecordRoutes(UserAccessTestCase, TestCase):
                 records=[
                     # Return multiple records to prevent an additional
                     # call /data/fetch due to deferring the rendering to
-                    # record_page_view
+                    # record_detail_view
                     create_record(reference_number="test 1/2/3"),
                     create_record(reference_number="test 1/2/3"),
                 ]

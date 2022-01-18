@@ -32,12 +32,12 @@ private_urls = [
 public_urls = [
     path(
         r"catalogue/<iaid:iaid>/",
-        login_required(records_views.record_page_view),
+        login_required(records_views.record_detail_view),
         name="details-page-machine-readable",
     ),
     path(
         r"catalogue/<reference_number:reference_number>/",
-        login_required(records_views.record_page_disambiguation_view),
+        login_required(records_views.record_disambiguation_view),
         name="details-page-human-readable",
     ),
 
