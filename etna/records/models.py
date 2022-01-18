@@ -3,8 +3,6 @@ from dataclasses import dataclass, field
 from django.conf import settings
 from django.urls import reverse
 
-from wagtail.core.models import Site
-
 from ..ciim.models import MediaManager, SearchManager
 from .transforms import transform_image_result, transform_record_result
 
@@ -45,13 +43,6 @@ class Record:
     related_articles: dict = field(default_factory=dict)
 
     _debug_kong_result: dict = field(default_factory=dict)
-
-    def get_site(self):
-        """Override to return the Site instance despite this page not belonging to the CMS.
-
-        Site is used by base.html to add the site name to the page's <title>
-        """
-        return Site.objects.first()
 
     def __str__(self):
         return f"{self.title} ({self.iaid})"
