@@ -21,11 +21,10 @@ class RecordChooserBlock(ChooserBlock):
 
     @cached_property
     def field(self):
-        """Return the associated field to pick a RecordPage.
+        """Return the associated field to pick a Record.
 
-        ChooserBlock.field returns a ModelChoiceField. RecordPage data is
-        held externally and populated via an API call to Kong and not the
-        database.
+        ChooserBlock.field returns a ModelChoiceField. Record data is held
+        externally and populated via an API call to Kong and not the database.
         """
         return forms.ChoiceField(
             choices=[],
@@ -40,9 +39,9 @@ class RecordChooserBlock(ChooserBlock):
         """Defines the model used by the ChooserBlock for ID <-> instance
         conversions.
         """
-        from .models import RecordPage
+        from .models import Record
 
-        return RecordPage
+        return Record
 
     @cached_property
     def widget(self):
@@ -52,7 +51,7 @@ class RecordChooserBlock(ChooserBlock):
         return RecordChooser()
 
     def get_prep_value(self, value):
-        """Convert RecordPage to IAID for persistance"""
+        """Convert Record to IAID for persistance"""
         return value.iaid
 
     def bulk_to_python(self, values):
@@ -77,7 +76,7 @@ class RecordChooserBlock(ChooserBlock):
         return value
 
     def value_from_form(self, value):
-        """Convert the stored IAID into a RecordPage"""
+        """Convert the stored IAID into a Record"""
 
         if not value:
             # if there's no value in the form, return None, the error will be
@@ -87,7 +86,7 @@ class RecordChooserBlock(ChooserBlock):
         try:
             return self.target_model.search.get(iaid=value)
         except KongError:
-            # If there's a connection issue with Kong, return a stub RecordPage
+            # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return self.target_model(iaid=value)
 

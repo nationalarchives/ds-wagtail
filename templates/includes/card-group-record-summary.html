@@ -2,14 +2,14 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record_page.title }}">
+        <a href="{% url 'details-page-machine-readable' iaid=record.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}">
             <p class="card-group-record-summary__heading">
-                {% if record_page.reference_number %}
+                {% if record.reference_number %}
                 <span class="sr-only">
-                    {{ record_page.reference_number }} - 
+                    {{ record.reference_number }} -
                 </span>
                 {% endif %}
-                {{ record_page.title }}
+                {{ record.title }}
             </p>
         </a>
         {% if teaser_image %}
@@ -18,7 +18,7 @@
             {% image teaser_image fill-348x352 as teaser_image_large %}
             {% image teaser_image fill-543x549 as teaser_image_extra_large %}
 
-            <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record_page.title }}" aria-hidden="true" tabindex="-1">
+            <a href="{% url 'details-page-machine-readable' iaid=record.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}" aria-hidden="true" tabindex="-1">
                 <div class="card-group-record-summary__image">
                     <picture>
                         <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
@@ -30,6 +30,6 @@
                 </div>
             </a>
         {% endif %}
-        <p class="card-group-record-summary__body">{{ description_override|default:record_page.description|safe }}</p>
+        <p class="card-group-record-summary__body">{{ description_override|default:record.description|safe }}</p>
     </div>
 </li>
