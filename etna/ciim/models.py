@@ -95,6 +95,7 @@ class Query(ABC):
         return KongClient(
             settings.KONG_CLIENT_BASE_URL,
             api_key=settings.KONG_CLIENT_KEY,
+            verify_certificates=settings.KONG_CLIENT_VERIFY_CERTIFICATES,
         )
 
 

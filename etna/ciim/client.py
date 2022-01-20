@@ -8,10 +8,11 @@ logger = logging.getLogger(__name__)
 
 
 class KongClient:
-    def __init__(self, base_url, api_key):
+    def __init__(self, base_url, api_key, verify_certificates=True):
         self.base_url = base_url
         self.session = requests.Session()
         self.session.headers.update({"apikey": api_key})
+        self.session.verify = verify_certificates
 
     def fetch(self, **kwargs):
         kwargs["ref"] = kwargs.pop("reference_number", None)
