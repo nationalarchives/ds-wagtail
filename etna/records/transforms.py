@@ -62,13 +62,6 @@ def transform_record_result(result):
         ]
 
     if availability := source.get("availability"):
-        if access := availability.get("access"):
-            data["availability_access_display_label"] = access["display"]["label"][
-                "value"
-            ]
-            data["availability_access_closure_label"] = pluck(
-                access["closure"], accessor=lambda i: i["display"]["label"]["value"]
-            )
         if delivery := availability.get("delivery"):
             data["availability_delivery_condition"] = delivery["condition"]["value"]
             data["availability_delivery_surrogates"] = delivery.get("surrogate")

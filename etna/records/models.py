@@ -26,8 +26,6 @@ class Record:
     description: str = ""
     origination_date: str = ""
     closure_status: str = ""
-    availability_access_display_label: str = ""
-    availability_access_closure_label: str = ""
     availability_delivery_condition: str = ""
     arrangement: str = ""
     held_by: str = ""

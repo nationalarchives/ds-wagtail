@@ -381,18 +381,6 @@ class ModelTranslationTest(TestCase):
     def test_is_digitised(self):
         self.assertEqual(self.record.is_digitised, True)
 
-    def test_availability_access_display_label(self):
-        self.assertEqual(
-            self.record.availability_access_display_label,
-            'NO "Access conditions" STATED',
-        )
-
-    def test_availability_access_closure_label(self):
-        self.assertEqual(
-            self.record.availability_access_closure_label,
-            "Open Document, Open Description",
-        )
-
     def test_availability_delivery_condition(self):
         self.assertEqual(
             self.record.availability_delivery_condition, "DigitizedDiscovery"
