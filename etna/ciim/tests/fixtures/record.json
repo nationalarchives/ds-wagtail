@@ -353,7 +353,7 @@
           "source" : {
             "value" : "CAT"
           },
-          "@summary" : {
+          "summary" : {
             "title" : "Law Officers' Department: Registered Files"
           },
           "title" : [

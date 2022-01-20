@@ -8,7 +8,7 @@ def transform_record_result(result):
 
     source = result["_source"]
     identifier = source.get("identifier")
-    summary = source.get("@summary")
+    summary = source.get("summary")
 
     data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = pluck(
