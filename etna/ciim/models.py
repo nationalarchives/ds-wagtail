@@ -67,25 +67,6 @@ class ResultSet:
             self.results[index] = result
 
 
-class SearchQueryIterator:
-    """Support iterating over a SearchQuery's results."""
-
-    def __init__(self, search_query):
-        self.search_query = search_query
-        self.index = 0
-
-    def __next__(self):
-
-        try:
-            result = self.search_query[self.index]
-        except IndexError:
-            raise StopIteration
-
-        self.index += 1
-
-        return result
-
-
 class Query(ABC):
     """Abstract base class to inherit from to create a Query"""
 
@@ -181,9 +162,6 @@ class SearchQuery(Query):
     def count(self):
         self._fetch(start=0, size=0)
         return self._response["hits"]["total"]["value"]
-
-    def __iter__(self):
-        return SearchQueryIterator(self)
 
     def first(self):
         """Return the first item in resultset without or None if nothing is found."""
