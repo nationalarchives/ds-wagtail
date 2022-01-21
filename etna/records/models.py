@@ -20,11 +20,11 @@ class Record:
     iaid: str
     title: str
     reference_number: str
-    legal_status: str
 
-    created_by: str = ''
-    description: str = ''
-    origination_date: str = ''
+    legal_status: str = ""
+    created_by: str = ""
+    description: str = ""
+    origination_date: str = ""
     closure_status: str = ""
     availability_access_display_label: str = ""
     availability_access_closure_label: str = ""
