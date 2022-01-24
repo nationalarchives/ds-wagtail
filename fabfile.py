@@ -22,8 +22,6 @@ PLATFORM_PROJECT_ID = "rasrzs7pi6sd4"
 PRODUCTION_APP_INSTANCE = "main"
 STAGING_APP_INSTANCE = "demo"
 
-LOCAL_MEDIA_DIR = "media"
-LOCAL_IMAGES_DIR = LOCAL_MEDIA_DIR + "/original_images"
 LOCAL_DB_DUMP_DIR = "database_dumps"
 
 # -----------------------------------------------------------------------------
@@ -31,27 +29,34 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 # -----------------------------------------------------------------------------
 
 
-def container_exec(cmd, container_name="web"):
-    return subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
+def container_exec(cmd, container_name="web", check_returncode=False):
+    result = subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
+    if check_returncode:
+        result.check_returncode()
+    return result
 
 
-def db_exec(cmd):
+def db_exec(cmd, check_returncode=False):
     "Execute something in the 'db' Docker container."
-    return container_exec(cmd, "db")
+    return container_exec(cmd, "db", check_returncode)
 
 
-def web_exec(cmd):
+def web_exec(cmd, check_returncode=False):
     "Execute something in the 'web' Docker container."
-    return container_exec(cmd, "web")
+    return container_exec(cmd, "web", check_returncode)
+
+
+def cli_exec(cmd, check_returncode=False):
+    return container_exec(cmd, "cli", check_returncode)
 
 
 @task
-def run_management_command(c, cmd):
+def run_management_command(c, cmd, check_returncode=False):
     """
     Run a Django management command in the 'web' Docker container
     with access to Django and other Python dependencies.
     """
-    return container_exec(f"poetry run ./manage.py {cmd}", "web")
+    return web_exec(f"poetry run python manage.py {cmd}", check_returncode)
 
 
 # -----------------------------------------------------------------------------
@@ -111,14 +116,15 @@ def test(c):
     """
     Run python tests in the web container
     """
-    subprocess.call(
+    subprocess.run(
         [
             "docker-compose",
             "exec",
             "web",
             "poetry",
             "run",
-            "./manage.py",
+            "python",
+            "manage.py",
             "test",
             "--parallel",
         ]
@@ -174,15 +180,28 @@ def dump_db(c, filename):
 
 
 @task
-def restore_db(c, filename):
+def restore_db(c, filename, delete_dump_after=False):
     """Restore the database from a snapshot in the db container"""
     print("Stopping 'web' to sever DB connection")
     stop(c, "web")
     if not filename.endswith(".psql"):
         filename += ".psql"
     delete_db(c)
-    db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}")
-    print(f"Database restored from: {filename}")
+
+    try:
+        restoration_error = None
+        print(f"Restoring datbase from: {filename}")
+        db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}", check_returncode=True)
+    except subprocess.CalledProcessError as e:
+        restoration_error = e
+
+    if delete_dump_after:
+        print(f"Deleting dump file: {filename}")
+        db_exec(f"rm {filename}")
+
+    if restoration_error is not None:
+        raise restoration_error
+
     start(c, "web")
 
 
@@ -200,13 +219,7 @@ def pull_production_data(c):
 @task
 def pull_production_media(c):
     """Pull all media from the production platform.sh env"""
-    pull_all_media_from_platform(c, PRODUCTION_APP_INSTANCE)
-
-
-@task
-def pull_production_images(c):
-    """Pull ONLY images from the production platform.sh env"""
-    pull_images_from_platform(c, PRODUCTION_APP_INSTANCE)
+    pull_media_from_platform(c, PRODUCTION_APP_INSTANCE)
 
 
 # -----------------------------------------------------------------------------
@@ -223,13 +236,7 @@ def pull_staging_data(c):
 @task
 def pull_staging_media(c):
     """Pull all media from the staging platform.sh env"""
-    pull_all_media_from_platform(c, STAGING_APP_INSTANCE)
-
-
-@task
-def pull_staging_images(c):
-    """Pull ONLY images from the staging platform.sh env"""
-    pull_images_from_platform(c, STAGING_APP_INSTANCE)
+    pull_media_from_platform(c, STAGING_APP_INSTANCE)
 
 
 # -----------------------------------------------------------------------------
@@ -237,38 +244,35 @@ def pull_staging_images(c):
 # -----------------------------------------------------------------------------
 
 
-def enable_platform_ssh(c):
-    known_hosts = os.path.expanduser("~/.ssh/known_hosts")
-    for hostname in ('ssh.uk-1.platform.sh', 'git.uk-1.platform.sh'):
-        # Remove existing keys for this hostname
-        local(f"ssh-keygen -q -R {hostname}")
-        # Add new ones
-        local(f"ssh-keyscan {hostname} >> {known_hosts}")
-
-
 def pull_database_from_platform(c, environment_name):
     timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
-    print("Stopping 'web' to sever DB connection")
-    stop(c, "web")
-
     print("Fetching data from platform.sh")
-    enable_platform_ssh(c)
-    local(
+    start(c, "cli")
+    cli_exec(
         f"platform db:dump -e {environment_name} -p {PLATFORM_PROJECT_ID} -f {timestamp}.psql -d {LOCAL_DB_DUMP_DIR}"
     )
 
     print("Replacing local database with downloaded version")
     start(c, "db")
-    delete_db(c)
-    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
-    local(f"rm {LOCAL_DB_DUMP_DIR}/{timestamp}.psql")
 
-    print("Applying migrations from local environment")
-    run_management_command(c, "migrate")
+    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_after=True)
 
-    print("Anonymising downloaded data")
-    run_management_command(c, "run_birdbath")
+    try:
+        print("Applying migrations from local environment...")
+        run_management_command(c, "migrate", check_returncode=True)
+    except subprocess.CalledProcessError:
+        print("Failed to apply migrations. Deleting database.")
+        delete_db(c)
+        raise
+
+    try:
+        print("Anonymising downloaded data...")
+        run_management_command(c, "run_birdbath", check_returncode=True)
+    except subprocess.CalledProcessError:
+        print("Failed to anonymise data. Deleting database.")
+        delete_db(c)
+        raise
 
     print("Database updated successfully")
     print(
@@ -278,39 +282,17 @@ def pull_database_from_platform(c, environment_name):
     )
 
 
-def pull_files_from_platform(c, environment_name, source, destination):
-    enable_platform_ssh(c)
-    return local(
-        "rsync -az --delete "
-        f'"$(platform ssh -e {environment_name} -p {PLATFORM_PROJECT_ID} --pipe)"'
-        f":{source}/ ./{destination}/"
-    )
-
-
-def pull_all_media_from_platform(
+def pull_media_from_platform(
     c,
     environment_name,
 ):
     """
     Copies the entire 'media' folder from a platform.sh environment
-    to a local one (including images, documents, videos, and audio)
+    to a local one (including original image, documents, videos, and audio),
+    but excluding thumnails generated by Wagtail.
     """
-    pull_files_from_platform(c, environment_name, "media", LOCAL_MEDIA_DIR)
-    delete_local_renditions(c)
-
-
-def pull_images_from_platform(
-    c,
-    environment_name,
-):
-    """
-    Copies only the 'media/original_images' folder from a platform.sh
-    environment to a local one.
-
-    To copy all media (including documents, videos and audio), use
-    `pull_all_media_from_platform()`
-    """
-    pull_files_from_platform(
-        c, environment_name, "media/original_images", LOCAL_IMAGES_DIR
+    cli_exec(
+        f"platform mount:download -e {environment_name} -p {PLATFORM_PROJECT_ID} -m media "
+        "--target=media --exclude='/images/*' --yes"
     )
     delete_local_renditions(c)

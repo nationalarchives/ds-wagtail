@@ -24,7 +24,7 @@ services:
     ports:
      - "5432:5432"
     volumes:
-     - .:/app:ro
+     - ./database_dumps:/app/database_dumps
   web:
     build: .
     volumes:
@@ -41,5 +41,12 @@ services:
     restart: on-failure
     stdin_open: true
     tty: true
+    env_file:
+      - .env
+  cli:
+    build: platformsh-cli
+    volumes:
+      - ./media:/app/media
+      - ./database_dumps:/app/database_dumps
     env_file:
       - .env
