@@ -19,7 +19,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?from=0&pretty=false",
+            "https://kong.test/data/search?from=0",
         )
 
     @responses.activate
@@ -29,27 +29,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?from=10&pretty=false",
-        )
-
-    @responses.activate
-    def test_pretty_parameter_conversion_true(self):
-        self.client.search(pretty=True)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?from=0&pretty=true",
-        )
-
-    @responses.activate
-    def test_pretty_parameter_conversion_false(self):
-        self.client.search(pretty=False)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?from=0&pretty=false",
+            "https://kong.test/data/search?from=10",
         )
 
     @responses.activate
@@ -59,7 +39,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0",
         )
 
     @responses.activate
@@ -69,7 +49,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=C10297&from=0&pretty=false",
+            "https://kong.test/data/search?term=C10297&from=0",
         )
 
     @responses.activate
@@ -79,7 +59,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=Egypt&from=0&pretty=false",
+            "https://kong.test/data/search?term=Egypt&from=0",
         )
 
 
@@ -97,7 +77,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
+            "https://kong.test/data/fetch?from=0&expand=false",
         )
 
     @responses.activate
@@ -107,27 +87,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?ref=PROD+1%2F4&from=0&pretty=false&expand=false",
-        )
-
-    @responses.activate
-    def test_pretty_parameter_conversion_true(self):
-        self.client.fetch(pretty=True)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/fetch?from=0&pretty=true&expand=false",
-        )
-
-    @responses.activate
-    def test_pretty_parameter_conversion_false(self):
-        self.client.fetch(pretty=False)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
+            "https://kong.test/data/fetch?ref=PROD+1%2F4&from=0&expand=false",
         )
 
     @responses.activate
@@ -137,7 +97,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?from=0&pretty=false&expand=true",
+            "https://kong.test/data/fetch?from=0&expand=true",
         )
 
     @responses.activate
@@ -147,7 +107,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?from=0&pretty=false&expand=false",
+            "https://kong.test/data/fetch?from=0&expand=false",
         )
 
     @responses.activate
@@ -157,7 +117,7 @@ class ClientFetchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C198022&from=0&pretty=false&expand=false",
+            "https://kong.test/data/fetch?iaid=C198022&from=0&expand=false",
         )
 
 

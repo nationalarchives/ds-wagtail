@@ -17,7 +17,6 @@ class KongClient:
     def fetch(self, **kwargs):
         kwargs["ref"] = kwargs.pop("reference_number", None)
         kwargs["from"] = kwargs.pop("start", 0)
-        kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
         kwargs["expand"] = "true" if kwargs.pop("expand", False) else "false"
 
         try:
@@ -54,7 +53,6 @@ class KongClient:
 
         # In Python 'from' cannot be a kwargs. Map 'start' to 'from' before making request
         kwargs["from"] = kwargs.pop("start", 0)
-        kwargs["pretty"] = "true" if kwargs.pop("pretty", False) else "false"
 
         try:
             response = self.session.get(

@@ -151,7 +151,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=10&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=10",
         )
 
     @responses.activate
@@ -161,7 +161,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1",
         )
 
     @responses.activate
@@ -171,7 +171,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=1",
         )
 
     @responses.activate
@@ -181,7 +181,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=5",
         )
 
     @responses.activate
@@ -191,7 +191,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=5&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=5&size=5",
         )
 
     @responses.activate
@@ -201,7 +201,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=10&size=5&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=10&size=5",
         )
 
     @responses.activate
@@ -234,7 +234,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0",
         )
 
     @responses.activate
@@ -244,7 +244,7 @@ class SearchManagerKongClientIntegrationTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0&pretty=false",
+            "https://kong.test/data/search?term=ADM+223%2F3&from=0&size=0",
         )
 
     @responses.activate
