@@ -186,11 +186,21 @@ def restore_db(c, filename, delete_dump_after=False):
     if not filename.endswith(".psql"):
         filename += ".psql"
     delete_db(c)
-    db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}")
-    print(f"Database restored from: {filename}")
+
+    try:
+        restoration_error = None
+        print(f"Restoring datbase from: {filename}")
+        db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}", check_returncode=True)
+    except subprocess.CalledProcessError as e:
+        restoration_error = e
+
     if delete_dump_after:
-        print("Deleting dump file: {filename}")
+        print(f"Deleting dump file: {filename}")
         db_exec(f"rm {filename}")
+
+    if restoration_error is not None:
+        raise restoration_error
+
     start(c, "web")
 
 
@@ -242,19 +252,26 @@ def pull_database_from_platform(c, environment_name):
         f"platform db:dump -e {environment_name} -p {PLATFORM_PROJECT_ID} -f {timestamp}.psql -d {LOCAL_DB_DUMP_DIR}"
     )
 
-    print("Stopping 'web' to sever DB connection")
-    stop(c, "web")
-
     print("Replacing local database with downloaded version")
     start(c, "db")
-    delete_db(c)
+
     restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_after=True)
 
-    print("Applying migrations from local environment")
-    run_management_command(c, "migrate")
+    try:
+        print("Applying migrations from local environment...")
+        run_management_command(c, "migrate", check_returncode=True)
+    except subprocess.CalledProcessError:
+        print("Failed to apply migrations. Deleting database.")
+        delete_db(c)
+        raise
 
-    print("Anonymising downloaded data")
-    run_management_command(c, "run_birdbath")
+    try:
+        print("Anonymising downloaded data...")
+        run_management_command(c, "run_birdbath", check_returncode=True)
+    except subprocess.CalledProcessError:
+        print("Failed to anonymise data. Deleting database.")
+        delete_db(c)
+        raise
 
     print("Database updated successfully")
     print(
