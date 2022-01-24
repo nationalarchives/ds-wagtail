@@ -180,7 +180,7 @@ def dump_db(c, filename):
 
 
 @task
-def restore_db(c, filename, delete_dump_after=False):
+def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=False):
     """Restore the database from a snapshot in the db container"""
     print("Stopping 'web' to sever DB connection")
     stop(c, "web")
@@ -189,18 +189,16 @@ def restore_db(c, filename, delete_dump_after=False):
     delete_db(c)
 
     try:
-        restoration_error = None
         print(f"Restoring datbase from: {filename}")
         db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}", check_returncode=True)
-    except subprocess.CalledProcessError as e:
-        restoration_error = e
+    except subprocess.CalledProcessError:
+        if delete_dump_on_error:
+            db_exec(f"rm {filename}")
+        raise
 
-    if delete_dump_after:
+    if delete_dump_on_success:
         print(f"Deleting dump file: {filename}")
         db_exec(f"rm {filename}")
-
-    if restoration_error is not None:
-        raise restoration_error
 
     start(c, "web")
 
@@ -256,7 +254,7 @@ def pull_database_from_platform(c, environment_name):
     print("Replacing local database with downloaded version")
     start(c, "db")
 
-    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_after=True)
+    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_on_success=True, delete_dump_on_error=True)
 
     try:
         print("Applying migrations from local environment...")
