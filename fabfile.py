@@ -29,31 +29,34 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 # -----------------------------------------------------------------------------
 
 
-def container_exec(cmd, container_name="web"):
-    return subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
+def container_exec(cmd, container_name="web", check_returncode=False):
+    result = subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
+    if check_returncode:
+        result.check_returncode()
+    return result
 
 
-def db_exec(cmd):
+def db_exec(cmd, check_returncode=False):
     "Execute something in the 'db' Docker container."
-    return container_exec(cmd, "db")
+    return container_exec(cmd, "db", check_returncode)
 
 
-def web_exec(cmd):
+def web_exec(cmd, check_returncode=False):
     "Execute something in the 'web' Docker container."
-    return container_exec(cmd, "web")
+    return container_exec(cmd, "web", check_returncode)
 
 
-def cli_exec(cmd):
-    return container_exec(cmd, "cli")
+def cli_exec(cmd, check_returncode=False):
+    return container_exec(cmd, "cli", check_returncode)
 
 
 @task
-def run_management_command(c, cmd):
+def run_management_command(c, cmd, check_returncode=False):
     """
     Run a Django management command in the 'web' Docker container
     with access to Django and other Python dependencies.
     """
-    return container_exec(f"poetry run ./manage.py {cmd}", "web")
+    return web_exec(f"poetry run python manage.py {cmd}", check_returncode)
 
 
 # -----------------------------------------------------------------------------
