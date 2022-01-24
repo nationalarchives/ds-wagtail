@@ -116,14 +116,15 @@ def test(c):
     """
     Run python tests in the web container
     """
-    subprocess.call(
+    subprocess.run(
         [
             "docker-compose",
             "exec",
             "web",
             "poetry",
             "run",
-            "./manage.py",
+            "python",
+            "manage.py",
             "test",
             "--parallel",
         ]
