@@ -77,9 +77,7 @@ class RecordChooserViewSet(ChooserViewSet):
 
     def get_chosen_view_attrs(self):
         attrs = super().get_chosen_view_attrs()
-        if hasattr(self, "model"):
-            attrs["model"] = self.model
-
+        attrs.update(model=self.model)
         return attrs
 
     def get_urlpatterns(self):
