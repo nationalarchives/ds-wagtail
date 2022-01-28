@@ -20,7 +20,7 @@ class SearchManager:
 
     def filter(self, **kwargs):
         # Check we're making a meaningful query before contacting Kong
-        if any({k: v for k, v in kwargs.items() if v is None}):
+        if any({k: v for k, v in kwargs.items() if not v}):
             raise InvalidQuery("Query to Kong must at least one clause")
 
         return SearchQuery(self.model, kwargs)
@@ -152,7 +152,7 @@ class SearchQuery(Query):
             return self.model(**transformed_result)
 
         self._fetch(start=key.start, size=count)
-        translated_results = [self.model.transform(r) for r in self._results[key]]
+        translated_results = [self.model.transform(r) for r in self._results[key] if r is not None]
         return [self.model(**r) for r in translated_results]
 
     def __len__(self):
