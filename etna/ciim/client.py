@@ -46,10 +46,10 @@ class KongClient:
         if term := (
             kwargs.pop("iaid", None)
             or kwargs.pop("reference_number", None)
-            or kwargs.pop("term", None)
+            or kwargs.pop("keyword", None)
             or ""
         ):
-            kwargs["term"] = term
+            kwargs["keyword"] = term
 
         # In Python 'from' cannot be a kwargs. Map 'start' to 'from' before making request
         kwargs["from"] = kwargs.pop("start", 0)
