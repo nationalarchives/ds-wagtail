@@ -19,7 +19,7 @@ def record_disambiguation_view(request, reference_number):
 
     https://discovery.nationalarchives.gov.uk/browse/r/h/C4122893
     """
-    pages = Record.search.filter(ref=reference_number)
+    pages = Record.search.filter(id=reference_number)
 
     if len(pages) == 0:
         raise Http404
