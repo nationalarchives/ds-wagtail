@@ -37,10 +37,9 @@ services:
     # Closely match prod server
     # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
     # Server for better debugging output
-    command: poetry run python manage.py runserver 0.0.0.0:8000
+    command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
     restart: on-failure
-    stdin_open: true
-    tty: true
+    init: true
     env_file:
       - .env
   cli:
