@@ -84,6 +84,12 @@ def start(c, container_name=None):
 
 
 @task
+def run(c):
+    start(c, "web")
+    return web_exec("python manage.py runserver 0.0.0.0:8000")
+
+
+@task
 def stop(c, container_name=None):
     """
     Stop the local development environment.
