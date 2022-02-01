@@ -16,9 +16,9 @@ class RecordChooser(AdminChooser):
             instance = value
             value = value.iaid
             return {
-                'value': value,
-                'title': self.get_title(instance),
-                'edit_item_url': self.get_edit_item_url(instance),
+                "value": value,
+                "title": self.get_title(instance),
+                "edit_item_url": self.get_edit_item_url(instance),
             }
         return super().get_value_data(value)
 

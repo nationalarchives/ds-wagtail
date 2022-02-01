@@ -23,4 +23,6 @@ def get_default_cache_control_kwargs():
 
 apply_default_cache_control = cache_control(**get_default_cache_control_kwargs())
 
-apply_default_vary_headers = vary_on_headers("Cookie", "X-Requested-With", "X-Forwarded-Proto", "Accept-Encoding")
+apply_default_vary_headers = vary_on_headers(
+    "Cookie", "X-Requested-With", "X-Forwarded-Proto", "Accept-Encoding"
+)

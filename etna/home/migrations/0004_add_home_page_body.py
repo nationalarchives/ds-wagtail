@@ -9,13 +9,24 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0003_add_alerts'),
+        ("home", "0003_add_alerts"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='homepage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('featured_items', wagtail.core.blocks.ListBlock(etna.home.blocks.FeaturedItemBlock))], blank=True, null=True),
+            model_name="homepage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "featured_items",
+                        wagtail.core.blocks.ListBlock(
+                            etna.home.blocks.FeaturedItemBlock
+                        ),
+                    )
+                ],
+                blank=True,
+                null=True,
+            ),
         ),
     ]

@@ -16,10 +16,11 @@ from ..sections.blocks import SectionBlock
 class FeaturedRecordBlock(blocks.StructBlock):
     record = RecordChooserBlock()
     image = ImageBlock(
-        label='Teaser image',
+        label="Teaser image",
         required=False,
         help_text="Add an image to be displayed with the selected record.",
-        template="insights/blocks/images/blog-embed__image-container.html")
+        template="insights/blocks/images/blog-embed__image-container.html",
+    )
 
     class Meta:
         icon = "archive"
@@ -27,7 +28,9 @@ class FeaturedRecordBlock(blocks.StructBlock):
 
 
 class FeaturedRecordsBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, required=True, label="Heading (heading level 3)")
+    heading = blocks.CharBlock(
+        max_length=100, required=True, label="Heading (heading level 3)"
+    )
     introduction = blocks.CharBlock(max_length=200, required=True)
     records = blocks.ListBlock(
         RecordChooserBlock,
@@ -39,35 +42,44 @@ class FeaturedRecordsBlock(blocks.StructBlock):
 
 
 class PromotedItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page", label="Title (heading level 3)")
-    category = SnippetChooserBlock("categories.Category")
-    publication_date = blocks.DateBlock(
-        required=False
+    title = blocks.CharBlock(
+        max_length=100,
+        help_text="Title of the promoted page",
+        label="Title (heading level 3)",
     )
+    category = SnippetChooserBlock("categories.Category")
+    publication_date = blocks.DateBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
         max_length=50,
         label="Duration/Read time",
-        help_text="Podcast or video duration. Or estimated read time of article."
+        help_text="Podcast or video duration. Or estimated read time of article.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
-    target_blank = blocks.BooleanBlock(label=format_html("%s <p style='font-size: 11px;'>%s</p>" % (
-        "Should this URL open in a new tab?",
-        "Tick the box if 'yes'"
-    )), required=False)
+    target_blank = blocks.BooleanBlock(
+        label=format_html(
+            "%s <p style='font-size: 11px;'>%s</p>"
+            % ("Should this URL open in a new tab?", "Tick the box if 'yes'")
+        ),
+        required=False,
+    )
     cta_label = blocks.CharBlock(
-        label="Call to action label", max_length=50,
-        help_text=format_html("%s <strong>%s</strong>'." % (
-            "The text displayed on the button for your URL. If your URL links to an external site, "
-            + "please add the name of the site users will land on, and what they will find on this page. "
-            + "For example 'Watch our short film ",
-            "about Shakespeare on YouTube"
-        ))
+        label="Call to action label",
+        max_length=50,
+        help_text=format_html(
+            "%s <strong>%s</strong>'."
+            % (
+                "The text displayed on the button for your URL. If your URL links to an external site, "
+                + "please add the name of the site users will land on, and what they will find on this page. "
+                + "For example 'Watch our short film ",
+                "about Shakespeare on YouTube",
+            )
+        ),
     )
     image = ImageBlock(
         label="Teaser image",
         help_text="An image used to create a teaser for the promoted page",
-        template="insights/blocks/images/blog-embed__image-container.html"
+        template="insights/blocks/images/blog-embed__image-container.html",
     )
     description = blocks.RichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
@@ -87,7 +99,10 @@ class PromotedListItemBlock(blocks.StructBlock):
     """
 
     title = blocks.CharBlock(
-        required=True, max_length=100, help_text="Title of the promoted page", label="Heading (heading level 4)"
+        required=True,
+        max_length=100,
+        help_text="Title of the promoted page",
+        label="Heading (heading level 4)",
     )
     description = blocks.RichTextBlock(
         required=False,
@@ -105,7 +120,9 @@ class PromotedListBlock(blocks.StructBlock):
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    heading = blocks.CharBlock(required=True, max_length=100, label="Heading (heading level 3)")
+    heading = blocks.CharBlock(
+        required=True, max_length=100, label="Heading (heading level 3)"
+    )
     category = SnippetChooserBlock("categories.Category")
     summary = blocks.RichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -119,7 +136,11 @@ class PromotedListBlock(blocks.StructBlock):
 
 
 class RelatedItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page", label="Heading (heading level 3)")
+    title = blocks.CharBlock(
+        max_length=100,
+        help_text="Title of the promoted page",
+        label="Heading (heading level 3)",
+    )
     description = blocks.TextBlock(
         help_text="A description of the promoted page",
     )
@@ -139,7 +160,9 @@ class RelatedItemsBlock(blocks.StructBlock):
     Items for promoted list block.
     """
 
-    heading = blocks.CharBlock(required=True, max_length=100, label="Heading (heading level 3)")
+    heading = blocks.CharBlock(
+        required=True, max_length=100, label="Heading (heading level 3)"
+    )
     description = blocks.CharBlock(required=True, max_length=100)
     related_items = blocks.ListBlock(RelatedItemBlock)
 

@@ -24,7 +24,7 @@ register_converter(converters.IAIDConverter, "iaid")
 private_urls = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
-    path('accounts/', include('allauth.urls')),
+    path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
 ]
 
@@ -40,7 +40,6 @@ public_urls = [
         login_required(records_views.record_page_disambiguation_view),
         name="details-page-human-readable",
     ),
-
     path(
         "records/image/<path:location>",
         records_views.image_serve,
@@ -80,7 +79,9 @@ private_urls = decorate_urlpatterns(private_urls, never_cache)
 
 # Join private and public URLs.
 urlpatterns = (
-    private_urls + public_urls + [
+    private_urls
+    + public_urls
+    + [
         # Wagtail URLs are added at the end.
         # cache-control is applied to the page models's serve methods
         path("", include(wagtail_urls)),

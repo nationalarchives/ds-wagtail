@@ -37,4 +37,6 @@ class IAIDConverter(StringConverter):
     https://beta.nationalarchives.gov.uk/C11285946/
     """
 
-    regex = r"(\w\d+)|([0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12})"
+    regex = (
+        r"(\w\d+)|([0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12})"
+    )

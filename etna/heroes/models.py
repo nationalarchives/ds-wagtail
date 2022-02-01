@@ -23,9 +23,9 @@ class HeroImageMixin(models.Model):
     hero_image_decorative = models.BooleanField(
         verbose_name="this image is purely decorative",
         help_text=mark_safe(
-            'Decorative images are used for visual effect and do not add information to the content of a page. '
+            "Decorative images are used for visual effect and do not add information to the content of a page. "
             '<a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">Check the guidance to '
-            'see if your image is decorative</a>.'
+            "see if your image is decorative</a>."
         ),
         default=False,
     )
@@ -34,11 +34,11 @@ class HeroImageMixin(models.Model):
         max_length=100,
         blank=True,
         help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive '
-            'technologies. Use a maximum of 100 characters to describe your image. Decorative images do not '
+            "Alternative (alt) text describes images when they fail to load, and is read aloud by assistive "
+            "technologies. Use a maximum of 100 characters to describe your image. Decorative images do not "
             'require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">'
-            'Check the guidance for tips on writing alt text</a>.'
-        )
+            "Check the guidance for tips on writing alt text</a>."
+        ),
     )
 
     hero_image_caption = RichTextField(
@@ -48,7 +48,7 @@ class HeroImageMixin(models.Model):
         help_text=(
             "An optional caption for non-decorative images, which will be displayed directly below the image. "
             "This could be used for image sources or for other useful metadata."
-        )
+        ),
     )
 
     class Meta:

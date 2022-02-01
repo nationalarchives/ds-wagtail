@@ -26,7 +26,9 @@ class SearchManager:
         return SearchQuery(self.model, kwargs)
 
     def get(self, iaid=None, reference_number=None, expand=None):
-        return FetchQuery(self.model).get(iaid=iaid, reference_number=reference_number, expand=expand)
+        return FetchQuery(self.model).get(
+            iaid=iaid, reference_number=reference_number, expand=expand
+        )
 
     def get_multiple(self, iaid=None):
         return FetchQuery(self.model).get_multiple(iaid=iaid)
@@ -203,7 +205,9 @@ class FetchQuery(Query):
         self.model = model
 
     def get(self, iaid=None, reference_number=None, expand=False):
-        response = self.client.fetch(iaid=iaid, reference_number=reference_number, expand=expand)
+        response = self.client.fetch(
+            iaid=iaid, reference_number=reference_number, expand=expand
+        )
 
         results = response["hits"]["hits"]
         results_count = response["hits"]["total"]["value"]

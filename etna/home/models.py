@@ -12,7 +12,7 @@ class HomePage(AlertMixin, BasePage):
     body = StreamField(HomePageStreamBlock, blank=True, null=True)
 
     content_panels = BasePage.content_panels + [
-        StreamFieldPanel('body'),
+        StreamFieldPanel("body"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 

@@ -6,31 +6,31 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0009_add_media_reference_id'),
+        ("records", "0009_add_media_reference_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='availablility_access_closure_label',
-            field=models.TextField(default=''),
+            model_name="recordpage",
+            name="availablility_access_closure_label",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='recordpage',
-            name='availablility_access_display_label',
-            field=models.TextField(default=''),
+            model_name="recordpage",
+            name="availablility_access_display_label",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='recordpage',
-            name='availablility_delivery_condition',
-            field=models.TextField(default=''),
+            model_name="recordpage",
+            name="availablility_delivery_condition",
+            field=models.TextField(default=""),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='recordpage',
-            name='availablility_delivery_surrogates',
+            model_name="recordpage",
+            name="availablility_delivery_surrogates",
             field=models.JSONField(null=True),
         ),
     ]

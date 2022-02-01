@@ -14,9 +14,7 @@ class CollectionHighlightsBlock(blocks.StructBlock):
 class FeaturedPageBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
     description = blocks.CharBlock(
-        required=False,
-        max_length=200,
-        help_text="A description of the featured page"
+        required=False, max_length=200, help_text="A description of the featured page"
     )
     page = blocks.PageChooserBlock()
 

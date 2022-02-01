@@ -8,23 +8,143 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0016_alter_explorer_page_blocks'),
+        ("collections", "0016_alter_explorer_page_blocks"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timeperiodexplorerindexpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('topic_explorer_index', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by topic', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Browse highlights of the collection through topics including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock(page_type=['collections.TopicExplorerIndexPage']))]))], blank=True),
+            model_name="timeperiodexplorerindexpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "topic_explorer_index",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Browse highlights of the collection through topics including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.core.blocks.PageChooserBlock(
+                                        page_type=["collections.TopicExplorerIndexPage"]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    )
+                ],
+                blank=True,
+            ),
         ),
         migrations.AddField(
-            model_name='topicexplorerindexpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('time_period_explorer_index', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by time period', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Discover 1,000 years of British history through time periods including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock(page_type=['collections.TimePeriodExplorerIndexPage']))]))], blank=True),
+            model_name="topicexplorerindexpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "time_period_explorer_index",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Discover 1,000 years of British history through time periods including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.core.blocks.PageChooserBlock(
+                                        page_type=[
+                                            "collections.TimePeriodExplorerIndexPage"
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    )
+                ],
+                blank=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='explorerindexpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('time_period_explorer_index', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by time period', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Discover 1,000 years of British history through time periods including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock(page_type=['collections.TimePeriodExplorerIndexPage']))])), ('topic_explorer_index', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by topic', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Browse highlights of the collection through topics including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock(page_type=['collections.TopicExplorerIndexPage']))]))], blank=True),
+            model_name="explorerindexpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "time_period_explorer_index",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Discover 1,000 years of British history through time periods including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.core.blocks.PageChooserBlock(
+                                        page_type=[
+                                            "collections.TimePeriodExplorerIndexPage"
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "topic_explorer_index",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Browse highlights of the collection through topics including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.core.blocks.PageChooserBlock(
+                                        page_type=["collections.TopicExplorerIndexPage"]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+            ),
         ),
     ]

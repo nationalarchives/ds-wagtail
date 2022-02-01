@@ -9,13 +9,65 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0009_rename_introduction'),
+        ("collections", "0009_rename_introduction"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timeperiodexplorerpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('collection_highlights', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Collection Highlights', max_length=100))])), ('featured_page', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('page', wagtail.core.blocks.PageChooserBlock())])), ('promoted_pages', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(max_length=200)), ('promoted_items', wagtail.core.blocks.ListBlock(etna.collections.blocks.PromotedItemBlock, max=3, min=3))]))], blank=True),
+            model_name="timeperiodexplorerpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "collection_highlights",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Collection Highlights", max_length=100
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                    (
+                        "featured_page",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                            ]
+                        ),
+                    ),
+                    (
+                        "promoted_pages",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(max_length=200),
+                                ),
+                                (
+                                    "promoted_items",
+                                    wagtail.core.blocks.ListBlock(
+                                        etna.collections.blocks.PromotedItemBlock,
+                                        max=3,
+                                        min=3,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+            ),
         ),
     ]

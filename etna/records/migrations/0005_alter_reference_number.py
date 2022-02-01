@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0004_recordpage_arrangement'),
+        ("records", "0004_recordpage_arrangement"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='recordpage',
-            name='reference_number',
+            model_name="recordpage",
+            name="reference_number",
             field=models.TextField(),
         ),
     ]

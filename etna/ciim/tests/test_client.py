@@ -221,7 +221,7 @@ class TestClientFetchReponse(TestCase):
                     "Failed to convert value of type 'java.lang.String' "
                     "to required type 'java.lang.Integer'; "
                     "nested exception is java.lang.NumberFormatException: "
-                    "For input string: \"999999999999999999\""
+                    'For input string: "999999999999999999"'
                 ),
                 "path": "/search",
             },

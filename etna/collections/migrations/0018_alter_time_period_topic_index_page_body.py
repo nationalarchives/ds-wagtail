@@ -9,18 +9,138 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0017_add_time_period_topic_index_page_body'),
+        ("collections", "0017_add_time_period_topic_index_page_body"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='timeperiodexplorerpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('collection_highlights', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Collection Highlights', max_length=100))])), ('featured_page', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('description', wagtail.core.blocks.CharBlock(help_text='A description of the featured page', max_length=200, required=False)), ('page', wagtail.core.blocks.PageChooserBlock())])), ('promoted_pages', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(max_length=200)), ('promoted_items', wagtail.core.blocks.ListBlock(etna.collections.blocks.PromotedItemBlock, max=3, min=3))]))], blank=True),
+            model_name="timeperiodexplorerpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "collection_highlights",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Collection Highlights", max_length=100
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                    (
+                        "featured_page",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                (
+                                    "description",
+                                    wagtail.core.blocks.CharBlock(
+                                        help_text="A description of the featured page",
+                                        max_length=200,
+                                        required=False,
+                                    ),
+                                ),
+                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                            ]
+                        ),
+                    ),
+                    (
+                        "promoted_pages",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(max_length=200),
+                                ),
+                                (
+                                    "promoted_items",
+                                    wagtail.core.blocks.ListBlock(
+                                        etna.collections.blocks.PromotedItemBlock,
+                                        max=3,
+                                        min=3,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='topicexplorerpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('collection_highlights', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Collection Highlights', max_length=100))])), ('featured_page', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('description', wagtail.core.blocks.CharBlock(help_text='A description of the featured page', max_length=200, required=False)), ('page', wagtail.core.blocks.PageChooserBlock())])), ('promoted_pages', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(max_length=200)), ('promoted_items', wagtail.core.blocks.ListBlock(etna.collections.blocks.PromotedItemBlock, max=3, min=3))]))], blank=True),
+            model_name="topicexplorerpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "collection_highlights",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Collection Highlights", max_length=100
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                    (
+                        "featured_page",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                (
+                                    "description",
+                                    wagtail.core.blocks.CharBlock(
+                                        help_text="A description of the featured page",
+                                        max_length=200,
+                                        required=False,
+                                    ),
+                                ),
+                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                            ]
+                        ),
+                    ),
+                    (
+                        "promoted_pages",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(max_length=200),
+                                ),
+                                (
+                                    "promoted_items",
+                                    wagtail.core.blocks.ListBlock(
+                                        etna.collections.blocks.PromotedItemBlock,
+                                        max=3,
+                                        min=3,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+            ),
         ),
     ]

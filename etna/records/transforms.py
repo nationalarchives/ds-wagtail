@@ -101,7 +101,7 @@ def transform_record_page_result(result):
         data["related_articles"] = [
             {"title": i["@summary"]["title"], "url": i["source"]["location"]}
             for i in related_articles
-            if '@summary' in i
+            if "@summary" in i
         ]
 
     data["media_reference_id"] = pluck(
