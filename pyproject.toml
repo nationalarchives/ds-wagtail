@@ -21,7 +21,7 @@ wagtail-font-awesome-svg = "0.0.2"
 django-birdbath = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
-black = "^20.8b1"
+black = "^22.1.0"
 ipdb = "^0.13.7"
 django-extensions = "^3.1.2"
 responses = "^0.13.3"
