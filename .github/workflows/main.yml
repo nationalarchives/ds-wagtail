@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - 'release/**'
+      - "release/**"
 
   pull_request:
 
@@ -25,6 +25,10 @@ jobs:
         run: python -m pip install isort
       - name: Run isort
         run: isort -c .
+      - name: Install Black
+        run: python -m pip install black==22.1.0
+      - name: Check compliance with Black
+        run: black etna config --check --fast
 
   test-python:
     runs-on: ubuntu-latest
