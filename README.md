@@ -105,7 +105,7 @@ Now, navigate to the admin URL in your browser, and sign in using the username/p
 
 ### Using `fab run`
 
-While it's good to be comfortable using the shell to access the 'web' container directly and interact with Django, sometimes all you need is to run the development server so that you can view the site in a browser. In these cases, you can use:
+While it's handy to be able to access 'web' via a shell and interact with Django directly, sometimes all you want is to view the site in a web browser. In these cases, you can use:
 
 ```console
 $ fab run
