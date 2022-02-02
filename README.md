@@ -61,22 +61,28 @@ $ cp .env.example .env
 $ fab build
 ```
 
-#### Run Docker containers
+#### Start Docker containers
 
 ```console
 $ fab start
 ```
 
-#### Access a container shell
+#### Start a shell session with the 'web' container
 
 ```console
 $ fab sh
 ```
 
-#### Run database migrations
+#### Apply database migrations
 
 ```console
 $ python manage.py migrate
+```
+
+#### Run the 'development' web server
+
+```console
+$ python manage.py runserver 0.0.0.0:8000
 ```
 
 #### Access the site
@@ -96,6 +102,25 @@ $ python manage.py createsuperuser
 Now, navigate to the admin URL in your browser, and sign in using the username/password combination you chose for your user:
 
 <http://127.0.0.1:8000/admin/>
+
+### Using `fab run`
+
+While it's good to be comfortable using the shell to access the 'web' container directly and interact with Django, sometimes all you need is to run the development server so that you can view the site in a browser. In these cases, you can use:
+
+```console
+$ fab run
+```
+
+This command takes care of the following:
+
+1. Starting all of the necessary Docker containers
+2. Installing any new python dependencies
+3. Applying any new database migrations
+4. Starting the Django development server
+
+You can then access the site in your browser as usual:
+
+<http://127.0.0.1:8000>
 
 ### Working with production data locally
 
