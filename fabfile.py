@@ -86,6 +86,8 @@ def start(c, container_name=None):
 @task
 def run(c):
     start(c, "web")
+    web_exec("poetry install --remove-untracked --no-root")
+    web_exec("python manage.py migrate")
     return web_exec("python manage.py runserver 0.0.0.0:8000")
 
 
