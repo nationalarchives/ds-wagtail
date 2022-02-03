@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  web:
+    volumes:
+      - ./:/app:delegated,rw
+      # Enable `git` integrations
+      - ./.git/:/app/.git:delegated,rw

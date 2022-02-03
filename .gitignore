@@ -43,9 +43,7 @@ templates/static/css/libraries/*
 /db/
 
 # Editor configuration files
-.devcontainer
 *.code-workspace
-.vscode/
 .idea/
 
 # SASS
