@@ -56,7 +56,7 @@ class KongClient:
 
         try:
             response = self.session.get(
-                self.base_url + "/data/fetch", params=kwargs, timeout=5
+                self.base_url + "/data/search", params=kwargs, timeout=5
             )
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
