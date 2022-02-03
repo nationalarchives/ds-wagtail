@@ -48,14 +48,14 @@ def transform_record_result(result):
                 parent,
                 accessor=lambda i: i["identifier"][0]["reference_number"],
             ),
-            "title": pluck(parent, accessor=lambda i: i["@summary"]["title"]),
+            "title": pluck(parent, accessor=lambda i: i["summary"]["title"]),
         }
 
     if hierarchy := source.get("hierarchy"):
         data["hierarchy"] = [
             {
                 "reference_number": i["identifier"][0]["reference_number"],
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
             }
             for i in hierarchy[0]
             if "identifier" in i
@@ -69,7 +69,7 @@ def transform_record_result(result):
     if topics := source.get("topic"):
         data["topics"] = [
             {
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
             }
             for i in topics
         ]
@@ -82,7 +82,7 @@ def transform_record_result(result):
         )
         data["related_records"] = [
             {
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
                 "iaid": i["@admin"]["id"],
             }
             for i in related_records
@@ -92,9 +92,9 @@ def transform_record_result(result):
             related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
         )
         data["related_articles"] = [
-            {"title": i["@summary"]["title"], "url": i["source"]["location"]}
+            {"title": i["summary"]["title"], "url": i["source"]["location"]}
             for i in related_articles
-            if '@summary' in i
+            if 'summary' in i
         ]
 
     data["media_reference_id"] = pluck(

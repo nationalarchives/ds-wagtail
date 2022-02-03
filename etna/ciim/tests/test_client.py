@@ -39,7 +39,7 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=ADM+223%2F3&from=0",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0",
         )
 
     @responses.activate
@@ -49,17 +49,17 @@ class ClientSearchTest(TestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=C10297&from=0",
+            "https://kong.test/data/search?keyword=C10297&from=0",
         )
 
     @responses.activate
-    def test_search_with_term(self):
-        self.client.search(term="Egypt")
+    def test_search_with_keyword(self):
+        self.client.search(keyword="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?term=Egypt&from=0",
+            "https://kong.test/data/search?keyword=Egypt&from=0",
         )
 
 

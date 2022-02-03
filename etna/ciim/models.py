@@ -20,7 +20,7 @@ class SearchManager:
 
     def filter(self, **kwargs):
         # Check we're making a meaningful query before contacting Kong
-        if any({k: v for k, v in kwargs.items() if not v}):
+        if any({k: v for k, v in kwargs.items() if v is None}):
             raise InvalidQuery("Query to Kong must at least one clause")
 
         return SearchQuery(self.model, kwargs)
