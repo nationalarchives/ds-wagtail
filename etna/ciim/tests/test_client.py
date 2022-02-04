@@ -323,23 +323,27 @@ class ClientFetchAllTest(SimpleTestCase):
             "https://kong.test/data/fetchAll?size=20",
         )
 
+
 class TestClientFetchReponse(SimpleTestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")
 
     @responses.activate
-    def test_raises_kubernetes_error(self):
+    def test_raises_kong_error_with_message(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
             json={"message": "failure to get a peer from the ring-balancer"},
+            status=503,
         )
 
-        with self.assertRaises(KubernetesError):
+        with self.assertRaisesMessage(
+            KongError, "failure to get a peer from the ring-balancer"
+        ):
             self.client.fetch()
 
     @responses.activate
-    def test_raises_kong_error(self):
+    def test_raises_kong_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -354,13 +358,14 @@ class TestClientFetchReponse(SimpleTestCase):
                 },
                 "status": 503,
             },
+            status=503,
         )
 
-        with self.assertRaises(KongError):
+        with self.assertRaisesMessage(KongError, "all shards failed"):
             self.client.fetch()
 
     @responses.activate
-    def test_raises_java_error(self):
+    def test_raises_kong_error_on_java_error(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -379,7 +384,7 @@ class TestClientFetchReponse(SimpleTestCase):
             status=400,
         )
 
-        with self.assertRaises(InvalidResponse):
+        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
             self.client.fetch()
 
     @responses.activate
@@ -409,42 +414,21 @@ class TestClientSearchReponse(SimpleTestCase):
         self.client = KongClient("https://kong.test", api_key="")
 
     @responses.activate
-    def test_500_raises_invalid_response(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            status=500,
-            json={},
-        )
-
-        with self.assertRaises(InvalidResponse):
-            self.client.search()
-
-    @responses.activate
-    def test_500_with_reason_raises_invalid_response(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            status=500,
-            json={"error": {"root_cause": [{"reason": "Test Error"}]}},
-        )
-
-        with self.assertRaisesMessage(InvalidResponse, "Reason: Test Error"):
-            self.client.search()
-
-    @responses.activate
-    def test_raises_kubernetes_error(self):
+    def test_raises_kong_error_with_message(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
             json={"message": "failure to get a peer from the ring-balancer"},
+            status=503,
         )
 
-        with self.assertRaises(KubernetesError):
+        with self.assertRaisesMessage(
+            KongError, "failure to get a peer from the ring-balancer"
+        ):
             self.client.search()
 
     @responses.activate
-    def test_raises_kong_error(self):
+    def test_raises_kong_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
@@ -459,9 +443,33 @@ class TestClientSearchReponse(SimpleTestCase):
                 },
                 "status": 503,
             },
+            status=503,
         )
 
-        with self.assertRaises(KongError):
+        with self.assertRaisesMessage(KongError, "all shards failed"):
+            self.client.search()
+
+    @responses.activate
+    def test_raises_kong_error_on_java_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "timestamp": "2021-08-26T09:07:31.688+00:00",
+                "status": 400,
+                "error": "Bad Request",
+                "message": (
+                    "Failed to convert value of type 'java.lang.String' "
+                    "to required type 'java.lang.Integer'; "
+                    "nested exception is java.lang.NumberFormatException: "
+                    'For input string: "999999999999999999"'
+                ),
+                "path": "/search",
+            },
+            status=400,
+        )
+
+        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
             self.client.search()
 
     @responses.activate
@@ -482,5 +490,90 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         response = self.client.search()
+
+        self.assertEqual(response, valid_response)
+
+
+class TestClientFetchAllReponse(SimpleTestCase):
+    def setUp(self):
+        self.client = KongClient("https://kong.test", api_key="")
+
+    @responses.activate
+    def test_raises_kong_error_with_message(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={"message": "failure to get a peer from the ring-balancer"},
+            status=503,
+        )
+
+        with self.assertRaisesMessage(
+            KongError, "failure to get a peer from the ring-balancer"
+        ):
+            self.client.fetch_all()
+
+    @responses.activate
+    def test_raises_kong_error_on_elastic_fetchAll_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={
+                "error": {
+                    "root_cause": [],
+                    "type": "fetchAll_phase_execution_exception",
+                    "reason": "all shards failed",
+                    "phase": "query",
+                    "grouped": True,
+                    "failed_shards": [],
+                },
+                "status": 503,
+            },
+            status=503,
+        )
+
+        with self.assertRaisesMessage(KongError, "all shards failed"):
+            self.client.fetch_all()
+
+    @responses.activate
+    def test_raises_kong_error_on_java_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={
+                "timestamp": "2021-08-26T09:07:31.688+00:00",
+                "status": 400,
+                "error": "Bad Request",
+                "message": (
+                    "Failed to convert value of type 'java.lang.String' "
+                    "to required type 'java.lang.Integer'; "
+                    "nested exception is java.lang.NumberFormatException: "
+                    'For input string: "999999999999999999"'
+                ),
+                "path": "/fetchAll",
+            },
+            status=400,
+        )
+
+        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
+            self.client.fetch_all()
+
+    @responses.activate
+    def test_valid_response(self):
+        valid_response = {
+            "took": 85,
+            "timed_out": False,
+            "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
+            "hits": {
+                "total": {"value": 0, "relation": "eq"},
+                "max_score": 14.217057,
+                "hits": [],
+            },
+        }
+
+        responses.add(
+            responses.GET, "https://kong.test/data/fetchAll", json=valid_response
+        )
+
+        response = self.client.fetch_all()
 
         self.assertEqual(response, valid_response)

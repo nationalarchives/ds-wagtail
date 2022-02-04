@@ -5,7 +5,7 @@ from typing import Optional
 
 import requests
 
-from .exceptions import ConnectionError, InvalidResponse, KongError, KubernetesError
+from .exceptions import ConnectionError, KongError
 
 logger = logging.getLogger(__name__)
 
@@ -255,18 +255,12 @@ class KongClient:
         return self.validate_and_parse_response(response)
 
     def validate_and_parse_response(self, response: requests.Response) -> dict:
-        """Validates response post and pre JSON decode."""
+        """Validates response pre-JSON decode."""
         if not response.ok:
-            raise InvalidResponse("Invalid response.", json=response.json())
+            raise KongError("Invalid response.", response=response)
 
         json = response.json()
 
         logger.debug(f"Response from Kong: {json}")
-
-        if "message" in json:
-            raise KubernetesError(json["message"])
-
-        if "error" in json:
-            raise KongError(f"Kong returned status {json['status']}")
 
         return json
