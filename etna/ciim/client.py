@@ -1,4 +1,7 @@
+import enum
 import logging
+
+from typing import Optional
 
 import requests
 
@@ -7,60 +10,252 @@ from .exceptions import ConnectionError, InvalidResponse, KongError, KubernetesE
 logger = logging.getLogger(__name__)
 
 
+class Stream(str, enum.Enum):
+    """Options for restricting /search results to a given stream.
+
+    Evidential:
+        Catalogue data i.e: Records
+
+    interpretive:
+        Any content written _about_ evidential i.e: Research Guides, Blog posts
+    """
+
+    EVIDENTIAL = "evidential"
+    INTERPRETIVE = "interpretive"
+
+
+class Sort(str, enum.Enum):
+    """Options for sorting /search results by a given field."""
+
+    TITLE = "title"
+    DATE_CREATED = "date_created"
+
+
+class SortOrder(str, enum.Enum):
+    """Options for sort order for /search results."""
+
+    ASC = "asc"
+    DESC = "desc"
+
+
+class Template(str, enum.Enum):
+    """Include @template block to assist parsing/rendering of record data.
+
+    Supported by all endpoints.
+    """
+
+    DETAILS = "details"
+    RESULTS = "results"
+
+
+def format_list_param(items: Optional[list]) -> Optional[str]:
+    """Convenience function to transform list to comma-separated string.
+
+    When parsing a request's parameters `requests` uses `urllib.parse.urlencode`
+    with the deseq flag set to true, transforming a list's values into multiple
+    parameters:
+
+    >>> urllib.parse.urlencode({'param': ['item-1', 'item-2']}, doseq=True)
+    'param=item-1&param=item-2'
+
+    https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlencode
+
+    Kong expects multiple values to be a in a comma-separated string:
+
+    'param=item-1,+item-2'
+
+    This function, when given a list, will return a comma-separated string.
+    """
+    if not items:
+        return None
+    return ", ".join(items)
+
+
 class KongClient:
-    def __init__(self, base_url, api_key, verify_certificates=True):
-        self.base_url = base_url
+    """Client used to Fetch and validate data from Kong."""
+
+    def __init__(
+        self,
+        base_url: str,
+        api_key: str,
+        verify_certificates: bool = True,
+        timeout: int = 5,
+    ):
+        self.base_url: str = base_url
         self.session = requests.Session()
         self.session.headers.update({"apikey": api_key})
         self.session.verify = verify_certificates
+        self.timeout = timeout
 
-    def fetch(self, **kwargs):
-        kwargs["ref"] = kwargs.pop("reference_number", None)
-        kwargs["from"] = kwargs.pop("start", 0)
-        kwargs["expand"] = "true" if kwargs.pop("expand", False) else "false"
+    def fetch(
+        self,
+        *,
+        iaid: Optional[str] = None,
+        id: Optional[str] = None,
+        template: Optional[Template] = None,
+        expand: Optional[bool] = None,
+    ) -> dict:
+        """Make request and return response for Kong's /fetch endpoint.
+
+        Used to fetch a single item by its identifier.
+
+        Keyword arguments:
+
+        iaid:
+            Return match on Information Asset Identifier
+        id:
+            Generic identifier. Matches on references_number or iaid
+        template:
+            @template data to include with response
+        expand:
+            include @next and @previous record with response. Kong defaults to false
+        """
+        params = {
+            "iaid": iaid,
+            "id": id,
+            "template": template,
+            "expand": expand,
+        }
+
+        # remove empty values to make logged requests cleaner.
+        params = {k: v for k, v in params.items() if v is not None}
 
         try:
             response = self.session.get(
-                self.base_url + "/data/fetch", params=kwargs, timeout=5
+                f"{self.base_url}/data/fetch", params=params, timeout=self.timeout
             )
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 
-        if not response.ok:
-            raise InvalidResponse("Invalid response")
+        return self.validate_and_parse_response(response)
 
-        json = response.json()
+    def search(
+        self,
+        *,
+        keyword: Optional[str] = None,
+        web_reference: Optional[str] = None,
+        stream: Optional[Stream] = None,
+        sort: Optional[Sort] = None,
+        sort_order: Optional[SortOrder] = None,
+        template: Optional[Template] = None,
+        show_buckets: Optional[bool] = None,
+        buckets: Optional[list[str]] = None,
+        topics: Optional[list[str]] = None,
+        references: Optional[list[str]] = None,
+        offset: Optional[int] = None,
+        size: Optional[int] = None,
+    ) -> dict:
+        """Make request and return response for Kong's /fetch endpoint.
 
-        logger.debug(f"Response from Kong: {json}")
+        Search all metadata by keyword or web_reference. Results can be
+        bucketed, and the search restricted by bucket, reference, topic and
+        data stream. If both keyword and web reference are not provided, the
+        returned items will be empty.
 
-        if "message" in json:
-            raise KubernetesError(json["message"])
+        Keyword arguments:
 
-        if "error" in json:
-            raise KongError(f"Kong returned status {json['status']}")
+        keyword:
+            String to query all indexed fields
+        web_reference:
+            Return matches on references_number
+        stream:
+            Restrict results to given stream
+        sort:
+            Field to sort results.
+        sortOrder:
+            Order of sorted results
+        template:
+            @template data to include with response
+        show_buckets:
+            Include Etna search buckets with response
+        buckets:
+            Restrict results to given bucket(s)
+        topics:
+            Restrict results to given topic(s)
+        references:
+            Restrict results to given reference(s)
+        offset:
+            Offset for results. Mapped to 'from' before making request
+        size:
+            Number of results to return
+        """
+        params = {
+            "keyword": keyword,
+            "webReference": web_reference,
+            "stream": stream,
+            "sort": sort,
+            "sortOrder": sort_order,
+            "template": template,
+            "showBuckets": show_buckets,
+            "buckets": format_list_param(buckets),
+            "topics": format_list_param(topics),
+            "references": format_list_param(references),
+            "from": offset,
+            "size": size,
+        }
 
-        return json
-
-    def search(self, **kwargs):
-
-        if term := (
-            kwargs.pop("iaid", None)
-            or kwargs.pop("reference_number", None)
-            or kwargs.pop("term", None)
-            or ""
-        ):
-            kwargs["term"] = term
-
-        # In Python 'from' cannot be a kwargs. Map 'start' to 'from' before making request
-        kwargs["from"] = kwargs.pop("start", 0)
+        # remove empty values to make logged requests cleaner.
+        params = {k: v for k, v in params.items() if v is not None}
 
         try:
             response = self.session.get(
-                self.base_url + "/data/search", params=kwargs, timeout=5
+                f"{self.base_url}/data/search", params=params, timeout=self.timeout
             )
         except requests.exceptions.ConnectionError as e:
             raise ConnectionError from e
 
+        return self.validate_and_parse_response(response)
+
+    def fetch_all(
+        self,
+        *,
+        ids: Optional[list[str]] = None,
+        iaids: Optional[list[str]] = None,
+        rid: Optional[str] = None,
+        offset: Optional[int] = None,
+        size: Optional[int] = None,
+    ) -> dict:
+        """Make request and return response for Kong's /fetchAll endpoint.
+
+        Used to fetch a all items by for the given identifier(s).
+
+        Fetch all metadata with a generic identifier, iaid or replicaId (rid).
+
+        Keyword arguments:
+
+        ids:
+            Generic identifiers. Matches on references_number or iaid
+        iaids:
+            Return matches on Information Asset Identifier
+        rid:
+            Return matches on replic ID
+        offset:
+            Offset for results. Mapped to 'from' before making request
+        size:
+            Number of results to return
+        """
+        params = {
+            "ids": format_list_param(ids),
+            "iaids": format_list_param(iaids),
+            "rid": rid,
+            "from": offset,
+            "size": size,
+        }
+
+        # remove empty values to make logged requests cleaner.
+        params = {k: v for k, v in params.items() if v is not None}
+
+        try:
+            response = self.session.get(
+                f"{self.base_url}/data/fetchAll", params=params, timeout=self.timeout
+            )
+        except requests.exceptions.ConnectionError as e:
+            raise ConnectionError from e
+
+        return self.validate_and_parse_response(response)
+
+    def validate_and_parse_response(self, response: requests.Response) -> dict:
+        """Validates response post and pre JSON decode."""
         if not response.ok:
             raise InvalidResponse("Invalid response.", json=response.json())
 
@@ -75,11 +270,3 @@ class KongClient:
             raise KongError(f"Kong returned status {json['status']}")
 
         return json
-
-    def media(self, location=None):
-        try:
-            return self.session.get(
-                f"{self.base_url}/media/{location}", stream=True, timeout=5
-            )
-        except requests.exceptions.ConnectionError as e:
-            raise ConnectionError from e
