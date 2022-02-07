@@ -23,7 +23,7 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_object_list(self, search_term=""):
         """Filter object list by user's search term"""
-        return self.model.search.filter(term=search_term, stream="evidential")
+        return self.model.search.filter(keyword=search_term, stream="evidential")
 
     def get_object(self, pk):
         """Fetch selected object"""
