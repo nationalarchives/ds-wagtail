@@ -3,12 +3,7 @@ from django.http import FileResponse
 from django.shortcuts import Http404, render
 from django.views.decorators.cache import cache_control
 
-from ...ciim.exceptions import (
-    DoesNotExist,
-    InvalidQuery,
-    KongAPIError,
-    UnsupportedSlice,
-)
+from ...ciim.exceptions import DoesNotExist, InvalidQuery, KongAPIError
 from ...ciim.utils import convert_sort_key_to_index
 from ..models import Image, Record
 
@@ -37,7 +32,7 @@ def image_viewer(request, iaid, sort):
 
     try:
         previous_image = images[index - 1]
-    except UnsupportedSlice:
+    except KongException:
         # Attempted to fetch using a negative index meaning we're viewing the
         # first image and therefore there's no previous image to fetch.
         previous_image = None

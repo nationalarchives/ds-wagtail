@@ -7,12 +7,7 @@ from django.test import TestCase, override_settings
 import responses
 
 from ...records.models import Record
-from ..exceptions import (
-    DoesNotExist,
-    KongAPIError,
-    MultipleObjectsReturned,
-    UnsupportedSlice,
-)
+from ..exceptions import DoesNotExist, KongAPIError, MultipleObjectsReturned
 from ..models import APIManager
 from .factories import create_record, create_response
 
