@@ -1,14 +1,16 @@
+from __future__ import annotations
+
 from dataclasses import dataclass, field
 
 from django.conf import settings
 from django.urls import reverse
 
-from ..ciim.models import MediaManager, SearchManager
+from ..ciim.models import APIModel, APIManager
 from .transforms import transform_image_result, transform_record_result
 
 
 @dataclass
-class Record:
+class Record(APIModel):
     """Non-creatable page used to render record data in templates.
 
     This stub page allows us to use common templates to render external record
@@ -45,17 +47,13 @@ class Record:
     def __str__(self):
         return f"{self.title} ({self.iaid})"
 
+    @classmethod
+    def from_api_response(cls, response: dict) -> Record:
+        return cls(**transform_record_result(response))
 
-"""Assign a search manager to Record
 
-SearchManager exposes a similar interface to Django's model.Manager but
-results are fetched from the Kong API instead of from a DB
-
-Transform function is used to transform a raw Elasticsearch response into a
-dictionary to pass to the Model's __init__.
-"""
-Record.search = SearchManager(Record)
-Record.transform = transform_record_result
+# APIManager exposes Kong Client method used to query Record data.
+Record.api = APIManager(Record)
 
 
 @dataclass
