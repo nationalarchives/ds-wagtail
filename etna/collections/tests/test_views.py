@@ -75,14 +75,10 @@ class TestRecordChooseView(WagtailPageTests):
             content["html"],
         )
 
-        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?stream=evidential&keyword=law&from=0&size=0",
-        )
-        self.assertURLEqual(
-            responses.calls[1].request.url,
-            "https://kong.test/data/search?stream=evidential&size=1&keyword=law&from=0",
+            "https://kong.test/data/search?stream=evidential&keyword=law&from=0&size=10",
         )
 
     @responses.activate
