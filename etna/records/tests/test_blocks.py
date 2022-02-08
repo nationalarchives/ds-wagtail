@@ -28,8 +28,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 ),
             ]
         )
-        responses.add(responses.GET, "https://kong.test/search", json=response)
         responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
+        responses.add(responses.GET, "https://kong.test/data/fetchAll", json=response)
 
         root = Site.objects.get().root_page
 
@@ -52,10 +52,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 "title": "Insights page changed",
                 "slug": "insights-page",
                 "sub_heading": "Introduction",
-                "body": streamfield([
-                    ("featured_record",
-                     {"record": "C123456"}
-                     ), ]
+                "body": streamfield(
+                    [
+                        ("featured_record", {"record": "C123456"}),
+                    ]
                 ),
                 "action-publish": "Publish",
             }
@@ -71,18 +71,9 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
         )
 
-        self.assertEqual(
-
-            self.insights_page.body[0].block_type, "featured_record"
-        )
-        self.assertEqual(
-            self.insights_page.body[0].value["record"].iaid,
-            "C123456"
-        )
-        self.assertEqual(
-            self.insights_page.body[0].value["image"]["image"],
-            None
-        )
+        self.assertEqual(self.insights_page.body[0].block_type, "featured_record")
+        self.assertEqual(self.insights_page.body[0].value["record"].iaid, "C123456")
+        self.assertEqual(self.insights_page.body[0].value["image"]["image"], None)
 
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
@@ -92,6 +83,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(
             responses.calls[1].request.url,
             "https://kong.test/data/fetch?iaid=C123456",
+        )
+        self.assertEqual(
+            responses.calls[2].request.url,
+            "https://kong.test/data/fetchAll?iaids=C123456",
         )
 
     @responses.activate
@@ -177,7 +172,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456&expand=False",
+            "https://kong.test/data/fetchAll?iaids=C123456",
         )
 
     @responses.activate
@@ -226,7 +221,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456&expand=False",
+            "https://kong.test/data/fetchAll?iaids=C123456",
         )
 
 
@@ -245,8 +240,8 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
                 ),
             ]
         )
-        responses.add(responses.GET, "https://kong.test/search", json=response)
         responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
+        responses.add(responses.GET, "https://kong.test/data/fetchAll", json=response)
 
         root = Site.objects.get().root_page
 
@@ -294,22 +289,15 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
             response,
             reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
         )
-        self.assertEqual(
-            self.insights_page.body[0].block_type, "featured_records"
-        )
+        self.assertEqual(self.insights_page.body[0].block_type, "featured_records")
 
         self.assertEqual(
-            self.insights_page.body[0].value["heading"],
-            "This is a heading"
+            self.insights_page.body[0].value["heading"], "This is a heading"
         )
         self.assertEqual(
-            self.insights_page.body[0].value["introduction"],
-            "This is some text"
+            self.insights_page.body[0].value["introduction"], "This is some text"
         )
-        self.assertEqual(
-            self.insights_page.body[0].value["records"][0].iaid,
-            "C123456"
-        )
+        self.assertEqual(self.insights_page.body[0].value["records"][0].iaid, "C123456")
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -384,7 +372,7 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456&expand=False",
+            "https://kong.test/data/fetchAll?iaids=C123456",
         )
 
     @responses.activate
@@ -439,5 +427,5 @@ class TestFeaturedRecordsBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456&expand=False",
+            "https://kong.test/data/fetchAll?iaids=C123456",
         )
