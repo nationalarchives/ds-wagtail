@@ -1,9 +1,11 @@
 from django.conf.urls import url
 from django.shortcuts import Http404
+from django.core.paginator import Page
 
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.client import Stream
+from ...ciim.paginator import APIPaginator
 from ...ciim.exceptions import KongAPIError, SearchManagerException
 from ..models import Record
 
@@ -17,21 +19,32 @@ class KongModelChooserMixinIn(ChooserMixin):
     """
 
     # Model belonging to this chooser, set via <model>ChooserViewSet.
-    model = None
+    model: Record = None
 
     # Allow models to be searched via chooser. Hides the search box if False
     is_searchable = True
 
     def get_object_list(self, search_term=""):
-        """Filter object list by user's search term,
-                check search_term if not then it means initial call for chooser dialog """
-        if not search_term:
-            return []
-        return self.model.search.filter(keyword=search_term, stream=Stream.EVIDENTIAL)
+        """Filter object list by user's search term"""
+        return self.model.api.search(keyword=search_term, stream=Stream.EVIDENTIAL)
+
+    def get_paginated_object_list(self, page_number, search_term="", **kwargs):
+        offset = ((page_number - 1) * self.per_page,)
+
+        count, results = self.model.api.search(
+            keyword=search_term,
+            stream=Stream.EVIDENTIAL,
+            size=self.per_page,
+            offset=offset,
+        )
+
+        paginator = APIPaginator(count, self.per_page)
+        page = Page(results, page_number, paginator)
+        return (page, paginator)
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return self.model.search.get(iaid=pk)
+        return self.model.api.fetch(iaid=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.
