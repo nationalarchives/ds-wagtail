@@ -5,8 +5,8 @@ from dataclasses import dataclass, field
 from django.conf import settings
 from django.urls import reverse
 
-from ..ciim.models import APIModel, APIManager
-from .transforms import transform_image_result, transform_record_result
+from ..ciim.models import APIManager, APIModel
+from .transforms import transform_record_result
 
 
 @dataclass
@@ -75,16 +75,3 @@ class Image:
             return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
         elif self.location:
             return reverse("image-serve", kwargs={"location": self.location})
-
-
-"""Assign a search manager to the Image
-
-SearchManager exposes a similar interface to Django's model.Manager but
-results are fetched from the Kong API instead of from a DB
-
-Transform function is used to transform a raw Elasticsearch response into a
-dictionary to pass to the Model's __init__.
-"""
-Image.search = SearchManager(Image)
-Image.media = MediaManager(Image)
-Image.transform = transform_image_result
