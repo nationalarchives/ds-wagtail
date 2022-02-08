@@ -260,7 +260,7 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results page.
         """
         try:
-            return Record.search.get(iaid=self.record_iaid)
+            return Record.api.fetch(iaid=self.record_iaid)
         except (KongAPIError, SearchManagerException):
             return None
 
