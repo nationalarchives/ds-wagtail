@@ -6,21 +6,21 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0010_add_availability_options'),
+        ("records", "0010_add_availability_options"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='recordpage',
-            old_name='date_range',
-            new_name='origination_date',
+            model_name="recordpage",
+            old_name="date_range",
+            new_name="origination_date",
         ),
         migrations.RemoveField(
-            model_name='recordpage',
-            name='date_end',
+            model_name="recordpage",
+            name="date_end",
         ),
         migrations.RemoveField(
-            model_name='recordpage',
-            name='date_start',
+            model_name="recordpage",
+            name="date_start",
         ),
     ]

@@ -30,7 +30,9 @@ LOCAL_DB_DUMP_DIR = "database_dumps"
 
 
 def container_exec(cmd, container_name="web", check_returncode=False):
-    result = subprocess.run(["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd])
+    result = subprocess.run(
+        ["docker-compose", "exec", "-T", container_name, "bash", "-c", cmd]
+    )
     if check_returncode:
         result.check_returncode()
     return result
@@ -120,23 +122,32 @@ def sh(c):
 
 
 @task
-def test(c):
+def format(c):
+    """
+    Apply formatters to code python code
+    """
+    start(c, "web")
+    print("Formatting with isort...")
+    web_exec("isort etna config")
+    print("Formatting with Black...")
+    web_exec("black etna config")
+
+
+@task
+def test(c, lint=False):
     """
     Run python tests in the web container
     """
-    subprocess.run(
-        [
-            "docker-compose",
-            "exec",
-            "web",
-            "poetry",
-            "run",
-            "python",
-            "manage.py",
-            "test",
-            "--parallel",
-        ]
-    )
+    start(c, "web")
+    if lint:
+        print("Checking isort compliance...")
+        web_exec("isort etna config --check --diff")
+        print("Checking Black compliance...")
+        web_exec("black etna config --check --diff --color --fast")
+        print("Checking flake8 compliance...")
+        web_exec("flake8 etna config")
+        print("Running Django tests...")
+    web_exec("python manage.py test --parallel")
 
 
 # -----------------------------------------------------------------------------
@@ -198,7 +209,10 @@ def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=F
 
     try:
         print(f"Restoring datbase from: {filename}")
-        db_exec(f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}", check_returncode=True)
+        db_exec(
+            f"psql -d {LOCAL_DATABASE_NAME} -U {LOCAL_DATABASE_USERNAME} < {filename}",
+            check_returncode=True,
+        )
     except subprocess.CalledProcessError:
         if delete_dump_on_error:
             db_exec(f"rm {filename}")
@@ -262,7 +276,12 @@ def pull_database_from_platform(c, environment_name):
     print("Replacing local database with downloaded version")
     start(c, "db")
 
-    restore_db(c, f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql", delete_dump_on_success=True, delete_dump_on_error=True)
+    restore_db(
+        c,
+        f"app/{LOCAL_DB_DUMP_DIR}/{timestamp}.psql",
+        delete_dump_on_success=True,
+        delete_dump_on_error=True,
+    )
 
     try:
         print("Applying migrations from local environment...")

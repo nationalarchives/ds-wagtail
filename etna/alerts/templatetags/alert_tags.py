@@ -23,7 +23,7 @@ def get_page_alert(page):
         return None
 
 
-@register.inclusion_tag('alerts/tags/alerts.html')
+@register.inclusion_tag("alerts/tags/alerts.html")
 def alerts(page):
     """
     Return alerts from current page as well as those cascaded from ancestors.
@@ -49,6 +49,4 @@ def alerts(page):
     if alert:
         alerts.append(alert)
 
-    return {
-        'alerts': alerts
-    }
+    return {"alerts": alerts}

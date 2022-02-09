@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0018_alter_time_period_topic_index_page_body'),
+        ("collections", "0018_alter_time_period_topic_index_page_body"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='resultspage',
-            name='title_prefix',
+            model_name="resultspage",
+            name="title_prefix",
             field=models.CharField(blank=True, max_length=200),
         ),
     ]

@@ -6,18 +6,18 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0012_add_related_items'),
+        ("insights", "0012_add_related_items"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='insightsindexpage',
-            old_name='introduction',
-            new_name='sub_heading',
+            model_name="insightsindexpage",
+            old_name="introduction",
+            new_name="sub_heading",
         ),
         migrations.RenameField(
-            model_name='insightspage',
-            old_name='introduction',
-            new_name='sub_heading',
+            model_name="insightspage",
+            old_name="introduction",
+            new_name="sub_heading",
         ),
     ]

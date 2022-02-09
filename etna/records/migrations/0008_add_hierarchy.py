@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0007_add_held_by'),
+        ("records", "0007_add_held_by"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='hierarchy',
+            model_name="recordpage",
+            name="hierarchy",
             field=models.JSONField(null=True),
         ),
     ]

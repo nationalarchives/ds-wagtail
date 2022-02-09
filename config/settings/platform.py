@@ -13,7 +13,9 @@ config = Config()
 SECRET_KEY = config.projectEntropy
 
 try:
-    ALLOWED_HOSTS = [urlparse(url).netloc for url in config.get_upstream_routes().keys()]
+    ALLOWED_HOSTS = [
+        urlparse(url).netloc for url in config.get_upstream_routes().keys()
+    ]
 except BuildTimeVariableAccessException:
     # Routes aren't available during build-time. Unfortunately, this file needs
     # to be accessed during collectstatic
@@ -85,18 +87,18 @@ except BuildTimeVariableAccessException:
 
 if redis_config:
     CACHES = {
-        'default': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
-            'OPTIONS': {
-                'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
         },
-        'renditions': {
-            'BACKEND': 'django_redis.cache.RedisCache',
-            'LOCATION': f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
-            'KEY_PREFIX': 'renditions',
-        }
+        "renditions": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": f"{redis_config['scheme']}://{redis_config['host']}:{redis_config['port']}",
+            "KEY_PREFIX": "renditions",
+        },
     }
 
 # Email

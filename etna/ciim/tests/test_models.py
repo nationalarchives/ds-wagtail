@@ -336,9 +336,9 @@ class ModelTranslationTest(TestCase):
             self.record_page.description,
             (
                 '<span class="scopecontent"><span class="head">Scope and Content</span><span class="p">'
-                'This series contains papers concering a wide variety of legal matters referred to the '
-                'Law Officers for their advice or approval and includes applications for the Attorney '
-                'General\'s General Fiat for leave to appeal to the House of Lords in criminal cases.'
+                "This series contains papers concering a wide variety of legal matters referred to the "
+                "Law Officers for their advice or approval and includes applications for the Attorney "
+                "General's General Fiat for leave to appeal to the House of Lords in criminal cases."
                 '</span><span class="p">Also included are a number of opinions, more of which can be '
                 'found in <a href="/catalogue/C10298/">LO 3</a></span></span>'
             ),
@@ -406,16 +406,16 @@ class ModelTranslationTest(TestCase):
                     "type": "surrogate",
                     "value": (
                         '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">'
-                        'The Genealogist'
-                        '</a>'
+                        "The Genealogist"
+                        "</a>"
                     ),
                 },
                 {
                     "type": "surrogate",
                     "value": (
                         '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">'
-                        'Ancestry'
-                        '</a>'
+                        "Ancestry"
+                        "</a>"
                     ),
                 },
             ],

@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0002_recordpage_is_digitised'),
+        ("records", "0002_recordpage_is_digitised"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='parent',
+            model_name="recordpage",
+            name="parent",
             field=models.JSONField(null=True),
         ),
     ]

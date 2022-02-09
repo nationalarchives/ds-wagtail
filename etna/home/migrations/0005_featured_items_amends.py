@@ -9,13 +9,39 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0004_add_home_page_body'),
+        ("home", "0004_add_home_page_body"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='homepage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('featured_items', etna.home.blocks.FeaturedItemsBlock()), ('paragraph_with_heading', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(max_length=100, required=True)), ('paragraph', wagtail.core.blocks.RichTextBlock(features=['bold', 'italic', 'link'], required=True))]))], blank=True, null=True),
+            model_name="homepage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    ("featured_items", etna.home.blocks.FeaturedItemsBlock()),
+                    (
+                        "paragraph_with_heading",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        max_length=100, required=True
+                                    ),
+                                ),
+                                (
+                                    "paragraph",
+                                    wagtail.core.blocks.RichTextBlock(
+                                        features=["bold", "italic", "link"],
+                                        required=True,
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+                null=True,
+            ),
         ),
     ]

@@ -58,6 +58,4 @@ class Migration(migrations.Migration):
         ("insights", "0027_change_accessible_image_required"),
     ]
 
-    operations = [
-        migrations.RunPython(migrate_forwards, migrate_backwards)
-    ]
+    operations = [migrations.RunPython(migrate_forwards, migrate_backwards)]

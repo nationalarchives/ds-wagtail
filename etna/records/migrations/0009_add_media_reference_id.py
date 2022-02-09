@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0008_add_hierarchy'),
+        ("records", "0008_add_hierarchy"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='media_reference_id',
+            model_name="recordpage",
+            name="media_reference_id",
             field=models.UUIDField(null=True),
         ),
     ]

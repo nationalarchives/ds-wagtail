@@ -9,8 +9,12 @@ import magic
 from wagtailmedia.permissions import permission_policy as media_permission_policy
 
 # Valid audio/video media types - https://www.iana.org/assignments/media-types/media-types.xhtml
-ALLOWED_AUDIO_MIME_TYPES = ["audio/mpeg", ]
-ALLOWED_VIDEO_MIME_TYPES = ["video/mp4", ]
+ALLOWED_AUDIO_MIME_TYPES = [
+    "audio/mpeg",
+]
+ALLOWED_VIDEO_MIME_TYPES = [
+    "video/mp4",
+]
 
 
 class BaseMediaForm(BaseCollectionMemberForm):
@@ -37,7 +41,7 @@ class BaseMediaForm(BaseCollectionMemberForm):
             "mime_type": "%(filename)s (%(mime_type)s) is not an allowed %(type)s file.",
         }
 
-        data = self.cleaned_data['file']
+        data = self.cleaned_data["file"]
         mime_type = magic.from_buffer(data.read(), mime=True)
         data.seek(0)
 

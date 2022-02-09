@@ -17,9 +17,9 @@ class ImageBlock(blocks.StructBlock):
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"
         ),
         help_text=mark_safe(
-            'Decorative images are used for visual effect and do not add information to the content of a page. '
+            "Decorative images are used for visual effect and do not add information to the content of a page. "
             '<a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to '
-            'see if your image is decorative</a>.'
+            "see if your image is decorative</a>."
         ),
         required=False,
         default=False,
@@ -29,10 +29,10 @@ class ImageBlock(blocks.StructBlock):
         max_length=100,
         label="Image alternative text",
         help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive '
-            'technologies. Use a maximum of 100 characters to describe your image. Decorative images do not '
+            "Alternative (alt) text describes images when they fail to load, and is read aloud by assistive "
+            "technologies. Use a maximum of 100 characters to describe your image. Decorative images do not "
             'require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">'
-            'Check the guidance for tips on writing alt text</a>.'
+            "Check the guidance for tips on writing alt text</a>."
         ),
         required=False,
     )
@@ -70,9 +70,7 @@ class ImageBlock(blocks.StructBlock):
                 errors["caption"] = ErrorList([message])
 
         if errors:
-            raise StructBlockValidationError(
-                errors
-            )
+            raise StructBlockValidationError(errors)
 
         return super().clean(value)
 

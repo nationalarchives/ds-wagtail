@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0001_initial'),
+        ("records", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='is_digitised',
+            model_name="recordpage",
+            name="is_digitised",
             field=models.BooleanField(default=False),
         ),
     ]

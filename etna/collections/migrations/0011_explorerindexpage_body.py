@@ -7,13 +7,13 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0010_timeperiodexplorerpage_body'),
+        ("collections", "0010_timeperiodexplorerpage_body"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='explorerindexpage',
-            name='body',
+            model_name="explorerindexpage",
+            name="body",
             field=wagtail.core.fields.StreamField([], blank=True),
         ),
     ]

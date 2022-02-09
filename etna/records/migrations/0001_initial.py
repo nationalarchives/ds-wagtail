@@ -9,27 +9,37 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0060_fix_workflow_unique_constraint'),
+        ("wagtailcore", "0060_fix_workflow_unique_constraint"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='RecordPage',
+            name="RecordPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('iaid', models.IntegerField()),
-                ('reference_number', models.IntegerField()),
-                ('closure_status', models.TextField()),
-                ('created_by', models.TextField()),
-                ('description', models.TextField()),
-                ('date_start', models.IntegerField()),
-                ('date_end', models.IntegerField()),
-                ('date_range', models.TextField()),
-                ('legal_status', models.TextField()),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("iaid", models.IntegerField()),
+                ("reference_number", models.IntegerField()),
+                ("closure_status", models.TextField()),
+                ("created_by", models.TextField()),
+                ("description", models.TextField()),
+                ("date_start", models.IntegerField()),
+                ("date_end", models.IntegerField()),
+                ("date_range", models.TextField()),
+                ("legal_status", models.TextField()),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=('wagtailcore.page',),
+            bases=("wagtailcore.page",),
         ),
     ]

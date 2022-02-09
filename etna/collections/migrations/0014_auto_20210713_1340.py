@@ -8,13 +8,59 @@ import wagtail.core.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0013_timeperiodexplorerindexpage_topicexplorerindexpage'),
+        ("collections", "0013_timeperiodexplorerindexpage_topicexplorerindexpage"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='explorerindexpage',
-            name='body',
-            field=wagtail.core.fields.StreamField([('time_period_explorer', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by time period', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Discover 1,000 years of British history through time periods including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock())])), ('topic_explorer_explorer', wagtail.core.blocks.StructBlock([('heading', wagtail.core.blocks.CharBlock(default='Explore by topic', max_length=100)), ('sub_heading', wagtail.core.blocks.CharBlock(default='Browse highlights of the collection through topics including:', max_length=200)), ('page', wagtail.core.blocks.PageChooserBlock())]))], blank=True),
+            model_name="explorerindexpage",
+            name="body",
+            field=wagtail.core.fields.StreamField(
+                [
+                    (
+                        "time_period_explorer",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Discover 1,000 years of British history through time periods including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                            ]
+                        ),
+                    ),
+                    (
+                        "topic_explorer_explorer",
+                        wagtail.core.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "sub_heading",
+                                    wagtail.core.blocks.CharBlock(
+                                        default="Browse highlights of the collection through topics including:",
+                                        max_length=200,
+                                    ),
+                                ),
+                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+            ),
         ),
     ]

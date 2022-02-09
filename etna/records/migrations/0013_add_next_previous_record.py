@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('records', '0012_add_topics'),
+        ("records", "0012_add_topics"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='recordpage',
-            name='next_record',
+            model_name="recordpage",
+            name="next_record",
             field=models.JSONField(null=True),
         ),
         migrations.AddField(
-            model_name='recordpage',
-            name='previous_record',
+            model_name="recordpage",
+            name="previous_record",
             field=models.JSONField(null=True),
         ),
     ]

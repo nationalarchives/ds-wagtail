@@ -9,9 +9,11 @@ from ..home.models import HomePage
 
 
 def rich_text_msg(level):
-    msg = ('<p>This is a <b>{level}</b> severity alert. '
-           'Here is some extra text to show what a detailed alert would look like. '
-           '<a href="/">Find out more</a>.</p>')
+    msg = (
+        "<p>This is a <b>{level}</b> severity alert. "
+        "Here is some extra text to show what a detailed alert would look like. "
+        '<a href="/">Find out more</a>.</p>'
+    )
     return msg.format(level=level)
 
 
@@ -19,34 +21,24 @@ class AlertTestCase(TestCase):
     def setUp(self):
         # Create inactive, non-cascading alerts
         self.alert_low = Alert.objects.create(
-            title="Notice",
-            message=rich_text_msg("low"),
-            alert_level="low"
+            title="Notice", message=rich_text_msg("low"), alert_level="low"
         )
         self.alert_medium = Alert.objects.create(
-            title="Alert",
-            message=rich_text_msg("medium"),
-            alert_level="medium"
+            title="Alert", message=rich_text_msg("medium"), alert_level="medium"
         )
         self.alert_high = Alert.objects.create(
-            title="Warning",
-            message=rich_text_msg("high"),
-            alert_level="high"
+            title="Warning", message=rich_text_msg("high"), alert_level="high"
         )
         # Create page heirarchy
         self.root = Site.objects.get().root_page
-        self.home_page = HomePage(
-            title="Home",
-            live=True,
-            alert=self.alert_high
-        )
+        self.home_page = HomePage(title="Home", live=True, alert=self.alert_high)
         self.root.add_child(instance=self.home_page)
 
         self.explorer_index_page = ExplorerIndexPage(
             title="Explorer page",
             sub_heading="Sub heading",
             live=True,
-            alert=self.alert_medium
+            alert=self.alert_medium,
         )
         self.home_page.add_child(instance=self.explorer_index_page)
 
@@ -54,7 +46,7 @@ class AlertTestCase(TestCase):
             title="Category page",
             sub_heading="Sub heading",
             live=True,
-            alert=self.alert_low
+            alert=self.alert_low,
         )
         self.explorer_index_page.add_child(instance=self.topic_explorer_page)
 
