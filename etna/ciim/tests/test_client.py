@@ -2,7 +2,7 @@ from django.test import SimpleTestCase
 
 import responses
 
-from ..client import KongClient, Sort, SortOrder, Stream, Template
+from ..client import KongClient, SortBy, SortOrder, Stream, Template
 from ..exceptions import KongError
 
 
@@ -63,7 +63,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_title(self):
-        self.client.search(sort=Sort.TITLE)
+        self.client.search(sort_by=SortBy.TITLE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -73,7 +73,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_date_created(self):
-        self.client.search(sort=Sort.DATE_CREATED)
+        self.client.search(sort_by=SortBy.DATE_CREATED)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(

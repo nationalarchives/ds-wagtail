@@ -24,7 +24,7 @@ class Stream(str, enum.Enum):
     INTERPRETIVE = "interpretive"
 
 
-class Sort(str, enum.Enum):
+class SortBy(str, enum.Enum):
     """Options for sorting /search results by a given field."""
 
     TITLE = "title"
@@ -135,7 +135,7 @@ class KongClient:
         keyword: Optional[str] = None,
         web_reference: Optional[str] = None,
         stream: Optional[Stream] = None,
-        sort: Optional[Sort] = None,
+        sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
         template: Optional[Template] = None,
         show_buckets: Optional[bool] = None,
@@ -160,7 +160,7 @@ class KongClient:
             Return matches on references_number
         stream:
             Restrict results to given stream
-        sort:
+        sort_by:
             Field to sort results.
         sortOrder:
             Order of sorted results
@@ -183,7 +183,7 @@ class KongClient:
             "keyword": keyword,
             "webReference": web_reference,
             "stream": stream,
-            "sort": sort,
+            "sort": sort_by,
             "sortOrder": sort_order,
             "template": template,
             "showBuckets": show_buckets,
