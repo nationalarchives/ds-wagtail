@@ -39,7 +39,7 @@ class SortOrder(str, enum.Enum):
 
 
 class Template(str, enum.Enum):
-    """Include @template block to assist parsing/rendering of record data.
+    """@template block to include with response.
 
     Supported by all endpoints.
     """
