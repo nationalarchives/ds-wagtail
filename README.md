@@ -124,6 +124,20 @@ You can then access the site in your browser as usual:
 
 <http://127.0.0.1:8000>
 
+## Testing python code
+
+The test suite can be run locally using the `test` Fabric command:
+
+```console
+$ fab test
+```
+
+Formatting compliance checks can be activated using the `--lint` option:
+
+```console
+$ fab test --lint
+```
+
 ## Python code standards
 
 The Etna project uses a few tools to improve the consistency and quality of Python code:
