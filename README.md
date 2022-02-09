@@ -124,6 +124,27 @@ You can then access the site in your browser as usual:
 
 <http://127.0.0.1:8000>
 
+## Python code standards
+
+The Etna project uses a few tools to improve the consistency and quality of Python code:
+
+- [``Black``](https://black.readthedocs.io/en/stable/): An opinionated Python formatter that takes care of code formatting (so we don't have to think about it).
+- [``isort``](https://pycqa.github.io/isort/): Ensures that import statements are ordered in a consistant way accross the project.
+- [``flake8``](https://flake8.pycqa.org/en/stable/): Catches things like unused parameters, unused imports and other non-formatting related things.
+
+The easiest way to ensure the code you're contributing adheres to these standards is to find and install plugins for your code editor of choice, that will check and transparently reformat your code whenever you save changes. Standard configuration files are included in the root of the repository, which *should* be picked up and respected by such plugins.
+
+Another option is to run the `format` Fabric command from your console to apply `isort` and `Black` formatting to Python code:
+
+```console
+$ fab format
+```
+
+Compliance checks are also built in to the `test` Fabric command - you just need to use the ``--lint`` option to activate them. For example:
+
+```console
+$ fab test --lint
+```
 
 ## Working with production data locally
 
