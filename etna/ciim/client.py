@@ -130,17 +130,7 @@ class KongClient:
             "expand": expand,
         }
 
-        # remove empty values to make logged requests cleaner.
-        params = {k: v for k, v in params.items() if v is not None}
-
-        try:
-            response = self.session.get(
-                f"{self.base_url}/data/fetch", params=params, timeout=self.timeout
-            )
-        except requests.exceptions.ConnectionError as e:
-            raise ConnectionError from e
-
-        return self.validate_and_parse_response(response)
+        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
 
     def search(
         self,
@@ -207,17 +197,7 @@ class KongClient:
             "size": size,
         }
 
-        # remove empty values to make logged requests cleaner.
-        params = {k: v for k, v in params.items() if v is not None}
-
-        try:
-            response = self.session.get(
-                f"{self.base_url}/data/search", params=params, timeout=self.timeout
-            )
-        except requests.exceptions.ConnectionError as e:
-            raise ConnectionError from e
-
-        return self.validate_and_parse_response(response)
+        return self.make_request(f"{self.base_url}/data/search", params=params).json()
 
     def fetch_all(
         self,
@@ -255,25 +235,46 @@ class KongClient:
             "size": size,
         }
 
-        # remove empty values to make logged requests cleaner.
-        params = {k: v for k, v in params.items() if v is not None}
+        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
 
+    def prepare_request_params(
+        self, data: Optional[dict[str, Any]] = None
+    ) -> dict[str, Any]:
+        """Process parameters before passing to Kong.
+
+        Remove empty values to make logged requests cleaner.
+        """
+        if not data:
+            return {}
+
+        return {k: v for k, v in data.items() if v is not None}
+
+    def make_request(
+        self, url: str, params: Optional[dict[str, Any]] = None
+    ) -> requests.Response:
+        """Make request to Kong API."""
+        params = self.prepare_request_params(params)
+        response = self.session.get(url, params=params, timeout=self.timeout)
+        self._raise_for_status(response)
+        return response
+
+    def _raise_for_status(self, response: requests.Response) -> None:
+        """Raise custom error for any requests.HTTPError raised for a request.
+
+        KongAPIErrors include response body in message to aide debugging.
+        """
         try:
-            response = self.session.get(
-                f"{self.base_url}/data/fetchAll", params=params, timeout=self.timeout
+            response.raise_for_status()
+        except requests.exceptions.HTTPError as e:
+            error_class = self.http_error_classes.get(
+                e.response.status_code, self.default_http_error_class
             )
-        except requests.exceptions.ConnectionError as e:
-            raise ConnectionError from e
 
-        return self.validate_and_parse_response(response)
+            try:
+                response_body = json.dumps(response.json(), indent=4)
+            except json.JSONDecodeError:
+                response_body = response.text
 
-    def validate_and_parse_response(self, response: requests.Response) -> dict:
-        """Validates response pre-JSON decode."""
-        if not response.ok:
-            raise KongError("Invalid response.", response=response)
-
-        json = response.json()
-
-        logger.debug(f"Response from Kong: {json}")
-
-        return json
+            raise error_class(
+                f"Response body: {response_body}", response=response
+            ) from e
