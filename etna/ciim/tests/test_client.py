@@ -3,7 +3,12 @@ from django.test import SimpleTestCase
 import responses
 
 from ..client import KongClient, SortBy, SortOrder, Stream, Template
-from ..exceptions import KongError
+from ..exceptions import (
+    KongBadRequestError,
+    KongCommunicationError,
+    KongInternalServerError,
+    KongServiceUnavailableError,
+)
 
 
 class ClientSearchTest(SimpleTestCase):
@@ -338,7 +343,7 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            KongError, "failure to get a peer from the ring-balancer"
+            KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
             self.client.fetch()
 
@@ -361,7 +366,7 @@ class TestClientFetchReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(KongError, "all shards failed"):
+        with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
             self.client.fetch()
 
     @responses.activate
@@ -384,7 +389,37 @@ class TestClientFetchReponse(SimpleTestCase):
             status=400,
         )
 
-        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
+        with self.assertRaisesMessage(
+            KongBadRequestError, "Failed to convert value of type"
+        ):
+            self.client.fetch()
+
+    @responses.activate
+    def test_internal_server_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json={
+                "message": ("Internal Server Error"),
+            },
+            status=500,
+        )
+
+        with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
+            self.client.fetch()
+
+    @responses.activate
+    def test_default_exception(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json={
+                "message": ("I'm a teapot"),
+            },
+            status=418,
+        )
+
+        with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
             self.client.fetch()
 
     @responses.activate
@@ -423,7 +458,7 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            KongError, "failure to get a peer from the ring-balancer"
+            KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
             self.client.search()
 
@@ -446,7 +481,7 @@ class TestClientSearchReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(KongError, "all shards failed"):
+        with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
             self.client.search()
 
     @responses.activate
@@ -469,7 +504,37 @@ class TestClientSearchReponse(SimpleTestCase):
             status=400,
         )
 
-        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
+        with self.assertRaisesMessage(
+            KongBadRequestError, "Failed to convert value of type"
+        ):
+            self.client.search()
+
+    @responses.activate
+    def test_internal_server_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "message": ("Internal Server Error"),
+            },
+            status=500,
+        )
+
+        with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
+            self.client.search()
+
+    @responses.activate
+    def test_default_exception(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "message": ("I'm a teapot"),
+            },
+            status=418,
+        )
+
+        with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
             self.client.search()
 
     @responses.activate
@@ -508,7 +573,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            KongError, "failure to get a peer from the ring-balancer"
+            KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
             self.client.fetch_all()
 
@@ -531,7 +596,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(KongError, "all shards failed"):
+        with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
             self.client.fetch_all()
 
     @responses.activate
@@ -554,7 +619,37 @@ class TestClientFetchAllReponse(SimpleTestCase):
             status=400,
         )
 
-        with self.assertRaisesMessage(KongError, "Failed to convert value of type"):
+        with self.assertRaisesMessage(
+            KongBadRequestError, "Failed to convert value of type"
+        ):
+            self.client.fetch_all()
+
+    @responses.activate
+    def test_internal_server_error(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={
+                "message": ("Internal Server Error"),
+            },
+            status=500,
+        )
+
+        with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
+            self.client.fetch_all()
+
+    @responses.activate
+    def test_default_exception(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={
+                "message": ("I'm a teapot"),
+            },
+            status=418,
+        )
+
+        with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
             self.client.fetch_all()
 
     @responses.activate

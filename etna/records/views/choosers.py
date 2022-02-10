@@ -4,7 +4,7 @@ from django.shortcuts import Http404
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.client import Stream
-from ...ciim.exceptions import KongException
+from ...ciim.exceptions import KongAPIError, SearchManagerException
 from ..models import Record
 
 
@@ -55,7 +55,7 @@ class KongChosenView(BaseChosenView):
         """
         try:
             return super().get(request, pk)
-        except KongException:
+        except (KongAPIError, SearchManagerException):
             raise Http404
 
 

@@ -10,7 +10,7 @@ import responses
 from ...records.models import Record
 from ..exceptions import (
     DoesNotExist,
-    KongException,
+    KongAPIError,
     MultipleObjectsReturned,
     UnsupportedSlice,
 )
@@ -290,7 +290,7 @@ class KongExceptionTest(TestCase):
             status=500,
         )
 
-        with self.assertRaises(KongException):
+        with self.assertRaises(KongAPIError):
             self.manager.get(iaid="C140")
 
 

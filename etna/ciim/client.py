@@ -1,11 +1,17 @@
 import enum
+import json
 import logging
 
-from typing import Optional
+from typing import Any, Optional
 
 import requests
 
-from .exceptions import ConnectionError, KongError
+from .exceptions import (
+    KongBadRequestError,
+    KongCommunicationError,
+    KongInternalServerError,
+    KongServiceUnavailableError,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -73,6 +79,13 @@ def format_list_param(items: Optional[list]) -> Optional[str]:
 
 class KongClient:
     """Client used to Fetch and validate data from Kong."""
+
+    http_error_classes = {
+        400: KongBadRequestError,
+        500: KongInternalServerError,
+        503: KongServiceUnavailableError,
+    }
+    default_http_error_class = KongCommunicationError
 
     def __init__(
         self,

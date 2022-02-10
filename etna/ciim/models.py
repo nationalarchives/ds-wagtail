@@ -6,7 +6,7 @@ from .client import KongClient
 from .exceptions import (
     DoesNotExist,
     InvalidQuery,
-    KongError,
+    KongAPIError,
     MultipleObjectsReturned,
     UnsupportedSlice,
 )
@@ -210,7 +210,7 @@ class FetchQuery(Query):
         for iaid in ids:
             try:
                 instance = self.get(iaid=iaid)
-            except (KongError, DoesNotExist):
+            except (KongAPIError, DoesNotExist):
                 continue
             records.append(instance)
 
