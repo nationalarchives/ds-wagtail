@@ -104,7 +104,13 @@ class TestRecordChooseView(WagtailPageTests):
 
     @responses.activate
     def test_select_failed(self):
+
         responses.reset()
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(),
+        )
 
         response = self.client.get("/admin/record-chooser/invalid/")
 
