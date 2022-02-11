@@ -3,7 +3,8 @@ from django.shortcuts import Http404
 
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
-from ...ciim.exceptions import KongException
+from ...ciim.client import Stream
+from ...ciim.exceptions import KongAPIError, SearchManagerException
 from ..models import Record
 
 
@@ -23,7 +24,7 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_object_list(self, search_term=""):
         """Filter object list by user's search term"""
-        return self.model.search.filter(term=search_term, stream="evidential")
+        return self.model.search.filter(keyword=search_term, stream=Stream.EVIDENTIAL)
 
     def get_object(self, pk):
         """Fetch selected object"""
@@ -54,7 +55,7 @@ class KongChosenView(BaseChosenView):
         """
         try:
             return super().get(request, pk)
-        except KongException:
+        except (KongAPIError, SearchManagerException):
             raise Http404
 
 

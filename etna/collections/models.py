@@ -9,7 +9,7 @@ from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import KongException
+from ..ciim.exceptions import KongAPIError, SearchManagerException
 from ..records.models import Record
 from ..records.widgets import RecordChooser
 from ..teasers.models import TeaserImageMixin
@@ -261,7 +261,7 @@ class ResultsPageRecord(Orderable, models.Model):
         """
         try:
             return Record.search.get(iaid=self.record_iaid)
-        except KongException:
+        except (KongAPIError, SearchManagerException):
             return None
 
     panels = [

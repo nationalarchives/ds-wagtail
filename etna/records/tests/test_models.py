@@ -1,3 +1,5 @@
+import unittest
+
 from django.test import TestCase, override_settings
 
 import responses
@@ -6,6 +8,9 @@ from ...ciim.tests.factories import create_media, create_response
 from ..models import Image
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",

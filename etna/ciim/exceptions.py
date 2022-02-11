@@ -1,37 +1,27 @@
-class KongException(Exception):
-    """Exception to group exceptions received from Kong client."""
+import requests
 
 
-class ConnectionError(KongException):
-    """Raised if Kong isn't accessible"""
-
-
-class InvalidResponse(KongException):
-    """Raised if Kong returns non-200 reponse"""
-
-    def __init__(self, message, *args, **kwargs):
-        """Attempt to parse out error message from ES."""
-
-        self.json = kwargs.pop("json", {})
-
-        try:
-            reason = self.json["error"]["root_cause"][0]["reason"]
-            message = f"{message} Reason: {reason}"
-        except (IndexError, KeyError, TypeError):
-            """Failed to find error message, raise without message"""
-
-        super().__init__(message, *args, **kwargs)
-
-
-class KubernetesError(KongException):
-    """Raised if kubernetes returns an error instead of results"""
-
-
-class KongError(KongException):
+class KongAPIError(requests.HTTPError):
     """Raised if Kong returns an error instead of results"""
 
 
-class SearchManagerException(KongException):
+class KongBadRequestError(KongAPIError):
+    """Raised if Kong responds with 400"""
+
+
+class KongInternalServerError(KongAPIError):
+    """Raised if Kong responds with 500"""
+
+
+class KongServiceUnavailableError(KongAPIError):
+    """Raised if Kong responds with 503"""
+
+
+class KongCommunicationError(KongAPIError):
+    """Raised if Kong responds with a non-200 status code"""
+
+
+class SearchManagerException(Exception):
     """Exception to group exceptions raised by SearchManager"""
 
 

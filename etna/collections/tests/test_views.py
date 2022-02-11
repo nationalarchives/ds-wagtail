@@ -78,11 +78,11 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?stream=evidential&term=law&from=0&size=0",
+            "https://kong.test/data/search?stream=evidential&keyword=law&from=0&size=0",
         )
         self.assertURLEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/search?stream=evidential&size=1&term=law&from=0",
+            "https://kong.test/data/search?stream=evidential&size=1&keyword=law&from=0",
         )
 
     @responses.activate
@@ -104,7 +104,13 @@ class TestRecordChooseView(WagtailPageTests):
 
     @responses.activate
     def test_select_failed(self):
+
         responses.reset()
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(),
+        )
 
         response = self.client.get("/admin/record-chooser/invalid/")
 
