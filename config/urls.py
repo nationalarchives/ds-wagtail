@@ -15,6 +15,7 @@ from etna.core.cache_control import (
 )
 from etna.records import converters
 from etna.records import views as records_views
+from etna.search import views as search_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
@@ -55,6 +56,11 @@ public_urls = [
         r"records/images/<iaid:iaid>/",
         login_required(records_views.image_browse),
         name="image-browse",
+    ),
+    path(
+        r"search/",
+        login_required(search_views.search_view),
+        name="search",
     ),
 ]
 
