@@ -23,7 +23,10 @@ class KongModelChooserMixinIn(ChooserMixin):
     is_searchable = True
 
     def get_object_list(self, search_term=""):
-        """Filter object list by user's search term"""
+        """Filter object list by user's search term,
+                check search_term if not then it means initial call for chooser dialog """
+        if not search_term:
+            return []
         return self.model.search.filter(keyword=search_term, stream=Stream.EVIDENTIAL)
 
     def get_object(self, pk):
