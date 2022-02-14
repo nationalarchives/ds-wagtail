@@ -6,7 +6,7 @@ from .client import KongClient
 from .exceptions import (
     DoesNotExist,
     InvalidQuery,
-    KongAPIError,
+    KongError,
     MultipleObjectsReturned,
     UnsupportedSlice,
 )
@@ -95,9 +95,9 @@ class SearchQuery(Query):
         self._results = []
         self._query = query
 
-    def _fetch(self, offset=0, size=1):
+    def _fetch(self, start=0, size=1):
         """Fetch and update ResultSet"""
-        self._response = self.client.search(offset=offset, size=size, **self._query)
+        self._response = self.client.search(start=start, size=size, **self._query)
 
         if not self._results:
             self._results = ResultSet(
@@ -105,7 +105,7 @@ class SearchQuery(Query):
             )
 
         if hits := self._response["hits"]["hits"]:
-            self._results.add(hits, offset)
+            self._results.add(hits, start)
 
     def __getitem__(self, key):
         """Support subscripts to allow results set to be paginated.
@@ -145,14 +145,14 @@ class SearchQuery(Query):
             try:
                 result = self._results[key.start]
             except (ResultPending, IndexError):
-                self._fetch(offset=key.start, size=self.BATCH_SIZE)
+                self._fetch(start=key.start, size=self.BATCH_SIZE)
                 result = self._results[key.start]
 
             transformed_result = self.model.transform(result)
             return self.model(**transformed_result)
 
-        self._fetch(offset=key.start, size=count)
-        translated_results = [self.model.transform(r) for r in self._results[key]]
+        self._fetch(start=key.start, size=count)
+        translated_results = [self.model.transform(r) for r in self._results[key] if r is not None]
         return [self.model(**r) for r in translated_results]
 
     def __len__(self):
@@ -160,7 +160,7 @@ class SearchQuery(Query):
         return self.count()
 
     def count(self):
-        self._fetch(offset=0, size=0)
+        self._fetch(start=0, size=0)
         return self._response["hits"]["total"]["value"]
 
     def first(self):
@@ -182,7 +182,7 @@ class FetchQuery(Query):
         self.model = model
 
     def get(self, iaid=None, reference_number=None, expand=False):
-        response = self.client.fetch(iaid=iaid, id=reference_number, expand=expand)
+        response = self.client.fetch(iaid=iaid, reference_number=reference_number, expand=expand)
 
         results = response["hits"]["hits"]
         results_count = response["hits"]["total"]["value"]
@@ -210,7 +210,7 @@ class FetchQuery(Query):
         for iaid in ids:
             try:
                 instance = self.get(iaid=iaid)
-            except (KongAPIError, DoesNotExist):
+            except (KongError, DoesNotExist):
                 continue
             records.append(instance)
 
