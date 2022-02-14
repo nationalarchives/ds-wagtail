@@ -87,6 +87,10 @@ def create_media(
     }
 
 
+def create_record_no_source():
+    return {}
+
+
 def create_response(records=None, total_count=None):
     """Create a sample Elasticsearch response for provided records.
 

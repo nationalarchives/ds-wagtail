@@ -1,10 +1,18 @@
 from ..ciim.utils import find_all, format_description_markup, pluck
+from ..ciim.exceptions import InValidResult
 
 
 def transform_record_result(result):
     """Fetch data from an Elasticsearch response to pass to Record.__init__"""
-
     data = {}
+    if result is None or not result or len(result) == 0:
+        raise InValidResult
+
+    if result["hits"]["total"]["value"] > 0:
+        if "_source" not in result:
+            raise InValidResult
+    if result["hits"]["total"]["value"] == 0:
+        return data
 
     source = result["_source"]
     identifier = source.get("identifier")
@@ -75,7 +83,6 @@ def transform_record_result(result):
         ]
 
     if related := source.get("related"):
-
         related_records = find_all(
             related,
             predicate=lambda i: i["@link"]["relationship"]["value"] == "related",

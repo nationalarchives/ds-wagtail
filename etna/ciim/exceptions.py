@@ -39,3 +39,7 @@ class MultipleObjectsReturned(SearchManagerException):
 
 class UnsupportedSlice(ValueError):
     """Raised if unsupported slice is attempted on a SearchManager result set"""
+
+
+class InValidResult(Exception):
+    """Raised invalid result exception , result is the response from Kong """
