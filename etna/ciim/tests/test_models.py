@@ -535,7 +535,7 @@ class UnexpectedParsingIssueTest(TestCase):
                         "qualifier": "association",
                         "relationship": {"value": "related"},
                     },
-                    "@summary": {
+                    "summary": {
                         "title": "Records of the Office of First Fruits and Tenths"
                     },
                 }
