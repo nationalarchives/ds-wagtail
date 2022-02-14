@@ -29,12 +29,3 @@ class TransformTestCase(SimpleTestCase):
         )
         with self.assertRaises(InValidResult):
             transform_record_result(result)
-
-    @responses.activate
-    def test_if_result_total_hit_value_zero_must_return_empty(self):
-        result = create_response(
-            records=[]
-        )
-        self.assertEquals(
-            transform_record_result(result), {}
-        )
