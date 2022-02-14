@@ -7,7 +7,7 @@ def transform_record_result(result):
 
     data = {}
     if not result:
-        raise
+        raise InValidResult
     if "_source" not in result:
         raise InValidResult
     if "hits" and "total" and "value" in result:
