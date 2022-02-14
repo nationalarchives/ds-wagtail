@@ -2,7 +2,7 @@ import json
 
 from pathlib import Path
 
-from django.test import TestCase, override_settings
+from django.test import SimpleTestCase, TestCase, override_settings
 
 import responses
 
@@ -10,6 +10,15 @@ from ...records.models import Record
 from ..exceptions import DoesNotExist, KongAPIError, MultipleObjectsReturned
 from ..models import APIManager
 from .factories import create_record, create_response
+
+
+class DeprecatedSearchManagerTest(SimpleTestCase):
+    @responses.activate
+    def test_search_property_raises_deprecation_warning(self):
+        with self.assertRaisesMessage(
+            DeprecationWarning, "Record.search is deprecated. Use Record.api instead."
+        ):
+            Record.search.fetch(iaid="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")

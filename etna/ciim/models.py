@@ -1,21 +1,35 @@
 from __future__ import annotations
 
-from typing import Protocol
+from abc import ABC, abstractmethod
 
 from django.conf import settings
+from django.utils.functional import classproperty
 
 from .client import KongClient
 from .exceptions import DoesNotExist, MultipleObjectsReturned
 
 
-class APIModel(Protocol):
+class APIModel(ABC):
     """Model representation of API data.."""
 
-    api: APIManager
-
     @classmethod
+    @abstractmethod
     def from_api_response(cls, response: dict) -> APIModel:
-        ...
+        """Transform a response From Kong into an APIModel instance.
+
+        To be implemented the concrete class.
+        """
+        raise NotImplementedError
+
+    @classproperty
+    def search(cls):
+        raise DeprecationWarning(
+            f"{cls.__name__}.search is deprecated. Use {cls.__name__}.api instead."
+        )
+
+    @classproperty
+    def api(cls) -> APIManager:
+        return APIManager(cls)
 
 
 class APIManager:
