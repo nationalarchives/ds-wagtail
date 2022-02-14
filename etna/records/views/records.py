@@ -1,7 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
 
-from ...ciim.exceptions import DoesNotExist, InvalidQuery
+from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..models import Image, Record
 
@@ -63,11 +63,8 @@ def record_detail_view(request, iaid):
 
     image = None
 
-    try:
-        if page.is_digitised:
-            image = Image.search.filter(rid=page.media_reference_id).first()
-    except InvalidQuery:
-        image = None
+    if page.is_digitised:
+        image = Image.search.filter(rid=page.media_reference_id).first()
 
     return render(
         request,

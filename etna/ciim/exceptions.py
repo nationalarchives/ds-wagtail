@@ -21,17 +21,13 @@ class KongCommunicationError(KongAPIError):
     """Raised if Kong responds with a non-200 status code"""
 
 
-class SearchManagerException(Exception):
-    """Exception to group exceptions raised by SearchManager"""
+class APIManagerException(Exception):
+    """Exception to group exceptions raised by APIManager"""
 
 
-class InvalidQuery(SearchManagerException):
-    """Raised if query to Kong contains no clauses"""
-
-
-class DoesNotExist(SearchManagerException):
+class DoesNotExist(APIManagerException):
     """Raised if item is requested from Kong but doesn't exist"""
 
 
-class MultipleObjectsReturned(SearchManagerException):
+class MultipleObjectsReturned(APIManagerException):
     """Raised if single item is requested but multiple returned"""

@@ -4,7 +4,7 @@ from django.utils.functional import cached_property
 
 from wagtail.core.blocks import ChooserBlock
 
-from ..ciim.exceptions import KongAPIError, SearchManagerException
+from ..ciim.exceptions import APIManagerException, KongAPIError
 
 
 class RecordChooserBlock(ChooserBlock):
@@ -86,7 +86,7 @@ class RecordChooserBlock(ChooserBlock):
 
         try:
             return self.target_model.api.fetch(iaid=value)
-        except (KongAPIError, SearchManagerException):
+        except (KongAPIError, APIManagerException):
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return self.target_model(iaid=value)
