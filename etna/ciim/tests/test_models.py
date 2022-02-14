@@ -10,7 +10,7 @@ import responses
 from ...records.models import Record
 from ..exceptions import (
     DoesNotExist,
-    KongAPIError,
+    KongException,
     MultipleObjectsReturned,
     UnsupportedSlice,
 )
@@ -61,7 +61,7 @@ class SearchManagerFilterTest(TestCase):
             ),
         )
 
-        results = self.manager.filter(web_reference="ADM 223/3")
+        results = self.manager.filter(reference_number="ADM 223/3")
 
         self.assertEqual(len(results), 2)
         self.assertTrue(isinstance(results[0], Record))
@@ -77,7 +77,7 @@ class SearchManagerFilterTest(TestCase):
             json=create_response(records=[create_record()]),
         )
 
-        results = self.manager.filter(web_reference="ADM 223/3")
+        results = self.manager.filter(reference_number="ADM 223/3")
 
         with self.assertRaises(IndexError):
             results[1]
@@ -97,7 +97,7 @@ class SearchManagerFilterTest(TestCase):
             callback=partial(paginate_records_callback, records),
         )
 
-        results = [r for r in self.manager.filter(web_reference="ADM 223/3")]
+        results = [r for r in self.manager.filter(reference_number="ADM 223/3")]
 
         self.assertEqual(len(results), 2)
         self.assertTrue(isinstance(results[0], Record))
@@ -121,7 +121,7 @@ class SearchManagerKongCount(TestCase):
 
     @responses.activate
     def test_hits_with_subscript_for_first_result(self):
-        result = self.manager.filter(web_reference="ADM 223/3")
+        result = self.manager.filter(reference_number="ADM 223/3")
 
         self.assertEqual(len(result), 1)
         self.assertEqual(result.count(), 1)
@@ -146,62 +146,62 @@ class SearchManagerKongClientIntegrationTest(TestCase):
     @responses.activate
     def test_url_for_with_subscript_for_first_result(self):
 
-        self.manager.filter(web_reference="ADM 223/3")[0]
+        self.manager.filter(reference_number="ADM 223/3")[0]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=10",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=10",
         )
 
     @responses.activate
     def test_url_for_subscript_for_first_result_with_limit(self):
-        self.manager.filter(web_reference="ADM 223/3")[0:1]
+        self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=1",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=1",
         )
 
     @responses.activate
     def test_url_for_subscript_for_second_result_with_limit(self):
-        self.manager.filter(web_reference="ADM 223/3")[0:1]
+        self.manager.filter(reference_number="ADM 223/3")[0:1]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=1",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=1",
         )
 
     @responses.activate
     def test_url_for_subscript_for_first_page(self):
-        self.manager.filter(web_reference="ADM 223/3")[0:5]
+        self.manager.filter(reference_number="ADM 223/3")[0:5]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=5",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=5",
         )
 
     @responses.activate
     def test_url_for_subscript_for_second_page(self):
-        self.manager.filter(web_reference="ADM 223/3")[5:10]
+        self.manager.filter(reference_number="ADM 223/3")[5:10]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=5&size=5",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=5&size=5",
         )
 
     @responses.activate
     def test_url_for_subscript_for_third_page(self):
-        self.manager.filter(web_reference="ADM 223/3")[10:15]
+        self.manager.filter(reference_number="ADM 223/3")[10:15]
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=10&size=5",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=10&size=5",
         )
 
     @responses.activate
@@ -229,47 +229,47 @@ class SearchManagerKongClientIntegrationTest(TestCase):
 
     @responses.activate
     def test_len_performs_fetch_for_zero_results(self):
-        len(self.manager.filter(web_reference="ADM 223/3"))
+        len(self.manager.filter(reference_number="ADM 223/3"))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=0",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=0",
         )
 
     @responses.activate
     def test_count_performs_fetch_for_zero_results(self):
-        self.manager.filter(web_reference="ADM 223/3").count()
+        self.manager.filter(reference_number="ADM 223/3").count()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?webReference=ADM+223%2F3&from=0&size=0",
+            "https://kong.test/data/search?keyword=ADM+223%2F3&from=0&size=0",
         )
 
     @responses.activate
     def test_iteration_performs_fetch(self):
-        for _ in self.manager.filter(web_reference="ADM 223/3"):
+        for _ in self.manager.filter(reference_number="ADM 223/3"):
             ...
 
         self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_comprehension_performs_fetch(self):
-        [r for r in self.manager.filter(web_reference="ADM 223/3")]
+        [r for r in self.manager.filter(reference_number="ADM 223/3")]
 
         self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_cast_to_list_performs_fetch(self):
-        list(self.manager.filter(web_reference="ADM 223/3"))
+        list(self.manager.filter(reference_number="ADM 223/3"))
 
         self.assertTrue(len(responses.calls) > 0)
 
     @responses.activate
     def test_iterator(self):
 
-        pages = self.manager.filter(web_reference="ADM 223/3")
+        pages = self.manager.filter(reference_number="ADM 223/3")
 
         self.assertEquals(len(pages), 15)
         self.assertEquals(len([p for p in pages]), 15)
@@ -290,7 +290,7 @@ class KongExceptionTest(TestCase):
             status=500,
         )
 
-        with self.assertRaises(KongAPIError):
+        with self.assertRaises(KongException):
             self.manager.get(iaid="C140")
 
 
@@ -535,7 +535,7 @@ class UnexpectedParsingIssueTest(TestCase):
                         "qualifier": "association",
                         "relationship": {"value": "related"},
                     },
-                    "@summary": {
+                    "summary": {
                         "title": "Records of the Office of First Fruits and Tenths"
                     },
                 }
