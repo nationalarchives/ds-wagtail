@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from django.conf import settings
 from django.urls import reverse
 
-from ..ciim.models import APIManager, APIModel
+from ..ciim.models import APIModel
 from .transforms import transform_record_result
 
 
@@ -50,10 +50,6 @@ class Record(APIModel):
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
         return cls(**transform_record_result(response))
-
-
-# APIManager exposes Kong Client method used to query Record data.
-Record.api = APIManager(Record)
 
 
 @dataclass
