@@ -107,6 +107,10 @@ def create_response(records=None, total_count=None):
     }
 
 
+def create_record_no_source():
+    return {}
+
+
 def paginate_records_callback(records, request):
     """Responses callback to simulate paginating through results.
 
