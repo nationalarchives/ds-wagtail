@@ -12,7 +12,7 @@ def image_viewer(request, iaid, sort):
     """View to render a single image for a record."""
 
     try:
-        page = Record.search.get(iaid)
+        page = Record.api.fetch(iaid=iaid)
     except DoesNotExist:
         raise Http404
 
@@ -59,7 +59,7 @@ def image_viewer(request, iaid, sort):
 
 def image_browse(request, iaid):
     try:
-        page = Record.search.get(iaid)
+        page = Record.api.fetch(iaid=iaid)
     except DoesNotExist:
         raise Http404
 
