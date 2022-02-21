@@ -24,10 +24,6 @@ class KongModelChooserMixinIn(ChooserMixin):
     # Allow models to be searched via chooser. Hides the search box if False
     is_searchable = True
 
-    def get_object_list(self, search_term=""):
-        """Filter object list by user's search term"""
-        return self.model.api.search(keyword=search_term, stream=Stream.EVIDENTIAL)
-
     def get_paginated_object_list(self, page_number, search_term="", **kwargs):
         offset = ((page_number - 1) * self.per_page,)
 
