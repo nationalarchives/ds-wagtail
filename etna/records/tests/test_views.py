@@ -1,5 +1,6 @@
 import io
 import re
+import unittest
 
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
@@ -142,6 +143,9 @@ class TestRecordView(TestCase):
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
 
+    @unittest.skip(
+        "Kong open beta API does not support media. Re-enable/update once media is available."
+    )
     @responses.activate
     def test_record_renders_for_record_with_no_image(self):
         responses.add(
@@ -169,6 +173,9 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
 
+    @unittest.skip(
+        "Kong open beta API does not support media. Re-enable/update once media is available."
+    )
     @responses.activate
     def test_record_renders_for_record_with_image(self):
         responses.add(
@@ -205,6 +212,9 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -244,6 +254,9 @@ class TestImageServeView(TestCase):
         self.assertTrue(response.streaming)
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -325,6 +338,9 @@ class TestImageBrowseView(TestCase):
         self.assertEquals(response.resolver_match.url_name, "image-browse")
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )

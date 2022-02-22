@@ -1,3 +1,5 @@
+import unittest
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase, override_settings
@@ -271,6 +273,9 @@ class TestRecordRoutes(UserAccessTestCase, TestCase):
         self.assertEquals(expected_status_code, response.status_code)
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @ddt
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
