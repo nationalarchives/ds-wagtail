@@ -1,4 +1,3 @@
-from ..ciim.exceptions import InValidResult
 from ..ciim.utils import find_all, format_description_markup, pluck
 
 
@@ -6,13 +5,7 @@ def transform_record_result(result):
     """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
-    if not result:
-        raise InValidResult
-    if "_source" not in result:
-        raise InValidResult
-    if "hits" and "total" and "value" in result:
-        if not result["hits"]["total"]["value"]:
-            return data
+
     source = result["_source"]
     identifier = source.get("identifier")
     summary = source.get("summary")

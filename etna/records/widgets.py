@@ -1,6 +1,6 @@
 from generic_chooser.widgets import AdminChooser
 
-from ..ciim.exceptions import KongAPIError, SearchManagerException
+from ..ciim.exceptions import APIManagerException, KongAPIError
 from .models import Record
 
 
@@ -29,8 +29,8 @@ class RecordChooser(AdminChooser):
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
         try:
-            return Record.search.get(iaid=pk)
-        except (KongAPIError, SearchManagerException):
+            return Record.api.fetch(iaid=pk)
+        except (KongAPIError, APIManagerException):
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return Record(iaid=pk, title="", reference_number="")

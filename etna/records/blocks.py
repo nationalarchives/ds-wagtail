@@ -4,7 +4,7 @@ from django.utils.functional import cached_property
 
 from wagtail.core.blocks import ChooserBlock
 
-from ..ciim.exceptions import KongAPIError, SearchManagerException
+from ..ciim.exceptions import APIManagerException, KongAPIError
 
 
 class RecordChooserBlock(ChooserBlock):
@@ -58,7 +58,8 @@ class RecordChooserBlock(ChooserBlock):
         """Return the model instances for the given list of primary keys.
         The instances must be returned in the same order as the values and keep None values.
         """
-        return self.target_model.search.get_multiple(iaid=values)
+        _, records = self.target_model.api.fetch_all(iaids=values)
+        return records
 
     def clean(self, value):
         """Return a 'clean' value for this chooser.
@@ -84,8 +85,8 @@ class RecordChooserBlock(ChooserBlock):
             return value
 
         try:
-            return self.target_model.search.get(iaid=value)
-        except (KongAPIError, SearchManagerException):
+            return self.target_model.api.fetch(iaid=value)
+        except (KongAPIError, APIManagerException):
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return self.target_model(iaid=value)
