@@ -9,7 +9,7 @@ from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import KongException
+from ..ciim.exceptions import APIManagerException, KongAPIError
 from ..records.models import Record
 from ..records.widgets import RecordChooser
 from ..teasers.models import TeaserImageMixin
@@ -260,8 +260,8 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results page.
         """
         try:
-            return Record.search.get(iaid=self.record_iaid)
-        except KongException:
+            return Record.api.fetch(iaid=self.record_iaid)
+        except (KongAPIError, APIManagerException):
             return None
 
     panels = [

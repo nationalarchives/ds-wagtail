@@ -43,7 +43,7 @@ def create_record(
             },
             "digitised": is_digitised,
             "hierarchy": [hierarchy],
-            "@summary": {
+            "summary": {
                 "title": title,
             },
             "multimedia": [
