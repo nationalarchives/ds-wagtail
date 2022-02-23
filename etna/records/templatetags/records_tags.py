@@ -1,6 +1,6 @@
 from django import template
 
-from ..field_labels import human_readable_labels
+from ..field_labels import FIELD_LABELS
 from ..models import Record
 
 register = template.Library()
@@ -14,5 +14,5 @@ def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: dict):
 
 @register.filter
 def as_label(record_field_name: str) -> str:
-    """returns human readable pre configured record/api field name, otherwise blank"""
-    return human_readable_labels.get(record_field_name, "")
+    """returns human readable label for pre configured record field name, otherwise blank"""
+    return FIELD_LABELS.get(record_field_name, "")

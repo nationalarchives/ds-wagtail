@@ -1,5 +1,5 @@
 # format <record_field_name> : <human readable label name>
-human_readable_labels = {
+FIELD_LABELS = {
     "reference_number": "Reference",
     "description": "Description",
     "origination_date": "Record created",
