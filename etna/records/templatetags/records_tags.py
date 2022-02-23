@@ -1,7 +1,7 @@
 from django import template
 
-from ..models import Record
 from ..field_labels import human_readable_labels
+from ..models import Record
 
 register = template.Library()
 
