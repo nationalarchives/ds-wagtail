@@ -14,5 +14,5 @@ def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: dict):
 
 @register.filter
 def as_label(record_field_name: str) -> str:
-    """returns human readable label for pre configured record field name, otherwise blank"""
-    return FIELD_LABELS.get(record_field_name, "")
+    """returns human readable label for pre configured record field name, otherwise Invalid name"""
+    return FIELD_LABELS.get(record_field_name, "UNRECOGNISED FIELD NAME")
