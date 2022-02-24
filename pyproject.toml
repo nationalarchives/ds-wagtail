@@ -29,6 +29,8 @@ coverage = "^5.5"
 ddt = "^1.4.2"
 flake8 = "^4.0.1"
 isort = "^5.10.0"
+pymdown-extensions = "^9.2"
+mkdocs-material = "^8.2.1"
 
 [build-system]
 requires = ["poetry>=0.12"]
