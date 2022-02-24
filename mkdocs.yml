@@ -21,6 +21,7 @@ nav:
   - 'Home': 'index.md'
   - 'Developer guide':
       - 'Project conventions': 'developer-guide/project-conventions.md'
+      - 'Local development gotchas': 'developer-guide/local-development-gotchas.md'
       - 'Backend development': 'developer-guide/backend.md'
       - 'Frontend development': 'developer-guide/frontend.md'
       - 'Fetching production data': 'developer-guide/fetching-production-data.md'
@@ -34,3 +35,4 @@ nav:
       - 'Caching strategy': 'infra/caching-strategy.md'
   - 'Unique features':
       - 'Search and record data': 'features/search-and-record-data.md'
+      - 'Categories': 'features/categories.md'
