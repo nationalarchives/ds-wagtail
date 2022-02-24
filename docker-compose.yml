@@ -33,7 +33,8 @@ services:
      - db
      - elasticsearch
     ports:
-     - "8000:8000"
+     - 8000:8000 # runserver
+     - 8001:8001 # mkdocs serve
     # Closely match prod server
     # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
     # Server for better debugging output
