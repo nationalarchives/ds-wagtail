@@ -75,3 +75,7 @@ class APIManager:
         hits = response["hits"]["hits"]
 
         return total, hits
+
+    def transform(self, response) -> tuple[int, list[APIModel]]:
+        count, hits = self._extract_hits_and_count(response)
+        return count, [self.model.from_api_response(h) for h in hits]

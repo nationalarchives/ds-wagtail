@@ -1,9 +1,16 @@
+{% load search_tags %}
+
 <h1>search</h1>
 
 <form method="get">
 	{{ form.as_p }}
 	<input type="submit" value="Submit" />
 </form>
+
+<ul>
+    <li><a href="?search_text={{search_text}}&bucket=tna" >Online records from The National Archives ({% aggregation_count response 'tna' %})</a></li>
+    <li><a href="?search_text={{search_text}}&bucket=nonTna" >Records from other UK archives ({% aggregation_count response 'nonTna' %})</a></li>
+</ul>
 
 <h2>Total count</h2>
 {{ count }}
