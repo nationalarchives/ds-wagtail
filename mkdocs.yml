@@ -21,6 +21,8 @@ nav:
   - 'Home': 'index.md'
   - 'Developer guide':
       - 'Project conventions': 'developer-guide/project-conventions.md'
+      - 'Contributing code': 'developer-guide/contributing.md'
+      - 'Dependency management': 'developer-guide/dependency-management.md'
       - 'Local development gotchas': 'developer-guide/local-development-gotchas.md'
       - 'Backend development': 'developer-guide/backend.md'
       - 'Frontend development': 'developer-guide/frontend.md'
