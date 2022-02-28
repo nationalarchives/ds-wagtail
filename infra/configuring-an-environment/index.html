@@ -914,41 +914,6 @@
 <p>To understand the full range of supported env vars and how they correlate to Django project configuration, take a good look through <code>config/base.py</code>.</p>
 <p>NOTE: The <code>Dockerfile</code> included in project sets a few 'higher order' env vars for the container to use too (using the <code>ENV</code> statement). The <code>DJANGO_SETTINGS_MODULE</code> one is particularly important: Without it, the app will attempt to run with <code>dev</code> settings, which are intended for local development only.</p>
 <p>The env vars you'll definitely want to set for each environment are:</p>
-<div class="toc">
-<ul>
-<li><a href="#configuration-an-environment">Configuration an environment</a><ul>
-<li><a href="#1-the-basics">1. The basics:</a><ul>
-<li><a href="#secret_key">SECRET_KEY</a></li>
-<li><a href="#database_url">DATABASE_URL</a></li>
-<li><a href="#primary_host">PRIMARY_HOST</a></li>
-</ul>
-</li>
-<li><a href="#2-media-storage">2. Media storage</a><ul>
-<li><a href="#aws_storage_bucket_name">AWS_STORAGE_BUCKET_NAME</a></li>
-<li><a href="#aws_access_key_id">AWS_ACCESS_KEY_ID</a></li>
-<li><a href="#aws_secret_access_key">AWS_SECRET_ACCESS_KEY</a></li>
-<li><a href="#aws_s3_custom_domain">AWS_S3_CUSTOM_DOMAIN</a></li>
-</ul>
-</li>
-<li><a href="#3-redis-for-internal-caching">3. Redis (for internal caching)</a><ul>
-<li><a href="#redis_tls_url">REDIS_TLS_URL</a></li>
-<li><a href="#redis_url">REDIS_URL</a></li>
-</ul>
-</li>
-<li><a href="#4-email-smtp">4. Email (SMTP)</a><ul>
-<li><a href="#server_email">SERVER_EMAIL</a></li>
-<li><a href="#email_host">EMAIL_HOST</a></li>
-<li><a href="#email_port">EMAIL_PORT</a></li>
-<li><a href="#email_host_user">EMAIL_HOST_USER</a></li>
-<li><a href="#email_host_password">EMAIL_HOST_PASSWORD</a></li>
-<li><a href="#email_use_tls">EMAIL_USE_TLS</a></li>
-<li><a href="#email_use_ssl">EMAIL_USE_SSL</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
 <h2 id="1-the-basics">1. The basics:<a class="headerlink" href="#1-the-basics" title="Permanent link">&para;</a></h2>
 <h3 id="secret_key"><code>SECRET_KEY</code><a class="headerlink" href="#secret_key" title="Permanent link">&para;</a></h3>
 <p><strong>This must be a large random value and it must be kept secret.</strong></p>

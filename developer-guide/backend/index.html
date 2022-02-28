@@ -707,23 +707,6 @@
 
 <h1 id="backend-development">Backend development<a class="headerlink" href="#backend-development" title="Permanent link">&para;</a></h1>
 <p>Specific guidance for working on on backend tasks.</p>
-<div class="toc">
-<ul>
-<li><a href="#backend-development">Backend development</a><ul>
-<li><a href="#managing-python-dependencies">Managing Python dependencies</a><ul>
-<li><a href="#updating-local-dependencies-to-reflect-changes">Updating local dependencies to reflect changes</a></li>
-<li><a href="#adding-a-dependency">Adding a dependency</a></li>
-<li><a href="#removing-a-dependency">Removing a dependency</a></li>
-</ul>
-</li>
-<li><a href="#running-django-management-commands">Running Django management commands</a></li>
-<li><a href="#applying-database-migrations">Applying database migrations</a></li>
-<li><a href="#reversing-database-migrations">Reversing database migrations</a></li>
-<li><a href="#generating-database-migrations">Generating database migrations</a></li>
-</ul>
-</li>
-</ul>
-</div>
 <h2 id="managing-python-dependencies">Managing Python dependencies<a class="headerlink" href="#managing-python-dependencies" title="Permanent link">&para;</a></h2>
 <p>The Etna project uses <a href="https://python-poetry.org/docs/">Poetry</a> to manage Python dependencies, which uses lock-file to help ensure environment consistency.</p>
 <p>Locally, Poetry runs in the <code>web</code> container, and it's commands are invoked via the shell. To start a shell session with your local <code>web</code> container, run:</p>
