@@ -253,6 +253,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        Contributing code
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../dependency-management/" class="md-nav__link">
+        Dependency management
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../local-development-gotchas/" class="md-nav__link">
         Local development gotchas
       </a>
@@ -299,40 +327,6 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#managing-python-dependencies" class="md-nav__link">
-    Managing Python dependencies
-  </a>
-  
-    <nav class="md-nav" aria-label="Managing Python dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#updating-local-dependencies-to-reflect-changes" class="md-nav__link">
-    Updating local dependencies to reflect changes
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-a-dependency" class="md-nav__link">
-    Adding a dependency
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#removing-a-dependency" class="md-nav__link">
-    Removing a dependency
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#running-django-management-commands" class="md-nav__link">
@@ -626,40 +620,6 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#managing-python-dependencies" class="md-nav__link">
-    Managing Python dependencies
-  </a>
-  
-    <nav class="md-nav" aria-label="Managing Python dependencies">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#updating-local-dependencies-to-reflect-changes" class="md-nav__link">
-    Updating local dependencies to reflect changes
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#adding-a-dependency" class="md-nav__link">
-    Adding a dependency
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#removing-a-dependency" class="md-nav__link">
-    Removing a dependency
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#running-django-management-commands" class="md-nav__link">
     Running Django management commands
   </a>
@@ -707,28 +667,6 @@
 
 <h1 id="backend-development">Backend development<a class="headerlink" href="#backend-development" title="Permanent link">&para;</a></h1>
 <p>Specific guidance for working on on backend tasks.</p>
-<h2 id="managing-python-dependencies">Managing Python dependencies<a class="headerlink" href="#managing-python-dependencies" title="Permanent link">&para;</a></h2>
-<p>The Etna project uses <a href="https://python-poetry.org/docs/">Poetry</a> to manage Python dependencies, which uses lock-file to help ensure environment consistency.</p>
-<p>Locally, Poetry runs in the <code>web</code> container, and it's commands are invoked via the shell. To start a shell session with your local <code>web</code> container, run:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>fab sh
-</code></pre></div>
-<p>You can then run Poetry commands exactly <a href="https://python-poetry.org/docs/cli/">as they are documented here</a>.</p>
-<p>Here are the ones you'll use regularly:</p>
-<h3 id="updating-local-dependencies-to-reflect-changes">Updating local dependencies to reflect changes<a class="headerlink" href="#updating-local-dependencies-to-reflect-changes" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="go">poetry install --remove-untracked --no-root&quot;</span>
-</code></pre></div>
-<h3 id="adding-a-dependency">Adding a dependency<a class="headerlink" href="#adding-a-dependency" title="Permanent link">&para;</a></h3>
-<p>Use the following to automatically use the latest version:</p>
-<div class="highlight"><pre><span></span><code><span class="go">poetry add name-of-dependency</span>
-</code></pre></div>
-<p>Or, specify a version:</p>
-<div class="highlight"><pre><span></span><code><span class="go">poetry add name-of-dependency@^2.0.5</span>
-<span class="go">poetry add &quot;name-of-dependency@&gt;=2.0.5&quot;</span>
-</code></pre></div>
-<p>See <a href="https://python-poetry.org/docs/cli/#add">the Poetry docs</a> for more options.</p>
-<h3 id="removing-a-dependency">Removing a dependency<a class="headerlink" href="#removing-a-dependency" title="Permanent link">&para;</a></h3>
-<div class="highlight"><pre><span></span><code><span class="go">poetry remove name-of-dependency</span>
-</code></pre></div>
 <h2 id="running-django-management-commands">Running Django management commands<a class="headerlink" href="#running-django-management-commands" title="Permanent link">&para;</a></h2>
 <p>Locally, Django runs in the <code>web</code> container, and it's commands are invoked via the shell. To start a shell session with your local <code>web</code> container, run:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>fab sh
