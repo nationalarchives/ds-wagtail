@@ -1,0 +1,1078 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+    
+    
+      
+        <title>Configuring an environment - Etna</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.e8d9bf0c.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.e6a45f82.min.css">
+        
+      
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="none" data-md-color-accent="none">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#configuration-an-environment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Etna" class="md-header__button md-logo" aria-label="Etna" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Etna
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Configuring an environment
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/nationalarchives/ds-wagtail/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Etna" class="md-nav__button md-logo" aria-label="Etna" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Etna
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/nationalarchives/ds-wagtail/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Developer guide
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Developer guide" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Developer guide
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/project-conventions/" class="md-nav__link">
+        Project conventions
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/local-development-gotchas.md" class="md-nav__link">
+        Local development gotchas
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/backend/" class="md-nav__link">
+        Backend development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/frontend/" class="md-nav__link">
+        Frontend development
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/fetching-production-data/" class="md-nav__link">
+        Fetching production data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../developer-guide/vscode/" class="md-nav__link">
+        Working with VS Code
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_3" type="checkbox" id="__nav_3" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_3">
+          Environments and infrastructure
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Environments and infrastructure" data-md-level="1">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Environments and infrastructure
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../environments/" class="md-nav__link">
+        Hosted environments
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../infrastructure/" class="md-nav__link">
+        Infrastructure overview
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../scheduled-tasks/" class="md-nav__link">
+        Scheduled tasks
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Configuring an environment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        Configuring an environment
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-basics" class="md-nav__link">
+    1. The basics:
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The basics:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secret_key" class="md-nav__link">
+    SECRET_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database_url" class="md-nav__link">
+    DATABASE_URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary_host" class="md-nav__link">
+    PRIMARY_HOST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-media-storage" class="md-nav__link">
+    2. Media storage
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Media storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws_storage_bucket_name" class="md-nav__link">
+    AWS_STORAGE_BUCKET_NAME
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_access_key_id" class="md-nav__link">
+    AWS_ACCESS_KEY_ID
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_secret_access_key" class="md-nav__link">
+    AWS_SECRET_ACCESS_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_s3_custom_domain" class="md-nav__link">
+    AWS_S3_CUSTOM_DOMAIN
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-redis-for-internal-caching" class="md-nav__link">
+    3. Redis (for internal caching)
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Redis (for internal caching)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_tls_url" class="md-nav__link">
+    REDIS_TLS_URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis_url" class="md-nav__link">
+    REDIS_URL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-email-smtp" class="md-nav__link">
+    4. Email (SMTP)
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Email (SMTP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server_email" class="md-nav__link">
+    SERVER_EMAIL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host" class="md-nav__link">
+    EMAIL_HOST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_port" class="md-nav__link">
+    EMAIL_PORT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host_user" class="md-nav__link">
+    EMAIL_HOST_USER
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host_password" class="md-nav__link">
+    EMAIL_HOST_PASSWORD
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_use_tls" class="md-nav__link">
+    EMAIL_USE_TLS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_use_ssl" class="md-nav__link">
+    EMAIL_USE_SSL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../testing-an-environment/" class="md-nav__link">
+        Testing an environment
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching-strategy/" class="md-nav__link">
+        Caching strategy
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_4">
+          Unique features
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Unique features" data-md-level="1">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Unique features
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/search-and-record-data/" class="md-nav__link">
+        Search and record data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../features/categories/" class="md-nav__link">
+        Categories
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#1-the-basics" class="md-nav__link">
+    1. The basics:
+  </a>
+  
+    <nav class="md-nav" aria-label="1. The basics:">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#secret_key" class="md-nav__link">
+    SECRET_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#database_url" class="md-nav__link">
+    DATABASE_URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#primary_host" class="md-nav__link">
+    PRIMARY_HOST
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-media-storage" class="md-nav__link">
+    2. Media storage
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Media storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#aws_storage_bucket_name" class="md-nav__link">
+    AWS_STORAGE_BUCKET_NAME
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_access_key_id" class="md-nav__link">
+    AWS_ACCESS_KEY_ID
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_secret_access_key" class="md-nav__link">
+    AWS_SECRET_ACCESS_KEY
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws_s3_custom_domain" class="md-nav__link">
+    AWS_S3_CUSTOM_DOMAIN
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-redis-for-internal-caching" class="md-nav__link">
+    3. Redis (for internal caching)
+  </a>
+  
+    <nav class="md-nav" aria-label="3. Redis (for internal caching)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#redis_tls_url" class="md-nav__link">
+    REDIS_TLS_URL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#redis_url" class="md-nav__link">
+    REDIS_URL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-email-smtp" class="md-nav__link">
+    4. Email (SMTP)
+  </a>
+  
+    <nav class="md-nav" aria-label="4. Email (SMTP)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#server_email" class="md-nav__link">
+    SERVER_EMAIL
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host" class="md-nav__link">
+    EMAIL_HOST
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_port" class="md-nav__link">
+    EMAIL_PORT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host_user" class="md-nav__link">
+    EMAIL_HOST_USER
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_host_password" class="md-nav__link">
+    EMAIL_HOST_PASSWORD
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_use_tls" class="md-nav__link">
+    EMAIL_USE_TLS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#email_use_ssl" class="md-nav__link">
+    EMAIL_USE_SSL
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/nationalarchives/ds-wagtail/edit/master/docs/infra/configuring-an-environment.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+
+<h1 id="configuration-an-environment">Configuration an environment<a class="headerlink" href="#configuration-an-environment" title="Permanent link">&para;</a></h1>
+<p>Most app configuration is controlled via <strong>env</strong> vars, which are managed from the 'Configuration' panel in AWS.</p>
+<p>To understand the full range of supported env vars and how they correlate to Django project configuration, take a good look through <code>config/base.py</code>.</p>
+<p>NOTE: The <code>Dockerfile</code> included in project sets a few 'higher order' env vars for the container to use too (using the <code>ENV</code> statement). The <code>DJANGO_SETTINGS_MODULE</code> one is particularly important: Without it, the app will attempt to run with <code>dev</code> settings, which are intended for local development only.</p>
+<p>The env vars you'll definitely want to set for each environment are:</p>
+<div class="toc">
+<ul>
+<li><a href="#configuration-an-environment">Configuration an environment</a><ul>
+<li><a href="#1-the-basics">1. The basics:</a><ul>
+<li><a href="#secret_key">SECRET_KEY</a></li>
+<li><a href="#database_url">DATABASE_URL</a></li>
+<li><a href="#primary_host">PRIMARY_HOST</a></li>
+</ul>
+</li>
+<li><a href="#2-media-storage">2. Media storage</a><ul>
+<li><a href="#aws_storage_bucket_name">AWS_STORAGE_BUCKET_NAME</a></li>
+<li><a href="#aws_access_key_id">AWS_ACCESS_KEY_ID</a></li>
+<li><a href="#aws_secret_access_key">AWS_SECRET_ACCESS_KEY</a></li>
+<li><a href="#aws_s3_custom_domain">AWS_S3_CUSTOM_DOMAIN</a></li>
+</ul>
+</li>
+<li><a href="#3-redis-for-internal-caching">3. Redis (for internal caching)</a><ul>
+<li><a href="#redis_tls_url">REDIS_TLS_URL</a></li>
+<li><a href="#redis_url">REDIS_URL</a></li>
+</ul>
+</li>
+<li><a href="#4-email-smtp">4. Email (SMTP)</a><ul>
+<li><a href="#server_email">SERVER_EMAIL</a></li>
+<li><a href="#email_host">EMAIL_HOST</a></li>
+<li><a href="#email_port">EMAIL_PORT</a></li>
+<li><a href="#email_host_user">EMAIL_HOST_USER</a></li>
+<li><a href="#email_host_password">EMAIL_HOST_PASSWORD</a></li>
+<li><a href="#email_use_tls">EMAIL_USE_TLS</a></li>
+<li><a href="#email_use_ssl">EMAIL_USE_SSL</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<h2 id="1-the-basics">1. The basics:<a class="headerlink" href="#1-the-basics" title="Permanent link">&para;</a></h2>
+<h3 id="secret_key"><code>SECRET_KEY</code><a class="headerlink" href="#secret_key" title="Permanent link">&para;</a></h3>
+<p><strong>This must be a large random value and it must be kept secret.</strong></p>
+<p>Each environment should have a unique value. Particular care should be taken to ensure that the key used in production isn’t used anywhere else.</p>
+<h3 id="database_url"><code>DATABASE_URL</code><a class="headerlink" href="#database_url" title="Permanent link">&para;</a></h3>
+<p>Postgres connection string including the user, password, host, port and target database name in a single string,</p>
+<p>e.g: <strong>postgres://USER:PASSWORD@HOST:PORT/DB_NAME</strong></p>
+<p>NOTE: The database 'DB_NAME' must already exist, but can be empty. The app will create any database tables / indexes it needs.</p>
+<h3 id="primary_host"><code>PRIMARY_HOST</code><a class="headerlink" href="#primary_host" title="Permanent link">&para;</a></h3>
+<p>The primary domain that will be used to access the Wagtail CMS for this environment.</p>
+<p>e.g. <strong>eta.nationalarchives.gov.uk</strong>.</p>
+<h2 id="2-media-storage">2. Media storage<a class="headerlink" href="#2-media-storage" title="Permanent link">&para;</a></h2>
+<h3 id="aws_storage_bucket_name"><code>AWS_STORAGE_BUCKET_NAME</code><a class="headerlink" href="#aws_storage_bucket_name" title="Permanent link">&para;</a></h3>
+<p>The name of the bucket to store uploaded media in.</p>
+<p>e.g. <strong>etna-production</strong>.</p>
+<h3 id="aws_access_key_id"><code>AWS_ACCESS_KEY_ID</code><a class="headerlink" href="#aws_access_key_id" title="Permanent link">&para;</a></h3>
+<p>Access credential for the <code>AWS_STORAGE_BUCKET_NAME</code> bucket.</p>
+<p>e.g. <strong>AKIXRCHO54ALNGIYM9FK</strong>.</p>
+<h3 id="aws_secret_access_key"><code>AWS_SECRET_ACCESS_KEY</code><a class="headerlink" href="#aws_secret_access_key" title="Permanent link">&para;</a></h3>
+<p>Access credential for the <code>AWS_STORAGE_BUCKET_NAME</code> bucket.</p>
+<p>e.g. <strong>LbxF12Yf0a8eDFVWxEvVcKRiFimLr5f/TxYImevS</strong>.</p>
+<h3 id="aws_s3_custom_domain"><code>AWS_S3_CUSTOM_DOMAIN</code><a class="headerlink" href="#aws_s3_custom_domain" title="Permanent link">&para;</a></h3>
+<p>Generally only set in production to put the S3 bucket behind a CDN using a custom domain.</p>
+<p>e.g. <strong>eta-media.nationalarchives.gov.uk</strong>.</p>
+<h2 id="3-redis-for-internal-caching">3. Redis (for internal caching)<a class="headerlink" href="#3-redis-for-internal-caching" title="Permanent link">&para;</a></h2>
+<h3 id="redis_tls_url"><code>REDIS_TLS_URL</code><a class="headerlink" href="#redis_tls_url" title="Permanent link">&para;</a></h3>
+<p>Connection string for a TLS-enabled Redis instance.</p>
+<p>e.g. <strong>rediss://USER:PASSWORD@HOST:PORT/DB_NAME</strong></p>
+<h3 id="redis_url"><code>REDIS_URL</code><a class="headerlink" href="#redis_url" title="Permanent link">&para;</a></h3>
+<p>Connection string for a Redis instance without TLS enabled.</p>
+<p>e.g. <strong>redis://USER:PASSWORD@HOST:PORT/DB_NAME</strong></p>
+<h2 id="4-email-smtp">4. Email (SMTP)<a class="headerlink" href="#4-email-smtp" title="Permanent link">&para;</a></h2>
+<h3 id="server_email"><code>SERVER_EMAIL</code><a class="headerlink" href="#server_email" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>'root@localhost'</strong></p>
+<p>The 'from' address that should be used for emails sent by the server to site admins and other users.</p>
+<h3 id="email_host"><code>EMAIL_HOST</code><a class="headerlink" href="#email_host" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>'localhost'</strong></p>
+<p>The host to use for sending email.</p>
+<h3 id="email_port"><code>EMAIL_PORT</code><a class="headerlink" href="#email_port" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>25</strong></p>
+<p>Port to use for the SMTP server defined in <code>EMAIL_HOST</code>.</p>
+<h3 id="email_host_user"><code>EMAIL_HOST_USER</code><a class="headerlink" href="#email_host_user" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>''</strong> (empty string)</p>
+<p>Username to use for the SMTP server defined in <code>EMAIL_HOST</code>. If empty, Django won’t attempt authentication.</p>
+<h3 id="email_host_password"><code>EMAIL_HOST_PASSWORD</code><a class="headerlink" href="#email_host_password" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>''</strong> (Empty string)</p>
+<p>Password to use for the SMTP server defined in <code>EMAIL_HOST</code>. This setting is used in conjunction with <code>EMAIL_HOST_USER</code> when authenticating to the SMTP server. If either of these settings is empty, Django won’t attempt authentication.</p>
+<h3 id="email_use_tls"><code>EMAIL_USE_TLS</code><a class="headerlink" href="#email_use_tls" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>False</strong></p>
+<p>Whether to use a TLS (secure) connection when talking to the SMTP server. This is used for explicit TLS connections, generally on port 587. If you are experiencing hanging connections, see the implicit TLS setting <code>EMAIL_USE_SSL</code>.</p>
+<h3 id="email_use_ssl"><code>EMAIL_USE_SSL</code><a class="headerlink" href="#email_use_ssl" title="Permanent link">&para;</a></h3>
+<p>Default: <strong>False</strong></p>
+<p>Whether to use an implicit TLS (secure) connection when talking to the SMTP server. In most email documentation this type of TLS connection is referred to as SSL. It is generally used on port 465. If you are experiencing problems, see the explicit TLS setting <code>EMAIL_USE_TLS</code>.</p>
+<p>NOTE: <code>EMAIL_USE_TLS</code> and <code>EMAIL_USE_SSL</code> are mutually exclusive, so only set one of those settings to <code>True</code>.</p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="../scheduled-tasks/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Scheduled tasks" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Scheduled tasks
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="../testing-an-environment/" class="md-footer__link md-footer__link--next" aria-label="Next: Testing an environment" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Testing an environment
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      
+    
+  </body>
+</html>
