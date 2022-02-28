@@ -2,8 +2,6 @@
 
 Specific guidance for working on on backend tasks.
 
-[TOC]
-
 ## Managing Python dependencies
 
 The Etna project uses [Poetry](https://python-poetry.org/docs/) to manage Python dependencies, which uses lock-file to help ensure environment consistency.

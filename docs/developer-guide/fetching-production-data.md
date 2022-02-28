@@ -1,7 +1,5 @@
 # Fetching production data
 
-[TOC]
-
 ## Prerequisites
 
 The following steps must be completed before you can pull data from an evironment:

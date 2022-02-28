@@ -1,7 +1,5 @@
 # Etna Technical Documentation
 
-[TOC]
-
 ## Project overview
 
 - A brief summary of the project

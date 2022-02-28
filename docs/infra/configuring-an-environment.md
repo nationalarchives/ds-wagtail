@@ -8,8 +8,6 @@ NOTE: The `Dockerfile` included in project sets a few 'higher order' env vars fo
 
 The env vars you'll definitely want to set for each environment are:
 
-[TOC]
-
 ## 1. The basics:
 
 ### `SECRET_KEY`

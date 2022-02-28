@@ -1,7 +1,5 @@
 # Etna project conventions
 
-[TOC]
-
 ## Docker for local development
 
 Etna uses Docker to create a consistent environment for local development.
@@ -76,7 +74,6 @@ TBC
 ### For Javascript
 
 TBC
-
 
 ## Git branching model
 

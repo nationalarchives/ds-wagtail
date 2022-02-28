@@ -2,8 +2,6 @@
 
 Specific guidance for working on the site frontend
 
-[TOC]
-
 ## Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
