@@ -26,7 +26,7 @@ nav:
       - 'Frontend development': 'developer-guide/frontend.md'
       - 'Fetching production data': 'developer-guide/fetching-production-data.md'
       - 'Working with VS Code': 'developer-guide/vscode.md'
-  - 'Environments and infrastructure':
+  - 'Infrastructure and environments':
       - 'Hosted environments': 'infra/environments.md'
       - 'Infrastructure overview': 'infra/infrastructure.md'
       - 'Scheduled tasks': 'infra/scheduled-tasks.md'
