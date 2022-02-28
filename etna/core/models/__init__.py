@@ -1,1 +1,0 @@
-from .basepage import *  # noqa

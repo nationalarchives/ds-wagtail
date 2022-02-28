@@ -1,8 +1,0 @@
-[run]
-omit =
-    config/*
-    etna/**/migrations/*.py
-    etna/**/tests/*.py
-    locustfile.py
-
-source = .
