@@ -364,22 +364,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#to-download-production-data" class="md-nav__link">
-    To download production data
-  </a>
-  
-    <nav class="md-nav" aria-label="To download production data">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#download-production-media" class="md-nav__link">
-    Download production media
+  <a href="#download-production-data" class="md-nav__link">
+    Download production data
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#download-production-media" class="md-nav__link">
+    Download production media
+  </a>
   
 </li>
       
@@ -626,22 +620,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#to-download-production-data" class="md-nav__link">
-    To download production data
-  </a>
-  
-    <nav class="md-nav" aria-label="To download production data">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#download-production-media" class="md-nav__link">
-    Download production media
+  <a href="#download-production-data" class="md-nav__link">
+    Download production data
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
+      
+        <li class="md-nav__item">
+  <a href="#download-production-media" class="md-nav__link">
+    Download production media
+  </a>
   
 </li>
       
@@ -671,12 +659,12 @@
 <li>On the <code>#ds-etna</code> or <code>#dev-etna</code> Slack channels, request for someone to grant you access to the Etna project.</li>
 <li>Once you have access, <a href="https://docs.platform.sh/development/cli/api-tokens.html#get-a-token">generate an API token</a> for your account (The name <strong>Local CLI</strong> will do nicely), and add it your local <code>.env</code> file as <code>PLATFORMSH_CLI_TOKEN</code>.</li>
 </ol>
-<h2 id="to-download-production-data">To download production data<a class="headerlink" href="#to-download-production-data" title="Permanent link">&para;</a></h2>
+<h2 id="download-production-data">Download production data<a class="headerlink" href="#download-production-data" title="Permanent link">&para;</a></h2>
 <p>Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>fab pull-production-data
 </code></pre></div>
 <p><strong>NOTE:</strong> Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. Also, any Django users you created locally before running the command will no longer exist. You can run <code>python manage.py createsuperuser</code> from a container shell to create yourself a new one.</p>
-<h3 id="download-production-media">Download production media<a class="headerlink" href="#download-production-media" title="Permanent link">&para;</a></h3>
+<h2 id="download-production-media">Download production media<a class="headerlink" href="#download-production-media" title="Permanent link">&para;</a></h2>
 <p>Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>fab pull-production-media
 </code></pre></div>
