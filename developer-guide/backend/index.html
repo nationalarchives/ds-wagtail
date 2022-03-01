@@ -336,23 +336,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#common-django-management-commands" class="md-nav__link">
+    Common Django management commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Django management commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-database-migrations" class="md-nav__link">
+    Generating database migrations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#applying-database-migrations" class="md-nav__link">
     Applying database migrations
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#reversing-database-migrations" class="md-nav__link">
     Reversing database migrations
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#generating-database-migrations" class="md-nav__link">
-    Generating database migrations
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -627,23 +640,36 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#common-django-management-commands" class="md-nav__link">
+    Common Django management commands
+  </a>
+  
+    <nav class="md-nav" aria-label="Common Django management commands">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#generating-database-migrations" class="md-nav__link">
+    Generating database migrations
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#applying-database-migrations" class="md-nav__link">
     Applying database migrations
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
+        
+          <li class="md-nav__item">
   <a href="#reversing-database-migrations" class="md-nav__link">
     Reversing database migrations
   </a>
   
 </li>
-      
-        <li class="md-nav__item">
-  <a href="#generating-database-migrations" class="md-nav__link">
-    Generating database migrations
-  </a>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -672,15 +698,23 @@
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>fab sh
 </code></pre></div>
 <p>From there, you can interact with Django exactly as you can see outlined in <a href="https://docs.djangoproject.com/en/stable/topics/migrations/#module-django.db.migrations">the official documentation</a> and the many tutorials you'll find on the web.</p>
-<p>Here are the ones you'll use regularly:</p>
-<h2 id="applying-database-migrations">Applying database migrations<a class="headerlink" href="#applying-database-migrations" title="Permanent link">&para;</a></h2>
+<h2 id="common-django-management-commands">Common Django management commands<a class="headerlink" href="#common-django-management-commands" title="Permanent link">&para;</a></h2>
+<p>Below are some commands you'll use regularly:</p>
+<h3 id="generating-database-migrations">Generating database migrations<a class="headerlink" href="#generating-database-migrations" title="Permanent link">&para;</a></h3>
+<p>To make migrations for a new app:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations <span class="o">[</span>appname<span class="o">]</span>
+</code></pre></div>
+<p>To make migrations for an existing app, use the <code>-n</code> argument to provide a meaninful name to help your peers understand what the migration does:</p>
+<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations <span class="o">[</span>appname<span class="o">]</span> -n meaningful_name_here
+</code></pre></div>
+<h3 id="applying-database-migrations">Applying database migrations<a class="headerlink" href="#applying-database-migrations" title="Permanent link">&para;</a></h3>
 <p>To apply migrations for all apps:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate
 </code></pre></div>
 <p>To apply migrations for a specific app:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate appname
 </code></pre></div>
-<h2 id="reversing-database-migrations">Reversing database migrations<a class="headerlink" href="#reversing-database-migrations" title="Permanent link">&para;</a></h2>
+<h3 id="reversing-database-migrations">Reversing database migrations<a class="headerlink" href="#reversing-database-migrations" title="Permanent link">&para;</a></h3>
 <p>To reverse migrations for an app, specify the number of the migration you want to <strong>revert back to</strong>. For example, if you wanted to reverse the following migrations:</p>
 <ul>
 <li><code>003_add_cat_gif_image_field</code></li>
@@ -692,13 +726,6 @@
 </code></pre></div>
 <p>If you need to reverse ALL migrations for an app, use the 'zero' keyword, like so:</p>
 <div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py migrate appname zero
-</code></pre></div>
-<h2 id="generating-database-migrations">Generating database migrations<a class="headerlink" href="#generating-database-migrations" title="Permanent link">&para;</a></h2>
-<p>To make migrations for a new app:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations <span class="o">[</span>appname<span class="o">]</span>
-</code></pre></div>
-<p>To make migrations for an existing app, use the <code>-n</code> argument to provide a meaninful name to help your peers understand what the migration does:</p>
-<div class="highlight"><pre><span></span><code><span class="gp">$ </span>python manage.py makemigrations <span class="o">[</span>appname<span class="o">]</span> -n meaningful_name_here
 </code></pre></div>
 
               
