@@ -24,18 +24,18 @@
                     <div class="row">
                         <h2 class="sr-only">Items</h2>
                         <ul class="card-group--list-style-none" id="analytics-explorer-results" data-container-name="explorer-results">
-                            {% for record_page_result in page.records.all %}
+                            {% for result_page_record in page.records.all %}
                                 {% comment %}
                                  It's possible for the request for record data from Kong could fail
-                                 resulting in no record page being associated with ResultsPageRecordPage.
+                                 resulting in no record page being associated with ResultsPageRecord.
 
                                  If so, skip the record.
                                 {% endcomment %}
-                                {% if record_page_result.record_page %}
-                                    {% if record_page_result.teaser_image %}
-                                        {% include 'includes/card-group-record-summary.html' with record_page=record_page_result.record_page teaser_image=record_page_result.teaser_image description_override=record_page_result.description only %}
+                                {% if result_page_record.record %}
+                                    {% if result_page_record.teaser_image %}
+                                        {% include 'includes/card-group-record-summary.html' with record=result_page_record.record teaser_image=result_page_record.teaser_image description_override=result_page_record.description only %}
                                     {% else %}
-                                        {% include 'includes/card-group-record-summary-no-image.html' with record_page=record_page_result.record_page description_override=record_page_result.description only %}
+                                        {% include 'includes/card-group-record-summary-no-image.html' with record=result_page_record.record description_override=result_page_record.description only %}
                                     {% endif %}
                                 {% endif %}
                             {% endfor %}

@@ -9,8 +9,8 @@ from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import KongException
-from ..records.models import RecordPage
+from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..records.models import Record
 from ..records.widgets import RecordChooser
 from ..teasers.models import TeaserImageMixin
 from .blocks import (
@@ -235,7 +235,7 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     subpage_types = []
 
 
-class ResultsPageRecordPage(Orderable, models.Model):
+class ResultsPageRecord(Orderable, models.Model):
     """Map orderable records data to ResultsPage"""
 
     page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
@@ -253,15 +253,15 @@ class ResultsPageRecordPage(Orderable, models.Model):
     )
 
     @cached_property
-    def record_page(self):
+    def record(self):
         """Fetch associated record page.
 
         Capture any exception thrown by KongClient and return None so we can
         skip this record on the results page.
         """
         try:
-            return RecordPage.search.get(iaid=self.record_iaid)
-        except KongException:
+            return Record.api.fetch(iaid=self.record_iaid)
+        except (KongAPIError, APIManagerException):
             return None
 
     panels = [
