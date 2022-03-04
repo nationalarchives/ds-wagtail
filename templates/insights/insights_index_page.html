@@ -10,6 +10,21 @@
         <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>
 
+    {% comment %}
+        NOTE: TO BE REFINED BY FE
+        {% if page.featured_insight %}
+            <div class="featured-insight">
+                <a href="{% pageurl page.featured_insight %}">
+                    <h3>
+                        <small>{% trans "Collection hightlight" %}</small><br>
+                        {{ page.featured_insight.title }}
+                    </h3>
+                    <p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
+                </a>
+            </div>
+        {% endif %}
+    {% endcomment %}
+
     {% for block in page.body %}
         {% include_block block %}
     {% endfor %}
