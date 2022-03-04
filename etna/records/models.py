@@ -1,16 +1,19 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Any, Dict
 
 from django.conf import settings
+from django.http import HttpRequest
 from django.urls import reverse
 
+from ..analytics.mixins import DataLayerMixin
 from ..ciim.models import APIModel
 from .transforms import transform_record_result
 
 
 @dataclass
-class Record(APIModel):
+class Record(DataLayerMixin, APIModel):
     """Non-creatable page used to render record data in templates.
 
     This stub page allows us to use common templates to render external record
@@ -50,6 +53,34 @@ class Record(APIModel):
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
         return cls(**transform_record_result(response))
+
+    @property
+    def availability_condition_category(self) -> str:
+        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
+            self.availability_delivery_condition, ""
+        )
+
+    def get_gtm_content_group(self) -> str:
+        """
+        Overrides DataLayerMixin.get_gtm_content_group() to
+        return the name of the class.
+        """
+        return self.__class__.__name__
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        """
+        Returns data to be included in the Google Analytics datalayer when
+        rendering this record.
+
+        Override this method on subclasses to add data that is relevant to a
+        specific record type.
+        """
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension16=self.availability_condition_category,
+            customDimension17=self.availability_delivery_condition,
+        )
+        return data
 
 
 @dataclass

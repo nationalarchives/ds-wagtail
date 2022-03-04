@@ -1,21 +1,17 @@
-{% load wagtailcore_tags %}
-{% load static wagtailuserbar %}
-{% load alert_tags %}
-
-{% wagtail_site as current_site %}
-
-<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags %}<!DOCTYPE html>
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
         <title>
-            {% if form.errors %}Error: {% endif %}
-
+            {% block title_prefix %}
+                {% if form.errors %}Error: {% endif %}
+            {% endblock %}
             {% block title %}
                 {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
             {% endblock %}
             {% block title_suffix %}
-                - {{ current_site.site_name }}
+                {% wagtail_site as current_site %}
+                 - {{ current_site.site_name }}
             {% endblock %}
         </title>
         <meta name="description" content="" />
@@ -28,38 +24,44 @@
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
-    {% block extra_gtm_js %}
-        {# Override this in templates to add extra javascript to be used by GTM #}
-    {% endblock %}
+        {% block extra_gtm_js %}
+            {# Override this in templates to add extra javascript to be used by GTM #}
+        {% endblock %}
 
-    {% include 'includes/gtm-script.html' %}
+        {% include 'includes/gtm-script.html' %}
 
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
-          rel="stylesheet">
-    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
+        {# Google Fonts #}
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+            rel="stylesheet">
+        <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
-    {# Favicon #}
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
-</head>
+        {# Favicon #}
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    </head>
 
-<body class="{% block body_class %}{% endblock %}">
-{% wagtailuserbar %}
-<a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
-{% block alerts %}{% alerts page=page %}{% endblock %}
-{% include 'includes/gtm-no-script.html' %}
-{% include 'includes/header.html' %}
+    <body class="{% block body_class %}{% endblock %}">
+        <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-<main id="maincontent">
-    {% block content %}{% endblock %}
-</main>
+        {% include 'includes/gtm-no-script.html' %}
 
-{% include 'includes/footer.html' %}
+        {% block header %}
+            {% include 'includes/header.html' %}
+        {% endblock %}
 
-{% block extra_js %}
-    {# Override this in templates to add extra javascript #}
-{% endblock %}
-</body>
+        {% block main %}
+            <main id="maincontent">
+                {% block content %}{% endblock %}
+            </main>
+        {% endblock %}
+
+        {% block footer %}
+            {% include 'includes/footer.html' %}
+        {% endblock %}
+
+        {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
 </html>
