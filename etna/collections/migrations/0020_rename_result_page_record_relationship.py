@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailimages', '0023_add_choose_permissions'),
-        ('collections', '0019_resultspage_title_prefix'),
+        ("wagtailimages", "0023_add_choose_permissions"),
+        ("collections", "0019_resultspage_title_prefix"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='ResultsPageRecordPage',
-            new_name='ResultsPageRecord',
+            old_name="ResultsPageRecordPage",
+            new_name="ResultsPageRecord",
         ),
     ]
