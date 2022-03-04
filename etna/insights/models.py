@@ -1,6 +1,6 @@
 from django.db import models
 
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
 
 from etna.core.models import BasePage
@@ -18,6 +18,9 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(InsightsIndexPageStreamBlock, blank=True, null=True)
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    )
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -27,6 +30,7 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
+        PageChooserPanel("featured_insight"),
         StreamFieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
