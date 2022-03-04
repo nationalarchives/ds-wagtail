@@ -2,13 +2,101 @@ from django.test import SimpleTestCase
 
 import responses
 
-from ..client import KongClient, SortBy, SortOrder, Stream, Template
+from ..client import Aggregation, KongClient, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
     KongBadRequestError,
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
 )
+
+
+class ClientSearchAllTest(SimpleTestCase):
+    def setUp(self):
+        self.client = KongClient("https://kong.test", api_key="")
+
+        responses.add(responses.GET, "https://kong.test/data/searchAll", json={})
+
+    @responses.activate
+    def test_no_arguments_makes_request_with_no_parameters(self):
+        self.client.search_all()
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url, "https://kong.test/data/searchAll"
+        )
+
+    @responses.activate
+    def test_with_keyword(self):
+        self.client.search_all(keyword="Egypt")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?keyword=Egypt",
+        )
+
+    @responses.activate
+    def test_with_template_details(self):
+        self.client.search_all(template=Template.DETAILS)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?template=details",
+        )
+
+    @responses.activate
+    def test_with_template_results(self):
+        self.client.search_all(template=Template.RESULTS)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?template=results",
+        )
+
+    @responses.activate
+    def test_with_aggregations(self):
+        self.client.search_all(aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?aggregations=level%2C+collection",
+        )
+
+    @responses.activate
+    def test_with_filter_aggregations(self):
+        self.client.search_all(
+            filter_aggregations=["level:Item", "topic:second world war"]
+        )
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war",
+        )
+
+    @responses.activate
+    def test_with_offset(self):
+        self.client.search_all(offset=20)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?from=20",
+        )
+
+    @responses.activate
+    def test_with_size(self):
+        self.client.search_all(size=20)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchAll?size=20",
+        )
 
 
 class ClientSearchTest(SimpleTestCase):
@@ -127,23 +215,33 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_show_buckets_true(self):
-        self.client.search(show_buckets=True)
+    def test_with_aggregations(self):
+        self.client.search(aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?showBuckets=True",
+            "https://kong.test/data/search?aggregations=level%2C+collection",
         )
 
     @responses.activate
-    def test_with_show_buckets_false(self):
-        self.client.search(show_buckets=False)
+    def test_with_filter_aggregations(self):
+        self.client.search(filter_aggregations=["level:Item", "topic:second world war"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?showBuckets=False",
+            "https://kong.test/data/search?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war",
+        )
+
+    @responses.activate
+    def test_with_filter_keyword(self):
+        self.client.search(filter_keyword="filter keyword")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterKeyword=filter+keyword",
         )
 
     @responses.activate
