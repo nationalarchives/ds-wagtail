@@ -1,6 +1,5 @@
+{{ data | json_script:"gtmDatalayer" }}
 <script>
     window.dataLayer = window.dataLayer || [];
-    {% if data_json %}
-    window.dataLayer.push({{ data_json|safe }});
-    {% endif %}
+    window.dataLayer.push(JSON.parse(document.getElementById('gtmDatalayer').textContent));
 </script>

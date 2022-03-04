@@ -1,7 +1,4 @@
-import json
-
 from django import template
-from django.core.serializers.json import DjangoJSONEncoder
 
 register = template.Library()
 
@@ -13,14 +10,12 @@ def render_gtm_datalayer(context, obj) -> dict:
     https://developers.google.com/tag-manager/devguide
     """
     try:
-        data_json = json.dumps(
-            obj.get_datalayer_data(context["request"]), cls=DjangoJSONEncoder
-        )
+        data = obj.get_datalayer_data(context["request"])
     except AttributeError:
-        data_json = ""
+        data = {}
 
     # Add a json serialized version of the data for output
-    return {"data_json": data_json}
+    return {"data": data}
 
 
 @register.simple_tag(takes_context=True)
