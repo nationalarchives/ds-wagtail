@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load alert_tags datalayer_tags %}
+
+{% comment %}
+    Base template for rendering Wagtail page instances
+{% endcomment %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer page %}
+{% endblock %}
+
+{% block header %}
+    {% alerts page=page %}
+    {{ block.super }}
+{% endblock %}

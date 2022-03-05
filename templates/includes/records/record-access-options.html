@@ -1,6 +1,6 @@
 {% comment %}
 
-Output availablity text depending on the delivery condition returned by Kong.
+Output availability text depending on the delivery condition returned by Kong.
 
 This content should almost certainly be moved into snippets at a later phase,
 with options for the available CTAs for each condition.
@@ -12,7 +12,7 @@ this template
 {% endcomment %}
 
 <div class="record-access" data-container-name="record-access" id="analytics-record-access">
-    {% if page.availablility_delivery_condition == 'TooLargeToCopyOriginal' %}
+    {% if page.availability_delivery_condition == 'TooLargeToCopyOriginal' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
@@ -26,7 +26,7 @@ this template
             <li><a class="record-access__button" href="https://www.nationalarchives.gov.uk/book-a-reading-room-visit/" data-link="Book a visit to see it (free)">Book a visit to see it <span>(free)</span></a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'OrderOriginal' %}
+    {% elif page.availability_delivery_condition == 'OrderOriginal' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
@@ -39,7 +39,7 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Request a copy">Request a copy</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'InvigilationSafeRoom' %}
+    {% elif page.availability_delivery_condition == 'InvigilationSafeRoom' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record can only be seen under supervision at The National Archives</p>
@@ -49,7 +49,7 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Copy this record">Copy this record</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'Surrogate' %}
+    {% elif page.availability_delivery_condition == 'Surrogate' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
@@ -59,7 +59,7 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Order a copy">Order a copy</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'DigitizedDiscovery' %}
+    {% elif page.availability_delivery_condition == 'DigitizedDiscovery' %}
 
         <h3>Ordering and viewing options</h3>
         <p>Free</p>
@@ -69,11 +69,11 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/details/addtobasket/{{ page.iaid }}" data-link="Add to basket">Add <span class="sr-only">{{ page.title }}</span> to basket</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'UnAvailable' %}
+    {% elif page.availability_delivery_condition == 'UnAvailable' %}
 
         <h3>This record is not available to order. More information may be available in the catalogue description.</h3>
 
-    {% elif page.availablility_delivery_condition == 'Offsite' %}
+    {% elif page.availability_delivery_condition == 'Offsite' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record has not been digitised and cannot be downloaded.</p>
@@ -88,7 +88,7 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Order a copy">Order a copy</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'DigitizedAvailableButNotDownloadableAtPieceLevel' %}
+    {% elif page.availability_delivery_condition == 'DigitizedAvailableButNotDownloadableAtPieceLevel' %}
 
         <h3>Ordering and viewing options</h3>
         <p>This record has been digitised as part of multiple records</p>
@@ -97,7 +97,7 @@ this template
             <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/browse/r/h/{{ page.iaid }}" data-link="Go to browse">Go to browse</a></li>
         </ul>
 
-    {% elif page.availablility_delivery_condition == 'CollectionCare' %}
+    {% elif page.availability_delivery_condition == 'CollectionCare' %}
 
         <h3>This record requires supervised handling in Collection Care</h3>
         <p>The National Archives is closed until further notice due to the Covid-19 pandemic. For updated information <a href="https://www.nationalarchives.gov.uk/about/news/coronavirus-update/">read our news story</a>.</p>

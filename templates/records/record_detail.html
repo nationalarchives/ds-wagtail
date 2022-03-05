@@ -2,14 +2,10 @@
 
 {% load static %}
 {% load datalayer_tags %}
+{% load records_tags %}
 
 {% block extra_gtm_js %}
-{{ page | datalayer:request | json_script:"datalayer" }}
-
-<script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
-</script>
+    {% render_gtm_datalayer page %}
 {% endblock extra_gtm_js %}
 
 {% block content %}
@@ -41,17 +37,17 @@
                 {% include "includes/records/record-details.html" %}
 
                 {% if page.topics %}
-                    <h2>Topics covered in this record</h2>
+                    <h2>{{ 'topics'|as_label }}</h2>
                     {% include "includes/records/taxonomy-tags.html" %}
                 {% endif %}
 
                 {% if page.related_records %}
-                    <h2>Related records</h2>
+                    <h2>{{ 'related_records'|as_label }}</h2>
                     {% include "includes/records/record-related-records.html" %}
                 {% endif %}
 
                 {% if page.related_articles %}
-                    <h2>Related content</h2>
+                    <h2>{{ 'related_articles'|as_label }}</h2>
                     {% include "includes/records/record-related-content.html" %}
                 {% endif %}
             </div>

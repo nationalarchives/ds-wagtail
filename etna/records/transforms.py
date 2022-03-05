@@ -1,14 +1,14 @@
 from ..ciim.utils import find_all, format_description_markup, pluck
 
 
-def transform_record_page_result(result):
-    """Fetch data from an Elasticsearch response to pass to RecordPage.__init__"""
+def transform_record_result(result):
+    """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
 
     source = result["_source"]
     identifier = source.get("identifier")
-    summary = source.get("@summary")
+    summary = source.get("summary")
 
     data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = pluck(
@@ -48,48 +48,40 @@ def transform_record_page_result(result):
                 parent,
                 accessor=lambda i: i["identifier"][0]["reference_number"],
             ),
-            "title": pluck(parent, accessor=lambda i: i["@summary"]["title"]),
+            "title": pluck(parent, accessor=lambda i: i["summary"]["title"]),
         }
 
     if hierarchy := source.get("hierarchy"):
         data["hierarchy"] = [
             {
                 "reference_number": i["identifier"][0]["reference_number"],
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
             }
             for i in hierarchy[0]
             if "identifier" in i
         ]
 
     if availability := source.get("availability"):
-        if access := availability.get("access"):
-            data["availablility_access_display_label"] = access["display"]["label"][
-                "value"
-            ]
-            data["availablility_access_closure_label"] = pluck(
-                access["closure"], accessor=lambda i: i["display"]["label"]["value"]
-            )
         if delivery := availability.get("delivery"):
-            data["availablility_delivery_condition"] = delivery["condition"]["value"]
-            data["availablility_delivery_surrogates"] = delivery.get("surrogate")
+            data["availability_delivery_condition"] = delivery["condition"]["value"]
+            data["availability_delivery_surrogates"] = delivery.get("surrogate")
 
     if topics := source.get("topic"):
         data["topics"] = [
             {
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
             }
             for i in topics
         ]
 
     if related := source.get("related"):
-
         related_records = find_all(
             related,
             predicate=lambda i: i["@link"]["relationship"]["value"] == "related",
         )
         data["related_records"] = [
             {
-                "title": i["@summary"]["title"],
+                "title": i["summary"]["title"],
                 "iaid": i["@admin"]["id"],
             }
             for i in related_records
@@ -99,9 +91,9 @@ def transform_record_page_result(result):
             related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
         )
         data["related_articles"] = [
-            {"title": i["@summary"]["title"], "url": i["source"]["location"]}
+            {"title": i["summary"]["title"], "url": i["source"]["location"]}
             for i in related_articles
-            if "@summary" in i
+            if "summary" in i
         ]
 
     data["media_reference_id"] = pluck(

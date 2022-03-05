@@ -1,11 +1,12 @@
-from django.core.paginator import Paginator
+from django.core.paginator import Page
 from django.shortcuts import Http404, render
 
-from ...ciim.exceptions import DoesNotExist, InvalidQuery
-from ..models import Image, RecordPage
+from ...ciim.exceptions import DoesNotExist
+from ...ciim.paginator import APIPaginator
+from ..models import Image, Record
 
 
-def record_page_disambiguation_view(request, reference_number):
+def record_disambiguation_view(request, reference_number):
     """View to render a record's details page or disambiguation page if multiple records are found.
 
     Details pages differ from all other page types within Etna in that their
@@ -19,31 +20,36 @@ def record_page_disambiguation_view(request, reference_number):
 
     https://discovery.nationalarchives.gov.uk/browse/r/h/C4122893
     """
-    pages = RecordPage.search.filter(ref=reference_number, pretty=True)
+    per_page = 20
+    page_number = int(request.GET.get("page", 1))
+    offset = (page_number - 1) * per_page
 
-    if len(pages) == 0:
+    count, records = Record.api.search(
+        web_reference=reference_number, offset=offset, size=per_page
+    )
+
+    if len(records) == 0:
         raise Http404
 
     # if the results contain a single record page, redirect to the details page.
-    if len(pages) == 1:
-        page = pages[0]
-        return record_page_view(request, page.iaid)
+    if len(records) == 1:
+        record = records[0]
+        return record_detail_view(request, record.iaid)
 
-    page_number = request.GET.get("page", 1)
-    paginator = Paginator(pages, 20)
-    pages = paginator.get_page(page_number)
+    paginator = APIPaginator(count, per_page=per_page)
+    page = Page(records, number=page_number, paginator=paginator)
 
     return render(
         request,
         "records/record_disambiguation_page.html",
         {
-            "pages": pages,
+            "pages": page,
             "queried_reference_number": reference_number,
         },
     )
 
 
-def record_page_view(request, iaid):
+def record_detail_view(request, iaid):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -51,21 +57,18 @@ def record_page_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        page = RecordPage.search.get(iaid, expand=True)
+        page = Record.api.fetch(iaid=iaid, expand=True)
     except DoesNotExist:
         raise Http404
 
     image = None
 
-    try:
-        if page.is_digitised:
-            image = Image.search.filter(rid=page.media_reference_id).first()
-    except InvalidQuery:
-        image = None
+    if page.is_digitised:
+        image = Image.search.filter(rid=page.media_reference_id).first()
 
     return render(
         request,
-        page.get_template(request),
+        "records/record_detail.html",
         {
             "page": page,
             "image": image,

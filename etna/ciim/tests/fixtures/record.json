@@ -64,7 +64,7 @@
                   }
                 ]
               },
-              "@summary" : {
+              "summary" : {
                 "title" : "Records created or inherited by the Law Officers' Department"
               }
             }
@@ -137,7 +137,7 @@
                     "value" : "FCO 13"
                   }
                 ],
-                "@summary" : {
+                "summary" : {
                   "title" : "Foreign and Commonwealth Office and predecessors: Cultural Relations Departments:..."
                 }
               },
@@ -155,7 +155,7 @@
                     "value" : "FCO 13/775"
                   }
                 ],
-                "@summary" : {
+                "summary" : {
                   "title" : "Centrepiece for celebrations of bicentenary of USA in 1976: loan of Magna Carta from..."
                 }
               }
@@ -169,7 +169,7 @@
                     "uuid": "3c2ba4d8-ee0e-38a1-b55d-3cf3d7e98230"
                 },
                 "@entity": "reference",
-                "@summary": {"title": "Irish maps c.1558-c.1610"},
+                "summary": {"title": "Irish maps c.1558-c.1610"},
                 "@type": {"base": "media", "type": "research guide"},
                 "source": {
                     "location": "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/irish-maps-c1558-c1610/"
@@ -186,7 +186,7 @@
                     "qualifier": "association",
                     "relationship": {"value": "related"}
                 },
-                "@summary": {
+                "summary": {
                     "title": "[1580-1688]. Notes (cards) from State Papers Foreign, Royal Letters, SP 102/61. Manuscript."
                 },
                 "identifier": [
@@ -250,7 +250,7 @@
               "source": "mongo"
             },
             "@entity": "reference",
-            "@summary": {
+            "summary": {
               "title": "Next"
             }
           },
@@ -259,7 +259,7 @@
               "id": "C441748", "source": "mongo"
             },
             "@entity": "reference",
-            "@summary": {
+            "summary": {
               "title": "Previous"
             }
           },
@@ -276,17 +276,17 @@
           },
           "topic" : [
             {
-              "@summary": {
+              "summary": {
                 "title" : "Taxonomy One"
               }
             },
             {
-              "@summary": {
+              "summary": {
                 "title" : "Taxonomy Two"
               }
             },
             {
-              "@summary": {
+              "summary": {
                 "title" : "Taxonomy Three"
               }
             }
@@ -318,7 +318,7 @@
                   "value" : "HO 42"
                 }
               ],
-              "@summary" : {
+              "summary" : {
                 "title" : "Records created or inherited by the Law Officers' Department"
               }
             }
@@ -345,7 +345,7 @@
             "name" : {
               "value" : "The National Archives, Kew"
             },
-            "@summary" : {
+            "summary" : {
               "title" : "The National Archives"
             }
           },
@@ -353,7 +353,7 @@
           "source" : {
             "value" : "CAT"
           },
-          "@summary" : {
+          "summary" : {
             "title" : "Law Officers' Department: Registered Files"
           },
           "title" : [

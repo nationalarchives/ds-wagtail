@@ -4,13 +4,14 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
-from wagtail.core.models import Orderable, Page
+from wagtail.core.models import Orderable
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import KongException
-from ..records.models import RecordPage
+from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..core.models import BasePage
+from ..records.models import Record
 from ..records.widgets import RecordChooser
 from ..teasers.models import TeaserImageMixin
 from .blocks import (
@@ -22,8 +23,8 @@ from .blocks import (
 )
 
 
-class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
-    """Collection Explorer landing page.
+class ExplorerIndexPage(AlertMixin, TeaserImageMixin, BasePage):
+    """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
     explorer.
@@ -32,12 +33,12 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -46,8 +47,8 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, Page):
     ]
 
 
-class TopicExplorerIndexPage(TeaserImageMixin, Page):
-    """Topic explorer page.
+class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
+    """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
     """
@@ -55,11 +56,11 @@ class TopicExplorerIndexPage(TeaserImageMixin, Page):
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
     @cached_property
     def featured_pages(self):
@@ -90,8 +91,8 @@ class TopicExplorerIndexPage(TeaserImageMixin, Page):
     ]
 
 
-class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
-    """Topic explorer page.
+class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
+    """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -105,12 +106,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     @property
     def results_pages(self):
@@ -124,8 +125,8 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, Page):
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
 
-class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
-    """Time period explorer page.
+class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
+    """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
     """
@@ -133,11 +134,11 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
     @cached_property
     def featured_pages(self):
@@ -168,8 +169,8 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, Page):
     ]
 
 
-class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
-    """Time period page.
+class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
+    """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -184,14 +185,14 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         StreamFieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     @property
     def results_pages(self):
@@ -205,8 +206,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, Page):
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
 
-class ResultsPage(AlertMixin, TeaserImageMixin, Page):
-    """Results page.
+class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):
+    """Results BasePage.
 
     This page is a placeholder for the results page at the end of a user's
     journey through the collection explorer.
@@ -219,14 +220,14 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     sub_heading = models.CharField(max_length=200, blank=False)
     introduction = models.TextField(blank=False)
 
-    content_panels = Page.content_panels + [
+    content_panels = BasePage.content_panels + [
         FieldPanel("title_prefix"),
         FieldPanel("sub_heading"),
         FieldPanel("introduction"),
         InlinePanel("records", heading="Records"),
     ]
-    promote_panels = Page.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = Page.settings_panels + AlertMixin.settings_panels
+    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = [
         "collections.TimePeriodExplorerPage",
@@ -235,7 +236,7 @@ class ResultsPage(AlertMixin, TeaserImageMixin, Page):
     subpage_types = []
 
 
-class ResultsPageRecordPage(Orderable, models.Model):
+class ResultsPageRecord(Orderable, models.Model):
     """Map orderable records data to ResultsPage"""
 
     page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
@@ -253,15 +254,15 @@ class ResultsPageRecordPage(Orderable, models.Model):
     )
 
     @cached_property
-    def record_page(self):
-        """Fetch associated record page.
+    def record(self):
+        """Fetch associated record BasePage.
 
         Capture any exception thrown by KongClient and return None so we can
-        skip this record on the results page.
+        skip this record on the results BasePage.
         """
         try:
-            return RecordPage.search.get(iaid=self.record_iaid)
-        except KongException:
+            return Record.api.fetch(iaid=self.record_iaid)
+        except (KongAPIError, APIManagerException):
             return None
 
     panels = [
