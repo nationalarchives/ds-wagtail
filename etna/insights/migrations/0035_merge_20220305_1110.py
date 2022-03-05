@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0030_insightsindexpage_featured_insight'),
-        ('insights', '0034_alter_insightspagetag_options'),
+        ("insights", "0030_insightsindexpage_featured_insight"),
+        ("insights", "0034_alter_insightspagetag_options"),
     ]
 
-    operations = [
-    ]
+    operations = []

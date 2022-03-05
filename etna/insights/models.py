@@ -41,7 +41,9 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
 @register_snippet
 class InsightsPageTag(TaggedItemBase):
-    content_object = ParentalKey('insights.InsightsPage', on_delete=models.CASCADE, related_name='tagged_items')
+    content_object = ParentalKey(
+        "insights.InsightsPage", on_delete=models.CASCADE, related_name="tagged_items"
+    )
     free_tagging = False
 
     class Meta:
@@ -79,11 +81,9 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             FieldPanel("sub_heading"),
             FieldPanel("topic"),
             FieldPanel("time"),
-            FieldPanel('tags'),
+            FieldPanel("tags"),
             StreamFieldPanel("body"),
-
         ]
-
     )
 
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels

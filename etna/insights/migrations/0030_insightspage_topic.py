@@ -7,14 +7,20 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0019_resultspage_title_prefix'),
-        ('insights', '0029_migrate_hero_image_alt_text'),
+        ("collections", "0019_resultspage_title_prefix"),
+        ("insights", "0029_migrate_hero_image_alt_text"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='insightspage',
-            name='topic',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='collections.topicexplorerpage'),
+            model_name="insightspage",
+            name="topic",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="collections.topicexplorerpage",
+            ),
         ),
     ]

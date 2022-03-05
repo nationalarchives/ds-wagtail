@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('insights', '0033_auto_20220304_2226'),
+        ("insights", "0033_auto_20220304_2226"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='insightspagetag',
-            options={'verbose_name': 'name', 'verbose_name_plural': 'slug'},
+            name="insightspagetag",
+            options={"verbose_name": "name", "verbose_name_plural": "slug"},
         ),
     ]

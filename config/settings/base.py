@@ -310,7 +310,7 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
 WAGTAILSEARCH_BACKENDS = {
-    'default': {
-        'BACKEND': 'wagtail.search.backends.database',
+    "default": {
+        "BACKEND": "wagtail.search.backends.database",
     }
 }

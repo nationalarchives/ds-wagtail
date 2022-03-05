@@ -8,32 +8,53 @@ import modelcluster.fields
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('taggit', '0003_taggeditem_add_unique_index'),
-        ('insights', '0031_insightspage_time'),
+        ("taggit", "0003_taggeditem_add_unique_index"),
+        ("insights", "0031_insightspage_time"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='InsightsPageTag',
+            name="InsightsPageTag",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_object', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE,
-                                                                   related_name='tagged_items',
-                                                                   to='insights.insightspage')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
-                                          related_name='insights_insightspagetag_items', to='taggit.tag')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "content_object",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tagged_items",
+                        to="insights.insightspage",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="insights_insightspagetag_items",
+                        to="taggit.tag",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='insightspage',
-            name='tags',
-            field=modelcluster.contrib.taggit.ClusterTaggableManager(blank=True,
-                                                                     help_text='A comma-separated list of tags.',
-                                                                     through='insights.InsightsPageTag',
-                                                                     to='taggit.Tag', verbose_name='Tags'),
+            model_name="insightspage",
+            name="tags",
+            field=modelcluster.contrib.taggit.ClusterTaggableManager(
+                blank=True,
+                help_text="A comma-separated list of tags.",
+                through="insights.InsightsPageTag",
+                to="taggit.Tag",
+                verbose_name="Tags",
+            ),
         ),
-
     ]
