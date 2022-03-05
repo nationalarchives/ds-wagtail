@@ -1,13 +1,14 @@
 from django.db import models
+
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from taggit.models import TaggedItemBase
-
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
+from wagtail.snippets.models import register_snippet
+
+from taggit.models import TaggedItemBase
 
 from etna.core.models import BasePage
-from wagtail.snippets.models import register_snippet
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
