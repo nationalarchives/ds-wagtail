@@ -18,6 +18,7 @@ from distutils.util import strtobool
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
+
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
 # Quick-start development settings - unsuitable for production
@@ -126,7 +127,9 @@ WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
 
+
 WSGI_APPLICATION = "config.wsgi.application"
+
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
@@ -145,6 +148,7 @@ LOGGING = {
     },
 }
 
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
@@ -158,6 +162,7 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT"),
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -177,6 +182,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -189,6 +195,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -226,11 +233,13 @@ WAGTAIL_SITE_NAME = "etna"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = "http://example.com"
 
+
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
 KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -245,6 +254,7 @@ RESTRICTED_RICH_TEXT_FEATURES = [
     "link",
     "ul",
 ]
+
 
 # Analytics
 AVAILABILITY_CONDITION_CATEGORIES = {
@@ -306,8 +316,3 @@ except ValueError:
 CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
-WAGTAILSEARCH_BACKENDS = {
-    'default': {
-        'BACKEND': 'wagtail.search.backends.database',
-    }
-}
