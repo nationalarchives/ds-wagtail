@@ -81,7 +81,9 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             FieldPanel("time"),
             FieldPanel('tags'),
             StreamFieldPanel("body"),
+
         ]
+
     )
 
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
