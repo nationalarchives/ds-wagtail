@@ -1,3 +1,5 @@
+import unittest
+
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.test import TestCase, override_settings
@@ -212,7 +214,7 @@ class TestCollectionsPages(UserAccessTestCase, TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 @ddt
-class TestRecordPageRoutes(UserAccessTestCase, TestCase):
+class TestRecordRoutes(UserAccessTestCase, TestCase):
     """Ensure that the record pages are accessible to the appropriate users.
 
     Unlike similar tests for CMSable pages, these test can assure us that
@@ -257,7 +259,7 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
                 records=[
                     # Return multiple records to prevent an additional
                     # call /data/fetch due to deferring the rendering to
-                    # record_page_view
+                    # record_detail_view
                     create_record(reference_number="test 1/2/3"),
                     create_record(reference_number="test 1/2/3"),
                 ]
@@ -271,6 +273,9 @@ class TestRecordPageRoutes(UserAccessTestCase, TestCase):
         self.assertEquals(expected_status_code, response.status_code)
 
 
+@unittest.skip(
+    "Kong open beta API does not support media. Re-enable/update once media is available."
+)
 @ddt
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",

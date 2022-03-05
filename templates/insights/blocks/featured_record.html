@@ -1,6 +1,7 @@
 {% load static %}
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
+{% load records_tags %}
 
 <div class="record-embed-no-image" data-container-name="record-embed-no-image">
     <div class="container">
@@ -13,11 +14,11 @@
             {{ value.record.title }}
         </h3>
         {% if value.record.reference_number %}
-            <p class="record-embed-no-image__text--inline">Reference: {{ value.record.reference_number }}</p>
+            <p class="record-embed-no-image__text--inline">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
         {% endif %}
         {% if value.record.origination_date %}
             <p class="record-embed-no-image__text--inline">
-            Date created: {{ value.record.origination_date }}
+            {{ 'origination_date'|as_label }}: {{ value.record.origination_date }}
             </p>
         {% endif %}
 

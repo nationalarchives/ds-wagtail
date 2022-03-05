@@ -1,85 +1,86 @@
-from dataclasses import dataclass
+from __future__ import annotations
+
+from dataclasses import dataclass, field
+from typing import Any, Dict
 
 from django.conf import settings
-from django.db import models
+from django.http import HttpRequest
 from django.urls import reverse
 
-from wagtail.core.models import Page, Site
+from ..analytics.mixins import DataLayerMixin
+from ..ciim.models import APIModel
+from .transforms import transform_record_result
 
-from ..ciim.models import MediaManager, SearchManager
-from .transforms import transform_image_result, transform_record_page_result
 
-
-class RecordPage(Page):
+@dataclass
+class Record(DataLayerMixin, APIModel):
     """Non-creatable page used to render record data in templates.
 
     This stub page allows us to use common templates to render external record
     data as though the data was fetched from the CMS.
 
-    see: views.record_page_view
+    see: views.record_detail_view
     """
 
-    is_creatable = False
+    iaid: str
+    title: str
+    reference_number: str
 
-    iaid = models.TextField()
-    reference_number = models.TextField()
-    closure_status = models.TextField()
-    created_by = models.TextField()
-    description = models.TextField()
-    arrangement = models.TextField(blank=True)
-    origination_date = models.TextField()
-    legal_status = models.TextField()
-    held_by = models.TextField(blank=True)
-    is_digitised = models.BooleanField(default=False)
-    parent = models.JSONField(null=True)
-    hierarchy = models.JSONField(null=True)
-    media_reference_id = models.UUIDField(null=True)
-    availablility_access_display_label = models.TextField()
-    availablility_access_closure_label = models.TextField()
-    availablility_delivery_condition = models.TextField()
-    availablility_delivery_surrogates = models.JSONField(null=True)
-    topics = models.JSONField(null=True)
-    next_record = models.JSONField(null=True)
-    previous_record = models.JSONField(null=True)
-    related_records = models.JSONField(null=True)
-    related_articles = models.JSONField(null=True)
+    legal_status: str = ""
+    created_by: str = ""
+    description: str = ""
+    origination_date: str = ""
+    closure_status: str = ""
+    availability_delivery_condition: str = ""
+    arrangement: str = ""
+    held_by: str = ""
+    is_digitised: bool = False
+    parent: dict = field(default_factory=dict)
+    hierarchy: dict = field(default_factory=dict)
+    media_reference_id: str = ""
+    availability_delivery_surrogates: dict = field(default_factory=dict)
+    topics: dict = field(default_factory=dict)
+    next_record: dict = field(default_factory=dict)
+    previous_record: dict = field(default_factory=dict)
+    related_records: dict = field(default_factory=dict)
+    related_articles: dict = field(default_factory=dict)
 
-    def __init__(self, *args, **kwargs):
-        """Override to add Kong response data to instance for debugging.
-
-        The Django docs advice against overriding the __init__ method, due to
-        the risk of the object not being persiable.
-
-        This risk is mitagated due to the use of the RecordPage as a container
-        to hold external data and should never be editable in the admin.
-
-        https://docs.djangoproject.com/en/3.2/ref/models/instances/
-        """
-        self._debug_kong_result = kwargs.pop("_debug_kong_result", None)
-
-        super().__init__(*args, **kwargs)
-
-    def get_site(self):
-        """Override to return the Site instance despite this page not belonging to the CMS.
-
-        Site is used by base.html to add the site name to the page's <title>
-        """
-        return Site.objects.first()
+    _debug_kong_result: dict = field(default_factory=dict)
 
     def __str__(self):
         return f"{self.title} ({self.iaid})"
 
+    @classmethod
+    def from_api_response(cls, response: dict) -> Record:
+        return cls(**transform_record_result(response))
 
-"""Assign a search manager to the RecordPage
+    @property
+    def availability_condition_category(self) -> str:
+        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
+            self.availability_delivery_condition, ""
+        )
 
-SearchManager exposes a similar interface to Django's model.Manager but
-results are fetched from the Kong API instead of from a DB
+    def get_gtm_content_group(self) -> str:
+        """
+        Overrides DataLayerMixin.get_gtm_content_group() to
+        return the name of the class.
+        """
+        return self.__class__.__name__
 
-Transform function is used to transform a raw Elasticsearch response into a
-dictionary to pass to the Model's __init__.
-"""
-RecordPage.search = SearchManager(RecordPage)
-RecordPage.transform = transform_record_page_result
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        """
+        Returns data to be included in the Google Analytics datalayer when
+        rendering this record.
+
+        Override this method on subclasses to add data that is relevant to a
+        specific record type.
+        """
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension16=self.availability_condition_category,
+            customDimension17=self.availability_delivery_condition,
+        )
+        return data
 
 
 @dataclass
@@ -101,16 +102,3 @@ class Image:
             return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
         elif self.location:
             return reverse("image-serve", kwargs={"location": self.location})
-
-
-"""Assign a search manager to the Image
-
-SearchManager exposes a similar interface to Django's model.Manager but
-results are fetched from the Kong API instead of from a DB
-
-Transform function is used to transform a raw Elasticsearch response into a
-dictionary to pass to the Model's __init__.
-"""
-Image.search = SearchManager(Image)
-Image.media = MediaManager(Image)
-Image.transform = transform_image_result

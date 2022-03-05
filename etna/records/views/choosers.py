@@ -1,13 +1,16 @@
 from django.conf.urls import url
+from django.core.paginator import Page
 from django.shortcuts import Http404
 
-from generic_chooser.views import BaseChosenView, ModelChooserMixin, ModelChooserViewSet
+from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
-from ...ciim.exceptions import KongException
-from ..models import RecordPage
+from ...ciim.client import Stream
+from ...ciim.exceptions import APIManagerException, KongAPIError
+from ...ciim.paginator import APIPaginator
+from ..models import Record
 
 
-class KongModelChooserMixinIn(ModelChooserMixin):
+class KongModelChooserMixinIn(ChooserMixin):
     """Chooser source to allow filtering and selection of Kong model data.
 
     Similar to the DFRDRFChooserMixin:
@@ -15,20 +18,29 @@ class KongModelChooserMixinIn(ModelChooserMixin):
     https://github.com/wagtail/wagtail-generic-chooser/blob/9ec9db937fe40311c67ed055e1b3f0dcd1b86908/generic_chooser/views.py#L223
     """
 
-    def get_object_list(self, search_term=""):
-        """Filter object list by user's search term"""
-        object_list = self.get_unfiltered_object_list()
+    # Model belonging to this chooser, set via <model>ChooserViewSet.
+    model: Record = None
 
-        if search_term:
-            object_list = self.model.search.filter(
-                term=search_term, stream="evidential"
-            )
+    # Allow models to be searched via chooser. Hides the search box if False
+    is_searchable = True
 
-        return object_list
+    def get_paginated_object_list(self, page_number, search_term="", **kwargs):
+        offset = ((page_number - 1) * self.per_page,)
+
+        count, results = self.model.api.search(
+            keyword=search_term,
+            stream=Stream.EVIDENTIAL,
+            size=self.per_page,
+            offset=offset,
+        )
+
+        paginator = APIPaginator(count, self.per_page)
+        page = Page(results, page_number, paginator)
+        return (page, paginator)
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return self.model.search.get(iaid=pk)
+        return self.model.api.fetch(iaid=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.
@@ -55,21 +67,29 @@ class KongChosenView(BaseChosenView):
         """
         try:
             return super().get(request, pk)
-        except KongException:
+        except (KongAPIError, APIManagerException):
             raise Http404
 
 
-class RecordChooserViewSet(ModelChooserViewSet):
+class RecordChooserViewSet(ChooserViewSet):
     """Custom chooser to allow users to filter and select records."""
 
     base_chosen_view_class = KongChosenView
     chooser_mixin_class = KongModelChooserMixinIn
     icon = "form"
-    model = RecordPage
+    model = Record
     page_title = "Choose a record"
     per_page = 10
-    order_by = "iaid"
-    fields = ["iaid", "title"]
+
+    def get_choose_view_attrs(self):
+        attrs = super().get_choose_view_attrs()
+        attrs.update(model=self.model)
+        return attrs
+
+    def get_chosen_view_attrs(self):
+        attrs = super().get_chosen_view_attrs()
+        attrs.update(model=self.model)
+        return attrs
 
     def get_urlpatterns(self):
         """Define patterns for chooser and chosen views.

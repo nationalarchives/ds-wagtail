@@ -230,6 +230,9 @@ BASE_URL = "http://example.com"
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
+)
 KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features

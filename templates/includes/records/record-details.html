@@ -1,39 +1,41 @@
+{% load records_tags %}
+
 <div class="record-details">
     <table class="record-details__table">
         <tbody>
             {% if page.reference_number %}
                 <tr>
-                    <th scope="row">Reference</th>
+                    <th scope="row">{{ 'reference_number'|as_label }}</th>
                     <td id="analytics-record-reference">{{ page.reference_number }}</td>
                 </tr>
             {% endif %}
             {% if page.description %}
                 <tr>
-                    <th scope="row">Record description</th>
+                    <th scope="row">{{ 'description'|as_label }}</th>
                     <td class="xslt_patches">{{ page.description|safe }}</td>
                 </tr>
             {% endif %}
             {% if page.origination_date %}
                 <tr>
-                    <th scope="row">Record created</th>
+                    <th scope="row">{{ 'origination_date'|as_label }}</th>
                     <td>{{ page.origination_date }}</td>
                 </tr>
             {% endif %}
             {% if page.held_by %}
                 <tr>
-                    <th scope="row">Held by</th>
+                    <th scope="row">{{ 'held_by'|as_label }}</th>
                     <td>{{ page.held_by }}</td>
                 </tr>
             {% endif %}
             {% if page.legal_status %}
                 <tr>
-                    <th scope="row">Legal status</th>
+                    <th scope="row">{{ 'legal_status'|as_label }}</th>
                     <td>{{ page.legal_status }}</td>
                 </tr>
             {% endif %}
             {% if page.closure_status %}
                 <tr>
-                    <th scope="row">Closure status</th>
+                    <th scope="row">{{ 'closure_status'|as_label }}</th>
                     <td>{{ page.closure_status }}</td>
                 </tr>
             {% endif %}
