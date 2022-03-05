@@ -142,7 +142,6 @@ def forwards_func(apps, schema_editor):
             tag(name="Radio and television", slug="Radio and television"),
             tag(name="Race relations", slug="Race relations"),
             tag(name="Public disorder", slug="Public disorder"),
-            tag(name="Treason and rebellion", slug="Treason and rebellion"),
             tag(name="Treaties and alliances", slug="Treaties and alliances"),
             tag(name="Weapons", slug="Weapons"),
             tag(name="Witchcraft", slug="Witchcraft"),
@@ -389,9 +388,6 @@ def reverse_func(apps, schema_editor):
     ).delete(),
     tag.objects.using(db_alias).filter(
         name="Public disorder", slug="Public disorder"
-    ).delete(),
-    tag.objects.using(db_alias).filter(
-        name="Treason and rebellion", slug="Treason and rebellion"
     ).delete(),
     tag.objects.using(db_alias).filter(
         name="Treaties and alliances", slug="Treaties and alliances"
