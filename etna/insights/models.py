@@ -90,6 +90,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         + HeroImageMixin.content_panels
         + [
             FieldPanel("sub_heading"),
+            PageChooserPanel("featured_insight"),
             FieldPanel("topic"),
             FieldPanel("time_period"),
             FieldPanel("tags"),
