@@ -35,6 +35,7 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
+        PageChooserPanel("featured_insight"),
         StreamFieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
@@ -90,7 +91,6 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         + HeroImageMixin.content_panels
         + [
             FieldPanel("sub_heading"),
-            PageChooserPanel("featured_insight"),
             FieldPanel("topic"),
             FieldPanel("time_period"),
             FieldPanel("tags"),
