@@ -7,7 +7,7 @@ from django.db import migrations
 def forwards_func(apps, schema_editor):
     # We get the model from the versioned app registry;
     # if we directly import it, it'll be the wrong version
-    tag = apps.get_model("taggit", "Tag")
+    tag = apps.get_model("insights", "InsightsTag")
     db_alias = schema_editor.connection.alias
     tag.objects.using(db_alias).bulk_create(
         [
@@ -403,7 +403,7 @@ def reverse_func(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("taggit", "0003_taggeditem_add_unique_index"),
-        ("insights", "0032_auto_20220302_2151"),
+        ("insights", "0031_auto_20220306_0443"),
     ]
 
     operations = [
