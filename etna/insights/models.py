@@ -4,6 +4,8 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
+from wagtail.core.models import Page
+from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
@@ -86,6 +88,13 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         related_name="+",
     )
     tags = ClusterTaggableManager(through=TaggedInsights, blank=True)
+
+    def get_insight_tag_names(self):
+        return "\n".join(self.tags.all().values_list("name", flat=True))
+
+    search_fields = Page.search_fields + [
+        index.SearchField("get_insight_tag_names"),
+    ]
     content_panels = (
         BasePage.content_panels
         + HeroImageMixin.content_panels
