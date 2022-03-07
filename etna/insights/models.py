@@ -1,7 +1,14 @@
 from django.db import models
 
+from modelcluster.contrib.taggit import ClusterTaggableManager
+from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
 from wagtail.core.fields import StreamField
+from wagtail.core.models import Page
+from wagtail.search import index
+from wagtail.snippets.models import register_snippet
+
+from taggit.models import ItemBase, TagBase
 
 from etna.core.models import BasePage
 
@@ -38,6 +45,26 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     subpage_types = ["insights.InsightsPage"]
 
 
+@register_snippet
+class InsightsTag(TagBase):
+    free_tagging = False
+
+    class Meta:
+        verbose_name = "insights tag"
+        verbose_name_plural = "insights tags"
+
+
+class TaggedInsights(ItemBase):
+    tag = models.ForeignKey(
+        InsightsTag, related_name="tagged_insights", on_delete=models.CASCADE
+    )
+    content_object = ParentalKey(
+        to="insights.InsightsPage",
+        on_delete=models.CASCADE,
+        related_name="tagged_items",
+    )
+
+
 class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
     """InsightsPage
 
@@ -46,12 +73,36 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
 
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
+    topic = models.ForeignKey(
+        "collections.TopicExplorerPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    time_period = models.ForeignKey(
+        "collections.TimePeriodExplorerPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    tags = ClusterTaggableManager(through=TaggedInsights, blank=True)
 
+    def get_insight_tag_names(self):
+        return "\n".join(self.tags.all().values_list("name", flat=True))
+
+    search_fields = Page.search_fields + [
+        index.SearchField("get_insight_tag_names"),
+    ]
     content_panels = (
         BasePage.content_panels
         + HeroImageMixin.content_panels
         + [
             FieldPanel("sub_heading"),
+            FieldPanel("topic"),
+            FieldPanel("time_period"),
+            FieldPanel("tags"),
             StreamFieldPanel("body"),
         ]
     )
