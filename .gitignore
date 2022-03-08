@@ -56,3 +56,7 @@ templates/static/css/libraries/*
 .coverage
 
 /coverage/
+
+# built docs
+/site/
+
