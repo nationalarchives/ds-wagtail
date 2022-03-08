@@ -2,7 +2,22 @@
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-## Getting started
+## Project documentation
+
+This project contains technical documentation written in Markdown in the /docs folder. The latest build (from the `develop` branch) can be viewed online at:
+https://nationalarchives.github.io/ds-wagtail/
+
+
+You can also view it locally via [mkdocs](https://www.mkdocs.org/) by running the following from a `web` container shell:
+
+```console
+$ mkdocs serve
+```
+
+The documentation will be available at:
+http://localhost:8001/
+
+## Setting up a local build
 
 Local development is done in Docker. You can [find out more about this here](https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/).
 
