@@ -54,6 +54,20 @@ class Template(str, enum.Enum):
     RESULTS = "results"
 
 
+class Aggregation(str, enum.Enum):
+    """Aggregated counts to include with response.
+
+    Supported by /search and /searchAll endpoints.
+    """
+
+    TOPIC = "topic"
+    COLLECTION = "collection"
+    GROUP = "group"
+    LEVEL = "level"
+    CLOSURE = "closure"
+    CATALOGUE_SOURCE = "catalogueSource"
+
+
 def format_list_param(items: Optional[list]) -> Optional[str]:
     """Convenience function to transform list to comma-separated string.
 
@@ -141,7 +155,9 @@ class KongClient:
         sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
         template: Optional[Template] = None,
-        show_buckets: Optional[bool] = None,
+        aggregations: Optional[list[Aggregation]] = None,
+        filter_aggregations: Optional[list[str]] = None,
+        filter_keyword: Optional[str] = None,
         buckets: Optional[list[str]] = None,
         topics: Optional[list[str]] = None,
         references: Optional[list[str]] = None,
@@ -169,8 +185,12 @@ class KongClient:
             Order of sorted results
         template:
             @template data to include with response
-        show_buckets:
-            Include Etna search buckets with response
+        aggregations:
+            aggregations to include with response
+        filter_aggregations:
+            filter results set by aggregation
+        filter_keyword:
+            filter results by keyword
         buckets:
             Restrict results to given bucket(s)
         topics:
@@ -189,7 +209,9 @@ class KongClient:
             "sort": sort_by,
             "sortOrder": sort_order,
             "template": template,
-            "showBuckets": show_buckets,
+            "aggregations": format_list_param(aggregations),
+            "filterAggregations": format_list_param(filter_aggregations),
+            "filterKeyword": filter_keyword,
             "buckets": format_list_param(buckets),
             "topics": format_list_param(topics),
             "references": format_list_param(references),
@@ -198,6 +220,49 @@ class KongClient:
         }
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
+
+    def search_all(
+        self,
+        *,
+        keyword: Optional[str] = None,
+        aggregations: Optional[list[Aggregation]] = None,
+        filter_aggregations: Optional[list[str]] = None,
+        template: Optional[Template] = None,
+        offset: Optional[int] = None,
+        size: Optional[int] = None,
+    ) -> dict:
+        """Make request and return response for Kong's /fetch endpoint.
+
+        Search metadata across multiple buckets in parallel. Returns results
+        and an aggregation for each provided bucket
+
+        Keyword arguments:
+
+        keyword:
+            String to query all indexed fields
+        aggregations:
+            aggregations to include with response
+        filter_aggregations:
+            filter results set by aggregation
+        template:
+            @template data to include with response
+        offset:
+            Offset for results. Mapped to 'from' before making request
+        size:
+            Number of results to return
+        """
+        params = {
+            "keyword": keyword,
+            "aggregations": format_list_param(aggregations),
+            "filterAggregations": format_list_param(filter_aggregations),
+            "template": template,
+            "from": offset,
+            "size": size,
+        }
+
+        return self.make_request(
+            f"{self.base_url}/data/searchAll", params=params
+        ).json()
 
     def fetch_all(
         self,
