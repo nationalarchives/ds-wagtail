@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "etna.paragraphs",
     "etna.quotes",
     "etna.records",
+    "etna.search",
     "etna.sections",
     "etna.teasers",
     "etna.users",

@@ -1,0 +1,90 @@
+{% load search_tags %}
+
+<h1>search</h1>
+
+<form method="get">
+	{{ form.as_p }}
+	<input type="submit" value="Submit" />
+</form>
+
+
+<ul>
+    <li>
+        <a href="?keyword={{form.keyword.value}}&group=group:tna" >
+            Online records from The National Archives ({% bucket_count bucket_count_response 'tna' %})
+        </a>
+    </li>
+    <li>
+        <a href="?keyword={{form.keyword.value}}&group=group:nonTna" >
+            Records from other UK archives ({% bucket_count bucket_count_response 'nonTna' %})
+        </a>
+    </li>
+    <li>
+        <a href="?keyword={{form.keyword.value}}&group=group:creator" >
+            Record creators ({% bucket_count bucket_count_response 'creator' %})
+        </a>
+    </li>
+    <li>
+        <a href="?keyword={{form.keyword.value}}&group=group:archive" >
+            Find an archive ({% bucket_count bucket_count_response 'archive' %})
+        </a>
+    </li>
+</ul>
+
+<h2>Total count</h2>
+{{ page.paginator.count }}
+
+<h2>Results</h2>
+<ul>
+	{% for record in page %}
+		<li>{{ record }}</li>
+	{% endfor %}
+</ul>
+
+<nav class="pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination"
+     id="analytics-disambiguation-pagination">
+    {% if page.has_other_pages %}
+        <ul class="pagination__list">
+            {% if page.has_previous %}
+                <li class="pagination__list-item">
+                    <a class="pagination__page-chevron-previous" href="?page={{ page.previous_page_number }}&keyword={{ form.keyword.value }}"><span
+                            class="sr-only" data-link="Previous page">Previous page</span></a>
+                </li>
+            {% else %}
+                <li class="pagination__list-item">
+                    <span class="pagination__page-chevron-previous--disabled"></span>
+                </li>
+            {% endif %}
+            <li class="pagination__list-pages" aria-label="Page numbers">
+                <ol>
+                    {% for i in page.paginator.page_range %}
+                        {% if page.number == i %}
+                            <li class="pagination__list-item">
+                                <a class="pagination__page-link-current" href="?page={{ i }}&keyword={{ form.keyword.value }}"
+                                   aria-label="Current page, Page {{ i }}"
+                                   aria-current="true" data-link="{{ i }}"><span
+                                        class="sr-only">Current page </span>{{ i }}</a>
+                            </li>
+                        {% else %}
+                        <li class="pagination__list-item"><a class="pagination__page-link" href="?page={{ i }}&keyword={{ form.keyword.value }}"
+                                                                 aria-label="Go to page {{ i }}"
+                                                                 data-link="{{ i }}"><span
+                                    class="sr-only">Page </span>{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </li>
+            {% if page.has_next %}
+                <li class="pagination__list-item">
+                    <a class="pagination__page-chevron-next" href="?page={{ page.next_page_number }}&keyword={{ form.keyword.value }}"
+                       data-link="Next page"><span class="sr-only">Next page</span></a>
+                </li>
+            {% else %}
+                <li class="pagination__list-item">
+                    <span class="pagination__page-chevron-next--disabled"></span>
+                </li>
+            {% endif %}
+        </ul>
+    {% endif %}
+</nav>
