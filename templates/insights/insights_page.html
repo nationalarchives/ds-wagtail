@@ -13,6 +13,17 @@
         {% include_block block %}
     {% endfor %}
 
+    {% comment %}
+        NOTE: TO BE REFINED BY FE
+    {% endcomment %}
+    {% if page.similar_items %}
+        <h3>Similar insights</h3>
+        <ol>
+            {% for item in page.similar_items %}
+                <li><a href="{% pageurl item %}">{{ item }}</a></li>
+            {% endfor %}
+        </ol>
+    {% endif %}
 
 {% endblock %}
 
