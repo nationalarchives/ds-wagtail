@@ -1,4 +1,7 @@
+from typing import Iterable
+
 from django.db import models
+from django.utils.functional import cached_property
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -98,14 +101,48 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         """
         Overrides Page.save() to ensure 'insight_tag_names' always reflects the tags() value
         """
-        try:
-            # For when tags is a RelatedManager
-            tags = self.tags.all()
-        except AttributeError:
-            # For when tags is a list
-            tags = self.tags
-        self.insight_tag_names = "\n".join(t.name for t in tags)
+        if (
+            "update_fields" not in kwargs
+            or "insight_tag_names" in kwargs["update_fields"]
+        ):
+            self.insight_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
+
+    @cached_property
+    def similar_items(self) -> Iterable["InsightsPage"]:
+        """
+        Returns a maximum of three InsightsPages that are tagged with at least
+        one of the same InsightsTags. Items should be ordered by the number
+        of tags they have in common.
+        """
+        if not self.insight_tag_names:
+            # Avoid unncecssary lookups
+            return InsightsPage.objects.none()
+
+        tag_ids = self.tagged_items.values_list("tag_id", flat=True)
+        if not tag_ids:
+            # Avoid unncecssary lookups
+            return InsightsPage.objects.none()
+
+        # Identify 'other' live pages with tags in common
+        tag_match_ids = (
+            InsightsPage.objects.live()
+            .not_page(self)
+            .filter(tagged_items__tag_id__in=tag_ids)
+            .values_list("id", flat=True)
+            .distinct()
+        )
+        if not tag_match_ids:
+            # Avoid unncecssary lookups
+            return InsightsPage.objects.none()
+
+        # Use search() to prioritise items with the highest number of matches
+        return InsightsPage.objects.filter(id__in=tag_match_ids).search(
+            self.insight_tag_names,
+            fields=["insight_tag_names"],
+            operator="or",
+        )[:3]
+
     content_panels = (
         BasePage.content_panels
         + HeroImageMixin.content_panels
