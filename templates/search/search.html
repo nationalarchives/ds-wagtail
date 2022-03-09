@@ -1,0 +1,13 @@
+<h1>search</h1>
+
+<form method="get">
+	{{ form.as_p }}
+	<input type="submit" value="Submit" />
+</form>
+
+<h2>Results</h2>
+<ul>
+	{% for record in records %}
+		<li>{{ record }}</li> 
+	{% endfor %}
+</ul>
