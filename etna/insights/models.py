@@ -87,14 +87,25 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    insight_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedInsights, blank=True)
 
-    def get_insight_tag_names(self):
-        return "\n".join(self.tags.all().values_list("name", flat=True))
-
     search_fields = Page.search_fields + [
-        index.SearchField("get_insight_tag_names"),
+        index.SearchField("insight_tag_names"),
     ]
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'insight_tag_names' always reflects the tags() value
+        """
+        try:
+            # For when tags is a RelatedManager
+            tags = self.tags.all()
+        except AttributeError:
+            # For when tags is a list
+            tags = self.tags
+        self.insight_tag_names = "\n".join(t.name for t in tags)
+        super().save(*args, **kwargs)
     content_panels = (
         BasePage.content_panels
         + HeroImageMixin.content_panels
