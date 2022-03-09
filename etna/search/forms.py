@@ -3,6 +3,7 @@ from django import forms
 
 class SearchForm(forms.Form):
     keyword = forms.CharField(label="Search here", required=False)
+    filter_keyword = forms.CharField(label="Search within", required=False)
     group = forms.ChoiceField(
         label="bucket",
         choices=[

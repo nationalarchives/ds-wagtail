@@ -21,10 +21,12 @@ def catalogue_search(request):
     if form.is_valid():
         # If no keyword is provided, pass None to client to fetch all results.
         keyword = form.cleaned_data.get("keyword") or None
+        filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
         response = Record.api.client.search(
             keyword=keyword,
+            filter_keyword=filter_keyword,
             filter_aggregations=filter_aggregations,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
