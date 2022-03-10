@@ -1,4 +1,5 @@
 {% load search_tags %}
+{% load humanize %}
 
 <style type="text/css" media="screen">
     .column {
@@ -57,23 +58,27 @@
             <h2>Buckets</h2>
 
             <li>
+                {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:tna" >
-                    Online records from The National Archives ({% bucket_count bucket_count_response 'tna' %})
+                    Online records from The National Archives ({{ tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
+                {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:nonTna" >
-                    All records from other UK archives ({% bucket_count bucket_count_response 'nonTna' %})
+                    All records from other UK archives ({{ non_tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
+                {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:creator" >
-                    Record creators ({% bucket_count bucket_count_response 'creator' %})
+                    Record creators ({{ creator_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
+                {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:archive" >
-                    Directory of archives in the UK and beyond ({% bucket_count bucket_count_response 'archive' %})
+                    Directory of archives in the UK and beyond ({{ archive_bucket_count|intcomma }})
                 </a>
             </li>
         </ul>
