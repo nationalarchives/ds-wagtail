@@ -43,6 +43,8 @@ def catalogue_search(request):
         records = result_response["hits"]["hits"]
         count = result_response["hits"]["total"]["value"]
 
+        form.update_from_response(response=result_response)
+
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
 
