@@ -12,7 +12,7 @@
     }
 
     .results {
-        width: 500px;
+        width: 900px;
     }
 
     .sr-only {
@@ -33,47 +33,53 @@
     }
 </style>
 
-<h1>Catalogue search</h1>
-
-<ul>
-    {% comment %}<li><a href="{% url 'search-featured' %}?keyword={{ form.keyword.value }}" >Featured results</a></li>{% endcomment %}
-    <li><a href="{% url 'search-catalogue' %}" >Catalogue results</a></li>
-    {% comment %}<li><a href="{% url 'search-website' %}?keyword={{ form.keyword.value }}" >Website results</a></li>{% endcomment %}
-</ul>
-
+<h1>Catalogue Search</h1>
 
 <div class="column filters">
-
     <form method="get">
         {{ form.non_field_errors }}
 
         <div>
-           {{ form.keyword.errors }}
-           {{ form.keyword.label_tag }}
-           {{ form.keyword }}
+           {{ form.search_text.errors }}
+           {{ form.search_text.label_tag }}
+           {{ form.search_text }}
         </div>
+
+        <ul>
+            {% comment %}<li><a href="{% url 'search-featured' %}?search_text={{ search_text }}" >Featured results</a></li>{% endcomment %}
+            <li><a href="{% url 'search-catalogue' %}?search_text={{ search_text }}" >Catalogue results</a></li>
+            {% comment %}<li><a href="{% url 'search-website' %}?search_text={{ search_text }}" >Website results</a></li>{% endcomment %}
+        </ul>
 
         <ul>
             <h2>Buckets</h2>
 
+
+            {% comment %}
             <li>
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:tna" >
-                    Online records from The National Archives ({% bucket_count bucket_count_response 'tna' %})
+                <a href="{% url 'search-catalogue' %}?search_text={{ search_text }}&bucket=evidential" >
+                    All records from The National Archives ({% aggregation_count bucket_count_response 'evidential' %})
+                </a>
+            </li>
+            {% endcomment %}
+            <li>
+                <a href="{% url 'search-catalogue' %}?search_text={{ search_text }}&group=group:tna" >
+                    Online records from The National Archives ({% aggregation_count bucket_count_response 'tna' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:nonTna" >
-                    All records from other UK archives ({% bucket_count bucket_count_response 'nonTna' %})
+                <a href="{% url 'search-catalogue' %}?search_text={{ search_text }}&group=group:nonTna" >
+                    All records from other UK archives ({% aggregation_count bucket_count_response 'nonTna' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:creator" >
-                    Record creators ({% bucket_count bucket_count_response 'creator' %})
+                <a href="{% url 'search-catalogue' %}?search_text={{ search_text }}&group=group:creator" >
+                    Record creators ({% aggregation_count bucket_count_response 'creator' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:archive" >
-                    Directory of archives in the UK and beyond ({% bucket_count bucket_count_response 'archive' %})
+                <a href="{% url 'search-catalogue' %}?search_text={{ search_text }}&group=group:archive" >
+                    Directory of archives in the UK and beyond ({% aggregation_count bucket_count_response 'archive' %})
                 </a>
             </li>
         </ul>
@@ -84,9 +90,9 @@
         </div>
 
         <div>
-           {{ form.filter_keyword.errors }}
-           {{ form.filter_keyword.label_tag }}
-           {{ form.filter_keyword }}
+           {{ form.search_within.errors }}
+           {{ form.search_within.label_tag }}
+           {{ form.search_within }}
         </div>
 
         {% if form.levels.field.choices %}
@@ -131,31 +137,35 @@
 
         <input type="submit" />
     </form>
-
-
 </div>
+
 
 {% if page.paginator.count %}
     <div class="column results">
 
+        <h2>Total count</h2>
         {% with count=page.paginator.count per_page=page.paginator.per_page  %}
-        <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count }}) result{{ count|pluralize}} for "{{ form.keyword.value|default:'*' }}" in "{{ form.group.value }}"</p>
+            <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count }}) result{{ count|pluralize}} for "{{ search_text }}"</p>
         {% endwith %}
 
-        <ul>
-          {% for record in page %}
-            <li>
-                <h3> {{ record|record_title }} </h3>
-
-                <dl>
-                    <dt>IAID:</dt>
-                    <dd>{{ record|record_score }}</dd>
-                    <dt>Score:</dt>
-                    <dd>{{ record|record_iaid }}</dd>
-                </dl>
-            </li>
-          {% endfor %}
-        </ul>
+        <div>
+            <h2>Results</h2>
+            <ul>
+              {% for record in page %}
+              <li>
+                  <h3>{{ record.summary_title|striptags }}</h3>
+                  <dl>
+                      <dt>IAID:</dt>
+                      <dd>{{ record.iaid }}</dd>
+                      <dt>Score:</dt>
+                      <dd>{% score record %}</dd>
+                  </dl>
+                  <ul class="bullets">
+                  </ul>
+              </li> 
+              {% endfor %}
+            </ul>
+        </div>
 
         <nav class="pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination"
              id="analytics-disambiguation-pagination">
