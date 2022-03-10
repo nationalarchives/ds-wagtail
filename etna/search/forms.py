@@ -77,7 +77,14 @@ class SearchForm(forms.Form):
         """Collect selected filters to pass to the client in view."""
         cleaned_data = super().clean()
 
-        cleaned_data["filter_aggregations"] = [cleaned_data.get("group")]
+        cleaned_data["filter_aggregations"] = (
+            [cleaned_data.get("group")]
+            + cleaned_data.get("levels")
+            + cleaned_data.get("topics")
+            + cleaned_data.get("collections")
+            + cleaned_data.get("closure_statuses")
+            + cleaned_data.get("catalogue_sources")
+        )
 
         return cleaned_data
 

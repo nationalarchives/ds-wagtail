@@ -1,7 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import render
 
-from ..ciim.client import Aggregation
+from ..ciim.client import Aggregation, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import SearchForm
@@ -21,10 +21,12 @@ def catalogue_search(request):
     if form.is_valid():
         # If no keyword is provided, pass None to client to fetch all results.
         keyword = form.cleaned_data.get("keyword") or None
-        filter_keyword = form.cleaned_data.get("filter_keyword")
+        # If no filter_keyword is provided, pass None to client bypass search within
+        filter_keyword = form.cleaned_data.get("filter_keyword") or None
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
         response = Record.api.client.search(
+            template=Template.DETAILS,
             keyword=keyword,
             filter_keyword=filter_keyword,
             filter_aggregations=filter_aggregations,
