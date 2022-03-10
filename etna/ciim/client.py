@@ -149,7 +149,7 @@ class KongClient:
     def search(
         self,
         *,
-        keyword: Optional[str] = None,
+        q: Optional[str] = None,
         web_reference: Optional[str] = None,
         stream: Optional[Stream] = None,
         sort_by: Optional[SortBy] = None,
@@ -173,7 +173,7 @@ class KongClient:
 
         Keyword arguments:
 
-        keyword:
+        q:
             String to query all indexed fields
         web_reference:
             Return matches on references_number
@@ -203,7 +203,7 @@ class KongClient:
             Number of results to return
         """
         params = {
-            "keyword": keyword,
+            "q": q,
             "webReference": web_reference,
             "stream": stream,
             "sort": sort_by,
@@ -211,7 +211,7 @@ class KongClient:
             "template": template,
             "aggregations": format_list_param(aggregations),
             "filterAggregations": format_list_param(filter_aggregations),
-            "filterKeyword": filter_keyword,
+            "filter": filter_keyword,
             "buckets": format_list_param(buckets),
             "topics": format_list_param(topics),
             "references": format_list_param(references),
@@ -224,7 +224,7 @@ class KongClient:
     def search_all(
         self,
         *,
-        keyword: Optional[str] = None,
+        q: Optional[str] = None,
         aggregations: Optional[list[Aggregation]] = None,
         filter_aggregations: Optional[list[str]] = None,
         template: Optional[Template] = None,
@@ -238,7 +238,7 @@ class KongClient:
 
         Keyword arguments:
 
-        keyword:
+        q:
             String to query all indexed fields
         aggregations:
             aggregations to include with response
@@ -252,7 +252,7 @@ class KongClient:
             Number of results to return
         """
         params = {
-            "keyword": keyword,
+            "q": q,
             "aggregations": format_list_param(aggregations),
             "filterAggregations": format_list_param(filter_aggregations),
             "template": template,

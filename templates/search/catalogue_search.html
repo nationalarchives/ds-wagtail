@@ -37,9 +37,9 @@
 <h1>Catalogue search</h1>
 
 <ul>
-    {% comment %}<li><a href="{% url 'search-featured' %}?keyword={{ form.keyword.value }}" >Featured results</a></li>{% endcomment %}
+    {% comment %}<li><a href="{% url 'search-featured' %}?q={{ form.q.value }}" >Featured results</a></li>{% endcomment %}
     <li><a href="{% url 'search-catalogue' %}" >Catalogue results</a></li>
-    {% comment %}<li><a href="{% url 'search-website' %}?keyword={{ form.keyword.value }}" >Website results</a></li>{% endcomment %}
+    {% comment %}<li><a href="{% url 'search-website' %}?q={{ form.q.value }}" >Website results</a></li>{% endcomment %}
 </ul>
 
 
@@ -49,9 +49,9 @@
         {{ form.non_field_errors }}
 
         <div>
-           {{ form.keyword.errors }}
-           {{ form.keyword.label_tag }}
-           {{ form.keyword }}
+           {{ form.q.errors }}
+           {{ form.q.label_tag }}
+           {{ form.q }}
         </div>
 
         <ul>
@@ -59,25 +59,25 @@
 
             <li>
                 {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:tna" >
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" >
                     Online records from The National Archives ({{ tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
                 {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:nonTna" >
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:nonTna" >
                     All records from other UK archives ({{ non_tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
                 {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:creator" >
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:creator" >
                     Record creators ({{ creator_bucket_count|intcomma }})
                 </a>
             </li>
             <li>
                 {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:archive" >
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:archive" >
                     Directory of archives in the UK and beyond ({{ archive_bucket_count|intcomma }})
                 </a>
             </li>
@@ -144,7 +144,7 @@
     <div class="column results">
 
         {% with count=page.paginator.count per_page=page.paginator.per_page  %}
-        <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count }}) result{{ count|pluralize}} for "{{ form.keyword.value|default:'*' }}" in "{{ form.group.value }}"</p>
+        <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ form.group.value }}"</p>
         {% endwith %}
 
         <ul>
