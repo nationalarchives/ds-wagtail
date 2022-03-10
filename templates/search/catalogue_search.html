@@ -37,7 +37,16 @@
 <h2>Results</h2>
 <ul>
 	{% for record in page %}
-		<li>{{ record }}</li>
+		<li>
+        <h3> {{ record|record_title }} </h3>
+
+        <dl>
+            <dt>IAID:</dt>
+            <dd>{{ record|record_score }}</dd>
+            <dt>Score:</dt>
+            <dd>{{ record|record_iaid }}</dd>
+        </dl>
+    </li>
 	{% endfor %}
 </ul>
 
