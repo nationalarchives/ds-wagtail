@@ -1,14 +1,13 @@
 from django.core.paginator import Page
 from django.shortcuts import render
 
-from ..ciim.client import Aggregation
+from ..ciim.client import Aggregation, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import SearchForm
 
 
 def catalogue_search(request):
-    form = SearchForm(request.GET)
 
     per_page = int(request.GET.get("per_page", 20))
     page_number = int(request.GET.get("page", 1))
@@ -18,13 +17,19 @@ def catalogue_search(request):
     records = []
     count = 0
 
+    data = request.GET.copy()
+    data.setdefault("group", "group:tna")
+    form = SearchForm(data)
+
     if form.is_valid():
         # If no keyword is provided, pass None to client to fetch all results.
-        keyword = form.cleaned_data.get("keyword") or None
+        keyword = form.cleaned_data.get("keyword")
+        # If no filter_keyword is provided, pass None to client bypass search within
         filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
         response = Record.api.client.search(
+            template=Template.DETAILS,
             keyword=keyword,
             filter_keyword=filter_keyword,
             filter_aggregations=filter_aggregations,
@@ -42,6 +47,8 @@ def catalogue_search(request):
         bucket_count_response, result_response = response["responses"]
         records = result_response["hits"]["hits"]
         count = result_response["hits"]["total"]["value"]
+
+        form.update_from_response(response=result_response)
 
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
