@@ -30,9 +30,9 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
 
 class SearchForm(forms.Form):
-    keyword = forms.CharField(
+    q = forms.CharField(
         label="Search here",
-        # If no keyword is provided, pass None to client to fetch all results.
+        # If no query is provided, pass None to client to fetch all results.
         empty_value=None,
         required=False,
     )

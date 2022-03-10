@@ -27,13 +27,13 @@ class ClientSearchAllTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_keyword(self):
-        self.client.search_all(keyword="Egypt")
+    def test_with_q(self):
+        self.client.search_all(q="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/searchAll?keyword=Egypt",
+            "https://kong.test/data/searchAll?q=Egypt",
         )
 
     @responses.activate
@@ -115,13 +115,13 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_keyword(self):
-        self.client.search(keyword="Egypt")
+    def test_with_q(self):
+        self.client.search(q="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?keyword=Egypt",
+            "https://kong.test/data/search?q=Egypt",
         )
 
     @responses.activate
@@ -241,7 +241,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?filterKeyword=filter+keyword",
+            "https://kong.test/data/search?filter=filter+keyword",
         )
 
     @responses.activate

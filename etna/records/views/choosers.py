@@ -28,7 +28,7 @@ class KongModelChooserMixinIn(ChooserMixin):
         offset = ((page_number - 1) * self.per_page,)
 
         count, results = self.model.api.search(
-            keyword=search_term,
+            q=search_term,
             stream=Stream.EVIDENTIAL,
             size=self.per_page,
             offset=offset,
