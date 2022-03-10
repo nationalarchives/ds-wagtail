@@ -37,7 +37,7 @@
 
 <ul>
     {% comment %}<li><a href="{% url 'search-featured' %}?keyword={{ form.keyword.value }}" >Featured results</a></li>{% endcomment %}
-    <li><a href="{% url 'search-catalogue' %}?keyword={{ form.keyword.value }}" >Catalogue results</a></li>
+    <li><a href="{% url 'search-catalogue' %}" >Catalogue results</a></li>
     {% comment %}<li><a href="{% url 'search-website' %}?keyword={{ form.keyword.value }}" >Website results</a></li>{% endcomment %}
 </ul>
 
@@ -57,22 +57,22 @@
             <h2>Buckets</h2>
 
             <li>
-                <a href="{% url 'search-catalogue' %}?keyword={{ form.keyword.value }}&group=group:tna" >
+                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:tna" >
                     Online records from The National Archives ({% bucket_count bucket_count_response 'tna' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?keyword={{ form.keyword.value }}&group=group:nonTna" >
+                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:nonTna" >
                     All records from other UK archives ({% bucket_count bucket_count_response 'nonTna' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?keyword={{ form.keyword.value }}&group=group:creator" >
+                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:creator" >
                     Record creators ({% bucket_count bucket_count_response 'creator' %})
                 </a>
             </li>
             <li>
-                <a href="{% url 'search-catalogue' %}?keyword={{ form.keyword.value }}&group=group:archive" >
+                <a href="{% url 'search-catalogue' %}?{% if form.keyword.value %}keyword={{ form.keyword.value }}&{% endif %}group=group:archive" >
                     Directory of archives in the UK and beyond ({% bucket_count bucket_count_response 'archive' %})
                 </a>
             </li>
@@ -133,16 +133,15 @@
     </form>
 
 
-    <h2>Total count</h2>
-    {% with count=page.paginator.count per_page=page.paginator.per_page  %}
-        <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count }}) result{{ count|pluralize}} for "{{ form.keyword.value|default:'all' }}"</p>
-    {% endwith %}
-
 </div>
 
 {% if page.paginator.count %}
     <div class="column results">
-        <h2>Results</h2>
+
+        {% with count=page.paginator.count per_page=page.paginator.per_page  %}
+        <p>Showing {% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %} (of {{ count }}) result{{ count|pluralize}} for "{{ form.keyword.value|default:'*' }}" in "{{ form.group.value }}"</p>
+        {% endwith %}
+
         <ul>
           {% for record in page %}
             <li>

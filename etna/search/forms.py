@@ -30,8 +30,18 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
 
 class SearchForm(forms.Form):
-    keyword = forms.CharField(label="Search here", required=False)
-    filter_keyword = forms.CharField(label="Search within", required=False)
+    keyword = forms.CharField(
+        label="Search here",
+        # If no keyword is provided, pass None to client to fetch all results.
+        empty_value=None,
+        required=False,
+    )
+    filter_keyword = forms.CharField(
+        label="Search within",
+        # If no filter_keyword is provided, pass None to client bypass search within
+        empty_value=None,
+        required=False,
+    )
     group = forms.ChoiceField(
         label="bucket",
         choices=[
@@ -40,7 +50,6 @@ class SearchForm(forms.Form):
             ("group:creator", "Creator"),
             ("group:archive", "Archive"),
         ],
-        required=False,
     )
     levels = DynamicMultipleChoiceField(
         label="Level",

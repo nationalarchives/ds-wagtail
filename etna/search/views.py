@@ -8,7 +8,6 @@ from .forms import SearchForm
 
 
 def catalogue_search(request):
-    form = SearchForm(request.GET)
 
     per_page = int(request.GET.get("per_page", 20))
     page_number = int(request.GET.get("page", 1))
@@ -18,11 +17,15 @@ def catalogue_search(request):
     records = []
     count = 0
 
+    data = request.GET.copy()
+    data.setdefault("group", "group:tna")
+    form = SearchForm(data)
+
     if form.is_valid():
         # If no keyword is provided, pass None to client to fetch all results.
-        keyword = form.cleaned_data.get("keyword") or None
+        keyword = form.cleaned_data.get("keyword")
         # If no filter_keyword is provided, pass None to client bypass search within
-        filter_keyword = form.cleaned_data.get("filter_keyword") or None
+        filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
         response = Record.api.client.search(
