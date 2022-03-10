@@ -1,4 +1,5 @@
 from django import template
+from django.http import QueryDict
 
 register = template.Library()
 
@@ -25,7 +26,7 @@ def record_title(record) -> str:
     try:
         return record["_source"]["@template"]["details"]["summaryTitle"]
     except KeyError:
-        return 'No Title Found'
+        return "No Title Found"
 
 
 @register.filter
@@ -39,7 +40,7 @@ def record_iaid(record) -> str:
     try:
         return record["_source"]["@template"]["details"]["iaid"]
     except KeyError:
-        return 'No IAID Found'
+        return "No IAID Found"
 
 
 @register.filter
@@ -51,3 +52,18 @@ def record_score(record) -> str:
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
     return record.get("_score")
+
+
+@register.simple_tag(takes_context=True)
+def query_string(context, **kwargs) -> str:
+    """Update  query string for context's request with passed kwargs."""
+
+    request = context["request"]
+
+    query_dict = QueryDict(mutable=True)
+    query_dict.update(request.GET)
+
+    for k, v in kwargs.items():
+        query_dict[k] = v
+
+    return query_dict.urlencode()
