@@ -52,12 +52,14 @@ def catalogue_search(request):
 
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
+    page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
 
     return render(
         request,
         "search/catalogue_search.html",
         {
             "page": page,
+            "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
         },

@@ -178,22 +178,22 @@
                     {% endif %}
                     <li class="pagination__list-pages" aria-label="Page numbers">
                         <ol>
-                            {% for i in page.paginator.page_range %}
-                                {% if page.number == i %}
-                                    <li class="pagination__list-item">
-                                        <a class="pagination__page-link-current" href="?{% query_string page=i %}"
-                                           aria-label="Current page, Page {{ i }}"
-                                           aria-current="true" data-link="{{ i }}"><span
-                                                class="sr-only">Current page </span>{{ i }}</a>
-                                    </li>
-                                {% else %}
-                                    <li class="pagination__list-item">
-                                    <a class="pagination__page-link" href="?{% query_string page=i %}"
-                                                                         aria-label="Go to page {{ i }}"
-                                                                         data-link="{{ i }}"><span
-                                            class="sr-only">Page </span>{{ i }}</a>
-                                    </li>
-                                {% endif %}
+                            {% for i in page_range %}
+                                <li class="pagination__list-item">
+                                    {% if page.number == i %}
+                                        <a class="pagination__page-link-current" href="?{% query_string page=i %}" aria-label="Current page, Page {{ i }}" aria-current="true" data-link="{{ i }}">
+                                            <span class="sr-only">Current page </span>{{ i }}
+                                        </a>
+                                    {% else %}
+                                        {% if i == page.paginator.ELLIPSIS %}
+                                            {{ i }}
+                                        {% else %}
+                                            <a class="pagination__page-link" href="?{% query_string page=i %}" aria-label="Go to page {{ i }}" data-link="{{ i }}">
+                                                <span class="sr-only">Page </span>{{ i }}
+                                            </a>
+                                        {% endif %}
+                                    {% endif %}
+                                </li>
                             {% endfor %}
                         </ol>
                     </li>
