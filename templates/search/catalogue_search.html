@@ -89,6 +89,17 @@
         </div>
 
         <div>
+           {{ form.sort_by.errors }}
+           {{ form.sort_by.label_tag }}
+           {{ form.sort_by }}
+        </div>
+
+        <div>
+           {{ form.sort_order.errors }}
+           {{ form.sort_order.as_hidden }}
+        </div>
+
+        <div>
            {{ form.filter_keyword.errors }}
            {{ form.filter_keyword.label_tag }}
            {{ form.filter_keyword }}

@@ -221,7 +221,27 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?sort=date_created",
+            "https://kong.test/data/search?sort=dateCreated",
+        )
+
+    @responses.activate
+    def test_with_sort_date_opening(self):
+        self.client.search(sort_by=SortBy.DATE_OPENING)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?sort=dateOpening",
+        )
+
+    @responses.activate
+    def test_with_sort_relevance(self):
+        self.client.search(sort_by=SortBy.RELEVANCE)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?sort=",
         )
 
     @responses.activate

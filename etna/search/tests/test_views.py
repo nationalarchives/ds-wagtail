@@ -50,6 +50,8 @@ class CatalogueSearchIntegrationTest(WagtailTestUtils, TestCase):
             (
                 "https://kong.test/data/search"
                 "?dateField=dateOpening"
+                "&sort="
+                "&sortOrder=asc"
                 "&template=details"
                 "&aggregations=catalogueSource%2C+closure%2C+collection%2C+group%2C+level%2C+topic"
                 "&filterAggregations=group%3Atna"

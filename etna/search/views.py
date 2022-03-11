@@ -1,7 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import render
 
-from ..ciim.client import Aggregation, DateField, Template
+from ..ciim.client import Aggregation, DateField, SortOrder, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import SearchForm
@@ -29,6 +29,8 @@ def catalogue_search(request):
         start_date = form.cleaned_data.get("start_date")
         end_date = form.cleaned_data.get("end_date")
 
+        sort_by = form.cleaned_data.get("sort_by")
+
         response = Record.api.client.search(
             template=Template.DETAILS,
             q=q,
@@ -47,6 +49,8 @@ def catalogue_search(request):
             start_date=start_date,
             end_date=end_date,
             date_field=DateField.DATE_OPENING,
+            sort_by=sort_by,
+            sort_order=SortOrder.ASC,
         )
         bucket_count_response, result_response = response["responses"]
         records = result_response["hits"]["hits"]

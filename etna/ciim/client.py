@@ -34,8 +34,10 @@ class Stream(str, enum.Enum):
 class SortBy(str, enum.Enum):
     """Options for sorting /search results by a given field."""
 
+    RELEVANCE = ""
     TITLE = "title"
-    DATE_CREATED = "date_created"
+    DATE_CREATED = "dateCreated"
+    DATE_OPENING = "dateOpening"
 
 
 class SortOrder(str, enum.Enum):

@@ -1,5 +1,7 @@
 from django import forms
 
+from ..ciim.client import SortBy, SortOrder
+
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices are populated by API response data.
@@ -91,6 +93,23 @@ class SearchForm(forms.Form):
         widget=forms.DateTimeInput(
             attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
         ),
+        required=False,
+    )
+    sort_by = forms.ChoiceField(
+        label="Sort by",
+        choices=[
+            (SortBy.RELEVANCE.value, "Relevance"),
+            (SortBy.DATE_OPENING.value, "Date"),
+            (SortBy.TITLE.value, "Title"),
+        ],
+        required=False,
+    )
+    sort_order = forms.ChoiceField(
+        label="Sort order",
+        choices=[
+            (SortOrder.ASC.value, "Ascending"),
+            (SortOrder.DESC.value, "Descending"),
+        ],
         required=False,
     )
 
