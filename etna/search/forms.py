@@ -81,10 +81,29 @@ class SearchForm(forms.Form):
         widget=forms.widgets.CheckboxSelectMultiple,
         required=False,
     )
+    start_date = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
+        ),
+        required=False,
+    )
+    end_date = forms.DateTimeField(
+        widget=forms.DateTimeInput(
+            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
+        ),
+        required=False,
+    )
 
     def clean(self):
         """Collect selected filters to pass to the client in view."""
         cleaned_data = super().clean()
+
+        try:
+            if cleaned_data.get("start_date") > cleaned_data.get("end_date"):
+                self.add_error("start_date", "Start date cannot be after end date")
+        except TypeError:
+            # Either one or both date fields are empty. No further validation necessary.
+            ...
 
         cleaned_data["filter_aggregations"] = (
             [cleaned_data.get("group")]

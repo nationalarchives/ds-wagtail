@@ -2,6 +2,7 @@ import enum
 import json
 import logging
 
+from datetime import datetime
 from typing import Any, Optional
 
 import requests
@@ -66,6 +67,13 @@ class Aggregation(str, enum.Enum):
     LEVEL = "level"
     CLOSURE = "closure"
     CATALOGUE_SOURCE = "catalogueSource"
+
+
+class DateField(str, enum.Enum):
+    """Field to use for date range searches."""
+
+    DATE_CREATED = "dateCreated"
+    DATE_OPENING = "dateOpening"
 
 
 def format_list_param(items: Optional[list]) -> Optional[str]:
@@ -151,6 +159,9 @@ class KongClient:
         *,
         q: Optional[str] = None,
         web_reference: Optional[str] = None,
+        start_date: Optional[datetime] = None,
+        end_date: Optional[datetime] = None,
+        date_field: Optional[DateField] = None,
         stream: Optional[Stream] = None,
         sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
@@ -205,6 +216,7 @@ class KongClient:
         params = {
             "q": q,
             "webReference": web_reference,
+            "dateField": date_field,
             "stream": stream,
             "sort": sort_by,
             "sortOrder": sort_order,
@@ -218,6 +230,12 @@ class KongClient:
             "from": offset,
             "size": size,
         }
+
+        if start_date:
+            params["startDate"] = start_date.isoformat()
+
+        if end_date:
+            params["endDate"] = end_date.isoformat()
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
 

@@ -1,8 +1,18 @@
+from datetime import datetime
+
 from django.test import SimpleTestCase
 
 import responses
 
-from ..client import Aggregation, KongClient, SortBy, SortOrder, Stream, Template
+from ..client import (
+    Aggregation,
+    DateField,
+    KongClient,
+    SortBy,
+    SortOrder,
+    Stream,
+    Template,
+)
 from ..exceptions import (
     KongBadRequestError,
     KongCommunicationError,
@@ -132,6 +142,46 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/search?webReference=ADM%2F223%2F3",
+        )
+
+    @responses.activate
+    def test_with_date_field_date_created(self):
+        self.client.search(date_field=DateField.DATE_CREATED)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?dateField=dateCreated",
+        )
+
+    @responses.activate
+    def test_with_date_field_date_opening(self):
+        self.client.search(date_field=DateField.DATE_OPENING)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?dateField=dateOpening",
+        )
+
+    @responses.activate
+    def test_with_start_date(self):
+        self.client.search(start_date=datetime(year=1901, month=2, day=3))
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?startDate=1901-02-03T00%3A00%3A00",
+        )
+
+    @responses.activate
+    def test_with_end_date(self):
+        self.client.search(end_date=datetime(year=1901, month=2, day=3))
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?endDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
