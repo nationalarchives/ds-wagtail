@@ -50,6 +50,7 @@ class CatalogueSearchIntegrationTest(WagtailTestUtils, TestCase):
             (
                 "https://kong.test/data/search"
                 "?dateField=dateOpening"
+                "&stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"

@@ -1,7 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import render
 
-from ..ciim.client import Aggregation, DateField, SortOrder, Template
+from ..ciim.client import Aggregation, DateField, SortOrder, Stream, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import SearchForm
@@ -36,6 +36,7 @@ def catalogue_search(request):
             q=q,
             filter_keyword=filter_keyword,
             filter_aggregations=filter_aggregations,
+            stream=Stream.EVIDENTIAL,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
                 Aggregation.CLOSURE,
