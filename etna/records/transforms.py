@@ -5,6 +5,8 @@ def transform_record_result(result):
     """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
+    repo_summary_title = ""
+    data["datalayer_data"] = {}
 
     source = result["_source"]
     identifier = source.get("identifier")
@@ -38,6 +40,7 @@ def transform_record_result(result):
 
     if repository := source.get("repository"):
         data["held_by"] = repository["name"]["value"]
+        repo_summary_title = repository["summary"]["title"]
 
     data["is_digitised"] = source.get("digitised", False)
 
@@ -105,6 +108,12 @@ def transform_record_result(result):
 
     if previous_record := source.get("@previous"):
         data["previous_record"] = {"iaid": previous_record["@admin"]["id"]}
+
+    if catalogue_source := source.get("source"):
+        if catalogue_source["value"] == "CAT":
+            data["datalayer_data"].update(
+                {"contentGroup1": "Catalogue: " + repo_summary_title}
+            )
 
     return data
 

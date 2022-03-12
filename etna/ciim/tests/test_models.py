@@ -290,6 +290,12 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    def test_datalayer_data(self):
+        self.assertEqual(
+            self.record.datalayer_data,
+            {"contentGroup1": "Catalogue: The National Archives"},
+        )
+
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(TestCase):

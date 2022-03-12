@@ -44,6 +44,7 @@ class Record(DataLayerMixin, APIModel):
     previous_record: dict = field(default_factory=dict)
     related_records: dict = field(default_factory=dict)
     related_articles: dict = field(default_factory=dict)
+    datalayer_data: dict = field(default_factory=dict)
 
     _debug_kong_result: dict = field(default_factory=dict)
 
@@ -63,9 +64,9 @@ class Record(DataLayerMixin, APIModel):
     def get_gtm_content_group(self) -> str:
         """
         Overrides DataLayerMixin.get_gtm_content_group() to
-        return the name of the class.
+        return content group otherwise the name of the class.
         """
-        return self.__class__.__name__
+        return self.datalayer_data.get("contentGroup1", self.__class__.__name__)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """
