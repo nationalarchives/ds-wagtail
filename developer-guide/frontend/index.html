@@ -343,19 +343,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#working-with-sasscss" class="md-nav__link">
-    Working with SASS/CSS
+  <a href="#follow-the-development-guide" class="md-nav__link">
+    Follow the development guide
   </a>
   
 </li>
       
         <li class="md-nav__item">
+  <a href="#setting-up-the-front-end-development-environment" class="md-nav__link">
+    Setting up the front end development environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the front end development environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#working-with-sasscss" class="md-nav__link">
+    Working with SASS/CSS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#working-with-javascript" class="md-nav__link">
     Working with JavaScript
   </a>
   
-    <nav class="md-nav" aria-label="Working with JavaScript">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#javascript-testing" class="md-nav__link">
@@ -619,19 +633,33 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#working-with-sasscss" class="md-nav__link">
-    Working with SASS/CSS
+  <a href="#follow-the-development-guide" class="md-nav__link">
+    Follow the development guide
   </a>
   
 </li>
       
         <li class="md-nav__item">
+  <a href="#setting-up-the-front-end-development-environment" class="md-nav__link">
+    Setting up the front end development environment
+  </a>
+  
+    <nav class="md-nav" aria-label="Setting up the front end development environment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#working-with-sasscss" class="md-nav__link">
+    Working with SASS/CSS
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#working-with-javascript" class="md-nav__link">
     Working with JavaScript
   </a>
   
-    <nav class="md-nav" aria-label="Working with JavaScript">
-      <ul class="md-nav__list">
+</li>
         
           <li class="md-nav__item">
   <a href="#javascript-testing" class="md-nav__link">
@@ -664,8 +692,11 @@
 
 
 <h1 id="frontend-development">Frontend development<a class="headerlink" href="#frontend-development" title="Permanent link">&para;</a></h1>
-<p>Specific guidance for working on the site frontend</p>
-<h2 id="working-with-sasscss">Working with SASS/CSS<a class="headerlink" href="#working-with-sasscss" title="Permanent link">&para;</a></h2>
+<h2 id="follow-the-development-guide">Follow the development guide<a class="headerlink" href="#follow-the-development-guide" title="Permanent link">&para;</a></h2>
+<p>To ensure we are working in a way that is compatible with the front end technology aspects of the <a href="https://www.gov.uk/service-manual/technology">GOV.UK Service Manual</a> <strong>all front end development should follow The National Archives <a href="https://github.com/nationalarchives/front-end-development-guide">front end development guide</a></strong> on GitHub. This will ensure user interfaces are robust, inclusive and meet relevant regulations. </p>
+<p>If you have any question about any aspect of front end development seek advice from the Lead Front End Developer or another front end specialist.</p>
+<h2 id="setting-up-the-front-end-development-environment">Setting up the front end development environment<a class="headerlink" href="#setting-up-the-front-end-development-environment" title="Permanent link">&para;</a></h2>
+<h3 id="working-with-sasscss">Working with SASS/CSS<a class="headerlink" href="#working-with-sasscss" title="Permanent link">&para;</a></h3>
 <ul>
 <li>Ensure you have NodeJS &amp; NPM installed.</li>
 <li>Install SASS globally by running <code>npm install -g sass</code>.</li>
@@ -673,7 +704,7 @@
 <li>To watch and build the Wagtail editor SASS, run <code>sass --watch sass/etna-wagtail-editor.scss:templates/static/css/dist/etna-wagtail-editor.css</code></li>
 <li>To modify styles, navigate to the <code>sass</code> folder in your editor.</li>
 </ul>
-<h2 id="working-with-javascript">Working with JavaScript<a class="headerlink" href="#working-with-javascript" title="Permanent link">&para;</a></h2>
+<h3 id="working-with-javascript">Working with JavaScript<a class="headerlink" href="#working-with-javascript" title="Permanent link">&para;</a></h3>
 <p>Webpack is used for JavaScript module bundling with entry points and outputs defined within <code>webpack.config.js</code>. When defining new
 entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required.</p>
 <ul>
