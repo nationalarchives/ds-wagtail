@@ -9,34 +9,8 @@
      
             {{ form.non_field_errors }}
 
-            <ul>
-                <h2>Buckets</h2>
+            {% include './blocks/search_buckets.html' %}
 
-                <li>
-                    {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                    <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" >
-                        Online records from The National Archives ({{ tna_bucket_count|intcomma }})
-                    </a>
-                </li>
-                <li>
-                    {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
-                    <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:nonTna" >
-                        All records from other UK archives ({{ non_tna_bucket_count|intcomma }})
-                    </a>
-                </li>
-                <li>
-                    {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
-                    <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:creator" >
-                        Record creators ({{ creator_bucket_count|intcomma }})
-                    </a>
-                </li>
-                <li>
-                    {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
-                    <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:archive" >
-                        Directory of archives in the UK and beyond ({{ archive_bucket_count|intcomma }})
-                    </a>
-                </li>
-            </ul>
 
             <div>
             {{ form.group.errors }}
