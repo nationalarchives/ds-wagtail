@@ -33,10 +33,16 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
 class SearchForm(forms.Form):
     q = forms.CharField(
-        label="Search here",
+        label="Search term",
         # If no query is provided, pass None to client to fetch all results.
         empty_value=None,
         required=False,
+        widget=forms.TextInput(
+            attrs = {
+                'class': 'search-results-hero__form-search-box'
+            }
+        )
+        
     )
     filter_keyword = forms.CharField(
         label="Search within",

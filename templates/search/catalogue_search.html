@@ -4,25 +4,10 @@
 {% load humanize %}
 
 {% block content %}
-    <h1>Catalogue search</h1>
-
-    <ul>
-        {% comment %}<li><a href="{% url 'search-featured' %}?q={{ form.q.value }}" >Featured results</a></li>{% endcomment %}
-        <li><a href="{% url 'search-catalogue' %}" >Catalogue results</a></li>
-        {% comment %}<li><a href="{% url 'search-website' %}?q={{ form.q.value }}" >Website results</a></li>{% endcomment %}
-    </ul>
-
-
-    <div class="column filters">
-
-        <form method="get">
+    <form method="get">
+    {% include './blocks/search_results_hero.html' %}
+     
             {{ form.non_field_errors }}
-
-            <div>
-            {{ form.q.errors }}
-            {{ form.q.label_tag }}
-            {{ form.q }}
-            </div>
 
             <ul>
                 <h2>Buckets</h2>
@@ -124,7 +109,7 @@
         </form>
 
 
-    </div>
+
 
         {% if form.catalogue_sources.field.choices %}
             <div>
