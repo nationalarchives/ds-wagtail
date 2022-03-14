@@ -49,6 +49,9 @@ class ManagerExceptionTest(TestCase):
             self.manager.fetch(iaid="C140")
 
 
+# @unittest.skip(
+#         "create_record not supported for open beta api"
+#     )
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
@@ -87,6 +90,9 @@ class SearchManagerFilterTest(TestCase):
             results[1]
 
 
+# @unittest.skip(
+#         "create_record not supported for open beta api"
+#     )
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -128,6 +134,7 @@ class ModelTranslationTest(TestCase):
     def setUp(self):
 
         path = Path(Path(__file__).parent, "fixtures/record.json")
+        # path = Path(Path(__file__).parent, "fixtures/record_v2022_03_10_C10297.json")
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -165,6 +172,9 @@ class ModelTranslationTest(TestCase):
                 '</span><span class="p">Also included are a number of opinions, more of which can be '
                 'found in <a href="/catalogue/C10298/">LO 3</a></span></span>'
             ),
+            # (
+            #     """<span class="scopecontent"><p>This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General's General Fiat for leave to appeal to the House of Lords in criminal cases.</p><p>Also included are a number of opinions, more of which can be found in <a href="C10298">LO 3</a></p></span>"""
+            # ),
         )
 
     def test_origination_date(self):
@@ -183,6 +193,9 @@ class ModelTranslationTest(TestCase):
                 "iaid": "C199",
                 "reference_number": "HO 42",
                 "title": "Records created or inherited by the Law Officers' Department",
+                # "iaid": "C199",
+                # "reference_number": "LO",
+                # "title": "Records created or inherited by the Law Officers' Department",
             },
         )
 
@@ -199,16 +212,35 @@ class ModelTranslationTest(TestCase):
                     "title": "Centrepiece for celebrations of bicentenary of USA in 1976: loan of Magna Carta from...",
                 },
             ],
+            # [
+            #     {
+            #         "reference_number": "LO",
+            #         "title": "Records created or inherited by the Law Officers' Department",
+            #     },
+            #     {
+            #         "reference_number": "LO 2",
+            #         "title": "Law Officers' Department: Registered Files",
+            #     },
+            # ],
         )
 
+    # @unittest.skip(
+    #     "Data not supported for the json record"
+    # )
     def test_is_digitised(self):
         self.assertEqual(self.record.is_digitised, True)
 
+    # @unittest.skip(
+    #     "Data not supported for the json record"
+    # )
     def test_availability_delivery_condition(self):
         self.assertEqual(
             self.record.availability_delivery_condition, "DigitizedDiscovery"
         )
 
+    # @unittest.skip(
+    #     "Data not supported for the json record"
+    # )
     def test_availability_delivery_surrogates(self):
         self.assertEqual(
             self.record.availability_delivery_surrogates,
@@ -232,6 +264,9 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
+    # @unittest.skip(
+    #     "Data not supported for the json record"
+    # )
     def test_topics(self):
         self.assertEqual(
             self.record.topics,
@@ -253,6 +288,7 @@ class ModelTranslationTest(TestCase):
             self.record.next_record,
             {
                 "iaid": "C441750",
+                #  "iaid": "C10298",
             },
         )
 
@@ -261,6 +297,7 @@ class ModelTranslationTest(TestCase):
             self.record.previous_record,
             {
                 "iaid": "C441748",
+                # "iaid": "C10296",
             },
         )
 
@@ -274,8 +311,17 @@ class ModelTranslationTest(TestCase):
                     "Letters, SP 102/61. Manuscript.",
                 }
             ],
+            # [
+            #     {
+            #         "iaid": "C10298",
+            #         "title": "Law Officers' Department: Law Officers' Opinions",
+            #     }
+            # ],
         )
 
+    # @unittest.skip(
+    #     "Data not supported for the json record"
+    # )
     def test_related_articles(self):
         self.assertEqual(
             self.record.related_articles,
@@ -290,13 +336,55 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
-    def test_datalayer_data(self):
-        self.assertEqual(
-            self.record.datalayer_data,
-            {"contentGroup1": "Catalogue: The National Archives"},
-        )
+    # def test_catalogue_source(self):
+    #     self.assertEqual(
+    #         self.record.catalogue_source, "CAT"
+    #     )
+
+    # def test_repo_summary_title(self):
+    #     self.assertEqual(
+    #         self.record.repo_summary_title, "The National Archives"
+    #     )
+
+    # def test_repo_archon_value(self):
+    #     self.assertEqual(
+    #         self.record.repo_archon_value, "66"
+    #     )
+
+    # def test_level_code(self):
+    #     self.assertEqual(
+    #         self.record.level_code, "3"
+    #     )
+
+    # def test_level_value(self):
+    #     self.assertEqual(
+    #         self.record.level_value, "Series"
+    #     )
+
+    # def test_association_reference_number(self):
+    #     self.assertEqual(
+    #         self.record.association_reference_number, "LO"
+    #     )
+
+    # def test_association_summary_title(self):
+    #     self.assertEqual(
+    #         self.record.association_summary_title, "Records created or inherited by the Law Officers' Department"
+    #     )
+
+    # def test_template_summary_title(self):
+    #     self.assertEqual(
+    #         self.record.template_summary_title, "Law Officers' Department: Registered Files"
+    #     )
+
+    # def test_data_source(self):
+    #     self.assertEqual(
+    #         self.record.data_source, "mongo"
+    #     )
 
 
+# @unittest.skip(
+#         "create_record not supported for open beta api"
+#     )
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(TestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)

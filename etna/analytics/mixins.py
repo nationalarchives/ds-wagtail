@@ -52,5 +52,6 @@ class DataLayerMixin:
         data.update(
             customDimension1="offsite",
             customDimension2=getattr(request.user, "id", ""),
+            # customDimension2="",
         )
         return data

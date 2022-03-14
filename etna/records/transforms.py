@@ -5,12 +5,12 @@ def transform_record_result(result):
     """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
-    repo_summary_title = ""
-    data["datalayer_data"] = {}
+    # repo_summary_title = ""
 
     source = result["_source"]
     identifier = source.get("identifier")
     summary = source.get("summary")
+    # template = source.get("@template")
 
     data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = pluck(
@@ -32,6 +32,28 @@ def transform_record_result(result):
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
 
+        # if related := description[0]["related"]:
+        #     related_records = find_all(
+        #         related,
+        #         predicate=lambda i: i["@link"]["relationship"]["value"] == "related",
+        #     )
+        #     data["related_records"] = [
+        #         {
+        #             "title": i["summary"]["title"],
+        #             "iaid": i["@admin"]["id"],
+        #         }
+        #         for i in related_records
+        #     ]
+
+        #     related_articles = find_all(
+        #     related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
+        #     )
+        #     data["related_articles"] = [
+        #         {"title": i["summary"]["title"], "url": i["source"]["location"]}
+        #         for i in related_articles
+        #         if "summary" in i
+        #     ]
+
     if arrangement := source.get("arrangement"):
         data["arrangement"] = format_description_markup(arrangement["value"])
 
@@ -40,7 +62,9 @@ def transform_record_result(result):
 
     if repository := source.get("repository"):
         data["held_by"] = repository["name"]["value"]
-        repo_summary_title = repository["summary"]["title"]
+        # repo_summary_title = repository["summary"]["title"]
+        # data["repo_summary_title"] = repository["summary"]["title"]
+        # data["repo_archon_value"] = repository["identifier"][1]["value"]
 
     data["is_digitised"] = source.get("digitised", False)
 
@@ -109,11 +133,22 @@ def transform_record_result(result):
     if previous_record := source.get("@previous"):
         data["previous_record"] = {"iaid": previous_record["@admin"]["id"]}
 
-    if catalogue_source := source.get("source"):
-        if catalogue_source["value"] == "CAT":
-            data["datalayer_data"].update(
-                {"contentGroup1": "Catalogue: " + repo_summary_title}
-            )
+    # if catalogue_source := source.get("source"):
+    #     data["catalogue_source"] = catalogue_source["value"]
+
+    # if level := source.get("level"):
+    #     data["level_code"] = str(level["code"])
+    #     data["level_value"] = level["value"]
+
+    # if association := source.get("association"):
+    #     data["association_reference_number"] = pluck(
+    #             association,
+    #             accessor=lambda i: i["identifier"][0]["reference_number"])
+    #     data["association_summary_title"] = pluck(association, accessor=lambda i: i["summary"]["title"])
+
+    # data["template_summary_title"] = template["details"]["summaryTitle"]
+
+    # data["data_source"] = source["@admin"]["source"]
 
     return data
 
