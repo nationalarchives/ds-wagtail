@@ -1,48 +1,109 @@
-.tna-header {
-  padding: 1rem 1rem 0 1rem;
-
-  @media only screen and (max-width: $screen__md) {
-  padding: 1rem 1rem 1rem 1rem;
-
-  }
-
-  &__home-link {
-    width: 100%;
-    max-width: 8.938rem;
-  }
-
+.header {
+  background-color: $color__yellow_2;
+  display: flex;
+  flex-wrap: wrap;
   &__logo {
 
-    &--beta {
-      max-width: 8.938rem;
-    }
-  }
+      &-holder {
+          padding: 1rem;
 
-  &__description {
-    font-size: 1.2rem;
-    margin-left: auto;
-    margin-top: auto;
-    margin-bottom: 0;
-    padding-top: 1rem;
-    
-    &-heading {
-      font-weight: bold;
-    }
-  }
-
-  @media only screen and (min-width: $screen__md) {
-    display: flex;
-    justify-content: space-between;
-    padding-bottom: 1rem;
-
-    &__description {
-      padding-top: 0;
-      padding-left: 5rem;
-      max-width: 37.5rem;
-      text-align: right;
-      &-heading {
-        text-align: right;
+          @media screen and (max-width: $screen__sm) {
+              padding-left: 0.1rem;
+              padding-right: 0.1rem;
+              padding-bottom: 0.5rem;
+              padding-top: 0.5rem;
+          }
       }
-    }
+
+      &-link {
+          align-self: center;
+          margin-left: 1rem;
+          display: block;
+          &:hover {
+              outline: 5px solid $color__grey-8;
+          }
+          &:focus {
+              outline-color: $color__black;
+          }
+      }
+      &-image {
+          width: 100px;
+          height: 100px;
+
+          @media screen and (max-width: $screen__sm) {
+              width: 50px;
+              height: 50px;
+          }
+      }
+  }
+  &__nav {
+      margin-left: auto;
+      align-items: flex-end;
+
+      &-list {
+          display: flex;
+          align-items: flex-end;
+          flex-wrap: wrap;
+          height: 100%;
+
+          @media only screen and (min-width: $screen__md) {
+              width: 32rem;
+          }
+
+          @media only screen and (max-width: $screen__md) {
+              padding-left: 0;
+          }
+
+          margin-bottom: 0;
+          justify-content: space-evenly;
+          &-item {
+              list-style: none;
+              height: 3rem;
+              display: block;
+
+              @media only screen and (max-width: $screen__md) {
+                  margin-right: 1rem;
+              }
+
+              @media only screen and (max-width: 35rem) {
+                  margin-right: 0.25rem;
+              }
+
+              &-link {
+                  display: block;
+                  color: $color__black;
+                  padding: 7px;
+                  height: 100%;
+                  text-decoration: none;
+                  font-family: $font__supria-sans;
+                  font-weight: normal;
+                  &:visited {
+                      color: $color__black;
+                  }
+
+                  &:hover, &[aria-current=true], &:focus {
+                      background-color: $color__white;
+                      color: $color__black;
+                  }
+
+                  &:focus {
+                      outline-color: $color__black;
+                  }
+
+                  &-search {
+                      width: 3rem;
+                      background-image: url('/static/images/icons/search-black.svg');
+                      background-repeat: no-repeat;
+                      background-position-x: center;
+                      background-position-y: 0.4rem;
+                      background-size: 1.5rem;
+
+                      &:hover, &[aria-current=true], &:focus {
+                          background-color: $color__grey-1;
+                      }
+                  }
+              }
+          }
+      }
   }
 }
