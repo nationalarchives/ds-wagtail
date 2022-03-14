@@ -6,16 +6,16 @@
 
         <li class="search-buckets__list-item" data-current="true">
             {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-            <span href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="true">
+            <span class="search-buckets__link" aria-current="true">
                 Records from The National Archives ({{ tna_bucket_count|intcomma }})
             </span>
         </li>
 
         <li class="search-buckets__list-item" data-current="false">
             {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-            <span href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="false">
+            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="false">
                 Online records from The National Archives ({{ tna_bucket_count|intcomma }})
-            </span>
+            </a>
         </li>
         <li class="search-buckets__list-item" data-current="false">
             {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
