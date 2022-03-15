@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Tuple
 
 from django.db import models
 from django.utils.functional import cached_property
@@ -109,7 +109,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Iterable["InsightsPage"]:
+    def similar_items(self) -> Tuple["InsightsPage"]:
         """
         Returns a maximum of three InsightsPages that are tagged with at least
         one of the same InsightsTags. Items should be ordered by the number
@@ -137,11 +137,13 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             return ()
 
         # Use search() to prioritise items with the highest number of matches
-        return InsightsPage.objects.filter(id__in=tag_match_ids).search(
-            self.insight_tag_names,
-            fields=["insight_tag_names"],
-            operator="or",
-        )[:3]
+        return tuple(
+            InsightsPage.objects.filter(id__in=tag_match_ids).search(
+                self.insight_tag_names,
+                fields=["insight_tag_names"],
+                operator="or",
+            )[:3]
+        )
 
     @cached_property
     def latest_items(self) -> Tuple["InsightsPage"]:
@@ -149,7 +151,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         Return the three most recently published InsightsPages,
         excluding this object.
         """
-        return (
+        return tuple(
             InsightsPage.objects.live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
