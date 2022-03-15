@@ -1,4 +1,4 @@
-from typing import Iterable
+from typing import Tuple
 
 from django.db import models
 from django.utils.functional import cached_property
@@ -109,7 +109,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Iterable["InsightsPage"]:
+    def similar_items(self) -> Tuple["InsightsPage"]:
         """
         Returns a maximum of three InsightsPages that are tagged with at least
         one of the same InsightsTags. Items should be ordered by the number
@@ -117,12 +117,12 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         """
         if not self.insight_tag_names:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         tag_ids = self.tagged_items.values_list("tag_id", flat=True)
         if not tag_ids:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         # Identify 'other' live pages with tags in common
         tag_match_ids = (
@@ -134,14 +134,29 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         )
         if not tag_match_ids:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         # Use search() to prioritise items with the highest number of matches
-        return InsightsPage.objects.filter(id__in=tag_match_ids).search(
-            self.insight_tag_names,
-            fields=["insight_tag_names"],
-            operator="or",
-        )[:3]
+        return tuple(
+            InsightsPage.objects.filter(id__in=tag_match_ids).search(
+                self.insight_tag_names,
+                fields=["insight_tag_names"],
+                operator="or",
+            )[:3]
+        )
+
+    @cached_property
+    def latest_items(self) -> Tuple["InsightsPage"]:
+        """
+        Return the three most recently published InsightsPages,
+        excluding this object.
+        """
+        return tuple(
+            InsightsPage.objects.live()
+            .not_page(self)
+            .select_related("hero_image", "topic", "time_period")
+            .order_by("-first_published_at")[:3]
+        )
 
     content_panels = (
         BasePage.content_panels
