@@ -1,9 +1,8 @@
+from datetime import datetime
+from typing import Any, Callable, Dict, Optional
 import enum
 import json
 import logging
-
-from datetime import datetime
-from typing import Any, Optional
 
 import requests
 
@@ -12,7 +11,10 @@ from .exceptions import (
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
+    KongRecordNotFound,
+    KongAmbiguousRecordIdentifier,
 )
+from .utils import MinimalResultParser, LazyResultList
 
 logger = logging.getLogger(__name__)
 
@@ -106,10 +108,12 @@ class KongClient:
 
     http_error_classes = {
         400: KongBadRequestError,
+        404: KongRecordNotFound,
         500: KongInternalServerError,
         503: KongServiceUnavailableError,
     }
     default_http_error_class = KongCommunicationError
+    default_result_parser = MinimalResultParser
 
     def __init__(
         self,
@@ -131,7 +135,8 @@ class KongClient:
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
-    ) -> dict:
+        result_parser: Optional[Callable] = None,
+    ) -> Dict[str, Any]:
         """Make request and return response for Kong's /fetch endpoint.
 
         Used to fetch a single item by its identifier.
@@ -153,8 +158,20 @@ class KongClient:
             "template": template,
             "expand": expand,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
+        response = self.make_request(f"{self.base_url}/data/fetch", params=params)
+        response_body = response.json()
+        count = response_body["hits"]["total"]["value"]
+        if not count:
+            raise KongRecordNotFound(
+                f"Response body: {response_body}", response=response
+            )
+        if count > 1:
+            raise KongAmbiguousRecordIdentifier(
+                f"Response body: {response_body}", response=response
+            )
+        result = response_body["hits"]["hits"][0]
+        parser = result_parser or self.default_result_parser
+        return parser(result)
 
     def search(
         self,
@@ -176,8 +193,9 @@ class KongClient:
         references: Optional[list[str]] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+        result_parser: Optional[Callable] = None,
+    ) -> LazyResultList:
+        """Make request and return response for Kong's /search endpoint.
 
         Search all metadata by keyword or web_reference. Results can be
         bucketed, and the search restricted by bucket, reference, topic and
@@ -239,7 +257,17 @@ class KongClient:
         if end_date:
             params["endDate"] = end_date.isoformat()
 
-        return self.make_request(f"{self.base_url}/data/search", params=params).json()
+        response_body = self.make_request(
+            f"{self.base_url}/data/search", params=params
+        ).json()
+        bucket_counts, results_response = response_body["responses"]
+        return LazyResultList(
+            total_count=results_response["hits"]["total"]["value"],
+            results=results_response["hits"]["hits"],
+            bucket_counts=bucket_counts,
+            aggregations=results_response["aggregations"],
+            result_parser=result_parser or self.default_result_parser,
+        )
 
     def search_all(
         self,
@@ -250,8 +278,8 @@ class KongClient:
         template: Optional[Template] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> Dict[str, Any]:
+        """Make request and return response for Kong's /searchAll endpoint.
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
@@ -279,7 +307,7 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
+        # TODO: Consider returning a more refined return value
         return self.make_request(
             f"{self.base_url}/data/searchAll", params=params
         ).json()
@@ -295,7 +323,8 @@ class KongClient:
         sort_order: Optional[SortOrder] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+        result_parser: Optional[Callable] = None,
+    ) -> LazyResultList:
         """Make request and return response for Kong's /searchUnified endpoint.
 
         /searchUnified reproduces the private beta’s /search endpoint, turning
@@ -334,10 +363,14 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(
+        response_body = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
         ).json()
+        return LazyResultList(
+            total_count=response_body["hits"]["total"]["value"],
+            results=response_body["hits"]["hits"],
+            result_parser=result_parser or self.default_result_parser,
+        )
 
     def fetch_all(
         self,
@@ -347,7 +380,8 @@ class KongClient:
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+        result_parser: Optional[Callable] = None,
+    ) -> LazyResultList:
         """Make request and return response for Kong's /fetchAll endpoint.
 
         Used to fetch a all items by for the given identifier(s).
@@ -374,8 +408,14 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        response_body = self.make_request(
+            f"{self.base_url}/data/fetchAll", params=params
+        ).json()
+        return LazyResultList(
+            total_count=response_body["hits"]["total"]["value"],
+            results=response_body["hits"]["hits"],
+            result_parser=result_parser or self.default_result_parser,
+        )
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None
