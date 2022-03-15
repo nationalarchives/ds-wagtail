@@ -25,6 +25,18 @@
         </ol>
     {% endif %}
 
+    {% comment %}
+        NOTE: TO BE REFINED BY FE
+    {% endcomment %}
+    {% if page.latest_items %}
+        <h3>More insights</h3>
+        <ol>
+            {% for item in page.latest_items %}
+                <li><a href="{% pageurl item %}">{{ item }}</a></li>
+            {% endfor %}
+        </ol>
+    {% endif %}
+
 {% endblock %}
 
 {% block extra_js %}
