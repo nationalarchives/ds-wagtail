@@ -117,12 +117,12 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         """
         if not self.insight_tag_names:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         tag_ids = self.tagged_items.values_list("tag_id", flat=True)
         if not tag_ids:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         # Identify 'other' live pages with tags in common
         tag_match_ids = (
@@ -134,7 +134,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         )
         if not tag_match_ids:
             # Avoid unncecssary lookups
-            return InsightsPage.objects.none()
+            return ()
 
         # Use search() to prioritise items with the highest number of matches
         return InsightsPage.objects.filter(id__in=tag_match_ids).search(
