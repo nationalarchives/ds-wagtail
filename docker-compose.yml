@@ -41,6 +41,7 @@ services:
     command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
     restart: on-failure
     init: true
+    stdin_open: true
     tty: true
     env_file:
       - .env
