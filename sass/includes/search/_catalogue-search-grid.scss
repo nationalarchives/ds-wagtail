@@ -19,9 +19,6 @@
     }
 
     &__sidebar {
-        background-color: $color__grey-5;
-        border: 1px solid $color__grey-3;
-        padding: 1rem;
         -ms-grid-column: 1;
         @media only screen and (max-width: $screen__xl) {
             grid-column: 1 / -1;

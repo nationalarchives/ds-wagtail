@@ -1,5 +1,7 @@
 .search-filters {
-
+    background-color: $color__grey-5;
+    border: 1px solid $color__grey-3;
+    padding: 1rem;
     &__list {
         list-style: none;
         padding-left: 0.5rem;
