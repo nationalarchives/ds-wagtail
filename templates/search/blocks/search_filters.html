@@ -91,77 +91,20 @@
             <fieldset>
                 <legend>
                     <h5 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h5></legend></fieldset>
-                
-                <p id="search_filters__opening-date-help-text">Helper text here</p>
-                <label id="opening_date_from">From</label>
-                <div class="search-filters__opening-date-section">
-                    <!-- TODO Django form -->
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_from" class="search-filters__opening-date" 
-                    id="opening_date_from_yy" 
-                    max="2022" 
-                    min="974" 
-                    name="opening_date_from_yy" 
-                    placeholder="YYYY" 
-                    type="number" 
-                    value="">
-
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_from" class="search-filters__opening-date" 
-                    id="opening_date_from_mm" 
-                    max="12" 
-                    min="1" 
-                    name="opening_date_from_mm" 
-                    placeholder="MM" 
-                    type="number" 
-                    value="">
-
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_from" class="search-filters__opening-date" 
-                    id="opening_date_from_dd" 
-                    max="31" 
-                    min="1" 
-                    name="opening_date_from_dd" 
-                    placeholder="DD" 
-                    type="number" 
-                    value="">
-                </div>
-                <label id="opening_date_to">To</label>
+                <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
 
                 <div class="search-filters__opening-date-section">
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_to" class="search-filters__opening-date" 
-                    id="opening_date_to_yy" 
-                    max="2022" 
-                    min="974" 
-                    name="opening_date_to_yy" 
-                    placeholder="YYYY" 
-                    type="number" 
-                    value="">
-
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_to" class="search-filters__opening-date" 
-                    id="opening_date_to_mm" 
-                    max="12" 
-                    min="1" 
-                    name="opening_date_to_mm" 
-                    placeholder="MM" 
-                    type="number" 
-                    value="">
-
-                    <input 
-                    aria-describedby="search_filters__opening-date-help-text" aria-labelledby="record_opening_date opening_date_to" class="search-filters__opening-date" 
-                    id="opening_date_to_dd" 
-                    max="31" 
-                    min="1" 
-                    name="opening_date_to_dd" 
-                    placeholder="DD" 
-                    type="number" 
-                    value="">
-                </div>
+                    {{ form.start_date.errors }}
+                    {{ form.start_date.label_tag }}
+                    {{ form.start_date }}
+                 </div>
+                 <div class="search-filters__opening-date-section">
+                    {{ form.end_date.errors }}
+                    {{ form.end_date.label_tag }}
+                    {{ form.end_date }}
+                 </div>
 
                  <input type="submit" value="Update" class="search-filters__submit">
-            
         </div>
         {% if form.catalogue_sources.field.choices %}
         <div class="search-filters__accordion-section">

@@ -114,6 +114,7 @@ class SearchForm(forms.Form):
             (SortBy.TITLE.value, "Title"),
         ],
         required=False,
+        widget=forms.Select(attrs={'class': 'search-sort-view__form-select'})
     )
     sort_order = forms.ChoiceField(
         label="Sort order",

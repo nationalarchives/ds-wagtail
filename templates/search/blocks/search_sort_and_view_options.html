@@ -1,12 +1,11 @@
 <div class="search-sort-view">
     <div class="search-sort-view__form">
-        <h3 class="search-sort-view__heading">Sort by</h3>
+        <h3 class="search-sort-view__heading">
+           <label for="{{form.sort_by.id_for_label}}">Sort by</label>
+        </h3>
         {% comment %} TODO make this use a django form {% endcomment %}
-        <select class="search-sort-view__form-select">
-            <option selected>Relevance</option>
-            <option>Date</option>
-            <option>Time</option>
-        </select>
+        {{ form.sort_by.errors }}
+        {{ form.sort_by }}
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </div>
 
