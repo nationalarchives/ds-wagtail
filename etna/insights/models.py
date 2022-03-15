@@ -143,6 +143,19 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             operator="or",
         )[:3]
 
+    @cached_property
+    def latest_items(self) -> Tuple["InsightsPage"]:
+        """
+        Return the three most recently published InsightsPages,
+        excluding this object.
+        """
+        return (
+            InsightsPage.objects.live()
+            .not_page(self)
+            .select_related("hero_image", "topic", "time_period")
+            .order_by("-first_published_at")[:3]
+        )
+
     content_panels = (
         BasePage.content_panels
         + HeroImageMixin.content_panels
