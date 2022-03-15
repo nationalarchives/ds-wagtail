@@ -49,6 +49,11 @@ class SearchForm(forms.Form):
         # If no filter_keyword is provided, pass None to client bypass search within
         empty_value=None,
         required=False,
+        widget=forms.TextInput(
+            attrs = {
+                'class': 'search-filters__search'
+            }
+        )
     )
     group = forms.ChoiceField(
         label="bucket",
@@ -62,31 +67,31 @@ class SearchForm(forms.Form):
     levels = DynamicMultipleChoiceField(
         label="Level",
         filter_key="level",
-        widget=forms.widgets.CheckboxSelectMultiple,
+        widget=forms.widgets.CheckboxSelectMultiple(attrs={'class':'search-filters__list'}),
         required=False,
     )
     topics = DynamicMultipleChoiceField(
         label="Topics",
         filter_key="topic",
-        widget=forms.widgets.CheckboxSelectMultiple,
+        widget=forms.widgets.CheckboxSelectMultiple(attrs={'class':'search-filters__list'}),
         required=False,
     )
     collections = DynamicMultipleChoiceField(
         label="Collections",
         filter_key="collection",
-        widget=forms.widgets.CheckboxSelectMultiple,
+        widget=forms.widgets.CheckboxSelectMultiple(attrs={'class':'search-filters__list'}),
         required=False,
     )
     closure_statuses = DynamicMultipleChoiceField(
         label="Closure Status",
         filter_key="closure",
-        widget=forms.widgets.CheckboxSelectMultiple,
+        widget=forms.widgets.CheckboxSelectMultiple(attrs={'class':'search-filters__list'}),
         required=False,
     )
     catalogue_sources = DynamicMultipleChoiceField(
         label="Catalogue Sources",
         filter_key="catalogueSource",
-        widget=forms.widgets.CheckboxSelectMultiple,
+        widget=forms.widgets.CheckboxSelectMultiple(attrs={'class':'search-filters__list'}),
         required=False,
     )
     start_date = forms.DateTimeField(

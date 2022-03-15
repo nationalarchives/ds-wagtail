@@ -1,6 +1,7 @@
 <div class="search-sort-view">
     <div class="search-sort-view__form">
         <h3 class="search-sort-view__heading">Sort by</h3>
+        {% comment %} TODO make this use a django form {% endcomment %}
         <select class="search-sort-view__form-select">
             <option selected>Relevance</option>
             <option>Date</option>
@@ -12,29 +13,15 @@
     <h3 class="search-sort-view__heading"><span class="sr-only">Display as:</span></h3>
     <ul class="search-sort-view__list">
 
-
-        {% if grid %}
-            <li class="search-sort-view__list-item">
-                <a class="search-sort-view__icon-list" href="{{request.path}}?list=y&grid=n">
-                    <span class="sr-only">Display results as a list</span>
-                </a>
-            </li>
-            <li class="search-sort-view__list-item">
-                <span aria-current="true" href="{{request.path}}?grid=y&list=n" class="search-sort-view__icon-grid">
-                    <span class="sr-only">Displaying results as a grid</span>
-            </span>
-            </li>
-        {% else %}
         <li class="search-sort-view__list-item">
             <span aria-current="true" class="search-sort-view__icon-list">
                 <span class="sr-only">Displaying results as a list</span>
             </span>
         </li>
         <li class="search-sort-view__list-item">
-            <a href="{{request.path}}?grid=y&list=n"class="search-sort-view__icon-grid">
+            <a href="#" class="search-sort-view__icon-grid">
                 <span class="sr-only">Display results as a grid</span>
            </a>
         </li>
-        {% endif %}
     </ul>
 </div>
