@@ -12,8 +12,6 @@ module.exports = {
         sign_in: './scripts/src/sign-in.js',
         global_search: './scripts/src/global-search.js',
         catalogue_search: './scripts/src/catalogue-search.js',
-
-
     },
     output: {
         filename: '[name].js',
