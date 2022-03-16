@@ -1,5 +1,13 @@
 
 .pagination {
+    margin-top: 1rem;
+    margin-left: 2rem;
+    margin-right: 2rem;
+
+    @media only screen and (max-width: $screen__sm) {
+        margin: 0;
+    }
+
     background-color: $color__dark;
 
     &__list {
@@ -52,7 +60,7 @@
         }
 
         &-chevron-next, &-chevron-previous {
-            background-color: $color__green;
+            background-color: $color__yellow_2;
 
             &:hover, &:focus {
                 background-color: $color__dark;
@@ -76,7 +84,7 @@
             }
 
             &--disabled {
-                background-color: $color__green;
+                background-color: $color__yellow_2;
                 background-image: url($fa_chevron_right_disabled);
                 background-repeat: no-repeat;
                 background-position: center;
@@ -107,7 +115,7 @@
             }
 
             &--disabled {
-                background-color: $color__green;
+                background-color: $color__yellow_2;
                 background-image: url($fa_chevron_left_disabled);
                 background-repeat: no-repeat;
                 background-position: center;
