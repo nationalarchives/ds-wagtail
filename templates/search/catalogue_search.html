@@ -2,9 +2,10 @@
 
 {% load search_tags %}
 {% load humanize %}
+{% load static %}
 
 {% block content %}
-    <form method="get">
+    <form method="get" data-id="search-form">
     {% include './blocks/search_results_hero.html' %}
      
             {{ form.non_field_errors }}
@@ -38,4 +39,10 @@
 
 
 </div>
+
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/catalogue_search.js' %}"></script>
 {% endblock %}
