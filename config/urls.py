@@ -62,6 +62,11 @@ public_urls = [
         name="search",
     ),
     path(
+        r"search/featured/",
+        login_required(search_views.featured_search),
+        name="search-featured",
+    ),
+    path(
         r"search/catalogue/",
         login_required(search_views.catalogue_search),
         name="search-catalogue",
