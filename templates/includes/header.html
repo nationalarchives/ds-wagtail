@@ -2,13 +2,36 @@
 
 {% include 'includes/login-status.html' %}
 
-<header class="tna-header">
-    <a href="/" class="tna-header__home-link">
-        <img src="{% static 'images/tna-blk-logo-beta.svg' %}" class="img-fluid tna-header__logo--beta"
-        alt="The National Archives" width="143" height="90">
-    </a>
-    <p class="tna-header__description">
-    <span class="tna-header__description-heading">Welcome to The National Archives</span><br/>
-    We are the guardians of over 1,000 years of UK government records.
-</p>
-</header>
+<header class="header">
+    <div class="header__logo-holder">
+      <a href="/" class="header__logo-link"
+        ><img
+          src="{% static 'images/tna-blk-logo-beta.svg' %}"
+          class="header__logo-image"
+          alt="The National Archives logo"
+      /></a>
+    </div>
+    {% comment %} TODO make attributes update based on current page {% endcomment %}
+    <nav class="header__nav" aria-label="Site menu">
+      <ul class="header__nav-list">
+        <li class="header__nav-list-item">
+          <a class="header__nav-list-item-link" href="/explore">Explore</a>
+        </li>
+        <li class="header__nav-list-item">
+          <a class="header__nav-list-item-link" href="#">What's on</a>
+        </li>
+        <li class="header__nav-list-item">
+          <a class="header__nav-list-item-link" href="#">Visit</a>
+        </li>
+        <li class="header__nav-list-item">
+          <a class="header__nav-list-item-link" href="#">Learn</a>
+        </li>
+        <li class="header__nav-list-item">
+  
+          <a class="header__nav-list-item-link header__nav-list-item-link-search" href="/search/catalogue" 
+          {% if not explore %} aria-current="true" {% else %} data-id='search-nav-link' {% endif %} >
+              <span class="sr-only">Search</span></a>
+        </li>
+      </ul>
+    </nav>
+  </header>  

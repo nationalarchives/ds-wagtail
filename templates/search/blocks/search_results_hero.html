@@ -1,0 +1,24 @@
+<div class="search-results-hero">
+    <h1 class="search-results-hero__heading">Search results</h1>
+    <div class="search-results-hero__form">
+        {{ form.q.errors }}
+        <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
+        {{ form.q }}
+        <input type="submit" value="Search" class="search-results-hero__form-submit">
+    </div>
+    <h2 class="sr-only">[TODO Search Type e.g. Catalogue Results]</h2>
+    {% comment %} TODO make attributes update based on current page {% endcomment %}
+    <nav class="search-results-hero__nav" aria-label="Search result types">
+        <ul class="search-results-hero__nav-list">
+            <li class="search-results-hero__nav-list-item">
+                <a class="search-results-hero__nav-link" href="#">Featured results</a>
+            </li>
+            <li class="search-results-hero__nav-list-item">
+                <span aria-current="true" class="search-results-hero__nav-link">Catalogue results</span>
+            </li>
+            <li class="search-results-hero__nav-list-item">
+                <a class="search-results-hero__nav-link" href="#">Website results</a>
+            </li>
+        </ul>
+    </nav>
+</div>
