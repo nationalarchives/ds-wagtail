@@ -32,7 +32,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_no_matches_respond_with_404(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(records=[]),
         )
 
@@ -47,7 +47,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_disambiguation_page_rendered_for_multiple_results(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
                     create_record(reference_number="ADM 223/3"),
@@ -67,7 +67,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_rendering_deferred_to_details_page_view(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", reference_number="ADM 223/3"),

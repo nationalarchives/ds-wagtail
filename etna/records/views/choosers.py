@@ -26,13 +26,16 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_paginated_object_list(self, page_number, search_term="", **kwargs):
         offset = ((page_number - 1) * self.per_page,)
+        count = 0
+        results = []
 
-        count, results = self.model.api.search(
-            q=search_term,
-            stream=Stream.EVIDENTIAL,
-            size=self.per_page,
-            offset=offset,
-        )
+        if search_term:
+            count, results = self.model.api.search_unified(
+                q=search_term,
+                stream=Stream.EVIDENTIAL,
+                size=self.per_page,
+                offset=offset,
+            )
 
         paginator = APIPaginator(count, self.per_page)
         page = Page(results, page_number, paginator)

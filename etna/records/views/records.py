@@ -24,7 +24,7 @@ def record_disambiguation_view(request, reference_number):
     page_number = int(request.GET.get("page", 1))
     offset = (page_number - 1) * per_page
 
-    count, records = Record.api.search(
+    count, records = Record.api.search_unified(
         web_reference=reference_number, offset=offset, size=per_page
     )
 
