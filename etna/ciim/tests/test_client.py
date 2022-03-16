@@ -367,6 +367,162 @@ class ClientSearchTest(SimpleTestCase):
         )
 
 
+class ClientSearchUnifiedTest(SimpleTestCase):
+    def setUp(self):
+        self.client = KongClient("https://kong.test", api_key="")
+
+        responses.add(responses.GET, "https://kong.test/data/searchUnified", json={})
+
+    @responses.activate
+    def test_no_arguments_makes_request_with_no_parameters(self):
+        self.client.search_unified()
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url, "https://kong.test/data/searchUnified"
+        )
+
+    @responses.activate
+    def test_with_q(self):
+        self.client.search_unified(q="Egypt")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?q=Egypt",
+        )
+
+    @responses.activate
+    def test_with_web_reference(self):
+        self.client.search_unified(web_reference="ADM/223/3")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?webReference=ADM%2F223%2F3",
+        )
+
+    @responses.activate
+    def test_with_evidential_stream(self):
+        self.client.search_unified(stream=Stream.EVIDENTIAL)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?stream=evidential",
+        )
+
+    @responses.activate
+    def test_with_interpretive_stream(self):
+        self.client.search_unified(stream=Stream.INTERPRETIVE)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?stream=interpretive",
+        )
+
+    @responses.activate
+    def test_with_template_details(self):
+        self.client.search_unified(template=Template.DETAILS)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?template=details",
+        )
+
+    @responses.activate
+    def test_with_template_results(self):
+        self.client.search_unified(template=Template.RESULTS)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?template=results",
+        )
+
+    @responses.activate
+    def test_with_sort_title(self):
+        self.client.search_unified(sort_by=SortBy.TITLE)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sort=title",
+        )
+
+    @responses.activate
+    def test_with_sort_date_created(self):
+        self.client.search_unified(sort_by=SortBy.DATE_CREATED)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sort=dateCreated",
+        )
+
+    @responses.activate
+    def test_with_sort_date_opening(self):
+        self.client.search_unified(sort_by=SortBy.DATE_OPENING)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sort=dateOpening",
+        )
+
+    @responses.activate
+    def test_with_sort_relevance(self):
+        self.client.search_unified(sort_by=SortBy.RELEVANCE)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sort=",
+        )
+
+    @responses.activate
+    def test_with_sort_order_asc(self):
+        self.client.search_unified(sort_order=SortOrder.ASC)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sortOrder=asc",
+        )
+
+    @responses.activate
+    def test_with_sort_order_desc(self):
+        self.client.search_unified(sort_order=SortOrder.DESC)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?sortOrder=desc",
+        )
+
+    @responses.activate
+    def test_with_offset(self):
+        self.client.search_unified(offset=20)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?from=20",
+        )
+
+    @responses.activate
+    def test_with_size(self):
+        self.client.search_unified(size=20)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/searchUnified?size=20",
+        )
+
+
 class ClientFetchTest(SimpleTestCase):
     def setUp(self):
         self.client = KongClient("https://kong.test", api_key="")

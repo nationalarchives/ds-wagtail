@@ -53,6 +53,12 @@ class APIManager:
         count, hits = self._extract_hits_and_count(response)
         return count, [self.model.from_api_response(h) for h in hits]
 
+    def search_unified(self, **kwargs) -> tuple[int, list[APIModel]]:
+        """Make request to /searchUnified and transform the response."""
+        response = self.client.search_unified(**kwargs)
+        count, hits = self._extract_hits_and_count(response)
+        return count, [self.model.from_api_response(h) for h in hits]
+
     def fetch(self, **kwargs) -> APIModel:
         """Make request to /fetch and transform the response."""
         response = self.client.fetch(**kwargs)
