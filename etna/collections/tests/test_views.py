@@ -24,7 +24,7 @@ class TestRecordChooseView(WagtailPageTests):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
                     create_record(
@@ -78,7 +78,7 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?stream=evidential&q=law&from=0&size=10",
+            "https://kong.test/data/searchUnified?stream=evidential&q=law&from=0&size=10",
         )
 
     @responses.activate

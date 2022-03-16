@@ -254,7 +254,7 @@ class TestRecordRoutes(UserAccessTestCase, TestCase):
     def test_human_readable_route(self, email, expected_status_code):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
                     # Return multiple records to prevent an additional

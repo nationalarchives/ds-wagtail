@@ -284,6 +284,61 @@ class KongClient:
             f"{self.base_url}/data/searchAll", params=params
         ).json()
 
+    def search_unified(
+        self,
+        *,
+        q: Optional[str] = None,
+        web_reference: Optional[str] = None,
+        stream: Optional[Stream] = None,
+        template: Optional[Template] = None,
+        sort_by: Optional[SortBy] = None,
+        sort_order: Optional[SortOrder] = None,
+        offset: Optional[int] = None,
+        size: Optional[int] = None,
+    ) -> dict:
+        """Make request and return response for Kong's /searchUnified endpoint.
+
+        /searchUnified reproduces the private beta’s /search endpoint, turning
+        a single response for a q, webReference-based query.
+
+        Search all metadata by title, identifier or web reference. Unlike the
+        main search endpoint, boolean operators, aggregations and filtering are
+        NOT supported.
+
+        Keyword arguments:
+
+        q:
+            String to query all indexed fields
+        web_reference:
+            Return matches on references_number
+        stream:
+            Restrict results to given stream
+        template:
+            @template data to include with response
+        sort_by:
+            Field to sort results.
+        sort_order:
+            Order of sorted results
+        offset:
+            Offset for results. Mapped to 'from' before making request
+        size:
+            Number of results to return
+        """
+        params = {
+            "q": q,
+            "webReference": web_reference,
+            "stream": stream,
+            "template": template,
+            "sort": sort_by,
+            "sortOrder": sort_order,
+            "from": offset,
+            "size": size,
+        }
+
+        return self.make_request(
+            f"{self.base_url}/data/searchUnified", params=params
+        ).json()
+
     def fetch_all(
         self,
         *,
