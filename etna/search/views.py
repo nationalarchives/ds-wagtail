@@ -7,6 +7,34 @@ from ..records.models import Record
 from .forms import SearchForm
 
 
+def search(request):
+    form = SearchForm()
+
+    # Make empty search to fetch aggregations
+    response = Record.api.client.search(
+        template=Template.DETAILS,
+        aggregations=[
+            Aggregation.CATALOGUE_SOURCE,
+            Aggregation.CLOSURE,
+            Aggregation.COLLECTION,
+            Aggregation.GROUP,
+            Aggregation.LEVEL,
+            Aggregation.TOPIC,
+        ],
+        size=0,
+    )
+    bucket_count_response, _ = response["responses"]
+
+    return render(
+        request,
+        "search/search.html",
+        {
+            "form": form,
+            "bucket_count_response": bucket_count_response,
+        },
+    )
+
+
 def catalogue_search(request):
 
     per_page = int(request.GET.get("per_page", 20))
