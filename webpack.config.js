@@ -9,7 +9,11 @@ module.exports = {
         insights: './scripts/src/insights.js',
         image_browse: './scripts/src/image-browse.js',
         details: './scripts/src/details.js',
-        sign_in: './scripts/src/sign-in.js'
+        sign_in: './scripts/src/sign-in.js',
+        global_search: './scripts/src/global-search.js',
+        catalogue_search: './scripts/src/catalogue-search.js',
+
+
     },
     output: {
         filename: '[name].js',

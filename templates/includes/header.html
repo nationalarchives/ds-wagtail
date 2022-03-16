@@ -29,6 +29,7 @@
         <li class="header__nav-list-item">
   
           <a class="header__nav-list-item-link header__nav-list-item-link-search" href="/search/catalogue" 
+          {% comment %} If it is a search page, set aria-current=true. If it isn't a search page, add the data-id so that global search loads. {% endcomment %}
           {% if not explore %} aria-current="true" {% else %} data-id='search-nav-link' {% endif %} >
               <span class="sr-only">Search</span></a>
         </li>
