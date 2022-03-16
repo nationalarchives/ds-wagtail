@@ -26,93 +26,15 @@
                 </div>
             </div>
 
+            {% if page.paginator.count %}
+                {% include './blocks/search_pagination.html' %}
+            {% endif %}
 
             <div>
             {{ form.group.errors }}
             {{ form.group.as_hidden }}
             </div>
-
-            <div>
-            {{ form.filter_keyword.errors }}
-            {{ form.filter_keyword.label_tag }}
-            {{ form.filter_keyword }}
-            </div>
-
-            {% if form.levels.field.choices %}
-                <div>
-                {{ form.levels.errors }}
-                {{ form.levels.label_tag }}
-                {{ form.levels }}
-                </div>
-            {% endif %}
-
-            {% if form.topics.field.choices %}
-                <div>
-                {{ form.topics.errors }}
-                {{ form.topics.label_tag }}
-                {{ form.topics }}
-                </div>
-            {% endif %}
-
-            {% if form.collections.field.choices %}
-                <div>
-                {{ form.collections.errors }}
-                {{ form.collections.label_tag }}
-                {{ form.collections }}
-                </div>
-            {% endif %}
-
-        <div>
-           {{ form.sort_by.errors }}
-           {{ form.sort_by.label_tag }}
-           {{ form.sort_by }}
-        </div>
-
-        <div>
-           {{ form.sort_order.errors }}
-           {{ form.sort_order.as_hidden }}
-        </div>
-
-        <div>
-           {{ form.filter_keyword.errors }}
-           {{ form.filter_keyword.label_tag }}
-           {{ form.filter_keyword }}
-        </div>
-            {% if form.closure_statuses.field.choices %}
-                <div>
-                {{ form.closure_statuses.errors }}
-                {{ form.closure_statuses.label_tag }}
-                {{ form.closure_statuses }}
-                </div>
-            {% endif %}
-
-            {% if form.catalogue_sources.field.choices %}
-                <div>
-                {{ form.catalogue_sources.errors }}
-                {{ form.catalogue_sources.label_tag }}
-                {{ form.catalogue_sources }}
-                </div>
-            {% endif %}
-
-            <input type="submit" />
         </form>
-
-        {% if page.paginator.count %}
-            {% include './blocks/search_pagination.html' %}
-        {% endif %}
-
-
-
-        {% if form.catalogue_sources.field.choices %}
-            <div>
-               {{ form.catalogue_sources.errors }}
-               {{ form.catalogue_sources.label_tag }}
-               {{ form.catalogue_sources }}
-            </div>
-        {% endif %}
-
-        <input type="submit" />
-    </form>
 
 
 </div>
