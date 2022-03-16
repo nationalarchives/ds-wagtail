@@ -89,6 +89,17 @@
         </div>
 
         <div>
+           {{ form.sort_by.errors }}
+           {{ form.sort_by.label_tag }}
+           {{ form.sort_by }}
+        </div>
+
+        <div>
+           {{ form.sort_order.errors }}
+           {{ form.sort_order.as_hidden }}
+        </div>
+
+        <div>
            {{ form.filter_keyword.errors }}
            {{ form.filter_keyword.label_tag }}
            {{ form.filter_keyword }}
@@ -133,6 +144,21 @@
                {{ form.catalogue_sources }}
             </div>
         {% endif %}
+
+        <fieldset>
+            <legend>Record Opening Date</legend>
+            <div>
+               {{ form.start_date.errors }}
+               {{ form.start_date.label_tag }}
+               {{ form.start_date }}
+            </div>
+
+            <div>
+               {{ form.end_date.errors }}
+               {{ form.end_date.label_tag }}
+               {{ form.end_date }}
+            </div>
+        </fieldset>
 
         <input type="submit" />
     </form>
