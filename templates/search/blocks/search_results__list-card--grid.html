@@ -1,0 +1,34 @@
+{% comment %} TODO downloadable, and record variables {% endcomment %}
+{% load search_tags %}
+{% load humanize %}
+<li class="search-results__list-card--grid">
+    {% if record.downloadable %}
+    <div class="search-results__list-card-delivery-options--grid">
+        <a href="#" aria-hidden="true" tabindex="-1">
+            <img src="https://via.placeholder.com/150x150" class="search-results__list-card-delivery-options-img" alt="" />
+        </a>
+    </div>
+    {% endif %}
+    <div class="search-results__list-card-content">
+        <h4 class="search-results__list-card-heading">
+            <a href="#" class="search-results__list-card-link"><span class="sr-only">TODO catalogue reference </span>{{ record|record_title }}</a>
+        </h4>
+        <p class="search-results__list-card-description">TODO description</p>
+        <ul class="search-results__list-card-metadata">
+            <li class="search-results__list-card-metadata-item">
+                TODO Held by: 123</li>
+            <li class="search-results__list-card-metadata-item">
+                TODO Date: 123
+            </li>
+            <li class="search-results__list-card-metadata-item">
+                TODO Catalogue reference: 123
+            </li>
+            <li class="search-results__list-card-metadata-item">
+                IAID: {{record|record_iaid}}
+            </li>
+            <li class="search-results__list-card-metadata-item">
+                Score: {{record|record_score}}
+            </li>
+        </ul>
+    </div>
+</li>
