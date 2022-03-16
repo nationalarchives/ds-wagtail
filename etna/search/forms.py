@@ -1,4 +1,5 @@
 from django import forms
+from django.core.validators import MinLengthValidator
 
 from ..ciim.client import SortBy, SortOrder
 
@@ -29,6 +30,16 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             (f"{self.filter_key}:{i['key']}", f"{i['key']} ({i['doc_count']:,})")
             for i in aggregations
         ]
+
+
+class FeaturedSearchForm(forms.Form):
+    q = forms.CharField(
+        label="Search here",
+        # If no query is provided, pass None to client to fetch all results.
+        empty_value=None,
+        required=False,
+        validators=[MinLengthValidator(2)],
+    )
 
 
 class SearchForm(forms.Form):

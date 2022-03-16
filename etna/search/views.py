@@ -4,7 +4,60 @@ from django.shortcuts import render
 from ..ciim.client import Aggregation, DateField, SortOrder, Stream, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
-from .forms import SearchForm
+from .forms import FeaturedSearchForm, SearchForm
+
+# Aggregations and their headings, passed /searchAll to fetch
+# counts and output along with grouped results.
+FEATURED_BUCKETS = [
+    {
+        "aggregation": "group:tna",
+        "heading": "Records from The National Archives",
+    },
+    {
+        "aggregation": "group:nonTna",
+        "heading": "Records from other UK archives",
+    },
+    {
+        "aggregation": "group:blog",
+        "heading": "Blog",
+    },
+    {
+        "aggregation": "group:researchGuide",
+        "heading": "Research Guides",
+    },
+]
+
+
+def featured_search(request):
+
+    responses = []
+
+    if "q" in request.GET:
+        form = FeaturedSearchForm(request.GET)
+    else:
+        form = FeaturedSearchForm()
+
+    if form.is_valid():
+        q = form.cleaned_data.get("q")
+
+        response = Record.api.client.search_all(
+            q=q,
+            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS],
+            size=3,
+        )
+        responses = response.get("responses", [])
+
+    # Combine bucket and responses to output headings and results together
+    responses = zip(responses, FEATURED_BUCKETS)
+
+    return render(
+        request,
+        "search/featured_search.html",
+        {
+            "form": form,
+            "responses": responses,
+        },
+    )
 
 
 def search(request):
