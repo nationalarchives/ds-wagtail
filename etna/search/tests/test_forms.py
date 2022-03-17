@@ -32,3 +32,125 @@ class SearchFormTest(SimpleTestCase):
         is_valid = form.is_valid()
 
         self.assertTrue(is_valid)
+
+
+class SearchFormSelectedFiltersTest(SimpleTestCase):
+    def test_empty_form(self):
+        form = SearchForm({})
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": [],
+                "topics": [],
+                "collections": [],
+                "closure_statuses": [],
+                "catalogue_sources": [],
+            },
+        )
+
+    def test_selected_group_is_excluded(self):
+        form = SearchForm(
+            {
+                "group": "group:tna",
+            }
+        )
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": [],
+                "topics": [],
+                "collections": [],
+                "closure_statuses": [],
+                "catalogue_sources": [],
+            },
+        )
+
+    def test_selected_level(self):
+        form = SearchForm(
+            {
+                "group": "group:tna",
+                "levels": ["level:level-one"],
+            }
+        )
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": ["level:level-one"],
+                "topics": [],
+                "collections": [],
+                "closure_statuses": [],
+                "catalogue_sources": [],
+            },
+        )
+
+    def test_selected_topic(self):
+        form = SearchForm(
+            {
+                "group": "group:tna",
+                "topics": ["topic:topic-one"],
+            }
+        )
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": [],
+                "topics": ["topic:topic-one"],
+                "collections": [],
+                "closure_statuses": [],
+                "catalogue_sources": [],
+            },
+        )
+
+    def test_selected_closure_status(self):
+        form = SearchForm(
+            {
+                "group": "group:tna",
+                "closure_statuses": ["closure:closure-status-one"],
+            }
+        )
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": [],
+                "topics": [],
+                "collections": [],
+                "closure_statuses": ["closure:closure-status-one"],
+                "catalogue_sources": [],
+            },
+        )
+
+    def test_selected_catalogue_sources(self):
+        form = SearchForm(
+            {
+                "group": "group:tna",
+                "catalogue_sources": ["catalogueSources:catalogue-source-one"],
+            }
+        )
+
+        form.is_valid()
+
+        self.assertEqual(
+            form.selected_filters(),
+            {
+                "levels": [],
+                "topics": [],
+                "collections": [],
+                "closure_statuses": [],
+                "catalogue_sources": ["catalogueSources:catalogue-source-one"],
+            },
+        )

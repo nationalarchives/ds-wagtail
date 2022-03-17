@@ -1,13 +1,17 @@
+{% load search_tags %}
 
 <h3 class="sr-only">Selected filters</h3>
-    <ul class="search-results__selected-filters">
-        <li class="search-results__selected-filters-item">
-            [TODO FILTER]
-            <a href="/search/catalogue" class="search-results__selected-filters-item-link"><span class="sr-only">Remove [TODO FILTERS] from search</span></a>
-        </li>
-        
-        <li class="search-results__selected-filters-item-remove-all">
-            <a href="/search/catalogue" class="search-results__selected-filters-item-remove-all-link">TODO Remove all filters</a>
-        </li>
-    </ul>
+<ul class="search-results__selected-filters">
+    {% for selected_filter, selected_values in form.selected_filters.items %}
+        {% for selected_value in selected_values %}
+            <li class="search-results__selected-filters-item">
+                {{ selected_value }}
+                <a href="?{% query_string_exclude selected_filter selected_value %}" class="search-results__selected-filters-item-link"><span class="sr-only">Remove {{ selected_value }} from search</span></a>
+            </li>
+        {% endfor %}
+    {% endfor %}
 
+    <li class="search-results__selected-filters-item-remove-all">
+        <a href="?q={{ form.cleaned_data.q }}&group={{ form.cleaned_data.group }}" class="search-results__selected-filters-item-remove-all-link">Remove all filters</a>
+    </li>
+</ul>
