@@ -72,10 +72,18 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
         )
 
     @responses.activate
-    def test_accessing_page_with_no_params_performs_no_search(self):
+    def test_accessing_page_with_no_params_performs_search(self):
         self.client.get("/search/featured/")
 
-        self.assertEqual(len(responses.calls), 0)
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/searchAll"
+                "?filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide"
+                "&size=3"
+            ),
+        )
 
     @responses.activate
     def test_search_with_query(self):
