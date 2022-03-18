@@ -7,18 +7,32 @@
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </div>
     <h2 class="sr-only">[TODO Search Type e.g. Catalogue Results]</h2>
-    {% comment %} TODO make attributes update based on current page {% endcomment %}
-    <nav class="search-results-hero__nav" aria-label="Search result types">
-        <ul class="search-results-hero__nav-list">
-            <li class="search-results-hero__nav-list-item">
-                <a class="search-results-hero__nav-link" href="#">Featured results</a>
-            </li>
-            <li class="search-results-hero__nav-list-item">
-                <span aria-current="true" class="search-results-hero__nav-link">Catalogue results</span>
-            </li>
-            <li class="search-results-hero__nav-list-item">
-                <a class="search-results-hero__nav-link" href="#">Website results</a>
-            </li>
-        </ul>
-    </nav>
+
+    {% with request.resolver_match.url_name as url_name  %}
+        <nav class="search-results-hero__nav" aria-label="Search result types">
+            <ul class="search-results-hero__nav-list">
+                <li class="search-results-hero__nav-list-item">
+                    {% if url_name == 'search-featured' %}
+                        <span {% aria-current="true" class="search-results-hero__nav-link">Featured results</span>
+                    {% else %}
+                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}">Featured results</a>
+                    {% endif %}
+                </li>
+                <li class="search-results-hero__nav-list-item">
+                    {% if url_name == 'search-catalogue' %}
+                        <span {% aria-current="true" class="search-results-hero__nav-link">Catalogue results</span>
+                    {% else %}
+                    <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}">Catalogue results</a>
+                    {% endif %}
+                </li>
+                <li class="search-results-hero__nav-list-item">
+                    {% if url_name == 'search-website' %}
+                        <span {% aria-current="true" class="search-results-hero__nav-link">Website results</span>
+                    {% else %}
+                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}">Website results</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+    {% endwith %}
 </div>

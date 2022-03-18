@@ -71,6 +71,11 @@ public_urls = [
         login_required(search_views.catalogue_search),
         name="search-catalogue",
     ),
+    path(
+        r"search/website/",
+        login_required(search_views.website_search),
+        name="search-website",
+    ),
 ]
 
 if settings.DEBUG:
