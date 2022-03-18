@@ -29,6 +29,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
+    "etna.blog",  # Wordpres Ingest
     "etna.categories",
     "etna.ciim",
     "etna.collections",

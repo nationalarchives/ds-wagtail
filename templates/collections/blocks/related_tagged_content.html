@@ -1,0 +1,20 @@
+<dl>
+  <dt>Selected tags:</dt>
+  {% for tag in selected_tags %}
+    <dd>{{ tag.name }}</dd>
+  {% endfor %}
+</dl>
+
+<dl>
+  <dt>Related pages:</dt>
+  {% for related_page in related_pages %}
+    <dd><a href="{{ related_page.get_url}}">{{ related_page.title }}</a></dd>
+    <dl>
+      <dt>Related page tags:</dt>
+      {% for tag in related_page.theme_tags.all %}
+        <dd>{{ tag.name }}</dd>
+      {% endfor %}
+    </dl>
+  {% endfor %}
+</dl>
+

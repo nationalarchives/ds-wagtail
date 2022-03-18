@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<dl>
+  <dt>Title</dt>
+  <dd>{{ page.title }}</dd>
+  <dt>Source URL</dt>
+  <dd><a href="{{ page.source_url }}">{{ page.source_url }}</a></dd>
+  <dt>Body</dt>
+  <dd>{{ page.body | richtext }}</dd>
+  <dt>Date published</dt>
+  <dd>{{ page.date_published }}</dd>
+  <dt>Content tags</dt>
+  <dd>
+    <ul>
+      {% for tag in page.content_tags.all %}
+      <li>{{ tag.name }}</li>
+      {% endfor %}
+    </ul>
+  </dd>
+  <dt>Theme tags</dt>
+  <dd>
+    <ul>
+      {% for tag in page.theme_tags.all %}
+      <li>{{ tag.name }}</li>
+      {% endfor %}
+    </ul>
+  </dd>
+</dl>
+{% endblock %}

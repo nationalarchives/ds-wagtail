@@ -1,0 +1,9 @@
+{% load wagtailcore_tags %}
+
+<dl>
+  <dt>Paragraph</dt>
+  <dd>{{ paragraph | richtext }}</dd>
+  <dt>Media page</dt>
+  <dd><a href="{{ page.get_url }}">{{ page.title }}</a></dd>
+</dl>
+

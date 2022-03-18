@@ -19,6 +19,7 @@ python-magic = "^0.4.24"
 django-redis = "^5.0.0"
 wagtail-font-awesome-svg = "0.0.2"
 django-birdbath = "^0.0.5"
+requests-cache = "^0.9.3"
 
 [tool.poetry.dev-dependencies]
 black = "^22.1.0"
