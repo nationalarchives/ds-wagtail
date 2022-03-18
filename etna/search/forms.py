@@ -25,7 +25,20 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         return True
 
     def update_from_aggregations(self, aggregations):
-        """Populate choice list with aggregation data."""
+        """Populate choice list with aggregation data.
+
+        Expected format:
+        [
+            {
+                "key": "item",
+                "doc_count": 10
+            },
+            …
+        ]
+        """
+        if not aggregations:
+            return
+
         self.choices = [
             (f"{self.filter_key}:{i['key']}", f"{i['key']} ({i['doc_count']:,})")
             for i in aggregations
@@ -42,7 +55,7 @@ class FeaturedSearchForm(forms.Form):
     )
 
 
-class SearchForm(forms.Form):
+class BaseCollectionSearchForm(forms.Form):
     q = forms.CharField(
         label="Search term",
         # If no query is provided, pass None to client to fetch all results.
@@ -50,21 +63,16 @@ class SearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
+    group = forms.ChoiceField(
+        label="bucket",
+        choices=[],
+    )
     filter_keyword = forms.CharField(
         label="Search within",
         # If no filter_keyword is provided, pass None to client bypass search within
         empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-filters__search"}),
-    )
-    group = forms.ChoiceField(
-        label="bucket",
-        choices=[
-            ("group:tna", "TNA"),
-            ("group:nonTna", "NonTNA"),
-            ("group:creator", "Creator"),
-            ("group:archive", "Archive"),
-        ],
     )
     levels = DynamicMultipleChoiceField(
         label="Level",
@@ -163,14 +171,62 @@ class SearchForm(forms.Form):
         """Populate dynamic fields choices using aggregation data from API."""
         aggregations = response["aggregations"]
 
-        self.fields["levels"].update_from_aggregations(aggregations["level"]["buckets"])
-        self.fields["topics"].update_from_aggregations(aggregations["topic"]["buckets"])
+        self.fields["levels"].update_from_aggregations(
+            aggregations.get("level", {}).get("buckets")
+        )
+        self.fields["topics"].update_from_aggregations(
+            aggregations.get("topic", {}).get("buckets")
+        )
         self.fields["collections"].update_from_aggregations(
-            aggregations["collection"]["buckets"]
+            aggregations.get("collection", {}).get("buckets")
         )
         self.fields["closure_statuses"].update_from_aggregations(
-            aggregations["closure"]["buckets"]
+            aggregations.get("closure", {}).get("buckets")
         )
         self.fields["catalogue_sources"].update_from_aggregations(
-            aggregations["catalogueSource"]["buckets"]
+            aggregations.get("catalogueSource", {}).get("buckets")
         )
+
+    def selected_filters(self):
+        """List of selected filters, keyed by the corresponding field name.
+
+        Used by template to output a list of selected filters.
+
+        Method must be called on a bound form (post validation)
+
+        Note: selected filters differ from the filter_aggregations passed to
+        the client as 'group' isn't considered to be a filter.
+
+        """
+        return {
+            "levels": self.cleaned_data.get("levels"),
+            "topics": self.cleaned_data.get("topics"),
+            "collections": self.cleaned_data.get("collections"),
+            "closure_statuses": self.cleaned_data.get("closure_statuses"),
+            "catalogue_sources": self.cleaned_data.get("catalogue_sources"),
+        }
+
+
+class CatalogueSearchForm(BaseCollectionSearchForm):
+    group = forms.ChoiceField(
+        label="bucket",
+        choices=[
+            ("group:tna", "TNA"),
+            ("group:nonTna", "NonTNA"),
+            ("group:creator", "Creator"),
+            ("group:archive", "Archive"),
+        ],
+    )
+
+
+class WebsiteSearchForm(BaseCollectionSearchForm):
+    group = forms.ChoiceField(
+        label="bucket",
+        choices=[
+            ("group:blog", "Blog"),
+            ("group:image", "Image"),
+            ("group:researchGuide", "Research Guide"),
+            ("group:audio", "Audio"),
+            ("group:video", "Video"),
+        ],
+    )
