@@ -36,5 +36,8 @@
                 </a>
             {% endif %}
         </li>
+
+        {{ form.display.errors }}
+        {{ form.display.as_hidden }}
     </ul>
 </div>
