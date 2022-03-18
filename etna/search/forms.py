@@ -144,6 +144,13 @@ class BaseCollectionSearchForm(forms.Form):
         ],
         required=False,
     )
+    display = forms.ChoiceField(
+        choices=[
+            ("grid", "Grid"),
+            ("list", "List"),
+        ],
+        required=False,
+    )
 
     def clean(self):
         """Collect selected filters to pass to the client in view."""

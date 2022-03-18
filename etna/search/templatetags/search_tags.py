@@ -17,31 +17,17 @@ def bucket_count(api_response, bucket_name: str) -> int:
 
 
 @register.filter
-def record_title(record) -> str:
-    """Output a record's title.
+def record_detail(record: dict, key: str) -> str:
+    """Fetch an item from a record's details template.
 
     Django templates don't allow access to keys or attributes prefixed with _
 
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
     try:
-        return record["_source"]["@template"]["details"]["summaryTitle"]
+        return record["_source"]["@template"]["details"][key]
     except KeyError:
-        return "No Title Found"
-
-
-@register.filter
-def record_iaid(record) -> str:
-    """Output a record's iaid.
-
-    Django templates don't allow access to keys or attributes prefixed with _
-
-    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
-    """
-    try:
-        return record["_source"]["@template"]["details"]["iaid"]
-    except KeyError:
-        return "No IAID Found"
+        return ""
 
 
 @register.filter
@@ -74,7 +60,31 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     request = context["request"]
 
     query_dict = request.GET.copy()
-    if query_dict.get(key) == str(value):
-        del query_dict[key]
+    items = query_dict.getlist(key, [])
+    query_dict.setlist(key, [i for i in items if i != str(value)])
 
     return query_dict.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def get_selected_filters(context) -> dict:
+    """Collect selected filters from request.
+
+    Querying the GET QueryDict instead of the form allows us to
+    output a link to remove the filter even if the selected filter
+    isn't returned back to us from the API.
+
+    Returns an empty dict if no filters are selected.
+    """
+
+    request = context["request"]
+
+    selected_filters = {
+        "levels": request.GET.getlist("levels"),
+        "topics": request.GET.getlist("topics"),
+        "collections": request.GET.getlist("collections"),
+        "closure_statuses": request.GET.getlist("closure_statuses"),
+        "catalogue_sources": request.GET.getlist("catalogue_sources"),
+    }
+
+    return {k: v for k, v in selected_filters.items() if v}
