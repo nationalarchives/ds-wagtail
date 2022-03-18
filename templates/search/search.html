@@ -4,64 +4,23 @@
 {% load humanize %}
 
 {% block content %}
-    <div class="search-results-hero">
-        <div class="search-results-hero__container">
-            <h1 class="search-results-hero__heading">Search</h1>
 
-            <div class="search-results-hero__form">
-                <form method="get" action="{% url 'search-catalogue' %}">
-                    {{ form.q.errors }}
-                    <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
-                    {{ form.q }}
-                    <input type="submit" value="Search" class="search-results-hero__form-submit">
-                </form>
-            </div>
-        </div>
-    </div>
+{% include './blocks/search_landing_hero.html' %}
 
     <div class="search-landing-buckets">
-        
+        <h2 class="search-landing-buckets__heading">
+            Recently added
+        </h2>  
+        {% include './blocks/search_landing_buckets--bordered.html'%}
+
         <h2 class="search-landing-buckets__heading">
             See all records from the catalogue
-        </h2>
+        </h2>  
+        {% include './blocks/search_landing_buckets.html'%}
 
-        <div class="search-landing-buckets__container--bordered">
-            <nav class="search-buckets" aria-label="Result categories">
-                <ul class="search-buckets__list" data-id="search-buckets-list">
-                    <li class="search-buckets__list-item" >
-                        {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                        <span class="search-buckets__link" >
-                            Records from The National Archives ({{ tna_bucket_count|intcomma }})
-                        </span>
-                    </li>
-
-                    <li class="search-buckets__list-item" >
-                        {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                        <a href="{% url 'search-catalogue' %}?group=group:tna" class="search-buckets__link" >
-                            Online records from The National Archives ({{ tna_bucket_count|intcomma }})
-                        </a>
-                    </li>
-                    <li class="search-buckets__list-item" >
-                        {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
-                        <a href="{% url 'search-catalogue' %}?group=group:nonTna" class="search-buckets__link" >
-                            Records from other UK archives ({{ non_tna_bucket_count|intcomma }})
-                        </a>
-                    </li>
-                    <li class="search-buckets__list-item" >
-                        {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
-                        <a href="{% url 'search-catalogue' %}?group=group:creator" class="search-buckets__link" >
-                            Record creators ({{ creator_bucket_count|intcomma }})
-                        </a>
-                    </li>
-                    <li class="search-buckets__list-item" >
-                        {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
-                        <a href="{% url 'search-catalogue' %}?group=group:archive" class="search-buckets__link" >
-                            Find an archive ({{ archive_bucket_count|intcomma }})
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-
+        <h2 class="search-landing-buckets__heading">
+            Browse content about our collections
+        </h2>  
+        {% include './blocks/search_landing_buckets.html'%}
     </div>
 {% endblock %}
