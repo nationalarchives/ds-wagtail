@@ -4,42 +4,42 @@
 {% load humanize %}
 
 {% block content %}
-		<h1>Featured search</h1>
+    <h1>Featured search</h1>
 
-		<div class="search-results-hero">
-				<div class="search-results-hero__container">
-						<h1 class="search-results-hero__heading">Search</h1>
+    <div class="search-results-hero">
+        <div class="search-results-hero__container">
+            <h1 class="search-results-hero__heading">Search</h1>
 
-						<div class="search-results-hero__form">
-								<form method="get">
-										{{ form.non_field_errors }}
+            <div class="search-results-hero__form">
+                <form method="get">
+                    {{ form.non_field_errors }}
 
-										<div>{{ form.q.errors }} {{ form.q.label_tag }} {{ form.q }}</div>
+                    <div>{{ form.q.errors }} {{ form.q.label_tag }} {{ form.q }}</div>
 
-										<input type="submit" value="Search" class="search-results-hero__form-submit"/>
-								</form>
-						</div>
-				</div>
+                    <input type="submit" value="Search" class="search-results-hero__form-submit"/>
+                </form>
+            </div>
+        </div>
 
-				<ul>
-						{% for response, bucket in responses %}
-								<h3>{{ bucket.heading }}</h3>
-								{% for record in response.hits.hits %}
-								<li>
-										<h3>{{ record|record_title }}</h3>
+        <ul>
+            {% for response, bucket in responses %}
+            <h3>{{ bucket.heading }}</h3>
+            {% for record in response.hits.hits %}
+            <li>
+                <h3>{{ record|record_detail:"summaryTitle" }}</h3>
 
-										<dl>
-												<dt>IAID:</dt>
-												<dd>{{ record|record_iaid }}</dd>
-												<dt>Score:</dt>
-												<dd>{{ record|record_score }}</dd>
-										</dl>
-								</li>
-						{% endfor %}
-				</ul>
-								<a href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
-										See all ({{ response.hits.total.value|intcomma }})
-								</a>
-				{% endfor %}
-		</div>
+                <dl>
+                    <dt>IAID:</dt>
+                    <dd>{{ record|record_detail:"iaid" }}</dd>
+                    <dt>Score:</dt>
+                    <dd>{{ record|record_score }}</dd>
+                </dl>
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
+            See all ({{ response.hits.total.value|intcomma }})
+        </a>
+        {% endfor %}
+    </div>
 {% endblock %}

@@ -17,31 +17,17 @@ def bucket_count(api_response, bucket_name: str) -> int:
 
 
 @register.filter
-def record_title(record) -> str:
-    """Output a record's title.
+def record_detail(record: dict, key: str) -> str:
+    """Fetch an item from a record's details template.
 
     Django templates don't allow access to keys or attributes prefixed with _
 
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
     try:
-        return record["_source"]["@template"]["details"]["summaryTitle"]
+        return record["_source"]["@template"]["details"][key]
     except KeyError:
-        return "No Title Found"
-
-
-@register.filter
-def record_iaid(record) -> str:
-    """Output a record's iaid.
-
-    Django templates don't allow access to keys or attributes prefixed with _
-
-    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
-    """
-    try:
-        return record["_source"]["@template"]["details"]["iaid"]
-    except KeyError:
-        return "No IAID Found"
+        return ""
 
 
 @register.filter
