@@ -1,5 +1,6 @@
+from typing import Union
+
 from django import template
-from django.http import QueryDict
 
 register = template.Library()
 
@@ -55,15 +56,25 @@ def record_score(record) -> str:
 
 
 @register.simple_tag(takes_context=True)
-def query_string(context, **kwargs) -> str:
-    """Update  query string for context's request with passed kwargs."""
+def query_string_include(context, key: str, value: Union[str, int]) -> str:
+    """Add key, value to current query string."""
 
     request = context["request"]
 
-    query_dict = QueryDict(mutable=True)
-    query_dict.update(request.GET)
+    query_dict = request.GET.copy()
+    query_dict[key] = value
 
-    for k, v in kwargs.items():
-        query_dict[k] = v
+    return query_dict.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
+    """Remove matching entry from current query string."""
+
+    request = context["request"]
+
+    query_dict = request.GET.copy()
+    if query_dict.get(key) == str(value):
+        del query_dict[key]
 
     return query_dict.urlencode()
