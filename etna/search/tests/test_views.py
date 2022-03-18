@@ -11,7 +11,7 @@ from ...ciim.tests.factories import create_response
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
-class CatalogueSearchIntegrationTest(WagtailTestUtils, TestCase):
+class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
     def setUp(self):
         super().setUp()
 
@@ -23,25 +23,13 @@ class CatalogueSearchIntegrationTest(WagtailTestUtils, TestCase):
             json={
                 "responses": [
                     create_response(),
-                    create_response(
-                        aggregations={
-                            "level": {"buckets": [{"key": "Item", "doc_count": 234}]},
-                            "topic": {"buckets": [{"key": "Item", "doc_count": 234}]},
-                            "collection": {
-                                "buckets": [{"key": "Item", "doc_count": 234}]
-                            },
-                            "closure": {"buckets": [{"key": "Item", "doc_count": 234}]},
-                            "catalogueSource": {
-                                "buckets": [{"key": "Item", "doc_count": 234}]
-                            },
-                        }
-                    ),
+                    create_response(),
                 ]
             },
         )
 
     @responses.activate
-    def test_empty_search(self):
+    def test_accessing_page_with_no_params_performs_empty_search(self):
         self.client.get("/search/catalogue/")
 
         self.assertEqual(len(responses.calls), 1)
@@ -56,6 +44,92 @@ class CatalogueSearchIntegrationTest(WagtailTestUtils, TestCase):
                 "&template=details"
                 "&aggregations=catalogueSource%2C+closure%2C+collection%2C+group%2C+level%2C+topic"
                 "&filterAggregations=group%3Atna"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.login()
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/searchAll",
+            json={
+                "responses": [
+                    create_response(),
+                    create_response(),
+                ]
+            },
+        )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_no_search(self):
+        self.client.get("/search/featured/")
+
+        self.assertEqual(len(responses.calls), 0)
+
+    @responses.activate
+    def test_search_with_query(self):
+        self.client.get("/search/featured/?q=query")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/searchAll"
+                "?q=query"
+                "&filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide"
+                "&size=3"
+            ),
+        )
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class WebsiteSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.login()
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "responses": [
+                    create_response(),
+                    create_response(),
+                ]
+            },
+        )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.client.get("/search/website/")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?dateField=dateOpening"
+                "&stream=interpretive"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=catalogueSource%2C+closure%2C+collection%2C+group%2C+level%2C+topic"
+                "&filterAggregations=group%3Ablog"
                 "&from=0"
                 "&size=20"
             ),
