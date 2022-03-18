@@ -4,7 +4,7 @@ from django.shortcuts import render
 from ..ciim.client import Aggregation, DateField, SortOrder, Stream, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
-from .forms import FeaturedSearchForm, WebsiteSearchForm, CatalogueSearchForm
+from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 # Aggregations and their headings, passed /searchAll to fetch
 # counts and output along with grouped results.
