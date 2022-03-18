@@ -3,6 +3,7 @@ import json
 
 def create_record(
     iaid="C0000000",
+    source="mongo",
     reference_number="ADM 223/3",
     title="Title",
     description="description",
@@ -27,13 +28,14 @@ def create_record(
         "_source": {
             "@admin": {
                 "id": iaid,
+                "source": source,
             },
             "access": {"conditions": "open"},
             "identifier": [
                 {"iaid": iaid},
                 {"reference_number": reference_number},
             ],
-            "@origination": {
+            "origination": {
                 "creator": [{"name": [{"value": "test"}]}],
                 "date": {
                     "earliest": {"from": earliest},
@@ -42,7 +44,7 @@ def create_record(
                 },
             },
             "digitised": is_digitised,
-            "hierarchy": [hierarchy],
+            "@hierarchy": [hierarchy],
             "summary": {
                 "title": title,
             },

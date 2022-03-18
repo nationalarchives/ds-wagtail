@@ -236,36 +236,36 @@ class TestResultsPageIntegration(TestCase):
         self.assertEquals(200, response.status_code)
 
 
-# @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-# class TestResultsPage(TestCase):
-#     def setUp(self):
-#         root_page = Site.objects.get().root_page
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+class TestResultsPage(TestCase):
+    def setUp(self):
+        root_page = Site.objects.get().root_page
 
-#         self.results_page = ResultsPage(
-#             title="Results Page", sub_heading="Sub heading", introduction="Introduction"
-#         )
+        self.results_page = ResultsPage(
+            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+        )
 
-#         root_page.add_child(instance=self.results_page)
+        root_page.add_child(instance=self.results_page)
 
-#         responses.add(
-#             responses.GET,
-#             "https://kong.test/data/fetch",
-#             json=create_response(
-#                 records=[
-#                     create_record(
-#                         iaid="C123456", description="This is the description from Kong"
-#                     )
-#                 ]
-#             ),
-#         )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456", description="This is the description from Kong"
+                    )
+                ]
+            ),
+        )
 
-#     @responses.activate
-#     def test_datalayer_results_page(self):
-#         self.results_page.records.create(record_iaid="C123456")
-#         self.results_page.save()
+    @responses.activate
+    def test_datalayer_results_page(self):
+        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.save()
 
-#         response = self.client.get("/results-page/")
+        response = self.client.get("/results-page/")
 
-#         html_decoded_response = response.content.decode('utf8')
-#         desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Explorer", "customDimension1": "offsite", "customDimension2": null, "customDimension3": "results page", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": ""}</script>"""
-#         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Explorer", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "results page", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)

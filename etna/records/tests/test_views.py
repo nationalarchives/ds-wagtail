@@ -211,24 +211,25 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
-    # @responses.activate
-    # def test_datalayer_record_detail(self):
-    #     import json
-    #     path = '/app/etna/records/tests/fixtures/record.json'
-    #     with open(path, "r") as f:
-    #         responses.add(
-    #             responses.GET,
-    #             "https://kong.test/data/fetch",
-    #             json=json.loads(f.read()),
-    #         )
+    @responses.activate
+    def test_datalayer_record_detail(self):
+        import json
 
-    #     response = self.client.get("/catalogue/C2361422/")
+        path = "/app/etna/records/tests/fixtures/record.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
 
-    #     self.assertTemplateUsed(response, "records/record_detail.html")
+        response = self.client.get("/catalogue/C2361422/")
 
-    #     html_decoded_response = response.content.decode('utf8')
-    #     desired_datalayer_script_tag = f"""<script id="gtmDatalayer" type="application/json">{{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "66", "customDimension11": "The National Archives", "customDimension12": "Level 6 - Piece", "customDimension13": "RAIL 253 - Great Western Railway Company: Miscellaneous Books and Records", "customDimension14": "RAIL 253/516 - Correspondence by members of Audit Office, Paddington while on active...", "customDimension15": "mongo", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}}</script>"""
-    #     self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = f"""<script id="gtmDatalayer" type="application/json">{{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "66", "customDimension11": "The National Archives", "customDimension12": "Level 6 - Piece", "customDimension13": "RAIL 253 - \\u003Cunittitle type=\\"Title\\"\\u003EGreat Western Railway Company: Miscellaneous Books and Records\\u003C/unittitle\\u003E", "customDimension14": "RAIL 253/516 - \\u003Cscopecontent\\u003E\\u003Cp\\u003ECorrespondence by members of Audit Office, Paddington while on active...", "customDimension15": "mongo", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
 
 @unittest.skip(

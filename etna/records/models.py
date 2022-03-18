@@ -44,15 +44,15 @@ class Record(DataLayerMixin, APIModel):
     previous_record: dict = field(default_factory=dict)
     related_records: dict = field(default_factory=dict)
     related_articles: dict = field(default_factory=dict)
-    # catalogue_source: str = ""
-    # repo_summary_title: str = ""
-    # repo_archon_value: str = ""
-    # level_code: str = ""
-    # level_value: str = ""
-    # association_reference_number: str = ""
-    # association_summary_title: str = ""
-    # template_summary_title: str = ""
-    # data_source: str = ""
+    catalogue_source: str = ""
+    repo_summary_title: str = ""
+    repo_archon_value: str = ""
+    level_code: str = ""
+    level: str = ""
+    association_reference_number: str = ""
+    association_summary_title: str = ""
+    template_summary_title: str = ""
+    data_source: str = ""
 
     _debug_kong_result: dict = field(default_factory=dict)
 
@@ -74,10 +74,17 @@ class Record(DataLayerMixin, APIModel):
         Overrides DataLayerMixin.get_gtm_content_group() to
         return content group otherwise the name of the class.
         """
-        # if self.catalogue_source == "CAT":
-        #     return "Catalogue: " + self.repo_summary_title
-        # else:
-        return self.__class__.__name__
+        if (
+            self.catalogue_source == "CAT"
+            and self.repo_summary_title == "The National Archives"
+        ):
+            return "Catalogue: The National Archives"
+        elif self.catalogue_source == "ARCHON":
+            return "Catalogue: Archive Details"
+        elif self.catalogue_source:
+            return "Catalogue: Other Archive Records"
+        else:
+            return self.__class__.__name__
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """
@@ -90,13 +97,17 @@ class Record(DataLayerMixin, APIModel):
         data = super().get_datalayer_data(request)
         data.update(
             contentGroup1=self.get_gtm_content_group(),
-            # customDimension3="record detail",
-            # customDimension10=self.repo_archon_value,
-            # customDimension11=self.repo_summary_title,
-            # customDimension12="Level " + self.level_code + " - " + self.level_value,
-            # customDimension13=self.association_reference_number + " - " + self.association_summary_title,
-            # customDimension14=self.reference_number + " - " + self.template_summary_title,
-            # customDimension15=self.data_source,
+            customDimension3="record detail",
+            customDimension10=self.repo_archon_value,
+            customDimension11=self.repo_summary_title,
+            customDimension12="Level " + self.level_code + " - " + self.level,
+            customDimension13=self.association_reference_number
+            + " - "
+            + self.association_summary_title,
+            customDimension14=self.reference_number
+            + " - "
+            + self.template_summary_title,
+            customDimension15=self.data_source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.availability_delivery_condition,
         )

@@ -1,16 +1,14 @@
-from ..ciim.utils import find_all, format_description_markup, pluck
+from ..ciim.utils import find_all, format_description_markup, pluck, find
 
 
 def transform_record_result(result):
     """Fetch data from an Elasticsearch response to pass to Record.__init__"""
 
     data = {}
-    # repo_summary_title = ""
 
     source = result["_source"]
     identifier = source.get("identifier")
     summary = source.get("summary")
-    # template = source.get("@template")
 
     data["iaid"] = source["@admin"]["id"]
     data["reference_number"] = pluck(
@@ -21,38 +19,13 @@ def transform_record_result(result):
     if access := source.get("access"):
         data["closure_status"] = access.get("conditions")
 
-    if origination := source.get("@origination"):
+    if origination := source.get("origination"):
         data["created_by"] = pluck(
             origination, accessor=lambda i: i["creator"][0]["name"][0]["value"]
-        )
-        data["origination_date"] = pluck(
-            origination, accessor=lambda i: i["date"]["value"]
         )
 
     if description := source.get("description"):
         data["description"] = format_description_markup(description[0]["value"])
-
-        # if related := description[0]["related"]:
-        #     related_records = find_all(
-        #         related,
-        #         predicate=lambda i: i["@link"]["relationship"]["value"] == "related",
-        #     )
-        #     data["related_records"] = [
-        #         {
-        #             "title": i["summary"]["title"],
-        #             "iaid": i["@admin"]["id"],
-        #         }
-        #         for i in related_records
-        #     ]
-
-        #     related_articles = find_all(
-        #     related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
-        #     )
-        #     data["related_articles"] = [
-        #         {"title": i["summary"]["title"], "url": i["source"]["location"]}
-        #         for i in related_articles
-        #         if "summary" in i
-        #     ]
 
     if arrangement := source.get("arrangement"):
         data["arrangement"] = format_description_markup(arrangement["value"])
@@ -61,10 +34,12 @@ def transform_record_result(result):
         data["legal_status"] = legal["status"]
 
     if repository := source.get("repository"):
-        data["held_by"] = repository["name"]["value"]
-        # repo_summary_title = repository["summary"]["title"]
-        # data["repo_summary_title"] = repository["summary"]["title"]
-        # data["repo_archon_value"] = repository["identifier"][1]["value"]
+        data["repo_summary_title"] = repository.get("summary", {}).get("title", "")
+        if repo_identifier := repository.get("identifier", ""):
+            archon_dict = find(
+                repo_identifier, predicate=lambda i: i["type"] == "Archon number"
+            )
+            data["repo_archon_value"] = archon_dict.get("value", "")
 
     data["is_digitised"] = source.get("digitised", False)
 
@@ -78,7 +53,7 @@ def transform_record_result(result):
             "title": pluck(parent, accessor=lambda i: i["summary"]["title"]),
         }
 
-    if hierarchy := source.get("hierarchy"):
+    if hierarchy := source.get("@hierarchy"):
         data["hierarchy"] = [
             {
                 "reference_number": i["identifier"][0]["reference_number"],
@@ -90,7 +65,6 @@ def transform_record_result(result):
 
     if availability := source.get("availability"):
         if delivery := availability.get("delivery"):
-            data["availability_delivery_condition"] = delivery["condition"]["value"]
             data["availability_delivery_surrogates"] = delivery.get("surrogate")
 
     if topics := source.get("topic"):
@@ -118,7 +92,10 @@ def transform_record_result(result):
             related, predicate=lambda i: i["@admin"]["source"] == "wagtail-es"
         )
         data["related_articles"] = [
-            {"title": i["summary"]["title"], "url": i["source"]["location"]}
+            {
+                "title": i.get("summary", {}).get("title", ""),
+                "url": i.get("source", {}).get("location", ""),
+            }
             for i in related_articles
             if "summary" in i
         ]
@@ -133,22 +110,32 @@ def transform_record_result(result):
     if previous_record := source.get("@previous"):
         data["previous_record"] = {"iaid": previous_record["@admin"]["id"]}
 
-    # if catalogue_source := source.get("source"):
-    #     data["catalogue_source"] = catalogue_source["value"]
+    if catalogue_source := source.get("source"):
+        data["catalogue_source"] = catalogue_source["value"]
 
-    # if level := source.get("level"):
-    #     data["level_code"] = str(level["code"])
-    #     data["level_value"] = level["value"]
+    if level := source.get("level"):
+        data["level_code"] = str(level["code"])
 
-    # if association := source.get("association"):
-    #     data["association_reference_number"] = pluck(
-    #             association,
-    #             accessor=lambda i: i["identifier"][0]["reference_number"])
-    #     data["association_summary_title"] = pluck(association, accessor=lambda i: i["summary"]["title"])
+    if association := source.get("association"):
+        data["association_reference_number"] = pluck(
+            association, accessor=lambda i: i["identifier"][0]["reference_number"]
+        )
+        data["association_summary_title"] = pluck(
+            association, accessor=lambda i: i["summary"]["title"]
+        )
 
-    # data["template_summary_title"] = template["details"]["summaryTitle"]
+    if template := source.get("@template"):
+        data["held_by"] = template.get("details", {}).get("heldBy", "")
+        data["origination_date"] = template.get("details", {}).get("dateCreated", "")
+        data["level"] = template.get("details", {}).get("level", "")
+        data["availability_delivery_condition"] = template.get("details", {}).get(
+            "deliveryOption", ""
+        )
+        data["template_summary_title"] = template.get("details", {}).get(
+            "summaryTitle", ""
+        )
 
-    # data["data_source"] = source["@admin"]["source"]
+    data["data_source"] = source["@admin"]["source"]
 
     return data
 

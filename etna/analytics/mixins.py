@@ -51,7 +51,6 @@ class DataLayerMixin:
         # server responses cacheable
         data.update(
             customDimension1="offsite",
-            customDimension2=getattr(request.user, "id", ""),
-            # customDimension2="",
+            customDimension2="",
         )
         return data
