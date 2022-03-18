@@ -1,11 +1,11 @@
 from django.test import SimpleTestCase
 
-from ..forms import SearchForm
+from ..forms import CatalogueSearchForm
 
 
-class SearchFormTest(SimpleTestCase):
+class CatalogueSearchFormTest(SimpleTestCase):
     def test_start_date_after_end_date_is_invalid(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "start_date": "2000-01-01",
@@ -21,7 +21,7 @@ class SearchFormTest(SimpleTestCase):
         )
 
     def test_start_date_before_end_date_is_valid(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "start_date": "1900-01-01",
@@ -34,9 +34,9 @@ class SearchFormTest(SimpleTestCase):
         self.assertTrue(is_valid)
 
 
-class SearchFormSelectedFiltersTest(SimpleTestCase):
+class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
     def test_empty_form(self):
-        form = SearchForm({})
+        form = CatalogueSearchForm({})
 
         form.is_valid()
 
@@ -52,7 +52,7 @@ class SearchFormSelectedFiltersTest(SimpleTestCase):
         )
 
     def test_selected_group_is_excluded(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
             }
@@ -72,7 +72,7 @@ class SearchFormSelectedFiltersTest(SimpleTestCase):
         )
 
     def test_selected_level(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "levels": ["level:level-one"],
@@ -93,7 +93,7 @@ class SearchFormSelectedFiltersTest(SimpleTestCase):
         )
 
     def test_selected_topic(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "topics": ["topic:topic-one"],
@@ -114,7 +114,7 @@ class SearchFormSelectedFiltersTest(SimpleTestCase):
         )
 
     def test_selected_closure_status(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "closure_statuses": ["closure:closure-status-one"],
@@ -135,7 +135,7 @@ class SearchFormSelectedFiltersTest(SimpleTestCase):
         )
 
     def test_selected_catalogue_sources(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "catalogue_sources": ["catalogueSources:catalogue-source-one"],
