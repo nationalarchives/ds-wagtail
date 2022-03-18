@@ -1,11 +1,11 @@
 from django.test import SimpleTestCase
 
-from ..forms import SearchForm
+from ..forms import CatalogueSearchForm
 
 
 class SearchFormTest(SimpleTestCase):
     def test_start_date_after_end_date_is_invalid(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "start_date": "2000-01-01",
@@ -21,7 +21,7 @@ class SearchFormTest(SimpleTestCase):
         )
 
     def test_start_date_before_end_date_is_valid(self):
-        form = SearchForm(
+        form = CatalogueSearchForm(
             {
                 "group": "group:tna",
                 "start_date": "1900-01-01",
