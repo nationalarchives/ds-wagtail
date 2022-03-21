@@ -248,7 +248,6 @@ class ModelTranslationTest(TestCase):
             ],
         )
 
-    @unittest.skip("Data not supported for the json record")
     def test_next_record(self):
         self.assertEqual(
             self.record.next_record,
@@ -257,7 +256,6 @@ class ModelTranslationTest(TestCase):
             },
         )
 
-    @unittest.skip("Data not supported for the json record")
     def test_previous_record(self):
         self.assertEqual(
             self.record.previous_record,
