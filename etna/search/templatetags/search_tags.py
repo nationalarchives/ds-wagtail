@@ -3,6 +3,7 @@ import types
 from typing import Union
 
 from django import forms, template
+from django.core.exceptions import ValidationError
 from django.forms.boundfield import BoundField
 from django.utils.crypto import get_random_string
 
@@ -111,6 +112,23 @@ class RepeatableBoundField(BoundField):
             return self.name not in self.form._visible_field_names
         return self.field.widget.is_hidden
 
+    def _has_changed(self):
+        field = self.field
+        if field.show_hidden_initial:
+            hidden_widget = field.hidden_widget()
+            initial_value = self.form._widget_data_value(
+                hidden_widget,
+                self.html_initial_name,
+            )
+            try:
+                initial_value = field.to_python(initial_value)
+            except ValidationError:
+                # Always assume data has changed if validation fails.
+                return True
+        else:
+            initial_value = self.initial
+        return field.has_changed(initial_value, self.data)
+
     def as_widget(self, widget=None, attrs=None, only_initial=False):
         if widget is None:
             if hasattr(self.form, "_visible_field_names"):
@@ -122,6 +140,8 @@ class RepeatableBoundField(BoundField):
                     widget = self.field.hidden_widget
         if not isinstance(widget, forms.Widget):
             widget = widget()
+        if self.is_hidden and not self._has_changed():
+            return ""
         return super().as_widget(widget, attrs, only_initial)
 
 
