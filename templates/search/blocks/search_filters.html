@@ -1,125 +1,130 @@
 <div class="search-filters">
     <h3 class="sr-only">Edit filters</h3>
-    <div class="search-filters__form-block">
-        {% comment %} TODO make this a django form element {% endcomment %}
-        <input type="checkbox" class="search-filters__checkbox">
-        <label class='search-filters__label'>Show online records only</label>
-        <input type="submit" value="Update" class="search-filters__submit">
-    </div>
-
-    <div class="search-filters__form-block">
-
-        <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
-        {{ form.filter_keyword }}
-        {{ form.filter_keyword.errors }}
-        <input type="submit" value="Search" class="search-filters__submit">
-    </div>
-
-    <div class="search-filters__form-block">
-        <h4>Refine results by</h4>
-        <div class="search-filters__accordion-section">
-            <fieldset>
-                <legend>
-                    <h5 class="search-filters__accordion-section-heading">Date</h5>
-                </legend>
-
-                <div>
-                    <input type="checkbox" name="date-example" id="date-example">
-                    <label for="date-example" class='search-filters__label'>Example century goes here</label>
-                </div>
-
-                <input type="submit" value="Update" class="search-filters__submit">
-            </fieldset>
-            
+    <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
+        <div class="search-filters__form-block">
+            {% comment %} TODO make this a django form element {% endcomment %}
+            <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
+            <label for="online-only" class='search-filters__label'>Show online records only</label>
+            <input type="submit" value="Update" class="search-filters__submit">
         </div>
 
-        {% if form.collections.field.choices %}
-        <div class="search-filters__accordion-section">
-            <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collections" class="search-filters__accordion-section-link">View collection filters</a></h5> -->
-            <fieldset>
-                <legend><h5 class="search-filters__accordion-section-heading">Collections</h5></legend>
-            <div>
-                {{ form.collections.errors }}
-                {{ form.collections }}
-            </div>
-            </fieldset>
-        
+        <div class="search-filters__form-block">
+
+            <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+            {{ form.filter_keyword }}
+            {{ form.filter_keyword.errors }}
+            <input type="submit" value="Search" class="search-filters__submit">
         </div>
-        {% endif %}
 
-        {% if form.topics.field.choices %}
-        <div class="search-filters__accordion-section">
-            <fieldset>
-                <legend><h5 class="search-filters__accordion-section-heading">Topics</h5></legend>
-            <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topics" class="search-filters__accordion-section-link">View topic filters</a></h5> -->
-            <div>
-                {{ form.topics.errors }}
-                {{ form.topics }}
-            </div>
-            </fieldset>
-        </div>
-        {% endif %}
-
-        {% if form.levels.field.choices %}
-        <div class="search-filters__accordion-section">
-            <fieldset>
-                <legend><h5 class="search-filters__accordion-section-heading">Catalogue level</h5></legend>
-
-                {{ form.levels.errors }}
-                {{ form.levels }}
-
-                <input type="submit" value="Update" class="search-filters__submit">
-            </fieldset>
-        </div>
-        {% endif %}
-
-        {% if form.closure_statuses.field.choices %}
+        <div class="search-filters__form-block">
+            <h4>Refine results by</h4>
             <div class="search-filters__accordion-section">
                 <fieldset>
-                    <legend><h5 class="search-filters__accordion-section-heading">Closure status</h5></legend>
+                    <legend>
+                        <h5 class="search-filters__accordion-section-heading">Date</h5>
+                    </legend>
 
                     <div>
-                        {{ form.closure_statuses.errors }}
-                        {{ form.closure_statuses }}
+                        <input type="checkbox" name="date-example" id="date-example">
+                        <label for="date-example" class='search-filters__label'>Example century goes here</label>
+                    </div>
+
+                    <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+                
+            </div>
+
+            {% if form.collections.field.choices %}
+            <div class="search-filters__accordion-section">
+                <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collections" class="search-filters__accordion-section-link">View collection filters</a></h5> -->
+                <fieldset>
+                    <legend><h5 class="search-filters__accordion-section-heading">Collections</h5></legend>
+                <div>
+                    {{ form.collections.errors }}
+                    {{ form.collections }}
+                </div>
+                <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+            
+            </div>
+            {% endif %}
+
+            {% if form.topics.field.choices %}
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend><h5 class="search-filters__accordion-section-heading">Topics</h5></legend>
+                <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topics" class="search-filters__accordion-section-link">View topic filters</a></h5> -->
+                <div>
+                    {{ form.topics.errors }}
+                    {{ form.topics }}
+                </div>
+                <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+            </div>
+            {% endif %}
+
+            {% if form.levels.field.choices %}
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend><h5 class="search-filters__accordion-section-heading">Catalogue level</h5></legend>
+
+                    {{ form.levels.errors }}
+                    {{ form.levels }}
+
+                    <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+            </div>
+            {% endif %}
+
+            {% if form.closure_statuses.field.choices %}
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend><h5 class="search-filters__accordion-section-heading">Closure status</h5></legend>
+
+                        <div>
+                            {{ form.closure_statuses.errors }}
+                            {{ form.closure_statuses }}
+                        </div>
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+            {% endif %}
+
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend>
+                        <h5 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h5></legend></fieldset>
+                    <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
+
+                    <div class="search-filters__opening-date-section">
+                        {{ form.start_date.errors }}
+                        {{ form.start_date.label_tag }}
+                        {{ form.start_date }}
+                    </div>
+                    <div class="search-filters__opening-date-section">
+                        {{ form.end_date.errors }}
+                        {{ form.end_date.label_tag }}
+                        {{ form.end_date }}
+                    </div>
+
+                    <input type="submit" value="Update" class="search-filters__submit">
+            </div>
+            {% if form.catalogue_sources.field.choices %}
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend>
+                        <h5 class="search-filters__accordion-section-heading">Held by</h5>
+                    </legend>
+                    <div>
+                        {{ form.catalogue_sources.errors }}
+                        {{ form.catalogue_sources }}
                     </div>
                     <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
             </div>
-        {% endif %}
-
-        <div class="search-filters__accordion-section">
-            <fieldset>
-                <legend>
-                    <h5 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h5></legend></fieldset>
-                <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
-
-                <div class="search-filters__opening-date-section">
-                    {{ form.start_date.errors }}
-                    {{ form.start_date.label_tag }}
-                    {{ form.start_date }}
-                 </div>
-                 <div class="search-filters__opening-date-section">
-                    {{ form.end_date.errors }}
-                    {{ form.end_date.label_tag }}
-                    {{ form.end_date }}
-                 </div>
-
-                 <input type="submit" value="Update" class="search-filters__submit">
+            {% endif %}
         </div>
-        {% if form.catalogue_sources.field.choices %}
-        <div class="search-filters__accordion-section">
-            <fieldset>
-                <legend>
-                    <h5 class="search-filters__accordion-section-heading">Held by</h5>
-                </legend>
-                <div>
-                    {{ form.catalogue_sources.errors }}
-                    {{ form.catalogue_sources }}
-                </div>
-                <input type="submit" value="Update" class="search-filters__submit">
-            </fieldset>
-        </div>
-        {% endif %}
-    </div>
+        {% include './hidden_fields/catalogue_filter_hidden_fields.html'%}
+    </form>
     {% include './search_export_and_share.html' %}
 </div>

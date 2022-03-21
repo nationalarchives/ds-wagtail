@@ -1,0 +1,5 @@
+{% comment %} These hidden fields are from the other forms on the page. They are needed to persist the state between each form. {% endcomment %}
+{% load search_tags %}
+
+{% render_hidden_form_fields form "group" "q" "sort_by" "sort_order" "display" as hidden_fields %}
+{{hidden_fields|safe}}

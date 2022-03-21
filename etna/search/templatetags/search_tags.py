@@ -1,3 +1,4 @@
+from dataclasses import field
 from typing import Union
 
 from django import template
@@ -88,3 +89,29 @@ def get_selected_filters(context) -> dict:
     }
 
     return {k: v for k, v in selected_filters.items() if v}
+
+
+@register.simple_tag(takes_context=True)
+def render_hidden_form_fields(context, form: dict, *fields: str) -> str:
+    """Takes a list of form fields and renders them as hidden input fields without an id tag. A field will only render if it contains a value.
+
+    This is used instead of 'form.field.as_hidden', as this renders an id, and we need to prevent id duplication when hidden fields are reused across multiple forms on the same page.
+    """
+    output_html = ""
+    for field_name in fields:
+        field_value = form.cleaned_data.get(field_name)
+
+        if field_value:
+            if isinstance(field_value, list):
+                """DynamicChoiceFields are displayed in our URLs using duplicated query string keys. For example, having two collections looks like:
+                /search/catalogue?collections=collection:PROB&collections=collection:WO
+                Therefore the nested_values need to be looped through and given their own hidden field.
+                """
+                for nested_value in field_value:
+                    output_html += f"<input type='hidden' name='{field_name}' value='{nested_value}' />"
+            else:
+                output_html += (
+                    f"<input type='hidden' name='{field_name}' value='{field_value}' />"
+                )
+
+    return output_html

@@ -1,11 +1,12 @@
 <div class="search-results-hero">
     <h1 class="search-results-hero__heading">Search results</h1>
-    <div class="search-results-hero__form">
+    <form action='' method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
         {{ form.q.errors }}
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
+        {% include './hidden_fields/catalogue_search_hidden_fields.html'%}
         <input type="submit" value="Search" class="search-results-hero__form-submit">
-    </div>
+    </form>
     <h2 class="sr-only">[TODO Search Type e.g. Catalogue Results]</h2>
 
     {% with request.resolver_match.url_name as url_name  %}

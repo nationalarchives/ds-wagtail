@@ -1,0 +1,5 @@
+{% comment %} These hidden fields are from the other forms on the page. They are needed to persist the state between each form. {% endcomment %}
+{% load search_tags %}
+
+{% render_hidden_form_fields form "group" "filter_keyword" "levels" "topics" "collections" "closure_statuses" "catalogue_sources" "start_date" "end_date"  "sort_order" "display" as hidden_fields %}
+{{hidden_fields|safe}}

@@ -1,14 +1,15 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <div class="search-sort-view__form">
+    <form action='' method="GET" class="search-sort-view__form" data-id="sort-form" id="catalogue-sort-form">
         <h3 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
         </h3>
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
+        {% include './hidden_fields/catalogue_sort_hidden_fields.html' %}
         <input type="submit" value="Update" class="search-sort-view__form-submit">
-    </div>
+    </form>
 
     <h3 class="search-sort-view__heading"><span class="sr-only">Display as:</span></h3>
     <ul class="search-sort-view__list">
