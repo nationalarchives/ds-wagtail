@@ -1,10 +1,13 @@
-from typing import Union
 import types
+
+from typing import Union
+
 from django import forms, template
 from django.forms.boundfield import BoundField
 from django.utils.crypto import get_random_string
 
 register = template.Library()
+
 
 @register.simple_tag
 def bucket_count(api_response, bucket_name: str) -> int:
@@ -97,6 +100,7 @@ class RepeatableBoundField(BoundField):
     generated html element IDs, allowing the same form to be rendered
     multiple times without field ID clashes.
     """
+
     @property
     def auto_id(self):
         return super().auto_id + getattr(self.form, "_field_id_suffix", "")
@@ -126,6 +130,7 @@ def patch_form_fields(form):
     Patches Field.get_bound_field() for all of the form's fields, so that they
     return ``RepeatableBoundField`` instances.
     """
+
     def replacement_method(self, form, field_name):
         return RepeatableBoundField(form, self, field_name)
 
@@ -136,7 +141,9 @@ def patch_form_fields(form):
 @register.simple_tag()
 def prepare_form_for_partial_render(form, *visible_field_names, field_id_suffix=None):
     # Set form attributes to be picked up by RepeatableBoundField
-    form._field_id_suffix = '_' + (field_id_suffix if field_id_suffix else get_random_string(3))
+    form._field_id_suffix = "_" + (
+        field_id_suffix if field_id_suffix else get_random_string(3)
+    )
     form._visible_field_names = visible_field_names
     # In case form fields have not been patched already
     patch_form_fields(form)
