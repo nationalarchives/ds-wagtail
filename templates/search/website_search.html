@@ -15,9 +15,16 @@
             <ul class="search-buckets__list" data-id="search-buckets-list">
 
                 <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'researchGuides' as research_guide_bucket_count %}
+                    {% bucket_count bucket_count_response 'researchGuide' as research_guide_bucket_count %}
                     <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:researchGuide" class="search-buckets__link" aria-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
                         Research Guides ({{ research_guide_bucket_count|intcomma }})
+                    </a>
+                </li>
+
+                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
+                    {% bucket_count bucket_count_response 'insight' as research_guide_bucket_count %}
+                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:insight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
+                        Insights ({{ research_guide_bucket_count|intcomma }})
                     </a>
                 </li>
 

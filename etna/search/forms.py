@@ -222,6 +222,7 @@ class CatalogueSearchForm(BaseCollectionSearchForm):
             ("group:nonTna", "NonTNA"),
             ("group:creator", "Creator"),
             ("group:archive", "Archive"),
+            ("group:digitised", "Digitised"),
         ],
     )
 
@@ -235,5 +236,6 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
             ("group:researchGuide", "Research Guide"),
             ("group:audio", "Audio"),
             ("group:video", "Video"),
+            ("group:insight", "Insights"),
         ],
     )

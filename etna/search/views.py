@@ -25,6 +25,10 @@ FEATURED_BUCKETS = [
         "aggregation": "group:researchGuide",
         "heading": "Research Guides",
     },
+    {
+        "aggregation": "group:insight",
+        "heading": "insights",
+    },
 ]
 
 
@@ -32,10 +36,7 @@ def featured_search(request):
 
     responses = []
 
-    if "q" in request.GET:
-        form = FeaturedSearchForm(request.GET)
-    else:
-        form = FeaturedSearchForm()
+    form = FeaturedSearchForm(request.GET)
 
     if form.is_valid():
         q = form.cleaned_data.get("q")
