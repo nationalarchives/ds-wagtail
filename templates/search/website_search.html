@@ -21,6 +21,13 @@
                     </a>
                 </li>
 
+                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
+                    {% bucket_count bucket_count_response 'insight' as research_guide_bucket_count %}
+                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:insight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
+                        Insights ({{ research_guide_bucket_count|intcomma }})
+                    </a>
+                </li>
+
                 <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
                     {% bucket_count bucket_count_response 'blog' as blog_bucket_count %}
                     <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:blog" class="search-buckets__link" aria-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">

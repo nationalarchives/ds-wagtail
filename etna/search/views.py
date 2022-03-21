@@ -25,6 +25,10 @@ FEATURED_BUCKETS = [
         "aggregation": "group:researchGuide",
         "heading": "Research Guides",
     },
+    {
+        "aggregation": "group:insight",
+        "heading": "insights",
+    },
 ]
 
 
