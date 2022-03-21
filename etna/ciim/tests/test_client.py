@@ -79,13 +79,21 @@ class ClientSearchAllTest(SimpleTestCase):
     @responses.activate
     def test_with_filter_aggregations(self):
         self.client.search_all(
-            filter_aggregations=["level:Item", "topic:second world war"]
+            filter_aggregations=[
+                "level:Item",
+                "topic:second world war",
+                # Comma should be stripped if included in filterParameter
+                "closureStatus:Closed Or Retained Document, Closed Description",
+            ]
         )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/searchAll?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war",
+            (
+                "https://kong.test/data/searchAll"
+                "?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war%2C+closureStatus%3AClosed+Or+Retained+Document+Closed+Description"
+            ),
         )
 
     @responses.activate
