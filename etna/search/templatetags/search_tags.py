@@ -103,7 +103,7 @@ def render_hidden_form_fields(context, form: dict, *fields: str) -> str:
 
         if field_value:
             if isinstance(field_value, list):
-                """DynamicChoiceFields are displayed in our URLs using duplicated query string keys. For example, having two collections looks like:
+                """DynamicMultipleChoiceFields are displayed in our URLs using duplicated query string keys. For example, having two collections looks like:
                 /search/catalogue?collections=collection:PROB&collections=collection:WO
                 Therefore the nested_values need to be looped through and given their own hidden field.
                 """
