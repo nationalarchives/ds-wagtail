@@ -1,10 +1,16 @@
+{% load search_tags %}
+
 <div class="search-results-hero">
     <h1 class="search-results-hero__heading">Search results</h1>
     <form action='' method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
+        {% prepare_form_for_partial_render form 'q' %}
         {{ form.q.errors }}
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
-        {% include './hidden_fields/catalogue_search_hidden_fields.html'%}
+
+        {% for hidden_field in form.hidden_fields %}
+            {{hidden_field}}
+        {% endfor %}
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
     <h2 class="sr-only">[TODO Search Type e.g. Catalogue Results]</h2>

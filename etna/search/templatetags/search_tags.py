@@ -1,9 +1,10 @@
 from typing import Union
-
-from django import template
+import types
+from django import forms, template
+from django.forms.boundfield import BoundField
+from django.utils.crypto import get_random_string
 
 register = template.Library()
-
 
 @register.simple_tag
 def bucket_count(api_response, bucket_name: str) -> int:
@@ -90,27 +91,63 @@ def get_selected_filters(context) -> dict:
     return {k: v for k, v in selected_filters.items() if v}
 
 
-@register.simple_tag(takes_context=True)
-def render_hidden_form_fields(context, form: dict, *fields: str) -> str:
-    """Takes a list of form fields and renders them as hidden input fields without an id tag. A field will only render if it contains a value.
-
-    This is used instead of 'form.field.as_hidden', as this renders an id, and we need to prevent id duplication when hidden fields are reused across multiple forms on the same page.
+class RepeatableBoundField(BoundField):
     """
-    output_html = ""
-    for field_name in fields:
-        field_value = form.cleaned_data.get(field_name)
+    A custom BoundField class that applies a 'suffix' to automatically
+    generated html element IDs, allowing the same form to be rendered
+    multiple times without field ID clashes.
+    """
+    @property
+    def auto_id(self):
+        return super().auto_id + getattr(self.form, "_field_id_suffix", "")
 
-        if field_value:
-            if isinstance(field_value, list):
-                """DynamicMultipleChoiceFields are displayed in our URLs using duplicated query string keys. For example, having two collections looks like:
-                /search/catalogue?collections=collection:PROB&collections=collection:WO
-                Therefore the nested_values need to be looped through and given their own hidden field.
-                """
-                for nested_value in field_value:
-                    output_html += f"<input type='hidden' name='{field_name}' value='{nested_value}' />"
-            else:
-                output_html += (
-                    f"<input type='hidden' name='{field_name}' value='{field_value}' />"
-                )
+    @property
+    def is_hidden(self):
+        if hasattr(self.form, "_visible_field_names"):
+            return self.name not in self.form._visible_field_names
+        return self.field.widget.is_hidden
 
-    return output_html
+    def as_widget(self, widget=None, attrs=None, only_initial=False):
+        if widget is None:
+            if hasattr(self.form, "_visible_field_names"):
+                if self.name in self.form._visible_field_names:
+                    widget = self.field.widget
+                    if isinstance(widget, forms.HiddenInput):
+                        widget = self.field.__class__.widget
+                else:
+                    widget = self.field.hidden_widget
+        if not isinstance(widget, forms.Widget):
+            widget = widget()
+        return super().as_widget(widget, attrs, only_initial)
+
+
+def patch_form_fields(form):
+    """
+    Patches Field.get_bound_field() for all of the form's fields, so that they
+    return ``RepeatableBoundField`` instances.
+    """
+    def replacement_method(self, form, field_name):
+        return RepeatableBoundField(form, self, field_name)
+
+    for field in form.fields.values():
+        field.get_bound_field = types.MethodType(replacement_method, field)
+
+
+@register.simple_tag()
+def prepare_form_for_partial_render(form, *visible_field_names, field_id_suffix=None):
+    # Set form attributes to be picked up by RepeatableBoundField
+    form._field_id_suffix = '_' + (field_id_suffix if field_id_suffix else get_random_string(3))
+    form._visible_field_names = visible_field_names
+    # In case form fields have not been patched already
+    patch_form_fields(form)
+    return ""
+
+
+@register.simple_tag()
+def prepare_form_for_full_render(form):
+    # Unset custom attributes so that RepeatableBoundFields render as normal
+    form.__dict__.pop("_field_id_suffix", None)
+    form.__dict__.pop("_visible_field_names", None)
+    # In case form fields have not been patched already
+    patch_form_fields(form)
+    return ""
