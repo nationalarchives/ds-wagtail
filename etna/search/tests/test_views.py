@@ -80,7 +80,7 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/searchAll"
-                "?filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide"
+                "?filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide%2C+group%3Ainsight"
                 "&size=3"
             ),
         )
@@ -95,7 +95,7 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             (
                 "https://kong.test/data/searchAll"
                 "?q=query"
-                "&filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide"
+                "&filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Ablog%2C+group%3AresearchGuide%2C+group%3Ainsight"
                 "&size=3"
             ),
         )
