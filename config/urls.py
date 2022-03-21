@@ -76,6 +76,11 @@ public_urls = [
         login_required(search_views.website_search),
         name="search-website",
     ),
+    path(
+        r"search/catalogue/long-filter-chooser/",
+        login_required(search_views.catalogue_search_long_filter_chooser),
+        name="search-catalogue-long-filter-chooser",
+    ),
 ]
 
 if settings.DEBUG:
