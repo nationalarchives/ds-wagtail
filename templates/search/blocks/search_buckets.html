@@ -10,9 +10,9 @@
             </span>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:digitised' %}true{% else %}false{% endif %}">
+            {% bucket_count bucket_count_response 'digitised' as tna_bucket_count %}
+            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:digitised" class="search-buckets__link" aria-current="{% if form.group.value == 'group:digitised' %}true{% else %}false{% endif %}">
                 Online records from The National Archives ({{ tna_bucket_count|intcomma }})
             </a>
         </li>
