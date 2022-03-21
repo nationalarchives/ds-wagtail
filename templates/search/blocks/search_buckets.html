@@ -5,7 +5,7 @@
     <ul class="search-buckets__list" data-id="search-buckets-list">
         <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?q={{ form.q.value }}" class="search-buckets__link" aria-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
+            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
                 Records from The National Archives ({{ tna_bucket_count|intcomma }})
             </a>
         </li>
