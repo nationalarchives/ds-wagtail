@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load search_tags %}
+{% load static %}
+
+{% block content %}
+    <div class="long-filters">
+        <h1 class="long-filters__heading">Select filters to apply to your results</h1>
+        <form method="get" action="{% url 'search-catalogue' %}" >
+            <div class="long-filters__options">
+                <input type="submit" value="Apply filters" class="search-filters__submit">
+                <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" >Cancel and return to results</a>
+            </div>
+            <div class="long-filters__form">
+            {{ form.collections }}
+
+            {% comment %}
+                Hide the rest of the form to preserve the state of the current search.
+            {% endcomment %}
+            {% for field in form %}
+                {{ field.as_hidden }}
+            {% endfor %}
+            </div>
+            <div class="long-filters__submit-section">
+                <input type="submit" value="Apply filters" class="search-filters__submit">
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -49,6 +49,46 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             ),
         )
 
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class CatalogueSearchLongFilterChooserAPIIntegrationTest(WagtailTestUtils, TestCase):
+    def setUp(self):
+        super().setUp()
+
+        self.login()
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "responses": [
+                    create_response(),
+                    create_response(),
+                ]
+            },
+        )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.client.get("/search/catalogue/long-filter-chooser/")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?dateField=dateOpening"
+                "&stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=collection%3A100"
+                "&filterAggregations=group%3Atna"
+            ),
+        )
+
 
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",

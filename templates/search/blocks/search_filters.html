@@ -47,6 +47,7 @@
                     {{ form.collections.errors }}
                     {{ form.collections }}
                 </div>
+                <a href="{% url 'search-catalogue-long-filter-chooser' %}?{{ request.GET.urlencode }}" >See more</a>
                 <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
             

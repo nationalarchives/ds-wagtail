@@ -157,6 +157,57 @@ def catalogue_search(request):
     )
 
 
+def catalogue_search_long_filter_chooser(request):
+    """Output a list of collections for a user to choose from.
+
+    Linked from the catalogue search page and Perform the user's current search
+    to fetch an applicable list of collections for the user to select.
+    """
+
+    # Number of aggrecation options to request from the API.
+    AGGREGATION_SIZE = 100
+
+    data = request.GET.copy()
+    data.setdefault("group", "group:tna")
+    form = CatalogueSearchForm(data)
+
+    if form.is_valid():
+        q = form.cleaned_data.get("q")
+        filter_keyword = form.cleaned_data.get("filter_keyword")
+        filter_aggregations = form.cleaned_data.get("filter_aggregations")
+
+        start_date = form.cleaned_data.get("start_date")
+        end_date = form.cleaned_data.get("end_date")
+
+        sort_by = form.cleaned_data.get("sort_by")
+
+        response = Record.api.client.search(
+            q=q,
+            filter_keyword=filter_keyword,
+            filter_aggregations=filter_aggregations,
+            stream=Stream.EVIDENTIAL,
+            aggregations=[
+                f"{Aggregation.COLLECTION}:{AGGREGATION_SIZE}",
+            ],
+            start_date=start_date,
+            end_date=end_date,
+            date_field=DateField.DATE_OPENING,
+            sort_by=sort_by,
+            sort_order=SortOrder.ASC,
+            template=Template.DETAILS,
+        )
+        bucket_count_response, result_response = response["responses"]
+        form.update_from_response(response=result_response)
+
+    return render(
+        request,
+        "search/catalogue_search_long_filter_chooser.html",
+        {
+            "form": form,
+        },
+    )
+
+
 def website_search(request):
 
     per_page = int(request.GET.get("per_page", 20))
