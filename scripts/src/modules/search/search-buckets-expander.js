@@ -8,7 +8,7 @@ export default function() {
         return;
     }
 
-    let $searchBucketsToHide = document.querySelectorAll("ul[data-id=search-buckets-list] li:not([data-current=True])");
+    let $searchBucketsToHide = document.querySelectorAll("ul[data-id=search-buckets-list] li:not([data-current=true])");
 
     let $showHideButton = document.createElement('button');
     $showHideButton.innerText = 'Show more result categories';

@@ -3,9 +3,9 @@ import debounce from '../debounce.js';
 export default function() {
     let $searchGrid = document.querySelector('div[data-id="catalogue-search-grid"]');
     let $searchFilterContainer = document.querySelector('div[data-id="catalogue-search-sidebar"]');
-    let $searchForm = document.querySelector('form[data-id="search-form"]');
+    let $main = document.querySelector('main');
 
-    if(!$searchFilterContainer || !$searchGrid || !$searchForm) {
+    if(!$searchFilterContainer || !$searchGrid || !$main) {
         return;
     }
 
@@ -16,7 +16,7 @@ export default function() {
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
     $showHideButton.setAttribute('aria-label', 'Show or hide filters');
     $showHideButton.hidden = true;
-    $searchForm.insertBefore($showHideButton, $searchGrid);
+    $main.insertBefore($showHideButton, $searchGrid);
 
     $searchFilterContainer.id = 'searchFilterContainer';
 
