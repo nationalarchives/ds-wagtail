@@ -235,5 +235,6 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
             ("group:researchGuide", "Research Guide"),
             ("group:audio", "Audio"),
             ("group:video", "Video"),
+            ("group:insight", "Insights"),
         ],
     )
