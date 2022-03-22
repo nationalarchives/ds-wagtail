@@ -129,6 +129,9 @@
             </div>
             {% endif %}
         </div>
+        {% for hidden_field in form.hidden_fields %}
+            {{hidden_field}}
+        {% endfor %}
     </form>
     {% include './search_export_and_share.html' %}
 </div>
