@@ -52,6 +52,7 @@ class FeaturedSearchForm(forms.Form):
         empty_value=None,
         required=False,
         validators=[MinLengthValidator(2)],
+        widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
 
 

@@ -49,6 +49,7 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             ),
         )
 
+
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",

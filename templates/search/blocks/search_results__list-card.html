@@ -3,9 +3,9 @@
 
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
-        <h4 class="search-results__list-card-heading">
-            <a href="/details/" class="search-results__list-card-link"><span class="sr-only">reference </span>{{record|record_detail:"summaryTitle"|striptags }}</a>
-        </h4>
+        <h3 class="search-results__list-card-heading">
+            <a href="/details/" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>{{record|record_detail:"summaryTitle"|striptags }}</a>
+        </h3>
         <p class="search-results__list-card-description">{{ record|record_detail:"description"|striptags }}</p>
         <ul class="search-results__list-card-metadata">
             <li class="search-results__list-card-metadata-item">
@@ -35,7 +35,7 @@
         </a>
         <a href="#" class="search-results__list-card-delivery-options-link">
             <p class="search-results__list-card-delivery-options-desc">
-                <span class="sr-only">TODO cat ref: {{ record|record_detail:"summaryTitle" }} is </span>Available to download and view online
+                <span class="sr-only">{{ record|record_detail:"referenceNumber"}} {{ record|record_detail:"summaryTitle" }} is </span>Available to download and view online
             </p>
         </a>
     </div>
