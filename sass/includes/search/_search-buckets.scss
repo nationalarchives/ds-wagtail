@@ -47,6 +47,9 @@
         align-items: center;
         justify-content: center;
 
+        &:visited {
+            color: $color__blue_4;
+        }
 
         &[aria-current=true], &:hover, &:focus {
             background-color: $color__yellow_2;

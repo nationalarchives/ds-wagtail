@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_by' 'collections' 'topics' 'levels' 'closure_statuses' 'start_date' 'end_date' 'catalogue_sources' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'start_date' 'end_date' 'catalogue_sources' %}
 
         <div class="search-filters__form-block">
             {% comment %} TODO make this a django form element {% endcomment %}
