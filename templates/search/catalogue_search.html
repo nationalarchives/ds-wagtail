@@ -5,10 +5,9 @@
 {% load static %}
 
 {% block content %}
-    <form method="get" data-id="search-form">
-        {% include './blocks/search_results_hero.html' %}
-
         {{ form.non_field_errors }}
+
+        {% include './blocks/search_results_hero.html' %}
 
         {% include './blocks/search_buckets.html' %}
         {% comment %} TODO make this text an editable field {% endcomment %}
@@ -33,7 +32,6 @@
             {{ form.group.errors }}
             {{ form.group.as_hidden }}
         </div>
-    </form>
 {% endblock %}
 
 {% block extra_js %}

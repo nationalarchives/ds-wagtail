@@ -95,10 +95,13 @@ def format_list_param(items: Optional[list]) -> Optional[str]:
     'param=item-1,+item-2'
 
     This function, when given a list, will return a comma-separated string.
+
+    Additionally, to overcome an issue with the API, any commas within paramter
+    text will be removed.
     """
     if not items:
         return None
-    return ", ".join(items)
+    return ", ".join([i.replace(",", "") for i in items])
 
 
 class KongClient:
@@ -199,7 +202,8 @@ class KongClient:
         template:
             @template data to include with response
         aggregations:
-            aggregations to include with response
+            aggregations to include with response. Number returned can be set
+            by optional count suffix: <aggregation>:<number-to-return>
         filter_aggregations:
             filter results set by aggregation
         filter_keyword:
@@ -261,7 +265,8 @@ class KongClient:
         q:
             String to query all indexed fields
         aggregations:
-            aggregations to include with response
+            aggregations to include with response. Number returned can be set
+            by optional count suffix: <aggregation>:<number-to-return>
         filter_aggregations:
             filter results set by aggregation
         template:
