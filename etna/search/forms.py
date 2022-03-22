@@ -164,9 +164,6 @@ class BaseCollectionSearchForm(forms.Form):
             # Either one or both date fields are empty. No further validation necessary.
             ...
 
-        if cleaned_data.get("q") == None:
-            q = ""
-
         cleaned_data["filter_aggregations"] = (
             [cleaned_data.get("group")]
             + cleaned_data.get("levels")
