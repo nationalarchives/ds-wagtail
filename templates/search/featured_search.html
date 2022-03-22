@@ -4,42 +4,70 @@
 {% load humanize %}
 
 {% block content %}
-    <h1>Featured search</h1>
 
-    <div class="search-results-hero">
-        <div class="search-results-hero__container">
-            <h1 class="search-results-hero__heading">Search</h1>
-
-            <div class="search-results-hero__form">
-                <form method="get">
-                    {{ form.non_field_errors }}
-
-                    <div>{{ form.q.errors }} {{ form.q.label_tag }} {{ form.q }}</div>
-
-                    <input type="submit" value="Search" class="search-results-hero__form-submit"/>
-                </form>
-            </div>
-        </div>
-
-        <ul>
+    {%  with type='Featured'%}
+        {% include './blocks/search_results_hero.html' %}
+    {% endwith  %}
+    <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
+    <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
+    <div class="featured-search-grid">
+        <div class="featured-search-grid__results">
             {% for response, bucket in responses %}
-            <h3>{{ bucket.heading }}</h3>
-            {% for record in response.hits.hits %}
-            <li>
-                <h3>{{ record|record_detail:"summaryTitle" }}</h3>
-
-                <dl>
-                    <dt>IAID:</dt>
-                    <dd>{{ record|record_detail:"iaid" }}</dd>
-                    <dt>Score:</dt>
-                    <dd>{{ record|record_score }}</dd>
-                </dl>
-            </li>
+            <h2 class="featured-results__heading">{{ bucket.heading }}</h2>
+            <ul class="search-results__list">
+                {% for record in response.hits.hits %}
+                    {% include './blocks/search_results__list-card.html' %}
             {% endfor %}
-        </ul>
-        <a href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
-            See all ({{ response.hits.total.value|intcomma }})
-        </a>
+            </ul>
+            <a href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
+                See all {{ bucket.heading }} ({{ response.hits.total.value|intcomma }})
+            </a>
         {% endfor %}
+        </div>
+        <div class="featured-search-grid__sidebar">
+            <h2 class="featured-results__sidebar-heading">Research guides</h2>
+
+            <ul class="featured-results__sidebar-card-list">
+                <li class="featured-results__sidebar-card-list-item">
+                    <div>
+                        <a href="#" aria-hidden="true" tabindex="-1" class="featured-results__sidebar-card-link">
+                            <div>
+                                <picture>
+                                    <source media="(max-width: 768px)" srcset="https://via.placeholder.com/508x304">
+                                    <source media="(max-width: 991px)" srcset="https://via.placeholder.com/328x196">
+                                    <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/288x172">
+                                    <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x208">
+                                    <img src="https://via.placeholder.com/508x304" alt="" class="featured-results__sidebar-card-image-fallback"> 
+                                </picture>
+                            </div>
+                        </a>
+                            <div>
+                                <a href="" class="featured-results__sidebar-card-link">
+                                    <h3>
+                                        Example card
+                                    </h3>
+                                </a>
+                                <p class="featured-results__sidebar-card-description">Example description</p>
+                            </div>
+                
+                    </div>
+                </li>
+            </ul>
+            <p><a href="#">See all research guides</a></p>
+
+
+            <h2 class="featured-results__sidebar-heading">Insights</h2>
+
+            <p>Same card list style as research guides here</p>
+
+            <p><a href="#">See all insights</a></p>
+
+            <h2 class="featured-results__sidebar-heading">Blogs</h2>
+
+            <p>Same card list style as research guides here</p>
+           
+            <p><a href="#">See all blog posts</a></p>
+
+        </div>
     </div>
 {% endblock %}

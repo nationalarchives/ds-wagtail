@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 <div class="search-filters">
-    <h3 class="sr-only">Edit filters</h3>
+    <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
         {% prepare_form_for_partial_render form 'filter_by' 'collections' 'topics' 'levels' 'closure_statuses' 'start_date' 'end_date' 'catalogue_sources' %}
 
@@ -21,11 +21,11 @@
         </div>
 
         <div class="search-filters__form-block">
-            <h4>Refine results by</h4>
+            <h3>Refine results by</h3>
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
-                        <h5 class="search-filters__accordion-section-heading">Date</h5>
+                        <h4 class="search-filters__accordion-section-heading">Date</h4>
                     </legend>
 
                     <div>
@@ -40,9 +40,9 @@
 
             {% if form.collections.field.choices %}
             <div class="search-filters__accordion-section">
-                <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collections" class="search-filters__accordion-section-link">View collection filters</a></h5> -->
+                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collections" class="search-filters__accordion-section-link">View collection filters</a></h4> -->
                 <fieldset>
-                    <legend><h5 class="search-filters__accordion-section-heading">Collections</h5></legend>
+                    <legend><h4 class="search-filters__accordion-section-heading">Collections</h4></legend>
                 <div>
                     {{ form.collections.errors }}
                     {{ form.collections }}
@@ -57,8 +57,8 @@
             {% if form.topics.field.choices %}
             <div class="search-filters__accordion-section">
                 <fieldset>
-                    <legend><h5 class="search-filters__accordion-section-heading">Topics</h5></legend>
-                <!-- <h5 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topics" class="search-filters__accordion-section-link">View topic filters</a></h5> -->
+                    <legend><h4 class="search-filters__accordion-section-heading">Topics</h4></legend>
+                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topics" class="search-filters__accordion-section-link">View topic filters</a></h4> -->
                 <div>
                     {{ form.topics.errors }}
                     {{ form.topics }}
@@ -71,7 +71,7 @@
             {% if form.levels.field.choices %}
             <div class="search-filters__accordion-section">
                 <fieldset>
-                    <legend><h5 class="search-filters__accordion-section-heading">Catalogue level</h5></legend>
+                    <legend><h4 class="search-filters__accordion-section-heading">Catalogue level</h4></legend>
 
                     {{ form.levels.errors }}
                     {{ form.levels }}
@@ -84,7 +84,7 @@
             {% if form.closure_statuses.field.choices %}
                 <div class="search-filters__accordion-section">
                     <fieldset>
-                        <legend><h5 class="search-filters__accordion-section-heading">Closure status</h5></legend>
+                        <legend><h4 class="search-filters__accordion-section-heading">Closure status</h4></legend>
 
                         <div>
                             {{ form.closure_statuses.errors }}
@@ -98,7 +98,7 @@
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
-                        <h5 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h5></legend></fieldset>
+                        <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4></legend></fieldset>
                     <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
 
                     <div class="search-filters__opening-date-section">
@@ -118,7 +118,7 @@
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
-                        <h5 class="search-filters__accordion-section-heading">Held by</h5>
+                        <h4 class="search-filters__accordion-section-heading">Held by</h4>
                     </legend>
                     <div>
                         {{ form.catalogue_sources.errors }}

@@ -3,9 +3,9 @@
 <div class="search-sort-view">
     <form action='' method="GET" class="search-sort-view__form" data-id="sort-form" id="catalogue-sort-form">
         {% prepare_form_for_partial_render form 'sort_by' %}
-        <h3 class="search-sort-view__heading">
+        <h2 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
-        </h3>
+        </h2>
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
@@ -15,7 +15,7 @@
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
 
-    <h3 class="search-sort-view__heading"><span class="sr-only">Display as:</span></h3>
+    <h2 class="search-sort-view__heading"><span class="sr-only">Display as:</span></h2>
     <ul class="search-sort-view__list">
 
         <li class="search-sort-view__list-item">
