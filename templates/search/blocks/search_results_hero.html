@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 <div class="search-results-hero">
-    <h1 class="search-results-hero__heading">Search results</h1>
+    <h1 class="search-results-hero__heading">{{type}} search results</h1>
     <form action='' method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
         {% prepare_form_for_partial_render form 'q' %}
         {{ form.q.errors }}
@@ -13,7 +13,6 @@
         {% endfor %}
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
-    <h2 class="sr-only">[TODO Search Type e.g. Catalogue Results]</h2>
 
     {% with request.resolver_match.url_name as url_name  %}
         <nav class="search-results-hero__nav" aria-label="Search result types">
@@ -22,21 +21,21 @@
                     {% if url_name == 'search-featured' %}
                         <span {% aria-current="true" class="search-results-hero__nav-link">Featured results</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}">Featured results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Featured results</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-catalogue' %}
                         <span {% aria-current="true" class="search-results-hero__nav-link">Catalogue results</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}">Catalogue results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Catalogue results</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-website' %}
                         <span {% aria-current="true" class="search-results-hero__nav-link">Website results</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}">Website results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Website results</a>
                     {% endif %}
                 </li>
             </ul>

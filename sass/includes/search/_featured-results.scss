@@ -1,0 +1,66 @@
+.featured-results {
+
+    &__heading {
+        font-family: $font__supria-sans;
+        font-size: 1.5rem;
+    }
+
+    &__record-creator {
+        padding: 1rem;
+        background-color: $color__grey_1;
+
+        @media only screen and (min-width: $screen__sm) {
+            display: flex;
+
+            &-description {
+                margin-left: 2rem;
+                margin-right: auto;
+            }
+        }
+
+
+        &-heading {
+            font-family: $font__supria-sans;
+            font-size: 1.7rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            &--smaller {
+                @extend .featured-results__record-creator-heading;
+                font-size: 1.3rem;
+            }
+        }
+
+        &-paragraph {
+            margin-bottom: 0.5rem;
+        }
+    }
+
+    &__sidebar {
+        &-heading {
+            font-family: $font__supria-sans;
+            font-size: 1.5rem;
+        }
+
+        &-card {
+
+            &-list {
+                padding-left: 0;
+
+                &-item {
+                    list-style: none;
+                }
+            }
+
+            &-link {
+                display: inline-block;
+            }
+
+            &-image {
+                &-fallback {
+                    max-width: 100%;
+                }
+            }
+
+        }
+    }
+}
