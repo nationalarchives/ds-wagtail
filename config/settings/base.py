@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "etna.images",
     "etna.insights",
     "etna.media",
+    "etna.navigation",
     "etna.paragraphs",
     "etna.quotes",
     "etna.records",
