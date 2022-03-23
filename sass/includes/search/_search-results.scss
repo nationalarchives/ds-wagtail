@@ -45,6 +45,14 @@
                 list-style: none;
                 padding-left: 0;
                 padding-right: 0;
+
+                &-link {
+                    color: $color__blue_4;
+
+                    &:visited {
+                        color: $color__blue_4;
+                    }
+                }
             }
         }
     }
