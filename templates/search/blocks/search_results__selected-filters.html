@@ -14,7 +14,7 @@
 
     {% if selected_filters %}
         <li class="search-results__selected-filters-item-remove-all">
-            <a href="?q={{ form.cleaned_data.q }}&group={{ form.cleaned_data.group }}" class="search-results__selected-filters-item-remove-all-link">Remove all filters</a>
+            <a href="?q={{ form.cleaned_data.q|default:'' }}&group={{ form.cleaned_data.group|default:'group:tna' }}" class="search-results__selected-filters-item-remove-all-link">Remove all filters</a>
         </li>
     {% endif %}
 </ul>
