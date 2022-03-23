@@ -11,28 +11,22 @@
           alt="The National Archives logo"
       /></a>
     </div>
-    {% comment %} TODO make attributes update based on current page {% endcomment %}
-    <nav class="header__nav" aria-label="Site menu">
-      <ul class="header__nav-list">
-        <li class="header__nav-list-item">
-          <a class="header__nav-list-item-link" href="/explore">Explore</a>
-        </li>
-        <li class="header__nav-list-item">
-          <a class="header__nav-list-item-link" href="#">What's on</a>
-        </li>
-        <li class="header__nav-list-item">
-          <a class="header__nav-list-item-link" href="#">Visit</a>
-        </li>
-        <li class="header__nav-list-item">
-          <a class="header__nav-list-item-link" href="#">Learn</a>
-        </li>
-        <li class="header__nav-list-item">
-  
-          <a class="header__nav-list-item-link header__nav-list-item-link-search" href="/search/catalogue" 
-          {% comment %} If it is a search page, set aria-current=true. If it isn't a search page, add the data-id so that global search loads. {% endcomment %}
-          {% if not explore %} aria-current="true" {% else %} data-id='search-nav-link' {% endif %} >
-              <span class="sr-only">Search</span></a>
-        </li>
-      </ul>
-    </nav>
-  </header>  
+
+    {% if settings.core.SiteSettings.main_menu_items %}
+      <nav class="header__nav" aria-label="Site menu">
+        <ul class="header__nav-list">
+          {% for item in settings.core.SiteSettings.main_menu_items %}
+            <li class="header__nav-list-item">
+              {% if item.handle == 'search' %}
+                <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>
+                  <span class="sr-only">{{ item.label }}</span>
+                </a>
+              {% else %}
+                <a class="header__nav-list-item-link" href="{{ item.url }}"{% if item.is_active %} aria-current="true"{% endif %}>{{ item.label }}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+  </header>
