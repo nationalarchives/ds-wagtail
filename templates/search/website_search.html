@@ -6,60 +6,21 @@
 
 {% block content %}
     <form method="get" data-id="search-form">
-        {% include './blocks/search_results_hero.html' %}
+        {% with type="Website" %}
+            {% include './blocks/search_results_hero.html' %}
+        {% endwith %}
 
         {{ form.non_field_errors }}
 
-        {% comment %}copied from search_buckets but modified with website-related buckets{% endcomment %}
-        <nav class="search-buckets" aria-label="Result categories">
-            <ul class="search-buckets__list" data-id="search-buckets-list">
+        {% include './blocks/website_search_buckets.html' %}
 
-                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'researchGuide' as research_guide_bucket_count %}
-                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:researchGuide" class="search-buckets__link" aria-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
-                        Research Guides ({{ research_guide_bucket_count|intcomma }})
-                    </a>
-                </li>
-
-                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'insight' as research_guide_bucket_count %}
-                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:insight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
-                        Insights ({{ research_guide_bucket_count|intcomma }})
-                    </a>
-                </li>
-
-                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'blog' as blog_bucket_count %}
-                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:blog" class="search-buckets__link" aria-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
-                        Blog posts ({{ blog_bucket_count|intcomma }})
-                    </a>
-                </li>
-
-                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'audio' as audio_bucket_count %}
-                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:audio" class="search-buckets__link" aria-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
-                        Audio ({{ audio_bucket_count|intcomma }})
-                    </a>
-                </li>
-
-                <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response 'video' as video_bucket_count %}
-                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:video" class="search-buckets__link" aria-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
-                        Video ({{ video_bucket_count|intcomma }})
-                    </a>
-                </li>
-            </ul>
-        </nav>
-        {% comment %}end copied from search_buckets{% endcomment %}
-
-        {% comment %} TODO make this text an editable field {% endcomment %}
-        <p class="search-results__explainer--desktop">This page displays search results for records that are held at The National Archives, Kew.</p>
-        <p class="search-results__explainer--mobile">Results for records held at The National Archives, Kew.</p>
+        <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
+        <p class="search-results__explainer--mobile">Results from our website.</p>
         {% include './blocks/search_sort_and_view_options.html' %}
 
         <div class="catalogue-search-grid" data-id="catalogue-search-grid">
             <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                {% include './blocks/search_filters.html' %}                    
+                {% include './blocks/search_filters.html' %}
             </div>
             <div class="catalogue-search-grid__results">
                 {% if page.paginator.count %}
