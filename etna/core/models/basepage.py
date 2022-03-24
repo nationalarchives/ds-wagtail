@@ -20,7 +20,6 @@ GTM_CONTENT_GROUPS = {
     "home": "Homepage",
     "insights": "Insights",
     "collections": "Explorer",
-    "records": "TNA catalogue",
 }
 
 
