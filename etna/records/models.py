@@ -74,10 +74,7 @@ class Record(DataLayerMixin, APIModel):
         Overrides DataLayerMixin.get_gtm_content_group() to
         return content group otherwise the name of the class.
         """
-        if (
-            self.catalogue_source == "CAT"
-            and self.repo_summary_title == "The National Archives"
-        ):
+        if self.catalogue_source == "CAT":
             return "Catalogue: The National Archives"
         elif self.catalogue_source == "ARCHON":
             return "Catalogue: Archive Details"
