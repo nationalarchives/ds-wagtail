@@ -20,11 +20,7 @@ class RecordChooser(AdminChooser):
 
         # If value isn't a Record instance, it's an iaid that can be directly
         # output in the form field.
-        return {
-            "value": value,
-            "title": "",
-            "edit_item_url": "",
-        }
+        return super().get_value_data(value)
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
