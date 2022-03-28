@@ -5,19 +5,19 @@
 
 {% block content %}
 
-    {%  with type='Featured'%}
+    {%  with type='All'%}
         {% include './blocks/search_results_hero.html' %}
     {% endwith  %}
     <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
     <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
     <div class="featured-search__results">
-        {% with heading='Records from The National Archives' %}
+        {% with heading='Records from The National Archives' group="group:tna" %}
             {% include './blocks/featured-search__results-block.html'%}
         {% endwith %}
-        {% with heading='Records from other UK archives' %}
+        {% with heading='Records from other UK archives' group="group:nonTna" %}
             {% include './blocks/featured-search__results-block.html'%}
         {% endwith %}
-        {% with heading='Record creators' %}
+        {% with heading='Record creators' group="group:creator" %}
         {% include './blocks/featured-search__record-creator.html'%}
     {% endwith %}
     </div>
@@ -25,17 +25,17 @@
         <div class="featured-search__interpretive-results-section">
             <h2 class="featured-search__heading">Research guides</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="#" class="featured-search__results-link">See all relevant research guides (8)</a>
+            <a href="/search/website?group=group:researchGuide&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant research guides (8)</a>
         </div>
         <div class="featured-search__interpretive-results-section">
             <h2 class="featured-search__heading">Stories from the collection</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="#" class="featured-search__results-link">See all relevant stories from the collection (8)</a>
+            <a href="/search/website?group=group:insight&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant stories from the collection (8)</a>
         </div>
         <div class="featured-search__interpretive-results-section">
             <h2 class="featured-search__heading">Blogs</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="#" class="featured-search__results-link">See all relevant blog posts (8)</a>
+            <a href="/search/website?group=group:blog&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant blog posts (8)</a>
         </div>
     </div>
 

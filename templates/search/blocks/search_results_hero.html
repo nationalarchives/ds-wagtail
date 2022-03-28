@@ -19,9 +19,9 @@
             <ul class="search-results-hero__nav-list">
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-featured' %}
-                        <span {% aria-current="true" class="search-results-hero__nav-link">Featured results</span>
+                        <span {% aria-current="true" class="search-results-hero__nav-link">All results</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Featured results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">All results</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
