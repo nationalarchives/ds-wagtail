@@ -321,37 +321,6 @@ class ClientSearchTest(SimpleTestCase):
             "https://kong.test/data/search?filter=filter+keyword",
         )
 
-    @responses.activate
-    def test_with_buckets(self):
-        self.client.search(buckets=["bucket-one", "bucket-two", "bucket-three"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?buckets=bucket-one%2C+bucket-two%2C+bucket-three",
-        )
-
-    @responses.activate
-    def test_with_topics(self):
-        self.client.search(topics=["topic-one", "topic-two", "topic-three"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?topics=topic-one%2C+topic-two%2C+topic-three",
-        )
-
-    @responses.activate
-    def test_with_references(self):
-        self.client.search(
-            references=["reference-one", "reference-two", "reference-three"]
-        )
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?references=reference-one%2C+reference-two%2C+reference-three",
-        )
 
     @responses.activate
     def test_with_offset(self):

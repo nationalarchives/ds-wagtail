@@ -168,9 +168,6 @@ class KongClient:
         aggregations: Optional[list[Aggregation]] = None,
         filter_aggregations: Optional[list[str]] = None,
         filter_keyword: Optional[str] = None,
-        buckets: Optional[list[str]] = None,
-        topics: Optional[list[str]] = None,
-        references: Optional[list[str]] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> dict:
@@ -202,12 +199,6 @@ class KongClient:
             filter results set by aggregation
         filter_keyword:
             filter results by keyword
-        buckets:
-            Restrict results to given bucket(s)
-        topics:
-            Restrict results to given topic(s)
-        references:
-            Restrict results to given reference(s)
         offset:
             Offset for results. Mapped to 'from' before making request
         size:
@@ -223,9 +214,6 @@ class KongClient:
             "aggregations": format_list_param(aggregations),
             "filterAggregations": format_list_param(filter_aggregations),
             "filter": filter_keyword,
-            "buckets": format_list_param(buckets),
-            "topics": format_list_param(topics),
-            "references": format_list_param(references),
             "from": offset,
             "size": size,
         }
