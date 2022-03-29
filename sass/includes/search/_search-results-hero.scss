@@ -93,6 +93,10 @@
             border-top: .3rem solid $color__grey-4;
             background-color: #ffffff85;
 
+            @media only screen and (max-width: 34rem) {
+                min-height: 100px;
+            }
+
             @media only screen and (max-width: 24rem) {
                 padding-left: 0.5rem;
                 padding-right: 0.5rem;
