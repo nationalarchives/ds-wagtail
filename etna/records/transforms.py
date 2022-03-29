@@ -1,4 +1,4 @@
-from ..ciim.utils import find, find_all, format_description_markup, pluck
+from ..ciim.utils import find, find_all, format_description_markup, pluck, format_links
 
 
 def transform_record_result(result):
@@ -142,6 +142,17 @@ def transform_record_result(result):
         data["template_summary_title"] = template.get("details", {}).get(
             "summaryTitle", ""
         )
+
+        if related_materials := template.get("details", {}).get("relatedMaterials", ""):
+            data["related_materials"] = []
+            for related_material in related_materials:
+                description = related_material.get("description", "")
+                links = format_links(related_material.get("links", ""))
+                data["related_materials"].append(
+                    {"description": description, "links": links}
+                )
+
+    data["data_source"] = source["@admin"]["source"]
 
     return data
 

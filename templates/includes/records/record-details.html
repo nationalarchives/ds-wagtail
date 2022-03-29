@@ -21,6 +21,20 @@
                     <td>{{ page.origination_date }}</td>
                 </tr>
             {% endif %}
+            {% if page.related_materials %}
+                <tr>
+                    <th scope="row">{{ 'related_materials'|as_label }}</th>
+                    <td>{% for related_material in page.related_materials %} 
+                            {% if related_material.description %}
+                                <p>{{related_material.description}}
+                                    {% for link in related_material.links %}
+                                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}">{{ link.text }}</a>
+                                    {% endfor %}
+                                </p>
+                            {% endif %}
+                        {% endfor %}</td>
+                </tr>
+            {% endif %}
             {% if page.held_by %}
                 <tr>
                     <th scope="row">{{ 'held_by'|as_label }}</th>

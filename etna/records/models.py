@@ -51,8 +51,8 @@ class Record(DataLayerMixin, APIModel):
     level: str = ""
     template_reference_number: str = ""
     template_summary_title: str = ""
-    hierarchy_level3_reference_number: str = ""
-    hierarchy_level3_summary_title: str = ""
+    data_source: str = ""
+    related_materials: dict = field(default_factory=dict)
 
     _debug_kong_result: dict = field(default_factory=dict)
 

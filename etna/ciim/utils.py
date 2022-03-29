@@ -182,3 +182,15 @@ def convert_sort_key_to_index(sort):
 
     # Ensure index is always > -1 to prevent invalid offsets being sent to Kong
     return max(index, 0)
+
+
+def format_links(links_list):
+    """
+    Extracts iaid and text from list of links ['<a href="C5789">DEFE 31</a>']
+    and returns as list of dict [{"iaid":"C5789", "text":"DEFE 31"},]
+    """
+    formatted_links = []
+    for link in links_list:
+        document = pq(link)
+        formatted_links.append({"iaid": document.attr("href"), "text": document.text()})
+    return formatted_links
