@@ -8,7 +8,7 @@ from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 # Aggregations and their headings, passed /searchAll to fetch
 # counts and output along with grouped results.
-FEATURED_BUCKETS = [
+FEATURED_BUCKETS_RECORDS = [
     {
         "aggregation": "group:tna",
         "heading": "Records from The National Archives",
@@ -16,7 +16,17 @@ FEATURED_BUCKETS = [
     {
         "aggregation": "group:nonTna",
         "heading": "Records from other UK archives",
-    },
+    }
+]
+
+FEATURED_BUCKETS_CREATOR = [
+    {
+        "aggregation": "group:creator",
+        "heading": "Record creators"
+    }
+]
+
+FEATURED_BUCKETS_INTERPRETIVE = [
     {
         "aggregation": "group:blog",
         "heading": "Blog",
@@ -41,22 +51,43 @@ def featured_search(request):
     if form.is_valid():
         q = form.cleaned_data.get("q")
 
-        response = Record.api.client.search_all(
+        record_response = Record.api.client.search_all(
             q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS],
+            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_RECORDS],
             size=3,
         )
-        responses = response.get("responses", [])
+        record_responses = record_response.get("responses", [])
+
+        record_creator_response = Record.api.client.search_all(
+            q=q,
+            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_CREATOR],
+            size=1,
+        )
+        record_creator_responses = record_creator_response.get("responses", [])
+
+        interpretive_response = record_response = Record.api.client.search_all(
+            q=q,
+            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_INTERPRETIVE],
+            size=1,
+        )
+        interpretive_responses = interpretive_response.get("responses", [])
+
 
     # Combine bucket and responses to output headings and results together
-    responses = zip(responses, FEATURED_BUCKETS)
+    record_responses = zip(record_responses, FEATURED_BUCKETS_RECORDS)
+    record_creator_responses = zip(record_creator_responses, FEATURED_BUCKETS_CREATOR)
+    interpretive_responses = zip(interpretive_responses, FEATURED_BUCKETS_INTERPRETIVE)
+
+
 
     return render(
         request,
         "search/featured_search.html",
         {
             "form": form,
-            "responses": responses,
+            "record_responses": record_responses,
+            "record_creator_responses": record_creator_responses,
+            "interpretive_responses": interpretive_responses,
         },
     )
 

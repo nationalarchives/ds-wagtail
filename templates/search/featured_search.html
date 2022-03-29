@@ -11,15 +11,15 @@
     <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
     <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
     <div class="featured-search__results">
-        {% with heading='Records from The National Archives' group="group:tna" %}
-            {% include './blocks/featured-search__results-block.html'%}
-        {% endwith %}
-        {% with heading='Records from other UK archives' group="group:nonTna" %}
-            {% include './blocks/featured-search__results-block.html'%}
-        {% endwith %}
-        {% with heading='Record creators' group="group:creator" %}
-        {% include './blocks/featured-search__record-creator.html'%}
-    {% endwith %}
+
+        {% for response, bucket in record_responses %}
+                {% include './blocks/featured-search__results-block.html'%}
+        {% endfor %}
+
+        {% for response, bucket in record_creator_responses %}
+            {% include './blocks/featured-search__record-creator.html'%}
+        {% endfor %}
+
     </div>
     <div class="featured-search__interpretive-results">
         <div class="featured-search__interpretive-results-section">
@@ -42,13 +42,8 @@
   
         <p>The loop for results will need to be separated from the loop for interpretive results.</p>
         <div>
-            {% for response, bucket in responses %}
-            <h5>{{ bucket.heading }}</h5>
-            <ul>
-                {% for record in response.hits.hits %}
-                <li>{{record|record_detail:"summaryTitle"|striptags }}</li>
-            {% endfor %}
-            </ul>
+            {% for response, bucket in record_responses %}
+            {{ bucket.heading }}
             <a href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
                 See all {{ bucket.heading }} ({{ response.hits.total.value|intcomma }})
             </a>

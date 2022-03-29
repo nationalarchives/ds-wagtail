@@ -34,11 +34,6 @@
             list-style: none;
             padding-left: 0.5rem;
 
-            &-item {
-                &:last-of-type {
-                    border-bottom: 4px dotted $color__grey-1;
-                }
-            }
         }
 
         &-heading {
@@ -52,8 +47,14 @@
             &:visited {
                 color: $color__blue-4;
             }
-
         }
+    }
+
+    &__see-all-link {
+
+        border-top: 4px dotted $color__grey-1;
+        margin-top: 2rem;
+        padding-top: 1rem;
     }
 
     &__heading {
@@ -62,6 +63,7 @@
     }
 
     &__record-creator {
+
         &-link {
             margin-top: 2rem;
         }

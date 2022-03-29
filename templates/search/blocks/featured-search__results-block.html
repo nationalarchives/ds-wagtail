@@ -1,22 +1,22 @@
+{% load search_tags %}
+{% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{heading}}</h2>
+    <h2 class="featured-search__heading">{{ bucket.heading }}</h2>
     <ul class="featured-search__results-list">
-        <li class="featured-search__results-list-item">
-            <a href="#" class="featured-search__results-link"><h3 class="featured-search__results-heading">Record title</h3></a>
-            <p>Catalogue reference: ABC123</p>
-        </li>
-        <li class="featured-search__results-list-item">
-            <a href="#" class="featured-search__results-link"><h3 class="featured-search__results-heading">Record title</h3></a>
-            <p>Catalogue reference: ABC123</p>
-        </li>
-        <li class="featured-search__results-list-item">
-            <a href="#" class="featured-search__results-link"><h3 class="featured-search__results-heading">Record title</h3></a>
-            <p>Catalogue reference: ABC123</p>
-        </li>
-        <li class="featured-search__results-list-item">
-            <a href="#" class="featured-search__results-link"><h3 class="featured-search__results-heading">Record title</h3></a>
-            <p>Catalogue reference: ABC123</p>
-        </li>
+        {% for record in response.hits.hits %}
+                <li class="featured-search__results-list-item">
+                    <a href="/details/" class="featured-search__results-link">
+                        <h3 class="featured-search__results-heading">
+                            {{record|record_detail:"summaryTitle"|striptags }}
+                        </h3>
+                    </a>
+                    <p>Catalogue reference: {{ record|record_detail:"referenceNumber"}}</p>
+                </li>
+        {% endfor %}
     </ul>
-    <a href="/search/catalogue?q={{form.q.value|default:''}}&group={{group}}" class="featured-search__results-link">See all {{heading}} (10,000)</a>
+    <div class="featured-search__see-all-link">
+        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
+            See all {{ bucket.heading }} ({{ response.hits.total.value|intcomma }})
+        </a>
+    </div>
 </div>
