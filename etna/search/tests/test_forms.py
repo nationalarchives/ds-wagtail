@@ -8,8 +8,8 @@ class CatalogueSearchFormTest(SimpleTestCase):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
-                "start_date": "2000-01-01",
-                "end_date": "1900-01-01",
+                "opening_start_date": "2000-01-01",
+                "opening_end_date": "1900-01-01",
             }
         )
 
@@ -17,15 +17,15 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["start_date"], ["Start date cannot be after end date"]
+            form.errors["opening_start_date"], ["Start date cannot be after end date"]
         )
 
-    def test_start_date_before_end_date_is_valid(self):
+    def test_opening_start_date_before_opening_end_date_is_valid(self):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
-                "start_date": "1900-01-01",
-                "end_date": "2000-01-01",
+                "opening_start_date": "1900-01-01",
+                "opening_end_date": "2000-01-01",
             }
         )
 

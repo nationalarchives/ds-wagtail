@@ -37,8 +37,7 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/search"
-                "?dateField=dateOpening"
-                "&stream=evidential"
+                "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
@@ -80,8 +79,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(WagtailTestUtils, TestC
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/search"
-                "?dateField=dateOpening"
-                "&stream=evidential"
+                "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
@@ -172,8 +170,7 @@ class WebsiteSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/search"
-                "?dateField=dateOpening"
-                "&stream=interpretive"
+                "?stream=interpretive"
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
