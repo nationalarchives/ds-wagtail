@@ -1,22 +1,29 @@
-<div>
-    <a href="#" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
-        <div>
-            <picture class="featured-search__interpretive-card-image">
-                <source media="(max-width: 768px)" srcset="https://via.placeholder.com/508x304">
-                <source media="(max-width: 991px)" srcset="https://via.placeholder.com/268x160">
-                <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/348x208">
-                <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x208">
-                <img src="https://via.placeholder.com/348x208" alt="" class="featured-search__interpretive-card-image-fallback"> 
-            </picture>
-        </div>
-    </a>
-        <div>
-            <a href="#" class="featured-search__results-link">
-                <h3 class="featured-search__heading">
-                    Card title
-                </h3>
-            </a>
-            <p class="featured-search__interpretive-card-description">Card description</p>
-        </div>
+{% load search_tags %}
+{% load humanize %}
 
-</div>
+{% if result.hits.hits %}
+    {% with record=result.hits.hits.0 %}
+        <div>
+            <a href="{{ record|interpretive_url }}" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
+                <div>
+                    <picture class="featured-search__interpretive-card-image">
+                        <source media="(max-width: 768px)" srcset="https://via.placeholder.com/508x304">
+                        <source media="(max-width: 991px)" srcset="https://via.placeholder.com/268x160">
+                        <source media="(max-width: 1199px)" srcset="https://via.placeholder.com/348x208">
+                        <source media="(min-width: 1200px)" srcset="https://via.placeholder.com/348x208">
+                        <img src="https://via.placeholder.com/348x208" alt="" class="featured-search__interpretive-card-image-fallback"> 
+                    </picture>
+                </div>
+            </a>
+                <div>
+                    <a href="{{ record|interpretive_url }}" class="featured-search__results-link">
+                        <h3 class="featured-search__heading">
+                            {{record|record_detail:"summaryTitle"|striptags }}
+                        </h3>
+                    </a>
+                    <p class="featured-search__interpretive-card-description">{{ record|interpretive_detail:"content"|striptags|truncatewords:40 }}</p>
+                </div>
+
+        </div>
+    {% endwith %}
+{% endif %}

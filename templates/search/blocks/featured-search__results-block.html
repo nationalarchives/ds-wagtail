@@ -1,9 +1,9 @@
 {% load search_tags %}
 {% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ bucket.heading }}</h2>
+    <h2 class="featured-search__heading">{{results.heading}}</h2>
     <ul class="featured-search__results-list">
-        {% for record in response.hits.hits %}
+        {% for record in results.hits.hits %}
                 <li class="featured-search__results-list-item">
                     <a href="/details/" class="featured-search__results-link">
                         <h3 class="featured-search__results-heading">
@@ -15,8 +15,8 @@
         {% endfor %}
     </ul>
     <div class="featured-search__see-all-link">
-        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
-            See all {{ bucket.heading }} ({{ response.hits.total.value|intcomma }})
+        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
+            See all {{ results.heading }} ({{ results.hits.total.value|intcomma }})
         </a>
     </div>
 </div>

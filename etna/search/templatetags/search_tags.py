@@ -36,6 +36,36 @@ def record_detail(record: dict, key: str) -> str:
 
 
 @register.filter
+def interpretive_detail(record: dict, key: str) -> str:
+    """Fetch an item from a record's details template.
+
+    Django templates don't allow access to keys or attributes prefixed with _
+
+    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
+    """
+    print(record["_source"])
+    try:
+        return record["_source"]["source"][key]
+    except KeyError:
+        return ""
+
+
+@register.filter
+def interpretive_url(record: dict) -> str:
+    """Fetch an item from a record's details template.
+
+    Django templates don't allow access to keys or attributes prefixed with _
+
+    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
+    """
+
+    try:
+        return record["_source"]["@template"]["details"]["sourceUrl"]
+    except KeyError:
+        return ""
+
+
+@register.filter
 def record_score(record) -> str:
     """Output a record's score.
 

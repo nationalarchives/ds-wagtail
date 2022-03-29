@@ -8,36 +8,28 @@ from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 # Aggregations and their headings, passed /searchAll to fetch
 # counts and output along with grouped results.
-FEATURED_BUCKETS_RECORDS = [
+FEATURED_BUCKETS = [
     {
         "aggregation": "group:tna",
         "heading": "Records from The National Archives",
+        "group": "tna",
     },
     {
         "aggregation": "group:nonTna",
         "heading": "Records from other UK archives",
-    }
-]
-
-FEATURED_BUCKETS_CREATOR = [
-    {
-        "aggregation": "group:creator",
-        "heading": "Record creators"
-    }
-]
-
-FEATURED_BUCKETS_INTERPRETIVE = [
-    {
-        "aggregation": "group:blog",
-        "heading": "Blog",
+        "group": "nonTna",
     },
+    {"aggregation": "group:creator", "heading": "Record creators", "group": "creator"},
+    {"aggregation": "group:blog", "heading": "Blog", "group": "blog"},
     {
         "aggregation": "group:researchGuide",
         "heading": "Research Guides",
+        "group": "researchGuide",
     },
     {
         "aggregation": "group:insight",
-        "heading": "insights",
+        "heading": "Stories from the collection",
+        "group": "insight",
     },
 ]
 
@@ -51,43 +43,26 @@ def featured_search(request):
     if form.is_valid():
         q = form.cleaned_data.get("q")
 
-        record_response = Record.api.client.search_all(
+        response = Record.api.client.search_all(
             q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_RECORDS],
+            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS],
             size=3,
         )
-        record_responses = record_response.get("responses", [])
+        responses = response.get("responses", [])
 
-        record_creator_response = Record.api.client.search_all(
-            q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_CREATOR],
-            size=1,
-        )
-        record_creator_responses = record_creator_response.get("responses", [])
-
-        interpretive_response = record_response = Record.api.client.search_all(
-            q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS_INTERPRETIVE],
-            size=1,
-        )
-        interpretive_responses = interpretive_response.get("responses", [])
-
-
-    # Combine bucket and responses to output headings and results together
-    record_responses = zip(record_responses, FEATURED_BUCKETS_RECORDS)
-    record_creator_responses = zip(record_creator_responses, FEATURED_BUCKETS_CREATOR)
-    interpretive_responses = zip(interpretive_responses, FEATURED_BUCKETS_INTERPRETIVE)
-
-
+    result_groups = {}
+    for i, response in enumerate(responses):
+        bucket = FEATURED_BUCKETS[i]
+        result_groups[bucket["group"]] = response
+        result_groups[bucket["group"]]["aggregation"] = bucket["aggregation"]
+        result_groups[bucket["group"]]["heading"] = bucket["heading"]
 
     return render(
         request,
         "search/featured_search.html",
         {
             "form": form,
-            "record_responses": record_responses,
-            "record_creator_responses": record_creator_responses,
-            "interpretive_responses": interpretive_responses,
+            "result_groups": result_groups,
         },
     )
 

@@ -1,23 +1,27 @@
 {% load search_tags %}
 {% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ bucket.heading }}</h2>
+    <h2 class="featured-search__heading">{{ results.heading }}</h2>
     
-    {% for record in response.hits.hits %}
-    <div class="featured-search__record-creator">
-        <div>
-            <a href="#" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
-                <div>
-                    <img src="https://via.placeholder.com/565x400" alt="" class="featured-search__record-creator-image"> 
-                </div>
-            </a>
+    {% if results.hits.hits %}
+
+        {% with record=results.hits.hits.0 %}
+        <div class="featured-search__record-creator">
+            <div>
+                <a href="#" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
+                    <div>
+                        <img src="https://via.placeholder.com/565x400" alt="" class="featured-search__record-creator-image"> 
+                    </div>
+                </a>
+            </div>
+            <h3 class="featured-search__results-heading"><a href="#" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
         </div>
-        <h3 class="featured-search__results-heading"><a href="#" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
-    </div>
-    {% endfor %}
+        {% endwith %}
+    {% endif %}
+
     <div class="featured-search__see-all-link">
-        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ bucket.aggregation }}">
-            See all {{ bucket.heading }} ({{ response.hits.total.value|intcomma }})
+        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
+            See all {{ results.heading }} ({{ results.hits.total.value|intcomma }})
         </a>
     </div>
 
