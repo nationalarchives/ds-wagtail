@@ -37,7 +37,7 @@ def record_detail(record: dict, key: str) -> str:
 
 @register.filter
 def interpretive_detail(record: dict, key: str) -> str:
-    """Fetch an item from a record's details template.
+    """Fetch an item from a an interpretive records source object.
 
     Django templates don't allow access to keys or attributes prefixed with _
 
@@ -52,9 +52,9 @@ def interpretive_detail(record: dict, key: str) -> str:
 
 @register.filter
 def interpretive_url(record: dict) -> str:
-    """Fetch an item from a record's details template.
+    """Fetch a source Url from an interpretive record template.
 
-    Django templates don't allow access to keys or attributes prefixed with _
+    Django templates don't allow access to keys or attributes prefixed with @
 
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
