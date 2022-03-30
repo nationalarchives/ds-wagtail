@@ -1,4 +1,4 @@
-from typing import Any, Optional, Sequence, Union
+from typing import Any, Optional, Sequence
 
 from django.utils.functional import cached_property
 
@@ -91,6 +91,11 @@ class PageListBlock(blocks.ListBlock):
         path, args, kwargs = super().deconstruct()
         # The following options are 'rendering preferences' and should be
         # updatable without requiring a migration
-        for key in ("exclude_drafts", "exclude_private", "select_related", "prefetch_related"):
+        for key in (
+            "exclude_drafts",
+            "exclude_private",
+            "select_related",
+            "prefetch_related",
+        ):
             kwargs.pop(key, None)
         return path, args, kwargs
