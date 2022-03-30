@@ -11,28 +11,19 @@
     <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
     <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
     <div class="featured-search__results">
-        {% with results=result_groups.tna %}
-            {% include './blocks/featured-search__results-block.html'%}
-        {% endwith %}
-        {% with results=result_groups.nonTna %}
-            {% include './blocks/featured-search__results-block.html'%}
-        {% endwith %}
-        {% with results=result_groups.creator %}
-            {% include './blocks/featured-search__record-creator.html'%}
-        {% endwith %}
+
+        {% include './blocks/featured-search__results-block.html' with results=result_groups.tna %}
+
+        {% include './blocks/featured-search__results-block.html' with results=result_groups.nonTna %}
+
+        {% include './blocks/featured-search__record-creator.html' with results=result_groups.creator %}
     </div>
     <div class="featured-search__interpretive-results">
 
-        {% with result=result_groups.researchGuide %}
-            {% include './blocks/featured-search__interpretive-card.html' %}
-        {% endwith %}
+        {% include './blocks/featured-search__interpretive-card.html' with result=result_groups.researchGuide %}
 
-        {% with result=result_groups.insight %}
-            {% include './blocks/featured-search__interpretive-card.html' %}
-        {% endwith %}
+        {% include './blocks/featured-search__interpretive-card.html' with result=result_groups.insight %}
 
-        {% with result=result_groups.blog %}
-            {% include './blocks/featured-search__interpretive-card.html' %}
-        {% endwith %}
+        {% include './blocks/featured-search__interpretive-card.html' with result=result_groups.blog %}
     </div>
 {% endblock %}
