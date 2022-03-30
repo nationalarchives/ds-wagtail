@@ -12,22 +12,24 @@ FEATURED_BUCKETS = [
     {
         "aggregation": "group:tna",
         "heading": "Records from The National Archives",
+        "group": "tna",
     },
     {
         "aggregation": "group:nonTna",
         "heading": "Records from other UK archives",
+        "group": "nonTna",
     },
-    {
-        "aggregation": "group:blog",
-        "heading": "Blog",
-    },
+    {"aggregation": "group:creator", "heading": "Record creators", "group": "creator"},
+    {"aggregation": "group:blog", "heading": "Blogs", "group": "blog"},
     {
         "aggregation": "group:researchGuide",
         "heading": "Research Guides",
+        "group": "researchGuide",
     },
     {
         "aggregation": "group:insight",
-        "heading": "insights",
+        "heading": "Stories from the collection",
+        "group": "insight",
     },
 ]
 
@@ -48,15 +50,19 @@ def featured_search(request):
         )
         responses = response.get("responses", [])
 
-    # Combine bucket and responses to output headings and results together
-    responses = zip(responses, FEATURED_BUCKETS)
+    result_groups = {}
+    for i, response in enumerate(responses):
+        bucket = FEATURED_BUCKETS[i]
+        result_groups[bucket["group"]] = response
+        result_groups[bucket["group"]]["aggregation"] = bucket["aggregation"]
+        result_groups[bucket["group"]]["heading"] = bucket["heading"]
 
     return render(
         request,
         "search/featured_search.html",
         {
             "form": form,
-            "responses": responses,
+            "result_groups": result_groups,
         },
     )
 
