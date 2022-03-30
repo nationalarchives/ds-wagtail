@@ -43,11 +43,19 @@ def interpretive_detail(record: dict, key: str) -> str:
 
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
-    print(record["_source"])
+
     try:
-        return record["_source"]["source"][key]
+        detail = record["_source"]["source"][key]
     except KeyError:
         return ""
+
+    if isinstance(detail, (list, tuple)):
+        try:
+            return detail[0]
+        except IndexError:
+            return ""
+    else:
+        return detail
 
 
 @register.filter

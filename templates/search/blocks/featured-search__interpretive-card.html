@@ -1,8 +1,10 @@
 {% load search_tags %}
 {% load humanize %}
 
-{% if result.hits.hits %}
+{% if result.hits.hits.0 %}
     {% with record=result.hits.hits.0 %}
+    <div class="featured-search__interpretive-results-section">
+        <h2 class="featured-search__heading">{{result.heading}}</h2>
         <div>
             <a href="{{ record|interpretive_url }}" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
                 <div>
@@ -21,9 +23,11 @@
                             {{record|record_detail:"summaryTitle"|striptags }}
                         </h3>
                     </a>
-                    <p class="featured-search__interpretive-card-description">{{ record|interpretive_detail:"content"|striptags|truncatewords:40 }}</p>
+                    <p class="featured-search__interpretive-card-description">{{ record|interpretive_detail:"content"|safe|striptags|truncatewords:40 }}</p>
                 </div>
 
         </div>
+        <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant {{result.heading }} ({{ result.hits.total.value|intcomma }})</a>
+    </div>
     {% endwith %}
 {% endif %}

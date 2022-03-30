@@ -24,27 +24,15 @@
     <div class="featured-search__interpretive-results">
 
         {% with result=result_groups.researchGuide %}
-        <div class="featured-search__interpretive-results-section">
-            <h2 class="featured-search__heading">{{result.heading}}</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant research guides ({{ result.hits.total.value|intcomma }})</a>
-        </div>
         {% endwith %}
 
         {% with result=result_groups.insight %}
-        <div class="featured-search__interpretive-results-section">
-            <h2 class="featured-search__heading">{{result.heading}}</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant research guides ({{ result.hits.total.value|intcomma }})</a>
-        </div>
         {% endwith %}
 
         {% with result=result_groups.blog %}
-        <div class="featured-search__interpretive-results-section">
-            <h2 class="featured-search__heading">{{result.heading}}</h2>
             {% include './blocks/featured-search__interpretive-card.html' %}
-            <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant research guides ({{ result.hits.total.value|intcomma }})</a>
-        </div>
         {% endwith %}
     </div>
 {% endblock %}

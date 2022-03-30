@@ -20,7 +20,7 @@ FEATURED_BUCKETS = [
         "group": "nonTna",
     },
     {"aggregation": "group:creator", "heading": "Record creators", "group": "creator"},
-    {"aggregation": "group:blog", "heading": "Blog", "group": "blog"},
+    {"aggregation": "group:blog", "heading": "Blogs", "group": "blog"},
     {
         "aggregation": "group:researchGuide",
         "heading": "Research Guides",
