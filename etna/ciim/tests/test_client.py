@@ -4,15 +4,7 @@ from django.test import SimpleTestCase
 
 import responses
 
-from ..client import (
-    Aggregation,
-    DateField,
-    KongClient,
-    SortBy,
-    SortOrder,
-    Stream,
-    Template,
-)
+from ..client import Aggregation, KongClient, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
     KongBadRequestError,
     KongCommunicationError,
@@ -153,43 +145,43 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_date_field_date_created(self):
-        self.client.search(date_field=DateField.DATE_CREATED)
+    def test_with_opening_start_date(self):
+        self.client.search(opening_start_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?dateField=dateCreated",
+            "https://kong.test/data/search?openingStartDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
-    def test_with_date_field_date_opening(self):
-        self.client.search(date_field=DateField.DATE_OPENING)
+    def test_with_opening_end_date(self):
+        self.client.search(opening_end_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?dateField=dateOpening",
+            "https://kong.test/data/search?openingEndDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
-    def test_with_start_date(self):
-        self.client.search(start_date=datetime(year=1901, month=2, day=3))
+    def test_with_closing_start_date(self):
+        self.client.search(closing_start_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?startDate=1901-02-03T00%3A00%3A00",
+            "https://kong.test/data/search?closingStartDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
-    def test_with_end_date(self):
-        self.client.search(end_date=datetime(year=1901, month=2, day=3))
+    def test_with_closing_end_date(self):
+        self.client.search(closing_end_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?endDate=1901-02-03T00%3A00%3A00",
+            "https://kong.test/data/search?closingEndDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
@@ -320,38 +312,6 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/search?filter=filter+keyword",
-        )
-
-    @responses.activate
-    def test_with_buckets(self):
-        self.client.search(buckets=["bucket-one", "bucket-two", "bucket-three"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?buckets=bucket-one%2C+bucket-two%2C+bucket-three",
-        )
-
-    @responses.activate
-    def test_with_topics(self):
-        self.client.search(topics=["topic-one", "topic-two", "topic-three"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?topics=topic-one%2C+topic-two%2C+topic-three",
-        )
-
-    @responses.activate
-    def test_with_references(self):
-        self.client.search(
-            references=["reference-one", "reference-two", "reference-three"]
-        )
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?references=reference-one%2C+reference-two%2C+reference-three",
         )
 
     @responses.activate
