@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'start_date' 'end_date' 'catalogue_sources' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'opening_start_date' 'opening_end_date' 'catalogue_sources' %}
 
         {% comment %}
          {% if form.group.value == 'group:tna' %}
@@ -111,14 +111,14 @@
                     <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
 
                     <div class="search-filters__opening-date-section">
-                        {{ form.start_date.errors }}
-                        {{ form.start_date.label_tag }}
-                        {{ form.start_date }}
+                        {{ form.opening_start_date.errors }}
+                        {{ form.opening_start_date.label_tag }}
+                        {{ form.opening_start_date }}
                     </div>
                     <div class="search-filters__opening-date-section">
-                        {{ form.end_date.errors }}
-                        {{ form.end_date.label_tag }}
-                        {{ form.end_date }}
+                        {{ form.opening_end_date.errors }}
+                        {{ form.opening_end_date.label_tag }}
+                        {{ form.opening_end_date }}
                     </div>
 
                     <input type="submit" value="Update" class="search-filters__submit">

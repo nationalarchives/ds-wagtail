@@ -71,13 +71,6 @@ class Aggregation(str, enum.Enum):
     CATALOGUE_SOURCE = "catalogueSource"
 
 
-class DateField(str, enum.Enum):
-    """Field to use for date range searches."""
-
-    DATE_CREATED = "dateCreated"
-    DATE_OPENING = "dateOpening"
-
-
 def format_list_param(items: Optional[list]) -> Optional[str]:
     """Convenience function to transform list to comma-separated string.
 
@@ -164,9 +157,10 @@ class KongClient:
         *,
         q: Optional[str] = None,
         web_reference: Optional[str] = None,
-        start_date: Optional[datetime] = None,
-        end_date: Optional[datetime] = None,
-        date_field: Optional[DateField] = None,
+        opening_start_date: Optional[datetime] = None,
+        opening_end_date: Optional[datetime] = None,
+        closing_start_date: Optional[datetime] = None,
+        closing_end_date: Optional[datetime] = None,
         stream: Optional[Stream] = None,
         sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
@@ -174,9 +168,6 @@ class KongClient:
         aggregations: Optional[list[Aggregation]] = None,
         filter_aggregations: Optional[list[str]] = None,
         filter_keyword: Optional[str] = None,
-        buckets: Optional[list[str]] = None,
-        topics: Optional[list[str]] = None,
-        references: Optional[list[str]] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> dict:
@@ -208,12 +199,6 @@ class KongClient:
             filter results set by aggregation
         filter_keyword:
             filter results by keyword
-        buckets:
-            Restrict results to given bucket(s)
-        topics:
-            Restrict results to given topic(s)
-        references:
-            Restrict results to given reference(s)
         offset:
             Offset for results. Mapped to 'from' before making request
         size:
@@ -222,7 +207,6 @@ class KongClient:
         params = {
             "q": q,
             "webReference": web_reference,
-            "dateField": date_field,
             "stream": stream,
             "sort": sort_by,
             "sortOrder": sort_order,
@@ -230,18 +214,21 @@ class KongClient:
             "aggregations": format_list_param(aggregations),
             "filterAggregations": format_list_param(filter_aggregations),
             "filter": filter_keyword,
-            "buckets": format_list_param(buckets),
-            "topics": format_list_param(topics),
-            "references": format_list_param(references),
             "from": offset,
             "size": size,
         }
 
-        if start_date:
-            params["startDate"] = start_date.isoformat()
+        if opening_start_date:
+            params["openingStartDate"] = opening_start_date.isoformat()
 
-        if end_date:
-            params["endDate"] = end_date.isoformat()
+        if opening_end_date:
+            params["openingEndDate"] = opening_end_date.isoformat()
+
+        if closing_start_date:
+            params["closingStartDate"] = closing_start_date.isoformat()
+
+        if closing_end_date:
+            params["closingEndDate"] = closing_end_date.isoformat()
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
 

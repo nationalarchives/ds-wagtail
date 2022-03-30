@@ -1,7 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import render
 
-from ..ciim.client import Aggregation, DateField, SortOrder, Stream, Template
+from ..ciim.client import Aggregation, SortOrder, Stream, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
@@ -114,8 +114,8 @@ def catalogue_search(request):
         filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
-        start_date = form.cleaned_data.get("start_date")
-        end_date = form.cleaned_data.get("end_date")
+        opening_start_date = form.cleaned_data.get("opening_start_date")
+        opening_end_date = form.cleaned_data.get("opening_end_date")
 
         sort_by = form.cleaned_data.get("sort_by")
 
@@ -135,9 +135,8 @@ def catalogue_search(request):
             ],
             offset=offset,
             size=per_page,
-            start_date=start_date,
-            end_date=end_date,
-            date_field=DateField.DATE_OPENING,
+            opening_start_date=opening_start_date,
+            opening_end_date=opening_end_date,
             sort_by=sort_by,
             sort_order=SortOrder.ASC,
         )
@@ -182,8 +181,8 @@ def catalogue_search_long_filter_chooser(request):
         filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
-        start_date = form.cleaned_data.get("start_date")
-        end_date = form.cleaned_data.get("end_date")
+        opening_start_date = form.cleaned_data.get("opening_start_date")
+        opening_end_date = form.cleaned_data.get("opening_end_date")
 
         sort_by = form.cleaned_data.get("sort_by")
 
@@ -195,9 +194,8 @@ def catalogue_search_long_filter_chooser(request):
             aggregations=[
                 f"{Aggregation.COLLECTION}:{AGGREGATION_SIZE}",
             ],
-            start_date=start_date,
-            end_date=end_date,
-            date_field=DateField.DATE_OPENING,
+            opening_start_date=opening_start_date,
+            opening_end_date=opening_end_date,
             sort_by=sort_by,
             sort_order=SortOrder.ASC,
             template=Template.DETAILS,
@@ -233,8 +231,8 @@ def website_search(request):
         filter_keyword = form.cleaned_data.get("filter_keyword")
         filter_aggregations = form.cleaned_data.get("filter_aggregations")
 
-        start_date = form.cleaned_data.get("start_date")
-        end_date = form.cleaned_data.get("end_date")
+        opening_start_date = form.cleaned_data.get("opening_start_date")
+        opening_end_date = form.cleaned_data.get("opening_end_date")
 
         sort_by = form.cleaned_data.get("sort_by")
 
@@ -254,9 +252,8 @@ def website_search(request):
             ],
             offset=offset,
             size=per_page,
-            start_date=start_date,
-            end_date=end_date,
-            date_field=DateField.DATE_OPENING,
+            opening_start_date=opening_start_date,
+            opening_end_date=opening_end_date,
             sort_by=sort_by,
             sort_order=SortOrder.ASC,
         )

@@ -115,13 +115,13 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
-    start_date = forms.DateTimeField(
+    opening_start_date = forms.DateTimeField(
         widget=forms.DateTimeInput(
             attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
         ),
         required=False,
     )
-    end_date = forms.DateTimeField(
+    opening_end_date = forms.DateTimeField(
         widget=forms.DateTimeInput(
             attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
         ),
@@ -158,8 +158,12 @@ class BaseCollectionSearchForm(forms.Form):
         cleaned_data = super().clean()
 
         try:
-            if cleaned_data.get("start_date") > cleaned_data.get("end_date"):
-                self.add_error("start_date", "Start date cannot be after end date")
+            if cleaned_data.get("opening_start_date") > cleaned_data.get(
+                "opening_end_date"
+            ):
+                self.add_error(
+                    "opening_start_date", "Start date cannot be after end date"
+                )
         except TypeError:
             # Either one or both date fields are empty. No further validation necessary.
             ...
