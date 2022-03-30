@@ -4,14 +4,7 @@ from django.test import SimpleTestCase
 
 import responses
 
-from ..client import (
-    Aggregation,
-    KongClient,
-    SortBy,
-    SortOrder,
-    Stream,
-    Template,
-)
+from ..client import Aggregation, KongClient, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
     KongBadRequestError,
     KongCommunicationError,
