@@ -13,8 +13,16 @@
 
         {% include './blocks/catalogue_search_buckets.html' %}
         {% comment %} TODO make this text an editable field {% endcomment %}
-        <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
-        <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
+        {% if form.group.value == 'group:tna' %}
+            <p class="search-results__explainer--desktop">This page displays search results for records that are held by The National Archives, Kew.</p>
+            <p class="search-results__explainer--mobile">Results for records that are held by The National Archives, Kew.</p>
+        {% elif form.group.value == 'group:digitised' %}
+            <p class="search-results__explainer--desktop">This page displays search results for records that are available to download that are held by The National Archives, Kew.</p>
+            <p class="search-results__explainer--mobile">Records that are available to download that are held by The National Archives, Kew.</p>
+        {% elif form.group.value == 'group:nonTna' %}
+            <p class="search-results__explainer--desktop">This page displays search results for records held by other archives in the UK and beyond. None of the records shown here are held by The National Archives, Kew.</p>
+            <p class="search-results__explainer--mobile"> Results for records held by other archives in the UK and beyond. None here are held by The National Archives, Kew.</p>
+        {% endif %}
         {% include './blocks/search_sort_and_view_options.html' %}
 
         <div class="catalogue-search-grid" data-id="catalogue-search-grid">
