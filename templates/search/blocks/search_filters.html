@@ -26,7 +26,7 @@
 
         <div class="search-filters__form-block">
 
-            {% comment %}TODO Hide this on archive/creator pages {% endcomment %}
+            {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
             {% if not form.group.value == "group:archive" and not form.group.value == "group:creator" %}
                 <h3>Refine results by</h3>
             {% endif %}
