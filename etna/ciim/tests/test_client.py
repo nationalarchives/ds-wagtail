@@ -321,7 +321,6 @@ class ClientSearchTest(SimpleTestCase):
             "https://kong.test/data/search?filter=filter+keyword",
         )
 
-
     @responses.activate
     def test_with_offset(self):
         self.client.search(offset=20)
