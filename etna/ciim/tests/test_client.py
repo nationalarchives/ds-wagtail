@@ -165,23 +165,23 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_closing_start_date(self):
-        self.client.search(closing_start_date=datetime(year=1901, month=2, day=3))
+    def test_with_created_start_date(self):
+        self.client.search(created_start_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?closingStartDate=1901-02-03T00%3A00%3A00",
+            "https://kong.test/data/search?createdStartDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
-    def test_with_closing_end_date(self):
-        self.client.search(closing_end_date=datetime(year=1901, month=2, day=3))
+    def test_with_created_end_date(self):
+        self.client.search(created_end_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?closingEndDate=1901-02-03T00%3A00%3A00",
+            "https://kong.test/data/search?createdEndDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
