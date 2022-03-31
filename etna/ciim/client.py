@@ -159,8 +159,8 @@ class KongClient:
         web_reference: Optional[str] = None,
         opening_start_date: Optional[datetime] = None,
         opening_end_date: Optional[datetime] = None,
-        closing_start_date: Optional[datetime] = None,
-        closing_end_date: Optional[datetime] = None,
+        created_start_date: Optional[datetime] = None,
+        created_end_date: Optional[datetime] = None,
         stream: Optional[Stream] = None,
         sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
@@ -224,11 +224,11 @@ class KongClient:
         if opening_end_date:
             params["openingEndDate"] = opening_end_date.isoformat()
 
-        if closing_start_date:
-            params["closingStartDate"] = closing_start_date.isoformat()
+        if created_start_date:
+            params["createdStartDate"] = created_start_date.isoformat()
 
-        if closing_end_date:
-            params["closingEndDate"] = closing_end_date.isoformat()
+        if created_end_date:
+            params["createdEndDate"] = created_end_date.isoformat()
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
 
