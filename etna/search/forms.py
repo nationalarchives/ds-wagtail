@@ -1,8 +1,10 @@
+from datetime import date
 from django import forms
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator, MaxValueValidator
 
 from ..ciim.client import SortBy, SortOrder
 
+CURRENT_YEAR = date.today().year
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices are populated by API response data.
@@ -55,7 +57,6 @@ class FeaturedSearchForm(forms.Form):
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
 
-
 class BaseCollectionSearchForm(forms.Form):
     q = forms.CharField(
         label="Search term",
@@ -63,6 +64,30 @@ class BaseCollectionSearchForm(forms.Form):
         empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
+    )
+    created_start_date = forms.IntegerField(
+        label="Record start date",
+        validators=[MinValueValidator(974), MaxValueValidator(CURRENT_YEAR)],
+        widget=forms.NumberInput(attrs = {
+            'aria-labelledby': 'date_guidance date_guidance_from',
+            'min': 974,
+            'max': CURRENT_YEAR,
+            'placeholder': 'YYYY'
+        }),
+        initial=974,
+        required=False
+    )
+    created_end_date = forms.IntegerField(
+        label="Record end date",
+        validators=[MinValueValidator(974), MaxValueValidator(CURRENT_YEAR)],
+        widget=forms.NumberInput(attrs = {
+            'aria-labelledby':'date_guidance date_guidance_to',
+            'min': 974,
+            'max': CURRENT_YEAR,
+            'placeholder': 'YYYY'
+        }),
+        initial=CURRENT_YEAR,
+        required=False
     )
     group = forms.ChoiceField(
         label="bucket",

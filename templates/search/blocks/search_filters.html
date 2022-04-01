@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'opening_start_date' 'opening_end_date' 'catalogue_sources' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'opening_start_date' 'opening_end_date' 'catalogue_sources' 'created_start_date' 'created_end_date' %}
 
         {% comment %}
          {% if form.group.value == 'group:tna' %}
@@ -46,6 +46,25 @@
                 </fieldset>
                 
             </div> {% endcomment %}
+            {% if form.created_start_date and form.created_end_date %}
+            
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend><h4 class="search-filters__accordion-section-heading">Date</h4></legend>
+                    <p class="search-filters__paragraph" ><span id="date_guidance">Filter between years:</span></p>
+                    <label id="date_guidance_from" for="{{form.created_start_date.id_for_label}}">From <span class="sr-only">year</span></label>
+                    {{form.created_start_date}}
+                    <label id="date_guidance_to" for="{{form.created_end_date.id_for_label}}">To <span class="sr-only">year</span></label>
+                    {{form.created_end_date}}
+            
+                    {{ form.created_start_date.errors }}
+                    {{ form.created_end_date.errors }}
+                <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+            
+            </div>
+    
+            {% endif %}
 
             {% if form.collections.field.choices %}
             <div class="search-filters__accordion-section">
@@ -108,7 +127,7 @@
                 <fieldset>
                     <legend>
                         <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4></legend></fieldset>
-                    <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
+                    <p class="search-filters__paragraph" id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
 
                     <div class="search-filters__opening-date-section">
                         {{ form.opening_start_date.errors }}
