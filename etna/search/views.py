@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.core.paginator import Page
 from django.shortcuts import render
 
@@ -119,6 +120,9 @@ def catalogue_search(request):
 
         sort_by = form.cleaned_data.get("sort_by")
 
+        created_start_date = form.cleaned_data.get("created_start_date")
+        created_end_date = form.cleaned_data.get("created_end_date")
+
         response = Record.api.client.search(
             template=Template.DETAILS,
             q=q,
@@ -139,6 +143,8 @@ def catalogue_search(request):
             opening_end_date=opening_end_date,
             sort_by=sort_by,
             sort_order=SortOrder.ASC,
+            created_start_date=created_start_date,
+            created_end_date=created_end_date
         )
         bucket_count_response, result_response = response["responses"]
         records = result_response["hits"]["hits"]

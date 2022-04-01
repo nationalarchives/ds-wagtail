@@ -2,7 +2,7 @@ import enum
 import json
 import logging
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any, Optional
 
 import requests
@@ -225,10 +225,10 @@ class KongClient:
             params["openingEndDate"] = opening_end_date.isoformat()
 
         if created_start_date:
-            params["createdStartDate"] = created_start_date.isoformat()
+            params["createdStartDate"] = datetime(created_start_date, 1, 1).isoformat()
 
         if created_end_date:
-            params["createdEndDate"] = created_end_date.isoformat()
+            params["createdEndDate"] = datetime(created_end_date, 12, 31).isoformat()
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
 
