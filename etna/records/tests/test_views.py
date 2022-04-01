@@ -211,11 +211,126 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+)
+class TestDataLayerRecordDetail(TestCase):
+    def setUp(self):
+        private_beta_user = User(
+            username="private-beta@email.com", email="private-beta@email.com"
+        )
+        private_beta_user.set_password("password")
+        private_beta_user.save()
+        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
+
+        self.client.login(email="private-beta@email.com", password="password")
+
     @responses.activate
-    def test_datalayer_record_detail(self):
+    def test_datalayer_level1(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record.json"
+        path = "/app/etna/records/tests/fixtures/record_level1.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C241/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "Level 1 - Lettercode", "customDimension13": "", "customDimension14": "RAIL - Records of the pre-nationalisation railway companies, pre-nationalisation canal and...", "customDimension15": "CAT", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level2(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level2.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C995/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "Level 2 - Division", "customDimension13": "", "customDimension14": "Division within POWE - Records of the Coal Division", "customDimension15": "CAT", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level3(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level3.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C12441/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "66 - The National Archives", "customDimension12": "Level 3 - Series", "customDimension13": "", "customDimension14": "RAIL 253 - Great Western Railway Company: Miscellaneous Books and Records", "customDimension15": "CAT", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level4(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level4.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C31931/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "Level 4 - Sub-series", "customDimension13": "ADM 171 - Admiralty, and Ministry of Defence, Navy Department: Medal Rolls", "customDimension14": "Sub-series within ADM 171 - AFRICA GENERAL SERVICE MEDAL 1902-1910", "customDimension15": "CAT", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level5(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level5.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C145033/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "Level 5 - Sub-sub-series", "customDimension13": "IR 900 - Specimens of Series of Documents Destroyed", "customDimension14": "Sub-sub-series within IR 900 - Camden Town Tax District", "customDimension15": "CAT", "customDimension16": "", "customDimension17": ""}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level6_nondigital(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level6_nondigital.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -228,7 +343,67 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
         html_decoded_response = response.content.decode("utf8")
-        desired_datalayer_script_tag = '<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "66", "customDimension11": "The National Archives", "customDimension12": "Level 6 - Piece", "customDimension13": "RAIL 253 - \\u003Cunittitle type=\\"Title\\"\\u003EGreat Western Railway Company: Miscellaneous Books and Records\\u003C/unittitle\\u003E", "customDimension14": "RAIL 253/516 - \\u003Cscopecontent\\u003E\\u003Cp\\u003ECorrespondence by members of Audit Office, Paddington while on active...", "customDimension15": "mongo", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}</script>'
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "66 - The National Archives", "customDimension12": "Level 6 - Piece", "customDimension13": "RAIL 253 - Great Western Railway Company: Miscellaneous Books and Records", "customDimension14": "RAIL 253/516 - Correspondence by members of Audit Office, Paddington while on active service to...", "customDimension15": "CAT", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level6_digital(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level6_digital.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C198022/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "66 - The National Archives", "customDimension12": "Level 6 - Piece", "customDimension13": "PROB 1 - Prerogative Court of Canterbury: Wills of Selected Famous Persons", "customDimension14": "PROB 1/4 - Will of William Shakespeare 25 March 1616. Proved 22 June 1616.", "customDimension15": "CAT", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level7_nondigital(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level7_nondigital.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C6518465/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "66 - The National Archives", "customDimension12": "Level 7 - Item", "customDimension13": "DSIR 27 - Department of Scientific and Industrial Research: Road Research Laboratory Reports", "customDimension14": "DSIR 27/6/ADM171 - The pressures produced by explosions underwater of 1-oz. solid cone charges of P.E....", "customDimension15": "CAT", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_level7_digital(self):
+        import json
+
+        path = "/app/etna/records/tests/fixtures/record_level7_digital.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/fetch",
+                json=json.loads(f.read()),
+            )
+
+        response = self.client.get("/catalogue/C14017032/")
+
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Catalogue: The National Archives", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "record detail", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "66 - The National Archives", "customDimension12": "Level 7 - Item", "customDimension13": "WO 95 - War Office: First World War and Army of Occupation War Diaries", "customDimension14": "WO 95/1510/4 - Headquarters Branches and Services: General Staff.", "customDimension15": "CAT", "customDimension16": "", "customDimension17": "No availability condition provisioned for this record"}</script>"""
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
 

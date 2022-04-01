@@ -49,10 +49,10 @@ class Record(DataLayerMixin, APIModel):
     repo_archon_value: str = ""
     level_code: str = ""
     level: str = ""
-    association_reference_number: str = ""
-    association_summary_title: str = ""
+    template_reference_number: str = ""
     template_summary_title: str = ""
-    data_source: str = ""
+    hierarchy3_reference_number: str = ""
+    hierarchy3_summary_title: str = ""
 
     _debug_kong_result: dict = field(default_factory=dict)
 
@@ -91,20 +91,49 @@ class Record(DataLayerMixin, APIModel):
         Override this method on subclasses to add data that is relevant to a
         specific record type.
         """
+
+        def get_customdimension11(self):
+            if self.repo_archon_value and self.repo_summary_title:
+                return self.repo_archon_value + " - " + self.repo_summary_title
+            else:
+                return ""
+
+        def get_customdimension12(self):
+            if self.level_code and self.level:
+                return "Level " + self.level_code + " - " + self.level
+            else:
+                return ""
+
+        def get_customdimension13(self):
+            if self.level_code in ("1", "2", "3"):
+                return ""
+            else:
+                if self.hierarchy3_reference_number and self.hierarchy3_summary_title:
+                    return (
+                        self.hierarchy3_reference_number
+                        + " - "
+                        + self.hierarchy3_summary_title
+                    )
+                else:
+                    return ""
+
+        def get_customdimension14(self):
+            if self.template_reference_number and self.template_summary_title:
+                return (
+                    self.template_reference_number + " - " + self.template_summary_title
+                )
+            else:
+                return ""
+
         data = super().get_datalayer_data(request)
         data.update(
             contentGroup1=self.get_gtm_content_group(),
             customDimension3="record detail",
-            customDimension10=self.repo_archon_value,
-            customDimension11=self.repo_summary_title,
-            customDimension12="Level " + self.level_code + " - " + self.level,
-            customDimension13=self.association_reference_number
-            + " - "
-            + self.association_summary_title,
-            customDimension14=self.reference_number
-            + " - "
-            + self.template_summary_title,
-            customDimension15=self.data_source,
+            customDimension11=get_customdimension11(self),
+            customDimension12=get_customdimension12(self),
+            customDimension13=get_customdimension13(self),
+            customDimension14=get_customdimension14(self),
+            customDimension15=self.catalogue_source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.availability_delivery_condition,
         )

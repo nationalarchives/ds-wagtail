@@ -62,6 +62,18 @@ def transform_record_result(result):
             for i in hierarchy[0]
             if "identifier" in i
         ]
+        try:
+            # non mandatory data
+            if hierarchy3 := hierarchy[0][2]:
+                data["hierarchy3_reference_number"] = hierarchy3.get("identifier")[0][
+                    "reference_number"
+                ]
+                data["hierarchy3_summary_title"] = hierarchy3.get("summary").get(
+                    "title"
+                )
+                print(data["hierarchy3_reference_number"], data["hierarchy3_summary_title"])
+        except:
+            pass
 
     if availability := source.get("availability"):
         if delivery := availability.get("delivery"):
@@ -116,14 +128,6 @@ def transform_record_result(result):
     if level := source.get("level"):
         data["level_code"] = str(level["code"])
 
-    if association := source.get("association"):
-        data["association_reference_number"] = pluck(
-            association, accessor=lambda i: i["identifier"][0]["reference_number"]
-        )
-        data["association_summary_title"] = pluck(
-            association, accessor=lambda i: i["summary"]["title"]
-        )
-
     if template := source.get("@template"):
         data["held_by"] = template.get("details", {}).get("heldBy", "")
         data["origination_date"] = template.get("details", {}).get("dateCreated", "")
@@ -131,11 +135,12 @@ def transform_record_result(result):
         data["availability_delivery_condition"] = template.get("details", {}).get(
             "deliveryOption", ""
         )
+        data["template_reference_number"] = template.get("details", {}).get(
+            "referenceNumber", ""
+        )
         data["template_summary_title"] = template.get("details", {}).get(
             "summaryTitle", ""
         )
-
-    data["data_source"] = source["@admin"]["source"]
 
     return data
 

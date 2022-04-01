@@ -15,33 +15,30 @@
             {
                 "_index": "ciim-160322",
                 "_type": "_doc",
-                "_id": "mongo-c10297",
+                "_id": "mongo-c12441",
                 "_score": 1.0,
                 "_source": {
                     "@admin": {
-                        "id": "C10297",
-                        "sequence": 74951645,
+                        "id": "C12441",
+                        "sequence": 77361587,
                         "source": "mongo",
                         "stream": "evidential",
-                        "uid": "mongo-c10297",
-                        "uuid": "963a50eb-54bb-3ac7-ae03-317f4bb95d17"
-                    },
-                    "arrangement": {
-                        "value": "<span class=\"arrangement\"><p>The files are registered in a numbered series according to their subject and these numbers are listed in the appendix to the series list.</p></span>"
+                        "uid": "mongo-c12441",
+                        "uuid": "7c65767c-0ee2-3446-8012-f8df6f6bfc53"
                     },
                     "association": [
                         {
                             "@admin": {
-                                "id": "C199",
-                                "uuid": "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+                                "id": "C241",
+                                "uuid": "8ad045a8-2fab-3a90-ae95-9c53a51a71bb"
                             },
                             "@entity": "reference",
                             "identifier": [
                                 {
                                     "primary": true,
-                                    "reference_number": "LO",
+                                    "reference_number": "RAIL",
                                     "type": "reference number",
-                                    "value": "LO"
+                                    "value": "RAIL"
                                 }
                             ],
                             "@link": {
@@ -56,16 +53,11 @@
                                 ]
                             },
                             "summary": {
-                                "title": "Records created or inherited by the Law Officers' Department"
+                                "title": "Records of the pre-nationalisation railway companies, pre-nationalisation canal and..."
                             }
                         }
                     ],
                     "availability": {
-                        "access": {
-                            "condition": {
-                                "value": "Open unless otherwise stated"
-                            }
-                        },
                         "closure": {
                             "code": "30",
                             "type": "N"
@@ -98,59 +90,28 @@
                     "description": [
                         {
                             "primary": true,
-                            "related": [
-                                {
-                                    "@admin": {
-                                        "id": "C10298",
-                                        "uuid": "cb6a7ac8-466d-3c23-b93d-0424477e16a7"
-                                    },
-                                    "@entity": "reference",
-                                    "identifier": [
-                                        {
-                                            "primary": true,
-                                            "reference_number": "LO 3",
-                                            "type": "reference number",
-                                            "value": "LO 3"
-                                        }
-                                    ],
-                                    "@link": {
-                                        "qualifier": "association",
-                                        "relationship": {
-                                            "value": "related"
-                                        },
-                                        "role": [
-                                            {
-                                                "value": "scope and content"
-                                            }
-                                        ]
-                                    },
-                                    "summary": {
-                                        "title": "Law Officers' Department: Law Officers' Opinions"
-                                    }
-                                }
-                            ],
                             "type": "scope and content",
-                            "value": "<span class=\"scopecontent\"><p>This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General's General Fiat for leave to appeal to the House of Lords in criminal cases.</p><p>Also included are a number of opinions, more of which can be found in <a class=\"extref\" href=\"C10298\">LO 3</a></p></span>"
+                            "value": "<span class=\"scopecontent\"><p>This series contains a diverse collection of records, including letterbooks, reports, photographs and diaries.</p></span>"
                         }
                     ],
                     "digitised": false,
                     "@hierarch": [
                         {
                             "@admin": {
-                                "id": "C199",
-                                "uuid": "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+                                "id": "C241",
+                                "uuid": "8ad045a8-2fab-3a90-ae95-9c53a51a71bb"
                             },
                             "@entity": "reference",
                             "identifier": [
                                 {
                                     "primary": true,
-                                    "reference_number": "LO",
+                                    "reference_number": "RAIL",
                                     "type": "reference number",
-                                    "value": "LO"
+                                    "value": "RAIL"
                                 }
                             ],
                             "summary": {
-                                "title": "Records created or inherited by the Law Officers' Department"
+                                "title": "Records of the pre-nationalisation railway companies, pre-nationalisation canal and..."
                             }
                         }
                     ],
@@ -158,56 +119,48 @@
                         [
                             {
                                 "@admin": {
-                                    "id": "C199",
-                                    "uuid": "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+                                    "id": "C241",
+                                    "uuid": "8ad045a8-2fab-3a90-ae95-9c53a51a71bb"
                                 },
                                 "@entity": "reference",
                                 "identifier": [
                                     {
                                         "primary": true,
-                                        "reference_number": "LO",
+                                        "reference_number": "RAIL",
                                         "type": "reference number",
-                                        "value": "LO"
+                                        "value": "RAIL"
                                     }
                                 ],
                                 "summary": {
-                                    "title": "Records created or inherited by the Law Officers' Department"
+                                    "title": "Records of the pre-nationalisation railway companies, pre-nationalisation canal and..."
                                 }
                             },
                             {
                                 "@admin": {
-                                    "id": "C10297",
-                                    "uuid": "963a50eb-54bb-3ac7-ae03-317f4bb95d17"
+                                    "id": "C1022",
+                                    "uuid": "6b7d7d0d-85ce-3598-9a55-301c78cec995"
                                 },
                                 "@entity": "reference",
-                                "identifier": [
-                                    {
-                                        "primary": true,
-                                        "reference_number": "LO 2",
-                                        "type": "reference number",
-                                        "value": "LO 2"
-                                    }
-                                ],
                                 "summary": {
-                                    "title": "Law Officers' Department: Registered Files"
+                                    "title": "Records of the privately owned railway companies (and their predecessors) taken over..."
                                 }
                             },
                             {
                                 "@admin": {
-                                    "id": "C1880",
-                                    "uuid": "cd044dd4-56d1-3444-bf17-0412b7621a5e"
+                                    "id": "C12441",
+                                    "uuid": "7c65767c-0ee2-3446-8012-f8df6f6bfc53"
                                 },
                                 "@entity": "reference",
                                 "identifier": [
                                     {
                                         "primary": true,
-                                        "reference_number": "ADM 171",
+                                        "reference_number": "RAIL 253",
                                         "type": "reference number",
-                                        "value": "ADM 171"
+                                        "value": "RAIL 253"
                                     }
                                 ],
                                 "summary": {
-                                    "title": "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls"
+                                    "title": "Great Western Railway Company: Miscellaneous Books and Records"
                                 }
                             }
                         ]
@@ -215,19 +168,19 @@
                     "identifier": [
                         {
                             "primary": true,
-                            "reference_number": "LO 2",
+                            "reference_number": "RAIL 253",
                             "type": "reference number",
-                            "value": "LO 2"
+                            "value": "RAIL 253"
                         },
                         {
-                            "catalogue_id": "9062",
+                            "catalogue_id": "11228",
                             "type": "catalogue id",
-                            "value": "9062"
+                            "value": "11228"
                         },
                         {
-                            "iaid": "C10297",
+                            "iaid": "C12441",
                             "type": "iaid",
-                            "value": "C10297"
+                            "value": "C12441"
                         },
                         {
                             "batch_id": "327",
@@ -235,9 +188,14 @@
                             "value": "327"
                         },
                         {
-                            "part_reference": "2",
+                            "former_reference__department_": "Former BTHR reference GW4.",
+                            "type": "former reference (Department)",
+                            "value": "Former BTHR reference GW4."
+                        },
+                        {
+                            "part_reference": "253",
                             "type": "part reference",
-                            "value": "2"
+                            "value": "253"
                         }
                     ],
                     "language": [
@@ -253,32 +211,38 @@
                         "value": "Series"
                     },
                     "measurements": {
-                        "display": "1180 file(s)",
-                        "extent": "1180",
-                        "form": "file(s)"
+                        "display": "830 volume(s)",
+                        "extent": "830",
+                        "form": "volume(s)"
                     },
                     "origination": {
+                        "creator": [
+                            {
+                                "@datatype": {
+                                    "actual": "organisation",
+                                    "base": "agent"
+                                },
+                                "@entity": "literal",
+                                "name": [
+                                    {
+                                        "value": "Great Western Railway Company"
+                                    }
+                                ]
+                            }
+                        ],
                         "date": {
-                            "from": "1885-01-01",
-                            "to": "1979-12-31",
-                            "value": "1885-1979"
+                            "from": "1800-01-01",
+                            "to": "1961-12-31",
+                            "value": "1800-1961"
                         }
                     },
                     "parent": [
                         {
                             "@admin": {
-                                "id": "C199",
-                                "uuid": "8d5c00f6-1c04-3ca6-854a-67ff2fbdff93"
+                                "id": "C1022",
+                                "uuid": "6b7d7d0d-85ce-3598-9a55-301c78cec995"
                             },
                             "@entity": "reference",
-                            "identifier": [
-                                {
-                                    "primary": true,
-                                    "reference_number": "LO",
-                                    "type": "reference number",
-                                    "value": "LO"
-                                }
-                            ],
                             "@link": {
                                 "qualifier": "association",
                                 "relationship": {
@@ -291,7 +255,36 @@
                                 ]
                             },
                             "summary": {
-                                "title": "Records created or inherited by the Law Officers' Department"
+                                "title": "Records of the privately owned railway companies (and their predecessors) taken over..."
+                            }
+                        }
+                    ],
+                    "related": [
+                        {
+                            "@admin": {
+                                "id": "C2317",
+                                "uuid": "779b41f7-db01-3570-95c9-78c8a05227e2"
+                            },
+                            "@entity": "reference",
+                            "identifier": [
+                                {
+                                    "primary": true,
+                                    "reference_number": "AN 125",
+                                    "type": "reference number",
+                                    "value": "AN 125"
+                                }
+                            ],
+                            "@link": {
+                                "note": {
+                                    "value": "Later volumes are in"
+                                },
+                                "qualifier": "association",
+                                "relationship": {
+                                    "value": "related"
+                                }
+                            },
+                            "summary": {
+                                "title": "British Railway Board: Western Region: Bristol District Diary"
                             }
                         }
                     ],
@@ -320,86 +313,97 @@
                             "title": "The National Archives"
                         }
                     },
-                    "sort": "03 0 LO 02 0",
+                    "sort": "03 0 RAIL 2253 0",
                     "source": {
                         "value": "CAT"
                     },
                     "summary": {
-                        "title": "Law Officers' Department: Registered Files"
+                        "title": "Great Western Railway Company: Miscellaneous Books and Records"
                     },
                     "title": [
                         {
                             "label": {
                                 "type": "display",
-                                "value": "Law Officers' Department: Registered Files"
+                                "value": "Great Western Railway Company: Miscellaneous Books and Records"
                             },
                             "primary": true,
-                            "value": "<span class=\"unittitle\" type=\"Title\">Law Officers' Department: Registered Files</span>"
+                            "value": "<span class=\"unittitle\" type=\"Title\">Great Western Railway Company: Miscellaneous Books and Records</span>"
                         }
                     ],
                     "web": {
                         "identifier": [
                             {
                                 "type": "web reference",
-                                "value": "LO/2",
-                                "web_reference": "LO/2"
+                                "value": "RAIL/253",
+                                "web_reference": "RAIL/253"
                             }
                         ]
                     },
                     "@template": {
                         "details": {
-                            "accessCondition": "Open unless otherwise stated",
-                            "arrangement": "<span class=\"arrangement\"><p>The files are registered in a numbered series according to their subject and these numbers are listed in the appendix to the series list.</p></span>",
-                            "dateCreated": "1885-1979",
-                            "description": "<span class=\"scopecontent\"><p>This series contains papers concering a wide variety of legal matters referred to the Law Officers for their advice or approval and includes applications for the Attorney General's General Fiat for leave to appeal to the House of Lords in criminal cases.</p><p>Also included are a number of opinions, more of which can be found in <a class=\"extref\" href=\"C10298\">LO 3</a></p></span>",
+                            "creator": [
+                                "Great Western Railway Company"
+                            ],
+                            "dateCreated": "1800-1961",
+                            "description": "<span class=\"scopecontent\"><p>This series contains a diverse collection of records, including letterbooks, reports, photographs and diaries.</p></span>",
+                            "formerDepartmentReference": "Former BTHR reference GW4.",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C10297",
+                            "iaid": "C12441",
                             "language": [
                                 "English"
                             ],
                             "legalStatus": "Public Record(s)",
                             "level": "Series",
-                            "physicalDescription": "1180 file(s)",
-                            "primaryIdentifier": "C10297",
-                            "referenceNumber": "LO 2",
-                            "summaryTitle": "Law Officers' Department: Registered Files",
-                            "title": "<span class=\"unittitle\" type=\"Title\">Law Officers' Department: Registered Files</span>",
+                            "physicalDescription": "830 volume(s)",
+                            "primaryIdentifier": "C12441",
+                            "referenceNumber": "RAIL 253",
+                            "relatedMaterials": [
+                                {
+                                    "description": "Later volumes are in",
+                                    "links": [
+                                        "<a href=\"C2317\">AN 125</a>"
+                                    ]
+                                }
+                            ],
+                            "summaryTitle": "Great Western Railway Company: Miscellaneous Books and Records",
+                            "title": "<span class=\"unittitle\" type=\"Title\">Great Western Railway Company: Miscellaneous Books and Records</span>",
                             "type": "aggregation"
                         },
                         "results": {
+                            "formerDepartmentReference": "Former BTHR reference GW4.",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C10297",
+                            "iaid": "C12441",
                             "level": "Series",
-                            "primaryIdentifier": "C10297",
-                            "summaryTitle": "Law Officers' Department: Registered Files",
-                            "title": "<span class=\"unittitle\" type=\"Title\">Law Officers' Department: Registered Files</span>",
+                            "primaryIdentifier": "C12441",
+                            "summaryTitle": "Great Western Railway Company: Miscellaneous Books and Records",
+                            "title": "<span class=\"unittitle\" type=\"Title\">Great Western Railway Company: Miscellaneous Books and Records</span>",
                             "type": "aggregation"
                         }
                     },
                     "@previous": {
                         "@admin": {
-                            "id": "C10296"
+                            "id": "C12440"
                         },
                         "@entity": "reference",
                         "summary": {
-                            "title": "Law Officers' Department: Patents for Inventions"
+                            "title": "<unittitle type=\"Title\">Great Western Railway Company: Deeds, Agreements, Contracts,..."
                         }
                     },
                     "@next": {
                         "@admin": {
-                            "id": "C10298"
+                            "id": "C12442"
                         },
                         "@entity": "reference",
                         "summary": {
-                            "title": "Law Officers' Department: Law Officers' Opinions"
+                            "title": "Great Western Railway Company: Locomotive and Rolling Stock Records"
                         }
                     }
                 }
             }
         ]
     },
-    "took": 43,
+    "took": 4,
     "timed_out": false
 }
