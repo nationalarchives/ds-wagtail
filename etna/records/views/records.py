@@ -3,7 +3,8 @@ from django.shortcuts import Http404, render
 
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from ..models import Image, Record
+from ..models import Record
+# from ..models import Image, Record #TODO
 
 
 def record_disambiguation_view(request, reference_number):
