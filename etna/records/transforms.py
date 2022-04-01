@@ -72,7 +72,7 @@ def transform_record_result(result):
                     "title"
                 )
                 print(data["hierarchy3_reference_number"], data["hierarchy3_summary_title"])
-        except:
+        except Exception:
             pass
 
     if availability := source.get("availability"):
