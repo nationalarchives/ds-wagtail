@@ -28,7 +28,7 @@
                             {% if related_material.description %}
                                 <p>{{related_material.description}}
                                     {% for link in related_material.links %}
-                                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}">{{ link.text }}</a>
+                                        <a href="{% url 'details-page-machine-readable' link.iaid %}">{{ link.text }}</a>
                                     {% endfor %}
                                 </p>
                             {% endif %}
