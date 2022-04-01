@@ -71,7 +71,6 @@ def transform_record_result(result):
                 data["hierarchy3_summary_title"] = hierarchy3.get("summary").get(
                     "title"
                 )
-                print(data["hierarchy3_reference_number"], data["hierarchy3_summary_title"])
         except Exception:
             pass
 
