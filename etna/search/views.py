@@ -1,10 +1,46 @@
+from typing import Any, Dict, List
+
 from django.core.paginator import Page
+from django.forms import Form
 from django.shortcuts import render
+
+from wagtail.core.utils import camelcase_to_underscore
 
 from ..ciim.client import Aggregation, SortOrder, Stream, Template
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
+
+
+def underscore_to_camelcase(word, lower_first=True):
+    result = "".join(char.capitalize() for char in word.split("_"))
+    if lower_first:
+        result = result[0].lower() + result[1:]
+    return result
+
+
+def get_api_filters_from_form_values(form: Form) -> List[str]:
+    filter_aggregations = []
+    for field_name in form.dynamic_choice_fields:
+        filter_name = underscore_to_camelcase(field_name)
+        value = form.cleaned_data.get(field_name)
+        filter_aggregations.extend((f"{filter_name}:{v}" for v in value))
+    # 'group' is handled separately, as it only has a single value, and
+    # values are currently still prefixed with "group:", which we don't
+    # want to repeat
+    filter_aggregations.append(form.cleaned_data.get("group", "group:tna"))
+    return filter_aggregations
+
+
+def update_field_choices_to_refelect_api_response(
+    form: Form, aggregations: Dict[str, Dict[str, Any]]
+):
+    for key, value in aggregations.items():
+        if buckets := value.get("buckets"):
+            field_name = camelcase_to_underscore(key)
+            if field_name in form.dynamic_choice_fields:
+                form.fields[field_name].update_choices(buckets)
+
 
 # Aggregations and their headings, passed /searchAll to fetch
 # counts and output along with grouped results.
@@ -112,18 +148,15 @@ def catalogue_search(request):
     if form.is_valid():
         q = form.cleaned_data.get("q")
         filter_keyword = form.cleaned_data.get("filter_keyword")
-        filter_aggregations = form.cleaned_data.get("filter_aggregations")
-
         opening_start_date = form.cleaned_data.get("opening_start_date")
         opening_end_date = form.cleaned_data.get("opening_end_date")
-
         sort_by = form.cleaned_data.get("sort_by")
 
         response = Record.api.client.search(
             template=Template.DETAILS,
             q=q,
             filter_keyword=filter_keyword,
-            filter_aggregations=filter_aggregations,
+            filter_aggregations=get_api_filters_from_form_values(form),
             stream=Stream.EVIDENTIAL,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
@@ -141,10 +174,11 @@ def catalogue_search(request):
             sort_order=SortOrder.ASC,
         )
         bucket_count_response, result_response = response["responses"]
+        update_field_choices_to_refelect_api_response(
+            form, result_response["aggregations"]
+        )
         records = result_response["hits"]["hits"]
         count = result_response["hits"]["total"]["value"]
-
-        form.update_from_response(response=result_response)
 
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
@@ -179,17 +213,13 @@ def catalogue_search_long_filter_chooser(request):
     if form.is_valid():
         q = form.cleaned_data.get("q")
         filter_keyword = form.cleaned_data.get("filter_keyword")
-        filter_aggregations = form.cleaned_data.get("filter_aggregations")
-
         opening_start_date = form.cleaned_data.get("opening_start_date")
         opening_end_date = form.cleaned_data.get("opening_end_date")
-
         sort_by = form.cleaned_data.get("sort_by")
-
         response = Record.api.client.search(
             q=q,
             filter_keyword=filter_keyword,
-            filter_aggregations=filter_aggregations,
+            filter_aggregations=get_api_filters_from_form_values(form),
             stream=Stream.EVIDENTIAL,
             aggregations=[
                 f"{Aggregation.COLLECTION}:{AGGREGATION_SIZE}",
@@ -201,7 +231,9 @@ def catalogue_search_long_filter_chooser(request):
             template=Template.DETAILS,
         )
         bucket_count_response, result_response = response["responses"]
-        form.update_from_response(response=result_response)
+        update_field_choices_to_refelect_api_response(
+            form, result_response["aggregations"]
+        )
 
     return render(
         request,
@@ -229,18 +261,15 @@ def website_search(request):
     if form.is_valid():
         q = form.cleaned_data.get("q")
         filter_keyword = form.cleaned_data.get("filter_keyword")
-        filter_aggregations = form.cleaned_data.get("filter_aggregations")
-
         opening_start_date = form.cleaned_data.get("opening_start_date")
         opening_end_date = form.cleaned_data.get("opening_end_date")
-
         sort_by = form.cleaned_data.get("sort_by")
 
         response = Record.api.client.search(
             template=Template.DETAILS,
             q=q,
             filter_keyword=filter_keyword,
-            filter_aggregations=filter_aggregations,
+            filter_aggregations=get_api_filters_from_form_values(form),
             stream=Stream.INTERPRETIVE,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
@@ -258,10 +287,11 @@ def website_search(request):
             sort_order=SortOrder.ASC,
         )
         bucket_count_response, result_response = response["responses"]
+        update_field_choices_to_refelect_api_response(
+            form, result_response["aggregations"]
+        )
         records = result_response["hits"]["hits"]
         count = result_response["hits"]["total"]["value"]
-
-        form.update_from_response(response=result_response)
 
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)

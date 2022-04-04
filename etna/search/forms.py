@@ -75,8 +75,14 @@ class BaseCollectionSearchForm(forms.Form):
     "fieldName" -> "field_name"
     """
 
-    # Used by search views to support updating of choices
-    dynamic_choice_fields = ("group", "level", "topic", "collection", "closure", "catalogue_source")
+    # Fields who's choices are updated to reflect the API response
+    dynamic_choice_fields = (
+        "collection",
+        "level",
+        "topic",
+        "closure",
+        "catalogue_source",
+    )
 
     q = forms.CharField(
         label="Search term",
@@ -188,36 +194,7 @@ class BaseCollectionSearchForm(forms.Form):
             # Either one or both date fields are empty. No further validation necessary.
             ...
 
-        cleaned_data["filter_aggregations"] = (
-            [cleaned_data.get("group")]
-            + cleaned_data.get("levels")
-            + cleaned_data.get("topics")
-            + cleaned_data.get("collections")
-            + cleaned_data.get("closure_statuses")
-            + cleaned_data.get("catalogue_sources")
-        )
-
         return cleaned_data
-
-    def update_from_response(self, *, response):
-        """Populate dynamic fields choices using aggregation data from API."""
-        aggregations = response["aggregations"]
-
-        self.fields["levels"].update_from_aggregations(
-            aggregations.get("level", {}).get("buckets")
-        )
-        self.fields["topics"].update_from_aggregations(
-            aggregations.get("topic", {}).get("buckets")
-        )
-        self.fields["collections"].update_from_aggregations(
-            aggregations.get("collection", {}).get("buckets")
-        )
-        self.fields["closure_statuses"].update_from_aggregations(
-            aggregations.get("closure", {}).get("buckets")
-        )
-        self.fields["catalogue_sources"].update_from_aggregations(
-            aggregations.get("catalogueSource", {}).get("buckets")
-        )
 
     def selected_filters(self):
         """List of selected filters, keyed by the corresponding field name.
