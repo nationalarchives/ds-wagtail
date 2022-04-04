@@ -47,7 +47,7 @@
 
             </div> {% endcomment %}
 
-            {% if form.collection.field.choices %}
+            {% if form.collection.field.choices and form.collection.field.choices_updated %}
             <div class="search-filters__accordion-section">
                 <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collection" class="search-filters__accordion-section-link">View collection filters</a></h4> -->
                 <fieldset>
@@ -63,7 +63,7 @@
             </div>
             {% endif %}
 
-            {% if form.topic.field.choices %}
+            {% if form.topic.field.choices and form.topic.field.choices_updated %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend><h4 class="search-filters__accordion-section-heading">topic</h4></legend>
@@ -77,7 +77,7 @@
             </div>
             {% endif %}
 
-            {% if form.level.field.choices %}
+            {% if form.level.field.choices and form.level.field.choices_updated %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend><h4 class="search-filters__accordion-section-heading">Catalogue level</h4></legend>
@@ -90,7 +90,7 @@
             </div>
             {% endif %}
 
-            {% if form.closure.field.choices %}
+            {% if form.closure.field.choices and form.closure.field.choices_updated %}
                 <div class="search-filters__accordion-section">
                     <fieldset>
                         <legend><h4 class="search-filters__accordion-section-heading">Closure status</h4></legend>

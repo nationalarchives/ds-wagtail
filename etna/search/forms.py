@@ -55,6 +55,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         if order_alphabetically:
             choices.sort(key=lambda x: x[1])
         self.choices = choices
+        self.choices_updated = True
 
 
 class FeaturedSearchForm(forms.Form):
