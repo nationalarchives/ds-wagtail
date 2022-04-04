@@ -65,6 +65,18 @@ class FeaturedSearchForm(forms.Form):
 
 
 class BaseCollectionSearchForm(forms.Form):
+    """
+    NOTE: For dynamic fields (where choices are update from the API result), the field
+    name should be a lower-case/underscored version of the API filter name (which are
+    typically in in 'camelCase'). For example:
+
+    "fieldname" -> "fieldname"
+    "fieldName" -> "field_name"
+    """
+
+    # Used by search views to support updating of choices
+    dynamic_choice_fields = ("group", "level", "topic", "collection", "closure", "catalogue_source")
+
     q = forms.CharField(
         label="Search term",
         # If no query is provided, pass None to client to fetch all results.
@@ -83,35 +95,35 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "search-filters__search"}),
     )
-    levels = DynamicMultipleChoiceField(
+    level = DynamicMultipleChoiceField(
         label="Level",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"},
         ),
         required=False,
     )
-    topics = DynamicMultipleChoiceField(
+    topic = DynamicMultipleChoiceField(
         label="Topics",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    collections = DynamicMultipleChoiceField(
-        label="Collections",
+    collection = DynamicMultipleChoiceField(
+        label="Collection",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    closure_statuses = DynamicMultipleChoiceField(
+    closure = DynamicMultipleChoiceField(
         label="Closure Status",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    catalogue_sources = DynamicMultipleChoiceField(
+    catalogue_source = DynamicMultipleChoiceField(
         label="Catalogue Sources",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
@@ -216,11 +228,11 @@ class BaseCollectionSearchForm(forms.Form):
 
         """
         return {
-            "levels": self.cleaned_data.get("levels"),
+            "level": self.cleaned_data.get("level"),
             "topics": self.cleaned_data.get("topics"),
-            "collections": self.cleaned_data.get("collections"),
-            "closure_statuses": self.cleaned_data.get("closure_statuses"),
-            "catalogue_sources": self.cleaned_data.get("catalogue_sources"),
+            "collection": self.cleaned_data.get("collection"),
+            "closure": self.cleaned_data.get("closure"),
+            "catalogue_source": self.cleaned_data.get("catalogue_source"),
         }
 
 

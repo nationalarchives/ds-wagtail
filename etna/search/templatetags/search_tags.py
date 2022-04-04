@@ -123,11 +123,11 @@ def get_selected_filters(context) -> dict:
     request = context["request"]
 
     selected_filters = {
-        "levels": request.GET.getlist("levels"),
-        "topics": request.GET.getlist("topics"),
-        "collections": request.GET.getlist("collections"),
-        "closure_statuses": request.GET.getlist("closure_statuses"),
-        "catalogue_sources": request.GET.getlist("catalogue_sources"),
+        "level": request.GET.getlist("level"),
+        "topic": request.GET.getlist("topic"),
+        "collection": request.GET.getlist("collection"),
+        "closure": request.GET.getlist("closure"),
+        "catalogue_source": request.GET.getlist("catalogue_source"),
     }
 
     return {k: v for k, v in selected_filters.items() if v}

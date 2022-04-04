@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collections' 'topics' 'levels' 'closure_statuses' 'opening_start_date' 'opening_end_date' 'catalogue_sources' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' %}
 
         {% comment %}
          {% if form.group.value == 'group:tna' %}
@@ -13,7 +13,7 @@
                 <label for="online-only" class='search-filters__label'>Show online records only</label>
                 <input type="submit" value="Update" class="search-filters__submit">
             </div>
-            {% endif %} 
+            {% endif %}
         {% endcomment %}
 
         <div class="search-filters__form-block">
@@ -44,60 +44,60 @@
 
                     <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
-                
+
             </div> {% endcomment %}
 
-            {% if form.collections.field.choices %}
+            {% if form.collection.field.choices %}
             <div class="search-filters__accordion-section">
-                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collections" class="search-filters__accordion-section-link">View collection filters</a></h4> -->
+                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=collection" class="search-filters__accordion-section-link">View collection filters</a></h4> -->
                 <fieldset>
-                    <legend><h4 class="search-filters__accordion-section-heading">Collections</h4></legend>
+                    <legend><h4 class="search-filters__accordion-section-heading">collection</h4></legend>
                 <div>
-                    {{ form.collections.errors }}
-                    {{ form.collections }}
+                    {{ form.collection.errors }}
+                    {{ form.collection }}
                 </div>
                 <a href="{% url 'search-catalogue-long-filter-chooser' %}?{{ request.GET.urlencode }}" >See more</a>
                 <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
-            
+
             </div>
             {% endif %}
 
-            {% if form.topics.field.choices %}
+            {% if form.topic.field.choices %}
             <div class="search-filters__accordion-section">
                 <fieldset>
-                    <legend><h4 class="search-filters__accordion-section-heading">Topics</h4></legend>
-                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topics" class="search-filters__accordion-section-link">View topic filters</a></h4> -->
+                    <legend><h4 class="search-filters__accordion-section-heading">topic</h4></legend>
+                <!-- <h4 class="search-filters__accordion-section-heading"><a href="/search/long-filters/?type=topic" class="search-filters__accordion-section-link">View topic filters</a></h4> -->
                 <div>
-                    {{ form.topics.errors }}
-                    {{ form.topics }}
+                    {{ form.topic.errors }}
+                    {{ form.topic }}
                 </div>
                 <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
             </div>
             {% endif %}
 
-            {% if form.levels.field.choices %}
+            {% if form.level.field.choices %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend><h4 class="search-filters__accordion-section-heading">Catalogue level</h4></legend>
 
-                    {{ form.levels.errors }}
-                    {{ form.levels }}
+                    {{ form.level.errors }}
+                    {{ form.level }}
 
                     <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
             </div>
             {% endif %}
 
-            {% if form.closure_statuses.field.choices %}
+            {% if form.closure.field.choices %}
                 <div class="search-filters__accordion-section">
                     <fieldset>
                         <legend><h4 class="search-filters__accordion-section-heading">Closure status</h4></legend>
 
                         <div>
-                            {{ form.closure_statuses.errors }}
-                            {{ form.closure_statuses }}
+                            {{ form.closure.errors }}
+                            {{ form.closure }}
                         </div>
                         <input type="submit" value="Update" class="search-filters__submit">
                     </fieldset>
@@ -127,15 +127,15 @@
                 </fieldset>
             </div>
             {% endif %}
-            {% if form.catalogue_sources.field.choices and form.group.value == 'group:nonTna' %}
+            {% if form.catalogue_source.field.choices and form.group.value == 'group:nonTna' %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
                         <h4 class="search-filters__accordion-section-heading">Held by</h4>
                     </legend>
                     <div>
-                        {{ form.catalogue_sources.errors }}
-                        {{ form.catalogue_sources }}
+                        {{ form.catalogue_source.errors }}
+                        {{ form.catalogue_source }}
                     </div>
                     <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
