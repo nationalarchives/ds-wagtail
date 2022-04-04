@@ -1,33 +1,42 @@
+from typing import Dict, List, Union
 from django import forms
 from django.core.validators import MinLengthValidator
+from django.utils.functional import cached_property
 
 from ..ciim.client import SortBy, SortOrder
 
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
-    """MultipleChoiceField whose choices are populated by API response data.
-
-    Valid filter options are returned by the API as aggregation data belong to
-    a result set.
-
-    This field populates its choice list from aggregation data. This means that
-    at the point of form validation, this field's choices are empty.
-    """
-
-    def __init__(self, filter_key, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # prefix when passing to filter_aggregations. Format <prefix>:<key>
-        self.filter_key = filter_key
+    """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
     def valid_value(self, value):
-        """Disable validation, field doesn't have choices until the API is called."""
-        return True
+        """Disable validation if the field choices are not yet set."""
+        if not self.choices:
+            return True
+        return super().valid_value(value)
 
-    def update_from_aggregations(self, aggregations):
-        """Populate choice list with aggregation data.
+    @cached_property
+    def original_choice_labels(self):
+        return {value: label for value, label in self.choices}
 
-        Expected format:
+    def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
+        count = f"{data['doc_count']:,}"
+        try:
+            return f"{data['label']} ({count})"
+        except KeyError:
+            pass
+        try:
+            return f"{self.original_choice_labels[data['key']]} ({count})"
+        except KeyError:
+            pass
+        return f"{data['key']} ({count})"
+
+    def update_choices(
+        self, data: List[Dict[str, Union[str, int]]], order_alphabetically: bool = True
+    ):
+        """Populate choice list with aggregation data from the API.
+
+        Expected ``data`` format:
         [
             {
                 "key": "item",
@@ -36,13 +45,12 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             …
         ]
         """
-        if not aggregations:
-            return
-
-        self.choices = [
-            (f"{self.filter_key}:{i['key']}", f"{i['key']} ({i['doc_count']:,})")
-            for i in aggregations
+        choices = [
+            (item["key"], self.choice_label_from_api_data(item)) for item in data
         ]
+        if order_alphabetically:
+            choices.sort(key=lambda x: x[1])
+        self.choices = choices
 
 
 class FeaturedSearchForm(forms.Form):
@@ -77,15 +85,13 @@ class BaseCollectionSearchForm(forms.Form):
     )
     levels = DynamicMultipleChoiceField(
         label="Level",
-        filter_key="level",
         widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
+            attrs={"class": "search-filters__list"},
         ),
         required=False,
     )
     topics = DynamicMultipleChoiceField(
         label="Topics",
-        filter_key="topic",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
@@ -93,7 +99,6 @@ class BaseCollectionSearchForm(forms.Form):
     )
     collections = DynamicMultipleChoiceField(
         label="Collections",
-        filter_key="collection",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
@@ -101,7 +106,6 @@ class BaseCollectionSearchForm(forms.Form):
     )
     closure_statuses = DynamicMultipleChoiceField(
         label="Closure Status",
-        filter_key="closure",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
@@ -109,7 +113,6 @@ class BaseCollectionSearchForm(forms.Form):
     )
     catalogue_sources = DynamicMultipleChoiceField(
         label="Catalogue Sources",
-        filter_key="catalogueSource",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
