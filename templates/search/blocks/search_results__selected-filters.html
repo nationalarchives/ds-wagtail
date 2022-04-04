@@ -2,17 +2,16 @@
 
 <h2 class="sr-only">Selected filters</h2>
 <ul class="search-results__selected-filters">
-    {% get_selected_filters as selected_filters %}
-    {% for selected_filter, selected_values in selected_filters.items %}
-        {% for selected_value in selected_values %}
+    {% for field_name, selected_options in form.selected_filters.items %}
+        {% for value, label in selected_options %}
             <li class="search-results__selected-filters-item">
-                {{ selected_value }}
-                <a href="?{% query_string_exclude selected_filter selected_value %}" class="search-results__selected-filters-item-link"><span class="sr-only">Remove {{ selected_value }} from search</span></a>
+                {{ label }}
+                <a href="?{% query_string_exclude field_name value %}" class="search-results__selected-filters-item-link"><span class="sr-only">Remove {{ label }} from search</span></a>
             </li>
         {% endfor %}
     {% endfor %}
 
-    {% if selected_filters %}
+    {% if form.selected_filters %}
         <li class="search-results__selected-filters-item-remove-all">
             <a href="?q={{ form.cleaned_data.q|default:'' }}&group={{ form.cleaned_data.group|default:'group:tna' }}" class="search-results__selected-filters-item-remove-all-link">Remove all filters</a>
         </li>

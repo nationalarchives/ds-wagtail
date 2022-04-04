@@ -1,4 +1,7 @@
-from typing import Dict, List, Union
+import re
+
+from typing import Dict, List, Tuple, Union
+
 from django import forms
 from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
@@ -196,24 +199,40 @@ class BaseCollectionSearchForm(forms.Form):
 
         return cleaned_data
 
-    def selected_filters(self):
-        """List of selected filters, keyed by the corresponding field name.
+    @cached_property
+    def selected_filters(self) -> Dict[str, List[Tuple[str, str]]]:
+        """List of selected values, keyed by the corresponding field name.
 
         Used by template to output a list of selected filters.
 
         Method must be called on a bound form (post validation)
 
-        Note: selected filters differ from the filter_aggregations passed to
-        the client as 'group' isn't considered to be a filter.
-
+        TODO: When we inevitably shift to class-based views, this logic
+        should be moved to the view.
         """
-        return {
-            "level": self.cleaned_data.get("level"),
-            "topics": self.cleaned_data.get("topics"),
-            "collection": self.cleaned_data.get("collection"),
-            "closure": self.cleaned_data.get("closure"),
-            "catalogue_source": self.cleaned_data.get("catalogue_source"),
+        return_value = {
+            field_name: self.cleaned_data.get(field_name)
+            for field_name in self.dynamic_choice_fields
         }
+
+        # Remove items with no values
+        return_value = {k: v for k, v in return_value.items() if v}
+
+        # Replace raw values with (key, label) tuples
+        for key, values in return_value.items():
+            for value, label in self.fields[key].choices:
+                if value in values:
+                    label_without_count = re.sub(r" \([0-9\,]+\)", "", label, 0)
+                    values.remove(value)
+                    values.append((value, label_without_count))
+
+        # Remove values that do not match choices
+        for value in return_value.values():
+            for i, item in enumerate(value):
+                if isinstance(item, str):
+                    value.pop(i)
+
+        return return_value
 
 
 class CatalogueSearchForm(BaseCollectionSearchForm):
