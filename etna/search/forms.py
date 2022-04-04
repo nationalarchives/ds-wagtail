@@ -4,6 +4,7 @@ from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
 from ..ciim.client import SortBy, SortOrder
+from ..ciim.constants import COLLECTION_CHOICES, LEVEL_CHOICES
 
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
@@ -97,6 +98,7 @@ class BaseCollectionSearchForm(forms.Form):
     )
     level = DynamicMultipleChoiceField(
         label="Level",
+        choices=LEVEL_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"},
         ),
@@ -111,6 +113,7 @@ class BaseCollectionSearchForm(forms.Form):
     )
     collection = DynamicMultipleChoiceField(
         label="Collection",
+        choices=COLLECTION_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
