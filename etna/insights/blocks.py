@@ -5,12 +5,10 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from ..images.blocks import ImageBlock
+from etna.core.blocks import ImageBlock, ParagraphWithHeading, QuoteBlock, SectionBlock
+
 from ..media.blocks import MediaBlock
-from ..paragraphs.blocks import ParagraphWithHeading
-from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
-from ..sections.blocks import SectionBlock
 
 
 class FeaturedRecordBlock(blocks.StructBlock):
