@@ -25,14 +25,17 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
     def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
         count = f"{data['doc_count']:,}"
-        try:
-            return f"{data['label']} ({count})"
-        except KeyError:
-            pass
+        # Firstly, use a label from the original choice values, if available
         try:
             return f"{self.original_choice_labels[data['key']]} ({count})"
         except KeyError:
             pass
+        # Secondly, look for a 'label' value in the data provided by the API
+        try:
+            return f"{data['label']} ({count})"
+        except KeyError:
+            pass
+        # Fall back to using the key value (which is the same in most cases)
         return f"{data['key']} ({count})"
 
     def update_choices(

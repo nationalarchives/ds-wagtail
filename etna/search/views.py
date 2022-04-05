@@ -20,14 +20,24 @@ def underscore_to_camelcase(word, lower_first=True):
 
 
 def get_api_filters_from_form_values(form: Form) -> List[str]:
+    """
+    The API expects filter values to be supplied in a certain way: as a list
+    of strings prefixed with the API field name. This function takes care
+    of matching up form fields to the relevant API field name, and returning
+    a list of filter strings that the API will understand.
+
+    Ideally, this function would be a method on class-based view that all
+    of the search views inherited from.
+    """
     filter_aggregations = []
     for field_name in form.dynamic_choice_fields:
         filter_name = underscore_to_camelcase(field_name)
         value = form.cleaned_data.get(field_name)
         filter_aggregations.extend((f"{filter_name}:{v}" for v in value))
-    # 'group' is handled separately, as it only has a single value, and
-    # values are currently still prefixed with "group:", which we don't
-    # want to repeat
+
+    # The 'group' field is handled separately, as it only returns a single
+    # value, which is currently still prefixed with "group:", which we don't
+    # want to repeat here
     filter_aggregations.append(form.cleaned_data.get("group", "group:tna"))
     return filter_aggregations
 
@@ -35,6 +45,21 @@ def get_api_filters_from_form_values(form: Form) -> List[str]:
 def update_field_choices_to_refelect_api_response(
     form: Form, aggregations: Dict[str, Dict[str, Any]]
 ):
+    """
+    Search forms contain special multiple choice fields, whose 'choice'
+    values are updated to reflect aggregated 'bucket' values included in
+    the API response. This method finds the relevant fields based on
+    the API value and triggers that update for each field.
+
+    This updated is done for two reasons:
+
+    1. To filter out options that are not relevant to the result
+    2. To include document counts in the choice labels.
+
+    Ideally, this function would be a method on class-based view that all
+    of the search views inherited from.
+    """
+
     for key, value in aggregations.items():
         if buckets := value.get("buckets"):
             field_name = camelcase_to_underscore(key)
