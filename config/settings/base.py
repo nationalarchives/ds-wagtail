@@ -35,7 +35,6 @@ INSTALLED_APPS = [
     "etna.core",
     "etna.heroes",
     "etna.home",
-    "etna.images",
     "etna.insights",
     "etna.media",
     "etna.navigation",

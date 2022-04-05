@@ -5,9 +5,8 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from etna.core.blocks import ParagraphWithHeading, QuoteBlock, SectionBlock
+from etna.core.blocks import ImageBlock, ParagraphWithHeading, QuoteBlock, SectionBlock
 
-from ..images.blocks import ImageBlock
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordChooserBlock
 
