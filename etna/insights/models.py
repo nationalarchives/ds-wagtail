@@ -17,7 +17,11 @@ from etna.core.models import BasePage
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
-from .blocks import InsightsIndexPageStreamBlock, InsightsPageStreamBlock
+from .blocks import (
+    FeaturedCollectionBlock,
+    InsightsIndexPageStreamBlock,
+    InsightsPageStreamBlock,
+)
 
 
 class InsightsIndexPage(TeaserImageMixin, BasePage):
@@ -27,10 +31,13 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(InsightsIndexPageStreamBlock, blank=True, null=True)
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
+    featured_collections = StreamField(
+        [("featuredcollection", FeaturedCollectionBlock())], blank=True, null=True
+    )
+    body = StreamField(InsightsIndexPageStreamBlock, blank=True, null=True)
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -41,6 +48,7 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         PageChooserPanel("featured_insight"),
+        StreamFieldPanel("featured_collections"),
         StreamFieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
