@@ -103,11 +103,13 @@
                     </fieldset>
                 </div>
             {% endif %}
+
             {% if form.group.value == 'group:tna' or form.group.value == 'group:digitised' %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
-                        <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4></legend></fieldset>
+                        <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                    </legend>
                     <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
 
                     <div class="search-filters__opening-date-section">
@@ -122,6 +124,7 @@
                     </div>
 
                     <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
             </div>
             {% endif %}
             {% if form.catalogue_sources.field.choices and form.group.value == 'group:nonTna' %}

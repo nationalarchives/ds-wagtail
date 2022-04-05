@@ -116,12 +116,14 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
     )
     opening_start_date = forms.DateTimeField(
+        label="From",
         widget=forms.DateTimeInput(
             attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
         ),
         required=False,
     )
     opening_end_date = forms.DateTimeField(
+        label="To",
         widget=forms.DateTimeInput(
             attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
         ),
