@@ -51,8 +51,8 @@ class Record(DataLayerMixin, APIModel):
     level: str = ""
     template_reference_number: str = ""
     template_summary_title: str = ""
-    hierarchy3_reference_number: str = ""
-    hierarchy3_summary_title: str = ""
+    hierarchy_level3_reference_number: str = ""
+    hierarchy_level3_summary_title: str = ""
 
     _debug_kong_result: dict = field(default_factory=dict)
 
@@ -96,7 +96,7 @@ class Record(DataLayerMixin, APIModel):
             if self.repo_archon_value and self.repo_summary_title:
                 return self.repo_archon_value + " - " + self.repo_summary_title
             else:
-                return ""
+                return "Held by not available"
 
         def get_customdimension12(self):
             if self.level_code and self.level:
@@ -105,17 +105,14 @@ class Record(DataLayerMixin, APIModel):
                 return ""
 
         def get_customdimension13(self):
-            if self.level_code in ("1", "2", "3"):
-                return ""
+            if self.hierarchy_level3_reference_number and self.hierarchy_level3_summary_title:
+                return (
+                    self.hierarchy_level3_reference_number
+                    + " - "
+                    + self.hierarchy_level3_summary_title
+                )
             else:
-                if self.hierarchy3_reference_number and self.hierarchy3_summary_title:
-                    return (
-                        self.hierarchy3_reference_number
-                        + " - "
-                        + self.hierarchy3_summary_title
-                    )
-                else:
-                    return ""
+                return ""
 
         def get_customdimension14(self):
             if self.template_reference_number and self.template_summary_title:

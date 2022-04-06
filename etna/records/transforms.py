@@ -63,15 +63,11 @@ def transform_record_result(result):
             if "identifier" in i
         ]
         try:
-            # non mandatory data
-            if hierarchy3 := hierarchy[0][2]:
-                data["hierarchy3_reference_number"] = hierarchy3.get("identifier")[0][
-                    "reference_number"
-                ]
-                data["hierarchy3_summary_title"] = hierarchy3.get("summary").get(
-                    "title"
-                )
-        except Exception:
+            # checking level.code through all dicts since it is non-mandatory
+            if hierarchy_level3 := [i for i in hierarchy[0] if i.get("level", {}).get("code","") == 3]:
+                data["hierarchy_level3_reference_number"] = hierarchy_level3[0]["identifier"][0]["reference_number"]
+                data["hierarchy_level3_summary_title"] = hierarchy_level3[0]["summary"]["title"]
+        except IndexError:
             pass
 
     if availability := source.get("availability"):
