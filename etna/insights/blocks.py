@@ -1,13 +1,17 @@
 from django.conf import settings
 from django.utils.html import format_html
+from django.utils.text import slugify
 
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
+    ContentImageBlock,
+    DepthAwareStructBlock,
     ImageBlock,
     PageListBlock,
+    ParagraphBlock,
     ParagraphWithHeading,
     QuoteBlock,
     SectionBlock,
@@ -200,7 +204,82 @@ class InsightsIndexPageStreamBlock(blocks.StreamBlock):
     paragraph = ParagraphWithHeading()
 
 
+class DepthAwareQuoteBlock(DepthAwareStructBlock):
+    """
+    A unique version of QuoteBlock for use in multi-level 'section'
+    blocks, where the heading element automatically changes to match
+    the content depth.
+    """
+
+    heading = blocks.CharBlock(required=False, max_length=100)
+    quote = blocks.RichTextBlock(
+        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
+    attribution = blocks.CharBlock(required=False, max_length=100)
+
+    class Meta:
+        icon = "openquote"
+        label = "Quote"
+        template = "insights/blocks/quote.html"
+
+
+class SubHeadingBlock(DepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100)
+
+    class Meta:
+        icon = "heading"
+        template = "insights/blocks/sub_heading.html"
+
+
+class SubSectionContentBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    quote = DepthAwareQuoteBlock()
+    sub_heading = SubHeadingBlock(label="H4")
+    image = ContentImageBlock()
+    media = MediaBlock()
+
+    featured_record = FeaturedRecordBlock()
+    featured_records = FeaturedRecordsBlock()
+    promoted_item = PromotedItemBlock()
+    promoted_list = PromotedListBlock()
+    related_items = RelatedItemsBlock()
+
+
+class ContentSubSectionBlock(DepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Sub-section heading (H3)")
+    content = SubSectionContentBlock()
+
+    class Meta:
+        label = "Sub-section"
+        template = "insights/blocks/section.html"
+
+
+class SectionContentBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    quote = DepthAwareQuoteBlock()
+    sub_heading = SubHeadingBlock(label="H3")
+    content_sub_section = ContentSubSectionBlock()
+    image = ContentImageBlock()
+    media = MediaBlock()
+
+    featured_record = FeaturedRecordBlock()
+    featured_records = FeaturedRecordsBlock()
+    promoted_item = PromotedItemBlock()
+    promoted_list = PromotedListBlock()
+    related_items = RelatedItemsBlock()
+
+
+class ContentSectionBlock(DepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Section heading (H2)")
+    content = SectionContentBlock(required=False)
+
+    class Meta:
+        label = "Section"
+        template = "insights/blocks/section.html"
+
+
 class InsightsPageStreamBlock(blocks.StreamBlock):
+    content_section = ContentSectionBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     media = MediaBlock()
