@@ -105,7 +105,10 @@ class Record(DataLayerMixin, APIModel):
                 return ""
 
         def get_customdimension13(self):
-            if self.hierarchy_level3_reference_number and self.hierarchy_level3_summary_title:
+            if (
+                self.hierarchy_level3_reference_number
+                and self.hierarchy_level3_summary_title
+            ):
                 return (
                     self.hierarchy_level3_reference_number
                     + " - "
