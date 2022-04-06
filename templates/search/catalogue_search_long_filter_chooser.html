@@ -13,7 +13,16 @@
                 <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" >Cancel and return to results</a>
             </div>
             <div class="long-filters__form">
-            {{ form.collections }}
+                <div class="long-filters__form-filters">
+                    <ul class="long-filters__form-filters-list">
+
+                    {% for field in  form.collections %}
+                        <li class="long-filters__form-filters-list-item">
+                        {{field}}
+                        </li>
+                    {% endfor %}
+                    </ul>
+                </div>
 
             {% comment %}
                 Hide the rest of the form to preserve the state of the current search.

@@ -1,0 +1,108 @@
+.long-filters {
+    margin-left: 1rem;
+    margin-right: 1rem;
+
+    @media only screen and (min-width: $screen__md) {
+        margin-left: 2rem;
+        margin-right: 2rem;
+    }
+    &__heading {
+        font-family: $font__supria-sans;
+    }
+
+    &__options {
+        margin-top: 4rem;
+        padding-bottom: 2rem;
+        margin-bottom: 2rem;
+        border-bottom: 3px dotted $color__grey-4;
+
+        @media only screen and (min-width: $screen__md) {
+            display: flex;
+            justify-content: space-between;
+        }
+
+    }
+
+    &__form {
+        @media only screen and (min-width: $screen__md) {
+            display: flex;
+        }
+
+        &-filters {
+            @media only screen and (max-width: $screen__md) {
+                margin-top: 2rem;
+                margin-left: 2rem;
+            }
+
+            &-list {
+                padding-left: 0;
+                margin-bottom: 0;
+
+                @media only screen and (min-width: $screen__md) {
+                    column-count: 4;
+                    column-gap: 2rem;
+                    column-width: 25%;
+                }
+
+                &-item {
+                    list-style: none;
+                    margin-right: 4rem;
+                    width: 100%;
+                    max-width: 20rem;
+                    vertical-align: text-top;
+                }
+            }
+
+            &-checkbox {
+                &:focus {
+                    outline: 5px solid $color__focus-blue-outline-light-bg;
+                }
+                margin-right: 0.2rem;
+            }
+
+            &-label {
+                cursor: pointer;
+                max-width: 85%;
+                vertical-align: top;
+            }
+        }
+
+        &-search {
+            background-color: $color__grey-4;
+            border: 1px solid $color__grey-3;
+            padding: 1rem;
+            max-height: 12rem;
+            &-label {
+                display: block;
+            }
+            &-button {
+                @extend .tna-button;
+                display: block;
+                margin-top: 0.25rem;
+                cursor: pointer;
+            }
+            &-box {
+                width: 100%;
+                max-width: 15rem;
+                margin-bottom: 0.5rem;
+                border: 1px solid $color__grey-3;
+                border-radius: 0.5rem;
+                height: 2.7rem;
+                padding: 1rem;
+            }
+        }
+    }
+
+    &__submit-section {
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 3px dotted $color__grey-4;
+        margin-bottom: 2rem;
+    }
+
+    &__submit-button {
+        @extend .tna-button;
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+}
