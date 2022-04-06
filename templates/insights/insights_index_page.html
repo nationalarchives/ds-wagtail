@@ -3,6 +3,7 @@
 {% load static %}
 {% load i18n %}
 {% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
@@ -10,28 +11,57 @@
         <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>
 
-    {% comment %}
-        NOTE: TO BE REFINED BY FE
-        {% if page.featured_insight %}
-            <div class="featured-insight">
-                <a href="{% pageurl page.featured_insight %}">
-                    <h3>
-                        <small>{% trans "Collection hightlight" %}</small><br>
-                        {{ page.featured_insight.title }}
-                    </h3>
-                    <p>Donec nec justo eget felis facilisis fermentum. Aliquam porttitor mauris sit amet orci. Aenean dignissim pellentesque felis.</p>
-                </a>
+    {% if page.featured_insight %}
+    <div class="container">
+        <div class="featured-insight">
+            {% if page.featured_insight.hero_image %}
+                <div class="featured-insight__image">
+                    {% if page.featured_insight.hero_image_caption %}
+                    <figure>
+                    {% endif %}
+                    <picture>
+                        {% image page.featured_insight.hero_image fill-412x361 as hero %}
+                        <source media="(max-width: 480px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-510x351 as hero %}
+                        <source media="(max-width: 640px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-510x304 as hero %}
+                        <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-345x495 as hero %}
+                        <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-555x367 as hero %}
+                        <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+                        {% if page.featured_insight.hero_image_decorative %}
+                            <img src="{{ hero.url }}" alt="" />
+                        {% else %}
+                            <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
+                        {% endif %}
+                    </picture>
+                    {% if page.featured_insight.hero_image_caption %}
+                        <figcaption class="hero-image__figcaption">{{ page.featured_insight.hero_image_caption|richtext }}</figcaption>
+                    </figure>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <div class="featured-insight__description">
+                <h2 class="featured-insight__heading">
+                    <small>{% trans "Collection highlight" %}</small>
+                    {{ page.featured_insight.title }}
+                </h2>
+                <p>{{ page.featured_insight.sub_heading }}</p>
+                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}">Read</a>
             </div>
-        {% endif %}
-    {% endcomment %}
+        </div>
+    </div>
+    {% endif %}
 
-    {% include_block page.featured_collections %}
-
-    {% for block in page.body %}
-        {% include_block block %}
-    {% endfor %}
+    <div class="container">
+        {% include_block page.featured_collections %}
+    </div>
 
     <div class="container mt-4" data-container-name="{{ page.title }}">
+        <h2>Discover all stories</h2>
+        <p>Browse and explore the human stories behind The National Archives’ collection.</p>
         <ul class="card-group--list-style-none">
             {% for insights_page in insights_pages %}
                 {% with page=insights_page.specific %}
