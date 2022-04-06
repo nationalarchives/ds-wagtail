@@ -12,44 +12,33 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         root = Site.objects.get().root_page
 
         self.insights_page = InsightsPage(
-            title="Insights page", sub_heading="Introduction"
-        )
-        self.insights_page.body = json.dumps(
-            [
-                {
-                    "type": "section",
-                    "value": {"heading": "Section One"},
-                },
-                {
-                    "type": "section",
-                    "value": {"heading": "Section Two"},
-                },
-            ]
+            title="Insights page",
+            sub_heading="Introduction",
+            body=json.dumps(
+                [
+                    {
+                        "type": "content_section",
+                        "value": {"heading": "Section One", "content": []},
+                    },
+                    {
+                        "type": "content_section",
+                        "value": {"heading": "Section Two", "content": []},
+                    },
+                ]
+            ),
         )
         root.add_child(instance=self.insights_page)
 
-    def test_jumplinks_rendered(self):
+    def test_jumplink_rendering(self):
         response = self.client.get(self.insights_page.get_url())
         self.assertContains(response, "jumplinks")
-
-    def test_section_one_id(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'id="section-one"')
-
-    def test_section_one_url(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'href="#section-one"')
-
-    def test_section_two_id(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'id="section-two"')
-
-    def test_section_two_url(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'href="#section-two"')
+        self.assertContains(response, 'href="#h2.section-one"')
+        self.assertContains(response, 'href="#h2.section-two"')
+        self.assertContains(response, 'id="h2.section-one"')
+        self.assertContains(response, 'id="h2.section-two"')
 
     def test_jumplinks_not_rendered_if_page_has_no_sections(self):
-        self.insights_page.body = json.dumps([])
+        self.insights_page.body = "[]"
         self.insights_page.save()
 
         response = self.client.get(self.insights_page.get_url())

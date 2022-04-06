@@ -16,6 +16,10 @@ class SectionDepthAwareStructBlock(blocks.StructBlock):
     passed through the parent level.
     """
 
+    def get_heading_id(self, value, heading_level: str = "h2"):
+        if heading := value.get("heading"):
+            return f"{heading_level}.{slugify(heading)}"
+
     def get_context(self, value, parent_context=None):
         context = super().get_context(value, parent_context)
         try:
@@ -24,15 +28,9 @@ class SectionDepthAwareStructBlock(blocks.StructBlock):
             content_depth = 1
 
         heading_level = f"h{content_depth + 1}"
-
-        if heading := value.get("heading"):
-            heading_id = f"{heading_level}.{slugify(heading)}"
-        else:
-            heading_id = ""
-
         context.update(
             content_depth=content_depth,
             heading_level=heading_level,
-            heading_id=heading_id,
+            heading_id=self.get_heading_id(value, heading_level),
         )
         return context
