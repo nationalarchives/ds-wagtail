@@ -64,9 +64,15 @@ def transform_record_result(result):
         ]
         try:
             # checking level.code through all dicts since it is non-mandatory
-            if hierarchy_level3 := [i for i in hierarchy[0] if i.get("level", {}).get("code","") == 3]:
-                data["hierarchy_level3_reference_number"] = hierarchy_level3[0]["identifier"][0]["reference_number"]
-                data["hierarchy_level3_summary_title"] = hierarchy_level3[0]["summary"]["title"]
+            if hierarchy_level3 := [
+                i for i in hierarchy[0] if i.get("level", {}).get("code", "") == 3
+            ]:
+                data["hierarchy_level3_reference_number"] = hierarchy_level3[0][
+                    "identifier"
+                ][0]["reference_number"]
+                data["hierarchy_level3_summary_title"] = hierarchy_level3[0]["summary"][
+                    "title"
+                ]
         except IndexError:
             pass
 
