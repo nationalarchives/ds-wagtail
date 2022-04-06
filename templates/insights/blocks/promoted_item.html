@@ -20,10 +20,10 @@
             {{ value.category.name }}
         </p>
 
-        <h3 class="promoted-item__heading">
+        <{{ heading_level }} class="promoted-item__heading">
             <span class="sr-only">{{ value.category.name }}</span>
             {{ value.title }}
-        </h3>
+        </{{ heading_level }}>
 
         {% if value.publication_date %}
         <p class="promoted-item__date">

@@ -12,10 +12,9 @@
             {{ value.category.name }}
         </p>
 
-        <h3 class="related-resources__heading">
+        <{{ heading_level }} class="related-resources__heading">
             {{ value.heading }}
-            <span class="sr-only">{{ value.heading }}</span>
-        </h3>
+        </{{ heading_level }}>
 
         {% if value.summary %}
         <div class="related-resources__description">

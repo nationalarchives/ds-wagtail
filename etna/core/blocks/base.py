@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from wagtail.core import blocks
 
 
-class DepthAwareStructBlock(blocks.StructBlock):
+class SectionDepthAwareStructBlock(blocks.StructBlock):
     """
     A StructBlock that includes "content_depth" and "heading_level" values in
     the context that reflect the depth of the block within the StreamField

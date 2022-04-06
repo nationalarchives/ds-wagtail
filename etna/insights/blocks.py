@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.utils.html import format_html
-from django.utils.text import slugify
 
 from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
@@ -8,20 +7,18 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
     ContentImageBlock,
-    DepthAwareStructBlock,
+    SectionDepthAwareStructBlock,
     ImageBlock,
     PageListBlock,
     ParagraphBlock,
     ParagraphWithHeading,
-    QuoteBlock,
-    SectionBlock,
 )
 
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordChooserBlock
 
 
-class FeaturedRecordBlock(blocks.StructBlock):
+class FeaturedRecordBlock(SectionDepthAwareStructBlock):
     record = RecordChooserBlock()
     image = ImageBlock(
         label="Teaser image",
@@ -35,10 +32,8 @@ class FeaturedRecordBlock(blocks.StructBlock):
         template = "insights/blocks/featured_record.html"
 
 
-class FeaturedRecordsBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(
-        max_length=100, required=True, label="Heading (heading level 3)"
-    )
+class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100, required=True)
     introduction = blocks.CharBlock(max_length=200, required=True)
     records = blocks.ListBlock(
         RecordChooserBlock,
@@ -49,11 +44,11 @@ class FeaturedRecordsBlock(blocks.StructBlock):
         template = "insights/blocks/featured_records.html"
 
 
-class PromotedItemBlock(blocks.StructBlock):
+class PromotedItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         max_length=100,
         help_text="Title of the promoted page",
-        label="Title (heading level 3)",
+        label="Title",
     )
     category = SnippetChooserBlock("categories.Category")
     publication_date = blocks.DateBlock(required=False)
@@ -101,7 +96,7 @@ class PromotedItemBlock(blocks.StructBlock):
         form_template = "form_templates/default-form-with-safe-label.html"
 
 
-class PromotedListItemBlock(blocks.StructBlock):
+class PromotedListItemBlock(SectionDepthAwareStructBlock):
     """
     Items for promoted list block.
     """
@@ -110,7 +105,7 @@ class PromotedListItemBlock(blocks.StructBlock):
         required=True,
         max_length=100,
         help_text="Title of the promoted page",
-        label="Heading (heading level 4)",
+        label="Heading",
     )
     description = blocks.RichTextBlock(
         required=False,
@@ -123,14 +118,12 @@ class PromotedListItemBlock(blocks.StructBlock):
         icon = "star"
 
 
-class PromotedListBlock(blocks.StructBlock):
+class PromotedListBlock(SectionDepthAwareStructBlock):
     """
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    heading = blocks.CharBlock(
-        required=True, max_length=100, label="Heading (heading level 3)"
-    )
+    heading = blocks.CharBlock(required=True, max_length=100)
     category = SnippetChooserBlock("categories.Category")
     summary = blocks.RichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -143,11 +136,10 @@ class PromotedListBlock(blocks.StructBlock):
         template = "insights/blocks/promoted_list_block.html"
 
 
-class RelatedItemBlock(blocks.StructBlock):
+class RelatedItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         max_length=100,
         help_text="Title of the promoted page",
-        label="Heading (heading level 3)",
     )
     description = blocks.TextBlock(
         help_text="A description of the promoted page",
@@ -163,14 +155,12 @@ class RelatedItemBlock(blocks.StructBlock):
         template = "insights/blocks/related_item.html"
 
 
-class RelatedItemsBlock(blocks.StructBlock):
+class RelatedItemsBlock(SectionDepthAwareStructBlock):
     """
     Items for promoted list block.
     """
 
-    heading = blocks.CharBlock(
-        required=True, max_length=100, label="Heading (heading level 3)"
-    )
+    heading = blocks.CharBlock(required=True, max_length=100)
     description = blocks.CharBlock(required=True, max_length=100)
     related_items = blocks.ListBlock(RelatedItemBlock)
 
@@ -182,7 +172,7 @@ class RelatedItemsBlock(blocks.StructBlock):
         }
 
 
-class FeaturedCollectionBlock(blocks.StructBlock):
+class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100)
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
@@ -195,7 +185,7 @@ class FeaturedCollectionBlock(blocks.StructBlock):
     )
 
     class Meta:
-        icon = "ul"
+        icon = "list"
         label = "Featured collection"
         template = "insights/blocks/featured_collection.html"
 
@@ -204,7 +194,7 @@ class InsightsIndexPageStreamBlock(blocks.StreamBlock):
     paragraph = ParagraphWithHeading()
 
 
-class DepthAwareQuoteBlock(DepthAwareStructBlock):
+class QuoteBlock(SectionDepthAwareStructBlock):
     """
     A unique version of QuoteBlock for use in multi-level 'section'
     blocks, where the heading element automatically changes to match
@@ -223,7 +213,7 @@ class DepthAwareQuoteBlock(DepthAwareStructBlock):
         template = "insights/blocks/quote.html"
 
 
-class SubHeadingBlock(DepthAwareStructBlock):
+class SubHeadingBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100)
 
     class Meta:
@@ -233,7 +223,7 @@ class SubHeadingBlock(DepthAwareStructBlock):
 
 class SubSectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
-    quote = DepthAwareQuoteBlock()
+    quote = QuoteBlock()
     sub_heading = SubHeadingBlock(label="H4")
     image = ContentImageBlock()
     media = MediaBlock()
@@ -245,7 +235,7 @@ class SubSectionContentBlock(blocks.StreamBlock):
     related_items = RelatedItemsBlock()
 
 
-class ContentSubSectionBlock(DepthAwareStructBlock):
+class ContentSubSectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, label="Sub-section heading (H3)")
     content = SubSectionContentBlock()
 
@@ -256,7 +246,7 @@ class ContentSubSectionBlock(DepthAwareStructBlock):
 
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
-    quote = DepthAwareQuoteBlock()
+    quote = QuoteBlock()
     sub_heading = SubHeadingBlock(label="H3")
     content_sub_section = ContentSubSectionBlock()
     image = ContentImageBlock()
@@ -269,7 +259,7 @@ class SectionContentBlock(blocks.StreamBlock):
     related_items = RelatedItemsBlock()
 
 
-class ContentSectionBlock(DepthAwareStructBlock):
+class ContentSectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, label="Section heading (H2)")
     content = SectionContentBlock(required=False)
 
@@ -280,12 +270,3 @@ class ContentSectionBlock(DepthAwareStructBlock):
 
 class InsightsPageStreamBlock(blocks.StreamBlock):
     content_section = ContentSectionBlock()
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
-    media = MediaBlock()
-    paragraph_with_heading = ParagraphWithHeading()
-    promoted_item = PromotedItemBlock()
-    promoted_list = PromotedListBlock()
-    quote = QuoteBlock()
-    related_items = RelatedItemsBlock()
-    section = SectionBlock()
