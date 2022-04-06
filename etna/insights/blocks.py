@@ -5,12 +5,16 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from ..images.blocks import ImageBlock
+from etna.core.blocks import (
+    ImageBlock,
+    PageListBlock,
+    ParagraphWithHeading,
+    QuoteBlock,
+    SectionBlock,
+)
+
 from ..media.blocks import MediaBlock
-from ..paragraphs.blocks import ParagraphWithHeading
-from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
-from ..sections.blocks import SectionBlock
 
 
 class FeaturedRecordBlock(blocks.StructBlock):
@@ -172,6 +176,24 @@ class RelatedItemsBlock(blocks.StructBlock):
         block_counts = {
             "related_items": {"min_num": 1, "max_num": 1},
         }
+
+
+class FeaturedCollectionBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100)
+    description = blocks.TextBlock(max_length=200)
+    items = PageListBlock(
+        "insights.InsightsPage",
+        exclude_drafts=True,
+        exclude_private=False,
+        select_related=["teaser_image"],
+        min_num=3,
+        max_num=9,
+    )
+
+    class Meta:
+        icon = "ul"
+        label = "Featured collection"
+        template = "insights/blocks/featured_collection.html"
 
 
 class InsightsIndexPageStreamBlock(blocks.StreamBlock):

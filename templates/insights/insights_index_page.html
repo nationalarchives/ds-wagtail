@@ -25,6 +25,8 @@
         {% endif %}
     {% endcomment %}
 
+    {% include_block page.featured_collections %}
+
     {% for block in page.body %}
         {% include_block block %}
     {% endfor %}
