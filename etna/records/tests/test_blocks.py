@@ -54,7 +54,14 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 "sub_heading": "Introduction",
                 "body": streamfield(
                     [
-                        ("featured_record", {"record": "C123456"}),
+                        (
+                            "content_section", {
+                                "heading": "Heading",
+                                "content": streamfield(
+                                    [("featured_record", {"record": "C123456"})]
+                                )
+                            },
+                        ),
                     ]
                 ),
                 "action-publish": "Publish",
@@ -64,16 +71,17 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         response = self.client.post(
             reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,)), data
         )
-        self.insights_page.refresh_from_db()
-
         self.assertRedirects(
             response,
             reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
         )
 
-        self.assertEqual(self.insights_page.body[0].block_type, "featured_record")
-        self.assertEqual(self.insights_page.body[0].value["record"].iaid, "C123456")
-        self.assertEqual(self.insights_page.body[0].value["image"]["image"], None)
+        self.insights_page.refresh_from_db()
+
+        featured_record = self.insights_page.body[0].value["content"][0]
+        self.assertEqual(featured_record.block_type, "featured_record")
+        self.assertEqual(featured_record.value["record"].iaid, "C123456")
+        self.assertEqual(featured_record.value["image"]["image"], None)
 
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
