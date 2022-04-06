@@ -7,11 +7,11 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
     ContentImageBlock,
-    SectionDepthAwareStructBlock,
     ImageBlock,
     PageListBlock,
     ParagraphBlock,
     ParagraphWithHeading,
+    SectionDepthAwareStructBlock,
 )
 
 from ..media.blocks import MediaBlock
