@@ -42,4 +42,4 @@ class ParagraphWithHeading(blocks.StructBlock):
     class Meta:
         icon = "paragraph"
         label = "Paragraph with heading"
-        template = "paragraphs/blocks/paragraph-with-heading.html"
+        template = "blocks/paragraph-with-heading.html"

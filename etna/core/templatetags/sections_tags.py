@@ -5,7 +5,7 @@ from ..blocks import SectionBlock
 register = template.Library()
 
 
-@register.inclusion_tag("sections/tags/jumplinks.html")
+@register.inclusion_tag("includes/jumplinks.html")
 def jumplinks(page):
     return {
         "sections": [
