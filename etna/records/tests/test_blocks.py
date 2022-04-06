@@ -98,41 +98,6 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
     @responses.activate
-    def test_remove_records(self):
-        self.insights_page.body = json.dumps(
-            [
-                {
-                    "type": "featured_record",
-                    "value": {"record": "C123456"},
-                }
-            ]
-        )
-        self.insights_page.save()
-
-        data = nested_form_data(
-            {
-                "title": "Insights page changed",
-                "slug": "insights-page",
-                "sub_heading": "Introduction",
-                "body": streamfield([]),
-                "action-publish": "Publish",
-            }
-        )
-
-        response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,)), data
-        )
-        self.insights_page.refresh_from_db()
-
-        self.assertRedirects(
-            response,
-            reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
-        )
-        self.assertEqual(len(self.insights_page.body), 0)
-
-        self.assertEqual(len(responses.calls), 0)
-
-    @responses.activate
     def test_validation_error_if_no_record_in_post(self):
         data = nested_form_data(
             {
