@@ -98,33 +98,6 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
     @responses.activate
-    def test_validation_error_if_no_record_in_post(self):
-        data = nested_form_data(
-            {
-                "title": "Insights page changed",
-                "slug": "insights-page",
-                "sub_heading": "Introduction",
-                "body": streamfield(
-                    [
-                        ("featured_record", {"record": ""}),
-                    ]
-                ),
-                "action-publish": "Publish",
-            }
-        )
-
-        response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,)), data
-        )
-
-        # Finding a block error within the form is tricky. For now let's assume that if
-        # an error is raised in the StreamBlock, then the record chooser is responsible.
-        self.assertEqual(
-            response.context["form"].errors,
-            {"body": ["Validation error in StreamBlock"]},
-        )
-
-    @responses.activate
     def test_view_edit_page_with_featured_record(self):
         self.insights_page.body = json.dumps(
             [
