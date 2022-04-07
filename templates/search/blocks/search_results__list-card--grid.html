@@ -25,12 +25,12 @@
                 Catalogue reference: {{ record|record_detail:"referenceNumber"|default:"N/A" }}
             </li>
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-            <li class="search-results__list-card-metadata-item">
+            <!-- <li class="search-results__list-card-metadata-item">
                 IAID: {{ record|record_detail:"iaid" }}
             </li>
             <li class="search-results__list-card-metadata-item">
                 Score: {{ record|record_score }}
-            </li>
+            </li> -->
             {% comment %}End debug attributes.{% endcomment %}
         </ul>
     </div>

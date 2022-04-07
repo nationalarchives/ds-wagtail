@@ -244,5 +244,6 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
             ("group:audio", "Audio"),
             ("group:video", "Video"),
             ("group:insight", "Insights"),
+            ("group:highlight", "Highlights"),
         ],
     )
