@@ -15,15 +15,30 @@
         </h4>
         <p class="search-results__list-card-description">{{ record|record_detail:"description"|striptags }}</p>
         <ul class="search-results__list-card-metadata">
+            {% if record|record_detail:"heldBy" %}
+                <li class="search-results__list-card-metadata-item">
+                    Held by: {{ record|record_detail:"heldBy" }}
+                </li>
+            {% endif %}
+
+            {% if record|record_detail:"dateCreated" %}
+                <li class="search-results__list-card-metadata-item">
+                    Date: {{ record|record_detail:"dateCreated"|default:"N/A" }}
+                </li>
+            {% endif %}
+
+            {% if record|record_detail:"referenceNumber" %}
             <li class="search-results__list-card-metadata-item">
-                Held by: {{ record|record_detail:"heldBy" }}
+
+                {% if form.group.value == 'group:archive' %}
+                Archon code:
+                {% else %}
+                Catalogue reference: 
+                {% endif %}
+                
+                {{ record|record_detail:"referenceNumber"|default:"N/A" }}
             </li>
-            <li class="search-results__list-card-metadata-item">
-                Date: {{ record|record_detail:"dateCreated"|default:"N/A" }}
-            </li>
-            <li class="search-results__list-card-metadata-item">
-                Catalogue reference: {{ record|record_detail:"referenceNumber"|default:"N/A" }}
-            </li>
+            {% endif %}
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
             <!-- <li class="search-results__list-card-metadata-item">
                 IAID: {{ record|record_detail:"iaid" }}
