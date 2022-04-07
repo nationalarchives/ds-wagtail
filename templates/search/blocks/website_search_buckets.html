@@ -4,45 +4,45 @@
 <nav class="search-buckets" aria-label="Result categories">
     <ul class="search-buckets__list" data-id="search-buckets-list">
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'blog' as blog_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:blog" class="search-buckets__link" aria-current="{% if form.group.value == 'group:blog' %}true{% else %}false{% endif %}">
                 Blog posts ({{ blog_bucket_count|intcomma }})
             </a>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'researchGuide' as research_guide_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:researchGuide" class="search-buckets__link" aria-current="{% if form.group.value == 'group:researchGuide' %}true{% else %}false{% endif %}">
                 Research Guides ({{ research_guide_bucket_count|intcomma }})
             </a>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'insight' as research_guide_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:insight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:insight' %}true{% else %}false{% endif %}">
                 Insights ({{ research_guide_bucket_count|intcomma }})
             </a>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'audio' as audio_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:audio" class="search-buckets__link" aria-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
                 Audio ({{ audio_bucket_count|intcomma }})
             </a>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'video' as video_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:video" class="search-buckets__link" aria-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
                 Video ({{ video_bucket_count|intcomma }})
             </a>
         </li>
 
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'highlight' as highlight_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:highlight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
-                Highlight ({{ highlight_bucket_count|intcomma }})
+                Highlights ({{ highlight_bucket_count|intcomma }})
             </a>
         </li>
     </ul>
