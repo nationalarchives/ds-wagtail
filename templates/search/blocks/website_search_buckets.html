@@ -25,6 +25,13 @@
             </a>
         </li>
 
+        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
+            {% bucket_count bucket_count_response 'highlight' as highlight_bucket_count %}
+            <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:highlight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
+                Highlights ({{ highlight_bucket_count|intcomma }})
+            </a>
+        </li>
+
         <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
             {% bucket_count bucket_count_response 'audio' as audio_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:audio" class="search-buckets__link" aria-current="{% if form.group.value == 'group:audio' %}true{% else %}false{% endif %}">
@@ -36,13 +43,6 @@
             {% bucket_count bucket_count_response 'video' as video_bucket_count %}
             <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:video" class="search-buckets__link" aria-current="{% if form.group.value == 'group:video' %}true{% else %}false{% endif %}">
                 Video ({{ video_bucket_count|intcomma }})
-            </a>
-        </li>
-
-        <li class="search-buckets__list-item--website" data-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'highlight' as highlight_bucket_count %}
-            <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:highlight" class="search-buckets__link" aria-current="{% if form.group.value == 'group:highlight' %}true{% else %}false{% endif %}">
-                Highlights ({{ highlight_bucket_count|intcomma }})
             </a>
         </li>
     </ul>
