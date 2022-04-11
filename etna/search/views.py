@@ -2,6 +2,7 @@ from typing import Any, Dict, List
 
 from django.core.paginator import Page
 from django.forms import Form
+from django.http import Http404
 from django.shortcuts import render
 
 from wagtail.core.utils import camelcase_to_underscore
@@ -221,19 +222,30 @@ def catalogue_search(request):
     )
 
 
-def catalogue_search_long_filter_chooser(request):
-    """Output a list of collections for a user to choose from.
+def catalogue_search_long_filter_chooser(request, field_name: str):
+    """Output a full(er) list of filter options for a user to choose from.
 
-    Linked from the catalogue search page and Perform the user's current search
-    to fetch an applicable list of collections for the user to select.
+    Linked to from the catalogue search page and perform the user's current search
+    in order to get a suitable list of options to select from.
     """
 
-    # Number of aggrecation options to request from the API.
+    # Number of aggregation options to request from the API.
+    # (100 is the maximum supported by the API)
     AGGREGATION_SIZE = 100
 
     data = request.GET.copy()
     data.setdefault("group", "group:tna")
     form = CatalogueSearchForm(data)
+    api_aggregation_name = underscore_to_camelcase(field_name)
+
+    try:
+        bound_field = form[field_name]
+        field = form.fields[field_name]
+    except KeyError:
+        raise Http404(
+            f"'{field_name}' is not a valid field name. The value must be "
+            f"one of: {tuple(form.fields.keys())}."
+        )
 
     if form.is_valid():
         q = form.cleaned_data.get("q")
@@ -247,7 +259,7 @@ def catalogue_search_long_filter_chooser(request):
             filter_aggregations=get_api_filters_from_form_values(form),
             stream=Stream.EVIDENTIAL,
             aggregations=[
-                f"{Aggregation.COLLECTION}:{AGGREGATION_SIZE}",
+                f"{api_aggregation_name}:{AGGREGATION_SIZE}",
             ],
             opening_start_date=opening_start_date,
             opening_end_date=opening_end_date,
@@ -265,6 +277,9 @@ def catalogue_search_long_filter_chooser(request):
         "search/catalogue_search_long_filter_chooser.html",
         {
             "form": form,
+            "field_name": field_name,
+            "bound_field": bound_field,
+            "field": field,
         },
     )
 
