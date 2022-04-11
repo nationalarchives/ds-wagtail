@@ -14,10 +14,11 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
     def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         # The following attribue is used in templates to prevent rendering
         # unless choices have been updated to reflect options from the API
         self.choices_updated = False
-        super().__init__(*args, **kwargs)
+        self.configured_choices = self.choices
 
     def valid_value(self, value):
         """Disable validation if the field choices are not yet set."""
@@ -27,7 +28,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
     @cached_property
     def configured_choice_labels(self):
-        return {value: label for value, label in self.choices}
+        return {value: label for value, label in self.configured_choices}
 
     def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
         count = f"{data['doc_count']:,}"
@@ -225,17 +226,17 @@ class BaseCollectionSearchForm(forms.Form):
         # allowing both to be used in the template
         for field_name in return_value:
             field = self.fields[field_name]
-            if field.choices_updated:
-                # Remove counts from ends of labels
-                labels_map = {
+            if field.configured_choice_labels:
+                choice_labels = field.configured_choice_labels
+            elif field.choices_updated:
+                choice_labels = field.configured_choice_labels or {
                     value: re.sub(r" \([0-9\,]+\)$", "", label, 0)
                     for value, label in field.choices
                 }
             else:
-                # Use choice labels as they are
-                labels_map = {value: label for value, label in field.choices}
+                choice_labels = {value: label for value, label in field.choices}
             return_value[field_name] = [
-                (value, labels_map.get(value, value))
+                (value, choice_labels.get(value, value))
                 for value in return_value[field_name]
             ]
         return return_value
