@@ -12,6 +12,11 @@ from ..ciim.constants import COLLECTION_CHOICES, LEVEL_CHOICES
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
+    def __init__(self, *args, **kwargs):
+        # The following attribue is used in templates to prevent rendering
+        # unless choices have been updated to reflect options from the API
+        self.choices_updated = False
+        super().__init__(*args, **kwargs)
 
     def valid_value(self, value):
         """Disable validation if the field choices are not yet set."""
@@ -52,6 +57,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         if order_alphabetically:
             choices.sort(key=lambda x: x[1])
         self.choices = choices
+        # Indicate that this field is okay to be rendered
         self.choices_updated = True
 
 
