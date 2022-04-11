@@ -109,30 +109,6 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     return query_dict.urlencode()
 
 
-@register.simple_tag(takes_context=True)
-def get_selected_filters(context) -> dict:
-    """Collect selected filters from request.
-
-    Querying the GET QueryDict instead of the form allows us to
-    output a link to remove the filter even if the selected filter
-    isn't returned back to us from the API.
-
-    Returns an empty dict if no filters are selected.
-    """
-
-    request = context["request"]
-
-    selected_filters = {
-        "levels": request.GET.getlist("levels"),
-        "topics": request.GET.getlist("topics"),
-        "collections": request.GET.getlist("collections"),
-        "closure_statuses": request.GET.getlist("closure_statuses"),
-        "catalogue_sources": request.GET.getlist("catalogue_sources"),
-    }
-
-    return {k: v for k, v in selected_filters.items() if v}
-
-
 class RepeatableBoundField(BoundField):
     """
     A custom BoundField class that applies a 'suffix' to automatically
