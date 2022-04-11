@@ -12,6 +12,7 @@ from ..ciim.constants import COLLECTION_CHOICES, LEVEL_CHOICES
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
+
     def __init__(self, *args, **kwargs):
         # The following attribue is used in templates to prevent rendering
         # unless choices have been updated to reflect options from the API
@@ -215,27 +216,28 @@ class BaseCollectionSearchForm(forms.Form):
         should be moved to the view.
         """
         return_value = {
-            field_name: self.cleaned_data.get(field_name)
+            field_name: self.cleaned_data[field_name]
             for field_name in self.dynamic_choice_fields
+            if self.cleaned_data.get(field_name)
         }
 
-        # Remove items with no values
-        return_value = {k: v for k, v in return_value.items() if v}
-
-        # Replace raw values with (key, label) tuples
-        for field_name, selected_options in return_value.items():
-            for value, label in self.fields[key].choices:
-                if value in values:
-                    label_without_count = re.sub(r" \([0-9\,]+\)", "", label, 0)
-                    values.remove(value)
-                    values.append((value, label_without_count))
-
-        # Remove values that do not match choices
-        for value in return_value.values():
-            for i, item in enumerate(value):
-                if isinstance(item, str):
-                    value.pop(i)
-
+        # Replace field 'values' with (value, label) tuples,
+        # allowing both to be used in the template
+        for field_name in return_value:
+            field = self.fields[field_name]
+            if field.choices_updated:
+                # Remove counts from ends of labels
+                labels_map = {
+                    value: re.sub(r" \([0-9\,]+\)$", "", label, 0)
+                    for value, label in field.choices
+                }
+            else:
+                # Use choice labels as they are
+                labels_map = {value: label for value, label in field.choices}
+            return_value[field_name] = [
+                (value, labels_map.get(value, value))
+                for value in return_value[field_name]
+            ]
         return return_value
 
 
