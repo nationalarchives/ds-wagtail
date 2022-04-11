@@ -20,23 +20,17 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         return super().valid_value(value)
 
     @cached_property
-    def config_choice_labels(self):
+    def configured_choice_labels(self):
         return {value: label for value, label in self.choices}
 
     def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
         count = f"{data['doc_count']:,}"
-        # Firstly, use a label from the config choice values, if available
         try:
-            return f"{self.config_choice_labels[data['key']]} ({count})"
+            # Use a label from the configured choice values, if available
+            return f"{self.configured_choice_labels[data['key']]} ({count})"
         except KeyError:
-            pass
-        # Secondly, look for a 'label' value in the data provided by the API
-        try:
-            return f"{data['label']} ({count})"
-        except KeyError:
-            pass
-        # Fall back to using the key value (which is the same in most cases)
-        return f"{data['key']} ({count})"
+            # Fall back to using the key value (which is the same in most cases)
+            return f"{data['key']} ({count})"
 
     def update_choices(
         self, data: List[Dict[str, Union[str, int]]], order_alphabetically: bool = True
