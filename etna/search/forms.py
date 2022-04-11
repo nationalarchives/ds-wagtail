@@ -20,14 +20,14 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         return super().valid_value(value)
 
     @cached_property
-    def original_choice_labels(self):
+    def config_choice_labels(self):
         return {value: label for value, label in self.choices}
 
     def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
         count = f"{data['doc_count']:,}"
-        # Firstly, use a label from the original choice values, if available
+        # Firstly, use a label from the config choice values, if available
         try:
-            return f"{self.original_choice_labels[data['key']]} ({count})"
+            return f"{self.config_choice_labels[data['key']]} ({count})"
         except KeyError:
             pass
         # Secondly, look for a 'label' value in the data provided by the API
@@ -223,7 +223,7 @@ class BaseCollectionSearchForm(forms.Form):
         return_value = {k: v for k, v in return_value.items() if v}
 
         # Replace raw values with (key, label) tuples
-        for key, values in return_value.items():
+        for field_name, selected_options in return_value.items():
             for value, label in self.fields[key].choices:
                 if value in values:
                     label_without_count = re.sub(r" \([0-9\,]+\)", "", label, 0)
