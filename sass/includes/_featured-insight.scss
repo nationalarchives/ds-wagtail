@@ -1,0 +1,39 @@
+.featured-insight {
+    display: flex;
+    margin-bottom: 4rem;
+
+    &__image {
+        width: 50%;
+    }
+
+    &__description {
+        background-color: #FFCC00;
+        padding: 2rem 4rem 2rem 2rem;
+        width: 50%;
+        height: 100%;
+
+        p {
+            margin-top: 2rem;
+        }
+    }
+
+    &__heading {
+        border-bottom: 2px solid $color__dark;
+
+        small {
+            display: block;
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: $screen__md) {
+        display: block;
+        &__image, &__description {
+            width: 100%;
+
+            img {
+                width: 100%;
+            }
+        }
+    }
+}

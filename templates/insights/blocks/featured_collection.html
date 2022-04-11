@@ -1,23 +1,15 @@
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
 
-{% comment %}
-    NOTE: TO BE REFINED BY FE
-    <div class="featured-collection">
-        <h2>{{ value.heading }}</h2>
-        <p>{{ value.description }}</p>
-        <div class="featured-collection-list">
-            {% for item in value.items %}
-                <div class="featured-collection-list__item">
-                    {% if item.hero_image %}
-                        <div class="featured-collection-list__thumb">
-                            {% image item.teaser_image fill-200x100 alt="" %}
-                        </div>
-                    {% endif %}
-                    <h3><a href="{% pageurl item %}">{{ item.title }}</a></h3>
-                    <p>{{ item.sub_heading }}</p>
-                </div>
-            {% endfor %}
-        </div>
-    </div>
-{% endcomment %}
+<div class="featured-collection">
+    <h2>{{ value.heading }}</h2>
+    <p>{{ value.description }}</p>
+
+    <ul class="card-group--list-style-none">
+        {% for item in value.items %}
+            {% with page=item %}
+                {% include 'includes/card-group-secondary-nav.html' %}
+            {% endwith %}
+        {% endfor %}
+    </ul>
+</div>
