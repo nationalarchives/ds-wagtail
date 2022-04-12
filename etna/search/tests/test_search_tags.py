@@ -1,10 +1,6 @@
 from django.test import RequestFactory, SimpleTestCase
 
-from ..templatetags.search_tags import (
-    get_selected_filters,
-    query_string_exclude,
-    query_string_include,
-)
+from ..templatetags.search_tags import query_string_exclude, query_string_include
 
 
 class QueryStringTest(SimpleTestCase):
@@ -61,43 +57,3 @@ class QueryStringExcludeTest(SimpleTestCase):
         result = query_string_exclude(context, "page", "1")
 
         self.assertEqual(result, "test=true")
-
-
-class GetSelectedFiltersTest(SimpleTestCase):
-    def setUp(self):
-        self.factory = RequestFactory()
-
-    def test_no_selected_filters_returns_empty_dict(self):
-        context = {"request": self.factory.get("?test=true&to-remove=1")}
-
-        selected_filters = get_selected_filters(context)
-
-        self.assertEqual(selected_filters, {})
-
-    def test_selected_collection(self):
-        context = {"request": self.factory.get("?collections=collection:MAF")}
-
-        selected_filters = get_selected_filters(context)
-
-        self.assertEqual(
-            selected_filters,
-            {
-                "collections": ["collection:MAF"],
-            },
-        )
-
-    def test_multiple_selected_filters_with_same_param(self):
-        context = {
-            "request": self.factory.get(
-                "?collections=collection:MAF&collections=collection:WO"
-            )
-        }
-
-        selected_filters = get_selected_filters(context)
-
-        self.assertEqual(
-            selected_filters,
-            {
-                "collections": ["collection:MAF", "collection:WO"],
-            },
-        )

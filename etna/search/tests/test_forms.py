@@ -35,122 +35,106 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
 
 class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
-    def test_empty_form(self):
-        form = CatalogueSearchForm({})
-
-        form.is_valid()
-
-        self.assertEqual(
-            form.selected_filters(),
-            {
-                "levels": [],
-                "topics": [],
-                "collections": [],
-                "closure_statuses": [],
-                "catalogue_sources": [],
-            },
-        )
-
-    def test_selected_group_is_excluded(self):
+    def test_with_valid_filter_values(self):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
+                "topic": ["topic-one"],
+                "level": ["Division"],
+                "collection": ["WO", "AK"],
             }
         )
 
-        form.is_valid()
+        self.assertTrue(form.is_valid())
 
         self.assertEqual(
-            form.selected_filters(),
+            form.selected_filters,
             {
-                "levels": [],
-                "topics": [],
-                "collections": [],
-                "closure_statuses": [],
-                "catalogue_sources": [],
+                "collection": [
+                    (
+                        "WO",
+                        "WO - War Office, Armed Forces, Judge Advocate General, and related bodies",
+                    ),
+                    ("AK", "AK - County Courts"),
+                ],
+                "level": [("Division", "Division")],
+                "topic": [("topic-one", "topic-one")],
             },
         )
 
-    def test_selected_level(self):
+    def test_counts_are_removed_from_updated_choice_labels(self):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
-                "levels": ["level:level-one"],
+                "topic": ["topic-one"],
+                "level": ["Division"],
             }
         )
+        self.assertTrue(form.is_valid())
 
-        form.is_valid()
+        topic_field = form.fields["topic"]
+        level_field = form.fields["level"]
+
+        # Update topic field choices to include counts on labels
+        topic_field.update_choices(
+            [
+                {"key": "topic-one", "doc_count": 10},
+            ]
+        )
+        self.assertEqual(topic_field.choices, [("topic-one", "topic-one (10)")])
+
+        # Update level field choices to include counts on labels
+        level_field.update_choices(
+            [
+                {
+                    "key": "Division",
+                    "doc_count": 10,
+                },
+            ]
+        )
+        self.assertEqual(level_field.choices, [("Division", "Division (10)")])
 
         self.assertEqual(
-            form.selected_filters(),
+            form.selected_filters,
             {
-                "levels": ["level:level-one"],
-                "topics": [],
-                "collections": [],
-                "closure_statuses": [],
-                "catalogue_sources": [],
+                "topic": [("topic-one", "topic-one")],
+                "level": [("Division", "Division")],
             },
         )
 
-    def test_selected_topic(self):
+    def test_with_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
-                "topics": ["topic:topic-one"],
+                "level": ["foo"],
+                "collection": ["bar"],
             }
         )
+        self.assertFalse(form.is_valid())
+        self.assertEqual(form.selected_filters, {})
 
-        form.is_valid()
-
-        self.assertEqual(
-            form.selected_filters(),
-            {
-                "levels": [],
-                "topics": ["topic:topic-one"],
-                "collections": [],
-                "closure_statuses": [],
-                "catalogue_sources": [],
-            },
-        )
-
-    def test_selected_closure_status(self):
+    def test_with_partially_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
                 "group": "group:tna",
-                "closure_statuses": ["closure:closure-status-one"],
+                "topic": ["topic-one", "topic-two"],  # valid
+                "catalogue_source": ["catalogue-source-one"],  # valid
+                "level": ["foo"],  # invalid
+                "collection": ["bar"],  # invalid
             }
         )
 
-        form.is_valid()
+        self.assertFalse(form.is_valid())
 
         self.assertEqual(
-            form.selected_filters(),
+            form.selected_filters,
             {
-                "levels": [],
-                "topics": [],
-                "collections": [],
-                "closure_statuses": ["closure:closure-status-one"],
-                "catalogue_sources": [],
-            },
-        )
-
-    def test_selected_catalogue_sources(self):
-        form = CatalogueSearchForm(
-            {
-                "group": "group:tna",
-                "catalogue_sources": ["catalogueSources:catalogue-source-one"],
-            }
-        )
-
-        form.is_valid()
-
-        self.assertEqual(
-            form.selected_filters(),
-            {
-                "levels": [],
-                "topics": [],
-                "collections": [],
-                "closure_statuses": [],
-                "catalogue_sources": ["catalogueSources:catalogue-source-one"],
+                "topic": [
+                    ("topic-one", "topic-one"),
+                    ("topic-two", "topic-two"),
+                ],
+                "catalogue_source": [
+                    ("catalogue-source-one", "catalogue-source-one"),
+                ],
             },
         )

@@ -1,33 +1,50 @@
+import re
+
+from typing import Dict, List, Tuple, Union
+
 from django import forms
 from django.core.validators import MinLengthValidator
+from django.utils.functional import cached_property
 
 from ..ciim.client import SortBy, SortOrder
+from ..ciim.constants import COLLECTION_CHOICES, LEVEL_CHOICES
 
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
-    """MultipleChoiceField whose choices are populated by API response data.
+    """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
-    Valid filter options are returned by the API as aggregation data belong to
-    a result set.
-
-    This field populates its choice list from aggregation data. This means that
-    at the point of form validation, this field's choices are empty.
-    """
-
-    def __init__(self, filter_key, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        # prefix when passing to filter_aggregations. Format <prefix>:<key>
-        self.filter_key = filter_key
+        # The following attribue is used in templates to prevent rendering
+        # unless choices have been updated to reflect options from the API
+        self.choices_updated = False
+        self.configured_choices = self.choices
 
     def valid_value(self, value):
-        """Disable validation, field doesn't have choices until the API is called."""
-        return True
+        """Disable validation if the field choices are not yet set."""
+        if not self.choices:
+            return True
+        return super().valid_value(value)
 
-    def update_from_aggregations(self, aggregations):
-        """Populate choice list with aggregation data.
+    @cached_property
+    def configured_choice_labels(self):
+        return {value: label for value, label in self.configured_choices}
 
-        Expected format:
+    def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
+        count = f"{data['doc_count']:,}"
+        try:
+            # Use a label from the configured choice values, if available
+            return f"{self.configured_choice_labels[data['key']]} ({count})"
+        except KeyError:
+            # Fall back to using the key value (which is the same in most cases)
+            return f"{data['key']} ({count})"
+
+    def update_choices(
+        self, data: List[Dict[str, Union[str, int]]], order_alphabetically: bool = True
+    ):
+        """Populate choice list with aggregation data from the API.
+
+        Expected ``data`` format:
         [
             {
                 "key": "item",
@@ -36,13 +53,14 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             …
         ]
         """
-        if not aggregations:
-            return
-
-        self.choices = [
-            (f"{self.filter_key}:{i['key']}", f"{i['key']} ({i['doc_count']:,})")
-            for i in aggregations
+        choices = [
+            (item["key"], self.choice_label_from_api_data(item)) for item in data
         ]
+        if order_alphabetically:
+            choices.sort(key=lambda x: x[1])
+        self.choices = choices
+        # Indicate that this field is okay to be rendered
+        self.choices_updated = True
 
 
 class FeaturedSearchForm(forms.Form):
@@ -57,6 +75,24 @@ class FeaturedSearchForm(forms.Form):
 
 
 class BaseCollectionSearchForm(forms.Form):
+    """
+    NOTE: For dynamic fields (where choices are update from the API result), the field
+    name should be a lower-case/underscored version of the API filter name (which are
+    typically in in 'camelCase'). For example:
+
+    "fieldname" -> "fieldname"
+    "fieldName" -> "field_name"
+    """
+
+    # Fields who's choices are updated to reflect the API response
+    dynamic_choice_fields = (
+        "collection",
+        "level",
+        "topic",
+        "closure",
+        "catalogue_source",
+    )
+
     q = forms.CharField(
         label="Search term",
         # If no query is provided, pass None to client to fetch all results.
@@ -75,41 +111,38 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "search-filters__search"}),
     )
-    levels = DynamicMultipleChoiceField(
+    level = DynamicMultipleChoiceField(
         label="Level",
-        filter_key="level",
+        choices=LEVEL_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
+            attrs={"class": "search-filters__list"},
         ),
         required=False,
     )
-    topics = DynamicMultipleChoiceField(
+    topic = DynamicMultipleChoiceField(
         label="Topics",
-        filter_key="topic",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    collections = DynamicMultipleChoiceField(
-        label="Collections",
-        filter_key="collection",
+    collection = DynamicMultipleChoiceField(
+        label="Collection",
+        choices=COLLECTION_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    closure_statuses = DynamicMultipleChoiceField(
+    closure = DynamicMultipleChoiceField(
         label="Closure Status",
-        filter_key="closure",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
     )
-    catalogue_sources = DynamicMultipleChoiceField(
+    catalogue_source = DynamicMultipleChoiceField(
         label="Catalogue Sources",
-        filter_key="catalogueSource",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
@@ -170,55 +203,43 @@ class BaseCollectionSearchForm(forms.Form):
             # Either one or both date fields are empty. No further validation necessary.
             ...
 
-        cleaned_data["filter_aggregations"] = (
-            [cleaned_data.get("group")]
-            + cleaned_data.get("levels")
-            + cleaned_data.get("topics")
-            + cleaned_data.get("collections")
-            + cleaned_data.get("closure_statuses")
-            + cleaned_data.get("catalogue_sources")
-        )
-
         return cleaned_data
 
-    def update_from_response(self, *, response):
-        """Populate dynamic fields choices using aggregation data from API."""
-        aggregations = response["aggregations"]
-
-        self.fields["levels"].update_from_aggregations(
-            aggregations.get("level", {}).get("buckets")
-        )
-        self.fields["topics"].update_from_aggregations(
-            aggregations.get("topic", {}).get("buckets")
-        )
-        self.fields["collections"].update_from_aggregations(
-            aggregations.get("collection", {}).get("buckets")
-        )
-        self.fields["closure_statuses"].update_from_aggregations(
-            aggregations.get("closure", {}).get("buckets")
-        )
-        self.fields["catalogue_sources"].update_from_aggregations(
-            aggregations.get("catalogueSource", {}).get("buckets")
-        )
-
-    def selected_filters(self):
-        """List of selected filters, keyed by the corresponding field name.
+    @cached_property
+    def selected_filters(self) -> Dict[str, List[Tuple[str, str]]]:
+        """List of selected values, keyed by the corresponding field name.
 
         Used by template to output a list of selected filters.
 
         Method must be called on a bound form (post validation)
 
-        Note: selected filters differ from the filter_aggregations passed to
-        the client as 'group' isn't considered to be a filter.
-
+        TODO: When we inevitably shift to class-based views, this logic
+        should be moved to the view.
         """
-        return {
-            "levels": self.cleaned_data.get("levels"),
-            "topics": self.cleaned_data.get("topics"),
-            "collections": self.cleaned_data.get("collections"),
-            "closure_statuses": self.cleaned_data.get("closure_statuses"),
-            "catalogue_sources": self.cleaned_data.get("catalogue_sources"),
+        return_value = {
+            field_name: self.cleaned_data[field_name]
+            for field_name in self.dynamic_choice_fields
+            if self.cleaned_data.get(field_name)
         }
+
+        # Replace field 'values' with (value, label) tuples,
+        # allowing both to be used in the template
+        for field_name in return_value:
+            field = self.fields[field_name]
+            if field.configured_choice_labels:
+                choice_labels = field.configured_choice_labels
+            elif field.choices_updated:
+                choice_labels = field.configured_choice_labels or {
+                    value: re.sub(r" \([0-9\,]+\)$", "", label, 0)
+                    for value, label in field.choices
+                }
+            else:
+                choice_labels = {value: label for value, label in field.choices}
+            return_value[field_name] = [
+                (value, choice_labels.get(value, value))
+                for value in return_value[field_name]
+            ]
+        return return_value
 
 
 class CatalogueSearchForm(BaseCollectionSearchForm):
@@ -244,5 +265,6 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
             ("group:audio", "Audio"),
             ("group:video", "Video"),
             ("group:insight", "Insights"),
+            ("group:highlight", "Highlights"),
         ],
     )

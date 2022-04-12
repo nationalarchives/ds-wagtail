@@ -19,6 +19,12 @@
             margin-bottom: 1rem;
             font-family: $font__supria-sans;
             font-size: 1.2rem;
+
+            &--website {
+                @extend .search-buckets__list-item;
+                width:15%;
+            }
+
             @media only screen and (max-width: $screen__md) {
                 width: 100%;
                 display: block;
