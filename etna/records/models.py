@@ -84,21 +84,21 @@ class Record(DataLayerMixin, APIModel):
             return self.__class__.__name__
 
     @property
-    def _customdimension11(self) -> str:
+    def custom_dimension_11(self) -> str:
         if self.repo_archon_value and self.repo_summary_title:
             return self.repo_archon_value + " - " + self.repo_summary_title
         else:
             return "Held by not available"
 
     @property
-    def _customdimension12(self) -> str:
+    def custom_dimension_12(self) -> str:
         if self.level_code and self.level:
             return "Level " + self.level_code + " - " + self.level
         else:
             return ""
 
     @property
-    def _customdimension13(self) -> str:
+    def custom_dimension_13(self) -> str:
         if (
             self.hierarchy_level3_reference_number
             and self.hierarchy_level3_summary_title
@@ -112,7 +112,7 @@ class Record(DataLayerMixin, APIModel):
             return ""
 
     @property
-    def _customdimension14(self) -> str:
+    def custom_dimension_14(self) -> str:
         if self.template_reference_number and self.template_summary_title:
             return self.template_reference_number + " - " + self.template_summary_title
         else:
@@ -131,10 +131,10 @@ class Record(DataLayerMixin, APIModel):
         data.update(
             contentGroup1=self.get_gtm_content_group(),
             customDimension3="record detail",
-            customDimension11=self._customdimension11,
-            customDimension12=self._customdimension12,
-            customDimension13=self._customdimension13,
-            customDimension14=self._customdimension14,
+            customDimension11=self.custom_dimension_11,
+            customDimension12=self.custom_dimension_12,
+            customDimension13=self.custom_dimension_13,
+            customDimension14=self.custom_dimension_14,
             customDimension15=self.catalogue_source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.availability_delivery_condition,
