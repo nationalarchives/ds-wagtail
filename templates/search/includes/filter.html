@@ -1,0 +1,15 @@
+{% if field.field.choices and field.field.choices_updated %}
+    <div class="search-filters__accordion-section">
+        <fieldset>
+            <legend><h4 class="search-filters__accordion-section-heading">{{ field.label }}</h4></legend>
+            <div>
+                {{ field.errors }}
+                {{ field }}
+            </div>
+            {% if field.more_filter_options_available %}
+                <a href="{% url 'search-catalogue-long-filter-chooser' field_name=field.name %}?{{ request.GET.urlencode }}">See more</a>
+            {% endif %}
+            <input type="submit" value="Update" class="search-filters__submit">
+        </fieldset>
+    </div>
+{% endif %}

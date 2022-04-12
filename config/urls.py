@@ -77,7 +77,7 @@ public_urls = [
         name="search-website",
     ),
     path(
-        r"search/catalogue/long-filter-chooser/",
+        r"search/catalogue/long-filter-chooser/<str:field_name>/",
         login_required(search_views.catalogue_search_long_filter_chooser),
         name="search-catalogue-long-filter-chooser",
     ),

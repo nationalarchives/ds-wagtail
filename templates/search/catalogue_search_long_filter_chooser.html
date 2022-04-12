@@ -8,27 +8,25 @@
     <div class="long-filters">
         <h1 class="long-filters__heading">Select filters to apply to your results</h1>
         <form method="get" action="{% url 'search-catalogue' %}" >
+            {% prepare_form_for_partial_render form field_name %}
+
             <div class="long-filters__options">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
                 <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" >Cancel and return to results</a>
             </div>
+
             <div class="long-filters__form">
                 <div class="long-filters__form-filters">
                     <ul class="long-filters__form-filters-list">
-                    {% for field in form.collection %}
-                        <li class="long-filters__form-filters-list-item">
-                        {{field}}
-                        </li>
-                    {% endfor %}
+                        {% for option in bound_field %}
+                            <li class="long-filters__form-filters-list-item">{{ option }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
 
-            {% comment %}
-                Hide the rest of the form to preserve the state of the current search.
-            {% endcomment %}
-            {% for field in form %}
-                {{ field.as_hidden }}
-            {% endfor %}
+                {% for hidden_field in form.hidden_fields %}
+                    {{ hidden_field }}
+                {% endfor %}
             </div>
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
