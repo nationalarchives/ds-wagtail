@@ -66,6 +66,9 @@ def update_field_choices_to_refelect_api_response(
             field_name = camelcase_to_underscore(key)
             if field_name in form.dynamic_choice_fields:
                 form.fields[field_name].update_choices(buckets)
+                form[field_name].more_filter_options_available = bool(
+                    value.get("sum_other_doc_count", 0)
+                )
 
 
 # Aggregations and their headings, passed /searchAll to fetch
