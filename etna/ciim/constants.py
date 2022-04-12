@@ -1,3 +1,26 @@
+CATALOGUE_BUCKETS = {
+    "group:tna": {"label": "Records from The National Archives", "count_key": "tna"},
+    "group:digitised": {
+        "label": "Online records from The National Archives",
+        "count_key": "digitised",
+    },
+    "group:nonTna": {"label": "Records from other UK archives", "count_key": "nonTna"},
+    "group:creator": {"label": "Record creators", "count_key": "creator"},
+    "group:archive": {"label": "Find an archive", "count_key": "archive"},
+}
+
+WEBSITE_BUCKETS = {
+    "group:blog": {
+        "label": "Blog posts",
+        "count_key": "blog",
+    },
+    "group:researchGuide": {"label": "Research Guides", "count_key": "researchGuide"},
+    "group:insight": {"label": "Insights", "count_key": "insight"},
+    "group:highlight": {"label": "Highlights", "count_key": "highlight"},
+    "group:audio": {"label": "Audio", "count_key": "audio"},
+    "group:video": {"label": "Video", "count_key": "video"},
+}
+
 COLLECTION_NAMES = {
     "A": "Alienation Office",
     "AB": "UK Atomic Energy Authority",

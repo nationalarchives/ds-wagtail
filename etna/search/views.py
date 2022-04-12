@@ -8,6 +8,7 @@ from django.shortcuts import render
 from wagtail.core.utils import camelcase_to_underscore
 
 from ..ciim.client import Aggregation, SortOrder, Stream, Template
+from ..ciim.constants import CATALOGUE_BUCKETS, WEBSITE_BUCKETS
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
@@ -212,7 +213,8 @@ def catalogue_search(request):
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
     page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
-
+    current_group = data.get("group")
+    current_group_label = CATALOGUE_BUCKETS[current_group]["label"]
     return render(
         request,
         "search/catalogue_search.html",
@@ -221,6 +223,8 @@ def catalogue_search(request):
             "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
+            "current_group_label": current_group_label,
+            "CATALOGUE_BUCKETS": CATALOGUE_BUCKETS,
         },
     )
 
@@ -339,7 +343,8 @@ def website_search(request):
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
     page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
-
+    current_group = data.get("group")
+    current_group_label = WEBSITE_BUCKETS[current_group]["label"]
     return render(
         request,
         "search/website_search.html",
@@ -348,5 +353,7 @@ def website_search(request):
             "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
+            "current_group_label": current_group_label,
+            "WEBSITE_BUCKETS": WEBSITE_BUCKETS,
         },
     )
