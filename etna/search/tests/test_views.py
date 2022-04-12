@@ -72,7 +72,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(WagtailTestUtils, TestC
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get("/search/catalogue/long-filter-chooser/")
+        self.client.get("/search/catalogue/long-filter-chooser/collection/")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
