@@ -105,10 +105,6 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
-    group = forms.ChoiceField(
-        label="bucket",
-        choices=[],
-    )
     filter_keyword = forms.CharField(
         label="Search within",
         # If no filter_keyword is provided, pass None to client bypass search within
@@ -251,6 +247,7 @@ class CatalogueSearchForm(BaseCollectionSearchForm):
     group = forms.ChoiceField(
         label="bucket",
         choices=CATALOGUE_BUCKETS.as_choices(),
+        required=False,
     )
 
 
@@ -258,4 +255,5 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
     group = forms.ChoiceField(
         label="bucket",
         choices=WEBSITE_BUCKETS.as_choices(),
+        required=False,
     )
