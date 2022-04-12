@@ -49,10 +49,10 @@ class Record(DataLayerMixin, APIModel):
     repo_archon_value: str = ""
     level_code: str = ""
     level: str = ""
-    association_reference_number: str = ""
-    association_summary_title: str = ""
+    template_reference_number: str = ""
     template_summary_title: str = ""
-    data_source: str = ""
+    hierarchy_level3_reference_number: str = ""
+    hierarchy_level3_summary_title: str = ""
 
     _debug_kong_result: dict = field(default_factory=dict)
 
@@ -83,6 +83,41 @@ class Record(DataLayerMixin, APIModel):
         else:
             return self.__class__.__name__
 
+    @property
+    def custom_dimension_11(self) -> str:
+        if self.repo_archon_value and self.repo_summary_title:
+            return self.repo_archon_value + " - " + self.repo_summary_title
+        else:
+            return "Held by not available"
+
+    @property
+    def custom_dimension_12(self) -> str:
+        if self.level_code and self.level:
+            return "Level " + self.level_code + " - " + self.level
+        else:
+            return ""
+
+    @property
+    def custom_dimension_13(self) -> str:
+        if (
+            self.hierarchy_level3_reference_number
+            and self.hierarchy_level3_summary_title
+        ):
+            return (
+                self.hierarchy_level3_reference_number
+                + " - "
+                + self.hierarchy_level3_summary_title
+            )
+        else:
+            return ""
+
+    @property
+    def custom_dimension_14(self) -> str:
+        if self.template_reference_number and self.template_summary_title:
+            return self.template_reference_number + " - " + self.template_summary_title
+        else:
+            return ""
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """
         Returns data to be included in the Google Analytics datalayer when
@@ -91,20 +126,16 @@ class Record(DataLayerMixin, APIModel):
         Override this method on subclasses to add data that is relevant to a
         specific record type.
         """
+
         data = super().get_datalayer_data(request)
         data.update(
             contentGroup1=self.get_gtm_content_group(),
             customDimension3="record detail",
-            customDimension10=self.repo_archon_value,
-            customDimension11=self.repo_summary_title,
-            customDimension12="Level " + self.level_code + " - " + self.level,
-            customDimension13=self.association_reference_number
-            + " - "
-            + self.association_summary_title,
-            customDimension14=self.reference_number
-            + " - "
-            + self.template_summary_title,
-            customDimension15=self.data_source,
+            customDimension11=self.custom_dimension_11,
+            customDimension12=self.custom_dimension_12,
+            customDimension13=self.custom_dimension_13,
+            customDimension14=self.custom_dimension_14,
+            customDimension15=self.catalogue_source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.availability_delivery_condition,
         )
