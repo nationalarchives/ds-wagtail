@@ -1,26 +1,28 @@
-CATALOGUE_BUCKETS = {
-    "group:tna": {"label": "Records from The National Archives", "count_key": "tna"},
-    "group:digitised": {
-        "label": "Online records from The National Archives",
-        "count_key": "digitised",
-    },
-    "group:nonTna": {"label": "Records from other UK archives", "count_key": "nonTna"},
-    "group:creator": {"label": "Record creators", "count_key": "creator"},
-    "group:archive": {"label": "Find an archive", "count_key": "archive"},
-}
+from dataclasses import dataclass
 
-WEBSITE_BUCKETS = {
-    "group:blog": {
-        "label": "Blog posts",
-        "count_key": "blog",
-    },
-    "group:researchGuide": {"label": "Research Guides", "count_key": "researchGuide"},
-    "group:insight": {"label": "Insights", "count_key": "insight"},
-    "group:highlight": {"label": "Highlights", "count_key": "highlight"},
-    "group:audio": {"label": "Audio", "count_key": "audio"},
-    "group:video": {"label": "Video", "count_key": "video"},
-}
+@dataclass
+class Bucket:
+    key: str
+    label: str
 
+
+CATALOGUE_BUCKETS = (
+    Bucket(key="tna", label="Records from The National Archives"),
+    Bucket(key="digitised", label="Online records from The National Archives"),
+    Bucket(key="nonTna", label="Records from other UK archives"),
+    Bucket(key="creator", label="Record creators"),
+    Bucket(key="digitised", label="Online records from The National Archives"),
+    Bucket(key="archive", label="Find an archive"),
+)
+
+WEBSITE_BUCKETS = (
+    Bucket(key="blog", label="Blog posts"),
+    Bucket(key="researchGuide", label="Research Guides"),
+    Bucket(key="insight", label="Insights"),
+    Bucket(key="highlight", label="Highlights"),
+    Bucket(key="audio", label="Audio"),
+    Bucket(key="video", label="Video"),
+)
 COLLECTION_NAMES = {
     "A": "Alienation Office",
     "AB": "UK Atomic Energy Authority",
