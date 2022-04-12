@@ -3,11 +3,11 @@
 
 <nav class="search-buckets" aria-label="Result categories">
     <ul class="search-buckets__list" data-id="search-buckets-list">
-        {% for bucket_key, bucket_data in CATALOGUE_BUCKETS.items %}
-            <li class="search-buckets__list-item" data-current="{% if form.group.value == bucket_key %}true{% else %}false{% endif %}">
-                {% bucket_count bucket_count_response bucket_data.count_key as bucket_count %}
-                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{bucket_key}}" class="search-buckets__link" aria-current="{% if form.group.value == bucket_key %}true{% else %}false{% endif %}">
-                    {{bucket_data.label}} ({{ bucket_count|intcomma }})
+        {% for bucket in buckets %}
+            <li class="search-buckets__list-item" data-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{ bucket.key }}" class="search-buckets__link" aria-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
+                    {% bucket_count bucket_count_response bucket_data.count_key as bucket_count %}
+                    {{bucket.label}} ({{ bucket_count|intcomma }})
                 </a>
             </li>
         {% endfor %}
