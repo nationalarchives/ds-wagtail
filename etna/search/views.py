@@ -8,7 +8,7 @@ from django.shortcuts import render
 from wagtail.core.utils import camelcase_to_underscore
 
 from ..ciim.client import Aggregation, SortOrder, Stream, Template
-from ..ciim.constants import CATALOGUE_BUCKETS, WEBSITE_BUCKETS
+from ..ciim.constants import CATALOGUE_BUCKETS, FEATURED_BUCKETS, WEBSITE_BUCKETS
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
@@ -70,34 +70,6 @@ def update_field_choices_to_refelect_api_response(
                 )
 
 
-# Aggregations and their headings, passed /searchAll to fetch
-# counts and output along with grouped results.
-FEATURED_BUCKETS = [
-    {
-        "aggregation": "group:tna",
-        "heading": "Records from The National Archives",
-        "group": "tna",
-    },
-    {
-        "aggregation": "group:nonTna",
-        "heading": "Records from other UK archives",
-        "group": "nonTna",
-    },
-    {"aggregation": "group:creator", "heading": "Record creators", "group": "creator"},
-    {"aggregation": "group:blog", "heading": "Blogs", "group": "blog"},
-    {
-        "aggregation": "group:researchGuide",
-        "heading": "Research Guides",
-        "group": "researchGuide",
-    },
-    {
-        "aggregation": "group:insight",
-        "heading": "Stories from the collection",
-        "group": "insight",
-    },
-]
-
-
 def featured_search(request):
 
     responses = []
@@ -109,17 +81,15 @@ def featured_search(request):
 
         response = Record.api.client.search_all(
             q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS],
+            filter_aggregations=[f"group:{bucket.key}" for bucket in FEATURED_BUCKETS],
             size=3,
         )
         responses = response.get("responses", [])
 
     result_groups = {}
-    for i, response in enumerate(responses):
-        bucket = FEATURED_BUCKETS[i]
-        result_groups[bucket["group"]] = response
-        result_groups[bucket["group"]]["aggregation"] = bucket["aggregation"]
-        result_groups[bucket["group"]]["heading"] = bucket["heading"]
+    for i, bucket in enumerate(FEATURED_BUCKETS):
+        result_groups[bucket.key] = responses[i]
+        result_groups[bucket.key]["bucket"] = bucket
 
     return render(
         request,

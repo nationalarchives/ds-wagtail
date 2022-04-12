@@ -35,6 +35,7 @@ CATALOGUE_BUCKETS = BucketList(
         Bucket(key="archive", label="Find an archive"),
     ]
 )
+
 WEBSITE_BUCKETS = BucketList(
     [
         Bucket(key="blog", label="Blog posts"),
@@ -45,6 +46,18 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(key="video", label="Video"),
     ]
 )
+
+FEATURED_BUCKETS = BucketList(
+    [
+        Bucket(key="tna", label="Records from The National Archives"),
+        Bucket(key="nonTna", label="Records from other UK archives"),
+        Bucket(key="creator", label="Record creators"),
+        Bucket(key="blog", label="Blogs"),
+        Bucket(key="researchGuide", label="Research Guides"),
+        Bucket(key="insight", label="Stories from the collection"),
+    ]
+)
+
 COLLECTION_NAMES = {
     "A": "Alienation Office",
     "AB": "UK Atomic Energy Authority",
