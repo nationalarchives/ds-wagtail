@@ -6,7 +6,7 @@
         {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' %}
 
         {% comment %}
-         {% if form.group.value == 'group:tna' %}
+         {% if form.group.value == 'tna' %}
             <div class="search-filters__form-block">
                 TODO make this a django form element
                 <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
@@ -27,7 +27,7 @@
         <div class="search-filters__form-block">
 
             {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-            {% if not form.group.value == "group:archive" and not form.group.value == "group:creator" and not form.group.value == "group:highlight" %}
+            {% if not form.group.value == "archive" and not form.group.value == "creator" and not form.group.value == "highlight" %}
                 <h3>Refine results by</h3>
             {% endif %}
 
@@ -55,7 +55,7 @@
 
             {% include "search/includes/filter.html" with field=form.closure %}
 
-            {% if form.group.value == 'group:tna' or form.group.value == 'group:digitised' %}
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
             <div class="search-filters__accordion-section">
                 <fieldset>
                     <legend>
@@ -79,7 +79,7 @@
             </div>
             {% endif %}
 
-            {% if form.group.value == 'group:nonTna' %}
+            {% if form.group.value == 'nonTna' %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}
         </div>
