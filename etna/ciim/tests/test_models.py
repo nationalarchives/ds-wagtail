@@ -194,6 +194,10 @@ class ModelTranslationTest(TestCase):
                     "reference_number": "LO 2",
                     "title": "Law Officers' Department: Registered Files",
                 },
+                {
+                    "reference_number": "ADM 171",
+                    "title": "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls",
+                },
             ],
         )
 
@@ -307,23 +311,11 @@ class ModelTranslationTest(TestCase):
     def test_level(self):
         self.assertEqual(self.record.level, "Series")
 
-    def test_association_reference_number(self):
-        self.assertEqual(self.record.association_reference_number, "LO")
-
-    def test_association_summary_title(self):
-        self.assertEqual(
-            self.record.association_summary_title,
-            "Records created or inherited by the Law Officers' Department",
-        )
-
     def test_template_summary_title(self):
         self.assertEqual(
             self.record.template_summary_title,
             "Law Officers' Department: Registered Files",
         )
-
-    def test_data_source(self):
-        self.assertEqual(self.record.data_source, "mongo")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")

@@ -3,7 +3,7 @@ from django.shortcuts import Http404, render
 
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from ..models import Image, Record
+from ..models import Record
 
 
 def record_disambiguation_view(request, reference_number):
@@ -63,8 +63,9 @@ def record_detail_view(request, iaid):
 
     image = None
 
-    if page.is_digitised:
-        image = Image.search.filter(rid=page.media_reference_id).first()
+    # TODO: Kong open beta API does not support media. Re-enable/update once media is available.
+    # if page.is_digitised:
+    #     image = Image.search.filter(rid=page.media_reference_id).first()
 
     return render(
         request,
