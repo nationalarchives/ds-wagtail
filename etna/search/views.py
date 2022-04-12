@@ -363,7 +363,7 @@ def website_search(request):
             "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
-            "current_group_label": current_group_label,
-            "WEBSITE_BUCKETS": WEBSITE_BUCKETS,
+            "current_bucket": current_bucket,
+            "buckets": WEBSITE_BUCKETS,
         },
     )
