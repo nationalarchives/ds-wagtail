@@ -347,8 +347,14 @@ def website_search(request):
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
     page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
-    current_group = data.get("group")
-    current_group_label = WEBSITE_BUCKETS[current_group]["label"]
+    try:
+        group = data["group"]
+    except KeyError:
+        raise Http404("No 'group' param value specified.")
+    try:
+        current_bucket = WEBSITE_BUCKETS.get_bucket(group)
+    except KeyError:
+        raise Http404(f"Invalid 'group' param value specified: '{group}'")
     return render(
         request,
         "search/website_search.html",
