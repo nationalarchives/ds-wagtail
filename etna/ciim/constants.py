@@ -32,7 +32,6 @@ CATALOGUE_BUCKETS = BucketList(
         Bucket(key="digitised", label="Online records from The National Archives"),
         Bucket(key="nonTna", label="Records from other UK archives"),
         Bucket(key="creator", label="Record creators"),
-        Bucket(key="digitised", label="Online records from The National Archives"),
         Bucket(key="archive", label="Find an archive"),
     ]
 )
