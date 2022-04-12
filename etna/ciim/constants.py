@@ -6,33 +6,42 @@ from typing import List
 class Bucket:
     key: str
     label: str
-    
- 
+
+
 @dataclass
 class BucketList:
     buckets: List[Bucket]
-    
+
     def get_bucket(self, key):
         for bucket in self.buckets:
             if bucket.key == key:
                 return bucket
         raise KeyError(f"Bucket matching the key '{key}' could not be found")
-CATALOGUE_BUCKETS = BucketList([
-    Bucket(key="tna", label="Records from The National Archives"),
-    Bucket(key="digitised", label="Online records from The National Archives"),
-    Bucket(key="nonTna", label="Records from other UK archives"),
-    Bucket(key="creator", label="Record creators"),
-    Bucket(key="digitised", label="Online records from The National Archives"),
-    Bucket(key="archive", label="Find an archive"),
-])
-WEBSITE_BUCKETS = BucketList([
-    Bucket(key="blog", label="Blog posts"),
-    Bucket(key="researchGuide", label="Research Guides"),
-    Bucket(key="insight", label="Insights"),
-    Bucket(key="highlight", label="Highlights"),
-    Bucket(key="audio", label="Audio"),
-    Bucket(key="video", label="Video"),
-])
+
+    def __iter__(self):
+        yield from self.buckets
+
+
+CATALOGUE_BUCKETS = BucketList(
+    [
+        Bucket(key="tna", label="Records from The National Archives"),
+        Bucket(key="digitised", label="Online records from The National Archives"),
+        Bucket(key="nonTna", label="Records from other UK archives"),
+        Bucket(key="creator", label="Record creators"),
+        Bucket(key="digitised", label="Online records from The National Archives"),
+        Bucket(key="archive", label="Find an archive"),
+    ]
+)
+WEBSITE_BUCKETS = BucketList(
+    [
+        Bucket(key="blog", label="Blog posts"),
+        Bucket(key="researchGuide", label="Research Guides"),
+        Bucket(key="insight", label="Insights"),
+        Bucket(key="highlight", label="Highlights"),
+        Bucket(key="audio", label="Audio"),
+        Bucket(key="video", label="Video"),
+    ]
+)
 COLLECTION_NAMES = {
     "A": "Alienation Office",
     "AB": "UK Atomic Energy Authority",

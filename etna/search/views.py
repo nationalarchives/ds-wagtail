@@ -173,7 +173,7 @@ def catalogue_search(request):
     count = 0
 
     data = request.GET.copy()
-    data.setdefault("group", "group:tna")
+    data.setdefault("group", "tna")
     form = CatalogueSearchForm(data)
 
     if form.is_valid():
@@ -245,7 +245,7 @@ def catalogue_search_long_filter_chooser(request, field_name: str):
     AGGREGATION_SIZE = 100
 
     data = request.GET.copy()
-    data.setdefault("group", "group:tna")
+    data.setdefault("group", "tna")
     form = CatalogueSearchForm(data)
     api_aggregation_name = underscore_to_camelcase(field_name)
 
@@ -306,7 +306,7 @@ def website_search(request):
     count = 0
 
     data = request.GET.copy()
-    data.setdefault("group", "group:blog")
+    data.setdefault("group", "blog")
 
     form = WebsiteSearchForm(data)
     if form.is_valid():
