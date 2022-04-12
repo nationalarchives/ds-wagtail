@@ -1,0 +1,12 @@
+{% if field.field.choices and field.field.choices_updated %}
+    <div class="search-filters__accordion-section">
+        <fieldset>
+            <legend><h4 class="search-filters__accordion-section-heading">{{ field.label }}</h4></legend>
+            <div>
+                {{ field.errors }}
+                {{ field }}
+            </div>
+            <input type="submit" value="Update" class="search-filters__submit">
+        </fieldset>
+    </div>
+{% endif %}
