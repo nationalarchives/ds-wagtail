@@ -37,10 +37,8 @@ def get_api_filters_from_form_values(form: Form) -> List[str]:
         value = form.cleaned_data.get(field_name)
         filter_aggregations.extend((f"{filter_name}:{v}" for v in value))
 
-    # The 'group' field is handled separately, as it only returns a single
-    # value, which is currently still prefixed with "group:", which we don't
-    # want to repeat here
-    filter_aggregations.append(form.cleaned_data.get("group", "group:tna"))
+    # The 'group' field is handled separately, as it only returns a single value
+    filter_aggregations.append(f"group:{form.cleaned_data['group']}")
     return filter_aggregations
 
 

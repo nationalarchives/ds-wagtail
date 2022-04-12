@@ -12,6 +12,10 @@ class Bucket:
 class BucketList:
     buckets: List[Bucket]
 
+    def as_choices(self):
+        for bucket in self.buckets:
+            yield (bucket.key, bucket.label)
+
     def get_bucket(self, key):
         for bucket in self.buckets:
             if bucket.key == key:

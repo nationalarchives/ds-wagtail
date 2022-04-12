@@ -7,7 +7,12 @@ from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
 from ..ciim.client import SortBy, SortOrder
-from ..ciim.constants import COLLECTION_CHOICES, LEVEL_CHOICES
+from ..ciim.constants import (
+    CATALOGUE_BUCKETS,
+    COLLECTION_CHOICES,
+    LEVEL_CHOICES,
+    WEBSITE_BUCKETS,
+)
 
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
@@ -245,26 +250,12 @@ class BaseCollectionSearchForm(forms.Form):
 class CatalogueSearchForm(BaseCollectionSearchForm):
     group = forms.ChoiceField(
         label="bucket",
-        choices=[
-            ("group:tna", "TNA"),
-            ("group:nonTna", "NonTNA"),
-            ("group:creator", "Creator"),
-            ("group:archive", "Archive"),
-            ("group:digitised", "Digitised"),
-        ],
+        choices=CATALOGUE_BUCKETS.as_choices(),
     )
 
 
 class WebsiteSearchForm(BaseCollectionSearchForm):
     group = forms.ChoiceField(
         label="bucket",
-        choices=[
-            ("group:blog", "Blog"),
-            ("group:image", "Image"),
-            ("group:researchGuide", "Research Guide"),
-            ("group:audio", "Audio"),
-            ("group:video", "Video"),
-            ("group:insight", "Insights"),
-            ("group:highlight", "Highlights"),
-        ],
+        choices=WEBSITE_BUCKETS.as_choices(),
     )
