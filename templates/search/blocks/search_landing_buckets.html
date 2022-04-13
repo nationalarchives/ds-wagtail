@@ -2,39 +2,15 @@
 {% load humanize %}
 <div class="search-landing-buckets__container">
     <div class="search-landing-buckets">
-        {% comment %} TODO use variables for dynamic bucket rendering {% endcomment %}
         <ul class="search-landing-buckets__list" data-id="search-buckets-list">
-            <li class="search-landing-buckets__list-item" >
-                {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?group=group:tna" class="search-landing-buckets__link" >
-                    Records from The National Archives ({{ tna_bucket_count|intcomma }})
-                </a>
-            </li>
-
-            <li class="search-landing-buckets__list-item" >
-                {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?group=group:tna" class="search-landing-buckets__link" >
-                    Online records from The National Archives ({{ tna_bucket_count|intcomma }})
-                </a>
-            </li>
-            <li class="search-landing-buckets__list-item" >
-                {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?group=group:nonTna" class="search-landing-buckets__link" >
-                    Records from other UK archives ({{ non_tna_bucket_count|intcomma }})
-                </a>
-            </li>
-            <li class="search-landing-buckets__list-item" >
-                {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?group=group:creator" class="search-landing-buckets__link" >
-                    Record creators ({{ creator_bucket_count|intcomma }})
-                </a>
-            </li>
-            <li class="search-landing-buckets__list-item" >
-                {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
-                <a href="{% url 'search-catalogue' %}?group=group:archive" class="search-landing-buckets__link" >
-                    Find an archive ({{ archive_bucket_count|intcomma }})
-                </a>
-            </li>
+            {% for bucket in buckets %}
+                <li class="search-landing-buckets__list-item" >
+                    {% bucket_count bucket_count_response bucket_data.count_key as bucket_count %}
+                    <a href="{% url 'search-catalogue' %}?group={{ bucket.key }}" class="search-landing-buckets__link" aria-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}>
+                        {{ bucket.label }} ({{ bucket_count|intcomma }})
+                    </a>
+                </li>
+            {% endfor %}
         </ul>
     </div>
 </div>

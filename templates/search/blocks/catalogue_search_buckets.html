@@ -3,36 +3,13 @@
 
 <nav class="search-buckets" aria-label="Result categories">
     <ul class="search-buckets__list" data-id="search-buckets-list">
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:tna" class="search-buckets__link" aria-current="{% if form.group.value == 'group:tna' %}true{% else %}false{% endif %}">
-                Records from The National Archives ({{ tna_bucket_count|intcomma }})
-            </a>
-        </li>
-
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:digitised' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'digitised' as tna_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:digitised" class="search-buckets__link" aria-current="{% if form.group.value == 'group:digitised' %}true{% else %}false{% endif %}">
-                Online records from The National Archives ({{ tna_bucket_count|intcomma }})
-            </a>
-        </li>
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:nonTna' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:nonTna" class="search-buckets__link" aria-current="{% if form.group.value == 'group:nonTna' %}true{% else %}false{% endif %}">
-                Records from other UK archives ({{ non_tna_bucket_count|intcomma }})
-            </a>
-        </li>
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:creator' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'creator' as creator_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:creator" class="search-buckets__link" aria-current="{% if form.group.value == 'group:creator' %}true{% else %}false{% endif %}">
-                Record creators ({{ creator_bucket_count|intcomma }})
-            </a>
-        </li>
-        <li class="search-buckets__list-item" data-current="{% if form.group.value == 'group:archive' %}true{% else %}false{% endif %}">
-            {% bucket_count bucket_count_response 'archive' as archive_bucket_count %}
-            <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group=group:archive" class="search-buckets__link" aria-current="{% if form.group.value == 'group:archive' %}true{% else %}false{% endif %}">
-                Find an archive ({{ archive_bucket_count|intcomma }})
-            </a>
-        </li>
+        {% for bucket in buckets %}
+            <li class="search-buckets__list-item" data-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
+                <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{ bucket.key }}" class="search-buckets__link" aria-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
+                    {% bucket_count bucket_count_response bucket_data.count_key as bucket_count %}
+                    {{bucket.label}} ({{ bucket_count|intcomma }})
+                </a>
+            </li>
+        {% endfor %}
     </ul>
 </nav>

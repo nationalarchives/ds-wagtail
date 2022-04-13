@@ -7,7 +7,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
     def test_start_date_after_end_date_is_invalid(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "opening_start_date": "2000-01-01",
                 "opening_end_date": "1900-01-01",
             }
@@ -23,7 +23,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
     def test_opening_start_date_before_opening_end_date_is_valid(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "opening_start_date": "1900-01-01",
                 "opening_end_date": "2000-01-01",
             }
@@ -38,7 +38,7 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
     def test_with_valid_filter_values(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "topic": ["topic-one"],
                 "level": ["Division"],
                 "collection": ["WO", "AK"],
@@ -65,7 +65,7 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
     def test_counts_are_removed_from_updated_choice_labels(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "topic": ["topic-one"],
                 "level": ["Division"],
             }
@@ -105,7 +105,7 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
     def test_with_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "level": ["foo"],
                 "collection": ["bar"],
             }
@@ -116,7 +116,7 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
     def test_with_partially_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
-                "group": "group:tna",
+                "group": "tna",
                 "topic": ["topic-one", "topic-two"],  # valid
                 "catalogue_source": ["catalogue-source-one"],  # valid
                 "level": ["foo"],  # invalid

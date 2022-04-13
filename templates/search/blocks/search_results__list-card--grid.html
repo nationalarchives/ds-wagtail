@@ -30,12 +30,12 @@
             {% if record|record_detail:"referenceNumber" %}
             <li class="search-results__list-card-metadata-item">
 
-                {% if form.group.value == 'group:archive' %}
+                {% if form.group.value == 'archive' %}
                 Archon code:
                 {% else %}
-                Catalogue reference: 
+                Catalogue reference:
                 {% endif %}
-                
+
                 {{ record|record_detail:"referenceNumber"|default:"N/A" }}
             </li>
             {% endif %}
