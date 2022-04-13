@@ -114,7 +114,6 @@ def search_result_striptags(raw_html) -> str:
     """
     Takes a string of HTML and strips out all tags apart from <mark> for search results highlighting.
     """
-    print(raw_html)
     return bleach.clean(raw_html, tags=["mark"], strip=True)
 
 
