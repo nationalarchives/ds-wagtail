@@ -8,6 +8,7 @@ from django.shortcuts import render
 from wagtail.core.utils import camelcase_to_underscore
 
 from ..ciim.client import Aggregation, SortOrder, Stream, Template
+from ..ciim.constants import CATALOGUE_BUCKETS, FEATURED_BUCKETS, WEBSITE_BUCKETS
 from ..ciim.paginator import APIPaginator
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
@@ -36,10 +37,8 @@ def get_api_filters_from_form_values(form: Form) -> List[str]:
         value = form.cleaned_data.get(field_name)
         filter_aggregations.extend((f"{filter_name}:{v}" for v in value))
 
-    # The 'group' field is handled separately, as it only returns a single
-    # value, which is currently still prefixed with "group:", which we don't
-    # want to repeat here
-    filter_aggregations.append(form.cleaned_data.get("group", "group:tna"))
+    # The 'group' field is handled separately, as it only returns a single value
+    filter_aggregations.append(f"group:{form.cleaned_data['group']}")
     return filter_aggregations
 
 
@@ -71,34 +70,6 @@ def update_field_choices_to_refelect_api_response(
                 )
 
 
-# Aggregations and their headings, passed /searchAll to fetch
-# counts and output along with grouped results.
-FEATURED_BUCKETS = [
-    {
-        "aggregation": "group:tna",
-        "heading": "Records from The National Archives",
-        "group": "tna",
-    },
-    {
-        "aggregation": "group:nonTna",
-        "heading": "Records from other UK archives",
-        "group": "nonTna",
-    },
-    {"aggregation": "group:creator", "heading": "Record creators", "group": "creator"},
-    {"aggregation": "group:blog", "heading": "Blogs", "group": "blog"},
-    {
-        "aggregation": "group:researchGuide",
-        "heading": "Research Guides",
-        "group": "researchGuide",
-    },
-    {
-        "aggregation": "group:insight",
-        "heading": "Stories from the collection",
-        "group": "insight",
-    },
-]
-
-
 def featured_search(request):
 
     responses = []
@@ -110,17 +81,15 @@ def featured_search(request):
 
         response = Record.api.client.search_all(
             q=q,
-            filter_aggregations=[b["aggregation"] for b in FEATURED_BUCKETS],
+            filter_aggregations=[f"group:{bucket.key}" for bucket in FEATURED_BUCKETS],
             size=3,
         )
         responses = response.get("responses", [])
 
     result_groups = {}
-    for i, response in enumerate(responses):
-        bucket = FEATURED_BUCKETS[i]
-        result_groups[bucket["group"]] = response
-        result_groups[bucket["group"]]["aggregation"] = bucket["aggregation"]
-        result_groups[bucket["group"]]["heading"] = bucket["heading"]
+    for i, bucket in enumerate(FEATURED_BUCKETS):
+        result_groups[bucket.key] = responses[i]
+        result_groups[bucket.key]["bucket"] = bucket
 
     return render(
         request,
@@ -156,6 +125,7 @@ def search(request):
         {
             "form": form,
             "bucket_count_response": bucket_count_response,
+            "CATALOGUE_BUCKETS": CATALOGUE_BUCKETS,
         },
     )
 
@@ -171,7 +141,7 @@ def catalogue_search(request):
     count = 0
 
     data = request.GET.copy()
-    data.setdefault("group", "group:tna")
+    data.setdefault("group", "tna")
     form = CatalogueSearchForm(data)
 
     if form.is_valid():
@@ -212,7 +182,11 @@ def catalogue_search(request):
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
     page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
-
+    group = data.get("group", "tna")
+    try:
+        current_bucket = CATALOGUE_BUCKETS.get_bucket(group)
+    except KeyError:
+        raise Http404(f"Invalid 'group' param value specified: '{group}'")
     return render(
         request,
         "search/catalogue_search.html",
@@ -221,6 +195,8 @@ def catalogue_search(request):
             "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
+            "current_bucket": current_bucket,
+            "buckets": CATALOGUE_BUCKETS,
         },
     )
 
@@ -237,7 +213,7 @@ def catalogue_search_long_filter_chooser(request, field_name: str):
     AGGREGATION_SIZE = 100
 
     data = request.GET.copy()
-    data.setdefault("group", "group:tna")
+    data.setdefault("group", "tna")
     form = CatalogueSearchForm(data)
     api_aggregation_name = underscore_to_camelcase(field_name)
 
@@ -298,7 +274,7 @@ def website_search(request):
     count = 0
 
     data = request.GET.copy()
-    data.setdefault("group", "group:blog")
+    data.setdefault("group", "blog")
 
     form = WebsiteSearchForm(data)
     if form.is_valid():
@@ -339,7 +315,14 @@ def website_search(request):
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
     page_range = paginator.get_elided_page_range(number=page_number, on_ends=0)
-
+    try:
+        group = data["group"]
+    except KeyError:
+        raise Http404("No 'group' param value specified.")
+    try:
+        current_bucket = WEBSITE_BUCKETS.get_bucket(group)
+    except KeyError:
+        raise Http404(f"Invalid 'group' param value specified: '{group}'")
     return render(
         request,
         "search/website_search.html",
@@ -348,5 +331,7 @@ def website_search(request):
             "page_range": page_range,
             "form": form,
             "bucket_count_response": bucket_count_response,
+            "current_bucket": current_bucket,
+            "buckets": WEBSITE_BUCKETS,
         },
     )

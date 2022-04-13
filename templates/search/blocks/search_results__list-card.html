@@ -5,7 +5,7 @@
         <h3 class="search-results__list-card-heading">
             <a href="/details/" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>{{record|record_detail:"summaryTitle"|striptags }}</a>
         </h3>
-        
+
         <p class="search-results__list-card-description">{{ record|record_detail:"description"|striptags }}</p>
         <ul class="search-results__list-card-metadata">
 
@@ -24,12 +24,12 @@
             {% if record|record_detail:"referenceNumber" %}
             <li class="search-results__list-card-metadata-item">
 
-                {% if form.group.value == 'group:archive' %}
+                {% if form.group.value == 'archive' %}
                 Archon code:
                 {% else %}
-                Catalogue reference: 
+                Catalogue reference:
                 {% endif %}
-                
+
                 {{ record|record_detail:"referenceNumber"|default:"N/A" }}
             </li>
             {% endif %}

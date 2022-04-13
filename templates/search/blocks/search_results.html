@@ -6,7 +6,7 @@
 
             {% with count=page.paginator.count per_page=page.paginator.per_page  %}
             <p class="search-results__metadata-count">Showing 
-                <span class="search-results__metadata-count-highlight">{% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %}</span> (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ form.group.value }}"</p>
+                <span class="search-results__metadata-count-highlight">{% if count < per_page %}{{ count }}{% else %}{{ per_page }}{% endif %}</span> (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ current_bucket.label }}"</p>
             {% endwith %}
 
             {% include './search_results__selected-filters.html' %}
