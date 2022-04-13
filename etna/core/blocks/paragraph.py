@@ -4,6 +4,15 @@ from django.utils.html import escape, mark_safe
 from wagtail.core import blocks
 
 
+class ParagraphBlock(blocks.StructBlock):
+    text = blocks.RichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+
+    class Meta:
+        icon = "paragraph"
+        label = "Paragraph text"
+        template = "blocks/paragraph.html"
+
+
 class ParagraphWithHeading(blocks.StructBlock):
     """
     Paragraph with heading streamfield component.
