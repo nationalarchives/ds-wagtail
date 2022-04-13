@@ -7,6 +7,8 @@ from django.core.exceptions import ValidationError
 from django.forms.boundfield import BoundField
 from django.utils.crypto import get_random_string
 
+import bleach
+
 register = template.Library()
 
 
@@ -33,6 +35,29 @@ def record_detail(record: dict, key: str) -> str:
         return record["_source"]["@template"]["details"][key]
     except KeyError:
         return ""
+
+
+@register.filter
+def record_highlight(record: dict, key: str) -> str:
+    """Fetch an item from a an interpretive records source object.
+
+    Django templates don't allow access to keys or attributes prefixed with @
+
+    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
+    """
+
+    try:
+        highlight = record["highlight"][f"@template.details.{key}"]
+    except KeyError:
+        return ""
+
+    if isinstance(highlight, (list, tuple)):
+        try:
+            return highlight[0]
+        except IndexError:
+            return ""
+    else:
+        return highlight
 
 
 @register.filter
@@ -107,6 +132,12 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     query_dict.setlist(key, [i for i in items if i != str(value)])
 
     return query_dict.urlencode()
+
+
+@register.simple_tag(takes_context=True)
+def strip_html_with_exceptions(context, raw_html: str, *exclusions: str):
+    print(list(exclusions))
+    return bleach.clean(raw_html, tags=list(exclusions), strip=True)
 
 
 class RepeatableBoundField(BoundField):
