@@ -91,6 +91,7 @@ def featured_search(request):
         result_groups[bucket.key] = responses[i]
         result_groups[bucket.key]["bucket"] = bucket
 
+    print(result_groups)
     return render(
         request,
         "search/featured_search.html",

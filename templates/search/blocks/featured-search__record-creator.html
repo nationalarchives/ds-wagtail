@@ -1,7 +1,7 @@
 {% load search_tags %}
 {% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ results.heading }}</h2>
+    <h2 class="featured-search__heading">{{ results.bucket.label }}</h2>
     
     {% if results.hits.hits %}
 
