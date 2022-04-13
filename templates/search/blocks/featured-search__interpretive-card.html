@@ -27,7 +27,7 @@
                 </div>
 
         </div>
-        <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant {{result.heading }} ({{ result.hits.total.value|intcomma }})</a>
+        <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant {{result.bucket.label }} ({{ result.hits.total.value|intcomma }})</a>
     </div>
     {% endwith %}
 {% endif %}

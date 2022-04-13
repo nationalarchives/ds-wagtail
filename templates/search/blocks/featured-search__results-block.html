@@ -16,7 +16,7 @@
     </ul>
     <div class="featured-search__see-all-link">
         <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
-            See all {{ results.heading }} ({{ results.hits.total.value|intcomma }})
+            See all {{ results.bucket.label }} ({{ results.hits.total.value|intcomma }})
         </a>
     </div>
 </div>
