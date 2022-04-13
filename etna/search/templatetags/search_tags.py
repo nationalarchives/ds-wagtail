@@ -39,7 +39,7 @@ def record_detail(record: dict, key: str) -> str:
 
 @register.filter
 def record_highlight(record: dict, key: str) -> str:
-    """Fetch an item from a an interpretive records source object.
+    """Fetch a record key from the ElasticSearch highlight object.
 
     Django templates don't allow access to keys or attributes prefixed with @
 
