@@ -136,7 +136,9 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
 
 @register.simple_tag(takes_context=True)
 def strip_html_with_exceptions(context, raw_html: str, *exclusions: str):
-    print(list(exclusions))
+    """
+    Takes a string of HTML and strips out all tags apart from those in the exclusions list.
+    """
     return bleach.clean(raw_html, tags=list(exclusions), strip=True)
 
 
