@@ -5,7 +5,7 @@
             <ol class="jumplinks__list">
                 {% for section in sections %}
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#{{ section.heading|slugify }}">{{ section.heading }}</a>
+                        <a class="jumplink" href="#{{ section.heading_id }}">{{ section.heading_text }}</a>
                     </li>
                 {% endfor %}
             </ol>

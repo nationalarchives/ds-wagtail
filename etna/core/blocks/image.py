@@ -75,7 +75,37 @@ class ImageBlock(blocks.StructBlock):
         return super().clean(value)
 
     class Meta:
+        label = "Image"
         template = "images/blocks/image-block-default.html"
         help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
-        icon = "fa-image"
+        icon = "image"
+        form_template = "form_templates/default-form-with-safe-label.html"
+
+
+class ContentImageBlock(ImageBlock):
+    image = ImageChooserBlock(required=False)
+    alt_text = blocks.CharBlock(
+        max_length=100,
+        label="Alternative text",
+        help_text=mark_safe(
+            "Alternative (alt) text describes images when they fail to load, and is read aloud by assistive "
+            "technologies. Use a maximum of 100 characters to describe your image. "
+            '<a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">'
+            "Check the guidance for tips on writing alt text</a>."
+        ),
+    )
+    caption = blocks.RichTextBlock(
+        features=["link"],
+        help_text=(
+            "If provided, displays directly below the image. Can be used to specify sources, transcripts or "
+            "other useful metadata."
+        ),
+        label="Caption (optional)",
+        required=False,
+    )
+
+    class Meta:
+        label = "Image"
+        template = "blocks/content_image.html"
+        icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"

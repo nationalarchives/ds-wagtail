@@ -9,10 +9,10 @@
         <p class="record-embed-no-image__icon-label" role="presentation" aria-hidden="true">
             Discover our records
         </p>
-        <h3 class="record-embed-no-image__heading">
+        <{{ heading_level }} class="record-embed-no-image__heading">
             <span class="sr-only">Discover our records.</span>
             {{ value.record.title }}
-        </h3>
+        </{{ heading_level }}>
         {% if value.record.reference_number %}
             <p class="record-embed-no-image__text--inline">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
         {% endif %}
