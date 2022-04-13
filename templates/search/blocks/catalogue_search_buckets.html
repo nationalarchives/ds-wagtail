@@ -6,7 +6,7 @@
         {% for bucket in buckets %}
             <li class="search-buckets__list-item" data-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
                 <a href="{% url 'search-catalogue' %}?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{ bucket.key }}" class="search-buckets__link" aria-current="{% if bucket == current_bucket %}true{% else %}false{% endif %}">
-                    {% bucket_count bucket_count_response bucket_data.count_key as bucket_count %}
+                    {% bucket_count bucket_count_response bucket.key as bucket_count %}
                     {{bucket.label}} ({{ bucket_count|intcomma }})
                 </a>
             </li>

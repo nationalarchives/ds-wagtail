@@ -125,7 +125,7 @@ def search(request):
         {
             "form": form,
             "bucket_count_response": bucket_count_response,
-            "CATALOGUE_BUCKETS": CATALOGUE_BUCKETS,
+            "buckets": CATALOGUE_BUCKETS,
         },
     )
 
