@@ -115,7 +115,8 @@ def search_result_striptags(raw_html) -> str:
     Takes a string of HTML and strips out all tags apart from <mark> for search results highlighting.
     """
     print(raw_html)
-    return bleach.clean(raw_html, tags=['mark'], strip=True)
+    return bleach.clean(raw_html, tags=["mark"], strip=True)
+
 
 @register.simple_tag(takes_context=True)
 def query_string_include(context, key: str, value: Union[str, int]) -> str:
@@ -140,7 +141,6 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     query_dict.setlist(key, [i for i in items if i != str(value)])
 
     return query_dict.urlencode()
-
 
 
 class RepeatableBoundField(BoundField):
