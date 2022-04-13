@@ -12,15 +12,11 @@
     <div class="search-results__list-card-content">
         <h4 class="search-results__list-card-heading">
             <a href="#" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
-            {% strip_html_with_exceptions record|record_highlight:"summaryTitle" 'mark' as summaryTitle %}
-
-            {{ summaryTitle | safe}}
+            {{ record|record_highlight:"summaryTitle"|search_result_striptags|safe}}
             </a>
         </h4>
         <p class="search-results__list-card-description">
-            {% strip_html_with_exceptions record|record_highlight:"description" 'mark' as description %}
-
-            {{ description | safe}}
+            {{ record|record_highlight:"description"|search_result_striptags|safe}}
         </p>
         <ul class="search-results__list-card-metadata">
             {% if record|record_detail:"heldBy" %}

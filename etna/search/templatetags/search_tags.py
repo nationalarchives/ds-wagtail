@@ -109,6 +109,14 @@ def record_score(record) -> str:
     return record.get("_score")
 
 
+@register.filter
+def search_result_striptags(raw_html) -> str:
+    """
+    Takes a string of HTML and strips out all tags apart from <mark> for search results highlighting.
+    """
+    print(raw_html)
+    return bleach.clean(raw_html, tags=['mark'], strip=True)
+
 @register.simple_tag(takes_context=True)
 def query_string_include(context, key: str, value: Union[str, int]) -> str:
     """Add key, value to current query string."""
@@ -133,13 +141,6 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
 
     return query_dict.urlencode()
 
-
-@register.simple_tag(takes_context=True)
-def strip_html_with_exceptions(context, raw_html: str, *exclusions: str):
-    """
-    Takes a string of HTML and strips out all tags apart from those in the exclusions list.
-    """
-    return bleach.clean(raw_html, tags=list(exclusions), strip=True)
 
 
 class RepeatableBoundField(BoundField):
