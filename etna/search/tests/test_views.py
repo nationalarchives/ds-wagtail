@@ -106,6 +106,10 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 "responses": [
                     create_response(),
                     create_response(),
+                    create_response(),
+                    create_response(),
+                    create_response(),
+                    create_response(),
                 ]
             },
         )
