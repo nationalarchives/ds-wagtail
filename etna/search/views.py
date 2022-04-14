@@ -111,9 +111,11 @@ def search(request):
             Aggregation.CATALOGUE_SOURCE,
             Aggregation.CLOSURE,
             Aggregation.COLLECTION,
-            Aggregation.GROUP,
             Aggregation.LEVEL,
             Aggregation.TOPIC,
+            # Fetching more groups so that we receive a counts
+            # for any bucket/tab options we might be showing
+            f"{Aggregation.GROUP}:30",
         ],
         size=0,
     )
@@ -161,9 +163,11 @@ def catalogue_search(request):
                 Aggregation.CATALOGUE_SOURCE,
                 Aggregation.CLOSURE,
                 Aggregation.COLLECTION,
-                Aggregation.GROUP,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
+                # Fetching more groups so that we receive a counts
+                # for any bucket/tab options we might be showing
+                f"{Aggregation.GROUP}:30",
             ],
             offset=offset,
             size=per_page,
@@ -294,9 +298,11 @@ def website_search(request):
                 Aggregation.CATALOGUE_SOURCE,
                 Aggregation.CLOSURE,
                 Aggregation.COLLECTION,
-                Aggregation.GROUP,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
+                # Fetching more groups so that we receive a counts
+                # for any bucket/tab options we might be showing
+                f"{Aggregation.GROUP}:30",
             ],
             offset=offset,
             size=per_page,
