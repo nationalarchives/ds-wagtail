@@ -38,28 +38,40 @@ def record_detail(record: dict, key: str) -> str:
         return ""
 
 
-@register.filter
 def record_highlight(record: dict, key: str) -> str:
-    """Fetch the title or description for a record, either from the highlight dict, or the details template."""
-
+    """
+    Fetch a key for a record, either from the highlight dict, or the details template and strip all HTML apart from <mark>.
+    """
     try:
-        title = record["highlight"][f"@template.details.{key}"]
+        value = record["highlight"][f"@template.details.{key}"]
     except KeyError:
         try:
-            title = record["_source"]["@template"]["details"][key]
+            value = record["_source"]["@template"]["details"][key]
         except KeyError:
             return ""
 
-    if isinstance(title, (list, tuple)):
-        try:
-            title = title[0]
-            title = bleach.clean(title, tags=["mark"], strip=True)
-            return mark_safe(title)
-        except IndexError:
-            return ""
-    else:
-        title = bleach.clean(title, tags=["mark"], strip=True)
-        return mark_safe(title)
+    if not value:
+        return ""
+    if isinstance(value, (list, tuple)):
+        value = value[0]
+
+    return mark_safe(bleach.clean(value, tags=["mark"], strip=True))
+
+
+@register.filter
+def record_title(record: dict) -> str:
+    """
+    Fetch the title for a record, either from the highlight dict, or the details template.
+    """
+    return record_highlight(record, "summaryTitle")
+
+
+@register.filter
+def record_description(record: dict) -> str:
+    """
+    Fetch the description for a record, either from the highlight dict, or the details template.
+    """
+    return record_highlight(record, "description")
 
 
 @register.filter
