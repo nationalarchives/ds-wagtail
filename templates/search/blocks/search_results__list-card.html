@@ -3,10 +3,16 @@
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
         <h3 class="search-results__list-card-heading">
-            <a href="/details/" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>{{record|record_detail:"summaryTitle"|striptags }}</a>
+            <a href="/details/" class="search-results__list-card-link">
+                <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
+                {{ record|record_title}}
+            </a>
         </h3>
 
-        <p class="search-results__list-card-description">{{ record|record_detail:"description"|striptags }}</p>
+        <p class="search-results__list-card-description">
+            {{ record|record_description}}
+        </p>
+
         <ul class="search-results__list-card-metadata">
 
             {% if record|record_detail:"heldBy" %}
