@@ -5,12 +5,12 @@
         <h3 class="search-results__list-card-heading">
             <a href="/details/" class="search-results__list-card-link">
                 <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
-                {{ record|record_highlight:"summaryTitle"|search_result_striptags|safe}}
+                {{ record|record_highlight:"summaryTitle"}}
             </a>
         </h3>
 
         <p class="search-results__list-card-description">
-            {{ record|record_highlight:"description"|search_result_striptags|safe}}
+            {{ record|record_highlight:"description"}}
         </p>
 
         <ul class="search-results__list-card-metadata">

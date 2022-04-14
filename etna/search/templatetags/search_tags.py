@@ -6,6 +6,7 @@ from django import forms, template
 from django.core.exceptions import ValidationError
 from django.forms.boundfield import BoundField
 from django.utils.crypto import get_random_string
+from django.utils.safestring import mark_safe
 
 import bleach
 
@@ -39,25 +40,26 @@ def record_detail(record: dict, key: str) -> str:
 
 @register.filter
 def record_highlight(record: dict, key: str) -> str:
-    """Fetch a record key from the ElasticSearch highlight object.
-
-    Django templates don't allow access to keys or attributes prefixed with @
-
-    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
-    """
+    """Fetch the title for a record, either from the highlight dict, or the details template."""
 
     try:
-        highlight = record["highlight"][f"@template.details.{key}"]
+        title = record["highlight"][f"@template.details.{key}"]
     except KeyError:
-        return ""
-
-    if isinstance(highlight, (list, tuple)):
         try:
-            return highlight[0]
+            title = record["_source"]["@template"]["details"][key]
+        except KeyError:
+            return ""
+
+    if isinstance(title, (list, tuple)):
+        try:
+            title = title[0]
+            title = bleach.clean(title, tags=["mark"], strip=True)
+            return mark_safe(title)
         except IndexError:
             return ""
     else:
-        return highlight
+        title = bleach.clean(title, tags=["mark"], strip=True)
+        return mark_safe(title)
 
 
 @register.filter
@@ -107,14 +109,6 @@ def record_score(record) -> str:
     https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
     """
     return record.get("_score")
-
-
-@register.filter
-def search_result_striptags(raw_html) -> str:
-    """
-    Takes a string of HTML and strips out all tags apart from <mark> for search results highlighting.
-    """
-    return bleach.clean(raw_html, tags=["mark"], strip=True)
 
 
 @register.simple_tag(takes_context=True)
