@@ -40,7 +40,7 @@ def record_detail(record: dict, key: str) -> str:
 
 @register.filter
 def record_highlight(record: dict, key: str) -> str:
-    """Fetch the title for a record, either from the highlight dict, or the details template."""
+    """Fetch the title or description for a record, either from the highlight dict, or the details template."""
 
     try:
         title = record["highlight"][f"@template.details.{key}"]
