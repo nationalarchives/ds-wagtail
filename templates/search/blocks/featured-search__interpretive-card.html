@@ -4,7 +4,7 @@
 {% if result.hits.hits.0 %}
     {% with record=result.hits.hits.0 %}
     <div class="featured-search__interpretive-results-section">
-        <h2 class="featured-search__heading">{{result.heading}}</h2>
+        <h2 class="featured-search__heading">{{result.bucket.label}}</h2>
         <div>
             <a href="{{ record|interpretive_url }}" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
                 <div>
@@ -27,7 +27,7 @@
                 </div>
 
         </div>
-        <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant {{result.heading }} ({{ result.hits.total.value|intcomma }})</a>
+        <a href="/search/website?group={{result.aggregation}}&q={{ form.q.value|default:'' }}" class="featured-search__results-link">See all relevant {{result.bucket.label }} ({{ result.hits.total.value|intcomma }})</a>
     </div>
     {% endwith %}
 {% endif %}

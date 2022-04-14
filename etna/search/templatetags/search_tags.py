@@ -6,6 +6,9 @@ from django import forms, template
 from django.core.exceptions import ValidationError
 from django.forms.boundfield import BoundField
 from django.utils.crypto import get_random_string
+from django.utils.safestring import mark_safe
+
+import bleach
 
 register = template.Library()
 
@@ -33,6 +36,42 @@ def record_detail(record: dict, key: str) -> str:
         return record["_source"]["@template"]["details"][key]
     except KeyError:
         return ""
+
+
+def record_highlight(record: dict, key: str) -> str:
+    """
+    Fetch a key for a record, either from the highlight dict, or the details template and strip all HTML apart from <mark>.
+    """
+    try:
+        value = record["highlight"][f"@template.details.{key}"]
+    except KeyError:
+        try:
+            value = record["_source"]["@template"]["details"][key]
+        except KeyError:
+            return ""
+
+    if not value:
+        return ""
+    if isinstance(value, (list, tuple)):
+        value = value[0]
+
+    return mark_safe(bleach.clean(value, tags=["mark"], strip=True))
+
+
+@register.filter
+def record_title(record: dict) -> str:
+    """
+    Fetch the title for a record, either from the highlight dict, or the details template.
+    """
+    return record_highlight(record, "summaryTitle")
+
+
+@register.filter
+def record_description(record: dict) -> str:
+    """
+    Fetch the description for a record, either from the highlight dict, or the details template.
+    """
+    return record_highlight(record, "description")
 
 
 @register.filter

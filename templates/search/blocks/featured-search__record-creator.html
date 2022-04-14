@@ -1,7 +1,7 @@
 {% load search_tags %}
 {% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ results.heading }}</h2>
+    <h2 class="featured-search__heading">{{ results.bucket.label }}</h2>
     
     {% if results.hits.hits %}
 
@@ -21,7 +21,7 @@
 
     <div class="featured-search__see-all-link">
         <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
-            See all {{ results.heading }} ({{ results.hits.total.value|intcomma }})
+            See all {{ results.bucket.label }} ({{ results.hits.total.value|intcomma }})
         </a>
     </div>
 
