@@ -229,12 +229,6 @@ class SubSectionContentBlock(blocks.StreamBlock):
     image = ContentImageBlock()
     media = MediaBlock()
 
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
-    promoted_item = PromotedItemBlock()
-    promoted_list = PromotedListBlock()
-    related_items = RelatedItemsBlock()
-
 
 class ContentSubSectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, label="Heading")
