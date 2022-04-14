@@ -236,7 +236,7 @@ class SubSectionContentBlock(blocks.StreamBlock):
 
 
 class ContentSubSectionBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, label="Sub-section heading (H3)")
+    heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SubSectionContentBlock()
 
     class Meta:
@@ -260,7 +260,7 @@ class SectionContentBlock(blocks.StreamBlock):
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, label="Section heading (H2)")
+    heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 
     class Meta:
