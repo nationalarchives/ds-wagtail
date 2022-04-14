@@ -242,7 +242,6 @@ class ContentSubSectionBlock(SectionDepthAwareStructBlock):
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    content_sub_section = ContentSubSectionBlock()
     sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
@@ -252,6 +251,7 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     related_items = RelatedItemsBlock()
+    content_sub_section = ContentSubSectionBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
