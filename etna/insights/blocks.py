@@ -218,13 +218,14 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         icon = "heading"
+        label = "Sub-heading"
         template = "insights/blocks/sub_heading.html"
 
 
 class SubSectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    sub_heading = SubHeadingBlock(label="H4")
+    sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
 
@@ -247,8 +248,8 @@ class ContentSubSectionBlock(SectionDepthAwareStructBlock):
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    sub_heading = SubHeadingBlock(label="H3")
     content_sub_section = ContentSubSectionBlock()
+    sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
 
