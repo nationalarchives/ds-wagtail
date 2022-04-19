@@ -15,3 +15,24 @@ try:
     from .local import *  # noqa: F401
 except ImportError:
     pass
+
+if DEBUG:
+    from .base import INSTALLED_APPS, MIDDLEWARE, LOGGING
+
+    INSTALLED_APPS += [
+        "debug_toolbar",
+    ]
+
+    MIDDLEWARE += [
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
+    ]
+
+    # make django toolbar to show when running in docker
+    import socket
+
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[:-1] + "1" for ip in ips] + [
+        "127.0.0.1",
+    ]
+
+    LOGGING["root"]["level"] = "DEBUG"
