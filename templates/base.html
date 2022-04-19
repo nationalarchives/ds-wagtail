@@ -8,7 +8,7 @@
                 {% if form.errors %}Error: {% endif %}
             {% endblock %}
             {% block title %}
-                {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+                {% firstof page.seo_title page.title meta_title "Untitled" %}
             {% endblock %}
             {% block title_suffix %}
                 {% wagtail_site as current_site %}
