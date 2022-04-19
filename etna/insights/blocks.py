@@ -11,6 +11,7 @@ from etna.core.blocks import (
     PageListBlock,
     ParagraphBlock,
     ParagraphWithHeading,
+    NoCaptionImageBlock,
     SectionDepthAwareStructBlock,
 )
 
@@ -50,12 +51,12 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         help_text="Title of the promoted page",
         label="Title",
     )
-    category = SnippetChooserBlock("categories.Category")
     publication_date = blocks.DateBlock(required=False)
+    author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
         max_length=50,
-        label="Duration/Read time",
+        label="Duration",
         help_text="Podcast or video duration. Or estimated read time of article.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
@@ -79,9 +80,8 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             )
         ),
     )
-    image = ImageBlock(
+    image = NoCaptionImageBlock(
         label="Teaser image",
-        help_text="An image used to create a teaser for the promoted page",
         template="insights/blocks/images/blog-embed__image-container.html",
     )
     description = blocks.RichTextBlock(
