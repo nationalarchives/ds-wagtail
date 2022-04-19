@@ -218,25 +218,20 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         icon = "heading"
+        label = "Sub-heading"
         template = "insights/blocks/sub_heading.html"
 
 
 class SubSectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    sub_heading = SubHeadingBlock(label="H4")
+    sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
 
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
-    promoted_item = PromotedItemBlock()
-    promoted_list = PromotedListBlock()
-    related_items = RelatedItemsBlock()
-
 
 class ContentSubSectionBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, label="Sub-section heading (H3)")
+    heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SubSectionContentBlock()
 
     class Meta:
@@ -247,8 +242,7 @@ class ContentSubSectionBlock(SectionDepthAwareStructBlock):
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
-    sub_heading = SubHeadingBlock(label="H3")
-    content_sub_section = ContentSubSectionBlock()
+    sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
 
@@ -257,10 +251,11 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     related_items = RelatedItemsBlock()
+    content_sub_section = ContentSubSectionBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, label="Section heading (H2)")
+    heading = blocks.CharBlock(max_length=100, label="Heading")
     content = SectionContentBlock(required=False)
 
     class Meta:
