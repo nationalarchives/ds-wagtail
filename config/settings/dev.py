@@ -17,7 +17,11 @@ except ImportError:
     pass
 
 if DEBUG:
+<<<<<<< HEAD
     from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
+=======
+    from .base import INSTALLED_APPS, MIDDLEWARE, LOGGING
+>>>>>>> 004ee59 (DF-261:Add debug toolbar for debugging)
 
     INSTALLED_APPS += [
         "debug_toolbar",
