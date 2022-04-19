@@ -280,7 +280,7 @@ Faker = ">=8,<9"
 name = "django-debug-toolbar"
 version = "3.2.4"
 description = "A configurable set of panels that display various debug information about the current request/response."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.6"
 

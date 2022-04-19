@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -114,9 +115,7 @@ urlpatterns = (
     ]
 )
 
-if settings.DEBUG:
-    import debug_toolbar
-
+if apps.is_installed("debug_toolbar"):
     urlpatterns = [
-        path("__debug__/", include(debug_toolbar.urls)),
+        path("__debug__/", include("debug_toolbar.urls")),
     ] + urlpatterns
