@@ -17,6 +17,8 @@ except ImportError:
     pass
 
 if DEBUG:
+    from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
+
     INSTALLED_APPS += [
         "debug_toolbar",
     ]
@@ -25,12 +27,11 @@ if DEBUG:
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 
-    # make django toolbar to show when running in docker
-    import socket
+    def show_toolbar(request):
+        return True
 
-    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
-    INTERNAL_IPS = [ip[:-1] + "1" for ip in ips] + [
-        "127.0.0.1",
-    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+    }
 
     LOGGING["root"]["level"] = "DEBUG"
