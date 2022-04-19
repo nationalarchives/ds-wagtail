@@ -17,7 +17,7 @@ except ImportError:
     pass
 
 if DEBUG:
-    from .base import INSTALLED_APPS, MIDDLEWARE, LOGGING # noqa: F401
+    from .base import INSTALLED_APPS, MIDDLEWARE, LOGGING  # noqa: F401
 
     INSTALLED_APPS += [
         "debug_toolbar",
