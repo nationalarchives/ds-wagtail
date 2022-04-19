@@ -19,6 +19,9 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
     def __init__(self, *args, **kwargs):
+        self.validate_input = bool(kwargs.get("choices")) and kwargs.pop(
+            "validate_input", True
+        )
         super().__init__(*args, **kwargs)
         # The following attribue is used in templates to prevent rendering
         # unless choices have been updated to reflect options from the API
@@ -27,7 +30,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 
     def valid_value(self, value):
         """Disable validation if the field choices are not yet set."""
-        if not self.choices:
+        if not self.validate_input:
             return True
         return super().valid_value(value)
 
@@ -112,6 +115,8 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={"class": "search-filters__search"}),
     )
+    # Choices are supplied to this field to benefit validation. The labels
+    # are the same as the API supplied values, so aren't of much benefit
     level = DynamicMultipleChoiceField(
         label="Level",
         choices=LEVEL_CHOICES,
@@ -127,6 +132,8 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
+    # Choices are supplied to this field to influence labels only. The options
+    # are not complete enough to be used for validation
     collection = DynamicMultipleChoiceField(
         label="Collection",
         choices=COLLECTION_CHOICES,
@@ -134,6 +141,7 @@ class BaseCollectionSearchForm(forms.Form):
             attrs={"class": "search-filters__list"}
         ),
         required=False,
+        validate_input=False,
     )
     closure = DynamicMultipleChoiceField(
         label="Closure Status",
