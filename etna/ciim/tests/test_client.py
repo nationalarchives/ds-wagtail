@@ -84,7 +84,7 @@ class ClientSearchAllTest(SimpleTestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/searchAll"
-                "?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war%2C+closureStatus%3AClosed+Or+Retained+Document+Closed+Description"
+                "?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war%2C+closureStatus%3AClosed+Or+Retained+Document++Closed+Description"
             ),
         )
 
@@ -302,6 +302,26 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/search?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_without_special_chars(self):
+        self.client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_with_special_chars(self):
+        self.client.search(filter_aggregations=["heldBy: 1\2/3:4,5&(People's)"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterAggregations=heldBy%3A+1%02+3+4+5++People%27s+",
         )
 
     @responses.activate
