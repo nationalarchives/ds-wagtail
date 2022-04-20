@@ -106,8 +106,8 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
         form = CatalogueSearchForm(
             {
                 "group": "tna",
+                # only the 'level' field validates values against the choices
                 "level": ["foo"],
-                "collection": ["bar"],
             }
         )
         self.assertFalse(form.is_valid())
@@ -119,8 +119,8 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
                 "group": "tna",
                 "topic": ["topic-one", "topic-two"],  # valid
                 "catalogue_source": ["catalogue-source-one"],  # valid
+                "collection": ["bar"],
                 "level": ["foo"],  # invalid
-                "collection": ["bar"],  # invalid
             }
         )
 
@@ -129,6 +129,9 @@ class CataglogueSearchFormSelectedFiltersTest(SimpleTestCase):
         self.assertEqual(
             form.selected_filters,
             {
+                "collection": [
+                    ("bar", "bar"),
+                ],
                 "topic": [
                     ("topic-one", "topic-one"),
                     ("topic-two", "topic-two"),
