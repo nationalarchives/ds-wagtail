@@ -76,7 +76,7 @@ class ImageBlock(blocks.StructBlock):
 
     class Meta:
         label = "Image"
-        template = "images/blocks/image-block-default.html"
+        template = "blocks/image-block-default.html"
         help_text = "An image block which allows editors to ensure accessibility is reflected on the page."
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
