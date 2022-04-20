@@ -171,23 +171,6 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
         template = "insights/blocks/related_item.html"
 
 
-class RelatedItemsBlock(SectionDepthAwareStructBlock):
-    """
-    Items for promoted list block.
-    """
-
-    heading = blocks.CharBlock(required=True, max_length=100)
-    description = blocks.CharBlock(required=True, max_length=100)
-    related_items = blocks.ListBlock(RelatedItemBlock)
-
-    class Meta:
-        icon = "external-link-alt"
-        template = "insights/blocks/related_items.html"
-        block_counts = {
-            "related_items": {"min_num": 1, "max_num": 1},
-        }
-
-
 class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100)
     description = blocks.TextBlock(max_length=200)
@@ -266,7 +249,6 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
-    related_items = RelatedItemsBlock()
     content_sub_section = ContentSubSectionBlock()
 
 
