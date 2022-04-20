@@ -8,10 +8,10 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 from etna.core.blocks import (
     ContentImageBlock,
     ImageBlock,
+    NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
     ParagraphWithHeading,
-    NoCaptionImageBlock,
     SectionDepthAwareStructBlock,
 )
 
@@ -122,7 +122,6 @@ class PromotedListItemBlock(SectionDepthAwareStructBlock):
         required=True,
         max_length=100,
         help_text="The title of the target page",
-
     )
     description = blocks.RichTextBlock(
         required=False,
