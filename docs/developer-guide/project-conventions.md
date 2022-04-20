@@ -18,10 +18,6 @@ building of the project's containers, one for each each service:
 
 The database service built from the official [postgres](https://hub.docker.com/_/postgres/) image
 
-### `elasticsearch`
-
-The search backend, build from the official [elasticsearch](https://hub.docker.com/_/elasticsearch/) image
-
 ### `web`
 
 Our custom container responsible for running the application. Built from the
@@ -36,8 +32,7 @@ Build steps for the `web` container are defined in the project's [`Dockerfile`](
 
 Our `web` container
 [depends](https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on)
-on both the `db` and `elasticsearch` containers in order for the `web`
-container to communicate with those services.
+has a dependency on the `db` container, as Django/Wagtail will not run without a database to connect to.
 
 ### `cli`
 
