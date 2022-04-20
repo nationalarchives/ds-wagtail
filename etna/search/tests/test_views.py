@@ -41,7 +41,7 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=catalogueSource%2C+closure%2C+collection%2C+level%2C+topic%2C+group%3A30"
+                "&aggregations=catalogueSource%2C+closure%2C+collection%2C+level%2C+topic%2C+group%3A30%2C+heldBy"
                 "&filterAggregations=group%3Atna"
                 "&from=0"
                 "&size=20"
