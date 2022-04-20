@@ -73,7 +73,9 @@ class Aggregation(str, enum.Enum):
     HELD_BY = "heldBy"
 
 
-def format_list_param(items: Optional[list], param_type: Optional[str] = None) -> Optional[str]:
+def format_list_param(
+    items: Optional[list], param_type: Optional[str] = None
+) -> Optional[str]:
     """Convenience function to transform list to comma-separated string.
 
     When parsing a request's parameters `requests` uses `urllib.parse.urlencode`
@@ -91,19 +93,23 @@ def format_list_param(items: Optional[list], param_type: Optional[str] = None) -
 
     This function, when given a list, will return a comma-separated string.
 
-    Additionally, to overcome an issue with the API, any commas within 
+    Additionally, to overcome an issue with the API, any commas within
     paramter text will be removed.
     """
     if not items:
         return None
-    
-    if param_type == 'filter_aggregations':
-        # replace special chars by space 
+
+    if param_type == "filter_aggregations":
+        # reconstruct the required starting value that contains special value
+        # replace special chars by space
         regex = r"([():\\/,&])"
         subst = " "
-        items = [i.split(":",1)[0] + ":" # reconstruct the required starting value that contains special value
-                    + re.sub(regex, subst, i.split(":",1)[1], 0, re.MULTILINE)
-                    for i in items]
+        items = [
+            i.split(":", 1)[0]
+            + ":"
+            + re.sub(regex, subst, i.split(":", 1)[1], 0, re.MULTILINE)
+            for i in items
+        ]
     else:
         items = [i.replace(",", "") for i in items]
 
@@ -225,7 +231,9 @@ class KongClient:
             "sortOrder": sort_order,
             "template": template,
             "aggregations": format_list_param(aggregations),
-            "filterAggregations": format_list_param(filter_aggregations, "filter_aggregations"),
+            "filterAggregations": format_list_param(
+                filter_aggregations, "filter_aggregations"
+            ),
             "filter": filter_keyword,
             "from": offset,
             "size": size,
@@ -279,7 +287,9 @@ class KongClient:
         params = {
             "q": q,
             "aggregations": format_list_param(aggregations),
-            "filterAggregations": format_list_param(filter_aggregations, "filter_aggregations"),
+            "filterAggregations": format_list_param(
+                filter_aggregations, "filter_aggregations"
+            ),
             "template": template,
             "from": offset,
             "size": size,
