@@ -106,6 +106,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
     )
 
     class Meta:
+        label = "Featured link"
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
@@ -120,13 +121,13 @@ class PromotedListItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         required=True,
         max_length=100,
-        help_text="Title of the promoted page",
-        label="Heading",
+        help_text="The title of the target page",
+
     )
     description = blocks.RichTextBlock(
         required=False,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page",
+        help_text="A description of the target page",
     )
     url = blocks.URLBlock(required=True)
 
@@ -147,8 +148,8 @@ class PromotedListBlock(SectionDepthAwareStructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "list"
-        label = "Promoted item list"
+        icon = "external-link-alt"
+        label = "Link list"
         template = "insights/blocks/promoted_list_block.html"
 
 
