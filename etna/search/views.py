@@ -91,10 +91,17 @@ def featured_search(request):
         result_groups[bucket.key] = responses[i]
         result_groups[bucket.key]["bucket"] = bucket
 
+    meta_title = "Search results"
+    query = form.cleaned_data.get("q")
+    if query:
+        meta_title += f' for "{query}"'
+
     return render(
         request,
         "search/featured_search.html",
         {
+            "meta_title": meta_title,
+            "query": query,
             "form": form,
             "result_groups": result_groups,
         },
@@ -125,6 +132,7 @@ def search(request):
         request,
         "search/search.html",
         {
+            "meta_title": "Search the collection",
             "form": form,
             "bucket_count_response": bucket_count_response,
             "buckets": CATALOGUE_BUCKETS,
@@ -191,10 +199,18 @@ def catalogue_search(request):
         current_bucket = CATALOGUE_BUCKETS.get_bucket(group)
     except KeyError:
         raise Http404(f"Invalid 'group' param value specified: '{group}'")
+
+    meta_title = "Catalogue results"
+    query = form.cleaned_data.get("q")
+    if query:
+        meta_title += f' for "{query}"'
+
     return render(
         request,
         "search/catalogue_search.html",
         {
+            "meta_title": meta_title,
+            "query": query,
             "page": page,
             "page_range": page_range,
             "form": form,
@@ -259,6 +275,7 @@ def catalogue_search_long_filter_chooser(request, field_name: str):
         request,
         "search/catalogue_search_long_filter_chooser.html",
         {
+            "meta_title": f'Filter options for "{field.label}"',
             "form": form,
             "field_name": field_name,
             "bound_field": bound_field,
@@ -329,10 +346,18 @@ def website_search(request):
         current_bucket = WEBSITE_BUCKETS.get_bucket(group)
     except KeyError:
         raise Http404(f"Invalid 'group' param value specified: '{group}'")
+
+    meta_title = "Website results"
+    query = form.cleaned_data.get("q")
+    if query:
+        meta_title += f' for "{query}"'
+
     return render(
         request,
         "search/website_search.html",
         {
+            "meta_title": meta_title,
+            "query": query,
             "page": page,
             "page_range": page_range,
             "form": form,
