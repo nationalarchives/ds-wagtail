@@ -1,7 +1,5 @@
 from .base import *  # noqa: F401
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "@6gce61jt^(pyj5+l**&*_#zyxfj5v1*71cs5yoetg-!fsz826"
