@@ -1,14 +1,9 @@
 from .base import *  # noqa: F401
 
-<<<<<<< HEAD
 try:
     from .local import *  # noqa: F401
 except ImportError:
     pass
-=======
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
->>>>>>> 41f0903 (DF-261:Fix test - make seperate from dev)
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "@6gce61jt^(pyj5+l**&*_#zyxfj5v1*71cs5yoetg-!fsz826"
