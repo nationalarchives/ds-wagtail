@@ -45,35 +45,6 @@ if database_config:
         }
     }
 
-
-# Elasticsearch
-#
-# https://docs.platform.sh/configuration/services/elasticsearch.html
-try:
-    search_config = config.credentials("elasticsearch")
-except BuildTimeVariableAccessException:
-    # Relationships aren't available during build-time. Unfortunately, this
-    # file needs to be accessed during collectstatic
-    search_config = None
-
-if search_config:
-    WAGTAILSEARCH_BACKENDS = {
-        "default": {
-            "BACKEND": "wagtail.search.backends.elasticsearch7",
-            "URLS": [
-                (
-                    f"{search_config['scheme']}://{search_config['username']}:"
-                    f"{search_config['password']}@{search_config['host']}:{search_config['port']}"
-                )
-            ],
-            "INDEX": "wagtail",
-            "TIMEOUT": 5,
-            "OPTIONS": {},
-            "INDEX_SETTINGS": {},
-        }
-    }
-
-
 # Redis
 #
 # https://docs.platform.sh/configuration/services/redis.html

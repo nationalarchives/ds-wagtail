@@ -227,6 +227,13 @@ WAGTAIL_SITE_NAME = "etna"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = "http://example.com"
 
+# For search results within Wagtail itself
+WAGTAILSEARCH_BACKENDS = {
+    "default": {
+        "BACKEND": "wagtail.search.backends.database",
+    }
+}
+
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
@@ -310,8 +317,3 @@ except ValueError:
 CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
-WAGTAILSEARCH_BACKENDS = {
-    "default": {
-        "BACKEND": "wagtail.search.backends.database",
-    }
-}
