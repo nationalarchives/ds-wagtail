@@ -38,12 +38,23 @@ class FeaturedRecordBlock(SectionDepthAwareStructBlock):
         template = "insights/blocks/featured_record.html"
 
 
+class FeaturedRecordsItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        required=False,
+        help_text="Optionally override for the record title. If left blank, the record title will be used.",
+    )
+    record = RecordChooserBlock()
+
+    class Meta:
+        icon = "archive"
+
+
 class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, required=True)
     introduction = blocks.CharBlock(max_length=200, required=True)
-    records = blocks.ListBlock(
-        RecordChooserBlock,
-    )
+    items = blocks.ListBlock(FeaturedRecordsItemBlock)
 
     class Meta:
         icon = "archive"
