@@ -20,6 +20,11 @@ from ..records.blocks import RecordChooserBlock
 
 
 class FeaturedRecordBlock(SectionDepthAwareStructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
+    )
     record = RecordChooserBlock()
     image = ImageBlock(
         label="Teaser image",
