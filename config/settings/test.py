@@ -17,6 +17,10 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.MD5PasswordHasher',
+]
+
 BIRDBATH_REQUIRED = False
 
 # Allow integration tests to run without needing to collectstatic
