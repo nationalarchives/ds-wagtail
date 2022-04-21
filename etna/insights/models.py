@@ -1,7 +1,8 @@
-from typing import Tuple
+from typing import Tuple, Any, Dict
 
 from django.db import models
 from django.utils.functional import cached_property
+from django.http import HttpRequest
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -104,6 +105,15 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
     search_fields = Page.search_fields + [
         index.SearchField("insight_tag_names"),
     ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="",
+            customDimension5="",
+            customDimension6="",
+            customDimension7="")
+        return data
 
     def save(self, *args, **kwargs):
         """
