@@ -123,6 +123,8 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
+# Whether user authentication is required to use search views
+SEARCH_VIEWS_REQUIRE_LOGIN = True
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}

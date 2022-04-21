@@ -11,6 +11,8 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+SEARCH_VIEWS_REQUIRE_LOGIN = False
+
 try:
     from .local import *  # noqa: F401
 except ImportError:
