@@ -6,23 +6,18 @@
         </p>
 
         <dl class="featured-records__list" data-container-name="featured-records">
-            {% for record in value.records %}
+            {% for item in value.items %}
                 <div class="featured-records__list-item">
+                    {% firstof item.record.reference_number item.record.iaid as record_id %}
+                    {% firstof item.title item.record.title as title %}
                     <dt>
-                        {% if record.reference_number %}
-                        <a class="featured-records__link" href="{% url 'details-page-human-readable' record.reference_number %}"
-                            data-link="{{ record.title }}">
-                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
+                        <a class="featured-records__link" href="{% url 'details-page-human-readable' record_id %}"
+                            data-link="{{ title }}">
+                            <h4 class="featured-records__link-heading">{{ title }}</h4>
                         </a>
-                        {% elif record.iaid %}
-                        <a class="featured-records__link" href="{% url 'details-page-machine-readable' record.iaid %}"
-                            data-link="{{ record.title }}">
-                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
-                        </a>
-                        {% endif %}
                     </dt>
-                    {% if record.description %}
-                        <dd class="featured-records__link-text">{{ record.description|safe }}</dd>
+                    {% if item.record.description %}
+                        <dd class="featured-records__link-text">{{ item.record.description|safe }}</dd>
                     {% endif %}
                 </div>
             {% endfor %}

@@ -8,6 +8,7 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 from etna.core.blocks import (
     ContentImageBlock,
     ImageBlock,
+    NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
     ParagraphWithHeading,
@@ -19,6 +20,11 @@ from ..records.blocks import RecordChooserBlock
 
 
 class FeaturedRecordBlock(SectionDepthAwareStructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
+    )
     record = RecordChooserBlock()
     image = ImageBlock(
         label="Teaser image",
@@ -32,12 +38,23 @@ class FeaturedRecordBlock(SectionDepthAwareStructBlock):
         template = "insights/blocks/featured_record.html"
 
 
+class FeaturedRecordsItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        required=False,
+        help_text="Optionally override for the record title. If left blank, the record title will be used.",
+    )
+    record = RecordChooserBlock()
+
+    class Meta:
+        icon = "archive"
+
+
 class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, required=True)
     introduction = blocks.CharBlock(max_length=200, required=True)
-    records = blocks.ListBlock(
-        RecordChooserBlock,
-    )
+    items = blocks.ListBlock(FeaturedRecordsItemBlock)
 
     class Meta:
         icon = "archive"
@@ -50,12 +67,12 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         help_text="Title of the promoted page",
         label="Title",
     )
-    category = SnippetChooserBlock("categories.Category")
     publication_date = blocks.DateBlock(required=False)
+    author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
         max_length=50,
-        label="Duration/Read time",
+        label="Duration",
         help_text="Podcast or video duration. Or estimated read time of article.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
@@ -79,9 +96,8 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             )
         ),
     )
-    image = ImageBlock(
+    image = NoCaptionImageBlock(
         label="Teaser image",
-        help_text="An image used to create a teaser for the promoted page",
         template="insights/blocks/images/blog-embed__image-container.html",
     )
     description = blocks.RichTextBlock(
@@ -90,6 +106,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
     )
 
     class Meta:
+        label = "Featured link"
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
@@ -104,13 +121,12 @@ class PromotedListItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         required=True,
         max_length=100,
-        help_text="Title of the promoted page",
-        label="Heading",
+        help_text="The title of the target page",
     )
     description = blocks.RichTextBlock(
         required=False,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page",
+        help_text="A description of the target page",
     )
     url = blocks.URLBlock(required=True)
 
@@ -131,8 +147,8 @@ class PromotedListBlock(SectionDepthAwareStructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "list"
-        label = "Promoted item list"
+        icon = "external-link-alt"
+        label = "Link list"
         template = "insights/blocks/promoted_list_block.html"
 
 
@@ -153,23 +169,6 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
         icon = "external-link-alt"
         help_text = "Block used promote an external page"
         template = "insights/blocks/related_item.html"
-
-
-class RelatedItemsBlock(SectionDepthAwareStructBlock):
-    """
-    Items for promoted list block.
-    """
-
-    heading = blocks.CharBlock(required=True, max_length=100)
-    description = blocks.CharBlock(required=True, max_length=100)
-    related_items = blocks.ListBlock(RelatedItemBlock)
-
-    class Meta:
-        icon = "external-link-alt"
-        template = "insights/blocks/related_items.html"
-        block_counts = {
-            "related_items": {"min_num": 1, "max_num": 1},
-        }
 
 
 class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
@@ -250,7 +249,6 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
-    related_items = RelatedItemsBlock()
     content_sub_section = ContentSubSectionBlock()
 
 

@@ -11,8 +11,11 @@
         </p>
         <{{ heading_level }} class="record-embed-no-image__heading">
             <span class="sr-only">Discover our records.</span>
-            {{ value.record.title }}
+            {{ value.title }}
         </{{ heading_level }}>
+        {% if value.record.title %}
+            <p class="record-embed-no-image__text--inline">{{ 'title'|as_label }}: {{ value.record.title }}</p>
+        {% endif %}
         {% if value.record.reference_number %}
             <p class="record-embed-no-image__text--inline">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
         {% endif %}

@@ -14,16 +14,15 @@
 
 <div class="promoted-item" data-container-name="promoted-item">
     <div class="container">
-        {% static value.category.icon_static_path as bg_image %}
-        <div class="promoted-item__icon" style="background-image: url('{{ bg_image }}');"></div>
-        <p class="promoted-item_icon-label" role="presentation" aria-hidden="true">
-            {{ value.category.name }}
-        </p>
-
         <{{ heading_level }} class="promoted-item__heading">
-            <span class="sr-only">{{ value.category.name }}</span>
             {{ value.title }}
         </{{ heading_level }}>
+
+        {% if value.author %}
+        <p class="promoted-item__author">
+            By {{ value.author }}
+        </p>
+        {% endif %}
 
         {% if value.publication_date %}
         <p class="promoted-item__date">
