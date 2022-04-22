@@ -16,13 +16,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
-<<<<<<< HEAD
-
-PASSWORD_HASHERS = [
-    "django.contrib.auth.hashers.MD5PasswordHasher",
-]
-=======
->>>>>>> 9a7b66bba974cb9308c54c9d99ba4acd3194add4
 
 BIRDBATH_REQUIRED = False
 
