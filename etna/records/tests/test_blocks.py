@@ -59,7 +59,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                             {
                                 "heading": "Heading",
                                 "content": streamfield(
-                                    [("featured_record", {"record": "C123456"})]
+                                    [
+                                        (
+                                            "featured_record",
+                                            {
+                                                "title": "This record is sooooo featured!",
+                                                "record": "C123456",
+                                            },
+                                        )
+                                    ]
                                 ),
                             },
                         ),
@@ -81,6 +89,9 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         featured_record = self.insights_page.body[0].value["content"][0]
         self.assertEqual(featured_record.block_type, "featured_record")
+        self.assertEqual(
+            featured_record.value["title"], "This record is sooooo featured!"
+        )
         self.assertEqual(featured_record.value["record"].iaid, "C123456")
         self.assertEqual(featured_record.value["image"]["image"], None)
 
@@ -109,7 +120,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                         "content": [
                             {
                                 "type": "featured_record",
-                                "value": {"record": "C123456"},
+                                "value": {
+                                    "title": "This record is sooooo featured!",
+                                    "record": "C123456",
+                                },
                             }
                         ],
                     },
@@ -122,6 +136,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
         )
+        self.assertContains(response, "This record is sooooo featured!")
         self.assertContains(response, "Test record")
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -157,7 +172,12 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                                 "value": {
                                     "heading": "This is a heading",
                                     "introduction": "This is some text",
-                                    "records": ["C123456"],
+                                    "items": [
+                                        {
+                                            "title": "",
+                                            "record": "C123456",
+                                        }
+                                    ],
                                 },
                             }
                         ],

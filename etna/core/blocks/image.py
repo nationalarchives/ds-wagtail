@@ -82,6 +82,10 @@ class ImageBlock(blocks.StructBlock):
         form_template = "form_templates/default-form-with-safe-label.html"
 
 
+class NoCaptionImageBlock(ImageBlock):
+    caption = None
+
+
 class ContentImageBlock(ImageBlock):
     image = ImageChooserBlock(required=False)
     alt_text = blocks.CharBlock(
