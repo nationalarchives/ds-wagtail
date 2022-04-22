@@ -1,16 +1,33 @@
 from dataclasses import dataclass
-from typing import List
+from typing import Any, List
+
+from django.contrib.humanize.templatetags.humanize import intcomma
 
 
 @dataclass
 class Bucket:
     key: str
     label: str
+    result_count: int = None
+    is_current: bool = False
+    results: List[Any] = None
+
+    @property
+    def label_with_count(self):
+        if self.result_count is None:
+            return self.label
+        return self.label + f" ({intcomma(self.result_count)})"
 
 
 @dataclass
 class BucketList:
     buckets: List[Bucket]
+
+    @property
+    def current(self):
+        for bucket in self.buckets:
+            if bucket.is_current:
+                return bucket
 
     def as_choices(self):
         for bucket in self.buckets:
