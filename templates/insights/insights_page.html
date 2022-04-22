@@ -7,12 +7,21 @@
 {% block content %}
     {% include 'includes/generic-intro.html' %}
     {% include 'includes/hero-img.html' %}
-    {% jumplinks page %}
 
-    {% for block in page.body %}
-        {% include_block block %}
-    {% endfor %}
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-3 pr-0">
+                {% jumplinks page %}
+            </div>
 
+            <div class="col-md-9 pl-0 pr-0">
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
     {% comment %}
         NOTE: TO BE REFINED BY FE
     {% endcomment %}
