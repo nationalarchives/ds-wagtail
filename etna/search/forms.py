@@ -179,6 +179,11 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
+    per_page = forms.IntegerField(
+        min_value=20,
+        max_value=200,
+        required=False,
+    )
     sort_by = forms.ChoiceField(
         label="Sort by",
         choices=[
