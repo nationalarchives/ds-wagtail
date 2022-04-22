@@ -327,6 +327,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "level",
         "topic",
         "closure",
+        "held_by",
         "catalogue_source",
     )
 

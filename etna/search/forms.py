@@ -1,6 +1,4 @@
-import re
-
-from typing import Dict, List, Tuple, Union
+from typing import Dict, List, Union
 
 from django import forms
 from django.core.validators import MinLengthValidator
@@ -91,16 +89,6 @@ class BaseCollectionSearchForm(forms.Form):
     "fieldname" -> "fieldname"
     "fieldName" -> "field_name"
     """
-
-    # Fields who's choices are updated to reflect the API response
-    dynamic_choice_fields = (
-        "collection",
-        "level",
-        "topic",
-        "closure",
-        "catalogue_source",
-        "held_by",
-    )
 
     q = forms.CharField(
         label="Search term",
@@ -223,45 +211,9 @@ class BaseCollectionSearchForm(forms.Form):
                 )
         except TypeError:
             # Either one or both date fields are empty. No further validation necessary.
-            ...
+            pass
 
         return cleaned_data
-
-    @cached_property
-    def selected_filters(self) -> Dict[str, List[Tuple[str, str]]]:
-        """List of selected values, keyed by the corresponding field name.
-
-        Used by template to output a list of selected filters.
-
-        Method must be called on a bound form (post validation)
-
-        TODO: When we inevitably shift to class-based views, this logic
-        should be moved to the view.
-        """
-        return_value = {
-            field_name: self.cleaned_data[field_name]
-            for field_name in self.dynamic_choice_fields
-            if self.cleaned_data.get(field_name)
-        }
-
-        # Replace field 'values' with (value, label) tuples,
-        # allowing both to be used in the template
-        for field_name in return_value:
-            field = self.fields[field_name]
-            if field.configured_choice_labels:
-                choice_labels = field.configured_choice_labels
-            elif field.choices_updated:
-                choice_labels = field.configured_choice_labels or {
-                    value: re.sub(r" \([0-9\,]+\)$", "", label, 0)
-                    for value, label in field.choices
-                }
-            else:
-                choice_labels = {value: label for value, label in field.choices}
-            return_value[field_name] = [
-                (value, choice_labels.get(value, value))
-                for value in return_value[field_name]
-            ]
-        return return_value
 
 
 class CatalogueSearchForm(BaseCollectionSearchForm):
