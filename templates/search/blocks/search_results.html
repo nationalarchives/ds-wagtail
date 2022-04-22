@@ -5,14 +5,14 @@
         <div class="search-results__metadata">
 
             {% with count=page.paginator.count %}
-            <p class="search-results__metadata-count">Showing 
-                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ current_bucket.label }}"</p>
+            <p class="search-results__metadata-count">Showing
+                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ buckets.current.label }}"</p>
             {% endwith %}
 
             {% include './search_results__selected-filters.html' %}
         </div>
         <h2 class="sr-only">Results</h2>
-        
+
         {% if form.cleaned_data.display == "grid" %}
             <ul class="search-results__list--grid">
                 {% for record in page %}
