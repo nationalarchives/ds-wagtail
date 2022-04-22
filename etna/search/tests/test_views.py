@@ -1,22 +1,18 @@
-from django.test import TestCase, override_settings
+from unittest import mock
 
-from wagtail.tests.utils import WagtailTestUtils
+from django.http import HttpResponse
+from django.test import SimpleTestCase, override_settings
+from django.urls import reverse
 
 import responses
 
 from ...ciim.tests.factories import create_response
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
-class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
+class SearchViewTestCase(SimpleTestCase):
+    maxDiff = None
+
     def setUp(self):
-        super().setUp()
-
-        self.login()
-
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
@@ -27,84 +23,6 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 ]
             },
         )
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get("/search/catalogue/")
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                "https://kong.test/data/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=catalogueSource"
-                "&aggregations=closure"
-                "&aggregations=collection"
-                "&aggregations=level"
-                "&aggregations=topic"
-                "&aggregations=group%3A30"
-                "&aggregations=heldBy"
-                "&filterAggregations=group%3Atna"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
-class CatalogueSearchLongFilterChooserAPIIntegrationTest(WagtailTestUtils, TestCase):
-    def setUp(self):
-        super().setUp()
-
-        self.login()
-
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get("/search/catalogue/long-filter-chooser/collection/")
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                "https://kong.test/data/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=collection%3A100"
-                "&filterAggregations=group%3Atna"
-            ),
-        )
-
-
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
-class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
-    def setUp(self):
-        super().setUp()
-
-        self.login()
-
         responses.add(
             responses.GET,
             "https://kong.test/data/searchAll",
@@ -120,9 +38,96 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             },
         )
 
+    def get(self, url: str, **data: Any):
+        # Request the URL with render_to_response() patched to avoid
+        # any database queries that are triggered during rendering
+        with mock.patch(
+            "etna.search.views.BaseSearchView.render_to_response",
+            return_value=HttpResponse(""),
+        ):
+            return self.client.get(url, data=data)
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("search-catalogue")
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.get(self.url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=catalogueSource%3A10"
+                "&aggregations=closure%3A10"
+                "&aggregations=collection%3A10"
+                "&aggregations=level%3A10"
+                "&aggregations=topic%3A10"
+                "&aggregations=group%3A30"
+                "&aggregations=heldBy%3A10"
+                "&filterAggregations=group%3Atna"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse(
+            "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
+        )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.get(self.url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=collection%3A100"
+                "&filterAggregations=group%3Atna"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
+class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
+    def setUp(self):
+        super().setUp()
+        self.url = reverse("search-featured")
+
     @responses.activate
     def test_accessing_page_with_no_params_performs_search(self):
-        self.client.get("/search/featured/")
+        self.get(self.url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -141,7 +146,7 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_search_with_query(self):
-        self.client.get("/search/featured/?q=query")
+        self.get(self.url, q="query")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -164,26 +169,14 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
-class WebsiteSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
+class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     def setUp(self):
         super().setUp()
-
-        self.login()
-
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
+        self.url = reverse("search-website")
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get("/search/website/")
+        self.get(self.url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -194,11 +187,11 @@ class WebsiteSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=catalogueSource"
-                "&aggregations=closure"
-                "&aggregations=collection"
-                "&aggregations=level"
-                "&aggregations=topic"
+                "&aggregations=catalogueSource%3A10"
+                "&aggregations=closure%3A10"
+                "&aggregations=collection%3A10"
+                "&aggregations=level%3A10"
+                "&aggregations=topic%3A10"
                 "&aggregations=group%3A30"
                 "&filterAggregations=group%3Ablog"
                 "&from=0"
