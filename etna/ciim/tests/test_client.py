@@ -349,16 +349,6 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_filter_held_by_with_special_chars(self):
-        self.client.search(filter_aggregations=["heldBy: 1\2/3:4,5&(People's)"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?filterAggregations=heldBy%3A+1%02+3+4+5++People%27s+",
-        )
-
-    @responses.activate
     def test_with_filter_keyword(self):
         self.client.search(filter_keyword="filter keyword")
 
