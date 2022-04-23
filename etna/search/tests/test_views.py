@@ -41,7 +41,13 @@ class CatalogueSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=catalogueSource%2C+closure%2C+collection%2C+level%2C+topic%2C+group%3A30%2C+heldBy"
+                "&aggregations=catalogueSource"
+                "&aggregations=closure"
+                "&aggregations=collection"
+                "&aggregations=level"
+                "&aggregations=topic"
+                "&aggregations=group%3A30"
+                "&aggregations=heldBy"
                 "&filterAggregations=group%3Atna"
                 "&from=0"
                 "&size=20"
@@ -123,7 +129,12 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/searchAll"
-                "?filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Acreator%2C+group%3Ablog%2C+group%3AresearchGuide%2C+group%3Ainsight"
+                "?filterAggregations=group%3Atna"
+                "&filterAggregations=group%3AnonTna"
+                "&filterAggregations=group%3Acreator"
+                "&filterAggregations=group%3Ablog"
+                "&filterAggregations=group%3AresearchGuide"
+                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
@@ -138,7 +149,12 @@ class FeaturedSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
             (
                 "https://kong.test/data/searchAll"
                 "?q=query"
-                "&filterAggregations=group%3Atna%2C+group%3AnonTna%2C+group%3Acreator%2C+group%3Ablog%2C+group%3AresearchGuide%2C+group%3Ainsight"
+                "&filterAggregations=group%3Atna"
+                "&filterAggregations=group%3AnonTna"
+                "&filterAggregations=group%3Acreator"
+                "&filterAggregations=group%3Ablog"
+                "&filterAggregations=group%3AresearchGuide"
+                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
@@ -178,7 +194,12 @@ class WebsiteSearchAPIIntegrationTest(WagtailTestUtils, TestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=catalogueSource%2C+closure%2C+collection%2C+level%2C+topic%2C+group%3A30"
+                "&aggregations=catalogueSource"
+                "&aggregations=closure"
+                "&aggregations=collection"
+                "&aggregations=level"
+                "&aggregations=topic"
+                "&aggregations=group%3A30"
                 "&filterAggregations=group%3Ablog"
                 "&from=0"
                 "&size=20"
