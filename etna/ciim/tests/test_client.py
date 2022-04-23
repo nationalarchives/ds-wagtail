@@ -349,16 +349,6 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_filter_held_by_without_special_chars(self):
-        self.client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            "https://kong.test/data/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
-        )
-
-    @responses.activate
     def test_with_filter_held_by_with_special_chars(self):
         self.client.search(filter_aggregations=["heldBy: 1\2/3:4,5&(People's)"])
 
