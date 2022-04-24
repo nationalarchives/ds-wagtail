@@ -1,11 +1,9 @@
 {% load wagtailcore_tags %}
 
 <div class="section-wrapper" data-section-level="{{ content_level }}">
-    <div{% if content_level == 1 %} class="section-separator"{% endif %}>
-        <{{ heading_level }} id="{{ heading_id }}" {% if content_level == 1 %}class="section-separator__heading"{% endif %}>
-            {{ value.heading }}
-        </{{ heading_level }}>
-    </div>
+    <{{ heading_level }} id="{{ heading_id }}" class="section__heading">
+        {{ value.heading }}
+    </{{ heading_level }}>
     <div class="section-content" data-controlled-by="{{ heading_id }}">
         {% for block in value.content %}
             {% include_block block %}
