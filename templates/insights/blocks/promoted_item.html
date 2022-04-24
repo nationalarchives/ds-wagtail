@@ -13,42 +13,39 @@
 
 
 <div class="promoted-item" data-container-name="promoted-item">
-    <div class="container">
-        <{{ heading_level }} class="promoted-item__heading">
-            {{ value.title }}
-        </{{ heading_level }}>
+    <{{ heading_level }} class="promoted-item__heading">
+        {{ value.title }}
+    </{{ heading_level }}>
 
-        {% if value.author %}
-        <p class="promoted-item__author">
-            By {{ value.author }}
-        </p>
-        {% endif %}
+    {% if value.author %}
+    <p class="promoted-item__author">
+        By {{ value.author }}
+    </p>
+    {% endif %}
 
-        {% if value.publication_date %}
-        <p class="promoted-item__date">
-            Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
-        </p>
-        {% endif %}
+    {% if value.publication_date %}
+    <p class="promoted-item__date">
+        Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+    </p>
+    {% endif %}
 
-        {% if value.duration %}
-        <p class="promoted-item__text">
-            {{ value.duration }}
-        </p>
-        {% endif %}
+    {% if value.duration %}
+    <p class="promoted-item__text">
+        {{ value.duration }}
+    </p>
+    {% endif %}
 
-        {% if value.image %}
-            {% include_block value.image %}
-        {% endif %}
+    {% if value.image %}
+        {% include_block value.image %}
+    {% endif %}
 
-        <div class="promoted-item__text">
-            {{ value.description|richtext }}
-        </div>
-
-        {% if value.target_blank %}
-        <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
-        {% else %}
-        <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}">{{ value.cta_label }}</a>
-        {% endif %}
-
+    <div class="promoted-item__text">
+        {{ value.description|richtext }}
     </div>
+
+    {% if value.target_blank %}
+    <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
+    {% else %}
+    <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}">{{ value.cta_label }}</a>
+    {% endif %}
 </div>

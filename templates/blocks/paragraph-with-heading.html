@@ -1,12 +1,10 @@
 {% load wagtailcore_tags %}
 
 <div class="content-block">
-    <div class="container">
-        <{% include_block value.heading_level %} class="content-block__heading">
-            {{ value.heading }}
-        </{% include_block value.heading_level %}>
-        <div class="content-block__text">
-            {{ value.paragraph|richtext }}
-        </div>
+    <{% include_block value.heading_level %} class="content-block__heading">
+        {{ value.heading }}
+    </{% include_block value.heading_level %}>
+    <div class="content-block__text">
+        {{ value.paragraph|richtext }}
     </div>
 </div>

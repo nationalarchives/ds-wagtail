@@ -1,25 +1,23 @@
 {% load static %}
 
 <div class="quote">
-    <div class="container">
-        <img class="quote__icon" src="{% static 'images/fontawesome-svgs/quote-left.svg' %}" alt="" />
-        {% if value.heading %}
-            <h3 class="sr-only">{{ value.heading }}</h3>
-        {% endif %}
+    <img class="quote__icon" src="{% static 'images/fontawesome-svgs/quote-left.svg' %}" alt="" />
+    {% if value.heading %}
+        <h3 class="sr-only">{{ value.heading }}</h3>
+    {% endif %}
 
-        {% if value.attribution %}
-            <figure>
-                <blockquote class="quote__container quote__text">
-                    {{ value.quote }}
-                </blockquote>
-                <figcaption class="quote__citation">
-                    <cite>{{ value.attribution }}</cite>
-                </figcaption>
-            </figure>
-        {% else %}
+    {% if value.attribution %}
+        <figure>
             <blockquote class="quote__container quote__text">
                 {{ value.quote }}
             </blockquote>
-        {% endif %}
-    </div>
+            <figcaption class="quote__citation">
+                <cite>{{ value.attribution }}</cite>
+            </figcaption>
+        </figure>
+    {% else %}
+        <blockquote class="quote__container quote__text">
+            {{ value.quote }}
+        </blockquote>
+    {% endif %}
 </div>
