@@ -35,13 +35,13 @@
     </p>
     {% endif %}
 
-    {% if value.image %}
-        {% include_block value.image %}
-    {% endif %}
-
     <div class="promoted-item__text">
         {{ value.description|richtext }}
     </div>
+
+    {% if value.image %}
+        {% include_block value.image %}
+    {% endif %}
 
     {% if value.target_blank %}
     <a class="tna-button--dark" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
