@@ -1,5 +1,4 @@
 .promoted-item {
-    text-align: center;
     margin: 0 0 2rem 0;
     padding: 2rem 0;
   
@@ -27,6 +26,10 @@
       font-weight: 400;
     }
   
+    &__image-container {
+      text-align: center;
+    }
+
     &__image {
       width: 100%;
     }
@@ -60,8 +63,6 @@
     &__text {
       font-size: 1.2rem;
       text-align: left;
-      margin: 1rem auto 0 auto;
-      width: 75%;
 
       @media (max-width: $screen__md) {
         width: 85%;
@@ -74,5 +75,10 @@
   
     &__link-heading, &__link-text {
       color: $color__white;
+    }
+
+    .tna-button--dark {
+      position: relative;
+      bottom: 30px;
     }
   }
