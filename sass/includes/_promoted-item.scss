@@ -60,10 +60,6 @@
     &__text {
       font-size: 1.2rem;
       text-align: left;
-
-      @media (max-width: $screen__md) {
-        width: 85%;
-      }
     }
   
     &__link-heading {
