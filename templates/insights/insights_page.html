@@ -15,18 +15,14 @@
             </div>
 
             <div class="col-md-9 pl-0 pr-0">
-                <div class="container ml-0">
-                    {% for block in page.body %}
-                        {% include_block block %}
-                    {% endfor %}
+                <div class="specific-insights-width">
+                        {% for block in page.body %}
+                            {% include_block block %}
+                        {% endfor %}
                 </div>
             </div>
         </div>
     </div>
-
-    
-
-
 
     <div class="row">
         <div class="col-md-12">

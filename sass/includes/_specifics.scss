@@ -84,4 +84,12 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
 
     }
 
+    /*
+    
+    Purpose: Restricts the width of Insights content to 70%
+    Used on: Insights page - */
+
+    &-insights-width {
+      width: 70%;
+    }
 }
