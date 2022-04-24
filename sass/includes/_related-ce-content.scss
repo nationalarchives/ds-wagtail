@@ -54,6 +54,10 @@
             height: 250px;
         }
 
+        picture {
+            width: 50%;
+        }
+
         &__summary {
             height: auto;
             width: 50%;
@@ -61,14 +65,14 @@
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 767px) {
     .related-ce-content {
         a {
             flex-direction: column;
             height: auto;
         }
 
-        &__image {
+        picture {
             width: 100%;
         }
 
