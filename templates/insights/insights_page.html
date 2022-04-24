@@ -8,24 +8,22 @@
     {% include 'includes/generic-intro.html' %}
     {% include 'includes/hero-img.html' %}
 
-    <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-3">
-                {% jumplinks page %}
-            </div>
+    <div class="insights-container">
+        <div class="insights-container__sidebar">
+            {% jumplinks page %}
+        </div>
 
-            <div class="col-md-9 pl-0 pr-0">
-                <div class="specific-insights-width">
-                        {% for block in page.body %}
-                            {% include_block block %}
-                        {% endfor %}
-                </div>
+        <div class="insights-container__main">
+            <div class="specific-insights-width">
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md-12">
+    <div class="col-md-12">
+        <div class="row">
             <div class="container">
                 {% if page.similar_items %}
                     <h3>Related insights</h3>

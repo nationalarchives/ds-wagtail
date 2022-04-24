@@ -9,3 +9,26 @@ h2 {
 h3 {
     font-size: 2rem;
 }
+
+.insights-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    &__sidebar {
+        grid-column-start: span 1;
+        padding: 0 1rem;
+    }
+
+    &__main {
+        grid-column-start: span 3;
+        padding: 0 2rem;
+
+        @media (max-width: 767px) {
+            grid-column-start: span 4;
+
+            .specific-insights-width {
+                width: 100%;
+            }
+        }
+    }
+}
