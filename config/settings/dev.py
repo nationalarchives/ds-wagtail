@@ -17,7 +17,7 @@ except ImportError:
     pass
 
 if DEBUG:
-    if strtobool(os.getenv("DEBUG_TOOLBAR", "False")):
+    if strtobool(os.getenv("DEBUG_TOOLBAR", "False")):  # noqa: F405
         from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
 
         INSTALLED_APPS += [
