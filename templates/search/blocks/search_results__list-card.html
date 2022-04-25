@@ -1,9 +1,15 @@
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 {% load search_tags static %}
+{{record}}
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
         <h3 class="search-results__list-card-heading">
-            <a href="/details/" class="search-results__list-card-link">
+            <a href="{% if record|record_detail:"sourceUrl" %}
+                        {{ record|record_detail:"sourceUrl" }}
+                    {% else %}
+                        /details/
+                    {% endif %}
+                    " class="search-results__list-card-link">
                 <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
                 {{ record|record_title}}
             </a>

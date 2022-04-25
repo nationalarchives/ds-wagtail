@@ -4,14 +4,22 @@
 <li class="search-results__list-card--grid">
     {% if record|record_detail:"digitised" %}
     <div class="search-results__list-card-delivery-options--grid">
-        <a href="#" aria-hidden="true" tabindex="-1">
+        <a href="/details" 
+            aria-hidden="true" 
+            tabindex="-1">
             <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
     </div>
     {% endif %}
     <div class="search-results__list-card-content">
         <h4 class="search-results__list-card-heading">
-            <a href="#" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
+            <a href="{% if record|record_detail:"sourceUrl" %}
+                        {{ record|record_detail:"sourceUrl" }}
+                    {% else %}
+                        /details/
+                    {% endif %}
+                    " 
+        class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
             {{ record|record_title}}
             </a>
         </h4>
