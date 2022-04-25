@@ -114,7 +114,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             semicolon_insight_tag_names = ";".join(self.insight_tag_names.split("\n"))
             data["customDimension6"] = semicolon_insight_tag_names
         if self.time_period:
-            data["customDimension7"] = self.time_period
+            data["customDimension7"] = self.time_period.title
         return data
 
     def save(self, *args, **kwargs):
