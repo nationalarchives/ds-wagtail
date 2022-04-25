@@ -17,21 +17,22 @@ except ImportError:
     pass
 
 if DEBUG:
-    from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
+    if strtobool(os.getenv("DEBUG_TOOLBAR", "False")):
+        from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
 
-    INSTALLED_APPS += [
-        "debug_toolbar",
-    ]
+        INSTALLED_APPS += [
+            "debug_toolbar",
+        ]
 
-    MIDDLEWARE += [
-        "debug_toolbar.middleware.DebugToolbarMiddleware",
-    ]
+        MIDDLEWARE += [
+            "debug_toolbar.middleware.DebugToolbarMiddleware",
+        ]
 
-    def show_toolbar(request):
-        return True
+        def show_toolbar(request):
+            return True
 
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TOOLBAR_CALLBACK": show_toolbar,
-    }
+        DEBUG_TOOLBAR_CONFIG = {
+            "SHOW_TOOLBAR_CALLBACK": show_toolbar,
+        }
 
     LOGGING["root"]["level"] = "DEBUG"
