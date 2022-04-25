@@ -21,29 +21,35 @@
         </div>
     </div>
 
-    {% comment %}
-        NOTE: TO BE REFINED BY FE
-    {% endcomment %}
-    {% if page.similar_items %}
-        <h3>Similar insights</h3>
-        <ol>
-            {% for item in page.similar_items %}
-                <li><a href="{% pageurl item %}">{{ item }}</a></li>
-            {% endfor %}
-        </ol>
-    {% endif %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                {% if page.similar_items %}
+                    <h3>Related insights</h3>
 
-    {% comment %}
-        NOTE: TO BE REFINED BY FE
-    {% endcomment %}
-    {% if page.latest_items %}
-        <h3>More insights</h3>
-        <ol>
-            {% for item in page.latest_items %}
-                <li><a href="{% pageurl item %}">{{ item }}</a></li>
-            {% endfor %}
-        </ol>
-    {% endif %}
+                    <ul class="card-group--list-style-none">
+                        {% for item in page.similar_items %}
+                            {% with page=item %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endwith %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+
+                {% if page.latest_items %}
+                    <h3>More insights</h3>
+
+                    <ul class="card-group--list-style-none">
+                        {% for item in page.latest_items %}
+                            {% with page=item %}
+                                {% include 'includes/card-group-secondary-nav.html' %}
+                            {% endwith %}
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 
