@@ -1,8 +1,8 @@
-from typing import Tuple, Any, Dict
+from typing import Any, Dict, Tuple
 
 from django.db import models
-from django.utils.functional import cached_property
 from django.http import HttpRequest
+from django.utils.functional import cached_property
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -110,8 +110,6 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         data = super().get_datalayer_data(request)
         if self.topic:
             data["customDimension4"] = self.topic.title
-        if self.topic:
-            data["customDimension5"] = self.sub_heading
         if self.insight_tag_names:
             semicolon_insight_tag_names = ";".join(self.insight_tag_names.split("\n"))
             data["customDimension6"] = semicolon_insight_tag_names
