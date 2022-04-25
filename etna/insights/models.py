@@ -108,27 +108,15 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
-        if customDimension4 := self.topic:
-            pass
-        else:
-            customDimension4 = ""
-        if customDimension5 := self.sub_heading:
-            pass
-        else:
-            customDimension5 = ""
-        if customDimension6 := self.insight_tag_names:
-            pass
-        else:
-            customDimension6 = ""
-        if customDimension7 := self.time_period:
-            pass
-        else:
-            customDimension7 = ""
-        data.update(
-            customDimension4,
-            customDimension5,
-            customDimension6,
-            customDimension7)
+        if self.topic:
+            data["customDimension4"] = self.topic.title
+        if self.topic:
+            data["customDimension5"] = self.sub_heading
+        if self.insight_tag_names:
+            semicolon_insight_tag_names = ";".join(self.insight_tag_names.split("\n"))
+            data["customDimension6"] = semicolon_insight_tag_names
+        if self.time_period:
+            data["customDimension7"] = self.time_period
         return data
 
     def save(self, *args, **kwargs):
