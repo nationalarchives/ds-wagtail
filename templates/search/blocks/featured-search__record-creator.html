@@ -1,9 +1,9 @@
 {% load search_tags %}
 {% load humanize %}
+{% if results.hits.hits %}
 <div class="featured-search__results-block">
     <h2 class="featured-search__heading">{{ results.bucket.label }}</h2>
-    
-    {% if results.hits.hits %}
+
 
         {% with record=results.hits.hits.0 %}
         <div class="featured-search__record-creator">
@@ -17,7 +17,6 @@
             <h3 class="featured-search__results-heading"><a href="#" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
         </div>
         {% endwith %}
-    {% endif %}
 
     <div class="featured-search__see-all-link">
         <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
@@ -26,3 +25,4 @@
     </div>
 
 </div>
+{% endif %}

@@ -87,9 +87,12 @@ def featured_search(request):
         responses = response.get("responses", [])
 
     result_groups = {}
+    no_results = True
     for i, bucket in enumerate(FEATURED_BUCKETS):
         result_groups[bucket.key] = responses[i]
         result_groups[bucket.key]["bucket"] = bucket
+        if result_groups[bucket.key]["hits"]["hits"]:
+            no_results = False
 
     meta_title = "Search results"
     query = form.cleaned_data.get("q")
@@ -104,6 +107,7 @@ def featured_search(request):
             "query": query,
             "form": form,
             "result_groups": result_groups,
+            "no_results": no_results,
         },
     )
 

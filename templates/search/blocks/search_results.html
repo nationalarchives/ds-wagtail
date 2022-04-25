@@ -17,12 +17,16 @@
             <ul class="search-results__list--grid">
                 {% for record in page %}
                     {% include './search_results__list-card--grid.html' %}
+                {% empty %}
+                    {% include './search-results__no-results.html' %}
                 {% endfor %}
             </ul>
         {% else %}
             <ul class="search-results__list">
                 {% for record in page %}
                     {% include './search_results__list-card.html' %}
+                {% empty %}
+                    {% include './search-results__no-results.html' %}
                 {% endfor %}
             </ul>
         {% endif %}

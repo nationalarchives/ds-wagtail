@@ -10,6 +10,9 @@
     {% endwith  %}
     <p class="search-results__explainer--desktop">This page displays a summary of catalogue and non-catalogue content that matches your search.</p>
     <p class="search-results__explainer--mobile">Catalogue and non-catalogue content that matches your search.</p>
+    {% if no_results %}
+        {% include './blocks/featured-search__no-results.html' %}
+    {% endif %}
     <div class="featured-search__results">
 
         {% include './blocks/featured-search__results-block.html' with results=result_groups.tna %}
