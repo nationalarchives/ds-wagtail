@@ -2,13 +2,13 @@
     <nav class="jumplinks">
         <div class="container">
             <h2 class="jumplinks__heading">On this page</h2>
-            <ol class="jumplinks__list">
+            <ul class="jumplinks__list">
                 {% for section in sections %}
                     <li class="jumplinks__list-item">
                         <a class="jumplink" href="#{{ section.heading_id }}">{{ section.heading_text }}</a>
                     </li>
                 {% endfor %}
-            </ol>
+            </ul>
         </div>
     </nav>
 {% endif %}
