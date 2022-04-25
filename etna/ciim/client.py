@@ -98,8 +98,7 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     filter_prepared_list = []
 
     for item in items:
-        split_field_value = item.split(":", 1)
-        field, value = split_field_value[0], split_field_value[1]
+        field, value = item.split(":", 1)
         if field in field_list_to_prepare:
             filter_prepared = field + ":" + re.sub(regex, subst, value, 0, re.MULTILINE)
         else:
