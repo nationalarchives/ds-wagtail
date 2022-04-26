@@ -17,7 +17,7 @@
     padding: 1rem 0;
 
     a {
-      color: #26262a;
+      color: $color__dark;
       position: relative;
       bottom: 3px;
     }
@@ -28,10 +28,10 @@
   }
 
   &__list-item.active {
-      color: #FFCC00;
+      color: $color__yellow_2;
 
     a {
-      outline: 0.1875rem solid #FFCC00;
+      outline: 0.1875rem solid $color__yellow_2;
       outline-offset: .25rem;
       text-decoration: none;
     }
