@@ -7,26 +7,22 @@
         <li class="col-md-6 related-ce-content">
             <a href="{% pageurl page.time_period %}">
                 <picture>
-                        {% image page.time_period.teaser_image fill-480x351 as teaser %}
-                        <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
-                        {% image page.time_period.teaser_image fill-480x250 as teaser %}
-                        <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
-                        {% image page.time_period.teaser_image fill-330x250 as teaser %}
-                        <source media="(max-width: 900px)" srcset="{{ teaser.url }}">
-                        {% image page.time_period.teaser_image fill-315x300 as teaser %}
-                        <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
-                        {% image page.time_period.teaser_image fill-435x367 as teaser %}
-                        <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
-                        {% image page.time_period.teaser_image fill-525x367 as teaser %}
-                        <source media="(max-width: 1440px)" srcset="{{ teaser.url }}">
-                    {% if page.time_period.teaser_image_decorative %}
-                        <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
-                    {% else %}
-                        <img class="related-ce-content__image" src="{{ teaser.url }}" alt="{{page.time_period.teaser_image_alt_text}}" />
-                    {% endif %}
+                    {% image page.time_period.teaser_image fill-480x351 as teaser %}
+                    <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
+                    {% image page.time_period.teaser_image fill-480x250 as teaser %}
+                    <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
+                    {% image page.time_period.teaser_image fill-330x250 as teaser %}
+                    <source media="(max-width: 900px)" srcset="{{ teaser.url }}">
+                    {% image page.time_period.teaser_image fill-315x300 as teaser %}
+                    <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
+                    {% image page.time_period.teaser_image fill-435x367 as teaser %}
+                    <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
+                    {% image page.time_period.teaser_image fill-525x367 as teaser %}
+                    <source media="(max-width: 1440px)" srcset="{{ teaser.url }}">
+                    <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
                 </picture>
                 <div class="related-ce-content__summary">
-                    <h3 class="no-margin-top">{{ page.time_period }}</h4>
+                    <h3 class="no-margin-top">{{ page.time_period }}</h3>
                 </div>
             </a>
         </li>
@@ -46,14 +42,10 @@
                     <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
                     {% image page.topic.teaser_image fill-525x367 as teaser %}
                     <source media="(max-width: 1440px)" srcset="{{ teaser.url }}">
-                    {% if page.topic.teaser_image_decorative  %}
-                        <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
-                    {% else %}
-                        <img class="related-ce-content__image" src="{{ teaser.url }}" alt="{{page.topic.teaser_image_alt_text}}" />
-                    {% endif %}
+                    <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
                 </picture>
                 <div class="related-ce-content__summary">
-                    <h3 class="no-margin-top">{{ page.topic }}</h4>
+                    <h3 class="no-margin-top">{{ page.topic }}</h3>
                 </div>
             </a>
         </li>
