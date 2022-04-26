@@ -1,6 +1,7 @@
-from typing import Tuple
+from typing import Any, Dict, Tuple
 
 from django.db import models
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
@@ -104,6 +105,16 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
     search_fields = Page.search_fields + [
         index.SearchField("insight_tag_names"),
     ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        if self.topic:
+            data["customDimension4"] = self.topic.title
+        if self.insight_tag_names:
+            data["customDimension6"] = ";".join(self.insight_tag_names.split("\n"))
+        if self.time_period:
+            data["customDimension7"] = self.time_period.title
+        return data
 
     def save(self, *args, **kwargs):
         """
