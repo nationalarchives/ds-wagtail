@@ -1,8 +1,9 @@
 .section-separator {
   
   &__heading {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: 500;
+    font-family: $font__supria-sans;
     color: $color__dark;
     padding-top: 2rem;
     display: inline-block;

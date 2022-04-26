@@ -1,6 +1,8 @@
 .promoted-item {
   &__heading {
     font-weight: 400;
+    font-family: $font__supria-sans;
+    font-size: 2rem;
   }
 
   &__image-container {
