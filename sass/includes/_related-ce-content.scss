@@ -1,8 +1,11 @@
 .related-ce-content-group {
     margin-bottom: 4rem;
 
-    h3 {
+    h2 {
         margin-bottom: 2rem;
+        font-size: 3rem;
+        font-family: $font__supria-sans;
+        font-weight: 400;
     }
 
     &__list {
@@ -19,7 +22,7 @@
         width: 100%;
     }
 
-    h4{
+    h3{
         font-size: 1.625rem;
     }
 

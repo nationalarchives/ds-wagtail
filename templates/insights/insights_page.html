@@ -18,13 +18,11 @@
                 {% include_block block %}
             {% endfor %}
         </div>
-    </div>
 
-    <div class="col-md-12">
-        <div class="row">
+        <div class="insights-container-related-content">
             <div class="container">
                 {% if page.similar_items %}
-                    <h3>Related insights</h3>
+                    <h2 class="insights-container-related-content__heading">Related insights</h3>
 
                     <ul class="card-group--list-style-none">
                         {% for item in page.similar_items %}
@@ -38,7 +36,7 @@
                 {% include 'includes/related-ce-content.html' %}
 
                 {% if page.latest_items %}
-                    <h3>More insights</h3>
+                    <h2 class="insights-container-related-content__heading">More insights</h3>
 
                     <ul class="card-group--list-style-none">
                         {% for item in page.latest_items %}
