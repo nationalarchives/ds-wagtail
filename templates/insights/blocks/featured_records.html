@@ -1,24 +1,25 @@
+{% load records_tags %}
 <div class="featured-records">
     <div class="container">
-        <{{ heading_level }} class="sr-only">{{ value.heading }}</{{ heading_level }}>
-        <p class="featured-records__standfirst">
-            {{ value.introduction }}
-        </p>
+        <{{ heading_level }} class="sr-only">Featured records</{{ heading_level }}>
+
+        {% if value.introduction %}
+            <p class="featured-records__standfirst">
+                {{ value.introduction }}
+            </p>
+        {% endif %}
 
         <dl class="featured-records__list" data-container-name="featured-records">
             {% for item in value.items %}
                 <div class="featured-records__list-item">
-                    {% firstof item.record.reference_number item.record.iaid as record_id %}
-                    {% firstof item.title item.record.title as title %}
+
                     <dt>
-                        <a class="featured-records__link" href="{% url 'details-page-human-readable' record_id %}"
-                            data-link="{{ title }}">
-                            <h4 class="featured-records__link-heading">{{ title }}</h4>
+                        <a class="featured-records__link" href="{% record_url item.record %}"
+                            data-link="{{ item.title }}">
+                            <h4 class="featured-records__link-heading">{{ item.title }}</h4>
                         </a>
                     </dt>
-                    {% if item.record.description %}
-                        <dd class="featured-records__link-text">{{ item.record.description|safe }}</dd>
-                    {% endif %}
+                    <dd class="featured-records__link-text">{{ item.record.title|striptags }}</dd>
                 </div>
             {% endfor %}
         </dl>
