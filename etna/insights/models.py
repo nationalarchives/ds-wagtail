@@ -111,8 +111,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
         if self.topic:
             data["customDimension4"] = self.topic.title
         if self.insight_tag_names:
-            semicolon_insight_tag_names = ";".join(self.insight_tag_names.split("\n"))
-            data["customDimension6"] = semicolon_insight_tag_names
+            data["customDimension6"] = ";".join(self.insight_tag_names.split("\n"))
         if self.time_period:
             data["customDimension7"] = self.time_period.title
         return data
