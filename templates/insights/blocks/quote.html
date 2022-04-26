@@ -3,8 +3,8 @@
 <div class="quote">
     <div class="container">
         {% if value.attribution %}
-            <figure>
-                <blockquote class="quote__container quote__text">
+            <figure class="quote__container">
+                <blockquote class="quote__text">
                     {{ value.quote }}
                 </blockquote>
                 <figcaption class="quote__citation">
@@ -12,7 +12,7 @@
                 </figcaption>
             </figure>
         {% else %}
-            <blockquote class="quote__container quote__text">
+            <blockquote class="quote__text">
                 {{ value.quote }}
             </blockquote>
         {% endif %}

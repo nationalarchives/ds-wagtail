@@ -1,7 +1,8 @@
 .quote {
-  position: relative;
-  background-color: $color__grey-5;
-  padding: 2rem;
+  &__container {
+    background-color: $color__grey-5;
+    padding: 2rem;
+  }
 
   &__text {
     font-family: $font__roboto;
