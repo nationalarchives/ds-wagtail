@@ -42,8 +42,7 @@ class FeaturedRecordsItemBlock(blocks.StructBlock):
     title = blocks.CharBlock(
         label="Descriptive title",
         max_length=200,
-        required=False,
-        help_text="Optionally override for the record title. If left blank, the record title will be used.",
+        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
     )
     record = RecordChooserBlock()
 
@@ -52,8 +51,7 @@ class FeaturedRecordsItemBlock(blocks.StructBlock):
 
 
 class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, required=True)
-    introduction = blocks.CharBlock(max_length=200, required=True)
+    introduction = blocks.CharBlock(max_length=200, required=False)
     items = blocks.ListBlock(FeaturedRecordsItemBlock)
 
     class Meta:
