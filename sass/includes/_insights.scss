@@ -1,0 +1,31 @@
+.insights-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    &__sidebar {
+        grid-column-start: span 1;
+        padding: 0 1rem;
+    }
+
+    &__main {
+        grid-column-start: span 3;
+        padding: 0 2rem;
+        width: 80%;
+
+        @media (max-width: 767px) {
+            grid-column-start: span 4;
+            width: 100%;
+        }
+    }
+
+    &-related-content {
+        grid-column-start: span 4;
+        margin-top: 2rem;
+
+        &__heading {
+            font-size: 3rem;
+            font-family: $font__supria-sans;
+            font-weight: 400;
+        }
+    }
+}
