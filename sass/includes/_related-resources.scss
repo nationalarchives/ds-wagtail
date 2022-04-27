@@ -1,32 +1,11 @@
 .related-resources {
-  text-align: center;
-  margin: 0 0 2rem 0;
-  padding: 2rem 0;
-  border-top: 0.5rem solid $color__grey-7;
-
-  &__icon {
-    background-color: $color__blue_3;
-    border-radius: 50%;
-    margin-bottom: 1rem;
-    padding: 1rem;
-    width: 5rem;
-    height: 5rem;
-    margin: auto;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 3rem;
-  }
-
-  &__icon-label {
-    text-transform: uppercase;
-    font-family: $font__roboto;
-    font-weight: bold;
-    font-size: 0.9rem;
-  }
+  margin: 2rem 0;
+  padding-bottom: 1rem;
 
   &__heading {
     font-size: 2rem;
     font-weight: 400;
+    font-family: $font__supria-sans;
   }
 
   &__description {
@@ -39,10 +18,10 @@
   }
 
   &__list-item {
-    background-color: $color__blue_3;
+    background-color: $color__dark;
     margin-bottom: 1rem;
     padding: 1rem;
-    border-left: 1.25rem solid $color__blue_4;
+    border-left: 1.25rem solid $color__yellow_2;
     text-align: left;
   }
 

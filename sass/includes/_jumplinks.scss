@@ -1,34 +1,43 @@
 .jumplinks {
-  background-color: $color__blue_3;
-  padding: 2rem;
+  position: sticky;
+  top: 0;
+  padding: 2.5rem 0 0 1rem;
 
   &__heading {
-    margin: 0 0 2rem 0;
+    font-size: 2rem;
+    font-family: $font__supria-sans;
   }
 
   &__list {
-    padding-left: 1rem;
+    padding-left: 0;
+    list-style-type: disc;
   }
 
   &__list-item {
-    margin: 0 1rem 1rem 1.2rem;
-    font-size: 1.2rem;
-  }
+    padding: 1rem 0;
 
-  .jumplink {
-    transition: none;
-
-    &:focus {
-      outline: 0.313rem solid $color__white;
+    a {
+      color: $color__dark;
+      position: relative;
+      bottom: 3px;
     }
 
-    &:hover {
-      color: $color__white !important;
+    &::marker {
+      font-size: 1.5rem;
     }
   }
-}
 
-.jumplinks__heading, .jumplinks__list-item, .jumplink, .jumplink:visited {
-  color: $color__white;
-  font-family: $font__roboto;
+  &__list-item.active {
+      color: $color__yellow_2;
+
+    a {
+      outline: 0.1875rem solid $color__yellow_2;
+      outline-offset: .25rem;
+      text-decoration: none;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    display: none;
+  }
 }
