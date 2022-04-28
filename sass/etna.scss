@@ -48,6 +48,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/hierarchy-local-nav';
 @import 'includes/key-facts';
 @import 'includes/image-viewer-panel';
+@import 'includes/insights';
 @import 'includes/record-access-options';
 @import 'includes/record-details';
 @import 'includes/taxonomy-tags';
@@ -61,6 +62,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/record-embed';
 @import 'includes/record-embed__no-image';
 @import 'includes/related-resources';
+@import 'includes/related-ce-content';
 @import 'includes/blog-embed';
 @import 'includes/related-content';
 @import 'includes/section-separator';
@@ -84,3 +86,5 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/search/search-landing-buckets';
 @import 'includes/search/featured-search';
 @import 'includes/search/long-filters';
+@import 'includes/sub-heading';
+@import 'includes/section-image';

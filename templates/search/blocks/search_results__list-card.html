@@ -1,5 +1,5 @@
 {% comment %} TODO downloadable, and record variables {% endcomment %}
-{% load search_tags %}
+{% load search_tags static %}
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
         <h3 class="search-results__list-card-heading">
@@ -51,10 +51,10 @@
         </ul>
     </div>
 
-    {% if record.downloadable %}
+    {% if record|record_detail:"digitised" %}
     <div class="search-results__list-card-delivery-options">
         <a href="#" aria-hidden="true" tabindex="-1">
-            <img src="https://via.placeholder.com/150x150" class="search-results__list-card-delivery-options-img" alt="" />
+            <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
         <a href="#" class="search-results__list-card-delivery-options-link">
             <p class="search-results__list-card-delivery-options-desc">

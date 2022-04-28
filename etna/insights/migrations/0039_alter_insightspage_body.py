@@ -225,17 +225,10 @@ class Migration(migrations.Migration):
                                                 wagtail.core.blocks.StructBlock(
                                                     [
                                                         (
-                                                            "heading",
-                                                            wagtail.core.blocks.CharBlock(
-                                                                max_length=100,
-                                                                required=True,
-                                                            ),
-                                                        ),
-                                                        (
                                                             "introduction",
                                                             wagtail.core.blocks.CharBlock(
                                                                 max_length=200,
-                                                                required=True,
+                                                                required=False,
                                                             ),
                                                         ),
                                                         (
