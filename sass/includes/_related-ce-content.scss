@@ -26,6 +26,10 @@
         font-size: 1.5rem;
     }
 
+    img {
+        width: 100%;
+    }
+
     &__summary {
         display: flex;
         justify-content: center;
@@ -48,6 +52,10 @@
         width: 100%;
         max-width: 100%;
 
+        picture {
+            width: 50%;
+        }
+
         a {
             display: flex;
             height: 250px;
@@ -65,6 +73,10 @@
         a {
             flex-direction: column;
             height: auto;
+        }
+
+        picture {
+            width: 100%;
         }
 
         &__summary {
