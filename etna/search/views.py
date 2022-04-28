@@ -568,9 +568,8 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
     title_base = "Catalogue results"
 
 
-class FeaturedSearchView(LoginRequiredMixin, BucketsMixin, BaseSearchView):
+class FeaturedSearchView(LoginRequiredMixin, BaseSearchView):
     api_method_name = "search_all"
-    bucket_list = FEATURED_BUCKETS
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
 
@@ -578,35 +577,26 @@ class FeaturedSearchView(LoginRequiredMixin, BucketsMixin, BaseSearchView):
         return {
             "q": form.cleaned_data.get("q"),
             "filter_aggregations": [
-                f"group:{bucket.key}" for bucket in self.bucket_list
+                f"group:{bucket.key}" for bucket in FEATURED_BUCKETS
             ],
             "size": 3,
         }
 
-    def extract_group_buckets(
-        self, api_result: Union[None, Dict[str, Any]]
-    ) -> Sequence[Dict[str, Union[str, int]]]:
+    def get_buckets(self) -> Dict[str, Bucket]:
         """
-        Replaces `BucketMixin.extract_group_buckets()` to avoid any wasted
-        effort. The result format from 'searchAll' is such that it's more
-        convenient to do everything in `get_buckets()`.
-        """
-        return ()
-
-    def get_buckets(
-        self,
-        *args,
-        **kwargs,
-    ) -> Dict[str, Bucket]:
-        """
-        Replaces BucketMixin.get_buckets() to return a `dict` of buckets
-        with their `result_count` and `results` attributes set using the
-        data from Kong.
+        This method is similar in principal to `BucketMixin.get_buckets()`,
+        but to support template/rendering needs, it returns a `dict` instead of
+        a `BucketList`, and instead of receiving additional argument values,
+        `result_count` and `results` are set on each bucket using data
+        directly from `self.api_result`.
         """
         buckets = {}
-        for i, bucket in enumerate(copy.deepcopy(self.bucket_list)):
+        for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
             response = self.api_result["responses"][i]
             bucket.result_count = response["hits"]["total"]["value"]
             bucket.results = response["hits"]["hits"]
             buckets[bucket.key] = bucket
         return buckets
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return super().get_context_data(buckets=self.get_buckets(), **kwargs)
