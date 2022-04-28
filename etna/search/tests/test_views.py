@@ -1,15 +1,68 @@
 from typing import Any
-from unittest import mock
 
 from django.http import HttpResponse
-from django.test import SimpleTestCase, override_settings
-from django.urls import reverse
+from django.test import SimpleTestCase, TestCase, override_settings
+from django.urls import reverse, reverse_lazy
+
+from wagtail.tests.utils import WagtailTestUtils
 
 import responses
 
 from ...ciim.tests.factories import create_response
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
+
+
+class SearchViewTestCase(WagtailTestUtils, TestCase):
+    maxDiff = None
+
+    def setUp(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "responses": [
+                    create_response(),
+                    create_response(),
+                ]
+            },
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/searchAll",
+            json={
+                "responses": [
+                    create_response(),
+                    create_response(),
+                    create_response(),
+                    create_response(),
+                    create_response(),
+                    create_response(),
+                ]
+            },
+        )
+
+    def get_url(self, url: str, **data: Any) -> HttpResponse:
+        return self.client.get(url, data=data)
+
+
+@override_settings(SEARCH_VIEWS_REQUIRE_LOGIN=True)
+class LoginRequiredTest(SearchViewTestCase):
+    test_url = reverse_lazy("search-catalogue")
+
+    def test_redirects_to_login_when_not_authenticated(self):
+        response = self.get_url(self.test_url)
+        self.assertRedirects(
+            response,
+            f"/accounts/login?next={self.test_url}",
+            fetch_redirect_response=False,
+        )
+
+    @responses.activate
+    def test_allows_request_when_authenticated(self):
+        self.login()
+        response = self.get_url(self.test_url)
+        self.assertEquals(response.status_code, 200)
 
 
 class SelectedFiltersTest(SimpleTestCase):
@@ -122,45 +175,6 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
             },
         )
-
-
-class SearchViewTestCase(SimpleTestCase):
-    maxDiff = None
-
-    def setUp(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/searchAll",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
-
-    def get(self, url: str, **data: Any):
-        # Request the URL with render_to_response() patched to avoid
-        # any database queries that are triggered during rendering
-        with mock.patch(
-            "etna.search.views.BaseSearchView.render_to_response",
-            return_value=HttpResponse(""),
-        ):
-            return self.client.get(url, data=data)
 
 
 @override_settings(
