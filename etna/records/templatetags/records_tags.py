@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Union
 
 from django import template
 from django.urls import reverse
@@ -10,7 +10,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def record_url(record: Dict[str, Any]) -> str:
+def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     """
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
