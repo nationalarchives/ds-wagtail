@@ -18,17 +18,25 @@
             {{ value.title }}
         </{{ heading_level }}>
 
-        {% if value.author %}
-        <p class="promoted-item__author">
-            By {{ value.author }}
-        </p>
-        {% endif %}
+        <div class="promoted-item__image-container">
+            {% if value.image %}
+                {% include_block value.image %}
+            {% endif %}
+        </div>
 
-        {% if value.publication_date %}
-        <p class="promoted-item__date">
-            Published on <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
-        </p>
-        {% endif %}
+        <div class="promoted-item__metadata">
+            {% if value.author %}
+            <p class="promoted-item__author">
+                By {{ value.author }}
+            </p>
+            {% endif %}
+
+            {% if value.publication_date %}
+            <p class="promoted-item__date">
+                <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+            </p>
+            {% endif %}
+        </div>
 
         {% if value.duration %}
         <p class="promoted-item__text">
@@ -36,19 +44,15 @@
         </p>
         {% endif %}
 
-        <div class="promoted-item__text">
-            {{ value.description|richtext }}
-        </div>
+        <div class="promoted-item__text-container">
+            <div class="promoted-item__text">
+                {{ value.description|richtext }}
+            </div>
 
-        <div class="promoted-item__image-container">
-            {% if value.image %}
-                {% include_block value.image %}
-            {% endif %}
-    
             {% if value.target_blank %}
-                <a class="tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
+                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
             {% else %}
-                <a class="tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}">{{ value.cta_label }}</a>
+                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}">{{ value.cta_label }}</a>
             {% endif %}
         </div>
     </div>
