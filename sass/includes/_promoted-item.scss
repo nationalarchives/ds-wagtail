@@ -1,12 +1,19 @@
 .promoted-item {
+  border: 0.1875rem solid $color__dark;
+  margin-top: 2rem;
+
   &__heading {
     font-weight: 400;
     font-family: $font__supria-sans;
     font-size: 2rem;
   }
 
-  &__image-container {
+  &__image-container, &__text-container {
     text-align: center;
+  }
+
+  &__text-container {
+    margin-top: 2rem;
   }
 
   &__image {
@@ -28,6 +35,7 @@
 
   &__link {
     text-decoration: none;
+    margin-bottom: 2rem;
 
     &:hover {
       text-decoration: underline;
@@ -35,8 +43,12 @@
     }
   }
 
-  &__date {
-    font-size: 1.2rem;
+  &__metadata {
+    margin-top: 1rem;
+
+    p {
+      margin-bottom: 0;
+    }
   }
 
   &__text {
@@ -50,10 +62,5 @@
 
   &__link-heading, &__link-text {
     color: $color__white;
-  }
-
-  .tna-button--dark {
-    position: relative;
-    bottom: 30px;
   }
 }
