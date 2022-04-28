@@ -169,7 +169,7 @@ class BaseCollectionSearchForm(forms.Form):
     )
     per_page = forms.IntegerField(
         min_value=20,
-        max_value=200,
+        max_value=50,
         required=False,
     )
     sort_by = forms.ChoiceField(
