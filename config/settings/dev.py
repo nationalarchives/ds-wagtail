@@ -11,11 +11,6 @@ ALLOWED_HOSTS = ["*"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-try:
-    from .local import *  # noqa: F401
-except ImportError:
-    pass
-
 if DEBUG:
     if strtobool(os.getenv("DEBUG_TOOLBAR", "False")):  # noqa: F405
         from .base import INSTALLED_APPS, LOGGING, MIDDLEWARE
@@ -36,3 +31,8 @@ if DEBUG:
         }
 
     LOGGING["root"]["level"] = "DEBUG"
+
+try:
+    from .local import *  # noqa: F401
+except ImportError:
+    pass

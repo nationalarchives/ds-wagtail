@@ -60,3 +60,5 @@ templates/static/css/libraries/*
 # built docs
 /site/
 
+# local config
+config/settings/local.py
