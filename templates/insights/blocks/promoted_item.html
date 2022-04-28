@@ -32,9 +32,7 @@
             {% endif %}
 
             {% if value.publication_date %}
-            <p class="promoted-item__date">
-                <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
-            </p>
+            <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
             {% endif %}
         </div>
 
