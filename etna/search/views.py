@@ -149,8 +149,11 @@ class KongAPIMixin:
         response that is useful for the request.
         """
         client = Record.api.client
-        method = getattr(client, self.api_method_name)
-        response = method(**self.get_api_kwargs(form))
+        # variabalize the method for calling below
+        client_method_to_call = getattr(client, self.api_method_name)
+        # call the variabalized api client method
+        response = client_method_to_call(**self.get_api_kwargs(form))
+        # add response to view state for use in other methods
         self.api_result = response
         return response
 
