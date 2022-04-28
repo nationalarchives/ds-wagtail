@@ -69,6 +69,12 @@
         &:focus {
             outline: 5px solid $color__black;
         }
+
+        @media only screen and (max-width: $screen__md) {
+            display: inline-block;
+            margin-left: auto;
+            margin-top: 0.5rem;
+        }
     }
 
     &__paragraph {

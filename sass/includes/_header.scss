@@ -1,12 +1,18 @@
 .header {
   background-color: $color__yellow_2;
-  display: flex;
-  flex-wrap: wrap;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
   &__logo {
 
       &-holder {
+          display: inline-block;
           padding: 1rem;
-
+          @media only screen and (max-width: $screen__md) {
+            vertical-align: top;
+          }
           @media screen and (max-width: $screen__sm) {
               padding-left: 0.1rem;
               padding-right: 0.1rem;
@@ -18,7 +24,7 @@
       &-link {
           align-self: center;
           margin-left: 1rem;
-          display: block;
+          display: inline-block;
           &:hover {
               outline: 5px solid $color__grey-8;
           }
@@ -31,8 +37,8 @@
           height: 100px;
 
           @media screen and (max-width: $screen__sm) {
-              width: 50px;
-              height: 50px;
+              width: 75px;
+              height: 75px;
           }
       }
   }
@@ -40,33 +46,51 @@
       margin-left: auto;
       align-items: flex-end;
 
+      @media only screen and (max-width: $screen__md) {
+        display: block;
+        text-align: right;
+        margin-top: -4rem;
+      }
+
       &-list {
-          display: flex;
-          align-items: flex-end;
-          flex-wrap: wrap;
+          @media only screen and (max-width: $screen__md) {
+            padding-left: 0;
+          }
+
+          @media only screen and (min-width: $screen__md) {
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: wrap;
+          }
+
           height: 100%;
 
           @media only screen and (min-width: $screen__md) {
               width: 32rem;
           }
 
-          @media only screen and (max-width: $screen__md) {
-              padding-left: 0;
-          }
-
           margin-bottom: 0;
           justify-content: space-around; // IE11 only supports space-around and space-between.
           &-item {
               list-style: none;
-              height: 3rem;
+              @media only screen and (min-width: $screen__md) {
+                height: 3rem;   
+                }
               display: block;
 
-              @media only screen and (max-width: $screen__md) {
-                  margin-right: 1rem;
+              &[data-isSearch='true'] {
+                display: inline-block;
               }
 
-              @media only screen and (max-width: 35rem) {
-                  margin-right: 0.25rem;
+              &[data-id='menu-show-hide-button'] {
+                display: inline-block;
+              }
+
+              &[data-isSearch='false'] {
+
+                @media only screen and (max-width: $screen__md) {
+                    background-color: $color__grey-1;
+                }
               }
 
               &-link {
@@ -82,10 +106,22 @@
                       color: $color__black;
                   }
 
-                  &:hover, &[aria-current=true], &:focus {
-                      background-color: $color__white;
-                      color: $color__black;
-                  }
+                  @media only screen and (max-width: $screen__md) {
+                    text-align: center;
+                    &:hover, &:focus {
+                        background-color: $color__white;
+                        color: $color__black;
+                    }  
+                }
+
+                    @media only screen and (min-width: $screen__md) {
+                        &:hover, &[aria-current=true], &:focus {
+                            background-color: $color__white;
+                            color: $color__black;
+                        }  
+                    }
+
+                  
 
                   &:focus {
                       outline-color: $color__black;
@@ -106,5 +142,30 @@
               }
           }
       }
+  }
+  &__show-hide-button {
+      display: inline-block;
+      background-color: $color__grey-2;
+      margin-right: 0.3rem;
+      width: 3rem;
+      height: 3rem;
+      color: $color__white;
+      border: 0;
+      margin-left: auto;
+      cursor: pointer;
+      background-image: url('/static/images/icons/hamburger-white.svg');
+      background-repeat: no-repeat;
+      background-position-x: center;
+      background-position-y: 0.6rem;
+      background-size: 1.5rem;
+
+        &[aria-expanded=true], &:hover, &:focus {
+            background-color: $color__grey-1;
+            background-image: url('/static/images/icons/hamburger-black.svg');
+            color: #000;
+        }
+        &:focus {
+            outline: 5px solid $color__black;
+        }
   }
 }

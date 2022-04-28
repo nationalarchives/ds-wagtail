@@ -1,3 +1,91 @@
+import debounce from './debounce.js';
+
 export default function() {
-    console.log("Hello world from hamburger menu")
+    let $headerMenu = document.querySelector('[data-id="site-menu"]');
+    let $headerMenuList = document.querySelector('[data-id="site-menu-list"]')
+    let $headerElementsToHide = document.querySelectorAll('[data-isSearch="false"]');
+    let $globalSearchButton = document.querySelector('[data-isSearch="true"]');
+    if(!$headerMenu) {
+        return;
+    }
+
+    let placeGlobalSearchAtIndex = function(index) {
+        if(index === "end") {
+            index = $headerMenuList.childNodes.length;
+        }
+        $globalSearchButton.remove();
+        $headerMenuList.insertBefore($globalSearchButton, $headerMenuList.childNodes[index]); //IE11 compatible prepend
+    }
+    
+    let $showHideListItem = document.createElement('li');
+    $showHideListItem.classList.add('header__nav-list-item');
+    $showHideListItem.setAttribute('data-id', 'menu-show-hide-button');
+
+    let $showHideButton = document.createElement('button');
+    $showHideButton.innerHTML = '<span class="sr-only">Show or hide navigation menu</span>';
+    $showHideButton.classList.add('header__show-hide-button');
+    $showHideButton.setAttribute('aria-expanded', false);
+    
+    $showHideListItem.appendChild($showHideButton)
+
+    $headerMenuList.insertBefore($showHideListItem, $headerMenuList.childNodes[0]); //IE11 compatible prepend
+    
+    if(window.innerWidth >= 768) {
+        $showHideButton.hidden = 'true';
+    }
+    else {
+        // Move global search button to the 2nd DOM element, so that the CSS can work as intended.
+        placeGlobalSearchAtIndex(1);
+    }
+
+    let ariaControls = '';
+    for(let i = 0; i < $headerElementsToHide.length; i++) {
+        let id = `menu-item-${i}`;
+        $headerElementsToHide[i].id = id;
+        ariaControls += ` ${id}`;
+        if(window.innerWidth < 768) {
+            $headerElementsToHide[i].hidden = 'true';
+        }
+    }
+
+    $showHideButton.setAttribute('aria-controls', ariaControls);
+
+    $showHideButton.addEventListener('click', function() {
+        let ariaExpandedBoolean = $showHideButton.getAttribute('aria-expanded') === 'true';
+        $showHideButton.setAttribute('aria-expanded', !ariaExpandedBoolean);
+
+        for(let i = 0; i < $headerElementsToHide.length; i++) {
+            $headerElementsToHide[i].hidden = !$headerElementsToHide[i].hidden;
+        }
+
+    });
+
+    let setMenuItemsHidden = function(hidden) {
+        for(let i = 0; i < $headerElementsToHide.length; i++) {
+            $headerElementsToHide[i].hidden = hidden;
+        }
+    }
+    window.addEventListener("resize", debounce(() =>{
+        let ariaExpanded = $showHideButton.getAttribute('aria-expanded');
+
+        if(window.innerWidth < 768) {
+            $showHideButton.hidden = false;
+
+            if(ariaExpanded === 'false') {
+                setMenuItemsHidden(true);
+            }
+            else {
+                setMenuItemsHidden(false);
+            }
+
+            placeGlobalSearchAtIndex(1);
+        }
+        else {
+            // Hide button on desktop, but keep menu items visibl
+            $showHideButton.hidden = true;
+            setMenuItemsHidden(false);
+            placeGlobalSearchAtIndex("end");
+        }
+    }, 200));
+    
 }

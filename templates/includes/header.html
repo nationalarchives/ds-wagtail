@@ -16,7 +16,7 @@
       <nav class="header__nav" aria-label="Site menu" data-id="site-menu">
         <ul class="header__nav-list" data-id="site-menu-list">
           {% for item in settings.core.SiteSettings.main_menu_items %}
-            <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% endif %}>
+            <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% else %} data-isSearch="true" {% endif %}>
               {% if item.handle == 'search' %}
                 <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>
                   <span class="sr-only">{{ item.label }}</span>
