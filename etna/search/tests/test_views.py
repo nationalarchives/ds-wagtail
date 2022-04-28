@@ -13,6 +13,10 @@ from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
 
+@override_settings(
+    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+)
 class SearchViewTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
 
@@ -177,10 +181,6 @@ class SelectedFiltersTest(SimpleTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -211,10 +211,6 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
@@ -241,10 +237,6 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-featured")
 
@@ -288,10 +280,6 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
