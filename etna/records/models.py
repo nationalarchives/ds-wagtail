@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -58,6 +58,9 @@ class Record(DataLayerMixin, APIModel):
 
     def __str__(self):
         return f"{self.title} ({self.iaid})"
+
+    def get(self, key: str, default: Optional[Any] = None):
+        return getattr(self, key, default)
 
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
