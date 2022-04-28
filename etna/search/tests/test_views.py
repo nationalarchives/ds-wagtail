@@ -69,6 +69,24 @@ class LoginRequiredTest(SearchViewTestCase):
         self.assertEquals(response.status_code, 200)
 
 
+class BadRequestHandlingTest(SearchViewTestCase):
+    test_url = reverse_lazy("search-catalogue")
+
+    def test_httpresponsebadrequest_recieved_when_bad_values_provided(self):
+        for field_name, value in [
+            ("group", "foo"),
+            ("per_page", "bar"),
+            ("per_page", 10000),
+            ("sort_by", "baz"),
+            ("sort_order", "foo"),
+            ("display", "foo"),
+        ]:
+            with self.subTest(f"{field_name} = {value}"):
+                data = {field_name: value}
+                response = self.get_url(self.test_url, **data)
+                self.assertEqual(response.status_code, 400)
+
+
 class SelectedFiltersTest(SimpleTestCase):
     def get_result(self, form):
         return CatalogueSearchView().get_selected_filters(form)
