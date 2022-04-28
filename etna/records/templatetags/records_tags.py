@@ -17,9 +17,9 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     the search() endpoint.
     """
     if ref := record.get("reference_number", record.get("referenceNumber")):
-        return reverse("details-page-human-readable", kwargs={"record_id": ref})
+        return reverse("details-page-human-readable", kwargs={"reference_number": ref})
     if iaid := record.get("iaid"):
-        return reverse("details-page-machine-readable", kwargs={"record_id": iaid})
+        return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
     if url := record.get("sourceUrl"):
         return url
     try:
