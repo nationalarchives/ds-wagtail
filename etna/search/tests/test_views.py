@@ -2,7 +2,7 @@ from typing import Any
 
 from django.http import HttpResponse
 from django.test import SimpleTestCase, TestCase, override_settings
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 
 from wagtail.tests.utils import WagtailTestUtils
 
@@ -182,13 +182,11 @@ class SelectedFiltersTest(SimpleTestCase):
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
-    def setUp(self):
-        super().setUp()
-        self.url = reverse("search-catalogue")
+    test_url = reverse_lazy("search-catalogue")
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.get(self.url)
+        self.get_url(self.test_url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -218,15 +216,13 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
-    def setUp(self):
-        super().setUp()
-        self.url = reverse(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
-        )
+    test_url = reverse_lazy(
+        "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
+    )
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.get(self.url)
+        self.get_url(self.test_url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -250,13 +246,11 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
-    def setUp(self):
-        super().setUp()
-        self.url = reverse("search-featured")
+    test_url = reverse_lazy("search-featured")
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_search(self):
-        self.get(self.url)
+        self.get_url(self.test_url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -275,7 +269,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
 
     @responses.activate
     def test_search_with_query(self):
-        self.get(self.url, q="query")
+        self.get_url(self.test_url, q="query")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -299,13 +293,11 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
-    def setUp(self):
-        super().setUp()
-        self.url = reverse("search-website")
+    test_url = reverse_lazy("search-website")
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.get(self.url)
+        self.get_url(self.test_url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
