@@ -1,7 +1,7 @@
 from typing import Any, Dict, Union
 
 from django import template
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 
 from ..field_labels import FIELD_LABELS
 from ..models import Record
@@ -17,9 +17,17 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     the search() endpoint.
     """
     if ref := record.get("reference_number", record.get("referenceNumber")):
-        return reverse("details-page-human-readable", kwargs={"reference_number": ref})
+        try:
+            return reverse(
+                "details-page-human-readable", kwargs={"reference_number": ref}
+            )
+        except NoReverseMatch:
+            pass
     if iaid := record.get("iaid"):
-        return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+        try:
+            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+        except NoReverseMatch:
+            pass
     if url := record.get("sourceUrl"):
         return url
     try:
