@@ -80,14 +80,12 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
 
     Example:
     before-prepare: "heldBy:Birmingham: Archives, Heritage and Photography Service"
-    after-prepare:  "heldBy:Birmingham  Archives  Heritage and Photography Service"
+    after-prepare:  "heldBy:Birmingham Archives Heritage and Photography Service"
     before-prepare: "heldBy:Staffordshire and Stoke-on-Trent Archive Service: Staffordshire County Record Office"
-    after-prepare:  "heldBy:Staffordshire and Stoke on Trent Archive Service  Staffordshire County Record Office"
+    after-prepare:  "heldBy:Staffordshire and Stoke on Trent Archive Service Staffordshire County Record Office"
     Special char single quote i.e. ' is not prepared
     before-prepare: "heldBy:Labour History Archive and Study Centre (People's History Museum/University of Central Lancashire)"
-    after-prepare:  "heldBy:Labour History Archive and Study Centre  People's History Museum University of Central Lancashire "
-    before-prepare: "heldBy:Bedfordshire Archives & Records Service"
-    after-prepare: "heldBy:Bedfordshire Archives   Records Service"
+    after-prepare:  "heldBy:Labour History Archive and Study Centre People's History Museum University of Central Lancashire "
     """
     if not items:
         return None
