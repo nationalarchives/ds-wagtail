@@ -104,7 +104,9 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
             prepared_value = re.sub(regex, subst, value, 0, re.MULTILINE)
             # replace multiple space
             prepared_value = re.sub(" +", subst, prepared_value, 0, re.MULTILINE)
-            filter_prepared = field + ":" + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
+            filter_prepared = (
+                field + ":" + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
+            )
         else:
             filter_prepared = field + ":" + value
         filter_prepared_list.append(filter_prepared)
