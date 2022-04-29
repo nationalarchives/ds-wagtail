@@ -78,7 +78,7 @@
                 }
               display: block;
 
-              &[data-isSearch='true'] {
+              &#site-menu-search{
                 display: inline-block;
               }
 
@@ -90,6 +90,12 @@
 
                 @media only screen and (max-width: $screen__md) {
                     background-color: $color__grey-1;
+
+                    .header__nav-list-item-link { 
+                        &:hover, &[aria-current=true], &:focus {
+                            text-decoration: underline;
+                        }
+                    }
                 }
               }
 

@@ -4,19 +4,31 @@ export default function() {
     let $headerMenu = document.querySelector('[data-id="site-menu"]');
     let $headerMenuList = document.querySelector('[data-id="site-menu-list"]')
     let $headerElementsToHide = document.querySelectorAll('[data-isSearch="false"]');
-    let $globalSearchButton = document.querySelector('[data-isSearch="true"]');
+    let $globalSearchListItem = document.querySelector('#site-menu-search');
+    let $globalSearchButton = document.querySelector('#gs-show-hide');
     if(!$headerMenu) {
         return;
     }
 
-    let placeGlobalSearchAtIndex = function(index) {
-        if(index === "end") {
-            index = $headerMenuList.childNodes.length;
-        }
-        $globalSearchButton.remove();
-        $headerMenuList.insertBefore($globalSearchButton, $headerMenuList.childNodes[index]); //IE11 compatible prepend
+    let isGlobalSearchFocused = function() {
+        // This has to be calculated outside of placeGlobalSearchAtIndex(), as I believe the debounce delay was causing an document.activeElement to be incorrect
+        return $globalSearchButton.id === document.activeElement.id;
     }
-    
+
+    let placeGlobalSearchAtIndex = function(newIndex, isFocused) {
+
+        if(newIndex === "end") {
+            newIndex = $headerMenuList.childNodes.length - 1;
+        }
+
+        // Only move the element if it's in the wrong place
+        if($headerMenuList.childNodes[newIndex].id !== $globalSearchListItem.id) {
+            $headerMenuList.insertBefore($globalSearchListItem, $headerMenuList.childNodes[newIndex]); //IE11 compatible prepend
+
+            isFocused ? $globalSearchButton.focus() : null;
+        }
+    }
+
     let $showHideListItem = document.createElement('li');
     $showHideListItem.classList.add('header__nav-list-item');
     $showHideListItem.setAttribute('data-id', 'menu-show-hide-button');
@@ -35,7 +47,7 @@ export default function() {
     }
     else {
         // Move global search button to the 2nd DOM element, so that the CSS can work as intended.
-        placeGlobalSearchAtIndex(1);
+        placeGlobalSearchAtIndex(1, isGlobalSearchFocused());
     }
 
     let ariaControls = '';
@@ -65,6 +77,7 @@ export default function() {
             $headerElementsToHide[i].hidden = hidden;
         }
     }
+
     window.addEventListener("resize", debounce(() =>{
         let ariaExpanded = $showHideButton.getAttribute('aria-expanded');
 
@@ -78,13 +91,13 @@ export default function() {
                 setMenuItemsHidden(false);
             }
 
-            placeGlobalSearchAtIndex(1);
+            placeGlobalSearchAtIndex(1, isGlobalSearchFocused());
         }
         else {
-            // Hide button on desktop, but keep menu items visibl
+            // Hide button on desktop, but keep menu items visible
             $showHideButton.hidden = true;
             setMenuItemsHidden(false);
-            placeGlobalSearchAtIndex("end");
+            placeGlobalSearchAtIndex("end", isGlobalSearchFocused());
         }
     }, 200));
     
