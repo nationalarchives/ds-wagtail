@@ -92,7 +92,7 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     if not items:
         return None
 
-    regex = r"([/():,&-])"
+    regex = r"([/():,\&\-\|+@!.])"
     subst = " "
     field_list_to_prepare = ["heldBy"]
     filter_prepared_list = []
