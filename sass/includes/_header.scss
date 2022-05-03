@@ -79,6 +79,7 @@
 
         &#site-menu-search {
           display: inline-block;
+          vertical-align: bottom;
         }
 
         &[data-id="menu-show-hide-button"] {
@@ -107,19 +108,25 @@
 
           @media only screen and (max-width: $screen__md) {
             text-align: center;
+            border-bottom: 1px solid $color__grey-7;
+            background-color: $color__white;
+            font-size: 1.2rem;
             &:hover,
+            &[aria-current="true"],
             &:focus {
-              background-color: $color__white;
+              background-color: $color__grey-1;
               color: $color__black;
             }
           }
 
-          &:hover,
-          &[aria-current="true"],
-          &:focus {
-            background-color: $color__white;
-            color: $color__black;
-          }
+          @media only screen and (min-width: $screen__md) {
+            &:hover,
+            &[aria-current="true"],
+            &:focus {
+                background-color: $color__white;
+                color: $color__black;
+            }
+         }
 
           &:focus {
             outline-color: $color__black;
@@ -127,6 +134,7 @@
 
           &-search {
             width: 3rem;
+            height: 3rem;
             background-image: url("/static/images/icons/search-black.svg");
             background-repeat: no-repeat;
             background-position-x: center;
