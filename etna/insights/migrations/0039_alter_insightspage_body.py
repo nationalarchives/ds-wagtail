@@ -253,6 +253,31 @@ class Migration(migrations.Migration):
                                                             ),
                                                         ),
                                                         (
+                                                            "category",
+                                                            wagtail.core.blocks.ChoiceBlock(
+                                                                label="Category",
+                                                                choices=[
+                                                                    (
+                                                                        "blog",
+                                                                        "Blog post",
+                                                                    ),
+                                                                    (
+                                                                        "podcast",
+                                                                        "Podcast",
+                                                                    ),
+                                                                    ("video", "Video"),
+                                                                    (
+                                                                        "video-external",
+                                                                        "External video",
+                                                                    ),
+                                                                    (
+                                                                        "external-link",
+                                                                        "External link",
+                                                                    ),
+                                                                ],
+                                                            ),
+                                                        ),
+                                                        (
                                                             "publication_date",
                                                             wagtail.core.blocks.DateBlock(
                                                                 required=False
