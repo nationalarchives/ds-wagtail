@@ -1,3 +1,4 @@
+from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -113,3 +114,8 @@ urlpatterns = (
         path("", include(wagtail_urls)),
     ]
 )
+
+if apps.is_installed("debug_toolbar"):
+    urlpatterns = [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ] + urlpatterns
