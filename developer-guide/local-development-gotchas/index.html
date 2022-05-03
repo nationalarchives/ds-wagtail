@@ -315,8 +315,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#brief-description-of-problem" class="md-nav__link">
-    Brief description of problem
+  <a href="#how-do-i-disable-djangos-debug-mode-locally" class="md-nav__link">
+    How do I disable Django's 'Debug mode' locally?
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I disable Django's 'Debug mode' locally?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-static-files-work" class="md-nav__link">
+    Making static files work
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-disable-django-debug-toolbar" class="md-nav__link">
+    How do I disable Django Debug Toolbar?
   </a>
   
 </li>
@@ -599,8 +619,28 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#brief-description-of-problem" class="md-nav__link">
-    Brief description of problem
+  <a href="#how-do-i-disable-djangos-debug-mode-locally" class="md-nav__link">
+    How do I disable Django's 'Debug mode' locally?
+  </a>
+  
+    <nav class="md-nav" aria-label="How do I disable Django's 'Debug mode' locally?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#making-static-files-work" class="md-nav__link">
+    Making static files work
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-do-i-disable-django-debug-toolbar" class="md-nav__link">
+    How do I disable Django Debug Toolbar?
   </a>
   
 </li>
@@ -625,8 +665,27 @@
 
 <h1 id="local-development-gotchas">Local development gotchas<a class="headerlink" href="#local-development-gotchas" title="Permanent link">&para;</a></h1>
 <p>This page lists common local development issues and how do resolve them.</p>
-<h2 id="brief-description-of-problem">Brief description of problem<a class="headerlink" href="#brief-description-of-problem" title="Permanent link">&para;</a></h2>
-<p>Solution description goes here.</p>
+<h2 id="how-do-i-disable-djangos-debug-mode-locally">How do I disable Django's 'Debug mode' locally?<a class="headerlink" href="#how-do-i-disable-djangos-debug-mode-locally" title="Permanent link">&para;</a></h2>
+<p>Sometimes you need to disable Django's DEBUG mode in order to test certain behaviours. To do this, you have two options:</p>
+<ol>
+<li>Add <code>DEBUG = False</code> to <code>config/settings/local.py</code></li>
+<li>Add <code>DEBUG=False</code> to your <code>.env</code> file</li>
+</ol>
+<h3 id="making-static-files-work">Making static files work<a class="headerlink" href="#making-static-files-work" title="Permanent link">&para;</a></h3>
+<p>Guidance from Django Documentation: <a href="https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#cmdoption-runserver-insecure">https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#cmdoption-runserver-insecure</a></p>
+<p>Add in <code>config/settings/local.py</code>
+<div class="highlight"><pre><span></span><code><span class="go">STATICFILES_STORAGE = &quot;django.contrib.staticfiles.storage.StaticFilesStorage&quot;</span>
+</code></pre></div></p>
+<p>Run the <code>development</code> web server</p>
+<div class="highlight"><pre><span></span><code><span class="go">python manage.py runserver 0.0.0.0:8000 --insecure</span>
+</code></pre></div>
+<h2 id="how-do-i-disable-django-debug-toolbar">How do I disable Django Debug Toolbar?<a class="headerlink" href="#how-do-i-disable-django-debug-toolbar" title="Permanent link">&para;</a></h2>
+<p>If you don't need Django's debugging tools, setting <code>DEBUG=False</code> as detailed above will disable Django Debug Toolbar also.</p>
+<p>If you still need Django's debugging tools, but don't want to use Django Debug Toolbar for any reason, you have two options for disabling it:</p>
+<ol>
+<li>Add <code>DEBUG_TOOLBAR_ENABLED = False</code> to <code>config/settings/local.py</code> </li>
+<li>Add <code>DEBUG_TOOLBAR_ENABLED=False</code> to your <code>.env</code> file</li>
+</ol>
 
               
             </article>
