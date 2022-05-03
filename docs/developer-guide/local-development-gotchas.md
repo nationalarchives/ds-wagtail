@@ -1,4 +1,5 @@
 # Local development gotchas
+
 This page lists common local development issues and how do resolve them.
 
 ## How do I disable Django's 'Debug mode' locally?
