@@ -5,6 +5,13 @@ from django.urls import reverse
 from pyquery import PyQuery as pq
 
 
+def underscore_to_camelcase(word, lower_first=True):
+    result = "".join(char.capitalize() for char in word.split("_"))
+    if lower_first:
+        result = result[0].lower() + result[1:]
+    return result
+
+
 def pluck(collection, accessor=lambda: False, default=None):
     """Fetch a value from within a nested data structure.
 
