@@ -127,7 +127,7 @@ class BucketsMixin:
     def get_context_data(self, **kwargs):
         if self.bucket_list:
             group_buckets = self.extract_group_buckets(
-                getattr(self, "api_request", None)
+                getattr(self, "api_result", None)
             )
             current_bucket_key = self.get_current_bucket_key()
             kwargs["buckets"] = self.get_buckets(group_buckets, current_bucket_key)
