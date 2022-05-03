@@ -80,8 +80,8 @@
             {% endif %}
 
             {% if form.group.value == 'nonTna' %}
-                {% include "search/includes/filter.html" with field=form.catalogue_source %}
                 {% include "search/includes/filter.html" with field=form.held_by %}
+                {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}
         </div>
         {% for hidden_field in form.hidden_fields %}

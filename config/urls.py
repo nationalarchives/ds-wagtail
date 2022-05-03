@@ -58,27 +58,27 @@ public_urls = [
     ),
     path(
         r"search/",
-        login_required(search_views.search),
+        search_views.SearchLandingView.as_view(),
         name="search",
     ),
     path(
         r"search/featured/",
-        login_required(search_views.featured_search),
+        search_views.FeaturedSearchView.as_view(),
         name="search-featured",
     ),
     path(
         r"search/catalogue/",
-        login_required(search_views.catalogue_search),
+        search_views.CatalogueSearchView.as_view(),
         name="search-catalogue",
     ),
     path(
         r"search/website/",
-        login_required(search_views.website_search),
+        search_views.WebsiteSearchView.as_view(),
         name="search-website",
     ),
     path(
         r"search/catalogue/long-filter-chooser/<str:field_name>/",
-        login_required(search_views.catalogue_search_long_filter_chooser),
+        search_views.CatalogueSearchLongFilterView.as_view(),
         name="search-catalogue-long-filter-chooser",
     ),
 ]

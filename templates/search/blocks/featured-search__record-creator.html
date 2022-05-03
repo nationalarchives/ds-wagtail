@@ -1,28 +1,23 @@
 {% load search_tags %}
-{% load humanize %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ results.bucket.label }}</h2>
-    
-    {% if results.hits.hits %}
+    <h2 class="featured-search__heading">{{ bucket.label }}</h2>
 
-        {% with record=results.hits.hits.0 %}
+    {% for record in bucket.results|slice:":1" %}
         <div class="featured-search__record-creator">
             <div>
                 <a href="#" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
                     <div>
-                        <img src="https://via.placeholder.com/565x400" alt="" class="featured-search__record-creator-image"> 
+                        <img src="https://via.placeholder.com/565x400" alt="" class="featured-search__record-creator-image">
                     </div>
                 </a>
             </div>
             <h3 class="featured-search__results-heading"><a href="#" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
         </div>
-        {% endwith %}
-    {% endif %}
+    {% endfor %}
 
     <div class="featured-search__see-all-link">
-        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ form.q.value }}&group={{ results.aggregation }}">
-            See all {{ results.bucket.label }} ({{ results.hits.total.value|intcomma }})
+        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ search_query|iriencode }}&group={{ bucket.key }}">
+            See all relevant {{ bucket.label_with_count }}
         </a>
     </div>
-
 </div>
