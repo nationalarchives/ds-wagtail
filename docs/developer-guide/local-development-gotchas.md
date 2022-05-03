@@ -1,4 +1,6 @@
-## How do I disable Django's 'debug' mode?
+# Local development gotchas
+This page lists common local development issues and how do resolve them.
+
 
 Sometimes you need to disable Django's DEBUG mode in order to test certain behaviours. To do this, you have two options:
 
@@ -14,7 +16,7 @@ If you still need Django's debugging tools, but don't want to use Django Debug T
 1. Add `DEBUG_TOOLBAR_ENABLED = False` to `config/settings/local.py` 
 2. Add `DEBUG_TOOLBAR_ENABLED=False` to your `.env` file
 
-## How do I run with 'DEBUG=False' in dev ?
+## How do I disable Django's 'Debug mode' locally?
 
 Add in `config/settings/local.py`
 ```console
