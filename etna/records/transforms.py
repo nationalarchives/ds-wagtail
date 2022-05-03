@@ -152,8 +152,6 @@ def transform_record_result(result):
                     {"description": description, "links": links}
                 )
 
-    data["data_source"] = source["@admin"]["source"]
-
     return data
 
 

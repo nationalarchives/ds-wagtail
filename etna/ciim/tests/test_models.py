@@ -317,9 +317,6 @@ class ModelTranslationTest(TestCase):
             "Law Officers' Department: Registered Files",
         )
 
-    def test_data_source(self):
-        self.assertEqual(self.record.data_source, "mongo")
-
     def test_related_materials(self):
         self.assertEqual(
             self.record.related_materials,
