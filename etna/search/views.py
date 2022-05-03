@@ -397,11 +397,12 @@ class BaseFilteredSearchView(BaseSearchView):
         """
         values = []
         for aggregation in (
-            Aggregation.CATALOGUE_SOURCE,
-            Aggregation.CLOSURE,
             Aggregation.COLLECTION,
             Aggregation.LEVEL,
             Aggregation.TOPIC,
+            Aggregation.CLOSURE,
+            Aggregation.HELD_BY,
+            Aggregation.CATALOGUE_SOURCE,
             Aggregation.GROUP,
         ):
             item_count = 10
