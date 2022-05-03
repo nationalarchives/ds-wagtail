@@ -65,7 +65,9 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/searchAll?aggregations=level%2C+collection",
+            "https://kong.test/data/searchAll?"
+            "aggregations=level"
+            "&aggregations=collection",
         )
 
     @responses.activate
@@ -74,8 +76,7 @@ class ClientSearchAllTest(SimpleTestCase):
             filter_aggregations=[
                 "level:Item",
                 "topic:second world war",
-                # Comma should be stripped if included in filterParameter
-                "closureStatus:Closed Or Retained Document, Closed Description",
+                "closure:Closed Or Retained Document, Closed Description",
             ]
         )
 
@@ -84,7 +85,9 @@ class ClientSearchAllTest(SimpleTestCase):
             responses.calls[0].request.url,
             (
                 "https://kong.test/data/searchAll"
-                "?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war%2C+closureStatus%3AClosed+Or+Retained+Document+Closed+Description"
+                "?filterAggregations=level%3AItem"
+                "&filterAggregations=topic%3Asecond+world+war"
+                "&filterAggregations=closure%3AClosed+Or+Retained+Document%2C+Closed+Description"
             ),
         )
 
@@ -291,17 +294,89 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?aggregations=level%2C+collection",
+            "https://kong.test/data/search?"
+            "aggregations=level"
+            "&aggregations=collection",
         )
 
     @responses.activate
     def test_with_filter_aggregations(self):
-        self.client.search(filter_aggregations=["level:Item", "topic:second world war"])
+        self.client.search(
+            filter_aggregations=[
+                "level:Item",
+                "topic:second world war",
+                "closure:Closed Or Retained Document, Closed Description",
+            ]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?filterAggregations=level%3AItem%2C+topic%3Asecond+world+war",
+            "https://kong.test/data/search?"
+            "filterAggregations=level%3AItem"
+            "&filterAggregations=topic%3Asecond+world+war"
+            "&filterAggregations=closure%3AClosed+Or+Retained+Document%2C+Closed+Description",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_without_special_chars(self):
+        self.client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_with_special_chars(self):
+        self.client.search(
+            filter_aggregations=["heldBy:1/ 2( 3) 4: 5, 6& 7- 8| 9+ 10@ 11! 12."]
+        )
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterAggregations=heldBy%3A1+2+3+4+5+6+7+8+9+10+11+12+",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_with_special_chars_examples(self):
+        self.maxDiff = None
+        self.client.search(
+            filter_aggregations=[
+                "heldBy:Rolls-Royce plc",
+                "heldBy:IRIE! dance theatre",
+                "heldBy:Royal Yorkshire Lodge No. 265",
+                "heldBy:REWIND| Artists' Video in the 70s & 80s",
+                "heldBy:National Arts Education Archive @ YSP",
+                "heldBy:Foster + Partners",
+                "heldBy:Labour History Archive and Study Centre (People's History Museum/University of Central Lancashire)",
+                "heldBy:London University: London School of Economics, The Women's Library",
+            ]
+        )
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?"
+            "filterAggregations=heldBy%3ARolls+Royce+plc&"
+            "filterAggregations=heldBy%3AIRIE+dance+theatre&"
+            "filterAggregations=heldBy%3ARoyal+Yorkshire+Lodge+No+265&"
+            "filterAggregations=heldBy%3AREWIND+Artists%27+Video+in+the+70s+80s&"
+            "filterAggregations=heldBy%3ANational+Arts+Education+Archive+YSP&"
+            "filterAggregations=heldBy%3AFoster+Partners&"
+            "filterAggregations=heldBy%3ALabour+History+Archive+and+Study+Centre+People%27s+History+Museum+University+of+Central+Lancashire+&"
+            "filterAggregations=heldBy%3ALondon+University+London+School+of+Economics+The+Women%27s+Library",
+        )
+
+    @responses.activate
+    def test_with_filter_held_by_with_special_chars_not_prepared(self):
+        self.client.search(filter_aggregations=["heldBy:People's"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?filterAggregations=heldBy%3APeople%27s",
         )
 
     @responses.activate
@@ -587,7 +662,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?ids=id-one%2C+id-two%2C+id-three",
+            "https://kong.test/data/fetchAll?ids=id-one&ids=id-two&ids=id-three",
         )
 
     @responses.activate
@@ -597,7 +672,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?iaids=iaid-one%2C+iaid-two%2C+iaid-three",
+            "https://kong.test/data/fetchAll?iaids=iaid-one&iaids=iaid-two&iaids=iaid-three",
         )
 
     @responses.activate
