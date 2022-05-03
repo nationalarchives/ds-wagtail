@@ -9,6 +9,7 @@
     &-holder {
       display: inline-block;
       padding: 1rem;
+      padding-bottom: 1.5rem;
       @media only screen and (max-width: $screen__md) {
         vertical-align: top;
       }
@@ -87,9 +88,11 @@
         }
 
         &[data-isSearch="false"] {
-          @media only screen and (max-width: $screen__md) {
-            background-color: $color__grey-1;
+          @media only screen and (max-width: $screen__md) { 
+            background-color: $color__white;
+            font-size: 1.2rem;
             text-decoration: underline;
+            border-bottom: 1px solid $color__grey-7;
           }
         }
 
@@ -108,9 +111,6 @@
 
           @media only screen and (max-width: $screen__md) {
             text-align: center;
-            border-bottom: 1px solid $color__grey-7;
-            background-color: $color__white;
-            font-size: 1.2rem;
             &:hover,
             &[aria-current="true"],
             &:focus {
