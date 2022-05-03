@@ -8,7 +8,7 @@ export default function () {
     );
     let $globalSearchListItem = document.querySelector("#site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
-    if (!$headerMenu) {
+    if (!$headerMenu || !$headerMenuList || !$globalSearchListItem || !$globalSearchButton) {
         return;
     }
 
