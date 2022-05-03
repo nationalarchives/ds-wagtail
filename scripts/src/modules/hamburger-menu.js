@@ -8,11 +8,16 @@ export default function () {
     );
     let $globalSearchListItem = document.querySelector("#site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
-    if (!$headerMenu || !$headerMenuList || !$globalSearchListItem || !$globalSearchButton) {
+    if (!$headerMenu || !$headerMenuList || !$globalSearchListItem) {
         return;
     }
 
     let isGlobalSearchFocused = function () {
+
+        if(!$globalSearchButton) {
+            return false;
+        }
+
         // This has to be calculated outside of placeGlobalSearchAtIndex(), as I believe the debounce delay was causing an document.activeElement to be incorrect
         return $globalSearchButton.id === document.activeElement.id;
     };
