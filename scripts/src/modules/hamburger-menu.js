@@ -18,11 +18,11 @@ export default function () {
             return false;
         }
 
-        // This has to be calculated outside of placeGlobalSearchAtIndex(), as I believe the debounce delay was causing an document.activeElement to be incorrect
+        // This has to be calculated outside of placeSearchAtIndex(), as I believe the debounce delay was causing an document.activeElement to be incorrect
         return $globalSearchButton.id === document.activeElement.id;
     };
 
-    let placeGlobalSearchAtIndex = function (newIndex, isFocused) {
+    let placeSearchAtIndex = function (newIndex, isFocused) {
         if (newIndex === "end") {
             newIndex = $headerMenuList.childNodes.length - 1;
         }
@@ -60,8 +60,8 @@ export default function () {
     if (window.innerWidth >= 768) {
         $showHideButton.hidden = "true";
     } else {
-        // Move global search button to the 2nd DOM element, so that the CSS can work as intended.
-        placeGlobalSearchAtIndex(1, isGlobalSearchFocused());
+        // Move search button to the 2nd DOM element, so that the CSS can work as intended.
+        placeSearchAtIndex(1, isGlobalSearchFocused());
     }
 
     let ariaControls = "";
@@ -106,12 +106,12 @@ export default function () {
                     setMenuItemsHidden(false);
                 }
 
-                placeGlobalSearchAtIndex(1, isGlobalSearchFocused());
+                placeSearchAtIndex(1, isGlobalSearchFocused());
             } else {
                 // Hide button on desktop, but keep menu items visible
                 $showHideButton.hidden = true;
                 setMenuItemsHidden(false);
-                placeGlobalSearchAtIndex("end", isGlobalSearchFocused());
+                placeSearchAtIndex("end", isGlobalSearchFocused());
             }
         }, 200)
     );
