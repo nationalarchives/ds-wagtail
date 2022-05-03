@@ -294,7 +294,7 @@ class BaseSearchView(KongAPIMixin, FormView):
         """
         title = self.base_title
         if query := self.form.cleaned_data.get("q", ""):
-            title += ' "' + query.replace('"', "'") + '"'
+            title += ' for "' + query.replace('"', "'") + '"'
         return title
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
