@@ -1,3 +1,3 @@
-import hamburgerMenu from './modules/hamburger-menu.js';
+import hamburgerMenu from "./modules/hamburger-menu.js";
 
 hamburgerMenu();

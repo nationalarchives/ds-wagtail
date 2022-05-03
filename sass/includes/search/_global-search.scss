@@ -1,84 +1,85 @@
 .global-search {
+  background-color: $color__grey-1;
+  padding: 2rem;
+  padding-bottom: 5rem;
 
-    background-color: $color__grey-1;
-    padding: 2rem;
-    padding-bottom: 5rem;
+  @media only screen and (max-width: $screen__md) {
+    padding-left: 1rem;
+  }
+
+  &__container {
+    max-width: 80rem;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__heading {
+    margin-top: 0;
+    font-weight: normal;
+    font-family: $font__supria-sans;
+  }
+
+  &__label {
+    display: block;
+    font-family: $font__supria-sans;
+    font-size: 1.4rem;
+  }
+
+  &__form {
+    &-submit {
+      @extend .search-button;
+      cursor: pointer;
+      width: 8rem;
+      font-size: 1.1rem;
+    }
+
+    &-search-box {
+      width: 100%;
+      max-width: 60rem;
+      height: 3.1rem;
+      border: 1px solid $color__grey-2;
+      border-radius: 0.25rem;
+      padding: 1rem;
+      vertical-align: top;
+      font-size: 1.1rem;
+      margin-right: 0.2rem;
+      margin-bottom: 0.2rem;
+      &:focus {
+        outline: 5px solid $color__focus-blue-outline-light-bg;
+      }
+    }
+  }
+
+  &__button {
+    width: 3rem;
+    height: 3rem;
+    background-color: $color__grey-2;
+    background-image: url("/static/images/icons/search-white.svg");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.6rem;
+    background-size: 1.5rem;
+    cursor: pointer;
+    border: 0;
+    &[aria-expanded="true"],
+    &:hover,
+    &:focus {
+      background-color: $color__grey-1;
+      background-image: url("/static/images/icons/search-black.svg");
+    }
+    &:focus {
+      outline: 5px solid $color__black;
+    }
 
     @media only screen and (max-width: $screen__md) {
-        padding-left: 1rem;
+      display: inline-block;
+      margin-left: auto;
+      margin-top: 0.5rem;
     }
+  }
 
-    &__container {
-        max-width: 80rem;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    &__heading {
-        margin-top: 0;
-        font-weight: normal;
-        font-family: $font__supria-sans;
-    }
-
-    &__label {
-        display: block;
-        font-family: $font__supria-sans;
-        font-size: 1.4rem;
-    }
-
-    &__form {
-        &-submit {
-            @extend .search-button;
-            cursor: pointer;
-            width: 8rem;
-            font-size: 1.1rem;
-        }
-
-        &-search-box {
-            width: 100%;
-            max-width: 60rem;
-            height: 3.1rem;
-            border: 1px solid $color__grey-2;
-            border-radius: 0.25rem;
-            padding: 1rem;
-            vertical-align: top;
-            font-size: 1.1rem;
-            margin-right: .2rem;
-            margin-bottom: .2rem;
-            &:focus {
-                outline: 5px solid $color__focus-blue-outline-light-bg;
-            }
-        }
-    }
-
-    &__button {
-        width: 3rem;
-        height: 3rem;
-        background-color: $color__grey-2;
-        background-image: url('/static/images/icons/search-white.svg');
-        background-repeat: no-repeat;
-        background-position-x: center;
-        background-position-y: 0.6rem;
-        background-size: 1.5rem;
-        cursor: pointer;
-        border: 0;
-        &[aria-expanded=true], &:hover, &:focus {
-            background-color: $color__grey-1;
-            background-image: url('/static/images/icons/search-black.svg');
-        }
-        &:focus {
-            outline: 5px solid $color__black;
-        }
-
-        @media only screen and (max-width: $screen__md) {
-            display: inline-block;
-            margin-left: auto;
-            margin-top: 0.5rem;
-        }
-    }
-
-    &__paragraph {
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
+  &__paragraph {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }

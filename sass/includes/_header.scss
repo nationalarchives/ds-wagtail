@@ -6,172 +6,168 @@
     flex-wrap: wrap;
   }
   &__logo {
-
-      &-holder {
-          display: inline-block;
-          padding: 1rem;
-          @media only screen and (max-width: $screen__md) {
-            vertical-align: top;
-          }
-          @media screen and (max-width: $screen__sm) {
-              padding-left: 0.1rem;
-              padding-right: 0.1rem;
-              padding-bottom: 0.5rem;
-              padding-top: 0.5rem;
-          }
+    &-holder {
+      display: inline-block;
+      padding: 1rem;
+      @media only screen and (max-width: $screen__md) {
+        vertical-align: top;
       }
-
-      &-link {
-          align-self: center;
-          margin-left: 1rem;
-          display: inline-block;
-          &:hover {
-              outline: 5px solid $color__grey-8;
-          }
-          &:focus {
-              outline-color: $color__black;
-          }
+      @media screen and (max-width: $screen__sm) {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
       }
-      &-image {
-          width: 100px;
-          height: 100px;
+    }
 
-          @media screen and (max-width: $screen__sm) {
-              width: 75px;
-              height: 75px;
-          }
+    &-link {
+      align-self: center;
+      margin-left: 1rem;
+      display: inline-block;
+      &:hover {
+        outline: 5px solid $color__grey-8;
       }
+      &:focus {
+        outline-color: $color__black;
+      }
+    }
+    &-image {
+      width: 100px;
+      height: 100px;
+
+      @media screen and (max-width: $screen__sm) {
+        width: 75px;
+        height: 75px;
+      }
+    }
   }
   &__nav {
-      margin-left: auto;
-      align-items: flex-end;
+    margin-left: auto;
+    align-items: flex-end;
 
+    @media only screen and (max-width: $screen__md) {
+      display: block;
+      text-align: right;
+      margin-top: -4rem;
+    }
+
+    &-list {
       @media only screen and (max-width: $screen__md) {
+        padding-left: 0;
+      }
+
+      @media only screen and (min-width: $screen__md) {
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
+      }
+
+      height: 100%;
+
+      @media only screen and (min-width: $screen__md) {
+        width: 32rem;
+      }
+
+      margin-bottom: 0;
+      justify-content: space-around; // IE11 only supports space-around and space-between.
+      &-item {
+        list-style: none;
+        @media only screen and (min-width: $screen__md) {
+          height: 3rem;
+        }
         display: block;
-        text-align: right;
-        margin-top: -4rem;
-      }
 
-      &-list {
+        &#site-menu-search {
+          display: inline-block;
+        }
+
+        &[data-id="menu-show-hide-button"] {
+          display: inline-block;
+        }
+
+        &[data-isSearch="false"] {
           @media only screen and (max-width: $screen__md) {
-            padding-left: 0;
+            background-color: $color__grey-1;
+            text-decoration: underline;
           }
+        }
 
-          @media only screen and (min-width: $screen__md) {
-            display: flex;
-            align-items: flex-end;
-            flex-wrap: wrap;
-          }
-
+        &-link {
+          display: block;
+          color: $color__black;
+          padding: 7px;
           height: 100%;
-
-          @media only screen and (min-width: $screen__md) {
-              width: 32rem;
+          text-decoration: none;
+          font-family: $font__supria-sans;
+          font-weight: normal;
+          transition: all 0.1s;
+          &:visited {
+            color: $color__black;
           }
 
-          margin-bottom: 0;
-          justify-content: space-around; // IE11 only supports space-around and space-between.
-          &-item {
-              list-style: none;
-              @media only screen and (min-width: $screen__md) {
-                height: 3rem;   
-                }
-              display: block;
-
-              &#site-menu-search{
-                display: inline-block;
-              }
-
-              &[data-id='menu-show-hide-button'] {
-                display: inline-block;
-              }
-
-              &[data-isSearch='false'] {
-
-                @media only screen and (max-width: $screen__md) {
-                    background-color: $color__grey-1;
-
-                    .header__nav-list-item-link { 
-                        &:hover, &[aria-current=true], &:focus {
-                            text-decoration: underline;
-                        }
-                    }
-                }
-              }
-
-              &-link {
-                  display: block;
-                  color: $color__black;
-                  padding: 7px;
-                  height: 100%;
-                  text-decoration: none;
-                  font-family: $font__supria-sans;
-                  font-weight: normal;
-                  transition: all .1s;
-                  &:visited {
-                      color: $color__black;
-                  }
-
-                  @media only screen and (max-width: $screen__md) {
-                    text-align: center;
-                    &:hover, &:focus {
-                        background-color: $color__white;
-                        color: $color__black;
-                    }  
-                }
-
-                    @media only screen and (min-width: $screen__md) {
-                        &:hover, &[aria-current=true], &:focus {
-                            background-color: $color__white;
-                            color: $color__black;
-                        }  
-                    }
-
-                  
-
-                  &:focus {
-                      outline-color: $color__black;
-                  }
-
-                  &-search {
-                      width: 3rem;
-                      background-image: url('/static/images/icons/search-black.svg');
-                      background-repeat: no-repeat;
-                      background-position-x: center;
-                      background-position-y: 0.4rem;
-                      background-size: 1.5rem;
-
-                      &:hover, &[aria-current=true], &:focus {
-                          background-color: $color__grey-1;
-                      }
-                  }
-              }
+          @media only screen and (max-width: $screen__md) {
+            text-align: center;
+            &:hover,
+            &:focus {
+              background-color: $color__white;
+              color: $color__black;
+            }
           }
+
+          &:hover,
+          &[aria-current="true"],
+          &:focus {
+            background-color: $color__white;
+            color: $color__black;
+          }
+
+          &:focus {
+            outline-color: $color__black;
+          }
+
+          &-search {
+            width: 3rem;
+            background-image: url("/static/images/icons/search-black.svg");
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: 0.4rem;
+            background-size: 1.5rem;
+
+            &:hover,
+            &[aria-current="true"],
+            &:focus {
+              background-color: $color__grey-1;
+            }
+          }
+        }
       }
+    }
   }
   &__show-hide-button {
-      display: inline-block;
-      background-color: $color__grey-2;
-      margin-right: 0.3rem;
-      width: 3rem;
-      height: 3rem;
-      color: $color__white;
-      border: 0;
-      margin-left: auto;
-      cursor: pointer;
-      background-image: url('/static/images/icons/hamburger-white.svg');
-      background-repeat: no-repeat;
-      background-position-x: center;
-      background-position-y: 0.6rem;
-      background-size: 1.5rem;
+    display: inline-block;
+    background-color: $color__grey-2;
+    margin-right: 0.3rem;
+    width: 3rem;
+    height: 3rem;
+    color: $color__white;
+    border: 0;
+    margin-left: auto;
+    cursor: pointer;
+    background-image: url("/static/images/icons/hamburger-white.svg");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.6rem;
+    background-size: 1.5rem;
 
-        &[aria-expanded=true], &:hover, &:focus {
-            background-color: $color__grey-1;
-            background-image: url('/static/images/icons/hamburger-black.svg');
-            color: #000;
-        }
-        &:focus {
-            outline: 5px solid $color__black;
-        }
+    &[aria-expanded="true"],
+    &:hover,
+    &:focus {
+      background-color: $color__grey-1;
+      background-image: url("/static/images/icons/hamburger-black.svg");
+      color: #000;
+    }
+    &:focus {
+      outline: 5px solid $color__black;
+    }
   }
 }
