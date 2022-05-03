@@ -6,9 +6,9 @@ export default function () {
     let $headerElementsToHide = document.querySelectorAll(
         '[data-isSearch="false"]'
     );
-    let $globalSearchListItem = document.querySelector("#site-menu-search");
+    let $searchListItem = document.querySelector("#site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
-    if (!$headerMenu || !$headerMenuList || !$globalSearchListItem) {
+    if (!$headerMenu || !$headerMenuList || !$searchListItem) {
         return;
     }
 
@@ -29,10 +29,10 @@ export default function () {
 
         // Only move the element if it's in the wrong place
         if (
-            $headerMenuList.childNodes[newIndex].id !== $globalSearchListItem.id
+            $headerMenuList.childNodes[newIndex].id !== $searchListItem.id
         ) {
             $headerMenuList.insertBefore(
-                $globalSearchListItem,
+                $searchListItem,
                 $headerMenuList.childNodes[newIndex]
             ); //IE11 compatible prepend
 
