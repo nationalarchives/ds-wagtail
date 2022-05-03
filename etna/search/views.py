@@ -176,6 +176,7 @@ def catalogue_search(request):
                 # Fetching more groups so that we receive a counts
                 # for any bucket/tab options we might be showing
                 f"{Aggregation.GROUP}:30",
+                Aggregation.HELD_BY,
             ],
             offset=offset,
             size=per_page,
