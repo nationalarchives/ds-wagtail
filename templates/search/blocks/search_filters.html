@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -81,6 +81,7 @@
 
             {% if form.group.value == 'nonTna' %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
+                {% include "search/includes/filter.html" with field=form.held_by %}
             {% endif %}
         </div>
         {% for hidden_field in form.hidden_fields %}

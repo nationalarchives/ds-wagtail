@@ -1,6 +1,7 @@
 import enum
 import json
 import logging
+import re
 
 from datetime import datetime
 from typing import Any, Optional
@@ -69,32 +70,46 @@ class Aggregation(str, enum.Enum):
     LEVEL = "level"
     CLOSURE = "closure"
     CATALOGUE_SOURCE = "catalogueSource"
+    HELD_BY = "heldBy"
 
 
-def format_list_param(items: Optional[list]) -> Optional[str]:
-    """Convenience function to transform list to comma-separated string.
+def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
+    """
+    Filter format in items: 'field:value'
+    Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api
 
-    When parsing a request's parameters `requests` uses `urllib.parse.urlencode`
-    with the deseq flag set to true, transforming a list's values into multiple
-    parameters:
-
-    >>> urllib.parse.urlencode({'param': ['item-1', 'item-2']}, doseq=True)
-    'param=item-1&param=item-2'
-
-    https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlencode
-
-    Kong expects multiple values to be a in a comma-separated string:
-
-    'param=item-1,+item-2'
-
-    This function, when given a list, will return a comma-separated string.
-
-    Additionally, to overcome an issue with the API, any commas within paramter
-    text will be removed.
+    Example:
+    before-prepare: "heldBy:Birmingham: Archives, Heritage and Photography Service"
+    after-prepare:  "heldBy:Birmingham Archives Heritage and Photography Service"
+    before-prepare: "heldBy:Staffordshire and Stoke-on-Trent Archive Service: Staffordshire County Record Office"
+    after-prepare:  "heldBy:Staffordshire and Stoke on Trent Archive Service Staffordshire County Record Office"
+    Special char single quote i.e. ' is not prepared
+    before-prepare: "heldBy:Labour History Archive and Study Centre (People's History Museum/University of Central Lancashire)"
+    after-prepare:  "heldBy:Labour History Archive and Study Centre People's History Museum University of Central Lancashire "
     """
     if not items:
         return None
-    return ", ".join([i.replace(",", "") for i in items])
+
+    regex = r"([/():,\&\-\|+@!.])"
+    subst = " "
+    field_list_to_prepare = ["heldBy"]
+    filter_prepared_list = []
+
+    for item in items:
+        field, value = item.split(":", 1)
+        if field in field_list_to_prepare:
+            # replace special chars
+            prepared_value = re.sub(regex, subst, value, 0, re.MULTILINE)
+            # replace multiple space
+            prepared_value = re.sub(" +", subst, prepared_value, 0, re.MULTILINE)
+            filter_prepared = (
+                field + ":" + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
+            )
+        else:
+            filter_prepared = field + ":" + value
+        filter_prepared_list.append(filter_prepared)
+
+    return filter_prepared_list
 
 
 class KongClient:
@@ -211,8 +226,8 @@ class KongClient:
             "sort": sort_by,
             "sortOrder": sort_order,
             "template": template,
-            "aggregations": format_list_param(aggregations),
-            "filterAggregations": format_list_param(filter_aggregations),
+            "aggregations": aggregations,
+            "filterAggregations": prepare_filter_aggregations(filter_aggregations),
             "filter": filter_keyword,
             "from": offset,
             "size": size,
@@ -265,8 +280,8 @@ class KongClient:
         """
         params = {
             "q": q,
-            "aggregations": format_list_param(aggregations),
-            "filterAggregations": format_list_param(filter_aggregations),
+            "aggregations": aggregations,
+            "filterAggregations": prepare_filter_aggregations(filter_aggregations),
             "template": template,
             "from": offset,
             "size": size,
@@ -360,8 +375,8 @@ class KongClient:
             Number of results to return
         """
         params = {
-            "ids": format_list_param(ids),
-            "iaids": format_list_param(iaids),
+            "ids": ids,
+            "iaids": iaids,
             "rid": rid,
             "from": offset,
             "size": size,

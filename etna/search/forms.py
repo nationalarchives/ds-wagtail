@@ -99,6 +99,7 @@ class BaseCollectionSearchForm(forms.Form):
         "topic",
         "closure",
         "catalogue_source",
+        "held_by",
     )
 
     q = forms.CharField(
@@ -152,6 +153,13 @@ class BaseCollectionSearchForm(forms.Form):
     )
     catalogue_source = DynamicMultipleChoiceField(
         label="Catalogue Sources",
+        widget=forms.widgets.CheckboxSelectMultiple(
+            attrs={"class": "search-filters__list"}
+        ),
+        required=False,
+    )
+    held_by = DynamicMultipleChoiceField(
+        label="Held By",
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
