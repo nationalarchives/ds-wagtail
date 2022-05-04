@@ -17,6 +17,8 @@ import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from ..versioning import get_git_sha
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
@@ -155,6 +157,7 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         environment=os.getenv("SENTRY_ENVIRONMENT", ""),
+        release=get_git_sha(),
         integrations=[DjangoIntegration()],
         # Set traces_sample_rate to 1.0 to capture 100%
         # of transactions for performance monitoring.
