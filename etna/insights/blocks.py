@@ -65,6 +65,16 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         help_text="Title of the promoted page",
         label="Title",
     )
+    category = blocks.ChoiceBlock(
+        label="Category",
+        choices=[
+            ("blog", "Blog post"),
+            ("podcast", "Podcast"),
+            ("video", "Video"),
+            ("video-external", "External video"),
+            ("external-link", "External link"),
+        ],
+    )
     publication_date = blocks.DateBlock(required=False)
     author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
