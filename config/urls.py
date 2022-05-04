@@ -21,6 +21,9 @@ from etna.search import views as search_views
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
 
+# Used by /sentry-debug/
+def trigger_error(request):
+    division_by_zero = 1 / 0
 
 # Private URLs that are not meant to be cached.
 private_urls = [
@@ -28,6 +31,7 @@ private_urls = [
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+    path("sentry-debug/", trigger_error),
 ]
 
 # Public URLs that are meant to be cached.
