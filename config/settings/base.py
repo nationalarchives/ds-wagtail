@@ -165,7 +165,7 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
         traces_sample_rate=float(os.getenv("SENTRY_SAMPLE_RATE", "0.5")),
         # If you wish to associate users to errors (assuming you are using
         # django.contrib.auth) you may enable sending PII data.
-        send_default_pii=False,
+        send_default_pii=strtobool(os.getenv("SENTY_SEND_USER_DATA", "False")),
     )
 
 
