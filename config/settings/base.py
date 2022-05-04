@@ -153,6 +153,7 @@ LOGGING = {
     },
 }
 
+SENTRY_DEBUG_URL_ENABLED = False
 if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
     sentry_sdk.init(
         dsn=SENTRY_DSN,
@@ -167,6 +168,8 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
         # django.contrib.auth) you may enable sending PII data.
         send_default_pii=strtobool(os.getenv("SENTY_SEND_USER_DATA", "False")),
     )
+
+    SENTRY_DEBUG_URL_ENABLED = strtobool(os.getenv("SENTRY_DEBUG_URL_ENABLED", "False"))
 
 
 # Database
