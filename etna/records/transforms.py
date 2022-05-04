@@ -1,4 +1,4 @@
-from ..ciim.utils import find, find_all, format_description_markup, pluck, format_links
+from ..ciim.utils import find, find_all, format_description_markup, format_links, pluck
 
 
 def transform_record_result(result):
