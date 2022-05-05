@@ -148,7 +148,7 @@ def transform_record_result(result):
             for related_material in related_materials:
                 data["related_materials"].append(
                     {
-                        "description": related_material["description"],
+                        "description": related_material.get("description", ""),
                         "links": list(
                             format_link(val)
                             for val in related_material.get("links", [])
