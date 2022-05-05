@@ -1,5 +1,7 @@
 import re
 
+from typing import Dict
+
 from django.urls import reverse
 
 from pyquery import PyQuery as pq
@@ -184,13 +186,10 @@ def convert_sort_key_to_index(sort):
     return max(index, 0)
 
 
-def format_links(links_list):
+def format_link(link_html: str):  # -> Dict[str, str]:
     """
-    Extracts iaid and text from list of links ['<a href="C5789">DEFE 31</a>']
-    and returns as list of dict [{"iaid":"C5789", "text":"DEFE 31"},]
+    Extracts iaid and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
+    and returns as dict in the format: `{"iaid":"C5789", "text":"DEFE 31"}
     """
-    formatted_links = []
-    for link in links_list:
-        document = pq(link)
-        formatted_links.append({"iaid": document.attr("href"), "text": document.text()})
-    return formatted_links
+    document = pq(link_html)
+    return {"iaid": document.attr("href"), "text": document.text()}
