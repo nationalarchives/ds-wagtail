@@ -25,12 +25,17 @@
                 <tr>
                     <th scope="row">{{ 'related_materials'|as_label }}</th>
                     <td>
-                        {% for related_material in page.related_materials %} 
-                            <p>{{related_material.description}}
-                                {% for link in related_material.links %}
-                                    <a href="{% url 'details-page-machine-readable' link.iaid %}">{{ link.text }}</a>
-                                {% endfor %}
-                            </p>
+                        {% for related_material in page.related_materials %}
+                            {% if related_material.description %}
+                                <p>{{related_material.description}}
+                            {% endif %}
+                            {% if related_material.links %}
+                                <ul>
+                                    {% for link in related_material.links %}
+                                        <li><a href="{% url 'details-page-machine-readable' link.iaid %}">{{ link.text }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
                         {% endfor %}
                     </td>
                 </tr>
