@@ -13,14 +13,19 @@ export default function () {
     let longFiltersArray = [...$longFiltersListItems];
 
     let $searchDiv = document.createElement('div');
+    $searchDiv.setAttribute('class', 'long-filters__search');
     let $searchBox = document.createElement('input');
+    $searchBox.setAttribute('class', 'long-filters__search-box');
     let searchId = 'long-filters-search-box';
     $searchBox.id = searchId;
     let $searchLabel = document.createElement('label');
-    $searchLabel.innerText = "Find filters by keyword";
+    $searchLabel.innerText = "Narrow down filters";
     $searchLabel.setAttribute('for', searchId);
+    $searchLabel.setAttribute('class', 'long-filters__search-label');
+
     let $searchButton = document.createElement('button');
-    $searchButton.innerText = 'Search all filters';
+    $searchButton.innerText = 'Search';
+    $searchButton.setAttribute('class', 'long-filters__search-button');
 
     $searchDiv.appendChild($searchLabel);
     $searchDiv.appendChild($searchBox);
@@ -35,7 +40,11 @@ export default function () {
         let keyword = $searchBox.value.toLowerCase();
 
         let narrowedDownFilters = longFiltersArray.filter(filter => {
-            return filter.innerText.toLowerCase().includes(keyword);
+            let filterLabel = filter.childNodes[0];
+            let filterInput = filterLabel.childNodes[0];
+
+            // Keep the filter if it matches the users keyword, or if the filter is selected.
+            return filter.innerText.toLowerCase().includes(keyword) || filterInput.checked;
         });
 
         $longFiltersList.replaceChildren(...narrowedDownFilters);
@@ -48,6 +57,7 @@ export default function () {
     }
 
     $searchButton.addEventListener('click', handleSearch);
+    $searchBox.addEventListener('keyup', handleSearch);
     $parentForm.addEventListener('keypress', disableSearchSubmit)
 
 }

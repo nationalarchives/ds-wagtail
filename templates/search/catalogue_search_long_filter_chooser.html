@@ -15,19 +15,19 @@
                 <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" >Cancel and return to results</a>
             </div>
 
-            <div class="long-filters__form">
-                <div class="long-filters__form-filters" data-id="long-filters-container">
-                    <ul class="long-filters__form-filters-list" data-id="long-filters-list">
-                        {% for option in bound_field %}
-                            <li class="long-filters__form-filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
-                        {% endfor %}
-                    </ul>
-                </div>
 
-                {% for hidden_field in form.hidden_fields %}
-                    {{ hidden_field }}
-                {% endfor %}
+            <div class="long-filters__filters" data-id="long-filters-container">
+                <ul class="long-filters__filters-list" data-id="long-filters-list">
+                    {% for option in bound_field %}
+                        <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
+                    {% endfor %}
+                </ul>
             </div>
+
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
+
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
             </div>
