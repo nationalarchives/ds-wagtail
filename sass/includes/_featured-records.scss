@@ -1,7 +1,7 @@
 .featured-records {
   &__heading {
-    color: #26262a;
-    background-color: #FFCC00;
+    color: $color__dark;
+    background-color: $color__yellow_2;
     margin-bottom: 0;
     padding: 1rem 0 1rem 1rem;
     font-weight: 400;
@@ -10,13 +10,13 @@
   }
 
   &__content {
-    border: 3px solid #ccc;
+    border: 3px solid $color__grey-7;
     padding: 1rem;
     border-top: none;
   }
 
   &__standfirst {
-    color: #26262a;
+    color: $color__dark;
     font-family: $font__supria-sans;
     font-size: 1.4rem;
   }
@@ -30,7 +30,7 @@
    background-color: $color__dark;
    margin-bottom: 1rem;
    padding: 1rem;
-   border-left: 1.25rem solid $color__yellow-2;
+   border-left: 1.25rem solid $color__yellow_2;
  }
 
  &__list-item-description {

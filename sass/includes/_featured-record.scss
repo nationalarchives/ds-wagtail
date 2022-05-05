@@ -1,7 +1,7 @@
 .featured-record {
     &__heading {
-        color: #26262a;
-        background-color: #FFCC00;
+        color: $color__dark;
+        background-color: $color__yellow_2;
         margin-bottom: 0;
         padding: 1rem 0 1rem 1rem;
         font-weight: 400;
@@ -10,14 +10,14 @@
     }
 
     &__content {
-      border: 3px solid #ccc;
+      border: 3px solid $color__grey-7;
       padding: 1rem;
       border-top: none;
       text-align: center;
     }
 
     &__standfirst {
-      color: #26262a;
+      color: $color__dark;
       font-family: $font__supria-sans;
       font-size: 1.4rem;
     }
