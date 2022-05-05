@@ -10,18 +10,18 @@
                 </p>
             {% endif %}
 
-            <dl class="featured-records__list" data-container-name="featured-records">
-                {% for item in value.items %}
-                    <div class="featured-records__list-item">
-                        <dt>
-                            <a class="featured-records__link" href="{% record_url item.record %}" data-link="{{ item.title }}">
-                                <h4 class="featured-records__link-heading">{{ item.title }}</h4>
-                            </a>
-                        </dt>
-                        <dd class="featured-records__list-item-description">{{ item.record.title|striptags }}</dd>
-                    </div>
-                {% endfor %}
-            </dl
+                <dl class="featured-records__list" data-container-name="featured-records">
+                    {% for item in value.items %}
+                        <div class="featured-records__list-item">
+                            <dt>
+                                <a class="featured-records__link" href="{% record_url item.record %}" data-link="{{ item.title }}">
+                                    <h4 class="featured-records__link-heading">{{ item.title }}</h4>
+                                </a>
+                            </dt>
+                            <dd class="featured-records__list-item-description">{{ item.record.title|striptags }}</dd>
+                        </div>
+                    {% endfor %}
+                </dl>
             </div>
         </div>
     </div>
