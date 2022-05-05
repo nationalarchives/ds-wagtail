@@ -115,3 +115,33 @@ Default: **False**
 Whether to use an implicit TLS (secure) connection when talking to the SMTP server. In most email documentation this type of TLS connection is referred to as SSL. It is generally used on port 465. If you are experiencing problems, see the explicit TLS setting `EMAIL_USE_TLS`.
 
 NOTE: `EMAIL_USE_TLS` and `EMAIL_USE_SSL` are mutually exclusive, so only set one of those settings to `True`.
+
+## 5. Sentry (Error logging and performance monitoring)
+
+Below are the key env vars used to configure Sentry for each environment. See [Sentry's official guide](https://docs.sentry.io/platforms/python/guides/django/) for further information on configuring Sentry for Django projects.
+
+### `SENTRY_DSN`
+
+Default: `None`
+
+The project-specific identifier provided by Sentry. This value should remain the same accross all environments... the `SENTRY_ENVIRONMENT` env var value is used to differentiate between environments.
+
+### `SENTRY_ENVIRONMENT`
+
+Default: `None`
+
+A string used to populate the `environment` value on issues and other transactions sent to Sentry from this environment. In the Sentry UI, this value can be used as a filter, allowing you to easily see which issues apply to which environment.
+
+### `SENTRY_SAMPLE_RATE`
+
+Default: 0.5
+
+A number between `0.0` and `1.0`, which determines how many processes out of all processes should be tracked/analysed in order to send performance data to Sentry. A value of `0.0` means that no processes should be tracked, and a value of `1.0` mean that ALL should be tracked.
+
+Performance monitoring has a minimal impact on app performance, but even so, Sentry recommend using a value less than `1.0` in production (hence using `0.5` as the default).
+
+### `SENTY_SEND_USER_DATA`
+
+Default: `False`
+
+This value determines whether data about the 'currently-logged in user' is included in the error reports sent to Sentry. This can be useful in 'testing' environments, as it can help developers to see which tester is having the problem. However, in production, we need to be far more careful leaking personal data - therefore, this option should be turned off in that environment (hence setting `False` as the default).
