@@ -186,7 +186,7 @@ def convert_sort_key_to_index(sort):
     return max(index, 0)
 
 
-def format_link(link_html: str):  # -> Dict[str, str]:
+def format_link(link_html: str) -> Dict[str, str]:
     """
     Extracts iaid and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
     and returns as dict in the format: `{"iaid":"C5789", "text":"DEFE 31"}
