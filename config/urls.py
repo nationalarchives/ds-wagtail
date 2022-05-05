@@ -22,6 +22,12 @@ register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
 
 
+# Used by /sentry-debug/
+def trigger_error(request):
+    # Raise a ZeroDivisionError
+    return 1 / 0
+
+
 # Private URLs that are not meant to be cached.
 private_urls = [
     path("django-admin/", admin.site.urls),
@@ -29,6 +35,10 @@ private_urls = [
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
 ]
+
+if settings.SENTRY_DEBUG_URL_ENABLED:
+    # url is toggled via the SENTRY_DEBUG_URL_ENABLED .env var
+    private_urls.append(path("sentry-debug/", trigger_error))
 
 # Public URLs that are meant to be cached.
 public_urls = [
