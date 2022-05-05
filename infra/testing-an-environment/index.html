@@ -495,6 +495,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#4-trigger-an-error" class="md-nav__link">
+    4. Trigger an error
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -633,6 +640,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#4-trigger-an-error" class="md-nav__link">
+    4. Trigger an error
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -676,6 +690,13 @@
 <li>From the login page, click the <strong>Forgotton it?</strong> link next to the password input.</li>
 <li>Enter the email address you set in the <code>createsuperuser</code> step above and request a password reset link.</li>
 <li>If email is configured correctly, you'll receive the email.</li>
+</ol>
+<h2 id="4-trigger-an-error">4. Trigger an error<a class="headerlink" href="#4-trigger-an-error" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Update the <code>SENTRY_DEBUG_URL_ENABLED</code> env var to <code>True</code> for the environment and restart the container.</li>
+<li>When the service is available again, visit the <code>/sentry-debug/</code> URL in your browser to trigger a <code>ZeroDivisionError</code>.</li>
+<li>Log into <a href="https://sentry.io/organizations/the-national-archives/projects/">Sentry</a> and check the relevant project for a new issue event with an <code>environment</code> value matching the <code>SENTRY_ENVIRONMNET</code> env var value set for the environment.</li>
+<li>Once confirmed that Sentry is working, update the <code>SENTRY_DEBUG_URL_ENABLED</code> env var to <code>False</code> for the environment, and restart the container.</li>
 </ol>
 
               

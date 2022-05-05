@@ -624,6 +624,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#5-sentry-error-logging-and-performance-monitoring" class="md-nav__link">
+    5. Sentry (Error logging and performance monitoring)
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Sentry (Error logging and performance monitoring)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentry_dsn" class="md-nav__link">
+    SENTRY_DSN
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sentry_environment" class="md-nav__link">
+    SENTRY_ENVIRONMENT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sentry_sample_rate" class="md-nav__link">
+    SENTRY_SAMPLE_RATE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#senty_send_user_data" class="md-nav__link">
+    SENTY_SEND_USER_DATA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -919,6 +960,47 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#5-sentry-error-logging-and-performance-monitoring" class="md-nav__link">
+    5. Sentry (Error logging and performance monitoring)
+  </a>
+  
+    <nav class="md-nav" aria-label="5. Sentry (Error logging and performance monitoring)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sentry_dsn" class="md-nav__link">
+    SENTRY_DSN
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sentry_environment" class="md-nav__link">
+    SENTRY_ENVIRONMENT
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sentry_sample_rate" class="md-nav__link">
+    SENTRY_SAMPLE_RATE
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#senty_send_user_data" class="md-nav__link">
+    SENTY_SEND_USER_DATA
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -996,6 +1078,21 @@
 <p>Default: <strong>False</strong></p>
 <p>Whether to use an implicit TLS (secure) connection when talking to the SMTP server. In most email documentation this type of TLS connection is referred to as SSL. It is generally used on port 465. If you are experiencing problems, see the explicit TLS setting <code>EMAIL_USE_TLS</code>.</p>
 <p>NOTE: <code>EMAIL_USE_TLS</code> and <code>EMAIL_USE_SSL</code> are mutually exclusive, so only set one of those settings to <code>True</code>.</p>
+<h2 id="5-sentry-error-logging-and-performance-monitoring">5. Sentry (Error logging and performance monitoring)<a class="headerlink" href="#5-sentry-error-logging-and-performance-monitoring" title="Permanent link">&para;</a></h2>
+<p>Below are the key env vars used to configure Sentry for each environment. See <a href="https://docs.sentry.io/platforms/python/guides/django/">Sentry's official guide</a> for further information on configuring Sentry for Django projects.</p>
+<h3 id="sentry_dsn"><code>SENTRY_DSN</code><a class="headerlink" href="#sentry_dsn" title="Permanent link">&para;</a></h3>
+<p>Default: <code>None</code></p>
+<p>The project-specific identifier provided by Sentry. This value should remain the same accross all environments... the <code>SENTRY_ENVIRONMENT</code> env var value is used to differentiate between environments.</p>
+<h3 id="sentry_environment"><code>SENTRY_ENVIRONMENT</code><a class="headerlink" href="#sentry_environment" title="Permanent link">&para;</a></h3>
+<p>Default: <code>None</code></p>
+<p>A string used to populate the <code>environment</code> value on issues and other transactions sent to Sentry from this environment. In the Sentry UI, this value can be used as a filter, allowing you to easily see which issues apply to which environment.</p>
+<h3 id="sentry_sample_rate"><code>SENTRY_SAMPLE_RATE</code><a class="headerlink" href="#sentry_sample_rate" title="Permanent link">&para;</a></h3>
+<p>Default: 0.5</p>
+<p>A number between <code>0.0</code> and <code>1.0</code>, which determines how many processes out of all processes should be tracked/analysed in order to send performance data to Sentry. A value of <code>0.0</code> means that no processes should be tracked, and a value of <code>1.0</code> mean that ALL should be tracked.</p>
+<p>Performance monitoring has a minimal impact on app performance, but even so, Sentry recommend using a value less than <code>1.0</code> in production (hence using <code>0.5</code> as the default).</p>
+<h3 id="senty_send_user_data"><code>SENTY_SEND_USER_DATA</code><a class="headerlink" href="#senty_send_user_data" title="Permanent link">&para;</a></h3>
+<p>Default: <code>False</code></p>
+<p>This value determines whether data about the 'currently-logged in user' is included in the error reports sent to Sentry. This can be useful in 'testing' environments, as it can help developers to see which tester is having the problem. However, in production, we need to be far more careful leaking personal data - therefore, this option should be turned off in that environment (hence setting <code>False</code> as the default).</p>
 
               
             </article>
