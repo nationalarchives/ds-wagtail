@@ -1,0 +1,37 @@
+.featured-record {
+    &__heading {
+        color: $color__dark;
+        background-color: $color__yellow_2;
+        margin-bottom: 0;
+        padding: 1rem 0 1rem 1rem;
+        font-weight: 400;
+        font-size: 2rem;
+        font-family: $font__supria-sans;
+    }
+
+    &__content {
+      border: 3px solid $color__grey-7;
+      padding: 1rem;
+      border-top: none;
+      text-align: center;
+    }
+
+    &__standfirst {
+      color: $color__dark;
+      font-family: $font__supria-sans;
+      font-size: 1.4rem;
+    }
+
+    &__metadata {
+        display: flex;
+        justify-content: space-evenly;
+
+        p {
+          margin-bottom: 0; 
+        }
+    }
+  
+    p:last-child {
+      margin-bottom: 0;
+    }
+}
