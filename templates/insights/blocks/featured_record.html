@@ -32,9 +32,7 @@
             </div>
 
             <p class="featured-record__text">{{ value.record.description|safe }}</p>
-
-            <a class="tna-button--dark" href="" data-link="View in the catalogue">View <span class="sr-only">this record</span> in the catalogue</a>
-
+            
             {% if value.record.reference_number %}
                 <a class="tna-button--dark" href="{% url 'details-page-human-readable' value.record.reference_number %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
             {% elif value.record.iaid %}
