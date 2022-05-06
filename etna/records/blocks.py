@@ -59,7 +59,9 @@ class RecordChooserBlock(ChooserBlock):
         The instances must be returned in the same order as the values and keep None values.
         """
         _, records = self.target_model.api.fetch_all(iaids=values)
-        return records
+        record_dict = {r.iaid: r for r in records}
+        record_list = tuple(record_dict.get(iaid) for iaid in values)
+        return record_list
 
     def clean(self, value):
         """Return a 'clean' value for this chooser.
