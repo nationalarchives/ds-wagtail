@@ -363,6 +363,23 @@
                             "physicalDescription": "1180 file(s)",
                             "primaryIdentifier": "C10297",
                             "referenceNumber": "LO 2",
+                            "relatedMaterials": [
+                                {
+                                    "description": "For files of the tri-service Defence Intelligence staff see,",
+                                    "links": [
+                                        "<a href=\"C5789\">DEFE 31</a>"
+                                    ]
+                                },
+                                {
+                                    "description": "For records of the Joint Intelligence Bureau see",
+                                    "links": [
+                                        "<a href=\"C14457\">WO 252</a>"
+                                    ]
+                                },
+                                {
+                                    "description": "Records of the Government Code and Cypher School:"
+                                }
+                            ],
                             "summaryTitle": "Law Officers' Department: Registered Files",
                             "title": "<span class=\"unittitle\" type=\"Title\">Law Officers' Department: Registered Files</span>",
                             "type": "aggregation"

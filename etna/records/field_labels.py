@@ -15,4 +15,5 @@ FIELD_LABELS = {
     "previous_record": "Previous",
     "related_records": "Related records",
     "related_articles": "Related content",
+    "related_materials": "Related material",
 }
