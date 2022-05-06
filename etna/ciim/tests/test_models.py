@@ -317,6 +317,25 @@ class ModelTranslationTest(TestCase):
             "Law Officers' Department: Registered Files",
         )
 
+    def test_related_materials(self):
+        self.assertEqual(
+            self.record.related_materials,
+            [
+                {
+                    "description": "For files of the tri-service Defence Intelligence staff see,",
+                    "links": [{"iaid": "C5789", "text": "DEFE 31"}],
+                },
+                {
+                    "description": "For records of the Joint Intelligence Bureau see",
+                    "links": [{"iaid": "C14457", "text": "WO 252"}],
+                },
+                {
+                    "description": "Records of the Government Code and Cypher School:",
+                    "links": [],
+                },
+            ],
+        )
+
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(TestCase):
