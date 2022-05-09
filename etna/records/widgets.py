@@ -1,7 +1,10 @@
+import logging
+
 from generic_chooser.widgets import AdminChooser
 
-from ..ciim.exceptions import APIManagerException, KongAPIError
 from .models import Record
+
+logger = logging.getLogger(__name__)
 
 
 class RecordChooser(AdminChooser):
@@ -11,22 +14,42 @@ class RecordChooser(AdminChooser):
     choose_modal_url_name = "record_chooser:choose"
 
     def get_value_data(self, value):
+        # Given a data value (which may be None or an value such as a pk to pass to get_instance),
+        # extract the necessary data for rendering the widget with that value.
+        # In the case of StreamField (in Wagtail >=2.13), this data will be serialised via
+        # telepath https://wagtail.github.io/telepath/ to be rendered client-side, which means it
+        # cannot include model instances. Instead, we return the raw values used in rendering -
+        # namely: value, title and edit_item_url
+
+        instance = None
+
         if isinstance(value, Record):
+            instance = value
+            value = value.iaid
+        elif value:
+            try:
+                instance = self.get_instance(value)
+            except Exception:
+                logger.exception(f"Error fetching Record '{value}'. Using dummy value.")
+                return {
+                    "value": value,
+                    "title": "Record currently unavailable",
+                    "edit_item_url": None,
+                }
+
+        if instance is None:
             return {
-                "value": value.iaid,
-                "title": self.get_title(value),
-                "edit_item_url": self.get_edit_item_url(value),
+                "value": None,
+                "title": "",
+                "edit_item_url": None,
             }
 
-        # If value isn't a Record instance, it's an iaid that can be directly
-        # output in the form field.
-        return super().get_value_data(value)
+        return {
+            "value": value,
+            "title": self.get_title(instance),
+            "edit_item_url": self.get_edit_item_url(instance),
+        }
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
-        try:
-            return Record.api.fetch(iaid=pk)
-        except (KongAPIError, APIManagerException):
-            # If there's a connection issue with Kong, return a stub Record
-            # so we have something to render on the ResultsPage edit form.
-            return Record(iaid=pk, title="", reference_number="")
+        return Record.api.fetch(iaid=pk)
