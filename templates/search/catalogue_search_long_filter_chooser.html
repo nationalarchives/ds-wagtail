@@ -17,11 +17,14 @@
 
 
             <div class="long-filters__filters" data-id="long-filters-container">
-                <ul class="long-filters__filters-list" data-id="long-filters-list">
-                    {% for option in bound_field %}
-                        <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
-                    {% endfor %}
-                </ul>
+                <fieldset>
+                    <legend class="sr-only">Filters</legend>
+                    <ul class="long-filters__filters-list" data-id="long-filters-list">
+                        {% for option in bound_field %}
+                            <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
+                        {% endfor %}
+                    </ul>
+                </fieldset>
             </div>
 
             {% for hidden_field in form.hidden_fields %}
