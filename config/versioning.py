@@ -2,12 +2,19 @@ import os
 
 
 def get_git_sha():
+    value_from_env = os.getenv("PLATFORM_TREE_ID", "")
+    if value_from_env:
+        return value_from_env
+
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     head_path = os.path.join(base_dir, ".git", "HEAD")
 
-    with open(head_path, "r") as fp:
-        head = fp.read().strip()
+    try:
+        with open(head_path, "r") as fp:
+            head = fp.read().strip()
+    except FileNotFoundError:
+        return ""
 
     if head.startswith("ref: "):
         head = head[5:]
