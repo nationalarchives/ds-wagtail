@@ -11,9 +11,10 @@
     }
 
     &__options {
-        margin-top: 4rem;
         padding-bottom: 2rem;
-        margin-bottom: 2rem;
+        @media only screen and (min-width: $screen__md) {
+            margin-bottom: 2rem;
+        }
         border-bottom: 3px dotted $color__grey-4;
 
         @media only screen and (min-width: $screen__md) {
@@ -26,11 +27,12 @@
 
 
     &__filters {
-        display: flex;
+        @media only screen and (min-width: 60rem) {
+            display: flex;
+        }
 
         @media only screen and (max-width: $screen__md) {
-            margin-top: 2rem;
-            margin-left: 2rem;
+            margin-top: 1rem;
         }
 
         &-list {
@@ -73,6 +75,8 @@
         padding: 1rem;
         max-height: 12rem;
         margin-right: 1rem;
+        margin-bottom: 1rem;
+
         &-label {
             display: block;
         }
@@ -85,7 +89,9 @@
         }
         &-box {
             width: 100%;
-            max-width: 15rem;
+            @media only screen and (min-width: 62rem) {
+                max-width: 15rem;
+            }
             margin-bottom: 0.5rem;
             border: 1px solid $color__grey-3;
             border-radius: 0.5rem;
