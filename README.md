@@ -108,4 +108,4 @@ Check out the [Local development gotchas](https://nationalarchives.github.io/ds-
 - [Project conventions](https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/)
 - [Backend development guide](https://nationalarchives.github.io/ds-wagtail/developer-guide/backend/)
 - [Frontend development guide](https://nationalarchives.github.io/ds-wagtail/developer-guide/frontend/)
-- [Fetching production data](https://nationalarchives.github.io/developer-guide/fetching-production-data.md)
+- [Fetching production data](https://nationalarchives.github.io/ds-wagtail/developer-guide/fetching-production-data/)
