@@ -11,7 +11,7 @@
                 <div class="image-viewer__reference">
                     <h1>{{ images.has_other_pages }}<strong>{{ page.reference_number }}</strong> <span>- Image {{ index|add:'1' }} of {{ images_count }}</span></h1>
                 </div>
-                <nav class="image-viewer__navigation" aria-label="Explore this record">
+                <nav class="image-viewer__navigation" role="navigation" aria-label="Explore this record">
 
                     {% comment %}
 
@@ -51,7 +51,7 @@
                 </div>
 
                 {% if next_image or previous_image %}
-                    <nav class="image-viewer__pagination" aria-label="Pagination">
+                    <nav class="image-viewer__pagination" role="navigation" aria-label="Pagination">
                         <ul>
                             {% if previous_image %}
                                 <li><a href="{% url 'image-viewer' page.iaid previous_image.sort %}">Previous</a></li>

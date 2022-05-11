@@ -1,4 +1,4 @@
-<nav class="search-buckets" aria-label="Result categories">
+<nav class="search-buckets" role="navigation" aria-label="Result categories">
     <ul class="search-buckets__list" data-id="search-buckets-list">
         {% for bucket in buckets %}
             <li class="search-buckets__list-item--website" data-current="{% if bucket.is_current %}true{% else %}false{% endif %}">

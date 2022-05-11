@@ -15,7 +15,7 @@
     </form>
 
     {% with request.resolver_match.url_name as url_name  %}
-        <nav class="search-results-hero__nav" aria-label="Search result types">
+        <nav class="search-results-hero__nav" role="navigation" aria-label="Search result types">
             <ul class="search-results-hero__nav-list">
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-featured' %}
