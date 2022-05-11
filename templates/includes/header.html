@@ -2,7 +2,7 @@
 
 {% include 'includes/login-status.html' %}
 
-<header class="header">
+<header class="header" role="banner">
     <div class="header__logo-holder">
       <a href="/" class="header__logo-link"
         ><img
@@ -13,7 +13,7 @@
     </div>
 
     {% if settings.core.SiteSettings.main_menu_items %}
-      <nav class="header__nav" aria-label="Site menu">
+      <nav class="header__nav" aria-label="Site menu" role="navigation">
         <ul class="header__nav-list">
           {% for item in settings.core.SiteSettings.main_menu_items %}
             <li class="header__nav-list-item">
