@@ -55,13 +55,15 @@ class RecordChooserBlock(ChooserBlock):
         return value.iaid
 
     def bulk_to_python(self, values):
-        """Return the model instances for the given list of primary keys.
+        """Return a list of model instances for the given list of primary keys.
         The instances must be returned in the same order as the values and keep None values.
         """
-        _, records = self.target_model.api.fetch_all(iaids=values)
-        record_dict = {r.iaid: r for r in records}
-        record_list = tuple(record_dict.get(iaid) for iaid in values)
-        return record_list
+        if not values:
+            return []
+        records_by_id = {
+            r.iaid: r for r in self.target_model.api.fetch_all(iaids=values)[1]
+        }
+        return list(records_by_id.get(iaid) for iaid in values)
 
     def clean(self, value):
         """Return a 'clean' value for this chooser.
