@@ -30,8 +30,6 @@
                     </p>
                 {% endif %}
             </div>
-
-            <p class="featured-record__text">{{ value.record.description|safe }}</p>
             
             {% if value.record.reference_number %}
                 <a class="tna-button--dark" href="{% url 'details-page-human-readable' value.record.reference_number %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
