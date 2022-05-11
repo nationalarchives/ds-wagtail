@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
             accordion_functionality(this, $sectionHeadings, $sectionContents)
         });
         add_event($sectionHeadings, "keypress", function(e) {
-            if(e.which === 13 || e.which === 32) {
+            if(e.key === "Enter") {
                 accordion_functionality(this, $sectionHeadings, $sectionContents)
             }
         });
