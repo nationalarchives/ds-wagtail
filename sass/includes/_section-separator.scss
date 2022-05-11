@@ -1,25 +1,27 @@
-.section-separator {
-  &__heading {
-    font-size: 3rem;
-    font-weight: 500;
-    font-family: $font__supria-sans;
-    color: $color__dark;
-    padding-top: 2rem;
-    display: inline-block;
+.js {
+  .section-separator {
+    &__heading {
+      font-size: 3rem;
+      font-weight: 500;
+      font-family: $font__supria-sans;
+      color: $color__dark;
+      padding-top: 2rem;
+      display: inline-block;
 
-    @media screen and (max-width: 767px) {
-      display: block;
-      font-size: 2rem;
-      border-bottom: 0.25rem solid $color__grey-4;
-      &:after {
-        content: "\25be";
-        padding-left: .5rem;
-      }
-      &:hover {
-        cursor: pointer;
-      }
-      &:focus {
-        outline: 0.3125rem solid $color__blue_4;
+      @media screen and (max-width: 767px) {
+        display: block;
+        font-size: 2rem;
+        border-bottom: 0.25rem solid $color__grey-4;
+        &:after {
+          content: "\25be";
+          padding-left: .5rem;
+        }
+        &:hover {
+          cursor: pointer;
+        }
+        &:focus {
+          outline: 0.3125rem solid $color__blue_4;
+        }
       }
     }
   }

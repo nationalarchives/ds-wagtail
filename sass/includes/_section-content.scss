@@ -1,8 +1,10 @@
-.section-content {
-    @media screen and (min-width: 768px) {
-        display: block !important;
-    }
-    @media screen and (max-width: 767px) {
-        display: none;
+.js {
+    .section-content {
+        @media screen and (min-width: 768px) {
+            display: block !important;
+        }
+        @media screen and (max-width: 767px) {
+            display: none;
+        }
     }
 }
