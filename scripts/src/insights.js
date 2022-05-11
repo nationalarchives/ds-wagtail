@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
-    const $windowWidth = $(window).width();
 
     // This boolean is used to detect if certain enhancements (e.g. click event listeners) have been applied in order to 
     // prevent events from being added more than once.
@@ -34,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
 
-    if($windowWidth < 768 && !mobileEnhancementsApplied) {
+    if($(window).width() < 768 && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
 
         // Detect if there are any expanded sections. If not, expand the first section.
