@@ -6,7 +6,12 @@ from django.utils.functional import cached_property
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    PageChooserPanel,
+    StreamFieldPanel,
+    MultiFieldPanel,
+)
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page
 from wagtail.search import index
@@ -14,7 +19,7 @@ from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
 
-from etna.core.models import BasePage
+from etna.core.models import BasePage, ContentWarningMixin
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
@@ -77,7 +82,7 @@ class TaggedInsights(ItemBase):
     )
 
 
-class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
+class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePage):
     """InsightsPage
 
     The InsightsPage model.
@@ -185,6 +190,14 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, BasePage):
             FieldPanel("topic"),
             FieldPanel("time_period"),
             FieldPanel("tags"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible collapsed",
+            ),
             StreamFieldPanel("body"),
         ]
     )
