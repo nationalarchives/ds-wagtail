@@ -4,6 +4,7 @@ from wagtail.core.fields import RichTextField
 
 __all__ = ["ContentWarningMixin"]
 
+
 class ContentWarningMixin(models.Model):
     """Mixin to allow editors to toggle content warnings on and off"""
 

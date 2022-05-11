@@ -8,9 +8,9 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import (
     FieldPanel,
+    MultiFieldPanel,
     PageChooserPanel,
     StreamFieldPanel,
-    MultiFieldPanel,
 )
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Page
