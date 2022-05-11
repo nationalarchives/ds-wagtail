@@ -10,7 +10,7 @@
  * @param {Number} wait
  * @param {Object} this_argument
  */
-function throttle(call_back, wait, this_argument) {
+export default function(call_back, wait, this_argument) {
 
     var last_call_timestamp, timer;
 
