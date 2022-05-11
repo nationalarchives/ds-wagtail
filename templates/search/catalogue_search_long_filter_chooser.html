@@ -17,8 +17,8 @@
 
 
             <div class="long-filters__filters" data-id="long-filters-container">
-                <fieldset>
-                    <legend class="sr-only">Filters</legend>
+                <fieldset data-id="long-filters-fieldset">
+                    <legend class="sr-only" data-id="long-filters-legend">Filters</legend>
                     <ul class="long-filters__filters-list" data-id="long-filters-list">
                         {% for option in bound_field %}
                             <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>

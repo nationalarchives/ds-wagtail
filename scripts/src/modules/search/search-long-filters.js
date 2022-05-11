@@ -6,7 +6,10 @@ export default function () {
     const $longFiltersList = document.querySelector('[data-id="long-filters-list"]');
     const $longFiltersListItems = document.querySelectorAll('[data-class="long-filters-list-item"]');
 
-    if(!$longFiltersContainer || !$longFiltersListItems || !$longFiltersList) {
+    const $longFiltersLegend = document.querySelector('[data-id="long-filters-legend"]');
+    const $longFiltersFieldset = document.querySelector('[data-id="long-filters-fieldset"]');
+
+    if(!$longFiltersContainer || !$longFiltersListItems || !$longFiltersList || !$longFiltersLegend || !$longFiltersFieldset) {
         return;
     }
 
@@ -16,6 +19,7 @@ export default function () {
     $searchDiv.setAttribute('class', 'long-filters__search');
     const $searchBox = document.createElement('input');
     $searchBox.setAttribute('class', 'long-filters__search-box');
+    $searchBox.setAttribute('type', 'text');
     const searchId = 'long-filters-search-box';
     $searchBox.id = searchId;
     const $searchLabel = document.createElement('label');
@@ -23,17 +27,21 @@ export default function () {
     $searchLabel.setAttribute('for', searchId);
     $searchLabel.setAttribute('class', 'long-filters__search-label');
 
-    const $searchButton = document.createElement('button');
-    $searchButton.innerText = 'Search';
-    $searchButton.setAttribute('class', 'long-filters__search-button');
-
     $searchDiv.appendChild($searchLabel);
     $searchDiv.appendChild($searchBox);
-    $searchDiv.appendChild($searchButton);
 
+    const $filterCount = document.createElement('p');
+    $filterCount.id = 'long-filters-count';
+    $filterCount.setAttribute('class', 'long-filters__count');
+    $longFiltersFieldset.setAttribute('aria-describedby', 'long-filters-count');
+
+    const totalFiltersLength = longFiltersArray.length;
+    let longFiltersCountText = `Showing ${totalFiltersLength} out of ${totalFiltersLength} filters`;
+    $filterCount.innerText = longFiltersCountText;
+
+    $longFiltersFieldset.insertBefore($filterCount, $longFiltersFieldset.childNodes[2]);
 
     $longFiltersContainer.insertBefore($searchDiv, $longFiltersContainer.childNodes[0]);
-
 
     const handleSearch = function(e) {
         e.preventDefault();
@@ -63,6 +71,10 @@ export default function () {
             $longFiltersList.appendChild(filter);
         }
 
+        let narrowedFiltersLength = narrowedDownFilters.length;
+        let longFiltersCountText = `Showing ${narrowedFiltersLength} out of ${totalFiltersLength} filters`;
+        $filterCount.innerText = longFiltersCountText;
+
     }
 
     const disableSearchSubmit = function(e) {
@@ -71,7 +83,6 @@ export default function () {
         }
     }
 
-    $searchButton.addEventListener('click', handleSearch);
     $searchBox.addEventListener('keyup', handleSearch);
     $parentForm.addEventListener('keypress', disableSearchSubmit)
 

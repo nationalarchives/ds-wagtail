@@ -73,7 +73,7 @@
         background-color: $color__grey-4;
         border: 1px solid $color__grey-3;
         padding: 1rem;
-        max-height: 12rem;
+        max-height: 8rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
 
@@ -112,5 +112,10 @@
         @extend .tna-button;
         font-size: 1.3rem;
         cursor: pointer;
+    }
+
+    &__count {
+        font-family: $font__open-sans;
+        font-size: 1.5rem;
     }
 }
