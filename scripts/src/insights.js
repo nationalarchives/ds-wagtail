@@ -55,10 +55,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // progress indication in the navigation on desktop.
         add_event($(window), "scroll", throttle(function() {
             set_active($sectionHeadings)
-        }, 300))
+        }, 300));
         add_event($jumplinks, "click", function() {
             jumplinks_smooth_scroll(this);
-        })
+        });
     }
 
     $(window).on('resize', debounce(() => {
@@ -78,8 +78,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Remove scroll listener
+            // Remove scroll and jumplink click listeners
             remove_event($(window), "scroll");
+            remove_event($jumplinks, "click");
 
             mobileEnhancementsApplied = true;
         }
@@ -93,12 +94,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add click and scroll listeners for smooth scrolling when using jumpinks to navigate the page and 
             // progress indication in the navigation when the screen size is increased.
-            add_event($jumplinks, "click", function() {
-                jumplinks_smooth_scroll(this)
-            })
             add_event($(window), "scroll", throttle(function() {
                 set_active($sectionHeadings)
-            }, 300))
+            }, 300));
+            add_event($jumplinks, "click", function() {
+                jumplinks_smooth_scroll(this)
+            });
             mobileEnhancementsApplied = false;
         }
     }, 200));
