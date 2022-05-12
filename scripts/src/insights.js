@@ -41,11 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Add click and enter listeners for expanding/collapsing sections on small screens.
         add_event($sectionHeadings, "click", function() {
-            accordion_functionality(this, $sectionHeadings, $sectionContents)
+            accordion_functionality(this, $sectionHeadings, $sectionContents);
         });
         add_event($sectionHeadings, "keypress", function(e) {
             if(e.key === "Enter") {
-                accordion_functionality(this, $sectionHeadings, $sectionContents)
+                accordion_functionality(this, $sectionHeadings, $sectionContents);
             }
         });
         mobileEnhancementsApplied = true;
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Add click and scroll listeners for smooth scrolling when using jumpinks to navigate the page and 
         // progress indication in the navigation on desktop.
         add_event($(window), "scroll", throttle(function() {
-            set_active($sectionHeadings)
+            set_active($sectionHeadings);
         }, 300));
         add_event($jumplinks, "click", function() {
             jumplinks_smooth_scroll(this);
@@ -70,11 +70,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Add click and enter listeners for expanding/collapsing sections when the screen size is reduced.
             add_event($sectionHeadings, "click", function() {
-                accordion_functionality(this, $sectionHeadings, $sectionContents)
+                accordion_functionality(this, $sectionHeadings, $sectionContents);
             });
             add_event($sectionHeadings, "keypress", function(e) {
                 if(e.which === 13 || e.which === 32) {
-                    accordion_functionality(this, $sectionHeadings, $sectionContents)
+                    accordion_functionality(this, $sectionHeadings, $sectionContents);
                 }
             });
 
@@ -95,10 +95,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // Add click and scroll listeners for smooth scrolling when using jumpinks to navigate the page and 
             // progress indication in the navigation when the screen size is increased.
             add_event($(window), "scroll", throttle(function() {
-                set_active($sectionHeadings)
+                set_active($sectionHeadings);
             }, 300));
             add_event($jumplinks, "click", function() {
-                jumplinks_smooth_scroll(this)
+                jumplinks_smooth_scroll(this);
             });
             mobileEnhancementsApplied = false;
         }
