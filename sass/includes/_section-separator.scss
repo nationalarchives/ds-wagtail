@@ -14,7 +14,7 @@
         border-bottom: 0.25rem solid $color__grey-4;
         &:after {
           content: "\25be";
-          padding-left: .5rem;
+          display: inline-block;
         }
         &:hover {
           cursor: pointer;
@@ -22,6 +22,14 @@
         &:focus {
           outline: 0.3125rem solid $color__blue_4;
         }
+      }
+    }
+
+    &__heading[aria-expanded="true"] {
+      @media screen and (max-width: 767px) {
+        &:after {
+          transform: rotate(180deg);
+        }  
       }
     }
   }
