@@ -20,9 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
 
-    // This boolean is used to detect if certain enhancements (e.g. click event listeners) have been applied in order to 
+    // These booleans are used to detect if certain enhancements (e.g. click event listeners) have been applied in order to 
     // prevent events from being added more than once.
     let mobileEnhancementsApplied = false;
+    let desktopEnhancementsApplied = false;
 
     add_analytics_data_card_position('.record-embed-no-image');
     add_analytics_data_card_position('.card-group-secondary-nav');
@@ -59,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
         add_event($jumplinks, "click", function() {
             jumplinks_smooth_scroll(this);
         });
+        desktopEnhancementsApplied = true;
     }
 
     $(window).on('resize', debounce(() => {
@@ -82,9 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
             remove_event($(window), "scroll");
             remove_event($jumplinks, "click");
 
+            desktopEnhancementsApplied = false;
             mobileEnhancementsApplied = true;
         }
-        else if ($(window).width() >= 768) {
+        else if ($(window).width() >= 768 && !desktopEnhancementsApplied) {
             remove_aria_roles($sectionHeadings);
 
             // Remove click and enter listeners because sections are fully expanded on desktop 
@@ -100,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
             add_event($jumplinks, "click", function() {
                 jumplinks_smooth_scroll(this);
             });
+            desktopEnhancementsApplied = true;
             mobileEnhancementsApplied = false;
         }
     }, 200));
