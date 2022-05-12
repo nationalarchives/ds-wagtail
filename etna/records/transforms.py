@@ -81,12 +81,15 @@ def transform_record_result(result):
             data["availability_delivery_surrogates"] = delivery.get("surrogate")
 
     if topics := source.get("topic"):
-        data["topics"] = [
-            {
-                "title": i["summary"]["title"],
-            }
-            for i in topics
-        ]
+        data["topics"] = []
+        for i in topics:
+            topic_title = ""
+            try:
+                topic_title = i.get["name"][0]["value"]
+            except (KeyError, IndexError):
+                topic_title = i.get("summary", {}).get("title", "")
+            if topic_title:
+                data["topics"].append({"title": topic_title})
 
     if related := source.get("related"):
         related_records = find_all(
