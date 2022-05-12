@@ -1,3 +1,5 @@
+import $ from 'jquery';
+
 import add_analytics_data_card_position from './modules/analytics/card_position'
 import audio_tracking from "./modules/analytics/audio_tracking"
 import video_tracking from "./modules/analytics/video_tracking"
@@ -16,6 +18,9 @@ import set_active from "./modules/insights/navigation/set_active";
 import throttle from "./modules/throttle";
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialise jquery
+    window.$ = $;
+    
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
