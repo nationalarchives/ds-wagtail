@@ -86,7 +86,7 @@ class NoCaptionImageBlock(ImageBlock):
     caption = None
 
 
-class ContentImageBlock(ImageBlock):
+class ContentImageBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=False)
     alt_text = blocks.CharBlock(
         max_length=100,
