@@ -1,10 +1,9 @@
 {% load wagtailcore_tags %}
 
-
-<div>
-{% if page.custom_warning_text %}
- {{ page.custom_warning_text | richtext }}
-{% else %}
-    Default content warning
-{% endif %}
+<div class="content-warning" aria-label="Content warning">
+    {% if page.custom_warning_text %}
+        {{ page.custom_warning_text | richtext }}
+    {% else %}
+        <p>This article contains content that some people may find offensive.</p>
+    {% endif %}
 </div>
