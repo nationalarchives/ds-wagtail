@@ -1,7 +1,6 @@
 {% load wagtailcore_tags %}
 
-<div class="content-warning">
-    <span class="sr-only">Warning</span>
+<div class="content-warning" aria-label="Content warning">
     {% if page.custom_warning_text %}
         {{ page.custom_warning_text | richtext }}
     {% else %}
