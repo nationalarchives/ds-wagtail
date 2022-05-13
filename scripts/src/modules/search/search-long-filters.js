@@ -27,8 +27,14 @@ export default function () {
     $searchLabel.setAttribute('for', searchId);
     $searchLabel.setAttribute('class', 'long-filters__search-label');
 
+    let $searchHelperText = document.createElement('p');
+    $searchHelperText.innerText = 'Filters that contain the text you enter will be displayed. Filters you have checked will always be shown.';
+    $searchHelperText.id = 'long-filters-helper-text';
+    $searchBox.setAttribute('aria-describedby', 'long-filters-helper-text');
+
     $searchDiv.appendChild($searchLabel);
     $searchDiv.appendChild($searchBox);
+    $searchDiv.appendChild($searchHelperText);
 
     const $filterCount = document.createElement('p');
     $filterCount.id = 'long-filters-count';
