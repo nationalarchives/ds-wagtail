@@ -8,8 +8,10 @@ export default function accordion_functionality(currentHeading, sectionHeadings,
     sectionContents.each(function(index) {
         // If it matches, expand the section.
         if($(this).attr("data-controlled-by") === id) {
-            slide_toggle($(this));
-            toggle_aria_expanded($(sectionHeadings[index]));
+            if(!$(this).is(':animated')) {
+                slide_toggle($(this));
+                toggle_aria_expanded($(sectionHeadings[index]));
+            }
         }
         // Otherwise, collapse all other sections. This functionality is required because a different section may be expanded
         // and it should collapse when a new section is opened.
