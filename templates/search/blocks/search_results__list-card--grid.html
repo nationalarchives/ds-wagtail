@@ -1,3 +1,10 @@
+{% load wagtailimages_tags %}
+
+{% image record.source_page.teaser_image fill-288x172 as teaser_image_small %}
+{% image record.source_page.teaser_image fill-328x196 as teaser_image_medium %}
+{% image record.source_page.teaser_image fill-348x208 as teaser_image_large %}
+{% image record.source_page.teaser_image fill-508x304 as teaser_image_extra_large %}
+
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 {% load search_tags static %}
 
@@ -11,6 +18,17 @@
     {% endif %}
     <div class="search-results__list-card-content">
         <h4 class="search-results__list-card-heading">
+            {% if teaser_image_large.url %}
+                <div class="">
+                    <picture>
+                        <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+                        <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                        <img src="{{ teaser_image_large.url }}">
+                    </picture>
+                </div>
+            {% endif %}
             <a href="#" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
             {{ record|record_title}}
             </a>
