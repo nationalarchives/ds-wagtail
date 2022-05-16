@@ -85,7 +85,7 @@ export default function () {
 
     // Prevents the whole form from submitting when pressing "Enter" on search filter box
     const disableSearchSubmit = function(e) {
-        if(e.key === "Enter") {
+        if(e.key === "Enter" && e.target.id === $searchBox.id) {
             handleSearch(e);
         }
     }
