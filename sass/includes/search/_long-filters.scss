@@ -20,6 +20,7 @@
         @media only screen and (min-width: $screen__md) {
             display: flex;
             justify-content: space-between;
+            align-items: baseline;
         }
 
     }
@@ -102,6 +103,10 @@
             height: 2.7rem;
             padding: 1rem;
             margin-left: -0.2rem;
+
+            &:focus {
+                outline: 5px solid $color__focus-blue-outline-light-bg;
+            }
         }
     }
 
