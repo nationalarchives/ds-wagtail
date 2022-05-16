@@ -19,7 +19,7 @@ export default function () {
     $searchDiv.setAttribute('class', 'long-filters__search');
     const $searchBox = document.createElement('input');
     $searchBox.setAttribute('class', 'long-filters__search-box');
-    $searchBox.setAttribute('type', 'text');
+    $searchBox.setAttribute('type', 'search');
     const searchId = 'long-filters-search-box';
     $searchBox.id = searchId;
     const $searchLabel = document.createElement('label');
