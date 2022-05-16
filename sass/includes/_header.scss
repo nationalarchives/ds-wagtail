@@ -1,7 +1,7 @@
 .header {
   background-color: $color__yellow_2;
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: $screen__md) {
     display: flex;
     flex-wrap: wrap;
   }
@@ -10,10 +10,10 @@
       display: inline-block;
       padding: 1rem;
       padding-bottom: 1.5rem;
-      @media only screen and (max-width: $screen__md) {
+      @media only screen and (max-width: $screen__767px) {
         vertical-align: top;
       }
-      @media screen and (max-width: $screen__sm) {
+      @media screen and (max-width: $screen__767px) {
         padding-left: 0.1rem;
         padding-right: 0.1rem;
         padding-bottom: 0.5rem;
@@ -46,14 +46,14 @@
     margin-left: auto;
     align-items: flex-end;
 
-    @media only screen and (max-width: $screen__md) {
+    @media only screen and (max-width: $screen__767px) {
       display: block;
       text-align: right;
       margin-top: -4rem;
     }
 
     &-list {
-      @media only screen and (max-width: $screen__md) {
+      @media only screen and (max-width: $screen__767px) {
         padding-left: 0;
       }
 
@@ -73,14 +73,13 @@
       justify-content: space-around; // IE11 only supports space-around and space-between.
       &-item {
         list-style: none;
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: $screen__767px) {
           height: 3rem;
         }
         display: block;
 
         &#site-menu-search {
           display: inline-block;
-          vertical-align: bottom;
         }
 
         &[data-id="menu-show-hide-button"] {
@@ -88,7 +87,7 @@
         }
 
         &[data-isSearch="false"] {
-          @media only screen and (max-width: $screen__md) { 
+          @media only screen and (max-width: $screen__767px) { 
             background-color: $color__white;
             font-size: 1.2rem;
             text-decoration: underline;
@@ -109,7 +108,7 @@
             color: $color__black;
           }
 
-          @media only screen and (max-width: $screen__md) {
+          @media only screen and (max-width: $screen__767px) {
             text-align: center;
             &:hover,
             &[aria-current="true"],
