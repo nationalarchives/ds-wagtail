@@ -25,7 +25,9 @@ def transform_record_result(result):
         )
 
     if description := source.get("description"):
-        data["description"] = format_description_markup(description[0]["value"])
+        for item in description:
+            if item.get("type", "") == "description" or len(description) == 1:
+                data["description"] = format_description_markup(item["value"])
 
     if arrangement := source.get("arrangement"):
         data["arrangement"] = format_description_markup(arrangement["value"])
