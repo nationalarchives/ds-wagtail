@@ -9,7 +9,7 @@ export default function () {
     const $longFiltersLegend = document.querySelector('[data-id="long-filters-legend"]');
     const $longFiltersFieldset = document.querySelector('[data-id="long-filters-fieldset"]');
 
-    if(!$longFiltersContainer || !$longFiltersListItems || !$longFiltersList || !$longFiltersLegend || !$longFiltersFieldset) {
+    if(!$parentForm || !$longFiltersContainer || !$longFiltersListItems || !$longFiltersList || !$longFiltersLegend || !$longFiltersFieldset) {
         return;
     }
 
