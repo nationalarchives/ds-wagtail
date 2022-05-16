@@ -1,7 +1,7 @@
 import slide_toggle from "./slide_toggle";
 import toggle_aria_expanded from "./toggle_aria_expanded";
 
-export default function accordion_functionality(currentHeading, sectionHeadings, sectionContents) {
+export default function accordion_functionality(currentHeading, sectionHeadings, sectionHeadingPositions, sectionContents) {
     const id = currentHeading.id;
 
     // Find the section that matches the heading that was clicked on.
@@ -9,7 +9,7 @@ export default function accordion_functionality(currentHeading, sectionHeadings,
         // If it matches, expand the section.
         if($(this).attr("data-controlled-by") === id) {
             if(!$(this).is(':animated')) {
-                slide_toggle($(this));
+                slide_toggle(sectionHeadingPositions[index], $(this));
                 toggle_aria_expanded($(sectionHeadings[index]));
             }
         }
