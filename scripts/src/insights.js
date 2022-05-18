@@ -30,7 +30,6 @@ window.addEventListener('load', () => {
     window.$ = $;
 
     const $sectionHeadings = $(".section-separator__heading");
-    const sectionHeadingPositions = [];
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
 
@@ -41,12 +40,6 @@ window.addEventListener('load', () => {
 
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
-
-    // Store the position of each heading; the values are used to keep an expanded section's heading at the top of the 
-    // viewport.
-    $sectionHeadings.each(function() {
-        sectionHeadingPositions.push($(this).offset().top);
-    })
     
     if($(window).width() < 768 && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
@@ -56,11 +49,11 @@ window.addEventListener('load', () => {
 
         // Add click and enter listeners for expanding/collapsing sections on small screens.
         add_event($sectionHeadings, "click", function() {
-            accordion_functionality(this, $sectionHeadings, sectionHeadingPositions, $sectionContents);
+            accordion_functionality(this, $sectionHeadings, $sectionContents);
         });
         add_event($sectionHeadings, "keypress", function(e) {
             if(e.key === "Enter") {
-                accordion_functionality(this, $sectionHeadings, sectionHeadingPositions, $sectionContents);
+                accordion_functionality(this, $sectionHeadings, $sectionContents);
             }
         });
         mobileEnhancementsApplied = true;
@@ -86,11 +79,11 @@ window.addEventListener('load', () => {
 
             // Add click and enter listeners for expanding/collapsing sections when the screen size is reduced.
             add_event($sectionHeadings, "click", function() {
-                accordion_functionality(this, $sectionHeadings, sectionHeadingPositions, $sectionContents);
+                accordion_functionality(this, $sectionHeadings, $sectionContents);
             });
             add_event($sectionHeadings, "keypress", function(e) {
                 if(e.key === "Enter") {
-                    accordion_functionality(this, $sectionHeadings, sectionHeadingPositions, $sectionContents);
+                    accordion_functionality(this, $sectionHeadings, $sectionContents);
                 }
             });
 
