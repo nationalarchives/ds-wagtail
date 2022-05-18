@@ -1,9 +1,9 @@
 {% comment %} TODO downloadable, and record variables {% endcomment %}
-{% load search_tags static %}
+{% load search_tags records_tags static %}
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
         <h3 class="search-results__list-card-heading">
-            <a href="/details/" class="search-results__list-card-link">
+            <a href="{% record_url record %}" class="search-results__list-card-link">
                 <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
                 {{ record|record_title}}
             </a>
@@ -53,10 +53,10 @@
 
     {% if record|record_detail:"digitised" %}
     <div class="search-results__list-card-delivery-options">
-        <a href="#" aria-hidden="true" tabindex="-1">
+        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1">
             <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
-        <a href="#" class="search-results__list-card-delivery-options-link">
+        <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
             <p class="search-results__list-card-delivery-options-desc">
                 <span class="sr-only">{{ record|record_detail:"referenceNumber"}} {{ record|record_detail:"summaryTitle" }} is </span>Available to download and view online
             </p>
