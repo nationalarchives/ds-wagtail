@@ -23,9 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     audio_tracking();
     video_tracking();
     add_unique_ids();
-});
 
-window.addEventListener('load', () => {
     // Initialise jquery
     window.$ = $;
 
@@ -114,4 +112,4 @@ window.addEventListener('load', () => {
             mobileEnhancementsApplied = false;
         }
     }, 200));
-})
+});
