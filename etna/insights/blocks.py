@@ -142,7 +142,7 @@ class PromotedListItemBlock(SectionDepthAwareStructBlock):
         icon = "star"
 
 
-class PromotedListBlock(SectionDepthAwareStructBlock):
+class PromotedListBlock(blocks.StructBlock):
     """
     Streamfield for collating a series of links for research or interesting pages.
     """
@@ -228,30 +228,12 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
         template = "insights/blocks/sub_heading.html"
 
 
-class SubSectionContentBlock(blocks.StreamBlock):
-    paragraph = ParagraphBlock()
-    quote = QuoteBlock()
-    sub_heading = SubHeadingBlock()
-    image = ContentImageBlock()
-    media = MediaBlock()
-
-
-class ContentSubSectionBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100, label="Heading")
-    content = SubSectionContentBlock()
-
-    class Meta:
-        label = "Sub-section"
-        template = "insights/blocks/section.html"
-
-
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
-
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()

@@ -38,56 +38,6 @@ class TestInsightPageSectionBlockIntegration(TestCase):
                                         "text": "<p>Some paragraph text following a h3 sub-heading.</p>"
                                     },
                                 },
-                                {
-                                    "type": "content_sub_section",
-                                    "value": {
-                                        "heading": "Section 1A",
-                                        "content": [
-                                            {
-                                                "type": "paragraph",
-                                                "value": {
-                                                    "text": "<p>Some paragraph text withing a sub-section.</p>"
-                                                },
-                                            },
-                                            {
-                                                "type": "sub_heading",
-                                                "value": {
-                                                    "heading": "This should render as a h4"
-                                                },
-                                            },
-                                            {
-                                                "type": "paragraph",
-                                                "value": {
-                                                    "text": "<p>Some paragraph text following a h4 sub-heading.</p>"
-                                                },
-                                            },
-                                        ],
-                                    },
-                                },
-                                {
-                                    "type": "content_sub_section",
-                                    "value": {
-                                        "heading": "Section 1B",
-                                        "content": [
-                                            {
-                                                "type": "paragraph",
-                                                "value": {
-                                                    "text": "<p>Some paragraph text withing another sub-section.</p>"
-                                                },
-                                            },
-                                            {
-                                                "type": "sub_heading",
-                                                "value": {"heading": "Another h4"},
-                                            },
-                                            {
-                                                "type": "paragraph",
-                                                "value": {
-                                                    "text": "<p>Some more paragraph text following a h4 sub-heading.</p>"
-                                                },
-                                            },
-                                        ],
-                                    },
-                                },
                             ],
                         },
                     },
@@ -101,6 +51,10 @@ class TestInsightPageSectionBlockIntegration(TestCase):
                                     "value": {
                                         "text": "<p>Well, this is a terribly sparse section.</p>"
                                     },
+                                },
+                                {
+                                    "type": "sub_heading",
+                                    "value": {"heading": "This should render as a h3"},
                                 },
                             ],
                         },
@@ -146,21 +100,6 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         response = self.client.get(self.insights_page.get_url())
         response.render()
         content = response.content.decode()
-        for heading_text in (
-            "This should render as a h3",
-            "Section 1A",
-            "Section 1B",
-        ):
+        for heading_text in ("This should render as a h3",):
             with self.subTest(heading_text):
                 self.assertContainsHeading(content, heading_text, 3)
-
-    def test_headings_rendered_as_h4(self):
-        response = self.client.get(self.insights_page.get_url())
-        response.render()
-        content = response.content.decode()
-        for heading_text in (
-            "This should render as a h4",
-            "Another h4",
-        ):
-            with self.subTest(heading_text):
-                self.assertContainsHeading(content, heading_text, 4)
