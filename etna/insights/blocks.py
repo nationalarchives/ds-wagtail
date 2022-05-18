@@ -147,7 +147,6 @@ class PromotedListBlock(SectionDepthAwareStructBlock):
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    heading = blocks.CharBlock(required=True, max_length=100)
     category = SnippetChooserBlock("categories.Category")
     summary = blocks.RichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -257,7 +256,6 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
-    content_sub_section = ContentSubSectionBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
