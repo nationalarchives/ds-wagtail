@@ -1,3 +1,4 @@
+import scroll_to_active_heading from "./scroll_to_active_heading";
 import slide_toggle from "./slide_toggle";
 import toggle_aria_expanded from "./toggle_aria_expanded";
 
@@ -9,7 +10,8 @@ export default function accordion_functionality(currentHeading, sectionHeadings,
         // If it matches, expand the section.
         if($(this).attr("data-controlled-by") === id) {
             if(!$(this).is(':animated')) {
-                slide_toggle(sectionHeadings, sectionHeadings[index], $(this));
+                slide_toggle($(this));
+                scroll_to_active_heading(sectionHeadings, sectionHeadings[index]);
                 toggle_aria_expanded($(sectionHeadings[index]));
             }
         }
