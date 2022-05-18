@@ -50,7 +50,6 @@ export default function () {
     $longFiltersContainer.insertBefore($searchDiv, $longFiltersContainer.childNodes[0]);
 
     const handleSearch = function(e) {
-        e.preventDefault();
         const keyword = $searchBox.value.toLowerCase();
 
         const narrowedDownFilters = longFiltersArray.filter(filter => {
@@ -86,7 +85,7 @@ export default function () {
     // Prevents the whole form from submitting when pressing "Enter" on search filter box
     const disableSearchSubmit = function(e) {
         if(e.key === "Enter" && e.target.id === $searchBox.id) {
-            handleSearch(e);
+            e.preventDefault();
         }
     }
 
