@@ -78,7 +78,7 @@ export default function () {
         }
 
         let narrowedFiltersLength = narrowedDownFilters.length;
-        let longFiltersCountText = `Showing ${narrowedFiltersLength} out of ${totalFiltersLength} filters`;
+        longFiltersCountText = `Showing ${narrowedFiltersLength} out of ${totalFiltersLength} filters`;
         $filterCount.innerText = longFiltersCountText;
 
     }
