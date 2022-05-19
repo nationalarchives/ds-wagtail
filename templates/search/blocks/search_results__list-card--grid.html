@@ -6,12 +6,12 @@
 {% image record.source_page.teaser_image fill-508x304 as teaser_image_extra_large %}
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
-{% load search_tags static %}
+{% load search_tags records_tags static %}
 
 <li class="search-results__list-card--grid">
     {% if record|record_detail:"digitised" %}
     <div class="search-results__list-card-delivery-options--grid">
-        <a href="#" aria-hidden="true" tabindex="-1">
+        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1">
             <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
     </div>
@@ -29,7 +29,7 @@
                     </picture>
                 </div>
             {% endif %}
-            <a href="#" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
+            <a href="{% record_url record %}" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
             {{ record|record_title}}
             </a>
         </h4>
