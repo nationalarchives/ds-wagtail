@@ -71,7 +71,7 @@
       outline: 0.3125rem solid $color__black;
     }
 
-    @media only screen and (max-width: $screen__767px) {
+    @media only screen and (max-width: $screen__md) {
       display: inline-block;
       margin-left: auto;
       margin-top: 0.5rem;
