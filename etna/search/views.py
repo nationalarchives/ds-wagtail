@@ -576,31 +576,50 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
 
+    def get_slug_for_url(self, result) -> str:
+        '''
+        Returns slug for given sourceUrl of result, otherwise empty string.
+        '''
+        url = (
+            result["_source"]
+            .get("@template", {})
+            .get("details", {})
+            .get("sourceUrl", "")
+        )
+        if not url.endswith('/'):
+            url += '/'
+        return url.split("/")[-2]
+    
+    def get_slug_list(self, page: Page):
+        """
+        Returns list slugs extracted from each result in page
+        """
+        slug_list = []
+        for result in page.object_list:
+            slug_list.append(self.get_slug_for_url(result))
+        return slug_list
+
     def add_insights_page_for_url(self, page: Page) -> None:
         """
         Finds the Insights page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
         """
-        insights_page_by_url = {
-            page.get_url(self.request): page
+        # filter by slug for performance boost
+        insights_page_by_slug = {
+            page.slug: page
             for page in InsightsPage.objects.live()
             .defer("body")
             .select_related("teaser_image")
+            .filter(slug__in=self.get_slug_list(page))
         }
         page_list = []
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            url = "/" + "/".join(url.split("/")[3:])
-            if source_page := insights_page_by_url.get(url, ""):
+            slug = self.get_slug_for_url(result)
+            if source_page := insights_page_by_slug.get(slug, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in insights_page_by_url={insights_page_by_url}"
+                    f"WebsiteSearchView:scrapped/ingested slug={slug} not found in insights_page_by_slug={insights_page_by_slug}"
                 )
             page_list.append(result)
         page.object_list = page_list
@@ -609,27 +628,21 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
         """
         Finds the Results page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
-        """
-        results_page_by_url = {
-            page.get_url(self.request): page
+        """ 
+        results_page_by_slug = {
+            page.slug: page
             for page in ResultsPage.objects.live()
-            .defer("records")
             .select_related("teaser_image")
+            .filter(slug__in=self.get_slug_list(page))
         }
         page_list = []
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            url = "/" + "/".join(url.split("/")[3:])
-            if source_page := results_page_by_url.get(url, ""):
+            slug = self.get_slug_for_url(result)
+            if source_page := results_page_by_slug.get(slug, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in results_page_by_url={results_page_by_url}"
+                    f"WebsiteSearchView:scrapped/ingested slug={slug} not found in results_page_by_slug={results_page_by_slug}"
                 )
             page_list.append(result)
         page.object_list = page_list
