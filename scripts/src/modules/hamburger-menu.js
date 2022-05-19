@@ -6,7 +6,7 @@ export default function () {
     let $headerElementsToHide = document.querySelectorAll(
         '[data-isSearch="false"]'
     );
-    let $searchListItem = document.querySelector("#site-menu-search");
+    let $searchListItem = document.querySelector("#js-site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
     if (!$headerMenu || !$headerMenuList || !$searchListItem) {
         return;
@@ -14,6 +14,7 @@ export default function () {
 
     let isGlobalSearchFocused = function () {
 
+        /* Global search doesn't exist on Etna search pages (/search/), so we must check if it exists before we check if it's focused. */
         if(!$globalSearchButton) {
             return false;
         }
@@ -51,6 +52,9 @@ export default function () {
     $showHideButton.setAttribute("aria-expanded", false);
 
     $showHideListItem.appendChild($showHideButton);
+
+    $searchListItem.style.display = 'inline-block';
+    $searchListItem.style.verticalAlign = 'bottom';
 
     $headerMenuList.insertBefore(
         $showHideListItem,
