@@ -45,9 +45,9 @@ class BucketList:
 
 CATALOGUE_BUCKETS = BucketList(
     [
-        Bucket(key="tna", label="Records from The National Archives"),
-        Bucket(key="digitised", label="Online records from The National Archives"),
-        Bucket(key="nonTna", label="Records from other UK archives"),
+        Bucket(key="tna", label="Records at The National Archives"),
+        Bucket(key="digitised", label="Online records at The National Archives"),
+        Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
         Bucket(key="archive", label="Find an archive"),
     ]
@@ -66,8 +66,8 @@ WEBSITE_BUCKETS = BucketList(
 
 FEATURED_BUCKETS = BucketList(
     [
-        Bucket(key="tna", label="Records from The National Archives"),
-        Bucket(key="nonTna", label="Records from other UK archives"),
+        Bucket(key="tna", label="Records at The National Archives"),
+        Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
         Bucket(key="blog", label="Blogs"),
         Bucket(key="researchGuide", label="Research Guides"),

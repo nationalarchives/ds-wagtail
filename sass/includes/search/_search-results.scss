@@ -140,20 +140,12 @@
         }
     }
     &__explainer {
-
-        &--desktop {
+        margin-left: 1rem;
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+        @media only screen and (min-width: $screen__md) {
             margin-left: 2rem;
-            margin-left: 2rem;
-            @media only screen and (max-width: $screen__md) {
-                display: none;
-            }
-        }
-        &--mobile {
-            margin-left: 1rem;
-            margin-left: 1rem;
-            @media only screen and (min-width: $screen__md) {
-                display: none;
-            }
+            margin-right: 2rem;
         }
     }
 }

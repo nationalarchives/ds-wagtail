@@ -7,20 +7,20 @@
             <li class="search-landing-buckets__list-item" >
                 {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?group=group:tna" class="search-landing-buckets__link" >
-                    Records from The National Archives ({{ tna_bucket_count|intcomma }})
+                    Records at The National Archives ({{ tna_bucket_count|intcomma }})
                 </a>
             </li>
 
             <li class="search-landing-buckets__list-item" >
                 {% bucket_count bucket_count_response 'tna' as tna_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?group=group:tna" class="search-landing-buckets__link" >
-                    Online records from The National Archives ({{ tna_bucket_count|intcomma }})
+                    Online records at The National Archives ({{ tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li class="search-landing-buckets__list-item" >
                 {% bucket_count bucket_count_response 'nonTna' as non_tna_bucket_count %}
                 <a href="{% url 'search-catalogue' %}?group=group:nonTna" class="search-landing-buckets__link" >
-                    Records from other UK archives ({{ non_tna_bucket_count|intcomma }})
+                    Records at other UK archives ({{ non_tna_bucket_count|intcomma }})
                 </a>
             </li>
             <li class="search-landing-buckets__list-item" >
