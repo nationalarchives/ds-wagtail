@@ -28,7 +28,7 @@ export default function () {
     $searchLabel.setAttribute('class', 'long-filters__search-label');
 
     let $searchHelperText = document.createElement('p');
-    $searchHelperText.innerText = 'Filters that contain the text you enter will be displayed. Filters you have checked will always be shown.';
+    $searchHelperText.innerText = 'Enter text to refine your filters. Already selected filters will remain active.';
     $searchHelperText.id = 'long-filters-helper-text';
     $searchBox.setAttribute('aria-describedby', 'long-filters-helper-text');
 
@@ -42,7 +42,7 @@ export default function () {
     $longFiltersFieldset.setAttribute('aria-describedby', 'long-filters-count');
 
     const totalFiltersLength = longFiltersArray.length;
-    let longFiltersCountText = `Showing ${totalFiltersLength} out of ${totalFiltersLength} filters`;
+    let longFiltersCountText = `Showing ${totalFiltersLength} of ${totalFiltersLength} filters`;
     $filterCount.innerText = longFiltersCountText;
 
     $longFiltersFieldset.insertBefore($filterCount, $longFiltersFieldset.childNodes[2]);
