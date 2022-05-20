@@ -18,9 +18,15 @@ import set_active from "./modules/insights/navigation/set_active";
 import throttle from "./modules/throttle";
 
 document.addEventListener('DOMContentLoaded', () => {
+    add_analytics_data_card_position('.record-embed-no-image');
+    add_analytics_data_card_position('.card-group-secondary-nav');
+    audio_tracking();
+    video_tracking();
+    add_unique_ids();
+
     // Initialise jquery
     window.$ = $;
-    
+
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
@@ -30,15 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let mobileEnhancementsApplied = false;
     let desktopEnhancementsApplied = false;
 
-    add_analytics_data_card_position('.record-embed-no-image');
-    add_analytics_data_card_position('.card-group-secondary-nav');
-    audio_tracking();
-    video_tracking();
-    add_unique_ids();
-
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
-
+    
     if($(window).width() < 768 && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
 
