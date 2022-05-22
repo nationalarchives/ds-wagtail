@@ -1,0 +1,20 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+{% load wagtailcore_tags %}
+
+
+
+{% block content %}
+
+    {% include 'includes/generic-intro.html' %}
+
+    <div class="container pt-4">
+        {% for block in page.body %}
+            <div class="row">
+                {% include_block block %}
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}
+
