@@ -1,8 +1,7 @@
 import json
 import re
 
-from django.test import SimpleTestCase, TestCase
-from django.urls import reverse
+from django.test import TestCase
 
 from wagtail.core.models import Site
 
