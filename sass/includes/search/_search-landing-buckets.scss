@@ -15,13 +15,6 @@
         }
     }
 
-    &__container {
-        &--bordered {
-
-            border-bottom: 3px dotted $color__grey-4;
-        }
-    }
-
     &__list {
         display: flex;
         flex-wrap: wrap;
