@@ -8,6 +8,7 @@ from django.contrib.humanize.templatetags.humanize import intcomma
 class Bucket:
     key: str
     label: str
+    description: str = None
     result_count: int = None
     is_current: bool = False
     results: List[Any] = None
@@ -45,11 +46,31 @@ class BucketList:
 
 CATALOGUE_BUCKETS = BucketList(
     [
-        Bucket(key="tna", label="Records from The National Archives"),
-        Bucket(key="digitised", label="Online records from The National Archives"),
-        Bucket(key="nonTna", label="Records from other UK archives"),
-        Bucket(key="creator", label="Record creators"),
-        Bucket(key="archive", label="Find an archive"),
+        Bucket(
+            key="tna",
+            label="Records at The National Archives",
+            description="Results for records held at The National Archives that match your search term.",
+        ),
+        Bucket(
+            key="digitised",
+            label="Online records at The National Archives",
+            description="Results for records available to download and held at The National Archives that match your search term.",
+        ),
+        Bucket(
+            key="nonTna",
+            label="Records at other UK archives",
+            description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
+        ),
+        Bucket(
+            key="creator",
+            label="Record creators",
+            description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
+        ),
+        Bucket(
+            key="archive",
+            label="Find an archive",
+            description="Results for archives in the UK and from across the world that match your search term.",
+        ),
     ]
 )
 
@@ -66,8 +87,8 @@ WEBSITE_BUCKETS = BucketList(
 
 FEATURED_BUCKETS = BucketList(
     [
-        Bucket(key="tna", label="Records from The National Archives"),
-        Bucket(key="nonTna", label="Records from other UK archives"),
+        Bucket(key="tna", label="Records at The National Archives"),
+        Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
         Bucket(key="blog", label="Blogs"),
         Bucket(key="researchGuide", label="Research Guides"),
