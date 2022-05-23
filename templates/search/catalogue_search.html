@@ -13,17 +13,13 @@
         <p class="search-results__explainer">Results for records held at The National Archives and other archives that match your search term.</p>
         {% include './blocks/catalogue_search_buckets.html' %}
         {% comment %} TODO make this text an editable field {% endcomment %}
-        {% if form.group.value == 'tna' %}
-            <p class="search-results__explainer">Results for records held at The National Archives that match your search term.</p>
-        {% elif form.group.value == 'digitised' %}
-            <p class="search-results__explainer">Results for records available to download and held at The National Archives that match your search term.</p>
-        {% elif form.group.value == 'nonTna' %}
-            <p class="search-results__explainer">Results for records held at other archives in the UK (and not at The National Archives) that match your search term.</p>
-        {% elif form.group.value == 'creator' %}
-            <p class="search-results__explainer">Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.</p>
-        {% elif form.group.value == 'archive' %}
-            <p class="search-results__explainer">Results for archives in the UK and from across the world that match your search term.</p>
-        {% endif %}
+        {% for bucket in buckets %}
+            {% if bucket.is_current and bucket.description %}
+                <p class="search-results__explainer">
+                    {{bucket.description}}
+                </p>
+            {% endif %}
+        {% endfor %}
         {% include './blocks/search_sort_and_view_options.html' %}
 
         <div class="catalogue-search-grid" data-id="catalogue-search-grid">
