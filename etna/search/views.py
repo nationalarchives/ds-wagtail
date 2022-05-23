@@ -595,11 +595,13 @@ class FeaturedSearchView(LoginRequiredMixin, BaseSearchView):
         directly from `self.api_result`.
         """
         buckets = {}
+        buckets['total_results_count'] = 0
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
             response = self.api_result["responses"][i]
             bucket.result_count = response["hits"]["total"]["value"]
             bucket.results = response["hits"]["hits"]
             buckets[bucket.key] = bucket
+            buckets['total_results_count'] += bucket.result_count
         return buckets
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:

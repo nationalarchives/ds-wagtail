@@ -120,4 +120,18 @@
             display: inline-block;
         }
     }
+
+    &__no-results-message {
+        margin-left: 1rem;
+        margin-right: 1rem;
+
+        @media only screen and (min-width: $screen__md) {
+            margin-left: 2rem;
+            margin-right: 2rem;
+        }
+
+        &-paragraph {
+            margin-bottom: 0.5rem;
+        }
+    }
 }
