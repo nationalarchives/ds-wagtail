@@ -1,7 +1,9 @@
 import copy
+import logging
 import re
 
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
@@ -23,8 +25,12 @@ from ..ciim.constants import (
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
+from ..collections.models import ResultsPage
+from ..insights.models import InsightsPage
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
+
+logger = logging.getLogger(__name__)
 
 
 class LoginRequiredMixin:
@@ -570,6 +576,93 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
     form_class = WebsiteSearchForm
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
+
+    def add_insights_page_for_url(self, page: Page) -> None:
+        """
+        Finds the Insights page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
+        Unmatched url is bypassed but logged.
+        """
+        slugs = [
+            result["_source"]
+            .get("@template", {})
+            .get("details", {})
+            .get("sourceUrl", "")
+            .rstrip("/")
+            .split("/")
+            .pop()
+            for result in page.object_list
+        ]
+        # filter by slug for performance boost
+        insights_page_by_url = {
+            page.get_url(self.request): page
+            for page in InsightsPage.objects.live()
+            .filter(slug__in=slugs)
+            .defer("body")
+            .select_related("teaser_image")
+        }
+        page_list = []
+        for result in page.object_list:
+            url = (
+                result["_source"]
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
+            )
+            if source_page := insights_page_by_url.get(urlparse(url).path, ""):
+                result["source_page"] = source_page
+            else:
+                logger.debug(
+                    f"WebsiteSearchView:scrapped/ingested url={url} not found in insights_page_by_url={insights_page_by_url}"
+                )
+            page_list.append(result)
+        page.object_list = page_list
+
+    def add_results_page_for_url(self, page: Page) -> None:
+        """
+        Finds the Results page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
+        Unmatched url is bypassed but logged.
+        """
+        slugs = [
+            result["_source"]
+            .get("@template", {})
+            .get("details", {})
+            .get("sourceUrl", "")
+            .rstrip("/")
+            .split("/")
+            .pop()
+            for result in page.object_list
+        ]
+        results_page_by_url = {
+            page.get_url(self.request): page
+            for page in ResultsPage.objects.live()
+            .filter(slug__in=slugs)
+            .select_related("teaser_image")
+        }
+        page_list = []
+        for result in page.object_list:
+            url = (
+                result["_source"]
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
+            )
+            if source_page := results_page_by_url.get(urlparse(url).path, ""):
+                result["source_page"] = source_page
+            else:
+                logger.debug(
+                    f"WebsiteSearchView:scrapped/ingested url={url} not found in results_page_by_url={results_page_by_url}"
+                )
+            page_list.append(result)
+        page.object_list = page_list
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if filter_aggregation := self.request.GET.get("group", ""):
+            if filter_aggregation == "insight" and "page" in context:
+                self.add_insights_page_for_url(context["page"])
+            if filter_aggregation == "highlight" and "page" in context:
+                self.add_results_page_for_url(context["page"])
+        return context
 
 
 class FeaturedSearchView(LoginRequiredMixin, BaseSearchView):
