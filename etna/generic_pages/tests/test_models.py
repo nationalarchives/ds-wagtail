@@ -33,11 +33,6 @@ class TestGeneral(TestCase):
 
         self.assertIn(paragraph_text, paragraph_texts)
 
-    def test_view_url_accessible_by_name(self):
-        url = "/general-page/"
-        response = self.client.get(url)
-        self.assertEqual(response.status_code, 200)
-
     def test_view_uses_correct_template(self):
         url = self.general_page.get_url()
         response = self.client.get(url)
