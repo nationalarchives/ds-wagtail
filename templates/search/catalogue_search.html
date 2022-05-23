@@ -13,13 +13,11 @@
         <p class="search-results__explainer">Results for records held at The National Archives and other archives that match your search term.</p>
         {% include './blocks/catalogue_search_buckets.html' %}
         {% comment %} TODO make this text an editable field {% endcomment %}
-        {% for bucket in buckets %}
-            {% if bucket.is_current and bucket.description %}
-                <p class="search-results__explainer">
-                    {{bucket.description}}
-                </p>
-            {% endif %}
-        {% endfor %}
+        {% if buckets.current.description %}
+            <p class="search-results__explainer">
+                {{ buckets.current.description }}
+            </p>
+        {% endif %}
         {% include './blocks/search_sort_and_view_options.html' %}
 
         <div class="catalogue-search-grid" data-id="catalogue-search-grid">
