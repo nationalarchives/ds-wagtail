@@ -3,13 +3,13 @@ from wagtail.core.fields import StreamField
 
 from etna.core.models import BasePage
 
-from .blocks import AboutPageStreamBlock
+from .blocks import GeneralPageStreamBlock
 
 
-class AboutPage(BasePage):
-    """About Page"""
+class GeneralPage(BasePage):
+    """GeneralPage"""
 
-    body = StreamField(AboutPageStreamBlock, blank=True, null=True)
+    body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
     content_panels = BasePage.content_panels + [
         StreamFieldPanel("body"),
     ]
