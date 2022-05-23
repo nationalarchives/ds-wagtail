@@ -100,6 +100,4 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         response = self.client.get(self.insights_page.get_url())
         response.render()
         content = response.content.decode()
-        for heading_text in ("This should render as a h3",):
-            with self.subTest(heading_text):
-                self.assertContainsHeading(content, heading_text, 3)
+        self.assertContainsHeading(content, "This should render as a h3", 3)
