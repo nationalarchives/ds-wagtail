@@ -3,6 +3,7 @@ import logging
 import re
 
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
+from urllib.parse import urlparse
 
 from django.conf import settings
 from django.contrib.auth.views import redirect_to_login
@@ -607,8 +608,7 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
                 .get("details", {})
                 .get("sourceUrl", "")
             )
-            url = "/" + "/".join(url.split("/")[3:])
-            if source_page := insights_page_by_url.get(url, ""):
+            if source_page := insights_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
@@ -646,8 +646,7 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
                 .get("details", {})
                 .get("sourceUrl", "")
             )
-            url = "/" + "/".join(url.split("/")[3:])
-            if source_page := results_page_by_url.get(url, ""):
+            if source_page := results_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
