@@ -88,9 +88,6 @@ class SearchManagerFilterTest(TestCase):
             results[1]
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class SearchManagerKongCount(TestCase):
     def setUp(self):
         self.manager = APIManager("records.Record")
@@ -102,9 +99,6 @@ class SearchManagerKongCount(TestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class KongExceptionTest(TestCase):
     def setUp(self):
         self.manager = APIManager("records.Record")
@@ -121,9 +115,6 @@ class KongExceptionTest(TestCase):
             self.manager.fetch(iaid="C140")
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class ModelTranslationTest(TestCase):
     @responses.activate
     def setUp(self):

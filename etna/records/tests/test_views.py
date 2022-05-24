@@ -4,7 +4,7 @@ import unittest
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
 from wagtail.core.models import Group
 from wagtail.tests.utils import WagtailTestUtils
@@ -16,9 +16,6 @@ from ...ciim.tests.factories import create_media, create_record, create_response
 User = get_user_model()
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestRecordDisambiguationView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
@@ -86,9 +83,6 @@ class TestRecordDisambiguationView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestRecordView(TestCase):
     @responses.activate
     def test_no_matches_respond_with_404(self):
@@ -194,9 +188,6 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     @responses.activate
     def test_datalayer_level1(self):
@@ -382,9 +373,6 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
 @unittest.skip(
     "Kong open beta API does not support media. Re-enable/update once media is available."
 )
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestImageServeView(TestCase):
     def test_no_location_404s(self):
         response = self.client.get("/records/media/")
@@ -423,9 +411,6 @@ class TestImageServeView(TestCase):
 
 @unittest.skip(
     "Kong open beta API does not support media. Re-enable/update once media is available."
-)
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestImageBrowseView(TestCase):
     @responses.activate
@@ -497,9 +482,6 @@ class TestImageBrowseView(TestCase):
 
 @unittest.skip(
     "Kong open beta API does not support media. Re-enable/update once media is available."
-)
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestImageViewerView(TestCase):
     def setUp(self):

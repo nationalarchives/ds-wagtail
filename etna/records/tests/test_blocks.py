@@ -1,6 +1,5 @@
 import json
 
-from django.test import override_settings
 from django.urls import reverse
 
 from wagtail.core.models import Site
@@ -13,9 +12,6 @@ from ...ciim.tests.factories import create_record, create_response
 from ...insights.models import InsightsIndexPage, InsightsPage
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestFeaturedRecordBlockIntegration(WagtailPageTests):
     def setUp(self):
         super().setUp()
