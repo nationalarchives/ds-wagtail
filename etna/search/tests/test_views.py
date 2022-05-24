@@ -64,25 +64,6 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
         return self.client.get(url, data=data)
 
 
-@override_settings(SEARCH_VIEWS_REQUIRE_LOGIN=True)
-class LoginRequiredTest(SearchViewTestCase):
-    test_url = reverse_lazy("search-catalogue")
-
-    def test_redirects_to_login_when_not_authenticated(self):
-        response = self.get_url(self.test_url)
-        self.assertRedirects(
-            response,
-            f"/accounts/login?next={self.test_url}",
-            fetch_redirect_response=False,
-        )
-
-    @responses.activate
-    def test_allows_request_when_authenticated(self):
-        self.login()
-        response = self.get_url(self.test_url)
-        self.assertEquals(response.status_code, 200)
-
-
 class BadRequestHandlingTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
