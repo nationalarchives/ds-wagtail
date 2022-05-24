@@ -18,7 +18,7 @@
                 {% else %}
                     <li class="hierarchy-global__list-item">
                         <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
-                        <a href="{% url 'details-page-human-readable' item.reference_number %}"  data-link="{{ forloop.counter0 }}: {{ item.reference_number }}" class="link--bold">
+                        <a href="{% record_url item %}"  data-link="{{ forloop.counter0 }}: {{ item.reference_number }}" class="link--bold">
                             {{ item.title }}
                         </a>
                     </li>
