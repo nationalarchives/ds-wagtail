@@ -5,12 +5,9 @@ import re
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
 from urllib.parse import urlparse
 
-from django.conf import settings
-from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Page
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
-from django.shortcuts import resolve_url
 from django.views.generic import FormView, TemplateView
 
 from wagtail.core.utils import camelcase_to_underscore
@@ -31,23 +28,6 @@ from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 logger = logging.getLogger(__name__)
-
-
-class LoginRequiredMixin:
-    """
-    Applied to search views to conditionally require authentication
-    depending on the `SEARCH_VIEWS_REQUIRE_LOGIN` setting value.
-    """
-
-    def dispatch(self, request, *args, **kwargs):
-        if settings.SEARCH_VIEWS_REQUIRE_LOGIN and not request.user.is_authenticated:
-            resolved_login_url = resolve_url(settings.LOGIN_URL)
-            return redirect_to_login(
-                self.request.get_full_path(),
-                resolved_login_url,
-                "next",
-            )
-        return super().dispatch(request, *args, **kwargs)
 
 
 class BucketsMixin:
@@ -194,7 +174,7 @@ class KongAPIMixin:
         return paginator, page, page_range
 
 
-class SearchLandingView(LoginRequiredMixin, BucketsMixin, TemplateView):
+class SearchLandingView(BucketsMixin, TemplateView):
     """
     A simple view that queries the API to retrieve counts for the various
     buckets the user can explore, and provides a form to encourage the user
@@ -513,7 +493,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return return_value
 
 
-class CatalogueSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView):
+class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     bucket_list = CATALOGUE_BUCKETS
@@ -523,7 +503,7 @@ class CatalogueSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchVi
     title_base = "Catalogue results"
 
 
-class CatalogueSearchLongFilterView(LoginRequiredMixin, BaseFilteredSearchView):
+class CatalogueSearchLongFilterView(BaseFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     default_group = "tna"
@@ -568,7 +548,7 @@ class CatalogueSearchLongFilterView(LoginRequiredMixin, BaseFilteredSearchView):
         return super().get_context_data(**kwargs)
 
 
-class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView):
+class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     api_stream = Stream.INTERPRETIVE
     api_method_name = "search"
     bucket_list = WEBSITE_BUCKETS
@@ -665,7 +645,7 @@ class WebsiteSearchView(LoginRequiredMixin, BucketsMixin, BaseFilteredSearchView
         return context
 
 
-class FeaturedSearchView(LoginRequiredMixin, BaseSearchView):
+class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
