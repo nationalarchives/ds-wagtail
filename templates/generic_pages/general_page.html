@@ -11,9 +11,7 @@
 
     <div class="container pt-4">
         {% for block in page.body %}
-            <div class="row">
-                {% include_block block %}
-            </div>
+            {% include_block block %}
         {% endfor %}
     </div>
 {% endblock content %}
