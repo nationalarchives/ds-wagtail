@@ -32,7 +32,7 @@
                             {% if related_material.links %}
                                 <ul>
                                     {% for link in related_material.links %}
-                                        <li><a href="{% url 'details-page-machine-readable' link.iaid %}">{{ link.text }}</a></li>
+                                        <li><a href="{% record_url link %}">{{ link.text }}</a></li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}

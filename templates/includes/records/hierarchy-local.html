@@ -8,7 +8,7 @@
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--left"></span>
                         <span class="hierarchy-local__nav-label">{{ 'previous_record'|as_label }}</span>
-                        <a href="{% url 'details-page-machine-readable' page.previous_record.iaid %}" data-link="Previous" class="link--bold"><span class="sr-only">{{ 'previous_record'|as_label }}</span> {{ page.previous_record.iaid }}</a>
+                        <a href="{% record_url page.previous_record %}" data-link="Previous" class="link--bold"><span class="sr-only">{{ 'previous_record'|as_label }}</span> {{ page.previous_record.iaid }}</a>
                     </p>
                 {% endif %}
             </div>
@@ -16,19 +16,12 @@
                 <p class="hierarchy-local__nav-item">
                     <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--up"></span>
                     <span class="hierarchy-local__nav-label">{{ 'parent'|as_label }}</span>
-                    {% if page.parent.reference_number %}
+
                     <span class="hierarchy-local__nav-link-span">
-                        <a href="{% url 'details-page-human-readable' page.parent.reference_number %}" data-link="Series level" class="link--bold">
+                        <a href="{% record_url page.parent %}" data-link="Series level" class="link--bold">
                             <span class="sr-only">{{ 'parent'|as_label }}</span> {{ page.parent.title }}
                         </a>
                     </span>
-                    {% elif page.parent.iaid %}
-                    <span class="hierarchy-local__nav-link-span">
-                        <a href="{% url 'details-page-machine-readable' page.parent.iaid %}" data-link="Series level" class="link--bold">
-                            <span class="sr-only">{{ 'parent'|as_label }}</span> {{ page.parent.title }}
-                        </a>
-                    </span>
-                    {% endif %}
                 </p>
             </div>
             <div class="col-4 col-md-2">
@@ -36,7 +29,7 @@
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--right"></span>
                         <span class="hierarchy-local__nav-label">{{ 'next_record'|as_label }}</span>
-                        <a href="{% url 'details-page-machine-readable' page.next_record.iaid %}" data-link="Next" class="link--bold"><span class="sr-only">{{ 'next_record'|as_label }}</span> {{ page.next_record.iaid }}</a>
+                        <a href="{% record_url page.next_record %}" data-link="Next" class="link--bold"><span class="sr-only">{{ 'next_record'|as_label }}</span> {{ page.next_record.iaid }}</a>
                     </p>
                 {% endif %}
             </div>
