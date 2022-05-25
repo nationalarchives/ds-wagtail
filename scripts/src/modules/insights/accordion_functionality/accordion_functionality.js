@@ -2,7 +2,7 @@ import scroll_to_active_heading from "./scroll_to_active_heading";
 import slide_toggle from "./slide_toggle";
 import toggle_aria_expanded from "./toggle_aria_expanded";
 
-export default function accordion_functionality(currentHeading, sectionHeadings, sectionContents) {
+export default function accordion_functionality(currentHeading, sectionHeadings, sectionContents, headingPositions) {
     const id = currentHeading.id;
 
     // Find the section that matches the heading that was clicked on.
@@ -11,7 +11,7 @@ export default function accordion_functionality(currentHeading, sectionHeadings,
         if($(this).attr("data-controlled-by") === id) {
             if(!$(this).is(':animated')) {
                 slide_toggle($(this));
-                scroll_to_active_heading(sectionHeadings, sectionHeadings[index]);
+                scroll_to_active_heading(headingPositions[index]);
                 toggle_aria_expanded($(sectionHeadings[index]));
             }
         }
