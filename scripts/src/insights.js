@@ -33,6 +33,8 @@ window.addEventListener('load', () => {
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
+    const baseFontSize = 16;
+    const remScreenSize = 48;
     let headingPositions;
 
     // These booleans are used to detect if certain enhancements (e.g. click event listeners) have been applied in order to 
@@ -43,7 +45,7 @@ window.addEventListener('load', () => {
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
     
-    if($(window).width() < 768 && !mobileEnhancementsApplied) {
+    if($(window).width() / baseFontSize <= remScreenSize && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
 
         // Detect if there are any expanded sections. If not, expand the first section.
@@ -77,7 +79,7 @@ window.addEventListener('load', () => {
     }
 
     $(window).on('resize', debounce(() => {
-        if($(window).width() < 768 && !mobileEnhancementsApplied){
+        if($(window).width() / baseFontSize <= remScreenSize && !mobileEnhancementsApplied){
             apply_aria_roles($sectionHeadings, $sectionContents);
 
             open_first_section($sectionHeadings, $sectionContents);
@@ -100,11 +102,11 @@ window.addEventListener('load', () => {
             desktopEnhancementsApplied = false;
             mobileEnhancementsApplied = true;
         }
-        else if($(window).width() < 768 && mobileEnhancementsApplied) {
+        else if($(window).width() / baseFontSize <= remScreenSize && mobileEnhancementsApplied) {
             // Recalculate heading positions on resize.
             headingPositions = set_heading_positions($sectionHeadings);
         }
-        else if ($(window).width() >= 768 && !desktopEnhancementsApplied) {
+        else if ($(window).width() / baseFontSize > remScreenSize && !desktopEnhancementsApplied) {
             remove_aria_roles($sectionHeadings);
 
             // Remove click and enter listeners because sections are fully expanded on desktop 

@@ -20,7 +20,7 @@
         padding: 0 2rem;
         width: 80%;
 
-        @media (max-width: 767px) {
+        @media (max-width: $screen__md) {
             grid-column-start: span 4;
             -ms-grid-column-span: 4;
             -ms-grid-row: 1;
@@ -28,7 +28,7 @@
             width: 100%;
         }
 
-        @media (max-width: 500px) {
+        @media (max-width: $screen__sm) {
             padding: 0 1rem;
         }
     }
