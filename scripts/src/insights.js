@@ -15,6 +15,7 @@ import open_first_section from "./modules/insights/accordion_functionality/open_
 import remove_aria_roles from "./modules/insights/accordion_functionality/remove_aria_roles";
 import remove_event from "./modules/insights/remove_event";
 import set_active from "./modules/insights/navigation/set_active";
+import set_heading_positions from "./modules/insights/accordion_functionality/set_heading_positions";
 import throttle from "./modules/throttle";
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -23,13 +24,16 @@ document.addEventListener('DOMContentLoaded', () => {
     audio_tracking();
     video_tracking();
     add_unique_ids();
+});
 
+window.addEventListener('load', () => {
     // Initialise jquery
     window.$ = $;
 
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
+    let headingPositions;
 
     // These booleans are used to detect if certain enhancements (e.g. click event listeners) have been applied in order to 
     // prevent events from being added more than once.
@@ -39,24 +43,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
     
-    if($(window).width() < 768 && !mobileEnhancementsApplied) {
+    if($(window).width() < 769 && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
 
         // Detect if there are any expanded sections. If not, expand the first section.
         open_first_section($sectionHeadings, $sectionContents);
 
+        // Obtain the positions of the headings. These are used for keeping a heading at the top of the viewport when
+        // it's corresponding section is expanded.
+        headingPositions = set_heading_positions($sectionHeadings);
+
         // Add click and enter listeners for expanding/collapsing sections on small screens.
         add_event($sectionHeadings, "click", function() {
-            accordion_functionality(this, $sectionHeadings, $sectionContents);
+            accordion_functionality(this, $sectionHeadings, $sectionContents, headingPositions);
         });
         add_event($sectionHeadings, "keypress", function(e) {
             if(e.key === "Enter") {
-                accordion_functionality(this, $sectionHeadings, $sectionContents);
+                accordion_functionality(this, $sectionHeadings, $sectionContents, headingPositions);
             }
         });
         mobileEnhancementsApplied = true;
     }
-    else if(!mobileEnhancementsApplied) {
+    else if(!desktopEnhancementsApplied) {
         // Add click and scroll listeners for smooth scrolling when using jumpinks to navigate the page and 
         // progress indication in the navigation on desktop.
         add_event($(window), "scroll", throttle(function() {
@@ -69,30 +77,34 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     $(window).on('resize', debounce(() => {
-        if($(window).width() < 768 && !mobileEnhancementsApplied){
+        if($(window).width() < 769 && !mobileEnhancementsApplied){
             apply_aria_roles($sectionHeadings, $sectionContents);
 
-            // Detect if there are any expanded sections. If not, expand the first section.
             open_first_section($sectionHeadings, $sectionContents);
 
-            // Add click and enter listeners for expanding/collapsing sections when the screen size is reduced.
-            add_event($sectionHeadings, "click", function() {
-                accordion_functionality(this, $sectionHeadings, $sectionContents);
-            });
-            add_event($sectionHeadings, "keypress", function(e) {
-                if(e.key === "Enter") {
-                    accordion_functionality(this, $sectionHeadings, $sectionContents);
-                }
-            });
+            headingPositions = set_heading_positions($sectionHeadings);
 
             // Remove scroll and jumplink click listeners
             remove_event($(window), "scroll");
             remove_event($jumplinks, "click");
 
+            add_event($sectionHeadings, "click", function() {
+                accordion_functionality(this, $sectionHeadings, $sectionContents, headingPositions);
+            });
+            add_event($sectionHeadings, "keypress", function(e) {
+                if(e.key === "Enter") {
+                    accordion_functionality(this, $sectionHeadings, $sectionContents, headingPositions);
+                }
+            });
+
             desktopEnhancementsApplied = false;
             mobileEnhancementsApplied = true;
         }
-        else if ($(window).width() >= 768 && !desktopEnhancementsApplied) {
+        else if($(window).width() < 769 && mobileEnhancementsApplied) {
+            // Recalculate heading positions on resize.
+            headingPositions = set_heading_positions($sectionHeadings);
+        }
+        else if ($(window).width() > 768 && !desktopEnhancementsApplied) {
             remove_aria_roles($sectionHeadings);
 
             // Remove click and enter listeners because sections are fully expanded on desktop 
