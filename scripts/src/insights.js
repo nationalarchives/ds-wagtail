@@ -43,7 +43,7 @@ window.addEventListener('load', () => {
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
     
-    if($(window).width() < 769 && !mobileEnhancementsApplied) {
+    if($(window).width() < 768 && !mobileEnhancementsApplied) {
         apply_aria_roles($sectionHeadings, $sectionContents);
 
         // Detect if there are any expanded sections. If not, expand the first section.
@@ -77,7 +77,7 @@ window.addEventListener('load', () => {
     }
 
     $(window).on('resize', debounce(() => {
-        if($(window).width() < 769 && !mobileEnhancementsApplied){
+        if($(window).width() < 768 && !mobileEnhancementsApplied){
             apply_aria_roles($sectionHeadings, $sectionContents);
 
             open_first_section($sectionHeadings, $sectionContents);
@@ -100,11 +100,11 @@ window.addEventListener('load', () => {
             desktopEnhancementsApplied = false;
             mobileEnhancementsApplied = true;
         }
-        else if($(window).width() < 769 && mobileEnhancementsApplied) {
+        else if($(window).width() < 768 && mobileEnhancementsApplied) {
             // Recalculate heading positions on resize.
             headingPositions = set_heading_positions($sectionHeadings);
         }
-        else if ($(window).width() > 768 && !desktopEnhancementsApplied) {
+        else if ($(window).width() >= 768 && !desktopEnhancementsApplied) {
             remove_aria_roles($sectionHeadings);
 
             // Remove click and enter listeners because sections are fully expanded on desktop 
