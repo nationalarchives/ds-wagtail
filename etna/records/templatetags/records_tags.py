@@ -1,6 +1,7 @@
 from typing import Any, Dict, Union
 
 from django import template
+from django.conf import settings
 from django.urls import NoReverseMatch, reverse
 
 from ..field_labels import FIELD_LABELS
@@ -10,7 +11,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def record_url(record: Union[Record, Dict[str, Any]]) -> str:
+def record_url(
+    record: Union[Record, Dict[str, Any]], is_editorial: bool = False
+) -> str:
     """
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
@@ -18,8 +21,9 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     Handling of Iaid as priority to allow Iaid in disambiguation pages when
     returning more than one record
     """
-
     if iaid := record.get("iaid"):
+        if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
+            return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
             return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
         except NoReverseMatch:
