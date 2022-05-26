@@ -12,13 +12,13 @@
         padding-top: 2rem;
         display: inline-block;
         background: transparent;
-        padding-right: 3rem;
 
         @media screen and (max-width: $screen__md) {
           display: block;
           font-size: 2rem;
           border-bottom: 0.25rem solid $color__grey-4;
           background: url($fa_chevron_down) no-repeat right bottom/2rem;
+          padding-right: 3rem;
           &:hover {
             cursor: pointer;
           }
