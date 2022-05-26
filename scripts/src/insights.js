@@ -46,6 +46,7 @@ window.addEventListener('load', () => {
     add_section_ids($sectionHeadings, $sectionContents);
     
     if($(window).width() / baseFontSize <= remScreenSize && !mobileEnhancementsApplied) {
+        $sectionContents.hide();
         apply_aria_roles($sectionHeadings, $sectionContents);
 
         // Detect if there are any expanded sections. If not, expand the first section.
@@ -75,11 +76,15 @@ window.addEventListener('load', () => {
         add_event($jumplinks, "click", function() {
             jumplinks_smooth_scroll(this);
         });
+
+        $sectionContents.show();
+
         desktopEnhancementsApplied = true;
     }
 
     $(window).on('resize', debounce(() => {
         if($(window).width() / baseFontSize <= remScreenSize && !mobileEnhancementsApplied){
+            $sectionContents.hide();
             apply_aria_roles($sectionHeadings, $sectionContents);
 
             open_first_section($sectionHeadings, $sectionContents);
@@ -122,6 +127,9 @@ window.addEventListener('load', () => {
             add_event($jumplinks, "click", function() {
                 jumplinks_smooth_scroll(this);
             });
+
+            $sectionContents.show();
+
             desktopEnhancementsApplied = true;
             mobileEnhancementsApplied = false;
         }
