@@ -2,6 +2,8 @@
   position: sticky;
   top: 0;
   padding: 2.5rem 0 0 1rem;
+  height: 100vh;
+  overflow: scroll;
 
   &__heading {
     font-size: 2rem;
@@ -37,7 +39,7 @@
     }
   }
   
-  @media (max-width: 767px) {
+  @media (max-width: $screen__md) {
     display: none;
   }
 }
