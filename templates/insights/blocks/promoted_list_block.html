@@ -14,11 +14,11 @@
         <ul class="related-resources__list">
             {% for item in value.promoted_items %}
             <li class="related-resources__list-item">
-                <h4 class="related-resources__link-heading">
+                <h3 class="related-resources__link-heading">
                     <a class="related-resources__link" href="{{ item.url }}" data-link="{{ item.title }}">
                         {{ item.title }}
                     </a>
-                </h4>
+                </h3>
                 {% if item.description %}
                 <div class="related-resources__link-text">
                     {{ item.description }}
