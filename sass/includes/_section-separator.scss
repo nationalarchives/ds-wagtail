@@ -12,7 +12,7 @@
         padding-top: 2rem;
         display: inline-block;
 
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: $screen__md) {
           display: block;
           font-size: 2rem;
           border-bottom: 0.25rem solid $color__grey-4;
@@ -30,7 +30,7 @@
       }
 
       &__heading[aria-expanded="true"] {
-        @media screen and (max-width: 767px) {
+        @media screen and (max-width: $screen__md) {
           &:after {
             transform: rotate(180deg);
           }  
