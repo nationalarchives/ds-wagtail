@@ -17,7 +17,8 @@
           display: block;
           font-size: 2rem;
           border-bottom: 0.25rem solid $color__grey-4;
-          background: url($fa_chevron_down) no-repeat right bottom/2rem;
+          background: url($fa_chevron_down) no-repeat right 90%/2rem;
+          padding-right: 3rem;
           &:hover {
             cursor: pointer;
           }
@@ -26,7 +27,7 @@
           }
 
           &[aria-expanded="true"] {
-            background: url($fa_chevron_up) no-repeat right bottom/2rem;
+            background: url($fa_chevron_up) no-repeat right 95%/2rem;
           }
         }
       }
