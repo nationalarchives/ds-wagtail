@@ -37,7 +37,7 @@ class TestRecordDisambiguationView(TestCase):
             json=create_response(records=[]),
         )
 
-        response = self.client.get("/catalogue/AD/2/2/")
+        response = self.client.get("/catalogue/ref/AD/2/2/")
 
         self.assertEquals(
             response.resolver_match.view_name, "details-page-human-readable"
@@ -57,7 +57,7 @@ class TestRecordDisambiguationView(TestCase):
             ),
         )
 
-        response = self.client.get("/catalogue/ADM/223/3/")
+        response = self.client.get("/catalogue/ref/ADM/223/3/")
 
         self.assertEquals(
             response.resolver_match.view_name, "details-page-human-readable"
@@ -86,7 +86,7 @@ class TestRecordDisambiguationView(TestCase):
             ),
         )
 
-        response = self.client.get("/catalogue/ADM/223/3/", follow=False)
+        response = self.client.get("/catalogue/ref/ADM/223/3/", follow=False)
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
@@ -117,7 +117,7 @@ class TestRecordView(TestCase):
             json=create_response(records=[]),
         )
 
-        response = self.client.get("/catalogue/C123456/")
+        response = self.client.get("/catalogue/id/C123456/")
 
         self.assertEquals(response.status_code, 404)
         self.assertEquals(
@@ -136,7 +136,7 @@ class TestRecordView(TestCase):
             ),
         )
 
-        response = self.client.get("/catalogue/C123456/")
+        response = self.client.get("/catalogue/id/C123456/")
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
@@ -165,7 +165,7 @@ class TestRecordView(TestCase):
             json=create_response(records=[]),
         )
 
-        response = self.client.get("/catalogue/C123456/")
+        response = self.client.get("/catalogue/id/C123456/")
 
         self.assertEquals(response.status_code, 200)
         self.assertEquals(
@@ -206,7 +206,7 @@ class TestRecordView(TestCase):
             stream=True,
         )
 
-        response = self.client.get("/catalogue/C123456/")
+        response = self.client.get("/catalogue/id/C123456/")
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -236,7 +236,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C241/")
+        response = self.client.get("/catalogue/id/C241/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -256,7 +256,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C995/")
+        response = self.client.get("/catalogue/id/C995/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -276,7 +276,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C12441/")
+        response = self.client.get("/catalogue/id/C12441/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -296,7 +296,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C31931/")
+        response = self.client.get("/catalogue/id/C31931/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -316,7 +316,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C145033/")
+        response = self.client.get("/catalogue/id/C145033/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -336,7 +336,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C2361422/")
+        response = self.client.get("/catalogue/id/C2361422/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -356,7 +356,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C198022/")
+        response = self.client.get("/catalogue/id/C198022/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -376,7 +376,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C6518465/")
+        response = self.client.get("/catalogue/id/C6518465/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
@@ -396,7 +396,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
                 json=json.loads(f.read()),
             )
 
-        response = self.client.get("/catalogue/C14017032/")
+        response = self.client.get("/catalogue/id/C14017032/")
 
         self.assertTemplateUsed(response, "records/record_detail.html")
 
