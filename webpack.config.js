@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
+        beta_banner: './scripts/src/beta-banner.js',
         image_viewer: './scripts/src/image-viewer.js',
         home_page: './scripts/src/home-page.js',
         explorer: './scripts/src/explorer.js',
