@@ -121,12 +121,15 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+WSGI_APPLICATION = "config.wsgi.application"
+
 # django-allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
 ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
+AUTH_URLS = "allauth.urls"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
@@ -140,7 +143,17 @@ SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
 
-WSGI_APPLICATION = "config.wsgi.application"
+# Auth0 configuration
+AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
+if AUTH0_DOMAIN:
+    AUTH_URLS = "etna.auth0.urls"
+    INSTALLED_APPS.insert(0, "etna.auth0")
+    AUTHENTICATION_BACKENDS.append("etna.auth0.auth_backend.Auth0Backend")
+    TERMINATE_SSO_SESSION_ON_LOGOUT = strtobool(
+        os.getenv("TERMINATE_SSO_SESSION_ON_LOGOUT", "False")
+    )
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
