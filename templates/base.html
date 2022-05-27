@@ -55,6 +55,10 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
+        {% if request.COOKIES.beta_banner_dismissed != "true" %}
+            {% include 'includes/beta-banner.html' %}
+        {% endif %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -69,5 +73,6 @@
             {# Override this in templates to add extra javascript #}
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
+        <script src="{% static 'scripts/beta_banner.js' %}"></script>
     </body>
 </html>
