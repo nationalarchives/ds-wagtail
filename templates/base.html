@@ -69,6 +69,10 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
+        {% if request.COOKIES.beta_banner_dismissed != "true" %}
+            {% include 'includes/beta-banner.html' %}
+        {% endif %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -89,5 +93,6 @@
             <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
         {% endif %}
 
+        <script src="{% static 'scripts/beta_banner.js' %}"></script>
     </body>
 </html>
