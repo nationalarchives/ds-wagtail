@@ -233,12 +233,12 @@ class TestRecordRoutes(UserAccessTestCase, TestCase):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
-            json=create_response(records=[create_record(iaid="c123456")]),
+            json=create_response(records=[create_record(iaid="C170181")]),
         )
 
         self.client.login(email=email, password="password")
 
-        response = self.client.get("/catalogue/c123456/")
+        response = self.client.get("/catalogue/id/C170181/")
 
         self.assertEquals(expected_status_code, response.status_code)
 
@@ -268,7 +268,7 @@ class TestRecordRoutes(UserAccessTestCase, TestCase):
 
         self.client.login(email=email, password="password")
 
-        response = self.client.get("/catalogue/test/1/2/3/")
+        response = self.client.get("/catalogue/ref/test/1/2/3/")
 
         self.assertEquals(expected_status_code, response.status_code)
 
@@ -294,7 +294,7 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(iaid="C170181", is_digitised=True),
                 ]
             ),
         )
@@ -326,7 +326,6 @@ class TestImageViewerRoutes(UserAccessTestCase, TestCase):
         (None, 302),
     )
     def test_browse_route(self, email, expected_status_code):
-
         self.client.login(email=email, password="password")
 
         response = self.client.get("/records/images/C123456/")
