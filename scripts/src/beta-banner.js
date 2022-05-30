@@ -1,10 +1,11 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const body = document.querySelector("body");
     const beta_banner = document.querySelector(".beta-banner");
 
     if(beta_banner) {
+        const body = document.querySelector("body");
         const beta_banner_options = document.querySelector(".beta-banner__options");
         const button = document.createElement("button");
+        const domain = window.location.hostname;
 
         button.setAttribute("class", "beta-banner__button");
         button.innerText = "Dismiss this message";
@@ -12,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         button.addEventListener("click", () => {
             body.removeChild(beta_banner);
-            document.cookie = "beta_banner_dismissed=true";
+            document.cookie = `beta_banner_dismissed=true; domain=${domain}; path=/; Secure`;
         })
     }
 });
