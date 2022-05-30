@@ -2,12 +2,13 @@
     background-color: $color__yellow_3;
     padding: 1rem 3rem;
 
-    &__text {
+    &__standfirst {
         margin-bottom: 1rem;
+        font-size: 2rem;
     }
 
-    &__text--large {
-        font-size: 2rem;
+    &__text {
+        margin-bottom: 1rem;
     }
 
     &__options {
