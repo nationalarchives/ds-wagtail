@@ -43,12 +43,12 @@ if settings.SENTRY_DEBUG_URL_ENABLED:
 # Public URLs that are meant to be cached.
 public_urls = [
     path(
-        r"catalogue/<iaid:iaid>/",
+        r"catalogue/id/<iaid:iaid>/",
         login_required(records_views.record_detail_view),
         name="details-page-machine-readable",
     ),
     path(
-        r"catalogue/<reference_number:reference_number>/",
+        r"catalogue/ref/<reference_number:reference_number>/",
         login_required(records_views.record_disambiguation_view),
         name="details-page-human-readable",
     ),
@@ -101,7 +101,6 @@ if settings.DEBUG:
     # Serve static and media files from development server
     public_urls += staticfiles_urlpatterns()
     public_urls += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 # Update public URLs to use the "default" cache settings.
 public_urls = decorate_urlpatterns(public_urls, apply_default_cache_control)
