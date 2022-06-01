@@ -16,7 +16,7 @@ class TestIaidFormats(TestCase):
         self.assertEqual(resolver.kwargs["iaid"], guid)
 
     def test_iaid_guid_ending_with_1(self):
-        guid = "4d8dae2c-b417-4614-8ed8-924b9b4beeac_1"
+        guid = "00149557ca64456a8a41e44f14621801_1"
         resolver = resolve("/catalogue/id/" + guid + "/")
         self.assertEqual(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(resolver.kwargs["iaid"], guid)
