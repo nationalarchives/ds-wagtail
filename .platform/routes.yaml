@@ -18,7 +18,3 @@
 "https://www.{default}/":
     type: redirect
     to: "https://{default}/"
-
-"https://es.{default}":
-    type: upstream
-    upstream: search:elasticsearch
