@@ -350,8 +350,14 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
 
-# Feature flags: special boolean settings that allow features to be toggled on/off in
-# different environments, and are loaded into templates using a custom context processor.
+# -----------------------------------------------------------------------------
+# Feature flags
+# -----------------------------------------------------------------------------
+
+# Special boolean settings prefixed with 'FEATURE_', that are automatically
+# injected into template contexts using a custom context processor - allowing
+# conditional logic to be added to both Python and template code
+
 FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
