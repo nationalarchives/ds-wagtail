@@ -1,4 +1,4 @@
-from urllib.parse import quote_plus, urlencode
+from urllib.parse import quote_plus, urlencode, urlparse
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -32,13 +32,20 @@ oauth.register(
 def login(request):
     callback_url = reverse("account_authorize")
     if next := request.GET.get("next"):
-        callback_url += "?" + urlencode(next)
+        request.session["login_success_url"] = next
     return oauth.auth0.authorize_redirect(
         request, request.build_absolute_uri(callback_url)
     )
 
 
 def authorize(request):
+    if success_url := request.session.get("login_success_url"):
+        parsed = urlparse(success_url)
+        if parsed.netloc and parsed.netloc != request.META.get("HTTP_HOST"):
+            success_url = "/"
+    else:
+        success_url = "/"
+
     token = oauth.auth0.authorize_access_token(request)
     user_info = token["userinfo"]
     user_id = user_info.get("user_id") or user_info.get("sub")
@@ -97,7 +104,7 @@ def authorize(request):
         )
 
     auth_login(request, user, backend="etna.auth0.auth_backend.Auth0Backend")
-    return HttpResponseRedirect(request.GET.get("next") or "/")
+    return HttpResponseRedirect(success_url)
 
 
 def logout(request):
