@@ -19,16 +19,6 @@ User = get_user_model()
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestRecordDisambiguationView(TestCase):
-    def setUp(self):
-        private_beta_user = User(
-            username="private-beta@email.com", email="private-beta@email.com"
-        )
-        private_beta_user.set_password("password")
-        private_beta_user.save()
-        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
-
-        self.client.login(email="private-beta@email.com", password="password")
-
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
@@ -99,16 +89,6 @@ class TestRecordDisambiguationView(TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestRecordView(TestCase):
-    def setUp(self):
-        private_beta_user = User(
-            username="private-beta@email.com", email="private-beta@email.com"
-        )
-        private_beta_user.set_password("password")
-        private_beta_user.save()
-        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
-
-        self.client.login(email="private-beta@email.com", password="password")
-
     @responses.activate
     def test_no_matches_respond_with_404(self):
         responses.add(
@@ -217,13 +197,6 @@ class TestRecordView(TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
-    def setUp(self):
-        """These tests are for testing the view logic (not the auth protection logic).
-        Therefore keeping more generic."""
-        # To bypass view-level protection
-        super().setUp()
-        self.login()
-
     @responses.activate
     def test_datalayer_level1(self):
         import json
@@ -454,16 +427,6 @@ class TestImageServeView(TestCase):
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
 class TestImageBrowseView(TestCase):
-    def setUp(self):
-        private_beta_user = User(
-            username="private-beta@email.com", email="private-beta@email.com"
-        )
-        private_beta_user.set_password("password")
-        private_beta_user.save()
-        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
-
-        self.client.login(email="private-beta@email.com", password="password")
-
     @responses.activate
     def test_image_browse_non_digitised_record(self):
         responses.add(
