@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.http import HttpResponseRedirect
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 
@@ -108,6 +108,8 @@ def authorize(request):
 
 
 def logout(request):
+    if request.method != "POST":
+        return render(request, "account/logout.html")
     auth_logout(request)
     redirect_to = "/"
     if settings.TERMINATE_SSO_SESSION_ON_LOGOUT:
