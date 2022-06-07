@@ -135,6 +135,11 @@
                     background-color: $color__grey-1;
                     text-decoration: none;
                 }
+
+                &:focus {
+                    border-top: none;
+                    background-color: $color__grey-1;
+                }
             }
         }
     }
