@@ -39,7 +39,7 @@ def record_url(
         return url
     try:
         # Assume `record` is an un-transformed search result
-        return record_url(record["_source"]["@template"]["details"])
+        return record_url(record["_source"]["@template"]["details"], is_editorial)
     except KeyError:
         return ""
 
