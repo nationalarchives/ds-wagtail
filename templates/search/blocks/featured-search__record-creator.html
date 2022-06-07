@@ -1,3 +1,4 @@
+{% load records_tags %}
 {% load search_tags %}
 <div class="featured-search__results-block">
     <h2 class="featured-search__heading">{{ bucket.label }}</h2>
@@ -5,13 +6,13 @@
     {% for record in bucket.results|slice:":1" %}
         <div class="featured-search__record-creator">
             <div>
-                <a href="#" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
+                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
                     <div>
                         <img src="https://via.placeholder.com/565x400" alt="" class="featured-search__record-creator-image">
                     </div>
                 </a>
             </div>
-            <h3 class="featured-search__results-heading"><a href="#" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
+            <h3 class="featured-search__results-heading"><a href="{% record_url record %}" class="featured-search__results-link">{{record|record_detail:"summaryTitle"|striptags }}</a></h3>
         </div>
     {% endfor %}
 
