@@ -15,6 +15,8 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
     the search() endpoint.
+    Handling of Iaid as priority to allow Iaid in disambiguation pages when
+    returning more than one record
     """
 
     if iaid := record.get("iaid"):
