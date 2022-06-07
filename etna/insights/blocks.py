@@ -36,6 +36,7 @@ class FeaturedRecordBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_record.html"
+        label = "Featured record"
 
 
 class FeaturedRecordsItemBlock(blocks.StructBlock):
@@ -57,6 +58,7 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_records.html"
+        label = "Featured records"
 
 
 class PromotedItemBlock(SectionDepthAwareStructBlock):
@@ -120,8 +122,6 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
 
-    label = Meta().label
-
 
 class PromotedListItemBlock(SectionDepthAwareStructBlock):
     """
@@ -160,8 +160,6 @@ class PromotedListBlock(blocks.StructBlock):
         label = "Link list"
         template = "insights/blocks/promoted_list_block.html"
 
-    label = Meta().label
-
 
 class RelatedItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
@@ -198,8 +196,6 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
         icon = "list"
         label = "Featured collection"
         template = "insights/blocks/featured_collection.html"
-
-    label = Meta().label
 
 
 class InsightsIndexPageStreamBlock(blocks.StreamBlock):
