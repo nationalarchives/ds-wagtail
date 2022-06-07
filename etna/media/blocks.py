@@ -29,3 +29,8 @@ class MediaBlock(blocks.StructBlock):
         template = "media/blocks/media-block.html"
         help_text = "An embedded audio or video block"
         icon = "play"
+        label = "Media"
+
+    @property
+    def admin_label(self):
+        return self.meta.label

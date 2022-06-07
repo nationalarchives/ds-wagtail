@@ -34,3 +34,7 @@ class SectionDepthAwareStructBlock(blocks.StructBlock):
             heading_id=self.get_heading_id(value, heading_level),
         )
         return context
+
+    @property
+    def admin_label(self):
+        return self.meta.label
