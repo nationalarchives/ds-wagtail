@@ -79,6 +79,10 @@
                     display: inline-block;
                     margin-left: auto;
                 }
+
+                &:last-of-type {
+                    max-width: none;
+                }
             }
         }
 
@@ -127,6 +131,7 @@
                 padding: 1rem 0;
                 font-family: $font__open-sans;
                 font-size: 1rem;
+                min-height: 0;
 
                 &:visited {
                     color: $color__blue_4;
