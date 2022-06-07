@@ -118,6 +118,24 @@
                 display: block;
 
             }
+
+            &--new-search {
+                border-top: none;
+                background-color: $color__grey-1;
+                color: $color__blue_4;
+                text-decoration: underline;
+                padding: 1rem 0;
+
+                &:visited {
+                    color: $color__blue_4;
+                }
+
+                &:hover {
+                    border-top: none;
+                    background-color: $color__grey-1;
+                    text-decoration: none;
+                }
+            }
         }
     }
 }

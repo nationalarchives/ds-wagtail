@@ -38,6 +38,9 @@
                     <a class="search-results-hero__nav-link" href="{% url 'search-website' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Website results</a>
                     {% endif %}
                 </li>
+                <li class="search-results-hero__nav-list-item">
+                    <a class="search-results-hero__nav-link search-results-hero__nav-link--new-search" href="/search/featured/">Start new search</a>
+                </li>
             </ul>
         </nav>
     {% endwith %}
