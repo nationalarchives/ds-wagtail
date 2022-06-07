@@ -8,7 +8,7 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% record_url record %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record.title }}">
+        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
             <p class="card-group-record-summary__heading">
                 {% if record.reference_number %}
                 <span class="sr-only">
@@ -16,6 +16,7 @@
                 </span>
                 {% endif %}
                 {{ record.title }}
+                {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %}<span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
         <div class="card-group-record-summary__body">
