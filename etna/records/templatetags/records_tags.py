@@ -16,16 +16,17 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     full/transformed result from the fetch() endpoint, OR a raw result from
     the search() endpoint.
     """
+
+    if iaid := record.get("iaid"):
+        try:
+            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+        except NoReverseMatch:
+            pass
     if ref := record.get("reference_number", record.get("referenceNumber")):
         try:
             return reverse(
                 "details-page-human-readable", kwargs={"reference_number": ref}
             )
-        except NoReverseMatch:
-            pass
-    if iaid := record.get("iaid"):
-        try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
         except NoReverseMatch:
             pass
     if url := record.get("sourceUrl"):
