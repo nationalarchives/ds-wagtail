@@ -15,17 +15,20 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
     the search() endpoint.
+    Handling of Iaid as priority to allow Iaid in disambiguation pages when
+    returning more than one record
     """
+
+    if iaid := record.get("iaid"):
+        try:
+            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+        except NoReverseMatch:
+            pass
     if ref := record.get("reference_number", record.get("referenceNumber")):
         try:
             return reverse(
                 "details-page-human-readable", kwargs={"reference_number": ref}
             )
-        except NoReverseMatch:
-            pass
-    if iaid := record.get("iaid"):
-        try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
         except NoReverseMatch:
             pass
     if url := record.get("sourceUrl"):
