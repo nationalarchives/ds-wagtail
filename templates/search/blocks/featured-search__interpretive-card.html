@@ -1,9 +1,10 @@
+{% load records_tags %}
 {% load search_tags %}
 <div class="featured-search__interpretive-results-section">
     <h2 class="featured-search__heading">{{ bucket.label }}</h2>
     {% for record in bucket.results|slice:":1" %}
         <div>
-            <a href="{{ record|interpretive_url }}" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
+            <a href={% record_url record %}" aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
                 <div>
                     <picture class="featured-search__interpretive-card-image">
                         <source media="(max-width: 768px)" srcset="https://via.placeholder.com/508x304">
@@ -15,7 +16,7 @@
                 </div>
             </a>
                 <div>
-                    <a href="{{ record|interpretive_url }}" class="featured-search__results-link">
+                    <a href={% record_url record %}" class="featured-search__results-link">
                         <h3 class="featured-search__heading">
                             {{ record|record_detail:"summaryTitle"|striptags }}
                         </h3>

@@ -87,21 +87,6 @@ def interpretive_detail(record: dict, key: str) -> str:
 
 
 @register.filter
-def interpretive_url(record: dict) -> str:
-    """Fetch a source Url from an interpretive record template.
-
-    Django templates don't allow access to keys or attributes prefixed with @
-
-    https://docs.djangoproject.com/en/4.0/ref/templates/language/#variables
-    """
-
-    try:
-        return record["_source"]["@template"]["details"]["sourceUrl"]
-    except KeyError:
-        return ""
-
-
-@register.filter
 def record_score(record) -> str:
     """Output a record's score.
 
