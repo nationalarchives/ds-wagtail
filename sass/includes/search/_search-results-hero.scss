@@ -82,6 +82,32 @@
 
                 &:last-of-type {
                     max-width: none;
+
+                    @media only screen and (max-width: $screen__md) {
+                        width: 100%;
+                        margin-right: 0;
+
+                        div {
+                            background-color: $color__white;
+                            margin-right: -1rem;
+                            margin-left: -1rem;
+                            padding: 1rem 2rem 1rem 1rem;
+                            text-align: right;
+                        }
+                    }
+
+                    a {
+                        font-family: $font__open-sans;
+                        font-size: 1rem;
+
+                        &:visited {
+                            color: $color__blue_4;
+                        }
+        
+                        &:hover {
+                            text-decoration: none;
+                        }
+                    }
                 }
             }
         }
@@ -120,33 +146,6 @@
 
             &-new-search {
                 display: block;
-
-            }
-
-            &--new-search {
-                border-top: none;
-                background-color: $color__grey-1;
-                color: $color__blue_4;
-                text-decoration: underline;
-                padding: 1rem 0;
-                font-family: $font__open-sans;
-                font-size: 1rem;
-                min-height: 0;
-
-                &:visited {
-                    color: $color__blue_4;
-                }
-
-                &:hover {
-                    border-top: none;
-                    background-color: $color__grey-1;
-                    text-decoration: none;
-                }
-
-                &:focus {
-                    border-top: none;
-                    background-color: $color__grey-1;
-                }
             }
         }
     }
