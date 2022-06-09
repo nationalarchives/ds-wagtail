@@ -1,7 +1,7 @@
 from django.db import models
 
 from modelcluster.models import ClusterableModel, ParentalKey
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
 from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
@@ -13,23 +13,37 @@ __all__ = ["SiteSettings", "MainMenuItem"]
 
 @register_setting(icon="list-ul")
 class SiteSettings(BaseSetting, ClusterableModel):
-    stand_first = models.CharField(max_length=200, blank=False, null=True)
-    banner_link = models.URLField(blank=True, null=True, help_text="Banner URL")
-    banner_text = RichTextField(blank=True, null=True)
-    panels = (
-        [
-            InlinePanel(
-                "main_menu_items_rel",
-                heading="main menu items",
-                label="item",
-                min_num=1,
-                max_num=6,
-            ),
-        ]
-        + [FieldPanel("stand_first")]
-        + [FieldPanel("banner_link")]
-        + [FieldPanel("banner_text")]
+    beta_banner_standfirst = models.CharField(
+        max_length=200,
+        default="What does the 'beta' label mean?",
+        verbose_name="standfirst",
     )
+    beta_banner_link = models.URLField(blank=True, verbose_name="link to")
+    beta_banner_text = RichTextField(
+        verbose_name="text",
+        default=(
+            "<p>This beta site contains new services and features currently in development. Many of these features are "
+            "works in progress and are being updated regularly. You can help us improve them by providing feedback as you "
+            "use the site.</p> "
+        ),
+    )
+    panels = [
+        MultiFieldPanel(
+            heading="BETA banner",
+            children=[
+                FieldPanel("beta_banner_standfirst"),
+                FieldPanel("beta_banner_text"),
+                FieldPanel("beta_banner_link"),
+            ],
+        ),
+        InlinePanel(
+            "main_menu_items_rel",
+            heading="main menu items",
+            label="item",
+            min_num=1,
+            max_num=6,
+        ),
+    ]
 
     @classmethod
     def base_queryset(cls):

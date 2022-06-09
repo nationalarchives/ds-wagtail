@@ -1,19 +1,14 @@
 {% load wagtailcore_tags %}
 <div class="beta-banner" aria-label="About The National Archives' beta">
-     {% if settings.core.SiteSettings.stand_first %}
-         <div class="beta-banner__standfirst">
-         {{ settings.core.SiteSettings.stand_first }}
-         </div>
-     {% endif %}
 
-     {% if settings.core.SiteSettings.banner_text %}
+         <div class="beta-banner__standfirst">
+         {{ settings.core.SiteSettings.beta_banner_standfirst }}
+         </div>
         <div class="beta-banner__text">
-            {{ settings.core.SiteSettings.banner_text|richtext }}
+            {{ settings.core.SiteSettings.beta_banner_text|richtext }}
         </div>
-     {% endif %}
-    {% if settings.core.SiteSettings.banner_link %}
         <div class="beta-banner__options">
-            <a class="beta-banner__link" href="{{ settings.core.SiteSettings.banner_link }}">Find out more</a>
+            <a class="beta-banner__link" href="{{ settings.core.SiteSettings.beta_banner_link }}">Find out more</a>
         </div>
-    {% endif %}
+
 </div>
