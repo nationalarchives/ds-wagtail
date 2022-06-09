@@ -1,9 +1,11 @@
+{% load wagtailcore_tags %}
 <div class="beta-banner" aria-label="About The National Archives' beta">
     <p class="beta-banner__standfirst">What does the 'beta' label mean?</p>
-    <p class="beta-banner__text">
-        This beta site contains new services and features currently in development. Many of these features are works in 
-        progress and are being updated regularly.  You can help us improve them by providing feedback as you use the site.
-    </p>
+     {% if settings.core.SiteSettings.banner_text %}
+        <p class="beta-banner__text">
+            {{ settings.core.SiteSettings.banner_text|richtext }}
+        </p>
+     {% endif %}
     <div class="beta-banner__options">
         <a class="beta-banner__link" href="/">Find out more</a>
     </div>

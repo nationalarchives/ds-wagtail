@@ -3,6 +3,7 @@ from django.db import models
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
+from wagtail.core.fields import RichTextField
 from wagtail.core.models import Page
 
 from etna.navigation.models import AbstractMenuItem
@@ -12,6 +13,7 @@ __all__ = ["SiteSettings", "MainMenuItem"]
 
 @register_setting(icon="list-ul")
 class SiteSettings(BaseSetting, ClusterableModel):
+    banner_text = RichTextField(blank=True, null=True)
     panels = [
         InlinePanel(
             "main_menu_items_rel",
@@ -20,7 +22,7 @@ class SiteSettings(BaseSetting, ClusterableModel):
             min_num=1,
             max_num=6,
         ),
-    ]
+    ] + [FieldPanel("banner_text")]
 
     @classmethod
     def base_queryset(cls):
