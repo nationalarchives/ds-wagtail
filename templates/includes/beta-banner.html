@@ -1,12 +1,19 @@
 {% load wagtailcore_tags %}
 <div class="beta-banner" aria-label="About The National Archives' beta">
-    <p class="beta-banner__standfirst">What does the 'beta' label mean?</p>
-     {% if settings.core.SiteSettings.banner_text %}
-        <p class="beta-banner__text">
-            {{ settings.core.SiteSettings.banner_text|richtext }}
-        </p>
+     {% if settings.core.SiteSettings.stand_first %}
+         <div class="beta-banner__standfirst">
+         {{ settings.core.SiteSettings.stand_first }}
+         </div>
      {% endif %}
-    <div class="beta-banner__options">
-        <a class="beta-banner__link" href="/">Find out more</a>
-    </div>
+
+     {% if settings.core.SiteSettings.banner_text %}
+        <div class="beta-banner__text">
+            {{ settings.core.SiteSettings.banner_text|richtext }}
+        </div>
+     {% endif %}
+    {% if settings.core.SiteSettings.banner_link %}
+        <div class="beta-banner__options">
+            <a class="beta-banner__link" href="{{ settings.core.SiteSettings.banner_link }}">Find out more</a>
+        </div>
+    {% endif %}
 </div>

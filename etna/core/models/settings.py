@@ -13,16 +13,23 @@ __all__ = ["SiteSettings", "MainMenuItem"]
 
 @register_setting(icon="list-ul")
 class SiteSettings(BaseSetting, ClusterableModel):
+    stand_first = models.CharField(max_length=200, blank=False, null=True)
+    banner_link = models.URLField(blank=True, null=True, help_text="Banner URL")
     banner_text = RichTextField(blank=True, null=True)
-    panels = [
-        InlinePanel(
-            "main_menu_items_rel",
-            heading="main menu items",
-            label="item",
-            min_num=1,
-            max_num=6,
-        ),
-    ] + [FieldPanel("banner_text")]
+    panels = (
+        [
+            InlinePanel(
+                "main_menu_items_rel",
+                heading="main menu items",
+                label="item",
+                min_num=1,
+                max_num=6,
+            ),
+        ]
+        + [FieldPanel("stand_first")]
+        + [FieldPanel("banner_link")]
+        + [FieldPanel("banner_text")]
+    )
 
     @classmethod
     def base_queryset(cls):
