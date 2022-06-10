@@ -19,6 +19,11 @@ class SiteSettings(BaseSetting, ClusterableModel):
         verbose_name="standfirst",
     )
     beta_banner_link = models.URLField(blank=True, verbose_name="link to")
+    beta_banner_link_text = models.CharField(
+        max_length=200,
+        default="Find out more ?",
+        verbose_name="linktext",
+    )
     beta_banner_text = RichTextField(
         verbose_name="text",
         default=(
@@ -32,8 +37,9 @@ class SiteSettings(BaseSetting, ClusterableModel):
             heading="BETA banner",
             children=[
                 FieldPanel("beta_banner_standfirst"),
-                FieldPanel("beta_banner_text"),
                 FieldPanel("beta_banner_link"),
+                FieldPanel("beta_banner_link_text"),
+                FieldPanel("beta_banner_text"),
             ],
         ),
         InlinePanel(
