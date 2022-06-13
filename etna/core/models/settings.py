@@ -39,9 +39,9 @@ class SiteSettings(BaseSetting, ClusterableModel):
             heading="BETA banner",
             children=[
                 FieldPanel("beta_banner_standfirst"),
+                FieldPanel("beta_banner_text"),
                 FieldPanel("beta_banner_link"),
                 FieldPanel("beta_banner_link_text"),
-                FieldPanel("beta_banner_text"),
             ],
         ),
         InlinePanel(
