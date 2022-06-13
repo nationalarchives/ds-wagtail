@@ -18,11 +18,13 @@ class SiteSettings(BaseSetting, ClusterableModel):
         default="What does the 'beta' label mean?",
         verbose_name="standfirst",
     )
-    beta_banner_link = models.URLField(blank=True, verbose_name="link to")
+    beta_banner_link = models.CharField(
+        max_length=200, blank=True, verbose_name="link to"
+    )
     beta_banner_link_text = models.CharField(
         max_length=200,
-        default="Find out more ?",
-        verbose_name="linktext",
+        default="Find out more",
+        verbose_name="link text",
     )
     beta_banner_text = RichTextField(
         verbose_name="text",
