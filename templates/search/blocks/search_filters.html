@@ -3,7 +3,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'catalogue_source' 'held_by' 'opening_start_day' 'opening_start_month' 'opening_start_year' 'opening_end_day' 'opening_end_month' 'opening_end_year'%}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -61,19 +61,41 @@
                     <legend>
                         <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                     </legend>
-                    <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
-
+                    <p id="search_filters__opening-date-help-text">For example, 2007 03 27</p>
+                    <p>From</p>
                     <div class="search-filters__opening-date-section">
-                        {{ form.opening_start_date.errors }}
-                        {{ form.opening_start_date.label_tag }}
-                        {{ form.opening_start_date }}
+                        <div>
+                            {# form.opening_start_year will also show consolidated errors accross dates #}
+                            {{ form.opening_start_year.errors|striptags }}
+                            {{ form.opening_start_month.errors|striptags }}
+                            {{ form.opening_start_day.errors|striptags }}
+                        </div>
+                        <div>
+                        <label for="{{form.opening_start_year.id_for_label}}" class="">{{ form.opening_start_year.label }}</label>                      
+                        {{ form.opening_start_year }}
+                        <label for="{{form.opening_start_month.id_for_label}}" class="">{{ form.opening_start_month.label }}</label>
+                        {{ form.opening_start_month }}
+                        <label for="{{form.opening_start_day.id_for_label}}" class="">{{ form.opening_start_day.label }}</label>  
+                        {{ form.opening_start_day }}
+                        </div>
                     </div>
+                    <p>To</p>
                     <div class="search-filters__opening-date-section">
-                        {{ form.opening_end_date.errors }}
-                        {{ form.opening_end_date.label_tag }}
-                        {{ form.opening_end_date }}
+                        <div>
+                            {# form.opening_start_year will also show consolidated errors accross dates #}
+                            {{ form.opening_end_year.errors|striptags }}
+                            {{ form.opening_end_month.errors|striptags }}
+                            {{ form.opening_end_day.errors|striptags }}
+                        </div>
+                        <div>
+                        <label for="{{form.opening_end_year.id_for_label}}" class="">{{ form.opening_end_year.label }}</label>                      
+                        {{ form.opening_end_year }}
+                        <label for="{{form.opening_end_month.id_for_label}}" class="">{{ form.opening_end_month.label }}</label>
+                        {{ form.opening_end_month }}
+                        <label for="{{form.opening_end_day.id_for_label}}" class="">{{ form.opening_end_day.label }}</label>  
+                        {{ form.opening_end_day }}
+                        </div>
                     </div>
-
                     <input type="submit" value="Update" class="search-filters__submit">
                 </fieldset>
             </div>

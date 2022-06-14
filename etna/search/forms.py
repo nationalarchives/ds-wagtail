@@ -1,8 +1,12 @@
+import logging
+
+from datetime import datetime
 from typing import Dict, List, Union
 
 from django import forms
 from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
@@ -11,6 +15,8 @@ from ..ciim.constants import (
     LEVEL_CHOICES,
     WEBSITE_BUCKETS,
 )
+
+logger = logging.getLogger(__name__)
 
 
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
@@ -88,6 +94,11 @@ class BaseCollectionSearchForm(forms.Form):
 
     "fieldname" -> "fieldname"
     "fieldName" -> "field_name"
+
+    Seperated date fields naming convention ->
+    <prefix>_start_day, <prefix>_start_month, <prefix>_start_year
+    example "opening_start_day", "opening_start_year", "opening_start_year" in form
+    corresponds to "openingStartDate" in API param
     """
 
     q = forms.CharField(
@@ -153,19 +164,47 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
-    opening_start_date = forms.DateTimeField(
-        label="From",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
+    opening_start_day = forms.CharField(
+        max_length=2,
+        label=_("Day"),
         required=False,
+        widget=forms.TextInput(
+            attrs={"size": 2, "placeholder": "DD", "inputmode": "numeric"}
+        ),
     )
-    opening_end_date = forms.DateTimeField(
-        label="To",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
+    opening_start_month = forms.CharField(
+        max_length=2,
+        label=_("Month"),
         required=False,
+        widget=forms.TextInput(
+            attrs={"size": 2, "placeholder": "MM", "inputmode": "numeric"}
+        ),
+    )
+    opening_start_year = forms.CharField(
+        max_length=4,
+        label=_("Year"),
+        required=False,
+        widget=forms.TextInput(
+            attrs={"size": 4, "placeholder": "YYYY", "inputmode": "numeric"}
+        ),
+    )
+    opening_end_day = forms.CharField(
+        max_length=2,
+        label=_("Day"),
+        required=False,
+        widget=forms.TextInput(attrs={"size": 2, "placeholder": "DD"}),
+    )
+    opening_end_month = forms.CharField(
+        max_length=2,
+        label=_("Month"),
+        required=False,
+        widget=forms.TextInput(attrs={"size": 2, "placeholder": "MM"}),
+    )
+    opening_end_year = forms.CharField(
+        max_length=4,
+        label=_("Year"),
+        required=False,
+        widget=forms.TextInput(attrs={"size": 4, "placeholder": "YYYY"}),
     )
     per_page = forms.IntegerField(
         min_value=20,
@@ -198,20 +237,137 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
     )
 
+    def _get_compressed_date_or_none_on_error(self, start_day: str, start_month: str, start_year: str) -> Union[None, datetime]:
+        """
+        Assumption: all params not required to belong to a real date. The Exception is bypassed to return None
+        as error messages are customised for date and handled outside this method.
+        Returns: valid date if all fields belong to a real date, otherwise None if invalid date.
+        """
+        try:
+            return datetime(
+                day=int(start_day), month=int(start_month), year=int(start_year)
+            )
+        except Exception as e:
+            logger.debug(
+                f"Error bypassed in _get_compressed_date_or_none_on_error: start_day={start_day}, start_month={start_month}, start_year={start_year} exception={e}"
+            )
+            return None
+
+    def get_cleaned_date_parts(self, prefix_field_with_type: str) -> tuple[str, str, str]:
+        """
+        Returns tuple of cleaned seperated date fields
+
+        Args:
+
+        prefix_field_with_type:
+        example when field is 'opening_start_day', prefix_field is 'opening', prefix_field_with_type is 'opening_start'
+        """
+        return (
+            self.cleaned_data.get(prefix_field_with_type + "_day"),
+            self.cleaned_data.get(prefix_field_with_type + "_month"),
+            self.cleaned_data.get(prefix_field_with_type + "_year"),
+        )
+
+    def validate_dates(self, prefix_field: str) -> None:
+        """
+        Validates the date containing the prefix_field name and adds field error messages accordingly.
+        As with individual fields, the <prefix>_start_year and <prefix>_end_year fields for populated for
+        consolidated error messages.
+
+        Args:
+
+        prefix_field:
+            Example when form field is 'opening_start_day', then prefix_field is 'opening'
+        """
+        start_date = None
+        end_date = None
+
+        start_day, start_month, start_year = self.get_cleaned_date_parts(
+            prefix_field_with_type=prefix_field + "_start"
+        )
+        end_day, end_month, end_year = self.get_cleaned_date_parts(
+            prefix_field_with_type=prefix_field + "_end"
+        )
+
+        # validate and make compressed start_date when all seperated fields are entered
+        if start_day and start_month and start_year:
+            start_date = self._get_compressed_date_or_none_on_error(
+                start_day, start_month, start_year
+            )
+            if not start_date:
+                # generic error for invalid date when all fields are provided
+                self.add_error(
+                    prefix_field + "_start_year", "Entered date must be a real date."
+                )
+
+        # validate and make compressed end_date when all seperated fields are entered
+        if end_day and end_month and end_year:
+            end_date = self._get_compressed_date_or_none_on_error(
+                end_day, end_month, end_year
+            )
+            if not end_date:
+                # generic error for invalid date when all fields are provided
+                self.add_error(
+                    prefix_field + "_end_year", "Entered date must be a real date."
+                )
+
+        # start date is empty or partial at this point
+        if not start_date:
+            # start date empty and not partial, when end date is empty or partial
+            if not (start_day or start_month or start_year) and (
+                end_day or end_month or end_year
+            ):
+                self.add_error(prefix_field + "_start_year", "Enter date")
+            # start date is partial
+            if start_day or start_month or start_year:
+                if not start_day:
+                    self.add_error(
+                        prefix_field + "_start_day", "Date must include a day."
+                    )
+                if not start_month:
+                    self.add_error(
+                        prefix_field + "_start_month", "Date must include a month."
+                    )
+                if not start_year:
+                    self.add_error(
+                        prefix_field + "_start_year", "Date must include a year."
+                    )
+
+        # end date is empty or partial at this point
+        if not end_date:
+            # end date empty and not partial, when start date is empty or partial
+            if not (end_day or end_month or end_year) and (
+                start_day or start_month or start_year
+            ):
+                self.add_error(prefix_field + "_end_year", "Enter date")
+
+            # end date is partial
+            if end_day or end_month or end_year:
+                if not end_day:
+                    self.add_error(
+                        prefix_field + "_end_day", "Date must include a day."
+                    )
+                if not end_month:
+                    self.add_error(
+                        prefix_field + "_end_month", "Date must include a month."
+                    )
+                if not end_year:
+                    self.add_error(
+                        prefix_field + "_end_year", "Date must include a year."
+                    )
+
+        if start_date and end_date:
+            # both dates are valid at this point
+            if start_date > end_date:
+                self.add_error(
+                    prefix_field + "_start_year", "Start date cannot be after end date"
+                )
+
     def clean(self):
         """Collect selected filters to pass to the client in view."""
         cleaned_data = super().clean()
 
-        try:
-            if cleaned_data.get("opening_start_date") > cleaned_data.get(
-                "opening_end_date"
-            ):
-                self.add_error(
-                    "opening_start_date", "Start date cannot be after end date"
-                )
-        except TypeError:
-            # Either one or both date fields are empty. No further validation necessary.
-            pass
+        self.validate_dates(prefix_field="opening")
 
         return cleaned_data
 
