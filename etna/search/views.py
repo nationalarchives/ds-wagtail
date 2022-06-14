@@ -2,6 +2,7 @@ import copy
 import logging
 import re
 
+from datetime import datetime
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
 from urllib.parse import urlparse
 
@@ -352,10 +353,29 @@ class BaseFilteredSearchView(BaseSearchView):
 
         return super().form_invalid(form)
 
+    def _get_compressed_date_or_none_on_empty_date(
+        self, start_day: str, start_month: str, start_year: str
+    ) -> Union[None, datetime]:
+        """
+        Returns compressed date if all date fields are given, otherwise None.
+        None scenario in case where date is not queried/filtered by the user.
+        Pre-conditions: all params if provided must belong to a real date.
+        """
+        if start_day and start_month and start_year:
+            return datetime(
+                day=int(start_day), month=int(start_month), year=int(start_year)
+            )
+        else:
+            return None
+
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         page_size = form.cleaned_data.get("per_page")
-        opening_start_date = form.cleaned_data.get("opening_start_date")
-        opening_end_date = form.cleaned_data.get("opening_end_date")
+        opening_start_date = self._get_compressed_date_or_none_on_empty_date(
+            *form.get_cleaned_date_parts(prefix_field_with_type="opening_start")
+        )
+        opening_end_date = self._get_compressed_date_or_none_on_empty_date(
+            *form.get_cleaned_date_parts(prefix_field_with_type="opening_end")
+        )
         return dict(
             stream=self.api_stream,
             q=form.cleaned_data.get("q"),
