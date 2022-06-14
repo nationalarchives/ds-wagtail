@@ -3,6 +3,7 @@
 {% load static %}
 {% load wagtailcore_tags %}
 
+
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
@@ -14,7 +15,23 @@
                 {% endfor %}
             </div>
         </div>
-    </div>
+
+    {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
+        <div class="row">
+            <div class="col-md-12">
+                 {% for insights_page in insights_topics %}
+                     {% with page=insights_page.specific %}
+                     <li>
+                       <a href="{{ page.url }}">{{ page.title }}</a>
+                     </li>
+                     {% endwith %}
+
+                  {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+     </div>
+
 
 {% endblock %}
 

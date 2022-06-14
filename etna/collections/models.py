@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.functional import cached_property
+from etna.insights.models import InsightsPage
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
@@ -124,6 +125,11 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     ]
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['insights_topics'] = InsightsPage.objects.filter(topic=self).live().order_by("title").specific()[:3]
+        return context
+
 
 class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
     """Time period explorer BasePage.
@@ -204,6 +210,11 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context['insights_time_periods'] = InsightsPage.objects.filter(time_period=self).live().order_by("title").specific()[:3]
+        return context
 
 
 class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):

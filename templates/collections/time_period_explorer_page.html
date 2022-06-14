@@ -14,7 +14,22 @@
                 {% endfor %}
             </div>
         </div>
+        {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
+        <div class="row">
+            <div class="col-md-12">
+                 {% for insights_page in insights_time_periods %}
+                {% with page=insights_page.specific %}
+                     <li>
+                       <a href="{{ page.url }}">{{ page.title }}</a>
+                     </li>
+                {% endwith %}
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
+
 
 {% endblock %}
 
