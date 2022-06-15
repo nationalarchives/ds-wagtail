@@ -12,9 +12,9 @@
             class="card-group-secondary-nav__image-link" 
             data-card-type="card-group-secondary-nav"
             {% if value.block.meta.label or heading %}
-                data_component_name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
+                data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
             {% endif %}
-            data_link_type="Card image" 
+            data-link-type="Card image" 
             data-card-title="{{ page.title }}" 
             aria-hidden="true" 
             tabindex="-1"
@@ -35,9 +35,9 @@
                     class="card-group-secondary-nav__title-link" 
                     data-card-type="card-group-secondary-nav" 
                     {% if value.block.meta.label or heading %}
-                        data_component_name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
+                        data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
                     {% endif %}
-                    data_link_type="Card text" 
+                    data-link-type="Card text" 
                     data-card-title="{{ page.title }}"
                 >
                     <h3 class="card-group-secondary-nav__heading">

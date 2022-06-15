@@ -3,9 +3,9 @@ export default function remove_mobile_tracking() {
     const section_headings = document.querySelectorAll(".section-separator__heading");
 
     Array.prototype.forEach.call(section_headings, item => {
-        item.removeAttribute("data_component_name");
-        item.removeAttribute("data_link_type");
-        item.removeAttribute("data_link");
+        item.removeAttribute("data-component-name");
+        item.removeAttribute("data-link-type");
+        item.removeAttribute("data-link");
     });
 
     insights_body.removeEventListener("click", e => {
