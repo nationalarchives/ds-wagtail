@@ -15,7 +15,7 @@
             {% for item in value.promoted_items %}
             <li class="related-resources__list-item">
                 <h3 class="related-resources__link-heading">
-                    <a class="related-resources__link" href="{{ item.url }}" data-link="{{ item.title }}">
+                    <a class="related-resources__link" href="{{ item.url }}" data_component_name="{{ value.block.meta.label }}: {{ value.heading }}" data_link_type="Links" position="{{ forloop.counter0 }}" data-link="{{ item.title }}">
                         {{ item.title }}
                     </a>
                 </h3>
