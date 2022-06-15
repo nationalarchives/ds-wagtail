@@ -48,9 +48,9 @@
             </div>
 
             {% if value.target_blank %}
-                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}" data-category="{{ value.category }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
+                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data_component_name="{{ value.block.meta.label }}: {{ value.category }}" data_link_type="Button" data-link="{{ value.cta_label }}" data-category="{{ value.category }}" target="_blank">{{ value.cta_label }} <span class="tna-button__target-blank-label">(Opens in a new tab)</span></a>
             {% else %}
-                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data-link="{{ value.cta_label }}" data-category="{{ value.category }}">{{ value.cta_label }}</a>
+                <a class="promoted-item__link tna-button--yellow" href="{{ value.url }}" data_component_name="{{ value.block.meta.label }}: {{ value.category }}" data_link_type="Button" data-link="{{ value.cta_label }}" data-category="{{ value.category }}">{{ value.cta_label }}</a>
             {% endif %}
         </div>
     </div>
