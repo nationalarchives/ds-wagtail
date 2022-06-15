@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils.functional import cached_property
-from etna.insights.models import InsightsPage
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
@@ -8,6 +7,8 @@ from wagtail.core.fields import StreamField
 from wagtail.core.models import Orderable
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
+
+from etna.insights.models import InsightsPage
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
@@ -127,7 +128,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context['insights_topics'] = InsightsPage.objects.filter(topic=self).live().order_by("title").specific()[:3]
+        context["insights_topics"] = (
+            InsightsPage.objects.filter(topic=self)
+            .live()
+            .order_by("title")
+            .specific()[:3]
+        )
         return context
 
 
@@ -213,7 +219,12 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context['insights_time_periods'] = InsightsPage.objects.filter(time_period=self).live().order_by("title").specific()[:3]
+        context["insights_time_periods"] = (
+            InsightsPage.objects.filter(time_period=self)
+            .live()
+            .order_by("title")
+            .specific()[:3]
+        )
         return context
 
 
