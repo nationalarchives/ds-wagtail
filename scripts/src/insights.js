@@ -4,6 +4,9 @@ import add_analytics_data_card_position from './modules/analytics/card_position'
 import audio_tracking from "./modules/analytics/audio_tracking"
 import video_tracking from "./modules/analytics/video_tracking"
 import add_unique_ids from "./modules/analytics/add_unique_ids";
+import mobile_tracking from "./modules/analytics/insights_tracking/mobile_tracking";
+import remove_mobile_tracking from "./modules/analytics/insights_tracking/remove_mobile_tracking";
+import link_list_tracking from "./modules/analytics/insights_tracking/link_list_tracking";
 
 import accordion_functionality from "./modules/insights/accordion_functionality/accordion_functionality";
 import add_event from "./modules/insights/add_event";
@@ -20,10 +23,12 @@ import throttle from "./modules/throttle";
 
 document.addEventListener('DOMContentLoaded', () => {
     add_analytics_data_card_position('.record-embed-no-image');
-    add_analytics_data_card_position('.card-group-secondary-nav');
+    add_analytics_data_card_position('.card-group-secondary-nav > a');
+    add_analytics_data_card_position('.card-group-secondary-nav__body > a');
     audio_tracking();
     video_tracking();
     add_unique_ids();
+    link_list_tracking();
 });
 
 window.addEventListener('load', () => {
@@ -65,6 +70,9 @@ window.addEventListener('load', () => {
                 accordion_functionality(this, $sectionHeadings, $sectionContents, headingPositions);
             }
         });
+
+        mobile_tracking();
+
         mobileEnhancementsApplied = true;
     }
     else if(!desktopEnhancementsApplied) {
@@ -104,6 +112,8 @@ window.addEventListener('load', () => {
                 }
             });
 
+            mobile_tracking();
+
             desktopEnhancementsApplied = false;
             mobileEnhancementsApplied = true;
         }
@@ -130,6 +140,8 @@ window.addEventListener('load', () => {
 
             $sectionContents.show();
 
+            remove_mobile_tracking();
+            
             desktopEnhancementsApplied = true;
             mobileEnhancementsApplied = false;
         }
