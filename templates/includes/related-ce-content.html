@@ -7,7 +7,7 @@
         <ul class="related-ce-content-group__list">
             {% if page.time_period %}
                 <li class="col-md-6 related-ce-content">
-                    <a href="{% pageurl page.time_period %}">
+                    <a href="{% pageurl page.time_period %}" data_component_name="Discover highlights from the collection" data_link_type="Image with label">
                         <picture>
                             {% image page.time_period.teaser_image fill-480x351 as teaser %}
                             <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
@@ -32,7 +32,7 @@
 
             {% if page.topic %}
                 <li class="col-md-6 related-ce-content">
-                    <a href="{% pageurl page.topic %}">
+                    <a href="{% pageurl page.topic %}" data_component_name="Discover highlights from the collection" data_link_type="Image with label">
                         <picture>
                             {% image page.topic.teaser_image fill-480x351 as teaser %}
                             <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
