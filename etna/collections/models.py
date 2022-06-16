@@ -126,15 +126,14 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     ]
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        context["insights_topics"] = (
+    @cached_property
+    def related_insights(self):
+        return (
             InsightsPage.objects.filter(topic=self)
             .live()
-            .order_by("title")
-            .specific()[:3]
+            .select_related("teaser_image")
+            .order_by("title")[:3]
         )
-        return context
 
 
 class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
@@ -217,15 +216,14 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     ]
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        context["insights_time_periods"] = (
+    @cached_property
+    def related_insights(self):
+        return (
             InsightsPage.objects.filter(time_period=self)
             .live()
-            .order_by("title")
-            .specific()[:3]
+            .select_related("teaser_image")
+            .order_by("title")[:3]
         )
-        return context
 
 
 class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):

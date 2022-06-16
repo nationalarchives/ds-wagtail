@@ -17,12 +17,10 @@
         {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
         <div class="row">
             <div class="col-md-12">
-                 {% for insights_page in insights_time_periods %}
-                {% with page=insights_page.specific %}
-                     <li>
-                       <a href="{{ page.url }}">{{ page.title }}</a>
-                     </li>
-                {% endwith %}
+                 {% for insights_page in page.related_insights %}
+                <li>
+                       <a href="{% pageurl insights_page %}">{{ insights_page.title }}</a>
+                </li>
             {% endfor %}
             </div>
         </div>
