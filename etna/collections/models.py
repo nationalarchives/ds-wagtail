@@ -8,6 +8,8 @@ from wagtail.core.models import Orderable
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 
+from etna.insights.models import InsightsPage
+
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
 from ..core.models import BasePage
@@ -124,6 +126,15 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     ]
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
+    @cached_property
+    def related_insights(self):
+        return (
+            InsightsPage.objects.filter(topic=self)
+            .live()
+            .select_related("teaser_image")
+            .order_by("title")[:3]
+        )
+
 
 class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
     """Time period explorer BasePage.
@@ -204,6 +215,15 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
         "collections.TimePeriodExplorerPage",
     ]
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
+
+    @cached_property
+    def related_insights(self):
+        return (
+            InsightsPage.objects.filter(time_period=self)
+            .live()
+            .select_related("teaser_image")
+            .order_by("title")[:3]
+        )
 
 
 class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):
