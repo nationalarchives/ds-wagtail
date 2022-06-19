@@ -2,6 +2,7 @@ import io
 import re
 import unittest
 
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
@@ -201,7 +202,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level1(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level1.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level1.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -221,7 +222,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level2(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level2.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level2.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -241,7 +242,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level3(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level3.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level3.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -261,7 +262,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level4(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level4.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level4.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -281,7 +282,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level5(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level5.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level5.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -301,7 +302,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level6_nondigital(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level6_nondigital.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level6_nondigital.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -321,7 +322,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level6_digital(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level6_digital.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level6_digital.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -341,7 +342,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level7_nondigital(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level7_nondigital.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level7_nondigital.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -361,7 +362,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     def test_datalayer_level7_digital(self):
         import json
 
-        path = "/app/etna/records/tests/fixtures/record_level7_digital.json"
+        path = f"{settings.BASE_DIR}/etna/records/tests/fixtures/record_level7_digital.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
