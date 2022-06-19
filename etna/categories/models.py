@@ -14,11 +14,15 @@ CATEGORIES_ICON_PATH = (
 )
 
 
+def icons_path():
+    return apps.get_app_config("categories").path + "/static/" + CATEGORIES_STATIC_PATH
+
+
 @register_snippet
 class Category(models.Model):
 
     name = models.CharField(max_length=255)
-    icon = models.FilePathField(path=CATEGORIES_ICON_PATH, null=True, blank=True)
+    icon = models.FilePathField(path=icons_path, max_length=250, null=True, blank=True)
 
     panels = [FieldPanel("name"), FieldPanel("icon")]
 
