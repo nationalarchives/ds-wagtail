@@ -15,6 +15,10 @@ CATEGORIES_ICON_PATH = (
 
 
 def icons_path():
+    """
+    Callable used as the 'path' value for `Category.icon` to avoid
+    platform-specific icon paths in migrations.
+    """
     return apps.get_app_config("categories").path + "/static/" + CATEGORIES_STATIC_PATH
 
 
