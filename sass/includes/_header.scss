@@ -1,110 +1,179 @@
 .header {
   background-color: $color__yellow_2;
-  display: flex;
-  flex-wrap: wrap;
+
+  @media screen and (min-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+  }
   &__logo {
-
-      &-holder {
-          padding: 1rem;
-
-          @media screen and (max-width: $screen__sm) {
-              padding-left: 0.1rem;
-              padding-right: 0.1rem;
-              padding-bottom: 0.5rem;
-              padding-top: 0.5rem;
-          }
+    &-holder {
+      display: inline-block;
+      padding: 1rem;
+      padding-bottom: 1.5rem;
+      @media only screen and (max-width: $screen__md) {
+        vertical-align: top;
       }
-
-      &-link {
-          align-self: center;
-          margin-left: 1rem;
-          display: block;
-          &:hover {
-              outline: 5px solid $color__grey-8;
-          }
-          &:focus {
-              outline-color: $color__black;
-          }
+      @media screen and (max-width: $screen__sm) {
+        padding-left: 0.1rem;
+        padding-right: 0.1rem;
+        padding-bottom: 0.5rem;
+        padding-top: 0.5rem;
       }
-      &-image {
-          width: 100px;
-          height: 100px;
+    }
 
-          @media screen and (max-width: $screen__sm) {
-              width: 50px;
-              height: 50px;
-          }
+    &-link {
+      align-self: center;
+      margin-left: 1rem;
+      display: inline-block;
+      &:hover {
+        outline: 0.3125rem solid $color__grey-8;
       }
+      &:focus {
+        outline-color: $color__black;
+      }
+    }
+    &-image {
+      width: 6.25rem;
+      height: 6.25rem;
+
+      @media screen and (max-width: $screen__sm) {
+        width: 4.6875rem;
+        height: 4.6875rem;
+      }
+    }
   }
   &__nav {
-      margin-left: auto;
-      align-items: flex-end;
+    margin-left: auto;
+    align-items: flex-end;
 
-      &-list {
-          display: flex;
-          align-items: flex-end;
-          flex-wrap: wrap;
-          height: 100%;
+    @media only screen and (max-width: $screen__md) {
+      display: block;
+      text-align: right;
+      margin-top: -4rem;
+    }
+
+    &-list {
+      padding-left: 0;
+
+      @media only screen and (min-width: $screen__md) {
+        display: flex;
+        align-items: flex-end;
+        flex-wrap: wrap;
+        padding-left: 2.5rem;
+      }
+
+      height: 100%;
+
+      @media only screen and (min-width: $screen__md) {
+        width: 32rem;
+      }
+
+      margin-bottom: 0;
+      justify-content: space-around; // IE11 only supports space-around and space-between.
+      &-item {
+        list-style: none;
+        @media only screen and (min-width: $screen__md) {
+          height: 3rem;
+        }
+        display: block;
+
+        &[data-id="menu-show-hide-button"] {
+          display: inline-block;
+        }
+
+        &[data-isSearch="false"] {
+          background-color: $color__white;
+          font-size: 1.2rem;
+          text-decoration: underline;
+          border-bottom: 0.0625rem solid $color__grey-7;
 
           @media only screen and (min-width: $screen__md) {
-              width: 32rem;
+            text-decoration: none;
+            font-size: 1rem;
+            border: 0;
+          }
+        }
+
+        &-link {
+          display: block;
+          color: $color__black;
+          padding: 0.4375rem;
+          height: 100%;
+          text-decoration: none;
+          font-family: $font__supria-sans;
+          font-weight: normal;
+          transition: all 0.1s;
+          &:visited {
+            color: $color__black;
           }
 
           @media only screen and (max-width: $screen__md) {
-              padding-left: 0;
+            text-align: center;
+            &:hover,
+            &[aria-current="true"],
+            &:focus {
+              background-color: $color__grey-1;
+              color: $color__black;
+            }
           }
 
-          margin-bottom: 0;
-          justify-content: space-around; // IE11 only supports space-around and space-between.
-          &-item {
-              list-style: none;
-              height: 3rem;
-              display: block;
+          @media only screen and (min-width: $screen__md) {
+            &:hover,
+            &[aria-current="true"],
+            &:focus {
+                background-color: $color__white;
+                color: $color__black;
+            }
+         }
 
-              @media only screen and (max-width: $screen__md) {
-                  margin-right: 1rem;
-              }
-
-              @media only screen and (max-width: 35rem) {
-                  margin-right: 0.25rem;
-              }
-
-              &-link {
-                  display: block;
-                  color: $color__black;
-                  padding: 7px;
-                  height: 100%;
-                  text-decoration: none;
-                  font-family: $font__supria-sans;
-                  font-weight: normal;
-                  transition: all .1s;
-                  &:visited {
-                      color: $color__black;
-                  }
-
-                  &:hover, &[aria-current=true], &:focus {
-                      background-color: $color__white;
-                      color: $color__black;
-                  }
-
-                  &:focus {
-                      outline-color: $color__black;
-                  }
-
-                  &-search {
-                      width: 3rem;
-                      background-image: url('/static/images/icons/search-black.svg');
-                      background-repeat: no-repeat;
-                      background-position-x: center;
-                      background-position-y: 0.4rem;
-                      background-size: 1.5rem;
-
-                      &:hover, &[aria-current=true], &:focus {
-                          background-color: $color__grey-1;
-                      }
-                  }
-              }
+          &:focus {
+            outline-color: $color__black;
           }
+
+          &-search {
+            width: 3rem;
+            height: 3rem;
+            background-image: url("/static/images/icons/search-black.svg");
+            background-repeat: no-repeat;
+            background-position-x: center;
+            background-position-y: 0.4rem;
+            background-size: 1.5rem;
+
+            &:hover,
+            &[aria-current="true"],
+            &:focus {
+              background-color: $color__grey-1;
+            }
+          }
+        }
       }
+    }
+  }
+  &__show-hide-button {
+    display: inline-block;
+    background-color: $color__grey-2;
+    margin-right: 0.3rem;
+    width: 3rem;
+    height: 3rem;
+    color: $color__white;
+    border: 0;
+    margin-left: auto;
+    cursor: pointer;
+    background-image: url("/static/images/icons/hamburger-white.svg");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: 0.6rem;
+    background-size: 1.5rem;
+
+    &[aria-expanded="true"],
+    &:hover,
+    &:focus {
+      background-color: $color__grey-1;
+      background-image: url("/static/images/icons/hamburger-black.svg");
+      color: #000;
+    }
+    &:focus {
+      outline: 5px solid $color__black;
+    }
   }
 }
