@@ -5,7 +5,15 @@
             <ol class="jumplinks__list">
                 {% for section in sections %}
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#{{ section.heading_id }}">{{ section.heading_text }}</a>
+                        <a 
+                            class="jumplink" 
+                            href="#{{ section.heading_id }}"
+                            data-component-name="Desktop in page navigation"
+                            data-link-type="Header no. {{ forloop.counter0 }}"
+                            data-link="{{ section.heading_text }}"
+                        >
+                            {{ section.heading_text }}
+                        </a>
                     </li>
                 {% endfor %}
             </ol>

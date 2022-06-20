@@ -36,6 +36,7 @@ class FeaturedRecordBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_record.html"
+        label = "Featured record"
 
 
 class FeaturedRecordsItemBlock(blocks.StructBlock):
@@ -57,6 +58,7 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_records.html"
+        label = "Featured records"
 
 
 class PromotedItemBlock(SectionDepthAwareStructBlock):
