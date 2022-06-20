@@ -7,7 +7,7 @@ class IDPProfile(models.Model):
         settings.AUTH_USER_MODEL, related_name="idp_profiles", on_delete=models.CASCADE
     )
     provider_name = models.CharField(max_length=100, db_index=True)
-    provider_user_id = models.CharField(max_length=36, db_index=True)
+    provider_user_id = models.CharField(max_length=100, db_index=True)
     created = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(null=True)
 
