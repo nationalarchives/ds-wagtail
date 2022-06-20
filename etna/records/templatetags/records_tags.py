@@ -1,6 +1,7 @@
 from typing import Any, Dict, Union
 
 from django import template
+from django.conf import settings
 from django.urls import NoReverseMatch, reverse
 
 from ..field_labels import FIELD_LABELS
@@ -10,12 +11,23 @@ register = template.Library()
 
 
 @register.simple_tag
-def record_url(record: Union[Record, Dict[str, Any]]) -> str:
+def record_url(
+    record: Union[Record, Dict[str, Any]], is_editorial: bool = False
+) -> str:
     """
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
     the search() endpoint.
+    Handling of Iaid as priority to allow Iaid in disambiguation pages when
+    returning more than one record
     """
+    if iaid := record.get("iaid"):
+        if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
+            return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
+        try:
+            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+        except NoReverseMatch:
+            pass
     if ref := record.get("reference_number", record.get("referenceNumber")):
         try:
             return reverse(
@@ -23,16 +35,11 @@ def record_url(record: Union[Record, Dict[str, Any]]) -> str:
             )
         except NoReverseMatch:
             pass
-    if iaid := record.get("iaid"):
-        try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
-        except NoReverseMatch:
-            pass
     if url := record.get("sourceUrl"):
         return url
     try:
         # Assume `record` is an un-transformed search result
-        return record_url(record["_source"]["@template"]["details"])
+        return record_url(record["_source"]["@template"]["details"], is_editorial)
     except KeyError:
         return ""
 

@@ -1,8 +1,9 @@
+{% load records_tags %}
 {% load wagtailimages_tags %}
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% url 'details-page-machine-readable' iaid=record.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}">
+        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
             <p class="card-group-record-summary__heading">
                 {% if record.reference_number %}
                 <span class="sr-only">
@@ -10,6 +11,7 @@
                 </span>
                 {% endif %}
                 {{ record.title }}
+                {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
         {% if teaser_image %}
@@ -18,7 +20,7 @@
             {% image teaser_image fill-348x352 as teaser_image_large %}
             {% image teaser_image fill-543x549 as teaser_image_extra_large %}
 
-            <a href="{% url 'details-page-machine-readable' iaid=record.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}" aria-hidden="true" tabindex="-1">
+            <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.title }}" aria-hidden="true" tabindex="-1"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
                 <div class="card-group-record-summary__image">
                     <picture>
                         <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
@@ -27,6 +29,7 @@
                         <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
                         <img src="{{ teaser_image_extra_large.url }}" alt="" class="card-group-record-summary__image-fallback">
                     </picture>
+                    {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
                 </div>
             </a>
         {% endif %}

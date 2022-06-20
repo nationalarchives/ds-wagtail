@@ -32,6 +32,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 # Application definition
 
 INSTALLED_APPS = [
+    "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
     "etna.categories",
@@ -107,6 +108,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
+                "etna.core.context_processors.feature_flags",
             ],
         },
     },
@@ -128,8 +130,12 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
-# Whether user authentication is required to use search views
-SEARCH_VIEWS_REQUIRE_LOGIN = True
+# View access control
+IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
+RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
+    os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
+)
+SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
@@ -342,4 +348,19 @@ except ValueError:
 # See core.cache_control.get_default_cache_control_kwargs()
 CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
+)
+
+# -----------------------------------------------------------------------------
+# Feature flags
+# -----------------------------------------------------------------------------
+
+# Special boolean settings prefixed with 'FEATURE_', that are automatically
+# injected into template contexts using a custom context processor - allowing
+# conditional logic to be added to both Python and template code
+
+FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
+    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
+)
+FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
+    os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
 )

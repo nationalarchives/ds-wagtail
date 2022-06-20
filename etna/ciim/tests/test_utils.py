@@ -18,7 +18,7 @@ class TestResolveLinks(SimpleTestCase):
         stripped_markup = format_description_markup(markup)
 
         self.assertEquals(
-            '<span><a href="/catalogue/C11996672/">link text</a></span>',
+            '<span><a href="/catalogue/id/C11996672/">link text</a></span>',
             stripped_markup,
         )
 
@@ -42,8 +42,8 @@ class TestResolveLinks(SimpleTestCase):
         self.assertEquals(
             (
                 "<span>"
-                '<a href="/catalogue/C11996672/">link text one</a>'
-                '<a href="/catalogue/C11996673/">link text two</a>'
+                '<a href="/catalogue/id/C11996672/">link text one</a>'
+                '<a href="/catalogue/id/C11996673/">link text two</a>'
                 "</span>"
             ),
             stripped_markup,

@@ -1,7 +1,6 @@
 from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
 
@@ -14,6 +13,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
+from etna.core.decorators import setting_controlled_login_required
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
@@ -43,13 +43,17 @@ if settings.SENTRY_DEBUG_URL_ENABLED:
 # Public URLs that are meant to be cached.
 public_urls = [
     path(
-        r"catalogue/<iaid:iaid>/",
-        login_required(records_views.record_detail_view),
+        r"catalogue/id/<iaid:iaid>/",
+        setting_controlled_login_required(
+            records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
+        ),
         name="details-page-machine-readable",
     ),
     path(
-        r"catalogue/<reference_number:reference_number>/",
-        login_required(records_views.record_disambiguation_view),
+        r"catalogue/ref/<reference_number:reference_number>/",
+        setting_controlled_login_required(
+            records_views.record_disambiguation_view, "RECORD_DETAIL_REQUIRE_LOGIN"
+        ),
         name="details-page-human-readable",
     ),
     path(
@@ -59,37 +63,52 @@ public_urls = [
     ),
     path(
         r"records/images/<iaid:iaid>/<str:sort>/",
-        login_required(records_views.image_viewer),
+        setting_controlled_login_required(
+            records_views.image_viewer, "IMAGE_VIEWER_REQUIRE_LOGIN"
+        ),
         name="image-viewer",
     ),
     path(
         r"records/images/<iaid:iaid>/",
-        login_required(records_views.image_browse),
+        setting_controlled_login_required(
+            records_views.image_browse, "IMAGE_VIEWER_REQUIRE_LOGIN"
+        ),
         name="image-browse",
     ),
     path(
         r"search/",
-        search_views.SearchLandingView.as_view(),
+        setting_controlled_login_required(
+            search_views.SearchLandingView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+        ),
         name="search",
     ),
     path(
         r"search/featured/",
-        search_views.FeaturedSearchView.as_view(),
+        setting_controlled_login_required(
+            search_views.FeaturedSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+        ),
         name="search-featured",
     ),
     path(
         r"search/catalogue/",
-        search_views.CatalogueSearchView.as_view(),
+        setting_controlled_login_required(
+            search_views.CatalogueSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+        ),
         name="search-catalogue",
     ),
     path(
         r"search/website/",
-        search_views.WebsiteSearchView.as_view(),
+        setting_controlled_login_required(
+            search_views.WebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+        ),
         name="search-website",
     ),
     path(
         r"search/catalogue/long-filter-chooser/<str:field_name>/",
-        search_views.CatalogueSearchLongFilterView.as_view(),
+        setting_controlled_login_required(
+            search_views.CatalogueSearchLongFilterView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
+        ),
         name="search-catalogue-long-filter-chooser",
     ),
 ]
@@ -101,7 +120,6 @@ if settings.DEBUG:
     # Serve static and media files from development server
     public_urls += staticfiles_urlpatterns()
     public_urls += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 
 # Update public URLs to use the "default" cache settings.
 public_urls = decorate_urlpatterns(public_urls, apply_default_cache_control)
