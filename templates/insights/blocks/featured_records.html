@@ -14,7 +14,7 @@
                 {% for item in value.items %}
                     <div class="featured-records__list-item">
                         <dt>
-                            <a class="featured-records__link" href="{% record_url item.record is_editorial=True %}" data-link="{{ item.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+                            <a class="featured-records__link" href="{% record_url item.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Links" position="{{ forloop.counter0 }}" data-link="{{ item.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
                                 <h4 class="featured-records__link-heading">{{ item.title }}</h4>
                                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
                             </a>

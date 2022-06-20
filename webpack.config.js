@@ -7,6 +7,7 @@ module.exports = {
         home_page: './scripts/src/home-page.js',
         explorer: './scripts/src/explorer.js',
         insights: './scripts/src/insights.js',
+        insights_index_page: './scripts/src/insights-index-page.js',
         image_browse: './scripts/src/image-browse.js',
         details: './scripts/src/details.js',
         sign_in: './scripts/src/sign-in.js',
