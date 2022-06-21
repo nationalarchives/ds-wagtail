@@ -1,5 +1,11 @@
 .section-image {
+    margin-bottom: 2rem;
+
     img {
         width: 100%;
+    }
+
+    figure, p {
+        margin-bottom: 0;
     }
 }
