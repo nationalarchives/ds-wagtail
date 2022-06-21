@@ -4,6 +4,10 @@
 
     &__image {
         width: 50%;
+
+        figure {
+            margin-bottom: 0;
+        }
     }
 
     &__description {

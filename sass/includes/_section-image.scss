@@ -8,4 +8,10 @@
     figure, p {
         margin-bottom: 0;
     }
+
+    figcaption {
+        background-color: $color__grey-5;
+        padding: 1rem;
+        border-bottom: 0.1875rem solid $color__grey-7;
+    }
 }
