@@ -2,6 +2,10 @@
   min-height: 37.5rem;
   position: relative;
 
+  &__audio-container, &__video-container {
+    text-align: center;
+  }
+
   &__overlay {
     background-color: $color__black;
     opacity: 0.8;
@@ -13,7 +17,6 @@
   &__content-panel {
     padding: 3rem 0;
     position: relative;
-    text-align: center;
     z-index: 999;
   }
 
