@@ -15,32 +15,8 @@
     <div class="container">
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
-                <div class="featured-insight__image">
-                    {% if page.featured_insight.hero_image_caption %}
-                    <figure>
-                    {% endif %}
-                    <picture>
-                        {% image page.featured_insight.hero_image fill-412x361 as hero %}
-                        <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.hero_image fill-510x351 as hero %}
-                        <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.hero_image fill-510x304 as hero %}
-                        <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.hero_image fill-345x495 as hero %}
-                        <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.hero_image fill-555x367 as hero %}
-                        <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                        {% if page.featured_insight.hero_image_decorative %}
-                            <img src="{{ hero.url }}" alt="" />
-                        {% else %}
-                            <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
-                        {% endif %}
-                    </picture>
-                    {% if page.featured_insight.hero_image_caption %}
-                        <figcaption class="hero-image__figcaption">{{ page.featured_insight.hero_image_caption|richtext }}</figcaption>
-                    </figure>
-                    {% endif %}
-                </div>
+                {% image page.featured_insight.hero_image fill-800x1000-c100 as hero %}
+                <div class="featured-insight__image" style="background: url('{{ hero.url }}') no-repeat; {{ hero.background_position_style }}"></div>
             {% endif %}
 
             <div class="featured-insight__description">
