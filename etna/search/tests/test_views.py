@@ -2,6 +2,7 @@ import json
 
 from typing import Any
 
+from django.conf import settings
 from django.http import HttpResponse
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse_lazy
@@ -345,7 +346,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
         insights_index_page.add_child(instance=insights_page)
 
         # create insight page response in sourceUrl
-        path = "/app/etna/search/tests/fixtures/website_search_insight.json"
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -499,7 +500,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         topic_explorer_page.add_child(instance=results_page)
 
         # create insight page response in sourceUrl
-        path = "/app/etna/search/tests/fixtures/website_search_highlight.json"
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,

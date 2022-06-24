@@ -28,6 +28,7 @@ class Migration(migrations.Migration):
                     models.FilePathField(
                         blank=True,
                         null=True,
+                        max_length=200,
                         path="/app/etna/categories/static/images/category-svgs/",
                     ),
                 ),
