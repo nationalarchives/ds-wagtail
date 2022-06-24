@@ -2,7 +2,6 @@ import json
 
 from http import HTTPStatus
 
-from django.test import override_settings
 from django.urls import reverse
 
 from wagtail.core.models import Site
@@ -15,9 +14,6 @@ from ...ciim.tests.factories import create_record, create_response
 from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestRecordChooseView(WagtailPageTests):
     def setUp(self):
         super().setUp()

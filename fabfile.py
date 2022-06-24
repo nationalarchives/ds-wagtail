@@ -134,7 +134,7 @@ def format(c):
 
 
 @task
-def test(c, lint=False):
+def test(c, lint=False, parallel=False):
     """
     Run python tests in the web container
     """
@@ -147,7 +147,10 @@ def test(c, lint=False):
         print("Checking flake8 compliance...")
         web_exec("flake8 etna config")
         print("Running Django tests...")
-    web_exec("python manage.py test --parallel")
+    cmd = "python manage.py test"
+    if parallel:
+        cmd += " --parallel"
+    web_exec(cmd)
 
 
 # -----------------------------------------------------------------------------
