@@ -271,8 +271,8 @@ class BaseCollectionSearchForm(forms.Form):
     def validate_dates(self, prefix_field: str) -> None:
         """
         Validates the date containing the prefix_field name and adds field error messages accordingly.
-        As with individual fields, the <prefix>_start_year and <prefix>_end_year fields for populated for
-        consolidated error messages.
+        The <prefix>_start_day and <prefix>_end_day fields for populated for error messages related 
+        to individual date fields.
 
         Args:
 
@@ -281,6 +281,7 @@ class BaseCollectionSearchForm(forms.Form):
         """
         start_date = None
         end_date = None
+        date_format_msg = "Enter a date in the correct format, for example 23 9 2017."
 
         start_day, start_month, start_year = self.get_cleaned_date_parts(
             prefix_field_with_type=prefix_field + "_start"
@@ -297,7 +298,7 @@ class BaseCollectionSearchForm(forms.Form):
             if not start_date:
                 # generic error for invalid date when all fields are provided
                 self.add_error(
-                    prefix_field + "_start_year", "Entered date must be a real date."
+                    prefix_field + "_start_day", date_format_msg
                 )
 
         # validate and make compressed end_date when all seperated fields are entered
@@ -308,7 +309,7 @@ class BaseCollectionSearchForm(forms.Form):
             if not end_date:
                 # generic error for invalid date when all fields are provided
                 self.add_error(
-                    prefix_field + "_end_year", "Entered date must be a real date."
+                    prefix_field + "_end_day", date_format_msg
                 )
 
         # start date is empty or partial at this point
@@ -317,20 +318,23 @@ class BaseCollectionSearchForm(forms.Form):
             if not (start_day or start_month or start_year) and (
                 end_day or end_month or end_year
             ):
-                self.add_error(prefix_field + "_start_year", "Enter date")
-            # start date is partial
+                self.add_error(prefix_field + "_start_day", date_format_msg)
+            # start date is partial - one or two fields are entered
             if start_day or start_month or start_year:
+                date_include_suffix = []
+                
                 if not start_day:
-                    self.add_error(
-                        prefix_field + "_start_day", "Date must include a day."
-                    )
+                    date_include_suffix.append("Day")
                 if not start_month:
-                    self.add_error(
-                        prefix_field + "_start_month", "Date must include a month."
-                    )
+                    date_include_suffix.append("Month")
                 if not start_year:
+                    date_include_suffix.append("Year")
+
+                ' and '.join(date_include_suffix)
+
+                if date_include_suffix:
                     self.add_error(
-                        prefix_field + "_start_year", "Date must include a year."
+                        prefix_field + "_start_day", f"Entered date must include { ' and '.join(date_include_suffix)}."
                     )
 
         # end date is empty or partial at this point
@@ -339,28 +343,31 @@ class BaseCollectionSearchForm(forms.Form):
             if not (end_day or end_month or end_year) and (
                 start_day or start_month or start_year
             ):
-                self.add_error(prefix_field + "_end_year", "Enter date")
+                self.add_error(prefix_field + "_end_day", date_format_msg)
 
-            # end date is partial
+            # end date is partial - one or two fields are entered
             if end_day or end_month or end_year:
+                date_include_suffix = []
+                
                 if not end_day:
-                    self.add_error(
-                        prefix_field + "_end_day", "Date must include a day."
-                    )
+                    date_include_suffix.append("Day")
                 if not end_month:
-                    self.add_error(
-                        prefix_field + "_end_month", "Date must include a month."
-                    )
+                    date_include_suffix.append("Month")
                 if not end_year:
+                    date_include_suffix.append("Year")
+
+                ' and '.join(date_include_suffix)
+
+                if date_include_suffix:
                     self.add_error(
-                        prefix_field + "_end_year", "Date must include a year."
+                        prefix_field + "_end_day", f"Entered date must include { ' and '.join(date_include_suffix)}."
                     )
 
         if start_date and end_date:
             # both dates are valid at this point
             if start_date > end_date:
                 self.add_error(
-                    prefix_field + "_start_year", "Start date cannot be after end date"
+                    prefix_field + "_start_day", "From date must be earlier than To date"
                 )
 
     def clean(self):

@@ -61,39 +61,34 @@
                     <legend>
                         <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                     </legend>
-                    <p id="search_filters__opening-date-help-text">For example, 2007 03 27</p>
                     <p>From</p>
                     <div class="search-filters__opening-date-section">
                         <div>
-                            {# form.opening_start_year will also show consolidated errors accross dates #}
-                            {{ form.opening_start_year.errors|striptags }}
-                            {{ form.opening_start_month.errors|striptags }}
+                            {# form.opening_start_day shows consolidated date errors #}
                             {{ form.opening_start_day.errors|striptags }}
                         </div>
                         <div>
-                        <label for="{{form.opening_start_year.id_for_label}}" class="">{{ form.opening_start_year.label }}</label>                      
-                        {{ form.opening_start_year }}
-                        <label for="{{form.opening_start_month.id_for_label}}" class="">{{ form.opening_start_month.label }}</label>
-                        {{ form.opening_start_month }}
                         <label for="{{form.opening_start_day.id_for_label}}" class="">{{ form.opening_start_day.label }}</label>  
                         {{ form.opening_start_day }}
+                        <label for="{{form.opening_start_month.id_for_label}}" class="">{{ form.opening_start_month.label }}</label>
+                        {{ form.opening_start_month }}
+                        <label for="{{form.opening_start_year.id_for_label}}" class="">{{ form.opening_start_year.label }}</label>                      
+                        {{ form.opening_start_year }}
                         </div>
                     </div>
                     <p>To</p>
                     <div class="search-filters__opening-date-section">
                         <div>
-                            {# form.opening_start_year will also show consolidated errors accross dates #}
-                            {{ form.opening_end_year.errors|striptags }}
-                            {{ form.opening_end_month.errors|striptags }}
+                            {# form.opening_end_day shows consolidated date errors #}
                             {{ form.opening_end_day.errors|striptags }}
                         </div>
                         <div>
-                        <label for="{{form.opening_end_year.id_for_label}}" class="">{{ form.opening_end_year.label }}</label>                      
-                        {{ form.opening_end_year }}
-                        <label for="{{form.opening_end_month.id_for_label}}" class="">{{ form.opening_end_month.label }}</label>
-                        {{ form.opening_end_month }}
                         <label for="{{form.opening_end_day.id_for_label}}" class="">{{ form.opening_end_day.label }}</label>  
                         {{ form.opening_end_day }}
+                        <label for="{{form.opening_end_month.id_for_label}}" class="">{{ form.opening_end_month.label }}</label>
+                        {{ form.opening_end_month }}
+                        <label for="{{form.opening_end_year.id_for_label}}" class="">{{ form.opening_end_year.label }}</label>                      
+                        {{ form.opening_end_year }}
                         </div>
                     </div>
                     <input type="submit" value="Update" class="search-filters__submit">

@@ -4,6 +4,8 @@ from ..forms import CatalogueSearchForm
 
 
 class CatalogueSearchFormTest(SimpleTestCase):
+    expected_date_format_msg = "Enter a date in the correct format, for example 23 9 2017."
+
     def test_start_date_after_end_date_is_invalid(self):
         form = CatalogueSearchForm(
             {
@@ -21,7 +23,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Start date cannot be after end date"]
+            form.errors["opening_start_day"], ["From date must be earlier than To date"]
         )
 
     def test_opening_start_date_before_opening_end_date_is_valid(self):
@@ -54,10 +56,10 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Entered date must be a real date."]
+            form.errors["opening_start_day"], [self.expected_date_format_msg]
         )
         self.assertEqual(
-            form.errors["opening_end_year"], ["Entered date must be a real date."]
+            form.errors["opening_end_day"], [self.expected_date_format_msg]
         )
 
     def test_incorrect_day_in_date_is_invalid(self):
@@ -77,10 +79,10 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Entered date must be a real date."]
+            form.errors["opening_start_day"], [self.expected_date_format_msg]
         )
         self.assertEqual(
-            form.errors["opening_end_year"], ["Entered date must be a real date."]
+            form.errors["opening_end_day"], [self.expected_date_format_msg]
         )
 
     def test_incorrect_month_in_date_is_invalid(self):
@@ -100,10 +102,10 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Entered date must be a real date."]
+            form.errors["opening_start_day"], [self.expected_date_format_msg]
         )
         self.assertEqual(
-            form.errors["opening_end_year"], ["Entered date must be a real date."]
+            form.errors["opening_end_day"], [self.expected_date_format_msg]
         )
 
     def test_incorrect_year_in_date_is_invalid(self):
@@ -123,10 +125,10 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Entered date must be a real date."]
+            form.errors["opening_start_day"], [self.expected_date_format_msg]
         )
         self.assertEqual(
-            form.errors["opening_end_year"], ["Entered date must be a real date."]
+            form.errors["opening_end_day"], [self.expected_date_format_msg]
         )
 
     def test_empty_start_year_is_invalid(self):
@@ -142,7 +144,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
         is_valid = form.is_valid()
 
         self.assertFalse(is_valid)
-        self.assertEqual(form.errors["opening_start_year"], ["Enter date"])
+        self.assertEqual(form.errors["opening_start_day"], [self.expected_date_format_msg])
 
     def test_empty_end_year_is_invalid(self):
         form = CatalogueSearchForm(
@@ -157,7 +159,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
         is_valid = form.is_valid()
 
         self.assertFalse(is_valid)
-        self.assertEqual(form.errors["opening_end_year"], ["Enter date"])
+        self.assertEqual(form.errors["opening_end_day"], [self.expected_date_format_msg])
 
     def test_empty_month_is_invalid(self):
         form = CatalogueSearchForm(
@@ -174,10 +176,10 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_month"], ["Date must include a month."]
+            form.errors["opening_start_day"], ["Entered date must include Month."]
         )
         self.assertEqual(
-            form.errors["opening_end_month"], ["Date must include a month."]
+            form.errors["opening_end_day"], ["Entered date must include Month."]
         )
 
     def test_empty_year_is_invalid(self):
@@ -195,9 +197,9 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
         self.assertFalse(is_valid)
         self.assertEqual(
-            form.errors["opening_start_year"], ["Date must include a year."]
+            form.errors["opening_start_day"], ["Entered date must include Year."]
         )
-        self.assertEqual(form.errors["opening_end_year"], ["Date must include a year."])
+        self.assertEqual(form.errors["opening_end_day"], ["Entered date must include Year."])
 
     def test_empty_day_is_invalid(self):
         form = CatalogueSearchForm(
@@ -213,5 +215,50 @@ class CatalogueSearchFormTest(SimpleTestCase):
         is_valid = form.is_valid()
 
         self.assertFalse(is_valid)
-        self.assertEqual(form.errors["opening_start_day"], ["Date must include a day."])
-        self.assertEqual(form.errors["opening_end_day"], ["Date must include a day."])
+        self.assertEqual(form.errors["opening_start_day"], ["Entered date must include Day."])
+        self.assertEqual(form.errors["opening_end_day"], ["Entered date must include Day."])
+
+    def test_empty_day_month_is_invalid(self):
+        form = CatalogueSearchForm(
+            {
+                "group": "tna",
+                "opening_start_year": "0",
+                "opening_end_year": "ABCD",
+            }
+        )
+
+        is_valid = form.is_valid()
+
+        self.assertFalse(is_valid)
+        self.assertEqual(form.errors["opening_start_day"], ["Entered date must include Day and Month."])
+        self.assertEqual(form.errors["opening_end_day"], ["Entered date must include Day and Month."])
+
+    def test_empty_day_year_is_invalid(self):
+        form = CatalogueSearchForm(
+            {
+                "group": "tna",
+                "opening_start_month": "13",
+                "opening_end_month": "AB",
+            }
+        )
+
+        is_valid = form.is_valid()
+
+        self.assertFalse(is_valid)
+        self.assertEqual(form.errors["opening_start_day"], ["Entered date must include Day and Year."])
+        self.assertEqual(form.errors["opening_end_day"], ["Entered date must include Day and Year."])
+
+    def test_empty_month_year_is_invalid(self):
+        form = CatalogueSearchForm(
+            {
+                "group": "tna",
+                "opening_start_day": "33",
+                "opening_end_day": "AB",
+            }
+        )
+
+        is_valid = form.is_valid()
+
+        self.assertFalse(is_valid)
+        self.assertEqual(form.errors["opening_start_day"], ["Entered date must include Month and Year."])
+        self.assertEqual(form.errors["opening_end_day"], ["Entered date must include Month and Year."])
