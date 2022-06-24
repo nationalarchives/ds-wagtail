@@ -9,13 +9,6 @@ on:
 
 env:
   PYTHON_VERSION: 3.9
-  DJANGO_SETTINGS_MODULE: config.settings.test
-  DATABASE_ENGINE: django.db.backends.postgresql
-  DATABASE_NAME: postgres
-  DATABASE_USER: postgres
-  DATABASE_PASSWORD: postgres
-  DATABASE_HOST: localhost
-  DATABASE_PORT: 5432
 jobs:
   lint-python:
     runs-on: ubuntu-latest
@@ -37,13 +30,21 @@ jobs:
   test-python:
     runs-on: ubuntu-latest
     needs: [lint-python]
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.test
+      DATABASE_ENGINE: django.db.backends.postgresql
+      DATABASE_NAME: postgres
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
     services:
       postgres:
         image: postgres:12.3
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres # pragma: allowlist secret
-          POSTGRES_DB: postgres
+          POSTGRES_USER: ${{ env.DATABASE_USER }}
+          POSTGRES_PASSWORD: ${{ env.DATABASE_PASSWORD }}
+          POSTGRES_DB: ${{ env.DATABASE_NAME }}
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 1s --health-timeout 3s --health-retries 10
