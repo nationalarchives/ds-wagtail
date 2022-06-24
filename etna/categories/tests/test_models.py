@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.test import TestCase
 
@@ -15,7 +16,8 @@ class CategoriesTestCase(TestCase):
         path = finders.find(category.icon_static_path)
 
         self.assertEqual(
-            path, "/app/etna/categories/static/images/category-svgs/search-white.svg"
+            path,
+            f"{settings.BASE_DIR}/etna/categories/static/images/category-svgs/search-white.svg",
         )
 
     def test_research_icon(self):
@@ -24,7 +26,8 @@ class CategoriesTestCase(TestCase):
         path = finders.find(category.icon_static_path)
 
         self.assertEqual(
-            path, "/app/etna/categories/static/images/category-svgs/book-open-white.svg"
+            path,
+            f"{settings.BASE_DIR}/etna/categories/static/images/category-svgs/book-open-white.svg",
         )
 
     def test_podcast_icon(self):
@@ -34,7 +37,7 @@ class CategoriesTestCase(TestCase):
 
         self.assertEqual(
             path,
-            "/app/etna/categories/static/images/category-svgs/headphones-white.svg",
+            f"{settings.BASE_DIR}/etna/categories/static/images/category-svgs/headphones-white.svg",
         )
 
     def test_video_icon(self):
@@ -43,7 +46,8 @@ class CategoriesTestCase(TestCase):
         path = finders.find(category.icon_static_path)
 
         self.assertEqual(
-            path, "/app/etna/categories/static/images/category-svgs/video-white.svg"
+            path,
+            f"{settings.BASE_DIR}/etna/categories/static/images/category-svgs/video-white.svg",
         )
 
     def test_blog_icon(self):
@@ -52,7 +56,8 @@ class CategoriesTestCase(TestCase):
         path = finders.find(category.icon_static_path)
 
         self.assertEqual(
-            path, "/app/etna/categories/static/images/category-svgs/comment-white.svg"
+            path,
+            f"{settings.BASE_DIR}/etna/categories/static/images/category-svgs/comment-white.svg",
         )
 
     def test_category_icon_unknown(self):
