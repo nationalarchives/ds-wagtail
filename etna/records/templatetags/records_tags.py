@@ -4,6 +4,8 @@ from django import template
 from django.conf import settings
 from django.urls import NoReverseMatch, reverse
 
+from etna.ciim.utils import ValueExtractionError
+
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -21,33 +23,60 @@ def record_url(
     Handling of Iaid as priority to allow Iaid in disambiguation pages when
     returning more than one record
     """
-    if iaid := record.get("iaid"):
+    try:
+        # Use Record property if available
+        iaid = record.iaid
+    except AttributeError:
+        # 'record' is likely just a dict
+        iaid = record.get("iaid")
+    except (ValueExtractionError, ValueError):
+        iaid = None
+
+    try:
+        # Use Record property if available
+        ref = record.reference_number
+    except AttributeError:
+        # 'record' is likely just a dict
+        ref = record.get("reference_number", record.get("referenceNumber"))
+    except ValueExtractionError:
+        ref = None
+
+    try:
+        # Use Record property if available
+        url = record.url
+    except AttributeError:
+        # 'record' is likely just a dict
+        url = record.get("sourceUrl")
+    except ValueExtractionError:
+        url = None
+
+    if iaid:
         if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
             return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
             return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
         except NoReverseMatch:
             pass
-    if ref := record.get("reference_number", record.get("referenceNumber")):
+    if ref:
         try:
             return reverse(
                 "details-page-human-readable", kwargs={"reference_number": ref}
             )
         except NoReverseMatch:
             pass
-    if url := record.get("sourceUrl"):
+    if url:
         return url
     try:
         # Assume `record` is an un-transformed search result
         return record_url(record["_source"]["@template"]["details"], is_editorial)
-    except KeyError:
+    except (TypeError, KeyError):
         return ""
 
 
 @register.simple_tag
-def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: dict):
+def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: Record):
     """Checks whether given page matches item from a record's hierarchy"""
-    return page.reference_number == hierarchy_item["reference_number"]
+    return page.reference_number == hierarchy_item.reference_number
 
 
 @register.filter
