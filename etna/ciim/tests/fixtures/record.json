@@ -400,6 +400,24 @@
                             "id": "C10296"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "LO 3",
+                                "type": "reference number",
+                                "value": "LO 3"
+                            },
+                            {
+                                "catalogue_id": "9063",
+                                "type": "catalogue id",
+                                "value": "9063"
+                            },
+                            {
+                                "iaid": "C10298",
+                                "type": "iaid",
+                                "value": "C10298"
+                            }
+                        ],
                         "summary": {
                             "title": "Law Officers' Department: Patents for Inventions"
                         }
@@ -409,6 +427,24 @@
                             "id": "C10298"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "LO 1",
+                                "type": "reference number",
+                                "value": "LO 1"
+                            },
+                            {
+                                "catalogue_id": "9061",
+                                "type": "catalogue id",
+                                "value": "9061"
+                            },
+                            {
+                                "iaid": "C10296",
+                                "type": "iaid",
+                                "value": "C10296"
+                            }
+                        ],
                         "summary": {
                             "title": "Law Officers' Department: Law Officers' Opinions"
                         }
