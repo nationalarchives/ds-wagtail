@@ -279,11 +279,11 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
-        return [
+        return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
             if item.get("identifier")
-        ]
+        )
 
     @cached_property
     def next_record(self) -> Union["Record", None]:
