@@ -1,76 +1,338 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import Any, Dict, Optional
+import logging
+import re
+
+from dataclasses import dataclass
+from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
 from django.urls import reverse
+from django.utils.functional import cached_property
 
 from ..analytics.mixins import DataLayerMixin
 from ..ciim.models import APIModel
-from .transforms import transform_record_result
+from ..ciim.utils import (
+    NOT_PROVIDED,
+    ValueExtractionError,
+    extract,
+    format_description_markup,
+    format_link,
+)
+from .converters import IAIDConverter
+
+logger = logging.getLogger(__name__)
 
 
-@dataclass
 class Record(DataLayerMixin, APIModel):
-    """Non-creatable page used to render record data in templates.
+    """A 'lazy' data-interaction layer for record data retrieved from the Kong API"""
 
-    This stub page allows us to use common templates to render external record
-    data as though the data was fetched from the CMS.
+    def __init__(self, raw_data: Dict[str, Any]):
+        """
+        This method recieves the raw JSON data dict recieved from
+        Kong and makes it available to the instance as `self._raw`.
+        """
+        self.score = raw_data.get("_score")
+        self._raw = raw_data.get("_source") or raw_data
 
-    see: views.record_detail_view
-    """
-
-    iaid: str
-    title: str
-    reference_number: str
-
-    legal_status: str = ""
-    created_by: str = ""
-    description: str = ""
-    origination_date: str = ""
-    closure_status: str = ""
-    availability_delivery_condition: str = ""
-    arrangement: str = ""
-    held_by: str = ""
-    is_digitised: bool = False
-    parent: dict = field(default_factory=dict)
-    hierarchy: dict = field(default_factory=dict)
-    media_reference_id: str = ""
-    availability_delivery_surrogates: dict = field(default_factory=dict)
-    topics: dict = field(default_factory=dict)
-    next_record: dict = field(default_factory=dict)
-    previous_record: dict = field(default_factory=dict)
-    related_records: dict = field(default_factory=dict)
-    related_articles: dict = field(default_factory=dict)
-    catalogue_source: str = ""
-    repo_summary_title: str = ""
-    repo_archon_value: str = ""
-    level_code: str = ""
-    level: str = ""
-    template_reference_number: str = ""
-    template_summary_title: str = ""
-    hierarchy_level3_reference_number: str = ""
-    hierarchy_level3_summary_title: str = ""
-    related_materials: list = field(default_factory=list)
-
-    _debug_kong_result: dict = field(default_factory=dict)
+    @classmethod
+    def from_api_response(cls, response: dict) -> Record:
+        return cls(response)
 
     def __str__(self):
         return f"{self.title} ({self.iaid})"
 
-    def get(self, key: str, default: Optional[Any] = None):
-        return getattr(self, key, default)
+    def get(self, key: str, default: Optional[Any] = NOT_PROVIDED):
+        """
+        Attempts to extract `key` from `self._raw` and return the value.
 
-    @classmethod
-    def from_api_response(cls, response: dict) -> Record:
-        return cls(**transform_record_result(response))
+        Raises `ciim.utils.ValueExtractionError` if the value cannot be extracted.
+        """
+        if "." in key:
+            return extract(self._raw, key, default)
+        try:
+            return self._raw[key]
+        except KeyError as e:
+            if default is NOT_PROVIDED:
+                raise ValueExtractionError(str(e))
+            return default
+
+    @cached_property
+    def template(self) -> Dict[str, Any]:
+        return self.get("@template.details", default=self.get("@template.results", {}))
+
+    @cached_property
+    def highlights(self) -> Dict[str, Any]:
+        return self.get("highlight", default={})
+
+    @cached_property
+    def iaid(self) -> str:
+        """
+        Return the "iaid" value for this record (if one is available).
+
+        Raises `ValueExtractionError` when the raw data does not include
+        any candidate values.
+
+        Raises `ValueError` when the raw data includes a value where iaids
+        are usually found, but the value is not a valid iaid.
+        """
+        try:
+            candidate = self.template["iaid"]
+        except KeyError:
+            candidate = self.get("@admin.id")
+
+        # value is not guaranteed to be a valid 'iaid', so we must
+        # check it before returning it as one
+        if not re.match(IAIDConverter.regex, candidate):
+            raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
+        return candidate
+
+    def has_iaid(self) -> bool:
+        """
+        Returns `True` if a valid 'iaid' value can be extracted from the
+        raw data for this record. Otherwise `False`.
+        """
+        try:
+            self.iaid
+        except (ValueExtractionError, ValueError):
+            return False
+        else:
+            return True
+
+    @cached_property
+    def reference_number(self) -> str:
+        """
+        Return the "reference_number" value for this record (if one is available).
+
+        Raises `ValueExtractionError` when the raw data does not include
+        values in any of the expected positions.
+        """
+        try:
+            return self.template["referenceNumber"]
+        except KeyError:
+            pass
+        identifiers = self.get("identifier", ())
+        for item in identifiers:
+            try:
+                return item["reference_number"]
+            except KeyError:
+                pass
+        raise ValueExtractionError(
+            f"'reference_number' could not be extracted from source data: {self._raw}"
+        )
+
+    def has_reference_number(self) -> bool:
+        """
+        Returns `True` if a 'reference_number' value can be extracted from the
+        raw data for this record. Otherwise `False`.
+        """
+        try:
+            self.reference_number
+        except ValueExtractionError:
+            return False
+        else:
+            return True
+
+    @cached_property
+    def url(self):
+        """
+        Return the "url" value for this record. This value is typically
+        only present for 'interpretive' results from other websites.
+
+        Raises `ValueExtractionError` when the raw data does not include
+        values in any of the expected positions.
+        """
+        try:
+            return self.template["sourceUrl"]
+        except KeyError:
+            raise ValueExtractionError(
+                f"'url' could not be extracted from source data: {self._raw}"
+            )
+
+    def has_url(self) -> bool:
+        """
+        Returns `True` if a 'url' value can be extracted from the raw data
+        for this record. Otherwise `False`.
+        """
+        try:
+            self.url
+        except ValueExtractionError:
+            return False
+        else:
+            return True
+
+    @cached_property
+    def title(self) -> str:
+        try:
+            return self.highlights["@template.details.summaryTitle"]
+        except KeyError:
+            pass
+        try:
+            return self.template["summaryTitle"]
+        except KeyError:
+            pass
+        return self.get("summary.title", default="")
+
+    @cached_property
+    def closure_status(self) -> str:
+        try:
+            return self.template["accessCondition"]
+        except KeyError:
+            self.get("availability.access.condition.value", default="")
+        return
+
+    @cached_property
+    def arrangement(self) -> str:
+        try:
+            raw = self.template["arrangement"]
+        except KeyError:
+            raw = self.get("arrangement.value", default="")
+        return format_description_markup(raw)
+
+    @cached_property
+    def legal_status(self) -> str:
+        try:
+            return self.template["legalStatus"]
+        except KeyError:
+            return self.get("legal.status", default="")
+
+    @cached_property
+    def is_digitised(self) -> bool:
+        return self.get("digitised", default=False)
+
+    @cached_property
+    def availability_delivery_surrogates(self) -> str:
+        return self.get("availability.delivery.surrogate", default="")
+
+    @cached_property
+    def media_reference_id(self) -> str:
+        return self.get("multimedia.@admin.id", default="")
+
+    @cached_property
+    def catalogue_source(self) -> str:
+        return self.get("source.value", default="")
+
+    @property
+    def raw_description(self) -> str:
+        try:
+            return self.highlights["@template.details.description"]
+        except KeyError:
+            pass
+        try:
+            return self.template["description"]
+        except KeyError:
+            pass
+        description_items = self.get("description", ())
+        for item in description_items:
+            if item.get("type", "") == "description" or len(description_items) == 1:
+                return item.get("value", "")
+        return ""
+
+    @cached_property
+    def description(self) -> str:
+        if raw := self.raw_description:
+            return format_description_markup(raw)
+        return ""
+
+    @cached_property
+    def held_by(self) -> str:
+        return self.template.get("heldBy", "")
+
+    @cached_property
+    def origination_date(self) -> str:
+        return self.template.get("dateCreated", "")
+
+    @cached_property
+    def level(self) -> str:
+        return self.get("level.value", self.template.get("level", ""))
+
+    @cached_property
+    def level_code(self) -> int:
+        return self.get("level.code", None)
+
+    @cached_property
+    def availability_delivery_condition(self) -> str:
+        return self.template.get("deliveryOption", "")
 
     @property
     def availability_condition_category(self) -> str:
         return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
             self.availability_delivery_condition, ""
+        )
+
+    @cached_property
+    def repo_summary_title(self) -> str:
+        return self.get("repository.summary.title", default="")
+
+    @cached_property
+    def repo_archon_value(self) -> str:
+        for item in self.get("repository.identifier", ()):
+            if item["type"] == "Archon number":
+                return item.get("value", "")
+        return ""
+
+    @cached_property
+    def parent(self) -> Union["Record", None]:
+        if parent_data := self.get("parent.0", default=None):
+            return Record(parent_data)
+
+    @cached_property
+    def hierarchy(self) -> Tuple["Record"]:
+        return tuple(
+            Record(item)
+            for item in self.get("@hierarchy.0", default=())
+            if item.get("identifier")
+        )
+
+    @cached_property
+    def next_record(self) -> Union["Record", None]:
+        if next := self.get("@next", default=None):
+            return Record(next)
+
+    @cached_property
+    def previous_record(self) -> Union["Record", None]:
+        if prev := self.get("@previous", default=None):
+            return Record(prev)
+
+    @cached_property
+    def topics(self) -> Tuple[Dict[str, str]]:
+        return_value = []
+        for item in self.get("topic", default=()):
+            topic_title = ""
+            try:
+                topic_title = item.get["name"][0]["value"]
+            except (KeyError, IndexError):
+                topic_title = extract(item, "summary.title")
+            if topic_title:
+                return_value.append({"title": topic_title})
+        return tuple(return_value)
+
+    @cached_property
+    def related_records(self) -> Tuple["Record"]:
+        return tuple(
+            Record(item)
+            for item in self.get("related", default=())
+            if extract(item, "@link.relationship.value", default="") == "related"
+        )
+
+    @cached_property
+    def related_articles(self) -> Tuple["Record"]:
+        return tuple(
+            Record(item)
+            for item in self.get("related", default=())
+            if item.get("summary")
+            and extract(item, "@admin.source", default="") == "wagtail-es"
+        )
+
+    @cached_property
+    def related_materials(self) -> Tuple[Dict[str, Any]]:
+        return tuple(
+            dict(
+                description=item.get("description", ""),
+                links=list(format_link(val) for val in item.get("links", ())),
+            )
+            for item in self.template.get("relatedMaterials", ())
         )
 
     def get_gtm_content_group(self) -> str:
@@ -97,30 +359,25 @@ class Record(DataLayerMixin, APIModel):
     @property
     def custom_dimension_12(self) -> str:
         if self.level_code and self.level:
-            return "Level " + self.level_code + " - " + self.level
-        else:
-            return ""
+            return f"Level {self.level_code} - {self.level}"
+        return ""
 
     @property
     def custom_dimension_13(self) -> str:
-        if (
-            self.hierarchy_level3_reference_number
-            and self.hierarchy_level3_summary_title
-        ):
-            return (
-                self.hierarchy_level3_reference_number
-                + " - "
-                + self.hierarchy_level3_summary_title
-            )
-        else:
-            return ""
+        for ancestor in self.hierarchy:
+            if (
+                ancestor.level_code == 3
+                and ancestor.has_reference_number()
+                and ancestor.title
+            ):
+                return f"{ancestor.reference_number} - {ancestor.title}"
+        return ""
 
     @property
     def custom_dimension_14(self) -> str:
-        if self.template_reference_number and self.template_summary_title:
-            return self.template_reference_number + " - " + self.template_summary_title
-        else:
-            return ""
+        if self.has_reference_number() and self.title:
+            return f"{self.reference_number} - {self.title}"
+        return ""
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """
