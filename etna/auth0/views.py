@@ -103,6 +103,10 @@ def authorize(request):
             last_login=now,
         )
 
+    if settings.AUTH0_EMAIL_VERIFICATION_REQUIRED and not user_info["email_verified"]:
+        url = settings.AUTH0_VERIFY_EMAIL_URL
+        return redirect(url + f"?clientID={settings.AUTH0_CLIENT_ID}")
+
     auth_login(request, user, backend="etna.auth0.auth_backend.Auth0Backend")
     return HttpResponseRedirect(success_url)
 
