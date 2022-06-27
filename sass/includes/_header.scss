@@ -207,6 +207,11 @@
         &-link-search {
           width: 100%;
           background-position-y: 0.7rem;
+          background-color: $color__white;
+          background-image: url("/static/images/icons/search-black.svg");
+          &:hover {
+            background-color: $color__grey-1;
+          }
         }
       }
     }
