@@ -6,7 +6,10 @@ from etna.records.templatetags.records_tags import record_url
 
 class TestRecordURLTag(SimpleTestCase):
 
+    # A sample search result respresentation, as encountered in search views
+    # (where no up-front transformation is applied)
     record_search_hit = {
+        "_score": 1,
         "_source": {
             "@template": {
                 "details": {
@@ -18,7 +21,10 @@ class TestRecordURLTag(SimpleTestCase):
         },
     }
 
+    # A sample search result respresentation, as encountered in search views
+    # (where no up-front transformation is applied)
     interpretive_search_hit = {
+        "_score": 1,
         "_source": {
             "@template": {
                 "details": {
@@ -27,26 +33,32 @@ class TestRecordURLTag(SimpleTestCase):
                     "summaryTitle": "Test",
                 }
             }
-        }
+        },
     }
 
+    # A sample item representation, as returned by Record.related_records
     partial_record_dict = {
         "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
         "reference_number": "2515/300/1",
         "title": "Test",
     }
 
+    # A sample item representation, as returned by Record.related_articles
     partial_interpretive_dict = {
         "url": "http://www.example.com",
         "title": "Test",
     }
 
+    # A sample Record representation, as encountered in record detail views
+    # (where values are prepared up-front by transform_record_result())
     record_instance = Record(
         iaid="e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
         reference_number="2515/300/1",
         title="Test",
     )
 
+    # A sample Record representation, as encountered in record detail views
+    # (where values are prepared up-front by transform_record_result())
     record_instance_no_reference = Record(
         iaid="e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
         reference_number="",
