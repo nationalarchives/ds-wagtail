@@ -29,7 +29,10 @@ def record_url(
     except AttributeError:
         # 'record' is likely just a dict
         iaid = record.get("iaid")
-    except (ValueExtractionError, ValueError):
+    except (
+        ValueExtractionError,  # Value was not present
+        ValueError,  # Value was invalid
+    ):
         iaid = None
 
     try:
