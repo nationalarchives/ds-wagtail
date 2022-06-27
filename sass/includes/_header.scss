@@ -64,7 +64,7 @@
       height: 100%;
 
       @media only screen and (min-width: $screen__md) {
-        width: 32rem;
+        width: 38rem;
       }
 
       margin-bottom: 0;
@@ -135,18 +135,25 @@
           }
 
           &-search {
-            width: 3rem;
+            color: $color__white;
             height: 3rem;
-            background-color: $color__dark;
-            background-image: url("/static/images/icons/search-white.svg");
+            background-color: #26262a;
+            background-image: url(/static/images/icons/search-white.svg);
             background-repeat: no-repeat;
-            background-position-x: center;
-            background-position-y: 0.4rem;
+            background-position-x: 0.5rem;
+            background-position-y: 0.6rem;
+            padding-left: 2.25rem;
+            padding-right: 0.75rem;
             background-size: 1.5rem;
+
+            &:visited {
+              color: $color__white;
+            }
 
             &:hover,
             &[aria-current="true"],
             &:focus {
+              color: $color__black;
               background-color: $color__grey-1;
               background-image: url("/static/images/icons/search-black.svg");
             }
@@ -206,11 +213,21 @@
         border-bottom: 0.0625rem solid $color__grey-7;
         &-link-search {
           width: 100%;
-          background-position-y: 0.7rem;
-          background-color: $color__white;
-          background-image: url("/static/images/icons/search-black.svg");
+          background-position-x: 45%;
+          background-position-y: 0.6rem;
+          text-decoration: underline;
+          color: $color__black;
+          font-size: 1.2rem;
+          background-color: #ffffff;
+          background-image: url(/static/images/icons/search-black.svg);
           &:hover {
             background-color: $color__grey-1;
+          }
+          @media only screen and (max-width: 41.25rem) {
+            background-position-x: 42.5%;
+          }
+          @media only screen and (max-width: $screen__sm) {
+            background-position-x: 40%;
           }
         }
       }
