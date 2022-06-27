@@ -36,33 +36,42 @@ class TestRecordURLTag(SimpleTestCase):
         },
     }
 
-    # A sample item representation, as returned by Record.related_records
+    # A sample item representation, as PREVIOUSLY returned by Record.related_records
     partial_record_dict = {
         "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
         "reference_number": "2515/300/1",
         "title": "Test",
     }
 
-    # A sample item representation, as returned by Record.related_articles
+    # A sample item representation, as PREVIOUSLY returned by Record.related_articles
     partial_interpretive_dict = {
         "url": "http://www.example.com",
         "title": "Test",
     }
 
     # A sample Record representation, as encountered in record detail views
-    # (where values are prepared up-front by transform_record_result())
     record_instance = Record(
-        iaid="e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
-        reference_number="2515/300/1",
-        title="Test",
+        raw_data={
+            "@template": {
+                "details": {
+                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "referenceNumber": "2515/300/1",
+                    "summaryTitle": "Test",
+                }
+            }
+        }
     )
 
     # A sample Record representation, as encountered in record detail views
-    # (where values are prepared up-front by transform_record_result())
     record_instance_no_reference = Record(
-        iaid="e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
-        reference_number=None,
-        title="Test",
+        raw_data={
+            "@template": {
+                "details": {
+                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "summaryTitle": "Test",
+                }
+            }
+        }
     )
 
     def test_default(self):
