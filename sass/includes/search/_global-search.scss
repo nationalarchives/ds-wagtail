@@ -80,6 +80,12 @@
       display: inline-block;
       margin-left: auto;
     }
+    
+    // IE11 styles
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+      background-size: 45px;
+      background-position-x: -3px;
+    }
   }
 
   &__paragraph {

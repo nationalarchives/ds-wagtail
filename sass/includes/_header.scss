@@ -79,6 +79,11 @@
         &[data-id="menu-show-hide-button"] {
           display: inline-block;
           position: relative;
+
+          // IE11 styles
+          @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+            bottom: -6px;
+          }
         }
 
         &[data-isSearch="false"] {
