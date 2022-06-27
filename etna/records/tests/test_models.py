@@ -319,7 +319,7 @@ class UnexpectedParsingIssueTest(TestCase):
 
         record = Record.api.fetch(iaid="C123456")
 
-        self.assertEqual(record.hierarchy, [])
+        self.assertEqual(record.hierarchy, ())
 
     @responses.activate
     def test_record_with_origination_but_no_date(self):
