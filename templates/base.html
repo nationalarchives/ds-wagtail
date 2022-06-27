@@ -52,10 +52,14 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% include 'includes/cookie-consent.html' %}
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            {% include 'includes/cookie-consent.html' %}
+        {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-        {% include 'includes/gtm-no-script.html' %}
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            {% include 'includes/gtm-no-script.html' %}
+        {% endif %}
 
         {% block header %}
             {% include 'includes/header.html' %}
