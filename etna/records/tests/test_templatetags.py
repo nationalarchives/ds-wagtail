@@ -61,7 +61,7 @@ class TestRecordURLTag(SimpleTestCase):
     # (where values are prepared up-front by transform_record_result())
     record_instance_no_reference = Record(
         iaid="e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
-        reference_number="",
+        reference_number=None,
         title="Test",
     )
 
