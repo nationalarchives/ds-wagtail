@@ -7,8 +7,8 @@ export default function () {
     }
 
     $gsFallbackLink.outerHTML = `<button aria-expanded="false" aria-controls="gs-component" aria-label="Show/hide global search" type="button" id="gs-show-hide" class="global-search__button">
-        <span class="sr-only">Search</span>
-      </button>`;
+        Search
+    </button>`;
 
     let $gsToggleButton = document.querySelector('#gs-show-hide');
 
