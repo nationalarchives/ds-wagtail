@@ -19,7 +19,7 @@
             <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% else %} id="js-site-menu-search" {% endif %}>
               {% if item.handle == 'search' %}
                 <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>
-                  <span class="sr-only">{{ item.label }}</span>
+                  {{ item.label }}
                 </a>
               {% else %}
                 <a class="header__nav-list-item-link" href="{{ item.url }}"{% if item.is_active %} aria-current="true"{% endif %}>{{ item.label }}</a>
