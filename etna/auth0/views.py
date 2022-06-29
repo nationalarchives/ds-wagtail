@@ -32,14 +32,26 @@ oauth.register(
 def login(request):
     callback_url = reverse("account_authorize")
     if next := request.GET.get("next"):
-        request.session["login_success_url"] = next
+        request.session["auth_success_url"] = next
     return oauth.auth0.authorize_redirect(
         request, request.build_absolute_uri(callback_url)
     )
 
 
+def register(request):
+    callback_url = reverse("account_authorize")
+    if next := request.GET.get("next"):
+        request.session["auth_success_url"] = next
+    return oauth.auth0.authorize_redirect(
+        request,
+        request.build_absolute_uri(callback_url),
+        screen_hint="signup",
+        prompt="login",
+    )
+
+
 def authorize(request):
-    if success_url := request.session.get("login_success_url"):
+    if success_url := request.session.get("auth_success_url"):
         parsed = urlparse(success_url)
         if parsed.netloc and parsed.netloc != request.META.get("HTTP_HOST"):
             success_url = "/"
