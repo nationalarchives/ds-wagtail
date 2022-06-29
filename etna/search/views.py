@@ -371,10 +371,14 @@ class BaseFilteredSearchView(BaseSearchView):
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         page_size = form.cleaned_data.get("per_page")
         opening_start_date = self._get_compressed_date_or_none_on_empty_date(
-            *form.get_cleaned_date_parts(prefix_field_with_type="opening_start")
+            *form.get_blank_parts_for_start_date(
+                *form.get_cleaned_date_parts(prefix_field_with_type="opening_start")
+            )
         )
         opening_end_date = self._get_compressed_date_or_none_on_empty_date(
-            *form.get_cleaned_date_parts(prefix_field_with_type="opening_end")
+            *form.get_blank_parts_for_end_date(
+                *form.get_cleaned_date_parts(prefix_field_with_type="opening_end")
+            )
         )
         return dict(
             stream=self.api_stream,
