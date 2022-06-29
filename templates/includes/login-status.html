@@ -4,6 +4,6 @@
         <a href="{% url 'account_logout' %}" class="login-status__link" id="authentication_link">Logout</a>
     {% else %}
         <a href="{% url 'account_login' %}" class="login-status__link" id="authentication_link">Login</a>
-        <a href="{% url 'account_register' %}" class="login-status__link">Register</a>
+        <a href="{% url 'account_signup' %}" class="login-status__link">Register</a>
     {% endif %}
 </div>
