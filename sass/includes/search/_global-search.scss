@@ -86,6 +86,11 @@
       background-size: 45px;
       background-position-x: -3px;
     }
+
+    &-text {
+      display: inline-block;
+      height: 75%;
+    }
   }
 
   &__paragraph {
