@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}{% load sections_tags %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
@@ -22,7 +22,9 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
         {# Cookie consent #}
-        <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
+        {% endif %}
 
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
@@ -57,7 +59,7 @@
         {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+        {% if request.COOKIES|cookie_usage %}
             {% include 'includes/gtm-no-script.html' %}
         {% endif %}
 
@@ -80,7 +82,10 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
-        <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
+
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
+        {% endif %}
 
     </body>
 </html>
