@@ -1,4 +1,5 @@
 export default function () {
+    const $headerElementsToHide = document.querySelectorAll('[data-isSearch="false"]');
     let $gsFallbackLink = document.querySelector("a[data-id='search-nav-link']");
     let $main = document.querySelector('main');
 
@@ -37,9 +38,18 @@ export default function () {
     $main.insertBefore($globalSearchComponent, $main.childNodes[0]); //IE11 compatible prepend
 
     $gsToggleButton.addEventListener('click', function(e) {
+        const $showHideButton = document.querySelector('.header__show-hide-button');
         let ariaExpanded = $gsToggleButton.getAttribute('aria-expanded') == 'true';
         $gsToggleButton.setAttribute('aria-expanded', !ariaExpanded);
 
         $globalSearchComponent.hidden = !$globalSearchComponent.hidden;
+
+        // Hide navigation menu when global search component is expanded
+        if($headerElementsToHide && $showHideButton) {
+            for (let i = 0; i < $headerElementsToHide.length; i++) {
+                $headerElementsToHide[i].hidden = true;
+            }
+            $showHideButton.setAttribute("aria-expanded", "false");
+        }
     })
 }
