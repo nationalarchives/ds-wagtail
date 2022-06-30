@@ -1,10 +1,12 @@
 import json
+
+from json.decoder import JSONDecodeError
+from urllib.parse import unquote
+
 from django import template
 
 from etna.core.blocks import SectionBlock
 from etna.insights.blocks import ContentSectionBlock
-from json.decoder import JSONDecodeError
-from urllib.parse import unquote
 
 register = template.Library()
 
