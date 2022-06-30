@@ -1,3 +1,4 @@
+import datetime
 import re
 
 from django.urls import reverse
@@ -175,3 +176,22 @@ def convert_sort_key_to_index(sort):
 
     # Ensure index is always > -1 to prevent invalid offsets being sent to Kong
     return max(index, 0)
+
+
+def get_date_for_retry_after_header(datetime_iso: str) -> str:
+    """
+    datetime_iso expected format "2011-11-04T00:05:23+04:00"
+    Returns formatted date as
+    Example: "<day-name>, <day> <month-name> <year> <hour>:<minute>:<second> GMT"
+             "Wed, 21 Oct 2015 07:28:00 GMT"
+    https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date
+    """
+    d = datetime.datetime.fromisoformat(datetime_iso)
+    day_name = d.strftime("%A")[:3]
+    day = f"{d.day:02}"
+    month_name = d.strftime("%b")
+    year = d.year
+    hour = f"{d.hour:02}"
+    minute = f"{d.minute:02}"
+    second = f"{d.second:02}"
+    return f"{day_name}, {day} {month_name} {year} {hour}:{minute}:{second} GMT"
