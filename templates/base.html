@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}{% load sections_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags cookie_tags %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
@@ -59,7 +59,7 @@
         {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-        {% if request.COOKIES|cookie_usage %}
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
             {% include 'includes/gtm-no-script.html' %}
         {% endif %}
 
