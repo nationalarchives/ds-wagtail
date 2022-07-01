@@ -90,7 +90,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "etna.core.middleware.CookieMiddleware",
 ]
+
+COOKIE_DOMAIN = "nationalarchives.gov.uk"
 
 ROOT_URLCONF = "config.urls"
 
