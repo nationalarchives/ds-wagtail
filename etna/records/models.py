@@ -175,6 +175,13 @@ class Record(DataLayerMixin, APIModel):
         return self.get("summary.title", default="")
 
     @cached_property
+    def is_tna(self):
+        for item in self.get("@datatype.group", ()):
+            if item.get("value", "") == "tna":
+                return True
+        return False
+
+    @cached_property
     def closure_status(self) -> str:
         try:
             return self.template["accessCondition"]
