@@ -8,6 +8,7 @@ from wagtail.core.models import Group
 import responses
 
 from ...ciim.tests.factories import create_record, create_response
+from ...ciim.utils import prevent_request_warnings
 
 User = get_user_model()
 
@@ -18,6 +19,7 @@ User = get_user_model()
 )
 class TestMaintenanceMode(TestCase):
     @responses.activate
+    @prevent_request_warnings
     def test_503_for_record_detail(self):
         response = self.client.get("/catalogue/id/C123456/")
         self.assertEquals(response.status_code, 503)
@@ -25,6 +27,7 @@ class TestMaintenanceMode(TestCase):
             response.headers["Retry-After"], "Fri, 04 Nov 2011 00:05:23 GMT"
         )
 
+    @prevent_request_warnings
     def test_503_maintenance_override_for_home_page(self):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)

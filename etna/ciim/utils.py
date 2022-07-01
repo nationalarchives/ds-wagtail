@@ -1,4 +1,5 @@
 import datetime
+import logging
 import re
 
 from django.urls import reverse
@@ -195,3 +196,24 @@ def get_date_for_retry_after_header(datetime_iso: str) -> str:
     minute = f"{d.minute:02}"
     second = f"{d.second:02}"
     return f"{day_name}, {day} {month_name} {year} {hour}:{minute}:{second} GMT"
+
+
+def prevent_request_warnings(original_function):
+    """
+    If we need to test for 503s this decorator can prevent the
+    request class from throwing warnings.
+    """
+
+    def new_function(*args, **kwargs):
+        # raise logging level to CRITICAL
+        logger = logging.getLogger("django.request")
+        previous_logging_level = logger.getEffectiveLevel()
+        logger.setLevel(logging.CRITICAL)
+
+        # trigger original function that would throw warning
+        original_function(*args, **kwargs)
+
+        # lower logging level back to previous
+        logger.setLevel(previous_logging_level)
+
+    return new_function
