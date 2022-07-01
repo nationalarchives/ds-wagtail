@@ -7,8 +7,16 @@
                 {% if page.previous_record %}
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--left"></span>
-                        <span class="hierarchy-local__nav-label">{{ 'previous_record'|as_label }}</span>
-                        <a href="{% record_url page.previous_record %}" data-link="Previous" class="link--bold"><span class="sr-only">{{ 'previous_record'|as_label }}</span> {{ page.previous_record.iaid }}</a>
+                        {% if page.previous_record.has_reference_number %}<span class="hierarchy-local__nav-label">{{ 'previous_record'|as_label }}</span>{% endif %}
+                        <a href="{% record_url page.previous_record %}" data-link="Previous" class="link--bold">
+                            {% if page.previous_record.has_reference_number %}
+                                <span class="sr-only">{{ 'previous_record'|as_label }}</span> {{ page.previous_record.reference_number }}
+                            {% elif page.is_tna %}
+                                {{ 'previous_record'|as_label }} {{ page.level.lower|default:"record" }}
+                            {% else %}
+                                {{ 'previous_record'|as_label }} record
+                            {% endif %}
+                        </a>
                     </p>
                 {% endif %}
             </div>
@@ -28,8 +36,16 @@
                 {% if page.next_record %}
                     <p class="hierarchy-local__nav-item">
                         <span class="hierarchy-local__nav-indicator hierarchy-local__nav-indicator--right"></span>
-                        <span class="hierarchy-local__nav-label">{{ 'next_record'|as_label }}</span>
-                        <a href="{% record_url page.next_record %}" data-link="Next" class="link--bold"><span class="sr-only">{{ 'next_record'|as_label }}</span> {{ page.next_record.iaid }}</a>
+                        {% if page.next_record.has_reference_number %}<span class="hierarchy-local__nav-label">{{ 'next_record'|as_label }}</span>{% endif %}
+                        <a href="{% record_url page.next_record %}" data-link="Next" class="link--bold">
+                            {% if page.next_record.has_reference_number %}
+                                <span class="sr-only">{{ 'next_record'|as_label }}</span> {{ page.next_record.reference_number }}
+                            {% elif page.is_tna %}
+                                {{ 'next_record'|as_label }} {{ page.level.lower|default:"record" }}
+                            {% else %}
+                                {{ 'next_record'|as_label }} record
+                            {% endif %}
+                        </a>
                     </p>
                 {% endif %}
             </div>
