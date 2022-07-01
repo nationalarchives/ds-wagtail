@@ -194,6 +194,23 @@ class RecordModelTests(SimpleTestCase):
             ],
         )
 
+    def test_is_tna_default(self):
+        # The test fixture includes the following, so this should
+        # return True by default
+        self.assertIs(self.record.is_tna, True)
+
+    def test_is_tna_returns_false_if_group_is_non_tna(self):
+        # patch raw data
+        for group in self.record._raw["@datatype"]["group"]:
+            if group["value"] == "tna":
+                group["value"] = "nonTna"
+        self.assertIs(self.record.is_tna, False)
+
+    def test_is_tna_returns_false_if_datatype_not_present(self):
+        # patch raw data
+        self.record._raw.pop("@datatype")
+        self.assertIs(self.record.is_tna, False)
+
     @unittest.skip("Data not supported for the json record")
     def test_topics(self):
         self.assertEqual(
