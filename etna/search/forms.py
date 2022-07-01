@@ -310,6 +310,11 @@ class BaseCollectionSearchForm(forms.Form):
         to individual date fields.
 
         Date Inputs: DD-MM-YYYY, MM-YYYY, YYYY, Start Date, End Date, Both Start Date and End Date
+        The missing parts are auto-filled -
+        FROM: YYYY -> 01/01/YYYY
+        FROM: MM/YYY -> 01/MM/YYYY
+        TO: YYYY -> 31/12/YYYY
+        TO: MM/YYY -> [28/29/30/31]/MM/YYYY
 
         Args:
 
