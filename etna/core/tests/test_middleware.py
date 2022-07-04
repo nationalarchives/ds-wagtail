@@ -18,15 +18,6 @@ User = get_user_model()
     MAINTENENCE_MODE_ENDS="2011-11-04T00:05:23+04:00",
 )
 class TestMaintenanceMode(TestCase):
-    @responses.activate
-    @prevent_request_warnings
-    def test_503_for_record_detail(self):
-        response = self.client.get("/catalogue/id/C123456/")
-        self.assertEquals(response.status_code, 503)
-        self.assertEquals(
-            response.headers["Retry-After"], "Fri, 04 Nov 2011 00:05:23 GMT"
-        )
-
     @prevent_request_warnings
     def test_503_maintenance_override_for_home_page(self):
         response = self.client.get("/")
