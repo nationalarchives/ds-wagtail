@@ -32,7 +32,7 @@ class MaintenanceModeMiddleware:
                 if maintenance_mode_ends := settings.MAINTENENCE_MODE_ENDS:
                     # Evaluate only if config is set
                     # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
-                    HTTP_HEADER_FORMAT = f"%a, %d %b %Y %H:%M:%S GMT"
+                    HTTP_HEADER_FORMAT = "%a, %d %b %Y %H:%M:%S GMT"
                     try:
                         end_datetime = datetime.datetime.fromisoformat(
                             maintenance_mode_ends
