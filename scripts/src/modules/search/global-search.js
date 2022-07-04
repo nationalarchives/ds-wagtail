@@ -45,7 +45,7 @@ export default function () {
         $globalSearchComponent.hidden = !$globalSearchComponent.hidden;
 
         // Hide navigation menu when global search component is expanded
-        if($headerElementsToHide && $showHideButton) {
+        if(window.innerWidth < 768 && $headerElementsToHide && $showHideButton) {
             for (let i = 0; i < $headerElementsToHide.length; i++) {
                 $headerElementsToHide[i].hidden = true;
             }
