@@ -1,16 +1,8 @@
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 
-from wagtail.core.models import Group
-
-import responses
-
-from ...ciim.tests.factories import create_record, create_response
 from ...ciim.utils import prevent_request_warnings
-
-User = get_user_model()
 
 
 @override_settings(
