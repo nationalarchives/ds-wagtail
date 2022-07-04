@@ -8,6 +8,7 @@ export default function () {
     );
     let $searchListItem = document.querySelector("#js-site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
+    let $globalSearch = document.querySelector("#gs-component");
     if (!$headerMenu || !$headerMenuList || !$searchListItem) {
         return;
     }
@@ -87,6 +88,12 @@ export default function () {
 
         for (let i = 0; i < $headerElementsToHide.length; i++) {
             $headerElementsToHide[i].hidden = !$headerElementsToHide[i].hidden;
+        }
+
+        // Hide global search component when the navigation menu is expanded
+        if($globalSearch && $globalSearchButton) {
+            $globalSearch.hidden = true;
+            $globalSearchButton.setAttribute("aria-expanded", "false");
         }
     });
 
