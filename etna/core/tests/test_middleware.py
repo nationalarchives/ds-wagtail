@@ -19,7 +19,7 @@ User = get_user_model()
 )
 class TestMaintenanceMode(TestCase):
     @prevent_request_warnings
-    def test_503_maintenance_override_for_home_page(self):
+    def test_503_maintenance_mode_for_home_page(self):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)
 
@@ -30,16 +30,6 @@ class TestMaintenanceMode(TestCase):
     MAINTENENCE_MODE_ALLOW_IPS="123.4.5.6",
 )
 class TestMaintenanceModeOverrrice(TestCase):
-    def setUp(self):
-
-        private_beta_user = User(
-            username="private-beta@email.com", email="private-beta@email.com"
-        )
-        private_beta_user.set_password("password")
-        private_beta_user.save()
-        private_beta_user.groups.add(Group.objects.get(name="Beta Testers"))
-
-        self.client.login(email="private-beta@email.com", password="password")
 
     def _mocked_ip(request):
         return "123.4.5.6"
