@@ -93,7 +93,7 @@ MIDDLEWARE = [
     "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
 ]
 
-COOKIE_DOMAIN = "nationalarchives.gov.uk"
+COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
 
