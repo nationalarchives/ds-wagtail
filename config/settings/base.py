@@ -90,7 +90,10 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
+    "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
 ]
+
+COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
 
@@ -364,3 +367,5 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
     os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
 )
+
+FEATURE_COOKIE_BANNER_ENABLED = True
