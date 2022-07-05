@@ -4,12 +4,14 @@ from urllib.parse import quote
 from django.conf import settings
 
 
-class CookieMiddleware:
+class SetDefaultCookiePreferencesMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
         response = self.get_response(request)
+        if not settings.FEATURE_COOKIE_BANNER_ENABLED:
+            return response
         cookie_name = "cookies_policy"
         if not request.COOKIES.get(cookie_name, None):
             expires = datetime.utcnow() + timedelta(days=90)
