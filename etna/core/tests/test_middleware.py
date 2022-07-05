@@ -3,6 +3,7 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 
 from ...ciim.utils import prevent_request_warnings
+from ...core import middleware
 
 
 @override_settings(
@@ -25,21 +26,23 @@ class TestMaintenanceMode(TestCase):
     MAINTENENCE_MODE_ALLOW_IPS=["123.4.5.6", "123.3.2.1"],
 )
 class TestMaintenanceModeOverride(TestCase):
-    def _mocked_ip_in_allowed_list(request):
-        return "123.4.5.6"
-
-    def _mocked_ip_not_in_allowed_list(request):
-        return "789.0.1.2"
-
-    @patch("etna.core.middleware.get_client_ip", _mocked_ip_in_allowed_list)
-    def test_maintenance_mode_bypassed_when_ip_in_allowed_list(self):
+    @patch("etna.core.middleware.get_client_ip")
+    def test_maintenance_mode_bypassed_when_ip_in_allowed_list(
+        self, mock_get_client_ip
+    ):
+        # set ip value that is in allowed list
+        mock_get_client_ip.return_value = "123.4.5.6"
         response = self.client.get("/")
 
         self.assertEquals(response.status_code, 200)
 
-    @patch("etna.core.middleware.get_client_ip", _mocked_ip_not_in_allowed_list)
+    @patch("etna.core.middleware.get_client_ip")
     @prevent_request_warnings
-    def test_maintenance_mode_enforced_when_ip_not_in_allowed_list(self):
+    def test_maintenance_mode_enforced_when_ip_not_in_allowed_list(
+        self, mock_get_client_ip
+    ):
+        # set ip value that is not in allowed list
+        mock_get_client_ip.return_value = "789.0.1.2"
         response = self.client.get("/")
 
         self.assertEquals(response.status_code, 503)
