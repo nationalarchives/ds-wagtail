@@ -46,7 +46,7 @@ class MaintenanceModeMiddleware:
 
                     if end_datetime:
                         kwargs["headers"] = {
-                        "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
+                            "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
                         }
                 return SimpleTemplateResponse(**kwargs).render()
 

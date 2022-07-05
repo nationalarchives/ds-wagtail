@@ -1,4 +1,3 @@
-from unittest import mock
 from unittest.mock import patch
 
 from django.test import TestCase, override_settings
@@ -15,8 +14,9 @@ class TestMaintenanceMode(TestCase):
     def test_503_maintenance_mode_for_home_page(self):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)
-        self.assertEquals(response.headers["Retry-After"], "Fri, 04 Nov 2011 00:05:23 UTC+04:00")
-        
+        self.assertEquals(
+            response.headers["Retry-After"], "Fri, 04 Nov 2011 00:05:23 UTC+04:00"
+        )
 
 
 @override_settings(
