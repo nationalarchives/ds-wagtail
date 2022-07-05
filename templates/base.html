@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags cookie_tags %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
@@ -21,6 +21,11 @@
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
+        {# Cookie consent #}
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
+        {% endif %}
+
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
@@ -33,8 +38,10 @@
 
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
             rel="stylesheet">
+
+
         <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
         {# Adobe Fonts #}
@@ -47,9 +54,14 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            {% include 'includes/cookie-consent.html' %}
+        {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-        {% include 'includes/gtm-no-script.html' %}
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
+            {% include 'includes/gtm-no-script.html' %}
+        {% endif %}
 
         {% block header %}
             {% include 'includes/header.html' %}
@@ -70,5 +82,10 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
+
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
+        {% endif %}
+
     </body>
 </html>

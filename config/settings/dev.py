@@ -18,6 +18,9 @@ IMAGE_VIEWER_REQUIRE_LOGIN = False
 RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False
 
+FEATURE_COOKIE_BANNER_ENABLED = False
+COOKIE_DOMAIN = "localhost"
+
 try:
     from .local import *  # noqa: F401
 except ImportError:
