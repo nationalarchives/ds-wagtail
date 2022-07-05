@@ -6,6 +6,9 @@ from django.template.response import SimpleTemplateResponse
 
 logger = logging.getLogger(__name__)
 
+# https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
+HTTP_HEADER_FORMAT = "%a, %d %b %Y %H:%M:%S %Z"
+
 
 def get_client_ip(request) -> str:
     x_forwarded_for = request.META.get("HTTP_X_FORWARDED_FOR")
@@ -23,7 +26,7 @@ class MaintenanceModeMiddleware:
     def __call__(self, request):
         """
         Renders for a 503 if MAINTENANCE_MODE is set.
-        Maintenanc Mode is overridden with MAINTENENCE_MODE_ALLOW_IPS
+        Maintenance mode should be bypassed when the user's public IP address is present in  MAINTENENCE_MODE_ALLOW_IPS
         """
         if settings.MAINTENANCE_MODE:
             # check override maintenance mode
@@ -31,8 +34,6 @@ class MaintenanceModeMiddleware:
                 kwargs = {"template": "503.html", "status": 503}
                 if maintenance_mode_ends := settings.MAINTENENCE_MODE_ENDS:
                     # Evaluate only if config is set
-                    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
-                    HTTP_HEADER_FORMAT = "%a, %d %b %Y %H:%M:%S GMT"
                     try:
                         end_datetime = datetime.datetime.fromisoformat(
                             maintenance_mode_ends
@@ -44,15 +45,9 @@ class MaintenanceModeMiddleware:
                         )
 
                     if end_datetime:
-                        kwargs.update(
-                            {
-                                "headers": {
-                                    "Retry-After": end_datetime.strftime(
-                                        HTTP_HEADER_FORMAT
-                                    )
-                                }
-                            }
-                        )
+                        kwargs["headers"] = {
+                        "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
+                        }
                 return SimpleTemplateResponse(**kwargs).render()
 
         response = self.get_response(request)
