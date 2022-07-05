@@ -4,10 +4,12 @@ import logging
 from django.conf import settings
 from django.template.response import SimpleTemplateResponse
 
+from pytz import timezone
+
 logger = logging.getLogger(__name__)
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
-HTTP_HEADER_FORMAT = "%a, %d %b %Y %H:%M:%S %Z"
+HTTP_HEADER_FORMAT = "%a, %d %b %Y %H:%M:%S GMT"
 
 
 def get_client_ip(request) -> str:
@@ -45,6 +47,11 @@ class MaintenanceModeMiddleware:
                         )
 
                     if end_datetime:
+                        # GMT is assumed for naive datetimes, but timezone-aware
+                        # datetimes must be converted to GMT
+                        if end_datetime.utcoffset() is not None:
+                            end_datetime = end_datetime.astimezone(timezone("GMT"))
+
                         kwargs["headers"] = {
                             "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
                         }
