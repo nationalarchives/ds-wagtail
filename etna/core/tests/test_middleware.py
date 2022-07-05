@@ -3,7 +3,6 @@ from unittest.mock import patch
 from django.test import TestCase, override_settings
 
 from ...ciim.utils import prevent_request_warnings
-from ...core import middleware
 
 
 @override_settings(
