@@ -1,4 +1,5 @@
 import logging
+
 from datetime import datetime, timedelta
 from urllib.parse import quote
 
@@ -38,9 +39,7 @@ class MaintenanceModeMiddleware:
                 if maintenance_mode_ends := settings.MAINTENENCE_MODE_ENDS:
                     # Evaluate only if config is set
                     try:
-                        end_datetime = datetime.fromisoformat(
-                            maintenance_mode_ends
-                        )
+                        end_datetime = datetime.fromisoformat(maintenance_mode_ends)
                     except ValueError:
                         end_datetime = None
                         logger.debug(
@@ -61,7 +60,6 @@ class MaintenanceModeMiddleware:
         response = self.get_response(request)
 
         return response
-
 
 
 class SetDefaultCookiePreferencesMiddleware:
