@@ -41,8 +41,6 @@ class TestMaintenanceMode(TestCase):
     @prevent_request_warnings
     @override_settings(MAINTENENCE_MODE_ALLOW_IPS=["123.4.5.6"])
     @patch("etna.core.middleware.get_client_ip", return_value="789.0.1.2")
-    def test_maintenance_mode_enforced_when_ip_not_in_allowed_list(
-        self, mock_get_client_ip
-    ):
+    def test_maintenance_mode_enforced_when_ip_not_in_allow_list(self, *args):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)
