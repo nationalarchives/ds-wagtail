@@ -10,7 +10,7 @@
                     {{ record.reference_number }} -
                 </span>
                 {% endif %}
-                {{ record.title }}
+                {% firstof description_override|safe record.title|striptags %}
                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
@@ -33,6 +33,6 @@
                 </div>
             </a>
         {% endif %}
-        <p class="card-group-record-summary__body">{{ description_override|default:record.description|safe }}</p>
+        <p class="card-group-record-summary__body">{{ record.description|striptags|escape|truncatewords:20 }}</p>
     </div>
 </li>
