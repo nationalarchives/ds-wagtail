@@ -12,6 +12,7 @@ from wagtail.tests.utils import WagtailTestUtils
 import responses
 
 from etna.ciim.constants import Bucket, BucketList
+from etna.core.test_utils import prevent_request_warnings
 
 from ...ciim.tests.factories import create_response
 from ...collections.models import (
@@ -68,6 +69,7 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
 class BadRequestHandlingTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
+    @prevent_request_warnings
     def test_httpresponsebadrequest_recieved_when_bad_values_provided(self):
         for field_name, value in [
             ("group", "foo"),
