@@ -4,7 +4,7 @@ import unittest
 from copy import deepcopy
 
 from django.conf import settings
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, TestCase
 
 import responses
 
@@ -305,7 +305,6 @@ class RecordModelTests(SimpleTestCase):
         )
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(TestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
     issues with data returned by Kong"""
@@ -433,10 +432,6 @@ class UnexpectedParsingIssueTest(TestCase):
 
 @unittest.skip(
     "Kong open beta API does not support media. Re-enable/update once media is available."
-)
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class ImageTestCase(TestCase):
     @responses.activate

@@ -4,7 +4,7 @@ from typing import Any
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse_lazy
 
 from wagtail.tests.utils import WagtailTestUtils
@@ -28,10 +28,6 @@ from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class SearchViewTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
 
@@ -324,9 +320,6 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
@@ -449,9 +442,6 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")

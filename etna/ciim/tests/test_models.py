@@ -1,4 +1,4 @@
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, TestCase
 
 import responses
 
@@ -17,7 +17,6 @@ class DeprecatedSearchManagerTest(SimpleTestCase):
             Record.search.fetch(iaid="C140")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class ManagerExceptionTest(TestCase):
     def setUp(self):
         self.manager = APIManager("records.Record")
@@ -45,7 +44,6 @@ class ManagerExceptionTest(TestCase):
             self.manager.fetch(iaid="C140")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class SearchManagerFilterTest(TestCase):
     def setUp(self):
         self.manager = Record.api

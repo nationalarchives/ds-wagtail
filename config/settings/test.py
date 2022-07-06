@@ -28,3 +28,4 @@ RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False
 
 KONG_CLIENT_BASE_URL = "https://kong.test"
+KONG_IMAGE_PREVIEW_BASE_URL = "https://media.preview/"
