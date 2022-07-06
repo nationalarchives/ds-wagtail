@@ -5,11 +5,10 @@ from wagtail.tests.utils import WagtailTestUtils
 
 import responses
 
-from ...ciim.tests.factories import create_response
+from ...ciim.tests.factories import create_record, create_response
 
 CONDITIONALLY_PROTECTED_URLS = (
     reverse_lazy("search-catalogue"),
-    reverse_lazy("image-browse", kwargs={"iaid": "C140"}),
     reverse_lazy("details-page-machine-readable", kwargs={"iaid": "C140"}),
 )
 
@@ -26,8 +25,20 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
             json={
                 "responses": [
                     create_response(),
+                    create_response(),
                 ]
             },
+        )
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456", description="This is the description from Kong"
+                    )
+                ]
+            ),
         )
 
     @override_settings(
@@ -41,7 +52,7 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
                 response = self.client.get(url)
                 self.assertRedirects(
                     response,
-                    f"/accounts/login?next={self.test_url}",
+                    f"/accounts/login?next={url}",
                     fetch_redirect_response=False,
                 )
 

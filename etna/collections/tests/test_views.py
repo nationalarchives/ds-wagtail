@@ -10,6 +10,8 @@ from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
 import responses
 
+from etna.core.test_utils import prevent_request_warnings
+
 from ...ciim.tests.factories import create_record, create_response
 from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
@@ -95,6 +97,7 @@ class TestRecordChooseView(WagtailPageTests):
         )
 
     @responses.activate
+    @prevent_request_warnings
     def test_select_failed(self):
 
         responses.reset()

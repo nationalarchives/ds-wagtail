@@ -11,6 +11,8 @@ from wagtail.tests.utils import WagtailTestUtils
 
 import responses
 
+from etna.core.test_utils import prevent_request_warnings
+
 from ...ciim.tests.factories import create_media, create_record, create_response
 
 User = get_user_model()
@@ -18,6 +20,7 @@ User = get_user_model()
 
 class TestRecordDisambiguationView(TestCase):
     @responses.activate
+    @prevent_request_warnings
     def test_no_matches_respond_with_404(self):
         responses.add(
             responses.GET,
@@ -85,6 +88,7 @@ class TestRecordDisambiguationView(TestCase):
 
 class TestRecordView(TestCase):
     @responses.activate
+    @prevent_request_warnings
     def test_no_matches_respond_with_404(self):
         responses.add(
             responses.GET,
