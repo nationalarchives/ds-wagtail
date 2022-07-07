@@ -94,6 +94,11 @@
   &__transcript-text {
     color: $color__white;
     margin-top: 2rem;
+
+    &:focus {
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+      outline-offset: 0.313rem;
+    }
   }
 }
 
