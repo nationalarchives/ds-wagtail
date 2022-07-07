@@ -1,7 +1,7 @@
-export default function toggle_data_link_type(e, section_headings) {
+export default function toggle_data_link_type(e) {
     const isExpanded = e.target.getAttribute("aria-expanded") === "true" ? true : false;
 
-    e.target.setAttribute("data-link-type", `${isExpanded ? "Expand" : "Collapse"} header no. ${Array.prototype.indexOf.call(section_headings, e.target)}`);
+    e.target.setAttribute("data-link-type", `${isExpanded ? "Expand" : "Collapse"} jump link`);
 
     return e.target.getAttribute("data-link-type");
 }
