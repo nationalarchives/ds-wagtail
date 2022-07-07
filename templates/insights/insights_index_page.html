@@ -15,7 +15,7 @@
     <div class="container">
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
-                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true">
+                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image">
                     <picture>
                         {% image page.featured_insight.hero_image fill-500x400-c100 as hero %}
                         <source media="(max-width: 768px)" srcset="{{ hero.url }}">
