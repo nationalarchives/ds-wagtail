@@ -17,7 +17,7 @@
   &__content-panel {
     padding: 3rem 0;
     position: relative;
-    z-index: 999;
+    z-index: 998;
   }
 
   &__icon {
@@ -72,7 +72,7 @@
         }
       }
 
-      summary::marker {
+      summary::marker, summary::-webkit-details-marker {
         color: $color__white;
       }
     }
@@ -86,6 +86,14 @@
   &__transcript-text {
     color: $color__white;
     margin-top: 2rem;
+    max-height: 25rem;
+    overflow-y: scroll;
+    overflow-x: hidden;
+
+    &:focus {
+      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+      outline-offset: 0.313rem;
+    }
   }
 }
 

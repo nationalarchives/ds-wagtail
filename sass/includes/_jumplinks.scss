@@ -3,7 +3,8 @@
   top: 0;
   padding: 2.5rem 0 0 1rem;
   height: 100vh;
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   &__heading {
     font-size: 2rem;
@@ -41,5 +42,10 @@
   
   @media (max-width: $screen__md) {
     display: none;
+  }
+
+  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+    overflow-y: hidden;
+    height: 100%;
   }
 }
