@@ -61,6 +61,14 @@
     background-color: $color__dark;
     margin-top: 2rem;
     padding: 1rem;
+    max-height: 30rem;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* Hide transcript scrollbar on Internet Explorer 11 */
+    scrollbar-width: none;  /* Hide jumplinks scrollbar on Firefox */
+
+    &::-webkit-scrollbar { 
+      display: none;  /* Hide jumplinks scrollbar on Safari, Chrome, and Edge */
+    }
 
     details {
       text-align: left;
@@ -72,7 +80,7 @@
         }
       }
 
-      summary::marker {
+      summary::marker, summary::-webkit-details-marker {
         color: $color__white;
       }
     }
