@@ -33,11 +33,9 @@
       }
     }
     &-image {
-      width: 6.25rem;
       height: 6.25rem;
 
       @media screen and (max-width: $screen__sm) {
-        width: 4.6875rem;
         height: 4.6875rem;
       }
     }
