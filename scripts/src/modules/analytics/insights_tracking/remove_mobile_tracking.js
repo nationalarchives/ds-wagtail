@@ -5,6 +5,7 @@ export default function remove_mobile_tracking() {
     Array.prototype.forEach.call(section_headings, item => {
         item.removeAttribute("data-component-name");
         item.removeAttribute("data-link-type");
+        item.removeAttribute("data-position");
         item.removeAttribute("data-link");
     });
 
