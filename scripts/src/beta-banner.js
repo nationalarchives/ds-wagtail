@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const beta_banner = document.querySelector(".beta-banner");
     const cookies_usage_policy = extract_usage_policy(document.cookie);
 
-    if(accept_cookies_button) {
+    if(beta_banner && accept_cookies_button) {
         accept_cookies_button.addEventListener("click", () => {
             create_dismiss_button(beta_banner);
         })
