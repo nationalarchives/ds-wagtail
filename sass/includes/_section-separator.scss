@@ -1,3 +1,27 @@
+.section-separator {
+  &__heading {
+    font-size: 3rem;
+    font-weight: 500;
+    font-family: $font__supria-sans;
+    color: $color__dark;
+    padding-top: 2rem;
+    background: transparent;
+
+    &-text {
+      display: inline-block;
+
+      @media only screen and (max-width: $screen__md) { 
+        width: 100%;
+        overflow-wrap: break-word;
+      }
+    }
+
+    &-chevron {
+      display: none;
+    }
+  }
+}
+
 .js {
   .section-wrapper {
     .container {
@@ -5,20 +29,12 @@
     }
     .section-separator {
       &__heading {
-        font-size: 3rem;
-        font-weight: 500;
-        font-family: $font__supria-sans;
-        color: $color__dark;
-        padding-top: 2rem;
-        display: inline-block;
-        background: transparent;
-
-        @media screen and (max-width: $screen__md) {
-          display: block;
+        @media only screen and (max-width: $screen__md) {
+          display: flex;
+          justify-content: space-between;
           font-size: 2rem;
           border-bottom: 0.25rem solid $color__grey-4;
-          background: url($fa_chevron_down) no-repeat right 90%/2rem;
-          padding-right: 3rem;
+
           &:hover {
             cursor: pointer;
           }
@@ -27,7 +43,23 @@
           }
 
           &[aria-expanded="true"] {
-            background: url($fa_chevron_up) no-repeat right 95%/2rem;
+            .section-separator__heading-chevron {
+              background: url($fa_chevron_up) no-repeat right 95%/2rem;
+            }
+          }
+        }
+
+        @media only screen and (max-width: $screen__md) {
+          &-text {
+            width: 85%;
+          }
+          &-chevron {
+            display: inline-block;
+            align-self: flex-end;
+            font-size: 2rem;
+            background: url($fa_chevron_down) no-repeat right 90%/2rem;
+            width: 3rem;
+            height: 3rem;
           }
         }
       }
