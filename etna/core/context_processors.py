@@ -1,6 +1,16 @@
 from django.conf import settings
 
 
+def globals(request):
+    """
+    Adds common setting (and potentially other values) to the context.
+    """
+    return {
+        "MY_ACCOUNT_URL": settings.MY_ACCOUNT_URL,
+        "REGISTER_URL": settings.REGISTER_URL,
+    }
+
+
 def feature_flags(request):
     """
     Makes any settings with the "FEATURE_" prefix available template contexts,

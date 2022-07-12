@@ -112,6 +112,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "wagtail.contrib.settings.context_processors.settings",
+                "etna.core.context_processors.globals",
                 "etna.core.context_processors.feature_flags",
             ],
         },
@@ -125,14 +126,21 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 
+WSGI_APPLICATION = "config.wsgi.application"
+
 # django-allauth configuration
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_LOGOUT_ON_GET = False  # Bypass logout confirmation form
 ACCOUNT_USERNAME_REQUIRED = False  # Register using email only
 ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
+AUTH_URLS = "allauth.urls"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
+LOGOUT_URL = "/accounts/logout"
+LOGOUT_REDIRECT_URL = "/"
+MY_ACCOUNT_URL = os.getenv("MY_ACCOUNT_URL")
+REGISTER_URL = os.getenv("REGISTER_URL")
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # View access control
 IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
@@ -144,7 +152,22 @@ SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
 
-WSGI_APPLICATION = "config.wsgi.application"
+# Auth0 configuration
+AUTH0_DOMAIN = os.getenv("AUTH0_DOMAIN")
+AUTH0_CLIENT_ID = os.getenv("AUTH0_CLIENT_ID")
+AUTH0_CLIENT_SECRET = os.getenv("AUTH0_CLIENT_SECRET")
+AUTH0_EMAIL_VERIFICATION_REQUIRED = strtobool(
+    os.getenv("AUTH0_EMAIL_VERIFICATION_REQUIRED", "True")
+)
+AUTH0_VERIFY_EMAIL_URL = os.getenv("AUTH0_VERIFY_EMAIL_URL")
+if AUTH0_CLIENT_SECRET:
+    # When configured, use the 'auth0' app instead of 'allauth' for
+    # authentication-related things
+    INSTALLED_APPS.insert(0, "etna.auth0")
+    AUTH_URLS = "etna.auth0.urls"
+    # We still want regular django username/password login to work too,
+    # hence 'appending' here
+    AUTHENTICATION_BACKENDS.append("etna.auth0.auth_backend.Auth0Backend")
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
