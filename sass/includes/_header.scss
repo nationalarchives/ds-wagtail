@@ -189,19 +189,6 @@
   }
 }
 
-.js {
-  .header {
-    &__nav {
-      @media only screen and (max-width: $screen__md) {
-        margin-top: -4rem;
-      }
-      @media only screen and (max-width: 30rem) {
-        margin-top: -2rem;
-      }
-    }
-  }
-}
-
 .no-js {
   .header {
     &__nav-list-item {
