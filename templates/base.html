@@ -69,10 +69,6 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
-        {% if request.COOKIES.beta_banner_dismissed != "true" %}
-            {% include 'includes/beta-banner.html' %}
-        {% endif %}
-
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
