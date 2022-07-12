@@ -387,6 +387,14 @@
                             "id": "C12440"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "RAIL 252",
+                                "type": "reference_number",
+                                "value": "RAIL 252"
+                            }
+                        ],
                         "summary": {
                             "title": "<unittitle type=\"Title\">Great Western Railway Company: Deeds, Agreements, Contracts,..."
                         }
@@ -396,6 +404,14 @@
                             "id": "C12442"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "RAIL 254",
+                                "type": "reference_number",
+                                "value": "RAIL 254"
+                            }
+                        ],
                         "summary": {
                             "title": "Great Western Railway Company: Locomotive and Rolling Stock Records"
                         }

@@ -444,6 +444,7 @@
                             "dateCreated": "1914-12-01",
                             "deliveryOption": "No availability condition provisioned for this record",
                             "description": "<span class=\"scopecontent\"><p>Headquarters Branches and Services: General Staff. </p></span>",
+                            "digitised": true,
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
                             "iaid": "C14017032",
@@ -460,6 +461,14 @@
                             "id": "C14017031"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "WO 95/1510/3",
+                                "type": "reference_number",
+                                "value": "WO 95/1510/3"
+                            }
+                        ],
                         "summary": {
                             "title": "Headquarters Branches and Services: General Staff."
                         }
@@ -468,6 +477,6 @@
             }
         ]
     },
-    "took": 6,
+    "took": 5,
     "timed_out": false
 }

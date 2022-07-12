@@ -2999,6 +2999,14 @@
                             "id": "C2361421"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "RAIL 253/515",
+                                "type": "reference_number",
+                                "value": "RAIL 253/515"
+                            }
+                        ],
                         "summary": {
                             "title": "Authorised staff establishment in Traffic Department at all stations"
                         }
@@ -3008,6 +3016,14 @@
                             "id": "C2361423"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "RAIL 253/517",
+                                "type": "reference_number",
+                                "value": "RAIL 253/517"
+                            }
+                        ],
                         "summary": {
                             "title": "Instructions for routing traffic and dividing receipts with Midland Railway Company"
                         }
@@ -3016,6 +3032,6 @@
             }
         ]
     },
-    "took": 7,
+    "took": 4,
     "timed_out": false
 }

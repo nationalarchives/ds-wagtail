@@ -191,24 +191,6 @@
                                 "summary": {
                                     "title": "Law Officers' Department: Registered Files"
                                 }
-                            },
-                            {
-                                "@admin": {
-                                    "id": "C1880",
-                                    "uuid": "cd044dd4-56d1-3444-bf17-0412b7621a5e"
-                                },
-                                "@entity": "reference",
-                                "identifier": [
-                                    {
-                                        "primary": true,
-                                        "reference_number": "ADM 171",
-                                        "type": "reference number",
-                                        "value": "ADM 171"
-                                    }
-                                ],
-                                "summary": {
-                                    "title": "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls"
-                                }
                             }
                         ]
                     ],
@@ -363,23 +345,6 @@
                             "physicalDescription": "1180 file(s)",
                             "primaryIdentifier": "C10297",
                             "referenceNumber": "LO 2",
-                            "relatedMaterials": [
-                                {
-                                    "description": "For files of the tri-service Defence Intelligence staff see,",
-                                    "links": [
-                                        "<a href=\"C5789\">DEFE 31</a>"
-                                    ]
-                                },
-                                {
-                                    "description": "For records of the Joint Intelligence Bureau see",
-                                    "links": [
-                                        "<a href=\"C14457\">WO 252</a>"
-                                    ]
-                                },
-                                {
-                                    "description": "Records of the Government Code and Cypher School:"
-                                }
-                            ],
                             "summaryTitle": "Law Officers' Department: Registered Files",
                             "title": "<span class=\"unittitle\" type=\"Title\">Law Officers' Department: Registered Files</span>",
                             "type": "aggregation"
@@ -404,18 +369,8 @@
                             {
                                 "primary": true,
                                 "reference_number": "LO 3",
-                                "type": "reference number",
+                                "type": "reference_number",
                                 "value": "LO 3"
-                            },
-                            {
-                                "catalogue_id": "9063",
-                                "type": "catalogue id",
-                                "value": "9063"
-                            },
-                            {
-                                "iaid": "C10298",
-                                "type": "iaid",
-                                "value": "C10298"
                             }
                         ],
                         "summary": {
@@ -431,18 +386,8 @@
                             {
                                 "primary": true,
                                 "reference_number": "LO 1",
-                                "type": "reference number",
+                                "type": "reference_number",
                                 "value": "LO 1"
-                            },
-                            {
-                                "catalogue_id": "9061",
-                                "type": "catalogue id",
-                                "value": "9061"
-                            },
-                            {
-                                "iaid": "C10296",
-                                "type": "iaid",
-                                "value": "C10296"
                             }
                         ],
                         "summary": {
@@ -453,6 +398,6 @@
             }
         ]
     },
-    "took": 43,
+    "took": 7,
     "timed_out": false
 }

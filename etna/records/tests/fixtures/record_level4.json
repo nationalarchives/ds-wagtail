@@ -20,7 +20,7 @@
                 "_source": {
                     "@admin": {
                         "id": "C31931",
-                        "sequence": 77364647,
+                        "sequence": 92499672,
                         "source": "mongo",
                         "stream": "evidential",
                         "uid": "mongo-c31931",
@@ -43,10 +43,7 @@
                                 "value": "aggregation"
                             },
                             {
-                                "value": "evidential"
-                            },
-                            {
-                                "value": "nonTna"
+                                "value": "tna"
                             }
                         ]
                     },
@@ -72,6 +69,12 @@
                                     "value": "ADM"
                                 }
                             ],
+                            "level": {
+                                "code": 1
+                            },
+                            "source": {
+                                "value": "CAT"
+                            },
                             "summary": {
                                 "title": "Records of the Admiralty, Naval Forces, Royal Marines, Coastguard, and related bodies"
                             }
@@ -93,6 +96,12 @@
                                         "value": "ADM"
                                     }
                                 ],
+                                "level": {
+                                    "code": 1
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "Records of the Admiralty, Naval Forces, Royal Marines, Coastguard, and related bodies"
                                 }
@@ -103,6 +112,12 @@
                                     "uuid": "22ac61d3-70f8-3d5d-b784-c98480f53b72"
                                 },
                                 "@entity": "reference",
+                                "level": {
+                                    "code": 2
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "Records of Service"
                                 }
@@ -121,6 +136,12 @@
                                         "value": "ADM 171"
                                     }
                                 ],
+                                "level": {
+                                    "code": 3
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls"
                                 }
@@ -131,6 +152,12 @@
                                     "uuid": "37c0e6c8-7a2f-367b-93b2-f61672b325d8"
                                 },
                                 "@entity": "reference",
+                                "level": {
+                                    "code": 4
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "AFRICA GENERAL SERVICE MEDAL 1902-1910"
                                 }
@@ -178,6 +205,9 @@
                                     "value": "ADM 171"
                                 }
                             ],
+                            "level": {
+                                "code": 3
+                            },
                             "@link": {
                                 "qualifier": "association",
                                 "relationship": {
@@ -188,6 +218,9 @@
                                         "value": "parent"
                                     }
                                 ]
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls"
@@ -222,6 +255,10 @@
                     },
                     "@template": {
                         "details": {
+                            "catalogueContext": [
+                                "Admiralty, and Ministry of Defence, Navy Department: Medal Rolls"
+                            ],
+                            "digitised": false,
                             "iaid": "C31931",
                             "level": "Sub-series",
                             "note": [
@@ -229,14 +266,6 @@
                             ],
                             "primaryIdentifier": "C31931",
                             "referenceNumber": "Sub-series within ADM 171",
-                            "summaryTitle": "AFRICA GENERAL SERVICE MEDAL 1902-1910",
-                            "title": "<span class=\"unittitle\" type=\"Title\">AFRICA GENERAL SERVICE MEDAL 1902-1910</span>",
-                            "type": "aggregation"
-                        },
-                        "results": {
-                            "iaid": "C31931",
-                            "level": "Sub-series",
-                            "primaryIdentifier": "C31931",
                             "summaryTitle": "AFRICA GENERAL SERVICE MEDAL 1902-1910",
                             "title": "<span class=\"unittitle\" type=\"Title\">AFRICA GENERAL SERVICE MEDAL 1902-1910</span>",
                             "type": "aggregation"
@@ -264,6 +293,6 @@
             }
         ]
     },
-    "took": 2,
+    "took": 3,
     "timed_out": false
 }

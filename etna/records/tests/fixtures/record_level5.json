@@ -43,7 +43,7 @@
                                 "value": "aggregation"
                             },
                             {
-                                "value": "nonTna"
+                                "value": "tna"
                             }
                         ]
                     },
@@ -253,6 +253,7 @@
                                 "<unittitle type = \"Title\">CAMDEN TOWN TAX DISTRICT</unittitle>",
                                 "Specimens of Series of Documents Destroyed"
                             ],
+                            "digitised": false,
                             "iaid": "C145033",
                             "level": "Sub-sub-series",
                             "primaryIdentifier": "C145033",
@@ -267,6 +268,14 @@
                             "id": "C6089146"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "IR 900/89",
+                                "type": "reference_number",
+                                "value": "IR 900/89"
+                            }
+                        ],
                         "summary": {
                             "title": "<scopecontent><p>Half Yearly assessment book</p></scopecontent>"
                         }
@@ -275,6 +284,6 @@
             }
         ]
     },
-    "took": 3,
+    "took": 4,
     "timed_out": false
 }

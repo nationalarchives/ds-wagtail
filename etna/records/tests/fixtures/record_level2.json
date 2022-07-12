@@ -20,7 +20,7 @@
                 "_source": {
                     "@admin": {
                         "id": "C995",
-                        "sequence": 77379916,
+                        "sequence": 92114630,
                         "source": "mongo",
                         "stream": "evidential",
                         "uid": "mongo-c995",
@@ -75,10 +75,7 @@
                                 "value": "aggregation"
                             },
                             {
-                                "value": "evidential"
-                            },
-                            {
-                                "value": "nonTna"
+                                "value": "tna"
                             }
                         ]
                     },
@@ -100,6 +97,9 @@
                                             "value": "POWE 16"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -110,6 +110,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Coal Division, Early Correspondence and Papers"
@@ -129,6 +132,9 @@
                                             "value": "POWE 17"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -139,6 +145,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Mines Department and Successor: Coal Division: Emergency Services, Correspondence..."
@@ -158,6 +167,9 @@
                                             "value": "POWE 18"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -168,6 +180,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "<unittitle type=\"Title\">Mines Departments and Successors: Coal Division: Fuel and..."
@@ -187,6 +202,9 @@
                                             "value": "POWE 19"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -197,6 +215,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "<unittitle type=\"Title\">Mines Department and Successors: Coal Division: House Coal:..."
@@ -216,6 +237,9 @@
                                             "value": "POWE 20"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -226,6 +250,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Home Office, Industrial and Parliamentary Department, and Successors: Coal Division:..."
@@ -245,6 +272,9 @@
                                             "value": "POWE 21"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -255,6 +285,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Mines Department and Successors: War Book and Associated Matters: Correspondence..."
@@ -274,6 +307,9 @@
                                             "value": "POWE 22"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -284,6 +320,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Board of Trade and Successors: Coal Division: Production: Correspondence and Papers"
@@ -303,6 +342,9 @@
                                             "value": "POWE 26"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -313,6 +355,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Board of Trade and Successors: Mines Department and Successors: 'A' Files"
@@ -332,6 +377,9 @@
                                             "value": "POWE 37"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -342,6 +390,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Ministry of Fuel and Power and Successor:Registered Files: Coal Division (B Series)"
@@ -361,6 +412,9 @@
                                             "value": "POWE 39"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -371,6 +425,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Mines Department and Successors: Coal Division: Finance Files"
@@ -390,6 +447,9 @@
                                             "value": "POWE 40"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -400,6 +460,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "<unittitle type=\"Title\">Ministry of Fuel and Power: Coal Division: Opencast Coal..."
@@ -419,6 +482,9 @@
                                             "value": "POWE 41"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -429,6 +495,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Ministry of Fuel and Power and Successor: Coal Division: International Matters: OB..."
@@ -448,6 +517,9 @@
                                             "value": "POWE 47"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -458,6 +530,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Ministry of Fuel and Power, Coal Division: Coal Distribution Costs Committee"
@@ -477,6 +552,9 @@
                                             "value": "POWE 52"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -487,6 +565,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "<unittitle type=\"Title\">Ministry of Fuel and Power, Coal Division, and Successors:..."
@@ -506,6 +587,9 @@
                                             "value": "POWE 53"
                                         }
                                     ],
+                                    "level": {
+                                        "code": 3
+                                    },
                                     "@link": {
                                         "qualifier": "association",
                                         "relationship": {
@@ -516,6 +600,9 @@
                                                 "value": "scope and content"
                                             }
                                         ]
+                                    },
+                                    "source": {
+                                        "value": "CAT"
                                     },
                                     "summary": {
                                         "title": "Ministry of Fuel and Power, Coal Division, and Successor: Registered Files: Coal..."
@@ -542,6 +629,12 @@
                                     "value": "POWE"
                                 }
                             ],
+                            "level": {
+                                "code": 1
+                            },
+                            "source": {
+                                "value": "CAT"
+                            },
                             "summary": {
                                 "title": "Records created or inherited by the Ministry of Power, and of related bodies"
                             }
@@ -563,6 +656,12 @@
                                         "value": "POWE"
                                     }
                                 ],
+                                "level": {
+                                    "code": 1
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "Records created or inherited by the Ministry of Power, and of related bodies"
                                 }
@@ -573,6 +672,12 @@
                                     "uuid": "5609a993-34fe-3375-aa83-9a6ce156a5bd"
                                 },
                                 "@entity": "reference",
+                                "level": {
+                                    "code": 2
+                                },
+                                "source": {
+                                    "value": "CAT"
+                                },
                                 "summary": {
                                     "title": "Records of the Coal Division"
                                 }
@@ -716,6 +821,9 @@
                                     "value": "POWE"
                                 }
                             ],
+                            "level": {
+                                "code": 1
+                            },
                             "@link": {
                                 "qualifier": "association",
                                 "relationship": {
@@ -726,6 +834,9 @@
                                         "value": "parent"
                                     }
                                 ]
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Records created or inherited by the Ministry of Power, and of related bodies"
@@ -747,6 +858,9 @@
                                 "uuid": "ae4d1685-d943-301d-8f33-3f0f9e9b7cb2"
                             },
                             "@entity": "reference",
+                            "level": {
+                                "code": 2
+                            },
                             "@link": {
                                 "note": {
                                     "value": "Coal Records Prior to the National Coal Board:"
@@ -755,6 +869,9 @@
                                 "relationship": {
                                     "value": "related"
                                 }
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Coal Records Prior to the National Coal Board"
@@ -774,6 +891,9 @@
                                     "value": "POWE 28"
                                 }
                             ],
+                            "level": {
+                                "code": 3
+                            },
                             "@link": {
                                 "note": {
                                     "value": "Departmental committee reports, files of the compensation tribunal, parliamentary papers and other records relating to the Coal Industry Nationalisation Bill are in"
@@ -782,6 +902,9 @@
                                 "relationship": {
                                     "value": "related"
                                 }
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Ministry of Fuel and Power and Ministry of Power: Statistics and Planning Division..."
@@ -801,11 +924,17 @@
                                     "value": "POWE 35"
                                 }
                             ],
+                            "level": {
+                                "code": 3
+                            },
                             "@link": {
                                 "qualifier": "association",
                                 "relationship": {
                                     "value": "related"
                                 }
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Ministry of Fuel and Power and Successor: Valuation and Compensation Division: Coal..."
@@ -825,11 +954,17 @@
                                     "value": "POWE 36"
                                 }
                             ],
+                            "level": {
+                                "code": 3
+                            },
                             "@link": {
                                 "qualifier": "association",
                                 "relationship": {
                                     "value": "related"
                                 }
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Ministry of Fuel and Power: Solicitors Branch"
@@ -849,6 +984,9 @@
                                     "value": "POWE 42"
                                 }
                             ],
+                            "level": {
+                                "code": 3
+                            },
                             "@link": {
                                 "note": {
                                     "value": "Files of the Central Valuation Board are in"
@@ -857,6 +995,9 @@
                                 "relationship": {
                                     "value": "related"
                                 }
+                            },
+                            "source": {
+                                "value": "CAT"
                             },
                             "summary": {
                                 "title": "Central Valuation Board: Coal Industry Nationalisation Act 1946"
@@ -896,6 +1037,9 @@
                                 "Coal Production Council",
                                 "National Coal Board"
                             ],
+                            "catalogueContext": [
+                                "Records created or inherited by the Ministry of Power, and of related bodies"
+                            ],
                             "creator": [
                                 "Mines Department, 1920-1942",
                                 "Ministry of Fuel and Power, Coal Division, 1942-1957",
@@ -904,6 +1048,7 @@
                             ],
                             "dateCreated": "1883-1973",
                             "description": "<span class=\"scopecontent\"><p>Records reflecting the creating bodies' responsibilities in relation to the coal industry.</p><p>Correspondence and papers of the Coal Division are in <a class=\"extref\" href=\"C11833\">POWE 16</a>, <a class=\"extref\" href=\"C11834\">POWE 17</a> (emergency services, price control, supply and demand for anthracite, retail coal distribution), <a class=\"extref\" href=\"C11835\">POWE 18</a> (fuel and lighting), <a class=\"extref\" href=\"C11836\">POWE 19</a> (house coal emergency schemes), <a class=\"extref\" href=\"C11837\">POWE 20</a> (labour and labour relations), <a class=\"extref\" href=\"C11838\">POWE 21</a> (Mines Department War Book control arrangements), <a class=\"extref\" href=\"C11839\">POWE 22</a> (drainage schemes: mining subsidence, mining rights, mineral royalties, financial assistance, Reid Committee reports), and <a class=\"extref\" href=\"C11843\">POWE 26</a>. Up to 1942, these are records inherited or created by the Mines Department, and include records relating to wartime controls. Subjects included amongst these cover various aspects of coal mining. Some early papers in these series originated in the Home Office.</p><p>Finance files are in <a class=\"extref\" href=\"C11855\">POWE 39</a>. Records of the Directorate of Opencast Mining are in <a class=\"extref\" href=\"C11856\">POWE 40</a>. Records of the Coal Distribution Costs Committee (1956-1958) are in <a class=\"extref\" href=\"C11863\">POWE 47</a>.</p><p>The main registered file series of the Coal Division post-dating nationalisation are in <a class=\"extref\" href=\"C11853\">POWE 37</a> (B Series), <a class=\"extref\" href=\"C11868\">POWE 52</a> (COAL Series) and <a class=\"extref\" href=\"C11869\">POWE 53</a> (C Series). The main series of the Coal Division files dealing with international matters are in <a class=\"extref\" href=\"C11857\">POWE 41</a> (OB Files).</p></span>",
+                            "digitised": false,
                             "iaid": "C995",
                             "language": [
                                 "English"
@@ -938,14 +1083,6 @@
                             "summaryTitle": "Records of the Coal Division",
                             "title": "<span class=\"unittitle\" type=\"Title\">Records of the Coal Division</span>",
                             "type": "aggregation"
-                        },
-                        "results": {
-                            "iaid": "C995",
-                            "level": "Division",
-                            "primaryIdentifier": "C995",
-                            "summaryTitle": "Records of the Coal Division",
-                            "title": "<span class=\"unittitle\" type=\"Title\">Records of the Coal Division</span>",
-                            "type": "aggregation"
                         }
                     },
                     "@next": {
@@ -961,6 +1098,6 @@
             }
         ]
     },
-    "took": 5,
+    "took": 3,
     "timed_out": false
 }

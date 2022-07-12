@@ -427,6 +427,14 @@
                             "id": "C6518464"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "DSIR 27/6/ADM170",
+                                "type": "reference_number",
+                                "value": "DSIR 27/6/ADM170"
+                            }
+                        ],
                         "summary": {
                             "title": "Progress report for February 1944 on small-scale underwater explosions."
                         }
@@ -436,6 +444,14 @@
                             "id": "C6518466"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "DSIR 27/6/ADM172",
+                                "type": "reference_number",
+                                "value": "DSIR 27/6/ADM172"
+                            }
+                        ],
                         "summary": {
                             "title": "The pressures produced by explosions underwater of straight line charges of Cordtex..."
                         }
