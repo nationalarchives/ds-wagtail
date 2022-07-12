@@ -1,0 +1,63 @@
+.maintenance {
+    background-color: $color__yellow_2;
+    padding: 2rem;
+    margin: 5rem 10rem;
+    text-align: center;
+    border-radius: 1rem;
+
+    &__heading {
+        padding: 2rem;
+
+        @media only screen and (max-width: $screen__md) {
+            padding: 1rem;
+        }
+    
+        @media only screen and (max-width: $screen__sm) {
+            font-size: 2rem;
+        }
+    }
+
+    &__text {
+        font-size: 1.5rem;
+
+        &--small {
+            font-size: 1.25rem;
+        }
+
+        a {
+            color: $color__dark;
+        }
+    }
+
+    &__logo-image {
+        width: 20rem;
+        height: 20rem;
+        padding: 2rem;
+
+        @media only screen and (max-width: $screen__sm) {
+            width: 15rem;
+            height: 15rem;
+        }
+
+        @media only screen and (max-width: 21.875rem) {
+            width: 13rem;
+            height: 13rem;
+        }
+    }
+
+    @media only screen and (max-width: $screen__lg) {
+        margin: 5rem 7rem;
+    }
+
+    @media only screen and (max-width: $screen__md) {
+        margin: 5rem 5rem;
+    }
+
+    @media only screen and (max-width: 37.5rem) {
+        margin: 5rem 2rem;
+    }
+
+    @media only screen and (max-width: $screen__sm) {
+        margin: 5rem 1rem;
+    }
+}
