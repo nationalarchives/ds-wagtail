@@ -32,8 +32,8 @@ def trigger_error(request):
 private_urls = [
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
-    path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+    path("accounts/", include(settings.AUTH_URLS)),
 ]
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
