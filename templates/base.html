@@ -34,10 +34,10 @@
             {# Override this in templates to add extra javascript to be used by GTM #}
         {% endblock %}
 
-        {% if request.COOKIES.cookies_policy|cookie_use_permitted %} 
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
             {% include 'includes/gtm-script.html' %}
         {% endif %}
-        
+
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
@@ -69,7 +69,7 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
-        {% if request.COOKIES.beta_banner_dismissed != "true" %}
+        {% if FEATURE_BETA_BANNER_ENABLED and request.COOKIES.beta_banner_dismissed != "true" %}
             {% include 'includes/beta-banner.html' %}
         {% endif %}
 
@@ -88,11 +88,11 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
-
         {% if FEATURE_COOKIE_BANNER_ENABLED %}
             <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
         {% endif %}
-
-        <script src="{% static 'scripts/beta_banner.js' %}"></script>
+        {% if FEATURE_BETA_BANNER_ENABLED %}
+            <script src="{% static 'scripts/beta_banner.js' %}"></script>
+        {% endif %}
     </body>
 </html>
