@@ -30,11 +30,11 @@
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
-        {% if request.COOKIES.cookies_policy|cookie_use_permitted %} 
-            {% block extra_gtm_js %}
-                {# Override this in templates to add extra javascript to be used by GTM #}
-            {% endblock %}
+        {% block extra_gtm_js %}
+            {# Override this in templates to add extra javascript to be used by GTM #}
+        {% endblock %}
 
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %} 
             {% include 'includes/gtm-script.html' %}
         {% endif %}
         
