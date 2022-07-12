@@ -34,8 +34,10 @@
             {# Override this in templates to add extra javascript to be used by GTM #}
         {% endblock %}
 
-        {% include 'includes/gtm-script.html' %}
-
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %} 
+            {% include 'includes/gtm-script.html' %}
+        {% endif %}
+        
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
@@ -67,6 +69,10 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
+        {% if request.COOKIES.beta_banner_dismissed != "true" %}
+            {% include 'includes/beta-banner.html' %}
+        {% endif %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -87,5 +93,6 @@
             <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
         {% endif %}
 
+        <script src="{% static 'scripts/beta_banner.js' %}"></script>
     </body>
 </html>
