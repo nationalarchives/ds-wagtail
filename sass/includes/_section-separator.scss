@@ -49,6 +49,10 @@
           }
         }
 
+        &-text, &-chevron {
+          pointer-events: none;
+        }
+
         @media only screen and (max-width: $screen__md) {
           &-text {
             width: 85%;
