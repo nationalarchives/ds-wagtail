@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load datalayer_tags %}
+{% load records_tags %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer page %}
+{% endblock extra_gtm_js %}
+
+{% block content %}
+
+    {% if page.parent %}
+        {% include "includes/records/hierarchy-local.html" %}
+    {% endif %}
+
+    <div class="row no-gutters">
+
+        <div class="col-xl-3 order-xl-2 specific-border-bottom-lg specific-sticky specific-bg-grey-5">
+              {% include "includes/records/hierarchy-global.html" %}
+        </div>
+
+        <div class="col-xl-9 order-xl-1 specific-padding-bottom-lg">
+            {% include "includes/records/record-title.html" %}
+            <div class="container">
+                {% include "includes/records/key-facts.html" %}
+
+                <h2>How to view this record</h2>
+
+                {% if page.is_digitised and image %}
+                    {% include "includes/records/image-viewer-panel.html" %}
+                {% endif %}
+                {% include "includes/records/record-access-options.html" %}
+
+                <h2 id="record-details-heading">Description and record details</h2>
+
+                {% include "includes/records/record-details.html" %}
+
+                {% if page.topics %}
+                    <h2>{{ 'topics'|as_label }}</h2>
+                    {% include "includes/records/taxonomy-tags.html" %}
+                {% endif %}
+
+                {% if page.related_records %}
+                    <h2>{{ 'related_records'|as_label }}</h2>
+                    {% include "includes/records/record-related-records.html" %}
+                {% endif %}
+
+                {% if page.related_articles %}
+                    <h2>{{ 'related_articles'|as_label }}</h2>
+                    {% include "includes/records/record-related-content.html" %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/details.js' %}"></script>
+{% endblock %}

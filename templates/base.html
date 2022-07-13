@@ -1,20 +1,18 @@
-{% load static wagtailuserbar %}
-{% load alert_tags %}
-
-<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags cookie_tags %}<!DOCTYPE html>
+{% get_settings %}
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
         <title>
-            {% if form.errors %}Error: {% endif %}
-
+            {% block title_prefix %}
+                {% if form.errors %}Error: {% endif %}
+            {% endblock %}
             {% block title %}
-                {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+                {% firstof page.seo_title page.title meta_title "Untitled" %}
             {% endblock %}
             {% block title_suffix %}
-                {% with page.get_site.site_name as site_name %}
-                    {% if site_name %}- {{ site_name }}{% endif %}
-                {% endwith %}
+                {% wagtail_site as current_site %}
+                 - {{ current_site.site_name }}
             {% endblock %}
         </title>
         <meta name="description" content="" />
@@ -23,42 +21,78 @@
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
+        {# Cookie consent #}
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
+        {% endif %}
+
         {% block extra_css %}
             {# Override this in templates to add extra stylesheets #}
         {% endblock %}
 
-    {% block extra_gtm_js %}
-        {# Override this in templates to add extra javascript to be used by GTM #}
-    {% endblock %}
+        {% block extra_gtm_js %}
+            {# Override this in templates to add extra javascript to be used by GTM #}
+        {% endblock %}
 
-    {% include 'includes/gtm-script.html' %}
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
+            {% include 'includes/gtm-script.html' %}
+        {% endif %}
 
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
-          rel="stylesheet">
-    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
+        {# Google Fonts #}
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
+            rel="stylesheet">
 
-    {# Favicon #}
-    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
-    <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
-</head>
 
-<body class="{% block body_class %}{% endblock %}">
-{% wagtailuserbar %}
-<a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
-{% alerts page=page %}
-{% include 'includes/gtm-no-script.html' %}
-{% include 'includes/header.html' %}
+        <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
-<main id="maincontent">
-    {% block content %}{% endblock %}
-</main>
+        {# Adobe Fonts #}
+        <link rel="preconnect" href="https://use.typekit.net">
+        <link rel="stylesheet" href="https://use.typekit.net/hkj3kuz.css">
 
-{% include 'includes/footer.html' %}
+        {# Favicon #}
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+    </head>
 
-{% block extra_js %}
-    {# Override this in templates to add extra javascript #}
-{% endblock %}
-</body>
+    <body class="{% block body_class %}{% endblock %}">
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            {% include 'includes/cookie-consent.html' %}
+        {% endif %}
+        <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
+
+        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
+            {% include 'includes/gtm-no-script.html' %}
+        {% endif %}
+
+        {% block header %}
+            {% include 'includes/header.html' %}
+        {% endblock %}
+
+        {% if FEATURE_BETA_BANNER_ENABLED and request.COOKIES.beta_banner_dismissed != "true" %}
+            {% include 'includes/beta-banner.html' %}
+        {% endif %}
+
+        {% block main %}
+            <main id="maincontent">
+                {% block content %}{% endblock %}
+            </main>
+        {% endblock %}
+
+        {% block footer %}
+            {% include 'includes/footer.html' %}
+        {% endblock %}
+
+        {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+        <script src="{% static 'scripts/global_search.js' %}"></script>
+        <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
+        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+            <script src="{% static 'scripts/cookie_consent.js' %}"></script>
+        {% endif %}
+        {% if FEATURE_BETA_BANNER_ENABLED %}
+            <script src="{% static 'scripts/beta_banner.js' %}"></script>
+        {% endif %}
+    </body>
 </html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% load search_tags %}
+{% load humanize %}
+{% load static %}
+
+{% block content %}
+    <form method="get" data-id="search-form">
+        {% with type="Website" %}
+            {% include './blocks/search_results_hero.html' %}
+        {% endwith %}
+
+        {{ form.non_field_errors }}
+
+        {% include './blocks/website_search_buckets.html' %}
+
+        <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
+        <p class="search-results__explainer--mobile">Results from our website.</p>
+        {% include './blocks/search_sort_and_view_options.html' %}
+
+        <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+            <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                {% include './blocks/search_filters.html' %}
+            </div>
+            <div class="catalogue-search-grid__results">
+                {% if page.paginator.count %}
+                    {% include './blocks/search_results.html' %}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if page.paginator.count %}
+            {% include './blocks/search_pagination.html' %}
+        {% endif %}
+
+        <div>
+            {{ form.group.errors }}
+            {{ form.group.as_hidden }}
+        </div>
+    </form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'scripts/catalogue_search.js' %}"></script>
+{% endblock %}

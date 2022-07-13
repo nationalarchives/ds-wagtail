@@ -4,7 +4,7 @@
 
     <details id="js-hierarchy-global" open>
         <summary id="analytics-hierarchy-link">
-            <h2 class="hierarchy-global__heading" id="hierarchy-label">Where am I in the catalogue?</h2>
+            <h2 class="hierarchy-global__heading" id="hierarchy-label">{{ 'hierarchy'|as_label }}</h2>
         </summary>
 
         <ol class="hierarchy-global__list" aria-labelledby="hierarchy-label">
@@ -18,7 +18,7 @@
                 {% else %}
                     <li class="hierarchy-global__list-item">
                         <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
-                        <a href="{% url 'details-page-human-readable' item.reference_number %}"  data-link="{{ forloop.counter0 }}: {{ item.reference_number }}" class="link--bold">
+                        <a href="{% record_url item %}"  data-link="{{ forloop.counter0 }}: {{ item.reference_number }}" class="link--bold">
                             {{ item.title }}
                         </a>
                     </li>

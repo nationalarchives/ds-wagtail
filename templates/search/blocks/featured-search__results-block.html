@@ -1,0 +1,22 @@
+{% load records_tags %}
+{% load search_tags %}
+<div class="featured-search__results-block">
+    <h2 class="featured-search__heading">{{ bucket.label }}</h2>
+    <ul class="featured-search__results-list">
+        {% for record in bucket.results %}
+            <li class="featured-search__results-list-item">
+                <a href="{% record_url record %}" class="featured-search__results-link">
+                    <h3 class="featured-search__results-heading">
+                        {{ record|record_detail:"summaryTitle"|striptags }}
+                    </h3>
+                </a>
+                <p>Catalogue reference: {{ record|record_detail:"referenceNumber"}}</p>
+            </li>
+        {% endfor %}
+    </ul>
+    <div class="featured-search__see-all-link">
+        <a class="featured-search__results-link" href="{% url 'search-catalogue' %}?q={{ search_query|iriencode }}&group={{ bucket.key }}">
+            See all relevant {{ bucket.label_with_count }}
+        </a>
+    </div>
+</div>

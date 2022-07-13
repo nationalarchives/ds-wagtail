@@ -1,0 +1,20 @@
+{% load static %}
+
+<div class="quote">
+    <div class="container quote__container">
+        {% if value.attribution %}
+            <figure>
+                <blockquote class="quote__text">
+                    {{ value.quote }}
+                </blockquote>
+                <figcaption class="quote__citation">
+                    <cite>{{ value.attribution }}</cite>
+                </figcaption>
+            </figure>
+        {% else %}
+            <blockquote class="quote__text">
+                {{ value.quote }}
+            </blockquote>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,92 @@
+{% load search_tags %}
+
+<div class="search-filters">
+    <h2 class="sr-only">Edit filters</h2>
+    <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
+
+        {% comment %}
+         {% if form.group.value == 'tna' %}
+            <div class="search-filters__form-block">
+                TODO make this a django form element
+                <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
+                <label for="online-only" class='search-filters__label'>Show online records only</label>
+                <input type="submit" value="Update" class="search-filters__submit">
+            </div>
+            {% endif %}
+        {% endcomment %}
+
+        <div class="search-filters__form-block">
+
+            <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+            {{ form.filter_keyword }}
+            {{ form.filter_keyword.errors }}
+            <input type="submit" value="Search" class="search-filters__submit">
+        </div>
+
+        <div class="search-filters__form-block">
+
+            {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
+            {% if not form.group.value == "archive" and not form.group.value == "creator" and not form.group.value == "highlight" %}
+                <h3>Refine results by</h3>
+            {% endif %}
+
+            {% comment %} <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend>
+                        <h4 class="search-filters__accordion-section-heading">Date</h4>
+                    </legend>
+
+                    <div>
+                        <input type="checkbox" name="date-example" id="date-example">
+                        <label for="date-example" class='search-filters__label'>Example century goes here</label>
+                    </div>
+
+                    <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+
+            </div> {% endcomment %}
+
+            {% include "search/includes/filter.html" with field=form.collection %}
+
+            {% include "search/includes/filter.html" with field=form.topic %}
+
+            {% include "search/includes/filter.html" with field=form.level %}
+
+            {% include "search/includes/filter.html" with field=form.closure %}
+
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+            <div class="search-filters__accordion-section">
+                <fieldset>
+                    <legend>
+                        <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                    </legend>
+                    <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
+
+                    <div class="search-filters__opening-date-section">
+                        {{ form.opening_start_date.errors }}
+                        {{ form.opening_start_date.label_tag }}
+                        {{ form.opening_start_date }}
+                    </div>
+                    <div class="search-filters__opening-date-section">
+                        {{ form.opening_end_date.errors }}
+                        {{ form.opening_end_date.label_tag }}
+                        {{ form.opening_end_date }}
+                    </div>
+
+                    <input type="submit" value="Update" class="search-filters__submit">
+                </fieldset>
+            </div>
+            {% endif %}
+
+            {% if form.group.value == 'nonTna' %}
+                {% include "search/includes/filter.html" with field=form.held_by %}
+                {% include "search/includes/filter.html" with field=form.catalogue_source %}
+            {% endif %}
+        </div>
+        {% for hidden_field in form.hidden_fields %}
+            {{hidden_field}}
+        {% endfor %}
+    </form>
+    {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
+</div>

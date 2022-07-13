@@ -1,4 +1,5 @@
 {% extends 'base-images.html' %}
+{% load records_tags %}
 {% load static %}
 
 {% block content %}
@@ -26,7 +27,7 @@
 
                     <ul>
                         <li><a href="{% url 'image-browse' page.iaid %}">All {{ images_count }} images</a></li>
-                        <li><a href="{% url 'details-page-machine-readable' page.iaid %}">Record details</a></li>
+                        <li><a href="{% record_url page %}">Record details</a></li>
                     </ul>
                 </nav>
             </div>

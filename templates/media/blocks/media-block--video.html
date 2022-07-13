@@ -1,13 +1,6 @@
 {% load static %}
 {% load wagtailcore_tags %}
 
-{% static "images/fontawesome-svgs/video-white.svg" as icon_bg %}
-
-<div class="media-embed__icon" style="background-image: url('{{ icon_bg }}');"></div>
-<p class="media-embed__icon-label" role="presentation" aria-hidden="true">
-    Video
-</p>
-
 <h3 class="media-embed__heading">
     <span class="sr-only">Video.</span>
     {{ value.title }}

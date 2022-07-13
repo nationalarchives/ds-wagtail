@@ -30,13 +30,6 @@ class ReferenceNumberConverter:
 
 
 class IAIDConverter(StringConverter):
-    """Converter used to extract an IAID from a URL.
+    """Converter used to extract an IAID from a URL."""
 
-    Extracts C11285946 from:
-
-    https://beta.nationalarchives.gov.uk/C11285946/
-    """
-
-    regex = (
-        r"(\w\d+)|([0-9a-f]{8}\b-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-\b[0-9a-f]{12})"
-    )
+    regex = r"([ACDFN][0-9]{1,8}|[a-f0-9]{8}-?([a-f0-9]{4}-?){3}[a-f0-9]{12}(_[1-9])?)"

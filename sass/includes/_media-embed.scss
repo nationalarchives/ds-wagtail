@@ -2,6 +2,10 @@
   min-height: 37.5rem;
   position: relative;
 
+  &__audio-container, &__video-container {
+    text-align: center;
+  }
+
   &__overlay {
     background-color: $color__black;
     opacity: 0.8;
@@ -13,8 +17,7 @@
   &__content-panel {
     padding: 3rem 0;
     position: relative;
-    text-align: center;
-    z-index: 999;
+    z-index: 998;
   }
 
   &__icon {
@@ -47,7 +50,6 @@
   }
 
   &__description {
-    font-size: 1.2rem;
     text-align: left;
   }
 
@@ -57,7 +59,6 @@
 
   &__transcript {
     background-color: $color__dark;
-    font-size: 1.2rem;
     margin-top: 2rem;
     padding: 1rem;
 
@@ -71,7 +72,7 @@
         }
       }
 
-      summary::marker {
+      summary::marker, summary::-webkit-details-marker {
         color: $color__white;
       }
     }

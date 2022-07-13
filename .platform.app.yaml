@@ -28,7 +28,6 @@ disk: 2048
 # side is in the form <service name>:<endpoint name>.
 relationships:
     db: 'db:postgresql'
-    elasticsearch: 'search:elasticsearch'
     redis: "redis:redis"
 
 
@@ -48,8 +47,8 @@ hooks:
 
     wget https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css --directory-prefix templates/static/css/libraries/
 
-    nvm install v14.17.3
-    nvm use v14.17.3
+    nvm install v14.19.1
+    nvm use v14.19.1
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
     sass sass/etna-wagtail-editor.scss:templates/static/css/dist/etna-wagtail-editor.css
