@@ -185,7 +185,6 @@ class TestRecordDescriptionOverride(TestCase):
 
         response = self.client.get("/results-page/")
 
-        self.assertNotContains(response, "This is the description from Kong")
         self.assertContains(response, "This is the overridden description")
 
 
