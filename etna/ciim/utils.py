@@ -262,6 +262,8 @@ def prevent_request_warnings(original_function):
         logger.setLevel(previous_logging_level)
 
     return new_function
+
+
 def format_link(link_html: str) -> Dict[str, str]:
     """
     Extracts iaid and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
