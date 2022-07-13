@@ -2,13 +2,37 @@
 
 {% include 'includes/login-status.html' %}
 
-<header class="tna-header">
-    <a href="/" class="tna-header__home-link">
-        <img src="{% static 'images/tna-blk-logo-beta.svg' %}" class="img-fluid tna-header__logo--beta"
-        alt="The National Archives" width="143" height="90">
-    </a>
-    <p class="tna-header__description">
-    <span class="tna-header__description-heading">Welcome to The National Archives</span><br/>
-    We are the guardians of over 1,000 years of UK government records.
-</p>
-</header>
+<div class="global-tna-link tna-bg--dark">
+  <a href="https://www.nationalarchives.gov.uk/" target="_blank" class="global-tna-link__link" data-component-name="Banner" data-link-type="Link text" data-link="Go to the current National Archives website">
+    Go to the current National Archives website <span class="sr-only">Opens in a new tab</span>
+  </a>
+</div>
+
+<header class="header">
+    <div class="header__logo-holder">
+      <a href="/" class="header__logo-link"
+        ><img
+          src="{% static 'images/tna-blk-logo-beta.svg' %}"
+          class="header__logo-image"
+          alt="The National Archives logo"
+      /></a>
+    </div>
+
+    {% if settings.core.SiteSettings.main_menu_items %}
+      <nav class="header__nav" aria-label="Site menu" data-id="site-menu">
+        <ul class="header__nav-list" data-id="site-menu-list">
+          {% for item in settings.core.SiteSettings.main_menu_items %}
+            <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% else %} id="js-site-menu-search" {% endif %}>
+              {% if item.handle == 'search' %}
+                <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>
+                  {{ item.label }}
+                </a>
+              {% else %}
+                <a class="header__nav-list-item-link" href="{{ item.url }}"{% if item.is_active %} aria-current="true"{% endif %}>{{ item.label }}</a>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+  </header>

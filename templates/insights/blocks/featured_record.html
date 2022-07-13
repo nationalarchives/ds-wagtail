@@ -1,36 +1,37 @@
 {% load static %}
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
+{% load records_tags %}
 
-<div class="record-embed-no-image" data-container-name="record-embed-no-image">
+<div class="featured-record" data-container-name="featured-record">
     <div class="container">
-        <div class="record-embed-no-image__icon" style="background-image: url({% static 'images/fontawesome-svgs/search-white.svg' %});"></div>
-        <p class="record-embed-no-image__icon-label" role="presentation" aria-hidden="true">
-            Discover our records
-        </p>
-        <h3 class="record-embed-no-image__heading">
-            <span class="sr-only">Discover our records.</span>
-            {{ value.record.title }}
-        </h3>
-        {% if value.record.reference_number %}
-            <p class="record-embed-no-image__text--inline">Reference: {{ value.record.reference_number }}</p>
-        {% endif %}
-        {% if value.record.origination_date %}
-            <p class="record-embed-no-image__text--inline">
-            Date created: {{ value.record.origination_date }}
-            </p>
-        {% endif %}
+        <{{ heading_level }} class="featured-record__heading">
+            Record details
+        </{{ heading_level }}>
 
-        {% if value.image %}
-            {% include_block value.image %}
-        {% endif %}
+        <div class="featured-record__content">
+            {% if value.image %}
+                {% include_block value.image %}
+            {% endif %}
 
-        <p class="record-embed-no-image__text">{{ value.record.description|safe }}</p>
-        <!-- Buttons to be placed in a for loop in case there are more than one e.g. view in the catalogue and read more in our blog -->
-        {% if value.record.reference_number %}
-            <a class="tna-button--dark" href="{% url 'details-page-human-readable' value.record.reference_number %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
-        {% elif value.record.iaid %}
-            <a class="tna-button--dark" href="{% url 'details-page-machine-readable' value.record.iaid %}" data-link="View in the catalogue">View <span class="sr-only">{{ value.record.title }}</span> in the catalogue</a>
-        {% endif %}
+            <h4 class="featured-record__standfirst">{{ value.title }}</h4>
+
+            {% if value.record.title %}
+                <p class="featured-record__title"><span class="sr-only">{{ 'title'|as_label }}:</span> {{ value.record.title }}</p>
+            {% endif %}
+
+            <div class="featured-record__metadata">
+                {% if value.record.reference_number %}
+                    <p class="featured-record__reference">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
+                {% endif %}
+                {% if value.record.origination_date %}
+                    <p class="featured-record__date">
+                    {{ 'origination_date'|as_label }}: {{ value.record.origination_date }}
+                    </p>
+                {% endif %}
+            </div>
+
+            <a class="tna-button--dark" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>View <span class="sr-only">{{ value.record.title }}</span> in the catalogue{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
+        </div>
     </div>
 </div>

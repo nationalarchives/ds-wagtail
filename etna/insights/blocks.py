@@ -5,15 +5,26 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
-from ..images.blocks import ImageBlock
+from etna.core.blocks import (
+    ContentImageBlock,
+    ImageBlock,
+    NoCaptionImageBlock,
+    PageListBlock,
+    ParagraphBlock,
+    ParagraphWithHeading,
+    SectionDepthAwareStructBlock,
+)
+
 from ..media.blocks import MediaBlock
-from ..paragraphs.blocks import ParagraphWithHeading
-from ..quotes.blocks import QuoteBlock
 from ..records.blocks import RecordChooserBlock
-from ..sections.blocks import SectionBlock
 
 
-class FeaturedRecordBlock(blocks.StructBlock):
+class FeaturedRecordBlock(SectionDepthAwareStructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
+    )
     record = RecordChooserBlock()
     image = ImageBlock(
         label="Teaser image",
@@ -25,34 +36,53 @@ class FeaturedRecordBlock(blocks.StructBlock):
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_record.html"
+        label = "Featured record"
 
 
-class FeaturedRecordsBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(
-        max_length=100, required=True, label="Heading (heading level 3)"
+class FeaturedRecordsItemBlock(blocks.StructBlock):
+    title = blocks.CharBlock(
+        label="Descriptive title",
+        max_length=200,
+        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
     )
-    introduction = blocks.CharBlock(max_length=200, required=True)
-    records = blocks.ListBlock(
-        RecordChooserBlock,
-    )
+    record = RecordChooserBlock()
+
+    class Meta:
+        icon = "archive"
+
+
+class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
+    introduction = blocks.CharBlock(max_length=200, required=False)
+    items = blocks.ListBlock(FeaturedRecordsItemBlock)
 
     class Meta:
         icon = "archive"
         template = "insights/blocks/featured_records.html"
+        label = "Featured records"
 
 
-class PromotedItemBlock(blocks.StructBlock):
+class PromotedItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         max_length=100,
         help_text="Title of the promoted page",
-        label="Title (heading level 3)",
+        label="Title",
     )
-    category = SnippetChooserBlock("categories.Category")
+    category = blocks.ChoiceBlock(
+        label="Category",
+        choices=[
+            ("blog", "Blog post"),
+            ("podcast", "Podcast"),
+            ("video", "Video"),
+            ("video-external", "External video"),
+            ("external-link", "External link"),
+        ],
+    )
     publication_date = blocks.DateBlock(required=False)
+    author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
         max_length=50,
-        label="Duration/Read time",
+        label="Duration",
         help_text="Podcast or video duration. Or estimated read time of article.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
@@ -76,9 +106,8 @@ class PromotedItemBlock(blocks.StructBlock):
             )
         ),
     )
-    image = ImageBlock(
+    image = NoCaptionImageBlock(
         label="Teaser image",
-        help_text="An image used to create a teaser for the promoted page",
         template="insights/blocks/images/blog-embed__image-container.html",
     )
     description = blocks.RichTextBlock(
@@ -87,13 +116,14 @@ class PromotedItemBlock(blocks.StructBlock):
     )
 
     class Meta:
+        label = "Featured link"
         template = "insights/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
 
 
-class PromotedListItemBlock(blocks.StructBlock):
+class PromotedListItemBlock(SectionDepthAwareStructBlock):
     """
     Items for promoted list block.
     """
@@ -101,13 +131,12 @@ class PromotedListItemBlock(blocks.StructBlock):
     title = blocks.CharBlock(
         required=True,
         max_length=100,
-        help_text="Title of the promoted page",
-        label="Heading (heading level 4)",
+        help_text="The title of the target page",
     )
     description = blocks.RichTextBlock(
         required=False,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        help_text="A description of the promoted page",
+        help_text="A description of the target page",
     )
     url = blocks.URLBlock(required=True)
 
@@ -120,9 +149,6 @@ class PromotedListBlock(blocks.StructBlock):
     Streamfield for collating a series of links for research or interesting pages.
     """
 
-    heading = blocks.CharBlock(
-        required=True, max_length=100, label="Heading (heading level 3)"
-    )
     category = SnippetChooserBlock("categories.Category")
     summary = blocks.RichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -130,16 +156,15 @@ class PromotedListBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "list"
-        label = "Promoted item list"
+        icon = "external-link-alt"
+        label = "Link list"
         template = "insights/blocks/promoted_list_block.html"
 
 
-class RelatedItemBlock(blocks.StructBlock):
+class RelatedItemBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
         max_length=100,
         help_text="Title of the promoted page",
-        label="Heading (heading level 3)",
     )
     description = blocks.TextBlock(
         help_text="A description of the promoted page",
@@ -155,36 +180,76 @@ class RelatedItemBlock(blocks.StructBlock):
         template = "insights/blocks/related_item.html"
 
 
-class RelatedItemsBlock(blocks.StructBlock):
-    """
-    Items for promoted list block.
-    """
-
-    heading = blocks.CharBlock(
-        required=True, max_length=100, label="Heading (heading level 3)"
+class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100)
+    description = blocks.TextBlock(max_length=200)
+    items = PageListBlock(
+        "insights.InsightsPage",
+        exclude_drafts=True,
+        exclude_private=False,
+        select_related=["teaser_image"],
+        min_num=3,
+        max_num=9,
     )
-    description = blocks.CharBlock(required=True, max_length=100)
-    related_items = blocks.ListBlock(RelatedItemBlock)
 
     class Meta:
-        icon = "external-link-alt"
-        template = "insights/blocks/related_items.html"
-        block_counts = {
-            "related_items": {"min_num": 1, "max_num": 1},
-        }
+        icon = "list"
+        label = "Featured collection"
+        template = "insights/blocks/featured_collection.html"
 
 
 class InsightsIndexPageStreamBlock(blocks.StreamBlock):
     paragraph = ParagraphWithHeading()
 
 
-class InsightsPageStreamBlock(blocks.StreamBlock):
+class QuoteBlock(SectionDepthAwareStructBlock):
+    """
+    A unique version of QuoteBlock for use in multi-level 'section'
+    blocks, where the heading element automatically changes to match
+    the content depth.
+    """
+
+    heading = blocks.CharBlock(required=False, max_length=100)
+    quote = blocks.RichTextBlock(
+        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
+    )
+    attribution = blocks.CharBlock(required=False, max_length=100)
+
+    class Meta:
+        icon = "openquote"
+        label = "Quote"
+        template = "insights/blocks/quote.html"
+
+
+class SubHeadingBlock(SectionDepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100)
+
+    class Meta:
+        icon = "heading"
+        label = "Sub-heading"
+        template = "insights/blocks/sub_heading.html"
+
+
+class SectionContentBlock(blocks.StreamBlock):
+    paragraph = ParagraphBlock()
+    quote = QuoteBlock()
+    sub_heading = SubHeadingBlock()
+    image = ContentImageBlock()
+    media = MediaBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
-    media = MediaBlock()
-    paragraph_with_heading = ParagraphWithHeading()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
-    quote = QuoteBlock()
-    related_items = RelatedItemsBlock()
-    section = SectionBlock()
+
+
+class ContentSectionBlock(SectionDepthAwareStructBlock):
+    heading = blocks.CharBlock(max_length=100, label="Heading")
+    content = SectionContentBlock(required=False)
+
+    class Meta:
+        label = "Section"
+        template = "insights/blocks/section.html"
+
+
+class InsightsPageStreamBlock(blocks.StreamBlock):
+    content_section = ContentSectionBlock()

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% load search_tags %}
+{% load humanize %}
+
+{% block content %}
+
+    {%  with type='All'%}
+        {% include './blocks/search_results_hero.html' %}
+    {% endwith  %}
+    <p class="search-results__explainer">Results for everything that matches your search term.</p>
+    <div class="featured-search__results">
+
+        {% include './blocks/featured-search__results-block.html' with bucket=buckets.tna %}
+
+        {% include './blocks/featured-search__results-block.html' with bucket=buckets.nonTna %}
+
+        {% include './blocks/featured-search__record-creator.html' with bucket=buckets.creator %}
+    </div>
+    <div class="featured-search__interpretive-results">
+
+        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.researchGuide %}
+
+        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.insight %}
+
+        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.blog %}
+    </div>
+{% endblock %}

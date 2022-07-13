@@ -1,24 +1,6 @@
 version: '3'
 
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=0.0.0.0
-      - discovery.type=single-node
-      # By default the docker image installs xpack, requiring the htauth access
-      # to elastic search (default credentials elastic:changeme). Remove security
-      # requirement for development
-      - xpack.security.enabled=false
-      # elasticsearch in docker can run out memory when running garbage collection
-      # and eventually creash.
-      # Incrase available memory to ES
-      # https://github.com/elastic/elasticsearch-docker/issues/43
-      - "ES_JAVA_OPTS=-Xms1G -Xmx1G"
-    ports:
-      - 9200:9200
-      - 9300:9300
   db:
     image: postgres:12.0
     ports:
@@ -26,23 +8,27 @@ services:
     volumes:
      - ./database_dumps:/app/database_dumps
   web:
+    platform: linux/amd64
     build: .
     volumes:
       - ./:/app
     depends_on:
      - db
-     - elasticsearch
     ports:
-     - "8000:8000"
+     - 8000:8000 # runserver
+     - 8001:8001 # mkdocs serve
     # Closely match prod server
     # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
     # Server for better debugging output
     command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
     restart: on-failure
     init: true
+    stdin_open: true
+    tty: true
     env_file:
       - .env
   cli:
+    platform: linux/amd64
     build: platformsh-cli
     volumes:
       - ./media:/app/media

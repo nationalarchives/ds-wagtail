@@ -9,15 +9,19 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
 import os
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from distutils.util import strtobool
 
+import sentry_sdk
+
+from sentry_sdk.integrations.django import DjangoIntegration
+
+from ..versioning import get_git_sha
+
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
-
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
@@ -28,6 +32,7 @@ DEBUG = strtobool(os.getenv("DEBUG", "False"))
 # Application definition
 
 INSTALLED_APPS = [
+    "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
     "etna.categories",
@@ -36,13 +41,11 @@ INSTALLED_APPS = [
     "etna.core",
     "etna.heroes",
     "etna.home",
-    "etna.images",
     "etna.insights",
     "etna.media",
-    "etna.paragraphs",
-    "etna.quotes",
+    "etna.navigation",
     "etna.records",
-    "etna.sections",
+    "etna.search",
     "etna.teasers",
     "etna.users",
     "wagtail.contrib.forms",
@@ -58,6 +61,7 @@ INSTALLED_APPS = [
     "wagtail.core",
     "wagtailfontawesomesvg",
     "wagtailmedia",
+    "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
     "generic_chooser",
     "modelcluster",
@@ -65,8 +69,9 @@ INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
-    "django.contrib.sessions",
+    "django.contrib.humanize",
     "django.contrib.messages",
+    "django.contrib.sessions",
     "django.contrib.sites",
     "django.contrib.staticfiles",
     "allauth",
@@ -84,9 +89,13 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "django.middleware.security.SecurityMiddleware",
+    "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.MaintenanceModeMiddleware",
+    "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
 ]
+
+COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
 
 ROOT_URLCONF = "config.urls"
 
@@ -103,6 +112,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "wagtail.contrib.settings.context_processors.settings",
+                "etna.core.context_processors.feature_flags",
             ],
         },
     },
@@ -124,13 +135,17 @@ ACCOUNT_SESSION_REMEMBER = False  # True|False disables "Remember me?" checkbox"
 LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
+# View access control
+IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
+RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
+    os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
+)
+SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
 
-
 WSGI_APPLICATION = "config.wsgi.application"
-
 
 # Logging
 # https://docs.djangoproject.com/en/3.2/topics/logging/
@@ -149,6 +164,24 @@ LOGGING = {
     },
 }
 
+SENTRY_DEBUG_URL_ENABLED = False
+if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        environment=os.getenv("SENTRY_ENVIRONMENT", ""),
+        release=get_git_sha(),
+        integrations=[DjangoIntegration()],
+        # Set traces_sample_rate to 1.0 to capture 100%
+        # of transactions for performance monitoring.
+        # We recommend adjusting this value in production.
+        traces_sample_rate=float(os.getenv("SENTRY_SAMPLE_RATE", "0.5")),
+        # If you wish to associate users to errors (assuming you are using
+        # django.contrib.auth) you may enable sending PII data.
+        send_default_pii=strtobool(os.getenv("SENTRY_SEND_USER_DATA", "False")),
+    )
+
+    SENTRY_DEBUG_URL_ENABLED = strtobool(os.getenv("SENTRY_DEBUG_URL_ENABLED", "False"))
+
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -163,7 +196,6 @@ DATABASES = {
         "PORT": os.getenv("DATABASE_PORT"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -183,7 +215,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -196,7 +227,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
@@ -234,13 +264,21 @@ WAGTAIL_SITE_NAME = "etna"
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
 BASE_URL = "http://example.com"
 
+# For search results within Wagtail itself
+WAGTAILSEARCH_BACKENDS = {
+    "default": {
+        "BACKEND": "wagtail.search.backends.database",
+    }
+}
 
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
+)
 KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
-
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -255,7 +293,6 @@ RESTRICTED_RICH_TEXT_FEATURES = [
     "link",
     "ul",
 ]
-
 
 # Analytics
 AVAILABILITY_CONDITION_CATEGORIES = {
@@ -318,8 +355,33 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
     os.getenv("CACHE_CONTROL_STALE_WHILE_REVALIDATE", 30)
 )
 
+# -----------------------------------------------------------------------------
+# Maintenance mode
+# -----------------------------------------------------------------------------
+
 MAINTENANCE_MODE = strtobool(os.getenv("MAINTENANCE_MODE", "False"))
 # MAINTENENCE_MODE_ALLOW_IPS="IPA1,IPA2" where IPA is IP address
 MAINTENENCE_MODE_ALLOW_IPS = os.getenv("MAINTENENCE_MODE_ALLOW_IPS", "").split(",")
 # datetime is iso MAINTENENCE_MODE_ENDS = "2011-11-04T00:05:23+04:00"
 MAINTENENCE_MODE_ENDS = os.getenv("MAINTENENCE_MODE_ENDS", "")
+
+# -----------------------------------------------------------------------------
+# Feature flags
+# -----------------------------------------------------------------------------
+
+# Special boolean settings prefixed with 'FEATURE_', that are automatically
+# injected into template contexts using a custom context processor - allowing
+# conditional logic to be added to both Python and template code
+
+FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
+    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
+)
+FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
+    os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
+)
+FEATURE_BETA_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
+)
+FEATURE_COOKIE_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
+)

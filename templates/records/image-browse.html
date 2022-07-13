@@ -2,6 +2,7 @@
 
 {% load static %}
 {% load datalayer_tags %}
+{% load records_tags %}
 
 {% block extra_gtm_js %}
     {% image_browse_datalayer as datalayer %}
@@ -21,7 +22,7 @@
                 </h1>
             </div>
             <div class="image-browse__details_navigation">
-                <a href="{% url 'details-page-human-readable' page.reference_number %}">Record details</a>
+                <a href="{% record_url page %}">Record details</a>
             </div>
         </div>
         <ul class="image-browse__listing">

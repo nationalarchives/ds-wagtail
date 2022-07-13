@@ -1,17 +1,7 @@
-{% extends 'base.html' %}
+{% extends 'base_page.html' %}
 
 {% load static %}
 {% load wagtailcore_tags %}
-{% load datalayer_tags %}
-
-{% block extra_gtm_js %}
-{{ page | datalayer:request | json_script:"datalayer" }}
-
-<script>
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push(JSON.parse(document.getElementById('datalayer').textContent));
-</script>
-{% endblock extra_gtm_js %}
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
@@ -24,7 +14,20 @@
                 {% endfor %}
             </div>
         </div>
+        {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
+        <div class="row">
+            <div class="col-md-12">
+                 {% for insights_page in page.related_insights %}
+                <li>
+                       <a href="{% pageurl insights_page %}">{{ insights_page.title }}</a>
+                </li>
+            {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+
     </div>
+
 
 {% endblock %}
 

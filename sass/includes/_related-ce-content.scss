@@ -1,0 +1,106 @@
+.related-ce-content {
+    margin-bottom: 4rem;
+
+    h2 {
+        margin-bottom: 2rem;
+        font-size: 2rem;
+        font-family: $font__supria-sans;
+        font-weight: 400;
+    }
+
+    &__list {
+        display: flex;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    &__item {
+        a {
+            color: $color__white;
+            display: inline-block;
+            width: 100%;
+        }
+    
+        h3{
+            font-size: 1.5rem;
+        }
+    }
+
+    &__image {
+        width: 100%;
+        height: 18.75rem;
+        object-fit: cover;
+    }
+
+    &__summary {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        background-color: #26262a;
+        height: 200px;
+        padding: 2rem;
+        width: 100%;
+    }
+    
+    @media only screen and (max-width: 56.25rem) {
+        &__list {
+            flex-direction: column;
+        }
+    
+        &__item {
+            flex: 1 1 auto;
+            margin-right: 0;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 100%;
+    
+            picture {
+                width: 50%;
+            }
+    
+            a {
+                display: flex;
+                height: 15.625rem;
+            }
+        }
+
+        &__image {
+            height: 100%;
+        }
+
+        &__summary {
+            height: auto;
+            width: 50%;
+        }
+    }
+    
+    @media only screen and (max-width: $screen__md) {
+        &__item {
+            a {
+                flex-direction: column;
+                height: auto;
+            }
+    
+            picture {
+                width: 100%;
+            }
+        }
+
+        &__summary {
+            width: 100%;
+        }
+    }
+    
+    @media only screen and (max-width: 36rem) {
+        &__item {
+            picture {
+                width: 100%;
+            }
+        }
+
+        &__image {
+            width: inherit;
+        }
+    }
+}

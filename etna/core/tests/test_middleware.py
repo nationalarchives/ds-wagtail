@@ -2,11 +2,12 @@ from unittest.mock import patch
 
 from django.test import TestCase, override_settings
 
-from ...ciim.utils import prevent_request_warnings
+from etna.core.test_utils import prevent_request_warnings
 
 
 @override_settings(MAINTENANCE_MODE=True)
 class TestMaintenanceMode(TestCase):
+    @prevent_request_warnings
     def test_without_maintenance_mode_ends(self):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)

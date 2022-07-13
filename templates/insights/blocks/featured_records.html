@@ -1,31 +1,28 @@
+{% load records_tags %}
 <div class="featured-records">
     <div class="container">
-        <h3 class="sr-only">{{ value.heading }}</h3>
-        <p class="featured-records__standfirst">
-            {{ value.introduction }}
-        </p>
+        <{{ heading_level }} class="featured-records__heading">Record details</{{ heading_level }}>
 
-        <dl class="featured-records__list" data-container-name="featured-records">
-            {% for record in value.records %}
-                <div class="featured-records__list-item">
-                    <dt>
-                        {% if record.reference_number %}
-                        <a class="featured-records__link" href="{% url 'details-page-human-readable' record.reference_number %}"
-                            data-link="{{ record.title }}">
-                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
-                        </a>
-                        {% elif record.iaid %}
-                        <a class="featured-records__link" href="{% url 'details-page-machine-readable' record.iaid %}"
-                            data-link="{{ record.title }}">
-                            <h4 class="featured-records__link-heading">{{ record.title }}</h4>
-                        </a>
-                        {% endif %}
-                    </dt>
-                    {% if record.description %}
-                        <dd class="featured-records__link-text">{{ record.description|safe }}</dd>
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </dl>
+        <div class="featured-records__content">
+            {% if value.introduction %}
+                <p class="featured-records__standfirst">
+                    {{ value.introduction }}
+                </p>
+            {% endif %}
+
+            <dl class="featured-records__list" data-container-name="featured-records">
+                {% for item in value.items %}
+                    <div class="featured-records__list-item">
+                        <dt>
+                            <a class="featured-records__link" href="{% record_url item.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Links" data-position="{{ forloop.counter0 }}" data-link="{{ item.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+                                <h4 class="featured-records__link-heading">{{ item.title }}</h4>
+                                {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
+                            </a>
+                        </dt>
+                        <dd class="featured-records__list-item-description">{{ item.record.title|striptags }}</dd>
+                    </div>
+                {% endfor %}
+            </dl>
+        </div>
     </div>
 </div>

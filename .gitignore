@@ -27,6 +27,9 @@ templates/static/css/libraries/*
 # Allow images within static
 !templates/static/images
 
+#Allow cookie consent
+!templates/static/cookie-consent
+
 # Ignore the contents of /static but keep the directory
 /static/*
 !/static/.gitkeep
@@ -56,3 +59,9 @@ templates/static/css/libraries/*
 .coverage
 
 /coverage/
+
+# built docs
+/site/
+
+# local config
+config/settings/local.py
