@@ -21,32 +21,17 @@
 
 <body class="template-404">
 {% include 'includes/gtm-no-script.html' %}
-<a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
-{% include 'includes/header.html' %}
 
 <main id="maincontent">
-    <div class="generic-intro">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <h1 class="generic-intro__title">
-                        Service Unavailable
-                    </h1>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="container mt-4 pb-6">
-        <div class="row">
-            <div class="col-12">
-                <p>Sorry, site is under maintenance. Service Unavailable.</p>
-            </div>
-        </div>
+    <div class="maintenance">
+        <h1 class="maintenance__heading">Sorry, our website is temporarily down for maintenance</h1>
+        <p class="maintenance__text">Please try again in a few minutes</p>
+        <p class="maintenance__text maintenance__text--small">
+            Follow us on <a href="https://twitter.com/UkNatArchives" rel="noopener noreferrer">Twitter</a> for updates
+        </p>
+        <img src="{% static 'images/tna-blk-logo.svg' %}" class="maintenance__logo-image" alt=""/>
     </div>
 </main>
-
-{% include 'includes/footer.html' %}
 
 </body>
 </html>

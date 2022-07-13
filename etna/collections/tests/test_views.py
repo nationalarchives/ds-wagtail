@@ -2,7 +2,6 @@ import json
 
 from http import HTTPStatus
 
-from django.test import override_settings
 from django.urls import reverse
 
 from wagtail.core.models import Site
@@ -11,20 +10,19 @@ from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
 import responses
 
+from etna.core.test_utils import prevent_request_warnings
+
 from ...ciim.tests.factories import create_record, create_response
 from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class TestRecordChooseView(WagtailPageTests):
     def setUp(self):
         super().setUp()
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
                     create_record(
@@ -75,14 +73,10 @@ class TestRecordChooseView(WagtailPageTests):
             content["html"],
         )
 
-        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/search?stream=evidential&term=law&from=0&size=0&pretty=false",
-        )
-        self.assertURLEqual(
-            responses.calls[1].request.url,
-            "https://kong.test/data/search?stream=evidential&size=1&term=law&from=0&pretty=false",
+            "https://kong.test/data/searchUnified?stream=evidential&q=law&from=0&size=10",
         )
 
     @responses.activate
@@ -103,8 +97,15 @@ class TestRecordChooseView(WagtailPageTests):
         )
 
     @responses.activate
+    @prevent_request_warnings
     def test_select_failed(self):
+
         responses.reset()
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(),
+        )
 
         response = self.client.get("/admin/record-chooser/invalid/")
 

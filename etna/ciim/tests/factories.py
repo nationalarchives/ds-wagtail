@@ -3,6 +3,7 @@ import json
 
 def create_record(
     iaid="C0000000",
+    source="mongo",
     reference_number="ADM 223/3",
     title="Title",
     description="description",
@@ -27,13 +28,14 @@ def create_record(
         "_source": {
             "@admin": {
                 "id": iaid,
+                "source": source,
             },
             "access": {"conditions": "open"},
             "identifier": [
                 {"iaid": iaid},
                 {"reference_number": reference_number},
             ],
-            "@origination": {
+            "origination": {
                 "creator": [{"name": [{"value": "test"}]}],
                 "date": {
                     "earliest": {"from": earliest},
@@ -42,8 +44,8 @@ def create_record(
                 },
             },
             "digitised": is_digitised,
-            "hierarchy": [hierarchy],
-            "@summary": {
+            "@hierarchy": [hierarchy],
+            "summary": {
                 "title": title,
             },
             "multimedia": [
@@ -87,7 +89,7 @@ def create_media(
     }
 
 
-def create_response(records=None, total_count=None):
+def create_response(records=None, aggregations=None, total_count=None):
     """Create a sample Elasticsearch response for provided records.
 
     If testing pagination or batch fetches, the total count can be optionally
@@ -96,6 +98,9 @@ def create_response(records=None, total_count=None):
     if not records:
         records = []
 
+    if not aggregations:
+        aggregations = {}
+
     if not total_count:
         total_count = len(records)
 
@@ -103,7 +108,8 @@ def create_response(records=None, total_count=None):
         "hits": {
             "total": {"value": total_count, "relation": "eq"},
             "hits": [r for r in records],
-        }
+        },
+        "aggregations": aggregations,
     }
 
 

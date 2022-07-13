@@ -20,7 +20,7 @@
         </a>
             <div class="card-group-secondary-nav__body">
                 <a href="{{ value.url }}" class="card-group-secondary-nav__title-link" data-card-title="{{ value.title }}" data-card-type="card-group-secondary-nav">
-                    <h3 class="card-group-secondary-nav__heading">{{ value.title }}</h3>
+                    <{{ heading_level }} class="card-group-secondary-nav__heading">{{ value.title }}</{{ heading_level }}>
                 </a>
                 <span class="card-group-secondary-nav__span">{{ value.description|linebreaks }}</span>
             </div>

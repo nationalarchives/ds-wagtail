@@ -1,4 +1,5 @@
 import json
+import re
 
 from django.test import TestCase
 
@@ -12,45 +13,91 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         root = Site.objects.get().root_page
 
         self.insights_page = InsightsPage(
-            title="Insights page", sub_heading="Introduction"
-        )
-        self.insights_page.body = json.dumps(
-            [
-                {
-                    "type": "section",
-                    "value": {"heading": "Section One"},
-                },
-                {
-                    "type": "section",
-                    "value": {"heading": "Section Two"},
-                },
-            ]
+            title="Insights page",
+            sub_heading="Introduction",
+            body=json.dumps(
+                [
+                    {
+                        "type": "content_section",
+                        "value": {
+                            "heading": "Section One",
+                            "content": [
+                                {
+                                    "type": "paragraph",
+                                    "value": {
+                                        "text": "<p>This section has two sub-sections. How about that?</p>"
+                                    },
+                                },
+                                {
+                                    "type": "sub_heading",
+                                    "value": {"heading": "This should render as a h3"},
+                                },
+                                {
+                                    "type": "paragraph",
+                                    "value": {
+                                        "text": "<p>Some paragraph text following a h3 sub-heading.</p>"
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                    {
+                        "type": "content_section",
+                        "value": {
+                            "heading": "Section Two",
+                            "content": [
+                                {
+                                    "type": "paragraph",
+                                    "value": {
+                                        "text": "<p>Well, this is a terribly sparse section.</p>"
+                                    },
+                                },
+                                {
+                                    "type": "sub_heading",
+                                    "value": {"heading": "This should render as a h3"},
+                                },
+                            ],
+                        },
+                    },
+                ]
+            ),
         )
         root.add_child(instance=self.insights_page)
 
-    def test_jumplinks_rendered(self):
+    def test_jumplink_rendering(self):
         response = self.client.get(self.insights_page.get_url())
         self.assertContains(response, "jumplinks")
-
-    def test_section_one_id(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'id="section-one"')
-
-    def test_section_one_url(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'href="#section-one"')
-
-    def test_section_two_id(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'id="section-two"')
-
-    def test_section_two_url(self):
-        response = self.client.get(self.insights_page.get_url())
-        self.assertContains(response, 'href="#section-two"')
+        self.assertContains(response, 'href="#h2.section-one"')
+        self.assertContains(response, 'href="#h2.section-two"')
+        self.assertContains(response, 'id="h2.section-one"')
+        self.assertContains(response, 'id="h2.section-two"')
 
     def test_jumplinks_not_rendered_if_page_has_no_sections(self):
-        self.insights_page.body = json.dumps([])
+        self.insights_page.body = "[]"
         self.insights_page.save()
 
         response = self.client.get(self.insights_page.get_url())
         self.assertNotContains(response, "jumplinks")
+
+    def assertContainsHeading(
+        self, subject: str, heading_text: str, heading_level: int
+    ):
+        regex = re.compile(
+            "<h"
+            + str(heading_level)
+            + r"[\s\w'\=\-\"\.]*>\s*(.*)\s*<\/h"
+            + str(heading_level)
+            + ">",
+            re.MULTILINE,
+        )
+        heading_texts = []
+        for match in regex.finditer(subject):
+            heading_texts.append(match.groups()[0].strip())
+
+        self.assertIn(heading_text, heading_texts)
+
+    def test_headings_rendered_as_h3(self):
+        response = self.client.get(self.insights_page.get_url())
+        response.render()
+        content = response.content.decode()
+        self.assertContainsHeading(content, "This should render as a h3", 3)

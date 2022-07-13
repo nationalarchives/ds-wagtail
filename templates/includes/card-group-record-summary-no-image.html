@@ -1,3 +1,4 @@
+{% load records_tags %}
 {% load wagtailimages_tags %}
 
 {% image teaser_image fill-288x292 as teaser_image_small %}
@@ -7,18 +8,19 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% url 'details-page-machine-readable' iaid=record_page.iaid %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record_page.title }}">
+        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{{ record.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
             <p class="card-group-record-summary__heading">
-                {% if record_page.reference_number %}
+                {% if record.reference_number %}
                 <span class="sr-only">
-                    {{ record_page.reference_number }} - 
+                    {{ record.reference_number }} -
                 </span>
                 {% endif %}
-                {{ record_page.title }}
+                {{ record.title }}
+                {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %}<span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
         <div class="card-group-record-summary__body">
-            <p>{{ description_override|default:record_page.description|striptags|truncatewords:40 }}</p>
+            <p>{{ description_override|default:record.description|striptags|truncatewords:40 }}</p>
         </div>
     </div>
 </li>

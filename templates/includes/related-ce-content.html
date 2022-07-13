@@ -1,0 +1,59 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+{% if page.time_period or page.topic %}
+    <div class="related-ce-content">
+        <h2>Discover highlights from the collection</h2>
+        <ul class="related-ce-content__list">
+            {% if page.time_period %}
+                <li class="col-md-6 related-ce-content__item">
+                    <a href="{% pageurl page.time_period %}" data-component-name="Discover highlights from the collection" data-link-type="Image with label">
+                        <picture>
+                            {% image page.time_period.teaser_image fill-480x351 as teaser %}
+                            <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
+                            {% image page.time_period.teaser_image fill-480x250 as teaser %}
+                            <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
+                            {% image page.time_period.teaser_image fill-330x250 as teaser %}
+                            <source media="(max-width: 900px)" srcset="{{ teaser.url }}">
+                            {% image page.time_period.teaser_image fill-315x300 as teaser %}
+                            <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
+                            {% image page.time_period.teaser_image fill-435x367 as teaser %}
+                            <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
+                            {% image page.time_period.teaser_image fill-525x367 as teaser %}
+                            <source media="(max-width: 1440px)" srcset="{{ teaser.url }}">
+                            <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
+                        </picture>
+                        <div class="related-ce-content__summary">
+                            <h3 class="no-margin-top">{{ page.time_period }}</h3>
+                        </div>
+                    </a>
+                </li>
+            {% endif %}
+
+            {% if page.topic %}
+                <li class="col-md-6 related-ce-content__item">
+                    <a href="{% pageurl page.topic %}" data-component-name="Discover highlights from the collection" data-link-type="Image with label">
+                        <picture>
+                            {% image page.topic.teaser_image fill-480x351 as teaser %}
+                            <source media="(max-width: 640px)" srcset="{{ teaser.url }}">
+                            {% image page.topic.teaser_image fill-480x250 as teaser %}
+                            <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
+                            {% image page.topic.teaser_image fill-330x250 as teaser %}
+                            <source media="(max-width: 900px)" srcset="{{ teaser.url }}">
+                            {% image page.topic.teaser_image fill-315x300 as teaser %}
+                            <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
+                            {% image page.topic.teaser_image fill-435x367 as teaser %}
+                            <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
+                            {% image page.topic.teaser_image fill-525x367 as teaser %}
+                            <source media="(max-width: 1440px)" srcset="{{ teaser.url }}">
+                            <img class="related-ce-content__image" src="{{ teaser.url }}" alt="" />
+                        </picture>
+                        <div class="related-ce-content__summary">
+                            <h3 class="no-margin-top">{{ page.topic }}</h3>
+                        </div>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endif %}
