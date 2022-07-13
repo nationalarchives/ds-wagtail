@@ -28,7 +28,6 @@ disk: 2048
 # side is in the form <service name>:<endpoint name>.
 relationships:
     db: 'db:postgresql'
-    elasticsearch: 'search:elasticsearch'
     redis: "redis:redis"
 
 
