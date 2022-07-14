@@ -107,7 +107,6 @@ class TimePeriodExplorerIndexPageStreamBlock(blocks.StreamBlock):
 
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     collection_highlights = CollectionHighlightsBlock()
-    # featured_page = FeaturedPageBlock()
     promoted_pages = PromotedPagesBlock()
 
     class Meta:
