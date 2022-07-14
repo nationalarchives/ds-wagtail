@@ -112,7 +112,6 @@ class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     class Meta:
         block_counts = {
             "collection_highlights": {"min_num": 1, "max_num": 1},
-            # "featured_page": {"max_num": 1},
             "promoted_pages": {"max_num": 1},
         }
 
