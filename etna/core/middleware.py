@@ -1,9 +1,12 @@
+import json
 import logging
 
-from datetime import datetime, timedelta
-from urllib.parse import quote
+from datetime import datetime
+from urllib.parse import unquote
 
 from django.conf import settings
+from django.http import HttpRequest
+from django.template.response import TemplateResponse
 from django.template.response import SimpleTemplateResponse
 
 from pytz import timezone
@@ -62,23 +65,33 @@ class MaintenanceModeMiddleware:
         return response
 
 
-class SetDefaultCookiePreferencesMiddleware:
+class CookieConsentMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
-        response = self.get_response(request)
-        if not settings.FEATURE_COOKIE_BANNER_ENABLED:
-            return response
-        cookie_name = "cookies_policy"
-        if not request.COOKIES.get(cookie_name, None):
-            expires = datetime.utcnow() + timedelta(days=90)
-            value = '{"usage":false,"settings":false,"essential":true}'
-            response.set_cookie(
-                cookie_name,
-                expires=expires,
-                path="/",
-                domain=settings.COOKIE_DOMAIN,
-                value=quote(value),
-            )
+        return self.get_response(request)
+
+    def process_template_response(
+        self, request: HttpRequest, response: TemplateResponse
+    ) -> TemplateResponse:
+
+        # Disable cookies by default
+        cookies_permitted = False
+        if cookies_policy := request.COOKIES.get("cookies_policy", None):
+            try:
+                # Enable cookies only if user has agreed to cookie use
+                cookies_permitted = json.loads(unquote(cookies_policy))["usage"] is True
+            except (
+                json.decoder.JSONDecodeError, # value is not valid json
+                TypeError,  # decoded json isn't a dict
+                KeyError,  # dict doesn't contain 'usage'
+                ValueError,  # 'usage' is something other than 'true'
+            ):
+                # Swallow above errors and leave 'cookies_permitted' as False
+                pass
+
+        # Add convenience values to context data
+        response.context_data["cookies_permitted"] = cookies_permitted
+        response.context_data["show_cookie_notice"] = settings.FEATURE_BETA_BANNER_ENABLED and "dontShowCookieNotice" not in request.COOKIES
         return response
