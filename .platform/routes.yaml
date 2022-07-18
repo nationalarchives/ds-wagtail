@@ -10,6 +10,8 @@
             - sessionid
             - csrftoken
             - messages
+            - csrftoken
+            - cookies_policy
         headers:
             - Accept
             - Vary
