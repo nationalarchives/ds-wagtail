@@ -48,19 +48,35 @@ class DateInputField(forms.MultiValueField):
             forms.CharField(
                 label=_("Day"),
                 error_messages={"incomplete": "Enter the day of the month"},
-                validators=[PositiveIntegerStringValidator(min=1, max=31)],
+                validators=[
+                    PositiveIntegerStringValidator(
+                        min=1,
+                        max=31,
+                        msg="Entered date must be a real date, for example 23 9 2017.",
+                    )
+                ],
                 required=default_day is None,
             ),
             forms.CharField(
                 label=_("Month"),
-                error_messages={"incomplete": "Enter the month"},
-                validators=[PositiveIntegerStringValidator(min=1, max=12)],
+                error_messages={"incomplete": "Entered date must include a Month."},
+                validators=[
+                    PositiveIntegerStringValidator(
+                        min=1,
+                        max=12,
+                        msg="Entered date must be a real date, for example 23 9 2017.",
+                    )
+                ],
                 required=default_month is None,
             ),
             forms.CharField(
                 label=_("Year"),
-                error_messages={"incomplete": "Enter the year"},
-                validators=[PositiveIntegerStringValidator()],
+                error_messages={"incomplete": "Entered date must include a Year."},
+                validators=[
+                    PositiveIntegerStringValidator(
+                        msg="Entered date must be a real date, for example 23 9 2017."
+                    )
+                ],
                 required=default_year is None,
             ),
         )
@@ -123,24 +139,42 @@ class DateInputField(forms.MultiValueField):
                     raise ValidationError(
                         self.error_messages["required"], code="required"
                     )
-                if default := self.default_values[i]:
-                    # Supplement the missing sub-field value the a default
-                    # provided to __init__()
-                    if default == END_OF_MONTH:
-                        # leave string in-tact to allow handling in compress()
-                        clean_data.append(default)
-                    else:
-                        # immitate cleaning by always converting the default
-                        # value to an int
-                        clean_data.append(int(default))
-                    continue  # skip the cleaning step below
-                elif field.required:
-                    if field.error_messages["incomplete"] not in errors:
-                        # add an 'incomplete' error to the collection
-                        errors.append(field.error_messages["incomplete"])
-                        # copy the error to the field's widget
-                        field.widget.errors.append(field.error_messages["incomplete"])
-                    continue  # skip the cleaning step below
+
+
+                if (
+                    i == 1
+                    and self.default_values[i]
+                    and value[0]
+                    and value[2]
+                    and not value[1]
+                ):
+                    # Validate empty month input (overrid default month) when day, year are input
+                    msg = "Entered date must include a Month."
+                    errors.append(msg)
+                    # copy the error to the field's widget
+                    field.widget.errors.append(msg)
+                    continue
+                else:
+                    if default := self.default_values[i]:
+                        # Supplement the missing sub-field value the a default
+                        # provided to __init__()
+                        if default == END_OF_MONTH:
+                            # leave string in-tact to allow handling in compress()
+                            clean_data.append(default)                            
+                        else:
+                            # immitate cleaning by always converting the default
+                            # value to an int
+                            clean_data.append(int(default))
+                        continue  # skip the cleaning step below
+                    elif field.required:
+                        if field.error_messages["incomplete"] not in errors:
+                            # add an 'incomplete' error to the collection
+                            errors.append(field.error_messages["incomplete"])
+                            # copy the error to the field's widget
+                            field.widget.errors.append(
+                                field.error_messages["incomplete"]
+                            )
+                        continue  # skip the cleaning step below
             try:
                 clean_data.append(field.clean(field_value))
             except ValidationError as e:
@@ -153,14 +187,24 @@ class DateInputField(forms.MultiValueField):
 
         if errors:
             # Raise collected errors all at once
-            raise ValidationError(errors)
+            # Make unique message when using same error message in validators
+            m = []
+            e = []
+            for error in errors:
+                if isinstance(error, str):
+                    msg = error
+                elif isinstance(error, ValidationError):
+                    msg = error.message
+                if msg not in m:
+                    m.append(msg)
+                    e.append(error)
+            raise ValidationError(e)
 
         try:
             out = self.compress(clean_data)
         except ValueError:
-            # The specified day must be invalid for the month, so add an error message
-            # to the 'day' sub-field widget before raising
-            msg = "Enter a valid day for the month you entered"
+            # When Day, Month belong to correct range and Year is 0, then error-value "year 0 is out of range"
+            msg = "Entered date must be a real date, for example 23 9 2017."
             self.fields[0].widget.errors.append(msg)
             raise ValidationError(msg)
 
