@@ -91,7 +91,6 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "etna.core.middleware.MaintenanceModeMiddleware",
     "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
 ]
 

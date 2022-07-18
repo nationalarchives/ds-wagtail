@@ -2,7 +2,12 @@ from django.db import models
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel, StreamFieldPanel
+from wagtail.admin.edit_handlers import (
+    FieldPanel,
+    InlinePanel,
+    PageChooserPanel,
+    StreamFieldPanel,
+)
 from wagtail.core.fields import StreamField
 from wagtail.core.models import Orderable
 from wagtail.images import get_image_model_string
@@ -105,11 +110,14 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
+        PageChooserPanel("featured_insight"),
         StreamFieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
@@ -195,9 +203,12 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
-
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
+        PageChooserPanel("featured_insight"),
         StreamFieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
