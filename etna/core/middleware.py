@@ -65,7 +65,7 @@ class MaintenanceModeMiddleware:
         return response
 
 
-class CookieConsentMiddleware:
+class InterpretCookiesMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
@@ -76,14 +76,14 @@ class CookieConsentMiddleware:
         self, request: HttpRequest, response: TemplateResponse
     ) -> TemplateResponse:
 
-        # Disable cookies by default
+        # Disable cookie by default
         cookies_permitted = False
         if cookies_policy := request.COOKIES.get("cookies_policy", None):
             try:
-                # Enable cookies only if user has agreed to cookie use
+                # Permit cookies if user has agreed
                 cookies_permitted = json.loads(unquote(cookies_policy))["usage"] is True
             except (
-                json.decoder.JSONDecodeError, # value is not valid json
+                json.decoder.JSONDecodeError,  # value is not valid json
                 TypeError,  # decoded json isn't a dict
                 KeyError,  # dict doesn't contain 'usage'
                 ValueError,  # 'usage' is something other than 'true'
@@ -91,7 +91,12 @@ class CookieConsentMiddleware:
                 # Swallow above errors and leave 'cookies_permitted' as False
                 pass
 
-        # Add convenience values to context data
+        # Update context_data to reflect preferences
         response.context_data["cookies_permitted"] = cookies_permitted
-        response.context_data["show_cookie_notice"] = settings.FEATURE_BETA_BANNER_ENABLED and "dontShowCookieNotice" not in request.COOKIES
+        response.context_data["show_cookie_notice"] = bool(
+            settings.FEATURE_COOKIE_BANNER_ENABLED and "dontShowCookieNotice" not in request.COOKIES
+        )
+        response.context_data["show_beta_banner"] = bool(
+            settings.FEATURE_BETA_BANNER_ENABLED and "beta_banner_dismissed" not in request.COOKIES
+        )
         return response
