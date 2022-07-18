@@ -140,7 +140,6 @@ class DateInputField(forms.MultiValueField):
                         self.error_messages["required"], code="required"
                     )
 
-
                 if (
                     i == 1
                     and self.default_values[i]
@@ -160,7 +159,7 @@ class DateInputField(forms.MultiValueField):
                         # provided to __init__()
                         if default == END_OF_MONTH:
                             # leave string in-tact to allow handling in compress()
-                            clean_data.append(default)                            
+                            clean_data.append(default)                       
                         else:
                             # immitate cleaning by always converting the default
                             # value to an int
