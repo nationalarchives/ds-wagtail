@@ -6,8 +6,7 @@ from urllib.parse import unquote
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.template.response import TemplateResponse
-from django.template.response import SimpleTemplateResponse
+from django.template.response import SimpleTemplateResponse, TemplateResponse
 
 from pytz import timezone
 
@@ -94,9 +93,11 @@ class InterpretCookiesMiddleware:
         # Update context_data to reflect preferences
         response.context_data["cookies_permitted"] = cookies_permitted
         response.context_data["show_cookie_notice"] = bool(
-            settings.FEATURE_COOKIE_BANNER_ENABLED and "dontShowCookieNotice" not in request.COOKIES
+            settings.FEATURE_COOKIE_BANNER_ENABLED
+            and "dontShowCookieNotice" not in request.COOKIES
         )
         response.context_data["show_beta_banner"] = bool(
-            settings.FEATURE_BETA_BANNER_ENABLED and "beta_banner_dismissed" not in request.COOKIES
+            settings.FEATURE_BETA_BANNER_ENABLED
+            and "beta_banner_dismissed" not in request.COOKIES
         )
         return response
