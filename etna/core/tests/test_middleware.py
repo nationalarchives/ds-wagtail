@@ -1,7 +1,11 @@
 from unittest.mock import patch
+from urllib.parse import quote
 
-from django.test import TestCase, override_settings
+from django.http import HttpRequest
+from django.template.response import TemplateResponse
+from django.test import SimpleTestCase, TestCase, override_settings
 
+from etna.core.middleware import InterpretCookiesMiddleware
 from etna.core.test_utils import prevent_request_warnings
 
 
@@ -46,3 +50,74 @@ class TestMaintenanceMode(TestCase):
     ):
         response = self.client.get("/")
         self.assertEquals(response.status_code, 503)
+
+
+class TestInterpretCookiesMiddleware(SimpleTestCase):
+    usage_true = quote('{"usage":true,"settings":false,"essential":true}')
+    usage_false = quote('{"usage":false,"settings":false,"essential":true}')
+    empty = ""
+    invalid = "NOT_JSON"
+    unexpected_structure = '["item_one", "item_two"]'
+    non_bool_usage = quote('{"usage":123,"settings":false,"essential":true}')
+
+    def setUp(self):
+        self.request = HttpRequest()
+        self.request.path = "/"
+        self.response = TemplateResponse(
+            self.request, "home/home_page.html", context={}, status=200
+        )
+
+    def _apply_middleware(self):
+        obj = InterpretCookiesMiddleware(None)
+        obj.process_template_response(self.request, self.response)
+
+    def test_default(self):
+        self._apply_middleware()
+        context_data = self.response.context_data
+        self.assertIs(context_data["cookies_permitted"], False)
+        self.assertIs(context_data["show_cookie_notice"], True)
+        self.assertIs(context_data["show_beta_banner"], True)
+
+    def test_cookies_permitted_value_when_preferences_cookie_set(self):
+        for attribute_name, expected_cookies_permitted_value in (
+            ("usage_true", True),
+            ("usage_false", False),
+            ("empty", False),
+            ("invalid", False),
+            ("unexpected_structure", False),
+            ("non_bool_usage", False),
+        ):
+            with self.subTest(attribute_name):
+                # set cookie value for request
+                self.request.COOKIES["cookies_policy"] = getattr(self, attribute_name)
+                # apply middelware to self.response
+                self._apply_middleware()
+                # check context_data
+                self.assertIs(
+                    self.response.context_data["cookies_permitted"],
+                    expected_cookies_permitted_value,
+                )
+
+    @override_settings(FEATURE_COOKIE_BANNER_ENABLED=False)
+    def test_show_cookie_notice_is_false_when_feature_disabled(self):
+        self._apply_middleware()
+        self.assertIs(self.response.context_data["show_cookie_notice"], False)
+
+    def test_show_cookie_notice_is_false_when_hide_cookie_set(self):
+        # set the 'hide cookie' value before applying
+        self.request.COOKIES["dontShowCookieNotice"] = "true"
+        self._apply_middleware()
+        # check context_data
+        self.assertIs(self.response.context_data["show_cookie_notice"], False)
+
+    @override_settings(FEATURE_BETA_BANNER_ENABLED=False)
+    def test_show_beta_banner_is_false_when_feature_disabled(self):
+        self._apply_middleware()
+        self.assertIs(self.response.context_data["show_beta_banner"], False)
+
+    def test_show_beta_banner_is_false_when_hide_cookie_set(self):
+        # set the 'hide cookie' value before applying
+        self.request.COOKIES["beta_banner_dismissed"] = "true"
+        self._apply_middleware()
+        # check context_data
+        self.assertIs(self.response.context_data["show_beta_banner"], False)
