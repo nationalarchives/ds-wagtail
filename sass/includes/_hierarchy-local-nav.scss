@@ -6,6 +6,14 @@
 
   &__nav-item {
     margin: 0;
+    &-link {
+      display: block;
+      word-break: break-all;
+    }
+  }
+
+  &__nav-link {
+    display: block;
   }
 
   &__nav-indicator {
@@ -33,14 +41,6 @@
 
     @media only screen and (min-width: $screen__lg) {
       display: inline;
-    }
-  }
-
-  &__nav-link-span {
-    display: none;
-
-    @media only screen and (min-width: $screen__lg) {
-      display: block;
     }
   }
 }
