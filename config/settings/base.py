@@ -91,8 +91,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "etna.core.middleware.MaintenanceModeMiddleware",
-    "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
+    "etna.core.middleware.InterpretCookiesMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
