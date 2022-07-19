@@ -187,8 +187,8 @@
                             "value": "67366"
                         },
                         {
-                            "iaid": "C145033",
-                            "type": "iaid",
+                            "metadataId": "C145033",
+                            "type": "metadataId",
                             "value": "C145033"
                         },
                         {
@@ -253,7 +253,7 @@
                                 "<unittitle type = \"Title\">CAMDEN TOWN TAX DISTRICT</unittitle>",
                                 "Specimens of Series of Documents Destroyed"
                             ],
-                            "iaid": "C145033",
+                            "metadataId": "C145033",
                             "level": "Sub-sub-series",
                             "primaryIdentifier": "C145033",
                             "referenceNumber": "Sub-sub-series within IR 900",

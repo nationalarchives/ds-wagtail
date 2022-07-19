@@ -8,11 +8,11 @@ from ...ciim.utils import convert_sort_key_to_index
 from ..models import Image, Record
 
 
-def image_viewer(request, iaid, sort):
+def image_viewer(request, metadataId, sort):
     """View to render a single image for a record."""
 
     try:
-        page = Record.api.fetch(iaid=iaid)
+        page = Record.api.fetch(metadataId=metadataId)
     except DoesNotExist:
         raise Http404
 
@@ -57,9 +57,9 @@ def image_viewer(request, iaid, sort):
     )
 
 
-def image_browse(request, iaid):
+def image_browse(request, metadataId):
     try:
-        page = Record.api.fetch(iaid=iaid)
+        page = Record.api.fetch(metadataId=metadataId)
     except DoesNotExist:
         raise Http404
 

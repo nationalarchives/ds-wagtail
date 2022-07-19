@@ -279,8 +279,8 @@
                             "value": "-812542"
                         },
                         {
-                            "iaid": "C6518465",
-                            "type": "iaid",
+                            "metadataId": "C6518465",
+                            "type": "metadataId",
                             "value": "C6518465"
                         },
                         {
@@ -410,7 +410,7 @@
                             "formerProReference": "DSIR 27/6/ADM 171",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C6518465",
+                            "metadataId": "C6518465",
                             "legalStatus": "Public Record(s)",
                             "level": "Item",
                             "note": [

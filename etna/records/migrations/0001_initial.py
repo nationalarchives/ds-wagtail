@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                         to="wagtailcore.page",
                     ),
                 ),
-                ("iaid", models.IntegerField()),
+                ("metadataId", models.IntegerField()),
                 ("reference_number", models.IntegerField()),
                 ("closure_status", models.TextField()),
                 ("created_by", models.TextField()),

@@ -62,7 +62,7 @@ class TestRecordDisambiguationView(TestCase):
             "https://kong.test/data/searchUnified",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", reference_number="ADM 223/3"),
+                    create_record(metadataId="C123456", reference_number="ADM 223/3"),
                 ]
             ),
         )
@@ -72,7 +72,7 @@ class TestRecordDisambiguationView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", reference_number="ADM 223/3"),
+                    create_record(metadataId="C123456", reference_number="ADM 223/3"),
                 ]
             ),
         )
@@ -110,7 +110,7 @@ class TestRecordView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456"),
+                    create_record(metadataId="C123456"),
                 ]
             ),
         )
@@ -133,7 +133,7 @@ class TestRecordView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -163,7 +163,7 @@ class TestRecordView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -424,7 +424,7 @@ class TestImageBrowseView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=False),
+                    create_record(metadataId="C123456", is_digitised=False),
                 ]
             ),
         )
@@ -441,7 +441,7 @@ class TestImageBrowseView(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", is_digitised=True, media_reference_id=None
+                        metadataId="C123456", is_digitised=True, media_reference_id=None
                     ),
                 ]
             ),
@@ -458,7 +458,7 @@ class TestImageBrowseView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -505,7 +505,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=False),
+                    create_record(metadataId="C123456", is_digitised=False),
                 ]
             ),
         )
@@ -522,7 +522,7 @@ class TestImageViewerView(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", is_digitised=True, media_reference_id=None
+                        metadataId="C123456", is_digitised=True, media_reference_id=None
                     ),
                 ]
             ),
@@ -539,7 +539,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -580,7 +580,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -612,7 +612,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -646,7 +646,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )
@@ -674,7 +674,7 @@ class TestImageViewerView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="C123456", is_digitised=True),
+                    create_record(metadataId="C123456", is_digitised=True),
                 ]
             ),
         )

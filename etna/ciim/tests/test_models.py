@@ -14,7 +14,7 @@ class DeprecatedSearchManagerTest(SimpleTestCase):
         with self.assertRaisesMessage(
             DeprecationWarning, "Record.search is deprecated. Use Record.api instead."
         ):
-            Record.search.fetch(iaid="C140")
+            Record.search.fetch(metadataId="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
@@ -31,7 +31,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(DoesNotExist):
-            self.manager.fetch(iaid="C140")
+            self.manager.fetch(metadataId="C140")
 
     @responses.activate
     def test_raises_multiple_objects_returned(self):
@@ -42,7 +42,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.manager.fetch(iaid="C140")
+            self.manager.fetch(metadataId="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
@@ -56,7 +56,7 @@ class SearchManagerFilterTest(TestCase):
             responses.GET,
             "https://kong.test/data/search",
             json=create_response(
-                records=[create_record(iaid="C4122893"), create_record(iaid="C4122894")]
+                records=[create_record(metadataId="C4122893"), create_record(metadataId="C4122894")]
             ),
         )
 
@@ -66,8 +66,8 @@ class SearchManagerFilterTest(TestCase):
         self.assertEqual(len(results), 2)
         self.assertTrue(isinstance(results[0], Record))
         self.assertTrue(isinstance(results[1], Record))
-        self.assertEqual(results[0].iaid, "C4122893")
-        self.assertEqual(results[1].iaid, "C4122894")
+        self.assertEqual(results[0].metadataId, "C4122893")
+        self.assertEqual(results[1].metadataId, "C4122894")
 
     @responses.activate
     def test_fetch_for_record_out_of_bounds_raises_key_error(self):
@@ -99,7 +99,7 @@ class KongExceptionTest(TestCase):
         self.manager = APIManager("records.Record")
 
     @responses.activate
-    def test_raises_invalid_iaid_match(self):
+    def test_raises_invalid_metadataId_match(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -107,4 +107,4 @@ class KongExceptionTest(TestCase):
         )
 
         with self.assertRaises(KongAPIError):
-            self.manager.fetch(iaid="C140")
+            self.manager.fetch(metadataId="C140")

@@ -150,8 +150,8 @@
                             "value": "241"
                         },
                         {
-                            "iaid": "C241",
-                            "type": "iaid",
+                            "metadataId": "C241",
+                            "type": "metadataId",
                             "value": "C241"
                         },
                         {
@@ -273,7 +273,7 @@
                             "arrangement": "<span class=\"arrangement\" encodinganalog=\"334\"/>",
                             "dateCreated": "1634-1982",
                             "description": "<span class=\"scopecontent\"><p>The records in RAIL are those of all private railway companies and private canal companies taken into public ownership by the Transport Act of 1947, together with records which relate to the railway network, and those of associated bodies.</p><p>They are as follows: <span class=\"list\"><span class=\"item\">the records of the Great Western Railway Company (GWR), the London Midland and Scottish Railway Company (LMS), the London and North Eastern Railway Company (LNER), and the Southern Railway Company (SR), together with their associated undertakings;</span><span class=\"item\">the records of private canal companies;</span><span class=\"item\">the records of the London Passenger Transport Board, 1933-1947;</span><span class=\"item\">and other railway records, from both private and public sources, relating mainly to the pre-nationalisation period.</span></span></p><p>These records relate to all administrative and operational aspects of private railway and private canal companies, to the railway network, and to their associated functions.</p></span>",
-                            "iaid": "C241",
+                            "metadataId": "C241",
                             "language": [
                                 "English"
                             ],

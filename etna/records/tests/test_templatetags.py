@@ -13,7 +13,7 @@ class TestRecordURLTag(SimpleTestCase):
         "_source": {
             "@template": {
                 "details": {
-                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "metadataId": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
                     "referenceNumber": "2515/300/1",
                     "summaryTitle": "Test",
                 }
@@ -38,7 +38,7 @@ class TestRecordURLTag(SimpleTestCase):
 
     # A sample item representation, as PREVIOUSLY returned by Record.related_records
     partial_record_dict = {
-        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+        "metadataId": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
         "reference_number": "2515/300/1",
         "title": "Test",
     }
@@ -54,7 +54,7 @@ class TestRecordURLTag(SimpleTestCase):
         raw_data={
             "@template": {
                 "details": {
-                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "metadataId": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
                     "referenceNumber": "2515/300/1",
                     "summaryTitle": "Test",
                 }
@@ -67,7 +67,7 @@ class TestRecordURLTag(SimpleTestCase):
         raw_data={
             "@template": {
                 "details": {
-                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "metadataId": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
                     "summaryTitle": "Test",
                 }
             }

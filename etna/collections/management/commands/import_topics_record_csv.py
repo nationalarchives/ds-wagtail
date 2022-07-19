@@ -31,12 +31,12 @@ def get_row(file_name):
     ) as f:
         reader = csv.reader(f, delimiter=",", quotechar='"')
 
-        for topic, result_page_name, iaid, description, image_url in reader:
+        for topic, result_page_name, metadataId, description, image_url in reader:
 
             row = {
                 "topic": topic,
                 "result_page_name": result_page_name,
-                "iaid": iaid,
+                "metadataId": metadataId,
                 "description": description,
                 "image_url": image_url,
             }
@@ -62,7 +62,7 @@ class Command(BaseCommand):
 
         topic_explorer_index_page = TopicExplorerIndexPage.objects.get()
 
-        result_page_iaids = defaultdict(list)
+        result_page_metadataIds = defaultdict(list)
 
         for row in get_row(path_to_csv):
 
@@ -103,16 +103,16 @@ class Command(BaseCommand):
                 )
 
             try:
-                results_page_record = results_page.records.get(record_iaid=row["iaid"])
+                results_page_record = results_page.records.get(record_metadataId=row["metadataId"])
             except ResultsPageRecord.DoesNotExist:
                 results_page_record = results_page.records.create(
-                    record_iaid=row["iaid"], page=results_page
+                    record_metadataId=row["metadataId"], page=results_page
                 )
 
             if url := row.get("image_url"):
                 image_path = download_image(url)
                 image, _ = Image.objects.get_or_create(
-                    title=row["iaid"], file=image_path
+                    title=row["metadataId"], file=image_path
                 )
                 results_page_record.teaser_image = image
 
@@ -126,7 +126,7 @@ class Command(BaseCommand):
             results_page_record.save()
 
         # Check that no records have been removed from results
-        for title, iaids in result_page_iaids.items():
+        for title, metadataIds in result_page_metadataIds.items():
             results_page = ResultsPage(title=title)
-            if results_page.records.exclude(record_iaid__in=iaids).exists():
+            if results_page.records.exclude(record_metadataId__in=metadataIds).exists():
                 print("Warning records have been removed.")

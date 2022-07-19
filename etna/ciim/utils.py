@@ -204,8 +204,8 @@ def resolve_links(markup):
 
     def link_from_span(span):
         if link := pq(span).attr("link"):
-            if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group("iaid"):
-                url = reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+            if metadataId := re.match(r"\$link\((?P<metadataId>[C0-9]*)\)", link).group("metadataId"):
+                url = reverse("details-page-machine-readable", kwargs={"metadataId": metadataId})
                 return pq(f'<a href="{url}">{pq(span).text()}</a>')
         if link := pq(span).attr("href"):
             return pq(f'<a href="{link}">{pq(span).text()}</a>')
@@ -244,8 +244,8 @@ def convert_sort_key_to_index(sort):
 
 def format_link(link_html: str) -> Dict[str, str]:
     """
-    Extracts iaid and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
-    and returns as dict in the format: `{"iaid":"C5789", "text":"DEFE 31"}
+    Extracts metadataId and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
+    and returns as dict in the format: `{"metadataId":"C5789", "text":"DEFE 31"}
     """
     document = pq(link_html)
-    return {"iaid": document.attr("href"), "text": document.text()}
+    return {"metadataId": document.attr("href"), "text": document.text()}

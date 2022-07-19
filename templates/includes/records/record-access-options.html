@@ -36,7 +36,7 @@ this template
         </details>
         <ul class="record-access__list">
             <li><a class="record-access__button" href="https://www.nationalarchives.gov.uk/book-a-reading-room-visit/" data-link="Book a visit to see it (free)">Book a visit to see it <span>(free)</span></a></li>
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Request a copy">Request a copy</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.metadataId }}" data-link="Request a copy">Request a copy</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'InvigilationSafeRoom' %}
@@ -46,7 +46,7 @@ this template
         <p>Request a quotation for a copy to be digitised or printed and sent to you.  </p>
 
         <ul class="record-access__list">
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Copy this record">Copy this record</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.metadataId }}" data-link="Copy this record">Copy this record</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'Surrogate' %}
@@ -56,7 +56,7 @@ this template
         <p>Request a quotation for a copy to be digitised and sent to you.</p>
 
         <ul class="record-access__list">
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Order a copy">Order a copy</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.metadataId }}" data-link="Order a copy">Order a copy</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'DigitizedDiscovery' %}
@@ -66,7 +66,7 @@ this template
         <p>Download format PDF</p>
         <p>Approximate size 16 MB</p>
         <ul class="record-access__list">
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/details/addtobasket/{{ page.iaid }}" data-link="Add to basket">Add <span class="sr-only">{{ page.title }}</span> to basket</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/details/addtobasket/{{ page.metadataId }}" data-link="Add to basket">Add <span class="sr-only">{{ page.title }}</span> to basket</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'UnAvailable' %}
@@ -85,7 +85,7 @@ this template
         </details>
         <ul class="record-access__list">
             <li><a class="record-access__button" href="https://www.nationalarchives.gov.uk/book-a-reading-room-visit/" data-link="Book a visit to see it (free)">Book a visit to see it <span>(free)</span></a></li>
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.iaid }}" data-link="Order a copy">Order a copy</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/pagecheck/start/{{ page.metadataId }}" data-link="Order a copy">Order a copy</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'DigitizedAvailableButNotDownloadableAtPieceLevel' %}
@@ -94,7 +94,7 @@ this template
         <p>This record has been digitised as part of multiple records</p>
         <p>You can browse for these records.</p>
         <ul class="record-access__list">
-            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/browse/r/h/{{ page.iaid }}" data-link="Go to browse">Go to browse</a></li>
+            <li><a class="record-access__button" href="https://discovery.nationalarchives.gov.uk/browse/r/h/{{ page.metadataId }}" data-link="Go to browse">Go to browse</a></li>
         </ul>
 
     {% elif page.availability_delivery_condition == 'CollectionCare' %}

@@ -20,7 +20,7 @@ from ..ciim.utils import (
     format_description_markup,
     format_link,
 )
-from .converters import IAIDConverter
+from .converters import metadataIdConverter
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +41,7 @@ class Record(DataLayerMixin, APIModel):
         return cls(response)
 
     def __str__(self):
-        return f"{self.title} ({self.iaid})"
+        return f"{self.title} ({self.metadataId})"
 
     def get(self, key: str, default: Optional[Any] = NOT_PROVIDED):
         """
@@ -67,34 +67,34 @@ class Record(DataLayerMixin, APIModel):
         return self.get("highlight", default={})
 
     @cached_property
-    def iaid(self) -> str:
+    def metadataId(self) -> str:
         """
-        Return the "iaid" value for this record (if one is available).
+        Return the "metadataId" value for this record (if one is available).
 
         Raises `ValueExtractionError` when the raw data does not include
         any candidate values.
 
-        Raises `ValueError` when the raw data includes a value where iaids
-        are usually found, but the value is not a valid iaid.
+        Raises `ValueError` when the raw data includes a value where metadataIds
+        are usually found, but the value is not a valid metadataId.
         """
         try:
-            candidate = self.template["iaid"]
+            candidate = self.template["metadataId"]
         except KeyError:
             candidate = self.get("@admin.id")
 
-        # value is not guaranteed to be a valid 'iaid', so we must
+        # value is not guaranteed to be a valid 'metadataId', so we must
         # check it before returning it as one
-        if not re.match(IAIDConverter.regex, candidate):
-            raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
+        if not re.match(metadataIdConverter.regex, candidate):
+            raise ValueError(f"Value '{candidate}' from API is not a valid metadataId.")
         return candidate
 
-    def has_iaid(self) -> bool:
+    def has_metadataId(self) -> bool:
         """
-        Returns `True` if a valid 'iaid' value can be extracted from the
+        Returns `True` if a valid 'metadataId' value can be extracted from the
         raw data for this record. Otherwise `False`.
         """
         try:
-            self.iaid
+            self.metadataId
         except (ValueExtractionError, ValueError):
             return False
         else:

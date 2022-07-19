@@ -51,8 +51,8 @@ class RecordChooserBlock(ChooserBlock):
         return RecordChooser()
 
     def get_prep_value(self, value):
-        """Convert Record to IAID for persistance"""
-        return value.iaid
+        """Convert Record to metadataId for persistance"""
+        return value.metadataId
 
     def bulk_to_python(self, values):
         """Return a list of model instances for the given list of primary keys.
@@ -61,9 +61,9 @@ class RecordChooserBlock(ChooserBlock):
         if not values:
             return []
         records_by_id = {
-            r.iaid: r for r in self.target_model.api.fetch_all(iaids=values)[1]
+            r.metadataId: r for r in self.target_model.api.fetch_all(metadataIds=values)[1]
         }
-        return list(records_by_id.get(iaid) for iaid in values)
+        return list(records_by_id.get(metadataId) for metadataId in values)
 
     def clean(self, value):
         """Return a 'clean' value for this chooser.
@@ -81,7 +81,7 @@ class RecordChooserBlock(ChooserBlock):
         return value
 
     def value_from_form(self, value):
-        """Convert the stored IAID into a Record"""
+        """Convert the stored metadataId into a Record"""
 
         if not value:
             # if there's no value in the form, return None, the error will be
@@ -89,11 +89,11 @@ class RecordChooserBlock(ChooserBlock):
             return value
 
         try:
-            return self.target_model.api.fetch(iaid=value)
+            return self.target_model.api.fetch(metadataId=value)
         except (KongAPIError, APIManagerException):
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
-            return self.target_model(iaid=value)
+            return self.target_model(metadataId=value)
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)

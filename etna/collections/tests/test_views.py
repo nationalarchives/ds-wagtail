@@ -26,7 +26,7 @@ class TestRecordChooseView(WagtailPageTests):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C10297",
+                        metadataId="C10297",
                         title="Law Officers' Department: Registered Files",
                     ),
                 ]
@@ -39,7 +39,7 @@ class TestRecordChooseView(WagtailPageTests):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C10297",
+                        metadataId="C10297",
                         title="Law Officers' Department: Registered Files",
                     ),
                 ]
@@ -142,7 +142,7 @@ class TestEditResultsPage(WagtailPageTests):
                     [
                         {
                             "id": "",
-                            "record_iaid": "C10297",
+                            "record_metadataId": "C10297",
                         }
                     ],
                 ),
@@ -161,7 +161,7 @@ class TestEditResultsPage(WagtailPageTests):
         self.assertEqual(self.results_page.records.count(), 1)
 
     def test_remove_records(self):
-        self.results_page.records.create(record_iaid="C140", page=self.results_page)
+        self.results_page.records.create(record_metadataId="C140", page=self.results_page)
         self.results_page.save()
 
         data = nested_form_data(
@@ -174,7 +174,7 @@ class TestEditResultsPage(WagtailPageTests):
                     [
                         {
                             "id": "",
-                            "record_iaid": "C10297",
+                            "record_metadataId": "C10297",
                         }
                     ],
                     initial=1,
@@ -200,7 +200,7 @@ class TestEditResultsPage(WagtailPageTests):
         request to Kong to fetch the record details. This test is a smoke test to ensure
         the page can load.
         """
-        self.results_page.records.create(record_iaid="C140", page=self.results_page)
+        self.results_page.records.create(record_metadataId="C140", page=self.results_page)
 
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.results_page.id,))

@@ -20,20 +20,20 @@ def record_url(
     Return the URL for the provided `record` dict; which could either be a
     full/transformed result from the fetch() endpoint, OR a raw result from
     the search() endpoint.
-    Handling of Iaid as priority to allow Iaid in disambiguation pages when
+    Handling of metadataId as priority to allow metadataId in disambiguation pages when
     returning more than one record
     """
     try:
         # Use Record property if available
-        iaid = record.iaid
+        metadataId = record.metadataId
     except AttributeError:
         # 'record' is likely just a dict
-        iaid = record.get("iaid")
+        metadataId = record.get("metadataId")
     except (
         ValueExtractionError,  # Value was not present
         ValueError,  # Value was invalid
     ):
-        iaid = None
+        metadataId = None
 
     try:
         # Use Record property if available
@@ -53,11 +53,11 @@ def record_url(
     except ValueExtractionError:
         url = None
 
-    if iaid:
+    if metadataId:
         if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
-            return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
+            return f"https://discovery.nationalarchives.gov.uk/details/r/{metadataId}"
         try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+            return reverse("details-page-machine-readable", kwargs={"metadataId": metadataId})
         except NoReverseMatch:
             pass
     if ref:

@@ -2,7 +2,7 @@ import json
 
 
 def create_record(
-    iaid="C0000000",
+    metadataId="C0000000",
     source="mongo",
     reference_number="ADM 223/3",
     title="Title",
@@ -27,12 +27,12 @@ def create_record(
     return {
         "_source": {
             "@admin": {
-                "id": iaid,
+                "id": metadataId,
                 "source": source,
             },
             "access": {"conditions": "open"},
             "identifier": [
-                {"iaid": iaid},
+                {"metadataId": metadataId},
                 {"reference_number": reference_number},
             ],
             "origination": {

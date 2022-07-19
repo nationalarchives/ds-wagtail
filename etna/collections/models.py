@@ -271,7 +271,7 @@ class ResultsPageRecord(Orderable, models.Model):
     """Map orderable records data to ResultsPage"""
 
     page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
-    record_iaid = models.TextField(verbose_name="Record")
+    record_metadataId = models.TextField(verbose_name="Record")
     teaser_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -292,12 +292,12 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
+            return Record.api.fetch(metadataId=self.record_metadataId)
         except (KongAPIError, APIManagerException):
             return None
 
     panels = [
-        FieldPanel("record_iaid", widget=RecordChooser),
+        FieldPanel("record_metadataId", widget=RecordChooser),
         ImageChooserPanel("teaser_image"),
         FieldPanel("description"),
     ]

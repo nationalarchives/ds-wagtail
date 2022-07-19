@@ -28,7 +28,7 @@ class Migration(migrations.Migration):
                     "sort_order",
                     models.IntegerField(blank=True, editable=False, null=True),
                 ),
-                ("record_iaid", models.TextField()),
+                ("record_metadataId", models.TextField()),
                 (
                     "page",
                     modelcluster.fields.ParentalKey(
