@@ -667,7 +667,9 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_metadataIds(self):
-        self.client.fetch_all(metadataIds=["metadataId-one", "metadataId-two", "metadataId-three"])
+        self.client.fetch_all(
+            metadataIds=["metadataId-one", "metadataId-two", "metadataId-three"]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(

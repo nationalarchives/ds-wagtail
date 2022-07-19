@@ -61,7 +61,8 @@ class RecordChooserBlock(ChooserBlock):
         if not values:
             return []
         records_by_id = {
-            r.metadataId: r for r in self.target_model.api.fetch_all(metadataIds=values)[1]
+            r.metadataId: r
+            for r in self.target_model.api.fetch_all(metadataIds=values)[1]
         }
         return list(records_by_id.get(metadataId) for metadataId in values)
 

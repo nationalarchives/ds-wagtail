@@ -204,8 +204,12 @@ def resolve_links(markup):
 
     def link_from_span(span):
         if link := pq(span).attr("link"):
-            if metadataId := re.match(r"\$link\((?P<metadataId>[C0-9]*)\)", link).group("metadataId"):
-                url = reverse("details-page-machine-readable", kwargs={"metadataId": metadataId})
+            if metadataId := re.match(r"\$link\((?P<metadataId>[C0-9]*)\)", link).group(
+                "metadataId"
+            ):
+                url = reverse(
+                    "details-page-machine-readable", kwargs={"metadataId": metadataId}
+                )
                 return pq(f'<a href="{url}">{pq(span).text()}</a>')
         if link := pq(span).attr("href"):
             return pq(f'<a href="{link}">{pq(span).text()}</a>')

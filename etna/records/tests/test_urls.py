@@ -156,7 +156,9 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
 
 class TestMachineReadableDetailsURL(TestCase):
     def test_reverse_metadataId(self):
-        url = reverse("details-page-machine-readable", kwargs={"metadataId": "C7810139"})
+        url = reverse(
+            "details-page-machine-readable", kwargs={"metadataId": "C7810139"}
+        )
 
         self.assertEqual(url, "/catalogue/id/C7810139/")
 

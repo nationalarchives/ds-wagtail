@@ -35,7 +35,8 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        metadataId="C123456", description="This is the description from Kong"
+                        metadataId="C123456",
+                        description="This is the description from Kong",
                     )
                 ]
             ),

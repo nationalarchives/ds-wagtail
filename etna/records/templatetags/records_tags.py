@@ -57,7 +57,9 @@ def record_url(
         if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
             return f"https://discovery.nationalarchives.gov.uk/details/r/{metadataId}"
         try:
-            return reverse("details-page-machine-readable", kwargs={"metadataId": metadataId})
+            return reverse(
+                "details-page-machine-readable", kwargs={"metadataId": metadataId}
+            )
         except NoReverseMatch:
             pass
     if ref:

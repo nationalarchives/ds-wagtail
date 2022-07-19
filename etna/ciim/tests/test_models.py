@@ -56,7 +56,10 @@ class SearchManagerFilterTest(TestCase):
             responses.GET,
             "https://kong.test/data/search",
             json=create_response(
-                records=[create_record(metadataId="C4122893"), create_record(metadataId="C4122894")]
+                records=[
+                    create_record(metadataId="C4122893"),
+                    create_record(metadataId="C4122894"),
+                ]
             ),
         )
 

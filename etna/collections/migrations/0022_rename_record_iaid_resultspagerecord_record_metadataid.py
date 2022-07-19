@@ -6,13 +6,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0021_add_feature_insights'),
+        ("collections", "0021_add_feature_insights"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='resultspagerecord',
-            old_name='record_metadataId',
-            new_name='record_metadataId',
+            model_name="resultspagerecord",
+            old_name="record_metadataId",
+            new_name="record_metadataId",
         ),
     ]

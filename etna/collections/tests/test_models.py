@@ -161,7 +161,8 @@ class TestRecordDescriptionOverride(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        metadataId="C123456", description="This is the description from Kong"
+                        metadataId="C123456",
+                        description="This is the description from Kong",
                     )
                 ]
             ),
@@ -179,7 +180,8 @@ class TestRecordDescriptionOverride(TestCase):
     @responses.activate
     def test_override_description_is_rendered(self):
         self.results_page.records.create(
-            record_metadataId="C123456", description="This is the overridden description"
+            record_metadataId="C123456",
+            description="This is the overridden description",
         )
         self.results_page.save()
 
@@ -253,7 +255,8 @@ class TestResultsPage(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        metadataId="C123456", description="This is the description from Kong"
+                        metadataId="C123456",
+                        description="This is the description from Kong",
                     )
                 ]
             ),

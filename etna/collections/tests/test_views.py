@@ -161,7 +161,9 @@ class TestEditResultsPage(WagtailPageTests):
         self.assertEqual(self.results_page.records.count(), 1)
 
     def test_remove_records(self):
-        self.results_page.records.create(record_metadataId="C140", page=self.results_page)
+        self.results_page.records.create(
+            record_metadataId="C140", page=self.results_page
+        )
         self.results_page.save()
 
         data = nested_form_data(
@@ -200,7 +202,9 @@ class TestEditResultsPage(WagtailPageTests):
         request to Kong to fetch the record details. This test is a smoke test to ensure
         the page can load.
         """
-        self.results_page.records.create(record_metadataId="C140", page=self.results_page)
+        self.results_page.records.create(
+            record_metadataId="C140", page=self.results_page
+        )
 
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.results_page.id,))

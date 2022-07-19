@@ -119,7 +119,9 @@ class Command(BaseCommand):
                 )
 
             try:
-                results_page_record = results_page.records.get(record_metadataId=row["metadataId"])
+                results_page_record = results_page.records.get(
+                    record_metadataId=row["metadataId"]
+                )
             except ResultsPageRecord.DoesNotExist:
                 results_page_record = results_page.records.create(
                     record_metadataId=row["metadataId"], page=results_page
