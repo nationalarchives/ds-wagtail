@@ -12,6 +12,8 @@
             - messages
             - csrftoken
             - cookies_policy
+            - dontShowCookieNotice
+            - beta_banner_dismissed
         headers:
             - Accept
             - Vary
