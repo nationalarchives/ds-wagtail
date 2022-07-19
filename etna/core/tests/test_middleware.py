@@ -53,13 +53,6 @@ class TestMaintenanceMode(TestCase):
 
 
 class TestInterpretCookiesMiddleware(SimpleTestCase):
-    usage_true = quote('{"usage":true,"settings":false,"essential":true}')
-    usage_false = quote('{"usage":false,"settings":false,"essential":true}')
-    empty = ""
-    invalid = "NOT_JSON"
-    unexpected_structure = '["item_one", "item_two"]'
-    non_bool_usage = quote('{"usage":123,"settings":false,"essential":true}')
-
     def setUp(self):
         self.request = HttpRequest()
         self.request.path = "/"
@@ -78,24 +71,45 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         self.assertIs(context_data["show_cookie_notice"], True)
         self.assertIs(context_data["show_beta_banner"], True)
 
-    def test_cookies_permitted_value_when_preferences_cookie_set(self):
-        for attribute_name, expected_cookies_permitted_value in (
-            ("usage_true", True),
-            ("usage_false", False),
-            ("empty", False),
-            ("invalid", False),
-            ("unexpected_structure", False),
-            ("non_bool_usage", False),
+    def test_cookies_permitted_is_true_when_usage_is_true(self):
+        # set cookie value for request
+        self.request.COOKIES["cookies_policy"] = quote(
+            '{"usage":true,"settings":false,"essential":true}'
+        )
+        # apply middelware to self.response
+        self._apply_middleware()
+        # check context data value
+        self.assertIs(self.response.context_data["cookies_permitted"], True)
+
+    def test_cookies_permitted_is_false_when_usage_is_false(self):
+        # set cookie value for request
+        self.request.COOKIES["cookies_policy"] = quote(
+            '{"usage":false,"settings":false,"essential":true}'
+        )
+        # apply middelware to self.response
+        self._apply_middleware()
+        # check context data value
+        self.assertIs(self.response.context_data["cookies_permitted"], False)
+
+    def test_cookies_permitted_is_false_when_value_is_unexpected(self):
+        for subtest_name, cookie_value in (
+            ("empty string", ""),
+            ("invalid", "NOT_JSON"),
+            ("unexpected json structure", '["item_one", "item_two"]'),
+            (
+                "usage is not a bool",
+                quote('{"usage":123,"settings":false,"essential":true}'),
+            ),
         ):
-            with self.subTest(attribute_name):
+            with self.subTest(subtest_name):
                 # set cookie value for request
-                self.request.COOKIES["cookies_policy"] = getattr(self, attribute_name)
+                self.request.COOKIES["cookies_policy"] = cookie_value
                 # apply middelware to self.response
                 self._apply_middleware()
                 # check context_data
                 self.assertIs(
                     self.response.context_data["cookies_permitted"],
-                    expected_cookies_permitted_value,
+                    False,
                 )
 
     @override_settings(FEATURE_COOKIE_BANNER_ENABLED=False)
