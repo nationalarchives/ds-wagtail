@@ -12,7 +12,7 @@ from django.views.generic import FormView, TemplateView
 
 from wagtail.core.utils import camelcase_to_underscore
 
-from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
+from ..ciim.client import Aggregation, ResultList, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     FEATURED_BUCKETS,
@@ -24,7 +24,7 @@ from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..collections.models import ResultsPage
 from ..insights.models import InsightsPage
-from ..records.models import Record
+from ..records.api import records_client
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 logger = logging.getLogger(__name__)
@@ -50,7 +50,7 @@ class BucketsMixin:
         self, api_result: Union[None, Dict[str, Any]]
     ) -> Sequence[Dict[str, Union[str, int]]]:
         """
-        Attempts to find and return a list or values from `api_result`
+        Attempts to find and return a list of values from `api_result`
         that can be passed to `get_buckets()`, allowing it to set the
         `result_count` value for each bucket.
         """
@@ -59,14 +59,13 @@ class BucketsMixin:
 
         # Account for different API response structures
         aggregations = {}
-        if api_result.get("responses"):
-            aggregations = api_result["responses"][0].get("aggregations", {})
-        else:
-            aggregations = api_result.get("aggregations", {})
-
-        # The API response has an unfamiliar structure
-        if not aggregations:
-            return ()
+        if isinstance(api_result, ResultList):
+            aggregations = api_result.aggregations
+        elif isinstance(api_result, tuple):
+            try:
+                aggregations = api_result[0].get("aggregations")
+            except AttributeError:
+                pass
 
         return aggregations.get("group", {}).get("buckets", ())
 
@@ -134,9 +133,8 @@ class KongAPIMixin:
         Queries the API, and returns a `dict` containing any data from the
         response that is useful for the request.
         """
-        client = Record.api.client
         # variabalize the method for calling below
-        client_method_to_call = getattr(client, self.api_method_name)
+        client_method_to_call = getattr(records_client, self.api_method_name)
         # call the variabalized api client method
         response = client_method_to_call(**self.get_api_kwargs(form))
         # add response to view state for use in other methods
@@ -190,7 +188,7 @@ class SearchLandingView(BucketsMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
-        self.api_result = Record.api.client.search(
+        self.api_result = records_client.search(
             template=Template.DETAILS,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
@@ -424,14 +422,20 @@ class BaseFilteredSearchView(BaseSearchView):
         filter_aggregations.append(f"group:{form.cleaned_data['group']}")
         return filter_aggregations
 
-    def process_api_result(self, form: Form, api_result: Dict[str, Any]):
+    def process_api_result(self, form: Form, api_result: Any):
         """
         Update the `choices` value on the form's `dynamic_choice_fields` to
         reflect the 'aggregations' data included in the API response.
 
         See also: `get_api_aggregations()`.
         """
-        aggregations = api_result["responses"][1].get("aggregations", {})
+        if self.api_method_name == "search":
+            aggregations = api_result[1].aggregations
+        elif isinstance(api_result, ResultList):
+            aggregations = api_result.aggregations
+        else:
+            return None
+
         for key, value in aggregations.items():
             if buckets := value.get("buckets"):
                 field_name = camelcase_to_underscore(key)
@@ -445,13 +449,12 @@ class BaseFilteredSearchView(BaseSearchView):
         context = super().get_context_data(**kwargs)
         context["selected_filters"] = self.get_selected_filters(self.form)
         if self.api_result:
-            result_response = self.api_result["responses"][1]
-            total_count = result_response["hits"]["total"]["value"]
+            results = self.api_result[1]
             per_page = self.form.cleaned_data["per_page"]
             paginator, page, page_range = self.paginate_api_result(
-                result_list=result_response["hits"]["hits"],
+                result_list=results.hits,
                 per_page=per_page,
-                total_count=total_count,
+                total_count=results.total_count,
             )
             context.update(
                 paginator=paginator,
@@ -563,39 +566,30 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         Unmatched url is bypassed but logged.
         """
         slugs = [
-            result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+            result.url.rstrip("/").split("/").pop()
             for result in page.object_list
+            if result.has_url()
         ]
-        # filter by slug for performance boost
-        insights_page_by_url = {
-            page.get_url(self.request): page
-            for page in InsightsPage.objects.live()
+
+        # find pages with matching slugs, and key them by their absolute URL
+        wagtail_pages = {
+            p.get_url(self.request): p
+            for p in InsightsPage.objects.live()
             .filter(slug__in=slugs)
             .defer("body")
             .select_related("teaser_image")
         }
-        page_list = []
+
+        # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            if source_page := insights_page_by_url.get(urlparse(url).path, ""):
-                result["source_page"] = source_page
-            else:
-                logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in insights_page_by_url={insights_page_by_url}"
-                )
-            page_list.append(result)
-        page.object_list = page_list
+            if result.has_url():
+                absolute_url = urlparse(result.url).path
+                if source_page := wagtail_pages.get(absolute_url):
+                    result.source_page = source_page
+                else:
+                    logger.debug(
+                        f"WebsiteSearchView:scrapped/ingested url={absolute_url} not found in insights_page_by_url={wagtail_pages}"
+                    )
 
     def add_results_page_for_url(self, page: Page) -> None:
         """
@@ -603,37 +597,29 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         Unmatched url is bypassed but logged.
         """
         slugs = [
-            result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+            result.url.rstrip("/").split("/").pop()
             for result in page.object_list
+            if result.has_url()
         ]
-        results_page_by_url = {
-            page.get_url(self.request): page
-            for page in ResultsPage.objects.live()
+
+        # find pages with matching slugs, and key them by their absolute URL
+        wagtail_pages = {
+            p.get_url(self.request): p
+            for p in ResultsPage.objects.live()
             .filter(slug__in=slugs)
             .select_related("teaser_image")
         }
-        page_list = []
+
+        # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            if source_page := results_page_by_url.get(urlparse(url).path, ""):
-                result["source_page"] = source_page
+            if result.has_url():
+                absolute_url = urlparse(result.url).path
+                if source_page := wagtail_pages.get(absolute_url):
+                    result.source_page = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in results_page_by_url={results_page_by_url}"
+                    f"WebsiteSearchView:scrapped/ingested url={absolute_url} not found in results_page_by_url={wagtail_pages}"
                 )
-            page_list.append(result)
-        page.object_list = page_list
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -669,9 +655,9 @@ class FeaturedSearchView(BaseSearchView):
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
-            response = self.api_result["responses"][i]
-            bucket.result_count = response["hits"]["total"]["value"]
-            bucket.results = response["hits"]["hits"]
+            results = self.api_result[i]
+            bucket.result_count = results.total_count
+            bucket.results = results.hits
             buckets[bucket.key] = bucket
         return buckets
 

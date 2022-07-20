@@ -2,6 +2,7 @@ import logging
 
 from generic_chooser.widgets import AdminChooser
 
+from .api import records_client
 from .models import Record
 
 logger = logging.getLogger(__name__)
@@ -52,4 +53,4 @@ class RecordChooser(AdminChooser):
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
-        return Record.api.fetch(iaid=pk)
+        return records_client.fetch(iaid=pk)
