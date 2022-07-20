@@ -5,11 +5,13 @@ from copy import deepcopy
 
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
+from django.urls import reverse
 
 import responses
 
 from ...ciim.tests.factories import create_media, create_record, create_response
 from ...ciim.utils import ValueExtractionError
+from ..api import get_records_client
 from ..models import Image, Record
 
 
@@ -19,6 +21,7 @@ class RecordModelTests(SimpleTestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.records_client = get_records_client()
         with open(cls.fixture_path, "r") as f:
             cls.fixture_contents = json.loads(f.read())
 
@@ -43,27 +46,20 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.template, {})
 
     def test_iaid(self):
-        self.assertTrue(self.record.has_iaid())
         self.assertEqual(self.record.iaid, "C10297")
 
-    def test_raises_valueextractionerror_when_iaid_is_not_present(self):
+    def test_returns_blank_string_when_data_not_present(self):
         # patch raw data
         self.record._raw["@admin"].pop("id")
         self.record._raw["@template"]["details"].pop("iaid")
+        self.assertEqual(self.record.iaid, "")
 
-        self.assertFalse(self.record.has_iaid())
-
-        with self.assertRaises(ValueExtractionError):
-            self.record.iaid
-
-    def test_raises_valueerror_when_iaid_is_invalid(self):
+    def test_returns_blank_string_when_iaid_value_is_invalid(self):
         # patch raw data
         invalid_value = "bp-299"
         self.record._raw["@admin"]["id"] = invalid_value
         self.record._raw["@template"]["details"]["iaid"] = invalid_value
-
-        with self.assertRaises(ValueError):
-            self.record.iaid
+        self.assertEqual(self.record.iaid, "")
 
     def test_summary_title(self):
         self.assertEqual(
@@ -82,21 +78,78 @@ class RecordModelTests(SimpleTestCase):
 
         self.assertFalse(self.record.has_reference_number())
 
-        with self.assertRaises(ValueExtractionError):
-            self.record.reference_number
-
-    def test_url(self):
+    def test_source_url(self):
         # patch raw data
         url = "http://dummy.com"
         self.record._raw["@template"]["details"]["sourceUrl"] = url
 
-        self.assertTrue(self.record.has_url())
-        self.assertEqual(self.record.url, url)
+        self.assertTrue(self.record.has_source_url())
+        self.assertEqual(self.record.source_url, url)
 
     def test_raises_valueextractionerror_if_url_not_present(self):
-        self.assertFalse(self.record.has_url())
+        self.assertFalse(self.record.has_source_url())
         with self.assertRaises(ValueExtractionError):
-            self.record.url
+            self.record.source_url
+
+    def test_url_prefers_iaid_over_reference_number_and_source_url(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                        "referenceNumber": "2515/300/1",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.url,
+            reverse("details-page-machine-readable", kwargs={"iaid": record.iaid}),
+        )
+
+    def test_url_prefers_reference_number_over_source_url(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "referenceNumber": "2515/300/1",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.url,
+            reverse(
+                "details-page-human-readable",
+                kwargs={"reference_number": record.reference_number},
+            ),
+        )
+
+    def test_url_uses_source_url_when_no_iaid_or_reference_number_is_available(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(record.url, record.source_url)
+
+    def test_url_returns_blank_string_when_no_sutiable_data_is_present(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "summaryTitle": "A very incomplete record",
+                    }
+                }
+            }
+        )
+        self.assertEqual(record.url, "")
 
     def test_description(self):
         self.assertEqual(
@@ -289,11 +342,23 @@ class RecordModelTests(SimpleTestCase):
             (
                 {
                     "description": "For files of the tri-service Defence Intelligence staff see,",
-                    "links": [{"iaid": "C5789", "text": "DEFE 31"}],
+                    "links": [
+                        {
+                            "id": "C5789",
+                            "text": "DEFE 31",
+                            "href": "/catalogue/id/C5789/",
+                        }
+                    ],
                 },
                 {
                     "description": "For records of the Joint Intelligence Bureau see",
-                    "links": [{"iaid": "C14457", "text": "WO 252"}],
+                    "links": [
+                        {
+                            "id": "C14457",
+                            "text": "WO 252",
+                            "href": "/catalogue/id/C14457/",
+                        }
+                    ],
                 },
                 {
                     "description": "Records of the Government Code and Cypher School:",
@@ -304,9 +369,14 @@ class RecordModelTests(SimpleTestCase):
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-class UnexpectedParsingIssueTest(TestCase):
+class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
     issues with data returned by Kong"""
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.records_client = get_records_client()
 
     @responses.activate
     def test_hierarchy_with_no_identifier_is_skipped(self):
@@ -332,7 +402,7 @@ class UnexpectedParsingIssueTest(TestCase):
             ),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = self.records_client.fetch(iaid="C123456")
 
         self.assertEqual(record.hierarchy, ())
 
@@ -349,7 +419,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = self.records_client.fetch(iaid="C123456")
 
         self.assertEqual(record.date_created, "")
 
@@ -383,7 +453,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = self.records_client.fetch(iaid="C123456")
 
         # Related records with no 'identifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
@@ -424,7 +494,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = self.records_client.fetch(iaid="C123456")
 
         self.assertEqual(record.related_articles, ())
 

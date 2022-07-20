@@ -454,7 +454,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="insight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], ArticlePage
+            response.context_data["page"].object_list[0].source_page, ArticlePage
         )
 
 
@@ -616,10 +616,10 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="highlight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], ResultsPage
+            response.context_data["page"].object_list[0].source_page, ResultsPage
         )
         self.assertIsInstance(
-            response.context_data["page"].object_list[1]["source_page"], ResultsPage
+            response.context_data["page"].object_list[1].source_page, ResultsPage
         )
 
 
