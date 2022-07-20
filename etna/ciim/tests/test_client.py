@@ -319,6 +319,18 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
+    def test_with_filter_collection(self):
+        self.client.search(filter_aggregations=["collection:IR", "collection:PROB"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?"
+            "filterAggregations=collection%3AIR%3Aor&"
+            "filterAggregations=collection%3APROB%3Aor",
+        )
+
+    @responses.activate
     def test_with_filter_held_by_without_special_chars(self):
         self.client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
 
@@ -359,14 +371,14 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/search?"
-            "filterAggregations=heldBy%3ARolls+Royce+plc&"
-            "filterAggregations=heldBy%3AIRIE+dance+theatre&"
-            "filterAggregations=heldBy%3ARoyal+Yorkshire+Lodge+No+265&"
-            "filterAggregations=heldBy%3AREWIND+Artists%27+Video+in+the+70s+80s&"
-            "filterAggregations=heldBy%3ANational+Arts+Education+Archive+YSP&"
-            "filterAggregations=heldBy%3AFoster+Partners&"
-            "filterAggregations=heldBy%3ALabour+History+Archive+and+Study+Centre+People%27s+History+Museum+University+of+Central+Lancashire+&"
-            "filterAggregations=heldBy%3ALondon+University+London+School+of+Economics+The+Women%27s+Library",
+            "filterAggregations=heldBy%3ARolls+Royce+plc%3Aor&"
+            "filterAggregations=heldBy%3AIRIE+dance+theatre%3Aor&"
+            "filterAggregations=heldBy%3ARoyal+Yorkshire+Lodge+No+265%3Aor&"
+            "filterAggregations=heldBy%3AREWIND+Artists%27+Video+in+the+70s+80s%3Aor&"
+            "filterAggregations=heldBy%3ANational+Arts+Education+Archive+YSP%3Aor&"
+            "filterAggregations=heldBy%3AFoster+Partners%3Aor&"
+            "filterAggregations=heldBy%3ALabour+History+Archive+and+Study+Centre+People%27s+History+Museum+University+of+Central+Lancashire+%3Aor&"
+            "filterAggregations=heldBy%3ALondon+University+London+School+of+Economics+The+Women%27s+Library%3Aor",
         )
 
     @responses.activate
