@@ -4,7 +4,9 @@ import logging
 import re
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Dict, Iterator, Optional, Sequence, Tuple
+
+from django.utils.functional import cached_property
 
 import requests
 
@@ -14,6 +16,9 @@ from .exceptions import (
     KongInternalServerError,
     KongServiceUnavailableError,
 )
+
+if TYPE_CHECKING:
+    from .models import APIModel
 
 logger = logging.getLogger(__name__)
 
@@ -129,6 +134,67 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
             filter_prepared_list = updated_list_for_or_operator
 
     return filter_prepared_list
+
+
+class ResultList:
+    """
+    Wrapper class for JSON-decoded list of search results, that converts the raw dicts
+    into instances of `result_type` when iterated.
+    """
+
+    def __init__(
+        self,
+        hits: Sequence[Dict[str, Any]],
+        total_count: int,
+        result_type: "APIModel",
+        aggregations: Dict[str, Any] = None,
+    ):
+        self._hits = hits or []
+        self.total_count = total_count
+        self.result_type = result_type
+        self.aggregations = aggregations or {}
+
+    @cached_property
+    def hits(self) -> Tuple["APIModel"]:
+        """
+        Return a tuple of APIModel instances representative of the raw `_hits`
+        data. The return value is cached to support reuse without any
+        transformation overhead.
+        """
+        return tuple(self.result_type.from_api_response(h) for h in self._hits)
+
+    def __len__(self) -> int:
+        return len(self._hits)
+
+    def __bool__(self) -> bool:
+        return bool(self._hits)
+
+    def __iter__(self) -> Iterator["APIModel"]:
+        """
+        Lazily transform raw results into APIModel instances and
+        return them one-by-one.
+        """
+        yield from self.hits
+
+    def __getitem__(self, slice_or_index):
+        # If results are already converted, take item or slice
+        # from the the converted values
+        if 'hits' in self.__dict__:
+            return self.hits[slice_or_index]
+
+        # If only a single item was requested, transform
+        # only that item to an APIModel instance
+        if isinstance(slice_or_index, int):
+            return self.result_type.from_api_response(self._hits[slice_or_index])
+
+        # Return a new ResultList that can be lazily
+        # transformed as needed
+        return ResultList(
+            hits=self._hits[slice_or_index],
+            total_count=self.total_count,
+            result_type=self.result_type,
+            aggregations=self.aggregations,
+        )
 
 
 class KongClient:
