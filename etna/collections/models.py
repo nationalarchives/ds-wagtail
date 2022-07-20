@@ -14,9 +14,9 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..ciim.exceptions import KongAPIError
 from ..core.models import BasePage, BasePageWithIntro
-from ..records.models import Record
+from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -557,8 +557,8 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
-        except (KongAPIError, APIManagerException):
+            return records_client.fetch(iaid=self.record_iaid)
+        except KongAPIError:
             return None
 
     panels = [
