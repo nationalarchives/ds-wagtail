@@ -340,7 +340,10 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             Data.cookiesToRemove.two,
             Data.cookiesToRemove.three,
             Data.cookiesToRemove.four,
-            Data.cookiesToRemove.five
+            Data.cookiesToRemove.five,
+            Data.cookiesToRemove.six,
+            Data.cookiesToRemove.seven,
+            Data.cookiesToRemove.eight
           ];
 
           // Unset GA cookies if available
