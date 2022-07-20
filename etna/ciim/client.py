@@ -4,20 +4,38 @@ import logging
 import re
 
 from datetime import date, datetime, time
-from typing import Any, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
+from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
 
 import requests
 
+from etna.records.models import Record
+
 from .exceptions import (
+    DoesNotExist,
     KongBadRequestError,
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
+    MultipleObjectsReturned,
 )
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from etna.ciim.models import APIModel
 
 
 class Stream(str, enum.Enum):
@@ -134,6 +152,64 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     return filter_prepared_list
 
 
+class ResultList:
+    """
+    Wrapper class for JSON-decoded list of search results, that lazily converts
+    raw "hits" into instances of `item_type` when iterated, as well
+    providing the following helper attributes for a more developer-friendly
+    interface:
+
+    `total_count`:
+        The total number of results available
+
+    `aggregations`:
+        A dict of "aggregation" values from the results themselves
+
+    `filter_aggregations`:
+        A dict of "aggregation" values populated from the separate 'filter aggregations'
+        response from the API. For endpoints that do not include such data in their
+        response (e.g. 'searchAll/' and 'searchUnified/'), the value will be `None`.
+    """
+
+    def __init__(
+        self,
+        hits: Sequence[Dict[str, Any]],
+        total_count: int,
+        item_type: Type,
+        aggregations: Dict[str, Any] = None,
+        filter_aggregations: Dict[str, Any] = None,
+    ):
+        self._hits = hits or []
+        self.total_count = total_count
+        self.item_type = item_type
+        self.aggregations = aggregations or {}
+        self.filter_aggregations = filter_aggregations
+
+    @cached_property
+    def hits(self) -> Tuple["APIModel"]:
+        """
+        Return a tuple of APIModel instances representative of the raw `_hits`
+        data. The return value is cached to support reuse without any
+        transformation overhead.
+        """
+        return tuple(
+            self.item_type.from_api_response(h) if isinstance(h, dict) else h
+            for h in self._hits
+        )
+
+    def __iter__(self) -> Iterable["APIModel"]:
+        yield from self.hits
+
+    def __len__(self) -> int:
+        return len(self._hits)
+
+    def __bool__(self) -> bool:
+        return bool(self._hits)
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name} {self.hits}>"
+
+
 class KongClient:
     """Client used to Fetch and validate data from Kong."""
 
@@ -157,6 +233,44 @@ class KongClient:
         self.session.verify = verify_certificates
         self.timeout = timeout
 
+    @staticmethod
+    def format_datetime(
+        value: Union[date, datetime], supplementary_time: Optional[time] = None
+    ) -> datetime:
+        """
+        Converts a `date` or `datetime` value to an isoformat string that the API
+        will understand. If value is `date`, it will be converted into a `datetime`,
+        using `supplementary_time` for the time information (defaulting to 00:00:00
+        if not provided).
+        """
+        if not isinstance(value, datetime):
+            value = datetime.combine(
+                value, supplementary_time or time.min, tzinfo=get_current_timezone()
+            )
+        return value.isoformat()
+
+    def resultlist_from_response(
+        self,
+        response: Dict[str, Any],
+        filter_aggregations: Dict[str, Any] = None,
+        item_type: Type = Record,
+    ) -> ResultList:
+        try:
+            hits = response["hits"]["hits"]
+        except KeyError:
+            hits = []
+        try:
+            total_count = response["hits"]["total"]["value"]
+        except KeyError:
+            total_count = len(hits)
+        return ResultList(
+            hits=hits,
+            total_count=total_count,
+            item_type=item_type,
+            aggregations=response.get("aggregations", {}),
+            filter_aggregations=filter_aggregations,
+        )
+
     def fetch(
         self,
         *,
@@ -164,7 +278,7 @@ class KongClient:
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
-    ) -> dict:
+    ) -> Record:
         """Make request and return response for Kong's /fetch endpoint.
 
         Used to fetch a single item by its identifier.
@@ -189,24 +303,13 @@ class KongClient:
             "template": template,
             "expand": expand,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
-
-    @staticmethod
-    def format_datetime(
-        value: Union[date, datetime], supplementary_time: Optional[time] = None
-    ):
-        """
-        Converts a `date` or `datetime` value to an isoformat string that the API
-        will understand. If value is `date`, it will be converted into a `datetime`,
-        using `supplementary_time` for the time information (defaulting to 00:00:00
-        if not provided).
-        """
-        if not isinstance(value, datetime):
-            value = datetime.combine(
-                value, supplementary_time or time.min, tzinfo=get_current_timezone()
-            )
-        return value.isoformat()
+        resp = self.make_request(f"{self.base_url}/data/fetch", params=params).json()
+        results = self.resultlist_from_response(resp)
+        if not results:
+            raise DoesNotExist
+        if len(results) > 1:
+            raise MultipleObjectsReturned
+        return results.hits[0]
 
     def search(
         self,
@@ -226,8 +329,8 @@ class KongClient:
         filter_keyword: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> ResultList:
+        """Make request and return response for Kong's /search endpoint.
 
         Search all metadata by keyword or web_reference. Results can be
         bucketed, and the search restricted by bucket, reference, topic and
@@ -294,7 +397,11 @@ class KongClient:
                 created_end_date, supplementary_time=time.max
             )
 
-        return self.make_request(f"{self.base_url}/data/search", params=params).json()
+        resp = self.make_request(f"{self.base_url}/data/search", params=params).json()
+        filter_aggregations_response, results_response = resp["responses"]
+        return self.resultlist_from_response(
+            results_response, filter_aggregations_response.get("aggregations")
+        )
 
     def search_all(
         self,
@@ -305,8 +412,8 @@ class KongClient:
         template: Optional[Template] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> Tuple[ResultList]:
+        """Make request and return response for Kong's /searchAll endpoint.
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
@@ -335,10 +442,12 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(
+        resp = self.make_request(
             f"{self.base_url}/data/searchAll", params=params
         ).json()
+        return tuple(
+            self.resultlist_from_response(r) for r in resp.get("responses", ())
+        )
 
     def search_unified(
         self,
@@ -351,7 +460,7 @@ class KongClient:
         sort_order: Optional[SortOrder] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /searchUnified endpoint.
 
         /searchUnified reproduces the private beta’s /search endpoint, turning
@@ -391,9 +500,10 @@ class KongClient:
             "size": size,
         }
 
-        return self.make_request(
+        resp = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
         ).json()
+        return self.resultlist_from_response(resp)
 
     def fetch_all(
         self,
@@ -403,7 +513,7 @@ class KongClient:
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /fetchAll endpoint.
 
         Used to fetch a all items by for the given identifier(s).
@@ -433,8 +543,8 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        resp = self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        return self.resultlist_from_response(resp)
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None

@@ -54,26 +54,15 @@ class BucketsMixin:
 
     def extract_group_buckets(
         self, api_result: Union[None, Dict[str, Any]]
-    ) -> Sequence[Dict[str, Union[str, int]]]:
+    ) -> Tuple[Dict[str, Union[str, int]]]:
         """
         Attempts to find and return a list or values from `api_result`
         that can be passed to `get_buckets()`, allowing it to set the
         `result_count` value for each bucket.
         """
-        if not api_result:
+        if api_result is None:
             return ()
-
-        # Account for different API response structures
-        aggregations = {}
-        if api_result.get("responses"):
-            aggregations = api_result["responses"][0].get("aggregations", {})
-        else:
-            aggregations = api_result.get("aggregations", {})
-
-        # The API response has an unfamiliar structure
-        if not aggregations:
-            return ()
-
+        aggregations = api_result.filter_aggregations or {}
         return aggregations.get("group", {}).get("buckets", ())
 
     def get_current_bucket_key(self):
