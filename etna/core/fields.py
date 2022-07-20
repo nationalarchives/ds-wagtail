@@ -202,7 +202,10 @@ class DateInputField(forms.MultiValueField):
         try:
             out = self.compress(clean_data)
         except ValueError:
-            # When Day, Month belong to correct range and Year is 0, then error-value "year 0 is out of range"
+            # After compressing any seperated fields individual fields dont make a valid date
+            # 31/02/2001 - "day is out of range for month"
+            # 28/02/0 - "year 0 is out of range"
+            # when using without defaults for missing fields:- invalid literal for int() with base 10:
             msg = "Entered date must be a real date, for example 23 9 2017."
             self.fields[0].widget.errors.append(msg)
             raise ValidationError(msg)
