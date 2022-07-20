@@ -1,10 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load i18n %}
-{% load wagtailcore_tags %}
-{% load wagtailimages_tags %}
+{% load i18n static wagtailcore_tags wagtailimages_tags %}
+
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 {% if page.featured_insight %}
