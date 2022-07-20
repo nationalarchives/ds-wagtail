@@ -33,7 +33,7 @@ const Data = {
     cookies: {
       cookieOne: "dontShowCookieNotice",
       cookieTwo: "cookies_policy",
-      gaCookies: ["_ga", "_gid", "_gat_UA-2827241-22", "_gat_UA-2827241-1", "_ga_2CP7QT8TDG"],
+      gaCookies: ["_ga", "_gid", "_gat_UA-2827241-1", "_gat_UA-2827241-22", "_ga_2CP7QT8TDG", "_ga_Q5K385DSTG", "_gat_UA-2827241-15", "_gat_UA-2827241-16"],
       settings: ["dontAutoStartResultsTour"]
     },
     formWrapper: {
@@ -57,7 +57,10 @@ const Data = {
       two: "_gid",
       three: "_gat_UA-2827241-1",
       four: "_gat_UA-2827241-22",
-      five: "_ga_2CP7QT8TDG"
+      five: "_ga_2CP7QT8TDG",
+      six: "_ga_Q5K385DSTG",
+      seven: "_gat_UA-2827241-15",
+      eight: "_gat_UA-2827241-16"
     },
     DOM: {
       on: ".jsON",
