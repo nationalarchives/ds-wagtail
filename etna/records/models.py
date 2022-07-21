@@ -211,7 +211,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def arrangement_safe(self) -> SafeString:
-        stripped = bleach.clean(self.arrangement, tage=["mark"], attributes=[], strip=True)
+        stripped = bleach.clean(
+            self.arrangement, tage=["mark"], attributes=[], strip=True
+        )
         return mark_safe(stripped)
 
     @cached_property
@@ -253,11 +255,10 @@ class Record(DataLayerMixin, APIModel):
                 return item.get("value", "")
         # Extract interpretive content as a last resort
         try:
-            content_text =  strip_tags(self.get("source.content"))
+            content_text = strip_tags(self.get("source.content"))
             return Truncator(content_text).words(50, truncate="...")
         except ValueExtractionError:
             return ""
-
 
     @cached_property
     def description(self) -> str:
@@ -267,7 +268,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def description_safe(self) -> SafeString:
-        stripped = bleach.clean(self.description, tags=["mark"], attributes=[], strip=True)
+        stripped = bleach.clean(
+            self.description, tags=["mark"], attributes=[], strip=True
+        )
         return mark_safe(stripped)
 
     @cached_property
