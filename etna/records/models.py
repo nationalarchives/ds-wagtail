@@ -10,7 +10,9 @@ from django.conf import settings
 from django.http import HttpRequest
 from django.urls import reverse
 from django.utils.functional import cached_property
+from django.utils.html import strip_tags
 from django.utils.safestring import SafeString, mark_safe
+from django.utils.text import Truncator
 
 import bleach
 
@@ -249,7 +251,13 @@ class Record(DataLayerMixin, APIModel):
         for item in description_items:
             if item.get("type", "") == "description" or len(description_items) == 1:
                 return item.get("value", "")
-        return ""
+        # Extract interpretive content as a last resort
+        try:
+            content_text =  strip_tags(self.get("source.content"))
+            return Truncator(content_text).words(50, truncate="...")
+        except ValueExtractionError:
+            return ""
+
 
     @cached_property
     def description(self) -> str:
