@@ -568,7 +568,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         slugs = [
             result.url.rstrip("/").split("/").pop()
             for result in page.object_list
-            if result.has_url()
+            if result.has_source_url()
         ]
 
         # find pages with matching slugs, and key them by their absolute URL
@@ -582,13 +582,13 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
 
         # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            if result.has_url():
+            if result.has_source_url():
                 absolute_url = urlparse(result.url).path
                 if source_page := wagtail_pages.get(absolute_url):
                     result.source_page = source_page
                 else:
                     logger.debug(
-                        f"WebsiteSearchView:scrapped/ingested url={absolute_url} not found in insights_page_by_url={wagtail_pages}"
+                        f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
                     )
 
     def add_results_page_for_url(self, page: Page) -> None:
@@ -599,7 +599,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         slugs = [
             result.url.rstrip("/").split("/").pop()
             for result in page.object_list
-            if result.has_url()
+            if result.has_source_url()
         ]
 
         # find pages with matching slugs, and key them by their absolute URL
@@ -612,13 +612,13 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
 
         # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            if result.has_url():
+            if result.has_source_url():
                 absolute_url = urlparse(result.url).path
                 if source_page := wagtail_pages.get(absolute_url):
                     result.source_page = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={absolute_url} not found in results_page_by_url={wagtail_pages}"
+                    f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
                 )
 
     def get_context_data(self, **kwargs):
