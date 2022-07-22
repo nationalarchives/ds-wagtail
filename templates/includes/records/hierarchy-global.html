@@ -10,13 +10,13 @@
             <h2 class="hierarchy-short-panel__heading sr-only">Catalogue location at a glance</h2>
             <p class="hierarchy-short-panel__label">You are here:</p>
 
-            <!-- 
+            <!--
             The 'short panel__list' section should only display up to a maximum of 3 list items at one time.
             These should display only the 'major' levels above the level you're on i.e Archive, Dept, Division, Series (don't include 'sub-levels' or 'sub-sub-levels').
             If the archive level is not the first item in the list, the first item should display the 'hierarchy-short-panel__list-item--more' modifier class to indicate there are more levels above by displaying the '...' before the list item, which is automatically handled by the CSS.
             If the Archive level is visible as the first item, this modifier doesn't need to be added.
             -->
-        
+
             <ul class="hierarchy-short-panel__list">
                 {% if record.hierarchy %}
                     {% if record.hierarchy|length <= 2 %}
@@ -26,10 +26,10 @@
                             </span>({{ record.template.heldBy }})
                         </li>
                     {% endif %}
-                    
+
                     {% for item in record.hierarchy %}
                         {% is_page_current_item_in_hierarchy record item as is_current_item %}
-    
+
                         {% if forloop.counter == 1 and not is_current_item %}
                             {% if record.hierarchy|length == 3 %}
                                 {% with trail_off=True %}
@@ -72,12 +72,12 @@
         </nav>
 
         <div class="hierarchy-short-panel__toggle-link" data-id="hierarchy-toggle-link"></div>
-        
+
         <!--
             The 'hierarchy-full-panel__bar-container-inner--level-1' modifier adds the width of the bar depending on the level.
             These always need to be added in stepped order - don't skip levels - so the widths descend by 2% each time (eg. only 1, 2, 3, 4 and not 1, 3, 4, 6).
         -->
-        
+
         <!-- DETAILED HIERARCHY VIEW -->
         <nav class="hierarchy-full-panel" role="navigation" data-id="hierarchy-detailed-view">
             <h2 class="hierarchy-full-panel__heading">Detailed catalogue location:</h2>
@@ -96,7 +96,7 @@
             {% if record.hierarchy %}
                 {% for item in record.hierarchy %}
                     {% is_page_current_item_in_hierarchy record item as is_current_item %}
-                    
+
                     {% include "includes/records/hierarchy-full-item.html" %}
                 {%endfor%}
             {% else %}
@@ -123,7 +123,7 @@
                 <!-- Previous item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
                     {% if record.previous_record %}
-                        {% if record.previous_record.has_reference_number %}
+                        {% if record.previous_record.reference_number %}
                             <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url record.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ record.previous_record.reference_number }}</a></p>
                         {% elif record.is_tna %}
                                 {{ 'previous_record'|as_label }} {{ record.level.lower|default:"record" }}
@@ -141,7 +141,7 @@
                 <!-- Next item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
                     {% if record.next_record %}
-                        {% if record.next_record.has_reference_number %}
+                        {% if record.next_record.reference_number %}
                             <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url record.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ record.next_record.reference_number }}</a></p>
                             {% elif record.is_tna %}
                                 {{ 'next_record'|as_label }} {{ record.level.lower|default:"record" }}

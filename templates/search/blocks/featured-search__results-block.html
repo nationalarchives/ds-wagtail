@@ -7,10 +7,12 @@
             <li class="featured-search__results-list-item">
                 <a href="{% record_url record %}" class="featured-search__results-link">
                     <h3 class="featured-search__results-heading">
-                        {{ record|record_detail:"summaryTitle"|striptags }}
+                        {{ record.summary_title }}
                     </h3>
                 </a>
-                <p>Catalogue reference: {{ record|record_detail:"referenceNumber"}}</p>
+                {% if record.reference_number %}
+                    <p>Catalogue reference: {{ record.reference_number }}</p>
+                {% endif %}
             </li>
         {% endfor %}
     </ul>

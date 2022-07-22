@@ -86,10 +86,8 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def reference_number(self) -> str:
         """
-        Return the "reference_number" value for this record (if one is available).
-
-        Raises `ValueExtractionError` when the raw data does not include
-        values in any of the expected positions.
+        Return the "reference_number" value for this record, or a blank
+        string if no such value can be found in the usual places.
         """
         try:
             return self.template["referenceNumber"]
@@ -101,21 +99,10 @@ class Record(DataLayerMixin, APIModel):
                 return item["reference_number"]
             except KeyError:
                 pass
-        raise ValueExtractionError(
-            f"'reference_number' could not be extracted from source data: {self._raw}"
-        )
+        return ""
 
-    def has_reference_number(self) -> bool:
-        """
-        Returns `True` if a 'reference_number' value can be extracted from the
-        raw data for this record. Otherwise `False`.
-        """
-        try:
-            self.reference_number
-        except ValueExtractionError:
-            return False
-        else:
-            return True
+    def reference_prefixed_title(self):
+        return f"{self.reference_number or 'N/A'} - {self.summary_title}"
 
     @cached_property
     def source_url(self):
@@ -166,7 +153,7 @@ class Record(DataLayerMixin, APIModel):
                 )
             except NoReverseMatch:
                 pass
-        if self.has_reference_number():
+        if self.reference_number:
             try:
                 return reverse(
                     "details-page-human-readable",
@@ -417,7 +404,7 @@ class Record(DataLayerMixin, APIModel):
         for ancestor in self.hierarchy:
             if (
                 ancestor.level_code == 3
-                and ancestor.has_reference_number()
+                and ancestor.reference_number
                 and ancestor.summary_title
             ):
                 return f"{ancestor.reference_number} - {ancestor.summary_title}"
@@ -425,7 +412,7 @@ class Record(DataLayerMixin, APIModel):
 
     @property
     def custom_dimension_14(self) -> str:
-        if self.has_reference_number() and self.summary_title:
+        if self.reference_number and self.summary_title:
             return f"{self.reference_number} - {self.summary_title}"
         return ""
 

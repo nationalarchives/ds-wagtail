@@ -68,7 +68,6 @@ class RecordModelTests(SimpleTestCase):
         )
 
     def test_reference_number(self):
-        self.assertTrue(self.record.has_reference_number())
         self.assertEqual(self.record.reference_number, "LO 2")
 
     def test_raises_valueextractionerror_when_reference_number_is_not_present(self):
@@ -76,7 +75,7 @@ class RecordModelTests(SimpleTestCase):
         self.record._raw.pop("identifier")
         self.record._raw["@template"]["details"].pop("referenceNumber")
 
-        self.assertFalse(self.record.has_reference_number())
+        self.assertEqual(self.record.reference_number, "")
 
     def test_source_url(self):
         # patch raw data
