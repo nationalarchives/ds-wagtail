@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 
 from ..analytics.mixins import DataLayerMixin
@@ -158,11 +158,39 @@ class Record(DataLayerMixin, APIModel):
         return self.get("summary.title", default="")
 
     @cached_property
+    def url(self) -> str:
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_reference_number():
+            try:
+                return reverse(
+                    "details-page-human-readable",
+                    kwargs={"reference_number": self.reference_number},
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_source_url():
+            return self.source_url
+        return ""
+
+    @cached_property
     def is_tna(self):
         for item in self.get("@datatype.group", ()):
             if item.get("value", "") == "tna":
                 return True
         return False
+
+    @cached_property
+    def type(self) -> Union[str, None]:
+        try:
+            return self.template["type"]
+        except KeyError:
+            return self.get("@datatype.base", None)
 
     @cached_property
     def access_condition(self) -> str:
@@ -225,6 +253,18 @@ class Record(DataLayerMixin, APIModel):
             return format_description_markup(raw)
         return ""
 
+    @property
+    def raw_content(self) -> str:
+        for item in self.get("source.content.items", ()):
+            return item.get("value", "")
+        return ""
+
+    @cached_property
+    def content(self) -> str:
+        if raw := self.raw_content:
+            return format_description_markup(raw)
+        return ""
+
     @cached_property
     def held_by(self) -> str:
         return self.template.get("heldBy", "")
@@ -232,6 +272,10 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def date_created(self) -> str:
         return self.template.get("dateCreated", "")
+
+    @cached_property
+    def record_opening(self) -> str:
+        return self.template.get("recordOpening", "")
 
     @cached_property
     def level(self) -> str:
