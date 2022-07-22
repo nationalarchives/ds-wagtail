@@ -8,7 +8,7 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.html import strip_tags
 from django.utils.safestring import SafeString, mark_safe
@@ -149,6 +149,27 @@ class Record(DataLayerMixin, APIModel):
             return False
         else:
             return True
+
+    @cached_property
+    def url(self) -> str:
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_reference_number():
+            try:
+                return reverse(
+                    "details-page-human-readable",
+                    kwargs={"reference_number": self.reference_number},
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_source_url():
+            return self.source_url
+        return ""
 
     @cached_property
     def title(self) -> str:
