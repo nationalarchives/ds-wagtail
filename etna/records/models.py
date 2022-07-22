@@ -118,7 +118,7 @@ class Record(DataLayerMixin, APIModel):
             return True
 
     @cached_property
-    def url(self):
+    def source_url(self):
         """
         Return the "url" value for this record. This value is typically
         only present for 'interpretive' results from other websites.
@@ -130,16 +130,16 @@ class Record(DataLayerMixin, APIModel):
             return self.template["sourceUrl"]
         except KeyError:
             raise ValueExtractionError(
-                f"'url' could not be extracted from source data: {self._raw}"
+                f"'source_url' could not be extracted from source data: {self._raw}"
             )
 
-    def has_url(self) -> bool:
+    def has_source_url(self) -> bool:
         """
-        Returns `True` if a 'url' value can be extracted from the raw data
+        Returns `True` if a 'source_url' value can be extracted from the raw data
         for this record. Otherwise `False`.
         """
         try:
-            self.url
+            self.source_url
         except ValueExtractionError:
             return False
         else:
