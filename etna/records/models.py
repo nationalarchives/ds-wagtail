@@ -69,36 +69,19 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def iaid(self) -> str:
         """
-        Return the "iaid" value for this record (if one is available).
-
-        Raises `ValueExtractionError` when the raw data does not include
-        any candidate values.
-
-        Raises `ValueError` when the raw data includes a value where iaids
-        are usually found, but the value is not a valid iaid.
+        Return the "iaid" value for this record. If the data is unavailable,
+        or is not a valid iaid, a blank string is returned.
         """
         try:
             candidate = self.template["iaid"]
         except KeyError:
-            candidate = self.get("@admin.id")
+            candidate = self.get("@admin.id", default="")
 
-        # value is not guaranteed to be a valid 'iaid', so we must
-        # check it before returning it as one
-        if not re.match(IAIDConverter.regex, candidate):
-            raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
-        return candidate
-
-    def has_iaid(self) -> bool:
-        """
-        Returns `True` if a valid 'iaid' value can be extracted from the
-        raw data for this record. Otherwise `False`.
-        """
-        try:
-            self.iaid
-        except (ValueExtractionError, ValueError):
-            return False
-        else:
-            return True
+        if candidate and re.match(IAIDConverter.regex, candidate):
+            # value is not guaranteed to be a valid 'iaid', so we must
+            # check it before returning it as one
+            return candidate
+        return ""
 
     @cached_property
     def reference_number(self) -> str:
