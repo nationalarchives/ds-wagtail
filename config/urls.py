@@ -18,6 +18,7 @@ from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
 
+
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
 
@@ -26,6 +27,12 @@ register_converter(converters.IAIDConverter, "iaid")
 def trigger_error(request):
     # Raise a ZeroDivisionError
     return 1 / 0
+
+
+handler500 = "etna.errors.views.custom_500_error_view"
+handler503 = "etna.errors.views.custom_503_error_view"
+handler404 = "etna.errors.views.custom_404_error_view"
+
 
 
 # Private URLs that are not meant to be cached.
@@ -145,5 +152,5 @@ urlpatterns = (
 
 if apps.is_installed("debug_toolbar"):
     urlpatterns = [
-        path("__debug__/", include("debug_toolbar.urls")),
-    ] + urlpatterns
+                      path("__debug__/", include("debug_toolbar.urls")),
+                  ] + urlpatterns
