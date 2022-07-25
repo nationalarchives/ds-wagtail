@@ -650,6 +650,7 @@
                             "custodialHistory": "The wills of Shakespeare (PROB 1/4) was seen by three of the members of the Royal Commission on Public Records in 1913. It had been placed in special storage conditions, at the Principal Probate Registry at Somerset House, because of its popularity with visitors.",
                             "dateCreated": "1616-06-22",
                             "deliveryOption": "No availability condition provisioned for this record",
+                            "digitised": true,
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
                             "iaid": "C198022",
@@ -678,6 +679,14 @@
                             "id": "C198021"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "PROB 1/3",
+                                "type": "reference_number",
+                                "value": "PROB 1/3"
+                            }
+                        ],
                         "summary": {
                             "title": "Will of William Cecil, Lord Burghley (copy) 1 March 1597/8. Proved 13 November 1598."
                         }
@@ -687,6 +696,14 @@
                             "id": "C15344975"
                         },
                         "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": true,
+                                "reference_number": "PROB 1/4A",
+                                "type": "reference_number",
+                                "value": "PROB 1/4A"
+                            }
+                        ],
                         "summary": {
                             "title": "William Shakespeare's will: three oak and glass display frames, and oak storage box...."
                         }
