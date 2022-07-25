@@ -56,7 +56,9 @@ class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(
+        TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
+    )
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
@@ -146,7 +148,9 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(
+        TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
+    )
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
@@ -195,7 +199,9 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(
+        TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
+    )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     featured_insight = models.ForeignKey(

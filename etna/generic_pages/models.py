@@ -7,7 +7,9 @@ from .blocks import GeneralPageStreamBlock
 
 
 class GeneralPage(BasePage):
-    body = StreamField(GeneralPageStreamBlock, blank=True, null=True)
+    body = StreamField(
+        GeneralPageStreamBlock, blank=True, null=True, use_json_field=True
+    )
     content_panels = BasePage.content_panels + [
         FieldPanel("body"),
     ]
