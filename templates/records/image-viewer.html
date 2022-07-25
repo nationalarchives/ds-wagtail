@@ -26,7 +26,7 @@
                     {% endcomment %}
 
                     <ul>
-                        <li><a href="{% url 'image-browse' page.iaid %}">All {{ images_count }} images</a></li>
+                        <li><a href="{% url 'image-browse' page.metadataId %}">All {{ images_count }} images</a></li>
                         <li><a href="{% record_url page %}">Record details</a></li>
                     </ul>
                 </nav>
@@ -55,10 +55,10 @@
                     <nav class="image-viewer__pagination" aria-label="Pagination">
                         <ul>
                             {% if previous_image %}
-                                <li><a href="{% url 'image-viewer' page.iaid previous_image.sort %}">Previous</a></li>
+                                <li><a href="{% url 'image-viewer' page.metadataId previous_image.sort %}">Previous</a></li>
                             {% endif %}
                             {% if next_image %}
-                                <li><a href="{% url 'image-viewer' page.iaid next_image.sort %}">Next</a></li>
+                                <li><a href="{% url 'image-viewer' page.metadataId next_image.sort %}">Next</a></li>
                             {% endif %}
                         </ul>
                     </nav>

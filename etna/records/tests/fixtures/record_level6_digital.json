@@ -296,8 +296,8 @@
                             "value": "96026"
                         },
                         {
-                            "iaid": "C198022",
-                            "type": "iaid",
+                            "metadataId": "C198022",
+                            "type": "metadataId",
                             "value": "C198022"
                         },
                         {
@@ -652,7 +652,7 @@
                             "deliveryOption": "No availability condition provisioned for this record",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C198022",
+                            "metadataId": "C198022",
                             "legalStatus": "Public Record(s)",
                             "level": "Piece",
                             "primaryIdentifier": "C198022",

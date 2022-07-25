@@ -28,7 +28,7 @@
         <ul class="image-browse__listing">
             {% for image in images %}
                 <li style="background-image:url({{ image.thumbnail_url }})">
-                    <a href="{% url 'image-viewer' page.iaid image.sort %}">
+                    <a href="{% url 'image-viewer' page.metadataId image.sort %}">
                         <span>Image {{ images.start_index|add:forloop.counter0 }} of {{ images_count }}</span>
                     </a>
                 </li>

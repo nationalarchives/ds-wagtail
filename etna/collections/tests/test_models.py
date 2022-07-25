@@ -161,7 +161,8 @@ class TestRecordDescriptionOverride(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", description="This is the description from Kong"
+                        metadataId="C123456",
+                        description="This is the description from Kong",
                     )
                 ]
             ),
@@ -169,7 +170,7 @@ class TestRecordDescriptionOverride(TestCase):
 
     @responses.activate
     def test_description_from_kong_is_rendered(self):
-        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.records.create(record_metadataId="C123456")
         self.results_page.save()
 
         response = self.client.get("/results-page/")
@@ -179,7 +180,8 @@ class TestRecordDescriptionOverride(TestCase):
     @responses.activate
     def test_override_description_is_rendered(self):
         self.results_page.records.create(
-            record_iaid="C123456", description="This is the overridden description"
+            record_metadataId="C123456",
+            description="This is the overridden description",
         )
         self.results_page.save()
 
@@ -203,7 +205,7 @@ class TestResultsPageIntegration(TestCase):
     def test_failed_result_fetch_due_to_404(self):
         responses.add(responses.GET, "https://kong.test/data/fetch", status=404)
 
-        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.records.create(record_metadataId="C123456")
         self.results_page.save()
 
         response = self.client.get("/results-page/")
@@ -214,7 +216,7 @@ class TestResultsPageIntegration(TestCase):
     def test_failed_result_fetch_due_to_500(self):
         responses.add(responses.GET, "https://kong.test/data/fetch", status=500)
 
-        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.records.create(record_metadataId="C123456")
         self.results_page.save()
 
         response = self.client.get("/results-page/")
@@ -227,7 +229,7 @@ class TestResultsPageIntegration(TestCase):
             responses.GET, "https://kong.test/data/fetch", json=create_response()
         )
 
-        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.records.create(record_metadataId="C123456")
         self.results_page.save()
 
         response = self.client.get("/results-page/")
@@ -252,7 +254,8 @@ class TestResultsPage(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456", description="This is the description from Kong"
+                        metadataId="C123456",
+                        description="This is the description from Kong",
                     )
                 ]
             ),
@@ -260,7 +263,7 @@ class TestResultsPage(TestCase):
 
     @responses.activate
     def test_datalayer_results_page(self):
-        self.results_page.records.create(record_iaid="C123456")
+        self.results_page.records.create(record_metadataId="C123456")
         self.results_page.save()
 
         response = self.client.get("/results-page/")

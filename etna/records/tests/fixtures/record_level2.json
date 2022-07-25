@@ -586,8 +586,8 @@
                             "value": "567"
                         },
                         {
-                            "iaid": "C995",
-                            "type": "iaid",
+                            "metadataId": "C995",
+                            "type": "metadataId",
                             "value": "C995"
                         },
                         {
@@ -904,7 +904,7 @@
                             ],
                             "dateCreated": "1883-1973",
                             "description": "<span class=\"scopecontent\"><p>Records reflecting the creating bodies' responsibilities in relation to the coal industry.</p><p>Correspondence and papers of the Coal Division are in <a class=\"extref\" href=\"C11833\">POWE 16</a>, <a class=\"extref\" href=\"C11834\">POWE 17</a> (emergency services, price control, supply and demand for anthracite, retail coal distribution), <a class=\"extref\" href=\"C11835\">POWE 18</a> (fuel and lighting), <a class=\"extref\" href=\"C11836\">POWE 19</a> (house coal emergency schemes), <a class=\"extref\" href=\"C11837\">POWE 20</a> (labour and labour relations), <a class=\"extref\" href=\"C11838\">POWE 21</a> (Mines Department War Book control arrangements), <a class=\"extref\" href=\"C11839\">POWE 22</a> (drainage schemes: mining subsidence, mining rights, mineral royalties, financial assistance, Reid Committee reports), and <a class=\"extref\" href=\"C11843\">POWE 26</a>. Up to 1942, these are records inherited or created by the Mines Department, and include records relating to wartime controls. Subjects included amongst these cover various aspects of coal mining. Some early papers in these series originated in the Home Office.</p><p>Finance files are in <a class=\"extref\" href=\"C11855\">POWE 39</a>. Records of the Directorate of Opencast Mining are in <a class=\"extref\" href=\"C11856\">POWE 40</a>. Records of the Coal Distribution Costs Committee (1956-1958) are in <a class=\"extref\" href=\"C11863\">POWE 47</a>.</p><p>The main registered file series of the Coal Division post-dating nationalisation are in <a class=\"extref\" href=\"C11853\">POWE 37</a> (B Series), <a class=\"extref\" href=\"C11868\">POWE 52</a> (COAL Series) and <a class=\"extref\" href=\"C11869\">POWE 53</a> (C Series). The main series of the Coal Division files dealing with international matters are in <a class=\"extref\" href=\"C11857\">POWE 41</a> (OB Files).</p></span>",
-                            "iaid": "C995",
+                            "metadataId": "C995",
                             "language": [
                                 "English"
                             ],
@@ -940,7 +940,7 @@
                             "type": "aggregation"
                         },
                         "results": {
-                            "iaid": "C995",
+                            "metadataId": "C995",
                             "level": "Division",
                             "primaryIdentifier": "C995",
                             "summaryTitle": "Records of the Coal Division",

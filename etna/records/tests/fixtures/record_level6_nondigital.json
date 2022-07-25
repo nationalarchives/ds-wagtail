@@ -239,8 +239,8 @@
                             "value": "3050578"
                         },
                         {
-                            "iaid": "C2361422",
-                            "type": "iaid",
+                            "metadataId": "C2361422",
+                            "type": "metadataId",
                             "value": "C2361422"
                         },
                         {
@@ -2982,7 +2982,7 @@
                             "formerDepartmentReference": "GW4 521",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C2361422",
+                            "metadataId": "C2361422",
                             "legalStatus": "Public Record(s)",
                             "level": "Piece",
                             "note": [

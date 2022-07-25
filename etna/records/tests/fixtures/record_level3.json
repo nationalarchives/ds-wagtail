@@ -178,8 +178,8 @@
                             "value": "11228"
                         },
                         {
-                            "iaid": "C12441",
-                            "type": "iaid",
+                            "metadataId": "C12441",
+                            "type": "metadataId",
                             "value": "C12441"
                         },
                         {
@@ -349,7 +349,7 @@
                             "formerDepartmentReference": "Former BTHR reference GW4.",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C12441",
+                            "metadataId": "C12441",
                             "language": [
                                 "English"
                             ],
@@ -374,7 +374,7 @@
                             "formerDepartmentReference": "Former BTHR reference GW4.",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C12441",
+                            "metadataId": "C12441",
                             "level": "Series",
                             "primaryIdentifier": "C12441",
                             "summaryTitle": "Great Western Railway Company: Miscellaneous Books and Records",

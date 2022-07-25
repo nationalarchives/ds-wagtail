@@ -144,8 +144,8 @@
                             "value": "19702"
                         },
                         {
-                            "iaid": "C31931",
-                            "type": "iaid",
+                            "metadataId": "C31931",
+                            "type": "metadataId",
                             "value": "C31931"
                         },
                         {
@@ -222,7 +222,7 @@
                     },
                     "@template": {
                         "details": {
-                            "iaid": "C31931",
+                            "metadataId": "C31931",
                             "level": "Sub-series",
                             "note": [
                                 "LARGE DOCUMENT"
@@ -234,7 +234,7 @@
                             "type": "aggregation"
                         },
                         "results": {
-                            "iaid": "C31931",
+                            "metadataId": "C31931",
                             "level": "Sub-series",
                             "primaryIdentifier": "C31931",
                             "summaryTitle": "AFRICA GENERAL SERVICE MEDAL 1902-1910",

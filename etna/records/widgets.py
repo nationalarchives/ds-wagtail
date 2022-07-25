@@ -25,7 +25,7 @@ class RecordChooser(AdminChooser):
 
         if isinstance(value, Record):
             instance = value
-            value = value.iaid
+            value = value.metadataId
         elif value:
             try:
                 instance = self.get_instance(value)
@@ -52,4 +52,4 @@ class RecordChooser(AdminChooser):
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
-        return Record.api.fetch(iaid=pk)
+        return Record.api.fetch(metadataId=pk)

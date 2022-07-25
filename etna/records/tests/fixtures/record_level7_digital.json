@@ -298,8 +298,8 @@
                             "value": "-8270351"
                         },
                         {
-                            "iaid": "C14017032",
-                            "type": "iaid",
+                            "metadataId": "C14017032",
+                            "type": "metadataId",
                             "value": "C14017032"
                         },
                         {
@@ -446,7 +446,7 @@
                             "description": "<span class=\"scopecontent\"><p>Headquarters Branches and Services: General Staff. </p></span>",
                             "heldBy": "The National Archives, Kew",
                             "heldById": "A13530124",
-                            "iaid": "C14017032",
+                            "metadataId": "C14017032",
                             "legalStatus": "Public Record(s)",
                             "level": "Item",
                             "primaryIdentifier": "C14017032",

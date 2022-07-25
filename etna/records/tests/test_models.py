@@ -42,28 +42,28 @@ class RecordModelTests(SimpleTestCase):
         self.record._raw["@template"] = {}
         self.assertEqual(self.record.template, {})
 
-    def test_iaid(self):
-        self.assertTrue(self.record.has_iaid())
-        self.assertEqual(self.record.iaid, "C10297")
+    def test_metadataId(self):
+        self.assertTrue(self.record.has_metadataId())
+        self.assertEqual(self.record.metadataId, "C10297")
 
-    def test_raises_valueextractionerror_when_iaid_is_not_present(self):
+    def test_raises_valueextractionerror_when_metadataId_is_not_present(self):
         # patch raw data
         self.record._raw["@admin"].pop("id")
-        self.record._raw["@template"]["details"].pop("iaid")
+        self.record._raw["@template"]["details"].pop("metadataId")
 
-        self.assertFalse(self.record.has_iaid())
+        self.assertFalse(self.record.has_metadataId())
 
         with self.assertRaises(ValueExtractionError):
-            self.record.iaid
+            self.record.metadataId
 
-    def test_raises_valueerror_when_iaid_is_invalid(self):
+    def test_raises_valueerror_when_metadataId_is_invalid(self):
         # patch raw data
         invalid_value = "bp-299"
         self.record._raw["@admin"]["id"] = invalid_value
-        self.record._raw["@template"]["details"]["iaid"] = invalid_value
+        self.record._raw["@template"]["details"]["metadataId"] = invalid_value
 
         with self.assertRaises(ValueError):
-            self.record.iaid
+            self.record.metadataId
 
     def test_title(self):
         self.assertEqual(
@@ -118,7 +118,7 @@ class RecordModelTests(SimpleTestCase):
     def test_parent(self):
         r = self.record.parent
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.metadataId, r.reference_number, r.title),
             (
                 "C199",
                 "LO",
@@ -231,21 +231,21 @@ class RecordModelTests(SimpleTestCase):
     def test_next_record(self):
         r = self.record.next_record
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.metadataId, r.reference_number, r.title),
             ("C10298", "LO 1", "Law Officers' Department: Law Officers' Opinions"),
         )
 
     def test_previous_record(self):
         r = self.record.previous_record
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.metadataId, r.reference_number, r.title),
             ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
         )
 
     @unittest.skip("Data not supported for the json record")
     def test_related_records(self):
         self.assertEqual(
-            [(r.iaid, r.title) for r in self.record.related_records],
+            [(r.metadataId, r.title) for r in self.record.related_records],
             [
                 (
                     "C8981250",
@@ -291,11 +291,11 @@ class RecordModelTests(SimpleTestCase):
             (
                 {
                     "description": "For files of the tri-service Defence Intelligence staff see,",
-                    "links": [{"iaid": "C5789", "text": "DEFE 31"}],
+                    "links": [{"metadataId": "C5789", "text": "DEFE 31"}],
                 },
                 {
                     "description": "For records of the Joint Intelligence Bureau see",
-                    "links": [{"iaid": "C14457", "text": "WO 252"}],
+                    "links": [{"metadataId": "C14457", "text": "WO 252"}],
                 },
                 {
                     "description": "Records of the Government Code and Cypher School:",
@@ -318,7 +318,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(
                 records=[
                     create_record(
-                        iaid="C123456",
+                        metadataId="C123456",
                         hierarchy=[
                             {
                                 "@summary": {
@@ -334,14 +334,14 @@ class UnexpectedParsingIssueTest(TestCase):
             ),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadataId="C123456")
 
         self.assertEqual(record.hierarchy, ())
 
     @responses.activate
     def test_record_with_origination_but_no_date(self):
         record = create_record(
-            iaid="C123456",
+            metadataId="C123456",
         )
         del record["_source"]["origination"]["date"]
 
@@ -351,7 +351,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadataId="C123456")
 
         self.assertEqual(record.origination_date, "")
 
@@ -385,13 +385,13 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadataId="C123456")
 
         # Related records with no 'identifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
-        # page using the iaid, these records should be present
+        # page using the metadataId, these records should be present
         self.assertEqual(
-            [(r.iaid, r.title) for r in record.related_records],
+            [(r.metadataId, r.title) for r in record.related_records],
             [
                 ("C568", "Records of the Office of First Fruits and Tenths"),
             ],
@@ -400,7 +400,7 @@ class UnexpectedParsingIssueTest(TestCase):
     @responses.activate
     def test_related_article_with_no_title(self):
         record = create_record(
-            iaid="C123456",
+            metadataId="C123456",
             related=[
                 {
                     "@admin": {
@@ -426,7 +426,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadataId="C123456")
 
         self.assertEqual(record.related_articles, ())
 

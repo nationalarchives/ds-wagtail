@@ -34,7 +34,7 @@ def record_disambiguation_view(request, reference_number):
     # if the results contain a single record page, redirect to the details page.
     if len(records) == 1:
         record = records[0]
-        return record_detail_view(request, record.iaid)
+        return record_detail_view(request, record.metadataId)
 
     paginator = APIPaginator(count, per_page=per_page)
     page = Page(records, number=page_number, paginator=paginator)
@@ -49,7 +49,7 @@ def record_disambiguation_view(request, reference_number):
     )
 
 
-def record_detail_view(request, iaid):
+def record_detail_view(request, metadataId):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -57,7 +57,7 @@ def record_detail_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        page = Record.api.fetch(iaid=iaid, expand=True)
+        page = Record.api.fetch(metadataId=metadataId, expand=True)
     except DoesNotExist:
         raise Http404
 

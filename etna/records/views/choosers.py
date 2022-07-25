@@ -43,14 +43,14 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return self.model.api.fetch(iaid=pk)
+        return self.model.api.fetch(metadataId=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.
 
         see RecordChooserViewSet.get_urlpatterns for overridden pattern for selected item.
         """
-        return instance.iaid
+        return instance.metadataId
 
     def user_can_create(self, user):
         """Records cannot be created in Wagtail.
@@ -64,7 +64,7 @@ class KongChosenView(BaseChosenView):
     """View to handle fetching a selected item."""
 
     def get(self, request, pk):
-        """Fetch selected item by its pk (in our case IAID)
+        """Fetch selected item by its pk (in our case metadataId)
 
         Override parent to handle any errors from the Kong API.
         """
@@ -97,7 +97,7 @@ class RecordChooserViewSet(ChooserViewSet):
     def get_urlpatterns(self):
         """Define patterns for chooser and chosen views.
 
-        Overridden to allow IAID to be used as an ID for chosen view"""
+        Overridden to allow metadataId to be used as an ID for chosen view"""
         return super().get_urlpatterns() + [
             url(r"^$", self.choose_view, name="choose"),
             url(r"^([\w-]+)/$", self.chosen_view, name="chosen"),

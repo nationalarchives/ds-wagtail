@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterField(
             model_name="recordpage",
-            name="iaid",
+            name="metadataId",
             field=models.TextField(),
         ),
     ]

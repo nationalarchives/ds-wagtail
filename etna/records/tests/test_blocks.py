@@ -19,7 +19,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         response = create_response(
             records=[
                 create_record(
-                    iaid="C123456",
+                    metadataId="C123456",
                     title="Test record",
                 ),
             ]
@@ -88,21 +88,21 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(
             featured_record.value["title"], "This record is sooooo featured!"
         )
-        self.assertEqual(featured_record.value["record"].iaid, "C123456")
+        self.assertEqual(featured_record.value["record"].metadataId, "C123456")
         self.assertEqual(featured_record.value["image"]["image"], None)
 
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456",
+            "https://kong.test/data/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetch?iaid=C123456",
+            "https://kong.test/data/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[2].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
@@ -137,7 +137,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
         # View the page to check rendering also
@@ -146,7 +146,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate

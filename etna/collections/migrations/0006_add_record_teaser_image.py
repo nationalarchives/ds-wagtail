@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="resultspagerecordpage",
-            name="record_iaid",
+            name="record_metadataId",
             field=models.TextField(verbose_name="Record"),
         ),
     ]

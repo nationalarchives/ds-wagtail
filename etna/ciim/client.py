@@ -157,7 +157,7 @@ class KongClient:
     def fetch(
         self,
         *,
-        iaid: Optional[str] = None,
+        metadataId: Optional[str] = None,
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
@@ -168,17 +168,17 @@ class KongClient:
 
         Keyword arguments:
 
-        iaid:
+        metadataId:
             Return match on Information Asset Identifier
         id:
-            Generic identifier. Matches on references_number or iaid
+            Generic identifier. Matches on references_number or metadataId
         template:
             @template data to include with response
         expand:
             include @next and @previous record with response. Kong defaults to false
         """
         params = {
-            "iaid": iaid,
+            "metadataId": metadataId,
             "id": id,
             "template": template,
             "expand": expand,
@@ -369,7 +369,7 @@ class KongClient:
         self,
         *,
         ids: Optional[list[str]] = None,
-        iaids: Optional[list[str]] = None,
+        metadataIds: Optional[list[str]] = None,
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
@@ -378,13 +378,13 @@ class KongClient:
 
         Used to fetch a all items by for the given identifier(s).
 
-        Fetch all metadata with a generic identifier, iaid or replicaId (rid).
+        Fetch all metadata with a generic identifier, metadataId or replicaId (rid).
 
         Keyword arguments:
 
         ids:
-            Generic identifiers. Matches on references_number or iaid
-        iaids:
+            Generic identifiers. Matches on references_number or metadataId
+        metadataIds:
             Return matches on Information Asset Identifier
         rid:
             Return matches on replic ID
@@ -395,7 +395,7 @@ class KongClient:
         """
         params = {
             "ids": ids,
-            "iaids": iaids,
+            "metadataIds": metadataIds,
             "rid": rid,
             "from": offset,
             "size": size,
