@@ -1,8 +1,8 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 
-from wagtail.admin.edit_handlers import FieldPanel, MultiFieldPanel
-from wagtail.core.fields import RichTextField
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 

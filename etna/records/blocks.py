@@ -2,7 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
-from wagtail.core.blocks import ChooserBlock
+from wagtail.blocks import ChooserBlock
 
 from ..ciim.exceptions import APIManagerException, KongAPIError
 
