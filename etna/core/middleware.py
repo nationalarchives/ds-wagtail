@@ -65,15 +65,30 @@ class MaintenanceModeMiddleware:
 
 
 class InterpretCookiesMiddleware:
+    exclude_paths = (
+        "/admin/",
+        "/django-admin/",
+        "/documents/",
+    )
+
     def __init__(self, get_response):
         self.get_response = get_response
 
     def __call__(self, request):
         return self.get_response(request)
 
+    def apply_to_request(self, request: HttpRequest) -> bool:
+        for path in self.exclude_paths:
+            if request.path.startswith(path):
+                return False
+        return True
+
     def process_template_response(
         self, request: HttpRequest, response: TemplateResponse
     ) -> TemplateResponse:
+        # Exit early if the response shouldn't be modified
+        if not self.apply_to_request(request):
+            return response
 
         # Disable cookie by default
         cookies_permitted = False
@@ -90,14 +105,20 @@ class InterpretCookiesMiddleware:
                 # Swallow above errors and leave 'cookies_permitted' as False
                 pass
 
+        # Ensure context_data is not None
+        if response.context_data is None:
+            response.context_data = {}
+
         # Update context_data to reflect preferences
-        response.context_data["cookies_permitted"] = cookies_permitted
-        response.context_data["show_cookie_notice"] = bool(
-            settings.FEATURE_COOKIE_BANNER_ENABLED
-            and "dontShowCookieNotice" not in request.COOKIES
-        )
-        response.context_data["show_beta_banner"] = bool(
-            settings.FEATURE_BETA_BANNER_ENABLED
-            and "beta_banner_dismissed" not in request.COOKIES
+        response.context_data.update(
+            cookies_permitted=cookies_permitted,
+            show_cookie_notice=bool(
+                settings.FEATURE_COOKIE_BANNER_ENABLED
+                and "dontShowCookieNotice" not in request.COOKIES
+            ),
+            show_beta_banner=bool(
+                settings.FEATURE_BETA_BANNER_ENABLED
+                and "beta_banner_dismissed" not in request.COOKIES
+            ),
         )
         return response
