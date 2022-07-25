@@ -45,6 +45,12 @@
                 </li>
             {% endif %}
 
+            {% if record|record_detail:"recordOpening" %}
+            <li class="search-results__list-card-metadata-item">
+                Record Opening Date: {{ record|record_detail:"recordOpening"|default:"N/A" }}
+            </li>
+            {% endif %}
+
             {% if record|record_detail:"referenceNumber" %}
             <li class="search-results__list-card-metadata-item">
 
