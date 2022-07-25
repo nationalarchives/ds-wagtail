@@ -1,6 +1,6 @@
 import unittest
 
-from django.test import TestCase, override_settings
+from django.test import TestCase
 
 from wagtail.models import PageViewRestriction, Site
 
@@ -144,7 +144,6 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class TestRecordDescriptionOverride(TestCase):
     def setUp(self):
         root_page = Site.objects.get().root_page
@@ -188,7 +187,6 @@ class TestRecordDescriptionOverride(TestCase):
         self.assertContains(response, "This is the overridden description")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class TestResultsPageIntegration(TestCase):
     def setUp(self):
         root_page = Site.objects.get().root_page
@@ -235,7 +233,6 @@ class TestResultsPageIntegration(TestCase):
         self.assertEquals(200, response.status_code)
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class TestResultsPage(TestCase):
     def setUp(self):
         root_page = Site.objects.get().root_page

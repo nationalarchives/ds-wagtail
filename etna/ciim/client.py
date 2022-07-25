@@ -4,16 +4,23 @@ import logging
 import re
 
 from datetime import datetime
-from typing import Any, Optional
+from typing import TYPE_CHECKING, Any, Dict, Iterator, Optional, Sequence, Tuple
+
+from django.utils.functional import cached_property
 
 import requests
 
 from .exceptions import (
+    DoesNotExist,
     KongBadRequestError,
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
+    MultipleObjectsReturned,
 )
+
+if TYPE_CHECKING:
+    from .models import APIModel
 
 logger = logging.getLogger(__name__)
 
@@ -131,6 +138,67 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     return filter_prepared_list
 
 
+class ResultList:
+    """
+    Wrapper class for JSON-decoded list of search results, that converts the raw dicts
+    into instances of `result_type` when iterated.
+    """
+
+    def __init__(
+        self,
+        hits: Sequence[Dict[str, Any]],
+        total_count: int,
+        result_type: "APIModel",
+        aggregations: Dict[str, Any] = None,
+    ):
+        self._hits = hits or []
+        self.total_count = total_count
+        self.result_type = result_type
+        self.aggregations = aggregations or {}
+
+    @cached_property
+    def hits(self) -> Tuple["APIModel"]:
+        """
+        Return a tuple of APIModel instances representative of the raw `_hits`
+        data. The return value is cached to support reuse without any
+        transformation overhead.
+        """
+        return tuple(self.result_type.from_api_response(h) for h in self._hits)
+
+    def __len__(self) -> int:
+        return len(self._hits)
+
+    def __bool__(self) -> bool:
+        return bool(self._hits)
+
+    def __iter__(self) -> Iterator["APIModel"]:
+        """
+        Lazily transform raw results into APIModel instances and
+        return them one-by-one.
+        """
+        yield from self.hits
+
+    def __getitem__(self, slice_or_index):
+        # If results are already converted, take item or slice
+        # from the the converted values
+        if "hits" in self.__dict__:
+            return self.hits[slice_or_index]
+
+        # If only a single item was requested, transform
+        # only that item to an APIModel instance
+        if isinstance(slice_or_index, int):
+            return self.result_type.from_api_response(self._hits[slice_or_index])
+
+        # Return a new ResultList that can be lazily
+        # transformed as needed
+        return ResultList(
+            hits=self._hits[slice_or_index],
+            total_count=self.total_count,
+            result_type=self.result_type,
+            aggregations=self.aggregations,
+        )
+
+
 class KongClient:
     """Client used to Fetch and validate data from Kong."""
 
@@ -145,6 +213,7 @@ class KongClient:
         self,
         base_url: str,
         api_key: str,
+        record_class: "APIModel",
         verify_certificates: bool = True,
         timeout: int = 5,
     ):
@@ -153,6 +222,23 @@ class KongClient:
         self.session.headers.update({"apikey": api_key})
         self.session.verify = verify_certificates
         self.timeout = timeout
+        self.record_class = record_class
+
+    def resultlist_from_response(self, response: Dict[str, Any]):
+        try:
+            hits = response["hits"]["hits"]
+        except KeyError:
+            hits = []
+        try:
+            total_count = response["hits"]["total"]["value"]
+        except KeyError:
+            total_count = len(hits)
+        return ResultList(
+            hits=hits,
+            total_count=total_count,
+            result_type=self.record_class,
+            aggregations=response.get("aggregations"),
+        )
 
     def fetch(
         self,
@@ -161,7 +247,7 @@ class KongClient:
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
-    ) -> dict:
+    ) -> "APIModel":
         """Make request and return response for Kong's /fetch endpoint.
 
         Used to fetch a single item by its identifier.
@@ -183,8 +269,13 @@ class KongClient:
             "template": template,
             "expand": expand,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
+        resp = self.make_request(f"{self.base_url}/data/fetch", params=params).json()
+        results = self.resultlist_from_response(resp)
+        if not results:
+            raise DoesNotExist
+        if len(results) > 1:
+            raise MultipleObjectsReturned
+        return results[0]
 
     def search(
         self,
@@ -204,7 +295,7 @@ class KongClient:
         filter_keyword: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> Tuple[dict, ResultList]:
         """Make request and return response for Kong's /fetch endpoint.
 
         Search all metadata by keyword or web_reference. Results can be
@@ -264,7 +355,9 @@ class KongClient:
         if created_end_date:
             params["createdEndDate"] = created_end_date.isoformat()
 
-        return self.make_request(f"{self.base_url}/data/search", params=params).json()
+        resp = self.make_request(f"{self.base_url}/data/search", params=params).json()
+        aggregations_response, results_response = resp["responses"]
+        return aggregations_response, self.resultlist_from_response(results_response)
 
     def search_all(
         self,
@@ -275,8 +368,8 @@ class KongClient:
         template: Optional[Template] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> Tuple[ResultList]:
+        """Make request and return response for Kong's /searchAll endpoint.
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
@@ -305,10 +398,12 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(
+        resp = self.make_request(
             f"{self.base_url}/data/searchAll", params=params
         ).json()
+        if responses := resp.get("responses"):
+            return tuple(self.resultlist_from_response(r) for r in responses)
+        return ()
 
     def search_unified(
         self,
@@ -321,7 +416,7 @@ class KongClient:
         sort_order: Optional[SortOrder] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /searchUnified endpoint.
 
         /searchUnified reproduces the private beta’s /search endpoint, turning
@@ -361,9 +456,10 @@ class KongClient:
             "size": size,
         }
 
-        return self.make_request(
+        resp = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
         ).json()
+        return self.resultlist_from_response(resp)
 
     def fetch_all(
         self,
@@ -373,7 +469,7 @@ class KongClient:
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /fetchAll endpoint.
 
         Used to fetch a all items by for the given identifier(s).
@@ -400,8 +496,8 @@ class KongClient:
             "from": offset,
             "size": size,
         }
-
-        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        resp = self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        return self.resultlist_from_response(resp)
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None

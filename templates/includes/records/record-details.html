@@ -12,7 +12,7 @@
             {% if page.description %}
                 <tr>
                     <th scope="row">{{ 'description'|as_label }}</th>
-                    <td class="xslt_patches">{{ page.description|safe }}</td>
+                    <td class="xslt_patches">{{ page.description_safe }}</td>
                 </tr>
             {% endif %}
             {% if page.origination_date %}
@@ -32,7 +32,7 @@
                             {% if related_material.links %}
                                 <ul>
                                     {% for link in related_material.links %}
-                                        <li><a href="{% record_url link %}">{{ link.text }}</a></li>
+                                        <li><a href="{{ link.href }}">{{ link.text }}</a></li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}

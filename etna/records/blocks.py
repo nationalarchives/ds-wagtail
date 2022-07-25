@@ -4,7 +4,8 @@ from django.utils.functional import cached_property
 
 from wagtail.blocks import ChooserBlock
 
-from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..ciim.exceptions import KongAPIError
+from .api import records_client
 
 
 class RecordChooserBlock(ChooserBlock):
@@ -60,9 +61,7 @@ class RecordChooserBlock(ChooserBlock):
         """
         if not values:
             return []
-        records_by_id = {
-            r.iaid: r for r in self.target_model.api.fetch_all(iaids=values)[1]
-        }
+        records_by_id = {r.iaid: r for r in records_client.fetch_all(iaids=values)}
         return list(records_by_id.get(iaid) for iaid in values)
 
     def clean(self, value):
@@ -89,11 +88,11 @@ class RecordChooserBlock(ChooserBlock):
             return value
 
         try:
-            return self.target_model.api.fetch(iaid=value)
-        except (KongAPIError, APIManagerException):
+            return records_client.fetch(iaid=value)
+        except KongAPIError:
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
-            return self.target_model(iaid=value)
+            return self.target_model(raw_data={"iaid": value})
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)

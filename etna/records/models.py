@@ -8,8 +8,13 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
+from django.utils.html import strip_tags
+from django.utils.safestring import SafeString, mark_safe
+from django.utils.text import Truncator
+
+import bleach
 
 from ..analytics.mixins import DataLayerMixin
 from ..ciim.models import APIModel
@@ -17,8 +22,8 @@ from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
-    format_description_markup,
     format_link,
+    resolve_links,
 )
 from .converters import IAIDConverter
 
@@ -41,7 +46,7 @@ class Record(DataLayerMixin, APIModel):
         return cls(response)
 
     def __str__(self):
-        return f"{self.title} ({self.iaid})"
+        return f"{self.title_safe} ({self.iaid})"
 
     def get(self, key: str, default: Optional[Any] = NOT_PROVIDED):
         """
@@ -69,36 +74,19 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def iaid(self) -> str:
         """
-        Return the "iaid" value for this record (if one is available).
-
-        Raises `ValueExtractionError` when the raw data does not include
-        any candidate values.
-
-        Raises `ValueError` when the raw data includes a value where iaids
-        are usually found, but the value is not a valid iaid.
+        Return the "iaid" value for this record. If the data is unavailable,
+        or is not a valid iaid, a blank string is returned.
         """
         try:
             candidate = self.template["iaid"]
         except KeyError:
-            candidate = self.get("@admin.id")
+            candidate = self.get("@admin.id", default="")
 
-        # value is not guaranteed to be a valid 'iaid', so we must
-        # check it before returning it as one
-        if not re.match(IAIDConverter.regex, candidate):
-            raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
-        return candidate
-
-    def has_iaid(self) -> bool:
-        """
-        Returns `True` if a valid 'iaid' value can be extracted from the
-        raw data for this record. Otherwise `False`.
-        """
-        try:
-            self.iaid
-        except (ValueExtractionError, ValueError):
-            return False
-        else:
-            return True
+        if candidate and re.match(IAIDConverter.regex, candidate):
+            # value is not guaranteed to be a valid 'iaid', so we must
+            # check it before returning it as one
+            return candidate
+        return ""
 
     @cached_property
     def reference_number(self) -> str:
@@ -135,7 +123,7 @@ class Record(DataLayerMixin, APIModel):
             return True
 
     @cached_property
-    def url(self):
+    def source_url(self):
         """
         Return the "url" value for this record. This value is typically
         only present for 'interpretive' results from other websites.
@@ -147,20 +135,41 @@ class Record(DataLayerMixin, APIModel):
             return self.template["sourceUrl"]
         except KeyError:
             raise ValueExtractionError(
-                f"'url' could not be extracted from source data: {self._raw}"
+                f"'source_url' could not be extracted from source data: {self._raw}"
             )
 
-    def has_url(self) -> bool:
+    def has_source_url(self) -> bool:
         """
-        Returns `True` if a 'url' value can be extracted from the raw data
+        Returns `True` if a 'source_url' value can be extracted from the raw data
         for this record. Otherwise `False`.
         """
         try:
-            self.url
+            self.source_url
         except ValueExtractionError:
             return False
         else:
             return True
+
+    @cached_property
+    def url(self) -> str:
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_reference_number():
+            try:
+                return reverse(
+                    "details-page-human-readable",
+                    kwargs={"reference_number": self.reference_number},
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_source_url():
+            return self.source_url
+        return ""
 
     @cached_property
     def title(self) -> str:
@@ -173,6 +182,11 @@ class Record(DataLayerMixin, APIModel):
         except KeyError:
             pass
         return self.get("summary.title", default="")
+
+    @cached_property
+    def title_safe(self) -> SafeString:
+        stripped = bleach.clean(self.title, tags=["mark"], attributes=[], strip=True)
+        return mark_safe(stripped)
 
     @cached_property
     def is_tna(self):
@@ -195,7 +209,16 @@ class Record(DataLayerMixin, APIModel):
             raw = self.template["arrangement"]
         except KeyError:
             raw = self.get("arrangement.value", default="")
-        return format_description_markup(raw)
+        if not raw:
+            return raw
+        return resolve_links(raw)
+
+    @cached_property
+    def arrangement_safe(self) -> SafeString:
+        stripped = bleach.clean(
+            self.arrangement, tage=["mark"], attributes=[], strip=True
+        )
+        return mark_safe(stripped)
 
     @cached_property
     def legal_status(self) -> str:
@@ -220,7 +243,7 @@ class Record(DataLayerMixin, APIModel):
     def catalogue_source(self) -> str:
         return self.get("source.value", default="")
 
-    @property
+    @cached_property
     def raw_description(self) -> str:
         try:
             return self.highlights["@template.details.description"]
@@ -234,13 +257,25 @@ class Record(DataLayerMixin, APIModel):
         for item in description_items:
             if item.get("type", "") == "description" or len(description_items) == 1:
                 return item.get("value", "")
-        return ""
+        # Extract interpretive content as a last resort
+        try:
+            content_text = strip_tags(self.get("source.content"))
+            return Truncator(content_text).words(50, truncate="...")
+        except ValueExtractionError:
+            return ""
 
     @cached_property
     def description(self) -> str:
-        if raw := self.raw_description:
-            return format_description_markup(raw)
-        return ""
+        if not self.raw_description:
+            return self.raw_description
+        return resolve_links(self.raw_description)
+
+    @cached_property
+    def description_safe(self) -> SafeString:
+        stripped = bleach.clean(
+            self.description, tags=["mark"], attributes=[], strip=True
+        )
+        return mark_safe(stripped)
 
     @cached_property
     def held_by(self) -> str:

@@ -4,7 +4,7 @@ from typing import Any
 
 from django.conf import settings
 from django.http import HttpResponse
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, TestCase
 from django.urls import reverse_lazy
 
 from wagtail.tests.utils import WagtailTestUtils
@@ -29,10 +29,6 @@ from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
 class SearchViewTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
 
@@ -326,9 +322,6 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
@@ -447,13 +440,10 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="insight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], InsightsPage
+            response.context_data["page"].object_list[0].source_page, InsightsPage
         )
 
 
-@override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-)
 class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
@@ -601,8 +591,8 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="highlight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], ResultsPage
+            response.context_data["page"].object_list[0].source_page, ResultsPage
         )
         self.assertIsInstance(
-            response.context_data["page"].object_list[1]["source_page"], ResultsPage
+            response.context_data["page"].object_list[1].source_page, ResultsPage
         )

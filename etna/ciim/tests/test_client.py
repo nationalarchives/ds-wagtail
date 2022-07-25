@@ -4,24 +4,37 @@ from django.test import SimpleTestCase
 
 import responses
 
-from ..client import Aggregation, KongClient, SortBy, SortOrder, Stream, Template
+from etna.ciim.tests.factories import (
+    create_record,
+    create_response,
+    create_search_response,
+)
+from etna.records.api import get_records_client
+from etna.records.models import Record
+
+from ..client import Aggregation, ResultList, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
+    DoesNotExist,
     KongBadRequestError,
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
+    MultipleObjectsReturned,
 )
 
 
 class ClientSearchAllTest(SimpleTestCase):
-    def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.records_client = get_records_client()
 
+    def setUp(self):
         responses.add(responses.GET, "https://kong.test/data/searchAll", json={})
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.client.search_all()
+        self.records_client.search_all()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -30,7 +43,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_q(self):
-        self.client.search_all(q="Egypt")
+        self.records_client.search_all(q="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -40,7 +53,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_details(self):
-        self.client.search_all(template=Template.DETAILS)
+        self.records_client.search_all(template=Template.DETAILS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -50,7 +63,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_results(self):
-        self.client.search_all(template=Template.RESULTS)
+        self.records_client.search_all(template=Template.RESULTS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -60,7 +73,9 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_aggregations(self):
-        self.client.search_all(aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION])
+        self.records_client.search_all(
+            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -72,7 +87,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_aggregations(self):
-        self.client.search_all(
+        self.records_client.search_all(
             filter_aggregations=[
                 "level:Item",
                 "topic:second world war",
@@ -93,7 +108,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_offset(self):
-        self.client.search_all(offset=20)
+        self.records_client.search_all(offset=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -103,7 +118,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_size(self):
-        self.client.search_all(size=20)
+        self.records_client.search_all(size=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -114,13 +129,16 @@ class ClientSearchAllTest(SimpleTestCase):
 
 class ClientSearchTest(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
-
-        responses.add(responses.GET, "https://kong.test/data/search", json={})
+        self.records_client = get_records_client()
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.client.search()
+        self.records_client.search()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -129,7 +147,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_q(self):
-        self.client.search(q="Egypt")
+        self.records_client.search(q="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -139,7 +157,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_web_reference(self):
-        self.client.search(web_reference="ADM/223/3")
+        self.records_client.search(web_reference="ADM/223/3")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -149,7 +167,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_opening_start_date(self):
-        self.client.search(opening_start_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(
+            opening_start_date=datetime(year=1901, month=2, day=3)
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -159,7 +179,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_opening_end_date(self):
-        self.client.search(opening_end_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(opening_end_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -169,7 +189,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_created_start_date(self):
-        self.client.search(created_start_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(
+            created_start_date=datetime(year=1901, month=2, day=3)
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -179,7 +201,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_created_end_date(self):
-        self.client.search(created_end_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(created_end_date=datetime(year=1901, month=2, day=3))
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -189,7 +211,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_evidential_stream(self):
-        self.client.search(stream=Stream.EVIDENTIAL)
+        self.records_client.search(stream=Stream.EVIDENTIAL)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -199,7 +221,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_interpretive_stream(self):
-        self.client.search(stream=Stream.INTERPRETIVE)
+        self.records_client.search(stream=Stream.INTERPRETIVE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -209,7 +231,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_title(self):
-        self.client.search(sort_by=SortBy.TITLE)
+        self.records_client.search(sort_by=SortBy.TITLE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -219,7 +241,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_date_created(self):
-        self.client.search(sort_by=SortBy.DATE_CREATED)
+        self.records_client.search(sort_by=SortBy.DATE_CREATED)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -229,7 +251,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_date_opening(self):
-        self.client.search(sort_by=SortBy.DATE_OPENING)
+        self.records_client.search(sort_by=SortBy.DATE_OPENING)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -239,7 +261,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_relevance(self):
-        self.client.search(sort_by=SortBy.RELEVANCE)
+        self.records_client.search(sort_by=SortBy.RELEVANCE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -249,7 +271,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_order_asc(self):
-        self.client.search(sort_order=SortOrder.ASC)
+        self.records_client.search(sort_order=SortOrder.ASC)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -259,7 +281,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_order_desc(self):
-        self.client.search(sort_order=SortOrder.DESC)
+        self.records_client.search(sort_order=SortOrder.DESC)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -269,7 +291,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_details(self):
-        self.client.search(template=Template.DETAILS)
+        self.records_client.search(template=Template.DETAILS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -279,7 +301,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_results(self):
-        self.client.search(template=Template.RESULTS)
+        self.records_client.search(template=Template.RESULTS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -289,7 +311,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_aggregations(self):
-        self.client.search(aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION])
+        self.records_client.search(
+            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -301,7 +325,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_aggregations(self):
-        self.client.search(
+        self.records_client.search(
             filter_aggregations=[
                 "level:Item",
                 "topic:second world war",
@@ -320,7 +344,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_collection(self):
-        self.client.search(filter_aggregations=["collection:IR", "collection:PROB"])
+        self.records_client.search(
+            filter_aggregations=["collection:IR", "collection:PROB"]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -332,7 +358,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_held_by_without_special_chars(self):
-        self.client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
+        self.records_client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -342,7 +368,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_held_by_with_special_chars(self):
-        self.client.search(
+        self.records_client.search(
             filter_aggregations=["heldBy:1/ 2( 3) 4: 5, 6& 7- 8| 9+ 10@ 11! 12."]
         )
 
@@ -355,7 +381,7 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_filter_held_by_with_special_chars_examples(self):
         self.maxDiff = None
-        self.client.search(
+        self.records_client.search(
             filter_aggregations=[
                 "heldBy:Rolls-Royce plc",
                 "heldBy:IRIE! dance theatre",
@@ -383,7 +409,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_held_by_with_special_chars_not_prepared(self):
-        self.client.search(filter_aggregations=["heldBy:People's"])
+        self.records_client.search(filter_aggregations=["heldBy:People's"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -393,7 +419,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_keyword(self):
-        self.client.search(filter_keyword="filter keyword")
+        self.records_client.search(filter_keyword="filter keyword")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -403,7 +429,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_offset(self):
-        self.client.search(offset=20)
+        self.records_client.search(offset=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -413,7 +439,7 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_size(self):
-        self.client.search(size=20)
+        self.records_client.search(size=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -424,13 +450,12 @@ class ClientSearchTest(SimpleTestCase):
 
 class ClientSearchUnifiedTest(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
-
+        self.records_client = get_records_client()
         responses.add(responses.GET, "https://kong.test/data/searchUnified", json={})
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.client.search_unified()
+        self.records_client.search_unified()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -439,7 +464,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_q(self):
-        self.client.search_unified(q="Egypt")
+        self.records_client.search_unified(q="Egypt")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -449,7 +474,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_web_reference(self):
-        self.client.search_unified(web_reference="ADM/223/3")
+        self.records_client.search_unified(web_reference="ADM/223/3")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -459,7 +484,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_evidential_stream(self):
-        self.client.search_unified(stream=Stream.EVIDENTIAL)
+        self.records_client.search_unified(stream=Stream.EVIDENTIAL)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -469,7 +494,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_interpretive_stream(self):
-        self.client.search_unified(stream=Stream.INTERPRETIVE)
+        self.records_client.search_unified(stream=Stream.INTERPRETIVE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -479,7 +504,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_details(self):
-        self.client.search_unified(template=Template.DETAILS)
+        self.records_client.search_unified(template=Template.DETAILS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -489,7 +514,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_results(self):
-        self.client.search_unified(template=Template.RESULTS)
+        self.records_client.search_unified(template=Template.RESULTS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -499,7 +524,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_title(self):
-        self.client.search_unified(sort_by=SortBy.TITLE)
+        self.records_client.search_unified(sort_by=SortBy.TITLE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -509,7 +534,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_date_created(self):
-        self.client.search_unified(sort_by=SortBy.DATE_CREATED)
+        self.records_client.search_unified(sort_by=SortBy.DATE_CREATED)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -519,7 +544,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_date_opening(self):
-        self.client.search_unified(sort_by=SortBy.DATE_OPENING)
+        self.records_client.search_unified(sort_by=SortBy.DATE_OPENING)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -529,7 +554,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_relevance(self):
-        self.client.search_unified(sort_by=SortBy.RELEVANCE)
+        self.records_client.search_unified(sort_by=SortBy.RELEVANCE)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -539,7 +564,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_order_asc(self):
-        self.client.search_unified(sort_order=SortOrder.ASC)
+        self.records_client.search_unified(sort_order=SortOrder.ASC)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -549,7 +574,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_sort_order_desc(self):
-        self.client.search_unified(sort_order=SortOrder.DESC)
+        self.records_client.search_unified(sort_order=SortOrder.DESC)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -559,7 +584,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_offset(self):
-        self.client.search_unified(offset=20)
+        self.records_client.search_unified(offset=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -569,7 +594,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
     @responses.activate
     def test_with_size(self):
-        self.client.search_unified(size=20)
+        self.records_client.search_unified(size=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -580,20 +605,23 @@ class ClientSearchUnifiedTest(SimpleTestCase):
 
 class ClientFetchTest(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
-
-        responses.add(responses.GET, "https://kong.test/data/fetch", json={})
+        self.records_client = get_records_client()
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[create_record()]),
+        )
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.client.fetch()
+        self.records_client.fetch()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(responses.calls[0].request.url, "https://kong.test/data/fetch")
 
     @responses.activate
     def test_with_iaid(self):
-        self.client.fetch(iaid="C198022")
+        self.records_client.fetch(iaid="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -603,7 +631,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_id(self):
-        self.client.fetch(id="ADM 223/3")
+        self.records_client.fetch(id="ADM 223/3")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -613,7 +641,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_details(self):
-        self.client.fetch(template=Template.DETAILS)
+        self.records_client.fetch(template=Template.DETAILS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -623,7 +651,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_template_results(self):
-        self.client.fetch(template=Template.RESULTS)
+        self.records_client.fetch(template=Template.RESULTS)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -633,7 +661,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_expand_true(self):
-        self.client.fetch(expand=True)
+        self.records_client.fetch(expand=True)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -643,7 +671,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_expand_false(self):
-        self.client.fetch(expand=False)
+        self.records_client.fetch(expand=False)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -654,13 +682,12 @@ class ClientFetchTest(SimpleTestCase):
 
 class ClientFetchAllTest(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
-
+        self.records_client = get_records_client()
         responses.add(responses.GET, "https://kong.test/data/fetchAll", json={})
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.client.fetch_all()
+        self.records_client.fetch_all()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -669,7 +696,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_ids(self):
-        self.client.fetch_all(ids=["id-one", "id-two", "id-three"])
+        self.records_client.fetch_all(ids=["id-one", "id-two", "id-three"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -679,7 +706,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaids(self):
-        self.client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
+        self.records_client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -689,7 +716,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_rid(self):
-        self.client.fetch_all(rid="rid-123")
+        self.records_client.fetch_all(rid="rid-123")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -699,7 +726,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_size(self):
-        self.client.fetch_all(size=20)
+        self.records_client.fetch_all(size=20)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -710,7 +737,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
 class TestClientFetchReponse(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_raises_kong_error_with_message(self):
@@ -724,7 +751,7 @@ class TestClientFetchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
-            self.client.fetch()
+            self.records_client.fetch()
 
     @responses.activate
     def test_raises_kong_error_on_elastic_search_error(self):
@@ -746,7 +773,7 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
-            self.client.fetch()
+            self.records_client.fetch()
 
     @responses.activate
     def test_raises_kong_error_on_java_error(self):
@@ -763,7 +790,7 @@ class TestClientFetchReponse(SimpleTestCase):
                     "nested exception is java.lang.NumberFormatException: "
                     'For input string: "999999999999999999"'
                 ),
-                "path": "/search",
+                "path": "/fetch",
             },
             status=400,
         )
@@ -771,7 +798,7 @@ class TestClientFetchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongBadRequestError, "Failed to convert value of type"
         ):
-            self.client.fetch()
+            self.records_client.fetch()
 
     @responses.activate
     def test_internal_server_error(self):
@@ -785,7 +812,7 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
-            self.client.fetch()
+            self.records_client.fetch()
 
     @responses.activate
     def test_default_exception(self):
@@ -799,33 +826,47 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
-            self.client.fetch()
+            self.records_client.fetch()
 
     @responses.activate
     def test_valid_response(self):
-        valid_response = {
-            "took": 85,
-            "timed_out": False,
-            "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
-            "hits": {
-                "total": {"value": 0, "relation": "eq"},
-                "max_score": 14.217057,
-                "hits": [],
-            },
-        }
-
+        record_data = create_record()
         responses.add(
-            responses.GET, "https://kong.test/data/fetch", json=valid_response
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[record_data]),
+        )
+        result = self.records_client.fetch()
+        self.assertIsInstance(result, Record)
+        self.assertEqual(
+            result.reference_number,
+            record_data["_source"]["identifier"][1]["reference_number"],
         )
 
-        response = self.client.fetch()
+    @responses.activate
+    def test_raises_doesnotexist_when_no_results_received(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[]),
+        )
+        with self.assertRaises(DoesNotExist):
+            self.records_client.fetch()
 
-        self.assertEqual(response, valid_response)
+    @responses.activate
+    def test_raises_multipleobjectsreturned_when_multiple_results_received(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(records=[create_record(), create_record()]),
+        )
+        with self.assertRaises(MultipleObjectsReturned):
+            self.records_client.fetch()
 
 
 class TestClientSearchReponse(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_raises_kong_error_with_message(self):
@@ -839,7 +880,7 @@ class TestClientSearchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
-            self.client.search()
+            self.records_client.search()
 
     @responses.activate
     def test_raises_kong_error_on_elastic_search_error(self):
@@ -861,7 +902,7 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
-            self.client.search()
+            self.records_client.search()
 
     @responses.activate
     def test_raises_kong_error_on_java_error(self):
@@ -886,7 +927,7 @@ class TestClientSearchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongBadRequestError, "Failed to convert value of type"
         ):
-            self.client.search()
+            self.records_client.search()
 
     @responses.activate
     def test_internal_server_error(self):
@@ -900,7 +941,7 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
-            self.client.search()
+            self.records_client.search()
 
     @responses.activate
     def test_default_exception(self):
@@ -914,33 +955,55 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
-            self.client.search()
+            self.records_client.search()
 
     @responses.activate
     def test_valid_response(self):
-        valid_response = {
+        aggregations_response = {
             "took": 85,
             "timed_out": False,
-            "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
-            "hits": {
-                "total": {"value": 0, "relation": "eq"},
-                "max_score": 14.217057,
-                "hits": [],
+            "_shards": {
+                "total": 2,
+                "successful": 2,
+                "skipped": 0,
+                "failed": 0,
             },
+            "aggregations": [],
         }
-
         responses.add(
-            responses.GET, "https://kong.test/data/search", json=valid_response
+            responses.GET,
+            "https://kong.test/data/search",
+            json={
+                "responses": [
+                    aggregations_response,
+                    {
+                        "took": 85,
+                        "timed_out": False,
+                        "_shards": {
+                            "total": 2,
+                            "successful": 2,
+                            "skipped": 0,
+                            "failed": 0,
+                        },
+                        "aggregations": [],
+                        "hits": {
+                            "total": {"value": 0, "relation": "eq"},
+                            "max_score": 14.217057,
+                            "hits": [],
+                        },
+                    },
+                ]
+            },
         )
-
-        response = self.client.search()
-
-        self.assertEqual(response, valid_response)
+        response = self.records_client.search()
+        self.assertEqual(response[0], aggregations_response)
+        self.assertIsInstance(response[1], ResultList)
+        self.assertEqual(response[1].hits, ())
 
 
 class TestClientFetchAllReponse(SimpleTestCase):
     def setUp(self):
-        self.client = KongClient("https://kong.test", api_key="")
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_raises_kong_error_with_message(self):
@@ -954,7 +1017,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongServiceUnavailableError, "failure to get a peer from the ring-balancer"
         ):
-            self.client.fetch_all()
+            self.records_client.fetch_all()
 
     @responses.activate
     def test_raises_kong_error_on_elastic_fetchAll_error(self):
@@ -976,7 +1039,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongServiceUnavailableError, "all shards failed"):
-            self.client.fetch_all()
+            self.records_client.fetch_all()
 
     @responses.activate
     def test_raises_kong_error_on_java_error(self):
@@ -1001,7 +1064,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             KongBadRequestError, "Failed to convert value of type"
         ):
-            self.client.fetch_all()
+            self.records_client.fetch_all()
 
     @responses.activate
     def test_internal_server_error(self):
@@ -1015,7 +1078,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongInternalServerError, "Internal Server Error"):
-            self.client.fetch_all()
+            self.records_client.fetch_all()
 
     @responses.activate
     def test_default_exception(self):
@@ -1029,25 +1092,24 @@ class TestClientFetchAllReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(KongCommunicationError, "I'm a teapot"):
-            self.client.fetch_all()
+            self.records_client.fetch_all()
 
     @responses.activate
     def test_valid_response(self):
-        valid_response = {
-            "took": 85,
-            "timed_out": False,
-            "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
-            "hits": {
-                "total": {"value": 0, "relation": "eq"},
-                "max_score": 14.217057,
-                "hits": [],
-            },
-        }
-
         responses.add(
-            responses.GET, "https://kong.test/data/fetchAll", json=valid_response
+            responses.GET,
+            "https://kong.test/data/fetchAll",
+            json={
+                "took": 85,
+                "timed_out": False,
+                "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
+                "hits": {
+                    "total": {"value": 0, "relation": "eq"},
+                    "max_score": 14.217057,
+                    "hits": [],
+                },
+            },
         )
-
-        response = self.client.fetch_all()
-
-        self.assertEqual(response, valid_response)
+        response = self.records_client.fetch_all()
+        self.assertIsInstance(response, ResultList)
+        self.assertEqual(response.hits, ())
