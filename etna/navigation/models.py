@@ -7,7 +7,7 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
-from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.models import Orderable, Page
 from wagtail.query import PageQuerySet
 
@@ -121,7 +121,7 @@ class AbstractMenuItem(MenuItem, Orderable):
 
     panels = [
         FieldPanel("label"),
-        PageChooserPanel("page"),
+        FieldPanel("page"),
         FieldPanel("url_name", widget=NamedURLSelect),
     ]
 
