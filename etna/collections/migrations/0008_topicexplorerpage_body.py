@@ -2,8 +2,8 @@
 
 from django.db import migrations
 import etna.collections.blocks
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -16,15 +16,15 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="topicexplorerpage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     (
                         "collection_highlights",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         default="Collection Highlights", max_length=100
                                     ),
                                 )
@@ -33,31 +33,31 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "featured_page",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                    wagtail.blocks.CharBlock(max_length=100),
                                 ),
-                                ("page", wagtail.core.blocks.PageChooserBlock()),
+                                ("page", wagtail.blocks.PageChooserBlock()),
                             ]
                         ),
                     ),
                     (
                         "promoted_pages",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(max_length=100),
+                                    wagtail.blocks.CharBlock(max_length=100),
                                 ),
                                 (
                                     "sub_heading",
-                                    wagtail.core.blocks.CharBlock(max_length=200),
+                                    wagtail.blocks.CharBlock(max_length=200),
                                 ),
                                 (
                                     "promoted_items",
-                                    wagtail.core.blocks.ListBlock(
+                                    wagtail.blocks.ListBlock(
                                         etna.collections.blocks.PromotedItemBlock,
                                         max=3,
                                         min=3,

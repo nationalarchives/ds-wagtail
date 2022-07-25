@@ -8,8 +8,8 @@ from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
 from wagtail.admin.edit_handlers import FieldPanel, PageChooserPanel
-from wagtail.core.models import Orderable, Page
-from wagtail.core.query import PageQuerySet
+from wagtail.models import Orderable, Page
+from wagtail.query import PageQuerySet
 
 from .widgets import NamedURLSelect
 

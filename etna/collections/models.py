@@ -2,16 +2,11 @@ from django.db import models
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import (
-    FieldPanel,
-    InlinePanel,
-    PageChooserPanel,
-    StreamFieldPanel,
-)
-from wagtail.core.fields import StreamField
-from wagtail.core.models import Orderable
+from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.models import Orderable
 
 from etna.insights.models import InsightsPage
 
@@ -38,11 +33,11 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
+    body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        StreamFieldPanel("body"),
+        FieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -61,11 +56,11 @@ class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True)
+    body = StreamField(TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        StreamFieldPanel("body"),
+        FieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
@@ -113,12 +108,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        PageChooserPanel("featured_insight"),
-        StreamFieldPanel("body"),
+        FieldPanel("featured_insight"),
+        FieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -151,11 +146,11 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True)
+    body = StreamField(TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        StreamFieldPanel("body"),
+        FieldPanel("body"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
@@ -200,7 +195,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     featured_insight = models.ForeignKey(
@@ -208,8 +203,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     )
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        PageChooserPanel("featured_insight"),
-        StreamFieldPanel("body"),
+        FieldPanel("featured_insight"),
+        FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
