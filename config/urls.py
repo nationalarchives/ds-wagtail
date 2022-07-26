@@ -122,7 +122,7 @@ public_urls = [
     ),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
