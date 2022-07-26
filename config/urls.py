@@ -1,3 +1,4 @@
+import etna
 from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
@@ -9,6 +10,7 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
+from etna.errors import views as errors_view
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
@@ -127,6 +129,19 @@ if settings.DEBUG:
     # Serve static and media files from development server
     public_urls += staticfiles_urlpatterns()
     public_urls += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    public_urls += [
+        path(
+            r"404/",
+            errors_view.custom_404_error_view,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+
+        path(
+            r"500/",
+            errors_view.custom_500_error_view
+        ),
+        path(r"503/", errors_view.custom_503_error_view),
+    ]
 
 # Update public URLs to use the "default" cache settings.
 public_urls = decorate_urlpatterns(public_urls, apply_default_cache_control)
