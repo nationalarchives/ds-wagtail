@@ -6,21 +6,20 @@
 
             {% with count=page.paginator.count %}
             <p class="search-results__metadata-count">Showing
-                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "{{ buckets.current.label }}"</p>
+                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"</p>
             {% endwith %}
-
             {% include './search_results__selected-filters.html' %}
         </div>
         <h2 class="sr-only">Results</h2>
 
         {% if form.cleaned_data.display == "grid" %}
-            <ul class="search-results__list--grid">
+            <ul class="search-results__list--grid" id="analytics-results-list">
                 {% for record in page %}
                     {% include './search_results__list-card--grid.html' %}
                 {% endfor %}
             </ul>
         {% else %}
-            <ul class="search-results__list">
+            <ul class="search-results__list" id="analytics-results-list">
                 {% for record in page %}
                     {% include './search_results__list-card.html' %}
                 {% endfor %}
