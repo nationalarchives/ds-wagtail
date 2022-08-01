@@ -4,8 +4,29 @@
 
 {% block content %}
     {% include 'includes/generic-intro.html' %}
+    <div class="container" data-container-name="topic-explorer" id="analytics-topic-explorer">
+        <div class="row">
+            <div class="col-md-12">
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
 
-    {% if page.featured_insight %}
+    {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
+        <div class="row">
+            <div class="col-md-12">
+                 {% for insights_page in page.related_insights %}
+                     <li>
+                       <a href="{% pageurl insights_page %}">{{ insights_page.title }}</a>
+                     </li>
+
+                  {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+     </div>
+{% if page.featured_insight %}
         <div class="container">
             <div class="featured-insight">
                 {% if page.featured_insight.hero_image %}
@@ -48,30 +69,6 @@
         </div>
     </div>
     {% endif %}
-
-    <div class="container" data-container-name="topic-explorer" id="analytics-topic-explorer">
-        <div class="row">
-            <div class="col-md-12">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </div>
-        </div>
-
-    {% if FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES %}
-        <div class="row">
-            <div class="col-md-12">
-                 {% for insights_page in page.related_insights %}
-                     <li>
-                       <a href="{% pageurl insights_page %}">{{ insights_page.title }}</a>
-                     </li>
-
-                  {% endfor %}
-            </div>
-        </div>
-    {% endif %}
-     </div>
-
 {% endblock %}
 
 {% block extra_js %}
