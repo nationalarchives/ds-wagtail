@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from wagtail.core.models import Site
+from wagtail.models import Site
 
 from ..alerts.models import Alert
 from ..alerts.templatetags import alert_tags

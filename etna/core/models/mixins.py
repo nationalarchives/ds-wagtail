@@ -1,6 +1,6 @@
 from django.db import models
 
-from wagtail.core.fields import RichTextField
+from wagtail.fields import RichTextField
 
 __all__ = ["ContentWarningMixin"]
 

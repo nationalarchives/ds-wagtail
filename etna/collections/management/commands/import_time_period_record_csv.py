@@ -9,8 +9,8 @@ from urllib.parse import urlparse
 from django.conf import settings
 from django.core.management.base import BaseCommand
 
-from wagtail.core.models import Page
 from wagtail.images import get_image_model
+from wagtail.models import Page
 
 import requests
 

@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -50,7 +50,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("introduction", models.CharField(max_length=200)),
-                ("body", wagtail.core.fields.StreamField([], blank=True, null=True)),
+                ("body", wagtail.fields.StreamField([], blank=True, null=True)),
             ],
             options={
                 "abstract": False,

@@ -1,5 +1,5 @@
-from wagtail.admin.edit_handlers import StreamFieldPanel
-from wagtail.core.fields import StreamField
+from wagtail.admin.panels import FieldPanel
+from wagtail.fields import StreamField
 
 from etna.core.models import BasePage
 
@@ -9,10 +9,10 @@ from .blocks import HomePageStreamBlock
 
 class HomePage(AlertMixin, BasePage):
 
-    body = StreamField(HomePageStreamBlock, blank=True, null=True)
+    body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
-        StreamFieldPanel("body"),
+        FieldPanel("body"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 

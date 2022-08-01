@@ -4,8 +4,8 @@ from django.db import migrations
 import etna.insights.blocks
 import etna.media.blocks
 import etna.records.blocks
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.images.blocks
 import wagtail.snippets.blocks
 
@@ -20,33 +20,33 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="insightspage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     (
                         "featured_record",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [("record", etna.records.blocks.RecordChooserBlock())]
                         ),
                     ),
                     (
                         "featured_records",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "introduction",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=200, required=True
                                     ),
                                 ),
                                 (
                                     "records",
-                                    wagtail.core.blocks.ListBlock(
+                                    wagtail.blocks.ListBlock(
                                         etna.records.blocks.RecordChooserBlock
                                     ),
                                 ),
@@ -55,7 +55,7 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "media",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "background_image",
@@ -69,17 +69,17 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "paragraph_with_heading",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "paragraph",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link", "ul"],
                                         required=True,
                                     ),
@@ -89,11 +89,11 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "promoted_item",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "title",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="Title of the promoted page",
                                         max_length=100,
                                     ),
@@ -106,7 +106,7 @@ class Migration(migrations.Migration):
                                 ),
                                 (
                                     "duration",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="Podcast or video duration. Or estimated read time of article.",
                                         label="Duration/Read time",
                                         max_length=50,
@@ -115,14 +115,14 @@ class Migration(migrations.Migration):
                                 ),
                                 (
                                     "url",
-                                    wagtail.core.blocks.URLBlock(
+                                    wagtail.blocks.URLBlock(
                                         help_text="URL for the external page",
                                         label="External URL",
                                     ),
                                 ),
                                 (
                                     "cta_label",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="The button label",
                                         label="CTA label",
                                         max_length=50,
@@ -136,14 +136,14 @@ class Migration(migrations.Migration):
                                 ),
                                 (
                                     "teaser_alt_text",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="Alt text of the teaser image",
                                         max_length=100,
                                     ),
                                 ),
                                 (
                                     "description",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link"],
                                         help_text="A description of the promoted page",
                                     ),
@@ -153,11 +153,11 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "promoted_list",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
@@ -169,19 +169,19 @@ class Migration(migrations.Migration):
                                 ),
                                 (
                                     "summary",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link"],
                                         required=False,
                                     ),
                                 ),
                                 (
                                     "promoted_items",
-                                    wagtail.core.blocks.ListBlock(
-                                        wagtail.core.blocks.StructBlock(
+                                    wagtail.blocks.ListBlock(
+                                        wagtail.blocks.StructBlock(
                                             [
                                                 (
                                                     "title",
-                                                    wagtail.core.blocks.CharBlock(
+                                                    wagtail.blocks.CharBlock(
                                                         help_text="Title of the promoted page",
                                                         max_length=100,
                                                         required=True,
@@ -189,7 +189,7 @@ class Migration(migrations.Migration):
                                                 ),
                                                 (
                                                     "description",
-                                                    wagtail.core.blocks.RichTextBlock(
+                                                    wagtail.blocks.RichTextBlock(
                                                         features=[
                                                             "bold",
                                                             "italic",
@@ -201,7 +201,7 @@ class Migration(migrations.Migration):
                                                 ),
                                                 (
                                                     "url",
-                                                    wagtail.core.blocks.URLBlock(
+                                                    wagtail.blocks.URLBlock(
                                                         required=True
                                                     ),
                                                 ),
@@ -214,24 +214,24 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "quote",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "quote",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link"],
                                         required=True,
                                     ),
                                 ),
                                 (
                                     "attribution",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=False
                                     ),
                                 ),
@@ -240,23 +240,23 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "related_items",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "description",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "related_items",
-                                    wagtail.core.blocks.ListBlock(
+                                    wagtail.blocks.ListBlock(
                                         etna.insights.blocks.RelatedItemBlock
                                     ),
                                 ),
@@ -265,11 +265,11 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "section",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="Section headings must be unique within the page.",
                                         max_length=100,
                                         required=True,

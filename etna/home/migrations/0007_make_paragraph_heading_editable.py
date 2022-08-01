@@ -2,8 +2,8 @@
 
 from django.db import migrations
 import etna.home.blocks
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -16,16 +16,16 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="homepage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     ("featured_items", etna.home.blocks.FeaturedItemsBlock()),
                     (
                         "paragraph_with_heading",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading_level",
-                                    wagtail.core.blocks.ChoiceBlock(
+                                    wagtail.blocks.ChoiceBlock(
                                         choices=[
                                             ("h2", "Heading level 2"),
                                             ("h3", "Heading level 3"),
@@ -36,13 +36,13 @@ class Migration(migrations.Migration):
                                 ),
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "paragraph",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link", "ul"],
                                         required=True,
                                     ),

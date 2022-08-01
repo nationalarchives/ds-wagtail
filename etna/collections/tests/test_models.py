@@ -2,7 +2,7 @@ import unittest
 
 from django.test import TestCase, override_settings
 
-from wagtail.core.models import PageViewRestriction, Site
+from wagtail.models import PageViewRestriction, Site
 
 import responses
 

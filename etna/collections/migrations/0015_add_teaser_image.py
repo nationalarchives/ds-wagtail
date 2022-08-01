@@ -2,8 +2,8 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -39,28 +39,28 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="explorerindexpage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     (
                         "time_period_explorer",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         default="Explore by time period", max_length=100
                                     ),
                                 ),
                                 (
                                     "sub_heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         default="Discover 1,000 years of British history through time periods including:",
                                         max_length=200,
                                     ),
                                 ),
                                 (
                                     "page",
-                                    wagtail.core.blocks.PageChooserBlock(
+                                    wagtail.blocks.PageChooserBlock(
                                         page_type=[
                                             "collections.TimePeriodExplorerIndexPage"
                                         ]
@@ -71,24 +71,24 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "topic_explorer_explorer",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         default="Explore by topic", max_length=100
                                     ),
                                 ),
                                 (
                                     "sub_heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         default="Browse highlights of the collection through topics including:",
                                         max_length=200,
                                     ),
                                 ),
                                 (
                                     "page",
-                                    wagtail.core.blocks.PageChooserBlock(
+                                    wagtail.blocks.PageChooserBlock(
                                         page_type=["collections.TopicExplorerIndexPage"]
                                     ),
                                 ),

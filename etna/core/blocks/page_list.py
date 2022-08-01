@@ -2,11 +2,11 @@ from typing import Any, Optional, Sequence
 
 from django.utils.functional import cached_property
 
+from wagtail.blocks.list_block import ListValue
 from wagtail.core import blocks
-from wagtail.core.blocks.list_block import ListValue
-from wagtail.core.models import Page, PageBase
-from wagtail.core.query import PageQuerySet
-from wagtail.core.utils import resolve_model_string
+from wagtail.coreutils import resolve_model_string
+from wagtail.models import Page, PageBase
+from wagtail.query import PageQuerySet
 
 
 class PageListBlock(blocks.ListBlock):

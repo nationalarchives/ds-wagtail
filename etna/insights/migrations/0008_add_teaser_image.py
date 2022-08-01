@@ -3,8 +3,8 @@
 from django.db import migrations, models
 import django.db.models.deletion
 import etna.records.blocks
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -29,28 +29,28 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="insightspage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     (
                         "quote",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "quote",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link"],
                                         required=True,
                                     ),
                                 ),
                                 (
                                     "attribution",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=False
                                     ),
                                 ),
@@ -59,17 +59,17 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "paragraph_with_heading",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "paragraph",
-                                    wagtail.core.blocks.RichTextBlock(
+                                    wagtail.blocks.RichTextBlock(
                                         features=["bold", "italic", "link"],
                                         required=True,
                                     ),
@@ -79,11 +79,11 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "section_heading",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         help_text="Section headings must be unique within the page.",
                                         max_length=100,
                                         required=True,
@@ -94,29 +94,29 @@ class Migration(migrations.Migration):
                     ),
                     (
                         "featured_record",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [("record", etna.records.blocks.RecordChooserBlock())]
                         ),
                     ),
                     (
                         "featured_records",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=100, required=True
                                     ),
                                 ),
                                 (
                                     "introduction",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         max_length=200, required=True
                                     ),
                                 ),
                                 (
                                     "records",
-                                    wagtail.core.blocks.ListBlock(
+                                    wagtail.blocks.ListBlock(
                                         etna.records.blocks.RecordChooserBlock
                                     ),
                                 ),

@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 
-from wagtail.core.models import Group
+from wagtail.models import Group
 from wagtail.tests.utils import WagtailTestUtils
 
 import responses
