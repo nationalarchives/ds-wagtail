@@ -1,37 +1,51 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html class="no-js" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <title>Site Maintenance - The National Archives</title>
-    <meta name="description" content=""/>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Site Maintenance - The National Archives</title>
+        <meta name="description" content=""/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
-    {% include 'includes/gtm-script.html' %}
+        {% if show_cookie_notice %}
+            <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
+        {% endif %}
 
-    {# Google Fonts #}
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
-          rel="stylesheet">
-    <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
-</head>
+        {% if cookies_permitted %}
+            {% include 'includes/gtm-script.html' %}
+        {% endif %}
 
-<body class="template-404">
-{% include 'includes/gtm-no-script.html' %}
+        {# Google Fonts #}
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
+            rel="stylesheet">
+        <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
+    </head>
 
-<main id="maincontent">
-    <div class="maintenance">
-        <h1 class="maintenance__heading">Sorry, our website is temporarily down for maintenance</h1>
-        <p class="maintenance__text">Please try again in a few minutes</p>
-        <p class="maintenance__text maintenance__text--small">
-            Follow us on <a href="https://twitter.com/UkNatArchives" rel="noopener noreferrer">Twitter</a> for updates
-        </p>
-        <img src="{% static 'images/tna-blk-logo.svg' %}" class="maintenance__logo-image" alt=""/>
-    </div>
-</main>
+    <body class="template-404">
+        {% if show_cookie_notice %}
+            {% include 'includes/cookie-consent.html' %}
+        {% endif %}
 
-</body>
+        {% if cookies_permitted %}
+            {% include 'includes/gtm-no-script.html' %}
+        {% endif %}
+
+        <main id="maincontent">
+            <div class="maintenance">
+                <h1 class="maintenance__heading">Sorry, our website is temporarily down for maintenance</h1>
+                <p class="maintenance__text">Please try again in a few minutes</p>
+                <p class="maintenance__text maintenance__text--small">
+                    Follow us on <a href="https://twitter.com/UkNatArchives" rel="noopener noreferrer">Twitter</a> for updates
+                </p>
+                <img src="{% static 'images/tna-blk-logo.svg' %}" class="maintenance__logo-image" alt=""/>
+            </div>
+        </main>
+
+        {% if show_cookie_notice %}
+            <script src="{% static 'scripts/cookie_consent.js' %}"></script>
+        {% endif %}
+    </body>
 </html>

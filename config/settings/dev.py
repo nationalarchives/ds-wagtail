@@ -2,6 +2,7 @@ from .base import *  # noqa: F401
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DEBUG", "True"))  # noqa: F405
+DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
     os.getenv("DEBUG_TOOLBAR_ENABLED", "True")  # noqa: F405
 )
@@ -28,8 +29,10 @@ except ImportError:
 
 if DEBUG:
     from .base import LOGGING
-
     LOGGING["root"]["level"] = "DEBUG"
+
+if not DEBUG and DJANGO_SERVE_STATIC:
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
 if DEBUG and DEBUG_TOOLBAR_ENABLED:
     from .base import INSTALLED_APPS, MIDDLEWARE
