@@ -9,17 +9,9 @@
 
 {% block content %}
 
-     <div class="row container pt-4 ml-lg-5 bg-info">
-            <div class="col-10">
-                <h1 class="generic-intro__title">
-                    {{ self.title }}
-                </h1>
-                {% if page.sub_heading %}
-                    <p class="generic-intro__paragraph">{{ page.sub_heading }}</p>
-                {% endif %}
-            </div>
-     </div>
-    <div class="row container pt-4 ml-lg-5 bg-info">
+    {% include 'includes/generic-intro.html' %}
+    <div class="container">
+    <div class="row container pt-4 ">
         {% for block in page.body %}
         {% if block.block_type == "time_period"  or block.block_type == "topic_explorer"%}
 
@@ -30,6 +22,7 @@
         {% endif %}
         {% endfor %}
      </div>
+    </div>
     <div class="container pt-4 ">
         {% for block in page.body %}
             <div class="row" ml-lg-7 bg-info>
