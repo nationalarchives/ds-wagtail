@@ -1,15 +1,13 @@
 import json
 
-from urllib.parse import urlparse, unquote
-
+from urllib.parse import unquote
 from django.conf import settings
-
 from django.shortcuts import render
 
 
 def get_context(request):
     # Disable cookie by default
-    cookies_permitted = False
+    cookies_permitted = True
     if cookies_policy := request.COOKIES.get("cookies_policy", None):
         try:
             # Permit cookies if user has agreed
@@ -29,22 +27,32 @@ def get_context(request):
     )
     if_cookie_notice = bool(
         settings.FEATURE_COOKIE_BANNER_ENABLED
-        and "dontShowCookieNotice" not in request.COOKIES)
-    context = {"cookies_permitted": cookies_permitted, "show_cookie_notice": if_cookie_notice,
-               "show_cookie_notice": if_show_banner}
+        and "dontShowCookieNotice" not in request.COOKIES
+    )
+    context = {
+        "cookies_permitted": cookies_permitted,
+        "show_cookie_notice": if_cookie_notice,
+        "show_beta_banner": if_show_banner,
+    }
     return context
 
 
 def custom_500_error_view(request):
     context = get_context(request)
-    return render(request, "500.html", context=context)
+    response = render(request, "500.html", context=context)
+    response.status_code = 500
+    return response
 
 
 def custom_503_error_view(request):
     context = get_context(request)
-    return render(request, "503.html", context=context)
+    response = render(request, "503.html", context=context)
+    response.status_code = 503
+    return response
 
 
 def custom_404_error_view(request, exception=None):
     context = get_context(request)
-    return render(request, "404.html", context=context)
+    response = render(request, "404.html", context=context)
+    response.status_code = 404
+    return response

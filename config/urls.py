@@ -1,4 +1,3 @@
-import etna
 from django.apps import apps
 from django.conf import settings
 from django.contrib import admin
@@ -10,16 +9,15 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
-from etna.errors import views as errors_view
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
 from etna.core.decorators import setting_controlled_login_required
+from etna.errors import views as errors_view
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
-
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
@@ -31,11 +29,9 @@ def trigger_error(request):
     return 1 / 0
 
 
+handler404 = "etna.errors.views.custom_404_error_view"
 handler500 = "etna.errors.views.custom_500_error_view"
 handler503 = "etna.errors.views.custom_503_error_view"
-handler404 = "etna.errors.views.custom_404_error_view"
-
-
 
 # Private URLs that are not meant to be cached.
 private_urls = [
@@ -135,11 +131,7 @@ if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
             errors_view.custom_404_error_view,
             kwargs={"exception": Exception("Bad Request!")},
         ),
-
-        path(
-            r"500/",
-            errors_view.custom_500_error_view
-        ),
+        path(r"500/", errors_view.custom_500_error_view),
         path(r"503/", errors_view.custom_503_error_view),
     ]
 
@@ -166,6 +158,4 @@ urlpatterns = (
 )
 
 if apps.is_installed("debug_toolbar"):
-    urlpatterns = [
-                      path("__debug__/", include("debug_toolbar.urls")),
-                  ] + urlpatterns
+    urlpatterns = [path("__debug__/", include("debug_toolbar.urls")), ] + urlpatterns

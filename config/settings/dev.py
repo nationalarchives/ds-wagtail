@@ -2,7 +2,6 @@ from .base import *  # noqa: F401
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DEBUG", "True"))  # noqa: F405
-DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
     os.getenv("DEBUG_TOOLBAR_ENABLED", "True")  # noqa: F405
 )
@@ -18,8 +17,13 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 IMAGE_VIEWER_REQUIRE_LOGIN = False
 RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False
-FEATURE_BETA_BANNER_ENABLED = False
-FEATURE_COOKIE_BANNER_ENABLED = False
+FEATURE_BETA_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
+)
+FEATURE_COOKIE_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
+)
+DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
 
 try:
