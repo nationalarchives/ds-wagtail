@@ -1,3 +1,7 @@
+import os
+
+from distutils.util import strtobool
+
 from .base import *  # noqa: F401
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -33,6 +37,7 @@ except ImportError:
 
 if DEBUG:
     from .base import LOGGING
+
     LOGGING["root"]["level"] = "DEBUG"
 
 if not DEBUG and DJANGO_SERVE_STATIC:

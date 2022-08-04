@@ -158,4 +158,6 @@ urlpatterns = (
 )
 
 if apps.is_installed("debug_toolbar"):
-    urlpatterns = [path("__debug__/", include("debug_toolbar.urls")), ] + urlpatterns
+    urlpatterns = [
+        path("__debug__/", include("debug_toolbar.urls")),
+    ] + urlpatterns
