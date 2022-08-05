@@ -58,11 +58,6 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
     subpage_types = ["insights.InsightsPage"]
 
-    @cached_property
-    def add_featured_collection(self, value):
-        """Return a sample of child pages for rendering in teaser."""
-        self.featuredcollections.append(value)
-
 
 @register_snippet
 class InsightsTag(TagBase):
