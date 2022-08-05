@@ -39,9 +39,14 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     )
 
     def get_context(self, request):
+        featuredcollections = []
         context = super().get_context(request)
         insights_pages = self.get_children().live().specific()
         context["insights_pages"] = insights_pages
+        for block in self.featured_collections:
+            for insight in block.value["items"].bound_blocks:
+                featuredcollections.append(insight.value)
+        context["featuredcollections"] = featuredcollections
         return context
 
     content_panels = BasePage.content_panels + [
@@ -52,6 +57,11 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
     subpage_types = ["insights.InsightsPage"]
+
+    @cached_property
+    def add_featured_collection(self, value):
+        """Return a sample of child pages for rendering in teaser."""
+        self.featuredcollections.append(value)
 
 
 @register_snippet
