@@ -1,0 +1,12 @@
+<div class="breadcrumb-content">
+    {% if self.get_ancestors|length > 1 %}
+        <ul class="breadcrumb">
+            {% for p in self.get_ancestors %}
+                {% if p.is_root == False %}
+                    <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+            <li class="active">{{ self.title }}</li>
+        </ul>
+    {% endif %}
+</div>
