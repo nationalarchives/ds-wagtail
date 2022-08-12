@@ -182,15 +182,11 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
             .select_related("hero_image", "topic", "time_period")
             .order_by("-first_published_at")
         )
-        self._filter_latest(latestqueryset, similarqueryset)
+        filterlatestpages= [page for page in latestqueryset if page not in similarqueryset]
 
-        return tuple(self._filter_latest(latestqueryset, similarqueryset))
+        return tuple(filterlatestpages)
 
-    def _filter_latest(self, latestqueryset, similerqueryset):
-        for page in latestqueryset[:]:
-            if page in similerqueryset:
-                latestqueryset.remove(page)
-        return latestqueryset
+
 
     content_panels = (
         BasePage.content_panels
