@@ -1,24 +1,23 @@
-.breadcrumb-content {
-   background-color: $color__yellow_2;
-}
+
 ul.breadcrumb {
   padding: 10px 16px;
   list-style: none;
 }
 ul.breadcrumb li {
   display: inline;
-  font-size: 10px;
+  font-family: supria-sans-condensed, sans-serif;
+  font-size: 16px;
 }
 ul.breadcrumb li+li:before {
-  padding: 6px;
+  padding: 2px;
   color: black;
   content: ">";
 }
 ul.breadcrumb li a {
-  color: #0275d8;
+  color: black;
   text-decoration: none;
 }
 ul.breadcrumb li a:hover {
-  color: #01447e;
+
   text-decoration: underline;
 }
