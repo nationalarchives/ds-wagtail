@@ -174,12 +174,23 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         Return the three most recently published InsightsPages,
         excluding this object.
         """
-        return tuple(
+        similerqueryset = list(self.similar_items)
+
+        latestqueryset = list(
             InsightsPage.objects.live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
-            .order_by("-first_published_at")[:3]
+            .order_by("-first_published_at")
         )
+        self._filter_latest(latestqueryset, similerqueryset)
+
+        return tuple(self._filter_latest(latestqueryset, similerqueryset))
+
+    def _filter_latest(self, latestqueryset, similerqueryset):
+        for page in latestqueryset[:]:
+            if page in similerqueryset:
+                latestqueryset.remove(page)
+        return latestqueryset
 
     content_panels = (
         BasePage.content_panels
