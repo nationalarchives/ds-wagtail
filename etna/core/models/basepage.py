@@ -3,7 +3,7 @@ from typing import Any, Dict
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
 
-from wagtail.core.models import Page
+from wagtail.models import Page
 
 from etna.analytics.mixins import DataLayerMixin
 from etna.core.cache_control import (
