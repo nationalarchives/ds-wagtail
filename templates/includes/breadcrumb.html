@@ -1,4 +1,4 @@
-
+<div class="breadcrumb-content">
     {% if self.get_ancestors|length > 1 %}
         <ul class="breadcrumb">
             {% for p in self.get_ancestors %}
@@ -6,5 +6,7 @@
                     <li><a href="{{ p.url }}">{{ p.title }}</a></li>
                 {% endif %}
             {% endfor %}
+
         </ul>
     {% endif %}
+</div>
