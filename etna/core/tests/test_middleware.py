@@ -68,7 +68,7 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         self._apply_middleware()
         context_data = self.response.context_data
         self.assertIs(context_data["cookies_permitted"], False)
-        self.assertIs(context_data["show_cookie_notice"], False)
+        self.assertIs(context_data["show_cookie_notice"], True)
         self.assertIs(context_data["show_beta_banner"], True)
 
     def test_behaviour_when_context_data_is_none(self):
@@ -76,7 +76,7 @@ class TestInterpretCookiesMiddleware(SimpleTestCase):
         self._apply_middleware()
         context_data = self.response.context_data
         self.assertIs(context_data["cookies_permitted"], False)
-        self.assertIs(context_data["show_cookie_notice"], False)
+        self.assertIs(context_data["show_cookie_notice"], True)
         self.assertIs(context_data["show_beta_banner"], True)
 
     def test_context_not_modified_for_excluded_paths_and_subpaths(self):
