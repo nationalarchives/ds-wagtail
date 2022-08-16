@@ -1,12 +1,14 @@
 <div class="breadcrumb-content">
+  <nav  aria-label="Breadcrumb">
     {% if self.get_ancestors|length > 1 %}
         <ul class="breadcrumb">
             {% for p in self.get_ancestors %}
                 {% if p.is_root == False %}
-                    <li><a href="{{ p.url }}">{{ p.title }}</a></li>
+                    <li><a href="{{ p.url }}"  aria-current="page">{{ p.title }}</a></li>
                 {% endif %}
             {% endfor %}
 
         </ul>
     {% endif %}
+  </nav>
 </div>
