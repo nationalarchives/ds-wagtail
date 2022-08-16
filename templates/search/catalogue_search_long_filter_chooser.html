@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% load humanize %}
+{% load datalayer_tags %}
 {% load search_tags %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer page %}
+{% endblock extra_gtm_js %}
 {% load static %}
 
 {% block content %}
