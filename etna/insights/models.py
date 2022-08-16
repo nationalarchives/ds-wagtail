@@ -184,7 +184,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         )
         filterlatestpages= [page for page in latestqueryset if page not in similarqueryset]
 
-        return tuple(filterlatestpages)
+        return tuple(filterlatestpages[:3])
 
 
 
