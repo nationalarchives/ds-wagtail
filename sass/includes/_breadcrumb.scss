@@ -19,9 +19,9 @@ ul.breadcrumb li+li:before {
 }
 ul.breadcrumb li a {
   color: black;
-  text-decoration: none;
+  text-decoration: underline;
 }
 ul.breadcrumb li a:hover {
 
-  text-decoration: underline;
+  text-decoration: none;
 }
