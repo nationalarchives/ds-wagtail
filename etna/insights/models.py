@@ -182,7 +182,9 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
             .select_related("hero_image", "topic", "time_period")
             .order_by("-first_published_at")
         )
-        filterlatestpages = [page for page in latestqueryset if page not in similarqueryset]
+        filterlatestpages = [
+            page for page in latestqueryset if page not in similarqueryset
+        ]
 
         return tuple(filterlatestpages[:3])
 
