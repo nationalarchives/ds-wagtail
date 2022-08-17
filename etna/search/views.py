@@ -173,7 +173,30 @@ class KongAPIMixin:
         page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
         return paginator, page, page_range
 
-
+data = {
+    "contentGroup1": "Search",  # The name of the content group - [Always has a value]
+    "customDimension1": "offsite",  # The reader type (options are "offsite",
+    # "onsite_public", "onsite_staff", "subscription")
+    "customDimension2": "",  # The user type and is private beta specific
+    # - the user ID for participants."customDimension3": ""
+    "customDimension3": "",  # The page type - [Always has a value]
+    "customDimension4": "",  # Taxonomy topics for the page, delineated by semi-colons. Empty string if no value.
+    "customDimension5": "",  # This is the taxonomy sub topic where applicable. Empty string if not applicable.
+    "customDimension6": "",  # This is the taxonomy term where applicable. Empty string if not applicable.
+    "customDimension7": "",  # This is the time period where applicable. Empty string if not applicable.
+    "customDimension8": "",  # This is the sub time period where applicable. Empty string if not applicable.
+    "customDimension9": "",  # This is the entity type where applicable. Empty string if not applicable.
+    "customDimension10": "",  # This is the entity label where applicable. Empty string if not applicable.
+    "customDimension11": "",  # This is the catalogue repository where applicable. Empty string if not applicable.
+    "customDimension12": "",  # This is the catalogue level where applicable. Empty string if not applicable.
+    "customDimension13": "",  # This is the catalogue series where applicable. Empty string if not applicable.
+    "customDimension14": "",  # This is the catalogue reference where applicable. Empty string if not applicable.
+    "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
+    "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
+    "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
+    "customMetric1": "", #This is the number of search results
+    "customMetric2": "", #This is the number of search filters applied
+}
 class SearchLandingView(BucketsMixin, TemplateView):
     """
     A simple view that queries the API to retrieve counts for the various
@@ -189,7 +212,11 @@ class SearchLandingView(BucketsMixin, TemplateView):
     bucket_list = CATALOGUE_BUCKETS
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = {"customDimension7": "test"}
+        data["customDimension3"] = self.__class__.__name__
+        data["customDimension8"] = "" #"[search_type]: [name_of_search_bucket]"
+        data["customDimension9"] = "*"
+        data["customMetric1"] = self.api_result["responses"][0]["hits"]["total"]["value"]
+        data["customMetric2"] = 0 #"[Count_of_filters_applied]"
         return data
 
     def get_context_data(self, **kwargs):
@@ -286,6 +313,24 @@ class BaseSearchView(KongAPIMixin, FormView):
         if query := self.form.cleaned_data.get("q", ""):
             title += ' for "' + query.replace('"', "'") + '"'
         return title
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data["customDimension3"] = self.__class__.__name__
+        try:
+            group = self.get_api_filter_aggregations(self.form)
+            data["customDimension8"] = self.__class__.__name__.replace("SearchView"," Results: ") + group[-1].replace("group:", "")
+        except:
+            data["customDimension8"] = ""
+        if self.form.cleaned_data.get("q", ""):
+            data["customDimension9"] = self.form.cleaned_data.get("q", "")
+        else:
+            data["customDimension9"] = "*"
+        data["customMetric1"] = self.api_result["responses"][0]["hits"]["total"]["value"]
+        try:
+            data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
+        except:
+            data["customMetric2"] = 0
+        return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs.update(
