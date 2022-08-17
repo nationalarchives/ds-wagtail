@@ -188,6 +188,10 @@ class SearchLandingView(BucketsMixin, TemplateView):
     template_name = "search/search.html"
     bucket_list = CATALOGUE_BUCKETS
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = {"customDimension7": "test"}
+        return data
+
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
         self.api_result = Record.api.client.search(
@@ -564,29 +568,29 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         """
         slugs = [
             result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
+                .rstrip("/")
+                .split("/")
+                .pop()
             for result in page.object_list
         ]
         # filter by slug for performance boost
         insights_page_by_url = {
             page.get_url(self.request): page
             for page in InsightsPage.objects.live()
-            .filter(slug__in=slugs)
-            .defer("body")
-            .select_related("teaser_image")
+                .filter(slug__in=slugs)
+                .defer("body")
+                .select_related("teaser_image")
         }
         page_list = []
         for result in page.object_list:
             url = (
                 result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
+                    .get("@template", {})
+                    .get("details", {})
+                    .get("sourceUrl", "")
             )
             if source_page := insights_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
@@ -604,27 +608,27 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         """
         slugs = [
             result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
+                .rstrip("/")
+                .split("/")
+                .pop()
             for result in page.object_list
         ]
         results_page_by_url = {
             page.get_url(self.request): page
             for page in ResultsPage.objects.live()
-            .filter(slug__in=slugs)
-            .select_related("teaser_image")
+                .filter(slug__in=slugs)
+                .select_related("teaser_image")
         }
         page_list = []
         for result in page.object_list:
             url = (
                 result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
+                    .get("@template", {})
+                    .get("details", {})
+                    .get("sourceUrl", "")
             )
             if source_page := results_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
