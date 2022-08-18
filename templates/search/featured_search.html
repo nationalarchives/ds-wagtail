@@ -9,6 +9,36 @@
         {% include './blocks/search_results_hero.html' %}
     {% endwith  %}
     <p class="search-results__explainer">Results for everything that matches your search term.</p>
+ 
+    <!--no results message for All results-->
+    <!--move this into a seperat html block and apply styles via sass-->
+    <!-- need to add in logic to check the number of results, if 0 then display the message-->
+
+    <div style="padding:2rem;">
+    <h2 class="featured-search__heading">We did not find any results for your search</h2>
+    <p class="search-results__explainer">Some record descriptions are much less detailed than others, so you may not find what you are looking for using a simple keyword search.</p> 
+
+    <ul>
+        <li>Try different spellings or search terms</li>
+        <li>Use the advanced search options such as the "AND", "OR" and "NOT" operators</li>
+        <li>Look at our <a href ="https://www.nationalarchives.gov.uk/help-with-your-research/research-guides-keywords/" target="_blank">research guides</a> for search tips</li>
+    </ul>
+    </div>
+    
+    <!--end no results message for All results-->
+
+  
+
+  <!--   {% if page.start_index < 1 %}
+            
+            <p>NONE</p>
+
+            {% else %}
+                
+            <p>SOME</p>            
+
+    {% endif %} -->
+
     <div class="featured-search__results">
 
         {% include './blocks/featured-search__results-block.html' with bucket=buckets.tna %}
