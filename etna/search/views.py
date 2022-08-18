@@ -325,7 +325,15 @@ class BaseSearchView(KongAPIMixin, FormView):
             data["customDimension9"] = self.form.cleaned_data.get("q", "")
         else:
             data["customDimension9"] = "*"
-        data["customMetric1"] = self.api_result["responses"][0]["hits"]["total"]["value"]
+        total_count = 0
+        try:
+            for bucket in self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]:
+                total_count += bucket["doc_count"]
+            if total_count > 10000:
+                total_count = 10001
+        except:
+            print("error")
+        data["customMetric1"] = total_count
         try:
             data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
         except:
