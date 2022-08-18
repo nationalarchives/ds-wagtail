@@ -319,7 +319,7 @@ class BaseSearchView(KongAPIMixin, FormView):
         try:
             group = self.get_api_filter_aggregations(self.form)
             group = group[-1].replace("group:", "")
-            data["customDimension8"] = self.__class__.__name__.replace("SearchView"," Results: ") + group[-1].replace("group:", "")
+            data["customDimension8"] = self.__class__.__name__.replace("SearchView"," Results: ") + group
         except:
             data["customDimension8"] = ""
         if self.form.cleaned_data.get("q", ""):
@@ -329,11 +329,12 @@ class BaseSearchView(KongAPIMixin, FormView):
         total_count = 0
         try:
             if group == "creator":
-                result = self.api_result["responses"][1]["aggregations"]["group"][0]
+                result = self.api_result["responses"][1]["aggregations"]["group"]["buckets"][0]["doc_count"]
+                total_count = result
             else:
                 result = self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]
-            for bucket in result:
-                total_count += bucket["doc_count"]
+                for bucket in result:
+                    total_count += bucket["doc_count"]
             if total_count > 10000:
                 total_count = 10001
         except:
