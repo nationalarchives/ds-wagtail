@@ -318,6 +318,7 @@ class BaseSearchView(KongAPIMixin, FormView):
         data["customDimension3"] = self.__class__.__name__
         try:
             group = self.get_api_filter_aggregations(self.form)
+            group = group[-1].replace("group:", "")
             data["customDimension8"] = self.__class__.__name__.replace("SearchView"," Results: ") + group[-1].replace("group:", "")
         except:
             data["customDimension8"] = ""
@@ -327,12 +328,16 @@ class BaseSearchView(KongAPIMixin, FormView):
             data["customDimension9"] = "*"
         total_count = 0
         try:
-            for bucket in self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]:
+            if group == "creator":
+                result = self.api_result["responses"][1]["aggregations"]["group"][0]
+            else:
+                result = self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]
+            for bucket in result:
                 total_count += bucket["doc_count"]
             if total_count > 10000:
                 total_count = 10001
         except:
-            print("error")
+            pass
         data["customMetric1"] = total_count
         try:
             data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
