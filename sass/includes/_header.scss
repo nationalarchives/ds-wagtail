@@ -4,6 +4,7 @@
   @media screen and (min-width: 768px) {
     display: flex;
     flex-wrap: wrap;
+
   }
   &__logo {
     &-holder {
@@ -40,6 +41,19 @@
       }
     }
   }
+
+  &__mobile-icons {
+    display:inline-block;
+    float:right;
+    position:relative;
+    top:2rem;
+
+    @media screen and (min-width: 768px) {
+      display: none;
+
+    }
+  }
+
   &__nav {
     margin-left: auto;
     align-items: flex-end;
@@ -144,6 +158,7 @@
             padding-left: 2.25rem;
             padding-right: 0.75rem;
             background-size: 1.5rem;
+            display: inline-block;
 
             &:visited {
               color: $color__white;

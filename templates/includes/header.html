@@ -17,6 +17,12 @@
           alt="The National Archives logo"
       /></a>
     </div>
+    <div class="header__mobile-icons">
+        <div class="header__show-hide-button"></div>
+        <div class="header__nav-list-item-link-search"></div>
+    </div>
+
+
 
     {% if settings.core.SiteSettings.main_menu_items %}
       <nav class="header__nav" aria-label="Site menu" data-id="site-menu">
@@ -35,4 +41,34 @@
         </ul>
       </nav>
     {% endif %}
-  </header>
+ </header>
+
+
+<!--<header class="header">-->
+<!--    <div class="header__logo-holder">-->
+<!--      <a href="/" class="header__logo-link"-->
+<!--        ><img-->
+<!--          src="{% static 'images/tna-blk-logo-beta.svg' %}"-->
+<!--          class="header__logo-image"-->
+<!--          alt="The National Archives logo"-->
+<!--      /></a>-->
+<!--    </div>-->
+
+<!--    {% if settings.core.SiteSettings.main_menu_items %}-->
+<!--      <nav class="header__nav" aria-label="Site menu" data-id="site-menu">-->
+<!--        <ul class="header__nav-list" data-id="site-menu-list">-->
+<!--          {% for item in settings.core.SiteSettings.main_menu_items %}-->
+<!--            <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% else %} id="js-site-menu-search" {% endif %}>-->
+<!--              {% if item.handle == 'search' %}-->
+<!--                <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>-->
+<!--                  {{ item.label }}-->
+<!--                </a>-->
+<!--              {% else %}-->
+<!--                <a class="header__nav-list-item-link" href="{{ item.url }}"{% if item.is_active %} aria-current="true"{% endif %}>{{ item.label }}</a>-->
+<!--              {% endif %}-->
+<!--            </li>-->
+<!--          {% endfor %}-->
+<!--        </ul>-->
+<!--      </nav>-->
+<!--    {% endif %}-->
+<!--  </header>-->
