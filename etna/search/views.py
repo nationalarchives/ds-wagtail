@@ -328,7 +328,9 @@ class BaseSearchView(KongAPIMixin, FormView):
         total_count = 0
         try:
             if group == "creator":
-                result = self.api_result["responses"][1]["aggregations"]["group"]["buckets"][0]["doc_count"]
+                result = self.api_result["responses"][1]["aggregations"]["group"][
+                    "buckets"
+                ][0]["doc_count"]
                 total_count = result
             elif className == "FeaturedSearchView":
                 for result in self.api_result["responses"]:
@@ -336,7 +338,9 @@ class BaseSearchView(KongAPIMixin, FormView):
             elif className == "WebsiteSearchView":
                 total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
             else:
-                result = self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]
+                result = self.api_result["responses"][1]["aggregations"][
+                    "catalogueSource"
+                ]["buckets"]
                 for bucket in result:
                     total_count += bucket["doc_count"]
             if total_count > 10000:
