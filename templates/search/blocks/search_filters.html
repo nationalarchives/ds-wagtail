@@ -1,7 +1,6 @@
 {% load search_tags %}
 
 
-
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
@@ -24,7 +23,7 @@
         {% endcomment %}
 
         <div class="search-filters__form-block">
-            
+
             <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
             {{ form.filter_keyword }}
             {{ form.filter_keyword.errors }}
