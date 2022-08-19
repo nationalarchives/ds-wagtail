@@ -46,20 +46,21 @@
     display:inline-block;
     float:right;
     position:relative;
-    top:2rem;
+    top:4rem;
+
 
     @media screen and (min-width: 768px) {
       display: none;
 
     }
   }
-
   &__nav {
     margin-left: auto;
     align-items: flex-end;
 
     @media only screen and (max-width: $screen__md) {
-      display: block;
+      //display: block;
+      //display:none;
       text-align: right;
     }
 
@@ -233,5 +234,104 @@
         }
       }
     }
+  }
+}
+
+//css navigation menu : reusing : https://codepen.io/danhearn/pen/XprGrJ
+body {
+  //background: #87cc77;
+  //margin: 0;
+  //font-family: arial;
+  //width: 100vw;
+  //height: 100vh;
+  animation: bugfix infinite 1s;
+  -webkit-animation: bugfix infinite 1s;
+}
+
+@keyframes bugfix { from {padding:0;} to {padding:0;}}
+@-webkit-keyframes bugfix { from {padding:0;} to {padding:0;}}
+
+#overlay-button {
+  position: absolute;
+  right: 3em;
+  top: 6.5em;
+  padding: 26px 11px;
+  z-index: 5;
+  cursor: pointer;
+  user-select: none;
+  span {
+    height: 4px;
+    width: 35px;
+    border-radius: 2px;
+    background-color: black;
+    position: relative;
+    display: block;
+    transition: all .2s ease-in-out;
+    &:before {
+      top: -10px;
+      visibility: visible;
+    }
+    &:after {
+      top: 10px;
+    }
+    &:before, &:after {
+      height: 4px;
+      width: 35px;
+      border-radius: 2px;
+      background-color: black;
+      position: absolute;
+      content: "";
+      transition: all .2s ease-in-out;
+    }
+  }
+  &:hover span, &:hover span:before, &:hover span:after {
+    background: #333332;
+  }
+  @media only screen and (min-width: $screen__md) {
+    display:none;
+  }
+}
+
+input[type=checkbox] {
+  display: none;
+
+  &:checked ~ #overlay {
+    //visibility: visible;
+    display:block;
+  }
+
+  &:checked ~ #overlay-button {
+    &:hover span, span{
+      background: transparent;
+    }
+    span {
+      &:before {
+        transform: rotate(45deg) translate(7px, 7px);
+        opacity: 1;
+      }
+      &:after {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+    }
+  }
+}
+
+#overlay {
+  //height: 100vh;
+  //width: 100vw;
+  //background: #ec6451;
+  z-index: 2;
+  display:none;
+  //visibility: hidden;
+  //position: fixed;
+  //height:0;
+
+  &.active {
+    //visibility: visible;
+    display:block;
+    //height:184px;
+  }
+  @media only screen and (min-width: $screen__md) {
+    display:block;
   }
 }
