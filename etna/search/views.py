@@ -173,12 +173,11 @@ class KongAPIMixin:
         page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
         return paginator, page, page_range
 
+
 data = {
     "contentGroup1": "Search",  # The name of the content group - [Always has a value]
     "customDimension1": "offsite",  # The reader type (options are "offsite",
-    # "onsite_public", "onsite_staff", "subscription")
     "customDimension2": "",  # The user type and is private beta specific
-    # - the user ID for participants."customDimension3": ""
     "customDimension3": "",  # The page type - [Always has a value]
     "customDimension4": "",  # Taxonomy topics for the page, delineated by semi-colons. Empty string if no value.
     "customDimension5": "",  # This is the taxonomy sub topic where applicable. Empty string if not applicable.
@@ -197,6 +196,8 @@ data = {
     "customMetric1": "", #This is the number of search results
     "customMetric2": "", #This is the number of search filters applied
 }
+
+
 class SearchLandingView(BucketsMixin, TemplateView):
     """
     A simple view that queries the API to retrieve counts for the various
@@ -212,11 +213,8 @@ class SearchLandingView(BucketsMixin, TemplateView):
     bucket_list = CATALOGUE_BUCKETS
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data["customDimension3"] = self.__class__.__name__
-        data["customDimension8"] = "" #"[search_type]: [name_of_search_bucket]"
-        data["customDimension9"] = "*"
-        data["customMetric1"] = self.api_result["responses"][0]["hits"]["total"]["value"]
-        data["customMetric2"] = 0 #"[Count_of_filters_applied]"
+        className = self.__class__.__name__
+        data["customDimension3"] = className
         return data
 
     def get_context_data(self, **kwargs):
@@ -315,13 +313,14 @@ class BaseSearchView(KongAPIMixin, FormView):
         return title
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data["customDimension3"] = self.__class__.__name__
+        className = self.__class__.__name__
+        data["customDimension3"] = className
         try:
             group = self.get_api_filter_aggregations(self.form)
             group = group[-1].replace("group:", "")
-            data["customDimension8"] = self.__class__.__name__.replace("SearchView"," Results: ") + group
         except:
-            data["customDimension8"] = ""
+            group = "none"
+        data["customDimension8"] = className.replace("SearchView"," Results: ") + group
         if self.form.cleaned_data.get("q", ""):
             data["customDimension9"] = self.form.cleaned_data.get("q", "")
         else:
@@ -331,6 +330,9 @@ class BaseSearchView(KongAPIMixin, FormView):
             if group == "creator":
                 result = self.api_result["responses"][1]["aggregations"]["group"]["buckets"][0]["doc_count"]
                 total_count = result
+            elif className == "FeaturedSearchView":
+                for result in self.api_result["responses"]:
+                    total_count += result["hits"]["total"]["value"]
             else:
                 result = self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]
                 for bucket in result:
@@ -338,7 +340,7 @@ class BaseSearchView(KongAPIMixin, FormView):
             if total_count > 10000:
                 total_count = 10001
         except:
-            pass
+            total_count=0
         data["customMetric1"] = total_count
         try:
             data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
