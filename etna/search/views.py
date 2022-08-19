@@ -333,6 +333,8 @@ class BaseSearchView(KongAPIMixin, FormView):
             elif className == "FeaturedSearchView":
                 for result in self.api_result["responses"]:
                     total_count += result["hits"]["total"]["value"]
+            elif className == "WebsiteSearchView":
+                total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
             else:
                 result = self.api_result["responses"][1]["aggregations"]["catalogueSource"]["buckets"]
                 for bucket in result:
