@@ -1,6 +1,5 @@
 import copy
 import logging
-from multiprocessing.sharedctypes import Value
 import re
 
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
@@ -194,8 +193,8 @@ data = {
     "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
     "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
     "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
-    "customMetric1": "", # This is the number of search results
-    "customMetric2": "", # This is the number of search filters applied
+    "customMetric1": "",  # This is the number of search results
+    "customMetric2": "",  # This is the number of search filters applied
 }
 
 
@@ -321,7 +320,7 @@ class BaseSearchView(KongAPIMixin, FormView):
             group = group[-1].replace("group:", "")
         except Exception:
             group = "none"
-        data["customDimension8"] = className.replace("SearchView"," Results: ") + group
+        data["customDimension8"] = className.replace("SearchView", " Results: ") + group
         if self.form.cleaned_data.get("q", ""):
             data["customDimension9"] = self.form.cleaned_data.get("q", "")
         else:
@@ -346,7 +345,7 @@ class BaseSearchView(KongAPIMixin, FormView):
             total_count = 0
         data["customMetric1"] = total_count
         try:
-            data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
+            data["customMetric2"] = len(self.get_api_filter_aggregations(self.form)) - 1
         except Exception:
             data["customMetric2"] = 0
         return data
@@ -632,29 +631,29 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         """
         slugs = [
             result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-                .rstrip("/")
-                .split("/")
-                .pop()
+            .get("@template", {})
+            .get("details", {})
+            .get("sourceUrl", "")
+            .rstrip("/")
+            .split("/")
+            .pop()
             for result in page.object_list
         ]
         # filter by slug for performance boost
         insights_page_by_url = {
             page.get_url(self.request): page
             for page in InsightsPage.objects.live()
-                .filter(slug__in=slugs)
-                .defer("body")
-                .select_related("teaser_image")
+            .filter(slug__in=slugs)
+            .defer("body")
+            .select_related("teaser_image")
         }
         page_list = []
         for result in page.object_list:
             url = (
                 result["_source"]
-                    .get("@template", {})
-                    .get("details", {})
-                    .get("sourceUrl", "")
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
             )
             if source_page := insights_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
@@ -672,27 +671,27 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         """
         slugs = [
             result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-                .rstrip("/")
-                .split("/")
-                .pop()
+            .get("@template", {})
+            .get("details", {})
+            .get("sourceUrl", "")
+            .rstrip("/")
+            .split("/")
+            .pop()
             for result in page.object_list
         ]
         results_page_by_url = {
             page.get_url(self.request): page
             for page in ResultsPage.objects.live()
-                .filter(slug__in=slugs)
-                .select_related("teaser_image")
+            .filter(slug__in=slugs)
+            .select_related("teaser_image")
         }
         page_list = []
         for result in page.object_list:
             url = (
                 result["_source"]
-                    .get("@template", {})
-                    .get("details", {})
-                    .get("sourceUrl", "")
+                .get("@template", {})
+                .get("details", {})
+                .get("sourceUrl", "")
             )
             if source_page := results_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
