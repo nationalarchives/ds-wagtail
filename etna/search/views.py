@@ -1,5 +1,6 @@
 import copy
 import logging
+from multiprocessing.sharedctypes import Value
 import re
 
 from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
@@ -193,8 +194,8 @@ data = {
     "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
     "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
     "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
-    "customMetric1": "", #This is the number of search results
-    "customMetric2": "", #This is the number of search filters applied
+    "customMetric1": "", # This is the number of search results
+    "customMetric2": "", # This is the number of search filters applied
 }
 
 
@@ -318,7 +319,7 @@ class BaseSearchView(KongAPIMixin, FormView):
         try:
             group = self.get_api_filter_aggregations(self.form)
             group = group[-1].replace("group:", "")
-        except:
+        except Exception:
             group = "none"
         data["customDimension8"] = className.replace("SearchView"," Results: ") + group
         if self.form.cleaned_data.get("q", ""):
@@ -341,12 +342,12 @@ class BaseSearchView(KongAPIMixin, FormView):
                     total_count += bucket["doc_count"]
             if total_count > 10000:
                 total_count = 10001
-        except:
-            total_count=0
+        except Exception:
+            total_count = 0
         data["customMetric1"] = total_count
         try:
             data["customMetric2"] = len(self.get_api_filter_aggregations(self.form))-1
-        except:
+        except Exception:
             data["customMetric2"] = 0
         return data
 
