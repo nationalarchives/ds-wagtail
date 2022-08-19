@@ -46,7 +46,7 @@
     display:inline-block;
     float:right;
     position:relative;
-    top:4rem;
+    //top:4rem;
 
 
     @media screen and (min-width: 768px) {
@@ -151,8 +151,8 @@
           &-search {
             color: $color__white;
             height: 3rem;
-            background-color: #26262a;
-            background-image: url(/static/images/icons/search-white.svg);
+            //background-color: #26262a;
+            background-image: url(/static/images/icons/search-black.svg);
             background-repeat: no-repeat;
             background-position-x: 0.5rem;
             background-position-y: 0.6rem;
@@ -239,11 +239,6 @@
 
 //css navigation menu : reusing : https://codepen.io/danhearn/pen/XprGrJ
 body {
-  //background: #87cc77;
-  //margin: 0;
-  //font-family: arial;
-  //width: 100vw;
-  //height: 100vh;
   animation: bugfix infinite 1s;
   -webkit-animation: bugfix infinite 1s;
 }
@@ -254,8 +249,8 @@ body {
 #overlay-button {
   position: absolute;
   right: 3em;
-  top: 6.5em;
-  padding: 26px 11px;
+  //top: 6.5em;
+  padding: 23px 11px;
   z-index: 5;
   cursor: pointer;
   user-select: none;
@@ -317,19 +312,13 @@ input[type=checkbox] {
 }
 
 #overlay {
-  //height: 100vh;
-  //width: 100vw;
-  //background: #ec6451;
   z-index: 2;
   display:none;
   //visibility: hidden;
-  //position: fixed;
-  //height:0;
 
   &.active {
     //visibility: visible;
     display:block;
-    //height:184px;
   }
   @media only screen and (min-width: $screen__md) {
     display:block;
