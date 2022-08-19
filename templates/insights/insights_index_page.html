@@ -53,10 +53,13 @@
         <h2>Discover all stories</h2>
         <p>Browse and explore the human stories behind The National Archives’ collection.</p>
         <ul class="card-group--list-style-none">
+
             {% for insights_page in insights_pages %}
-                {% with page=insights_page.specific %}
-                    {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" %}
-                {% endwith %}
+                      {% if insights_page not in featuredcollections %}
+                        {% with page=insights_page.specific %}
+                         {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" %}
+                        {% endwith %}
+                      {% endif %}
             {% endfor %}
         </ul>
     </div>
