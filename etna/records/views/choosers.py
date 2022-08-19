@@ -1,6 +1,6 @@
-from django.urls import re_path as url
 from django.core.paginator import Page
 from django.shortcuts import Http404
+from django.urls import re_path as url
 
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
