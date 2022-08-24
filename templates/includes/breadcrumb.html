@@ -1,11 +1,11 @@
-<div class="breadcrumb-content">
+<div class="breadcrumb-content govuk-breadcrumbs--collapse-on-mobile">
   <nav  aria-label="Breadcrumb">
     {% if self.get_ancestors|length > 1 %}
-        <ul class="breadcrumb">
-           <li><a href="/" >Home</a></li>
+        <ul class="breadcrumb govuk-breadcrumbs__list">
+           <li class="govuk-breadcrumbs__list-item"><a href="/"  aria-current="page">Home</a></li>
             {% for p in self.get_ancestors %}
                 {% if  p.depth > 2 %}
-                    <li><a href="{{ p.url }}"  aria-current="page">{{ p.title }}</a></li>
+                    <li class="govuk-breadcrumbs__list-item"><a href="{{ p.url }}"  aria-current="page">{{ p.title }}</a></li>
                 {% endif %}
             {% endfor %}
 
