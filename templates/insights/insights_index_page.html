@@ -37,7 +37,9 @@
                 <h2 class="featured-insight__heading">
                     <small>{% trans "Spotlight on" %}</small>
                     {{ page.featured_insight.title }}
-                    <span aria-describedby="populate via wagtail?" role="label">NEW</span>
+                    {% if page.first_published_at.date > page.new_label_end_date.date %}
+                        <span aria-describedby="This is a new story about {{ page.featured_insight.title }}" role="label">NEW</span>
+                    {% endif %}
                 </h2>
 
                 <p>{{ page.featured_insight.sub_heading }}</p>
