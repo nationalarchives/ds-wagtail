@@ -39,7 +39,6 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
     )
 
     def get_context(self, request):
-        featuredcollections = []
         context = super().get_context(request)
         insights_pages = self.get_children().live().specific()
         context["insights_pages"] = insights_pages
