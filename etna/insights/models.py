@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
 from django.db import models
@@ -37,6 +38,8 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         null=True,
         use_json_field=True,
     )
+
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -104,6 +107,8 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
     search_fields = Page.search_fields + [
         index.SearchField("insight_tag_names"),
     ]
+
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
