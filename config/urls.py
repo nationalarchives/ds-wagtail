@@ -14,6 +14,7 @@ from etna.core.cache_control import (
     apply_default_vary_headers,
 )
 from etna.core.decorators import setting_controlled_login_required
+from etna.errors import views as errors_view
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
@@ -27,6 +28,10 @@ def trigger_error(request):
     # Raise a ZeroDivisionError
     return 1 / 0
 
+
+handler404 = "etna.errors.views.custom_404_error_view"
+handler500 = "etna.errors.views.custom_500_error_view"
+handler503 = "etna.errors.views.custom_503_error_view"
 
 # Private URLs that are not meant to be cached.
 private_urls = [
@@ -113,13 +118,22 @@ public_urls = [
     ),
 ]
 
-if settings.DEBUG:
+if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
     from django.conf.urls.static import static
     from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
     # Serve static and media files from development server
     public_urls += staticfiles_urlpatterns()
     public_urls += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    public_urls += [
+        path(
+            r"404/",
+            errors_view.custom_404_error_view,
+            kwargs={"exception": Exception("Bad Request!")},
+        ),
+        path(r"500/", errors_view.custom_500_error_view),
+        path(r"503/", errors_view.custom_503_error_view),
+    ]
 
 # Update public URLs to use the "default" cache settings.
 public_urls = decorate_urlpatterns(public_urls, apply_default_cache_control)

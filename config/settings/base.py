@@ -23,7 +23,7 @@ from ..versioning import get_git_sha
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-DEBUG = strtobool(os.getenv("DEBUG", "False"))
+DEBUG = strtobool(os.getenv("DEBUG", "True"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -249,6 +249,10 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Should always be False in production. Can be set to True in local environments
+# to serve static files even when DEBUG is False
+DJANGO_SERVE_STATIC = False
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
