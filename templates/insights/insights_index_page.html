@@ -55,11 +55,11 @@
         <ul class="card-group--list-style-none">
 
             {% for insights_page in insights_pages %}
-                      {% if insights_page not in featuredcollections %}
+
                         {% with page=insights_page.specific %}
                          {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" %}
                         {% endwith %}
-                      {% endif %}
+
             {% endfor %}
         </ul>
     </div>
