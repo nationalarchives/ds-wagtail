@@ -6,14 +6,9 @@ from django.utils.functional import cached_property
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.edit_handlers import (
-    FieldPanel,
-    MultiFieldPanel,
-    PageChooserPanel,
-    StreamFieldPanel,
-)
-from wagtail.core.fields import StreamField
-from wagtail.core.models import Page
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import StreamField
+from wagtail.models import Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
@@ -23,11 +18,7 @@ from etna.core.models import BasePage, ContentWarningMixin
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
-from .blocks import (
-    FeaturedCollectionBlock,
-    InsightsIndexPageStreamBlock,
-    InsightsPageStreamBlock,
-)
+from .blocks import FeaturedCollectionBlock, InsightsPageStreamBlock
 
 
 class InsightsIndexPage(TeaserImageMixin, BasePage):
@@ -41,9 +32,11 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     featured_collections = StreamField(
-        [("featuredcollection", FeaturedCollectionBlock())], blank=True, null=True
+        [("featuredcollection", FeaturedCollectionBlock())],
+        blank=True,
+        null=True,
+        use_json_field=True,
     )
-    body = StreamField(InsightsIndexPageStreamBlock, blank=True, null=True)
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -53,9 +46,8 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        PageChooserPanel("featured_insight"),
-        StreamFieldPanel("featured_collections"),
-        StreamFieldPanel("body"),
+        FieldPanel("featured_insight"),
+        FieldPanel("featured_collections"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
 
@@ -89,7 +81,9 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(InsightsPageStreamBlock, blank=True, null=True)
+    body = StreamField(
+        InsightsPageStreamBlock, blank=True, null=True, use_json_field=True
+    )
     topic = models.ForeignKey(
         "collections.TopicExplorerPage",
         null=True,
@@ -175,12 +169,19 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         Return the three most recently published InsightsPages,
         excluding this object.
         """
-        return tuple(
+        similarqueryset = list(self.similar_items)
+
+        latestqueryset = list(
             InsightsPage.objects.live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
-            .order_by("-first_published_at")[:3]
+            .order_by("-first_published_at")
         )
+        filterlatestpages = [
+            page for page in latestqueryset if page not in similarqueryset
+        ]
+
+        return tuple(filterlatestpages[:3])
 
     content_panels = (
         BasePage.content_panels
@@ -198,7 +199,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
                 heading="Content Warning Options",
                 classname="collapsible collapsed",
             ),
-            StreamFieldPanel("body"),
+            FieldPanel("body"),
         ]
     )
 

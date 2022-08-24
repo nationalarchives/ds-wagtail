@@ -15,8 +15,9 @@ export default function mobile_tracking() {
             push_to_data_layer({
                 "event": "Mobile nav",
                 "data-component-name": e.target.getAttribute("data-component-name"),
-                "data-link-type": set_data_link_type(e, section_headings),
-                "data-link": e.target.getAttribute("data-link")
+                "data-link-type": set_data_link_type(e),
+                "data-link": e.target.getAttribute("data-link"),
+                "data-position": e.target.getAttribute("data-position")
             })
         }
     })
@@ -28,8 +29,9 @@ export default function mobile_tracking() {
             push_to_data_layer({
                 "event": "Mobile nav",
                 "data-component-name": e.target.getAttribute("data-component-name"),
-                "data-link-type": set_data_link_type(e, section_headings),
-                "data-link": e.target.getAttribute("data-link")
+                "data-link-type": set_data_link_type(e),
+                "data-link": e.target.getAttribute("data-link"),
+                "data-position": e.target.getAttribute("data-position")
             })
         }
     })

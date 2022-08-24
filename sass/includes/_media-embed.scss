@@ -17,7 +17,7 @@
   &__content-panel {
     padding: 3rem 0;
     position: relative;
-    z-index: 999;
+    z-index: 998;
   }
 
   &__icon {
@@ -72,7 +72,7 @@
         }
       }
 
-      summary::marker {
+      summary::marker, summary::-webkit-details-marker {
         color: $color__white;
       }
     }

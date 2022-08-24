@@ -7,7 +7,7 @@
 
 <div class="tab-content">
     <section id="search" class="{% if not uploadforms.audio.errors and not uploadforms.video.errors %}active {% endif %}nice-padding">
-        <form class="media-search search-bar" action="{% url 'wagtailmedia:chooser' %}" method="GET" novalidate>
+        <form class="media-search search-bar" action="{% url 'wagtailmedia:chooser' %}" method="GET" novalidate id="analytics-chooser">
             <ul class="fields">
                 {% for field in searchform %}
                     {% include "wagtailadmin/shared/field_as_li.html" with field=field %}

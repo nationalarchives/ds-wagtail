@@ -10,7 +10,7 @@ from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.views.generic import FormView, TemplateView
 
-from wagtail.core.utils import camelcase_to_underscore
+from wagtail.coreutils import camelcase_to_underscore
 
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (

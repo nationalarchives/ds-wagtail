@@ -7,7 +7,7 @@ export default function link_list_tracking() {
         Array.prototype.forEach.call(link_list_links, (item, index) => {
             const component_name = item.getAttribute("data-component-name");
             item.setAttribute("data-component-name", component_name + section_name);
-            item.setAttribute("position", index);
+            item.setAttribute("data-position", index);
         });
     }
 }

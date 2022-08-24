@@ -33,11 +33,9 @@
       }
     }
     &-image {
-      width: 6.25rem;
       height: 6.25rem;
 
       @media screen and (max-width: $screen__sm) {
-        width: 4.6875rem;
         height: 4.6875rem;
       }
     }
@@ -62,11 +60,6 @@
       }
 
       height: 100%;
-
-      @media only screen and (min-width: $screen__md) {
-        width: 38rem;
-      }
-
       margin-bottom: 0;
       justify-content: space-around; // IE11 only supports space-around and space-between.
       &-item {
@@ -96,6 +89,7 @@
             text-decoration: none;
             font-size: 1rem;
             border: 0;
+            margin: 0 0.3125rem;
           }
 
           @media only screen and (max-width: $screen__md) {
@@ -106,7 +100,7 @@
         &-link {
           display: block;
           color: $color__black;
-          padding: 0.4375rem;
+          padding: 0.4375rem 1rem;
           height: 100%;
           text-decoration: none;
           font-family: $font__supria-sans;
@@ -192,19 +186,6 @@
     }
     &:focus {
       outline: 5px solid $color__black;
-    }
-  }
-}
-
-.js {
-  .header {
-    &__nav {
-      @media only screen and (max-width: $screen__md) {
-        margin-top: -4rem;
-      }
-      @media only screen and (max-width: 30rem) {
-        margin-top: -2rem;
-      }
     }
   }
 }

@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags cookie_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
@@ -21,8 +21,7 @@
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
-        {# Cookie consent #}
-        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+        {% if show_cookie_notice %}
             <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
         {% endif %}
 
@@ -34,7 +33,9 @@
             {# Override this in templates to add extra javascript to be used by GTM #}
         {% endblock %}
 
-        {% include 'includes/gtm-script.html' %}
+        {% if cookies_permitted %}
+            {% include 'includes/gtm-script.html' %}
+        {% endif %}
 
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -54,12 +55,12 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
-        {% if FEATURE_COOKIE_BANNER_ENABLED %}
+        {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
 
-        {% if request.COOKIES.cookies_policy|cookie_use_permitted %}
+        {% if cookies_permitted %}
             {% include 'includes/gtm-no-script.html' %}
         {% endif %}
 
@@ -67,6 +68,12 @@
             {% include 'includes/header.html' %}
         {% endblock %}
 
+        {% if show_beta_banner %}
+            {% include 'includes/beta-banner.html' %}
+        {% endif %}
+        {% block breadcrumb %}
+        {% include 'includes/breadcrumb.html' %}
+        {% endblock %}
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -82,10 +89,11 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
-
-        {% if FEATURE_COOKIE_BANNER_ENABLED %}
-            <script src="{% static 'cookie-consent/ds-cookie-consent.js' %}"></script>
+        {% if show_cookie_notice %}
+            <script src="{% static 'scripts/cookie_consent.js' %}"></script>
         {% endif %}
-
+        {% if show_beta_banner %}
+            <script src="{% static 'scripts/beta_banner.js' %}"></script>
+        {% endif %}
     </body>
 </html>

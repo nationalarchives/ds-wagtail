@@ -77,8 +77,10 @@ class Aggregation(str, enum.Enum):
 
 def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     """
-    Filter format in items: 'field:value'
+    Filter format in items: 'field:value', 'field:value:or'
     Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api
+    When using filter with multiple values, specific fields require OR operator to be specified,
+    otherwise AND is used by default.
 
     Example:
     before-prepare: "heldBy:Birmingham: Archives, Heritage and Photography Service"
@@ -96,6 +98,7 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     subst = " "
     field_list_to_prepare = ["heldBy"]
     filter_prepared_list = []
+    fields_using_or_operator = ["heldBy", "collection"]
 
     for item in items:
         field, value = item.split(":", 1)
@@ -109,7 +112,23 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
             )
         else:
             filter_prepared = field + ":" + value
+
         filter_prepared_list.append(filter_prepared)
+
+    # if number of occurrences of field_for_or is more than 1, update add or to those values
+    # ["collection:<value1>:or", "collection:<value2>:or", "group:<value3>"]
+    for field in fields_using_or_operator:
+        # more than 1 value for the field
+        if sum((item.split(":", 1)[0].count(field) for item in items)) > 1:
+            # append or to the value for each field
+            updated_list_for_or_operator = []
+            for item in filter_prepared_list:
+                if item.split(":", 1)[0] == field:
+                    updated_list_for_or_operator.append(item + ":or")
+                else:
+                    updated_list_for_or_operator.append(item)
+
+            filter_prepared_list = updated_list_for_or_operator
 
     return filter_prepared_list
 

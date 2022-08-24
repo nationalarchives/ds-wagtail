@@ -2,11 +2,23 @@
     display: flex;
     margin-bottom: 4rem;
 
-    &__image {
+    &__image-link {
+        display: inline-block;
         width: 50%;
+        z-index: 998;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
 
         figure {
             margin-bottom: 0;
+        }
+
+        &:hover {
+            outline: 0.3125rem solid $color__dark;
         }
     }
 
@@ -14,7 +26,6 @@
         background-color: #FFCC00;
         padding: 2rem 4rem 2rem 2rem;
         width: 50%;
-        height: 100%;
 
         p {
             margin-top: 2rem;
@@ -22,7 +33,7 @@
     }
 
     &__heading {
-        border-bottom: 2px solid $color__dark;
+        border-bottom: 0.125rem solid $color__dark;
 
         small {
             display: block;
@@ -30,13 +41,26 @@
         }
     }
 
-    @media (max-width: $screen__md) {
+    @media only screen and (max-width: $screen__md) {
         display: block;
-        &__description, &__image{
+        &__description, &__image-link {
             width: 100%;
         }
-        &__image {
-            height: 21.875rem;
+        &__image-link {
+            img {
+                width: 100%;
+            }
+        }
+    }
+
+    // IE11 styles
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        &__image-link {
+            display: none;
+        }
+
+        &__description {
+            width: 100%;
         }
     }
 }

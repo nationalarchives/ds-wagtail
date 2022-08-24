@@ -23,7 +23,7 @@ from ..versioning import get_git_sha
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
-DEBUG = strtobool(os.getenv("DEBUG", "False"))
+DEBUG = strtobool(os.getenv("DEBUG", "True"))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -91,7 +91,7 @@ MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
-    "etna.core.middleware.SetDefaultCookiePreferencesMiddleware",
+    "etna.core.middleware.InterpretCookiesMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
@@ -250,6 +250,10 @@ STATIC_URL = "/static/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+# Should always be False in production. Can be set to True in local environments
+# to serve static files even when DEBUG is False
+DJANGO_SERVE_STATIC = False
+
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",
     "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
@@ -261,7 +265,7 @@ WAGTAIL_SITE_NAME = "etna"
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = "http://example.com"
+WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "https://www.example.com")
 
 # For search results within Wagtail itself
 WAGTAILSEARCH_BACKENDS = {
@@ -378,5 +382,9 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
     os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
 )
-
-FEATURE_COOKIE_BANNER_ENABLED = True
+FEATURE_BETA_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
+)
+FEATURE_COOKIE_BANNER_ENABLED = strtobool(
+    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
+)
