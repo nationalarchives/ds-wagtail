@@ -54,7 +54,9 @@
 
             {% include "search/includes/filter.html" with field=form.topic %}
 
-            {% include "search/includes/filter.html" with field=form.level %}
+            {% if form.group.value != 'nonTna' %}
+                {% include "search/includes/filter.html" with field=form.level %}
+            {% endif %}
 
             {% include "search/includes/filter.html" with field=form.closure %}
 
