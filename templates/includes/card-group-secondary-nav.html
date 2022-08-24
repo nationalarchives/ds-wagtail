@@ -42,6 +42,9 @@
                     {% endif %}
                     data-link-type="Card text" 
                     data-card-title="{{ page.title }}"
+                    {% if page.first_published_at.date > page.new_label_end_date.date %}
+                        data-label = "New"
+                    {%endif%}
                 >
                     <h3 class="card-group-secondary-nav__heading">
                             {{ page.title }}
