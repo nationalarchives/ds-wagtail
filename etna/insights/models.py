@@ -39,7 +39,7 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         use_json_field=True,
     )
 
-    new_label_end_date = datetime.now() - timedelta(days=700)
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_context(self, request):
         featuredcollections = []
@@ -113,7 +113,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         index.SearchField("insight_tag_names"),
     ]
 
-    new_label_end_date = datetime.now() - timedelta(days=700)
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
