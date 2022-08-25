@@ -147,7 +147,7 @@ class DateInputField(forms.MultiValueField):
                     and value[2]
                     and not value[1]
                 ):
-                    # Validate empty month input (overrid default month) when day, year are input
+                    # Validate empty month input (override default month) when day, year are input
                     msg = "Entered date must include a Month."
                     errors.append(msg)
                     # copy the error to the field's widget
