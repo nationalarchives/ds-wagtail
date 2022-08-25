@@ -15,6 +15,7 @@ class DateFieldTest(SimpleTestCase):
 
     def test_various_inputs_with_dtf_default_for_start_date(self):
         """date field with defaults for start date"""
+        field = DateInputField(required=False, default_day=1, default_month=1)
         for label, value, expected in (
             (
                 "input yyyy with ddmm empty",
@@ -28,7 +29,6 @@ class DateFieldTest(SimpleTestCase):
             ),
         ):
             with self.subTest(label):
-                field = DateInputField(required=False, default_day=1, default_month=1)
                 value = field.clean(
                     [value["input_day"], value["input_month"], value["input_year"]]
                 )
@@ -36,6 +36,9 @@ class DateFieldTest(SimpleTestCase):
 
     def test_various_inputs_with_dtf_default_for_end_date(self):
         """date field with defaults for end date"""
+        field = DateInputField(
+            required=False, default_day=END_OF_MONTH, default_month=12
+        )
         for label, value, expected in (
             (
                 "with empty day input 31-days-in-month",
@@ -64,9 +67,6 @@ class DateFieldTest(SimpleTestCase):
             ),
         ):
             with self.subTest(label):
-                field = DateInputField(
-                    required=False, default_day=END_OF_MONTH, default_month=12
-                )
                 value = field.clean(
                     [value["input_day"], value["input_month"], value["input_year"]]
                 )
@@ -74,6 +74,9 @@ class DateFieldTest(SimpleTestCase):
 
     def test_date_cleaned_without_validators(self):
         """validates exception raised in clean method when using dateinputfield defaults"""
+        field = DateInputField(
+            required=False, default_day=END_OF_MONTH, default_month=12
+        )
         for label, value, expected in (
             (
                 "incorrect day range for month",
@@ -97,9 +100,6 @@ class DateFieldTest(SimpleTestCase):
             ),
         ):
             with self.subTest(label):
-                field = DateInputField(
-                    required=False, default_day=END_OF_MONTH, default_month=12
-                )
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
                         [value["input_day"], value["input_month"], value["input_year"]]
@@ -107,6 +107,7 @@ class DateFieldTest(SimpleTestCase):
 
     def test_date_cleaned_without_defaults_without_validators(self):
         """validates exception raised in clean method when without dateinputfield defaults"""
+        field = DateInputField(required=False)
         for label, value, expected in (
             (
                 "input month is empty dd<empty>yyyy",
@@ -125,7 +126,6 @@ class DateFieldTest(SimpleTestCase):
             ),
         ):
             with self.subTest(label):
-                field = DateInputField(required=False)
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
                         [value["input_day"], value["input_month"], value["input_year"]]
