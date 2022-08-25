@@ -82,6 +82,9 @@
         @media only screen and (min-width: $screen__md) {
           height: 3rem;
         }
+        @media only screen and (min-width: 480px) {
+          text-indent: 0.7em;
+        }
         display: block;
 
         &[data-id="menu-show-hide-button"] {
@@ -126,7 +129,7 @@
           }
 
           @media only screen and (max-width: $screen__md) {
-            text-align: center;
+            text-align: left;
             &:hover,
             &[aria-current="true"],
             &:focus {
@@ -248,12 +251,19 @@ body {
 
 #overlay-button {
   position: absolute;
-  right: 3em;
-  //top: 6.5em;
+  right: 0em;
+  top: 110px;
   padding: 23px 11px;
   z-index: 5;
   cursor: pointer;
   user-select: none;
+  @media only screen and (max-width: 481px) {
+    top:85px;
+  }
+  @media only screen and (max-width: 390px) {
+    top:105px;
+
+  }
   span {
     height: 4px;
     width: 35px;
