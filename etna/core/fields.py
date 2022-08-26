@@ -9,6 +9,7 @@ from .validators import PositiveIntegerStringValidator
 from .widgets import DateInputWidget
 
 END_OF_MONTH = "END_OF_MONTH"
+ERR_MSG_REAL_DATE = "Entered date must be a real date, for example 23 9 2017."
 
 
 class DateInputField(forms.MultiValueField):
@@ -52,7 +53,7 @@ class DateInputField(forms.MultiValueField):
                     PositiveIntegerStringValidator(
                         min=1,
                         max=31,
-                        msg="Entered date must be a real date, for example 23 9 2017.",
+                        msg=ERR_MSG_REAL_DATE,
                     )
                 ],
                 required=default_day is None,
@@ -64,7 +65,7 @@ class DateInputField(forms.MultiValueField):
                     PositiveIntegerStringValidator(
                         min=1,
                         max=12,
-                        msg="Entered date must be a real date, for example 23 9 2017.",
+                        msg=ERR_MSG_REAL_DATE,
                     )
                 ],
                 required=default_month is None,
@@ -72,11 +73,7 @@ class DateInputField(forms.MultiValueField):
             forms.CharField(
                 label=_("Year"),
                 error_messages={"incomplete": "Entered date must include a Year."},
-                validators=[
-                    PositiveIntegerStringValidator(
-                        msg="Entered date must be a real date, for example 23 9 2017."
-                    )
-                ],
+                validators=[PositiveIntegerStringValidator(msg=ERR_MSG_REAL_DATE)],
                 required=default_year is None,
             ),
         )
@@ -191,9 +188,13 @@ class DateInputField(forms.MultiValueField):
             e = []
             for error in errors:
                 if isinstance(error, str):
+                    # msg defined in CharField-error_messages, clean method
                     msg = error
                 elif isinstance(error, ValidationError):
+                    # msg defined in CharField-Validator
                     msg = error.message
+                    if msg == ERR_MSG_REAL_DATE:
+                        raise ValidationError(error)
                 if msg not in m:
                     m.append(msg)
                     e.append(error)
@@ -206,7 +207,7 @@ class DateInputField(forms.MultiValueField):
             # 31/02/2001 - "day is out of range for month"
             # 28/02/0 - "year 0 is out of range"
             # when using without defaults for missing fields:- invalid literal for int() with base 10:
-            msg = "Entered date must be a real date, for example 23 9 2017."
+            msg = ERR_MSG_REAL_DATE
             self.fields[0].widget.errors.append(msg)
             raise ValidationError(msg)
 
