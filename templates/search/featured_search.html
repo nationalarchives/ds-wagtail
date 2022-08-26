@@ -41,8 +41,8 @@
         {% endif %}
     </div>
     {% endif %}
-
-    {% if buckets.tna.result_count < 1 %}
+    
+    {% if not buckets.tna.result_count > 0 and not buckets.nonTna.result_count > 0 and not buckets.creator.result_count > 0%}
         {% include './blocks/no_results.html' %}
     {% endif %}
 {% endblock %}

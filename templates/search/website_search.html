@@ -7,19 +7,21 @@
 {% endblock %}
 {% block content %}
     <form method="get" data-id="search-form" id="analytics-search-form">
+        {{ form.non_field_errors }}
+
         {% with type="Website" %}
             {% include './blocks/search_results_hero.html' %}
         {% endwith %}
-
-        {{ form.non_field_errors }}
+        
+        {% if buckets.current.result_count > 0 %}
+            <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
+        {% endif %}
 
         {% include './blocks/website_search_buckets.html' %}
+        
         {% if buckets.current.result_count > 0 %}
-        <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
         <p class="search-results__explainer--mobile">Results from our website.</p>
-        {% endif %}
         {% include './blocks/search_sort_and_view_options.html' %}
-        {% if buckets.current.result_count > 0 %}
         <div class="catalogue-search-grid" data-id="catalogue-search-grid">
             <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
                 {% include './blocks/search_filters.html' %}
