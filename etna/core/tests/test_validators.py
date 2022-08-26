@@ -3,6 +3,8 @@ from django.test import SimpleTestCase
 
 from etna.core.fields import DateInputField
 
+from ..fields import ERR_MSG_REAL_DATE
+
 
 class DateFieldValidatorTest(SimpleTestCase):
     def test_date_input_for_day_field_validator(self):
@@ -12,17 +14,17 @@ class DateFieldValidatorTest(SimpleTestCase):
             (
                 "incorrect input with non numeric value for day",
                 {"input_day": "aa", "input_month": "12", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input day with non positive value",
                 {"input_day": "-99", "input_month": "01", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input day with positive value and not in valid range",
                 {"input_day": "99", "input_month": "01", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
         ):
             with self.subTest(label):
@@ -37,18 +39,18 @@ class DateFieldValidatorTest(SimpleTestCase):
         for label, value, expected in (
             (
                 "incorrect input with non numeric value for month",
-                {"input_day": "31", "input_month": "13", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                {"input_day": "31", "input_month": "bb", "input_year": "2001"},
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input month with non positive value",
                 {"input_day": "31", "input_month": "-13", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input month with positive value and not in valid range",
                 {"input_day": "31", "input_month": "13", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
         ):
             with self.subTest(label):
@@ -64,17 +66,17 @@ class DateFieldValidatorTest(SimpleTestCase):
             (
                 "incorrect input with non numeric values for all fields",
                 {"input_day": "aa", "input_month": "bb", "input_year": "cccc"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input with non numeric value for year",
                 {"input_day": "31", "input_month": "12", "input_year": "cccc"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect input year non positive value",
                 {"input_day": "31", "input_month": "12", "input_year": "-1"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
         ):
             with self.subTest(label):

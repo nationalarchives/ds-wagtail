@@ -56,19 +56,43 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
     def test_opening_start_date_before_opening_end_date_is_invalid(self):
         """tests inputs accross both date fields for form invalidity"""
-        form = CatalogueSearchForm(
-            {
-                "group": "tna",
-                "opening_start_date_0": "01",
-                "opening_start_date_1": "01",
-                "opening_start_date_2": "2000",
-                "opening_end_date_0": "31",
-                "opening_end_date_1": "12",
-                "opening_end_date_2": "1999",
-            }
-        )
-        self.assertFalse(form.is_valid())
-        self.assertEqual(
-            form.errors.get("opening_start_date", None),
-            ["Start date cannot be after end date"],
-        )
+
+        for label, form_data in (
+            (
+                "input start date after end date with all fields input DDMMYYY",
+                {
+                    "group": "tna",
+                    "opening_start_date_0": "01",
+                    "opening_start_date_1": "01",
+                    "opening_start_date_2": "2000",
+                    "opening_end_date_0": "31",
+                    "opening_end_date_1": "12",
+                    "opening_end_date_2": "1999",
+                },
+            ),
+            (
+                "input start date after end date with partial fields input YYYY",
+                {
+                    "group": "tna",
+                    "opening_start_date_2": "2000",
+                    "opening_end_date_2": "1999",
+                },
+            ),
+            (
+                "input start date after end date with partial fields input MMYYYY",
+                {
+                    "group": "tna",
+                    "opening_start_date_1": "01",
+                    "opening_start_date_2": "2000",
+                    "opening_end_date_1": "12",
+                    "opening_end_date_2": "1999",
+                },
+            ),
+        ):
+            with self.subTest(label):
+                form = CatalogueSearchForm(form_data)
+                self.assertFalse(form.is_valid(), label)
+                self.assertEqual(
+                    form.errors.get("opening_start_date", None),
+                    ["Start date cannot be after end date"],
+                )

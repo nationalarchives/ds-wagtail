@@ -5,6 +5,8 @@ from django.test import SimpleTestCase
 
 from etna.core.fields import END_OF_MONTH, DateInputField
 
+from ..fields import ERR_MSG_REAL_DATE
+
 
 class DateFieldTest(SimpleTestCase):
     def test_date_cleaned_valid_date(self):
@@ -81,12 +83,12 @@ class DateFieldTest(SimpleTestCase):
             (
                 "incorrect day range for month",
                 {"input_day": "31", "input_month": "02", "input_year": "2001"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "incorrect year but position year",
                 {"input_day": "31", "input_month": "02", "input_year": "0"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "input month is empty dd<empty>yyyy",
@@ -112,17 +114,17 @@ class DateFieldTest(SimpleTestCase):
             (
                 "input month is empty dd<empty>yyyy",
                 {"input_day": "01", "input_month": "", "input_year": "2007"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "input year is empty ddmm<empty>",
                 {"input_day": "01", "input_month": "01", "input_year": ""},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
             (
                 "input day is empty <empty>mmyyyy",
                 {"input_day": "", "input_month": "01", "input_year": "2007"},
-                "Entered date must be a real date, for example 23 9 2017.",
+                ERR_MSG_REAL_DATE,
             ),
         ):
             with self.subTest(label):
