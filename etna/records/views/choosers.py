@@ -1,6 +1,6 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404
-from django.urls import re_path as url
+from django.urls import re_path
 
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
@@ -99,6 +99,6 @@ class RecordChooserViewSet(ChooserViewSet):
 
         Overridden to allow IAID to be used as an ID for chosen view"""
         return super().get_urlpatterns() + [
-            url(r"^$", self.choose_view, name="choose"),
-            url(r"^([\w-]+)/$", self.chosen_view, name="chosen"),
+            re_path(r"^$", self.choose_view, name="choose"),
+            re_path(r"^([\w-]+)/$", self.chosen_view, name="chosen"),
         ]
