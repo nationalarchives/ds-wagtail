@@ -17,6 +17,7 @@ const addListenersToResultsList = () => {
         if (event.target.classList.contains("search-results__list-card-link")) {
 
             const eventData = {
+                'event': 'search-result' || '',
                 'search-bucket': bucket || '',
                 'data-link-type': 'Search results list' || '',
                 'data-link': event.target.dataset.analyticsLink || '',
