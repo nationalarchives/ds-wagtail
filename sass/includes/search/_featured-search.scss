@@ -125,11 +125,18 @@
 .no-results {
 
     .featured-search__heading {
-        padding:1rem 2rem;
+        padding:1rem 1rem;
+
+        @media only screen and (min-width: $screen__md) {
+            padding:1rem 2rem;
+
+        }
     }
 
     ul {
-        margin-left:1rem;
+        @media only screen and (min-width: $screen__md) {
+            margin-left: 1rem;
+        }
     }    
     
 }
