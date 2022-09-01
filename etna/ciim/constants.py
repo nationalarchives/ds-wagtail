@@ -14,7 +14,6 @@ def forTemplate(cls):
 
 @forTemplate
 class BucketKeys(Enum):
-    TNA = "tna"
     NONTNA = "nonTna"
 
 
