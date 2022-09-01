@@ -5,12 +5,14 @@ from typing import Any, List
 from django.contrib.humanize.templatetags.humanize import intcomma
 
 
-def forDjango(cls):
+def forTemplate(cls):
+    # Enum class call in template raises error and abort with empty string
+    # setting do_not_call_in_templates = True skips the call portion
     cls.do_not_call_in_templates = True
     return cls
 
 
-@forDjango
+@forTemplate
 class BucketKeys(Enum):
     TNA = "tna"
     NONTNA = "nonTna"
