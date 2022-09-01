@@ -93,12 +93,12 @@ class DateFieldTest(SimpleTestCase):
             (
                 "input month is empty dd<empty>yyyy",
                 {"input_day": "01", "input_month": "", "input_year": "2007"},
-                "Entered date must include a Month.",
+                "Entered date must include a month.",
             ),
             (
                 "input year is empty ddmm<empty>",
                 {"input_day": "01", "input_month": "01", "input_year": ""},
-                "Entered date must include a Year.",
+                "Entered date must include a year.",
             ),
         ):
             with self.subTest(label):

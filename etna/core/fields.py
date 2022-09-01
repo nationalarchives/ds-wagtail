@@ -60,7 +60,7 @@ class DateInputField(forms.MultiValueField):
             ),
             forms.CharField(
                 label=_("Month"),
-                error_messages={"incomplete": "Entered date must include a Month."},
+                error_messages={"incomplete": "Entered date must include a month."},
                 validators=[
                     PositiveIntegerStringValidator(
                         min=1,
@@ -72,7 +72,7 @@ class DateInputField(forms.MultiValueField):
             ),
             forms.CharField(
                 label=_("Year"),
-                error_messages={"incomplete": "Entered date must include a Year."},
+                error_messages={"incomplete": "Entered date must include a year."},
                 validators=[PositiveIntegerStringValidator(msg=ERR_MSG_REAL_DATE)],
                 required=default_year is None,
             ),
@@ -145,7 +145,7 @@ class DateInputField(forms.MultiValueField):
                     and not value[1]
                 ):
                     # Validate empty month input (override default month) when day, year are input
-                    msg = "Entered date must include a Month."
+                    msg = "Entered date must include a month."
                     errors.append(msg)
                     # copy the error to the field's widget
                     field.widget.errors.append(msg)
