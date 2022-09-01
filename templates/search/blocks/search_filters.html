@@ -54,7 +54,7 @@
 
             {% include "search/includes/filter.html" with field=form.topic %}
 
-            {% if form.group.value != 'nonTna' %}
+            {% if form.group.value != bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.level %}
             {% endif %}
 
@@ -84,7 +84,7 @@
             </div>
             {% endif %}
 
-            {% if form.group.value == 'nonTna' %}
+            {% if form.group.value == bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.held_by %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}

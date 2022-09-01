@@ -1,7 +1,19 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, List
 
 from django.contrib.humanize.templatetags.humanize import intcomma
+
+
+def forDjango(cls):
+    cls.do_not_call_in_templates = True
+    return cls
+
+
+@forDjango
+class BucketKeys(Enum):
+    TNA = "tna"
+    NONTNA = "nonTna"
 
 
 @dataclass

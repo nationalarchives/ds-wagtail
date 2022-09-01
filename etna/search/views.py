@@ -18,6 +18,7 @@ from ..ciim.constants import (
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
+    BucketKeys,
     BucketList,
 )
 from ..ciim.paginator import APIPaginator
@@ -502,6 +503,10 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
 
+    def get_context_data(self, **kwargs):
+        kwargs["bucketkeys"] = BucketKeys
+        return super().get_context_data(**kwargs)
+
 
 class CatalogueSearchLongFilterView(BaseFilteredSearchView):
     api_method_name = "search"
@@ -636,6 +641,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         page.object_list = page_list
 
     def get_context_data(self, **kwargs):
+        kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
