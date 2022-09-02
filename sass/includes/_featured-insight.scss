@@ -39,6 +39,13 @@
             display: block;
             font-size: 1.2rem;
         }
+
+        span {
+            background:green;
+            font-size: 0.8rem;
+            color:white;
+            padding:3px 3px 0px 3px;
+        }
     }
 
     @media only screen and (max-width: $screen__md) {

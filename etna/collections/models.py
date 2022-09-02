@@ -107,15 +107,15 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
         FieldPanel("body"),
+        FieldPanel("featured_insight"),
     ]
     promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -209,8 +209,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     )
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
         FieldPanel("body"),
+        FieldPanel("featured_insight"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
