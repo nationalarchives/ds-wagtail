@@ -5,30 +5,40 @@
 {% load static %}
 {% block breadcrumb %}
 {% endblock %}
+
 {% block content %}
         {{ form.non_field_errors }}
 
         {%  with type='Catalogue'%}
             {% include './blocks/search_results_hero.html' %}
         {% endwith  %}
-        <p class="search-results__explainer">Results for records held at The National Archives and other archives that match your search term.</p>
+
+        {% if buckets.current.result_count > 0 %}
+            <p class="search-results__explainer">Results for records held at The National Archives and other archives that match your search term.</p>
+        {% endif %}
+
         {% include './blocks/catalogue_search_buckets.html' %}
         {% comment %} TODO make this text an editable field {% endcomment %}
-        {% if buckets.current.description %}
+
+        {% if buckets.current.description and buckets.current.result_count > 0 %}
             <p class="search-results__explainer">
                 {{ buckets.current.description }}
             </p>
         {% endif %}
-        {% include './blocks/search_sort_and_view_options.html' %}
 
-        <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-            <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                {% include './blocks/search_filters.html' %}
+        {% if buckets.current.result_count > 0 %}
+            {% include './blocks/search_sort_and_view_options.html' %}
+            <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+                <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                    {% include './blocks/search_filters.html' %}
+                </div>
+                <div class="catalogue-search-grid__results">
+                    {% include './blocks/search_results.html' %}
+                </div>
             </div>
-            <div class="catalogue-search-grid__results">
-                {% include './blocks/search_results.html' %}
-            </div>
-        </div>
+        {% else %}
+            {% include './blocks/no_results.html' %}
+        {% endif %}
 
         {% if page.paginator.count %}
             {% include './blocks/search_pagination.html' %}

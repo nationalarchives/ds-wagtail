@@ -559,8 +559,8 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     bucket_list = WEBSITE_BUCKETS
     default_group = "blog"
     form_class = WebsiteSearchForm
-    template_name = "search/catalogue_search.html"
-    title_base = "Catalogue results"
+    template_name = "search/website_search.html"
+    title_base = "Website results"
 
     def add_insights_page_for_url(self, page: Page) -> None:
         """

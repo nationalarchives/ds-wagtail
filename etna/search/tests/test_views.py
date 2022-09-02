@@ -388,7 +388,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     @responses.activate
     def test_template_used(self):
         response = self.get_url(self.test_url, group="insight")
-        self.assertTemplateUsed(response, "search/catalogue_search.html")
+        self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
@@ -542,7 +542,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     @responses.activate
     def test_template_used(self):
         response = self.get_url(self.test_url, group="highlight")
-        self.assertTemplateUsed(response, "search/catalogue_search.html")
+        self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
