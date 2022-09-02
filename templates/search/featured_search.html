@@ -2,13 +2,25 @@
 
 {% load search_tags %}
 {% load humanize %}
-
+{% block breadcrumb %}
+{% endblock %}
 {% block content %}
-
+    
     {%  with type='All'%}
         {% include './blocks/search_results_hero.html' %}
     {% endwith  %}
+    
+    <!-- <p>Count: {{ buckets.tna.result_count }}</p> -->
+
+    {% if buckets.tna.result_count > 0%}
     <p class="search-results__explainer">Results for everything that matches your search term.</p>
+    {% endif %}
+    
+    {% if buckets.tna.result_count < 1%}
+    {% include './blocks/no_results.html' %}
+    {% endif %}
+
+    {% if buckets.tna.result_count > 0%}
     <div class="featured-search__results">
 
         {% include './blocks/featured-search__results-block.html' with bucket=buckets.tna %}
@@ -25,4 +37,5 @@
 
         {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.blog %}
     </div>
+    {% endif %}
 {% endblock %}

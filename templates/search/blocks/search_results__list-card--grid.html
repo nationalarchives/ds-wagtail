@@ -29,7 +29,7 @@
                     </picture>
                 </div>
             {% endif %}
-            <a href="{% record_url record %}" class="search-results__list-card-link"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
+            <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}"><span class="sr-only">{{ record|record_detail:"referenceNumber"|default:"N/A" }}</span>
             {{ record|record_title}}
             </a>
         </h4>

@@ -3,7 +3,8 @@
 {% load search_tags %}
 {% load humanize %}
 {% load static %}
-
+{% block breadcrumb %}
+{% endblock %}
 {% block content %}
     <form method="get" data-id="search-form" id="analytics-search-form">
         {% with type="Website" %}
