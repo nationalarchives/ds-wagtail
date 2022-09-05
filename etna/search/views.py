@@ -12,6 +12,8 @@ from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
 
+from ..analytics.mixins import DataLayerMixin
+
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
@@ -174,31 +176,7 @@ class KongAPIMixin:
         return paginator, page, page_range
 
 
-data = {
-    "contentGroup1": "Search",  # The name of the content group - [Always has a value]
-    "customDimension1": "offsite",  # The reader type (options are "offsite",
-    "customDimension2": "",  # The user type and is private beta specific
-    "customDimension3": "",  # The page type - [Always has a value]
-    "customDimension4": "",  # Taxonomy topics for the page, delineated by semi-colons. Empty string if no value.
-    "customDimension5": "",  # This is the taxonomy sub topic where applicable. Empty string if not applicable.
-    "customDimension6": "",  # This is the taxonomy term where applicable. Empty string if not applicable.
-    "customDimension7": "",  # This is the time period where applicable. Empty string if not applicable.
-    "customDimension8": "",  # This is the sub time period where applicable. Empty string if not applicable.
-    "customDimension9": "",  # This is the entity type where applicable. Empty string if not applicable.
-    "customDimension10": "",  # This is the entity label where applicable. Empty string if not applicable.
-    "customDimension11": "",  # This is the catalogue repository where applicable. Empty string if not applicable.
-    "customDimension12": "",  # This is the catalogue level where applicable. Empty string if not applicable.
-    "customDimension13": "",  # This is the catalogue series where applicable. Empty string if not applicable.
-    "customDimension14": "",  # This is the catalogue reference where applicable. Empty string if not applicable.
-    "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
-    "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
-    "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
-    "customMetric1": "",  # This is the number of search results
-    "customMetric2": "",  # This is the number of search filters applied
-}
-
-
-class SearchLandingView(BucketsMixin, TemplateView):
+class SearchLandingView(DataLayerMixin, BucketsMixin, TemplateView):
     """
     A simple view that queries the API to retrieve counts for the various
     buckets the user can explore, and provides a form to encourage the user
@@ -212,9 +190,12 @@ class SearchLandingView(BucketsMixin, TemplateView):
     template_name = "search/search.html"
     bucket_list = CATALOGUE_BUCKETS
 
+    def get_gtm_content_group(self) -> str:
+        return "Search"
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        className = self.__class__.__name__
-        data["customDimension3"] = className
+        data = super().get_datalayer_data(request)
+        data["customDimension3"] = self.__class__.__name__
         return data
 
     def get_context_data(self, **kwargs):
@@ -241,7 +222,7 @@ class SearchLandingView(BucketsMixin, TemplateView):
         )
 
 
-class BaseSearchView(KongAPIMixin, FormView):
+class BaseSearchView(DataLayerMixin, KongAPIMixin, FormView):
     """
     A base view that uses a Django form to interpret/clean querystring
     data, then uses those values to make an API request and render
@@ -312,42 +293,20 @@ class BaseSearchView(KongAPIMixin, FormView):
             title += ' for "' + query.replace('"', "'") + '"'
         return title
 
+    def get_gtm_content_group(self) -> str:
+        return "Search"
+    
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        className = self.__class__.__name__
-        data["customDimension3"] = className
+        data = super().get_datalayer_data(request)
+        data["customDimension3"] = self.__class__.__name__
         try:
-            group = self.get_api_filter_aggregations(self.form)
-            group = group[-1].replace("group:", "")
+            data["customDimension8"] = self.title_base + ": " + self.form.cleaned_data['group']
         except Exception:
-            group = "none"
-        data["customDimension8"] = className.replace("SearchView", " Results: ") + group
+            data["customDimension8"] = self.title_base + ": " + "none"
         if self.form.cleaned_data.get("q", ""):
             data["customDimension9"] = self.form.cleaned_data.get("q", "")
         else:
             data["customDimension9"] = "*"
-        total_count = 0
-        try:
-            if group == "creator":
-                result = self.api_result["responses"][1]["aggregations"]["group"][
-                    "buckets"
-                ][0]["doc_count"]
-                total_count = result
-            elif className == "FeaturedSearchView":
-                for result in self.api_result["responses"]:
-                    total_count += result["hits"]["total"]["value"]
-            elif className == "WebsiteSearchView":
-                total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
-            else:
-                result = self.api_result["responses"][1]["aggregations"][
-                    "catalogueSource"
-                ]["buckets"]
-                for bucket in result:
-                    total_count += bucket["doc_count"]
-            if total_count > 10000:
-                total_count = 10001
-        except Exception:
-            total_count = 0
-        data["customMetric1"] = total_count
         try:
             data["customMetric2"] = len(self.get_api_filter_aggregations(self.form)) - 1
         except Exception:
@@ -573,6 +532,25 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = 0
+        if self.form.cleaned_data['group'] == "creator":
+            result = self.api_result["responses"][1]["aggregations"]["group"][
+                        "buckets"
+                    ][0]["doc_count"]
+            total_count = result
+        else:
+            result = self.api_result["responses"][1]["aggregations"][
+                        "catalogueSource"
+                    ]["buckets"]
+            for bucket in result:
+                total_count += bucket["doc_count"]
+        if total_count > 10000:
+            total_count = 10001
+        data["customMetric1"] = total_count
+        return data
+
 
 class CatalogueSearchLongFilterView(BaseFilteredSearchView):
     api_method_name = "search"
@@ -627,6 +605,15 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     form_class = WebsiteSearchForm
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
+        if total_count > 10000:
+            total_count = 10001
+        data["customMetric1"] = total_count
+        return data
+
 
     def add_insights_page_for_url(self, page: Page) -> None:
         """
@@ -720,6 +707,15 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
+    title_base = "All results"
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = 0
+        for result in self.api_result["responses"]:
+            total_count += result["hits"]["total"]["value"]
+        data["customMetric1"] = total_count
+        return data
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
