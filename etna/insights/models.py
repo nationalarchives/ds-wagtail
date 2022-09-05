@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
 from django.db import models
@@ -38,15 +39,12 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         use_json_field=True,
     )
 
+    new_label_end_date = datetime.now() - timedelta(days=21)
+
     def get_context(self, request):
-        featuredcollections = []
         context = super().get_context(request)
         insights_pages = self.get_children().live().specific()
         context["insights_pages"] = insights_pages
-        for block in self.featured_collections:
-            for insight in block.value["items"].bound_blocks:
-                featuredcollections.append(insight.value)
-        context["featuredcollections"] = featuredcollections
         return context
 
     content_panels = BasePage.content_panels + [
@@ -109,6 +107,8 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
     search_fields = Page.search_fields + [
         index.SearchField("insight_tag_names"),
     ]
+
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -174,12 +174,19 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         Return the three most recently published InsightsPages,
         excluding this object.
         """
-        return tuple(
+        similarqueryset = list(self.similar_items)
+
+        latestqueryset = list(
             InsightsPage.objects.live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
-            .order_by("-first_published_at")[:3]
+            .order_by("-first_published_at")
         )
+        filterlatestpages = [
+            page for page in latestqueryset if page not in similarqueryset
+        ]
+
+        return tuple(filterlatestpages[:3])
 
     content_panels = (
         BasePage.content_panels

@@ -38,6 +38,15 @@
 
     &__heading {
       display: inline;
+
+      span {
+        background:green;
+        font-size: 0.8rem;
+        color:white;
+        padding:3px 3px 0px 3px;
+        margin-left: 1em;
+      }
+
     }
 
     &__image {

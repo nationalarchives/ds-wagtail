@@ -392,6 +392,18 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
+    def test_with_filter_level(self):
+        self.client.search(filter_aggregations=["level:Item", "level:Piece"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?"
+            "filterAggregations=level%3AItem%3Aor&"
+            "filterAggregations=level%3APiece%3Aor",
+        )
+
+    @responses.activate
     def test_with_filter_keyword(self):
         self.client.search(filter_keyword="filter keyword")
 
