@@ -537,17 +537,20 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         total_count = 0
-        if self.form.cleaned_data["group"] == "creator":
-            result = self.api_result["responses"][1]["aggregations"]["group"][
-                "buckets"
-            ][0]["doc_count"]
-            total_count = result
-        else:
-            result = self.api_result["responses"][1]["aggregations"]["catalogueSource"][
-                "buckets"
-            ]
-            for bucket in result:
-                total_count += bucket["doc_count"]
+        try:
+            if self.form.cleaned_data["group"] == "creator":
+                result = self.api_result["responses"][1]["aggregations"]["group"][
+                    "buckets"
+                ][0]["doc_count"]
+                total_count = result
+            else:
+                result = self.api_result["responses"][1]["aggregations"]["catalogueSource"][
+                    "buckets"
+                ]
+                for bucket in result:
+                    total_count += bucket["doc_count"]
+        except Exception:
+            total_count = 0
         if total_count > 10000:
             total_count = 10001
         data["customMetric1"] = total_count
@@ -720,6 +723,8 @@ class FeaturedSearchView(BaseSearchView):
         total_count = 0
         for result in self.api_result["responses"]:
             total_count += result["hits"]["total"]["value"]
+        if total_count > 10000:
+            total_count = 10001
         data["customMetric1"] = total_count
         return data
 

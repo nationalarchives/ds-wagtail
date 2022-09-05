@@ -44,6 +44,8 @@ class DataLayerMixin:
             "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
             "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
             "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
+            "customMetric1": "",  # This is the number of search results returned
+            "customMetric2": "",  # This is the number of search filters applied
         }
 
         # Add request-specific data
