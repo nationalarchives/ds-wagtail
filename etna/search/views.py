@@ -12,7 +12,6 @@ from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
 
-from ..analytics.mixins import DataLayerMixin
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
@@ -28,6 +27,7 @@ from ..collections.models import ResultsPage
 from ..insights.models import InsightsPage
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
+from ..analytics.mixins import DataLayerMixin
 
 logger = logging.getLogger(__name__)
 
