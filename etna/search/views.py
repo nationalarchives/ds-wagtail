@@ -296,12 +296,14 @@ class BaseSearchView(DataLayerMixin, KongAPIMixin, FormView):
 
     def get_gtm_content_group(self) -> str:
         return "Search"
-    
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         data["customDimension3"] = self.__class__.__name__
         try:
-            data["customDimension8"] = self.title_base + ": " + self.form.cleaned_data['group']
+            data["customDimension8"] = (
+                self.title_base + ": " + self.form.cleaned_data["group"]
+            )
         except Exception:
             data["customDimension8"] = self.title_base + ": " + "none"
         if self.form.cleaned_data.get("q", ""):
@@ -536,15 +538,15 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         total_count = 0
-        if self.form.cleaned_data['group'] == "creator":
+        if self.form.cleaned_data["group"] == "creator":
             result = self.api_result["responses"][1]["aggregations"]["group"][
-                        "buckets"
-                    ][0]["doc_count"]
+                "buckets"
+            ][0]["doc_count"]
             total_count = result
         else:
-            result = self.api_result["responses"][1]["aggregations"][
-                        "catalogueSource"
-                    ]["buckets"]
+            result = self.api_result["responses"][1]["aggregations"]["catalogueSource"][
+                "buckets"
+            ]
             for bucket in result:
                 total_count += bucket["doc_count"]
         if total_count > 10000:
