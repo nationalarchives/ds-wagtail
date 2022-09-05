@@ -544,9 +544,9 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 ][0]["doc_count"]
                 total_count = result
             else:
-                result = self.api_result["responses"][1]["aggregations"]["catalogueSource"][
-                    "buckets"
-                ]
+                result = self.api_result["responses"][1]["aggregations"][
+                    "catalogueSource"
+                ]["buckets"]
                 for bucket in result:
                     total_count += bucket["doc_count"]
         except Exception:
