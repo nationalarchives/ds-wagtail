@@ -9,10 +9,14 @@ Related ticket(s):
 
 <- Where possible, provide guidance to help your reviewer ->
 
-## Dear reviewer, I promise I have:
+## Before assigning to reviewer, please make sure you have
 
-- [ ] Checked things thoroughly myself before handing over to you.
-- [ ] Included the ticket number in the PR title to help us keep track of changes
-- [ ] Ensured that my PR does not include any irrelevant commits.
+- [ ] Checked things thoroughly myself before handing over to reviewer.
+- [ ] Included the ticket number in the PR title to help us keep track of changes.
+- [ ] Ensured that PR includes only commits relevant to the ticket.
 - [ ] Waited for all CI jobs to pass before requesting a review.
 - [ ] Added/updated tests and documentation where relevant.
+
+## For Reviewer
+
+Once PR is merged, check and arrange to deploy on platform-sh.
