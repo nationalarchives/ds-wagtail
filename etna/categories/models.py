@@ -3,7 +3,7 @@ import os
 from django.apps import apps
 from django.db import models
 
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.snippets.models import register_snippet
 
 # The path to where the static template tag will expect to find an image.

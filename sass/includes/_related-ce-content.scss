@@ -1,4 +1,4 @@
-.related-ce-content-group {
+.related-ce-content {
     margin-bottom: 4rem;
 
     h2 {
@@ -13,82 +13,90 @@
         padding-left: 0;
         list-style: none;
     }
-}
 
-.related-ce-content {
-    a {
-        color: $color__white;
-        display: inline-block;
-        width: 100%;
+    &__item {
+        a {
+            color: $color__white;
+            display: inline-block;
+            width: 100%;
+        }
+    
+        h3{
+            font-size: 1.5rem;
+        }
     }
 
-    h3{
-        font-size: 1.5rem;
-    }
-
-    img {
+    &__image {
         width: 100%;
+        height: 18.75rem;
+        object-fit: cover;
     }
 
     &__summary {
         display: flex;
         justify-content: center;
+        text-align: center;
         align-items: center;
         background-color: #26262a;
         height: 200px;
         padding: 2rem;
         width: 100%;
     }
-}
-
-@media (max-width: 900px) {
-    .related-ce-content-group__list {
-        flex-direction: column;
-    }
-
-    .related-ce-content {
-        margin-right: 0;
-        margin-bottom: 2rem;
-        width: 100%;
-        max-width: 100%;
-
-        picture {
-            width: 50%;
-        }
-
-        a {
-            display: flex;
-            height: 250px;
-        }
-
-        &__summary {
-            height: auto;
-            width: 50%;
-        }
-    }
-}
-
-@media (max-width: 767px) {
-    .related-ce-content {
-        a {
+    
+    @media only screen and (max-width: 56.25rem) {
+        &__list {
             flex-direction: column;
-            height: auto;
+        }
+    
+        &__item {
+            flex: 1 1 auto;
+            margin-right: 0;
+            margin-bottom: 2rem;
+            width: 100%;
+            max-width: 100%;
+    
+            picture {
+                width: 50%;
+            }
+    
+            a {
+                display: flex;
+                height: 15.625rem;
+            }
         }
 
-        picture {
-            width: 100%;
+        &__image {
+            height: 100%;
+        }
+
+        &__summary {
+            height: auto;
+            width: 50%;
+        }
+    }
+    
+    @media only screen and (max-width: $screen__md) {
+        &__item {
+            a {
+                flex-direction: column;
+                height: auto;
+            }
+    
+            picture {
+                width: 100%;
+            }
         }
 
         &__summary {
             width: 100%;
         }
     }
-}
-
-@media (max-width: 576px) {
-    .related-ce-content {
-        picture {
-            width: 100%;
+    
+    @media only screen and (max-width: 36rem) {
+        &__item {
+            picture {
+                width: 100%;
+            }
         }
 
         &__image {

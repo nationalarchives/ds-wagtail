@@ -8,6 +8,7 @@ services:
     volumes:
      - ./database_dumps:/app/database_dumps
   web:
+    platform: linux/amd64
     build: .
     volumes:
       - ./:/app
@@ -27,6 +28,7 @@ services:
     env_file:
       - .env
   cli:
+    platform: linux/amd64
     build: platformsh-cli
     volumes:
       - ./media:/app/media

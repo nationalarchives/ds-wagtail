@@ -4,6 +4,7 @@
   @media screen and (min-width: 768px) {
     display: flex;
     flex-wrap: wrap;
+
   }
   &__logo {
     &-holder {
@@ -33,13 +34,24 @@
       }
     }
     &-image {
-      width: 6.25rem;
       height: 6.25rem;
 
       @media screen and (max-width: $screen__sm) {
-        width: 4.6875rem;
         height: 4.6875rem;
       }
+    }
+  }
+
+  &__mobile-icons {
+    display:inline-block;
+    float:right;
+    position:relative;
+    //top:4rem;
+
+
+    @media screen and (min-width: 768px) {
+      display: none;
+
     }
   }
   &__nav {
@@ -47,7 +59,8 @@
     align-items: flex-end;
 
     @media only screen and (max-width: $screen__md) {
-      display: block;
+      //display: block;
+      //display:none;
       text-align: right;
     }
 
@@ -62,17 +75,15 @@
       }
 
       height: 100%;
-
-      @media only screen and (min-width: $screen__md) {
-        width: 38rem;
-      }
-
       margin-bottom: 0;
       justify-content: space-around; // IE11 only supports space-around and space-between.
       &-item {
         list-style: none;
         @media only screen and (min-width: $screen__md) {
           height: 3rem;
+        }
+        @media only screen and (min-width: 480px) {
+          text-indent: 0.7em;
         }
         display: block;
 
@@ -96,6 +107,7 @@
             text-decoration: none;
             font-size: 1rem;
             border: 0;
+            margin: 0 0.3125rem;
           }
 
           @media only screen and (max-width: $screen__md) {
@@ -106,7 +118,7 @@
         &-link {
           display: block;
           color: $color__black;
-          padding: 0.4375rem;
+          padding: 0.4375rem 1rem;
           height: 100%;
           text-decoration: none;
           font-family: $font__supria-sans;
@@ -117,7 +129,7 @@
           }
 
           @media only screen and (max-width: $screen__md) {
-            text-align: center;
+            text-align: left;
             &:hover,
             &[aria-current="true"],
             &:focus {
@@ -142,14 +154,15 @@
           &-search {
             color: $color__white;
             height: 3rem;
-            background-color: #26262a;
-            background-image: url(/static/images/icons/search-white.svg);
+            //background-color: #26262a;
+            background-image: url(/static/images/icons/search-black.svg);
             background-repeat: no-repeat;
             background-position-x: 0.5rem;
             background-position-y: 0.6rem;
             padding-left: 2.25rem;
             padding-right: 0.75rem;
             background-size: 1.5rem;
+            display: inline-block;
 
             &:visited {
               color: $color__white;
@@ -196,19 +209,6 @@
   }
 }
 
-.js {
-  .header {
-    &__nav {
-      @media only screen and (max-width: $screen__md) {
-        margin-top: -4rem;
-      }
-      @media only screen and (max-width: 30rem) {
-        margin-top: -2rem;
-      }
-    }
-  }
-}
-
 .no-js {
   .header {
     &__nav-list-item {
@@ -237,5 +237,100 @@
         }
       }
     }
+  }
+}
+
+//css navigation menu : reusing : https://codepen.io/danhearn/pen/XprGrJ
+body {
+  animation: bugfix infinite 1s;
+  -webkit-animation: bugfix infinite 1s;
+}
+
+@keyframes bugfix { from {padding:0;} to {padding:0;}}
+@-webkit-keyframes bugfix { from {padding:0;} to {padding:0;}}
+
+#overlay-button {
+  position: absolute;
+  right: 0em;
+  top: 110px;
+  padding: 23px 11px;
+  z-index: 5;
+  cursor: pointer;
+  user-select: none;
+  @media only screen and (max-width: 481px) {
+    top:85px;
+  }
+  @media only screen and (max-width: 390px) {
+    top:105px;
+
+  }
+  span {
+    height: 4px;
+    width: 35px;
+    border-radius: 2px;
+    background-color: black;
+    position: relative;
+    display: block;
+    transition: all .2s ease-in-out;
+    &:before {
+      top: -10px;
+      visibility: visible;
+    }
+    &:after {
+      top: 10px;
+    }
+    &:before, &:after {
+      height: 4px;
+      width: 35px;
+      border-radius: 2px;
+      background-color: black;
+      position: absolute;
+      content: "";
+      transition: all .2s ease-in-out;
+    }
+  }
+  &:hover span, &:hover span:before, &:hover span:after {
+    background: #333332;
+  }
+  @media only screen and (min-width: $screen__md) {
+    display:none;
+  }
+}
+
+input[type=checkbox] {
+  display: none;
+
+  &:checked ~ #overlay {
+    //visibility: visible;
+    display:block;
+  }
+
+  &:checked ~ #overlay-button {
+    &:hover span, span{
+      background: transparent;
+    }
+    span {
+      &:before {
+        transform: rotate(45deg) translate(7px, 7px);
+        opacity: 1;
+      }
+      &:after {
+        transform: rotate(-45deg) translate(7px, -7px);
+      }
+    }
+  }
+}
+
+#overlay {
+  z-index: 2;
+  display:none;
+  //visibility: hidden;
+
+  &.active {
+    //visibility: visible;
+    display:block;
+  }
+  @media only screen and (min-width: $screen__md) {
+    display:block;
   }
 }

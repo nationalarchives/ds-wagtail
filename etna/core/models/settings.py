@@ -1,9 +1,10 @@
 from django.db import models
 
 from modelcluster.models import ClusterableModel, ParentalKey
-from wagtail.admin.edit_handlers import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSetting, register_setting
-from wagtail.core.models import Page
+from wagtail.fields import RichTextField
+from wagtail.models import Page
 
 from etna.navigation.models import AbstractMenuItem
 
@@ -12,7 +13,37 @@ __all__ = ["SiteSettings", "MainMenuItem"]
 
 @register_setting(icon="list-ul")
 class SiteSettings(BaseSetting, ClusterableModel):
+    beta_banner_standfirst = models.CharField(
+        max_length=200,
+        default="What does the 'beta' label mean?",
+        verbose_name="standfirst",
+    )
+    beta_banner_link = models.CharField(
+        max_length=200, blank=True, verbose_name="link to"
+    )
+    beta_banner_link_text = models.CharField(
+        max_length=200,
+        default="Find out more",
+        verbose_name="link text",
+    )
+    beta_banner_text = RichTextField(
+        verbose_name="text",
+        default=(
+            "<p>This beta site contains new services and features currently in development. Many of these features are "
+            "works in progress and are being updated regularly. You can help us improve them by providing feedback as you "
+            "use the site.</p> "
+        ),
+    )
     panels = [
+        MultiFieldPanel(
+            heading="BETA banner",
+            children=[
+                FieldPanel("beta_banner_standfirst"),
+                FieldPanel("beta_banner_text"),
+                FieldPanel("beta_banner_link"),
+                FieldPanel("beta_banner_link_text"),
+            ],
+        ),
         InlinePanel(
             "main_menu_items_rel",
             heading="main menu items",

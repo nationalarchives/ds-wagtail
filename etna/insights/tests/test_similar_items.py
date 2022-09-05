@@ -1,6 +1,6 @@
 from django.test import TestCase
 
-from wagtail.core.models import Site
+from wagtail.models import Site
 
 from ..models import InsightsPage, InsightsTag, TaggedInsights
 

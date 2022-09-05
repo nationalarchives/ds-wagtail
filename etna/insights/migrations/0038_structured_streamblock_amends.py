@@ -4,8 +4,8 @@ from django.db import migrations
 import etna.insights.blocks
 import etna.media.blocks
 import etna.records.blocks
-import wagtail.core.blocks
-import wagtail.core.fields
+import wagtail.blocks
+import wagtail.fields
 import wagtail.images.blocks
 import wagtail.snippets.blocks
 
@@ -20,29 +20,29 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name="insightspage",
             name="body",
-            field=wagtail.core.fields.StreamField(
+            field=wagtail.fields.StreamField(
                 [
                     (
                         "content_section",
-                        wagtail.core.blocks.StructBlock(
+                        wagtail.blocks.StructBlock(
                             [
                                 (
                                     "heading",
-                                    wagtail.core.blocks.CharBlock(
+                                    wagtail.blocks.CharBlock(
                                         label="Heading", max_length=100
                                     ),
                                 ),
                                 (
                                     "content",
-                                    wagtail.core.blocks.StreamBlock(
+                                    wagtail.blocks.StreamBlock(
                                         [
                                             (
                                                 "paragraph",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "text",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=[
                                                                     "bold",
                                                                     "italic",
@@ -56,18 +56,18 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "quote",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=False,
                                                             ),
                                                         ),
                                                         (
                                                             "quote",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=[
                                                                     "bold",
                                                                     "italic",
@@ -78,7 +78,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "attribution",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=False,
                                                             ),
@@ -88,11 +88,11 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "sub_heading",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100
                                                             ),
                                                         )
@@ -101,7 +101,7 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "image",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "image",
@@ -111,7 +111,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "decorative",
-                                                            wagtail.core.blocks.BooleanBlock(
+                                                            wagtail.blocks.BooleanBlock(
                                                                 default=False,
                                                                 help_text='Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
                                                                 label="Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
@@ -120,7 +120,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "alt_text",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
                                                                 label="Alternative text",
                                                                 max_length=100,
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "caption",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=["link"],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
@@ -140,7 +140,7 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "media",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "background_image",
@@ -157,7 +157,7 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "featured_record",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "record",
@@ -165,7 +165,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "image",
-                                                            wagtail.core.blocks.StructBlock(
+                                                            wagtail.blocks.StructBlock(
                                                                 [
                                                                     (
                                                                         "image",
@@ -175,7 +175,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "decorative",
-                                                                        wagtail.core.blocks.BooleanBlock(
+                                                                        wagtail.blocks.BooleanBlock(
                                                                             default=False,
                                                                             help_text='Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
                                                                             label="Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
@@ -184,7 +184,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "alt_text",
-                                                                        wagtail.core.blocks.CharBlock(
+                                                                        wagtail.blocks.CharBlock(
                                                                             help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
                                                                             label="Image alternative text",
                                                                             max_length=100,
@@ -193,7 +193,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "caption",
-                                                                        wagtail.core.blocks.RichTextBlock(
+                                                                        wagtail.blocks.RichTextBlock(
                                                                             features=[
                                                                                 "link"
                                                                             ],
@@ -214,25 +214,25 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "featured_records",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=True,
                                                             ),
                                                         ),
                                                         (
                                                             "introduction",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=200,
                                                                 required=True,
                                                             ),
                                                         ),
                                                         (
                                                             "records",
-                                                            wagtail.core.blocks.ListBlock(
+                                                            wagtail.blocks.ListBlock(
                                                                 etna.records.blocks.RecordChooserBlock
                                                             ),
                                                         ),
@@ -241,11 +241,11 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "promoted_item",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "title",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 help_text="Title of the promoted page",
                                                                 label="Title",
                                                                 max_length=100,
@@ -259,13 +259,13 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "publication_date",
-                                                            wagtail.core.blocks.DateBlock(
+                                                            wagtail.blocks.DateBlock(
                                                                 required=False
                                                             ),
                                                         ),
                                                         (
                                                             "duration",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 help_text="Podcast or video duration. Or estimated read time of article.",
                                                                 label="Duration/Read time",
                                                                 max_length=50,
@@ -274,21 +274,21 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "url",
-                                                            wagtail.core.blocks.URLBlock(
+                                                            wagtail.blocks.URLBlock(
                                                                 help_text="URL for the external page",
                                                                 label="External URL",
                                                             ),
                                                         ),
                                                         (
                                                             "target_blank",
-                                                            wagtail.core.blocks.BooleanBlock(
+                                                            wagtail.blocks.BooleanBlock(
                                                                 label="Should this URL open in a new tab? <p style='font-size: 11px;'>Tick the box if 'yes'</p>",
                                                                 required=False,
                                                             ),
                                                         ),
                                                         (
                                                             "cta_label",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 help_text="The text displayed on the button for your URL. If your URL links to an external site, please add the name of the site users will land on, and what they will find on this page. For example 'Watch our short film  <strong>about Shakespeare on YouTube</strong>'.",
                                                                 label="Call to action label",
                                                                 max_length=50,
@@ -296,7 +296,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "image",
-                                                            wagtail.core.blocks.StructBlock(
+                                                            wagtail.blocks.StructBlock(
                                                                 [
                                                                     (
                                                                         "image",
@@ -306,7 +306,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "decorative",
-                                                                        wagtail.core.blocks.BooleanBlock(
+                                                                        wagtail.blocks.BooleanBlock(
                                                                             default=False,
                                                                             help_text='Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
                                                                             label="Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
@@ -315,7 +315,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "alt_text",
-                                                                        wagtail.core.blocks.CharBlock(
+                                                                        wagtail.blocks.CharBlock(
                                                                             help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. Decorative images do not require alt text. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
                                                                             label="Image alternative text",
                                                                             max_length=100,
@@ -324,7 +324,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "caption",
-                                                                        wagtail.core.blocks.RichTextBlock(
+                                                                        wagtail.blocks.RichTextBlock(
                                                                             features=[
                                                                                 "link"
                                                                             ],
@@ -341,7 +341,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "description",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=[
                                                                     "bold",
                                                                     "italic",
@@ -355,11 +355,11 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "promoted_list",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=True,
                                                             ),
@@ -372,7 +372,7 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "summary",
-                                                            wagtail.core.blocks.RichTextBlock(
+                                                            wagtail.blocks.RichTextBlock(
                                                                 features=[
                                                                     "bold",
                                                                     "italic",
@@ -383,12 +383,12 @@ class Migration(migrations.Migration):
                                                         ),
                                                         (
                                                             "promoted_items",
-                                                            wagtail.core.blocks.ListBlock(
-                                                                wagtail.core.blocks.StructBlock(
+                                                            wagtail.blocks.ListBlock(
+                                                                wagtail.blocks.StructBlock(
                                                                     [
                                                                         (
                                                                             "title",
-                                                                            wagtail.core.blocks.CharBlock(
+                                                                            wagtail.blocks.CharBlock(
                                                                                 help_text="Title of the promoted page",
                                                                                 label="Heading",
                                                                                 max_length=100,
@@ -397,7 +397,7 @@ class Migration(migrations.Migration):
                                                                         ),
                                                                         (
                                                                             "description",
-                                                                            wagtail.core.blocks.RichTextBlock(
+                                                                            wagtail.blocks.RichTextBlock(
                                                                                 features=[
                                                                                     "bold",
                                                                                     "italic",
@@ -409,7 +409,7 @@ class Migration(migrations.Migration):
                                                                         ),
                                                                         (
                                                                             "url",
-                                                                            wagtail.core.blocks.URLBlock(
+                                                                            wagtail.blocks.URLBlock(
                                                                                 required=True
                                                                             ),
                                                                         ),
@@ -422,25 +422,25 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "related_items",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=True,
                                                             ),
                                                         ),
                                                         (
                                                             "description",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 max_length=100,
                                                                 required=True,
                                                             ),
                                                         ),
                                                         (
                                                             "related_items",
-                                                            wagtail.core.blocks.ListBlock(
+                                                            wagtail.blocks.ListBlock(
                                                                 etna.insights.blocks.RelatedItemBlock
                                                             ),
                                                         ),
@@ -449,26 +449,26 @@ class Migration(migrations.Migration):
                                             ),
                                             (
                                                 "content_sub_section",
-                                                wagtail.core.blocks.StructBlock(
+                                                wagtail.blocks.StructBlock(
                                                     [
                                                         (
                                                             "heading",
-                                                            wagtail.core.blocks.CharBlock(
+                                                            wagtail.blocks.CharBlock(
                                                                 label="Heading",
                                                                 max_length=100,
                                                             ),
                                                         ),
                                                         (
                                                             "content",
-                                                            wagtail.core.blocks.StreamBlock(
+                                                            wagtail.blocks.StreamBlock(
                                                                 [
                                                                     (
                                                                         "paragraph",
-                                                                        wagtail.core.blocks.StructBlock(
+                                                                        wagtail.blocks.StructBlock(
                                                                             [
                                                                                 (
                                                                                     "text",
-                                                                                    wagtail.core.blocks.RichTextBlock(
+                                                                                    wagtail.blocks.RichTextBlock(
                                                                                         features=[
                                                                                             "bold",
                                                                                             "italic",
@@ -482,18 +482,18 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "quote",
-                                                                        wagtail.core.blocks.StructBlock(
+                                                                        wagtail.blocks.StructBlock(
                                                                             [
                                                                                 (
                                                                                     "heading",
-                                                                                    wagtail.core.blocks.CharBlock(
+                                                                                    wagtail.blocks.CharBlock(
                                                                                         max_length=100,
                                                                                         required=False,
                                                                                     ),
                                                                                 ),
                                                                                 (
                                                                                     "quote",
-                                                                                    wagtail.core.blocks.RichTextBlock(
+                                                                                    wagtail.blocks.RichTextBlock(
                                                                                         features=[
                                                                                             "bold",
                                                                                             "italic",
@@ -504,7 +504,7 @@ class Migration(migrations.Migration):
                                                                                 ),
                                                                                 (
                                                                                     "attribution",
-                                                                                    wagtail.core.blocks.CharBlock(
+                                                                                    wagtail.blocks.CharBlock(
                                                                                         max_length=100,
                                                                                         required=False,
                                                                                     ),
@@ -514,11 +514,11 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "sub_heading",
-                                                                        wagtail.core.blocks.StructBlock(
+                                                                        wagtail.blocks.StructBlock(
                                                                             [
                                                                                 (
                                                                                     "heading",
-                                                                                    wagtail.core.blocks.CharBlock(
+                                                                                    wagtail.blocks.CharBlock(
                                                                                         max_length=100
                                                                                     ),
                                                                                 )
@@ -527,7 +527,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "image",
-                                                                        wagtail.core.blocks.StructBlock(
+                                                                        wagtail.blocks.StructBlock(
                                                                             [
                                                                                 (
                                                                                     "image",
@@ -537,7 +537,7 @@ class Migration(migrations.Migration):
                                                                                 ),
                                                                                 (
                                                                                     "decorative",
-                                                                                    wagtail.core.blocks.BooleanBlock(
+                                                                                    wagtail.blocks.BooleanBlock(
                                                                                         default=False,
                                                                                         help_text='Decorative images are used for visual effect and do not add information to the content of a page. <a href="https://www.w3.org/WAI/tutorials/images/decorative/" target="_blank">"Check the guidance to see if your image is decorative</a>.',
                                                                                         label="Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>",
@@ -546,7 +546,7 @@ class Migration(migrations.Migration):
                                                                                 ),
                                                                                 (
                                                                                     "alt_text",
-                                                                                    wagtail.core.blocks.CharBlock(
+                                                                                    wagtail.blocks.CharBlock(
                                                                                         help_text='Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.',
                                                                                         label="Alternative text",
                                                                                         max_length=100,
@@ -554,7 +554,7 @@ class Migration(migrations.Migration):
                                                                                 ),
                                                                                 (
                                                                                     "caption",
-                                                                                    wagtail.core.blocks.RichTextBlock(
+                                                                                    wagtail.blocks.RichTextBlock(
                                                                                         features=[
                                                                                             "link"
                                                                                         ],
@@ -568,7 +568,7 @@ class Migration(migrations.Migration):
                                                                     ),
                                                                     (
                                                                         "media",
-                                                                        wagtail.core.blocks.StructBlock(
+                                                                        wagtail.blocks.StructBlock(
                                                                             [
                                                                                 (
                                                                                     "background_image",

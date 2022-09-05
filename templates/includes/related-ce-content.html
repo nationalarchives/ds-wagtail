@@ -2,11 +2,11 @@
 {% load wagtailimages_tags %}
 
 {% if page.time_period or page.topic %}
-    <div class="related-ce-content-group">
+    <div class="related-ce-content">
         <h2>Discover highlights from the collection</h2>
-        <ul class="related-ce-content-group__list">
+        <ul class="related-ce-content__list">
             {% if page.time_period %}
-                <li class="col-md-6 related-ce-content">
+                <li class="col-md-6 related-ce-content__item">
                     <a href="{% pageurl page.time_period %}" data-component-name="Discover highlights from the collection" data-link-type="Image with label">
                         <picture>
                             {% image page.time_period.teaser_image fill-480x351 as teaser %}
@@ -31,7 +31,7 @@
             {% endif %}
 
             {% if page.topic %}
-                <li class="col-md-6 related-ce-content">
+                <li class="col-md-6 related-ce-content__item">
                     <a href="{% pageurl page.topic %}" data-component-name="Discover highlights from the collection" data-link-type="Image with label">
                         <picture>
                             {% image page.topic.teaser_image fill-480x351 as teaser %}

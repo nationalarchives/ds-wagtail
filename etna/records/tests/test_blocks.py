@@ -2,7 +2,7 @@ import json
 
 from django.urls import reverse
 
-from wagtail.core.models import Site
+from wagtail.models import Site
 from wagtail.tests.utils import WagtailPageTests
 from wagtail.tests.utils.form_data import nested_form_data, streamfield
 

@@ -38,6 +38,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/card-groups';
 @import 'includes/footer';
 @import 'includes/cta-banner-newsletter';
+@import 'includes/cta-banner-survey';
 @import 'includes/results-options';
 @import 'includes/pagination';
 @import 'includes/alert-message';
@@ -91,3 +92,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/sub-heading';
 @import 'includes/section-image';
 @import 'includes/cookie-consent';
+@import 'includes/maintenance-503';
+@import 'includes/beta-banner';
+@import "includes/breadcrumb";

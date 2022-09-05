@@ -3,11 +3,12 @@
 {% load humanize %}
 {% load search_tags %}
 {% load static %}
-
+{% block breadcrumb %}
+{% endblock %}
 {% block content %}
     <div class="long-filters">
         <h1 class="long-filters__heading">Select filters to apply to your results</h1>
-        <form method="get" action="{% url 'search-catalogue' %}" data-id="long-filter-form">
+        <form method="get" action="{% url 'search-catalogue' %}" data-id="long-filter-form" id="analytics-long-filter-form">
             {% prepare_form_for_partial_render form field_name %}
 
             <div class="long-filters__options">

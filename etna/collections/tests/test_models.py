@@ -2,7 +2,7 @@ import unittest
 
 from django.test import TestCase, override_settings
 
-from wagtail.core.models import PageViewRestriction, Site
+from wagtail.models import PageViewRestriction, Site
 
 import responses
 
@@ -168,15 +168,6 @@ class TestRecordDescriptionOverride(TestCase):
         )
 
     @responses.activate
-    def test_description_from_kong_is_rendered(self):
-        self.results_page.records.create(record_iaid="C123456")
-        self.results_page.save()
-
-        response = self.client.get("/results-page/")
-
-        self.assertContains(response, "This is the description from Kong")
-
-    @responses.activate
     def test_override_description_is_rendered(self):
         self.results_page.records.create(
             record_iaid="C123456", description="This is the overridden description"
@@ -185,7 +176,6 @@ class TestRecordDescriptionOverride(TestCase):
 
         response = self.client.get("/results-page/")
 
-        self.assertNotContains(response, "This is the description from Kong")
         self.assertContains(response, "This is the overridden description")
 
 

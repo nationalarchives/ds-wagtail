@@ -15,7 +15,10 @@
                 data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
             {% endif %}
             data-link-type="Card image" 
-            data-card-title="{{ page.title }}" 
+            data-card-title="{{ page.title }}"
+            {% if page.first_published_at.date > page.new_label_end_date.date %}
+                data-label = "New"
+            {%endif%}
             aria-hidden="true" 
             tabindex="-1"
         >
@@ -39,9 +42,15 @@
                     {% endif %}
                     data-link-type="Card text" 
                     data-card-title="{{ page.title }}"
+                    {% if page.first_published_at.date > page.new_label_end_date.date %}
+                        data-label = "New"
+                    {%endif%}
                 >
                     <h3 class="card-group-secondary-nav__heading">
-                            {{ page.title }}
+                        {{ page.title }}
+                        {% if page.first_published_at.date > page.new_label_end_date.date %}
+                        <span aria-describedby="This is a new story about {{ page.title }}" role="label">NEW</span>
+                        {% endif %}
                     </h3>
                 </a>
                 <p class="card-group-secondary-nav__paragraph">{{ page.sub_heading }}</p>
