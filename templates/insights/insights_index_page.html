@@ -4,7 +4,10 @@
 {% load i18n %}
 {% load wagtailcore_tags %}
 {% load wagtailimages_tags %}
-
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
     <div class="container">

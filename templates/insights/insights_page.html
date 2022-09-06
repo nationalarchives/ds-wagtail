@@ -3,8 +3,10 @@
 {% load static %}
 {% load wagtailcore_tags %}
 {% load sections_tags %}
-
-
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
     {% include 'includes/hero-img.html' %}

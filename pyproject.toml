@@ -21,6 +21,7 @@ wagtail-font-awesome-svg = "0.0.2"
 django-birdbath = "^0.0.5"
 bleach = "^5.0.0"
 sentry-sdk = "^1.5.11"
+wagtail-metadata = "^4.0.1"
 
 [tool.poetry.dev-dependencies]
 black = "^22.6.0"

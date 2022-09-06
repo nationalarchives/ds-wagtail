@@ -1,8 +1,9 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags  %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
+    {% block meta_tag %}
         <title>
             {% block title_prefix %}
                 {% if form.errors %}Error: {% endif %}
@@ -16,6 +17,7 @@
             {% endblock %}
         </title>
         <meta name="description" content="" />
+     {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
@@ -37,21 +39,6 @@
             {% include 'includes/gtm-script.html' %}
         {% endif %}
 
-        {# Open Graph tags for facebook sharing #}
-        <!--
-        <meta property="og:locale" content="en_GB" />
-        <meta property="og:title" content="The National Archives" />
-        <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://www.nationalarchives.gov.uk/wp-content/uploads/sites/24/2019/07/tna-logo-600x315.jpg" />
-        <meta property="og:url" content="https://beta.nationalarchives.gov.uk/" />
-        <meta property="og:description" content="We are a non-ministerial department, and the official archive and publisher for the UK Government, and for England and Wales." />
-
-        <meta property="og:site_name" content="The National Archives" />
-        <meta property="article:modified_time" content="2022-08-05T12:37:08+00:00" />
-        <meta property="og:image:width" content="600" />
-        <meta property="og:image:height" content="315" />
-        <meta property="og:image:type" content="image/jpeg" />
-        -->
 
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
