@@ -33,9 +33,6 @@
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
                 <div class="featured-insight__image">
-                    {% if page.featured_insight.hero_image_caption %}
-                    <figure>
-                    {% endif %}
                     <picture>
                         {% image page.featured_insight.hero_image fill-412x361 as hero %}
                         <source media="(max-width: 480px)" srcset="{{ hero.url }}">
@@ -53,10 +50,6 @@
                             <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
                         {% endif %}
                     </picture>
-                    {% if page.featured_insight.hero_image_caption %}
-                        <figcaption class="hero-image__figcaption">{{ page.featured_insight.hero_image_caption|richtext }}</figcaption>
-                    </figure>
-                    {% endif %}
                 </div>
             {% endif %}
 
