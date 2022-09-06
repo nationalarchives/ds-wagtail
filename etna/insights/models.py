@@ -14,6 +14,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
+from wagtailmetadata.models import MetadataPageMixin
 
 from etna.core.models import BasePage, ContentWarningMixin
 
@@ -22,7 +23,7 @@ from ..teasers.models import TeaserImageMixin
 from .blocks import FeaturedCollectionBlock, InsightsPageStreamBlock
 
 
-class InsightsIndexPage(TeaserImageMixin, BasePage):
+class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """InsightsIndexPage
 
     This page lists the InsightsPage objects that are children of this page.
@@ -52,7 +53,8 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         FieldPanel("featured_insight"),
         FieldPanel("featured_collections"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     subpage_types = ["insights.InsightsPage"]
 
@@ -77,7 +79,9 @@ class TaggedInsights(ItemBase):
     )
 
 
-class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePage):
+class InsightsPage(
+    HeroImageMixin, TeaserImageMixin, ContentWarningMixin, MetadataPageMixin, BasePage
+):
     """InsightsPage
 
     The InsightsPage model.
@@ -208,7 +212,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         ]
     )
 
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     parent_page_types = ["insights.InsightsIndexPage"]
     subpage_types = []
