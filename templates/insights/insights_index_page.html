@@ -46,7 +46,7 @@
                 </h2>
 
                 <p>{{ page.featured_insight.sub_heading }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
+                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
     </div>
