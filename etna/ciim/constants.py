@@ -15,6 +15,7 @@ def forTemplate(cls):
 @forTemplate
 class BucketKeys(Enum):
     NONTNA = "nonTna"
+    CREATOR = "creator"
 
 
 @dataclass

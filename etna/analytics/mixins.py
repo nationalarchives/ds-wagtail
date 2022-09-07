@@ -44,8 +44,6 @@ class DataLayerMixin:
             "customDimension15": "",  # This is the catalogueDataSource where applicable. Empty string if not applicable.
             "customDimension16": "",  # This is the availability condition category where applicable. Empty string if not applicable.
             "customDimension17": "",  # This is the availability condition where applicable. Empty string if not applicable.
-            "customMetric1": "",  # This is the number of search results returned
-            "customMetric2": "",  # This is the number of search filters applied
         }
 
         # Add request-specific data
@@ -54,5 +52,29 @@ class DataLayerMixin:
         data.update(
             customDimension1="offsite",
             customDimension2="",
+        )
+        return data
+
+
+class SearchDataLayerMixin(DataLayerMixin):
+    """
+    A mixin applied to Search classes to allow them to customise the Google Analytics
+    datalayer.
+    """
+
+    def get_gtm_content_group(self) -> str:
+        return "Search"
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        custom_dimension3 = (
+            self.__class__.__name__
+        )  # The page type - [Always has a value]
+        custom_metric1 = 0  # This is the number of search results returned
+        custom_metric2 = 0  # This is the number of search filters applied
+        data.update(
+            customDimension3=custom_dimension3,
+            customMetric1=custom_metric1,
+            customMetric2=custom_metric2,
         )
         return data
