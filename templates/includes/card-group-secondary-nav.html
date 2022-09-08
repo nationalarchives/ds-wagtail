@@ -49,9 +49,11 @@
                             {%endif%}
                             >{{ page.title }}</a>
                         {% if page.first_published_at.date > page.new_label_end_date.date %}
-                        <span aria-describedby="This is a new story about {{ page.title }}" role="label">NEW</span>
+                        <span aria-describedby="article-desc" role="link">NEW</span>
+
                         {% endif %}
                     </h3>
+                <p id ="article-desc" style="display:none;">This is a link to a new story about {{ page.title }}</p>
 
                 <p class="card-group-secondary-nav__paragraph">{{ page.sub_heading }}</p>
             </div>
