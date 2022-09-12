@@ -542,8 +542,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
             total_count = 0
         if total_count > 10000:
             total_count = 10001
-        custom_metric1 = total_count
-        data.update(customMetric1=custom_metric1)
+        data.update(customMetric1=total_count)
         return data
 
     def get_context_data(self, **kwargs):
@@ -610,8 +609,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
         if total_count > 10000:
             total_count = 10001
-        custom_metric1 = total_count
-        data.update(customMetric1=custom_metric1)
+        data.update(customMetric1=total_count)
         return data
 
     def add_insights_page_for_url(self, page: Page) -> None:
@@ -741,8 +739,7 @@ class FeaturedSearchView(BaseSearchView):
         total_count = self.featured_search_total_count
         if total_count > 10000:
             total_count = 10001
-        custom_metric1 = total_count
-        data.update(customMetric1=custom_metric1)
+        data.update(customMetric1=total_count)
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
