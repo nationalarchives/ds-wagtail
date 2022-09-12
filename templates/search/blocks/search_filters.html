@@ -9,7 +9,7 @@
             {% endif %}
             
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
+        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' 'type' %}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -87,6 +87,10 @@
             {% if form.group.value == bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.held_by %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
+            {% endif %}
+
+            {% if form.group.value == bucketkeys.CREATOR.value %}
+                {% include "search/includes/filter.html" with field=form.type %}
             {% endif %}
         </div>
         {% for hidden_field in form.hidden_fields %}

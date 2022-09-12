@@ -153,6 +153,13 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
+    type = DynamicMultipleChoiceField(
+        label="Creator type",
+        widget=forms.widgets.CheckboxSelectMultiple(
+            attrs={"class": "search-filters__list"}
+        ),
+        required=False,
+    )
     opening_start_date = forms.DateTimeField(
         label="From",
         widget=forms.DateTimeInput(

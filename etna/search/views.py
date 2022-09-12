@@ -203,6 +203,7 @@ class SearchLandingView(BucketsMixin, TemplateView):
                 # for any bucket/tab options we might be showing
                 f"{Aggregation.GROUP}:30",
                 Aggregation.HELD_BY,
+                Aggregation.TYPE,
             ],
             size=0,
         )
@@ -319,6 +320,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "closure",
         "held_by",
         "catalogue_source",
+        "type",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:
@@ -391,6 +393,7 @@ class BaseFilteredSearchView(BaseSearchView):
             Aggregation.HELD_BY,
             Aggregation.CATALOGUE_SOURCE,
             Aggregation.GROUP,
+            Aggregation.TYPE,
         ):
             item_count = 10
             if aggregation == Aggregation.GROUP:
