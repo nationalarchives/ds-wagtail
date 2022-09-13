@@ -67,14 +67,11 @@ class SearchDataLayerMixin(DataLayerMixin):
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
-        custom_dimension3 = (
-            self.__class__.__name__
-        )  # The page type - [Always has a value]
-        custom_metric1 = 0  # This is the number of search results returned
-        custom_metric2 = 0  # This is the number of search filters applied
         data.update(
-            customDimension3=custom_dimension3,
-            customMetric1=custom_metric1,
-            customMetric2=custom_metric2,
+            customDimension3 = self.__class__.__name__,  # The page type - [Always has a value]
+            customDimension8 = "",  # This is the search bucket. Empty string if not applicable.
+            customDimension9 = "",  # This is the search term. Empty string if not applicable.
+            customMetric1 = 0,  # This is the number of search results returned
+            customMetric2 = 0,  # This is the number of search filters applied
         )
         return data

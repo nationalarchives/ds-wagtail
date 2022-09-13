@@ -296,7 +296,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         custom_dimension9 = self.form.cleaned_data.get("q") or "*"
         try:
             custom_metric2 = len(self.get_api_filter_aggregations(self.form)) - 1
-        except Exception:
+        except AttributeError:  # This is needed as it will throw an error as some pages do not have filters (e.g. Featured Search, or Record Creator bucket)
             custom_metric2 = 0
         data.update(
             customDimension8=custom_dimension8,
