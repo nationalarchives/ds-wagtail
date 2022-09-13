@@ -18,7 +18,7 @@
     <div class="container">
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
-                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.first_published_at.date > page.new_label_end_date.date %} data-label = "New" {%endif%}>
+                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
                     <picture>
                         {% image page.featured_insight.hero_image fill-500x400-c100 as hero %}
                         <source media="(max-width: 768px)" srcset="{{ hero.url }}">
@@ -48,7 +48,7 @@
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_insight.title }}</p>
 
                 <p>{{ page.featured_insight.sub_heading }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
+                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
     </div>
