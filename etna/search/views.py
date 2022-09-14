@@ -538,7 +538,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 ]["buckets"]
                 for bucket in result:
                     total_count += bucket["doc_count"]
-        except Exception:
+        except KeyError:
             total_count = 0
         if total_count > 10000:
             total_count = 10001
