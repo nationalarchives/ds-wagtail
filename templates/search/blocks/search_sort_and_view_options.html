@@ -9,9 +9,11 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
-        {% endfor %}
+        <input type="hidden" name="q" value="{{form.q.value}}" id="id_q_SSAVO">
+        <input type="hidden" name="group" value="{{form.group.value}}" id="id_group_SSAVO">
+        <input type="hidden" name="sort_order" value="{{form.sort_order.value}}" id="id_sort_order_SSAVO">
+        <input type="hidden" name="per_page" value="{{form.per_page.value}}" id="id_per_page_SSAVO">
+
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
 

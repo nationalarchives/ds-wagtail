@@ -28,9 +28,11 @@
                 </fieldset>
             </div>
 
-            {% for hidden_field in form.hidden_fields %}
-                {{ hidden_field }}
-            {% endfor %}
+            <input type="hidden" name="q" value="{{form.q.value}}" id="id_q_CSLFC">
+            <input type="hidden" name="group" value="{{form.group.value}}" id="id_group_CSLFC">
+            <input type="hidden" name="sort_by" value="{{form.sort_by.value}}" id="id_sort_by_CSLFC">
+            <input type="hidden" name="sort_order" value="{{form.sort_order.value}}" id="id_sort_order_CSLFC">
+            <input type="hidden" name="per_page" value="{{form.per_page.value}}" id="id_per_page_CSLFC">
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">

@@ -89,9 +89,13 @@
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}
         </div>
-        {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
-        {% endfor %}
+
+        <input type="hidden" name="q" value="{{form.q.value}}" id="id_q_SF">
+        <input type="hidden" name="group" value="{{form.group.value}}" id="id_group_SF">
+        <input type="hidden" name="sort_by" value="{{form.sort_by.value}}" id="id_sort_by_SF">
+        <input type="hidden" name="sort_order" value="{{form.sort_order.value}}" id="id_sort_order_SF">
+        <input type="hidden" name="per_page" value="{{form.per_page.value}}" id="id_per_page_SF">
+      
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
