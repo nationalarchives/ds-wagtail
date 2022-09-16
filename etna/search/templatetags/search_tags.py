@@ -205,3 +205,18 @@ def prepare_form_for_full_render(form):
     # In case form fields have not been patched already
     patch_form_fields(form)
     return ""
+
+@register.filter
+def split(value, key=None) -> list:
+  """
+  Returns list of values split by key
+  """
+  return value.split(key)
+
+
+@register.filter
+def suffix_random_string(s="", num=3) -> str:
+  """
+  Returns random string of num chars suffixed to s
+  """
+  return s + get_random_string(num)

@@ -46,7 +46,7 @@
 
         <div>
             {{ form.group.errors }}
-            <input type="hidden" name="group" value="{{form.group.value}}" id="id_group_PK4">
+            {% include 'search/includes/hidden_fields.html' with hidden_fields="group"|split suffix=""|suffix_random_string %}
         </div>
 {% endblock %}
 
