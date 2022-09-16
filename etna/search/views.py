@@ -312,7 +312,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_per_page: int = 20
     default_sort_by: str = SortBy.RELEVANCE.value
     default_sort_order: str = SortOrder.ASC.value
-    default_display:str = Display.LIST.value
+    default_display: str = Display.LIST.value
 
     dynamic_choice_fields = (
         "collection",
