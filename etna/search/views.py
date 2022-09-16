@@ -20,6 +20,7 @@ from ..ciim.constants import (
     Bucket,
     BucketKeys,
     BucketList,
+    Display,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -311,6 +312,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_per_page: int = 20
     default_sort_by: str = SortBy.RELEVANCE.value
     default_sort_order: str = SortOrder.ASC.value
+    default_display:str = Display.LIST.value
 
     dynamic_choice_fields = (
         "collection",
@@ -327,6 +329,7 @@ class BaseFilteredSearchView(BaseSearchView):
             "sort_by": self.default_sort_by,
             "sort_order": self.default_sort_order,
             "per_page": self.default_per_page,
+            "display": self.default_display,
         }
 
     @property
