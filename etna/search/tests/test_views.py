@@ -1,4 +1,4 @@
-import json
+import json as json_module
 
 from typing import Any
 
@@ -353,7 +353,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
     def get_url(self, url: str, **data: Any) -> HttpResponse:
@@ -507,7 +507,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
     def get_url(self, url: str, **data: Any) -> HttpResponse:
@@ -610,15 +610,13 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
 
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     @responses.activate
-    def test_datalayer_search_landing(self):
-        import json
-
+    def test_datalayer_landing_search(self):
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/landing_search.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/")
@@ -631,14 +629,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_featured_search(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/searchAll",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/featured/")
@@ -651,8 +647,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_featured_search_query(self):
-        import json
-
         path = (
             f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search_query.json"
         )
@@ -660,7 +654,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/searchAll",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/featured/?q=test+search+term")
@@ -673,8 +667,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_tna(self):
-        import json
-
         path = (
             f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_tna.json"
         )
@@ -682,7 +674,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/")
@@ -695,14 +687,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_tna_query(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_tna_query.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/?q=test+search+term&group=tna")
@@ -715,14 +705,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_filtered_search_tna(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_filtered_search_tna.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get(
@@ -737,14 +725,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_digitised(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_digitised.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/?group=digitised")
@@ -757,14 +743,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_nontna(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_nontna.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/?group=nonTna")
@@ -777,14 +761,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_creator(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_creator.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/?group=creator")
@@ -797,14 +779,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_catalogue_search_archive(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_archive.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/catalogue/?group=archive")
@@ -817,14 +797,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_filtered_search_blog(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_filtered_search_blog.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?topic=Conservation&group=blog")
@@ -837,14 +815,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_blog_query(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog_query.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?q=test&group=blog")
@@ -857,8 +833,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_blog(self):
-        import json
-
         path = (
             f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog.json"
         )
@@ -866,7 +840,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=blog")
@@ -879,14 +853,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_researchguide(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_researchguide.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=researchGuide")
@@ -899,14 +871,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_insight(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=insight")
@@ -919,14 +889,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_highlight(self):
-        import json
-
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight2.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=highlight")
@@ -939,8 +907,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_audio(self):
-        import json
-
         path = (
             f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_audio.json"
         )
@@ -948,7 +914,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=audio")
@@ -961,8 +927,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_video(self):
-        import json
-
         path = (
             f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_video.json"
         )
@@ -970,7 +934,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
         response = self.client.get("/search/website/?group=video")
