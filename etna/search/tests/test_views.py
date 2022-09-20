@@ -608,23 +608,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
 
 
-# SearchLandingView: cG1 = "Search", cd1 = "offsite", cd3 = "SearchLandingView", cd8 = "", cd9 = "", cm1 = 0, cm2 = 0.
-# FeaturedSearchView: cG1 = "Search", cd1 = "offsite", cd3 = "FeaturedSearchView", cd8 = "All results: none", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# CatalogueSearchView (tna bucket UNFILTERED): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: tna", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# CatalogueSearchView (tna bucket FILTERED): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: tna", cd9 = "(search term)", cm1 = (how many results), cm2 = 2.
-# CatalogueSearchView (nonTna bucket): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: nonTna", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# CatalogueSearchView (digitised bucket): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: digitised", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# CatalogueSearchView (creator bucket): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: creator", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# CatalogueSearchView (archive bucket): cG1 = "Search", cd1 = "offsite", cd3 = "CatalogueSearchView", cd8 = "Catalogue results: archive", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (blog bucket UNFILTERED): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: blog", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (blog bucket FILTERED): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: blog", cd9 = "(search term)", cm1 = (how many results), cm2 = 2.
-# WebsiteSearchView (researchGuide bucket): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: researchGuide", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (insight bucket): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: insight", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (highlight bucket): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: highlight", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (audio bucket): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: audio", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-# WebsiteSearchView (video bucket): cG1 = "Search", cd1 = "offsite", cd3 = "WebsiteSearchView", cd8 = "Website results: video", cd9 = "(search term)", cm1 = (how many results), cm2 = 0.
-
-
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     @responses.activate
     def test_datalayer_search_landing(self):
