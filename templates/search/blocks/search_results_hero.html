@@ -3,7 +3,7 @@
 <div class="search-results-hero">
     <h1 class="search-results-hero__heading">{{type}} search results</h1>
     <form action='' method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
-        {% prepare_form_for_partial_render form 'q' %}
+
         {{ form.q.errors }}
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}

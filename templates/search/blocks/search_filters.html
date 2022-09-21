@@ -9,7 +9,6 @@
             {% endif %}
             
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
