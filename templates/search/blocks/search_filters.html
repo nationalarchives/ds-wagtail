@@ -90,7 +90,7 @@
             {% endif %}
         </div>
 
-        {% include 'search/includes/hidden_fields.html' with hidden_fields="q group sort_by sort_order per_page display"|split suffix=""|suffix_random_string %}
+        {{ 'q group sort_by sort_order per_page display '|include_hidden_fields:form }}
       
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}

@@ -9,7 +9,7 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {% include 'search/includes/hidden_fields.html' with hidden_fields="q group sort_order per_page display"|split suffix=""|suffix_random_string %}
+        {{ 'q group sort_order per_page display filter_keyword opening_start_date opening_end_date'|include_hidden_fields:form }}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
@@ -42,6 +42,6 @@
         </li>
 
         {{ form.display.errors }}
-        {% include 'search/includes/hidden_fields.html' with hidden_fields="display"|split suffix=""|suffix_random_string %}
+        {{ 'display'|include_hidden_fields:form }}
     </ul>
 </div>

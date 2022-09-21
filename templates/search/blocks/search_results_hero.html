@@ -8,7 +8,7 @@
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
 
-        {% include 'search/includes/hidden_fields.html' with hidden_fields="group sort_by sort_order per_page display"|split suffix=""|suffix_random_string %}
+        {{ 'group sort_by sort_order per_page display filter_keyword opening_start_date opening_end_date'|include_hidden_fields:form }}
 
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
