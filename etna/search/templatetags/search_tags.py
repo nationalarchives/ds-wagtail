@@ -208,16 +208,17 @@ def prepare_form_for_full_render(form):
 
 
 @register.filter
-def split(value, key=None) -> list:
+def include_hidden_fields(fields_str, form):
     """
-    Returns list of values split by key
+    Returns fields given in fields_str as hidden fields.
+    Random string suffixed for id to make it unique within the page.
     """
-    return value.split(key)
-
-
-@register.filter
-def suffix_random_string(s="", num=3) -> str:
-    """
-    Returns random string of num chars suffixed to s
-    """
-    return s + get_random_string(num)
+    html = ""
+    for field in fields_str.split():
+        try:
+            if value := form.cleaned_data[field]:
+                html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
+        except KeyError:
+            # field is not part of the page, example /search/featured/
+            pass
+    return mark_safe(html)

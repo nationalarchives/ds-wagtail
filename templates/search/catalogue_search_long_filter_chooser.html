@@ -28,7 +28,7 @@
                 </fieldset>
             </div>
 
-            {% include 'search/includes/hidden_fields.html' with hidden_fields="q group sort_by sort_order per_page"|split suffix=""|suffix_random_string %}
+            {{ 'q group sort_by sort_order per_page display filter_keyword opening_start_date opening_end_date'|include_hidden_fields:form }}
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">

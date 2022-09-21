@@ -46,7 +46,7 @@
 
         <div>
             {{ form.group.errors }}
-            {% include 'search/includes/hidden_fields.html' with hidden_fields="group"|split suffix=""|suffix_random_string %}
+            {{ 'group'|include_hidden_fields:form }}
         </div>
 {% endblock %}
 
