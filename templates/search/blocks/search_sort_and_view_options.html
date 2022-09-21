@@ -9,7 +9,15 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {{ 'q group sort_order per_page display filter_keyword opening_start_date opening_end_date'|include_hidden_fields:form }}
+        {{ form.q.as_hidden }}
+        {{ form.group.as_hidden }}
+        {{ form.display.as_hidden }}
+        {{ form.filter_keyword.as_hidden }}
+        {{ form.opening_start_date.as_hidden }}
+        {{ form.opening_end_date.as_hidden }}
+        {% for hidden_field in form.hidden_fields %}
+            {{ hidden_field }}
+        {% endfor %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
@@ -42,6 +50,6 @@
         </li>
 
         {{ form.display.errors }}
-        {{ 'display'|include_hidden_fields:form }}
+        {{ form.display.as_hidden }}
     </ul>
 </div>

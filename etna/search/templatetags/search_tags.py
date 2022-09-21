@@ -120,20 +120,3 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     query_dict.setlist(key, [i for i in items if i != str(value)])
 
     return query_dict.urlencode()
-
-
-@register.filter
-def include_hidden_fields(fields_str, form):
-    """
-    Returns fields given in fields_str as hidden fields.
-    Random string suffixed for id to make it unique within the page.
-    """
-    html = ""
-    for field in fields_str.split():
-        try:
-            if value := form.cleaned_data[field]:
-                html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
-        except KeyError:
-            # field is not part of the page, example /search/featured/
-            pass
-    return mark_safe(html)

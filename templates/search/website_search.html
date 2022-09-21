@@ -42,7 +42,7 @@
 
         <div>
             {{ form.group.errors }}
-            {{ 'group'|include_hidden_fields:form }}
+            {{ form.group.as_hidden }}
         </div>
     </form>
 {% endblock %}

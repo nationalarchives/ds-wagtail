@@ -27,7 +27,16 @@
                 </fieldset>
             </div>
 
-            {{ 'q group sort_by sort_order per_page display filter_keyword opening_start_date opening_end_date'|include_hidden_fields:form }}
+            {{ form.q.as_hidden }}
+            {{ form.group.as_hidden }}
+            {{ form.sort_by.as_hidden }}
+            {{ form.display.as_hidden }}
+            {{ form.filter_keyword.as_hidden }}
+            {{ form.opening_start_date.as_hidden }}
+            {{ form.opening_end_date.as_hidden }}
+            {% for hidden_field in form.hidden_fields %}
+                {{ hidden_field }}
+            {% endfor %}
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
