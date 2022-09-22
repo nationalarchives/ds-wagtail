@@ -12,6 +12,7 @@ from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
 
+from ..analytics.mixins import SearchDataLayerMixin
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
@@ -20,6 +21,7 @@ from ..ciim.constants import (
     Bucket,
     BucketKeys,
     BucketList,
+    Display,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -175,7 +177,7 @@ class KongAPIMixin:
         return paginator, page, page_range
 
 
-class SearchLandingView(BucketsMixin, TemplateView):
+class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
     """
     A simple view that queries the API to retrieve counts for the various
     buckets the user can explore, and provides a form to encourage the user
@@ -214,7 +216,7 @@ class SearchLandingView(BucketsMixin, TemplateView):
         )
 
 
-class BaseSearchView(KongAPIMixin, FormView):
+class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
     """
     A base view that uses a Django form to interpret/clean querystring
     data, then uses those values to make an API request and render
@@ -285,6 +287,26 @@ class BaseSearchView(KongAPIMixin, FormView):
             title += ' for "' + query.replace('"', "'") + '"'
         return title
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        if self.form.cleaned_data.get("group"):
+            custom_dimension8 = (
+                self.title_base + ": " + self.form.cleaned_data.get("group")
+            )
+        else:
+            custom_dimension8 = self.title_base + ": " + "none"
+        custom_dimension9 = self.form.cleaned_data.get("q") or "*"
+        try:
+            custom_metric2 = len(self.get_api_filter_aggregations(self.form)) - 1
+        except AttributeError:  # This is needed as it will throw an error as some pages do not have filters (e.g. Featured Search, or Record Creator bucket)
+            custom_metric2 = 0
+        data.update(
+            customDimension8=custom_dimension8,
+            customDimension9=custom_dimension9,
+            customMetric2=custom_metric2,
+        )
+        return data
+
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         kwargs.update(
             meta_title=self.get_meta_title(),
@@ -312,6 +334,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_per_page: int = 20
     default_sort_by: str = SortBy.RELEVANCE.value
     default_sort_order: str = SortOrder.ASC.value
+    default_display: str = Display.LIST.value
 
     dynamic_choice_fields = (
         "collection",
@@ -329,6 +352,7 @@ class BaseFilteredSearchView(BaseSearchView):
             "sort_by": self.default_sort_by,
             "sort_order": self.default_sort_order,
             "per_page": self.default_per_page,
+            "display": self.default_display,
         }
 
     @property
@@ -506,6 +530,27 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/catalogue_search.html"
     title_base = "Catalogue results"
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = 0
+        try:
+            if self.form.cleaned_data["group"] == BucketKeys.CREATOR.value:
+                total_count = self.api_result["responses"][1]["aggregations"]["group"][
+                    "buckets"
+                ][0]["doc_count"]
+            else:
+                result = self.api_result["responses"][1]["aggregations"][
+                    "catalogueSource"
+                ]["buckets"]
+                for bucket in result:
+                    total_count += bucket["doc_count"]
+        except KeyError:
+            total_count = 0
+        if total_count > 10000:
+            total_count = 10001
+        data.update(customMetric1=total_count)
+        return data
+
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
         return super().get_context_data(**kwargs)
@@ -564,6 +609,14 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
     title_base = "Website results"
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
+        if total_count > 10000:
+            total_count = 10001
+        data.update(customMetric1=total_count)
+        return data
 
     def add_insights_page_for_url(self, page: Page) -> None:
         """
@@ -658,6 +711,8 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
+    title_base = "All results"
+    featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
@@ -682,7 +737,16 @@ class FeaturedSearchView(BaseSearchView):
             bucket.result_count = response["hits"]["total"]["value"]
             bucket.results = response["hits"]["hits"]
             buckets[bucket.key] = bucket
+            self.featured_search_total_count += bucket.result_count
         return buckets
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        total_count = self.featured_search_total_count
+        if total_count > 10000:
+            total_count = 10001
+        data.update(customMetric1=total_count)
+        return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(buckets=self.get_buckets(), **kwargs)

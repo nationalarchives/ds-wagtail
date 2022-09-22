@@ -178,6 +178,7 @@ class BaseCollectionSearchForm(forms.Form):
         min_value=20,
         max_value=50,
         required=False,
+        widget=forms.HiddenInput(),
     )
     sort_by = forms.ChoiceField(
         label="Sort by",
@@ -196,6 +197,7 @@ class BaseCollectionSearchForm(forms.Form):
             (SortOrder.DESC.value, "Descending"),
         ],
         required=False,
+        widget=forms.HiddenInput(),
     )
     display = forms.ChoiceField(
         choices=[

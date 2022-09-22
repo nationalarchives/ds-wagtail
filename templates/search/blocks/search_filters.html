@@ -9,7 +9,6 @@
             {% endif %}
             
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' 'type' %}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -93,9 +92,15 @@
                 {% include "search/includes/filter.html" with field=form.type %}
             {% endif %}
         </div>
+
+        {{ form.q.as_hidden }}
+        {{ form.group.as_hidden }}
+        {{ form.sort_by.as_hidden }}
+        {{ form.display.as_hidden }}
         {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
+            {{ hidden_field }}
         {% endfor %}
+      
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>

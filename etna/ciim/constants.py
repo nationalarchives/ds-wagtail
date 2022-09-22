@@ -580,3 +580,10 @@ LEVELS = (
 )
 
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)
+
+
+class Display(str, Enum):
+    """Display type to support veiw, template."""
+
+    LIST = "list"
+    GRID = "grid"

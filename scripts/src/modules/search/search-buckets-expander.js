@@ -15,6 +15,8 @@ export default function() {
     $showHideButton.classList.add('search-buckets__toggle-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-label', 'Show or hide result categories');
+    $showHideButton.setAttribute('data-link-type', 'Link');
+    $showHideButton.setAttribute('data-link', 'Show more result categories');
     $showHideButton.hidden = true;
     $searchBuckets.insertBefore($showHideButton, $searchBuckets.childNodes[0]); //IE11 compatible prepend
 
