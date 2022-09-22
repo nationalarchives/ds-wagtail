@@ -2,16 +2,23 @@
 
 <div class="search-sort-view">
     <form action='' method="GET" class="search-sort-view__form" data-id="sort-form" id="catalogue-sort-form">
-        {% prepare_form_for_partial_render form 'sort_by' %}
+
         <h2 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
         </h2>
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
+        {{ form.q.as_hidden }}
+        {{ form.group.as_hidden }}
+        {{ form.display.as_hidden }}
+        {{ form.filter_keyword.as_hidden }}
+        {{ form.opening_start_date.as_hidden }}
+        {{ form.opening_end_date.as_hidden }}
         {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
+            {{ hidden_field }}
         {% endfor %}
+
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
 

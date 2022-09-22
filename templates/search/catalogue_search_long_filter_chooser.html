@@ -10,7 +10,6 @@
     <div class="long-filters">
         <h1 class="long-filters__heading">Select filters to apply to your results</h1>
         <form method="get" action="{% url 'search-catalogue' %}" data-id="long-filter-form" id="analytics-long-filter-form">
-            {% prepare_form_for_partial_render form field_name %}
 
             <div class="long-filters__options">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
@@ -29,6 +28,13 @@
                 </fieldset>
             </div>
 
+            {{ form.q.as_hidden }}
+            {{ form.group.as_hidden }}
+            {{ form.sort_by.as_hidden }}
+            {{ form.display.as_hidden }}
+            {{ form.filter_keyword.as_hidden }}
+            {{ form.opening_start_date.as_hidden }}
+            {{ form.opening_end_date.as_hidden }}
             {% for hidden_field in form.hidden_fields %}
                 {{ hidden_field }}
             {% endfor %}

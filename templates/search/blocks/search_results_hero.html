@@ -3,14 +3,21 @@
 <div class="search-results-hero">
     <h1 class="search-results-hero__heading">{{type}} search results</h1>
     <form action='' method="GET" class="search-results-hero__form" data-id="search-form" id="catalogue-search-form">
-        {% prepare_form_for_partial_render form 'q' %}
+
         {{ form.q.errors }}
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
-
+        
+        {{ form.group.as_hidden }}
+        {{ form.sort_by.as_hidden }}
+        {{ form.display.as_hidden }}
+        {{ form.filter_keyword.as_hidden }}
+        {{ form.opening_start_date.as_hidden }}
+        {{ form.opening_end_date.as_hidden }}
         {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
+            {{ hidden_field }}
         {% endfor %}
+
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
 
