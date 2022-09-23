@@ -9,6 +9,7 @@ from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
     LEVEL_CHOICES,
+    TYPE_CHOICES,
     WEBSITE_BUCKETS,
 )
 
@@ -153,12 +154,16 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
+    # Choices are supplied to this field to influence labels only. The options
+    # are not complete enough to be used for validation
     type = DynamicMultipleChoiceField(
         label="Creator type",
+        choices=TYPE_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
         ),
         required=False,
+        validate_input=False,
     )
     opening_start_date = forms.DateTimeField(
         label="From",
