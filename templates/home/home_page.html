@@ -77,21 +77,8 @@
 
 <div class="container">
     <div class="block-featuredcollection">
-
-
         <div class="featured-collection">
-
-
             <ul class="card-group--list-style-none">
-
-
-
-
-
-
-
-
-
                 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
                     <div class="card-group-secondary-nav">
                         <a href="/stories/mangrove-nine/" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card image" data-card-title="The Mangrove Nine" aria-hidden="true" tabindex="-1" data-card-position="0">
@@ -118,16 +105,6 @@
                     </div>
                 </li>
 
-
-
-
-
-
-
-
-
-
-
                 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
                     <div class="card-group-secondary-nav">
                         <a href="/stories/alice-hawkins/" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card image" data-card-title="Alice Hawkins" aria-hidden="true" tabindex="-1" data-card-position="1">
@@ -153,16 +130,6 @@
 
                     </div>
                 </li>
-
-
-
-
-
-
-
-
-
-
 
                 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
                     <div class="card-group-secondary-nav">
@@ -195,17 +162,36 @@
             </ul>
         </div>
     </div>
-   
+
+    <div class="cta-banner-survey">
+        <div class="container py-3">
+            <div class="row justify-content-md-center text-center">
+
+                <div class="col-sm-12 col-lg-12">
+                    <a class="tna-button--dark" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">See more stories from the collection</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="cta-banner-survey">
+        <div class="container py-3">
+            <div class="row justify-content-md-center text-center">
+
+                <div class="col-sm-12 col-lg-12">
+                    <a class="tna-button--dark" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">See more stories from the collection</a>
+                    <a class="tna-button--dark" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">See more stories from the collection</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 </div>
     <!--end static template-->
 
-    <div class="container pt-4">
-        {% for block in page.body %}
-            <div class="row">
-                {% include_block block %}
-            </div>
-        {% endfor %}
-    </div>
+
 {% endblock content %}
 
 {% block extra_js %}
