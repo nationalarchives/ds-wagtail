@@ -778,7 +778,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         self.assertTemplateUsed(response, "search/catalogue_search.html")
 
         html_decoded_response = response.content.decode("utf8")
-        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: creator", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 10001, "customMetric2": 0}</script>"""
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: creator", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 0, "customMetric2": 0}</script>"""
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
     @responses.activate
