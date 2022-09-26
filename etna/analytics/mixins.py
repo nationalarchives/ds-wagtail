@@ -54,3 +54,24 @@ class DataLayerMixin:
             customDimension2="",
         )
         return data
+
+
+class SearchDataLayerMixin(DataLayerMixin):
+    """
+    A mixin applied to Search classes to allow them to customise the Google Analytics
+    datalayer.
+    """
+
+    def get_gtm_content_group(self) -> str:
+        return "Search"
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension3=self.__class__.__name__,  # The page type - [Always has a value]
+            customDimension8="",  # This is the search bucket. Empty string if not applicable.
+            customDimension9="",  # This is the search term. Empty string if not applicable.
+            customMetric1=0,  # This is the number of search results returned
+            customMetric2=0,  # This is the number of search filters applied
+        )
+        return data

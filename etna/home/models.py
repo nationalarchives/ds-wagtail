@@ -3,14 +3,17 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 
+from wagtailmetadata.models import MetadataPageMixin
+
 from etna.core.models import BasePage
+from etna.teasers.models import TeaserImageMixin
 
 from ..alerts.models import AlertMixin
 from .blocks import HomePageStreamBlock
 from ..core.blocks.cta import FeaturedCollectionBlock
 
 
-class HomePage(AlertMixin, BasePage):
+class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     sub_heading = models.CharField(max_length=255, blank=False,
                                    default="Discover some of the most important and unusual records from over 1000 "
                                            "years of history.")
@@ -31,6 +34,7 @@ class HomePage(AlertMixin, BasePage):
         FieldPanel("featured_collections"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     def get_context(self, request):
         context = super().get_context(request)

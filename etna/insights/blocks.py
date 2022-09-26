@@ -11,7 +11,6 @@ from etna.core.blocks import (
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
-    ParagraphWithHeading,
     SectionDepthAwareStructBlock,
 )
 
@@ -186,7 +185,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     items = PageListBlock(
         "insights.InsightsPage",
         exclude_drafts=True,
-        exclude_private=False,
+        exclude_private=True,
         select_related=["teaser_image"],
         min_num=3,
         max_num=9,
@@ -196,10 +195,6 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
         icon = "list"
         label = "Featured collection"
         template = "insights/blocks/featured_collection.html"
-
-
-class InsightsIndexPageStreamBlock(blocks.StreamBlock):
-    paragraph = ParagraphWithHeading()
 
 
 class QuoteBlock(SectionDepthAwareStructBlock):

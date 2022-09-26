@@ -2,6 +2,11 @@
     display: flex;
     margin-bottom: 4rem;
 
+    //class to hide aria descriptions
+    .aria-desc {
+        display:none;
+    }
+
     &__image-link {
         display: inline-block;
         width: 50%;
@@ -38,6 +43,13 @@
         small {
             display: block;
             font-size: 1.2rem;
+        }
+
+        span {
+            background:green;
+            font-size: 0.8rem;
+            color:white;
+            padding:3px 3px 0px 3px;
         }
     }
 

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
     "generic_chooser",
+    "wagtailmetadata",
     "modelcluster",
     "taggit",
     "django.contrib.admin",
@@ -249,6 +250,10 @@ STATIC_URL = "/static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Should always be False in production. Can be set to True in local environments
+# to serve static files even when DEBUG is False
+DJANGO_SERVE_STATIC = False
 
 WAGTAILMEDIA = {
     "MEDIA_MODEL": "media.EtnaMedia",

@@ -23,6 +23,10 @@
       @include explorer-link;
     }
 
+    .aria-desc-card {
+      display:none;
+    }
+
     &__title-link {
       @extend .tna-card__link;
 
@@ -38,6 +42,15 @@
 
     &__heading {
       display: inline;
+
+      span {
+        background:green;
+        font-size: 0.8rem;
+        color:white;
+        padding:3px 3px 0px 3px;
+        margin-left: 1px;
+      }
+
     }
 
     &__image {
@@ -67,6 +80,7 @@
     list-style: none;
     display: inline-block;
     width: 100%;
+    margin-bottom: 2rem;
     &__image {
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
@@ -95,11 +109,6 @@
       &:focus {
         outline-offset: .2rem;
       }
-    }
-
-    &__body {
-      margin-left: 0.5rem;
-      margin-top: 0.5rem;
     }
  
     &__heading {

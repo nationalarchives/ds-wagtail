@@ -8,6 +8,8 @@ from wagtail.images import get_image_model_string
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Orderable
 
+from wagtailmetadata.models import MetadataPageMixin
+
 from etna.insights.models import InsightsPage
 
 from ..alerts.models import AlertMixin
@@ -25,7 +27,7 @@ from .blocks import (
 )
 
 
-class ExplorerIndexPage(AlertMixin, TeaserImageMixin, BasePage):
+class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
@@ -39,7 +41,7 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, BasePage):
         FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
@@ -49,7 +51,7 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, BasePage):
     ]
 
 
-class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
+class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -64,7 +66,7 @@ class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
         FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     @cached_property
     def featured_pages(self):
@@ -95,7 +97,7 @@ class TopicExplorerIndexPage(TeaserImageMixin, BasePage):
     ]
 
 
-class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
+class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -107,17 +109,17 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
         FieldPanel("body"),
+        FieldPanel("featured_insight"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     @property
@@ -141,7 +143,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
         )
 
 
-class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
+class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -156,7 +158,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
         FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     @cached_property
     def featured_pages(self):
@@ -187,7 +189,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, BasePage):
     ]
 
 
-class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
+class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -209,12 +211,12 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
     )
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
         FieldPanel("body"),
+        FieldPanel("featured_insight"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     @property
@@ -238,7 +240,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, BasePage):
         )
 
 
-class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):
+class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Results BasePage.
 
     This page is a placeholder for the results page at the end of a user's
@@ -258,7 +260,7 @@ class ResultsPage(AlertMixin, TeaserImageMixin, BasePage):
         FieldPanel("introduction"),
         InlinePanel("records", heading="Records"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = [

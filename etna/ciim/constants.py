@@ -1,7 +1,21 @@
 from dataclasses import dataclass
+from enum import Enum
 from typing import Any, List
 
 from django.contrib.humanize.templatetags.humanize import intcomma
+
+
+def forTemplate(cls):
+    # Enum class call in template raises error and abort with empty string
+    # setting do_not_call_in_templates = True skips the call portion
+    cls.do_not_call_in_templates = True
+    return cls
+
+
+@forTemplate
+class BucketKeys(Enum):
+    NONTNA = "nonTna"
+    CREATOR = "creator"
 
 
 @dataclass
@@ -566,3 +580,10 @@ LEVELS = (
 )
 
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)
+
+
+class Display(str, Enum):
+    """Display type to support veiw, template."""
+
+    LIST = "list"
+    GRID = "grid"
