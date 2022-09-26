@@ -2,40 +2,39 @@
 {% load humanize %}
 
 <div class="search-results">
-        <div class="search-results__metadata">
+        {% with count=page.paginator.count %}
+            <div class="search-results__metadata">
+                
+                {% if count > 0 %}            
+                <p class="search-results__metadata-count">Showing 
+                    {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"</p>
+                {% endif %}    
+                
+                
 
-            {% with count=page.paginator.count %}
-            
-            {% if count > 0 %}            
-            <p class="search-results__metadata-count">Showing 
-                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"</p>
-            {% endif %}    
-             
-              
+                {% if count < 1 %}
+                    <!-- add in the no results -->
+                    {% include './no_results_catalogue_website.html' %}
+                {% endif %}
 
-            {% if count < 1 %}
-                <!-- add in the no results -->
-                {% include './no_results_catalogue_website.html' %}
+                {% include './search_results__selected-filters.html' %}
+                            
+
+            </div>
+            <h2 class="sr-only">Results</h2>
+
+            {% if form.cleaned_data.display == "grid" %}
+                <ul class="search-results__list--grid" id="analytics-results-list">
+                    {% for record in page %}
+                        {% include './search_results__list-card--grid.html' %}
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <ul class="search-results__list" id="analytics-results-list">
+                    {% for record in page %}
+                        {% include './search_results__list-card.html' %}
+                    {% endfor %}
+                </ul>
             {% endif %}
-
-            {% include './search_results__selected-filters.html' %}
-                        
-
-        </div>
-        <h2 class="sr-only">Results</h2>
-
-        {% if form.cleaned_data.display == "grid" %}
-            <ul class="search-results__list--grid" id="analytics-results-list">
-                {% for record in page %}
-                    {% include './search_results__list-card--grid.html' %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <ul class="search-results__list" id="analytics-results-list">
-                {% for record in page %}
-                    {% include './search_results__list-card.html' %}
-                {% endfor %}
-            </ul>
-        {% endif %}
+        {% endwith %} 
 </div>
-{% endwith %} 

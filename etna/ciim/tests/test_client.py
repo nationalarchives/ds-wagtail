@@ -289,14 +289,17 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_aggregations(self):
-        self.client.search(aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION])
+        self.client.search(
+            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION, Aggregation.TYPE]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/search?"
             "aggregations=level"
-            "&aggregations=collection",
+            "&aggregations=collection"
+            "&aggregations=type",
         )
 
     @responses.activate
@@ -401,6 +404,18 @@ class ClientSearchTest(SimpleTestCase):
             "https://kong.test/data/search?"
             "filterAggregations=level%3AItem%3Aor&"
             "filterAggregations=level%3APiece%3Aor",
+        )
+
+    @responses.activate
+    def test_with_filter_type(self):
+        self.client.search(filter_aggregations=["type:person", "type:organisation"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            "https://kong.test/data/search?"
+            "filterAggregations=type%3Aperson&"
+            "filterAggregations=type%3Aorganisation",
         )
 
     @responses.activate

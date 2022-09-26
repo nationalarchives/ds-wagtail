@@ -87,6 +87,10 @@
                 {% include "search/includes/filter.html" with field=form.held_by %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}
+
+            {% if form.group.value == bucketkeys.CREATOR.value %}
+                {% include "search/includes/filter.html" with field=form.type %}
+            {% endif %}
         </div>
 
         {{ form.q.as_hidden }}
