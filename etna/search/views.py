@@ -205,6 +205,7 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
                 # for any bucket/tab options we might be showing
                 f"{Aggregation.GROUP}:30",
                 Aggregation.HELD_BY,
+                Aggregation.TYPE,
             ],
             size=0,
         )
@@ -342,6 +343,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "closure",
         "held_by",
         "catalogue_source",
+        "type",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:
@@ -415,6 +417,7 @@ class BaseFilteredSearchView(BaseSearchView):
             Aggregation.HELD_BY,
             Aggregation.CATALOGUE_SOURCE,
             Aggregation.GROUP,
+            Aggregation.TYPE,
         ):
             item_count = 10
             if aggregation == Aggregation.GROUP:
@@ -530,19 +533,9 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         total_count = 0
-        try:
-            if self.form.cleaned_data["group"] == BucketKeys.CREATOR.value:
-                total_count = self.api_result["responses"][1]["aggregations"]["group"][
-                    "buckets"
-                ][0]["doc_count"]
-            else:
-                result = self.api_result["responses"][1]["aggregations"][
-                    "catalogueSource"
-                ]["buckets"]
-                for bucket in result:
-                    total_count += bucket["doc_count"]
-        except KeyError:
-            total_count = 0
+        if aggregations := self.api_result["responses"][1].get("aggregations"):
+            for bucket in aggregations["catalogueSource"]["buckets"]:
+                total_count += bucket["doc_count"]
         if total_count > 10000:
             total_count = 10001
         data.update(customMetric1=total_count)

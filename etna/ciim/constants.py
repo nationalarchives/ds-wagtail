@@ -587,3 +587,16 @@ class Display(str, Enum):
 
     LIST = "list"
     GRID = "grid"
+
+
+TYPE_NAMES = {
+    "business": "Business",
+    "family": "Family",
+    "manor": "Manor",
+    "organisation": "Organisation",
+    "person": "Person",
+}
+
+TYPE_CHOICES = tuple(
+    (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
+)
