@@ -1,18 +1,22 @@
 {% extends "base_page.html" %}
 
 {% load static %}
-{% load wagtailcore_tags %}
+{% load i18n %}
 {% block breadcrumb %}
 {% endblock %}
 {% block body_class %}template-homepage{% endblock %}
+{% load wagtailcore_tags %}
 {% load wagtailmetadata_tags %}
+{% load wagtailimages_tags %}
 {% block meta_tag %}
     {% meta_tags %}
 {% endblock %}
 {% block content %}
 
     {% include 'includes/generic-intro.html' %}
-
+    {% for item in page.body %}
+        {{item.name}}
+    {%endfor%}
     <!--static template-->
     <div class="container pt-4">
         <div class="row">
@@ -37,130 +41,49 @@
         </div><!--end row-->
     </div><!--end container-->
 
-    <div class="container pt-4">
-        <div class="row">
-            <h2>Stories from the collection</h2>
-
-            <div class="featured-insight">
-
-                <a href="/stories/margaret-bondfield/" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: Margaret Bondfield" data-link-type="Image">
+    {% if page.featured_insight %} <!-- this if statement is for the whole featured insight card -->
+    
+    <div class="container">
+        <div class="featured-insight">
+            {% if page.featured_insight.hero_image %}
+                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
                     <picture>
+                        {% image page.featured_insight.hero_image fill-500x400-c100 as hero %}
+                        <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-500x500-c100 as hero %}
+                        <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+                        {% image page.featured_insight.hero_image fill-1000x600-c100 as hero %}
+                        <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
 
-                        <source media="(max-width: 768px)" srcset="/media/images/Margaret-Bondfield.060d724d.fill-500x400-c100.jpg">
-
-                        <source media="(max-width: 991px)" srcset="/media/images/Margaret-Bondfield.060d724d.fill-500x500-c100.jpg">
-
-                        <source media="(max-width: 1200px)" srcset="/media/images/Margaret-Bondfield.060d724d.fill-1000x600-c100.jpg">
-
-
-                        <img src="/media/images/Margaret-Bondfield.060d724d.fill-1000x600-c100.jpg" alt="A woman smiles at someone off camera. She is wearing a black coat and standing next to a suited man">
-
+                        {% if page.featured_insight.hero_image_decorative %}
+                            <img src="{{ hero.url }}" alt="" />
+                        {% else %}
+                            <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
+                        {% endif %}
                     </picture>
                 </a>
+            {% endif %}
+            
+            <div class="featured-insight__description">
+                <h2 class="featured-insight__heading">
+                    <small>{% trans "Spotlight on" %}</small>
+                    {{ page.featured_insight.title }}
+                    {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}
+                        <span aria-describedby="article-desc" role="link">NEW</span>
+                    {% endif %}
+                </h2>
 
+                <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_insight.title }}</p>
 
-                <div class="featured-insight__description">
-                    <h2 class="featured-insight__heading">
-                        <small>Spotlight on</small>
-                        Margaret Bondfield
-
-                    </h2>
-
-                    <p>Margaret Bondfield (1873–1953) was a trade unionist and Labour politician. In 1929 she became Britain’s first female cabinet minister.</p>
-                    <a class="tna-button--dark" href="/stories/margaret-bondfield/" data-component-name="Featured Insight: Margaret Bondfield" data-link-type="Button">Read</a>
-                </div>
+                <p>{{ page.featured_insight.sub_heading }}</p>
+                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
-
-
         </div>
     </div>
+    {% endif %}
 
-<div class="container">
-    <div class="block-featuredcollection">
-        <div class="featured-collection">
-            <ul class="card-group--list-style-none">
-                <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                    <div class="card-group-secondary-nav">
-                        <a href="/stories/mangrove-nine/" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card image" data-card-title="The Mangrove Nine" aria-hidden="true" tabindex="-1" data-card-position="0">
-                            <div class="card-group-secondary-nav__image">
-                                <picture>
-                                    <source media="(max-width: 768px)" srcset="/media/images/HO325-143-3-icon.dea41e43.fill-508x304_X5rzNix.jpg">
-                                    <source media="(max-width: 991px)" srcset="/media/images/HO325-143-3-icon.dea41e43.fill-328x196_bOhSwNX.jpg">
-                                    <source media="(max-width: 1199px)" srcset="/media/images/HO325-143-3-icon.dea41e43.fill-288x172_rDqz84P.jpg">
-                                    <source media="(min-width: 1200px)" srcset="/media/images/HO325-143-3-icon.dea41e43.fill-348x208_lgcoEnz.jpg">
-                                    <img src="/media/images/HO325-143-3-icon.dea41e43.fill-508x304_X5rzNix.jpg" alt="" class="card-group-secondary-nav__image-fallback">
-                                </picture>
-                            </div>
-                        </a>
-                        <div class="card-group-secondary-nav__body">
-                            <a href="/stories/mangrove-nine/" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card text" data-card-title="The Mangrove Nine" data-card-position="0">
-                                <h3 class="card-group-secondary-nav__heading">
-                                    The Mangrove Nine
-
-                                </h3>
-                            </a>
-                            <p class="card-group-secondary-nav__paragraph">The trial of nine black protestors who were arrested while demonstrating in Notting Hill in the early 1970s became a public platform to criticise racism in the police.</p>
-                        </div>
-
-                    </div>
-                </li>
-
-                <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                    <div class="card-group-secondary-nav">
-                        <a href="/stories/alice-hawkins/" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card image" data-card-title="Alice Hawkins" aria-hidden="true" tabindex="-1" data-card-position="1">
-                            <div class="card-group-secondary-nav__image">
-                                <picture>
-                                    <source media="(max-width: 768px)" srcset="/media/images/Alice_Hawkins_statue_Leicester.2e16d0ba.fill-508x304.jpg">
-                                    <source media="(max-width: 991px)" srcset="/media/images/Alice_Hawkins_statue_Leicester.2e16d0ba.fill-328x196.jpg">
-                                    <source media="(max-width: 1199px)" srcset="/media/images/Alice_Hawkins_statue_Leicester.2e16d0ba.fill-288x172.jpg">
-                                    <source media="(min-width: 1200px)" srcset="/media/images/Alice_Hawkins_statue_Leicester.2e16d0ba.fill-348x208.jpg">
-                                    <img src="/media/images/Alice_Hawkins_statue_Leicester.2e16d0ba.fill-508x304.jpg" alt="" class="card-group-secondary-nav__image-fallback">
-                                </picture>
-                            </div>
-                        </a>
-                        <div class="card-group-secondary-nav__body">
-                            <a href="/stories/alice-hawkins/" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card text" data-card-title="Alice Hawkins" data-card-position="1">
-                                <h3 class="card-group-secondary-nav__heading">
-                                    Alice Hawkins
-
-                                </h3>
-                            </a>
-                            <p class="card-group-secondary-nav__paragraph">Alice Hawkins (1863–1946) was a working class member of the Women’s Social and Political Union (WSPU) and a trade unionist, who boldly campaigned for the rights of women.</p>
-                        </div>
-
-                    </div>
-                </li>
-
-                <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
-                    <div class="card-group-secondary-nav">
-                        <a href="/stories/william-cuffey/" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card image" data-card-title="William Cuffey" aria-hidden="true" tabindex="-1" data-card-position="2">
-                            <div class="card-group-secondary-nav__image">
-                                <picture>
-                                    <source media="(max-width: 768px)" srcset="/media/images/William-Cuffay.bbcba0bb.fill-508x304.jpg">
-                                    <source media="(max-width: 991px)" srcset="/media/images/William-Cuffay.bbcba0bb.fill-328x196.jpg">
-                                    <source media="(max-width: 1199px)" srcset="/media/images/William-Cuffay.bbcba0bb.fill-288x172.jpg">
-                                    <source media="(min-width: 1200px)" srcset="/media/images/William-Cuffay.bbcba0bb.fill-348x208.jpg">
-                                    <img src="/media/images/William-Cuffay.bbcba0bb.fill-508x304.jpg" alt="" class="card-group-secondary-nav__image-fallback">
-                                </picture>
-                            </div>
-                        </a>
-                        <div class="card-group-secondary-nav__body">
-                            <a href="/stories/william-cuffey/" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-component-name="Featured collection: Agitators and activists" data-link-type="Card text" data-card-title="William Cuffey" data-card-position="2">
-                                <h3 class="card-group-secondary-nav__heading">
-                                    William Cuffey
-
-                                </h3>
-                            </a>
-                            <p class="card-group-secondary-nav__paragraph">William Cuffey (1788–1870) was a mixed-race, disabled, working-class leader. He was a leading figure in the Chartism movement, famed for his powerful oratory and leadership.</p>
-                        </div>
-
-                    </div>
-                </li>
-
-
-
-            </ul>
-        </div>
+    <div class="container"> <!-- this part is for the 3 insights cards -->
+        {% include_block page.featured_collections %}
     </div>
 
     <div class="cta-banner-survey">
