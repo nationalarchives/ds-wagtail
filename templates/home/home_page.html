@@ -1,5 +1,6 @@
 {% extends "base_page.html" %}
 
+
 {% load static %}
 {% load i18n %}
 {% block breadcrumb %}
@@ -14,30 +15,21 @@
 {% block content %}
 
     {% include 'includes/generic-intro.html' %}
-    {% for item in page.body %}
-        {{item.name}}
-    {%endfor%}
+    
     <!--static template-->
     <div class="container pt-4">
         <div class="row">
-            <div class="col-sm-12 col-md-6">
-                <div class="topic-explore">
-                    <a href=""><img src="/media/images/explore-by-topic.png" alt="Explore by topic banner image" width="100%"/></a>
-                    <div class="explore-cta">
-                        <a href="/explore-the-collection/explore-by-topic/"><p>Explore by topic</p></a>
+            {% for item in page.body %}
+                {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
+                <div class="col-sm-12 col-md-6">
+                    <div class="topic-explore">
+                        <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
+                        <div class="explore-cta">
+                            <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-
-            <div class="col-sm-12 col-md-6">
-                <div class="time-explore">
-                    <a href=""><img src="/media/images/explore-by-time-period.png" alt="Explore by Topic Banner image" width="100%"/></a>
-                    <div class="explore-cta">
-                        <a href="/explore-the-collection/explore-by-time-period/"><p>Explore by time period</p></a>
-                    </div>
-                </div>
-            </div>
+            {%endfor%}
         </div><!--end row-->
     </div><!--end container-->
 
