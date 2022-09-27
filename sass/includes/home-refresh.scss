@@ -1,11 +1,15 @@
 .explore-cta {
   background: #26262a;
-  height:200px;
+  height:150px;
+  @media only screen and (max-width: 768px) {
+    margin-bottom:20px;
+    }
+  ;
 
     p {
       color: white;
       text-align:center;
-      padding-top:15%;
+      padding-top:10%;
       font-size:1.3em;
     }
 
