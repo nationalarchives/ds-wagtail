@@ -18,7 +18,7 @@
         {{item.name}}
     {%endfor%}
     <!--static template-->
-    <div class="container pt-4">
+    <div class="container pt-4 pb-4">
         <div class="row">
             <div class="col-sm-12 col-md-6">
                 <div class="topic-explore">
@@ -44,6 +44,7 @@
     {% if page.featured_insight %} <!-- this if statement is for the whole featured insight card -->
     
     <div class="container">
+        <h2>Stories from the collection</h2>
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
                 <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
@@ -108,7 +109,7 @@
                     <p>How would you rate this page?</p>
                     <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Very helpful</a>
                     <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Could be better</a>
-                    <p><a href="">Leave a comment</a></p>
+                    <p><a href="https://www.nationalarchives.gov.uk/contact-us/your-views/" target="_blank">Leave a comment</a></p>
                     </div>
                 </div>
 
