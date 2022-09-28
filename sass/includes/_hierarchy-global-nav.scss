@@ -1,99 +1,366 @@
-.hierarchy-global {
+.hierarchy {
+  position: relative;
+  border: 3px solid $color__yellow_2;
+  margin: 0 0 3rem 0;
+  background: $color__yellow_2 url($fa_diagram) no-repeat 11px 12px;
+  background-size: 35px;
+  padding: 0;
 
-  @media only screen and (min-width: $screen__xl) {
-    position: sticky;
+  @media screen and (min-width: $screen__lg) {
+    padding: 0 0 0 3.5rem;
   }
-  top: 2em;
 
-  details {
-
-    summary {
-      padding: 1rem;
-      text-align: center;
-      margin: 1.5rem 0;
-
-      @media only screen and (min-width: $screen__xl) {
-        cursor: auto;
-      }
-
-      &:hover {
-        text-decoration: none;
-      }
-
-      &:focus {
-        outline: 0.312rem solid $color__link;
-      }
-    }
+  &__container {
+    background: $color__yellow_5;
+    overflow: auto;
   }
+}
+
+.hierarchy-short-panel {
+  padding: 1rem;
+  font-family: $font__supria-sans;
 
   &__heading {
     display: inline;
+  }
+
+  &__label {
+    margin: 0;
     font-size: 1.3rem;
-    padding-left: 0.5rem;
+  }
+
+  &__toggle-link {
+    position: relative;
+    text-align: center;
+    margin: 0;
+
+    a {
+      display: inline-block;
+      background: url($fa_chevron_down) no-repeat left center;
+      background-size: 10px;
+      margin: 1rem auto;
+      padding: 0 0 0 1.25rem;
+    }
+
+    @media screen and (min-width: $screen__lg) {
+      position: absolute;
+      top: 0;
+      right: 25px;
+    }
   }
 
   &__list {
-    list-style-type: none;
+    display: block;
     padding: 0;
-    margin: 0;
-    background: $color__white;
+    margin: 1rem 0;
+  }
 
-    &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
+  &__list-item {
+    list-style: none;
+    background: url($fa_chevron_double_right_yellow) no-repeat left center;
+    background-size: 16px;
+    margin: 0 0.75rem 0.75rem 0;
+    padding-left: 1.8rem;
+    display: block;
+    font-size: 1.1rem;
+
+    &:first-child {
+      background: url($fa_chevron_double_right_yellow) no-repeat left center;
+      padding-left: 1.8rem;
+
+      @media screen and (min-width: $screen__lg) {
+        background: transparent;
+        padding-left: 0;
+      }
     }
 
-    @media only screen and (min-width: $screen__xl) {
-      max-height: 30rem;
-      border-top: 3px solid $color__grey-4;
-      border-bottom: 3px solid $color__grey-4;
-      overflow-y: auto;
-      margin: 0.75rem;
+    @media screen and (min-width: $screen__lg) {
+      display: inline-block;
+      margin: 0 0.75rem 0 0;
+    }
+    &--more:before {
+      content: '...';
+      display: none;
+
+      @media screen and (min-width: $screen__lg) {
+        display: inline-block;
+        margin: 0 0.75rem 0 0;
+      }
+    }
+
+  }
+
+  &__level {
+    margin: 0 0.2rem 0 0;
+    font-size: 1.1rem;
+    text-decoration: underline;
+  }
+}
+
+
+.hierarchy-full-panel {
+
+  &__heading {
+    display: inline-block;
+    margin: 1rem 0 1rem 1rem;
+    font-family: $font__supria-sans;
+    font-size: 1.3rem;
+  }
+
+  &__bar-container-outer {
+    min-height: 60px;
+    padding: 0.25rem 0 1rem;
+    border-top: 2px solid $color__yellow_2;
+    background: $color__yellow_4;
+
+    @media screen and (min-width: $screen__lg) {
+      border-top: 0;
+      padding: 0.25rem 0;
+      background: transparent;
+    }
+
+    &--active {
+      border-bottom: 2px solid $color__yellow_2;
+      background: $color__yellow_2;
+
+      @media screen and (min-width: $screen__lg) {
+        border-bottom: 0;
+        background: transparent;
+      }
+
+    }
+
+  }
+
+  &__bar-container-inner {
+    padding: 0.5rem 1rem 0;
+    display: block;
+    vertical-align: top;
+    color: $color__black;
+
+
+    @media screen and (min-width: $screen__lg) {
+      background-color: $color__yellow_4;
+      padding: 0.5rem 0.75rem;
+      display: inline-block;
+      min-height: 60px;
+      border: 2px solid $color__yellow_2;
+      border-left: 0;
+      width: 11.5%;
+    }
+
+    p {
+      margin: 0 0 0.5rem;
+      display: inline-block;
+      color: $color__grey_2;
+      background: $color__yellow_2;
+      padding: 0.4rem 0.35rem 0.4rem;
+      margin-top: 0.25rem;
+      line-height: 1.2rem;
+
+      @media screen and (min-width: $screen__sm) {
+        display: block;
+        float: right;
+      }
+
+      @media screen and (min-width: $screen__lg) {
+        display: block;
+        text-align: left;
+        background: transparent;
+        float: none;
+      }
+    }
+
+    &--level-1 {
+      @media screen and (min-width: $screen__xl) {
+        width: 22%;
+      }
+    }
+    &--level-2 {
+      @media screen and (min-width: $screen__xl) {
+        width: 20%;
+      }
+    }
+    &--level-3 {
+      @media screen and (min-width: $screen__xl) {
+        width: 18%;
+      }
+    }
+    &--level-4 {
+      @media screen and (min-width: $screen__xl) {
+        width: 16%;
+      }
+    }
+    &--level-5 {
+      @media screen and (min-width: $screen__xl) {
+        width: 14%;
+      }
+    }
+    &--level-6 {
+      @media screen and (min-width: $screen__xl) {
+        width: 12%;
+      }
+    }
+    &--level-7 {
+      @media screen and (min-width: $screen__xl) {
+        width: 10%;
+      }
+    }
+    &--active {
+      @media screen and (min-width: $screen__lg) {
+        background: $color__yellow_2;
+        border-left: 0;
+      }
+
+      p {
+        border: 1px solid $color__grey-2;
+        border-bottom: 2px solid $color__grey-2;
+        font-weight: bold;
+
+        @media screen and (min-width: $screen__lg) {
+          border: 0;
+        }
+      }
+    }
+  }
+
+  &__bar-number {
+    display: inline-block;
+    font-size: 0.9rem;
+    width: auto;
+    color: $color__grey-6;
+    letter-spacing: -0.4px;
+
+    @media screen and (min-width: $screen__lg) {
+      display: inline-block;
+      font-size: 1.1rem;
+      width: 100%;
+      font-family: $font__roboto;
+    }
+  }
+  &__bar-label {
+    font-size: 0.85rem;
+    display: inline-block;
+    text-align: right;
+
+    @media screen and (min-width: $screen__lg) {
+      display: inline-block;
+      font-size: 0.8rem;
+    }
+  }
+  &__text-container {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 1rem;
+    line-height: 1.8rem;
+    width: auto;
+
+    @media screen and (min-width: $screen__sm) {
+      width: 60%;
+    }
+
+    @media screen and (min-width: $screen__lg) {
+      width: 80%;
+    }
+    @media screen and (min-width: $screen__xl) {
+      width: auto;
+    }
+
+    a {
+      display: block;
+      line-height: 2.5rem;
+
+      @media screen and (min-width: $screen__lg) {
+        display: inline-block;
+        line-height: 0;
+      }
+    }
+  }
+  &__text-level {
+    font-family: $font__supria-sans;
+    margin: 0;
+    padding: 0;
+    font-size: 1.15rem;
+    display: inline-block;
+
+    @media screen and (min-width: $screen__lg) {
+      margin: 0.7rem 0 0;
+    }
+  }
+  &__text-title {
+    margin: 0;
+    padding: 0;
+    font-size: 0.95rem;
+    line-height: 1.2rem;
+  }
+}
+
+.hierarchy-local-nav {
+  vertical-align: middle;
+  margin: 0.5rem 0 1rem;
+  font-size: 0.9rem;
+
+  @media screen and (min-width: $screen__lg) {
+    margin: 1.5rem 0 1rem;
+  }
+
+  &__list {
+    font-family: supria-sans-condensed, sans-serif;
+    padding: 0;
+    margin: 1rem 1rem;
+    list-style-type: none;
+
+    @media screen and (min-width: $screen__md) {
+      display: flex;
+      justify-content: center;
     }
   }
 
   &__list-item {
-    background: url($fa_arrow_down) no-repeat 1rem 2.25rem;
-    background-size: 0.9rem;
-    border-bottom: 1px solid $color__grey-4;
-    padding: 2rem 2rem 2rem 3rem;
+    background: none;
+    padding: 0;
+    margin: 0 0 0.5rem 0;
 
-    @media only screen and (min-width: $screen__lg) {
-      background: url($fa_arrow_down) no-repeat 1rem 1.75rem;
-      background-size: 0.9rem;
-      padding: 1.5rem 1.5rem 1.5rem 3rem;
+    @media screen and (min-width: $screen__md) {
+      text-align: center;
     }
 
     &:first-child {
-      border-top: 1px solid $color__grey-4;
+      @media screen and (min-width: $screen__md) {
+        margin: 0 2rem;
+        padding-right: 2rem;
+        border-right: 1px dotted $color__yellow_2;
+        text-align: right;
+      }
     }
 
-    &--current-item {
-      background: $color__link url($fa_arrow_right) no-repeat 1rem 2.25rem;
-      background-size: 0.9rem;
-      color: $color__white;
-      border-bottom: 0;
-
-      @media only screen and (min-width: $screen__lg) {
-        background: $color__link url($fa_arrow_right) no-repeat 1rem 1.75rem;
-        background-size: 0.9rem;
+    &:last-child {
+      @media screen and (min-width: $screen__md) {
+        margin: 0 2rem;
+        padding-left: 2rem;
+        border-left: 1px dotted $color__yellow_2;
+        text-align: left;
       }
     }
   }
 
-  &__reference {
+  &__list-link {
     display: block;
-    color: $color__black;
-    font-weight: bold;
+    font-size: 1.1rem;
 
-    &--white {
-      color: $color__white;
+    &--left {
+      @media screen and (min-width: $screen__md) {
+        background: url($fa_chevron_left) no-repeat left center;
+        background-size: 9px;
+        padding: 0 0 0 1.5rem;
+      }
     }
-  }
-
-  &__location {
-    color: $color__white;
-    display: block;
-    font-size: 1rem;
-    margin-bottom: 0.25rem;
+    &--right  {
+      @media screen and (min-width: $screen__md) {
+        background: url($fa_chevron_right) no-repeat right center;
+        background-size: 9px;
+        padding: 0 1.5rem 0 0;
+      }
+    }
   }
 }
