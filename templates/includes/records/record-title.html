@@ -1,16 +1,8 @@
 {% load records_tags %}
 
-<div class="record-title record-title--dark">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                {% if page.reference_number %}
-                    <p>{{ 'reference_number'|as_label }}: {{ page.reference_number }}</p>
-                {% endif %}
-                {% if page.title %}
-                    <h1>{{ page.title }}</h1>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+<div class="record-title">
+    <p class="record-title__description">You are viewing the catalogue description of the following item:</p>
+    {% if page.title %}
+        <h1 class="record-title__heading">{{ page.title }}</h1>
+    {% endif %}
 </div>
