@@ -1,0 +1,38 @@
+.series-panel {
+  position: relative;
+  border: 3px solid $color__yellow_2;
+  margin: 0 0 3rem 0;
+  background: $color__yellow_2 url($fa_folder) no-repeat 11px 12px;
+  background-size: 35px;
+  padding: 0;
+
+  @media screen and (min-width: $screen__lg) {
+    padding: 0 0 0 3.5rem;
+  }
+
+  &__container {
+    background: $color__white;
+    overflow: auto;
+    padding: 1rem;
+  }
+
+  &__heading {
+    overflow: auto;
+    margin: 0 0 0.5rem 0;
+    font-family: $font__supria-sans;
+    font-weight: normal;
+  }
+
+  &__reference {
+    font-size: 1rem;
+    font-weight: normal;
+    margin-bottom: 0.5rem;
+    display: block;
+  }
+
+  &__link {
+    color: $color__link;
+    font-family: $font__supria-sans;
+    font-size: 1.2rem;
+  }
+}
