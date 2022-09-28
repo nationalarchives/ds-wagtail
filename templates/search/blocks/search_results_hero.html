@@ -8,7 +8,7 @@
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
         
-        {% if type == "Catalogue" or type == "Website" %}
+        {% if search_tab == searchtabs.CATALOGUE.value or search_tab == searchtabs.WEBSITE.value %}
             {{ 'q'|include_hidden_fields:form }}
         {% endif %}
 

@@ -22,6 +22,7 @@ from ..ciim.constants import (
     BucketKeys,
     BucketList,
     Display,
+    SearchTabs,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -543,6 +544,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
+        kwargs["searchtabs"] = SearchTabs
         return super().get_context_data(**kwargs)
 
 

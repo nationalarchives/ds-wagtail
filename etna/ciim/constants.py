@@ -18,6 +18,13 @@ class BucketKeys(Enum):
     CREATOR = "creator"
 
 
+@forTemplate
+class SearchTabs(Enum):
+    ALL = "All results"
+    CATALOGUE = "Catalogue results"
+    WEBSITE = "Website results"
+
+
 @dataclass
 class Bucket:
     key: str
