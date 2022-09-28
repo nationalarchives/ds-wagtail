@@ -529,7 +529,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
-    title_base = "Catalogue results"
+    title_base = SearchTabs.CATALOGUE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -600,7 +600,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "blog"
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
-    title_base = "Website results"
+    title_base = SearchTabs.WEBSITE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -703,7 +703,7 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
-    title_base = "All results"
+    title_base = SearchTabs.ALL.value
     featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
