@@ -134,16 +134,20 @@ def include_hidden_fields(visible_field_names, form) -> str:
     visible_field_list = visible_field_names.split()
     for field in form.fields:
         if field not in visible_field_list:
-            if value := form.cleaned_data[field]:
-                if isinstance(value, (str, int)):
-                    html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
-                elif isinstance(value, list):
-                    for value_in_list in value:
-                        html += f""" <input type="hidden" name="{field}" value="{value_in_list}" id="id_{field}_{get_random_string(3)}"> """
-                elif isinstance(value, datetime.datetime):
-                    html += f""" <input type="hidden" name="{field}" value="{value.date()}" id="id_{field}_{get_random_string(3)}"> """
-                else:
-                    logger.debug(
-                        f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
-                    )
+            try:
+                if value := form.cleaned_data[field]:
+                    if isinstance(value, (str, int)):
+                        html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
+                    elif isinstance(value, list):
+                        for value_in_list in value:
+                            html += f""" <input type="hidden" name="{field}" value="{value_in_list}" id="id_{field}_{get_random_string(3)}"> """
+                    elif isinstance(value, datetime.datetime):
+                        html += f""" <input type="hidden" name="{field}" value="{value.date()}" id="id_{field}_{get_random_string(3)}"> """
+                    else:
+                        logger.debug(
+                            f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
+                        )
+            except KeyError:
+                # for invalid input - example invalid date, value is not cleaned
+                pass
     return mark_safe(html)
