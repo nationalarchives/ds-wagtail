@@ -21,6 +21,7 @@ $color__white: #ffffff;
 $color__yellow: #fbe2bc;
 $color__yellow_2: #FFCC00;
 $color__yellow_3: #F9F7E2;
+$color__yellow_4: #ffcc002b;
 $color__green: #dde5d5;
 $color__pink: #fad3d4;
 $color__blue_2: #1e1e2a;
@@ -70,8 +71,16 @@ $fa_chevron_down: '#{$fa_path}chevron-down.svg';
 $fa_chevron_left: '#{$fa_path}chevron-left.svg';
 $fa_chevron_left_white: '#{$fa_path}chevron-left-white.svg';
 $fa_chevron_left_disabled: '#{$fa_path}chevron-left-disabled.svg';
+$fa_chevron_double_right_yellow: '#{$fa_path}chevron-double-right-yellow.svg';
 
 $fa_arrow_down: '#{$fa_path}arrow-down.svg';
 $fa_arrow_right: '#{$fa_path}arrow-right.svg';
 
 $fa_search_plus: '#{$fa_path}search-plus-white.svg';
+
+$fa_download_white: '#{$fa_path}download-white.svg';
+
+$fa_diagram: '#{$fa_path}diagram-3.svg';
+$fa_list_blue: '#{$fa_path}list-ul-blue.svg';
+
+$fa_folder: '#{$fa_path}folder.svg';
