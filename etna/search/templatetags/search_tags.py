@@ -1,11 +1,16 @@
+import datetime
+import logging
+
 from typing import Union
 
 from django import template
+from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
 import bleach
 
 register = template.Library()
+logger = logging.getLogger(__name__)
 
 
 @register.filter
@@ -115,3 +120,30 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     query_dict.setlist(key, [i for i in items if i != str(value)])
 
     return query_dict.urlencode()
+
+
+@register.filter
+def include_hidden_fields(visible_field_names, form) -> str:
+    """
+    Returns automatically generated html hidden fields for the input form.
+    The hidden fields are derived from the input form less the visible field names.
+    A random suffix is applied to html id allowing the same form to be rendered
+    multiple times without field ID clashes.
+    """
+    html = ""
+    visible_field_list = visible_field_names.split()
+    for field in form.fields:
+        if field not in visible_field_list:
+            if value := form.cleaned_data[field]:
+                if isinstance(value, (str, int)):
+                    html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
+                elif isinstance(value, list):
+                    for value_in_list in value:
+                        html += f""" <input type="hidden" name="{field}" value="{value_in_list}" id="id_{field}_{get_random_string(3)}"> """
+                elif isinstance(value, datetime.datetime):
+                    html += f""" <input type="hidden" name="{field}" value="{value.date()}" id="id_{field}_{get_random_string(3)}"> """
+                else:
+                    logger.debug(
+                        f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
+                    )
+    return mark_safe(html)
