@@ -17,7 +17,7 @@
     {% include 'includes/generic-intro.html' %}
     
     <!--static template-->
-    <div class="container pt-4">
+    <div class="container pt-2">
         <div class="row">
             {% for item in page.body %}
                 {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
@@ -36,7 +36,7 @@
     {% if page.featured_insight %} <!-- this if statement is for the whole featured insight card -->
     
     <div class="container">
-        <h2>Stories from the collection</h2>
+        <h2 class="extra-padding">Stories from the collection</h2>
         <div class="featured-insight">
             {% if page.featured_insight.hero_image %}
                 <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
@@ -80,18 +80,20 @@
         {% include_block page.featured_collections %}
     </div>
 
-    <div class="cta-banner-survey">
+    <div class="cta-banner-survey no-dots">
         <div class="container py-3">
             <div class="row justify-content-md-center text-center">
 
                 <div class="col-sm-12 col-lg-12">
-                    <a class="tna-button--dark" href="/stories/" rel="noopener noreferrer" target="_blank">See more stories from the collection</a>
+                    <a class="tna-button--dark" href="/stories/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
                 </div>
 
             </div>
         </div>
     </div>
 
+    <!--new survey element-->
+    <!--
     <div class="cta-banner-survey">
         <div class="container py-3">
             <div class="row justify-content-md-center text-center">
@@ -108,6 +110,7 @@
             </div>
         </div>
     </div>
+    -->
 
 </div>
     <!--end static template-->
