@@ -290,19 +290,19 @@ class Record(DataLayerMixin, APIModel):
             if item.get("identifier"):
                 pass
             else:
-                level = item.get("level")
-                level_code = level.get("code")
-                hierarchy = self.get("@hierarchy.0")
-                previous_level_record = hierarchy[level_code-2]
-                previous_level_identifier = previous_level_record.get("identifier")[0]
-                previous_level_reference = previous_level_identifier.get("reference_number")
-                if level_code == 2:
-                    reference_number = "Division within " + previous_level_reference
-                elif level_code == 4:
-                    reference_number = "Sub-series within " + previous_level_reference
-                new_identifier = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
-                item["identifier"] = new_identifier
-                print(new_identifier)
+                level = item.get("level", {})
+                level_code = level.get("code", "")
+                hierarchy = self.get("@hierarchy.0", ())
+                if hierarchy != () and level_code != "":
+                    previous_level_record = hierarchy[level_code-2]
+                    previous_level_identifier = previous_level_record.get("identifier")[0]
+                    previous_level_reference = previous_level_identifier.get("reference_number")
+                    if level_code == 2:
+                        reference_number = "Division within " + previous_level_reference
+                    elif level_code == 4:
+                        reference_number = "Sub-series within " + previous_level_reference
+                    new_identifier = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
+                    item["identifier"] = new_identifier
         return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
