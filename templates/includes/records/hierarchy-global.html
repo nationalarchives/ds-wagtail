@@ -14,21 +14,34 @@
             If the Archive level is visible as the first item, this modifier doesn't need to be added.
 
             -->
-
+            
             <ul class="hierarchy-short-panel__list">
-                <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
-                    <span class="hierarchy-short-panel__level">
-                        <a href="#">Department</a>
-                    </span>(DSIR)
-                </li>
-                <li class="hierarchy-short-panel__list-item">
-                    <span class="hierarchy-short-panel__level">
-                        <a class="hierarchy-short-panel__link" href="#">Series</a>
-                    </span>(DSIR 27)
-                </li>
-                <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                    <span class="hierarchy-short-panel__level">This item</span>(DSIR 27/6/ADM171)
-                </li>
+                {% if page.hierarchy %}
+                    {% for item in page.hierarchy %}
+                        {% is_page_current_item_in_hierarchy page item as is_current_item %}
+                        {% if item.level_code == 1 and not is_current_item %}
+                            <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
+                                <span class="hierarchy-short-panel__level">
+                                    <a href="{% record_url item%}">Department</a>
+                                </span>{{ item.reference_number }}
+                            </li>
+                        {% elif item.level_code == 3 and not is_current_item %}
+                        <li class="hierarchy-short-panel__list-item">
+                            <span class="hierarchy-short-panel__level">
+                                <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
+                            </span>{{ item.reference_number }}
+                        </li>
+                        {% elif is_current_item %}
+                            <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
+                                <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>{{ item.reference_number }}
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                {% else %}
+                    <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
+                        <span class="hierarchy-short-panel__level">This department</span>{{ page.reference_number }}
+                    </li>
+                {% endif %}
             </ul>
             <!-- END COMMENT 1-->
 
@@ -53,82 +66,104 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                 </div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="">The National Archives</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="">{{page.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at Kew, Surrey</p>
                 </div>
             </div>
+            {% if page.hierarchy %}
+                {% for item in page.hierarchy %}
+                    {% is_page_current_item_in_hierarchy page item as is_current_item %}
+                    <!-- Level 2 -->
+                    {% if item.level_code == 1 %}
+                        <div class="hierarchy-full-panel__bar-container-outer">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-2">
+                                <p><span class="hierarchy-full-panel__bar-number">200,000</span>
+                            <span class="hierarchy-full-panel__bar-label">records</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}In{% endif %} the department: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
+                    
+                    <!-- Level 3 -->
+                    {% elif item.level_code == 2 %}
+                        <div class="hierarchy-full-panel__bar-container-outer">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-3">
+                                <p><span class="hierarchy-full-panel__bar-number">20,000</span>
+                                <span class="hierarchy-full-panel__bar-label">records</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the division: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
+                        
+                    <!-- Level 4 -->
+                    {% elif item.level_code == 3 %}
+                        <div class="hierarchy-full-panel__bar-container-outer">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-4">
+                                <p><span class="hierarchy-full-panel__bar-number">500</span>
+                                <span class="hierarchy-full-panel__bar-label">records</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the series: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
 
-            <!-- Level 2 -->
-            <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-2">
-                    <p><span class="hierarchy-full-panel__bar-number">200,000</span>
-                   <span class="hierarchy-full-panel__bar-label">records</span></p>
-                </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">In the department: <a href="">DSIR</a></p>
-                    <p class="hierarchy-full-panel__text-title">Records created or inherited by the Department of Scientific and Industrial Research, and related bodies</p>
-                </div>
-            </div>
+                    <!-- Level 5 -->
+                    {% elif item.level_code == 4 %}
+                        <div class="hierarchy-full-panel__bar-container-outer">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-5">
+                                <p><span class="hierarchy-full-panel__bar-number">20</span>
+                                <span class="hierarchy-full-panel__bar-label">records</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the sub-series: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
 
-            <!-- Level 3 -->
-            <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-3">
-                    <p><span class="hierarchy-full-panel__bar-number">20,000</span>
+                    <!-- Level 6 -->
+                    {% elif item.level_code == 6 %}
+                        <div class="hierarchy-full-panel__bar-container-outer">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-6">
+                                <p><span class="hierarchy-full-panel__bar-number">10</span>
+                                    <span class="hierarchy-full-panel__bar-label">records</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the piece: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
+
+                    <!-- Level 7 -->
+                    {% elif item.level_code == 7 %}
+                        <div class="hierarchy-full-panel__bar-container-outer hierarchy-full-panel__bar-container-outer--active">
+                            <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-7">
+                                <p><span class="hierarchy-full-panel__bar-number">1</span>
+                                    <span class="hierarchy-full-panel__bar-label">record</span></p>
+                            </div>
+                            <div class="hierarchy-full-panel__text-container">
+                                <p class="hierarchy-full-panel__text-level">{% if is_current_item %} You are currently looking at {% endif %} the item: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+                                <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+                            </div>
+                        </div>
+                    {%endif%}
+                {%endfor%}
+            {% else %}
+                <div class="hierarchy-full-panel__bar-container-outer">
+                    <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-2">
+                        <p><span class="hierarchy-full-panel__bar-number">200,000</span>
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
+                    </div>
+                    <div class="hierarchy-full-panel__text-container">
+                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url page %}">{{page.reference_number}}</a></p>
+                        <p class="hierarchy-full-panel__text-title">{{page.title}}</p>
+                    </div>
                 </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">Within the division: <a href="">Division within DSIR</a></p>
-                    <p class="hierarchy-full-panel__text-title">Records of the Road Research Laboratory and Successor</p>
-                </div>
-            </div>
-
-            <!-- Level 4 -->
-            <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-4">
-                    <p><span class="hierarchy-full-panel__bar-number">500</span>
-                    <span class="hierarchy-full-panel__bar-label">records</span></p>
-                </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">Within the series: <a href="">DSIR 27</a></p>
-                    <p class="hierarchy-full-panel__text-title">Department of Scientific and Industrial Research: Road Research Laboratory Reports</p>
-                </div>
-            </div>
-
-            <!-- Level 5 -->
-            <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-5">
-                    <p><span class="hierarchy-full-panel__bar-number">20</span>
-                    <span class="hierarchy-full-panel__bar-label">records</span></p>
-                </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">Within the sub-series: <a href="">Subseries within DSIR 27</a></p>
-                    <p class="hierarchy-full-panel__text-title">REPORTS TO ADMIRALTY</p>
-                </div>
-            </div>
-
-            <!-- Level 6 -->
-            <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-6">
-                    <p><span class="hierarchy-full-panel__bar-number">10</span>
-                        <span class="hierarchy-full-panel__bar-label">records</span></p>
-                </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">Within the piece: <a href="">DSIR 27/6</a></p>
-                    <p class="hierarchy-full-panel__text-title">ADM 157 - 185</p>
-                </div>
-            </div>
-
-            <!-- Level 7 -->
-            <div class="hierarchy-full-panel__bar-container-outer hierarchy-full-panel__bar-container-outer--active">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-7">
-                    <p><span class="hierarchy-full-panel__bar-number">1</span>
-                        <span class="hierarchy-full-panel__bar-label">record</span></p>
-                </div>
-                <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">You are currently looking at: <a href="">DSIR 27/6/ADM171</a></p>
-                    <p class="hierarchy-full-panel__text-title">The pressures produced by explosions underwater of 1-oz. solid cone charges of P.E. By..</p>
-                </div>
-            </div>
+            {%endif%}
             <!-- END COMMENT 2 -->
 
 
@@ -154,7 +189,7 @@
                     {% endif %}
 
                 <!-- Current item in series -->
-                <li class="hierarchy-local-nav__list-item">You are looking at <span class="hierarchy-local-nav__list-link">DSIR 27/6/ADM171</span></li>
+                <li class="hierarchy-local-nav__list-item">You are looking at <span class="hierarchy-local-nav__list-link">{{ page.reference_number }}</span></li>
 
                 <!-- Next item in series -->
                     {% if page.next_record %}
