@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
 from django.db import models
@@ -13,6 +14,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
+from wagtailmetadata.models import MetadataPageMixin
 
 from etna.core.models import BasePage, ContentWarningMixin
 
@@ -21,7 +23,7 @@ from ..teasers.models import TeaserImageMixin
 from .blocks import FeaturedCollectionBlock, InsightsPageStreamBlock
 
 
-class InsightsIndexPage(TeaserImageMixin, BasePage):
+class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """InsightsIndexPage
 
     This page lists the InsightsPage objects that are children of this page.
@@ -38,9 +40,11 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         use_json_field=True,
     )
 
+    new_label_end_date = datetime.now() - timedelta(days=21)
+
     def get_context(self, request):
         context = super().get_context(request)
-        insights_pages = self.get_children().live().specific()
+        insights_pages = self.get_children().public().live().specific()
         context["insights_pages"] = insights_pages
         return context
 
@@ -49,7 +53,8 @@ class InsightsIndexPage(TeaserImageMixin, BasePage):
         FieldPanel("featured_insight"),
         FieldPanel("featured_collections"),
     ]
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     subpage_types = ["insights.InsightsPage"]
 
@@ -74,7 +79,9 @@ class TaggedInsights(ItemBase):
     )
 
 
-class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePage):
+class InsightsPage(
+    HeroImageMixin, TeaserImageMixin, ContentWarningMixin, MetadataPageMixin, BasePage
+):
     """InsightsPage
 
     The InsightsPage model.
@@ -104,6 +111,8 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
     search_fields = Page.search_fields + [
         index.SearchField("insight_tag_names"),
     ]
+
+    new_label_end_date = datetime.now() - timedelta(days=21)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -203,7 +212,7 @@ class InsightsPage(HeroImageMixin, TeaserImageMixin, ContentWarningMixin, BasePa
         ]
     )
 
-    promote_panels = BasePage.promote_panels + TeaserImageMixin.promote_panels
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     parent_page_types = ["insights.InsightsIndexPage"]
     subpage_types = []

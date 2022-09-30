@@ -1,8 +1,9 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags  %}<!DOCTYPE html>
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
         <meta charset="utf-8" />
+    {% block meta_tag %}
         <title>
             {% block title_prefix %}
                 {% if form.errors %}Error: {% endif %}
@@ -16,6 +17,7 @@
             {% endblock %}
         </title>
         <meta name="description" content="" />
+     {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
 
         {# Global stylesheets #}
@@ -36,6 +38,7 @@
         {% if cookies_permitted %}
             {% include 'includes/gtm-script.html' %}
         {% endif %}
+
 
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">

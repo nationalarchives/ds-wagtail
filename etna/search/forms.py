@@ -11,6 +11,7 @@ from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
     LEVEL_CHOICES,
+    TYPE_CHOICES,
     WEBSITE_BUCKETS,
 )
 
@@ -155,6 +156,17 @@ class BaseCollectionSearchForm(forms.Form):
         ),
         required=False,
     )
+    # Choices are supplied to this field to influence labels only. The options
+    # are not complete enough to be used for validation
+    type = DynamicMultipleChoiceField(
+        label="Creator type",
+        choices=TYPE_CHOICES,
+        widget=forms.widgets.CheckboxSelectMultiple(
+            attrs={"class": "search-filters__list"}
+        ),
+        required=False,
+        validate_input=False,
+    )
     opening_start_date = DateInputField(
         label="From",
         required=False,
@@ -171,6 +183,7 @@ class BaseCollectionSearchForm(forms.Form):
         min_value=20,
         max_value=50,
         required=False,
+        widget=forms.HiddenInput(),
     )
     sort_by = forms.ChoiceField(
         label="Sort by",
@@ -189,6 +202,7 @@ class BaseCollectionSearchForm(forms.Form):
             (SortOrder.DESC.value, "Descending"),
         ],
         required=False,
+        widget=forms.HiddenInput(),
     )
     display = forms.ChoiceField(
         choices=[

@@ -23,6 +23,10 @@
       @include explorer-link;
     }
 
+    .aria-desc-card {
+      display:none;
+    }
+
     &__title-link {
       @extend .tna-card__link;
 
@@ -38,6 +42,15 @@
 
     &__heading {
       display: inline;
+
+      span {
+        background:green;
+        font-size: 0.8rem;
+        color:white;
+        padding:3px 3px 0px 3px;
+        margin-left: 1px;
+      }
+
     }
 
     &__image {

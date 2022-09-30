@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 
+{% load datalayer_tags %}
 {% load search_tags %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer view %}
+{% endblock extra_gtm_js %}
 {% load humanize %}
 {% block breadcrumb %}
 {% endblock %}
@@ -9,33 +14,40 @@
     {%  with type='All'%}
         {% include './blocks/search_results_hero.html' %}
     {% endwith  %}
-    
-    <!-- <p>Count: {{ buckets.tna.result_count }}</p> -->
 
-    {% if buckets.tna.result_count > 0%}
+    {% if buckets.tna.result_count > 0 or buckets.nonTna.result_count > 0 or buckets.creator.result_count > 0 %}
     <p class="search-results__explainer">Results for everything that matches your search term.</p>
+    <div class="featured-search__results">
+        {% if buckets.tna.result_count > 0 %}
+            {% include './blocks/featured-search__results-block.html' with bucket=buckets.tna %}
+        {% endif %}
+
+        {% if buckets.nonTna.result_count > 0 %}
+            {% include './blocks/featured-search__results-block.html' with bucket=buckets.nonTna %}
+        {% endif %}
+
+        {% if buckets.creator.result_count > 0 %}
+            {% include './blocks/featured-search__record-creator.html' with bucket=buckets.creator %}
+        {% endif %}
+    </div>
+    {% endif %}
+    {% if buckets.researchGuide.result_count > 0 or buckets.insight.result_count > 0 or buckets.blog.result_count > 0 %}
+    <div class="featured-search__interpretive-results">
+        {% if buckets.researchGuide.result_count > 0 %}
+            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.researchGuide %}
+        {% endif %}
+
+        {% if buckets.insight.result_count > 0 %}
+            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.insight %}
+        {% endif %}
+
+        {% if buckets.blog.result_count > 0 %}
+            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.blog %}
+        {% endif %}
+    </div>
     {% endif %}
     
-    {% if buckets.tna.result_count < 1%}
-    {% include './blocks/no_results.html' %}
-    {% endif %}
-
-    {% if buckets.tna.result_count > 0%}
-    <div class="featured-search__results">
-
-        {% include './blocks/featured-search__results-block.html' with bucket=buckets.tna %}
-
-        {% include './blocks/featured-search__results-block.html' with bucket=buckets.nonTna %}
-
-        {% include './blocks/featured-search__record-creator.html' with bucket=buckets.creator %}
-    </div>
-    <div class="featured-search__interpretive-results">
-
-        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.researchGuide %}
-
-        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.insight %}
-
-        {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.blog %}
-    </div>
+    {% if not buckets.tna.result_count > 0 and not buckets.nonTna.result_count > 0 and not buckets.creator.result_count > 0%}
+        {% include './blocks/no_results.html' %}
     {% endif %}
 {% endblock %}

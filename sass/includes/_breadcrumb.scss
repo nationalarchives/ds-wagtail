@@ -25,12 +25,15 @@ ul.breadcrumb li a:hover {
   text-decoration: none;
 }
 
-//hide the first child - The National Archives
+//hide the first child - The National Archives - now handled by python logic
+/*
 .breadcrumb li:nth-child(2) {
   display:none;
 }
+*/
 
-//media query to truncate listn on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
+
+//media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media(max-width: 768px){
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item{
     display:none
