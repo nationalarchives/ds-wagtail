@@ -143,9 +143,12 @@
         margin-left: 1rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
+        display:none; //hiding on mobile
         @media only screen and (min-width: $screen__md) {
             margin-left: 2rem;
             margin-right: 2rem;
+            display: block;
+
         }
     }
 }
