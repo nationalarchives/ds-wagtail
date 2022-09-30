@@ -10,7 +10,7 @@ export default function() {
     }
 
     let $showHideButton = document.createElement('button');
-    $showHideButton.innerText = 'Show search filters';
+    $showHideButton.innerText = 'Filters';
     $showHideButton.classList.add('search-results__filter-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
@@ -30,10 +30,10 @@ export default function() {
         $searchFilterContainer.hidden = !$searchFilterContainer.hidden;
 
         if(newAriaExpanded) {
-            $showHideButton.innerHTML = 'Hide search filters';
+            $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Show search filters';
+            $showHideButton.innerHTML = 'Filters';
         }
     });
 

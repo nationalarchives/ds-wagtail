@@ -122,7 +122,11 @@
         }
 
         @media only screen and (max-width: $screen__md) {
+            background:$color__black;
+            color: $color__white;
             margin-left: 1.5rem;
+            width:90%;
+            padding:0.8rem;
         }
 
         &:before {
@@ -135,12 +139,19 @@
             background-image: url('/static/images/icons/triangle-right.svg');
             background-repeat: no-repeat;
             background-size: 100%;
+
+            @media only screen and (max-width: $screen__md) {
+                background-image: none;
+            }
         }
 
         &[aria-expanded=true] {
 
             &:before {
                 background-image: url('/static/images/icons/triangle-down.svg');
+                @media only screen and (max-width: $screen__md) {
+                    background-image: none;
+                }
             }
         }
     }
