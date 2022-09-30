@@ -15,6 +15,11 @@
         display: flex;
         padding-left: 0;
         flex-wrap: wrap;
+
+        @media only screen and (max-width: $screen__sm) {
+            display:none; //hiding on mobile
+        }
+
         &-item {
             list-style: none;
             display: inline-block;
