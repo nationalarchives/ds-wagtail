@@ -287,9 +287,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
         for item in self.get("@hierarchy.0", default=()):
-            if item.get("identifier"):
-                pass
-            else:
+            if not item.get("identifier"):
                 level = item.get("level", {})
                 level_code = level.get("code", "")
                 hierarchy = self.get("@hierarchy.0", ())
@@ -301,8 +299,7 @@ class Record(DataLayerMixin, APIModel):
                         reference_number = "Division within " + previous_level_reference
                     elif level_code == 4:
                         reference_number = "Sub-series within " + previous_level_reference
-                    new_identifier = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
-                    item["identifier"] = new_identifier
+                    item["identifier"] = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
         return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
