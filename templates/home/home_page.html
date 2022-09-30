@@ -15,26 +15,27 @@
 {% block content %}
 
     {% include 'includes/generic-intro.html' %}
-    
-    <!--static template-->
     <div class="container pt-2">
         <div class="row">
             {% for item in page.body %}
-                {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
-                <div class="col-sm-12 col-md-6">
-                    <div class="topic-explore">
-                        <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
-                        <div class="explore-cta">
-                            <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>
+                {% if item.value.paragraph or item.value.text %}
+                    {{ item }}
+                {% else %}
+                    {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
+                    <div class="col-sm-12 col-md-6">
+                        <div class="topic-explore">
+                            <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
+                            <div class="explore-cta">
+                                <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            {%endfor%}
-        </div><!--end row-->
-    </div><!--end container-->
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 
-    {% if page.featured_insight %} <!-- this if statement is for the whole featured insight card -->
-    
+    {% if page.featured_insight %}
     <div class="container">
         <h2 class="extra-padding">Stories from the collection</h2>
         <div class="featured-insight">
@@ -75,19 +76,18 @@
     </div>
     {% endif %}
 
-
-    <div class="container"> <!-- this part is for the 3 insights cards -->
+    {% if page.featured_collections %}
+    <div class="container">
         {% include_block page.featured_collections %}
     </div>
+    {% endif %}
 
     <div class="cta-banner-survey no-dots">
         <div class="container py-3">
             <div class="row justify-content-md-center text-center">
-
                 <div class="col-sm-12 col-lg-12">
                     <a class="tna-button--dark" href="/stories/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
                 </div>
-
             </div>
         </div>
     </div>
@@ -113,9 +113,6 @@
     -->
 
 </div>
-    <!--end static template-->
-
-
 {% endblock content %}
 
 {% block extra_js %}
