@@ -14,7 +14,7 @@
     <form method="get" data-id="search-form" id="analytics-search-form">
         {{ form.non_field_errors }}
 
-        {% with type="Website" %}
+        {% with search_tab=searchtabs.CATALOGUE.value %}
             {% include './blocks/search_results_hero.html' %}
         {% endwith %}
         

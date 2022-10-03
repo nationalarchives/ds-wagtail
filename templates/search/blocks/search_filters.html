@@ -93,13 +93,7 @@
             {% endif %}
         </div>
 
-        {{ form.q.as_hidden }}
-        {{ form.group.as_hidden }}
-        {{ form.sort_by.as_hidden }}
-        {{ form.display.as_hidden }}
-        {% for hidden_field in form.hidden_fields %}
-            {{ hidden_field }}
-        {% endfor %}
+        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type'|include_hidden_fields:form }}
       
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
