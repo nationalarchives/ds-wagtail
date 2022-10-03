@@ -23,6 +23,10 @@
       @include explorer-link;
     }
 
+    .aria-desc-card {
+      display:none;
+    }
+
     &__title-link {
       @extend .tna-card__link;
 
@@ -44,7 +48,7 @@
         font-size: 0.8rem;
         color:white;
         padding:3px 3px 0px 3px;
-        margin-left: 1em;
+        margin-left: 1px;
       }
 
     }

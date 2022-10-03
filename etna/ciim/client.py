@@ -71,6 +71,7 @@ class Aggregation(str, enum.Enum):
     CLOSURE = "closure"
     CATALOGUE_SOURCE = "catalogueSource"
     HELD_BY = "heldBy"
+    TYPE = "type"
 
 
 def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:

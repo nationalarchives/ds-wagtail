@@ -33,26 +33,29 @@
             </div>
         </a>
             <div class="card-group-secondary-nav__body">
-                <a 
-                    href='{{ page.url }}' 
-                    class="card-group-secondary-nav__title-link" 
-                    data-card-type="card-group-secondary-nav" 
-                    {% if value.block.meta.label or heading %}
-                        data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
-                    {% endif %}
-                    data-link-type="Card text" 
-                    data-card-title="{{ page.title }}"
-                    {% if page.first_published_at.date > page.new_label_end_date.date %}
-                        data-label = "New"
-                    {%endif%}
-                >
+
                     <h3 class="card-group-secondary-nav__heading">
-                        {{ page.title }}
+                        <a
+                                href='{{ page.url }}'
+                                class="card-group-secondary-nav__title-link"
+                                data-card-type="card-group-secondary-nav"
+                                aria-describedby="article-desc{{page.id}}"
+                                {% if value.block.meta.label or heading %}
+                                data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
+                                {% endif %}
+                                data-link-type="Card text"
+                                data-card-title="{{ page.title }}"
+                                {% if page.first_published_at.date > page.new_label_end_date.date %}
+                            data-label = "New"
+                            {%endif%}
+                            >{{ page.title }}</a>
                         {% if page.first_published_at.date > page.new_label_end_date.date %}
-                        <span aria-describedby="This is a new story about {{ page.title }}" role="label">NEW</span>
+                        <span>NEW</span>
+
                         {% endif %}
                     </h3>
-                </a>
+                <p id ="article-desc{{ page.id }}" class="aria-desc-card">This is a link to a story about {{ page.title }}</p>
+
                 <p class="card-group-secondary-nav__paragraph">{{ page.sub_heading }}</p>
             </div>
 
