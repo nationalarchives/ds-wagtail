@@ -1,4 +1,4 @@
-import json
+import json as json_module
 
 from typing import Any
 
@@ -220,6 +220,7 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
                 "&aggregations=heldBy%3A10"
                 "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Atna"
                 "&from=0"
                 "&size=20"
@@ -319,6 +320,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
                 "&aggregations=heldBy%3A10"
                 "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Ablog"
                 "&from=0"
                 "&size=20"
@@ -353,7 +355,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
     def get_url(self, url: str, **data: Any) -> HttpResponse:
@@ -379,6 +381,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
                 "&aggregations=heldBy%3A10"
                 "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Ainsight"
                 "&from=0"
                 "&size=20"
@@ -388,7 +391,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     @responses.activate
     def test_template_used(self):
         response = self.get_url(self.test_url, group="insight")
-        self.assertTemplateUsed(response, "search/catalogue_search.html")
+        self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
@@ -507,7 +510,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
             responses.add(
                 responses.GET,
                 "https://kong.test/data/search",
-                json=json.loads(f.read()),
+                json=json_module.loads(f.read()),
             )
 
     def get_url(self, url: str, **data: Any) -> HttpResponse:
@@ -533,6 +536,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
                 "&aggregations=heldBy%3A10"
                 "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Ahighlight"
                 "&from=0"
                 "&size=20"
@@ -542,7 +546,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     @responses.activate
     def test_template_used(self):
         response = self.get_url(self.test_url, group="highlight")
-        self.assertTemplateUsed(response, "search/catalogue_search.html")
+        self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
@@ -606,3 +610,341 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         self.assertIsInstance(
             response.context_data["page"].object_list[1]["source_page"], ResultsPage
         )
+
+
+class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
+    @responses.activate
+    def test_datalayer_landing_search(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/landing_search.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/")
+
+        self.assertTemplateUsed(response, "search/search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "SearchLandingView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "", "customDimension9": "", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 0, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_featured_search(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/searchAll",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/featured/")
+
+        self.assertTemplateUsed(response, "search/featured_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "FeaturedSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "All results: none", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 10001, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_featured_search_query(self):
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search_query.json"
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/searchAll",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/featured/?q=test+search+term")
+
+        self.assertTemplateUsed(response, "search/featured_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "FeaturedSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "All results: none", "customDimension9": "test search term", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 11, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_tna(self):
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_tna.json"
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: tna", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 10001, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_tna_query(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_tna_query.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/?q=test+search+term&group=tna")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: tna", "customDimension9": "test search term", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 7, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_filtered_search_tna(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_filtered_search_tna.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get(
+            "/search/catalogue/?collection=ZOS&level=Sub-sub-series&group=tna"
+        )
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: tna", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 6, "customMetric2": 2}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_digitised(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_digitised.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/?group=digitised")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: digitised", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 10001, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_nontna(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_nontna.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/?group=nonTna")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: nonTna", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 10001, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_creator(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_creator.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/?group=creator")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: creator", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 0, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_catalogue_search_archive(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_archive.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/catalogue/?group=archive")
+
+        self.assertTemplateUsed(response, "search/catalogue_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "CatalogueSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Catalogue results: archive", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 3477, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_filtered_search_blog(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_filtered_search_blog.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?topic=Conservation&group=blog")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: blog", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 47, "customMetric2": 1}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_blog_query(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog_query.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?q=test&group=blog")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: blog", "customDimension9": "test", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 8, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_blog(self):
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog.json"
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=blog")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: blog", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 1653, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_researchguide(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_researchguide.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=researchGuide")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: researchGuide", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 359, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_insight(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=insight")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: insight", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 9, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_highlight(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight2.json"
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=highlight")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: highlight", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 67, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_audio(self):
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_audio.json"
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=audio")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: audio", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 644, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+    @responses.activate
+    def test_datalayer_website_search_video(self):
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_video.json"
+        )
+        with open(path, "r") as f:
+            responses.add(
+                responses.GET,
+                "https://kong.test/data/search",
+                json=json_module.loads(f.read()),
+            )
+
+        response = self.client.get("/search/website/?group=video")
+
+        self.assertTemplateUsed(response, "search/website_search.html")
+
+        html_decoded_response = response.content.decode("utf8")
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: video", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 348, "customMetric2": 0}</script>"""
+        self.assertIn(desired_datalayer_script_tag, html_decoded_response)

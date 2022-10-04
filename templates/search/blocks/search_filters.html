@@ -9,7 +9,6 @@
             {% endif %}
             
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% prepare_form_for_partial_render form 'filter_keyword' 'collection' 'topic' 'level' 'closure' 'opening_start_date' 'opening_end_date' 'catalogue_source' 'held_by' %}
 
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -54,7 +53,9 @@
 
             {% include "search/includes/filter.html" with field=form.topic %}
 
-            {% include "search/includes/filter.html" with field=form.level %}
+            {% if form.group.value != bucketkeys.NONTNA.value %}
+                {% include "search/includes/filter.html" with field=form.level %}
+            {% endif %}
 
             {% include "search/includes/filter.html" with field=form.closure %}
 
@@ -82,14 +83,18 @@
             </div>
             {% endif %}
 
-            {% if form.group.value == 'nonTna' %}
+            {% if form.group.value == bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.held_by %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
             {% endif %}
+
+            {% if form.group.value == bucketkeys.CREATOR.value %}
+                {% include "search/includes/filter.html" with field=form.type %}
+            {% endif %}
         </div>
-        {% for hidden_field in form.hidden_fields %}
-            {{hidden_field}}
-        {% endfor %}
+
+        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type'|include_hidden_fields:form }}
+      
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
