@@ -10,7 +10,7 @@ export default function() {
     }
 
     let $showHideButton = document.createElement('button');
-    $showHideButton.innerText = 'Filters';
+    $showHideButton.innerHTML = 'Filters<span class="filter-indicator">3</span>';
     $showHideButton.classList.add('search-results__filter-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
@@ -33,7 +33,7 @@ export default function() {
             $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Filters';
+            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">!</span>';
         }
     });
 
