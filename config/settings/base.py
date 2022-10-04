@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
     "generic_chooser",
+    "wagtailmetadata",
     "modelcluster",
     "taggit",
     "django.contrib.admin",

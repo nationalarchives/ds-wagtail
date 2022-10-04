@@ -1,7 +1,10 @@
 {% extends 'base_page.html' %}
 
 {% load i18n static wagtailcore_tags wagtailimages_tags %}
-
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
     <div class="container" data-container-name="topic-explorer" id="analytics-topic-explorer">
@@ -20,54 +23,45 @@
                      <li>
                        <a href="{% pageurl insights_page %}">{{ insights_page.title }}</a>
                      </li>
-
                   {% endfor %}
             </div>
         </div>
     {% endif %}
-     </div>
-{% if page.featured_insight %}
-        <div class="container">
-            <div class="featured-insight">
-                {% if page.featured_insight.hero_image %}
-                    <div class="featured-insight__image">
-                        {% if page.featured_insight.hero_image_caption %}
-                        <figure>
-                        {% endif %}
-                        <picture>
-                            {% image page.featured_insight.hero_image fill-412x361 as hero %}
-                            <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                            {% image page.featured_insight.hero_image fill-510x351 as hero %}
-                            <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                            {% image page.featured_insight.hero_image fill-510x304 as hero %}
-                            <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                            {% image page.featured_insight.hero_image fill-345x495 as hero %}
-                            <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                            {% image page.featured_insight.hero_image fill-555x367 as hero %}
-                            <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                            {% if page.featured_insight.hero_image_decorative %}
-                                <img src="{{ hero.url }}" alt="" />
-                            {% else %}
-                                <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
-                            {% endif %}
-                        </picture>
-                    {% if page.featured_insight.hero_image_caption %}
-                            <figcaption class="hero-image__figcaption">{{ page.featured_insight.hero_image_caption|richtext }}</figcaption>
-                        </figure>
+    </div>
+    {% if page.featured_insight %}
+            <div class="container">
+                <div class="featured-insight">
+                    {% if page.featured_insight.hero_image %}
+                        <div class="featured-insight__image">
+                            <picture>
+                                {% image page.featured_insight.hero_image fill-412x361 as hero %}
+                                <source media="(max-width: 480px)" srcset="{{ hero.url }}">
+                                {% image page.featured_insight.hero_image fill-510x351 as hero %}
+                                <source media="(max-width: 640px)" srcset="{{ hero.url }}">
+                                {% image page.featured_insight.hero_image fill-510x304 as hero %}
+                                <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+                                {% image page.featured_insight.hero_image fill-345x495 as hero %}
+                                <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+                                {% image page.featured_insight.hero_image fill-555x367 as hero %}
+                                <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+                                {% if page.featured_insight.hero_image_decorative %}
+                                    <img src="{{ hero.url }}" alt="" />
+                                {% else %}
+                                    <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
+                                {% endif %}
+                            </picture>
+                        </div>
                     {% endif %}
+                <div class="featured-insight__description">
+                    <h2 class="featured-insight__heading">
+                        <small>{% trans "Spotlight on" %}</small>
+                        {{ page.featured_insight.title }}
+                    </h2>
+                    <p>{{ page.featured_insight.sub_heading }}</p>
+                    <a class="tna-button--dark" href="{% pageurl page.featured_insight %}">Read</a>
                 </div>
-            {% endif %}
-
-            <div class="featured-insight__description">
-                <h2 class="featured-insight__heading">
-                    <small>{% trans "Spotlight on" %}</small>
-                    {{ page.featured_insight.title }}
-                </h2>
-                <p>{{ page.featured_insight.sub_heading }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}">Read</a>
             </div>
         </div>
-    </div>
     {% endif %}
 {% endblock %}
 

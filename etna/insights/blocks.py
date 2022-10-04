@@ -185,7 +185,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     items = PageListBlock(
         "insights.InsightsPage",
         exclude_drafts=True,
-        exclude_private=False,
+        exclude_private=True,
         select_related=["teaser_image"],
         min_num=3,
         max_num=9,

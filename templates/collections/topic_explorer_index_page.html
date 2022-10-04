@@ -2,7 +2,10 @@
 
 {% load static %}
 {% load wagtailcore_tags %}
-
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
 
