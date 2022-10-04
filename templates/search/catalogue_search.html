@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% load humanize %}
+{% load datalayer_tags %}
 {% load search_tags %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer view %}
+{% endblock extra_gtm_js %}
 {% load static %}
 {% block breadcrumb %}
 {% endblock %}
@@ -9,7 +14,7 @@
 {% block content %}
         {{ form.non_field_errors }}
 
-        {%  with type='Catalogue'%}
+        {%  with search_tab=searchtabs.CATALOGUE.value%}
             {% include './blocks/search_results_hero.html' %}
         {% endwith  %}
 

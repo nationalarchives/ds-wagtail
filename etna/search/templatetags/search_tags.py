@@ -1,16 +1,16 @@
-import types
+import datetime
+import logging
 
 from typing import Union
 
-from django import forms, template
-from django.core.exceptions import ValidationError
-from django.forms.boundfield import BoundField
+from django import template
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
 import bleach
 
 register = template.Library()
+logger = logging.getLogger(__name__)
 
 
 @register.filter
@@ -122,86 +122,32 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     return query_dict.urlencode()
 
 
-class RepeatableBoundField(BoundField):
+@register.filter
+def include_hidden_fields(visible_field_names, form) -> str:
     """
-    A custom BoundField class that applies a 'suffix' to automatically
-    generated html element IDs, allowing the same form to be rendered
+    Returns automatically generated html hidden fields for the input form.
+    The hidden fields are derived from the input form less the visible field names.
+    A random suffix is applied to html id allowing the same form to be rendered
     multiple times without field ID clashes.
     """
-
-    @property
-    def auto_id(self):
-        return super().auto_id + getattr(self.form, "_field_id_suffix", "")
-
-    @property
-    def is_hidden(self):
-        if hasattr(self.form, "_visible_field_names"):
-            return self.name not in self.form._visible_field_names
-        return self.field.widget.is_hidden
-
-    def _has_changed(self):
-        field = self.field
-        if field.show_hidden_initial:
-            hidden_widget = field.hidden_widget()
-            initial_value = self.form._widget_data_value(
-                hidden_widget,
-                self.html_initial_name,
-            )
+    html = ""
+    visible_field_list = visible_field_names.split()
+    for field in form.fields:
+        if field not in visible_field_list:
             try:
-                initial_value = field.to_python(initial_value)
-            except ValidationError:
-                # Always assume data has changed if validation fails.
-                return True
-        else:
-            initial_value = self.initial
-        return field.has_changed(initial_value, self.data)
-
-    def as_widget(self, widget=None, attrs=None, only_initial=False):
-        if widget is None:
-            if hasattr(self.form, "_visible_field_names"):
-                if self.name in self.form._visible_field_names:
-                    widget = self.field.widget
-                    if isinstance(widget, forms.HiddenInput):
-                        widget = self.field.__class__.widget
-                else:
-                    widget = self.field.hidden_widget
-        if not isinstance(widget, forms.Widget):
-            widget = widget()
-        if self.is_hidden and not self._has_changed():
-            return ""
-        return super().as_widget(widget, attrs, only_initial)
-
-
-def patch_form_fields(form):
-    """
-    Patches Field.get_bound_field() for all of the form's fields, so that they
-    return ``RepeatableBoundField`` instances.
-    """
-
-    def replacement_method(self, form, field_name):
-        return RepeatableBoundField(form, self, field_name)
-
-    for field in form.fields.values():
-        field.get_bound_field = types.MethodType(replacement_method, field)
-
-
-@register.simple_tag()
-def prepare_form_for_partial_render(form, *visible_field_names, field_id_suffix=None):
-    # Set form attributes to be picked up by RepeatableBoundField
-    form._field_id_suffix = "_" + (
-        field_id_suffix if field_id_suffix else get_random_string(3)
-    )
-    form._visible_field_names = visible_field_names
-    # In case form fields have not been patched already
-    patch_form_fields(form)
-    return ""
-
-
-@register.simple_tag()
-def prepare_form_for_full_render(form):
-    # Unset custom attributes so that RepeatableBoundFields render as normal
-    form.__dict__.pop("_field_id_suffix", None)
-    form.__dict__.pop("_visible_field_names", None)
-    # In case form fields have not been patched already
-    patch_form_fields(form)
-    return ""
+                if value := form.cleaned_data[field]:
+                    if isinstance(value, (str, int)):
+                        html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
+                    elif isinstance(value, list):
+                        for value_in_list in value:
+                            html += f""" <input type="hidden" name="{field}" value="{value_in_list}" id="id_{field}_{get_random_string(3)}"> """
+                    elif isinstance(value, datetime.datetime):
+                        html += f""" <input type="hidden" name="{field}" value="{value.date()}" id="id_{field}_{get_random_string(3)}"> """
+                    else:
+                        logger.debug(
+                            f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
+                        )
+            except KeyError:
+                # for invalid input - example invalid date, value is not cleaned
+                pass
+    return mark_safe(html)
