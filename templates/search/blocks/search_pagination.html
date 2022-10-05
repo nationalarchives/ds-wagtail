@@ -7,8 +7,8 @@
                     <ul class="pagination__list">
                         {% if page.has_previous %}
                             <li class="pagination__list-item">
-                                <a class="pagination__page-chevron-previous" href="?{% query_string_include 'page' page.previous_page_number %}" data-link-type=”Pagination”><span
-                                        class="sr-only" data-link="Previous page">Previous page</span></a>
+                                <a class="pagination__page-chevron-previous" href="?{% query_string_include 'page' page.previous_page_number %}" data-link-type="Pagination" data-link="Previous page"><span
+                                        class="sr-only">Previous page</span></a>
                             </li>
                         {% else %}
                             <li class="pagination__list-item">
@@ -20,14 +20,14 @@
                                 {% for i in page_range %}
                                     <li class="pagination__list-item">
                                         {% if page.number == i %}
-                                            <a class="pagination__page-link-current" href="?{% query_string_include 'page' i %}" aria-label="Current page, Page {{ i }}" aria-current="true" data-link-type=”Pagination” data-link="{{ i }}">
+                                            <a class="pagination__page-link-current" href="?{% query_string_include 'page' i %}" aria-label="Current page, Page {{ i }}" aria-current="true" data-link-type="Pagination" data-link="{{ i }}">
                                                 <span class="sr-only">Current page </span>{{ i }}
                                             </a>
                                         {% else %}
                                             {% if i == page.paginator.ELLIPSIS %}
                                                 {{ i }}
                                             {% else %}
-                                                <a class="pagination__page-link" href="?{% query_string_include 'page' i %}" data-link-type=”Pagination” aria-label="Go to page {{ i }}" data-link="{{ i }}">
+                                                <a class="pagination__page-link" href="?{% query_string_include 'page' i %}" data-link-type="Pagination" aria-label="Go to page {{ i }}" data-link="{{ i }}">
                                                     <span class="sr-only">Page </span>{{ i }}
                                                 </a>
                                             {% endif %}
@@ -39,7 +39,7 @@
                         {% if page.has_next %}
                             <li class="pagination__list-item">
                                 <a class="pagination__page-chevron-next" href="?{% query_string_include 'page' page.next_page_number %}"
-                                data-link="Next page" data-link-type=”Pagination”><span class="sr-only">Next page</span></a>
+                                data-link="Next page" data-link-type="Pagination"><span class="sr-only">Next page</span></a>
                             </li>
                         {% else %}
                             <li class="pagination__list-item">
