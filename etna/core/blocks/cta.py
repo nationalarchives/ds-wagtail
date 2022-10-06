@@ -1,15 +1,16 @@
 from wagtail.core import blocks
-from wagtail.images.blocks import ImageChooserBlock
 
-from etna.collections.blocks import (
-    TimePeriodExplorerIndexBlock,
-    TopicExplorerIndexBlock,
-)
-from etna.core.blocks import (
-    ContentImageBlock,
+# from etna.collections.blocks import (
+#    TimePeriodExplorerIndexBlock,
+#    TopicExplorerIndexBlock,
+# )
+#
+from etna.core.blocks import (  # ContentImageBlock,
     PageListBlock,
     SectionDepthAwareStructBlock,
 )
+
+# from wagtail.images.blocks import ImageChooserBlock
 
 
 class TimePeriodBlock(blocks.StructBlock):
