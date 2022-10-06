@@ -11,15 +11,15 @@
     <div class="search-results__list-card-content">
         <h3 class="search-results__list-card-heading">
             {% if teaser_image_large.url %}
-                <div class="">
-                    <picture>
-                        <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                        <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
-                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                        <img src="{{ teaser_image_large.url }}" alt="" class="">
-                    </picture>
-                </div>
+            <div class="search-results__list-card-image">
+                <picture>
+                    <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+                    <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+                    <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+                    <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                    <img src="{{ teaser_image_large.url }}" alt="" class="">
+                </picture>
+            </div>
             {% endif %}
             <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}">
                 <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>

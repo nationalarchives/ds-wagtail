@@ -21,6 +21,13 @@
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
     }
+
+    &-image {
+
+        display:block;
+        overflow:hidden;
+        max-width:70%;
+    }
     
     &-content {
         margin-right: auto;
@@ -39,6 +46,7 @@
 
     &-description {
         margin-bottom: 0.5rem;
+        max-width:70%;
 
     }
 
