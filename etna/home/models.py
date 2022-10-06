@@ -9,14 +9,17 @@ from etna.core.models import BasePage
 from etna.teasers.models import TeaserImageMixin
 
 from ..alerts.models import AlertMixin
-from .blocks import HomePageStreamBlock
 from ..core.blocks.cta import FeaturedCollectionBlock
+from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
-    sub_heading = models.CharField(max_length=255, blank=False,
-                                   default="Discover some of the most important and unusual records from over 1000 "
-                                           "years of history.")
+    sub_heading = models.CharField(
+        max_length=255,
+        blank=False,
+        default="Discover some of the most important and unusual records from over 1000 "
+        "years of history.",
+    )
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
