@@ -97,10 +97,15 @@
 
 .search-others {
     margin-bottom: 1rem;
+    @media only screen and (min-width: $screen__md) {
+        display:none;
+    }
+
     select {
         padding:0.5rem;
-        padding-right: 1.1rem;
+        padding-right: 1rem;
         border-radius: 5px;
         background : #eeedf3;
     }
+
 }
