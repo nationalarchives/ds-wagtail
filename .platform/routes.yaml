@@ -4,7 +4,7 @@
     type: upstream
     upstream: "app:http"
     cache:
-        enabled: ${{env.HTTP_CACHE_ENABLED}}
+        enabled: ${ HTTP_CACHE_ENABLED }
         default_ttl: 300
         cookies:
             - sessionid
