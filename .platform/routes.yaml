@@ -4,7 +4,7 @@
     type: upstream
     upstream: "app:http"
     cache:
-        enabled: false
+        enabled: true
         default_ttl: 300
         cookies:
             - sessionid
