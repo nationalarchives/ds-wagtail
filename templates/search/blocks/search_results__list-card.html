@@ -11,22 +11,23 @@
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
         <div class="row">
-            <div class="col-md-2 order-md-12">
-                    {% if teaser_image_large.url %}
+            <div class="col-md-2 col-lg-2 order-md-2">
+
                     <div class="search-results__list-card-image">
                         <picture>
-                            <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                            <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                            <source media="(max-width: 1199px)" srcset="{{ teaser_image_medium.url }}">
-                            <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                            <img src="{{ teaser_image_medium.url }}" class="card-group-secondary-nav__image-fallback">
+<!--                            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">-->
+<!--                            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">-->
+<!--                            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">-->
+<!--                            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">-->
+<!--                            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">-->
+                            <img src="{{ teaser_image_large.url }}" alt="alt tag to go here" class="card-group-secondary-nav__image-fallback"/>
                         </picture>
                     </div>
-                    {% endif %}
+
                 </div>
 
 
-            <div class="col-md-10 order-md-1">
+            <div class="col-md-10 col-lg-10 order-md-1">
 
                 <h3 class="search-results__list-card-heading">
                     <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}">
