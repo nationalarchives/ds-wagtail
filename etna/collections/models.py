@@ -107,6 +107,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     another CategoryPage (to allow the user to make a more fine-grained choice) or a
     single ResultsPage (to output the results of their selection).
     """
+
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
