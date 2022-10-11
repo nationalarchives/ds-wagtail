@@ -238,14 +238,14 @@ dev = ["tox", "bump2version (<1)", "sphinx (<2)", "importlib-metadata (<3)", "im
 
 [[package]]
 name = "django"
-version = "4.0.7"
+version = "4.1"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 category = "main"
 optional = false
 python-versions = ">=3.8"
 
 [package.dependencies]
-asgiref = ">=3.4.1,<4"
+asgiref = ">=3.5.2,<4"
 "backports.zoneinfo" = {version = "*", markers = "python_version < \"3.9\""}
 sqlparse = ">=0.2.2"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
@@ -458,7 +458,7 @@ python-versions = "*"
 python-dateutil = ">=2.8.1"
 
 [package.extras]
-dev = ["wheel", "flake8", "markdown", "twine"]
+dev = ["twine", "markdown", "flake8", "wheel"]
 
 [[package]]
 name = "gunicorn"
@@ -487,10 +487,10 @@ six = ">=1.9"
 webencodings = "*"
 
 [package.extras]
-lxml = ["lxml"]
-genshi = ["genshi"]
+all = ["genshi", "chardet (>=2.2)", "lxml"]
 chardet = ["chardet (>=2.2)"]
-all = ["lxml", "chardet (>=2.2)", "genshi"]
+genshi = ["genshi"]
+lxml = ["lxml"]
 
 [[package]]
 name = "idna"
@@ -915,19 +915,20 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "pyjwt"
-version = "2.4.0"
+version = "2.5.0"
 description = "JSON Web Token implementation in Python"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 cryptography = {version = ">=3.3.1", optional = true, markers = "extra == \"crypto\""}
+types-cryptography = {version = ">=3.3.21", optional = true, markers = "extra == \"crypto\""}
 
 [package.extras]
-crypto = ["cryptography (>=3.3.1)"]
-dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
-docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
+crypto = ["cryptography (>=3.3.1)", "types-cryptography (>=3.3.21)"]
+dev = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "types-cryptography (>=3.3.21)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "pre-commit"]
+docs = ["sphinx (>=4.5.0,<5.0.0)", "sphinx-rtd-theme", "zope.interface"]
 tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
@@ -1161,7 +1162,7 @@ executing = "*"
 pure-eval = "*"
 
 [package.extras]
-tests = ["cython", "littleutils", "pygments", "typeguard", "pytest"]
+tests = ["pytest", "typeguard", "pygments", "littleutils", "cython"]
 
 [[package]]
 name = "tablib"
@@ -1195,7 +1196,7 @@ optional = false
 python-versions = ">=3.5"
 
 [package.extras]
-docs = ["mkdocs-material (>=6.2,<6.3)", "mkdocs (>=1.1,<1.2)"]
+docs = ["mkdocs (>=1.1,<1.2)", "mkdocs-material (>=6.2,<6.3)"]
 
 [[package]]
 name = "text-unidecode"
@@ -1233,6 +1234,14 @@ python-versions = ">=3.7"
 test = ["pre-commit", "pytest"]
 
 [[package]]
+name = "types-cryptography"
+version = "3.3.23"
+description = "Typing stubs for cryptography"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "typing-extensions"
 version = "4.3.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -1263,7 +1272,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "wagtail"
-version = "3.0.1"
+version = "4.0.2"
 description = "A Django content management system."
 category = "main"
 optional = false
@@ -1271,12 +1280,12 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 anyascii = ">=0.1.5"
-beautifulsoup4 = ">=4.8,<4.10"
-Django = ">=3.2,<4.1"
-django-filter = ">=2.2,<22"
+beautifulsoup4 = ">=4.8,<4.12"
+Django = ">=3.2,<4.2"
+django-filter = ">=2.2,<23"
 django-modelcluster = ">=6.0,<7.0"
 django-permissionedforms = ">=0.1,<1.0"
-django-taggit = ">=2.0,<3.0"
+django-taggit = ">=2.0,<4.0"
 django-treebeard = ">=4.5.1,<5.0"
 djangorestframework = ">=3.11.1,<4.0"
 draftjs-exporter = ">=2.1.5,<3.0"
@@ -1290,8 +1299,8 @@ Willow = ">=1.4,<1.5"
 xlsxwriter = ">=1.2.8,<4.0"
 
 [package.extras]
-testing = ["polib (>=1.1,<2.0)", "djhtml (==1.4.13)", "curlylint (==0.13.1)", "flake8-assertive (==2.0.0)", "doc8 (==0.8.1)", "flake8-print (==2.0.2)", "flake8-comprehensions (==3.8.0)", "flake8-blind-except (==0.1.1)", "isort (==5.6.4)", "flake8 (>=3.6.0)", "black (==22.3.0)", "coverage (>=3.7.0)", "django-pattern-library (>=0.7,<0.8)", "azure-mgmt-frontdoor (>=0.3,<0.4)", "azure-mgmt-cdn (>=5.1,<6.0)", "openpyxl (>=2.6.4)", "freezegun (>=0.3.8)", "boto3 (>=1.16,<1.17)", "Jinja2 (>=3.0,<3.2)", "elasticsearch (>=5.0,<6.0)", "pytz (>=2014.7)", "python-dateutil (>=2.7)"]
-docs = ["myst-parser (==0.17.0)", "sphinx-wagtail-theme (==5.1.1)", "sphinx-autobuild (>=0.6.0)", "Sphinx (>=1.5.2)", "sphinxcontrib-spelling (>=5.4.0,<6)", "pyenchant (>=3.1.1,<4)"]
+docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==5.3.0)", "myst-parser (==0.17.0)"]
+testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=3.0,<3.2)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "openpyxl (>=2.6.4)", "azure-mgmt-cdn (>=5.1,<6.0)", "azure-mgmt-frontdoor (>=0.3,<0.4)", "django-pattern-library (>=0.7,<0.8)", "coverage (>=3.7.0)", "black (==22.3.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-comprehensions (==3.8.0)", "flake8-print (==5.0.0)", "doc8 (==0.8.1)", "flake8-assertive (==2.0.0)", "curlylint (==0.13.1)", "djhtml (==1.4.13)", "polib (>=1.1,<2.0)"]
 
 [[package]]
 name = "wagtail-font-awesome-svg"
@@ -1314,7 +1323,7 @@ requests = ">=2.11.1,<3.0"
 
 [[package]]
 name = "wagtail-metadata"
-version = "4.0.1"
+version = "4.0.2"
 description = "A tool to assist with metadata for social media."
 category = "main"
 optional = false
@@ -1373,7 +1382,7 @@ optional = false
 python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
 
 [package.extras]
-testing = ["mock (>=3.0,<4.0)", "Wand (>=0.6,<1.0)", "Pillow (>=6.0.0,<10.0.0)"]
+testing = ["Pillow (>=6.0.0,<10.0.0)", "Wand (>=0.6,<1.0)", "mock (>=3.0,<4.0)"]
 
 [[package]]
 name = "wrapt"
@@ -1392,9 +1401,9 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.extras]
-test = ["pytest-cov", "pytest"]
+build = ["wheel", "twine"]
 docs = ["sphinx"]
-build = ["twine", "wheel"]
+test = ["pytest", "pytest-cov"]
 
 [[package]]
 name = "xlsxwriter"
@@ -1427,7 +1436,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "c1ca212469a37c5bae2610a7a2c6ebeb2e8fafece908f2bb9e794c20a81acc96"
+content-hash = "59142d8375dc3981ee9f6359334df7d5e89d8c3de2a3dba2a3c73124634c188a"
 
 [metadata.files]
 anyascii = []
@@ -1532,6 +1541,7 @@ text-unidecode = []
 toml = []
 tomli = []
 traitlets = []
+types-cryptography = []
 typing-extensions = []
 tzdata = []
 urllib3 = []

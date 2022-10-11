@@ -5,7 +5,6 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Orderable
 
 from wagtailmetadata.models import MetadataPageMixin
@@ -301,6 +300,6 @@ class ResultsPageRecord(Orderable, models.Model):
 
     panels = [
         FieldPanel("record_iaid", widget=RecordChooser),
-        ImageChooserPanel("teaser_image"),
+        FieldPanel("teaser_image"),
         FieldPanel("description"),
     ]
