@@ -57,7 +57,7 @@
       @extend .tna-card__image;
       border: 0.0625rem solid $color__black;
       &-fallback {
-        min-width: 100%;
+        max-width: 100%;
       }
     }
 
