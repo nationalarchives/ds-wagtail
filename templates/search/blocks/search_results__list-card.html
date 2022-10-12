@@ -10,7 +10,7 @@
 
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
-        <div class="row">
+        <div class="row row-fix">
             <div class="col-md-3 order-md-2">
 
                     <div class="search-results__list-card-image">
@@ -20,7 +20,7 @@
                             <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
                             <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
                             <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-                            <img src="{{ teaser_image_large.url }}" alt="alt tag to go here" class="card-group-secondary-nav__image-fallback"/>
+                            <img src="{{ teaser_image_medium.url }}" alt="alt tag to go here" class="card-group-secondary-nav__image-fallback"/>
                         </picture>
                     </div>
 
