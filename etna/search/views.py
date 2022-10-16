@@ -490,7 +490,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return context
 
     def get_selected_filters(self, form: Form) -> Dict[str, List[Tuple[str, str]]]:
-        """Returns a list of selected dynamic_choice_fields values, keyed by
+        """Returns a list of selected dynamic_choice_fields values, refined filter values, keyed by
         the corresponding field name.
 
         Used by template to output a list of selected filters.
@@ -519,6 +519,34 @@ class BaseFilteredSearchView(BaseSearchView):
                 (value, choice_labels.get(value, value))
                 for value in return_value[field_name]
             ]
+
+        if filter_keyword := form.cleaned_data.get("filter_keyword"):
+            return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+        if opening_start_date := form.cleaned_data.get("opening_start_date"):
+            return_value.update(
+                {
+                    "opening_start_date": [
+                        (
+                            opening_start_date.date(),
+                            opening_start_date.strftime(
+                                "Record Opening From: %d-%m-%Y"
+                            ),
+                        )
+                    ]
+                }
+            )
+        if opening_end_date := form.cleaned_data.get("opening_end_date"):
+            return_value.update(
+                {
+                    "opening_end_date": [
+                        (
+                            opening_end_date.date(),
+                            opening_end_date.strftime("Record Opening To:  %d-%m-%Y"),
+                        )
+                    ]
+                }
+            )
+
         return return_value
 
 
