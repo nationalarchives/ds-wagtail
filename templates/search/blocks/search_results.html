@@ -12,7 +12,7 @@
                 
                 
 
-                {% if count < 1 %}
+                {% if form.errors or count < 1 %}
                     <!-- add in the no results -->
                     {% include './no_results_catalogue_website.html' %}
                 {% endif %}
