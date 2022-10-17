@@ -46,7 +46,7 @@
     }
 
     &__page {
-        &-chevron-next, &-chevron-previous, &-link, &-link-current {
+         &-link, &-link-current {
             display: flex;
             justify-content: center;
             align-items: center;
