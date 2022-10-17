@@ -13,12 +13,14 @@
     &__list {
         text-align: center;
         list-style-type: none;
-        padding-left: 0;
+        //padding-left: 0;
         min-height: 3.125rem;
 
         display: flex;
         justify-content: start;
+        margin:auto;
         margin-bottom: 2em;
+        width:65%;
 
         &-pages {
             padding: 0;
