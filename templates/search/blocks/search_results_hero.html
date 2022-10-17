@@ -20,23 +20,23 @@
             <ul class="search-results-hero__nav-list">
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-featured' %}
-                        <span {% aria-current="true" class="search-results-hero__nav-link">All results</span>
+                        <span {% aria-current="true" class="search-results-hero__nav-link">{{searchtabs.ALL.value}}</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">All results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.ALL.value}}</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-catalogue' %}
-                        <span {% aria-current="true" class="search-results-hero__nav-link">Catalogue results</span>
+                        <span {% aria-current="true" class="search-results-hero__nav-link">{{searchtabs.CATALOGUE.value}}</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Catalogue results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.CATALOGUE.value}}</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
                     {% if url_name == 'search-website' %}
-                        <span {% aria-current="true" class="search-results-hero__nav-link">Website results</span>
+                        <span {% aria-current="true" class="search-results-hero__nav-link">{{searchtabs.WEBSITE.value}}</span>
                     {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">Website results</a>
+                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.WEBSITE.value}}</a>
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">

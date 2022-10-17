@@ -309,6 +309,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs["bucketkeys"] = BucketKeys
+        kwargs["searchtabs"] = SearchTabs
         kwargs.update(
             meta_title=self.get_meta_title(),
             search_query=self.form.cleaned_data.get("q", ""),
@@ -573,8 +575,6 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         return data
 
     def get_context_data(self, **kwargs):
-        kwargs["bucketkeys"] = BucketKeys
-        kwargs["searchtabs"] = SearchTabs
         return super().get_context_data(**kwargs)
 
 
