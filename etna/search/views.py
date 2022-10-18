@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import re
 
@@ -16,6 +17,7 @@ from ..analytics.mixins import SearchDataLayerMixin
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
+    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
@@ -503,6 +505,8 @@ class BaseFilteredSearchView(BaseSearchView):
             if form.cleaned_data.get(field_name)
         }
 
+        form_error_messages = []
+
         # Replace field 'values' with (value, label) tuples,
         # allowing both to be used in the template
         for field_name in return_value:
@@ -524,30 +528,50 @@ class BaseFilteredSearchView(BaseSearchView):
 
         if filter_keyword := form.cleaned_data.get("filter_keyword"):
             return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+
+        # get form error messages
+        if error_dict := json.loads(form.errors.as_json()):
+            for dict_values in error_dict.values():
+                for item in dict_values:
+                    form_error_messages.append(item["message"])
+
         if opening_start_date := form.cleaned_data.get("opening_start_date"):
-            return_value.update(
-                {
-                    "opening_start_date": [
-                        (
-                            opening_start_date.date(),
-                            opening_start_date.strftime(
-                                "Record Opening From: %d-%m-%Y"
-                            ),
-                        )
-                    ]
-                }
-            )
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_start_date": [
+                            (
+                                opening_start_date.date(),
+                                opening_start_date.strftime(
+                                    "Record Opening From: %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
+
         if opening_end_date := form.cleaned_data.get("opening_end_date"):
-            return_value.update(
-                {
-                    "opening_end_date": [
-                        (
-                            opening_end_date.date(),
-                            opening_end_date.strftime("Record Opening To:  %d-%m-%Y"),
-                        )
-                    ]
-                }
-            )
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_end_date": [
+                            (
+                                opening_end_date.date(),
+                                opening_end_date.strftime(
+                                    "Record Opening To:  %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
 
         return return_value
 

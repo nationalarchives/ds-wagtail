@@ -180,6 +180,8 @@ def hidden_fields_for_date_filter(selected_filters, form) -> str:
             for value, _ in selected_options:
                 visible_field_names_str += f"{field_name} "
                 html += f""" <input type="hidden" name="{field_name}" value="{value}" id="id_{field_name}_{get_random_string(3)}"> """
+        # date fields are visible, editable and can have errors
+        visible_field_names_str += " opening_start_date opening_end_date"
         # fields outside form of selected filters
         if visible_field_names_str:
             html += include_hidden_fields(visible_field_names_str, form)
