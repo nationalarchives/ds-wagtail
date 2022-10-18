@@ -2,6 +2,8 @@
     border-top: 0.1875rem dotted $color__grey-4;
     padding: 1rem 0;
 
+
+
     &__heading {
         font-size: 1.55rem;
         @media only screen and (max-width: $screen__md) {
@@ -21,4 +23,10 @@
         }
         height: 3.75rem;
     }
+}
+
+.cta-banner-border {
+    border:solid 1px black;
+    margin:auto;
+    width:50%;
 }
