@@ -7,87 +7,101 @@
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 {% load search_tags records_tags static %}
+
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
-        <h3 class="search-results__list-card-heading">
-            {% if teaser_image_large.url %}
-                <div class="">
-                    <picture>
-                        <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                        <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                        <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
-                        <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                        <img src="{{ teaser_image_large.url }}" alt="" class="">
-                    </picture>
+        <div class="row">
+            <div class="col-md-3 order-md-2">
+
+                    <div class="search-results__list-card-image">
+                        <picture>
+                            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
+                            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
+                            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
+                            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
+                            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
+                            <img src="{{ teaser_image_large.url }}" alt="alt tag to go here" class="card-group-secondary-nav__image-fallback"/>
+                        </picture>
+                    </div>
+
                 </div>
-            {% endif %}
-            <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}">
-                <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
-                {{ record|record_title}}
-            </a>
-        </h3>
 
-        <p class="search-results__list-card-description">
-            {{ record|record_description}}
-        </p>
 
-        <ul class="search-results__list-card-metadata">
+            <div class="col-md-9 order-md-1">
 
-            {% if record|record_detail:"heldBy" %}
-                <li class="search-results__list-card-metadata-item">
-                    Held by: {{ record|record_detail:"heldBy" }}
-                </li>
-            {% endif %}
+                <h3 class="search-results__list-card-heading">
+                    <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}">
+                    <span class="sr-only">{{ record|record_detail:"referenceNumber"}} </span>
+                    {{ record|record_title}}
+                    </a>
+                </h3>
 
-            {% if record|record_detail:"dateCreated" %}
-                <li class="search-results__list-card-metadata-item">
-                    Date: {{ record|record_detail:"dateCreated"|default:"N/A" }}
-                </li>
-            {% endif %}
+                <p class="search-results__list-card-description">
+                    {{ record|record_description}}
+                </p>
 
-            {% if record|record_detail:"referenceNumber" %}
-            <li class="search-results__list-card-metadata-item">
+                <ul class="search-results__list-card-metadata">
 
-                {% if form.group.value == 'archive' %}
-                Archon code:
-                {% else %}
-                Catalogue reference:
-                {% endif %}
+                    {% if record|record_detail:"heldBy" %}
+                    <li class="search-results__list-card-metadata-item">
+                        Held by: {{ record|record_detail:"heldBy" }}
+                    </li>
+                    {% endif %}
 
-                {{ record|record_detail:"referenceNumber"|default:"N/A" }}
-            </li>
-            {% endif %}
+                    {% if record|record_detail:"dateCreated" %}
+                    <li class="search-results__list-card-metadata-item">
+                        Date: {{ record|record_detail:"dateCreated"|default:"N/A" }}
+                    </li>
+                    {% endif %}
 
-            {% if form.group.value == bucketkeys.CREATOR.value %}
-                {% if record|record_detail:"type" %}
+                    {% if record|record_detail:"referenceNumber" %}
+                    <li class="search-results__list-card-metadata-item">
+
+                        {% if form.group.value == 'archive' %}
+                        Archon code:
+                        {% else %}
+                        Catalogue reference:
+                        {% endif %}
+
+                        {{ record|record_detail:"referenceNumber"|default:"N/A" }}
+                    </li>
+                    {% endif %}
+
+                    {% if form.group.value == bucketkeys.CREATOR.value %}
+                    {% if record|record_detail:"type" %}
                     <li class="search-results__list-card-metadata-item">
                         Type: {{ record|record_detail:"type"|default:"N/A" }}
                     </li>
-                {% endif %}
+                    {% endif %}
+                    {% endif %}
+
+                    {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
+                    <!--
+                    <li class="search-results__list-card-metadata-item">
+                        IAID: {{ record|record_detail:"iaid"|default:"N/A" }}
+                    </li>
+                    <li class="search-results__list-card-metadata-item">
+                        Score: {{ record|record_score }}
+                    </li>-->
+                    {% comment %}End debug attributes.{% endcomment %}
+                </ul>
+            </div>
+
+            {% if record|record_detail:"digitised" %}
+            <div class="search-results__list-card-delivery-options">
+                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1">
+                    <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
+                </a>
+                <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                    <p class="search-results__list-card-delivery-options-desc">
+                        <span class="sr-only">{{ record|record_detail:"referenceNumber"}} {{ record|record_detail:"summaryTitle" }} is </span>Available to download and view online
+                    </p>
+                </a>
+            </div>
             {% endif %}
-
-            {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-            <!--
-            <li class="search-results__list-card-metadata-item">
-                IAID: {{ record|record_detail:"iaid"|default:"N/A" }}
-            </li>
-            <li class="search-results__list-card-metadata-item">
-                Score: {{ record|record_score }}
-            </li>-->
-            {% comment %}End debug attributes.{% endcomment %}
-        </ul>
-    </div>
-
-    {% if record|record_detail:"digitised" %}
-    <div class="search-results__list-card-delivery-options">
-        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1">
-            <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-        </a>
-        <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-            <p class="search-results__list-card-delivery-options-desc">
-                <span class="sr-only">{{ record|record_detail:"referenceNumber"}} {{ record|record_detail:"summaryTitle" }} is </span>Available to download and view online
-            </p>
-        </a>
-    </div>
-    {% endif %}
 </li>
+
+
+
+
+
