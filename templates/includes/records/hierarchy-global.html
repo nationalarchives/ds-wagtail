@@ -14,23 +14,57 @@
             If the Archive level is visible as the first item, this modifier doesn't need to be added.
 
             -->
-            
+
             <ul class="hierarchy-short-panel__list">
                 {% if page.hierarchy %}
-                    {% for item in page.hierarchy %}
-                        {% is_page_current_item_in_hierarchy page item as is_current_item %}
-                        {% if item.level_code == 1 and not is_current_item %}
-                            <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
-                                <span class="hierarchy-short-panel__level">
-                                    <a href="{% record_url item%}">Department</a>
-                                </span>{{ item.reference_number }}
-                            </li>
-                        {% elif item.level_code == 3 and not is_current_item %}
+                    {% if page.hierarchy|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
-                                <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
-                            </span>{{ item.reference_number }}
+                                <a href="#">Archive</a>
+                            </span>{{ page.template.heldBy }}
                         </li>
+                    {% endif %}
+                    
+                    {% for item in page.hierarchy %}
+                        {% is_page_current_item_in_hierarchy page item as is_current_item %}
+
+                        {% if forloop.counter == 1 and not is_current_item %}
+                            {% if page.hierarchy|length == 3 %}
+                                <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
+                                    <span class="hierarchy-short-panel__level">
+                                        <a href="{% record_url item%}">Department</a>
+                                    </span>{{ item.reference_number }}
+                                </li>
+                            {% elif page.hierarchy|length == 2 %}
+                                <li class="hierarchy-short-panel__list-item">
+                                    <span class="hierarchy-short-panel__level">
+                                        <a href="{% record_url item%}">Department</a>
+                                    </span>{{ item.reference_number }}
+                                </li>
+                            {% endif %}
+
+                        {% elif forloop.counter == 2 and not is_current_item %}
+                            {% if page.hierarchy|length > 3 %}
+                                <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
+                                    <span class="hierarchy-short-panel__level">
+                                        <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
+                                    </span>{{ item.reference_number }}
+                                </li>
+                            {% else %}
+                                <li class="hierarchy-short-panel__list-item">
+                                    <span class="hierarchy-short-panel__level">
+                                        <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
+                                    </span>{{ item.reference_number }}
+                                </li>
+                            {%endif%}
+
+                        {% elif forloop.counter == 3 and not is_current_item %}
+                            <li class="hierarchy-short-panel__list-item">
+                                <span class="hierarchy-short-panel__level">
+                                    <a class="hierarchy-short-panel__link" href="{% record_url item %}">Piece</a>
+                                </span>{{ item.reference_number }}
+                            </li>
+
                         {% elif is_current_item %}
                             <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
                                 <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>{{ item.reference_number }}
@@ -38,6 +72,11 @@
                         {% endif %}
                     {% endfor %}
                 {% else %}
+                    <li class="hierarchy-short-panel__list-item">
+                        <span class="hierarchy-short-panel__level">
+                            <a href="#">Archive</a>
+                        </span>{{ page.template.heldBy }}
+                    </li>
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
                         <span class="hierarchy-short-panel__level">This department</span>{{ page.reference_number }}
                     </li>
@@ -62,22 +101,22 @@
             <!-- Level 1 -->
             <div class="hierarchy-full-panel__bar-container-outer">
                 <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-1">
-                    <p><span class="hierarchy-full-panel__bar-number">3 million</span>
+                    <p><span class="hierarchy-full-panel__bar-number">N</span>
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                 </div>
                 <div class="hierarchy-full-panel__text-container">
                     <p class="hierarchy-full-panel__text-level">This record is held at: <a href="">{{page.template.heldBy}}</a></p>
-                    <p class="hierarchy-full-panel__text-title">Located at Kew, Surrey</p>
+                    <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p>
                 </div>
             </div>
             {% if page.hierarchy %}
                 {% for item in page.hierarchy %}
                     {% is_page_current_item_in_hierarchy page item as is_current_item %}
                     <!-- Level 2 -->
-                    {% if item.level_code == 1 %}
+                    {% if item.level_code == 1 or forloop.counter == 1 %}
                         <div class="hierarchy-full-panel__bar-container-outer">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-2">
-                                <p><span class="hierarchy-full-panel__bar-number">200,000</span>
+                                <p><span class="hierarchy-full-panel__bar-number">N</span>
                             <span class="hierarchy-full-panel__bar-label">records</span></p>
                             </div>
                             <div class="hierarchy-full-panel__text-container">
@@ -87,10 +126,11 @@
                         </div>
                     
                     <!-- Level 3 -->
-                    {% elif item.level_code == 2 %}
+                    <!--Commenting out due to missing data
+                        {#{% elif item.level_code == 2 or forloop.counter == 2 %}#}
                         <div class="hierarchy-full-panel__bar-container-outer">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-3">
-                                <p><span class="hierarchy-full-panel__bar-number">20,000</span>
+                                <p><span class="hierarchy-full-panel__bar-number">N</span>
                                 <span class="hierarchy-full-panel__bar-label">records</span></p>
                             </div>
                             <div class="hierarchy-full-panel__text-container">
@@ -98,12 +138,13 @@
                                 <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
                             </div>
                         </div>
-                        
+                    -->
                     <!-- Level 4 -->
-                    {% elif item.level_code == 3 %}
+                    <!-- forloop.counter should be equal to 3 however due to missing data it will be 2 -->
+                    {% elif item.level_code == 3 or forloop.counter == 2 %}
                         <div class="hierarchy-full-panel__bar-container-outer">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-4">
-                                <p><span class="hierarchy-full-panel__bar-number">500</span>
+                                <p><span class="hierarchy-full-panel__bar-number">N</span>
                                 <span class="hierarchy-full-panel__bar-label">records</span></p>
                             </div>
                             <div class="hierarchy-full-panel__text-container">
@@ -113,10 +154,11 @@
                         </div>
 
                     <!-- Level 5 -->
-                    {% elif item.level_code == 4 %}
+                    <!--Commenting out due to missing data
+                    {#{% elif item.level_code == 4 or forloop.counter == 4 %}#}
                         <div class="hierarchy-full-panel__bar-container-outer">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-5">
-                                <p><span class="hierarchy-full-panel__bar-number">20</span>
+                                <p><span class="hierarchy-full-panel__bar-number">N</span>
                                 <span class="hierarchy-full-panel__bar-label">records</span></p>
                             </div>
                             <div class="hierarchy-full-panel__text-container">
@@ -124,12 +166,13 @@
                                 <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
                             </div>
                         </div>
-
+                    -->
                     <!-- Level 6 -->
-                    {% elif item.level_code == 6 %}
+                    <!--As above, should be 5 but missing data prevents this-->
+                    {% elif item.level_code == 6 or forloop.counter == 3 %}
                         <div class="hierarchy-full-panel__bar-container-outer">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-6">
-                                <p><span class="hierarchy-full-panel__bar-number">10</span>
+                                <p><span class="hierarchy-full-panel__bar-number">N</span>
                                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                             </div>
                             <div class="hierarchy-full-panel__text-container">
@@ -139,7 +182,7 @@
                         </div>
 
                     <!-- Level 7 -->
-                    {% elif item.level_code == 7 %}
+                    {% elif item.level_code == 7 or forloop.counter == 6 %}
                         <div class="hierarchy-full-panel__bar-container-outer hierarchy-full-panel__bar-container-outer--active">
                             <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-7">
                                 <p><span class="hierarchy-full-panel__bar-number">1</span>
@@ -155,7 +198,7 @@
             {% else %}
                 <div class="hierarchy-full-panel__bar-container-outer">
                     <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-2">
-                        <p><span class="hierarchy-full-panel__bar-number">200,000</span>
+                        <p><span class="hierarchy-full-panel__bar-number">N</span>
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                     </div>
                     <div class="hierarchy-full-panel__text-container">
