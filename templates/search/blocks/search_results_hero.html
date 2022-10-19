@@ -8,15 +8,9 @@
         <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
         {{ form.q }}
         
-        {{ form.group.as_hidden }}
-        {{ form.sort_by.as_hidden }}
-        {{ form.display.as_hidden }}
-        {{ form.filter_keyword.as_hidden }}
-        {{ form.opening_start_date.as_hidden }}
-        {{ form.opening_end_date.as_hidden }}
-        {% for hidden_field in form.hidden_fields %}
-            {{ hidden_field }}
-        {% endfor %}
+        {% if search_tab == searchtabs.CATALOGUE.value or search_tab == searchtabs.WEBSITE.value %}
+            {{ 'q'|include_hidden_fields:form }}
+        {% endif %}
 
         <input type="submit" value="Search" class="search-results-hero__form-submit">
     </form>
@@ -47,12 +41,13 @@
                 </li>
                 <li class="search-results-hero__nav-list-item">
                     <div>
-                        <a href="/search/featured/" data-link-type=”Link” data-link=”Start a new search”>Start new search</a>
+                        <a href="/search/featured/" data-link-type="Link" data-link="Start a new search">Start new search</a>
                     </div>
                 </li>
             </ul>
         </nav>
     {% endwith %}
 </div>
+
 
 

@@ -14,7 +14,7 @@
 {% block content %}
         {{ form.non_field_errors }}
 
-        {%  with type='Catalogue'%}
+        {%  with search_tab=searchtabs.CATALOGUE.value%}
             {% include './blocks/search_results_hero.html' %}
         {% endwith  %}
 

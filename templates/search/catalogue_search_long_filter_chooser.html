@@ -13,7 +13,7 @@
 
             <div class="long-filters__options">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
-                <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" data-link-type=”Search Link” data-link=”Cancel and return to results”>Cancel and return to results</a>
+                <a href="{% url 'search-catalogue' %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
             </div>
 
 
@@ -28,16 +28,7 @@
                 </fieldset>
             </div>
 
-            {{ form.q.as_hidden }}
-            {{ form.group.as_hidden }}
-            {{ form.sort_by.as_hidden }}
-            {{ form.display.as_hidden }}
-            {{ form.filter_keyword.as_hidden }}
-            {{ form.opening_start_date.as_hidden }}
-            {{ form.opening_end_date.as_hidden }}
-            {% for hidden_field in form.hidden_fields %}
-                {{ hidden_field }}
-            {% endfor %}
+            {{ field_name|include_hidden_fields:form }}
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">

@@ -22,6 +22,7 @@ from ..ciim.constants import (
     BucketKeys,
     BucketList,
     Display,
+    SearchTabs,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -528,14 +529,16 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
-    title_base = "Catalogue results"
+    title_base = SearchTabs.CATALOGUE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         total_count = 0
-        if aggregations := self.api_result["responses"][1].get("aggregations"):
-            for bucket in aggregations["catalogueSource"]["buckets"]:
-                total_count += bucket["doc_count"]
+        if self.api_result:
+            # a respose is returned for valid input
+            if aggregations := self.api_result["responses"][1].get("aggregations"):
+                for bucket in aggregations["catalogueSource"]["buckets"]:
+                    total_count += bucket["doc_count"]
         if total_count > 10000:
             total_count = 10001
         data.update(customMetric1=total_count)
@@ -543,6 +546,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
+        kwargs["searchtabs"] = SearchTabs
         return super().get_context_data(**kwargs)
 
 
@@ -598,7 +602,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "blog"
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
-    title_base = "Website results"
+    title_base = SearchTabs.WEBSITE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -701,7 +705,7 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
-    title_base = "All results"
+    title_base = SearchTabs.ALL.value
     featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:

@@ -20,10 +20,19 @@
         font-family: $font__supria-sans;
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
-        @media only screen and (max-width: 57rem) {
-            margin-top:0;
-        }
 
+        @media only screen and (min-width: 57rem) {
+            margin-top: 0;
+
+        }
+    }
+
+    &-full-width-image img{
+
+        width:100%;
+        //display:block;
+        //overflow:hidden;
+        //max-width:70%;
 
     }
     
@@ -31,7 +40,10 @@
         margin-right: auto;
         margin-bottom: 2rem;
         padding-right: 1rem;
-        max-width: 46rem;
+        //max-width: 46rem;
+        @media only screen and (min-width: 57rem) {
+
+        }
     }
 
     &-link {
@@ -44,6 +56,7 @@
 
     &-description {
         margin-bottom: 0.5rem;
+        //max-width:70%;
 
     }
 
