@@ -49,13 +49,28 @@ export default function () {
 
     $longFiltersContainer.insertBefore($searchDiv, $longFiltersContainer.childNodes[0]);
 
-    //create a const for the paragraph
+
+
+    //create a const for the intro paragraph for collections
     const $introCopy = document.createElement('p');
     $introCopy.setAttribute('class', 'long-filters__intro');
     $introCopy.innerText = 'Filter by collections of records, which are typically organised by government department and consist of many items.';
 
-    //append intro paragraph
-    $filterCount.appendChild($introCopy);
+    //create a const for the intro paragraph for Held by
+    const $introCopyheldby = document.createElement('p');
+    $introCopyheldby.setAttribute('class', 'long-filters__intro');
+    $introCopyheldby.innerText = 'Filter by holding archives and other organisations, for example local archives or record offices.';
+
+    //check to see if it is 'collections' results or 'held by' results that is being searched for.
+    if (window.location.href.indexOf("collection") != -1) {
+        console.log('collections');
+        //append intro paragraph
+        $filterCount.appendChild($introCopy);
+    }
+    if (window.location.href.indexOf("held_by") != -1) {
+        //console.log('held by');
+        $filterCount.appendChild($introCopyheldby);
+    }
 
     const handleSearch = function(e) {
         const keyword = $searchBox.value.toLowerCase();
