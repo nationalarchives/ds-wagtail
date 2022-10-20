@@ -49,6 +49,14 @@ export default function () {
 
     $longFiltersContainer.insertBefore($searchDiv, $longFiltersContainer.childNodes[0]);
 
+    //create a const for the paragraph
+    const $introCopy = document.createElement('p');
+    $introCopy.setAttribute('class', 'long-filters__intro');
+    $introCopy.innerText = 'Filter by collections of records, which are typically organised by government department and consist of many items.';
+
+    //append intro paragraph
+    $filterCount.appendChild($introCopy);
+
     const handleSearch = function(e) {
         const keyword = $searchBox.value.toLowerCase();
 
