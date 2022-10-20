@@ -9,6 +9,12 @@ export default function() {
         return;
     }
 
+    //check the query string to populate the number of selected filters
+    //if 0, don't show number indicator
+    //need case where validation warning is invoked
+
+
+
     let $showHideButton = document.createElement('button');
     $showHideButton.innerHTML = 'Filters<span class="filter-indicator">3</span>';
     $showHideButton.classList.add('search-results__filter-button');
