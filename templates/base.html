@@ -2,6 +2,9 @@
 {% get_settings %}
 <html class="no-js" lang="en">
     <head>
+    {% if request.in_preview_panel %}
+    <base target="_blank">
+    {% endif %}
         <meta charset="utf-8" />
     {% block meta_tag %}
         <title>

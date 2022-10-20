@@ -10,6 +10,7 @@ from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
+    CUSTOM_ERROR_MESSAGES,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
@@ -183,7 +184,6 @@ class BaseCollectionSearchForm(forms.Form):
         min_value=20,
         max_value=50,
         required=False,
-        widget=forms.HiddenInput(),
     )
     sort_by = forms.ChoiceField(
         label="Sort by",
@@ -202,7 +202,6 @@ class BaseCollectionSearchForm(forms.Form):
             (SortOrder.DESC.value, "Descending"),
         ],
         required=False,
-        widget=forms.HiddenInput(),
     )
     display = forms.ChoiceField(
         choices=[
@@ -221,7 +220,8 @@ class BaseCollectionSearchForm(forms.Form):
                 "opening_end_date"
             ):
                 self.add_error(
-                    "opening_start_date", "Start date cannot be after end date"
+                    "opening_start_date",
+                    CUSTOM_ERROR_MESSAGES.get("invalid_date_range"),
                 )
         except TypeError:
             # Either one or both date fields are empty. No further validation necessary.

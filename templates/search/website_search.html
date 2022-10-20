@@ -12,9 +12,11 @@
 {% endblock %}
 {% block content %}
     <form method="get" data-id="search-form" id="analytics-search-form">
+        {% has_result_count buckets as buckets_have_a_result_count %}
+
         {{ form.non_field_errors }}
 
-        {% with type="Website" %}
+        {% with search_tab=searchtabs.CATALOGUE.value %}
             {% include './blocks/search_results_hero.html' %}
         {% endwith %}
         
@@ -22,23 +24,29 @@
             <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
         {% endif %}
 
-        {% include './blocks/website_search_buckets.html' %}
+        {% if buckets_have_a_result_count %}
+            {% include './blocks/website_search_buckets.html' %}
+        {% endif %}
         
-        {% if buckets.current.result_count > 0 %}
         <p class="search-results__explainer--mobile">Results from our website.</p>
-        {% include './blocks/search_sort_and_view_options.html' %}
-        <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-            <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                {% include './blocks/search_filters.html' %}
-            </div>
-            <div class="catalogue-search-grid__results">
-                {% if page.paginator.count %}
-                    {% include './blocks/search_results.html' %}
-                {% endif %}
-            </div>
-        </div>
-        {% else %}
+
+        {% if buckets_have_a_result_count %}
+            {% include './blocks/search_sort_and_view_options.html' %}
+        {% endif %}
+
+        {% if not buckets_have_a_result_count and not form.errors %}
             {% include './blocks/no_results.html' %}
+        {% else %}
+            <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+                <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                    {% include './blocks/search_filters.html' %}
+                </div>
+                <div class="catalogue-search-grid__results">
+                    {% if page.paginator.count %}
+                        {% include './blocks/search_results.html' %}
+                    {% endif %}
+                </div>
+            </div>
         {% endif %}
 
         {% if page.paginator.count %}
