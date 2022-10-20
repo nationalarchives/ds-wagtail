@@ -1,20 +1,22 @@
 
 <!--new form element-->
 <div class="search-sort-view search-others">
-<form action='' method="GET" class="search-sort-view__form" data-id="gta-id-to-go-here" id="id-to-go-here">
+    <form action='' method="GET" class="search-sort-view__form" data-id="gta-id-to-go-here" id="id-to-go-here">
+    
+        <h2 class="search-sort-view__heading">
+            <label for="id-for-this-dropdown">Show results from:</label>
+        </h2>
+        <select name="group" id="id-for-this-dropdown">
+            {% for bucket in buckets %}
+                {% if bucket.result_count != None %}
+                    <option value="{{ bucket.key }}" {% if bucket.is_current %}selected{% endif %} >{{ bucket.label_with_count }}</option>
+                {%endif%}
+            {% endfor %}        
+        </select>
 
-    <h2 class="search-sort-view__heading">
-        <label for="{{form.sort_by.id_for_label}}">Show results from:</label>
-    </h2>
-    <select name="name-to-go-here" id="id-for-this-dropdown">
-        <option value="">The National Archives (22,907,540)</option>
-        <option value="">Other UK Archives (2,928)</option>
-        <option value="">Records Creators (25)</option>
-        <option value="">Find an archive (14)</option>
-    </select>
+        <input type="submit" value="Update" class="search-sort-view__form-submit">
 
-    <input type="submit" value="Update" class="search-sort-view__form-submit">
-</form>
+    </form>
 </div>
 <!-- end new form element-->
 
