@@ -9,14 +9,28 @@ export default function() {
         return;
     }
 
-    //check the query string to populate the number of selected filters
-    //if 0, don't show number indicator
+
+
     //need case where validation warning is invoked
 
-
-
     let $showHideButton = document.createElement('button');
-    $showHideButton.innerHTML = 'Filters<span class="filter-indicator">3</span>';
+    let $filtersValue = document.createElement('span');
+
+    //number of filters selected
+    let $noOfFilters = document.location.search.match(/=/g).length-5;
+
+
+    //check the query string to populate the number of selected filters
+    if (window.location.href.indexOf("filter_keyword") != -1) {
+
+        $showHideButton.innerHTML = 'Filters<span id="filterValue" class="filter-indicator">P</span>';
+        //$showHideButton.innerHTML = 'Filters';
+
+
+    } else {
+        // no filters selected
+        $showHideButton.innerHTML = 'Filters';
+    }
     $showHideButton.classList.add('search-results__filter-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
