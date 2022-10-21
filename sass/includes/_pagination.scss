@@ -28,6 +28,17 @@
             ol {
                 padding: 0;
                 list-style-type: none;
+
+                @media only screen and (max-width: $screen__md) {
+
+                    li {
+                        display:none;
+                    }
+                    li:nth-child(-n+2) {
+                        display:inline-block;
+                    }
+                }
+
             }
         }
 
