@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import re
 
@@ -16,6 +17,7 @@ from ..analytics.mixins import SearchDataLayerMixin
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
+    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
@@ -309,6 +311,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs["bucketkeys"] = BucketKeys
+        kwargs["searchtabs"] = SearchTabs
         kwargs.update(
             meta_title=self.get_meta_title(),
             search_query=self.form.cleaned_data.get("q", ""),
@@ -490,7 +494,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return context
 
     def get_selected_filters(self, form: Form) -> Dict[str, List[Tuple[str, str]]]:
-        """Returns a list of selected dynamic_choice_fields values, keyed by
+        """Returns a list of selected dynamic_choice_fields values, refined filter values, keyed by
         the corresponding field name.
 
         Used by template to output a list of selected filters.
@@ -500,6 +504,8 @@ class BaseFilteredSearchView(BaseSearchView):
             for field_name in self.dynamic_choice_fields
             if form.cleaned_data.get(field_name)
         }
+
+        form_error_messages = []
 
         # Replace field 'values' with (value, label) tuples,
         # allowing both to be used in the template
@@ -519,6 +525,54 @@ class BaseFilteredSearchView(BaseSearchView):
                 (value, choice_labels.get(value, value))
                 for value in return_value[field_name]
             ]
+
+        if filter_keyword := form.cleaned_data.get("filter_keyword"):
+            return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+
+        # get form error messages
+        if error_dict := json.loads(form.errors.as_json()):
+            for dict_values in error_dict.values():
+                for item in dict_values:
+                    form_error_messages.append(item["message"])
+
+        if opening_start_date := form.cleaned_data.get("opening_start_date"):
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_start_date": [
+                            (
+                                opening_start_date.date(),
+                                opening_start_date.strftime(
+                                    "Record Opening From: %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
+
+        if opening_end_date := form.cleaned_data.get("opening_end_date"):
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_end_date": [
+                            (
+                                opening_end_date.date(),
+                                opening_end_date.strftime(
+                                    "Record Opening To:  %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
+
         return return_value
 
 
@@ -545,8 +599,6 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         return data
 
     def get_context_data(self, **kwargs):
-        kwargs["bucketkeys"] = BucketKeys
-        kwargs["searchtabs"] = SearchTabs
         return super().get_context_data(**kwargs)
 
 

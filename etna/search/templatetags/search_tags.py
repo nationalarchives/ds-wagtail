@@ -151,3 +151,39 @@ def include_hidden_fields(visible_field_names, form) -> str:
                 # for invalid input - example invalid date, value is not cleaned
                 pass
     return mark_safe(html)
+
+
+@register.simple_tag(takes_context=True)
+def has_result_count(context, bucket) -> bool:
+    """Returns True if at least one bucket contains count returned by api response, otherwise False"""
+    buckets = context["buckets"]
+    for bucket in buckets:
+        if bucket.result_count:  # checks api has returned a count
+            if bucket.result_count > 0:
+                return True
+    return False
+
+
+@register.filter
+def hidden_fields_for_date_filter(selected_filters, form) -> str:
+    """
+    Returns automatically generated html hidden fields.
+    The hidden fields are derived from the selected_filters and fields outside form of selected filters
+    A random suffix is applied to html id allowing the same form to be rendered
+    multiple times without field ID clashes.
+    selected_filters:[('field_name', [('value', 'display_value')]), ]
+    """
+    html = ""
+    visible_field_names_str = ""
+    if form.has_error("opening_start_date") or form.has_error("opening_end_date"):
+        for field_name, selected_options in selected_filters:
+            for value, _ in selected_options:
+                visible_field_names_str += f"{field_name} "
+                html += f""" <input type="hidden" name="{field_name}" value="{value}" id="id_{field_name}_{get_random_string(3)}"> """
+        # date fields are visible, editable and can have errors
+        visible_field_names_str += " opening_start_date opening_end_date"
+        # fields outside form of selected filters
+        if visible_field_names_str:
+            html += include_hidden_fields(visible_field_names_str, form)
+
+    return mark_safe(html)
