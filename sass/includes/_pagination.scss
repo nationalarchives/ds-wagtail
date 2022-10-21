@@ -59,9 +59,13 @@
 
             color: white;
         }
+        &-link:visited,&-link:hover{
+            color:white;
+        }
 
         &-link-current {
             background: #ffcc00;
+            color: black;
         }
 
         &-chevron-next, &-chevron-previous {
