@@ -9,23 +9,18 @@ export default function() {
         return;
     }
 
-
-
     //need case where validation warning is invoked
 
     let $showHideButton = document.createElement('button');
-    let $filtersValue = document.createElement('span');
 
     //number of filters selected
-    let $noOfFilters = document.location.search.match(/=/g).length-5;
-
+    let $noOfFilters = document.location.search.match(/=/g).length-8;
+    let $buttonHtml= "Filters <span class='filter-indicator'>"+ $noOfFilters +"</span>";
 
     //check the query string to populate the number of selected filters
     if (window.location.href.indexOf("filter_keyword") != -1) {
 
-        $showHideButton.innerHTML = 'Filters<span id="filterValue" class="filter-indicator">P</span>';
-        //$showHideButton.innerHTML = 'Filters';
-
+        $showHideButton.innerHTML=$buttonHtml;
 
     } else {
         // no filters selected
