@@ -62,7 +62,7 @@ class TestInsightPageSimilarItems(TestCase):
         # Items should be in 'best match' order
         # No draft items should be included
         test_page = InsightsPage.objects.get(id=self.original_page.id)
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(4):
             self.assertEqual(
                 list(test_page.similar_items),
                 [
@@ -86,5 +86,5 @@ class TestInsightPageSimilarItems(TestCase):
 
     def test_search_prevented_if_no_tag_matches_identified(self):
         test_page = InsightsPage.objects.get(id=self.different_tags_page.id)
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(3):
             self.assertFalse(test_page.similar_items)
