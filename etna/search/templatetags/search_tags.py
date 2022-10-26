@@ -110,7 +110,7 @@ def query_string_include(context, key: str, value: Union[str, int]) -> str:
 
 
 @register.simple_tag(takes_context=True)
-def query_string_exclude(context, key: str, value: Union[str, int], page) -> str:
+def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     """Remove matching entry from current query string."""
 
     request = context["request"]
