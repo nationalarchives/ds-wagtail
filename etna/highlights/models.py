@@ -12,7 +12,7 @@ class Highlights(models.Model):
         related_name='+'
     )
     record = RecordChooserBlock()
-    date = models.CharField(max_length=255)
+    date = models.CharField(max_length=20)
 
     panels = [
         FieldPanel('title'),
