@@ -6,6 +6,8 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
+from wagtail.snippets.models import register_snippet
+from taggit.models import ItemBase, TagBase
 
 from wagtailmetadata.models import MetadataPageMixin
 
@@ -47,6 +49,7 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
+        "highlights.HighlightsGalleryPage"
     ]
 
 

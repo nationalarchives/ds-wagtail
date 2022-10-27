@@ -1,0 +1,13 @@
+{% load wagtailcore_tags %}
+
+<div class="container">
+    <div class="col-12">
+        <{{ heading_level }} class="related-content__heading">{{ value.heading }}</{{ heading_level }}>
+        <p>{{ value.description }}</p>
+    </div>
+    <ul class="card-group--list-style-none" data-container-name="related-items" id="analytics-related-items">
+        {% for related_item in value.related_items %}
+            {% include_block related_item %}
+        {% endfor %}
+    </ul>
+</div>

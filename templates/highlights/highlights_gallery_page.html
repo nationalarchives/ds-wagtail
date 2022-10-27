@@ -1,0 +1,22 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+{% load sections_tags %}
+{% block content %}
+    {% include 'includes/generic-intro.html' %}
+    {% include 'includes/hero-img.html' %}
+    {{page.highlight.title}}
+
+    <div class="hero-image__container">
+        <figure>
+            <picture>
+                {% image page.highlight.image fill-800x250%}
+                <source media="(max-width: 480px)" srcset="{{ page.highlight.imageurl }}">
+            </picture>
+            <figcaption class="hero-image__figcaption">{{ page.highlight.short_description|richtext }}</figcaption>
+        </figure>
+    </div>
+    
+{% endblock %}

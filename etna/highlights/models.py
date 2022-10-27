@@ -22,9 +22,11 @@ from etna.records.blocks import RecordChooserBlock
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 
+
+
 class Highlights(models.Model):
-    title = models.CharField(max_length=255)
-    standfirst = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, blank=False, null=True)
+    short_description = models.CharField(max_length=200, blank=False, null=True)
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True, blank=True,
@@ -35,87 +37,68 @@ class Highlights(models.Model):
 
     panels = [
         FieldPanel('title'),
-        FieldPanel('standfirst'),
+        FieldPanel('short_description'),
         FieldPanel('image'),
-        FieldPanel('date')
+        FieldPanel('date'),
     ]
 
-@register_snippet
-class HighlightsTag(TagBase):
-    free_tagging = False
-
     class Meta:
-        verbose_name = "highlights tag"
-        verbose_name_plural = "highlights tags"
- 
+        verbose_name = "highlight"
+        verbose_name_plural = "highlights"
 
-class TaggedHighlights(ItemBase):
-    tag = models.ForeignKey(
-        HighlightsTag, related_name="tagged_highlights", on_delete=models.CASCADE
+
+
+class HighlightsGalleryPage(BasePage):
+    """HighlightsGalleryPage
+ 
+    This page is ______.
+    """
+    standfirst = models.CharField(max_length=250, blank = False, null=True)
+    #highlights_gallery = multi chooser of highlights
+    #featured_collections = StreamField(
+    #     [("featuredcollection", FeaturedCollectionBlock())],
+    #     blank=True,
+    #     null=True,
+    #     use_json_field=True,
+    # )
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    content_object = ParentalKey(
-        to="highlights.HighlightsPage",
-        on_delete=models.CASCADE,
-        related_name="tagged_items",
+    highlight = models.ForeignKey(
+        "highlights.Highlights", blank=True, null=True, on_delete=models.SET_NULL
     )
  
-# class HighlightsIndexPage(BasePage):
-#     """HighlightsIndexPage
+    # highlight_tag_names = models.TextField(editable=False)
+    # tags = ClusterTaggableManager(through=TaggedHighlights, blank=True)
  
-#     Index page to hold Highlights
-#     """
-#     max_count = 1
-#     parent_page_types = ["collections.ExplorerIndexPage"]
-#     subpage_types = ["highlights.HighlightsPage"]
+    # search_fields = Page.search_fields + [
+    #     index.SearchField("highlight_tag_names"),
+    # ]
  
+    # def save(self, *args, **kwargs):
+    #     """
+    #     Overrides Page.save() to ensure 'highlight_tag_names' always reflects the tags() value
+    #     """
+    #     if (
+    #         "update_fields" not in kwargs
+    #         or "highlight_tag_names" in kwargs["update_fields"]
+    #     ):
+    #         self.highlight_tag_names = "\n".join(t.name for t in self.tags.all())
+    #     super().save(*args, **kwargs)
  
-# class HighlightsPage(BasePage):
-#     """HighlightsPage
- 
-#     This page is ______.
-#     """
-#     #title = models.CharField(max_length=100, blank = False, null=False) #title of the page, e.g. Elton John
-#     short_description = models.CharField(max_length=250, blank = False, null=False) #short description about this highlight (i assume) needs further info e.g. Elton John is a world-wide pop singer
-#     #file = file #needs speccing
-#     record_link = RecordChooserBlock() #link to relevant records, e.g. Elton John's letter to the Queen #could this be done automatically? (most likely not)
-#     #date = date #need speccing
- 
-#     highlight_tag_names = models.TextField(editable=False)
-#     tags = ClusterTaggableManager(through=TaggedHighlights, blank=True)
- 
-#     search_fields = Page.search_fields + [
-#         index.SearchField("highlight_tag_names"),
-#     ]
- 
-#     def save(self, *args, **kwargs):
-#         """
-#         Overrides Page.save() to ensure 'highlight_tag_names' always reflects the tags() value
-#         """
-#         if (
-#             "update_fields" not in kwargs
-#             or "highlight_tag_names" in kwargs["update_fields"]
-#         ):
-#             self.highlight_tag_names = "\n".join(t.name for t in self.tags.all())
-#         super().save(*args, **kwargs)
- 
- 
-#     def get_context(self, request):
-#         context = super().get_context(request)
-#         closer_look = self.get_children().specific()[0]
-#         context["closer_look"] = closer_look
-#         return context
    
-#     content_panels = BasePage.content_panels + [
-#         #FieldPanel("title"),
-#         FieldPanel("short_description"),
-#         #FieldPanel("file"),
-#         #FieldPanel("record_link"),
-#         #FieldPanel("date"),
-#         FieldPanel("tags"),
-#     ]
+    content_panels = BasePage.content_panels + [
+        FieldPanel("standfirst"),
+        FieldPanel("featured_insight"),
+        FieldPanel("highlight"),
+        #FieldPanel("file"),
+        #FieldPanel("record_link"),
+        #FieldPanel("date"),
+        # FieldPanel("time_period_tags"),
+        # FieldPanel("topic_tags"),
+    ]
  
-#     parent_page_types = ["highlights.HighlightsIndexPage"]
-#     subpage_types = ["highlights.CloserLookPage"]
+    parent_page_types = ["collections.ExplorerIndexPage"]
  
  
 # class CloserLookPage(BasePage):
