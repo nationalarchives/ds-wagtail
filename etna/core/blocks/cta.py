@@ -10,7 +10,6 @@ from etna.core.blocks import (  # ContentImageBlock,
     SectionDepthAwareStructBlock,
 )
 
-# from wagtail.images.blocks import ImageChooserBlock
 
 
 class TimePeriodBlock(blocks.StructBlock):
@@ -22,7 +21,7 @@ class TimePeriodBlock(blocks.StructBlock):
     page = blocks.PageChooserBlock(page_type="collections.TimePeriodExplorerIndexPage")
 
     class Meta:
-        template = "collections/blocks/time_period_explorer_new.html"
+        template = "collections/blocks/time_period_explorer.html"
         help_text = "Outputs all time period child pages"
         icon = "th-large"
 
@@ -36,20 +35,11 @@ class TopicExplorerBlock(blocks.StructBlock):
     page = blocks.PageChooserBlock(page_type="collections.TopicExplorerIndexPage")
 
     class Meta:
-        template = "collections/blocks/topic_explorer_new.html"
+        template = "collections/blocks/topic_explorer.html"
         help_text = "Outputs all topic child pages"
         icon = "th-large"
-        help_text = "Outputs all topic child pages"
-        icon = "th-large"
 
 
-class FeatureInsightBlock(blocks.StructBlock):
-    page = blocks.PageChooserBlock(page_type="insights.InsightsPage")
-
-    class Meta:
-        template = "collections/blocks/time_period_explorer.html"
-        help_text = "Insight page"
-        icon = "th-large"
 
 
 class TwoLargeImageLinks(blocks.StreamBlock):
@@ -77,4 +67,4 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "list"
         label = "Featured collection"
-        template = "insights/blocks/featured_collection_new.html"
+        template = "insights/blocks/featured_collection.html"
