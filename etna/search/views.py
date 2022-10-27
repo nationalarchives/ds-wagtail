@@ -545,7 +545,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     {
                         "opening_start_date": [
                             (
-                                opening_start_date.date(),
+                                opening_start_date,
                                 opening_start_date.strftime(
                                     "Record Opening From: %d-%m-%Y"
                                 ),
@@ -564,7 +564,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     {
                         "opening_end_date": [
                             (
-                                opening_end_date.date(),
+                                opening_end_date,
                                 opening_end_date.strftime(
                                     "Record Opening To:  %d-%m-%Y"
                                 ),
