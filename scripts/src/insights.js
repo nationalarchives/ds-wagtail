@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
     add_analytics_data_card_position('.record-embed-no-image');
     add_analytics_data_card_position('.card-group-secondary-nav > a');
     add_analytics_data_card_position('.card-group-secondary-nav__body > a');
+    add_analytics_data_card_position('.card-group-secondary-nav__heading > a');
     audio_tracking();
     video_tracking();
     add_unique_ids();

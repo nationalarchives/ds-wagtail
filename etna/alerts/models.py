@@ -3,7 +3,6 @@ from django.db import models
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
-from wagtail.snippets.edit_handlers import SnippetChooserPanel
 from wagtail.snippets.models import register_snippet
 
 
@@ -73,7 +72,7 @@ class AlertMixin(models.Model):
     )
 
     settings_panels = [
-        SnippetChooserPanel("alert"),
+        FieldPanel("alert"),
     ]
 
     class Meta:

@@ -4,7 +4,6 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.snippets.models import register_snippet
 
 
@@ -40,7 +39,7 @@ class Author(models.Model):
         FieldPanel("name"),
         FieldPanel("role"),
         FieldPanel("summary"),
-        ImageChooserPanel("image"),
+        FieldPanel("image"),
         FieldPanel("bio_link"),
         FieldPanel("bio_link_label"),
     ]

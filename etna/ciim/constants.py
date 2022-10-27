@@ -18,6 +18,13 @@ class BucketKeys(Enum):
     CREATOR = "creator"
 
 
+@forTemplate
+class SearchTabs(Enum):
+    ALL = "All results"
+    CATALOGUE = "Catalogue results"
+    WEBSITE = "Website results"
+
+
 @dataclass
 class Bucket:
     key: str
@@ -600,3 +607,5 @@ TYPE_NAMES = {
 TYPE_CHOICES = tuple(
     (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
 )
+
+CUSTOM_ERROR_MESSAGES = {"invalid_date_range": "Start date cannot be after end date"}

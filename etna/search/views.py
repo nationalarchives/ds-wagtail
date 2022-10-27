@@ -1,4 +1,5 @@
 import copy
+import json
 import logging
 import re
 
@@ -16,12 +17,14 @@ from ..analytics.mixins import SearchDataLayerMixin
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
+    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
     BucketKeys,
     BucketList,
     Display,
+    SearchTabs,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -308,6 +311,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs["bucketkeys"] = BucketKeys
+        kwargs["searchtabs"] = SearchTabs
         kwargs.update(
             meta_title=self.get_meta_title(),
             search_query=self.form.cleaned_data.get("q", ""),
@@ -489,7 +494,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return context
 
     def get_selected_filters(self, form: Form) -> Dict[str, List[Tuple[str, str]]]:
-        """Returns a list of selected dynamic_choice_fields values, keyed by
+        """Returns a list of selected dynamic_choice_fields values, refined filter values, keyed by
         the corresponding field name.
 
         Used by template to output a list of selected filters.
@@ -499,6 +504,8 @@ class BaseFilteredSearchView(BaseSearchView):
             for field_name in self.dynamic_choice_fields
             if form.cleaned_data.get(field_name)
         }
+
+        form_error_messages = []
 
         # Replace field 'values' with (value, label) tuples,
         # allowing both to be used in the template
@@ -518,6 +525,54 @@ class BaseFilteredSearchView(BaseSearchView):
                 (value, choice_labels.get(value, value))
                 for value in return_value[field_name]
             ]
+
+        if filter_keyword := form.cleaned_data.get("filter_keyword"):
+            return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+
+        # get form error messages
+        if error_dict := json.loads(form.errors.as_json()):
+            for dict_values in error_dict.values():
+                for item in dict_values:
+                    form_error_messages.append(item["message"])
+
+        if opening_start_date := form.cleaned_data.get("opening_start_date"):
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_start_date": [
+                            (
+                                opening_start_date,
+                                opening_start_date.strftime(
+                                    "Record Opening From: %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
+
+        if opening_end_date := form.cleaned_data.get("opening_end_date"):
+            # if both dates have valid values but invalid when together
+            if (
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                not in form_error_messages
+            ):
+                return_value.update(
+                    {
+                        "opening_end_date": [
+                            (
+                                opening_end_date,
+                                opening_end_date.strftime(
+                                    "Record Opening To:  %d-%m-%Y"
+                                ),
+                            )
+                        ]
+                    }
+                )
+
         return return_value
 
 
@@ -528,21 +583,22 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
-    title_base = "Catalogue results"
+    title_base = SearchTabs.CATALOGUE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         total_count = 0
-        if aggregations := self.api_result["responses"][1].get("aggregations"):
-            for bucket in aggregations["catalogueSource"]["buckets"]:
-                total_count += bucket["doc_count"]
+        if self.api_result:
+            # a respose is returned for valid input
+            if aggregations := self.api_result["responses"][1].get("aggregations"):
+                for bucket in aggregations["catalogueSource"]["buckets"]:
+                    total_count += bucket["doc_count"]
         if total_count > 10000:
             total_count = 10001
         data.update(customMetric1=total_count)
         return data
 
     def get_context_data(self, **kwargs):
-        kwargs["bucketkeys"] = BucketKeys
         return super().get_context_data(**kwargs)
 
 
@@ -598,7 +654,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "blog"
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
-    title_base = "Website results"
+    title_base = SearchTabs.WEBSITE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -701,7 +757,7 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
-    title_base = "All results"
+    title_base = SearchTabs.ALL.value
     featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
