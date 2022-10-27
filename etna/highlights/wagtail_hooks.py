@@ -11,7 +11,7 @@ class HighlightsAdmin(ModelAdmin):
     add_to_settings_menu = False
     exclude_from_explorer = False
     add_to_admin_menu = True
-    list_display = ('title', 'image')
+    list_display = ('title','standfirst') #change standfirst to tags?
     #list_filter = ('',) can use this for tags?
     search_fields = ('title')
 
