@@ -11,7 +11,6 @@ from etna.core.blocks import (  # ContentImageBlock,
 )
 
 
-
 class TimePeriodBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, default="Explore by time period")
     sub_heading = blocks.CharBlock(
@@ -38,8 +37,6 @@ class TopicExplorerBlock(blocks.StructBlock):
         template = "collections/blocks/topic_explorer.html"
         help_text = "Outputs all topic child pages"
         icon = "th-large"
-
-
 
 
 class TwoLargeImageLinks(blocks.StreamBlock):

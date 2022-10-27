@@ -2,8 +2,7 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks import ParagraphBlock, ParagraphWithHeading
-from etna.core.blocks.cta import ( TimePeriodBlock,TopicExplorerBlock,
-)
+from etna.core.blocks.cta import TimePeriodBlock, TopicExplorerBlock
 
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
