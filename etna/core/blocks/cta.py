@@ -1,9 +1,6 @@
 from wagtail.core import blocks
 
-from etna.core.blocks import (  # ContentImageBlock,
-    PageListBlock,
-    SectionDepthAwareStructBlock,
-)
+from etna.core.blocks import PageListBlock, SectionDepthAwareStructBlock
 
 
 class TimePeriodBlock(blocks.StructBlock):
@@ -32,17 +29,6 @@ class TopicExplorerBlock(blocks.StructBlock):
         template = "collections/blocks/topic_explorer.html"
         help_text = "Outputs all topic child pages"
         icon = "th-large"
-
-
-class TwoLargeImageLinks(blocks.StreamBlock):
-    time_period = TimePeriodBlock()
-    topic_explorer = TopicExplorerBlock()
-
-    class Meta:
-        block_counts = {
-            "time_period": {"min_num": 1, "max_num": 1},
-            "topic_explorer": {"min_num": 1, "max_num": 1},
-        }
 
 
 class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
