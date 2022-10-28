@@ -1,10 +1,5 @@
 from wagtail.core import blocks
 
-# from etna.collections.blocks import (
-#    TimePeriodExplorerIndexBlock,
-#    TopicExplorerIndexBlock,
-# )
-#
 from etna.core.blocks import (  # ContentImageBlock,
     PageListBlock,
     SectionDepthAwareStructBlock,
