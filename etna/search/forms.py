@@ -4,10 +4,13 @@ from django import forms
 from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
+from etna.core.fields import END_OF_MONTH, DateInputField
+
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
+    CUSTOM_ERROR_MESSAGES,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
@@ -165,19 +168,17 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         validate_input=False,
     )
-    opening_start_date = forms.DateTimeField(
+    opening_start_date = DateInputField(
         label="From",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
         required=False,
+        default_day=1,
+        default_month=1,
     )
-    opening_end_date = forms.DateTimeField(
+    opening_end_date = DateInputField(
         label="To",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
         required=False,
+        default_day=END_OF_MONTH,
+        default_month=12,
     )
     per_page = forms.IntegerField(
         min_value=20,
@@ -219,7 +220,8 @@ class BaseCollectionSearchForm(forms.Form):
                 "opening_end_date"
             ):
                 self.add_error(
-                    "opening_start_date", "Start date cannot be after end date"
+                    "opening_start_date",
+                    CUSTOM_ERROR_MESSAGES.get("invalid_date_range"),
                 )
         except TypeError:
             # Either one or both date fields are empty. No further validation necessary.

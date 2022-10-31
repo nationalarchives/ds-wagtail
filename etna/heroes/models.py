@@ -4,7 +4,6 @@ from django.utils.safestring import mark_safe
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.edit_handlers import ImageChooserPanel
 
 from .forms import PageWithHeroMixinForm
 
@@ -57,7 +56,7 @@ class HeroImageMixin(models.Model):
     content_panels = [
         MultiFieldPanel(
             [
-                ImageChooserPanel("hero_image"),
+                FieldPanel("hero_image"),
                 FieldPanel("hero_image_decorative"),
                 FieldPanel("hero_image_alt_text"),
                 FieldPanel("hero_image_caption"),

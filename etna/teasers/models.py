@@ -1,7 +1,7 @@
 from django.db import models
 
+from wagtail.admin.panels import FieldPanel
 from wagtail.images import get_image_model_string
-from wagtail.images.edit_handlers import ImageChooserPanel
 
 
 class TeaserImageMixin(models.Model):
@@ -18,4 +18,4 @@ class TeaserImageMixin(models.Model):
     class Meta:
         abstract = True
 
-    promote_panels = [ImageChooserPanel("teaser_image")]
+    promote_panels = [FieldPanel("teaser_image")]
