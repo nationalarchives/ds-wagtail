@@ -297,48 +297,35 @@
 
 .hierarchy-local-nav {
   vertical-align: middle;
-  margin: 0.5rem 0 1rem;
-  font-size: 0.9rem;
+  margin: 1rem;
+  font-family: supria-sans-condensed, sans-serif;
+  text-align: center;
 
-  @media screen and (min-width: $screen__lg) {
-    margin: 1.5rem 0 1rem;
+  @media screen and (min-width: $screen__md) {
+    margin: 2rem 0 0.5rem;
   }
 
-  &__list {
-    font-family: supria-sans-condensed, sans-serif;
-    padding: 0;
-    margin: 1rem 1rem;
-    list-style-type: none;
+  &__container {
+
 
     @media screen and (min-width: $screen__md) {
-      display: flex;
-      justify-content: center;
-    }
-  }
-
-  &__list-item {
-    background: none;
-    padding: 0;
-    margin: 0 0 0.5rem 0;
-
-    @media screen and (min-width: $screen__md) {
+      display: inline-block;
       text-align: center;
+      min-width: 20%;
     }
 
-    &:first-child {
+    &--previous {
       @media screen and (min-width: $screen__md) {
         margin: 0 2rem;
         padding-right: 2rem;
-        border-right: 1px dotted $color__yellow_2;
         text-align: right;
       }
     }
 
-    &:last-child {
+    &--next {
       @media screen and (min-width: $screen__md) {
         margin: 0 2rem;
         padding-left: 2rem;
-        border-left: 1px dotted $color__yellow_2;
         text-align: left;
       }
     }
