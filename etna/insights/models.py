@@ -153,7 +153,8 @@ class InsightsPage(
 
         # Identify 'other' live pages with tags in common
         tag_match_ids = (
-            InsightsPage.objects.live()
+            InsightsPage.objects.public()
+            .live()
             .not_page(self)
             .filter(tagged_items__tag_id__in=tag_ids)
             .values_list("id", flat=True)
@@ -181,7 +182,8 @@ class InsightsPage(
         similarqueryset = list(self.similar_items)
 
         latestqueryset = list(
-            InsightsPage.objects.live()
+            InsightsPage.objects.public()
+            .live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
             .order_by("-first_published_at")
