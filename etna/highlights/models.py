@@ -23,7 +23,7 @@ from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 
 
-
+@register_snippet
 class Highlights(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
     short_description = models.CharField(max_length=200, blank=False, null=True)
@@ -41,6 +41,9 @@ class Highlights(models.Model):
         FieldPanel('image'),
         FieldPanel('date'),
     ]
+
+    def __str__(self):
+        return self.title
 
     class Meta:
         verbose_name = "highlight"

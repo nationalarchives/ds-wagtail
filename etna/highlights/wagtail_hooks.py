@@ -10,16 +10,16 @@ class HighlightsGalleryAdmin(ModelAdmin):
     menu_icon = 'folder-open-1'
     #list_display = ('title')
     #list_filter = ('tags')
-    search_fields = ('title')
+    search_fields = ('title',)
 
 
 class HighlightsAdmin(ModelAdmin):
     model = Highlights
     menu_label = 'Highlights'
     menu_icon = 'pick'
-    list_display = ('title', 'image')
+    #list_display = ('title',)
     #list_filter = ('tags',) can use this for tags?
-    search_fields = ('title')
+    search_fields = ('title',)
 
 """
 class CloserLookAdmin(ModelAdmin):
