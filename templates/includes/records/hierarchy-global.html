@@ -21,7 +21,7 @@
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
                                 <a href="#">Archive</a>
-                            </span>{{ page.template.heldBy }}
+                            </span>({{ page.template.heldBy }})
                         </li>
                     {% endif %}
                     
@@ -33,13 +33,13 @@
                                 <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
                                     <span class="hierarchy-short-panel__level">
                                         <a href="{% record_url item%}">Department</a>
-                                    </span>{{ item.reference_number }}
+                                    </span>({{ item.reference_number }})
                                 </li>
                             {% elif page.hierarchy|length == 2 %}
                                 <li class="hierarchy-short-panel__list-item">
                                     <span class="hierarchy-short-panel__level">
                                         <a href="{% record_url item%}">Department</a>
-                                    </span>{{ item.reference_number }}
+                                    </span>({{ item.reference_number }})
                                 </li>
                             {% endif %}
 
@@ -48,13 +48,13 @@
                                 <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
                                     <span class="hierarchy-short-panel__level">
                                         <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
-                                    </span>{{ item.reference_number }}
+                                    </span>({{ item.reference_number }})
                                 </li>
                             {% else %}
                                 <li class="hierarchy-short-panel__list-item">
                                     <span class="hierarchy-short-panel__level">
                                         <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
-                                    </span>{{ item.reference_number }}
+                                    </span>({{ item.reference_number }})
                                 </li>
                             {%endif%}
 
@@ -62,12 +62,12 @@
                             <li class="hierarchy-short-panel__list-item">
                                 <span class="hierarchy-short-panel__level">
                                     <a class="hierarchy-short-panel__link" href="{% record_url item %}">Piece</a>
-                                </span>{{ item.reference_number }}
+                                </span>({{ item.reference_number }})
                             </li>
 
                         {% elif is_current_item %}
                             <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                                <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>{{ item.reference_number }}
+                                <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>({{ item.reference_number }})
                             </li>
                         {% endif %}
                     {% endfor %}
@@ -75,10 +75,10 @@
                     <li class="hierarchy-short-panel__list-item">
                         <span class="hierarchy-short-panel__level">
                             <a href="#">Archive</a>
-                        </span>{{ page.template.heldBy }}
+                        </span>({{ page.template.heldBy }})
                     </li>
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                        <span class="hierarchy-short-panel__level">This department</span>{{ page.reference_number }}
+                        <span class="hierarchy-short-panel__level">This department</span>({{ page.reference_number }})
                     </li>
                 {% endif %}
             </ul>
