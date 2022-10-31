@@ -87,7 +87,7 @@
             <p class="hierarchy-short-panel__toggle-link"><a href="#">Show detailed view</a></p>
         </div>
 
-        <div class="hierarchy-full-panel" id="hierarchy-togglee">
+        <nav class="hierarchy-full-panel" id="hierarchy-togglee">
             <h2 class="hierarchy-full-panel__heading">Detailed catalogue location:</h2>
 
             <!-- START COMMENT 2:
@@ -217,38 +217,42 @@
 
             -->
 
-            <div class="hierarchy-local-nav">
-                <ul class="hierarchy-local-nav__list">
+
+          <nav class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
 
                 <!-- Previous item in series -->
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
                     {% if page.previous_record %}
                         {% if page.previous_record.has_reference_number %}
-                            <li class="hierarchy-local-nav__list-item">{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--left" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></li>
+                            <p>{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--left" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></p>
                         {% elif page.is_tna %}
                                 {{ 'previous_record'|as_label }} {{ page.level.lower|default:"record" }}
                         {% else %}
                                 {{ 'previous_record'|as_label }} record
                         {% endif %}
                     {% endif %}
+                </div>
 
                 <!-- Current item in series -->
-                <li class="hierarchy-local-nav__list-item">You are looking at <span class="hierarchy-local-nav__list-link">{{ page.reference_number }}</span></li>
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--current">
+                    <p>You are looking at <a href="#" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--current" rel="current" aria-current="page">{{ page.reference_number }}</a></p>
+                </div>
+
 
                 <!-- Next item in series -->
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
                     {% if page.next_record %}
                         {% if page.next_record.has_reference_number %}
-                            <li class="hierarchy-local-nav__list-item">{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--right" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></li>
+                            <p>{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--right" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></p>
                             {% elif page.is_tna %}
                                 {{ 'next_record'|as_label }} {{ page.level.lower|default:"record" }}
                             {% else %}
                                 {{ 'next_record'|as_label }} record
                         {% endif %}
                     {% endif %}
-                </ul>
-            </div>
+                </div>
             <!-- END COMMENT 3 -->
-
-        </div>
+          </nav>
     </div>
 </nav>
 
