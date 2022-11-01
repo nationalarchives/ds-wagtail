@@ -15,12 +15,11 @@ from wagtail.snippets.models import register_snippet
  
 from taggit.models import ItemBase, TagBase
 from wagtailmetadata.models import MetadataPageMixin
-from etna.core.blocks.paragraph import ParagraphBlock
  
 from etna.core.models import BasePage, ContentWarningMixin
-from etna.insights.blocks import FeaturedRecordBlock
 from etna.records.blocks import RecordChooserBlock
 
+from .blocks import CloserLookRecordBlock
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 
@@ -132,6 +131,16 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         verbose_name="Promoted Time Period",
     )
 
+    body = StreamField([
+        ('record_info', CloserLookRecordBlock()),
+    ], 
+    block_counts={
+        'record_info': {'min_num': 1, 'max_num': 1},
+    }, 
+    use_json_field=True,
+    null=True,
+    )
+    
 
     featured_insight = models.ForeignKey(
         "insights.InsightsPage",
@@ -139,12 +148,6 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         null=True,
         on_delete=models.SET_NULL,
         verbose_name="Featured insight"
-    )
-
-    date = models.CharField(
-        blank=True,
-        null=True,
-        max_length=30
     )
 
     content_panels = BasePage.content_panels + [
@@ -157,7 +160,7 @@ class CloserLookPage(BasePage, ContentWarningMixin):
                 classname="collapsible collapsed",
             ),
         InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
-        FieldPanel("date"),
+        FieldPanel("body"),
         FieldPanel("featured_insight"),
         MultiFieldPanel(
             [
