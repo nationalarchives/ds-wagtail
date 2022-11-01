@@ -7,20 +7,23 @@ from django.utils.functional import cached_property
  
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
 from wagtail.fields import StreamField
-from wagtail.models import Page
+from wagtail.models import Page, Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
  
 from taggit.models import ItemBase, TagBase
 from wagtailmetadata.models import MetadataPageMixin
+from etna.core.blocks.paragraph import ParagraphBlock
  
 from etna.core.models import BasePage, ContentWarningMixin
+from etna.insights.blocks import FeaturedRecordBlock
 from etna.records.blocks import RecordChooserBlock
- 
+
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
+
 
 
 @register_snippet
@@ -104,39 +107,135 @@ class HighlightsGalleryPage(BasePage):
     parent_page_types = ["collections.ExplorerIndexPage"]
  
  
-# class CloserLookPage(BasePage):
-#     """CloserLookPage
+
+
+class CloserLookPage(BasePage, ContentWarningMixin):
+    """CloserLookPage
  
-#     This page is ______.
-#     """
-#     meta_description = models.CharField(max_length=250, blank = False, null=False) #needs more info
-#     #date = date #more info
-#     #record_description = record_description #more info
-#     #record_link = record_link #more info
-#     #image = image #i assume images of elton john but more info
-#     #image_library_link = image_library_link #link to a bunch of images needs more info
-#     #print_on_demand_link = print_on_demand_link #again more info
-#     featured_story = models.ForeignKey(
-#         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
-#     ) #link to featured story (insight?) but need more info
-#     #tags = tags #can pull these in from parent potentially?
-#     #primary_topic = primary_topic #specific tag, for elton john could be music (or british people) could generate via tag or just let the editor select the link to that exact topic gallery?
-#     #primary_time_period = primary_time_period #specific tag, for elton john could be 1960-today. could generate via tag or just let the editor select the link to that exact time period gallery?
+    This page is ______.
+    """
+    
+    topic = models.ForeignKey(
+        "collections.TopicExplorerPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Promoted Topic",
+    )
+    time_period = models.ForeignKey(
+        "collections.TimePeriodExplorerPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Promoted Time Period",
+    )
+
+
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Featured insight"
+    )
+
+    date = models.CharField(
+        blank=True,
+        null=True,
+        max_length=30
+    )
+
+    content_panels = BasePage.content_panels + [
+        MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible collapsed",
+            ),
+        InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
+        FieldPanel("date"),
+        FieldPanel("featured_insight"),
+        MultiFieldPanel(
+            [
+                FieldPanel("topic"),
+                FieldPanel("time_period"),
+            ],
+            heading="Topic and Time Periods"
+        )
+        # FieldPanel("topic_tags"),
+        # FieldPanel("time_period_tags"),
+        # FieldPanel("image_library_link"), = use this image - use this image how?
+        # FieldPanel("print_on_demand_link"), = buy an art print - not done yet?
+    ]
  
-#     content_panels = BasePage.content_panels + [
-#         FieldPanel("meta_description"),
-#         #FieldPanel("date"),
-#         #FieldPanel("record_description"),
-#         #FieldPanel("record_link"),
-#         #FieldPanel("image"),
-#         #FieldPanel("image_library_link"),
-#         #FieldPanel("print_on_demand_link"),
-#         FieldPanel("featured_story"),
-#         #FieldPanel("tags"),
-#         #FieldPanel("primary_topic"),
-#         #FieldPanel("primary_time_period"),
-#     ]
  
- 
-#     parent_page_types = ["highlights.HighlightsPage"]
-#     subpage_types = []
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = []
+
+
+class CloserLookGalleryImage(Orderable):
+    page = ParentalKey(CloserLookPage, on_delete=models.CASCADE, related_name='image_gallery')
+    image = models.ForeignKey(
+        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+    )
+    alt_text = models.CharField(
+        max_length=100,
+        help_text="Alt text for the image",
+        null=True,
+        blank=False,
+    )
+    sensitive_image = models.BooleanField(
+        help_text="Apply the sensitive image filter to this image",
+        default=False,
+    )
+    caption = models.CharField(
+        max_length=100,
+        help_text="A caption for the image",
+        null=True,
+        blank=True,
+    )
+    transcription = models.TextField(
+        max_length=400, 
+        help_text="A transcription of the image",
+        null=True,
+        blank=True,
+    )
+    translation_text = models.TextField(
+        max_length=400,
+        help_text="A translation of the transcription",
+        null=True,
+        blank=True,
+    )
+    translation_header = models.CharField(
+        max_length=50,
+        help_text="Header for the translation",
+        null=True,
+        blank=True,
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = "gallery image"
+
+    panels = [
+        FieldPanel('image'),
+        FieldPanel('alt_text'),
+        FieldPanel('sensitive_image'),
+        FieldPanel('caption'),
+        MultiFieldPanel(
+            [
+                FieldPanel('transcription'),
+                MultiFieldPanel(
+                [
+                    FieldPanel("translation_header"),
+                    FieldPanel('translation_text'),
+                ],
+                heading="Translation"
+            ),
+            ],
+            heading="Translation and Transcription",
+        ),
+    ]
