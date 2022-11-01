@@ -34,18 +34,25 @@
     text-align: center;
     margin: 0;
 
-    a {
+
+    button {
+      font-family: $font-_supria-sans;
+      color: $color__link;
       display: inline-block;
       background: url($fa_chevron_down) no-repeat left center;
       background-size: 10px;
-      margin: 1rem auto;
+      margin: 0 auto 1rem;
       padding: 0 0 0 1.25rem;
+      border: 0;
+      text-decoration: underline;
+      font-size: 1.1rem;
     }
 
     @media screen and (min-width: $screen__lg) {
       position: absolute;
       top: 0;
       right: 25px;
+      margin: 1rem auto;
     }
   }
 
