@@ -20,7 +20,7 @@ from wagtailmetadata.models import MetadataPageMixin
 from etna.core.models import BasePage, ContentWarningMixin
 from etna.records.blocks import RecordChooserBlock
 
-from .blocks import CloserLookRecordBlock
+from .blocks import HighlightsRecordBlock, CloserLookRecordBlock
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 from ..collections.models import TaggedTimePeriods, TaggedTopics
@@ -33,20 +33,36 @@ from ..collections.models import TaggedTimePeriods, TaggedTopics
 @register_snippet
 class Highlights(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
+
     short_description = models.CharField(max_length=200, blank=False, null=True)
+
     image = models.ForeignKey(
         'wagtailimages.Image',
         null=True, blank=True,
         on_delete=models.SET_NULL,
         related_name='+'
     )
-    date = models.CharField(max_length=20)
+
+    body = StreamField([
+        ('record_info', HighlightsRecordBlock()),
+    ], 
+    block_counts={
+        'record_info': {'min_num': 1, 'max_num': 1},
+    }, 
+    use_json_field=True,
+    null=True,
+    )
+
+    closer_look = models.ForeignKey(
+        "highlights.CloserLookPage", blank=True, null=True, on_delete=models.SET_NULL
+    )
 
     panels = [
         FieldPanel('title'),
         FieldPanel('short_description'),
         FieldPanel('image'),
-        FieldPanel('date'),
+        FieldPanel('body'),
+        FieldPanel('closer_look'),
     ]
 
     def __str__(self):
@@ -74,38 +90,25 @@ class HighlightsGalleryPage(BasePage):
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
+
     highlight = models.ForeignKey(
         "highlights.Highlights", blank=True, null=True, on_delete=models.SET_NULL
     )
  
-    # highlight_tag_names = models.TextField(editable=False)
-    # tags = ClusterTaggableManager(through=TaggedHighlights, blank=True)
- 
-    # search_fields = Page.search_fields + [
-    #     index.SearchField("highlight_tag_names"),
-    # ]
- 
-    # def save(self, *args, **kwargs):
-    #     """
-    #     Overrides Page.save() to ensure 'highlight_tag_names' always reflects the tags() value
-    #     """
-    #     if (
-    #         "update_fields" not in kwargs
-    #         or "highlight_tag_names" in kwargs["update_fields"]
-    #     ):
-    #         self.highlight_tag_names = "\n".join(t.name for t in self.tags.all())
-    #     super().save(*args, **kwargs)
- 
+    topic_tags = ClusterTaggableManager(through="collections.TaggedTopics", blank=True, verbose_name="Topic Tags")
+    time_period_tags = ClusterTaggableManager(through="collections.TaggedTimePeriods", blank=True, verbose_name="Time Period Tags")
    
     content_panels = BasePage.content_panels + [
         FieldPanel("standfirst"),
         FieldPanel("featured_insight"),
         FieldPanel("highlight"),
-        #FieldPanel("file"),
-        #FieldPanel("record_link"),
-        #FieldPanel("date"),
-        # FieldPanel("time_period_tags"),
-        # FieldPanel("topic_tags"),
+        MultiFieldPanel(
+            [
+                FieldPanel("topic_tags"),
+                FieldPanel("time_period_tags"),
+            ],
+            heading="Tags",
+        ),
     ]
  
     parent_page_types = ["collections.ExplorerIndexPage"]
@@ -177,7 +180,6 @@ class CloserLookPage(BasePage, ContentWarningMixin):
                 ],
                 heading="Tags",
             ),
-        
         MultiFieldPanel(
             [
                 FieldPanel("topic"),

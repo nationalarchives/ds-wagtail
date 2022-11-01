@@ -1,7 +1,7 @@
 from wagtail.contrib.modeladmin.options import (
         ModelAdmin, ModelAdminGroup, modeladmin_register)
 from .models import (
-    HighlightsGalleryPage, Highlights)
+    HighlightsGalleryPage, Highlights, CloserLookPage)
 
 
 class HighlightsGalleryAdmin(ModelAdmin):
@@ -21,20 +21,20 @@ class HighlightsAdmin(ModelAdmin):
     #list_filter = ('tags',) can use this for tags?
     search_fields = ('title',)
 
-"""
+
 class CloserLookAdmin(ModelAdmin):
     model = CloserLookPage
     menu_label = 'Closer Look'
     menu_icon = 'search'
-    list_display = ('name',)
-    list_filter = ('name',)
-    search_fields = ('name',)
-"""
+    #list_display = ('title',)
+    #list_filter = ('title',)
+    search_fields = ('title',)
+
 
 class RecordHighlightsGroup(ModelAdminGroup):
     menu_label = 'Record Highlights'
     menu_icon = 'folder-open-inverse'
     menu_order = 200
-    items = (HighlightsGalleryAdmin, HighlightsAdmin)
+    items = (HighlightsGalleryAdmin, HighlightsAdmin, CloserLookAdmin)
 
 modeladmin_register(RecordHighlightsGroup)
