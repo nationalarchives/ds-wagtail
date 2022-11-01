@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.functional import cached_property
 
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
@@ -27,6 +28,44 @@ from .blocks import (
     TopicExplorerPageStreamBlock,
 )
 
+
+@register_snippet
+class TopicTag(TagBase):
+    free_tagging = False
+
+    class Meta:
+        verbose_name = "topic tag"
+        verbose_name_plural = "topic tags"
+
+
+class TaggedTopics(ItemBase):
+    tag = models.ForeignKey(
+        TopicTag, related_name="tagged_topics", on_delete=models.CASCADE
+    )
+    content_object = ParentalKey(
+        to="wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="tagged_topics",
+    )
+
+
+@register_snippet
+class TimePeriodTag(TagBase):
+    free_tagging = False
+
+    class Meta:
+        verbose_name = "time period tag"
+        verbose_name_plural = "time period tags"
+
+class TaggedTimePeriods(ItemBase):
+    tag = models.ForeignKey(
+        TimePeriodTag, related_name="tagged_time_periods", on_delete=models.CASCADE
+    )
+    content_object = ParentalKey(
+        to="wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="tagged_time_periods",
+    )
 
 class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Collection Explorer landing BasePage.

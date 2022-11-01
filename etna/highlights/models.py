@@ -1,3 +1,4 @@
+from cProfile import label
 from typing import Any, Dict, Tuple
 from typing_extensions import Required
  
@@ -22,6 +23,10 @@ from etna.records.blocks import RecordChooserBlock
 from .blocks import CloserLookRecordBlock
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
+from ..collections.models import TaggedTimePeriods, TaggedTopics
+
+
+
 
 
 
@@ -140,7 +145,10 @@ class CloserLookPage(BasePage, ContentWarningMixin):
     use_json_field=True,
     null=True,
     )
-    
+
+    topic_tags = ClusterTaggableManager(through="collections.TaggedTopics", blank=True, verbose_name="Topic Tags")
+    time_period_tags = ClusterTaggableManager(through="collections.TaggedTimePeriods", blank=True, verbose_name="Time Period Tags")
+
 
     featured_insight = models.ForeignKey(
         "insights.InsightsPage",
@@ -162,6 +170,14 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
         FieldPanel("body"),
         FieldPanel("featured_insight"),
+        MultiFieldPanel(
+                [
+                    FieldPanel("topic_tags"),
+                    FieldPanel("time_period_tags"),
+                ],
+                heading="Tags",
+            ),
+        
         MultiFieldPanel(
             [
                 FieldPanel("topic"),
