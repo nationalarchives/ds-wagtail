@@ -126,6 +126,10 @@
                 display: flex;
                 justify-content: center;
 
+                @media only screen and (max-width: $screen__md) {
+                    display: none;
+                }
+
                 &:hover, &:focus {
                     // background-image: url($fa_chevron_right_disabled);
                     outline-color: transparent;
@@ -141,6 +145,7 @@
             //background-image: url($fa_chevron_left_white);
             //outline-color: $color__focus-blue-outline-light-bg;
             //outline-offset: 0.125rem;
+
         }
 
         &:focus {
@@ -157,6 +162,8 @@
             height: 100%;
             display: flex;
             justify-content: center;
+
+
 
             &:hover, &:focus {
                 //background-image: url($fa_chevron_left_disabled);
@@ -189,6 +196,13 @@
         color: $color__black;
         font-weight: bold;
         outline-color: $color__focus-blue-outline-dark-bg;
+    }
+}
+
+
+.pagination__page-chevron-previous--disabled {
+    @media only screen and (max-width: $screen__md) {
+        display:none;
     }
 }
 //}
