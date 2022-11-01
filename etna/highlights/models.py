@@ -90,10 +90,7 @@ class HighlightsGalleryPage(BasePage):
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-
-    highlight = models.ForeignKey(
-        "highlights.Highlights", blank=True, null=True, on_delete=models.SET_NULL
-    )
+   
  
     topic_tags = ClusterTaggableManager(through="collections.TaggedTopics", blank=True, verbose_name="Topic Tags")
     time_period_tags = ClusterTaggableManager(through="collections.TaggedTimePeriods", blank=True, verbose_name="Time Period Tags")
@@ -101,7 +98,7 @@ class HighlightsGalleryPage(BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("standfirst"),
         FieldPanel("featured_insight"),
-        FieldPanel("highlight"),
+        InlinePanel("highlights_gallery", heading="Highlights Gallery", label="Highlight", min_num=1),
         MultiFieldPanel(
             [
                 FieldPanel("topic_tags"),
@@ -113,6 +110,19 @@ class HighlightsGalleryPage(BasePage):
  
     parent_page_types = ["collections.ExplorerIndexPage"]
  
+
+class HighlightsGalleryItem(Orderable):
+    page = ParentalKey(HighlightsGalleryPage, on_delete=models.CASCADE, related_name='highlights_gallery')
+    highlight = models.ForeignKey(
+        "highlights.Highlights", blank=False, null=True, on_delete=models.SET_NULL
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = "highlight"
+
+    panels = [
+        FieldPanel('highlight'),
+    ]
  
 
 
