@@ -1,4 +1,7 @@
 .search-buckets {
+    @media only screen and (max-width: $screen__md) {
+        display:none;
+    }
     display: flex;
     flex-wrap: wrap;
     &__list {
