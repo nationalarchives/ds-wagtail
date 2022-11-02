@@ -180,6 +180,16 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         verbose_name="Featured insight"
     )
 
+    related_records = models.ForeignKey(
+        "highlights.HighlightsGalleryPage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name="Related records"
+    )
+
+    
+
     content_panels = BasePage.content_panels + [
         MultiFieldPanel(
                 [
@@ -192,6 +202,7 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
         FieldPanel("body"),
         FieldPanel("featured_insight"),
+        FieldPanel("related_records"),
         FieldPanel("image_library_link"),
         FieldPanel("print_on_demand_link"),
         MultiFieldPanel(
