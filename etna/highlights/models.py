@@ -26,10 +26,6 @@ from ..teasers.models import TeaserImageMixin
 from ..collections.models import TaggedTimePeriods, TaggedTopics
 
 
-
-
-
-
 @register_snippet
 class Highlights(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
@@ -77,10 +73,10 @@ class Highlights(models.Model):
 class HighlightsGalleryPage(BasePage):
     """HighlightsGalleryPage
  
-    This page is ______.
+    This page is used to display highlights, which can have Closer Look
+    pages attached to them.
     """
     standfirst = models.CharField(max_length=250, blank = False, null=True)
-    #highlights_gallery = multi chooser of highlights
     #featured_collections = StreamField(
     #     [("featuredcollection", FeaturedCollectionBlock())],
     #     blank=True,
@@ -162,6 +158,19 @@ class CloserLookPage(BasePage, ContentWarningMixin):
     topic_tags = ClusterTaggableManager(through="collections.TaggedTopics", blank=True, verbose_name="Topic Tags")
     time_period_tags = ClusterTaggableManager(through="collections.TaggedTimePeriods", blank=True, verbose_name="Time Period Tags")
 
+    image_library_link = models.URLField(
+        max_length=300,
+        blank=True,
+        null=True,
+        verbose_name="Link to external image library"
+    )
+
+    print_on_demand_link = models.URLField(
+        max_length=300,
+        blank=True,
+        null=True,
+        verbose_name="Link to external print on demand"
+    )
 
     featured_insight = models.ForeignKey(
         "insights.InsightsPage",
@@ -183,6 +192,8 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
         FieldPanel("body"),
         FieldPanel("featured_insight"),
+        FieldPanel("image_library_link"),
+        FieldPanel("print_on_demand_link"),
         MultiFieldPanel(
                 [
                     FieldPanel("topic_tags"),
@@ -196,11 +207,7 @@ class CloserLookPage(BasePage, ContentWarningMixin):
                 FieldPanel("time_period"),
             ],
             heading="Topic and Time Periods"
-        )
-        # FieldPanel("topic_tags"),
-        # FieldPanel("time_period_tags"),
-        # FieldPanel("image_library_link"), = use this image - use this image how?
-        # FieldPanel("print_on_demand_link"), = buy an art print - not done yet?
+        ),
     ]
  
  
