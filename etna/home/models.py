@@ -9,7 +9,7 @@ from etna.core.models import BasePage
 from etna.teasers.models import TeaserImageMixin
 
 from ..alerts.models import AlertMixin
-from ..core.blocks.cta import FeaturedCollectionBlock
+from ..insights.blocks import FeaturedCollectionBlock
 from .blocks import HomePageStreamBlock
 
 
@@ -24,8 +24,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
-    featured_collections = StreamField(
-        [("featuredcollection", FeaturedCollectionBlock())],
+    featured_pages = StreamField(
+        [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
         null=True,
         use_json_field=True,
@@ -34,7 +34,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("sub_heading"),
         FieldPanel("body"),
         FieldPanel("featured_insight"),
-        FieldPanel("featured_collections"),
+        FieldPanel("featured_pages"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels

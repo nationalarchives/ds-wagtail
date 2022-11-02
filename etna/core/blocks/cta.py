@@ -1,7 +1,5 @@
 from wagtail.core import blocks
 
-from etna.core.blocks import PageListBlock, SectionDepthAwareStructBlock
-
 
 class TimePeriodBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, default="Explore by time period")
@@ -19,30 +17,9 @@ class TimePeriodBlock(blocks.StructBlock):
 
 class TopicExplorerBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, default="Explore by topic")
-    sub_heading = blocks.CharBlock(
-        max_length=200,
-        default="Browse highlights of the collection through topics including:",
-    )
     page = blocks.PageChooserBlock(page_type="collections.TopicExplorerIndexPage")
 
     class Meta:
         template = "collections/blocks/topic_explorer.html"
         help_text = "Outputs all topic child pages"
         icon = "th-large"
-
-
-class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
-
-    items = PageListBlock(
-        "insights.InsightsPage",
-        exclude_drafts=True,
-        exclude_private=False,
-        select_related=["teaser_image"],
-        min_num=3,
-        max_num=9,
-    )
-
-    class Meta:
-        icon = "list"
-        label = "Featured collection"
-        template = "insights/blocks/featured_collection.html"
