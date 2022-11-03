@@ -20,7 +20,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         default="Discover some of the most important and unusual records from over 1000 "
         "years of history.",
     )
-    featured_insight = models.ForeignKey(
+    featured_story = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
@@ -33,7 +33,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("featured_collections"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels

@@ -30,7 +30,7 @@ class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    featured_insight = models.ForeignKey(
+    featured_story = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     featured_collections = StreamField(
@@ -50,7 +50,7 @@ class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("featured_collections"),
     ]
 

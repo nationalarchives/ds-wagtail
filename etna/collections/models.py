@@ -107,7 +107,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     single ResultsPage (to output the results of their selection).
     """
 
-    featured_insight = models.ForeignKey(
+    featured_story = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     sub_heading = models.CharField(max_length=200, blank=False)
@@ -115,7 +115,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -200,7 +200,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    featured_insight = models.ForeignKey(
+    featured_story = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(
@@ -210,7 +210,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
