@@ -36,15 +36,29 @@
     const buttonEasy = document.getElementById("easy");
     const buttonHard = document.getElementById("hard");
 
+    //disable other button
+
     buttonEasy.addEventListener("click", ()=>{
-        console.log("easy is clicked");
+        //alert("easy is clicked");
         event.preventDefault();
+        buttonHard.style.opacity = '0.2';
+        buttonHard.removeAttribute("href");
+        buttonHard.style.cursor = 'not-allowed';
+        buttonHard.event.preventDefault();
+        buttonEasy.event.preventDefault();
+
+
 
     })
 
     buttonHard.addEventListener("click", ()=>{
-        console.log("hard is clicked");
+        //alert("hard is clicked");
         event.preventDefault();
+        buttonEasy.style.opacity = '0.2';
+        buttonEasy.removeAttribute("href");
+        buttonEasy.style.cursor = 'not-allowed';
+        buttonHard.event.preventDefault();
+        buttonEasy.event.preventDefault();
 
     })
 
