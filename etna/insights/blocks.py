@@ -193,7 +193,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         icon = "list"
-        label = "Featured collection"
+        label = "Featured Pages"
         template = "insights/blocks/featured_collection.html"
 
 
