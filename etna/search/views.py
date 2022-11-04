@@ -796,6 +796,3 @@ class FeaturedSearchView(BaseSearchView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(buckets=self.get_buckets(), **kwargs)
-
-    def _do_not_use(self):
-        return None
