@@ -742,6 +742,9 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
             page_list.append(result)
         page.object_list = page_list
 
+    def _do_not_use(self):
+        return None
+
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
