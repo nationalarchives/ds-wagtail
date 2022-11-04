@@ -54,7 +54,7 @@
     //disable other button possibly by replacing the innerHTML??
 
     buttonEasy.addEventListener("click", ()=>{
-        //alert("easy is clicked");
+        //easy clicked
         event.preventDefault();
         replaceHard.innerHTML = disabledButtonHard;
         replaceHard.style.opacity = '0.2';
@@ -64,7 +64,7 @@
     })
 
     buttonHard.addEventListener("click", ()=>{
-        //alert("hard is clicked");
+        //hard clicked
         event.preventDefault();
         replaceEasy.innerHTML = disabledButtonEasy;
         replaceEasy.style.opacity = '0.2';
