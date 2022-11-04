@@ -40,7 +40,7 @@
 <script>
     document.querySelector('.cta-banner-survey-js').style.display = 'block';
 
-    //console.log('script');
+
     const buttonEasy = document.getElementById("easy");
     const buttonHard = document.getElementById("hard");
 
@@ -51,7 +51,7 @@
 
     const disabledButtonHard = '<span class="tna-button--dark response-btn"><span><img class="thumb-image" src="../media/thumb-down.png"> Hard to use</span></span>';
 
-    //disable other button possibly by replacing the innerHTML??
+    //disable the 'other button'
 
     buttonEasy.addEventListener("click", ()=>{
         //easy clicked
@@ -59,8 +59,6 @@
         replaceHard.innerHTML = disabledButtonHard;
         replaceHard.style.opacity = '0.2';
         replaceHard.style.cursor = 'not-allowed';
-
-
 
 
     })
@@ -74,7 +72,5 @@
 
 
     })
-
-
 
 </script>
