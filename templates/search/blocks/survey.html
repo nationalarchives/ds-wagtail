@@ -8,8 +8,12 @@
             <div class="col-sm-12 col-lg-12">
                 <div class="survey-outline">
                     <p>What did you think of this page?</p>
+                    <div id="replacer">
                     <a class="tna-button--dark response-btn" href="#" id="easy" rel="noopener noreferrer" tabindex="0"><span><img class="thumb-image" src="../media/thumb-up.png"> Easy to use</span></a>
+                    </div>
+                    <div class="replacer2">
                     <a class="tna-button--dark response-btn" href="#" id="hard"rel="noopener noreferrer" tabindex="1"><span><img class="thumb-image" src="../media/thumb-down.png">Hard to use</span></a>
+                    </div>
                     <p><a href="https://www.smartsurvey.co.uk/s/SY13JD/" target="_blank">Tell us more</a></p>
                 </div>
             </div>
@@ -36,17 +40,22 @@
     const buttonEasy = document.getElementById("easy");
     const buttonHard = document.getElementById("hard");
 
-    //disable other button
+    const replaceEasy =document.getElementById("replacer");
+    const replaceHard =document.getElementById("replacer2");
+
+    const disabledButtonEasy = '<span class=""><span><img class="thumb-image" src="../media/thumb-up.png"> Easy to use2</span></span>';
+
+    const disabledButtonHard = '<span class=""><span><img class="thumb-image" src="../media/thumb-up.png"> Hard to use2</span></span>';
+
+    //disable other button possibly by replacing the innerHTML??
 
     buttonEasy.addEventListener("click", ()=>{
         //alert("easy is clicked");
         event.preventDefault();
-        buttonHard.style.opacity = '0.2';
-        buttonHard.removeAttribute("href");
-        buttonHard.style.cursor = 'not-allowed';
-        buttonHard.event.preventDefault();
-        buttonEasy.event.preventDefault();
-
+        replaceHard.innerHTML = disabledButtonHard;
+        //buttonHard.style.opacity = '0.2';
+        //buttonHard.removeAttribute("href");
+        //buttonHard.style.cursor = 'not-allowed';
 
 
     })
@@ -54,11 +63,12 @@
     buttonHard.addEventListener("click", ()=>{
         //alert("hard is clicked");
         event.preventDefault();
-        buttonEasy.style.opacity = '0.2';
-        buttonEasy.removeAttribute("href");
-        buttonEasy.style.cursor = 'not-allowed';
-        buttonHard.event.preventDefault();
-        buttonEasy.event.preventDefault();
+        replaceEasy.innerHTML = disabledButtonEasy;
+        //buttonEasy.style.opacity = '0.2';
+        //buttonEasy.removeAttribute("href");
+        //buttonEasy.style.cursor = 'not-allowed';
+        //buttonHard.event.preventDefault();
+        //buttonEasy.event.preventDefault();
 
     })
 
