@@ -20,7 +20,7 @@ from wagtailmetadata.models import MetadataPageMixin
 from etna.core.models import BasePage, ContentWarningMixin
 from etna.records.blocks import RecordChooserBlock
 
-from .blocks import HighlightsRecordBlock, CloserLookRecordBlock
+from .blocks import HighlightsRecordBlock
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
 from ..collections.models import TaggedTimePeriods, TaggedTopics
@@ -29,8 +29,6 @@ from ..collections.models import TaggedTimePeriods, TaggedTopics
 @register_snippet
 class Highlights(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
-
-    short_description = models.CharField(max_length=200, blank=False, null=True)
 
     image = models.ForeignKey(
         'wagtailimages.Image',
@@ -55,7 +53,6 @@ class Highlights(models.Model):
 
     panels = [
         FieldPanel('title'),
-        FieldPanel('short_description'),
         FieldPanel('image'),
         FieldPanel('body'),
         FieldPanel('closer_look'),
@@ -77,12 +74,6 @@ class HighlightsGalleryPage(BasePage):
     pages attached to them.
     """
     standfirst = models.CharField(max_length=250, blank = False, null=True)
-    #featured_collections = StreamField(
-    #     [("featuredcollection", FeaturedCollectionBlock())],
-    #     blank=True,
-    #     null=True,
-    #     use_json_field=True,
-    # )
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -146,7 +137,7 @@ class CloserLookPage(BasePage, ContentWarningMixin):
     )
 
     body = StreamField([
-        ('record_info', CloserLookRecordBlock()),
+        ('record_info', HighlightsRecordBlock()),
     ], 
     block_counts={
         'record_info': {'min_num': 1, 'max_num': 1},

@@ -11,13 +11,6 @@ class HighlightsRecordBlock(blocks.StructBlock):
         max_length=30,
         required=False
     )
-    
-    class Meta:
-        icon = "archive"
-
-
-class CloserLookRecordBlock(blocks.StructBlock):
-    record_and_date = HighlightsRecordBlock()
     paragraph = ParagraphBlock()
 
     class Meta:
