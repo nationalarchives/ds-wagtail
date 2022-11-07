@@ -41,6 +41,19 @@
 
     }
 
+    &__mobile {
+        padding-bottom:1em;
+        @media only screen and (min-width: $screen__md) {
+            display:none;
+        }
+    }
+
+    &__desktop {
+        @media only screen and (max-width: $screen__md) {
+            display:none;
+        }
+    }
+
     &__list {
         display: flex;
         align-items: center;
