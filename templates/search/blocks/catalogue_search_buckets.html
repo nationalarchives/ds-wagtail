@@ -16,6 +16,10 @@
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
 
+        {% if form.q.value %}
+            {{form.q.as_hidden}}
+        {% endif %}
+
     </form>
 </div>
 <!-- end new form element-->
