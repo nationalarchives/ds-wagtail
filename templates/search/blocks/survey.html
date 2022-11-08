@@ -1,0 +1,78 @@
+
+
+<!--new survey element-->
+<div class="cta-banner-survey cta-banner-survey-js cta-banner-border">
+    <div class="container py-3">
+        <div class="row justify-content-md-center text-center">
+
+            <div class="col-sm-12 col-lg-12">
+                <div class="survey-outline">
+                    <p>What did you think of this page?</p>
+
+                    <span id ="replacer-easy">
+                    <a class="tna-button--dark response-btn" href="#" id="easy" rel="noopener noreferrer" tabindex="0"><span><img class="thumb-image" src="../media/thumb-up.png"> Easy to use</span></a>
+                    </span>
+
+
+                    <span id ="replacer-hard">
+                    <a class="tna-button--dark response-btn" href="#" id="hard" rel="noopener noreferrer" tabindex="1"><span><img class="thumb-image" src="../media/thumb-down.png">Hard to use</span></a>
+                    </span>
+
+
+                    <p><a href="https://www.smartsurvey.co.uk/s/SY13JD/" target="_blank">Tell us more</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--end new survey element-->
+
+<noscript>
+    <div class="cta-banner-survey cta-banner-border no-js-survey">
+    <div class="container py-3">
+        <h3>What did you think of this page?</h3>
+        <div class="rowr">
+          <a href="https://www.smartsurvey.co.uk/s/SY13JD/" target="_blank">Take our short survey</a>
+        </div>
+    </div>
+    </div>
+</noscript>
+
+<script>
+    document.querySelector('.cta-banner-survey-js').style.display = 'block';
+
+
+    const buttonEasy = document.getElementById("easy");
+    const buttonHard = document.getElementById("hard");
+
+    const replaceEasy =document.getElementById("replacer-easy");
+    const replaceHard =document.getElementById("replacer-hard");
+
+    const disabledButtonEasy = '<span class="tna-button--dark response-btn"><span><img class="thumb-image" src="../media/thumb-up.png"> Easy to use</span></span>';
+
+    const disabledButtonHard = '<span class="tna-button--dark response-btn"><span><img class="thumb-image" src="../media/thumb-down.png"> Hard to use</span></span>';
+
+    //disable the 'other button'
+
+    buttonEasy.addEventListener("click", ()=>{
+        //easy clicked
+        event.preventDefault();
+        replaceHard.innerHTML = disabledButtonHard;
+        replaceHard.style.opacity = '0.2';
+        replaceHard.style.cursor = 'not-allowed';
+
+
+    })
+
+    buttonHard.addEventListener("click", ()=>{
+        //hard clicked
+        event.preventDefault();
+        replaceEasy.innerHTML = disabledButtonEasy;
+        replaceEasy.style.opacity = '0.2';
+        replaceEasy.style.cursor = 'not-allowed';
+
+
+    })
+
+</script>
