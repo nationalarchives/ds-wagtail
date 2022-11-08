@@ -32,10 +32,19 @@
 .cta-banner-border {
     border:solid 1px black;
     margin:auto;
-    width:50%;
+    width:90%;
+    margin-bottom:1em;
 
     p {
         margin-bottom:1rem;
     }
 
+}
+
+.no-js-survey {
+    //background:red;
+    margin:auto;
+    width:50%;
+    text-align: center;
+    margin-bottom:1em;
 }
