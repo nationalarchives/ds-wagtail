@@ -1,0 +1,25 @@
+.more-records {
+  background:#fbf8e9;
+
+  .records-title {
+    font-size:1.3em;
+    font-weight: bold;
+    padding: 1em 0;
+  }
+
+  .card-elements {
+    padding-bottom:4em;
+  }
+
+  .card {
+    border:solid 1px #e4e4da;
+    border-bottom:solid 2px #d3d3c7;
+    background:#ffffff;
+    margin-right:24px;
+
+    p {
+      padding:1em 0.5em 0.5em 0.5em;
+    }
+  }
+
+}
