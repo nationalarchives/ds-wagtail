@@ -3,10 +3,14 @@
         <div class="row">
             <div class="col-12">
                 <h1 class="generic-intro__title">
-                    {{ self.title }}
+                    <!--{{ self.title }}-->
+                    Explore the collection
                 </h1>
+                <!---<p class="generic-intro__paragraph">Discover some of the most important and unusual records from over 1000 years of history.</p>-->
                 {% if page.sub_heading %}
-                    <p class="generic-intro__paragraph">{{ page.sub_heading }}</p>
+                    <p class="generic-intro__paragraph">
+                        {{ page.sub_heading }}
+                    </p>
                 {% endif %}
             </div>
         </div>

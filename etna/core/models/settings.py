@@ -2,7 +2,7 @@ from django.db import models
 
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.contrib.settings.models import BaseSetting, register_setting
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.fields import RichTextField
 from wagtail.models import Page
 
@@ -12,7 +12,7 @@ __all__ = ["SiteSettings", "MainMenuItem"]
 
 
 @register_setting(icon="list-ul")
-class SiteSettings(BaseSetting, ClusterableModel):
+class SiteSettings(BaseSiteSetting, ClusterableModel):
     beta_banner_standfirst = models.CharField(
         max_length=200,
         default="What does the 'beta' label mean?",
