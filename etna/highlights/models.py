@@ -31,17 +31,17 @@ class Highlights(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
 
     image = models.ForeignKey(
-        'wagtailimages.Image',
+        "wagtailimages.Image",
         null=True, blank=True,
         on_delete=models.SET_NULL,
-        related_name='+'
+        related_name="+"
     )
 
     body = StreamField([
-        ('record_info', HighlightsRecordBlock()),
+        ("record_info", HighlightsRecordBlock()),
     ], 
     block_counts={
-        'record_info': {'min_num': 1, 'max_num': 1},
+        "record_info": {"min_num": 1, "max_num": 1},
     }, 
     use_json_field=True,
     null=True,
@@ -52,10 +52,10 @@ class Highlights(models.Model):
     )
 
     panels = [
-        FieldPanel('title'),
-        FieldPanel('image'),
-        FieldPanel('body'),
-        FieldPanel('closer_look'),
+        FieldPanel("title"),
+        FieldPanel("image"),
+        FieldPanel("body"),
+        FieldPanel("closer_look"),
     ]
 
     def __str__(self):
@@ -99,7 +99,7 @@ class HighlightsGalleryPage(BasePage):
  
 
 class HighlightsGalleryItem(Orderable):
-    page = ParentalKey(HighlightsGalleryPage, on_delete=models.CASCADE, related_name='highlights_gallery')
+    page = ParentalKey(HighlightsGalleryPage, on_delete=models.CASCADE, related_name="highlights_gallery")
     highlight = models.ForeignKey(
         "highlights.Highlights", blank=False, null=True, on_delete=models.SET_NULL
     )
@@ -108,7 +108,7 @@ class HighlightsGalleryItem(Orderable):
         verbose_name = "highlight"
 
     panels = [
-        FieldPanel('highlight'),
+        FieldPanel("highlight"),
     ]
  
 
@@ -137,10 +137,10 @@ class CloserLookPage(BasePage, ContentWarningMixin):
     )
 
     body = StreamField([
-        ('record_info', HighlightsRecordBlock()),
+        ("record_info", HighlightsRecordBlock()),
     ], 
     block_counts={
-        'record_info': {'min_num': 1, 'max_num': 1},
+        "record_info": {"min_num": 1, "max_num": 1},
     }, 
     use_json_field=True,
     null=True,
@@ -218,9 +218,9 @@ class CloserLookPage(BasePage, ContentWarningMixin):
 
 
 class CloserLookGalleryImage(Orderable):
-    page = ParentalKey(CloserLookPage, on_delete=models.CASCADE, related_name='image_gallery')
+    page = ParentalKey(CloserLookPage, on_delete=models.CASCADE, related_name="image_gallery")
     image = models.ForeignKey(
-        'wagtailimages.Image', on_delete=models.CASCADE, related_name='+'
+        "wagtailimages.Image", on_delete=models.CASCADE, related_name="+"
     )
     alt_text = models.CharField(
         max_length=100,
@@ -238,9 +238,15 @@ class CloserLookGalleryImage(Orderable):
         null=True,
         blank=True,
     )
-    transcription = models.TextField(
+    transcription_text = models.TextField(
         max_length=400, 
         help_text="A transcription of the image",
+        null=True,
+        blank=True,
+    )
+    transcription_header = models.CharField(
+        max_length=50,
+        help_text="Header for the transcription",
         null=True,
         blank=True,
     )
@@ -261,17 +267,23 @@ class CloserLookGalleryImage(Orderable):
         verbose_name = "gallery image"
 
     panels = [
-        FieldPanel('image'),
-        FieldPanel('alt_text'),
-        FieldPanel('sensitive_image'),
-        FieldPanel('caption'),
+        FieldPanel("image"),
+        FieldPanel("alt_text"),
+        FieldPanel("sensitive_image"),
+        FieldPanel("caption"),
         MultiFieldPanel(
             [
-                FieldPanel('transcription'),
+                MultiFieldPanel(
+                [
+                    FieldPanel("transcription_header"),
+                    FieldPanel("transcription_text"),
+                ],
+                heading="Transcription"
+            ),
                 MultiFieldPanel(
                 [
                     FieldPanel("translation_header"),
-                    FieldPanel('translation_text'),
+                    FieldPanel("translation_text"),
                 ],
                 heading="Translation"
             ),
