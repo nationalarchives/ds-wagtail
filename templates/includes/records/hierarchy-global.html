@@ -222,7 +222,7 @@
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
                     {% if page.previous_record %}
                         {% if page.previous_record.has_reference_number %}
-                            <p>{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--left" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></p>
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></p>
                         {% elif page.is_tna %}
                                 {{ 'previous_record'|as_label }} {{ page.level.lower|default:"record" }}
                         {% else %}
@@ -233,7 +233,7 @@
 
                 <!-- Current item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--current">
-                    <p>You are looking at <span class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--current" rel="current" aria-current="page">{{ page.reference_number }}</span></p>
+                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ page.reference_number }}</span></p>
                 </div>
 
 
@@ -241,7 +241,7 @@
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
                     {% if page.next_record %}
                         {% if page.next_record.has_reference_number %}
-                            <p>{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link hierarchy-local-nav__list-link--right" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></p>
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></p>
                             {% elif page.is_tna %}
                                 {{ 'next_record'|as_label }} {{ page.level.lower|default:"record" }}
                             {% else %}

@@ -323,7 +323,7 @@
     @media screen and (min-width: $screen__md) {
       display: inline-block;
       text-align: center;
-      min-width: 18%;
+      min-width: 19%;
     }
 
     &--previous {
@@ -343,23 +343,27 @@
     }
   }
 
-  &__list-link {
+  &__list-label {
     display: block;
     font-size: 1.1rem;
 
     &--left {
-      @media screen and (min-width: $screen__md) {
-        background: url($fa_chevron_left) no-repeat left center;
-        background-size: 9px;
-        padding: 0 0 0 1.5rem;
-      }
-    }
-    &--right  {
-      @media screen and (min-width: $screen__md) {
-        background: url($fa_chevron_right) no-repeat right center;
-        background-size: 9px;
+      @media screen and (min-width: $screen__xl) {
+        background: url($fa_chevron_left) no-repeat left 7px;
+        background-size: 8px;
         padding: 0 1.5rem 0 0;
       }
     }
+
+    &--right {
+      @media screen and (min-width: $screen__xl) {
+        background: url($fa_chevron_right) no-repeat 75% 7px;
+        background-size: 8px;
+        padding: 0 1.5rem 0 0;
+      }
+    }
+  }
+  &__list-link {
+    display: block;
   }
 }
