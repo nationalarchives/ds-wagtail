@@ -118,12 +118,16 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
     query_dict = request.GET.copy()
 
     if key in ("opening_start_date", "opening_end_date"):
-        day = str(query_dict.getlist(f"{key}_0", "")[0])
-        month = str(query_dict.getlist(f"{key}_1", "")[0])
+        # prepare query_dict date for comparison
+        # substitute unkeyed input date field value with derived value
+        day = str(query_dict.getlist(f"{key}_0", "")[0]) or value.day
+        month = str(query_dict.getlist(f"{key}_1", "")[0]) or value.month
         year = str(query_dict.getlist(f"{key}_2", "")[0])
-        query_dict.setlist(f"{key}_0", [day if day != str(value.day) else ""])
-        query_dict.setlist(f"{key}_1", [month if month != str(value.month) else ""])
-        query_dict.setlist(f"{key}_2", [year if year != str(value.year) else ""])
+        qd_dt = datetime.datetime.strptime(f"{day} {month} {year}", "%d %m %Y").date()
+        if qd_dt == value:
+            query_dict.pop(f"{key}_0")
+            query_dict.pop(f"{key}_1")
+            query_dict.pop(f"{key}_2")
     else:
         items = query_dict.getlist(key, [])
         query_dict.setlist(key, [i for i in items if i != str(value)])
