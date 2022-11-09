@@ -23,7 +23,7 @@
     }
 
     @media (max-width: 576px) {
-      height:100%;
+      height:93%;
     }
     img {
       width:100%;
@@ -33,6 +33,14 @@
     p {
       padding:1em 0.5em 0.5em 0.5em;
       font-size:15px;
+      @media (max-width: 576px) {
+        font-size:18px;
+        ///border-bottom:20px solid #fbf8e9;
+        padding:0;
+        padding-bottom:2.5em;
+        padding-left: 1em;
+        padding-top:1em;
+      }
 
     }
 
