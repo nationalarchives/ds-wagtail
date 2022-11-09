@@ -29,9 +29,11 @@ export default function() {
 
         if(newAriaExpanded) {
             $showHideButton.innerHTML = 'Hide detailed view';
+            $showHideButton.setAttribute('class', 'open');
         }
         else {
             $showHideButton.innerHTML = 'Show detailed view';
+            $showHideButton.setAttribute('class', '');
         }
     });
 };

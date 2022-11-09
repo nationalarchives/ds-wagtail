@@ -48,6 +48,12 @@
       font-size: 1.1rem;
     }
 
+    .open {
+      background: url($fa_chevron_up) no-repeat left center;
+      background-size: 10px;
+      min-width: 5rem;
+    }
+
     @media screen and (min-width: $screen__lg) {
       position: absolute;
       top: 0;
