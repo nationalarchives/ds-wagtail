@@ -48,8 +48,8 @@
     }
 
     &--primary {
-      background: $color__link url($fa_download_white) no-repeat 15px;
-      background-size: 20px;
+      background: $color__link url($fa_chevron_down_white) no-repeat 15px;
+      background-size: 15px;
       color: $color__white;
       text-decoration: none;
 
@@ -66,13 +66,16 @@
       &:hover {
         color: $color__white;
         background-color: $color__dark;
-
       }
       &:active {
         color: $color__white;
         background-color: $color__white;
       }
     }
+  }
+  .open {
+    background: #1A67A2 url($fa_chevron_up_white) no-repeat 15px;
+    background-size: 15px;
   }
 }
 

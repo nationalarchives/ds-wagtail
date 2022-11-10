@@ -29,10 +29,12 @@ export default function() {
         $detailedViewCTA.hidden = !$detailedViewCTA.hidden;
 
         if(newAriaExpanded) {
-            $showHideButton.innerHTML = 'Hide order options';
+            $showHideButton.innerHTML = 'Hide order information';
+            $showHideButton.setAttribute('class', 'cta-primary-panel__link cta-primary-panel__link--primary open');
         }
         else {
             $showHideButton.innerHTML = 'Order/download this record';
+            $showHideButton.setAttribute('class', 'cta-primary-panel__link cta-primary-panel__link--primary');
         }
     });
 };
