@@ -13,6 +13,7 @@
   &__container {
     background: $color__yellow_5;
     overflow: auto;
+    padding: 0 0 1.5rem;
   }
 }
 
@@ -46,6 +47,10 @@
       border: 0;
       text-decoration: underline;
       font-size: 1.1rem;
+
+      &:focus {
+        @include focus-default;
+      }
     }
 
     .open {
@@ -280,11 +285,11 @@
 
     a {
       display: block;
-      line-height: 2.5rem;
+      line-height: 2rem;
 
       @media screen and (min-width: $screen__lg) {
         display: inline-block;
-        line-height: 0;
+        line-height: 1.4rem;
       }
     }
   }
@@ -319,7 +324,6 @@
 
   &__container {
 
-
     @media screen and (min-width: $screen__md) {
       display: inline-block;
       text-align: center;
@@ -346,6 +350,7 @@
   &__list-label {
     display: block;
     font-size: 1.1rem;
+    margin-bottom: 0.75rem;
 
     &--left {
       @media screen and (min-width: $screen__xl) {

@@ -23,7 +23,7 @@
     }
 
     &--secondary {
-      background: transparent url($fa_list_blue) no-repeat 15px;
+      background: #fff url($fa_list_blue) no-repeat 15px;
       background-size: 20px;
       padding: 0.5rem 1rem 0.5rem 2rem;
       text-decoration: none;
@@ -35,13 +35,15 @@
         color: $color__link;
       }
       &:focus {
-        color: $color__link;
+        @include focus-default;
       }
       &:hover {
         color: $color__link;
+        background-color: $color__grey-4;
       }
       &:active {
         color: $color__link;
+        background-color: $color__grey-4;
       }
     }
 
@@ -58,13 +60,17 @@
         color: $color__white;
       }
       &:focus {
-        color: $color__white;
+        @include focus-default;
+        outline: 5px solid $color__dark;
       }
       &:hover {
         color: $color__white;
+        background-color: $color__dark;
+
       }
       &:active {
         color: $color__white;
+        background-color: $color__white;
       }
     }
   }
