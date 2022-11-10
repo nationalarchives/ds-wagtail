@@ -215,9 +215,8 @@
 
             -->
 
-
-          <div class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
-
+        {% if page.previous_record or page.next_record %}
+            <div class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
                 <!-- Previous item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
                     {% if page.previous_record %}
@@ -236,7 +235,6 @@
                     <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ page.reference_number }}</span></p>
                 </div>
 
-
                 <!-- Next item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
                     {% if page.next_record %}
@@ -250,7 +248,8 @@
                     {% endif %}
                 </div>
             <!-- END COMMENT 3 -->
-          </div>
+            </div>
+        {% endif %}
     </div>
 </nav>
 
