@@ -3,8 +3,10 @@ import json
 import logging
 import re
 
-from datetime import datetime
-from typing import Any, Optional
+from datetime import date, datetime, time
+from typing import Any, Optional, Union
+
+from django.utils.timezone import get_current_timezone
 
 import requests
 
@@ -187,15 +189,31 @@ class KongClient:
 
         return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
 
+    @staticmethod
+    def format_datetime(
+        value: Union[date, datetime], supplementary_time: Optional[time] = None
+    ):
+        """
+        Converts a `date` or `datetime` value to an isoformat string that the API
+        will understand. If value is `date`, it will be converted into a `datetime`,
+        using `supplementary_time` for the time information (defaulting to 00:00:00
+        if not provided).
+        """
+        if not isinstance(value, datetime):
+            value = datetime.combine(
+                value, supplementary_time or time.min, tzinfo=get_current_timezone()
+            )
+        return value.isoformat()
+
     def search(
         self,
         *,
         q: Optional[str] = None,
         web_reference: Optional[str] = None,
-        opening_start_date: Optional[datetime] = None,
-        opening_end_date: Optional[datetime] = None,
-        created_start_date: Optional[datetime] = None,
-        created_end_date: Optional[datetime] = None,
+        opening_start_date: Optional[Union[date, datetime]] = None,
+        opening_end_date: Optional[Union[date, datetime]] = None,
+        created_start_date: Optional[Union[date, datetime]] = None,
+        created_end_date: Optional[Union[date, datetime]] = None,
         stream: Optional[Stream] = None,
         sort_by: Optional[SortBy] = None,
         sort_order: Optional[SortOrder] = None,
@@ -254,16 +272,24 @@ class KongClient:
         }
 
         if opening_start_date:
-            params["openingStartDate"] = opening_start_date.isoformat()
+            params["openingStartDate"] = self.format_datetime(
+                opening_start_date, supplementary_time=time.min
+            )
 
         if opening_end_date:
-            params["openingEndDate"] = opening_end_date.isoformat()
+            params["openingEndDate"] = self.format_datetime(
+                opening_end_date, supplementary_time=time.max
+            )
 
         if created_start_date:
-            params["createdStartDate"] = created_start_date.isoformat()
+            params["createdStartDate"] = self.format_datetime(
+                created_start_date, supplementary_time=time.min
+            )
 
         if created_end_date:
-            params["createdEndDate"] = created_end_date.isoformat()
+            params["createdEndDate"] = self.format_datetime(
+                created_end_date, supplementary_time=time.max
+            )
 
         return self.make_request(f"{self.base_url}/data/search", params=params).json()
 
