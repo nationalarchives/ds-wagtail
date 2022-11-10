@@ -44,6 +44,7 @@ class AlertTestCase(TestCase):
 
         self.topic_explorer_page = TopicExplorerPage(
             title="Category page",
+            sub_heading="Sub heading",
             live=True,
             alert=self.alert_low,
         )

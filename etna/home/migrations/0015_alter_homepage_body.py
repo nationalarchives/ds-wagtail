@@ -8,13 +8,72 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('home', '0014_alter_homepage_body'),
+        ("home", "0014_alter_homepage_body"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='homepage',
-            name='body',
-            field=wagtail.fields.StreamField([('time_period', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by time period', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TimePeriodExplorerIndexPage']))])), ('topic_explorer', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by topic', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TopicExplorerIndexPage']))])), ('paragraph', wagtail.blocks.StructBlock([('text', wagtail.blocks.RichTextBlock(features=['bold', 'italic', 'link', 'ul']))]))], blank=True, null=True, use_json_field=True),
+            model_name="homepage",
+            name="body",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "time_period",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=[
+                                            "collections.TimePeriodExplorerIndexPage"
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "topic_explorer",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=["collections.TopicExplorerIndexPage"]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "paragraph",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "text",
+                                    wagtail.blocks.RichTextBlock(
+                                        features=["bold", "italic", "link", "ul"]
+                                    ),
+                                )
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+                null=True,
+                use_json_field=True,
+            ),
         ),
     ]
