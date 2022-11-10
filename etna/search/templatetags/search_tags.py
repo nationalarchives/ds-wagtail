@@ -203,14 +203,14 @@ def hidden_fields_for_date_filter(selected_filters, form) -> str:
 
 
 @register.filter
-def search_title(searchtab) -> str:
+def search_title(search_tab) -> str:
     """
     Returns title for search tab
     """
-    if searchtab == SearchTabs.ALL.value:
+    if search_tab == SearchTabs.ALL.value:
         label = "All search results"
-    elif searchtab == SearchTabs.CATALOGUE.value:
+    elif search_tab == SearchTabs.CATALOGUE.value:
         label = "Catalogue search results"
-    elif searchtab == SearchTabs.WEBSITE.value:
+    elif search_tab == SearchTabs.WEBSITE.value:
         label = "Website search results"
     return label
