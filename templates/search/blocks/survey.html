@@ -1,4 +1,4 @@
-
+{% load static %}
 
 <!--new survey element-->
 <div class="cta-banner-survey cta-banner-survey-js cta-banner-border">
@@ -10,11 +10,11 @@
                     <p>What did you think of this page?</p>
 
                     <span id ="replacer-easy">
-                    <a class="tna-button--dark response-btn" href="#" id="easy" rel="noopener noreferrer" tabindex="0" data-component-name="Feedback" data-link="Easy to use"><span><img class="thumb-image" src="../media/thumb-up.png"> Easy to use</span></a>
+                    <a class="tna-button--dark response-btn" href="#" id="easy" rel="noopener noreferrer" tabindex="0" data-component-name="Feedback" data-link="Easy to use"><span><img class="thumb-image" src="{% static 'images/thumb-up.png' %}"> Easy to use</span></a>
                     </span>
 
                     <span id ="replacer-hard">
-                    <a class="tna-button--dark response-btn" href="#" id="hard" rel="noopener noreferrer" tabindex="1" data-component-name="Feedback" data-link="Hard to use"><span><img class="thumb-image" src="../media/thumb-down.png">Hard to use</span></a>
+                    <a class="tna-button--dark response-btn" href="#" id="hard" rel="noopener noreferrer" tabindex="1" data-component-name="Feedback" data-link="Hard to use"><span><img class="thumb-image" src="{% static 'images/thumb-down.png' %}">Hard to use</span></a>
                     </span>
                     <p><a href="https://www.smartsurvey.co.uk/s/SY13JD/" target="_blank">Tell us more</a></p>
                 </div>
