@@ -1,7 +1,10 @@
+{% load records_tags %}
+
+
 <div class="series-panel">
     <div class="series-panel__container">
-        <h3 class="series-panel__heading"><span class="series-panel__reference">DSIR 27 </span>Department of Scientific and Industrial Research: Road Research Laboratory Reports</h3>
+        <h3 class="series-panel__heading"><span class="series-panel__reference">{{page.hierarchy.1.reference_number}}</span>{{page.hierarchy.1.title}}</h3>
         <p>See the series level description for more information about this record.</p>
-        <a class="series-panel__link" href="#">View series description</a>
+        <a class="series-panel__link" href="{% record_url page.hierarchy.1 %}">View series description</a>
     </div>
 </div>

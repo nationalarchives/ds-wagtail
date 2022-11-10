@@ -21,9 +21,13 @@
 
         {% include "includes/records/record-details.html" %}
 
-        <h2>This record is in the series</h2>
+        {% if page.hierarchy %}
+            {% if page.hierarchy|length > 2 %}
+                <h2>This record is in the series</h2>
 
-        {% include "includes/records/record-series-panel.html" %}
+                {% include "includes/records/record-series-panel.html" %}
+            {% endif %}
+        {% endif %}
 
         {% if page.topics %}
             <h2>{{ 'topics'|as_label }}</h2>
