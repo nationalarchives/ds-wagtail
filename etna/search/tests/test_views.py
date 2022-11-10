@@ -472,13 +472,12 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         home_page.add_child(instance=explorer_index_page)
 
         time_period_explorer_index_page = TimePeriodExplorerIndexPage(
-            title="Explore by time period", sub_heading="Sub Heading"
+            title="Explore by time period"
         )
         explorer_index_page.add_child(instance=time_period_explorer_index_page)
 
         time_period_explorer_page = TimePeriodExplorerPage(
             title="Early modern",
-            sub_heading="Sub Heading",
             start_year="1485",
             end_year="1714",
         )
@@ -489,14 +488,10 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
         time_period_explorer_page.add_child(instance=results_page)
 
-        topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Explore by topic", sub_heading="Sub Heading"
-        )
+        topic_explorer_index_page = TopicExplorerIndexPage(title="Explore by topic")
         explorer_index_page.add_child(instance=topic_explorer_index_page)
 
-        topic_explorer_page = TopicExplorerPage(
-            title="Agriculture and Environment", sub_heading="Sub Heading"
-        )
+        topic_explorer_page = TopicExplorerPage(title="Agriculture and Environment")
         topic_explorer_index_page.add_child(instance=topic_explorer_page)
 
         results_page = ResultsPage(

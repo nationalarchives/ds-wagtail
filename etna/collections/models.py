@@ -5,7 +5,6 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.models import Orderable
 
 from wagtailmetadata.models import MetadataPageMixin
@@ -57,13 +56,11 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     This page lists all child TopicExplorerPages
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
     content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -108,16 +105,15 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
+
     content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
-        FieldPanel("body"),
         FieldPanel("featured_insight"),
+        FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -149,13 +145,11 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
     This page lists all child TimePeriodExplorerPage
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
     content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -200,19 +194,17 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    featured_insight = models.ForeignKey(
+        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
     )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
-    )
     content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
-        FieldPanel("body"),
         FieldPanel("featured_insight"),
+        FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
@@ -301,6 +293,6 @@ class ResultsPageRecord(Orderable, models.Model):
 
     panels = [
         FieldPanel("record_iaid", widget=RecordChooser),
-        ImageChooserPanel("teaser_image"),
+        FieldPanel("teaser_image"),
         FieldPanel("description"),
     ]

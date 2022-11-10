@@ -33,8 +33,8 @@ class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    featured_collections = StreamField(
-        [("featuredcollection", FeaturedCollectionBlock())],
+    featured_pages = StreamField(
+        [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
         null=True,
         use_json_field=True,
@@ -51,7 +51,7 @@ class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("featured_insight"),
-        FieldPanel("featured_collections"),
+        FieldPanel("featured_pages"),
     ]
 
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -153,7 +153,8 @@ class InsightsPage(
 
         # Identify 'other' live pages with tags in common
         tag_match_ids = (
-            InsightsPage.objects.live()
+            InsightsPage.objects.public()
+            .live()
             .not_page(self)
             .filter(tagged_items__tag_id__in=tag_ids)
             .values_list("id", flat=True)
@@ -181,7 +182,8 @@ class InsightsPage(
         similarqueryset = list(self.similar_items)
 
         latestqueryset = list(
-            InsightsPage.objects.live()
+            InsightsPage.objects.public()
+            .live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
             .order_by("-first_published_at")

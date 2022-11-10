@@ -2,6 +2,7 @@ from wagtail.core import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks import ParagraphBlock, ParagraphWithHeading
+from etna.core.blocks.cta import TimePeriodBlock, TopicExplorerBlock
 
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
@@ -54,6 +55,7 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
 
 class HomePageStreamBlock(blocks.StreamBlock):
-    featured_items = FeaturedItemsBlock()
+    time_period = TimePeriodBlock()
+    topic_explorer = TopicExplorerBlock()
     paragraph = ParagraphBlock()
     paragraph_with_heading = ParagraphWithHeading()
