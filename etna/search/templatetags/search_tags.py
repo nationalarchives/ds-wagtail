@@ -9,6 +9,8 @@ from django.utils.safestring import mark_safe
 
 import bleach
 
+from ...ciim.constants import SearchTabs
+
 register = template.Library()
 logger = logging.getLogger(__name__)
 
@@ -202,3 +204,17 @@ def hidden_fields_for_date_filter(selected_filters, form) -> str:
             html += include_hidden_fields(visible_field_names_str, form)
 
     return mark_safe(html)
+
+
+@register.filter
+def search_title(search_tab) -> str:
+    """
+    Returns title for search tab
+    """
+    if search_tab == SearchTabs.ALL.value:
+        label = "All search results"
+    elif search_tab == SearchTabs.CATALOGUE.value:
+        label = "Catalogue search results"
+    elif search_tab == SearchTabs.WEBSITE.value:
+        label = "Website search results"
+    return label
