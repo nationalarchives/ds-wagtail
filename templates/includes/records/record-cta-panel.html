@@ -1,12 +1,9 @@
 <div class="cta-primary-panel">
     <div class="container" data-id="cta-toggle-link">
-        <a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="/search">Back to search results</a>
-        {% if not FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %}
-        {% endif %}
+        <a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{% url 'search' %}">Back to search results</a>
     </div>
 </div>
 
-{# {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} #} <!-- delete the jinja comment blocks to enable this-->  
 <div class="cta-secondary-panel" data-id="cta-detailed-view">
     <div class="container">
         <h2 class="cta-secondary-panel__heading">Looking to view, download or order a copy of this record?</h2>
@@ -14,4 +11,3 @@
         <a class="cta-secondary-panel__link" target="_blank" href="https://discovery.nationalarchives.gov.uk/details/r/{{page.template.iaid}}">View this record in Discovery <span class="sr-only">(link opens in a new window)</span></a>
     </div>
 </div>
-{# {% endif %} #}
