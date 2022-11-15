@@ -1,8 +1,10 @@
 {% load records_tags %}
 
-<nav class="hierarchy" data-container-name="hierarchy-global">
+<div class="hierarchy" data-container-name="hierarchy-global">
     <div class="hierarchy__container">
-        <div class="hierarchy-short-panel">
+
+        <!-- SHORT HIERARCHY VIEW -->
+        <nav class="hierarchy-short-panel" role="navigation">
             <h2 class="hierarchy-short-panel__heading sr-only">Catalogue location at a glance</h2>
             <p class="hierarchy-short-panel__label">You are here:</p>
 
@@ -107,6 +109,7 @@
                 </div>
             {%endif%}
 
+        <!-- PREVIOUS/CURRENT/NEXT NAVIGATION -->
         {% if page.previous_record or page.next_record %}
             <div class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
 
@@ -139,5 +142,6 @@
                 </div>
             </div>
         {% endif %}
+        </nav>
     </div>
 </nav>
