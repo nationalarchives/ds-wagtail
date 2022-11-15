@@ -577,13 +577,14 @@ COLLECTION_CHOICES = tuple(
 )
 
 LEVELS = (
+    "Department",
     "Division",
-    "Lettercode",
     "Series",
     "Sub-series",
     "Sub-sub-series",
-    "Item",
     "Piece",
+    "Item",
+    "Lettercode",
 )
 
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)

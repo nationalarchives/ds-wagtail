@@ -7,6 +7,7 @@ from django.urls import NoReverseMatch, reverse
 from etna.ciim.utils import ValueExtractionError
 
 from ..field_labels import FIELD_LABELS
+from ...ciim.constants import LEVELS
 from ..models import Record
 
 register = template.Library()
@@ -86,3 +87,9 @@ def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: Record):
 def as_label(record_field_name: str) -> str:
     """returns human readable label for pre configured record field name, otherwise Invalid name"""
     return FIELD_LABELS.get(record_field_name, "UNRECOGNISED FIELD NAME")
+
+
+@register.simple_tag
+def current_hierarchy_level(current_level_code: int) -> str:
+    """returns human readable level"""
+    return LEVELS[current_level_code-1]

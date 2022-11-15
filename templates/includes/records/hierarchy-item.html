@@ -1,0 +1,36 @@
+{% load records_tags %}
+
+<!--
+    TODO This is using the forloop for the CSS level, due to missing API data. If the API data is added by K-Int,
+    the forloop.counter will need to be changed to item.level_code. If it's done currently, it will give styling issues.
+
+    TODO "N" will need to be replaced with API data for the count of records inside this level.
+
+    TODO "MISSING DATA" will need to be removed when API data is added. Currently some level codes are missing on some
+    record levels. e.g. C11541262.
+-->
+
+{% if item.level_code %}
+    {% current_hierarchy_level item.level_code as hierarchy_level %}
+{% else %}
+    {% if forloop.counter == 1 %}
+        {% current_hierarchy_level 1 as hierarchy_level %}
+    {% elif forloop.counter == 2 %}
+        {% current_hierarchy_level 3 as hierarchy_level %}
+    {% elif forloop.counter == 3 %}
+        {% current_hierarchy_level 6 as hierarchy_level %}
+    {% elif forloop.counter == 4 %}
+        {% current_hierarchy_level 7 as hierarchy_level %}
+    {%endif%}
+{% endif %}
+
+<div class="hierarchy-full-panel__bar-container-outer">
+    <div class="hierarchy-full-panel__bar-container-inner {% if is_current_item %} hierarchy-full-panel__bar-container-inner--active {% endif %} hierarchy-full-panel__bar-container-inner--level-{{forloop.counter|add:'1'}}">
+        <p><span class="hierarchy-full-panel__bar-number">N</span>
+        <span class="hierarchy-full-panel__bar-label">record(s)</span></p>
+    </div>
+    <div class="hierarchy-full-panel__text-container">
+        <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the {% if hierarchy_level %}{{ hierarchy_level|lower }}{% else %}MISSING DATA{% endif %}: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+        <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
+    </div>
+</div>
