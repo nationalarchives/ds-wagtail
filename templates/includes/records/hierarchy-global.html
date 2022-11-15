@@ -91,7 +91,7 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                 </div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="">{{page.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{page.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p>
                 </div>
             </div>
@@ -99,7 +99,7 @@
                 {% for item in page.hierarchy %}
                     {% is_page_current_item_in_hierarchy page item as is_current_item %}
                     
-                    {% include "includes/records/hierarchy-item.html" %}
+                    {% include "includes/records/hierarchy-full-item.html" %}
                 {%endfor%}
             {% else %}
                 <div class="hierarchy-full-panel__bar-container-outer">
