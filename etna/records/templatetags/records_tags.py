@@ -7,7 +7,7 @@ from django.urls import NoReverseMatch, reverse
 from etna.ciim.utils import ValueExtractionError
 
 from ..field_labels import FIELD_LABELS
-from ...ciim.constants import LEVELS
+from ...ciim.constants import LevelKeys
 from ..models import Record
 
 register = template.Library()
@@ -92,4 +92,4 @@ def as_label(record_field_name: str) -> str:
 @register.simple_tag
 def current_hierarchy_level(current_level_code: int) -> str:
     """returns human readable level"""
-    return LEVELS[current_level_code-1]
+    return LevelKeys["LEVEL_"+current_level_code]

@@ -576,15 +576,25 @@ COLLECTION_CHOICES = tuple(
     (k, f"{k} - {v}") for k, v in sorted(COLLECTION_NAMES.items(), key=lambda x: x[1])
 )
 
+@forTemplate
+class LevelKeys(Enum):
+    LEVEL_1 = "Department"
+    LEVEL_2 = "Division"
+    LEVEL_3 = "Series"
+    LEVEL_4 = "Sub-series"
+    LEVEL_5 = "Sub-sub-series"
+    LEVEL_6 = "Piece"
+    LEVEL_7 = "Item"
+
+
 LEVELS = (
-    "Department",
     "Division",
+    "Lettercode",
     "Series",
     "Sub-series",
     "Sub-sub-series",
-    "Piece",
     "Item",
-    "Lettercode",
+    "Piece",
 )
 
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)
