@@ -55,7 +55,7 @@ def record_url(
         url = None
 
     if iaid:
-        if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
+        if (is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY) or settings.FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY:
             return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
             return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
@@ -90,6 +90,6 @@ def as_label(record_field_name: str) -> str:
 
 
 @register.simple_tag
-def current_hierarchy_level(current_level_code: int) -> str:
-    """returns human readable level"""
-    return LevelKeys["LEVEL_"+current_level_code]
+def level_name(level_code: int) -> str:
+    """returns level as a human readable string"""
+    return LevelKeys["LEVEL_"+str(level_code)].value

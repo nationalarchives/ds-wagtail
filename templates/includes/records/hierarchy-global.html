@@ -27,43 +27,27 @@
                     
                     {% for item in page.hierarchy %}
                         {% is_page_current_item_in_hierarchy page item as is_current_item %}
-
+    
                         {% if forloop.counter == 1 and not is_current_item %}
                             {% if page.hierarchy|length == 3 %}
-                                <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
-                                    <span class="hierarchy-short-panel__level">
-                                        <a href="{% record_url item%}">Department</a>
-                                    </span>({{ item.reference_number }})
-                                </li>
+                                {% with trail_off=True %}
+                                    {% include "includes/records/hierarchy-short-item.html" %}
+                                {% endwith %}
                             {% elif page.hierarchy|length == 2 %}
-                                <li class="hierarchy-short-panel__list-item">
-                                    <span class="hierarchy-short-panel__level">
-                                        <a href="{% record_url item%}">Department</a>
-                                    </span>({{ item.reference_number }})
-                                </li>
+                                {% include "includes/records/hierarchy-short-item.html" %}
                             {% endif %}
 
                         {% elif forloop.counter == 2 and not is_current_item %}
                             {% if page.hierarchy|length > 3 %}
-                                <li class="hierarchy-short-panel__list-item hierarchy-short-panel__list-item--more">
-                                    <span class="hierarchy-short-panel__level">
-                                        <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
-                                    </span>({{ item.reference_number }})
-                                </li>
+                                {% with trail_off=True %}
+                                    {% include "includes/records/hierarchy-short-item.html" %}
+                                {% endwith %}
                             {% else %}
-                                <li class="hierarchy-short-panel__list-item">
-                                    <span class="hierarchy-short-panel__level">
-                                        <a class="hierarchy-short-panel__link" href="{% record_url item %}">Series</a>
-                                    </span>({{ item.reference_number }})
-                                </li>
+                                {% include "includes/records/hierarchy-short-item.html" %}
                             {%endif%}
 
                         {% elif forloop.counter == 3 and not is_current_item %}
-                            <li class="hierarchy-short-panel__list-item">
-                                <span class="hierarchy-short-panel__level">
-                                    <a class="hierarchy-short-panel__link" href="{% record_url item %}">Piece</a>
-                                </span>({{ item.reference_number }})
-                            </li>
+                            {% include "includes/records/hierarchy-short-item.html" %}
 
                         {% elif is_current_item %}
                             <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
@@ -99,7 +83,7 @@
                 </div>
                 <div class="hierarchy-full-panel__text-container">
                     <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{page.template.heldBy}}</a></p>
-                    <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p>
+                    <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
                 </div>
             </div>
             {% if page.hierarchy %}
@@ -120,7 +104,7 @@
                     </div>
                 </div>
             {%endif%}
-            
+
         <!--
             The next section 'hierarchy-local-nav' section will only need to be shown if there is a previous and/or a next item available.
             It won't need it to be shown if it's only showing the current item
