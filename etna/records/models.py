@@ -288,7 +288,7 @@ class Record(DataLayerMixin, APIModel):
     def hierarchy(self) -> Tuple["Record"]:
 
         # TODO Leaving this here for potential later use for testing the data for the front-end aspects.
-        # This is to create spoof data for the missing API data from K-int. Can be removed from code when 
+        # This is to create spoof data for the missing API data from K-int. Can be removed from code when
 
         # for item in self.get("@hierarchy.0", default=()):
         #     if not item.get("identifier"):

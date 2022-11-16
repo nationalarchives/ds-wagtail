@@ -576,6 +576,7 @@ COLLECTION_CHOICES = tuple(
     (k, f"{k} - {v}") for k, v in sorted(COLLECTION_NAMES.items(), key=lambda x: x[1])
 )
 
+
 @forTemplate
 class LevelKeys(Enum):
     LEVEL_1 = "Department"
