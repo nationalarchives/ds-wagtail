@@ -6,22 +6,12 @@
 
     TODO "N" will need to be replaced with API data for the count of records inside this level.
 
-    TODO "MISSING DATA" will need to be removed when API data is added. Currently some level codes are missing on some
+    TODO "UNAVAILABLE" will need to be removed when API data is added. Currently some level codes are missing on some
     record levels. e.g. C11541262.
 -->
 
 {% if item.level_code %}
     {% current_hierarchy_level item.level_code as hierarchy_level %}
-{% else %}
-    {% if forloop.counter == 1 %}
-        {% current_hierarchy_level 1 as hierarchy_level %}
-    {% elif forloop.counter == 2 %}
-        {% current_hierarchy_level 3 as hierarchy_level %}
-    {% elif forloop.counter == 3 %}
-        {% current_hierarchy_level 6 as hierarchy_level %}
-    {% elif forloop.counter == 4 %}
-        {% current_hierarchy_level 7 as hierarchy_level %}
-    {%endif%}
 {% endif %}
 
 <div class="hierarchy-full-panel__bar-container-outer">
@@ -30,7 +20,7 @@
         <span class="hierarchy-full-panel__bar-label">record(s)</span></p>
     </div>
     <div class="hierarchy-full-panel__text-container">
-        <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the {% if hierarchy_level %}{{ hierarchy_level|lower }}{% else %}MISSING DATA{% endif %}: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
+        <p class="hierarchy-full-panel__text-level">{% if is_current_item %}You are currently looking at{% else %}Within{% endif %} the {% if hierarchy_level %}{{ hierarchy_level|lower }}{% else %}UNAVAILABLE{% endif %}: <a href="{% record_url item %}">{{item.reference_number}}</a></p>
         <p class="hierarchy-full-panel__text-title">{{item.title}}</p>
     </div>
 </div>
