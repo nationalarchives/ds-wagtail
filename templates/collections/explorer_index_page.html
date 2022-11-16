@@ -13,19 +13,11 @@
 {% include 'includes/more-records.html' %}
 {% include 'includes/spotlight-on.html' %}
 {% include 'includes/blogs-and-podcasts.html' %}
+{% include 'includes/interested.html' %}
 
 
 
-    <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row">
-        <h2 class="sr-only">Select a way to explore</h2>
-            <ul class="card-group--no-flex">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </ul>
-       </div>
-    </div>
+
 {% endblock %}
 
 {% block extra_js %}
