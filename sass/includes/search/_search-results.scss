@@ -15,6 +15,11 @@
         display: flex;
         padding-left: 0;
         flex-wrap: wrap;
+
+        @media only screen and (max-width: $screen__sm) {
+            display:none; //hiding on mobile
+        }
+
         &-item {
             list-style: none;
             display: inline-block;
@@ -27,6 +32,7 @@
             border-radius: 0.3rem;
             margin-right: 0.5rem;
             margin-top: 0.5rem;
+
 
             &-link {
                 display: inline-block;
@@ -117,7 +123,11 @@
         }
 
         @media only screen and (max-width: $screen__md) {
+            background:$color__black;
+            color: $color__white;
             margin-left: 1.5rem;
+            width:90%;
+            padding:0.8rem;
         }
 
         &:before {
@@ -130,22 +140,44 @@
             background-image: url('/static/images/icons/triangle-right.svg');
             background-repeat: no-repeat;
             background-size: 100%;
+
+            @media only screen and (max-width: $screen__md) {
+                background-image: none;
+            }
         }
 
         &[aria-expanded=true] {
 
             &:before {
                 background-image: url('/static/images/icons/triangle-down.svg');
+                @media only screen and (max-width: $screen__md) {
+                    background-image: none;
+                }
             }
         }
     }
+
+
     &__explainer {
         margin-left: 1rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
+        display:none; //hiding on mobile
         @media only screen and (min-width: $screen__md) {
             margin-left: 2rem;
             margin-right: 2rem;
+            display: block;
+
         }
     }
+}
+
+.filter-indicator {
+    background: #FFCC00;
+    color: #1d2124;
+    padding: 0.4rem 1rem;
+    text-decoration: none;
+    margin-left: 0.8rem;
+    border-radius: 5px;
+    display:inline-block;
 }
