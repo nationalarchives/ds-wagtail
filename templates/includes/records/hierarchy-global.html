@@ -8,6 +8,13 @@
             <h2 class="hierarchy-short-panel__heading sr-only">Catalogue location at a glance</h2>
             <p class="hierarchy-short-panel__label">You are here:</p>
 
+            <!-- 
+            The 'short panel__list' section should only display up to a maximum of 3 list items at one time.
+            These should display only the 'major' levels above the level you're on i.e Archive, Dept, Division, Series (don't include 'sub-levels' or 'sub-sub-levels').
+            If the archive level is not the first item in the list, the first item should display the 'hierarchy-short-panel__list-item--more' modifier class to indicate there are more levels above by displaying the '...' before the list item, which is automatically handled by the CSS.
+            If the Archive level is visible as the first item, this modifier doesn't need to be added.
+            -->
+        
             <ul class="hierarchy-short-panel__list">
                 {% if page.hierarchy %}
                     {% if page.hierarchy|length <= 2 %}
@@ -113,6 +120,11 @@
                     </div>
                 </div>
             {%endif%}
+            
+        <!--
+            The next section 'hierarchy-local-nav' section will only need to be shown if there is a previous and/or a next item available.
+            It won't need it to be shown if it's only showing the current item
+        -->
 
         <!-- PREVIOUS/CURRENT/NEXT NAVIGATION -->
         {% if page.previous_record or page.next_record %}
