@@ -15,7 +15,9 @@ register = template.Library()
 
 @register.simple_tag
 def record_url(
-    record: Union[Record, Dict[str, Any]], is_editorial: bool = False
+    record: Union[Record, Dict[str, Any]],
+    is_editorial: bool = False,
+    is_downloadable: bool = False,
 ) -> str:
     """
     Return the URL for the provided `record` dict; which could either be a
@@ -55,9 +57,9 @@ def record_url(
         url = None
 
     if iaid:
-        if (
-            is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY
-        ) or settings.FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY:
+        if (is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY) or (
+            is_downloadable and settings.FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY
+        ):
             return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
             return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
