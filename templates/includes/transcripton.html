@@ -12,6 +12,14 @@
             <a class="tna-button--yellow reveal-button" rel="noopener noreferrer" >View images and transcripts</a>
         </div>
 
+        <!--
+        <div class="row d-flex justify-content-center">
+            <input type="radio" name="tabset" id="tab1" aria-controls="transcription">
+            <label for="tab1"><p>click to reveal tab</p></label>
+
+        </div>
+        -->
+
         <div class="row d-flex justify-content-center">
             <div class="col-md-12 col-sm-12"></div>
             <p>Image 1 of 3</p>
@@ -24,23 +32,6 @@
 
 
             <div class="col-md-6">
-
-                <!--
-
-  Radio version of tabs.
-
-  Requirements:
-  - not rely on specific IDs for CSS (the CSS shouldn't need to know specific IDs)
-  - flexible for any number of unkown tabs [2-6]
-  - accessible
-
-  Caveats:
-  - since these are checkboxes the tabs not tab-able, need to use arrow keys
-
-  Also worth reading:
-  http://simplyaccessible.com/article/danger-aria-tabs/
--->
-
                 <div class="tabset">
                     <!-- Tab 1 -->
                     <input type="radio" name="tabset" id="tab1" aria-controls="transcription" checked>

@@ -24,26 +24,17 @@
 
   h2 {
     color:white;
+    @media only screen and (max-width: $screen__md) {
+      font-size:1.3em;
+    }
     a{
       color:white;
       text-decoration: none;
       @media only screen and (max-width: $screen__md) {
-        font-size:0.8em;
+       // font-size:0.8em;
       }
     }
   }
-
-  .selected{
-
-
-
-  }
-
-
-  .transcription-content {
-     // p {text-align:left;}
-  }
-
 
 ///tab system
   /*
