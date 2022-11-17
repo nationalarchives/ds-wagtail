@@ -5,16 +5,35 @@
   p { color:white;text-align: center;margin-top:1.5em;}
 
   img {
+    width:100%;
+  }
 
+  .show-more-image {
     margin:auto;
     display:block;
     width:100%;
+    max-height:513px;
+    border-bottom :dashed white 10px;
   }
 
   .tna-button--yellow {
     margin-bottom:5em;
     margin-top:-10px;
     z-index:1;
+  }
+
+
+
+  .record-details {
+      color:white;
+      //display:none;
+  }
+
+
+
+  .test a:target > .record-details {
+     //display:block;
+
   }
 
 }
