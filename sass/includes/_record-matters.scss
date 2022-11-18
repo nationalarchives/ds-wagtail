@@ -3,6 +3,11 @@
   font-weight: bold;
 }
 
+
+#readmore {display:none;}
+.reveal-text {display: block;}
+
+
 .record-buttons {
   @media (max-width: $screen__md) {
 

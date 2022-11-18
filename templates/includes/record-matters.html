@@ -4,13 +4,17 @@
             <div class="col-md-10 col-sm-12">
                 <p class="story-title">Why this record matters</p>
                 <p>Date: <b>1616</b><br>
-                Catalogue ref: <b>PROB 1/4 (1)</b></p>
+                Catalogue ref: <b><a href="">PROB 1/4 (1)</a></b></p>
 
                 <p class="generic-intro__paragraph">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
                 </p>
 
-                <p><a href="">Read more <span>+</span></a></p>
+                <p><a id="readmore" href="">Read more <span>+</span></a></p>
+
+                <p class="generic-intro__paragraph reveal-text" id="readmorecontent">
+                    Reveal text to go here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                </p>
 
 
             </div>
@@ -27,3 +31,26 @@
         </div>
     </div>
 </div>
+
+<script>
+    //read more functionality
+
+    //variables
+    const readmore = document.getElementById("readmore");
+    const readmorecontent = document.getElementById("readmorecontent");
+
+    readmore.style.display="block";
+    readmorecontent.style.display="none";
+
+    //actions
+    readmore.addEventListener("click", ()=>{
+        //button clicked
+        event.preventDefault();
+        readmorecontent.style.display="block";
+        readmore.style.display="none";
+
+
+    })
+
+
+</script>
