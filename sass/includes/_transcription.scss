@@ -1,5 +1,8 @@
 .transcription {
 
+
+
+
   background: #333439;
 
   p { color:white;text-align: center;margin-top:1.5em;}
@@ -20,6 +23,7 @@
     margin-bottom:5em;
     margin-top:-10px;
     z-index:1;
+    cursor:pointer;
   }
 
   h2 {
@@ -35,6 +39,23 @@
       }
     }
   }
+
+
+
+  #transcript-element {
+    display:none;
+  }
+
+  .close-button {
+    padding:1em;
+     a {color:#fbd709;}
+  }
+
+
+
+
+
+
 
 ///tab system
   /*
