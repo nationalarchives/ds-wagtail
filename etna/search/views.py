@@ -338,7 +338,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_sort_order: str = SortOrder.ASC.value
     default_display: str = Display.LIST.value
 
-    # create a _var to avoid repetitive call to self.get_context_data().get(<VAR) in get_datalayer_data() to extract value
+    # create a _var to avoid repetitive call to self.get_context_data().get(<VAR>) in get_datalayer_data() to extract value
     _custom_metric2 = 0
 
     dynamic_choice_fields = (
