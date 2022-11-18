@@ -293,9 +293,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         if self.form.cleaned_data.get("group"):
-            custom_dimension8 = (
-                self.search_tab + ": " + self.form.cleaned_data.get("group")
-            )
+            custom_dimension8 = self.search_tab + ": " + self.form.cleaned_data.get("group")
         else:
             custom_dimension8 = self.search_tab + ": " + "none"
 
