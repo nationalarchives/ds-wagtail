@@ -64,29 +64,25 @@
         </div>
         <!--end of transcript element-->
 
-        <!--
-            a div to reveal (preferably via css) a:active {show/toggle div}
-            within that div there are 2 tabs - how are the controlled
-            how do we go to next / prev n the images
-            if no js do the tabs stack on top of each other?
-         -->
-
     </div>
 </div>
 
 <script>
-    //alert('script');
-    //when button is clicked show detail div
-    //and hide preview div
-    // when 'close' is clicked show the preview div / hide the detail div
-
-    // if no js - just show the detail div
 
     //variables
     const previewImage = document.getElementById("previewImage");
     const showMoreButton = document.getElementById("showMoreButton");
     const transcript = document.getElementById("transcript-element");
     const closebutton = document.getElementById("closebutton");
+
+    //if js enabled show relevant content
+    transcript.style.display="none";
+    previewImage.style.display="block";
+    showMoreButton.style.display="block";
+
+    closebutton.style.display="block";
+    closebutton.style.padding="1em";
+    closebutton.style.color="#fbd709";
 
     //actions
     showMoreButton.addEventListener("click", ()=>{
@@ -95,19 +91,17 @@
         transcript.style.display="block";
         previewImage.style.display="none";
         showMoreButton.style.display="none";
-        //alert('click');
 
     })
 
     closebutton.addEventListener("click", ()=>{
-        //button clicked
+        //close button
         event.preventDefault();
         transcript.style.display="none";
         previewImage.style.display="block";
         showMoreButton.style.display="block";
-        //alert('click');
 
     })
 
-    //console.log(showMoreButton);
 </script>
+
