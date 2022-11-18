@@ -47,5 +47,8 @@
 
   &__paragraph {
     margin-bottom: 0.5rem;
+    @media (max-width: $screen__md) {
+      padding-bottom:1em;
+    }
   }
 }
