@@ -1,6 +1,12 @@
 .more-records {
   background:#fbf8e9;
 
+  .limit{
+    @media (max-width: 576px) {
+      width:50%;
+    }
+  }
+
   .records-title {
     font-size:1.3em;
     font-weight: bold;
@@ -34,7 +40,7 @@
       padding:1em 0.5em 0.5em 0.5em;
       font-size:15px;
       @media (max-width: 576px) {
-        font-size:18px;
+        font-size:15px;
         ///border-bottom:20px solid #fbf8e9;
         padding:0;
         padding-bottom:2.5em;
@@ -43,6 +49,9 @@
       }
 
     }
+
+
+
 
 
   }
