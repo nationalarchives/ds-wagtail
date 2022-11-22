@@ -123,7 +123,7 @@ class TestEditResultsPage(WagtailPageTests):
         )
         root.add_child(instance=explorer_page)
 
-        self.topic_page = TopicExplorerPage(title="Topic")
+        self.topic_page = TopicExplorerPage(title="Topic", sub_heading="Sub Heading")
         explorer_page.add_child(instance=self.topic_page)
 
         self.results_page = ResultsPage(
