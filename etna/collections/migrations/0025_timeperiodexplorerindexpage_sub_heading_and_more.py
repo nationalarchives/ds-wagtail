@@ -8,47 +8,142 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('collections', '0024_remove_timeperiodexplorerindexpage_sub_heading_and_more'),
+        ("collections", "0024_remove_timeperiodexplorerindexpage_sub_heading_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='timeperiodexplorerindexpage',
-            name='sub_heading',
-            field=models.CharField(default='Needs adding', max_length=200),
+            model_name="timeperiodexplorerindexpage",
+            name="sub_heading",
+            field=models.CharField(default="Needs adding", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='timeperiodexplorerpage',
-            name='sub_heading',
-            field=models.CharField(default='Needs adding', max_length=200),
+            model_name="timeperiodexplorerpage",
+            name="sub_heading",
+            field=models.CharField(default="Needs adding", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='topicexplorerindexpage',
-            name='sub_heading',
-            field=models.CharField(default='Needs adding', max_length=200),
+            model_name="topicexplorerindexpage",
+            name="sub_heading",
+            field=models.CharField(default="Needs adding", max_length=200),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='topicexplorerpage',
-            name='sub_heading',
-            field=models.CharField(default='Needs adding', max_length=200),
+            model_name="topicexplorerpage",
+            name="sub_heading",
+            field=models.CharField(default="Needs adding", max_length=200),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='explorerindexpage',
-            name='body',
-            field=wagtail.fields.StreamField([('time_period_explorer_index', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by time period', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TimePeriodExplorerIndexPage']))])), ('topic_explorer_index', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by topic', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TopicExplorerIndexPage']))]))], blank=True, use_json_field=True),
+            model_name="explorerindexpage",
+            name="body",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "time_period_explorer_index",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=[
+                                            "collections.TimePeriodExplorerIndexPage"
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                    (
+                        "topic_explorer_index",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=["collections.TopicExplorerIndexPage"]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    ),
+                ],
+                blank=True,
+                use_json_field=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='timeperiodexplorerindexpage',
-            name='body',
-            field=wagtail.fields.StreamField([('topic_explorer_index', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by topic', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TopicExplorerIndexPage']))]))], blank=True, use_json_field=True),
+            model_name="timeperiodexplorerindexpage",
+            name="body",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "topic_explorer_index",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by topic", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=["collections.TopicExplorerIndexPage"]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    )
+                ],
+                blank=True,
+                use_json_field=True,
+            ),
         ),
         migrations.AlterField(
-            model_name='topicexplorerindexpage',
-            name='body',
-            field=wagtail.fields.StreamField([('time_period_explorer_index', wagtail.blocks.StructBlock([('heading', wagtail.blocks.CharBlock(default='Explore by time period', max_length=100)), ('page', wagtail.blocks.PageChooserBlock(page_type=['collections.TimePeriodExplorerIndexPage']))]))], blank=True, use_json_field=True),
+            model_name="topicexplorerindexpage",
+            name="body",
+            field=wagtail.fields.StreamField(
+                [
+                    (
+                        "time_period_explorer_index",
+                        wagtail.blocks.StructBlock(
+                            [
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(
+                                        default="Explore by time period", max_length=100
+                                    ),
+                                ),
+                                (
+                                    "page",
+                                    wagtail.blocks.PageChooserBlock(
+                                        page_type=[
+                                            "collections.TimePeriodExplorerIndexPage"
+                                        ]
+                                    ),
+                                ),
+                            ]
+                        ),
+                    )
+                ],
+                blank=True,
+                use_json_field=True,
+            ),
         ),
     ]
