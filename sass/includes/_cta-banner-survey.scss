@@ -5,6 +5,7 @@
 .cta-banner-survey {
     border-top: 0.1875rem dotted $color__grey-4;
     padding: 1rem 0;
+    display: none;
 
 
 
@@ -30,7 +31,7 @@
 }
 
 .cta-banner-border {
-    border:solid 1px black;
+    //border:solid 1px black;
     margin:auto;
     width:90%;
     margin-bottom:1em;

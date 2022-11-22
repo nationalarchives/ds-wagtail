@@ -5,18 +5,19 @@
 {% load wagtailimages_tags %}
 {% load sections_tags %}
 {% block content %}
-    {% include 'includes/generic-intro.html' %}
-    {% include 'includes/hero-img.html' %}
-    {{page.highlight.title}}
-STUFF NEEDS TO GO HERE
-    <div class="hero-image__container">
-        <figure>
-            <picture>
-                {% image page.highlight.image fill-800x250%}
-                <source media="(max-width: 480px)" srcset="{{ page.highlight.imageurl }}">
-            </picture>
-            <figcaption class="hero-image__figcaption">{{ page.highlight.short_description|richtext }}</figcaption>
-        </figure>
-    </div>
-    
+    {% include 'includes/record-revealed.html' %}
+    {% include 'includes/transcription.html' %}
+    {% include 'includes/record-matters.html' %}
+    {% if page.related_records %}
+        {% include 'includes/more-records.html' %}
+    {% endif %}
+    {% if page.featured_insight %}
+        {% include 'includes/spotlight-on.html' %}
+    {% endif %}
+    {% if page.related_blogs %}
+        {% include 'includes/blogs-and-podcasts.html' %}
+    {% endif %}
+    {% if page.topic or page.time_period %}
+        {% include 'includes/interested.html' %}
+    {% endif %}
 {% endblock %}

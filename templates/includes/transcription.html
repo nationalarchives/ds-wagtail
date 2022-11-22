@@ -1,0 +1,110 @@
+{% load static %}
+
+<div class="transcription">
+    <div class="container">
+        <div class="row">
+            <div id="previewImage" class="col-md-12 col-sm-12">
+                <p>Image 1 of 3</p>
+                <img class="show-more-image" src="../media/dag-letter.png" alt="">
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <a id="showMoreButton" class="tna-button--yellow reveal-button" rel="noopener noreferrer" >View images and transcripts</a>
+        </div>
+
+
+
+        <!--start of transcript element-->
+
+        <div id="transcript-element">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12 col-sm-12"></div>
+            <p>Image 1 of 3</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <img src ="../media/will.png" alt="An image of Shakespeare's will" />
+            </div>
+
+
+            <div id ="tab-system" class="col-md-6">
+                <div class="tabset">
+                    <!-- Tab 1 -->
+                    <input type="radio" name="tabset" id="tab1" aria-controls="transcription" checked>
+                    <label for="tab1"><h2>Transcription</h2></label>
+                    <!-- Tab 2 -->
+                    <input type="radio" name="tabset" id="tab2" aria-controls="modern">
+                    <label for="tab2"><h2>Modern English</h2></label>
+
+                    <div class="tab-panels">
+                        <section id="transcription" class="tab-panel">
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Massa sapien faucibus et molestie ac feugiat. Nibh tellus molestie nunc non blandit. Diam maecenas sed enim ut sem viverra aliquet eget sit. Aliquam etiam erat velit scelerisque in dictum non. Sed vulputate mi sit amet mauris commodo quis imperdiet. Eu ultrices vitae auctor eu augue ut. Lacus laoreet non curabitur gravida arcu ac tortor dignissim convallis. Massa tincidunt dui ut ornare. Quis vel eros donec ac. Pellentesque nec nam aliquam sem et tortor consequat. Volutpat ac tincidunt vitae semper.</p>
+
+                            <p>Non odio euismod lacinia at. Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Ut sem viverra aliquet eget sit. Sollicitudin tempor id eu nisl nunc. Purus non enim praesent elementum. In hac habitasse platea dictumst vestibulum rhoncus est pellentesque elit. Urna duis convallis convallis tellus id interdum. Morbi tincidunt ornare massa eget. In nulla posuere sollicitudin aliquam ultrices. In dictum non consectetur a erat.</p>
+                        </section>
+                        <section id="modern" class="tab-panel">
+
+                            <p>This is the Modern English Tab</p>
+                            <p>Non odio euismod lacinia at. Eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci. Ut sem viverra aliquet eget sit. Sollicitudin tempor id eu nisl nunc. Purus non enim praesent elementum. In hac habitasse platea dictumst vestibulum rhoncus est pellentesque elit. Urna duis convallis convallis tellus id interdum. Morbi tincidunt ornare massa eget. In nulla posuere sollicitudin aliquam ultrices. In dictum non consectetur a erat.</p>
+                        </section>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+            <div class="row d-flex justify-content-center close-button">
+                <a id ='closebutton' href="">Close X</a>
+            </div>
+        </div>
+        <!--end of transcript element-->
+
+    </div>
+</div>
+
+<script>
+
+    //variables
+    const previewImage = document.getElementById("previewImage");
+    const showMoreButton = document.getElementById("showMoreButton");
+    const transcript = document.getElementById("transcript-element");
+    const closebutton = document.getElementById("closebutton");
+
+    //if js enabled show relevant content
+    transcript.style.display="none";
+    previewImage.style.display="block";
+    showMoreButton.style.display="block";
+
+
+
+    closebutton.style.display="block";
+    closebutton.style.padding="1em";
+    closebutton.style.color="#fbd709";
+
+    //actions
+    showMoreButton.addEventListener("click", ()=>{
+        //button clicked
+        event.preventDefault();
+        transcript.style.display="block";
+        previewImage.style.display="none";
+        showMoreButton.style.display="none";
+
+    })
+
+    closebutton.addEventListener("click", ()=>{
+        //close button
+        event.preventDefault();
+        transcript.style.display="none";
+        previewImage.style.display="block";
+        showMoreButton.style.display="block";
+
+    })
+
+</script>

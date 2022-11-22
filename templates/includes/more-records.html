@@ -1,0 +1,23 @@
+{% load static %}
+{% load wagtailimages_tags %}
+{% load wagtailcore_tags %}
+
+<div class="more-records">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <h2 class="records-title">Browse more records</h2>
+            </div>
+        </div>
+        <div class="row card-elements">
+            {% for item in page.related_records.highlights_gallery.all %}
+            <div class="col-md col-sm-6 limit">
+                <div class="card">
+                    <img src="{{ item.image.url }}" alt="#"/>
+                    <p><a href="{% pageurl page.related_records %}">{{ item.title }}</a></p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
