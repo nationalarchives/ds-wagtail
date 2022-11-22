@@ -118,7 +118,8 @@ class CloserLookPage(BasePage, ContentWarningMixin):
  
     This page is ______.
     """
-    
+
+    standfirst = models.CharField(max_length=250, blank = False, null=True)
     topic = models.ForeignKey(
         "collections.TopicExplorerPage",
         null=True,
@@ -182,6 +183,7 @@ class CloserLookPage(BasePage, ContentWarningMixin):
     
 
     content_panels = BasePage.content_panels + [
+        FieldPanel("standfirst"),
         MultiFieldPanel(
                 [
                     FieldPanel("display_content_warning"),
