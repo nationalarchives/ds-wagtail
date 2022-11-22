@@ -21,9 +21,9 @@ class TestCloserLookPageSectionBlockIntegration(TestCase):
                             "date": "25th March 1616",
                             "record": "F257483",
                             "paragraph": {
-                                "text": "<p data-block-key=\"xvzqp\">This is a test for the paragraph text.</p>"
-                            }
-                        }
+                                "text": '<p data-block-key="xvzqp">This is a test for the paragraph text.</p>'
+                            },
+                        },
                     }
                 ]
             ),

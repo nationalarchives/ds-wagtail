@@ -15,115 +15,447 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('wagtailcore', '0077_alter_revision_user'),
-        ('wagtailimages', '0024_index_image_file_hash'),
-        ('insights', '0046_remove_insightsindexpage_featured_collections_and_more'),
-        ('collections', '0025_timeperiodtag_topictag_taggedtopics_and_more'),
+        ("wagtailcore", "0077_alter_revision_user"),
+        ("wagtailimages", "0024_index_image_file_hash"),
+        ("insights", "0046_remove_insightsindexpage_featured_collections_and_more"),
+        ("collections", "0025_timeperiodtag_topictag_taggedtopics_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CloserLookPage',
+            name="CloserLookPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('display_content_warning', models.BooleanField(default=False, verbose_name='display a content warning on this page')),
-                ('custom_warning_text', wagtail.fields.RichTextField(blank=True, help_text='If specified, will be used for the content warning. Otherwise the default text will be used.', verbose_name='custom content warning text (optional)')),
-                ('body', wagtail.fields.StreamField([('record_info', wagtail.blocks.StructBlock([('record', etna.records.blocks.RecordChooserBlock()), ('date', wagtail.blocks.CharBlock(max_length=30, required=False)), ('paragraph', wagtail.blocks.StructBlock([('text', wagtail.blocks.RichTextBlock(features=['bold', 'italic', 'link', 'ul']))]))]))], null=True, use_json_field=True)),
-                ('image_library_link', models.URLField(blank=True, max_length=300, null=True, verbose_name='Link to external image library')),
-                ('print_on_demand_link', models.URLField(blank=True, max_length=300, null=True, verbose_name='Link to external print on demand')),
-                ('featured_insight', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='insights.insightspage', verbose_name='Featured insight')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "display_content_warning",
+                    models.BooleanField(
+                        default=False,
+                        verbose_name="display a content warning on this page",
+                    ),
+                ),
+                (
+                    "custom_warning_text",
+                    wagtail.fields.RichTextField(
+                        blank=True,
+                        help_text="If specified, will be used for the content warning. Otherwise the default text will be used.",
+                        verbose_name="custom content warning text (optional)",
+                    ),
+                ),
+                (
+                    "body",
+                    wagtail.fields.StreamField(
+                        [
+                            (
+                                "record_info",
+                                wagtail.blocks.StructBlock(
+                                    [
+                                        (
+                                            "record",
+                                            etna.records.blocks.RecordChooserBlock(),
+                                        ),
+                                        (
+                                            "date",
+                                            wagtail.blocks.CharBlock(
+                                                max_length=30, required=False
+                                            ),
+                                        ),
+                                        (
+                                            "paragraph",
+                                            wagtail.blocks.StructBlock(
+                                                [
+                                                    (
+                                                        "text",
+                                                        wagtail.blocks.RichTextBlock(
+                                                            features=[
+                                                                "bold",
+                                                                "italic",
+                                                                "link",
+                                                                "ul",
+                                                            ]
+                                                        ),
+                                                    )
+                                                ]
+                                            ),
+                                        ),
+                                    ]
+                                ),
+                            )
+                        ],
+                        null=True,
+                        use_json_field=True,
+                    ),
+                ),
+                (
+                    "image_library_link",
+                    models.URLField(
+                        blank=True,
+                        max_length=300,
+                        null=True,
+                        verbose_name="Link to external image library",
+                    ),
+                ),
+                (
+                    "print_on_demand_link",
+                    models.URLField(
+                        blank=True,
+                        max_length=300,
+                        null=True,
+                        verbose_name="Link to external print on demand",
+                    ),
+                ),
+                (
+                    "featured_insight",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="insights.insightspage",
+                        verbose_name="Featured insight",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(etna.analytics.mixins.DataLayerMixin, 'wagtailcore.page', models.Model),
+            bases=(
+                etna.analytics.mixins.DataLayerMixin,
+                "wagtailcore.page",
+                models.Model,
+            ),
         ),
         migrations.CreateModel(
-            name='Highlights',
+            name="Highlights",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255, null=True)),
-                ('body', wagtail.fields.StreamField([('record_info', wagtail.blocks.StructBlock([('record', etna.records.blocks.RecordChooserBlock()), ('date', wagtail.blocks.CharBlock(max_length=30, required=False)), ('paragraph', wagtail.blocks.StructBlock([('text', wagtail.blocks.RichTextBlock(features=['bold', 'italic', 'link', 'ul']))]))]))], null=True, use_json_field=True)),
-                ('closer_look', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='highlights.closerlookpage')),
-                ('image', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='wagtailimages.image')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255, null=True)),
+                (
+                    "body",
+                    wagtail.fields.StreamField(
+                        [
+                            (
+                                "record_info",
+                                wagtail.blocks.StructBlock(
+                                    [
+                                        (
+                                            "record",
+                                            etna.records.blocks.RecordChooserBlock(),
+                                        ),
+                                        (
+                                            "date",
+                                            wagtail.blocks.CharBlock(
+                                                max_length=30, required=False
+                                            ),
+                                        ),
+                                        (
+                                            "paragraph",
+                                            wagtail.blocks.StructBlock(
+                                                [
+                                                    (
+                                                        "text",
+                                                        wagtail.blocks.RichTextBlock(
+                                                            features=[
+                                                                "bold",
+                                                                "italic",
+                                                                "link",
+                                                                "ul",
+                                                            ]
+                                                        ),
+                                                    )
+                                                ]
+                                            ),
+                                        ),
+                                    ]
+                                ),
+                            )
+                        ],
+                        null=True,
+                        use_json_field=True,
+                    ),
+                ),
+                (
+                    "closer_look",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="highlights.closerlookpage",
+                    ),
+                ),
+                (
+                    "image",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        related_name="+",
+                        to="wagtailimages.image",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'highlight',
-                'verbose_name_plural': 'highlights',
+                "verbose_name": "highlight",
+                "verbose_name_plural": "highlights",
             },
         ),
         migrations.CreateModel(
-            name='HighlightsGalleryPage',
+            name="HighlightsGalleryPage",
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('standfirst', models.CharField(max_length=250, null=True)),
-                ('featured_insight', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='insights.insightspage')),
-                ('time_period_tags', modelcluster.contrib.taggit.ClusterTaggableManager(blank=True, help_text='A comma-separated list of tags.', through='collections.TaggedTimePeriods', to='collections.TimePeriodTag', verbose_name='Time Period Tags')),
-                ('topic_tags', modelcluster.contrib.taggit.ClusterTaggableManager(blank=True, help_text='A comma-separated list of tags.', through='collections.TaggedTopics', to='collections.TopicTag', verbose_name='Topic Tags')),
+                (
+                    "page_ptr",
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to="wagtailcore.page",
+                    ),
+                ),
+                ("standfirst", models.CharField(max_length=250, null=True)),
+                (
+                    "featured_insight",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="insights.insightspage",
+                    ),
+                ),
+                (
+                    "time_period_tags",
+                    modelcluster.contrib.taggit.ClusterTaggableManager(
+                        blank=True,
+                        help_text="A comma-separated list of tags.",
+                        through="collections.TaggedTimePeriods",
+                        to="collections.TimePeriodTag",
+                        verbose_name="Time Period Tags",
+                    ),
+                ),
+                (
+                    "topic_tags",
+                    modelcluster.contrib.taggit.ClusterTaggableManager(
+                        blank=True,
+                        help_text="A comma-separated list of tags.",
+                        through="collections.TaggedTopics",
+                        to="collections.TopicTag",
+                        verbose_name="Topic Tags",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
-            bases=(etna.analytics.mixins.DataLayerMixin, 'wagtailcore.page'),
+            bases=(etna.analytics.mixins.DataLayerMixin, "wagtailcore.page"),
         ),
         migrations.CreateModel(
-            name='HighlightsGalleryItem',
+            name="HighlightsGalleryItem",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sort_order', models.IntegerField(blank=True, editable=False, null=True)),
-                ('highlight', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='highlights.highlights')),
-                ('page', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='highlights_gallery', to='highlights.highlightsgallerypage')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sort_order",
+                    models.IntegerField(blank=True, editable=False, null=True),
+                ),
+                (
+                    "highlight",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.SET_NULL,
+                        to="highlights.highlights",
+                    ),
+                ),
+                (
+                    "page",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="highlights_gallery",
+                        to="highlights.highlightsgallerypage",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'highlight',
-                'ordering': ['sort_order'],
-                'abstract': False,
+                "verbose_name": "highlight",
+                "ordering": ["sort_order"],
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='closerlookpage',
-            name='related_records',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='highlights.highlightsgallerypage', verbose_name='Related records'),
+            model_name="closerlookpage",
+            name="related_records",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="highlights.highlightsgallerypage",
+                verbose_name="Related records",
+            ),
         ),
         migrations.AddField(
-            model_name='closerlookpage',
-            name='time_period',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='collections.timeperiodexplorerpage', verbose_name='Promoted Time Period'),
+            model_name="closerlookpage",
+            name="time_period",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="collections.timeperiodexplorerpage",
+                verbose_name="Promoted Time Period",
+            ),
         ),
         migrations.AddField(
-            model_name='closerlookpage',
-            name='time_period_tags',
-            field=modelcluster.contrib.taggit.ClusterTaggableManager(blank=True, help_text='A comma-separated list of tags.', through='collections.TaggedTimePeriods', to='collections.TimePeriodTag', verbose_name='Time Period Tags'),
+            model_name="closerlookpage",
+            name="time_period_tags",
+            field=modelcluster.contrib.taggit.ClusterTaggableManager(
+                blank=True,
+                help_text="A comma-separated list of tags.",
+                through="collections.TaggedTimePeriods",
+                to="collections.TimePeriodTag",
+                verbose_name="Time Period Tags",
+            ),
         ),
         migrations.AddField(
-            model_name='closerlookpage',
-            name='topic',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='+', to='collections.topicexplorerpage', verbose_name='Promoted Topic'),
+            model_name="closerlookpage",
+            name="topic",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="+",
+                to="collections.topicexplorerpage",
+                verbose_name="Promoted Topic",
+            ),
         ),
         migrations.AddField(
-            model_name='closerlookpage',
-            name='topic_tags',
-            field=modelcluster.contrib.taggit.ClusterTaggableManager(blank=True, help_text='A comma-separated list of tags.', through='collections.TaggedTopics', to='collections.TopicTag', verbose_name='Topic Tags'),
+            model_name="closerlookpage",
+            name="topic_tags",
+            field=modelcluster.contrib.taggit.ClusterTaggableManager(
+                blank=True,
+                help_text="A comma-separated list of tags.",
+                through="collections.TaggedTopics",
+                to="collections.TopicTag",
+                verbose_name="Topic Tags",
+            ),
         ),
         migrations.CreateModel(
-            name='CloserLookGalleryImage',
+            name="CloserLookGalleryImage",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sort_order', models.IntegerField(blank=True, editable=False, null=True)),
-                ('alt_text', models.CharField(help_text='Alt text for the image', max_length=100, null=True)),
-                ('sensitive_image', models.BooleanField(default=False, help_text='Apply the sensitive image filter to this image')),
-                ('caption', models.CharField(blank=True, help_text='A caption for the image', max_length=100, null=True)),
-                ('transcription_text', models.TextField(blank=True, help_text='A transcription of the image', max_length=400, null=True)),
-                ('transcription_header', models.CharField(blank=True, help_text='Header for the transcription', max_length=50, null=True)),
-                ('translation_text', models.TextField(blank=True, help_text='A translation of the transcription', max_length=400, null=True)),
-                ('translation_header', models.CharField(blank=True, help_text='Header for the translation', max_length=50, null=True)),
-                ('image', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='+', to='wagtailimages.image')),
-                ('page', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='image_gallery', to='highlights.closerlookpage')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "sort_order",
+                    models.IntegerField(blank=True, editable=False, null=True),
+                ),
+                (
+                    "alt_text",
+                    models.CharField(
+                        help_text="Alt text for the image", max_length=100, null=True
+                    ),
+                ),
+                (
+                    "sensitive_image",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Apply the sensitive image filter to this image",
+                    ),
+                ),
+                (
+                    "caption",
+                    models.CharField(
+                        blank=True,
+                        help_text="A caption for the image",
+                        max_length=100,
+                        null=True,
+                    ),
+                ),
+                (
+                    "transcription_text",
+                    models.TextField(
+                        blank=True,
+                        help_text="A transcription of the image",
+                        max_length=400,
+                        null=True,
+                    ),
+                ),
+                (
+                    "transcription_header",
+                    models.CharField(
+                        blank=True,
+                        help_text="Header for the transcription",
+                        max_length=50,
+                        null=True,
+                    ),
+                ),
+                (
+                    "translation_text",
+                    models.TextField(
+                        blank=True,
+                        help_text="A translation of the transcription",
+                        max_length=400,
+                        null=True,
+                    ),
+                ),
+                (
+                    "translation_header",
+                    models.CharField(
+                        blank=True,
+                        help_text="Header for the translation",
+                        max_length=50,
+                        null=True,
+                    ),
+                ),
+                (
+                    "image",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="+",
+                        to="wagtailimages.image",
+                    ),
+                ),
+                (
+                    "page",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="image_gallery",
+                        to="highlights.closerlookpage",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'gallery image',
-                'ordering': ['sort_order'],
-                'abstract': False,
+                "verbose_name": "gallery image",
+                "ordering": ["sort_order"],
+                "abstract": False,
             },
         ),
     ]

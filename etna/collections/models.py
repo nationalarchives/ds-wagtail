@@ -8,8 +8,8 @@ from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.snippets.models import register_snippet
-from taggit.models import ItemBase, TagBase
 
+from taggit.models import ItemBase, TagBase
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.insights.models import InsightsPage
@@ -57,6 +57,7 @@ class TimePeriodTag(TagBase):
         verbose_name = "time period tag"
         verbose_name_plural = "time period tags"
 
+
 class TaggedTimePeriods(ItemBase):
     tag = models.ForeignKey(
         TimePeriodTag, related_name="tagged_time_periods", on_delete=models.CASCADE
@@ -66,6 +67,7 @@ class TaggedTimePeriods(ItemBase):
         on_delete=models.CASCADE,
         related_name="tagged_time_periods",
     )
+
 
 class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """Collection Explorer landing BasePage.
@@ -89,7 +91,7 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
         "highlights.HighlightsGalleryPage",
-        "highlights.CloserLookPage"
+        "highlights.CloserLookPage",
     ]
 
 

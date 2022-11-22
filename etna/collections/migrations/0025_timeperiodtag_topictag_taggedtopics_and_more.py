@@ -8,55 +8,127 @@ import modelcluster.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('wagtailcore', '0077_alter_revision_user'),
-        ('collections', '0024_remove_timeperiodexplorerindexpage_sub_heading_and_more'),
+        ("wagtailcore", "0077_alter_revision_user"),
+        ("collections", "0024_remove_timeperiodexplorerindexpage_sub_heading_and_more"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='TimePeriodTag',
+            name="TimePeriodTag",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True, verbose_name='name')),
-                ('slug', models.SlugField(max_length=100, unique=True, verbose_name='slug')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=100, unique=True, verbose_name="name"),
+                ),
+                (
+                    "slug",
+                    models.SlugField(max_length=100, unique=True, verbose_name="slug"),
+                ),
             ],
             options={
-                'verbose_name': 'time period tag',
-                'verbose_name_plural': 'time period tags',
+                "verbose_name": "time period tag",
+                "verbose_name_plural": "time period tags",
             },
         ),
         migrations.CreateModel(
-            name='TopicTag',
+            name="TopicTag",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100, unique=True, verbose_name='name')),
-                ('slug', models.SlugField(max_length=100, unique=True, verbose_name='slug')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=100, unique=True, verbose_name="name"),
+                ),
+                (
+                    "slug",
+                    models.SlugField(max_length=100, unique=True, verbose_name="slug"),
+                ),
             ],
             options={
-                'verbose_name': 'topic tag',
-                'verbose_name_plural': 'topic tags',
+                "verbose_name": "topic tag",
+                "verbose_name_plural": "topic tags",
             },
         ),
         migrations.CreateModel(
-            name='TaggedTopics',
+            name="TaggedTopics",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_object', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='tagged_topics', to='wagtailcore.page')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tagged_topics', to='collections.topictag')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "content_object",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tagged_topics",
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tagged_topics",
+                        to="collections.topictag",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
         migrations.CreateModel(
-            name='TaggedTimePeriods',
+            name="TaggedTimePeriods",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('content_object', modelcluster.fields.ParentalKey(on_delete=django.db.models.deletion.CASCADE, related_name='tagged_time_periods', to='wagtailcore.page')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tagged_time_periods', to='collections.timeperiodtag')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "content_object",
+                    modelcluster.fields.ParentalKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tagged_time_periods",
+                        to="wagtailcore.page",
+                    ),
+                ),
+                (
+                    "tag",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="tagged_time_periods",
+                        to="collections.timeperiodtag",
+                    ),
+                ),
             ],
             options={
-                'abstract': False,
+                "abstract": False,
             },
         ),
     ]
