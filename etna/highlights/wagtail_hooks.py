@@ -26,15 +26,18 @@ class CloserLookAdmin(ModelAdmin):
     model = CloserLookPage
     menu_label = 'Closer Look'
     menu_icon = 'search'
+    menu_order = 200 # Remove when uncommenting the below code
     #list_display = ('title',)
     #list_filter = ('title',)
     search_fields = ('title',)
 
+# Leaving this here until HighlightsGallery and Highlights are going live.
+# class RecordHighlightsGroup(ModelAdminGroup):
+#     menu_label = 'Record Highlights'
+#     menu_icon = 'folder-open-inverse'
+#     menu_order = 200
+#     items = (HighlightsGalleryAdmin, HighlightsAdmin, CloserLookAdmin)
 
-class RecordHighlightsGroup(ModelAdminGroup):
-    menu_label = 'Record Highlights'
-    menu_icon = 'folder-open-inverse'
-    menu_order = 200
-    items = (HighlightsGalleryAdmin, HighlightsAdmin, CloserLookAdmin)
+# modeladmin_register(RecordHighlightsGroup)
 
-modeladmin_register(RecordHighlightsGroup)
+modeladmin_register(CloserLookAdmin)
