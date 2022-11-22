@@ -14,7 +14,12 @@
 
                 <p class="generic-intro__paragraph reveal-text" id="readmorecontent">
                     Reveal text to go here....Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+                    <br><br><a id="readless" href="">Read less <span>-</span></a>
+
                 </p>
+
+
 
 
             </div>
@@ -37,6 +42,7 @@
 
     //variables
     const readmore = document.getElementById("readmore");
+    const readless = document.getElementById("readless");
     const readmorecontent = document.getElementById("readmorecontent");
 
     readmore.style.display="block";
@@ -48,6 +54,15 @@
         event.preventDefault();
         readmorecontent.style.display="block";
         readmore.style.display="none";
+
+
+    })
+
+    readless.addEventListener("click", ()=>{
+        //button clicked
+        event.preventDefault();
+        readmorecontent.style.display="none";
+        readmore.style.display="block";
 
 
     })
