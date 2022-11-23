@@ -1,29 +1,18 @@
-from cProfile import label
-from typing import Any, Dict, Tuple
-from typing_extensions import Required
- 
 from django.db import models
-from django.http import HttpRequest
-from django.utils.functional import cached_property
  
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel
 from wagtail.fields import StreamField
-from wagtail.models import Page, Orderable
-from wagtail.search import index
+from wagtail.models import Orderable
 from wagtail.snippets.models import register_snippet
  
-from taggit.models import ItemBase, TagBase
 from wagtailmetadata.models import MetadataPageMixin
  
 from etna.core.models import BasePage, ContentWarningMixin
-from etna.records.blocks import RecordChooserBlock
 
 from .blocks import HighlightsRecordBlock
-from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
-from ..collections.models import TaggedTimePeriods, TaggedTopics
 
 
 @register_snippet
@@ -113,7 +102,7 @@ class HighlightsGalleryItem(Orderable):
  
 
 
-class CloserLookPage(BasePage, ContentWarningMixin):
+class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin):
     """CloserLookPage
  
     This page is ______.
@@ -214,7 +203,8 @@ class CloserLookPage(BasePage, ContentWarningMixin):
         ),
     ]
  
- 
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
 
