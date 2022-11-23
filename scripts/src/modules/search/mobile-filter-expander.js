@@ -53,7 +53,7 @@ export default function() {
             $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">"+ $noOfFilters +"</span>';
+            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">'+ $noOfFilters +'</span>';
 
         }
     });
