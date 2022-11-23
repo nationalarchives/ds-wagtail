@@ -2,11 +2,10 @@
 
 {% load static %}
 {% load wagtailcore_tags %}
-{% load wagtailimages_tags %}
 {% load sections_tags %}
 {% block content %}
     {% include 'includes/record-revealed.html' %}
-    {% include 'includes/transcription.html' %}
+    {% include 'includes/image_gallery.html' %}
     {% include 'includes/record-matters.html' %}
     {% if page.related_records %}
         {% include 'includes/more-records.html' %}

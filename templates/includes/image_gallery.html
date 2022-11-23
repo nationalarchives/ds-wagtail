@@ -1,0 +1,114 @@
+{% load static %}
+{% load wagtailimages_tags %}
+
+<div class="transcription">
+    <div class="container">
+        <div class="row">
+            <div id="previewImage" class="col-md-12 col-sm-12">
+                <p>Image 1 of {{page.image_gallery.all|length}}</p>
+                {% image page.image_gallery.all.0.image fill-626x383 as gallery_image %}
+                <img class="show-more-image" src="{{gallery_image.url}}" alt="page.image_gallery.all.0.alt_text">
+            </div>
+        </div>
+
+        <div class="row d-flex justify-content-center">
+            <a id="showMoreButton" class="tna-button--yellow reveal-button" rel="noopener noreferrer" >View images and transcripts</a>
+        </div>
+
+        <!--start of transcript element-->
+        <div id="transcript-element">
+            {% for item in page.image_gallery.all %}
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12 col-sm-12"></div>
+                <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    {% image item.image fill-626x383 as gallery_image %}
+                    <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
+                </div>
+            
+                {% if item.transcription_text %}
+                <div id ="tab-system" class="col-md-6">
+                    <div class="tabset">
+                        <!-- Tab 1 -->
+                            <input type="radio" name="tabset" id="tab1" aria-controls="transcription" checked>
+                            <label for="tab1"><h2>Transcription</h2></label>
+                            <!-- Tab 2 -->
+                            {% if item.translation_text %}
+                                <input type="radio" name="tabset" id="tab2" aria-controls="translation">
+                                <label for="tab2"><h2>Modern English</h2></label>
+                            {% endif %}
+                            <div class="tab-panels">
+                                <section id="transcription" class="tab-panel">
+                                    {% if item.transcription_header %}
+                                        <p>
+                                            {{ item.transcription_header }}
+                                        </p>
+                                    {% endif %}
+                                    <p>
+                                        {{ item.transcription_text }}
+                                    </p>
+                                </section>
+                            {% if item.translation_text %}
+                                <section id="translation" class="tab-panel">
+                                    {% if item.translation_header %}
+                                        <p>{{ item.translation_header}}</p>
+                                    {% endif %}
+                                    <p>{{ item.translation_text }}</p>
+                                </section>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div class="row d-flex justify-content-center close-button">
+                <a id ='closebutton' href="">Close X</a>
+            </div> 
+        </div>
+        <!--end of transcript element-->
+    </div>
+</div>
+
+<script>
+
+    //variables
+    const previewImage = document.getElementById("previewImage");
+    const showMoreButton = document.getElementById("showMoreButton");
+    const transcript = document.getElementById("transcript-element");
+    const closebutton = document.getElementById("closebutton");
+
+    //if js enabled show relevant content
+    transcript.style.display="none";
+    previewImage.style.display="block";
+    showMoreButton.style.display="block";
+
+
+
+    closebutton.style.display="block";
+    closebutton.style.padding="1em";
+    closebutton.style.color="#fbd709";
+
+    //actions
+    showMoreButton.addEventListener("click", ()=>{
+        //button clicked
+        event.preventDefault();
+        transcript.style.display="block";
+        previewImage.style.display="none";
+        showMoreButton.style.display="none";
+
+    })
+
+    closebutton.addEventListener("click", ()=>{
+        //close button
+        event.preventDefault();
+        transcript.style.display="none";
+        previewImage.style.display="block";
+        showMoreButton.style.display="block";
+
+    })
+
+</script>
