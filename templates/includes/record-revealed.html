@@ -1,4 +1,5 @@
 {% load static %}
+{% load wagtailimages_tags %}
 
 <div class="explore-intro">
     <div class="container">
@@ -16,7 +17,8 @@
                 </p>
             </div>
             <div class="col-4 explore-intro__image">
-                <img src="/media/dagnham-letter.png" alt="image of letter by the women workers at Fords of Dagenham" />
+                {% image page.teaser_image width-100 as teaser_image %}
+                <img src="{{teaser_image.url}}" alt="" />
             </div>
         </div>
     </div>

@@ -28,10 +28,12 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center record-buttons">
-
+            {% if page.body.0.value.record %}
             <div class="col-sm-12 col-md-3">
-                <a class="tna-button--yellow" href="#" rel="noopener noreferrer">View record details</a>
+                <a class="tna-button--yellow" href="{% record_url page.body.0.value.record is_editorial=True %}" rel="noopener noreferrer">View record details</a>
             </div>
+            {% endif %}
+
             {% if page.image_library_link %}
                 <div class="col-sm-12 col-md-3"><a class="tna-button--yellow" href="{{page.image_library_link}}" rel="noopener noreferrer">Use this image</a></div>
             {% endif %}

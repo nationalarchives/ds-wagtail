@@ -6,7 +6,7 @@
         <div class="row">
             <div id="previewImage" class="col-md-12 col-sm-12">
                 <p>Image 1 of {{page.image_gallery.all|length}}</p>
-                {% image page.image_gallery.all.0.image fill-626x383 as gallery_image %}
+                {% image page.image_gallery.all.0.image fill-1110x503 as gallery_image %}
                 <img class="show-more-image" src="{{gallery_image.url}}" alt="page.image_gallery.all.0.alt_text">
             </div>
         </div>
@@ -25,7 +25,7 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    {% image item.image fill-626x383 as gallery_image %}
+                    {% image item.image original as gallery_image %}
                     <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
                 </div>
             
