@@ -1,6 +1,12 @@
 {% load search_tags %}
 {% load humanize %}
 
+<script>
+    //var $noOfFilters = 0;
+    var $noOfFilters = {{ selected_filters_count }};
+    let $buttonHtml= "Filters <span class='filter-indicator'>"+ $noOfFilters +"</span>";
+</script>
+
 <div class="search-results">
         {% with count=page.paginator.count %}
             <div class="search-results__metadata">

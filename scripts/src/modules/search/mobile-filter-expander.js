@@ -1,3 +1,4 @@
+
 import debounce from '../debounce.js';
 
 export default function() {
@@ -14,8 +15,12 @@ export default function() {
     let $showHideButton = document.createElement('button');
 
     //number of filters selected
-    let $noOfFilters = document.location.search.match(/=/g).length-8;
-    let $buttonHtml= "Filters <span class='filter-indicator'>"+ $noOfFilters +"</span>";
+    //let $noOfFilters = document.location.search.match(/=/g).length-8;
+
+
+
+
+
 
     //check the query string to populate the number of selected filters
     if (window.location.href.indexOf("filter_keyword") != -1) {
@@ -48,7 +53,8 @@ export default function() {
             $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">!</span>';
+            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">"+ $noOfFilters +"</span>';
+
         }
     });
 
