@@ -14,7 +14,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0042_alter_insightspage_body"),
+        ("stories", "0042_alter_storiespage_body"),
     ]
 
     operations = [

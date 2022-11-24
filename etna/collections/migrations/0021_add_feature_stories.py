@@ -10,7 +10,7 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0042_alter_insightspage_body"),
+        ("stories", "0042_alter_storiespage_body"),
         ("collections", "0020_rename_result_page_record_relationship"),
     ]
 

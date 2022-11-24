@@ -8,7 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("wagtailimages", "0024_index_image_file_hash"),
-        ("stories", "0044_remove_insightsindexpage_body"),
+        ("stories", "0044_remove_storiesindexpage_body"),
     ]
 
     operations = [

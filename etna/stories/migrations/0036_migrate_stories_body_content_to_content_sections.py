@@ -114,7 +114,7 @@ def migrate_forwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0035_add_content_section_blocks_to_insights_body"),
+        ("stories", "0035_add_content_section_blocks_to_stories_body"),
     ]
 
     # NOTE: This data migration can only work one way, because new content

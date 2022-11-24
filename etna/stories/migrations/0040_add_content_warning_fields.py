@@ -7,7 +7,7 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0039_alter_insightspage_body"),
+        ("stories", "0039_alter_storiespage_body"),
     ]
 
     operations = [

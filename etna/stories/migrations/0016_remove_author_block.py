@@ -13,7 +13,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0015_insightspage_teaser_image"),
+        ("stories", "0015_storiespage_teaser_image"),
     ]
 
     operations = [

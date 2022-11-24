@@ -13,7 +13,7 @@ import wagtail.snippets.blocks
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0037_remove_top_level_content_options_from_insights_body"),
+        ("stories", "0037_remove_top_level_content_options_from_stories_body"),
     ]
 
     operations = [

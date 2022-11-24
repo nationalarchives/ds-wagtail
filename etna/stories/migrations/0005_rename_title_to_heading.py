@@ -8,7 +8,7 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0004_insightspage_hero_image"),
+        ("stories", "0004_storiespage_hero_image"),
     ]
 
     operations = [

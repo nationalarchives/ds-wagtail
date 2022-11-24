@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ("collections", "0020_rename_result_page_record_relationship"),
-        ("stories", "0030_insightsindexpage_featured_insight"),
+        ("stories", "0030_storiesindexpage_featured_stories"),
     ]
 
     operations = [
