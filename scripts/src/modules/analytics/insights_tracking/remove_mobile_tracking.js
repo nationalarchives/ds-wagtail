@@ -1,5 +1,5 @@
 export default function remove_mobile_tracking() {
-    const insights_body = document.querySelector(".insights-container__main");
+    const Stories_body = document.querySelector(".stories-container__main");
     const section_headings = document.querySelectorAll(".section-separator__heading");
 
     Array.prototype.forEach.call(section_headings, item => {
@@ -9,7 +9,7 @@ export default function remove_mobile_tracking() {
         item.removeAttribute("data-link");
     });
 
-    insights_body.removeEventListener("click", e => {
+    Stories_body.removeEventListener("click", e => {
         mobile_section_tracking(e);
     })
 }

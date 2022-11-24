@@ -50,7 +50,7 @@ To reverse migrations for an app, specify the number of the migration you want t
 
 - `003_add_cat_gif_image_field`
 - `004_tweak_streamfield_options`
-- `005_add_fks_to_insights_pages`
+- `005_add_fks_to_Stories_pages`
 
 You would run:
 

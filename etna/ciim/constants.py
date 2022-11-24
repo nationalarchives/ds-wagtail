@@ -99,7 +99,7 @@ WEBSITE_BUCKETS = BucketList(
     [
         Bucket(key="blog", label="Blog posts"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="insight", label="Insights"),
+        Bucket(key="Story", label="Stories"),
         Bucket(key="highlight", label="Highlights"),
         Bucket(key="audio", label="Audio"),
         Bucket(key="video", label="Video"),
@@ -113,7 +113,7 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="creator", label="Record creators"),
         Bucket(key="blog", label="Blogs"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="insight", label="Stories from the collection"),
+        Bucket(key="Story", label="Stories from the collection"),
     ]
 )
 

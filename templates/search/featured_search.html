@@ -31,14 +31,14 @@
         {% endif %}
     </div>
     {% endif %}
-    {% if buckets.researchGuide.result_count > 0 or buckets.insight.result_count > 0 or buckets.blog.result_count > 0 %}
+    {% if buckets.researchGuide.result_count > 0 or buckets.Story.result_count > 0 or buckets.blog.result_count > 0 %}
     <div class="featured-search__interpretive-results">
         {% if buckets.researchGuide.result_count > 0 %}
             {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.researchGuide %}
         {% endif %}
 
-        {% if buckets.insight.result_count > 0 %}
-            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.insight %}
+        {% if buckets.Story.result_count > 0 %}
+            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.Story %}
         {% endif %}
 
         {% if buckets.blog.result_count > 0 %}

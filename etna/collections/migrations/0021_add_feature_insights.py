@@ -10,29 +10,29 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("insights", "0042_alter_insightspage_body"),
+        ("stories", "0042_alter_insightspage_body"),
         ("collections", "0020_rename_result_page_record_relationship"),
     ]
 
     operations = [
         migrations.AddField(
             model_name="timeperiodexplorerpage",
-            name="featured_insight",
+            name="featured_story",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                to="insights.insightspage",
+                to="stories.Storiespage",
             ),
         ),
         migrations.AddField(
             model_name="topicexplorerpage",
-            name="featured_insight",
+            name="featured_story",
             field=models.ForeignKey(
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                to="insights.insightspage",
+                to="stories.Storiespage",
             ),
         ),
         migrations.AlterField(

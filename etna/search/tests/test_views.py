@@ -24,7 +24,7 @@ from ...collections.models import (
     TopicExplorerPage,
 )
 from ...home.models import HomePage
-from ...insights.models import InsightsIndexPage, InsightsPage
+from ...stories.models import StoriesIndexPage, StoriesPage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -271,7 +271,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Acreator"
                 "&filterAggregations=group%3Ablog"
                 "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
+                "&filterAggregations=group%3AStory"
                 "&size=3"
             ),
         )
@@ -291,7 +291,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Acreator"
                 "&filterAggregations=group%3Ablog"
                 "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
+                "&filterAggregations=group%3AStory"
                 "&size=3"
             ),
         )
@@ -331,26 +331,26 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
+class WebsiteSearchStoryTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
 
     def setUp(self):
         super().setUp()
 
-        # create insight page object
+        # create Story page object
         home = HomePage.objects.get()
-        insights_index_page = InsightsIndexPage(
-            title="Insight Pages", sub_heading="Sub heading"
+        Stories_index_page = StoriesIndexPage(
+            title="Story Pages", sub_heading="Sub heading"
         )
-        home.add_child(instance=insights_index_page)
-        insights_page = InsightsPage(
+        home.add_child(instance=Stories_index_page)
+        Stories_page = StoriesPage(
             title="William Shakespeare", sub_heading="Sub heading"
         )
-        insights_index_page.add_child(instance=insights_page)
+        Stories_index_page.add_child(instance=Stories_page)
 
-        # create insight page response in sourceUrl
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"
+        # create Story page response in sourceUrl
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_Story.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -363,7 +363,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.get_url(self.test_url, group="insight")
+        self.get_url(self.test_url, group="Story")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -382,7 +382,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
                 "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
                 "&aggregations=type%3A10"
-                "&filterAggregations=group%3Ainsight"
+                "&filterAggregations=group%3AStory"
                 "&from=0"
                 "&size=20"
             ),
@@ -390,14 +390,14 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_template_used(self):
-        response = self.get_url(self.test_url, group="insight")
+        response = self.get_url(self.test_url, group="Story")
         self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
-        response = self.get_url(self.test_url, group="insight")
+        response = self.get_url(self.test_url, group="Story")
 
-        # insight is current, others are not
+        # Story is current, others are not
         expected_bucket_list = BucketList(
             [
                 Bucket(
@@ -415,8 +415,8 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
                     results=None,
                 ),
                 Bucket(
-                    key="insight",
-                    label="Insights",
+                    key="Story",
+                    label="Stories",
                     result_count=1,
                     is_current=True,
                     results=None,
@@ -448,9 +448,9 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_page_instance_added_for_source_url(self):
-        response = self.get_url(self.test_url, group="insight")
+        response = self.get_url(self.test_url, group="Story")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], InsightsPage
+            response.context_data["page"].object_list[0]["source_page"], StoriesPage
         )
 
 
@@ -504,7 +504,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
         topic_explorer_page.add_child(instance=results_page)
 
-        # create insight page response in sourceUrl
+        # create Story page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
             responses.add(
@@ -570,8 +570,8 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
                     results=None,
                 ),
                 Bucket(
-                    key="insight",
-                    label="Insights",
+                    key="Story",
+                    label="Stories",
                     result_count=1,
                     is_current=False,
                     results=None,
@@ -874,8 +874,8 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
     @responses.activate
-    def test_datalayer_website_search_insight(self):
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json"
+    def test_datalayer_website_search_Story(self):
+        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_Story2.json"
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -883,12 +883,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 json=json_module.loads(f.read()),
             )
 
-        response = self.client.get("/search/website/?group=insight")
+        response = self.client.get("/search/website/?group=Story")
 
         self.assertTemplateUsed(response, "search/website_search.html")
 
         html_decoded_response = response.content.decode("utf8")
-        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: insight", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 9, "customMetric2": 0}</script>"""
+        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: Story", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 9, "customMetric2": 0}</script>"""
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
     @responses.activate

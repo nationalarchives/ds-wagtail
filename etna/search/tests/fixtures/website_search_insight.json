@@ -79,7 +79,7 @@
                             "doc_count": 1
                         },
                         {
-                            "key": "insight",
+                            "key": "Story",
                             "doc_count": 1
                         },
                         {
@@ -115,9 +115,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/william-shakespeare/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/william-shakespeare/",
                                     "primaryIdentifier": "ip-3162",
-                                    "type": "insights page",
+                                    "type": "Stories page",
                                     "summaryTitle": "William Shakespeare"
                                 }
                             }
@@ -166,7 +166,7 @@
                     "sum_other_doc_count": 0,
                     "buckets": [
                         {
-                            "key": "insight",
+                            "key": "Story",
                             "doc_count": 1
                         }
                     ]

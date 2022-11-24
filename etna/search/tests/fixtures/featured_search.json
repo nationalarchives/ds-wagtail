@@ -3798,11 +3798,11 @@
                                 "uuid": "6d87dfbd-10dd-36f6-ae81-95d5bc1b4fff"
                             },
                             "@datatype": {
-                                "actual": "insights page",
+                                "actual": "Stories page",
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "insight"
+                                        "value": "Story"
                                     }
                                 ]
                             },
@@ -3876,9 +3876,9 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/insight-pages/festival-of-britain/"
+                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/festival-of-britain/"
                                 },
-                                "@type": "insights page"
+                                "@type": "Stories page"
                             },
                             "summary": {
                                 "title": "Festival of Britain"
@@ -3886,9 +3886,9 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3167",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/festival-of-britain/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/festival-of-britain/",
                                     "summaryTitle": "Festival of Britain",
-                                    "type": "insights page"
+                                    "type": "Stories page"
                                 }
                             }
                         }
@@ -3908,11 +3908,11 @@
                                 "uuid": "69e7b576-0b8e-38be-8574-13fb50c072f3"
                             },
                             "@datatype": {
-                                "actual": "insights page",
+                                "actual": "Stories page",
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "insight"
+                                        "value": "Story"
                                     }
                                 ]
                             },
@@ -4034,9 +4034,9 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/insight-pages/the-battle-of-the-somme/"
+                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/the-battle-of-the-somme/"
                                 },
-                                "@type": "insights page"
+                                "@type": "Stories page"
                             },
                             "summary": {
                                 "title": "The Battle of the Somme"
@@ -4044,9 +4044,9 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3170",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/the-battle-of-the-somme/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/the-battle-of-the-somme/",
                                     "summaryTitle": "The Battle of the Somme",
-                                    "type": "insights page"
+                                    "type": "Stories page"
                                 }
                             }
                         }
@@ -4066,11 +4066,11 @@
                                 "uuid": "306db2c3-6c5b-3644-a9f2-4873cb665fda"
                             },
                             "@datatype": {
-                                "actual": "insights page",
+                                "actual": "Stories page",
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "insight"
+                                        "value": "Story"
                                     }
                                 ]
                             },
@@ -4135,9 +4135,9 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/insight-pages/maud-allan-1873-1956/"
+                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/maud-allan-1873-1956/"
                                 },
-                                "@type": "insights page"
+                                "@type": "Stories page"
                             },
                             "summary": {
                                 "title": "Maud Allan (1873-1956)"
@@ -4145,9 +4145,9 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3169",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/maud-allan-1873-1956/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/maud-allan-1873-1956/",
                                     "summaryTitle": "Maud Allan (1873-1956)",
-                                    "type": "insights page"
+                                    "type": "Stories page"
                                 }
                             }
                         }
