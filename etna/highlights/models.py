@@ -62,7 +62,7 @@ class HighlightsGalleryPage(BasePage):
     This page is used to display highlights, which can have Closer Look
     pages attached to them.
     """
-    standfirst = models.CharField(max_length=250, blank = False, null=True)
+    standfirst = models.CharField(max_length=350, blank = False, null=True)
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -108,7 +108,7 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
     This page is ______.
     """
 
-    standfirst = models.CharField(max_length=250, blank = False, null=True)
+    standfirst = models.CharField(max_length=350, blank = False, null=True)
     topic = models.ForeignKey(
         "collections.TopicExplorerPage",
         null=True,
@@ -225,13 +225,13 @@ class CloserLookGalleryImage(Orderable):
         default=False,
     )
     caption = models.CharField(
-        max_length=100,
+        max_length=200,
         help_text="A caption for the image",
         null=True,
         blank=True,
     )
     transcription_text = models.TextField(
-        max_length=400, 
+        max_length=800, 
         help_text="A transcription of the image",
         null=True,
         blank=True,
@@ -243,7 +243,7 @@ class CloserLookGalleryImage(Orderable):
         blank=True,
     )
     translation_text = models.TextField(
-        max_length=400,
+        max_length=800,
         help_text="A translation of the transcription",
         null=True,
         blank=True,

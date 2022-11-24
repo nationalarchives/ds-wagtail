@@ -5,6 +5,7 @@
 {% load wagtailmetadata_tags %}
 
 <div class="spotlight container">
+    <h2 class="records-title">Stories from the collection</h2>
     <div class="featured-insight">
         {% if page.featured_insight.hero_image %}
             <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>

@@ -12,7 +12,8 @@ class TestCloserLookPageSectionBlockIntegration(TestCase):
         root = Site.objects.get().root_page
 
         self.closer_look_page = CloserLookPage(
-            title="Closer look page",
+            title="Test closer look page",
+            standfirst = "This is a test to make sure the standfirst is working",
             body=json.dumps(
                 [
                     {
@@ -30,23 +31,6 @@ class TestCloserLookPageSectionBlockIntegration(TestCase):
         )
         root.add_child(instance=self.closer_look_page)
 
-    def test_paragraph_rendering(self):
+    def test_title_rendering(self):
         response = self.client.get(self.closer_look_page.get_url())
-        self.assertContains(response, "jumplinks")
-        self.assertContains(response, 'href="#h2.section-one"')
-        self.assertContains(response, 'href="#h2.section-two"')
-        self.assertContains(response, 'id="h2.section-one"')
-        self.assertContains(response, 'id="h2.section-two"')
-
-    def test_jumplinks_not_rendered_if_page_has_no_sections(self):
-        self.closer_look_page.body = "[]"
-        self.closer_look_page.save()
-
-        response = self.client.get(self.closer_look_page.get_url())
-        self.assertNotContains(response, "jumplinks")
-
-    def test_headings_rendered_as_h3(self):
-        response = self.client.get(self.closer_look_page.get_url())
-        response.render()
-        content = response.content.decode()
-        self.assertContainsHeading(content, "This should render as a h3", 3)
+        self.assertContains(response, "Test closer look page")

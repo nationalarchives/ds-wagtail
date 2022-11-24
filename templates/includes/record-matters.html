@@ -1,4 +1,5 @@
 {% load records_tags %}
+{% load wagtailcore_tags %}
 
 <div class="generic-intro">
     <div class="container">
@@ -13,16 +14,16 @@
                         Catalogue ref: <b><a href="{% record_url item.value.record is_editorial=True %}">{{ item.value.record.reference_number }}</a></b></p>
                     {%endif%}
                     {% if item.value.paragraph.text %}
-                        <p class="generic-intro__paragraph" id="readlesscontent">
-                            {{ item.value.paragraph.text|truncatechars_html:20|striptags }}
-                        </p>
+                        <div class="generic-intro__paragraph" id="readlesscontent">
+                            {{ item.value.paragraph.text|richtext|truncatewords_html:50 }}
+                        </div>
 
                         <p><a id="readmore" href="">Read more <span>+</span></a></p>
 
-                        <p class="generic-intro__paragraph reveal-text" id="readmorecontent">
-                            {{ item.value.paragraph.text|striptags }}
+                        <div class="generic-intro__paragraph reveal-text" id="readmorecontent">
+                            {{ item.value.paragraph.text|richtext }}
                             <br><br><a id="readless" href="">Read less <span>-</span></a>
-                        </p>
+                        </div>
                     {% endif %}
                 {%endfor%}
             </div>
