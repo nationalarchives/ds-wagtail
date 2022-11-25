@@ -350,7 +350,9 @@ class WebsiteSearchstoryTest(WagtailTestUtils, TestCase):
         Stories_index_page.add_child(instance=Stories_page)
 
         # create story page response in sourceUrl
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_story.json"
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_story.json"
+        )
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
@@ -875,7 +877,9 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_datalayer_website_search_story(self):
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_story2.json"
+        path = (
+            f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_story2.json"
+        )
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
