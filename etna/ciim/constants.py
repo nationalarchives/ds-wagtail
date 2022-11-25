@@ -16,6 +16,8 @@ def forTemplate(cls):
 class BucketKeys(Enum):
     NONTNA = "nonTna"
     CREATOR = "creator"
+    INSIGHT = "insight"
+    HIGHLIGHT = "highlight"
 
 
 @forTemplate
@@ -99,8 +101,8 @@ WEBSITE_BUCKETS = BucketList(
     [
         Bucket(key="blog", label="Blog posts"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="insight", label="Insights"),
-        Bucket(key="highlight", label="Highlights"),
+        Bucket(key=BucketKeys.INSIGHT.value, label="Insights"),
+        Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
         Bucket(key="audio", label="Audio"),
         Bucket(key="video", label="Video"),
     ]
@@ -113,7 +115,7 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="creator", label="Record creators"),
         Bucket(key="blog", label="Blogs"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="insight", label="Stories from the collection"),
+        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
