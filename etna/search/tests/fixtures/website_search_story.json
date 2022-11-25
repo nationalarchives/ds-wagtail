@@ -79,7 +79,7 @@
                             "doc_count": 1
                         },
                         {
-                            "key": "Story",
+                            "key": "story",
                             "doc_count": 1
                         },
                         {
@@ -115,7 +115,7 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/william-shakespeare/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/william-shakespeare/",
                                     "primaryIdentifier": "ip-3162",
                                     "type": "Stories page",
                                     "summaryTitle": "William Shakespeare"
@@ -166,7 +166,7 @@
                     "sum_other_doc_count": 0,
                     "buckets": [
                         {
-                            "key": "Story",
+                            "key": "story",
                             "doc_count": 1
                         }
                     ]

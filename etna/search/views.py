@@ -760,7 +760,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
-            if filter_aggregation == "Story" and "page" in context:
+            if filter_aggregation == "story" and "page" in context:
                 self.add_Stories_page_for_url(context["page"])
             if filter_aggregation == "highlight" and "page" in context:
                 self.add_results_page_for_url(context["page"])

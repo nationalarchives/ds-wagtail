@@ -3802,7 +3802,7 @@
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "Story"
+                                        "value": "story"
                                     }
                                 ]
                             },
@@ -3876,7 +3876,7 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/festival-of-britain/"
+                                    "value": "https://beta.nationalarchives.gov.uk/story-pages/festival-of-britain/"
                                 },
                                 "@type": "Stories page"
                             },
@@ -3886,7 +3886,7 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3167",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/festival-of-britain/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/festival-of-britain/",
                                     "summaryTitle": "Festival of Britain",
                                     "type": "Stories page"
                                 }
@@ -3912,7 +3912,7 @@
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "Story"
+                                        "value": "story"
                                     }
                                 ]
                             },
@@ -4034,7 +4034,7 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/the-battle-of-the-somme/"
+                                    "value": "https://beta.nationalarchives.gov.uk/story-pages/the-battle-of-the-somme/"
                                 },
                                 "@type": "Stories page"
                             },
@@ -4044,7 +4044,7 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3170",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/the-battle-of-the-somme/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/the-battle-of-the-somme/",
                                     "summaryTitle": "The Battle of the Somme",
                                     "type": "Stories page"
                                 }
@@ -4070,7 +4070,7 @@
                                 "base": "media",
                                 "group": [
                                     {
-                                        "value": "Story"
+                                        "value": "story"
                                     }
                                 ]
                             },
@@ -4135,7 +4135,7 @@
                                 "@location": {
                                     "public": true,
                                     "type": "http",
-                                    "value": "https://beta.nationalarchives.gov.uk/Story-pages/maud-allan-1873-1956/"
+                                    "value": "https://beta.nationalarchives.gov.uk/story-pages/maud-allan-1873-1956/"
                                 },
                                 "@type": "Stories page"
                             },
@@ -4145,7 +4145,7 @@
                             "@template": {
                                 "details": {
                                     "primaryIdentifier": "ip-3169",
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/Story-pages/maud-allan-1873-1956/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/maud-allan-1873-1956/",
                                     "summaryTitle": "Maud Allan (1873-1956)",
                                     "type": "Stories page"
                                 }

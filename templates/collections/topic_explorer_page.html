@@ -7,37 +7,37 @@
 {% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
-    {% if page.featured_Story %}
+    {% if page.featured_story %}
             <div class="container">
-                <div class="featured-Story">
-                    {% if page.featured_Story.teaser_image %}
-                        <div class="featured-Story__image">
+                <div class="featured-story">
+                    {% if page.featured_story.teaser_image %}
+                        <div class="featured-story__image">
                             <picture>
-                                {% image page.featured_Story.teaser_image fill-412x361 as hero %}
+                                {% image page.featured_story.teaser_image fill-412x361 as hero %}
                                 <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                                {% image page.featured_Story.teaser_image fill-510x351 as hero %}
+                                {% image page.featured_story.teaser_image fill-510x351 as hero %}
                                 <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                                {% image page.featured_Story.teaser_image fill-510x304 as hero %}
+                                {% image page.featured_story.teaser_image fill-510x304 as hero %}
                                 <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                                {% image page.featured_Story.teaser_image fill-345x495 as hero %}
+                                {% image page.featured_story.teaser_image fill-345x495 as hero %}
                                 <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                                {% image page.featured_Story.teaser_image fill-555x367 as hero %}
+                                {% image page.featured_story.teaser_image fill-555x367 as hero %}
                                 <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                                {% if page.featured_Story.hero_image_decorative %}
+                                {% if page.featured_story.hero_image_decorative %}
                                     <img src="{{ hero.url }}" alt="" />
                                 {% else %}
-                                    <img src="{{ hero.url }}" alt="{{page.featured_Story.hero_image_alt_text}}" />
+                                    <img src="{{ hero.url }}" alt="{{page.featured_story.hero_image_alt_text}}" />
                                 {% endif %}
                             </picture>
                         </div>
                     {% endif %}
-                <div class="featured-Story__description">
-                    <h2 class="featured-Story__heading">
+                <div class="featured-story__description">
+                    <h2 class="featured-story__heading">
                         <small>{% trans "Spotlight on" %}</small>
-                        {{ page.featured_Story.title }}
+                        {{ page.featured_story.title }}
                     </h2>
-                    <p>{{ page.featured_Story.sub_heading }}</p>
-                    <a class="tna-button--dark" href="{% pageurl page.featured_Story %}">Read</a>
+                    <p>{{ page.featured_story.sub_heading }}</p>
+                    <a class="tna-button--dark" href="{% pageurl page.featured_story %}">Read</a>
                 </div>
             </div>
         </div>

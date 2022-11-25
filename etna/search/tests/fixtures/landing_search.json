@@ -332,7 +332,7 @@
                             "doc_count": 67
                         },
                         {
-                            "key": "Story",
+                            "key": "story",
                             "doc_count": 9
                         }
                     ]
@@ -671,7 +671,7 @@
                             "doc_count": 67
                         },
                         {
-                            "key": "Story",
+                            "key": "story",
                             "doc_count": 9
                         }
                     ]

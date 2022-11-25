@@ -105,11 +105,11 @@ class StoriesPage(
         on_delete=models.SET_NULL,
         related_name="+",
     )
-    Story_tag_names = models.TextField(editable=False)
+    story_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedStories, blank=True)
 
     search_fields = Page.search_fields + [
-        index.SearchField("Story_tag_names"),
+        index.SearchField("story_tag_names"),
     ]
 
     new_label_end_date = datetime.now() - timedelta(days=21)
@@ -118,21 +118,21 @@ class StoriesPage(
         data = super().get_datalayer_data(request)
         if self.topic:
             data["customDimension4"] = self.topic.title
-        if self.Story_tag_names:
-            data["customDimension6"] = ";".join(self.Story_tag_names.split("\n"))
+        if self.story_tag_names:
+            data["customDimension6"] = ";".join(self.story_tag_names.split("\n"))
         if self.time_period:
             data["customDimension7"] = self.time_period.title
         return data
 
     def save(self, *args, **kwargs):
         """
-        Overrides Page.save() to ensure 'Story_tag_names' always reflects the tags() value
+        Overrides Page.save() to ensure 'story_tag_names' always reflects the tags() value
         """
         if (
             "update_fields" not in kwargs
-            or "Story_tag_names" in kwargs["update_fields"]
+            or "story_tag_names" in kwargs["update_fields"]
         ):
-            self.Story_tag_names = "\n".join(t.name for t in self.tags.all())
+            self.story_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
 
     @cached_property
@@ -142,7 +142,7 @@ class StoriesPage(
         one of the same StoriesTags. Items should be ordered by the number
         of tags they have in common.
         """
-        if not self.Story_tag_names:
+        if not self.story_tag_names:
             # Avoid unncecssary lookups
             return ()
 
@@ -167,8 +167,8 @@ class StoriesPage(
         # Use search() to prioritise items with the highest number of matches
         return tuple(
             StoriesPage.objects.filter(id__in=tag_match_ids).search(
-                self.Story_tag_names,
-                fields=["Story_tag_names"],
+                self.story_tag_names,
+                fields=["story_tag_names"],
                 operator="or",
             )[:3]
         )

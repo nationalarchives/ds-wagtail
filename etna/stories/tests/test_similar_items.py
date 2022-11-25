@@ -5,7 +5,7 @@ from wagtail.models import Site
 from ..models import StoriesPage, StoriesTag, TaggedStories
 
 
-class TestStoryPageSimilarItems(TestCase):
+class TeststoryPageSimilarItems(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 
@@ -72,15 +72,15 @@ class TestStoryPageSimilarItems(TestCase):
                 ],
             )
 
-    def test_all_queries_prevented_when_Story_tag_names_is_blank(self):
+    def test_all_queries_prevented_when_story_tag_names_is_blank(self):
         test_page = StoriesPage.objects.get(id=self.original_page.id)
-        test_page.Story_tag_names = ""
+        test_page.story_tag_names = ""
         with self.assertNumQueries(0):
             self.assertFalse(test_page.similar_items)
 
     def test_further_queries_prevented_when_no_tags_available(self):
         test_page = StoriesPage.objects.get(id=self.untagged_page.id)
-        test_page.Story_tag_names = "foobar"
+        test_page.story_tag_names = "foobar"
         with self.assertNumQueries(1):
             self.assertFalse(test_page.similar_items)
 

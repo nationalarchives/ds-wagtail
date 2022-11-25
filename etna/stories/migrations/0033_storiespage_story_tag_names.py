@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name="Storiespage",
-            name="Story_tag_names",
+            name="story_tag_names",
             field=models.TextField(default="", editable=False),
             preserve_default=False,
         ),
