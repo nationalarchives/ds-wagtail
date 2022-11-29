@@ -1,9 +1,9 @@
 {% load search_tags %}
 {% load humanize %}
 
+{{ selected_filters_count|json_script:"selected_filters_count" }}
 <script>
-    
-    var $noOfFilters = {{ selected_filters_count }};
+    $noOfFilters = JSON.parse(document.getElementById('selected_filters_count').textContent);
     let $buttonHtml= "Filters <span class='filter-indicator'>"+ $noOfFilters +"</span>";
 </script>
 
