@@ -294,19 +294,16 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         data = super().get_datalayer_data(request)
         if self.form.cleaned_data.get("group"):
             custom_dimension8 = (
-                self.title_base + ": " + self.form.cleaned_data.get("group")
+                self.search_tab + ": " + self.form.cleaned_data.get("group")
             )
         else:
-            custom_dimension8 = self.title_base + ": " + "none"
+            custom_dimension8 = self.search_tab + ": " + "none"
+
         custom_dimension9 = self.form.cleaned_data.get("q") or "*"
-        try:
-            custom_metric2 = len(self.get_api_filter_aggregations(self.form)) - 1
-        except AttributeError:  # This is needed as it will throw an error as some pages do not have filters (e.g. Featured Search, or Record Creator bucket)
-            custom_metric2 = 0
+
         data.update(
             customDimension8=custom_dimension8,
             customDimension9=custom_dimension9,
-            customMetric2=custom_metric2,
         )
         return data
 
@@ -340,6 +337,9 @@ class BaseFilteredSearchView(BaseSearchView):
     default_sort_by: str = SortBy.RELEVANCE.value
     default_sort_order: str = SortOrder.ASC.value
     default_display: str = Display.LIST.value
+
+    # create a _var to avoid repetitive call to self.get_context_data().get(<VAR>) in get_datalayer_data() to extract value
+    _custom_metric2 = 0
 
     dynamic_choice_fields = (
         "collection",
@@ -474,9 +474,23 @@ class BaseFilteredSearchView(BaseSearchView):
                         value.get("sum_other_doc_count", 0)
                     )
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+
+        data.update(
+            customMetric2=self._custom_metric2,
+        )
+        return data
+
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["selected_filters"] = self.get_selected_filters(self.form)
+
+        # sum of all values accross all selected filters
+        self._custom_metric2 = context["selected_filters_count"] = sum(
+            map(len, context["selected_filters"].values())
+        )
+
         if self.api_result:
             result_response = self.api_result["responses"][1]
             total_count = result_response["hits"]["total"]["value"]
@@ -583,7 +597,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
-    title_base = SearchTabs.CATALOGUE.value
+    search_tab = SearchTabs.CATALOGUE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -654,7 +668,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "blog"
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
-    title_base = SearchTabs.WEBSITE.value
+    search_tab = SearchTabs.WEBSITE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -757,7 +771,7 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
-    title_base = SearchTabs.ALL.value
+    search_tab = SearchTabs.ALL.value
     featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:

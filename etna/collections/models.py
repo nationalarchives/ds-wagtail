@@ -56,11 +56,14 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     This page lists all child TopicExplorerPages
     """
 
+    sub_heading = models.CharField(max_length=200, blank=False)
+
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
     content_panels = BasePage.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -105,6 +108,8 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     single ResultsPage (to output the results of their selection).
     """
 
+    sub_heading = models.CharField(max_length=200, blank=False)
+
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -112,6 +117,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("featured_insight"),
         FieldPanel("body"),
     ]
@@ -145,11 +151,14 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
     This page lists all child TimePeriodExplorerPage
     """
 
+    sub_heading = models.CharField(max_length=200, blank=False)
+
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
     content_panels = BasePage.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -194,6 +203,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     single ResultsPage (to output the results of their selection).
     """
 
+    sub_heading = models.CharField(max_length=200, blank=False)
+
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -203,6 +214,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
+        FieldPanel("sub_heading"),
         FieldPanel("featured_insight"),
         FieldPanel("body"),
         FieldPanel("start_year"),

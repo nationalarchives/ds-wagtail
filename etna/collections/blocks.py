@@ -48,10 +48,6 @@ class PromotedPagesBlock(blocks.StructBlock):
 
 class TopicExplorerIndexBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, default="Explore by topic")
-    sub_heading = blocks.CharBlock(
-        max_length=200,
-        default="Browse highlights of the collection through topics including:",
-    )
     page = blocks.PageChooserBlock(page_type="collections.TopicExplorerIndexPage")
 
     class Meta:
@@ -62,10 +58,6 @@ class TopicExplorerIndexBlock(blocks.StructBlock):
 
 class TimePeriodExplorerIndexBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, default="Explore by time period")
-    sub_heading = blocks.CharBlock(
-        max_length=200,
-        default="Discover 1,000 years of British history through time periods including:",
-    )
     page = blocks.PageChooserBlock(page_type="collections.TimePeriodExplorerIndexPage")
 
     class Meta:
