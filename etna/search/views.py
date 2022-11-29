@@ -294,10 +294,10 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         data = super().get_datalayer_data(request)
         if self.form.cleaned_data.get("group"):
             custom_dimension8 = (
-                self.title_base + ": " + self.form.cleaned_data.get("group")
+                self.search_tab + ": " + self.form.cleaned_data.get("group")
             )
         else:
-            custom_dimension8 = self.title_base + ": " + "none"
+            custom_dimension8 = self.search_tab + ": " + "none"
         custom_dimension9 = self.form.cleaned_data.get("q") or "*"
         try:
             custom_metric2 = len(self.get_api_filter_aggregations(self.form)) - 1
@@ -583,7 +583,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
-    title_base = SearchTabs.CATALOGUE.value
+    search_tab = SearchTabs.CATALOGUE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -654,7 +654,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     default_group = "blog"
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
-    title_base = SearchTabs.WEBSITE.value
+    search_tab = SearchTabs.WEBSITE.value
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -757,7 +757,7 @@ class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
     template_name = "search/featured_search.html"
-    title_base = SearchTabs.ALL.value
+    search_tab = SearchTabs.ALL.value
     featured_search_total_count = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:

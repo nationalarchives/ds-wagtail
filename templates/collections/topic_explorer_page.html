@@ -10,18 +10,18 @@
     {% if page.featured_insight %}
             <div class="container">
                 <div class="featured-insight">
-                    {% if page.featured_insight.hero_image %}
+                    {% if page.featured_insight.teaser_image %}
                         <div class="featured-insight__image">
                             <picture>
-                                {% image page.featured_insight.hero_image fill-412x361 as hero %}
+                                {% image page.featured_insight.teaser_image fill-412x361 as hero %}
                                 <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                                {% image page.featured_insight.hero_image fill-510x351 as hero %}
+                                {% image page.featured_insight.teaser_image fill-510x351 as hero %}
                                 <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                                {% image page.featured_insight.hero_image fill-510x304 as hero %}
+                                {% image page.featured_insight.teaser_image fill-510x304 as hero %}
                                 <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                                {% image page.featured_insight.hero_image fill-345x495 as hero %}
+                                {% image page.featured_insight.teaser_image fill-345x495 as hero %}
                                 <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                                {% image page.featured_insight.hero_image fill-555x367 as hero %}
+                                {% image page.featured_insight.teaser_image fill-555x367 as hero %}
                                 <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
                                 {% if page.featured_insight.hero_image_decorative %}
                                     <img src="{{ hero.url }}" alt="" />
