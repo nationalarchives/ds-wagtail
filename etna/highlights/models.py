@@ -11,7 +11,7 @@ from wagtailmetadata.models import MetadataPageMixin
  
 from etna.core.models import BasePage, ContentWarningMixin
 
-from .blocks import HighlightsRecordBlock
+from .blocks import HighlightsRecordBlock, PromotedPagesBlock
 from ..teasers.models import TeaserImageMixin
 
 
@@ -108,7 +108,7 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
     This page is ______.
     """
 
-    standfirst = models.CharField(max_length=350, blank = False, null=True)
+    standfirst = models.CharField(max_length=350, blank = False, null=True, help_text="(max. character length: 350)",)
     topic = models.ForeignKey(
         "collections.TopicExplorerPage",
         null=True,
@@ -137,20 +137,21 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
     )
 
     topic_tags = ClusterTaggableManager(through="collections.TaggedTopics", blank=True, verbose_name="Topic Tags")
+
     time_period_tags = ClusterTaggableManager(through="collections.TaggedTimePeriods", blank=True, verbose_name="Time Period Tags")
 
     image_library_link = models.URLField(
-        max_length=300,
         blank=True,
         null=True,
-        verbose_name="Link to external image library"
+        verbose_name="Image library link",
+        help_text="Link to an external image library",
     )
 
     print_on_demand_link = models.URLField(
-        max_length=300,
         blank=True,
         null=True,
-        verbose_name="Link to external print on demand"
+        verbose_name="Print on demand link",
+        help_text="Link to an external print on demand service",
     )
 
     featured_insight = models.ForeignKey(
@@ -166,10 +167,19 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name="Related records"
+        verbose_name="Related records",
+        help_text="Displays the Highlights inside the selected Highlights Gallery page",
     )
 
-    
+    promoted_pages = StreamField([
+        ("promoted_pages", PromotedPagesBlock()),
+    ], 
+    block_counts={
+        "promoted_pages": {"min_num": 1, "max_num": 1},
+    }, 
+    use_json_field=True,
+    null=True,
+    )
 
     content_panels = BasePage.content_panels + [
         FieldPanel("standfirst"),
@@ -194,6 +204,7 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
                 ],
                 heading="Tags",
             ),
+        FieldPanel("promoted_pages"),
         MultiFieldPanel(
             [
                 FieldPanel("topic"),
@@ -215,8 +226,8 @@ class CloserLookGalleryImage(Orderable):
         "wagtailimages.Image", on_delete=models.CASCADE, related_name="+"
     )
     alt_text = models.CharField(
-        max_length=100,
-        help_text="Alt text for the image",
+        max_length=150,
+        help_text="Alt text for the image (max. character length: 150)",
         null=True,
         blank=False,
     )
@@ -226,31 +237,31 @@ class CloserLookGalleryImage(Orderable):
     )
     caption = models.CharField(
         max_length=200,
-        help_text="A caption for the image",
+        help_text="A caption for the image (max. character length: 200)",
         null=True,
         blank=True,
     )
     transcription_text = models.TextField(
-        max_length=800, 
-        help_text="A transcription of the image",
+        max_length=1500, 
+        help_text="A transcription of the image (max. character length: 1500)",
         null=True,
         blank=True,
     )
     transcription_header = models.CharField(
         max_length=50,
-        help_text="Header for the transcription",
+        help_text="Header for the transcription (max. character length: 50)",
         null=True,
         blank=True,
     )
     translation_text = models.TextField(
-        max_length=800,
-        help_text="A translation of the transcription",
+        max_length=1500,
+        help_text="A translation of the transcription (max. character length: 1500)",
         null=True,
         blank=True,
     )
     translation_header = models.CharField(
         max_length=50,
-        help_text="Header for the translation",
+        help_text="Header for the translation (max. character length: 50)",
         null=True,
         blank=True,
     )
