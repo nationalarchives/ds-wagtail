@@ -36,6 +36,6 @@ class PromotedPagesBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedItemBlock, min=1, max=3)
 
     class Meta:
-        template = "collections/blocks/promoted_pages.html"
+        template = "highlights/blocks/promoted_pages.html"
         help_text = "Block used promote external pages"
         icon = "th-large"

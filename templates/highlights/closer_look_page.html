@@ -16,6 +16,17 @@
     {% if page.related_blogs %}
         {% include 'includes/blogs-and-podcasts.html' %}
     {% endif %}
+    {% if page.promoted_pages %}
+    <div class="container" id="analytics-topic-explorer">
+        <div class="row">
+            <div class="col-md-12">
+                {% for block in page.promoted_pages %}
+                    {% include_block block %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
     {% if page.topic or page.time_period %}
         {% include 'includes/interested.html' %}
     {% endif %}
