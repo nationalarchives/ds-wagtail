@@ -152,6 +152,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
@@ -203,6 +204,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+    
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
