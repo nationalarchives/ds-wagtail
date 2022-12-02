@@ -7,10 +7,19 @@ a#showMoreButton:hover {color:white;}
 
   p { color:white;text-align: center;margin-top:1.5em;}
 
+
   img {
     width:100%;
   }
+  .image-caption{
+    padding-left:1em;
+    border-left: solid 1px white;
+    text-align: left;
+    a {
+      color:orange;
+    }
 
+  }
   .explore-intro__image {
 
   }
