@@ -90,6 +90,13 @@ a#showMoreButton:hover {color:white;}
     display: none;
   }
 
+  div[id^="tabset-"] p{
+    display: block;
+    text-align: left;
+  }
+
+
+
   .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
   .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
   .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
