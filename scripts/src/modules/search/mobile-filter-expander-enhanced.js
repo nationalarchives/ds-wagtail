@@ -9,9 +9,7 @@ export default function() {
     if(!$searchFilterContainer || !$searchGrid || !$main) {
         return;
     }
-
     //need case where validation warning is invoked
-
     let $showHideButton = document.createElement('button');
     //check the query string to populate the number of selected filters
     if (window.location.href.indexOf("filter_keyword") != -1) {
