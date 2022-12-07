@@ -79,7 +79,7 @@
                             "doc_count": 1
                         },
                         {
-                            "key": "story",
+                            "key": "insight",
                             "doc_count": 1
                         },
                         {
@@ -166,7 +166,7 @@
                     "sum_other_doc_count": 0,
                     "buckets": [
                         {
-                            "key": "story",
+                            "key": "insight",
                             "doc_count": 1
                         }
                     ]

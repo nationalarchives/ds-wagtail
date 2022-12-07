@@ -63,9 +63,9 @@
         <p>Browse and explore the human stories behind The National Archives’ collection.</p>
         <ul class="card-group--list-style-none">
 
-            {% for Stories_page in Stories_pages %}
+            {% for stories_page in stories_pages %}
 
-                        {% with page=Stories_page.specific %}
+                        {% with page=stories_page.specific %}
                          {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" %}
                         {% endwith %}
 
@@ -76,5 +76,5 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'scripts/Stories_index_page.js' %}"></script>
+    <script src="{% static 'scripts/stories_index_page.js' %}"></script>
 {% endblock %}

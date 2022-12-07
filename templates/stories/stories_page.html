@@ -11,12 +11,12 @@
     {% include 'includes/generic-intro.html' %}
     {% include 'includes/hero-img.html' %}
 
-    <div class="Stories-container">
-        <div class="Stories-container__sidebar">
+    <div class="stories-container">
+        <div class="stories-container__sidebar">
             {% jumplinks page %}
         </div>
 
-        <div class="Stories-container__main">
+        <div class="stories-container__main">
             {% if page.display_content_warning %}
                 {% include 'includes/content-warning.html' %}
             {% endif %}
@@ -25,10 +25,10 @@
             {% endfor %}
         </div>
 
-        <div class="Stories-container-related-content">
+        <div class="stories-container-related-content">
             <div class="container">
                 {% if page.similar_items %}
-                    <h2 class="Stories-container-related-content__heading">You may also be interested in</h2>
+                    <h2 class="stories-container-related-content__heading">You may also be interested in</h2>
 
                     <ul class="card-group--list-style-none">
                         {% for item in page.similar_items %}
@@ -40,7 +40,7 @@
                 {% include 'includes/related-ce-content.html' %}
 
                 {% if page.latest_items %}
-                    <h2 class="Stories-container-related-content__heading">More stories</h2>
+                    <h2 class="stories-container-related-content__heading">More stories</h2>
 
                     <ul class="card-group--list-style-none">
                         {% for item in page.latest_items %}
@@ -55,5 +55,5 @@
 {% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'scripts/Stories.js' %}"></script>
+    <script src="{% static 'scripts/stories.js' %}"></script>
  {% endblock %}

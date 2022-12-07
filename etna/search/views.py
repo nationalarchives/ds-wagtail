@@ -761,7 +761,6 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         context = super().get_context_data(**kwargs)
 
         if filter_aggregation := self.request.GET.get("group", ""):
-            print("Big Mo filter_aggregation:", filter_aggregation)
             if filter_aggregation == "insight" and "page" in context:
                 self.add_stories_page_for_url(context["page"])
             if filter_aggregation == "highlight" and "page" in context:
