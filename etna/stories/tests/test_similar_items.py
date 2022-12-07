@@ -5,7 +5,7 @@ from wagtail.models import Site
 from ..models import StoriesPage, StoriesTag, TaggedStories
 
 
-class TeststoryPageSimilarItems(TestCase):
+class TestStoryPageSimilarItems(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 
