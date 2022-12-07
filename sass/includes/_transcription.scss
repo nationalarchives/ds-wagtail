@@ -143,17 +143,38 @@ a#showMoreButton:hover {color:white;}
 
   }
 
-  label[id^="tab1-"] {
+
+ // .tabset > input:checked + label {
+    //border-bottom: 0.125rem solid #fff;
+  //}
+
+  input[type="radio"]:checked + label{
+    /* Checked Styles */
     border-bottom: 0.125rem solid #fff;
   }
 
+  input[type="radio"] + label{
+    /* Base Styles aka unchecked */
+    border:none; // Will be overwritten by :checked
+  }
+  input[type="radio"]:not(:checked) + label{
+    /* Explicit Unchecked Styles */
+    border: none; // Only apply border to unchecked state
+  }
 
-  .tabset > input:checked + label {
+
+
+/*
+  input[id^="tab1-"] + label{
     border-bottom: 0.125rem solid #fff;
   }
 
+  input[id^="tab2-"]:checked + label{
+    border-bottom: 0.125rem solid #fff;
+  }
+*/
   input:checked#tab2-1{
-    #tab1-1 {background:red;}
+    //#tab1-1 {background:red;}
   }
 
   .tab-panel {
