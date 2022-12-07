@@ -8,11 +8,11 @@ from wagtail.models import Site
 from ..models import StoriesPage
 
 
-class TeststoryPageSectionBlockIntegration(TestCase):
+class TestStoryPageSectionBlockIntegration(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 
-        self.Stories_page = StoriesPage(
+        self.stories_page = StoriesPage(
             title="Stories page",
             sub_heading="Introduction",
             body=json.dumps(
@@ -62,10 +62,10 @@ class TeststoryPageSectionBlockIntegration(TestCase):
                 ]
             ),
         )
-        root.add_child(instance=self.Stories_page)
+        root.add_child(instance=self.stories_page)
 
     def test_jumplink_rendering(self):
-        response = self.client.get(self.Stories_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         self.assertContains(response, "jumplinks")
         self.assertContains(response, 'href="#h2.section-one"')
         self.assertContains(response, 'href="#h2.section-two"')
@@ -73,10 +73,10 @@ class TeststoryPageSectionBlockIntegration(TestCase):
         self.assertContains(response, 'id="h2.section-two"')
 
     def test_jumplinks_not_rendered_if_page_has_no_sections(self):
-        self.Stories_page.body = "[]"
-        self.Stories_page.save()
+        self.stories_page.body = "[]"
+        self.stories_page.save()
 
-        response = self.client.get(self.Stories_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         self.assertNotContains(response, "jumplinks")
 
     def assertContainsHeading(
@@ -97,7 +97,7 @@ class TeststoryPageSectionBlockIntegration(TestCase):
         self.assertIn(heading_text, heading_texts)
 
     def test_headings_rendered_as_h3(self):
-        response = self.client.get(self.Stories_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         response.render()
         content = response.content.decode()
         self.assertContainsHeading(content, "This should render as a h3", 3)

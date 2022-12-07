@@ -35,11 +35,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
         root.add_child(instance=self.Stories_index_page)
 
-        self.Stories_page = StoriesPage(
+        self.stories_page = StoriesPage(
             title="Stories page",
             sub_heading="Introduction",
         )
-        self.Stories_index_page.add_child(instance=self.Stories_page)
+        self.Stories_index_page.add_child(instance=self.stories_page)
 
     @responses.activate
     def test_add_featured_record(self):
@@ -74,16 +74,16 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
         response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.Stories_page.id,)), data
+            reverse("wagtailadmin_pages:edit", args=(self.stories_page.id,)), data
         )
         self.assertRedirects(
             response,
             reverse("wagtailadmin_explore", args=(self.Stories_index_page.id,)),
         )
 
-        self.Stories_page.refresh_from_db()
+        self.stories_page.refresh_from_db()
 
-        featured_record = self.Stories_page.body[0].value["content"][0]
+        featured_record = self.stories_page.body[0].value["content"][0]
         self.assertEqual(featured_record.block_type, "featured_record")
         self.assertEqual(
             featured_record.value["title"], "This record is sooooo featured!"
@@ -107,7 +107,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
     @responses.activate
     def test_page_with_featured_record(self):
-        self.Stories_page.body = json.dumps(
+        self.stories_page.body = json.dumps(
             [
                 {
                     "type": "content_section",
@@ -126,11 +126,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 }
             ]
         )
-        self.Stories_page.save()
+        self.stories_page.save()
 
         # Check the edit view first
         response = self.client.get(
-            reverse("wagtailadmin_pages:edit", args=(self.Stories_page.id,))
+            reverse("wagtailadmin_pages:edit", args=(self.stories_page.id,))
         )
         self.assertContains(response, "This record is sooooo featured!")
         self.assertContains(response, "Test record")
@@ -141,7 +141,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
         # View the page to check rendering also
-        response = self.client.get(self.Stories_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         self.assertContains(response, "Test record")
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
@@ -156,7 +156,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         responses.replace(responses.GET, "https://kong.test/data/fetch", status=500)
 
-        self.Stories_page.body = json.dumps(
+        self.stories_page.body = json.dumps(
             [
                 {
                     "type": "content_section",
@@ -181,10 +181,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 }
             ]
         )
-        self.Stories_page.save()
+        self.stories_page.save()
 
         response = self.client.get(
-            reverse("wagtailadmin_pages:edit", args=(self.Stories_page.id,))
+            reverse("wagtailadmin_pages:edit", args=(self.stories_page.id,))
         )
 
         self.assertEquals(response.status_code, 200)
