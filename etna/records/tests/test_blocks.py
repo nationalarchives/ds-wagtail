@@ -29,17 +29,17 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         root = Site.objects.get().root_page
 
-        self.Stories_index_page = StoriesIndexPage(
+        self.stories_index_page = StoriesIndexPage(
             title="Stories Index Page",
             sub_heading="Introduction",
         )
-        root.add_child(instance=self.Stories_index_page)
+        root.add_child(instance=self.stories_index_page)
 
         self.stories_page = StoriesPage(
             title="Stories page",
             sub_heading="Introduction",
         )
-        self.Stories_index_page.add_child(instance=self.stories_page)
+        self.stories_index_page.add_child(instance=self.stories_page)
 
     @responses.activate
     def test_add_featured_record(self):
@@ -78,7 +78,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
         self.assertRedirects(
             response,
-            reverse("wagtailadmin_explore", args=(self.Stories_index_page.id,)),
+            reverse("wagtailadmin_explore", args=(self.stories_index_page.id,)),
         )
 
         self.stories_page.refresh_from_db()
