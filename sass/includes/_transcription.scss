@@ -142,25 +142,23 @@ a#showMoreButton:hover {color:white;}
   .tabset > input:checked + label::after {
 
   }
-
-
- // .tabset > input:checked + label {
-    //border-bottom: 0.125rem solid #fff;
-  //}
-
+  /*
+  label[id^="tab1-"]{
+    border-bottom: 0.125rem solid #fff;
+  }
+  */
   input[type="radio"]:checked + label{
-    /* Checked Styles */
     border-bottom: 0.125rem solid #fff;
   }
 
   input[type="radio"] + label{
-    /* Base Styles aka unchecked */
     border:none; // Will be overwritten by :checked
   }
   input[type="radio"]:not(:checked) + label{
-    /* Explicit Unchecked Styles */
     border: none; // Only apply border to unchecked state
   }
+
+
 
 
 

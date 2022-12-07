@@ -35,8 +35,8 @@
                 <div id ="tab-system" class="col-md-6">
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
-                            <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked>
-                            <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}"><h2>Transcription</h2></label>
+                            <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
+                            <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}" ><h2>Transcription</h2></label>
                             <!-- Tab 2 -->
                             {% if item.translation_text %}
                                 <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
