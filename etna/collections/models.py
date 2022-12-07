@@ -136,7 +136,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_Stories(self):
+    def related_stories(self):
         return (
             StoriesPage.objects.filter(topic=self)
             .live()
@@ -235,7 +235,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_Stories(self):
+    def related_stories(self):
         return (
             StoriesPage.objects.filter(time_period=self)
             .live()
