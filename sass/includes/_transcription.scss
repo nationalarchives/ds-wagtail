@@ -143,8 +143,17 @@ a#showMoreButton:hover {color:white;}
 
   }
 
+  label[id^="tab1-"] {
+    border-bottom: 0.125rem solid #fff;
+  }
+
+
   .tabset > input:checked + label {
     border-bottom: 0.125rem solid #fff;
+  }
+
+  input:checked#tab2-1{
+    #tab1-1 {background:red;}
   }
 
   .tab-panel {
