@@ -94,5 +94,5 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 self.assertFalse(form.is_valid(), label)
                 self.assertEqual(
                     form.errors.get("opening_start_date", None),
-                    ["Start date cannot be after end date"],
+                    ["There is a problem. Start date cannot be after end date"],
                 )
