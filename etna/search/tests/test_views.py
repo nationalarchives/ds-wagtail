@@ -340,14 +340,14 @@ class WebsiteSearchinsightTest(WagtailTestUtils, TestCase):
 
         # create story page object
         home = HomePage.objects.get()
-        Stories_index_page = StoriesIndexPage(
+        stories_index_page = StoriesIndexPage(
             title="Insight Pages", sub_heading="Sub heading"
         )
-        home.add_child(instance=Stories_index_page)
-        Stories_page = StoriesPage(
+        home.add_child(instance=stories_index_page)
+        stories_page = StoriesPage(
             title="William Shakespeare", sub_heading="Sub heading"
         )
-        Stories_index_page.add_child(instance=Stories_page)
+        stories_index_page.add_child(instance=stories_page)
 
         # create story page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"

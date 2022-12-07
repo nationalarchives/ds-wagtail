@@ -55,9 +55,9 @@
     {% if FEATURE_RELATED_Stories_ON_EXPLORE_PAGES %}
         <div class="row">
             <div class="col-md-12">
-                 {% for Stories_page in page.related_Stories %}
+                 {% for stories_page in page.related_stories %}
                      <li>
-                       <a href="{% pageurl Stories_page %}">{{ Stories_page.title }}</a>
+                       <a href="{% pageurl stories_page %}">{{ stories_page.title }}</a>
                      </li>
                   {% endfor %}
             </div>

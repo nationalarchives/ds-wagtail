@@ -41,8 +41,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        Stories_pages = self.get_children().live().specific()
-        context["Stories_pages"] = Stories_pages
+        stories_pages = self.get_children().live().specific()
+        context["stories_pages"] = stories_pages
         context["etna_index_pages"] = [
             {
                 "title": "Collection Explorer",

@@ -57,7 +57,7 @@
             <div class="col-md-12">
                  {% for stories_page in page.related_Stories %}
                 <li>
-                       <a href="{% pageurl Stories_page %}">{{ stories_page.title }}</a>
+                       <a href="{% pageurl stories_page %}">{{ stories_page.title }}</a>
                 </li>
             {% endfor %}
             </div>
