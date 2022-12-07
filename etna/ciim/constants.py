@@ -99,7 +99,7 @@ WEBSITE_BUCKETS = BucketList(
     [
         Bucket(key="blog", label="Blog posts"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="story", label="Stories"),
+        Bucket(key="insight", label="Insights"),
         Bucket(key="highlight", label="Highlights"),
         Bucket(key="audio", label="Audio"),
         Bucket(key="video", label="Video"),

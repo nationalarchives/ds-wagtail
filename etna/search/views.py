@@ -678,7 +678,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         data.update(customMetric1=total_count)
         return data
 
-    def add_Stories_page_for_url(self, page: Page) -> None:
+    def add_stories_page_for_url(self, page: Page) -> None:
         """
         Finds the Stories page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
@@ -694,7 +694,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
             for result in page.object_list
         ]
         # filter by slug for performance boost
-        Stories_page_by_url = {
+        stories_page_by_url = {
             page.get_url(self.request): page
             for page in StoriesPage.objects.live()
             .filter(slug__in=slugs)
@@ -709,11 +709,11 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
                 .get("details", {})
                 .get("sourceUrl", "")
             )
-            if source_page := Stories_page_by_url.get(urlparse(url).path, ""):
+            if source_page := stories_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in Stories_page_by_url={Stories_page_by_url}"
+                    f"WebsiteSearchView:scrapped/ingested url={url} not found in stories_page_by_url={stories_page_by_url}"
                 )
             page_list.append(result)
         page.object_list = page_list
@@ -759,9 +759,11 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
+
         if filter_aggregation := self.request.GET.get("group", ""):
-            if filter_aggregation == "story" and "page" in context:
-                self.add_Stories_page_for_url(context["page"])
+            print("Big Mo filter_aggregation:", filter_aggregation)
+            if filter_aggregation == "insight" and "page" in context:
+                self.add_stories_page_for_url(context["page"])
             if filter_aggregation == "highlight" and "page" in context:
                 self.add_results_page_for_url(context["page"])
         return context
