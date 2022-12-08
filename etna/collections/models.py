@@ -57,6 +57,7 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
@@ -107,10 +108,12 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     single ResultsPage (to output the results of their selection).
     """
 
+    sub_heading = models.CharField(max_length=200, blank=False)
+
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    sub_heading = models.CharField(max_length=200, blank=False)
+
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
@@ -149,6 +152,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
@@ -200,6 +204,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
+
     featured_insight = models.ForeignKey(
         "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
     )

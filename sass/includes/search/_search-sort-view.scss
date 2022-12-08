@@ -41,6 +41,19 @@
 
     }
 
+    &__mobile {
+        padding-bottom:1em;
+        @media only screen and (min-width: $screen__md) {
+            display:none;
+        }
+    }
+
+    &__desktop {
+        @media only screen and (max-width: $screen__md) {
+            display:none;
+        }
+    }
+
     &__list {
         display: flex;
         align-items: center;
@@ -58,6 +71,7 @@
             margin-left: auto;
             align-items: flex-end;
             margin-right: 0;
+            display:none;
 
         }
 
@@ -93,4 +107,20 @@
             }
         }
     }
+}
+
+.search-others {
+    margin-bottom: 1rem;
+    @media only screen and (min-width: $screen__md) {
+        display:none;
+    }
+
+    select {
+        padding:0.5rem;
+        padding-right: 1rem;
+        border-radius: 5px;
+        background : #eeedf3;
+        width:75%;
+    }
+
 }

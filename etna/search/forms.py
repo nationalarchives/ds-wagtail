@@ -4,6 +4,8 @@ from django import forms
 from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
+from etna.core.fields import END_OF_MONTH, DateInputField
+
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
@@ -166,19 +168,17 @@ class BaseCollectionSearchForm(forms.Form):
         required=False,
         validate_input=False,
     )
-    opening_start_date = forms.DateTimeField(
+    opening_start_date = DateInputField(
         label="From",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
         required=False,
+        default_day=1,
+        default_month=1,
     )
-    opening_end_date = forms.DateTimeField(
+    opening_end_date = DateInputField(
         label="To",
-        widget=forms.DateTimeInput(
-            attrs={"type": "input", "placeholder": "YYYY-MM-DD"}
-        ),
         required=False,
+        default_day=END_OF_MONTH,
+        default_month=12,
     )
     per_page = forms.IntegerField(
         min_value=20,

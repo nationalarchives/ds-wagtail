@@ -1,6 +1,13 @@
+.cta-banner-survey-js{
+    display: none;
+}
+
 .cta-banner-survey {
     border-top: 0.1875rem dotted $color__grey-4;
     padding: 1rem 0;
+    display: none;
+
+
 
     &__heading {
         font-size: 1.55rem;
@@ -21,4 +28,24 @@
         }
         height: 3.75rem;
     }
+}
+
+.cta-banner-border {
+    //border:solid 1px black;
+    margin:auto;
+    width:90%;
+    margin-bottom:1em;
+
+    p {
+        margin-bottom:1rem;
+    }
+
+}
+
+.no-js-survey {
+    //background:red;
+    margin:auto;
+    width:50%;
+    text-align: center;
+    margin-bottom:1em;
 }

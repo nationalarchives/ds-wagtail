@@ -1,9 +1,13 @@
 {% load wagtailimages_tags %}
+{% load search_tags %}
 
-{% image record.source_page.teaser_image fill-288x172 as teaser_image_small %}
-{% image record.source_page.teaser_image fill-328x196 as teaser_image_medium %}
-{% image record.source_page.teaser_image fill-348x208 as teaser_image_large %}
-{% image record.source_page.teaser_image fill-508x304 as teaser_image_extra_large %}
+{% extended_in_operator buckets.current.key bucketkeys.INSIGHT.value bucketkeys.HIGHLIGHT.value as apply_teaser_image %}
+{% if apply_teaser_image %}
+    {% image record.source_page.teaser_image fill-288x172 as teaser_image_small %}
+    {% image record.source_page.teaser_image fill-328x196 as teaser_image_medium %}
+    {% image record.source_page.teaser_image fill-348x208 as teaser_image_large %}
+    {% image record.source_page.teaser_image fill-508x304 as teaser_image_extra_large %}
+{% endif %}
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 {% load search_tags records_tags static %}
@@ -12,7 +16,7 @@
     <div class="search-results__list-card-content">
         <div class="row">
             <div class="col-md-3 order-md-2">
-
+                {% if apply_teaser_image %}
                     <div class="search-results__list-card-image">
                         <picture>
                             <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
@@ -20,11 +24,11 @@
                             <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
                             <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
                             <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-                            <img src="{{ teaser_image_large.url }}" alt="alt tag to go here" class="card-group-secondary-nav__image-fallback"/>
+                            <img src="{{ teaser_image_large.url }}" alt="" class="card-group-secondary-nav__image-fallback"/>
                         </picture>
                     </div>
-
-                </div>
+                {% endif %}
+            </div>
 
 
             <div class="col-md-9 order-md-1">
@@ -99,6 +103,8 @@
                 </a>
             </div>
             {% endif %}
+        </div>
+    </div>
 </li>
 
 

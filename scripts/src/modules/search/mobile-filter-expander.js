@@ -1,3 +1,4 @@
+
 import debounce from '../debounce.js';
 
 export default function() {
@@ -10,7 +11,15 @@ export default function() {
     }
 
     let $showHideButton = document.createElement('button');
-    $showHideButton.innerText = 'Show search filters';
+    //check the query string to populate the number of selected filters
+    if (window.location.href.indexOf("filter_keyword") != -1) {
+
+        $showHideButton.innerHTML=$buttonHtml;
+
+    } else {
+        // no filters selected
+        $showHideButton.innerHTML = 'Filters';
+    }
     $showHideButton.classList.add('search-results__filter-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
@@ -30,10 +39,11 @@ export default function() {
         $searchFilterContainer.hidden = !$searchFilterContainer.hidden;
 
         if(newAriaExpanded) {
-            $showHideButton.innerHTML = 'Hide search filters';
+            $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Show search filters';
+            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">'+ $noOfFilters +'</span>';
+
         }
     });
 
