@@ -20,7 +20,7 @@
         <div id="transcript-element">
             {% for item in page.image_gallery.all %}
             <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-sm-12"></div>
+<!--                <div class="col-md-12 col-sm-12"></div>-->
                 <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
             </div>
 
@@ -43,7 +43,7 @@
                                 <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}"><h2>Modern English</h2></label>
                             {% endif %}
                             <div class="tab-panels">
-                                <section id="transcription" class="tab-panel-{{ forloop.counter }}">
+                                <section id="transcription" class="tab-panel">
                                     {% if item.transcription_header %}
                                         <p>
                                             {{ item.transcription_header }}

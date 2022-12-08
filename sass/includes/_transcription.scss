@@ -106,6 +106,8 @@ a#showMoreButton:hover {color:white;}
     display: block;
   }
 
+
+
   /*
    Styling
   */
@@ -142,11 +144,7 @@ a#showMoreButton:hover {color:white;}
   .tabset > input:checked + label::after {
 
   }
-  /*
-  label[id^="tab1-"]{
-    border-bottom: 0.125rem solid #fff;
-  }
-  */
+
   input[type="radio"]:checked + label{
     border-bottom: 0.125rem solid #fff;
   }
@@ -158,22 +156,6 @@ a#showMoreButton:hover {color:white;}
     border: none; // Only apply border to unchecked state
   }
 
-
-
-
-
-/*
-  input[id^="tab1-"] + label{
-    border-bottom: 0.125rem solid #fff;
-  }
-
-  input[id^="tab2-"]:checked + label{
-    border-bottom: 0.125rem solid #fff;
-  }
-*/
-  input:checked#tab2-1{
-    //#tab1-1 {background:red;}
-  }
 
   .tab-panel {
     padding: 30px 0;
