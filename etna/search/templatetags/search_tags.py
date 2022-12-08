@@ -218,3 +218,12 @@ def search_title(search_tab) -> str:
     elif search_tab == SearchTabs.WEBSITE.value:
         label = "Website search results"
     return label
+
+
+@register.simple_tag
+def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
+    """
+    Input params are template tags
+    Returns True when rhs_operand_list contains lhs_operand value, False otherwise
+    """
+    return (lhs_operand in rhs_operand_list) or False

@@ -1,6 +1,10 @@
 from django.test import RequestFactory, SimpleTestCase
 
-from ..templatetags.search_tags import query_string_exclude, query_string_include
+from ..templatetags.search_tags import (
+    extended_in_operator,
+    query_string_exclude,
+    query_string_include,
+)
 
 
 class QueryStringTest(SimpleTestCase):
@@ -57,3 +61,32 @@ class QueryStringExcludeTest(SimpleTestCase):
         result = query_string_exclude(context, "page", "1")
 
         self.assertEqual(result, "test=true")
+
+
+class TestExtendedInOperator(SimpleTestCase):
+    def test_extended_in_operator(self):
+        for label, value, expected in (
+            (
+                "test_match_notfound",
+                ("a", "b", "c"),
+                False,
+            ),
+            (
+                "test_match_found",
+                ("c", "b", "c"),
+                True,
+            ),
+            (
+                "test_none_found",
+                (None, "b", None),
+                True,
+            ),
+            (
+                "test_none_not_found",
+                (None, "b", "c"),
+                False,
+            ),
+        ):
+            with self.subTest(label):
+                result = extended_in_operator(value[0], value[1], value[2])
+                self.assertEqual(result, expected)
