@@ -7,7 +7,7 @@
     <ul class="pagination__list">
         {% if page.has_previous %}
         <li class="pagination__list-item">
-            <a class="pagination__page-chevron-previous" href="?{% query_string_include 'page' page.previous_page_number %}" data-link-type="Pagination" aria-label="Go to Previous Page" data-link="Previous page"><span
+          <a class="pagination__page-chevron-previous" href="?{% query_string_include 'page' page.previous_page_number %}" data-link-type="Pagination" aria-label="Go to Previous Page" data-link="Previous page"><span
                     class="sr-only">< Previous</span>< Previous</a>
         </li>
         {% else %}
