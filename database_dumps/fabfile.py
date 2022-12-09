@@ -280,7 +280,7 @@ def pull_database_from_platform(c, environment_name):
 
     restore_db(
         c,
-        f"app/{LOCAL_DB_DUMP_DIR}/production.psql",
+        f"app/{LOCAL_DB_DUMP_DIR}/stories.psql",
         delete_dump_on_success=False,
         delete_dump_on_error=True,
     )
