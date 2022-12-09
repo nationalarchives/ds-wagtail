@@ -21,7 +21,7 @@
             {% for item in page.image_gallery.all %}
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12 col-sm-12">
-                <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
+                    <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
                 </div>
             </div>
 
@@ -31,36 +31,36 @@
                     <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
                     <p class="image-caption">Will of William Shakespeare 25 MArch 1616. Proved 22 June 1616. Image library ref: <a href="" alt="">PROB 1/4</a></p>
                 </div>
-            
+
                 {% if item.transcription_text %}
                 <div id ="tab-system" class="col-md-6">
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
-                            <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
-                            <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}" ><h2>Transcription</h2></label>
-                            <!-- Tab 2 -->
+                        <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
+                        <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}" ><h2>Transcription</h2></label>
+                        <!-- Tab 2 -->
+                        {% if item.translation_text %}
+                        <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
+                        <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}"><h2>Modern English</h2></label>
+                        {% endif %}
+                        <div class="tab-panels">
+                            <section class="tab-panel">
+                                {% if item.transcription_header %}
+                                <p id="transcription-{{ forloop.counter }}">
+                                    {{ item.transcription_header }}
+                                </p>
+                                {% endif %}
+                                <p>
+                                    {{ item.transcription_text|richtext }}
+                                </p>
+                            </section>
                             {% if item.translation_text %}
-                                <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
-                                <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}"><h2>Modern English</h2></label>
-                            {% endif %}
-                            <div class="tab-panels">
-                                <section class="tab-panel">
-                                    {% if item.transcription_header %}
-                                        <p id="transcription-{{ forloop.counter }}">
-                                            {{ item.transcription_header }}
-                                        </p>
-                                    {% endif %}
-                                    <p>
-                                        {{ item.transcription_text|richtext }}
-                                    </p>
-                                </section>
-                            {% if item.translation_text %}
-                                <section id="translation" class="tab-panel">
-                                    {% if item.translation_header %}
-                                        <p>{{ item.translation_header}}</p>
-                                    {% endif %}
-                                    <p>{{ item.translation_text|richtext }}</p>
-                                </section>
+                            <section id="translation" class="tab-panel">
+                                {% if item.translation_header %}
+                                <p>{{ item.translation_header}}</p>
+                                {% endif %}
+                                <p>{{ item.translation_text|richtext }}</p>
+                            </section>
                             {% endif %}
                         </div>
                     </div>
@@ -70,7 +70,7 @@
             {% endfor %}
             <div class="row d-flex justify-content-center close-button">
                 <a id ='closebutton' href="">Close X</a>
-            </div> 
+            </div>
         </div>
         <!--end of transcript element-->
     </div>

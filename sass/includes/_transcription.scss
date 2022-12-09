@@ -52,7 +52,7 @@ a#showMoreButton:hover {color:white;}
       color:white;
       text-decoration: none;
       @media only screen and (max-width: $screen__md) {
-       // font-size:0.8em;
+        // font-size:0.8em;
       }
     }
   }
@@ -71,13 +71,13 @@ a#showMoreButton:hover {color:white;}
   #close-button {
     display:none;
     padding:1em;
-     a {color:#fbd709;}
+    a {color:#fbd709;}
   }
 
 
 
 
-///tab system
+  ///tab system
   /*
  CSS for the main interaction
 */
@@ -103,9 +103,9 @@ a#showMoreButton:hover {color:white;}
     text-align: left;
   }
 
-.tab-panel-inital {
-  display: block;
-}
+  .tab-panel-inital {
+    display: block;
+  }
 
   .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
   .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
