@@ -1,4 +1,3 @@
-import datetime
 import os
 import subprocess
 
@@ -268,7 +267,7 @@ def pull_staging_media(c):
 
 
 def pull_database_from_platform(c, environment_name):
-    timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+    # timestamp = datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
     print("Fetching data from platform.sh")
     start(c, "cli")
