@@ -94,7 +94,6 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 form = CatalogueSearchForm(form_data)
                 self.assertFalse(form.is_valid(), label)
                 self.assertEqual(
-                
                     form.errors.get("opening_start_date", None),
                     [CUSTOM_ERROR_MESSAGES.get("invalid_date_range")],
                 )
