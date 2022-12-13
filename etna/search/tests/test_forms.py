@@ -1,5 +1,6 @@
 from django.test import SimpleTestCase
 
+from ...ciim.constants import CUSTOM_ERROR_MESSAGES
 from ..forms import CatalogueSearchForm
 
 
@@ -94,5 +95,5 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 self.assertFalse(form.is_valid(), label)
                 self.assertEqual(
                     form.errors.get("opening_start_date", None),
-                    ["There is a problem. Start date cannot be after end date"],
+                    [CUSTOM_ERROR_MESSAGES.get("invalid_date_range")],
                 )
