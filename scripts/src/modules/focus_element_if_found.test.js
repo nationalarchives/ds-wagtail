@@ -24,7 +24,7 @@ test('updates the DOM as expected', () => {
     document.body.innerHTML = `
     <div class="tna-form__error-summary" role="alert" id="error-message">
        <h2>There is a problem.</h2>
-       <p>Check the highlighted fields below</p>
+       <p>Check the highlighted fields below.</p>
     </div>
     `;
 
