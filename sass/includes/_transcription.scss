@@ -68,6 +68,8 @@ a#showMoreButton:hover {color:white;}
     //display:none;
   }
 
+
+
   #close-button {
     display:none;
     padding:1em;
@@ -81,6 +83,7 @@ a#showMoreButton:hover {color:white;}
   /*
  CSS for the main interaction
 */
+
   .tabset > input[type="radio"] {
     position: absolute;
     left: -200vw;

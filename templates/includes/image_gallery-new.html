@@ -17,10 +17,8 @@
         </div>
 
         <!--start of transcript element-->
-
         <div id="transcript-element">
             {% for item in page.image_gallery.all %}
-            <div id="item-{{forloop.counter}}">
             <div class="row d-flex justify-content-center">
                 <div class="col-md-12 col-sm-12">
                     <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
@@ -31,45 +29,37 @@
                 <div class="col-md-6">
                     {% image item.image original as gallery_image %}
                     <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
-                    <p class="image-caption">xWill of William Shakespeare 25 MArch 1616. Proved 22 June 1616. Image library ref: <a href="" alt="">PROB 1/4</a></p>
+                    <p class="image-caption">Will of William Shakespeare 25 March 1616. Proved 22 June 1616. Image library ref: <a href="" alt="">PROB 1/4</a></p>
                 </div>
-
-                {% if item.transcription_text %}
-                <div id ="tab-system" class="col-md-6">
-                    <div class="tabset" id="tabset-{{ forloop.counter }}">
+                <div class="col-md-6">
+                    <div class="tabset">
                         <!-- Tab 1 -->
-                        <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
-                        <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}" ><h2>Transcription</h2></label>
+                        <input type="radio" name="tabset" id="transcription-{{ forloop.counter }}" aria-controls="marzen" checked>
+                        <label for="tab1">Transcription</label>
                         <!-- Tab 2 -->
-                        {% if item.translation_text %}
-                        <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
-                        <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}"><h2>Modern English</h2></label>
-                        {% endif %}
+                        <input type="radio" name="tabset" id="translation-{{ forloop.counter }}" aria-controls="rauchbier">
+                        <label for="tab2">Modern Translation</label>
+
+
 
                         <div class="tab-panels">
-                            <section class="tab-panel">
-                                {% if item.transcription_header %}
-                                <p id="transcription-{{ forloop.counter }}">
-                                    {{ item.transcription_header }}
-                                </p>
-                                {% endif %}
-                                <p>
-                                    {{ item.transcription_text|richtext }}
-                                </p>
+                            <section id="transcription-{{ forloop.counter }}" class="tab-panel">
+                                <h2>6A. Märzen</h2>
+                                <p><strong>Overall Impression:</strong> An elegant, malty German amber lager with a clean, rich, toasty and bready malt flavor, restrained bitterness, and a dry finish that encourages another drink. The overall malt impression is soft, elegant, and complex, with a rich aftertaste that is never cloying or heavy.</p>
+                                <p><strong>History:</strong> As the name suggests, brewed as a stronger “March beer” in March and lagered in cold caves over the summer. Modern versions trace back to the lager developed by Spaten in 1841, contemporaneous to the development of Vienna lager. However, the Märzen name is much older than 1841; the early ones were dark brown, and in Austria the name implied a strength band (14 °P) rather than a style. The German amber lager version (in the Viennese style of the time) was first served at Oktoberfest in 1872, a tradition that lasted until 1990 when the golden Festbier was adopted as the standard festival beer.</p>
                             </section>
-                            {% if item.translation_text %}
-                            <section id="translation" class="tab-panel">
-                                {% if item.translation_header %}
-                                <p>{{ item.translation_header}}</p>
-                                {% endif %}
-                                <p>{{ item.translation_text|richtext }}</p>
+                            <section id="translation-{{ forloop.counter }}" class="tab-panel">
+                                <h2>6B. Rauchbier</h2>
+                                <p><strong>Overall Impression:</strong>  An elegant, malty German amber lager with a balanced, complementary beechwood smoke character. Toasty-rich malt in aroma and flavor, restrained bitterness, low to high smoke flavor, clean fermentation profile, and an attenuated finish are characteristic.</p>
+                                <p><strong>History:</strong> A historical specialty of the city of Bamberg, in the Franconian region of Bavaria in Germany. Beechwood-smoked malt is used to make a Märzen-style amber lager. The smoke character of the malt varies by maltster; some breweries produce their own smoked malt (rauchmalz).</p>
                             </section>
-                            {% endif %}
+
                         </div>
+
                     </div>
+
                 </div>
-                {% endif %}
-            </div>
+
             </div>
             {% endfor %}
             <div class="row d-flex justify-content-center close-button">
