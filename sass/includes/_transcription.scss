@@ -89,10 +89,20 @@ a#showMoreButton:hover {color:white;}
   }
 
 
-
+/* original control
   .tabset .tab-panel {
     display: none;
   }
+*/
+  /*
+  .tab-panel-1,.tab-panel-2 {
+    display:none;
+  }
+
+  .tab-panel-initial-1,.tab-panel-initial-2 {
+    display:none;
+  }
+*/
 
   /*
   p[id^="transcription-"] {
@@ -101,23 +111,35 @@ a#showMoreButton:hover {color:white;}
   */
 
   div[id^="tabset-"] p{
-    display: block;
+    //display: block;
     text-align: left;
   }
 
-  .tab-panel-inital {
+
+
+/*
+  .tabset > input:first-child:checked ~ .tab-panels > .tab-panel-1:first-child,
+  .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel-1:nth-child(2),
+  .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel-1:nth-child(3),
+  .tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel-1:nth-child(4),
+  .tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel-1:nth-child(5),
+  .tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel-1:nth-child(6) {
     display: block;
+
   }
 
-  .tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-  .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-  .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-  .tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-  .tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-  .tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
-    display: block;
-  }
 
+
+  .tabset > input:first-child:checked ~ .tab-panels > .tab-panel-2:first-child,
+  .tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel-2:nth-child(2),
+  .tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel-2:nth-child(3),
+  .tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel-2:nth-child(4),
+  .tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel-2:nth-child(5),
+  .tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel-2:nth-child(6) {
+    display: block;
+
+  }
+*/
 
 
 

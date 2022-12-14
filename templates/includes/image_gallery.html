@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                     {% image item.image original as gallery_image %}
                     <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
-                    <p class="image-caption">xWill of William Shakespeare 25 MArch 1616. Proved 22 June 1616. Image library ref: <a href="" alt="">PROB 1/4</a></p>
+                    <p class="image-caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do. Lorem ipsum Image library ref: <a href="" alt="">PROB 1/4</a></p>
                 </div>
 
                 {% if item.transcription_text %}
@@ -39,7 +39,7 @@
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
                         <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
-                        <label for="tab1-{{ forloop.counter }}" id="tab1-{{ forloop.counter }}" ><h2>Transcription</h2></label>
+                        <label for="tab1-{{ forloop.counter }}"><h2>Transcription</h2></label>
                         <!-- Tab 2 -->
                         {% if item.translation_text %}
                         <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
@@ -47,9 +47,9 @@
                         {% endif %}
 
                         <div class="tab-panels">
-                            <section class="tab-panel">
+                            <section id="transcription-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
                                 {% if item.transcription_header %}
-                                <p id="transcription-{{ forloop.counter }}">
+                                <p>
                                     {{ item.transcription_header }}
                                 </p>
                                 {% endif %}
@@ -58,7 +58,7 @@
                                 </p>
                             </section>
                             {% if item.translation_text %}
-                            <section id="translation" class="tab-panel">
+                            <section id="translation-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
                                 {% if item.translation_header %}
                                 <p>{{ item.translation_header}}</p>
                                 {% endif %}
@@ -82,6 +82,7 @@
 
 <script>
 
+    //js to show/hide transcription, translation element
     //variables
     const previewImage = document.getElementById("previewImage");
     const showMoreButton = document.getElementById("showMoreButton");
@@ -92,8 +93,6 @@
     transcript.style.display="none";
     previewImage.style.display="block";
     showMoreButton.style.display="block";
-
-
 
     closebutton.style.display="block";
     closebutton.style.padding="1em";
@@ -117,5 +116,32 @@
         showMoreButton.style.display="block";
 
     })
+
+    //js to control tabs
+    const transcription1 = document.getElementById("transcription-1");
+    const translation1 = document.getElementById("translation-1");
+
+    const transcirtiontab = document.getElementById("tab1-1");
+    const translationtab = document.getElementById("tab2-1");
+
+    translation1.style.display="none";
+
+    translationtab.oninput= () => {
+        //alert('clicked') // Do something
+        transcription1.style.display="none";
+        translation1.style.display="block"
+    }
+
+    transcirtiontab.oninput= () => {
+        //alert('clicked') // Do something
+        transcription1.style.display="block";
+        translation1.style.display="none"
+    }
+
+
+
+
+
+
 
 </script>
