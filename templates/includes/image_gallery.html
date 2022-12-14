@@ -38,8 +38,8 @@
                 <div id ="tab-system" class="col-md-6">
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
-                        <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked >
-                        <label for="tab1-{{ forloop.counter }}"><h2>Transcription</h2></label>
+                        <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked>
+                        <label for="tab1-{{ forloop.counter }}" id="initial-label"><h2>Transcription</h2></label>
                         <!-- Tab 2 -->
                         {% if item.translation_text %}
                         <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
@@ -118,13 +118,25 @@
     })
 
     //js to control tabs
+
+    //const initialLabel = document.getElementById("initial-label");
+    //initialLabel.style.border="0.125rem solid #fff;";
+
+
     const transcription1 = document.getElementById("transcription-1");
     const translation1 = document.getElementById("translation-1");
+
+    const transcription2 = document.getElementById("transcription-2");
+    const translation2 = document.getElementById("translation-2");
 
     const transcirtiontab = document.getElementById("tab1-1");
     const translationtab = document.getElementById("tab2-1");
 
+    const transcirtiontab2 = document.getElementById("tab1-2");
+    const translationtab2 = document.getElementById("tab2-2");
+
     translation1.style.display="none";
+    translation2.style.display="none";
 
     translationtab.oninput= () => {
         //alert('clicked') // Do something
@@ -136,6 +148,18 @@
         //alert('clicked') // Do something
         transcription1.style.display="block";
         translation1.style.display="none"
+    }
+
+    translationtab2.oninput= () => {
+        //alert('clicked') // Do something
+        transcription2.style.display="none";
+        translation2.style.display="block"
+    }
+
+    transcirtiontab2.oninput= () => {
+        //alert('clicked') // Do something
+        transcription2.style.display="block";
+        translation2.style.display="none"
     }
 
 
