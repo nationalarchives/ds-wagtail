@@ -180,6 +180,8 @@ a#showMoreButton:hover {color:white;}
 
   }
 
+
+
   input[type="radio"]:checked + label{
     border-bottom: 0.125rem solid #fff;
   }
@@ -189,6 +191,10 @@ a#showMoreButton:hover {color:white;}
   }
   input[type="radio"]:not(:checked) + label{
     border: none; // Only apply border to unchecked state
+  }
+
+  .initial-label {
+    border-bottom: 0.125rem solid #fff !important;
   }
 
 

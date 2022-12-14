@@ -39,7 +39,7 @@
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
                         <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked>
-                        <label for="tab1-{{ forloop.counter }}" id="initial-label"><h2>Transcription</h2></label>
+                        <label for="tab1-{{ forloop.counter }}" class="initial-label" id="initial-{{forloop.counter}}"><h2>Transcription</h2></label>
                         <!-- Tab 2 -->
                         {% if item.translation_text %}
                         <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
@@ -142,6 +142,8 @@
         //alert('clicked') // Do something
         transcription1.style.display="none";
         translation1.style.display="block"
+        var element = document.getElementById("initial-1");
+        element.classList.remove("initial-label");
     }
 
     transcirtiontab.oninput= () => {
@@ -154,6 +156,8 @@
         //alert('clicked') // Do something
         transcription2.style.display="none";
         translation2.style.display="block"
+        var elementb = document.getElementById("initial-2");
+        elementb.classList.remove("initial-label");
     }
 
     transcirtiontab2.oninput= () => {
