@@ -115,7 +115,7 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="creator", label="Record creators"),
         Bucket(key="blog", label="Blogs"),
         Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key="insight", label="Insights from the collection"),
+        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
