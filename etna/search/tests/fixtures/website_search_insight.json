@@ -115,9 +115,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/william-shakespeare/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/william-shakespeare/",
                                     "primaryIdentifier": "ip-3162",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "William Shakespeare"
                                 }
                             }
