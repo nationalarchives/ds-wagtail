@@ -151,9 +151,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/william-shakespeare/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/william-shakespeare/",
                                     "primaryIdentifier": "ip-3162",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "William Shakespeare"
                                 }
                             }
@@ -170,9 +170,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/mangrove-nine-protest/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/mangrove-nine-protest/",
                                     "primaryIdentifier": "ip-3163",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "Mangrove Nine protest, 1970"
                                 }
                             }
@@ -189,9 +189,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/letter-from-cyril-to-morris/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/letter-from-cyril-to-morris/",
                                     "primaryIdentifier": "ip-3164",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "The Caravan Club, London"
                                 }
                             }
@@ -208,9 +208,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/noor-inayat-khan/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/noor-inayat-khan/",
                                     "primaryIdentifier": "ip-3165",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "Noor-un-nisa Inayat Khan"
                                 }
                             }
@@ -227,9 +227,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/william-cuffey-1788-1870/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/william-cuffey-1788-1870/",
                                     "primaryIdentifier": "ip-3166",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "William Cuffey (1788-1870)"
                                 }
                             }
@@ -246,9 +246,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/festival-of-britain/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/festival-of-britain/",
                                     "primaryIdentifier": "ip-3167",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "Festival of Britain"
                                 }
                             }
@@ -265,9 +265,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/alice-hawkins-1863-1946/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/alice-hawkins-1863-1946/",
                                     "primaryIdentifier": "ip-3168",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "Alice Hawkins (1863-1946)"
                                 }
                             }
@@ -284,9 +284,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/maud-allan-1873-1956/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/maud-allan-1873-1956/",
                                     "primaryIdentifier": "ip-3169",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "Maud Allan (1873-1956)"
                                 }
                             }
@@ -303,9 +303,9 @@
                         "_source": {
                             "@template": {
                                 "details": {
-                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/story-pages/the-battle-of-the-somme/",
+                                    "sourceUrl": "https://beta.nationalarchives.gov.uk/insight-pages/the-battle-of-the-somme/",
                                     "primaryIdentifier": "ip-3170",
-                                    "type": "Stories page",
+                                    "type": "insights page",
                                     "summaryTitle": "The Battle of the Somme"
                                 }
                             }
