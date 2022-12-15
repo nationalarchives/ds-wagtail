@@ -331,7 +331,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class WebsiteSearchinsightTest(WagtailTestUtils, TestCase):
+class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
 
@@ -341,7 +341,7 @@ class WebsiteSearchinsightTest(WagtailTestUtils, TestCase):
         # create story page object
         home = HomePage.objects.get()
         stories_index_page = StoriesIndexPage(
-            title="Insight Pages", sub_heading="Sub heading"
+            title="Story Pages", sub_heading="Sub heading"
         )
         home.add_child(instance=stories_index_page)
         stories_page = StoriesPage(
