@@ -331,7 +331,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
+class WebsiteSearchStoryTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
 
