@@ -24,7 +24,7 @@ from ...collections.models import (
     TopicExplorerPage,
 )
 from ...home.models import HomePage
-from ...insights.models import InsightsIndexPage, InsightsPage
+from ...insights.models import StoriesIndexPage, StoriesPage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -338,18 +338,18 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     def setUp(self):
         super().setUp()
 
-        # create insight page object
+        # create stories page object
         home = HomePage.objects.get()
-        insights_index_page = InsightsIndexPage(
+        stories_index_page = StoriesIndexPage(
             title="Insight Pages", sub_heading="Sub heading"
         )
-        home.add_child(instance=insights_index_page)
-        insights_page = InsightsPage(
+        home.add_child(instance=stories_index_page)
+        stories_page = StoriesPage(
             title="William Shakespeare", sub_heading="Sub heading"
         )
-        insights_index_page.add_child(instance=insights_page)
+        stories_index_page.add_child(instance=stories_page)
 
-        # create insight page response in sourceUrl
+        # create stories page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"
         with open(path, "r") as f:
             responses.add(
@@ -450,7 +450,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="insight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], InsightsPage
+            response.context_data["page"].object_list[0]["source_page"], StoriesPage
         )
 
 
@@ -504,7 +504,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
         topic_explorer_page.add_child(instance=results_page)
 
-        # create insight page response in sourceUrl
+        # create stories page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
             responses.add(

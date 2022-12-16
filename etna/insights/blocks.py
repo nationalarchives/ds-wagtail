@@ -183,7 +183,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100)
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
-        "insights.InsightsPage",
+        "insights.StoriesPage",
         exclude_drafts=True,
         exclude_private=True,
         select_related=["teaser_image"],
@@ -246,5 +246,5 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
         template = "insights/blocks/section.html"
 
 
-class InsightsPageStreamBlock(blocks.StreamBlock):
+class StoriesPageStreamBlock(blocks.StreamBlock):
     content_section = ContentSectionBlock()

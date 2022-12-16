@@ -20,18 +20,18 @@ from etna.core.models import BasePage, ContentWarningMixin
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
-from .blocks import FeaturedCollectionBlock, InsightsPageStreamBlock
+from .blocks import FeaturedCollectionBlock, StoriesPageStreamBlock
 
 
-class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
-    """InsightsIndexPage
+class StoriesIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
+    """StoriesIndexPage
 
-    This page lists the InsightsPage objects that are children of this page.
+    This page lists the StoriesPage objects that are children of this page.
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_story = models.ForeignKey(
+        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
@@ -44,52 +44,52 @@ class InsightsIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        insights_pages = self.get_children().public().live().specific()
-        context["insights_pages"] = insights_pages
+        stories_pages = self.get_children().public().live().specific()
+        context["stories_pages"] = stories_pages
         return context
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("featured_pages"),
     ]
 
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
-    subpage_types = ["insights.InsightsPage"]
+    subpage_types = ["insights.StoriesPage"]
 
 
 @register_snippet
-class InsightsTag(TagBase):
+class StoriesTag(TagBase):
     free_tagging = False
 
     class Meta:
-        verbose_name = "insights tag"
-        verbose_name_plural = "insights tags"
+        verbose_name = "stories tag"
+        verbose_name_plural = "stories tags"
 
 
-class TaggedInsights(ItemBase):
+class TaggedStories(ItemBase):
     tag = models.ForeignKey(
-        InsightsTag, related_name="tagged_insights", on_delete=models.CASCADE
+        StoriesTag, related_name="tagged_stories", on_delete=models.CASCADE
     )
     content_object = ParentalKey(
-        to="insights.InsightsPage",
+        to="insights.StoriesPage",
         on_delete=models.CASCADE,
         related_name="tagged_items",
     )
 
 
-class InsightsPage(
+class StoriesPage(
     HeroImageMixin, TeaserImageMixin, ContentWarningMixin, MetadataPageMixin, BasePage
 ):
-    """InsightsPage
+    """StoriesPage
 
-    The InsightsPage model.
+    The StoriesPage model.
     """
 
     sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(
-        InsightsPageStreamBlock, blank=True, null=True, use_json_field=True
+        StoriesPageStreamBlock, blank=True, null=True, use_json_field=True
     )
     topic = models.ForeignKey(
         "collections.TopicExplorerPage",
@@ -105,11 +105,11 @@ class InsightsPage(
         on_delete=models.SET_NULL,
         related_name="+",
     )
-    insight_tag_names = models.TextField(editable=False)
-    tags = ClusterTaggableManager(through=TaggedInsights, blank=True)
+    story_tag_names = models.TextField(editable=False)
+    tags = ClusterTaggableManager(through=TaggedStories, blank=True)
 
     search_fields = Page.search_fields + [
-        index.SearchField("insight_tag_names"),
+        index.SearchField("story_tag_names"),
     ]
 
     new_label_end_date = datetime.now() - timedelta(days=21)
@@ -118,31 +118,31 @@ class InsightsPage(
         data = super().get_datalayer_data(request)
         if self.topic:
             data["customDimension4"] = self.topic.title
-        if self.insight_tag_names:
-            data["customDimension6"] = ";".join(self.insight_tag_names.split("\n"))
+        if self.story_tag_names:
+            data["customDimension6"] = ";".join(self.story_tag_names.split("\n"))
         if self.time_period:
             data["customDimension7"] = self.time_period.title
         return data
 
     def save(self, *args, **kwargs):
         """
-        Overrides Page.save() to ensure 'insight_tag_names' always reflects the tags() value
+        Overrides Page.save() to ensure 'story_tag_names' always reflects the tags() value
         """
         if (
             "update_fields" not in kwargs
-            or "insight_tag_names" in kwargs["update_fields"]
+            or "story_tag_names" in kwargs["update_fields"]
         ):
-            self.insight_tag_names = "\n".join(t.name for t in self.tags.all())
+            self.story_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Tuple["InsightsPage"]:
+    def similar_items(self) -> Tuple["StoriesPage"]:
         """
-        Returns a maximum of three InsightsPages that are tagged with at least
-        one of the same InsightsTags. Items should be ordered by the number
+        Returns a maximum of three StoriesPages that are tagged with at least
+        one of the same StoriesTags. Items should be ordered by the number
         of tags they have in common.
         """
-        if not self.insight_tag_names:
+        if not self.story_tag_names:
             # Avoid unncecssary lookups
             return ()
 
@@ -153,7 +153,7 @@ class InsightsPage(
 
         # Identify 'other' live pages with tags in common
         tag_match_ids = (
-            InsightsPage.objects.public()
+            StoriesPage.objects.public()
             .live()
             .not_page(self)
             .filter(tagged_items__tag_id__in=tag_ids)
@@ -166,23 +166,23 @@ class InsightsPage(
 
         # Use search() to prioritise items with the highest number of matches
         return tuple(
-            InsightsPage.objects.filter(id__in=tag_match_ids).search(
-                self.insight_tag_names,
-                fields=["insight_tag_names"],
+            StoriesPage.objects.filter(id__in=tag_match_ids).search(
+                self.story_tag_names,
+                fields=["story_tag_names"],
                 operator="or",
             )[:3]
         )
 
     @cached_property
-    def latest_items(self) -> Tuple["InsightsPage"]:
+    def latest_items(self) -> Tuple["StoriesPage"]:
         """
-        Return the three most recently published InsightsPages,
+        Return the three most recently published StoriesPages,
         excluding this object.
         """
         similarqueryset = list(self.similar_items)
 
         latestqueryset = list(
-            InsightsPage.objects.public()
+            StoriesPage.objects.public()
             .live()
             .not_page(self)
             .select_related("hero_image", "topic", "time_period")
@@ -216,5 +216,5 @@ class InsightsPage(
 
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
-    parent_page_types = ["insights.InsightsIndexPage"]
+    parent_page_types = ["insights.StoriesIndexPage"]
     subpage_types = []
