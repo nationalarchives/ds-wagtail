@@ -9,7 +9,7 @@ from wagtail.models import Orderable
 
 from wagtailmetadata.models import MetadataPageMixin
 
-from etna.insights.models import InsightsPage
+from etna.insights.models import StoriesPage
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
@@ -110,15 +110,15 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     sub_heading = models.CharField(max_length=200, blank=False)
 
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_story = models.ForeignKey(
+        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -136,9 +136,9 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_insights(self):
+    def related_stories(self):
         return (
-            InsightsPage.objects.filter(topic=self)
+            StoriesPage.objects.filter(topic=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
@@ -205,8 +205,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
 
     sub_heading = models.CharField(max_length=200, blank=False)
 
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_story = models.ForeignKey(
+        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
@@ -215,7 +215,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_story"),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
@@ -235,9 +235,9 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_insights(self):
+    def related_stories(self):
         return (
-            InsightsPage.objects.filter(time_period=self)
+            StoriesPage.objects.filter(time_period=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]

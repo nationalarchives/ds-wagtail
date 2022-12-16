@@ -5,15 +5,15 @@ from django.test import TestCase
 
 from wagtail.models import Site
 
-from ..models import InsightsPage
+from ..models import StoriesPage
 
 
 class TestInsightPageSectionBlockIntegration(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 
-        self.insights_page = InsightsPage(
-            title="Insights page",
+        self.stories_page = StoriesPage(
+            title="Stories page",
             sub_heading="Introduction",
             body=json.dumps(
                 [
@@ -62,10 +62,10 @@ class TestInsightPageSectionBlockIntegration(TestCase):
                 ]
             ),
         )
-        root.add_child(instance=self.insights_page)
+        root.add_child(instance=self.stories_page)
 
     def test_jumplink_rendering(self):
-        response = self.client.get(self.insights_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         self.assertContains(response, "jumplinks")
         self.assertContains(response, 'href="#h2.section-one"')
         self.assertContains(response, 'href="#h2.section-two"')
@@ -73,10 +73,10 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         self.assertContains(response, 'id="h2.section-two"')
 
     def test_jumplinks_not_rendered_if_page_has_no_sections(self):
-        self.insights_page.body = "[]"
-        self.insights_page.save()
+        self.stories_page.body = "[]"
+        self.stories_page.save()
 
-        response = self.client.get(self.insights_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         self.assertNotContains(response, "jumplinks")
 
     def assertContainsHeading(
@@ -97,7 +97,7 @@ class TestInsightPageSectionBlockIntegration(TestCase):
         self.assertIn(heading_text, heading_texts)
 
     def test_headings_rendered_as_h3(self):
-        response = self.client.get(self.insights_page.get_url())
+        response = self.client.get(self.stories_page.get_url())
         response.render()
         content = response.content.decode()
         self.assertContainsHeading(content, "This should render as a h3", 3)
