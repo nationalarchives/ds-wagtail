@@ -4,21 +4,21 @@ import add_analytics_data_card_position from './modules/analytics/card_position'
 import audio_tracking from "./modules/analytics/audio_tracking"
 import video_tracking from "./modules/analytics/video_tracking"
 import add_unique_ids from "./modules/analytics/add_unique_ids";
-import mobile_tracking from "./modules/analytics/insights_tracking/mobile_tracking";
-import remove_mobile_tracking from "./modules/analytics/insights_tracking/remove_mobile_tracking";
-import link_list_tracking from "./modules/analytics/insights_tracking/link_list_tracking";
+import mobile_tracking from "./modules/analytics/stories_tracking/mobile_tracking";
+import remove_mobile_tracking from "./modules/analytics/stories_tracking/remove_mobile_tracking";
+import link_list_tracking from "./modules/analytics/stories_tracking/link_list_tracking";
 
-import accordion_functionality from "./modules/insights/accordion_functionality/accordion_functionality";
-import add_event from "./modules/insights/add_event";
-import add_section_ids from "./modules/insights/accordion_functionality/add_section_ids";
-import apply_aria_roles from "./modules/insights/accordion_functionality/apply_aria_roles";
+import accordion_functionality from "./modules/stories/accordion_functionality/accordion_functionality";
+import add_event from "./modules/stories/add_event";
+import add_section_ids from "./modules/stories/accordion_functionality/add_section_ids";
+import apply_aria_roles from "./modules/stories/accordion_functionality/apply_aria_roles";
 import debounce from "./modules/debounce";
-import jumplinks_smooth_scroll from './modules/insights/navigation/jumplinks_smooth_scroll';
-import open_first_section from "./modules/insights/accordion_functionality/open_first_section";
-import remove_aria_roles from "./modules/insights/accordion_functionality/remove_aria_roles";
-import remove_event from "./modules/insights/remove_event";
-import set_active from "./modules/insights/navigation/set_active";
-import set_heading_positions from "./modules/insights/accordion_functionality/set_heading_positions";
+import jumplinks_smooth_scroll from './modules/stories/navigation/jumplinks_smooth_scroll';
+import open_first_section from "./modules/stories/accordion_functionality/open_first_section";
+import remove_aria_roles from "./modules/stories/accordion_functionality/remove_aria_roles";
+import remove_event from "./modules/stories/remove_event";
+import set_active from "./modules/stories/navigation/set_active";
+import set_heading_positions from "./modules/stories/accordion_functionality/set_heading_positions";
 import throttle from "./modules/throttle";
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -31,7 +31,7 @@ export default function () {
         <ul class='global-search__list'>
             <li class='global-search__list-item'>Try the <a href='/search/'>search page</a> for more options</li>
             <li class='global-search__list-item'><a href='/explore-the-collection/'>Explore the collection</a> through topics and time periods</li>
-            <li class='global-search__list-item'><a href='/insight-pages/'>Discover Insights</a> for unique stories behind our collection.</li>
+            <li class='global-search__list-item'><a href='/story-pages/'>Discover Insights</a> for unique stories behind our collection.</li>
         </ul>
     </div>`;
 

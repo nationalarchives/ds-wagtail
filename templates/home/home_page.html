@@ -38,9 +38,9 @@
     {% if page.featured_story %}
     <div class="container">
         <h2 class="extra-padding">Stories from the collection</h2>
-        <div class="featured-insight">
+        <div class="featured-story">
             {% if page.featured_story.hero_image %}
-                <a href="{% pageurl page.featured_story %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_story.title }}" data-link-type="Image" {% if page.featured_story.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
+                <a href="{% pageurl page.featured_story %}" class="featured-story__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.featured_story.title }}" data-link-type="Image" {% if page.featured_story.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
                     <picture>
                         {% image page.featured_story.teaser_image fill-500x400-c100 as hero %}
                         <source media="(max-width: 768px)" srcset="{{ hero.url }}">
@@ -58,8 +58,8 @@
                 </a>
             {% endif %}
             
-            <div class="featured-insight__description">
-                <h2 class="featured-insight__heading">
+            <div class="featured-story__description">
+                <h2 class="featured-story__heading">
                     <small>{% trans "Spotlight on" %}</small>
                     {{ page.featured_story.title }}
                     {% if page.featured_story.first_published_at.date > page.new_label_end_date.date %}
@@ -70,7 +70,7 @@
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_story.title }}</p>
 
                 <p>{{ page.featured_story.sub_heading }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_story %}" data-component-name="Featured Insight: {{ page.featured_story.title }}" data-link-type="Button" {% if page.featured_story.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
+                <a class="tna-button--dark" href="{% pageurl page.featured_story %}" data-component-name="Featured Story: {{ page.featured_story.title }}" data-link-type="Button" {% if page.featured_story.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
     </div>

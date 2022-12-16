@@ -9,9 +9,9 @@
     {% include 'includes/generic-intro.html' %}
     {% if page.featured_story %}
         <div class="container">
-            <div class="featured-insight">
+            <div class="featured-story">
                 {% if page.featured_story.teaser_image %}
-                    <div class="featured-insight__image">
+                    <div class="featured-story__image">
                         <picture>
                             {% image page.featured_story.teaser_image fill-412x361 as hero %}
                             <source media="(max-width: 480px)" srcset="{{ hero.url }}">
@@ -32,8 +32,8 @@
                     </div>
                 {% endif %}
 
-                <div class="featured-insight__description">
-                    <h2 class="featured-insight__heading">
+                <div class="featured-story__description">
+                    <h2 class="featured-story__heading">
                         <small>{% trans "Spotlight on" %}</small>
                         {{ page.featured_story.title }}
                     </h2>
