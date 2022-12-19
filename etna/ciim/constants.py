@@ -623,5 +623,5 @@ TYPE_CHOICES = tuple(
 )
 
 CUSTOM_ERROR_MESSAGES = {
-    "invalid_date_range": "There is a problem. Start date cannot be after end date"
+    "invalid_date_range": "There is a problem. Start date cannot be after end date."
 }
