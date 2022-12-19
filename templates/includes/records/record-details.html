@@ -9,16 +9,16 @@
                     <td id="analytics-record-reference">{{ page.reference_number }}</td>
                 </tr>
             {% endif %}
-            {% if page.description %}
-                <tr>
-                    <th scope="row">{{ 'description'|as_label }}</th>
-                    <td class="xslt_patches">{{ page.description|safe }}</td>
-                </tr>
-            {% endif %}
             {% if page.origination_date %}
                 <tr>
                     <th scope="row">{{ 'origination_date'|as_label }}</th>
                     <td>{{ page.origination_date }}</td>
+                </tr>
+            {% endif %}
+            {% if page.description %}
+                <tr>
+                    <th scope="row">{{ 'description'|as_label }}</th>
+                    <td class="xslt_patches">{{ page.description|safe }}</td>
                 </tr>
             {% endif %}
             {% if page.related_materials %}

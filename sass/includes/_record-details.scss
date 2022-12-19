@@ -6,10 +6,11 @@
 
     th, td {
       padding: 0.75em;
-      border: 3px solid $color__grey-4;
       vertical-align: top;
     }
-
+    tr:nth-child(odd) {
+      background-color: $color__grey-1;
+    }
     th {
       font-weight: bold;
     }

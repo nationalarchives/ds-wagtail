@@ -1,29 +1,155 @@
 {% load records_tags %}
 
-<nav class="hierarchy-global" data-container-name="hierarchy-global" id="analytics-hierarchy-global">
+<div class="hierarchy" data-container-name="hierarchy-global">
+    <div class="hierarchy__container">
 
-    <details id="js-hierarchy-global" open>
-        <summary id="analytics-hierarchy-link">
-            <h2 class="hierarchy-global__heading" id="hierarchy-label">{{ 'hierarchy'|as_label }}</h2>
-        </summary>
+        <!-- SHORT HIERARCHY VIEW -->
+        <nav class="hierarchy-short-panel" role="navigation">
+            <h2 class="hierarchy-short-panel__heading sr-only">Catalogue location at a glance</h2>
+            <p class="hierarchy-short-panel__label">You are here:</p>
 
-        <ol class="hierarchy-global__list" aria-labelledby="hierarchy-label">
-            {% for item in page.hierarchy %}
-                {% is_page_current_item_in_hierarchy page item as is_current_item %}
-                {% if is_current_item %}
-                    <li class="hierarchy-global__list-item hierarchy-global__list-item--current-item">
-                        <span class="hierarchy-global__location">You are here:</span>
-                        <span class="hierarchy-global__reference hierarchy-global__reference--white">{{ item.reference_number }}</span> {{ item.title }}
-                    </li>
+            <!-- 
+            The 'short panel__list' section should only display up to a maximum of 3 list items at one time.
+            These should display only the 'major' levels above the level you're on i.e Archive, Dept, Division, Series (don't include 'sub-levels' or 'sub-sub-levels').
+            If the archive level is not the first item in the list, the first item should display the 'hierarchy-short-panel__list-item--more' modifier class to indicate there are more levels above by displaying the '...' before the list item, which is automatically handled by the CSS.
+            If the Archive level is visible as the first item, this modifier doesn't need to be added.
+            -->
+        
+            <ul class="hierarchy-short-panel__list">
+                {% if page.hierarchy %}
+                    {% if page.hierarchy|length <= 2 %}
+                        <li class="hierarchy-short-panel__list-item">
+                            <span class="hierarchy-short-panel__level">
+                                <a href="#">Archive</a>
+                            </span>({{ page.template.heldBy }})
+                        </li>
+                    {% endif %}
+                    
+                    {% for item in page.hierarchy %}
+                        {% is_page_current_item_in_hierarchy page item as is_current_item %}
+    
+                        {% if forloop.counter == 1 and not is_current_item %}
+                            {% if page.hierarchy|length == 3 %}
+                                {% with trail_off=True %}
+                                    {% include "includes/records/hierarchy-short-item.html" %}
+                                {% endwith %}
+                            {% elif page.hierarchy|length == 2 %}
+                                {% include "includes/records/hierarchy-short-item.html" %}
+                            {% endif %}
+
+                        {% elif forloop.counter == 2 and not is_current_item %}
+                            {% if page.hierarchy|length > 3 %}
+                                {% with trail_off=True %}
+                                    {% include "includes/records/hierarchy-short-item.html" %}
+                                {% endwith %}
+                            {% else %}
+                                {% include "includes/records/hierarchy-short-item.html" %}
+                            {%endif%}
+
+                        {% elif forloop.counter == 3 and not is_current_item %}
+                            {% include "includes/records/hierarchy-short-item.html" %}
+
+                        {% elif is_current_item %}
+                            <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
+                                <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>({{ item.reference_number }})
+                            </li>
+                        {% endif %}
+                    {% endfor %}
                 {% else %}
-                    <li class="hierarchy-global__list-item">
-                        <span class="hierarchy-global__reference">{{ item.reference_number }}</span>
-                        <a href="{% record_url item %}"  data-link="{{ forloop.counter0 }}: {{ item.reference_number }}" class="link--bold">
-                            {{ item.title }}
-                        </a>
+                    <li class="hierarchy-short-panel__list-item">
+                        <span class="hierarchy-short-panel__level">
+                            <a href="#">Archive</a>
+                        </span>({{ page.template.heldBy }})
+                    </li>
+                    <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
+                        <span class="hierarchy-short-panel__level">This department</span>({{ page.reference_number }})
                     </li>
                 {% endif %}
-            {% endfor %}
-        </ol>
-    </details>
-</nav>
+            </ul>
+
+        </nav>
+
+        <div class="hierarchy-short-panel__toggle-link" data-id="hierarchy-toggle-link"></div>
+        
+        <!--
+            The 'hierarchy-full-panel__bar-container-inner--level-1' modifier adds the width of the bar depending on the level.
+            These always need to be added in stepped order - don't skip levels - so the widths descend by 2% each time (eg. only 1, 2, 3, 4 and not 1, 3, 4, 6).
+        -->
+        
+        <!-- DETAILED HIERARCHY VIEW -->
+        <nav class="hierarchy-full-panel" role="navigation" data-id="hierarchy-detailed-view">
+            <h2 class="hierarchy-full-panel__heading">Detailed catalogue location:</h2>
+
+            <!-- Level 1 -->
+            <div class="hierarchy-full-panel__bar-container-outer">
+                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-1">
+                    <p><span class="hierarchy-full-panel__bar-number">N</span>
+                    <span class="hierarchy-full-panel__bar-label">records</span></p>
+                </div>
+                <div class="hierarchy-full-panel__text-container">
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{page.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
+                </div>
+            </div>
+            {% if page.hierarchy %}
+                {% for item in page.hierarchy %}
+                    {% is_page_current_item_in_hierarchy page item as is_current_item %}
+                    
+                    {% include "includes/records/hierarchy-full-item.html" %}
+                {%endfor%}
+            {% else %}
+                <div class="hierarchy-full-panel__bar-container-outer">
+                    <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-2">
+                        <p><span class="hierarchy-full-panel__bar-number">N</span>
+                    <span class="hierarchy-full-panel__bar-label">records</span></p>
+                    </div>
+                    <div class="hierarchy-full-panel__text-container">
+                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url page %}">{{page.reference_number}}</a></p>
+                        <p class="hierarchy-full-panel__text-title">{{page.title}}</p>
+                    </div>
+                </div>
+            {%endif%}
+
+        <!--
+            The next section 'hierarchy-local-nav' section will only need to be shown if there is a previous and/or a next item available.
+            It won't need it to be shown if it's only showing the current item
+        -->
+
+        <!-- PREVIOUS/CURRENT/NEXT NAVIGATION -->
+        {% if page.previous_record or page.next_record %}
+            <nav class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
+                <!-- Previous item in series -->
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
+                    {% if page.previous_record %}
+                        {% if page.previous_record.has_reference_number %}
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></p>
+                        {% elif page.is_tna %}
+                                {{ 'previous_record'|as_label }} {{ page.level.lower|default:"record" }}
+                        {% else %}
+                                {{ 'previous_record'|as_label }} record
+                        {% endif %}
+                    {% endif %}
+                </div>
+
+                <!-- Current item in series -->
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--current">
+                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ page.reference_number }}</span></p>
+                </div>
+
+                <!-- Next item in series -->
+                <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
+                    {% if page.next_record %}
+                        {% if page.next_record.has_reference_number %}
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></p>
+                            {% elif page.is_tna %}
+                                {{ 'next_record'|as_label }} {{ page.level.lower|default:"record" }}
+                            {% else %}
+                                {{ 'next_record'|as_label }} record
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </nav>
+        {% endif %}
+        </nav>
+    </div>
+</div>

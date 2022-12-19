@@ -286,6 +286,24 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
+
+        # TODO Leaving this here for potential later use for testing the data for the front-end aspects.
+        # This is to create spoof data for the missing API data from K-int. Can be removed from code when
+
+        # for item in self.get("@hierarchy.0", default=()):
+        #     if not item.get("identifier"):
+        #         level = item.get("level", {})
+        #         level_code = level.get("code", "")
+        #         hierarchy = self.get("@hierarchy.0", ())
+        #         if hierarchy != () and level_code != "":
+        #             previous_level_record = hierarchy[level_code-2]
+        #             previous_level_identifier = previous_level_record.get("identifier")[0]
+        #             previous_level_reference = previous_level_identifier.get("reference_number")
+        #             if level_code == 2:
+        #                 reference_number = "Division within " + previous_level_reference
+        #             elif level_code == 4:
+        #                 reference_number = "Sub-series within " + previous_level_reference
+        #             item["identifier"] = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
         return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
