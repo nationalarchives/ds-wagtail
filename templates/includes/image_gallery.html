@@ -59,6 +59,7 @@
                             </section>
                             {% if item.translation_text %}
                             <section id="translation-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
+                                <noscript><h2>Modern English</h2></noscript>
                                 {% if item.translation_header %}
                                 <p>{{ item.translation_header}}</p>
                                 {% endif %}
@@ -134,6 +135,9 @@
 
     const transcirtiontab2 = document.getElementById("tab1-2");
     const translationtab2 = document.getElementById("tab2-2");
+
+    //const tabsystem = document.getElementById("tab-system");
+    //tabsystem.style.display="background:red;"
 
     translation1.style.display="none";
     translation2.style.display="none";

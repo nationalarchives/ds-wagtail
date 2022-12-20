@@ -147,10 +147,16 @@ a#showMoreButton:hover {color:white;}
    Styling
   */
 
+  /*hide tabs if no js*/
+
+ .tab-{
+    //display:none;
+  }
 
   .tabset > label {
     position: relative;
     display: inline-block;
+    //display: none;
     padding: 15px 15px 0px;
     padding-left: 0;
     padding-right:2em;
