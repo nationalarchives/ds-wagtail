@@ -114,6 +114,8 @@ class StoriesPage(
 
     new_label_end_date = datetime.now() - timedelta(days=21)
 
+    template = "stories/stories_page.html"
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         if self.topic:

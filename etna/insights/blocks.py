@@ -29,12 +29,12 @@ class FeaturedRecordBlock(SectionDepthAwareStructBlock):
         label="Teaser image",
         required=False,
         help_text="Add an image to be displayed with the selected record.",
-        template="insights/blocks/images/blog-embed__image-container.html",
+        template="stories/blocks/images/blog-embed__image-container.html",
     )
 
     class Meta:
         icon = "archive"
-        template = "insights/blocks/featured_record.html"
+        template = "stories/blocks/featured_record.html"
         label = "Featured record"
 
 
@@ -56,7 +56,7 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         icon = "archive"
-        template = "insights/blocks/featured_records.html"
+        template = "stories/blocks/featured_records.html"
         label = "Featured records"
 
 
@@ -107,7 +107,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
     )
     image = NoCaptionImageBlock(
         label="Teaser image",
-        template="insights/blocks/images/blog-embed__image-container.html",
+        template="stories/blocks/images/blog-embed__image-container.html",
     )
     description = blocks.RichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
@@ -116,7 +116,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Featured link"
-        template = "insights/blocks/promoted_item.html"
+        template = "stories/blocks/promoted_item.html"
         help_text = "Block used promote an external page"
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
@@ -157,7 +157,7 @@ class PromotedListBlock(blocks.StructBlock):
     class Meta:
         icon = "external-link-alt"
         label = "Link list"
-        template = "insights/blocks/promoted_list_block.html"
+        template = "stories/blocks/promoted_list_block.html"
 
 
 class RelatedItemBlock(SectionDepthAwareStructBlock):
@@ -176,7 +176,7 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "external-link-alt"
         help_text = "Block used promote an external page"
-        template = "insights/blocks/related_item.html"
+        template = "stories/blocks/related_item.html"
 
 
 class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
@@ -194,7 +194,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "list"
         label = "Featured pages"
-        template = "insights/blocks/featured_collection.html"
+        template = "stories/blocks/featured_collection.html"
 
 
 class QuoteBlock(SectionDepthAwareStructBlock):
@@ -213,7 +213,7 @@ class QuoteBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "openquote"
         label = "Quote"
-        template = "insights/blocks/quote.html"
+        template = "stories/blocks/quote.html"
 
 
 class SubHeadingBlock(SectionDepthAwareStructBlock):
@@ -222,7 +222,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "heading"
         label = "Sub-heading"
-        template = "insights/blocks/sub_heading.html"
+        template = "stories/blocks/sub_heading.html"
 
 
 class SectionContentBlock(blocks.StreamBlock):
@@ -243,7 +243,7 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Section"
-        template = "insights/blocks/section.html"
+        template = "stories/blocks/section.html"
 
 
 class StoriesPageStreamBlock(blocks.StreamBlock):
