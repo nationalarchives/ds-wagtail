@@ -8,7 +8,7 @@ from wagtail.models import Site
 from ..models import StoriesPage
 
 
-class TestInsightPageSectionBlockIntegration(TestCase):
+class TestStoryPageSectionBlockIntegration(TestCase):
     def setUp(self):
         root = Site.objects.get().root_page
 

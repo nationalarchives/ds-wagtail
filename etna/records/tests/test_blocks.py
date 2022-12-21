@@ -30,7 +30,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         root = Site.objects.get().root_page
 
         self.stories_index_page = StoriesIndexPage(
-            title="Insights Index Page",
+            title="Stories Index Page",
             sub_heading="Introduction",
         )
         root.add_child(instance=self.stories_index_page)
