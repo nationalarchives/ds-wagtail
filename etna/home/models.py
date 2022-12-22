@@ -9,7 +9,7 @@ from etna.core.models import BasePage
 from etna.teasers.models import TeaserImageMixin
 
 from ..alerts.models import AlertMixin
-from ..insights.blocks import FeaturedCollectionBlock
+from ..stories.blocks import FeaturedCollectionBlock
 from .blocks import HomePageStreamBlock
 
 
@@ -21,7 +21,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         "years of history.",
     )
     featured_story = models.ForeignKey(
-        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
+        "stories.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
     featured_pages = StreamField(

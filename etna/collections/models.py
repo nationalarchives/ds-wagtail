@@ -9,7 +9,7 @@ from wagtail.models import Orderable
 
 from wagtailmetadata.models import MetadataPageMixin
 
-from etna.insights.models import StoriesPage
+from etna.stories.models import StoriesPage
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
@@ -111,7 +111,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     sub_heading = models.CharField(max_length=200, blank=False)
 
     featured_story = models.ForeignKey(
-        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
+        "stories.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
@@ -206,7 +206,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     sub_heading = models.CharField(max_length=200, blank=False)
 
     featured_story = models.ForeignKey(
-        "insights.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
+        "stories.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True

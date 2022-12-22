@@ -24,7 +24,7 @@ from ...collections.models import (
     TopicExplorerPage,
 )
 from ...home.models import HomePage
-from ...insights.models import StoriesIndexPage, StoriesPage
+from ...stories.models import StoriesIndexPage, StoriesPage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 

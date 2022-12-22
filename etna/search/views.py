@@ -29,7 +29,7 @@ from ..ciim.constants import (
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..collections.models import ResultsPage
-from ..insights.models import StoriesPage
+from ..stories.models import StoriesPage
 from ..records.models import Record
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 

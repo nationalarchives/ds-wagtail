@@ -9,7 +9,7 @@ from wagtail.tests.utils.form_data import nested_form_data, streamfield
 import responses
 
 from ...ciim.tests.factories import create_record, create_response
-from ...insights.models import StoriesIndexPage, StoriesPage
+from ...stories.models import StoriesIndexPage, StoriesPage
 
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTests):
