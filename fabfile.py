@@ -287,6 +287,8 @@ def pull_database_from_platform(c, environment_name):
     )
 
     try:
+        print("Renaming app...")
+        run_management_command(c, "rename_app insights stories", check_returncode=True)
         print("Applying migrations from local environment...")
         run_management_command(c, "migrate", check_returncode=True)
     except subprocess.CalledProcessError:
