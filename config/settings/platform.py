@@ -16,6 +16,8 @@ try:
     ALLOWED_HOSTS = [
         urlparse(url).netloc for url in config.get_upstream_routes().keys()
     ]
+    # Fix for DisallowedHost in Wagtail Preview mode when for a new env
+    ALLOWED_HOSTS = ALLOWED_HOSTS + [os.getenv("PARENT_ENVIRONMENT_URL", "")]
 except BuildTimeVariableAccessException:
     # Routes aren't available during build-time. Unfortunately, this file needs
     # to be accessed during collectstatic
