@@ -1,3 +1,5 @@
+import os
+
 from urllib.parse import urlparse
 
 from platformshconfig import Config
