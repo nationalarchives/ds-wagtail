@@ -29,8 +29,8 @@ from ..ciim.constants import (
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..collections.models import ResultsPage
-from ..stories.models import StoriesPage
 from ..records.models import Record
+from ..stories.models import StoriesPage
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 logger = logging.getLogger(__name__)
