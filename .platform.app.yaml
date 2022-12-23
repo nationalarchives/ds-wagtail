@@ -59,6 +59,7 @@ hooks:
     python manage.py collectstatic --no-input
 
   deploy: |
+    python manage.py rename_app insights stories
     python manage.py migrate
 
 web:
