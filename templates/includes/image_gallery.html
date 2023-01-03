@@ -120,9 +120,6 @@
 
     //js to control tabs
 
-    //const initialLabel = document.getElementById("initial-label");
-    //initialLabel.style.border="0.125rem solid #fff;";
-
 
     const transcription1 = document.getElementById("transcription-1");
     const translation1 = document.getElementById("translation-1");
@@ -133,6 +130,9 @@
     const transcription3 = document.getElementById("transcription-3");
     const translation3 = document.getElementById("translation-3");
 
+    const transcription4 = document.getElementById("transcription-4");
+    const translation4 = document.getElementById("translation-4");
+
     const transcirtiontab = document.getElementById("tab1-1");
     const translationtab = document.getElementById("tab2-1");
 
@@ -142,11 +142,15 @@
     const transcirtiontab3 = document.getElementById("tab1-3");
     const translationtab3 = document.getElementById("tab2-3");
 
+    const transcirtiontab4 = document.getElementById("tab1-4");
+    const translationtab4 = document.getElementById("tab2-4");
+
 
 
     translation1.style.display="none";
     translation2.style.display="none";
     translation3.style.display="none";
+    translation4.style.display="none";
 
     translationtab.oninput= () => {
         //alert('clicked') // Do something
@@ -188,6 +192,20 @@
         //alert('clicked') // Do something
         transcription3.style.display="block";
         translation3.style.display="none"
+    }
+
+    translationtab4.oninput= () => {
+        //alert('clicked') // Do something
+        transcription4.style.display="none";
+        translation4.style.display="block"
+        var elementb = document.getElementById("initial-4");
+        elementb.classList.remove("initial-label");
+    }
+
+    transcirtiontab4.oninput= () => {
+        //alert('clicked') // Do something
+        transcription4.style.display="block";
+        translation4.style.display="none"
     }
 
 
