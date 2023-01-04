@@ -1,7 +1,8 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <form action='' method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{{type_of_search}}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}">
+    <form action='' method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
+{{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}">
 
         <h2 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
@@ -23,7 +24,7 @@
                     <span class="sr-only">Displaying results as a list</span>
                 </span>
             {% else %}
-                <a href="?{% query_string_include 'display' 'list' %}" search-type="{{type_of_search}}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}" class="search-sort-view__icon-list">
+                <a href="?{% query_string_include 'display' 'list' %}" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %} {{searchtabs.CATALOGUE.value}} {% elif url_name == 'search-website' %}{{searchtabs.WEBSITE.value}}{% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}" class="search-sort-view__icon-list">
                     <span class="sr-only">Displaying results as a list</span>
                 </a>
             {% endif %}
@@ -35,7 +36,8 @@
                     <span class="sr-only">Displaying results as a grid</span>
                 </span>
             {% else %}
-                <a href="?{% query_string_include 'display' 'grid' %}" search-type="{{type_of_search}}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}" class="search-sort-view__icon-grid">
+                <a href="?{% query_string_include 'display' 'grid' %}" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
+{{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}" class="search-sort-view__icon-grid">
                     <span class="sr-only">Display results as a grid</span>
                 </a>
             {% endif %}
