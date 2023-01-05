@@ -1,8 +1,24 @@
 {% load search_tags %}
 
+<script>
+    //set a variable to get the value of the dropdown based on sort_by= parameter in url string
+
+    const queryString = window.location.search;
+    //console.log(queryString);
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const sort = urlParams.get('sort_by')
+    console.log(sort);
+
+
+
+
+</script>
+
 <div class="search-sort-view">
     <form action='' method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
-{{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="{{selected_option}}">
+{{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="">
 
         <h2 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
@@ -47,3 +63,8 @@
         {{ form.display.as_hidden }}
     </ul>
 </div>
+
+<script>
+    //add to html?
+    document.getElementById("catalogue-sort-form").setAttribute("search-filter-value", sort);
+</script>
