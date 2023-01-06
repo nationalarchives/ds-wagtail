@@ -1,18 +1,5 @@
 {% load search_tags %}
 
-<script>
-    //set a variable to get the value of the dropdown based on sort_by= parameter in url string
-
-    const queryString = window.location.search;
-    //console.log(queryString);
-    const urlParams = new URLSearchParams(queryString);
-    const sort = urlParams.get('sort_by');
-
-    //console.log(sortgrid);
-
-
-
-</script>
 
 <div class="search-sort-view">
     <form action='' method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
@@ -63,25 +50,18 @@
 </div>
 
 <script>
-    //populate the gtm tags
-    document.getElementById("catalogue-sort-form").setAttribute("search-filter-value", sort);
-    document.getElementById("listview").setAttribute("search-filter-value", sort);
 
     //get value of selected option based on id : id_sort_by
 
-        function getOption() {
+    function getOption() {
         selectElement = document.querySelector('#id_sort_by');
         output = selectElement.value;
-        //alert(output);
+        alert(output);
     }
 
     getOption();
-    document.getElementById("gridView").setAttribute("search-filter-value",option);
-
-
-
-
-
+    document.getElementById("gridView").setAttribute("search-filter-value",output);
+    document.getElementById("listview").setAttribute("search-filter-value",output);
 
 </script>
 
