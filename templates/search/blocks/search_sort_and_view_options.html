@@ -7,7 +7,7 @@
     //console.log(queryString);
     const urlParams = new URLSearchParams(queryString);
     const sort = urlParams.get('sort_by');
-    
+
     //console.log(sortgrid);
 
 
@@ -50,7 +50,7 @@
                     <span class="sr-only">Displaying results as a grid</span>
                 </span>
             {% else %}
-                <a href="?{% query_string_include 'display' 'grid' %}" id="grid" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
+                <a href="?{% query_string_include 'display' 'grid' %}" id="gridView" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
 {{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="" class="search-sort-view__icon-grid">
                     <span class="sr-only">Display results as a grid</span>
                 </a>
@@ -66,6 +66,22 @@
     //populate the gtm tags
     document.getElementById("catalogue-sort-form").setAttribute("search-filter-value", sort);
     document.getElementById("listview").setAttribute("search-filter-value", sort);
-    document.getElementById("grid").setAttribute("search-filter-value",sort);
+
+    //get value of selected option based on id : id_sort_by
+
+        function getOption() {
+        selectElement = document.querySelector('#id_sort_by');
+        output = selectElement.value;
+        //alert(output);
+    }
+
+    getOption();
+    document.getElementById("gridView").setAttribute("search-filter-value",option);
+
+
+
+
+
 
 </script>
+
