@@ -56,12 +56,14 @@
     function getOption() {
         selectElement = document.querySelector('#id_sort_by');
         output = selectElement.value;
-        alert(output);
+        //alert(output);
+        document.getElementById("catalogue-sort-form").setAttribute("search-filter-value",output);
+        document.getElementById("gridView").setAttribute("search-filter-value",output);
+        document.getElementById("listview").setAttribute("search-filter-value",output);
     }
 
     getOption();
-    document.getElementById("gridView").setAttribute("search-filter-value",output);
-    document.getElementById("listview").setAttribute("search-filter-value",output);
+
 
 </script>
 
