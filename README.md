@@ -25,25 +25,20 @@ Convenience commands have been added to `fabfile.py` to help you interact with t
 
 Once installed, you can type `fab -l` to see a list of available commands.
 
-### 1. Create `.env`
 
-```console
-$ cp .env.example .env
-```
-
-### 2. Build Docker containers
+### 1. Build Docker containers
 
 ```console
 $ fab build
 ```
 
-### 3. Start Docker containers
+### 2. Start Docker containers
 
 ```console
 $ fab start
 ```
 
-### 4. Start a shell session with the 'web' container
+### 3. Start a shell session with the 'web' container
 
 ```console
 $ fab sh
@@ -52,13 +47,13 @@ $ fab sh
 ### 5. Apply database migrations
 
 ```console
-$ python manage.py migrate
+$ dj migrate
 ```
 
 ### 6. Run the 'development' web server
 
 ```console
-$ python manage.py runserver 0.0.0.0:8000
+$ djrun
 ```
 
 ### 7. Access the site
@@ -70,7 +65,7 @@ $ python manage.py runserver 0.0.0.0:8000
 ### 8. Create a Django user for yourself
 
 ```console
-$ python manage.py createsuperuser
+$ dj createsuperuser
 ```
 
 ### 9. Access the Wagtail admin

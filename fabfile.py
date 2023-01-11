@@ -71,6 +71,9 @@ def build(c):
     """
     Build (or rebuild) local development containers.
     """
+    # bash copy .env.example .env if .env does not exist
+    if not os.path.exists(".env"):
+        local("cp .env.example .env")
     local("docker-compose build")
 
 
