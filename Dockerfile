@@ -39,8 +39,11 @@ COPY pyproject.toml poetry.lock ./
 # Copy application code
 COPY . .
 
+# Load shortcuts
+RUN cp ./bash/bashrc.sh /root/.bashrc
+
 # Install Python dependencies AND the 'etna' app
-RUN poetry install
+RUN poetry install 
 
 # Do nothing forever (use 'exec' to resuse the container)
 CMD tail -f /dev/null
