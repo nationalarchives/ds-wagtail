@@ -6,6 +6,7 @@ from django.urls import NoReverseMatch, reverse
 
 from etna.ciim.utils import ValueExtractionError
 
+from ...ciim.constants import LevelKeys
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -14,7 +15,9 @@ register = template.Library()
 
 @register.simple_tag
 def record_url(
-    record: Union[Record, Dict[str, Any]], is_editorial: bool = False
+    record: Union[Record, Dict[str, Any]],
+    is_editorial: bool = False,
+    is_downloadable: bool = False,
 ) -> str:
     """
     Return the URL for the provided `record` dict; which could either be a
@@ -54,7 +57,9 @@ def record_url(
         url = None
 
     if iaid:
-        if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY:
+        if (is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY) or (
+            is_downloadable and settings.FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY
+        ):
             return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
             return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
@@ -86,3 +91,9 @@ def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: Record):
 def as_label(record_field_name: str) -> str:
     """returns human readable label for pre configured record field name, otherwise Invalid name"""
     return FIELD_LABELS.get(record_field_name, "UNRECOGNISED FIELD NAME")
+
+
+@register.simple_tag
+def level_name(level_code: int) -> str:
+    """returns level as a human readable string"""
+    return LevelKeys["LEVEL_" + str(level_code)].value
