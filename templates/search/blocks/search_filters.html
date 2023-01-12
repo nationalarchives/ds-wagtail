@@ -17,9 +17,7 @@
 <div class="search-filters">
     <h2 class="sr-only">Edit filters</h2>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-            {% if not form.group.value == "archive" and not form.group.value == "creator" and not form.group.value == "highlight" %}
-                <h3>Refine results by</h3>
-            {% endif %}
+    <h3>Refine results by</h3>
             
     <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
 
