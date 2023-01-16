@@ -128,7 +128,7 @@ class BaseCollectionSearchForm(forms.Form):
     # Choices are supplied to this field to influence labels only. The options
     # are not complete enough to be used for validation
     collection = DynamicMultipleChoiceField(
-        label="Collection",
+        label="Collections",
         choices=COLLECTION_CHOICES,
         widget=forms.widgets.CheckboxSelectMultiple(
             attrs={"class": "search-filters__list"}
