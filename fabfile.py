@@ -287,7 +287,6 @@ def pull_database_from_platform(c, environment_name):
     )
 
     try:
-        # TODO: Rename command to be removed once applied in all local environments
         print("Applying migrations from local environment...")
         run_management_command(c, "migrate", check_returncode=True)
     except subprocess.CalledProcessError:
