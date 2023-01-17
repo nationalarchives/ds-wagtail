@@ -287,6 +287,7 @@ def pull_database_from_platform(c, environment_name):
     )
 
     try:
+        # TODO: Rename command to be removed once applied in all local environments
         print("Renaming app...")
         run_management_command(c, "rename_app insights stories", check_returncode=True)
         print("Applying migrations from local environment...")
