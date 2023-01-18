@@ -75,15 +75,18 @@ TBC
 We follow a loose version of the [Git flow branching model](https://nvie.com/posts/a-successful-git-branching-model/).
 
 - Changes are developed in feature branches and submitted as pull requests via Github
-- Feature branches should always be based on: `main`
-- Pull requests should always be merged to: `main`
+- Feature branches should always be based on: `develop`
+- Release branches should always be based on: `develop`
+- Release branches should be merged via PR into `main`, followed by PR to merge `main` into `develop`.
 
-### Naming feature branches
+### Naming branches
 
-- Branch names for new features should start with: `feature/`.
-- Branch names for ticketed bugs should start with: `fix/`.
-- Branch names for housekeeping tasks or other unticketed work should start with: `chore/`
+- Branch names for ticketed new features should start with: `feature/<JIRA-TICKET-with-short-description>`.
+- Branch names for ticketed bugs should start with: `fix/<JIRA-TICKET-with-short-description>`.
+- Branch names for release should start with: `release/<major.minor.patch>`.
+- Branch names for housekeeping tasks or other unticketed work should start with: `chore/<short-description>`
 - Ticket numbers should be included in branch names wherever possible. For example:
-    - `feature/df123-extra-squiggles`
-    - `fix/df999-image-view-error`
+  - `feature/DF-123-extra-squiggles`
+  - `fix/DF-999-image-view-error`
+  - `chore/short-description`
 - Stick with alphanumeric characters and hyphens where possible and avoid random special characters.
