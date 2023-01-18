@@ -102,7 +102,7 @@ class HighlightsGalleryItem(Orderable):
  
 
 
-class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin):
+class CloserLookPage(ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     """CloserLookPage
  
     This page is ______.
@@ -175,10 +175,11 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
         ("promoted_pages", PromotedPagesBlock()),
     ], 
     block_counts={
-        "promoted_pages": {"min_num": 1, "max_num": 1},
+        "promoted_pages": {"min_num": 0, "max_num": 1},
     }, 
     use_json_field=True,
     null=True,
+    blank=True,
     )
 
     content_panels = BasePage.content_panels + [
@@ -191,7 +192,7 @@ class CloserLookPage(BasePage, ContentWarningMixin, TeaserImageMixin, MetadataPa
                 heading="Content Warning Options",
                 classname="collapsible collapsed",
             ),
-        InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
+        InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=0, max_num=6), #change back to min 1 when done
         FieldPanel("body"),
         FieldPanel("featured_insight"),
         FieldPanel("related_records"),
@@ -229,7 +230,7 @@ class CloserLookGalleryImage(Orderable):
         max_length=150,
         help_text="Alt text for the image (max. character length: 150)",
         null=True,
-        blank=False,
+        blank=True,
     )
     sensitive_image = models.BooleanField(
         help_text="Apply the sensitive image filter to this image",
