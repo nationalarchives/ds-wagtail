@@ -31,7 +31,7 @@
                 <div class="col-md-6">
                     {% image item.image original as gallery_image %}
                     <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
-                    <p class="image-caption">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do. Lorem ipsum Image library ref: <a href="" alt="">PROB 1/4</a></p>
+                    <p class="image-caption">{{ item.caption }}<a href="" alt="">PROB 1/4</a></p>
                 </div>
 
                 {% if item.transcription_text %}
@@ -39,20 +39,15 @@
                     <div class="tabset" id="tabset-{{ forloop.counter }}">
                         <!-- Tab 1 -->
                         <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked>
-                        <label for="tab1-{{ forloop.counter }}" class="initial-label" id="initial-{{forloop.counter}}"><h2>Transcription</h2></label>
+                        <label for="tab1-{{ forloop.counter }}" class="initial-label" id="initial-{{forloop.counter}}">{% if item.transcription_header %}<h2>{{ item.transcription_header }}</h2>{% else %}<h2>Transcription</h2>{% endif %}</label>
                         <!-- Tab 2 -->
                         {% if item.translation_text %}
                         <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
-                        <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}"><h2>Modern English</h2></label>
+                        <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}">{% if item.translation_header %}<h2>{{ item.translation_header }}</h2>{% else %}<h2>Translation</h2>{% endif %}</label>
                         {% endif %}
 
                         <div class="tab-panels">
                             <section id="transcription-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
-                                {% if item.transcription_header %}
-                                <p>
-                                    {{ item.transcription_header }}
-                                </p>
-                                {% endif %}
                                 <p>
                                     {{ item.transcription_text|richtext }}
                                 </p>
@@ -60,9 +55,6 @@
                             {% if item.translation_text %}
                             <section id="translation-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
                                 <noscript><h2>Modern English</h2></noscript>
-                                {% if item.translation_header %}
-                                <p>{{ item.translation_header}}</p>
-                                {% endif %}
                                 <p>{{ item.translation_text|richtext }}</p>
                             </section>
                             {% endif %}
