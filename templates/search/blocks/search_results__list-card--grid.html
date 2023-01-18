@@ -15,7 +15,9 @@
 <li class="search-results__list-card--grid">
     {% if record|record_detail:"digitised" %}
     <div class="search-results__list-card-delivery-options--grid">
+
         <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record|record_detail:"referenceNumber"|default:"N/A" }} - {{ record|record_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+
             <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
     </div>
