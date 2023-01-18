@@ -192,7 +192,7 @@ class CloserLookPage(ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, B
                 heading="Content Warning Options",
                 classname="collapsible collapsed",
             ),
-        InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=0, max_num=6), #change back to min 1 when done
+        InlinePanel("image_gallery", heading="Image Gallery", label="Gallery Image", min_num=1, max_num=6),
         FieldPanel("body"),
         FieldPanel("featured_insight"),
         FieldPanel("related_records"),
