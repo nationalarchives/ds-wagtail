@@ -13,7 +13,7 @@ def editor_css():
 
 @hooks.register('insert_global_admin_css')
 def global_admin_css():
-    if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE == "development" or "staging":
+    if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "development" or "staging":
         return format_html(
             '<link rel="stylesheet" href="{}">', static('css/dist/etna-wagtail-admin.css')
         )
