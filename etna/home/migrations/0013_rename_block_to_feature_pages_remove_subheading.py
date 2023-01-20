@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                                 (
                                     "items",
                                     etna.core.blocks.page_list.PageListBlock(
-                                        "stories.InsightsPage", max_num=9, min_num=3
+                                        "article.InsightsPage", max_num=9, min_num=3
                                     ),
                                 ),
                             ]

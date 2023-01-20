@@ -24,7 +24,7 @@ from ...collections.models import (
     TopicExplorerPage,
 )
 from ...home.models import HomePage
-from ...stories.models import StoriesIndexPage, StoriesPage
+from ...article.models import ArticleIndexPage, ArticlePage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -331,25 +331,26 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
-class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
+class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
     maxDiff = None
     test_url = reverse_lazy("search-website")
 
     def setUp(self):
         super().setUp()
 
-        # create stories page object
+        # create article page object
         home = HomePage.objects.get()
-        stories_index_page = StoriesIndexPage(
-            title="Insight Pages", sub_heading="Sub heading"
+        article_index_page = ArticleIndexPage(
+            title="A page title", sub_heading="Sub heading"
         )
-        home.add_child(instance=stories_index_page)
-        stories_page = StoriesPage(
+        home.add_child(instance=article_index_page)
+        article_page = ArticlePage(
             title="William Shakespeare", sub_heading="Sub heading"
         )
-        stories_index_page.add_child(instance=stories_page)
+        article_index_page.add_child(instance=article_page)
 
-        # create stories page response in sourceUrl
+        # create article page response in sourceUrl
+        #TODO:KINT
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"
         with open(path, "r") as f:
             responses.add(
@@ -363,6 +364,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
+        #TODO:KINT
         self.get_url(self.test_url, group="insight")
 
         self.assertEqual(len(responses.calls), 1)
@@ -390,13 +392,16 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
 
     @responses.activate
     def test_template_used(self):
+        #TODO:KINT
         response = self.get_url(self.test_url, group="insight")
         self.assertTemplateUsed(response, "search/website_search.html")
 
     @responses.activate
     def test_current_bucket(self):
+        #TODO:KINT
         response = self.get_url(self.test_url, group="insight")
 
+        #TODO:KINT
         # insight is current, others are not
         expected_bucket_list = BucketList(
             [
@@ -450,7 +455,7 @@ class WebsiteSearchInsightTest(WagtailTestUtils, TestCase):
     def test_page_instance_added_for_source_url(self):
         response = self.get_url(self.test_url, group="insight")
         self.assertIsInstance(
-            response.context_data["page"].object_list[0]["source_page"], StoriesPage
+            response.context_data["page"].object_list[0]["source_page"], ArticlePage
         )
 
 
@@ -504,7 +509,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
         topic_explorer_page.add_child(instance=results_page)
 
-        # create stories page response in sourceUrl
+        # create article page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
             responses.add(
@@ -874,7 +879,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
     @responses.activate
-    def test_datalayer_website_search_insight(self):
+    def test_datalayer_website_search_article(self):
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json"
         with open(path, "r") as f:
             responses.add(
