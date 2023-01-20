@@ -1,9 +1,8 @@
-from django.db.models.fields import Field
 from django.core.exceptions import ValidationError
+from django.db.models.fields import Field
 from django.forms import ChoiceField
 
 from ..ciim.exceptions import KongBadRequestError
-
 from .models import Record
 from .widgets import RecordChooser
 
