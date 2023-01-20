@@ -1,6 +1,5 @@
 from django.core.exceptions import ValidationError
 from django.db.models.fields import Field
-from django.forms import ChoiceField
 
 from ..ciim.exceptions import KongBadRequestError
 from .models import Record
@@ -18,14 +17,14 @@ class RecordChooserField(Field):
         return name, path, args, kwargs
 
     def formfield(self, **kwargs):
-        return ChoiceField(
-            choices=[],
-            widget=RecordChooser(),
-            required=self.blank is False,
-            validators=self.validators,
-            help_text=self.help_text,
-            **kwargs,
-        )
+        defaults = {
+            "widget": RecordChooser(),
+        }
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+    def get_internal_type(self):
+        return "CharField"
 
     def to_python(self, value):
         if isinstance(value, Record) or value is None:
