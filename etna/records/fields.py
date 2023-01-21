@@ -30,8 +30,11 @@ class LazyRecord(SimpleLazyObject):
 
     def __getattribute__(self, name: str) -> Any:
         """
-        Allow access to ``self.iaid`` without fetching the record details
+        Allow access to ``iaid`` without fetching the full record details
         from CIIM.
+
+        # The local ``iaid`` value is not preserved when copying or pickling,
+        # the value (hence the extra check here).
         """
         if name == "iaid" and "iaid" in self.__dict__:
             return self.__dict__["iaid"]
@@ -51,11 +54,18 @@ class RecordChooserField(Field):
         super().__init__(*args, **kwargs)
 
     def deconstruct(self):
+        """
+        RecordChooserFields have a fixed max_length of 50, so it doesn't
+        need to be included in field breakdowns in migrations.
+        """
         name, path, args, kwargs = super().deconstruct()
         del kwargs["max_length"]
         return name, path, args, kwargs
 
     def formfield(self, **kwargs):
+        """
+        Changes the default form field widget to a RecordChooser.
+        """
         defaults = {
             "widget": RecordChooser(),
         }
@@ -66,6 +76,11 @@ class RecordChooserField(Field):
         return "CharField"
 
     def to_python(self, value):
+        """
+        Return ``None`` if the value is null or an empty string.
+        Otherwise, return create a ``LazyRecord`` from the stored
+        "iaid" value.
+        """
         if isinstance(value, str):
             if not value:
                 return None
@@ -73,6 +88,11 @@ class RecordChooserField(Field):
         return value
 
     def from_db_value(self, value, expression, connection):
+        """
+        Return ``None`` if the value is null or an empty string.
+        Otherwise, return create a ``LazyRecord`` from the stored
+        "iaid" value.
+        """
         if isinstance(value, str):
             if not value:
                 return None
@@ -80,6 +100,11 @@ class RecordChooserField(Field):
         return value
 
     def get_prep_value(self, value):
+        """
+        ``None`` and string values can be used as is, but if the value is a
+        ``Record`` or ``LazyRecord`` instance, extract the "iaid" value to
+        store in the DB.
+        """
         if isinstance(value, str) or value is None:
             return value
         return value.iaid
