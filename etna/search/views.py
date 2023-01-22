@@ -14,6 +14,7 @@ from django.views.generic import FormView, TemplateView
 from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
+from ..article.models import ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
@@ -30,7 +31,6 @@ from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..collections.models import ResultsPage
 from ..records.models import Record
-from ..stories.models import StoriesPage
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 logger = logging.getLogger(__name__)
@@ -678,9 +678,9 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         data.update(customMetric1=total_count)
         return data
 
-    def add_stories_page_for_url(self, page: Page) -> None:
+    def add_article_page_for_url(self, page: Page) -> None:
         """
-        Finds the Stories page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
+        Finds the Article page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
         """
         slugs = [
@@ -694,9 +694,9 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
             for result in page.object_list
         ]
         # filter by slug for performance boost
-        stories_page_by_url = {
+        article_page_by_url = {
             page.get_url(self.request): page
-            for page in StoriesPage.objects.live()
+            for page in ArticlePage.objects.live()
             .filter(slug__in=slugs)
             .defer("body")
             .select_related("teaser_image")
@@ -709,11 +709,11 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
                 .get("details", {})
                 .get("sourceUrl", "")
             )
-            if source_page := stories_page_by_url.get(urlparse(url).path, ""):
+            if source_page := article_page_by_url.get(urlparse(url).path, ""):
                 result["source_page"] = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in stories_page_by_url={stories_page_by_url}"
+                    f"WebsiteSearchView:scrapped/ingested url={url} not found in article_page_by_url={article_page_by_url}"
                 )
             page_list.append(result)
         page.object_list = page_list
@@ -761,7 +761,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
-                self.add_stories_page_for_url(context["page"])
+                self.add_article_page_for_url(context["page"])
             if filter_aggregation == "highlight" and "page" in context:
                 self.add_results_page_for_url(context["page"])
         return context
