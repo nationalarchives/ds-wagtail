@@ -520,4 +520,13 @@ class Migration(migrations.Migration):
                 use_json_field=True,
             ),
         ),
+        # alter_articleindexpage_options_and_more
+        migrations.AlterModelOptions(
+            name='articleindexpage',
+            options={'verbose_name': 'article index page'},
+        ),
+        migrations.AlterModelOptions(
+            name='articlepage',
+            options={'verbose_name': 'article page'},
+        ),
     ]
