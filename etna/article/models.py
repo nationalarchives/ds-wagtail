@@ -44,8 +44,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        article_pages = self.get_children().public().live().specific()
-        context["article_pages"] = article_pages
+        context["article_pages"] = self.get_children().public().live().specific()
         return context
 
     content_panels = BasePage.content_panels + [
