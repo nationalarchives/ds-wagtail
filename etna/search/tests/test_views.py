@@ -340,8 +340,11 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
 
         # create article page object
         home = HomePage.objects.get()
+        # explict slug so that title does not default to slug
         article_index_page = ArticleIndexPage(
-            title="Insight Pages", sub_heading="Sub heading"
+            title="Insight Pages",
+            sub_heading="Sub heading",
+            slug="insight-pages",
         )
         home.add_child(instance=article_index_page)
         article_page = ArticlePage(
