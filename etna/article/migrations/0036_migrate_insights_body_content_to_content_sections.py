@@ -6,7 +6,10 @@ from django.db import migrations
 
 def migrate_forwards(apps, schema_editor):
     InsightsPage = apps.get_model("article", "InsightsPage")
-    PageRevision = apps.get_model("wagtailcore", "PageRevision")
+    # PageRevision = apps.get_model("wagtailcore", "PageRevision") # when runninng fab test LookupError: App 'wagtailcore' doesn't have a 'PageRevision' model.
+    PageRevision = apps.get_model(
+        "wagtailcore", "Revision"
+    )  # FIX: when runninng fab test LookupError: App 'wagtailcore' doesn't have a 'PageRevision' model.
     for page in InsightsPage.objects.only("id", "title", "body").iterator():
         new_content = []
         current_section_heading = None
