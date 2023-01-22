@@ -118,7 +118,7 @@ class ArticlePage(
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     template = "article/article_page.html"
-    
+
     class Meta:
         verbose_name = _("article page")
 
