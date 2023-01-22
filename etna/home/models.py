@@ -9,7 +9,7 @@ from etna.core.models import BasePage
 from etna.teasers.models import TeaserImageMixin
 
 from ..alerts.models import AlertMixin
-from ..stories.blocks import FeaturedCollectionBlock
+from ..article.blocks import FeaturedCollectionBlock
 from .blocks import HomePageStreamBlock
 
 
@@ -20,8 +20,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         default="Discover some of the most important and unusual records from over 1000 "
         "years of history.",
     )
-    featured_story = models.ForeignKey(
-        "stories.StoriesPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_article = models.ForeignKey(
+        "article.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
     featured_pages = StreamField(
@@ -33,7 +33,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
-        FieldPanel("featured_story"),
+        FieldPanel("featured_article"),
         FieldPanel("featured_pages"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -41,8 +41,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        stories_pages = self.get_children().live().specific()
-        context["stories_pages"] = stories_pages
+        article_pages = self.get_children().live().specific()
+        context["article_pages"] = article_pages
         context["etna_index_pages"] = [
             {
                 "title": "Collection Explorer",

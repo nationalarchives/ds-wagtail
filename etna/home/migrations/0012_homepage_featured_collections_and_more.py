@@ -10,7 +10,7 @@ import wagtail.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("stories", "0045_add_search_image_fields"),
+        ("article", "0045_add_search_image_fields"),
         ("home", "0011_add_search_image_fields"),
     ]
 
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                                 (
                                     "items",
                                     etna.core.blocks.page_list.PageListBlock(
-                                        "stories.InsightsPage", max_num=9, min_num=3
+                                        "article.InsightsPage", max_num=9, min_num=3
                                     ),
                                 )
                             ]
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 null=True,
                 on_delete=django.db.models.deletion.SET_NULL,
-                to="stories.insightspage",
+                to="article.insightspage",
             ),
         ),
         migrations.AddField(

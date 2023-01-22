@@ -1,43 +1,21 @@
-{% extends "base_page.html" %}
-
+{% extends 'base_page.html' %}
 
 {% load static %}
 {% load i18n %}
-{% block breadcrumb %}
-{% endblock %}
-{% block body_class %}template-homepage{% endblock %}
 {% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
 {% load wagtailimages_tags %}
+{% load wagtailmetadata_tags %}
 {% block meta_tag %}
-    {% meta_tags %}
+  {% meta_tags %}
 {% endblock %}
 {% block content %}
-
     {% include 'includes/generic-intro.html' %}
-    <div class="container pt-2">
-        <div class="row">
-            {% for item in page.body %}
-                {% if item.value.paragraph or item.value.text %}
-                    {{item}}
-                {% else %}
-                    {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
-                    <div class="col-sm-12 col-md-6">
-                        <div class="topic-explore">
-                            <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
-                            <div class="explore-cta">
-                                <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>
-                            </div>
-                        </div>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
+    <div class="container">
+        <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>
 
     {% if page.featured_article %}
     <div class="container">
-        <h2 class="extra-padding">Stories from the collection</h2>
         <div class="featured-article">
             {% if page.featured_article.hero_image %}
                 <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
@@ -57,7 +35,7 @@
                     </picture>
                 </a>
             {% endif %}
-            
+
             <div class="featured-article__description">
                 <h2 class="featured-article__heading">
                     <small>{% trans "Spotlight on" %}</small>
@@ -76,45 +54,27 @@
     </div>
     {% endif %}
 
-    {% if page.featured_pages %}
     <div class="container">
         {% include_block page.featured_pages %}
     </div>
-    {% endif %}
 
-    <div class="cta-banner-survey no-dots">
-        <div class="container py-3">
-            <div class="row justify-content-md-center text-center">
-                <div class="col-sm-12 col-lg-12">
-                    <a class="tna-button--dark" href="/article/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
-                </div>
-            </div>
-        </div>
+    <div class="container mt-4" data-container-name="{{ page.title }}">
+        <h2>Discover all stories</h2>
+        <p>Browse and explore the human stories behind The National Archives’ collection.</p>
+        <ul class="card-group--list-style-none">
+
+            {% for article_page in article_pages %}
+
+                        {% with page=article_page.specific %}
+                         {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" %}
+                        {% endwith %}
+
+            {% endfor %}
+        </ul>
     </div>
 
-    <!--new survey element-->
-    <!--
-    <div class="cta-banner-survey">
-        <div class="container py-3">
-            <div class="row justify-content-md-center text-center">
-
-                <div class="col-sm-12 col-lg-12">
-                    <div class="survey-outline">
-                    <p>How would you rate this page?</p>
-                    <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Very helpful</a>
-                    <a class="tna-button--dark response-btn" href="https://www.smartsurvey.co.uk/s/SY13JD/" rel="noopener noreferrer" target="_blank">Could be better</a>
-                    <p><a href="https://www.nationalarchives.gov.uk/contact-us/your-views/" target="_blank">Leave a comment</a></p>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-    -->
-
-</div>
-{% endblock content %}
+{% endblock %}
 
 {% block extra_js %}
-    <script src="{% static 'scripts/home_page.js' %}"></script>
+    <script src="{% static 'scripts/article_index_page.js' %}"></script>
 {% endblock %}
