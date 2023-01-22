@@ -522,11 +522,11 @@ class Migration(migrations.Migration):
         ),
         # alter_articleindexpage_options_and_more
         migrations.AlterModelOptions(
-            name="articleindexpage",
-            options={"verbose_name": "article index page"},
-        ),
-        migrations.AlterModelOptions(
             name="articlepage",
             options={"verbose_name": "article page"},
+        ),
+        migrations.AlterModelOptions(
+            name="articleindexpage",
+            options={"verbose_name": "article index page"},
         ),
     ]
