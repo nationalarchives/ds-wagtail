@@ -1,7 +1,7 @@
 from django import template
 
+from etna.article.blocks import ContentSectionBlock
 from etna.core.blocks import SectionBlock
-from etna.stories.blocks import ContentSectionBlock
 
 register = template.Library()
 

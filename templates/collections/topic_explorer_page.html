@@ -7,37 +7,37 @@
 {% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' %}
-    {% if page.featured_story %}
+    {% if page.featured_article %}
             <div class="container">
-                <div class="featured-story">
-                    {% if page.featured_story.teaser_image %}
-                        <div class="featured-story__image">
+                <div class="featured-article">
+                    {% if page.featured_article.teaser_image %}
+                        <div class="featured-article__image">
                             <picture>
-                                {% image page.featured_story.teaser_image fill-412x361 as hero %}
+                                {% image page.featured_article.teaser_image fill-412x361 as hero %}
                                 <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                                {% image page.featured_story.teaser_image fill-510x351 as hero %}
+                                {% image page.featured_article.teaser_image fill-510x351 as hero %}
                                 <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                                {% image page.featured_story.teaser_image fill-510x304 as hero %}
+                                {% image page.featured_article.teaser_image fill-510x304 as hero %}
                                 <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                                {% image page.featured_story.teaser_image fill-345x495 as hero %}
+                                {% image page.featured_article.teaser_image fill-345x495 as hero %}
                                 <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                                {% image page.featured_story.teaser_image fill-555x367 as hero %}
+                                {% image page.featured_article.teaser_image fill-555x367 as hero %}
                                 <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                                {% if page.featured_story.hero_image_decorative %}
+                                {% if page.featured_article.hero_image_decorative %}
                                     <img src="{{ hero.url }}" alt="" />
                                 {% else %}
-                                    <img src="{{ hero.url }}" alt="{{page.featured_story.hero_image_alt_text}}" />
+                                    <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
                                 {% endif %}
                             </picture>
                         </div>
                     {% endif %}
-                <div class="featured-story__description">
-                    <h2 class="featured-story__heading">
+                <div class="featured-article__description">
+                    <h2 class="featured-article__heading">
                         <small>{% trans "Spotlight on" %}</small>
-                        {{ page.featured_story.title }}
+                        {{ page.featured_article.title }}
                     </h2>
-                    <p>{{ page.featured_story.sub_heading }}</p>
-                    <a class="tna-button--dark" href="{% pageurl page.featured_story %}">Read</a>
+                    <p>{{ page.featured_article.sub_heading }}</p>
+                    <a class="tna-button--dark" href="{% pageurl page.featured_article %}">Read</a>
                 </div>
             </div>
         </div>
@@ -52,12 +52,12 @@
             </div>
         </div>
 
-    {% if FEATURE_RELATED_STORIES_ON_EXPLORE_PAGES %}
+    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
         <div class="row">
             <div class="col-md-12">
-                 {% for stories_page in page.related_stories %}
+                 {% for article_page in page.related_article %}
                      <li>
-                       <a href="{% pageurl stories_page %}">{{ stories_page.title }}</a>
+                       <a href="{% pageurl article_page %}">{{ article_page.title }}</a>
                      </li>
                   {% endfor %}
             </div>
