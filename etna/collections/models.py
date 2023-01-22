@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
@@ -118,7 +119,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article"),
+        FieldPanel("featured_article", heading=_("Featured Article")),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -215,7 +216,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article"),
+        FieldPanel("featured_article", heading=_("Featured Article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),

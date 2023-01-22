@@ -4,6 +4,7 @@ from typing import Any, Dict, Tuple
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
@@ -42,6 +43,9 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     new_label_end_date = datetime.now() - timedelta(days=21)
 
+    class Meta:
+        verbose_name = _("article index page")
+
     def get_context(self, request):
         context = super().get_context(request)
         context["article_pages"] = self.get_children().public().live().specific()
@@ -49,7 +53,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article"),
+        FieldPanel("featured_article", heading=_("Featured Article")),
         FieldPanel("featured_pages"),
     ]
 
@@ -114,6 +118,9 @@ class ArticlePage(
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     template = "article/article_page.html"
+    
+    class Meta:
+        verbose_name = _("article page")
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)

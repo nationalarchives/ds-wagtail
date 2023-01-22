@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
@@ -33,7 +34,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
-        FieldPanel("featured_article"),
+        FieldPanel("featured_article", heading=_("Featured Article")),
         FieldPanel("featured_pages"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
