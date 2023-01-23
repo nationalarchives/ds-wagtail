@@ -119,7 +119,7 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article", heading=_("Featured Article")),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
@@ -216,7 +216,7 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article", heading=_("Featured Article")),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
