@@ -53,7 +53,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article", heading=_("Featured Article")),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
 
