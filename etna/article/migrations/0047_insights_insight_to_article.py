@@ -81,8 +81,8 @@ class Migration(migrations.Migration):
         migrations.AlterModelOptions(
             name="articletag",
             options={
-                "verbose_name": "article tag",
-                "verbose_name_plural": "article tags",
+                "verbose_name": "story tag",
+                "verbose_name_plural": "story tags",
             },
         ),
         # _rename_taggedinsights_taggedarticle
@@ -523,10 +523,10 @@ class Migration(migrations.Migration):
         # alter_articleindexpage_options_and_more
         migrations.AlterModelOptions(
             name="articlepage",
-            options={"verbose_name": "article page"},
+            options={"verbose_name": "story page"},
         ),
         migrations.AlterModelOptions(
             name="articleindexpage",
-            options={"verbose_name": "article index page"},
+            options={"verbose_name": "story index page"},
         ),
     ]
