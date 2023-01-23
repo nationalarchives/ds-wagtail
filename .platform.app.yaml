@@ -60,7 +60,7 @@ hooks:
 
   # TODO: Rename command to be removed once applied in all local environments
   deploy: |
-    python manage.py rename_app insights stories
+    python manage.py rename_app insights article
     python manage.py migrate
 
 web:
