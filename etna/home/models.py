@@ -34,7 +34,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
-        FieldPanel("featured_article", heading=_("Featured Article")),
+        FieldPanel("featured_article", heading=_("Featured story")),
         FieldPanel("featured_pages"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels

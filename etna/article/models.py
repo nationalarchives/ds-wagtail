@@ -44,7 +44,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     class Meta:
-        verbose_name = _("article index page")
+        verbose_name = _("story index page")
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -53,7 +53,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_article", heading=_("Featured Article")),
+        FieldPanel("featured_article", heading=_("Featured story")),
         FieldPanel("featured_pages"),
     ]
 
@@ -67,8 +67,8 @@ class ArticleTag(TagBase):
     free_tagging = False
 
     class Meta:
-        verbose_name = "article tag"
-        verbose_name_plural = "article tags"
+        verbose_name = "story tag"
+        verbose_name_plural = "story tags"
 
 
 class TaggedArticle(ItemBase):
@@ -120,7 +120,7 @@ class ArticlePage(
     template = "article/article_page.html"
 
     class Meta:
-        verbose_name = _("article page")
+        verbose_name = _("story page")
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
