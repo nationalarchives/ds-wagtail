@@ -24,7 +24,7 @@ export default function() {
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
     $showHideButton.setAttribute('aria-label', 'Show or hide filters');
-    $showHideButton.setAttribute('data-link-type', 'Link');
+    $showHideButton.setAttribute('data-link-type', 'Mobile Button');
     $showHideButton.setAttribute('data-link', 'Show search filters');
     $showHideButton.hidden = true;
     $main.insertBefore($showHideButton, $searchGrid);
