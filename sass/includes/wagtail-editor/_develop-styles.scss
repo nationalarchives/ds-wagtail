@@ -1,10 +1,12 @@
+$environment: "development" !default;
+
 :root {
-    @if $environment == "production" {
+    @if $environment == "development" {
         --w-color-primary: #195900;
         --w-color-primary-200: #103800;
     }
-    @if $environment == "development" {
-        --w-color-primary: red;
-        --w-color-primary-200: red;
+    @if $environment == "staging" {
+        --w-color-primary: #890000;
+        --w-color-primary-200: #530000;
     }
 }
