@@ -22,6 +22,14 @@
         {% if cookies_permitted %}
             {% include 'includes/gtm-script.html' %}
         {% endif %}
+
+        {# Adobe Fonts #}
+        <link rel="preconnect" href="https://use.typekit.net">
+        <link rel="stylesheet" href="https://use.typekit.net/hkj3kuz.css">
+
+        {# Favicon #}
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
     </head>
     <body>
         {% if show_cookie_notice %}
