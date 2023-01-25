@@ -52,7 +52,6 @@ hooks:
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
     sass sass/etna-wagtail-editor.scss:templates/static/css/dist/etna-wagtail-editor.css
-    sass sass/etna-wagtail-admin.scss:templates/static/css/dist/etna-wagtail-admin.css
 
     npm install
     npx webpack --config webpack.config.js
