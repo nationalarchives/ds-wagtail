@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
+    "etna.articles",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -42,7 +43,6 @@ INSTALLED_APPS = [
     "etna.heroes",
     "etna.highlights",
     "etna.home",
-    "etna.insights",
     "etna.media",
     "etna.navigation",
     "etna.records",
@@ -384,8 +384,8 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
-FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
-    os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
+FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES = strtobool(
+    os.getenv("FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES", "True")
 )
 FEATURE_BETA_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
