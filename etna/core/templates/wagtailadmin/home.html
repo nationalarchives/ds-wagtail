@@ -1,4 +1,4 @@
 {% extends "wagtailadmin/home.html" %}
 
 
-{% block branding_welcome %}Welcome to the etna {{ FEATURE_PLATFORM_ENVIRONMENT_TYPE }} OR ITS {{ PLATFORM_ENVIRONMENT_TYPE }} {% if FEATURE_PLATFORM_ENVIRONMENT_TYPE == "staging" or FEATURE_PLATFORM_ENVIRONMENT_TYPE == "development"%}DEVELOP{% endif %} Wagtail CMS{% endblock %}
+{% block branding_welcome %}Welcome to the etna {% if FEATURE_PLATFORM_ENVIRONMENT_TYPE == "staging" or FEATURE_PLATFORM_ENVIRONMENT_TYPE == "development"%}DEVELOP {% endif %}Wagtail CMS{% endblock %}
