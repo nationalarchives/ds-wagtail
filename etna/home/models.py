@@ -1,15 +1,16 @@
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 
 from wagtailmetadata.models import MetadataPageMixin
 
+from etna.alerts.models import AlertMixin
+from etna.articles.blocks import FeaturedCollectionBlock
 from etna.core.models import BasePage
 from etna.teasers.models import TeaserImageMixin
 
-from ..alerts.models import AlertMixin
-from ..insights.blocks import FeaturedCollectionBlock
 from .blocks import HomePageStreamBlock
 
 
@@ -20,8 +21,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         default="Discover some of the most important and unusual records from over 1000 "
         "years of history.",
     )
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
     featured_pages = StreamField(
@@ -33,7 +34,7 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -41,8 +42,8 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
 
     def get_context(self, request):
         context = super().get_context(request)
-        insights_pages = self.get_children().live().specific()
-        context["insights_pages"] = insights_pages
+        article_pages = self.get_children().live().specific()
+        context["article_pages"] = article_pages
         context["etna_index_pages"] = [
             {
                 "title": "Collection Explorer",
