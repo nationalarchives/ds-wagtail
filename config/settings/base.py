@@ -378,7 +378,7 @@ MAINTENENCE_MODE_ENDS = os.getenv("MAINTENENCE_MODE_ENDS", "")
 # conditional logic to be added to both Python and template code
 
 FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
-    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "True")
+    os.getenv("FEATURE_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
