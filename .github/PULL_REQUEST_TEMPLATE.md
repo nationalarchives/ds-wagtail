@@ -19,24 +19,24 @@ Related ticket(s):
 
 ## For Reviewer
 
-- [ ] Before merging PR
+- Before merging PR
 
     `main` branch :
 
-        - [ ] check PR merge tile begins with `release/<major.minor.patch>:<default/custom description>`
-        - [ ] check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
-        - [ ] select `Create a merge commit`
+        - check PR merge tile begins with `release/<major.minor.patch>:<default/custom description>`
+        - check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
+        - select `Create a merge commit`
 
     `develop` branch:
 
-        - [ ] check if merges into base branch are `not to be kept On Hold` and then proceed.
-        - [ ] check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
-        - [ ] select `Squash and merge`
+        - check if merges into base branch are `not to be kept On Hold` and then proceed.
+        - check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
+        - select `Squash and merge`
 
 ## For Reviewer/Developer
 
-- [ ] After merging PR:
+- After merging PR:
 
-  - [ ] check and arrange to deploy on platform-sh.
-  - [ ] update status on JIRA ticket on deployment.
-  - [ ] update slack on deployment progress of the JIRA ticket once deployed.
+  - check and arrange to deploy on platform-sh.
+  - update status on JIRA ticket on deployment.
+  - update slack on deployment progress of the JIRA ticket once deployed.
