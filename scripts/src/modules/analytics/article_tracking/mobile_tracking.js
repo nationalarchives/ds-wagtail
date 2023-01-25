@@ -3,12 +3,12 @@ import set_mobile_tracking_attributes from "./set_mobile_tracking_attributes";
 import push_to_data_layer from "../push_to_data_layer";
 
 export default function mobile_tracking() {
-    const insights_body = document.querySelector(".insights-container__main");
+    const article_body = document.querySelector(".article-container__main");
     const section_headings = document.querySelectorAll(".section-separator__heading");
 
     set_mobile_tracking_attributes(section_headings);
 
-    insights_body.addEventListener("click", e => {
+    article_body.addEventListener("click", e => {
         if(e.target.className === "section-separator__heading"){ 
             set_mobile_tracking_attributes(section_headings);
 
@@ -22,7 +22,7 @@ export default function mobile_tracking() {
         }
     })
 
-    insights_body.addEventListener("keyup", e => {
+    article_body.addEventListener("keyup", e => {
         if(e.key === "Enter" && e.target.className === "section-separator__heading") {
             set_mobile_tracking_attributes(section_headings);
 
