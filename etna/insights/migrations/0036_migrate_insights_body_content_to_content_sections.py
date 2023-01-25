@@ -114,6 +114,7 @@ def migrate_forwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("wagtailcore", "0077_alter_revision_user"),
         ("insights", "0035_add_content_section_blocks_to_insights_body"),
     ]
 
