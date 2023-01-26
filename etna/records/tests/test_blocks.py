@@ -8,8 +8,8 @@ from wagtail.tests.utils.form_data import nested_form_data, streamfield
 
 import responses
 
+from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
-from ...insights.models import InsightsIndexPage, InsightsPage
 
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTests):
@@ -29,24 +29,24 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         root = Site.objects.get().root_page
 
-        self.insights_index_page = InsightsIndexPage(
-            title="Insights Index Page",
+        self.article_index_page = ArticleIndexPage(
+            title="Article Index Page",
             sub_heading="Introduction",
         )
-        root.add_child(instance=self.insights_index_page)
+        root.add_child(instance=self.article_index_page)
 
-        self.insights_page = InsightsPage(
-            title="Insights page",
+        self.article_page = ArticlePage(
+            title="Article page",
             sub_heading="Introduction",
         )
-        self.insights_index_page.add_child(instance=self.insights_page)
+        self.article_index_page.add_child(instance=self.article_page)
 
     @responses.activate
     def test_add_featured_record(self):
         data = nested_form_data(
             {
-                "title": "Insights page changed",
-                "slug": "insights-page",
+                "title": "Article page changed",
+                "slug": "stories-page",
                 "sub_heading": "Introduction",
                 "body": streamfield(
                     [
@@ -74,16 +74,16 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
         response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,)), data
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)), data
         )
         self.assertRedirects(
             response,
-            reverse("wagtailadmin_explore", args=(self.insights_index_page.id,)),
+            reverse("wagtailadmin_explore", args=(self.article_index_page.id,)),
         )
 
-        self.insights_page.refresh_from_db()
+        self.article_page.refresh_from_db()
 
-        featured_record = self.insights_page.body[0].value["content"][0]
+        featured_record = self.article_page.body[0].value["content"][0]
         self.assertEqual(featured_record.block_type, "featured_record")
         self.assertEqual(
             featured_record.value["title"], "This record is sooooo featured!"
@@ -107,7 +107,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
     @responses.activate
     def test_page_with_featured_record(self):
-        self.insights_page.body = json.dumps(
+        self.article_page.body = json.dumps(
             [
                 {
                     "type": "content_section",
@@ -126,11 +126,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 }
             ]
         )
-        self.insights_page.save()
+        self.article_page.save()
 
         # Check the edit view first
         response = self.client.get(
-            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
         self.assertContains(response, "This record is sooooo featured!")
         self.assertContains(response, "Test record")
@@ -141,7 +141,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
 
         # View the page to check rendering also
-        response = self.client.get(self.insights_page.get_url())
+        response = self.client.get(self.article_page.get_url())
         self.assertContains(response, "Test record")
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
@@ -156,7 +156,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
 
         responses.replace(responses.GET, "https://kong.test/data/fetch", status=500)
 
-        self.insights_page.body = json.dumps(
+        self.article_page.body = json.dumps(
             [
                 {
                     "type": "content_section",
@@ -181,10 +181,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
                 }
             ]
         )
-        self.insights_page.save()
+        self.article_page.save()
 
         response = self.client.get(
-            reverse("wagtailadmin_pages:edit", args=(self.insights_page.id,))
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
 
         self.assertEquals(response.status_code, 200)

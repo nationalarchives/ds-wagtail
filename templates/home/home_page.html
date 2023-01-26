@@ -35,42 +35,42 @@
         </div>
     </div>
 
-    {% if page.featured_insight %}
+    {% if page.featured_article %}
     <div class="container">
         <h2 class="extra-padding">Stories from the collection</h2>
-        <div class="featured-insight">
-            {% if page.featured_insight.hero_image %}
-                <a href="{% pageurl page.featured_insight %}" class="featured-insight__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Image" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
+        <div class="featured-article">
+            {% if page.featured_article.hero_image %}
+                <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>
                     <picture>
-                        {% image page.featured_insight.teaser_image fill-500x400-c100 as hero %}
+                        {% image page.featured_article.teaser_image fill-500x400-c100 as hero %}
                         <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.teaser_image fill-500x500-c100 as hero %}
+                        {% image page.featured_article.teaser_image fill-500x500-c100 as hero %}
                         <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                        {% image page.featured_insight.teaser_image fill-1000x600-c100 as hero %}
+                        {% image page.featured_article.teaser_image fill-1000x600-c100 as hero %}
                         <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
 
-                        {% if page.featured_insight.hero_image_decorative %}
+                        {% if page.featured_article.hero_image_decorative %}
                             <img src="{{ hero.url }}" alt="" />
                         {% else %}
-                            <img src="{{ hero.url }}" alt="{{page.featured_insight.hero_image_alt_text}}" />
+                            <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
                         {% endif %}
                     </picture>
                 </a>
             {% endif %}
-            
-            <div class="featured-insight__description">
-                <h2 class="featured-insight__heading">
+
+            <div class="featured-article__description">
+                <h2 class="featured-article__heading">
                     <small>{% trans "Spotlight on" %}</small>
-                    {{ page.featured_insight.title }}
-                    {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}
+                    {{ page.featured_article.title }}
+                    {% if page.featured_article.first_published_at.date > page.new_label_end_date.date %}
                         <span aria-describedby="article-desc" role="link">NEW</span>
                     {% endif %}
                 </h2>
 
-                <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_insight.title }}</p>
+                <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_article.title }}</p>
 
-                <p>{{ page.featured_insight.sub_heading }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_insight %}" data-component-name="Featured Insight: {{ page.featured_insight.title }}" data-link-type="Button" {% if page.featured_insight.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
+                <p>{{ page.featured_article.sub_heading }}</p>
+                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Story: {{ page.featured_article.title }}" data-link-type="Button" {% if page.featured_article.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
         <div class="container py-3">
             <div class="row justify-content-md-center text-center">
                 <div class="col-sm-12 col-lg-12">
-                    <a class="tna-button--dark" href="/stories/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
+                    <a class="tna-button--dark" href="/articles/" rel="noopener noreferrer" target="_blank">Explore stories from the collection</a>
                 </div>
             </div>
         </div>
