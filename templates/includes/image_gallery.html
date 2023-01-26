@@ -2,47 +2,49 @@
 <div class="transcription">
     <div class="container">
         <div class="row">
-            <div id="previewImage" class="col-md-12 col-sm-12">
+            <div class="transcription__preview">
                 <p class="transcription__image-counter">Image 1 of {{ page.image_gallery.all|length }}</p>
                 <picture>
-                    {% image page.image_gallery.all.0.image fill-1110x500 format-webp as image_webp %}
-                    <source srcset="{{ image_webp.url }}"
-                            type="image/webp"
-                            alt="{{ item.alt_text }}"/>
-                    {% image page.image_gallery.all.0.image fill-1110x500 as image_png %}
-                    <source srcset="{{ image_png.url }}"
-                            type="image/png"
-                            alt="{{ item.alt_text }}"/>
-                    {% image page.image_gallery.all.0.image fill-1110x500 as base_img %}
-                    <img width="1110"
-                         height="500"
-                         src="{{ base_img.url }}"
-                         alt="{{ item.alt_text }}"/>
+                    {% with first_gallery_item=page.image_gallery.all.0 %}
+                        {% image first_gallery_item.image fill-1110x500 format-webp as image_webp %}
+                        <source srcset="{{ image_webp.url }}"
+                                type="image/webp"
+                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                        {% image first_gallery_item.image fill-1110x500 as image_png %}
+                        <source srcset="{{ image_png.url }}"
+                                type="image/png"
+                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                        {% image first_gallery_item.image fill-1110x500 as base_img %}
+                        <img width="1110"
+                             height="500"
+                             src="{{ base_img.url }}"
+                             {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                    {% endwith %}
                 </picture>
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-            <button id="showMoreButton" class="tna-button--yellow reveal-button">View images and transcripts</button>
+            <button id="showButton" class="tna-button--yellow reveal-button">View images and transcripts</button>
         </div>
         <!--start of transcript element-->
         {% for item in page.image_gallery.all %}
-            <div id="item-{{ forloop.counter }}">
+            <div id="item-{{ forloop.counter }}" class="hidden">
                 <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ page.image_gallery.all|length }}</p>
                 <div class="transcription__content">
                     <picture>
                         {% image item.image fill-540x540 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
-                                alt="{{ item.alt_text }}"/>
+                                {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
                         {% image item.image fill-540x540 format-png as image_png %}
                         <source srcset="{{ image_png.url }}"
                                 type="image/png"
-                                alt="{{ item.alt_text }}"/>
+                                {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
                         {% image item.image fill-540x540 as base_img %}
                         <img width="540"
                              height="540"
                              src="{{ base_img.url }}"
-                             alt="{{ item.alt_text }}"/>
+                             {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
                     </picture>
                     <div role="tablist"
                          aria-labelledby="tablist-1-{{ forloop.counter }}"
@@ -76,7 +78,7 @@
                                  role="tabpanel"
                                  tabindex="0"
                                  aria-labelledby="tab-2-{{ forloop.counter }}"
-                                 class="is-hidden">
+                                 class="hidden">
                                 <p>{{ item.translation_text|richtext }}</p>
                             </div>
                         {% endif %}
@@ -85,12 +87,10 @@
             </div>
         {% endfor %}
     </div>
-    <div class="row d-flex justify-content-center image_gallery__close">
-        <button class="transcription__close" id="closebutton" aria-role="close">
-            Close
-            {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="" %}
-        </button>
-    </div>
+    <button class="transcription__close" id="closeButton" type="button">
+        Close
+        {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="" %}
+    </button>
 </div>
 <!--end of transcript element-->
 <noscript>

@@ -2,17 +2,20 @@
   background: $color__grey-2;
   color: $color__white;
 
+  .hidden {
+    display: none;
+  }
+
   &__content {
     display: grid;
-    margin: 40px;
+    margin-bottom: 4rem;
     grid-template-columns: 50% 50%;
+    row-gap: 30px;
 
     @media screen and (max-width: map-get($grid-breakpoints, "md")) {
       grid-template-columns: 100%;
     }
   }
-
-  &__content:last-child {}
 
   &__preview {
     margin: auto;
@@ -83,12 +86,8 @@
     margin-top: 40px;
     color: $color__white;
 
-    >p {
+    > p {
       margin: 0;
     }
-  }
-
-  [role="tabpanel"].is-hidden {
-    display: none;
   }
 }
