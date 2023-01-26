@@ -6,7 +6,7 @@ from django.db import migrations
 
 def migrate_forwards(apps, schema_editor):
     InsightsPage = apps.get_model("insights", "InsightsPage")
-    PageRevision = apps.get_model("wagtailcore", "PageRevision")
+    Revision = apps.get_model("wagtailcore", "Revision")
     for page in InsightsPage.objects.only("id", "title", "body").iterator():
         new_content = []
         current_section_heading = None
@@ -103,7 +103,7 @@ def migrate_forwards(apps, schema_editor):
 
         # Update the page's latest revision, so that changes 'stick' in the editor
         latest_revision = (
-            PageRevision.objects.filter(page_id=page.id).order_by("-created_at").first()
+            Revision.objects.filter(page_id=page.id).order_by("-created_at").first()
         )
         if latest_revision:
             revision_content = json.loads(latest_revision.content_json)
@@ -114,6 +114,7 @@ def migrate_forwards(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
+        ("wagtailcore", "0077_alter_revision_user"),
         ("insights", "0035_add_content_section_blocks_to_insights_body"),
     ]
 
