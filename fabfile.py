@@ -89,6 +89,7 @@ def start(c, container_name=None):
 def run(c):
     start(c, "web")
     web_exec("poetry install --remove-untracked --no-root")
+    web_exec("python manage.py rename_app insights articles")
     web_exec("python manage.py migrate")
     return web_exec("python manage.py runserver 0.0.0.0:8000")
 
