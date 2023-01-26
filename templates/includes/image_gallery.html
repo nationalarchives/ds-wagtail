@@ -1,209 +1,98 @@
-{% load static %}
-{% load wagtailimages_tags %}
-{% load wagtailcore_tags %}
-
+{% load static wagtailimages_tags wagtailcore_tags %}
 <div class="transcription">
     <div class="container">
         <div class="row">
             <div id="previewImage" class="col-md-12 col-sm-12">
-                <p>Image 1 of {{page.image_gallery.all|length}}</p>
-                {% image page.image_gallery.all.0.image fill-1110x503 as gallery_image %}
-                <img class="show-more-image" src="{{gallery_image.url}}" alt="{{page.image_gallery.all.0.alt_text}}">
+                <p class="transcription__image-counter">Image 1 of {{ page.image_gallery.all|length }}</p>
+                <picture>
+                    {% image page.image_gallery.all.0.image fill-1110x500 format-webp as image_webp %}
+                    <source srcset="{{ image_webp.url }}"
+                            type="image/webp"
+                            alt="{{ item.alt_text }}"/>
+                    {% image page.image_gallery.all.0.image fill-1110x500 as image_png %}
+                    <source srcset="{{ image_png.url }}"
+                            type="image/png"
+                            alt="{{ item.alt_text }}"/>
+                    {% image page.image_gallery.all.0.image fill-1110x500 as base_img %}
+                    <img width="1110"
+                         height="500"
+                         src="{{ base_img.url }}"
+                         alt="{{ item.alt_text }}"/>
+                </picture>
             </div>
         </div>
-
         <div class="row d-flex justify-content-center">
-            <a id="showMoreButton" class="tna-button--yellow reveal-button" rel="noopener noreferrer" >View images and transcripts</a>
+            <button id="showMoreButton" class="tna-button--yellow reveal-button">View images and transcripts</button>
         </div>
-
         <!--start of transcript element-->
-
-        <div id="transcript-element">
-            {% for item in page.image_gallery.all %}
-            <div id="item-{{forloop.counter}}">
-            <div class="row d-flex justify-content-center">
-                <div class="col-md-12 col-sm-12">
-                    <p>Image {{forloop.counter}} of {{page.image_gallery.all|length}}</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6">
-                    {% image item.image original as gallery_image %}
-                    <img src ="{{gallery_image.url}}" alt="{{item.alt_text}}" />
-                    <p class="image-caption">{{ item.caption }}<a href="" alt="">PROB 1/4</a></p>
-                </div>
-
-                {% if item.transcription_text %}
-                <div id ="tab-system" class="col-md-6">
-                    <div class="tabset" id="tabset-{{ forloop.counter }}">
-                        <!-- Tab 1 -->
-                        <input type="radio" name="tabset" id="tab1-{{ forloop.counter }}" aria-controls="transcription" checked>
-                        <label for="tab1-{{ forloop.counter }}" class="initial-label" id="initial-{{forloop.counter}}">{% if item.transcription_header %}<h2>{{ item.transcription_header }}</h2>{% else %}<h2>Transcription</h2>{% endif %}</label>
-                        <!-- Tab 2 -->
+        {% for item in page.image_gallery.all %}
+            <div id="item-{{ forloop.counter }}">
+                <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ page.image_gallery.all|length }}</p>
+                <div class="transcription__content">
+                    <picture>
+                        {% image item.image fill-540x540 format-webp as image_webp %}
+                        <source srcset="{{ image_webp.url }}"
+                                type="image/webp"
+                                alt="{{ item.alt_text }}"/>
+                        {% image item.image fill-540x540 format-png as image_png %}
+                        <source srcset="{{ image_png.url }}"
+                                type="image/png"
+                                alt="{{ item.alt_text }}"/>
+                        {% image item.image fill-540x540 as base_img %}
+                        <img width="540"
+                             height="540"
+                             src="{{ base_img.url }}"
+                             alt="{{ item.alt_text }}"/>
+                    </picture>
+                    <div role="tablist"
+                         aria-labelledby="tablist-1-{{ forloop.counter }}"
+                         class="automatic col-md-6">
+                        <button id="tab-1-{{ forloop.counter }}"
+                                class="tabset"
+                                type="button"
+                                role="tab"
+                                aria-selected="true"
+                                aria-controls="tabpanel-1-{{ forloop.counter }}">
+                            <span class="focus">{% firstof item.transcription_header "Transcription" %}</span>
+                        </button>
                         {% if item.translation_text %}
-                        <input type="radio" name="tabset" id="tab2-{{ forloop.counter }}" aria-controls="translation">
-                        <label for="tab2-{{ forloop.counter }}" id="tab2-{{ forloop.counter }}">{% if item.translation_header %}<h2>{{ item.translation_header }}</h2>{% else %}<h2>Translation</h2>{% endif %}</label>
+                            <button id="tab-2-{{ forloop.counter }}"
+                                    type="button"
+                                    role="tab"
+                                    aria-selected="false"
+                                    aria-controls="tabpanel-2-{{ forloop.counter }}"
+                                    tabindex="-1">
+                                <span class="focus">{% firstof item.translation_header "Translation" %}</span>
+                            </button>
                         {% endif %}
-
-                        <div class="tab-panels">
-                            <section id="transcription-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
-                                <p>
-                                    {{ item.transcription_text|richtext }}
-                                </p>
-                            </section>
-                            {% if item.translation_text %}
-                            <section id="translation-{{ forloop.counter }}" class="tab-panel-{{ forloop.counter }}">
-                                <noscript><h2>Modern English</h2></noscript>
-                                <p>{{ item.translation_text|richtext }}</p>
-                            </section>
-                            {% endif %}
+                        <div id="tabpanel-1-{{ forloop.counter }}"
+                             role="tabpanel"
+                             tabindex="0"
+                             aria-labelledby="tab-1-{{ forloop.counter }}">
+                            <p>{{ item.transcription_text|richtext }}</p>
                         </div>
+                        {% if item.translation_text %}
+                            <div id="tabpanel-2-{{ forloop.counter }}"
+                                 role="tabpanel"
+                                 tabindex="0"
+                                 aria-labelledby="tab-2-{{ forloop.counter }}"
+                                 class="is-hidden">
+                                <p>{{ item.translation_text|richtext }}</p>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
-                {% endif %}
             </div>
-            </div>
-            {% endfor %}
-            <div class="row d-flex justify-content-center close-button">
-                <a id ='closebutton' href="">Close X</a>
-            </div>
-        </div>
-        <!--end of transcript element-->
+        {% endfor %}
+    </div>
+    <div class="row d-flex justify-content-center image_gallery__close">
+        <button class="transcription__close" id="closebutton" aria-role="close">
+            Close
+            {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="" %}
+        </button>
     </div>
 </div>
-
-<script>
-
-    //js to show/hide transcription, translation element
-    //variables
-    const previewImage = document.getElementById("previewImage");
-    const showMoreButton = document.getElementById("showMoreButton");
-    const transcript = document.getElementById("transcript-element");
-    const closebutton = document.getElementById("closebutton");
-
-    //if js enabled show relevant content
-    transcript.style.display="none";
-    previewImage.style.display="block";
-    showMoreButton.style.display="block";
-
-    closebutton.style.display="block";
-    closebutton.style.padding="1em";
-    closebutton.style.color="#fbd709";
-
-    //actions
-    showMoreButton.addEventListener("click", ()=>{
-        //button clicked
-        event.preventDefault();
-        transcript.style.display="block";
-        previewImage.style.display="none";
-        showMoreButton.style.display="none";
-
-    })
-
-    closebutton.addEventListener("click", ()=>{
-        //close button
-        event.preventDefault();
-        transcript.style.display="none";
-        previewImage.style.display="block";
-        showMoreButton.style.display="block";
-
-    })
-
-    //js to control tabs
-
-
-    const transcription1 = document.getElementById("transcription-1");
-    const translation1 = document.getElementById("translation-1");
-
-    const transcription2 = document.getElementById("transcription-2");
-    const translation2 = document.getElementById("translation-2");
-
-    const transcription3 = document.getElementById("transcription-3");
-    const translation3 = document.getElementById("translation-3");
-
-    const transcription4 = document.getElementById("transcription-4");
-    const translation4 = document.getElementById("translation-4");
-
-    const transcirtiontab = document.getElementById("tab1-1");
-    const translationtab = document.getElementById("tab2-1");
-
-    const transcirtiontab2 = document.getElementById("tab1-2");
-    const translationtab2 = document.getElementById("tab2-2");
-
-    const transcirtiontab3 = document.getElementById("tab1-3");
-    const translationtab3 = document.getElementById("tab2-3");
-
-    const transcirtiontab4 = document.getElementById("tab1-4");
-    const translationtab4 = document.getElementById("tab2-4");
-
-
-
-    translation1.style.display="none";
-    translation2.style.display="none";
-    translation3.style.display="none";
-    translation4.style.display="none";
-
-    translationtab.oninput= () => {
-        //alert('clicked') // Do something
-        transcription1.style.display="none";
-        translation1.style.display="block"
-        var element = document.getElementById("initial-1");
-        element.classList.remove("initial-label");
-    }
-
-    transcirtiontab.oninput= () => {
-        //alert('clicked') // Do something
-        transcription1.style.display="block";
-        translation1.style.display="none"
-    }
-
-    translationtab2.oninput= () => {
-        //alert('clicked') // Do something
-        transcription2.style.display="none";
-        translation2.style.display="block"
-        var elementb = document.getElementById("initial-2");
-        elementb.classList.remove("initial-label");
-    }
-
-    transcirtiontab2.oninput= () => {
-        //alert('clicked') // Do something
-        transcription2.style.display="block";
-        translation2.style.display="none"
-    }
-
-    translationtab3.oninput= () => {
-        //alert('clicked') // Do something
-        transcription3.style.display="none";
-        translation3.style.display="block"
-        var elementb = document.getElementById("initial-3");
-        elementb.classList.remove("initial-label");
-    }
-
-    transcirtiontab3.oninput= () => {
-        //alert('clicked') // Do something
-        transcription3.style.display="block";
-        translation3.style.display="none"
-    }
-
-    translationtab4.oninput= () => {
-        //alert('clicked') // Do something
-        transcription4.style.display="none";
-        translation4.style.display="block"
-        var elementb = document.getElementById("initial-4");
-        elementb.classList.remove("initial-label");
-    }
-
-    transcirtiontab4.oninput= () => {
-        //alert('clicked') // Do something
-        transcription4.style.display="block";
-        translation4.style.display="none"
-    }
-
-
-
-
-
-
-
-</script>
+<!--end of transcript element-->
+<noscript>
+    {# Add no JS approach #}
+</noscript>
