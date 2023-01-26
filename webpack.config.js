@@ -17,6 +17,7 @@ module.exports = {
         global_search: './scripts/src/global-search.js',
         catalogue_search: './scripts/src/catalogue-search.js',
         hamburger_menu: './scripts/src/hamburger-menu.js',
+        image_gallery: './scripts/src/image-gallery.js',
     },
     output: {
         filename: '[name].js',
