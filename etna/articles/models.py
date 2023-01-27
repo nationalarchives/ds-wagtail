@@ -4,20 +4,23 @@ from typing import Any, Dict, Tuple
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
-from wagtail.fields import StreamField
-from wagtail.models import Page
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import RichTextField, StreamField
+from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
 from wagtailmetadata.models import MetadataPageMixin
 
+from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePage, ContentWarningMixin
+from etna.records.fields import RecordChooserField
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
@@ -226,3 +229,205 @@ class ArticlePage(
 
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
+
+
+class RecordArticlePage(
+    TopicalPageMixin, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, BasePage
+):
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = []
+
+    standfirst = models.CharField(
+        verbose_name=_("standfirst"), max_length=350, blank=False
+    )
+
+    record = RecordChooserField(verbose_name=_("record"), db_index=True)
+
+    date_text = models.CharField(
+        verbose_name=_("date text"),
+        max_length=100,
+        help_text=_("Date(s) related to the record (max. character length: 100)"),
+    )
+
+    about = RichTextField(
+        verbose_name=_("why this record matters"),
+        features=["bold", "italic", "link", "ol", "ul"],
+    )
+
+    image_library_link = models.URLField(
+        blank=True,
+        verbose_name="Image library link",
+        help_text="Link to an external image library",
+    )
+
+    print_on_demand_link = models.URLField(
+        blank=True,
+        verbose_name="Print on demand link",
+        help_text="Link to an external print on demand service",
+    )
+
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("featured article"),
+    )
+
+    class Meta:
+        verbose_name = "Record Revealed article"
+        verbose_name_plural = "Record Revealed articles"
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("standfirst"),
+        MultiFieldPanel(
+            heading="Content Warning Options",
+            classname="collapsible collapsed",
+            children=[
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+        ),
+        InlinePanel(
+            "gallery_images",
+            heading="Image Gallery",
+            label="Item",
+            min_num=1,
+            max_num=6,
+        ),
+        MultiFieldPanel(
+            heading="Body",
+            children=[
+                FieldPanel("record"),
+                FieldPanel("date_text"),
+                FieldPanel("about"),
+                FieldPanel("image_library_link"),
+                FieldPanel("print_on_demand_link"),
+            ],
+        ),
+        FieldPanel("featured_article"),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+        TopicalPageMixin.get_topics_inlinepanel(),
+    ]
+
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    search_fields = BasePage.search_fields + [
+        index.SearchField("standfirst", boost=3),
+        index.SearchField("gallery_text"),
+        index.SearchField("date_text"),
+        index.SearchField("about"),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
+    @cached_property
+    def gallery_items(self):
+        """
+        Used to access the page's 'gallery_images' for output. Makes use of
+        Django's select_related() and prefetch_related() to efficiently
+        prefetch image and rendition data from the database.
+        """
+        return (
+            self.gallery_images.all()
+            .select_related("image")
+            .prefetch_related("image__renditions")
+        )
+
+    @property
+    def gallery_text(self) -> str:
+        """
+        Returns all of the relevant text defined on this page's gallery images,
+        joined into one giant string to faciliate indexing.
+        """
+        strings = []
+        for item in self.gallery_images.all():
+            strings.extend([item.alt_text, item.caption])
+            if item.has_transcription:
+                strings.extend([item.transcription_header, item.transcription_text])
+            if item.has_translation:
+                strings.extend([item.translation_header, item.translation_text])
+        return " ".join(strings)
+
+
+class PageGalleryImage(Orderable):
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
+    image = models.ForeignKey(
+        "wagtailimages.Image", on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+    is_sensitive = models.BooleanField(
+        verbose_name="Is this image sensitive?",
+        default=False,
+    )
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+    caption = RichTextField(
+        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
+        blank=True,
+    )
+    transcription_header = models.CharField(
+        verbose_name=_("transcription header"),
+        max_length=50,
+        default="Transcript",
+        help_text=_("Header for the transcription (max length: 50 chars)."),
+    )
+    transcription_text = RichTextField(
+        verbose_name=_("transcription text"),
+        features=["bold", "italic", "ol", "ul"],
+        max_length=1500,
+        help_text=_("An optional transcription of the image (max length: 1500 chars),"),
+        blank=True,
+    )
+    translation_header = models.CharField(
+        verbose_name=_("translation header"),
+        max_length=50,
+        default="Translation",
+        help_text=_("Header for the translation (max length: 50 chars)"),
+    )
+    translation_text = RichTextField(
+        verbose_name=_("translation text"),
+        features=["bold", "italic", "ol", "ul"],
+        max_length=1500,
+        help_text=_(
+            "An optional translation of the transcription (max length: 1500 chars)."
+        ),
+        blank=True,
+    )
+
+    @property
+    def has_transcription(self) -> bool:
+        """
+        Convenience property to support cleaner template code.
+
+        e.g. `{% if item.has_transcription %}` instead of `{% if item.transcription_text != "" %}`
+        """
+        return self.transcription_text != ""
+
+    @property
+    def has_translation(self) -> bool:
+        """
+        Convenience property to support cleaner template code.
+
+        e.g. `{% if item.has_translation %}` instead of `{% if item.translation_text != "" %}`
+        """
+        return self.translation_text != ""
+
+    class Meta(Orderable.Meta):
+        verbose_name = _("gallery image")
+        verbose_name_plural = _("gallery images")
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("is_sensitive"),
+        FieldPanel("alt_text"),
+        FieldPanel("caption"),
+        FieldPanel("transcription_header"),
+        FieldPanel("transcription_text"),
+        FieldPanel("translation_header"),
+        FieldPanel("translation_text"),
+    ]
