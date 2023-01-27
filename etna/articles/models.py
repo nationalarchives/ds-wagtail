@@ -249,7 +249,10 @@ class RecordArticlePage(
         help_text=_("Date(s) related to the record (max. character length: 100)"),
     )
 
-    about = RichTextField(verbose_name=_("why this record matters"))
+    about = RichTextField(
+        verbose_name=_("why this record matters"),
+        features=["bold", "italic", "link", "ol", "ul"],
+    )
 
     image_library_link = models.URLField(
         blank=True,
@@ -373,8 +376,9 @@ class PageGalleryImage(Orderable):
         default="Transcript",
         help_text=_("Header for the transcription (max length: 50 chars)."),
     )
-    transcription_text = models.TextField(
+    transcription_text = RichTextField(
         verbose_name=_("transcription text"),
+        features=["bold", "italic", "ol", "ul"],
         max_length=1500,
         help_text=_("An optional transcription of the image (max length: 1500 chars),"),
         blank=True,
@@ -385,8 +389,9 @@ class PageGalleryImage(Orderable):
         default="Translation",
         help_text=_("Header for the translation (max length: 50 chars)"),
     )
-    translation_text = models.TextField(
+    translation_text = RichTextField(
         verbose_name=_("translation text"),
+        features=["bold", "italic", "ol", "ul"],
         max_length=1500,
         help_text=_(
             "An optional translation of the transcription (max length: 1500 chars)."
