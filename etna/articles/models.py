@@ -371,11 +371,11 @@ class PageGalleryImage(Orderable):
     )
 
     @property
-    def has_transcription(self):
+    def has_transcription(self) -> bool:
         return self.transcription_text != ""
 
     @property
-    def has_translation(self):
+    def has_translation(self) -> bool:
         return self.translation_text != ""
 
     class Meta(Orderable.Meta):
