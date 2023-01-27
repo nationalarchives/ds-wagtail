@@ -374,25 +374,23 @@ class TopicalPageMixin:
     def get_time_periods_inlinepanel(
         cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
     ) -> InlinePanel:
-        kwargs = {
-            "heading": _("Related time periods"),
-            "max_num": max_num,
-        }
-        if min_num:
-            kwargs["min_num"] = min_num
-        return InlinePanel("page_time_periods", **kwargs)
+        return InlinePanel(
+            "page_time_periods",
+            heading=_("Related time periods"),
+            min_num=min_num,
+            max_num=max_num,
+        )
 
     @classmethod
     def get_topics_inlinepanel(
         cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
     ) -> InlinePanel:
-        kwargs = {
-            "heading": _("Related topics"),
-            "max_num": max_num,
-        }
-        if min_num:
-            kwargs["min_num"] = min_num
-        return InlinePanel("page_topics", **kwargs)
+        return InlinePanel(
+            "page_topics",
+            heading=_("Related topics"),
+            min_num=min_num,
+            max_num=max_num,
+        )
 
     @cached_property
     def primary_topic(self) -> Union[TopicExplorerPage, None]:
