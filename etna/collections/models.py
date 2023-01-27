@@ -48,6 +48,7 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
+        "articles.RecordArticlePage",
     ]
 
 
