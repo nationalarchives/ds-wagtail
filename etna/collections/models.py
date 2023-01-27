@@ -414,6 +414,14 @@ class TopicalPageMixin:
     def topics_alphabetical(self) -> List[TopicExplorerPage]:
         return sorted(self.topic, key=lambda item: item.title.lower())
 
+    @property
+    def topic_names(self) -> str:
+        """
+        Returns the titles of all related topics, joined together into one big
+        comma-separated string. Ideal for indexing!
+        """
+        return ", ".join(item.title for item in self.topics)
+
     @cached_property
     def primary_time_period(self) -> Union[TimePeriodExplorerPage, None]:
         try:
@@ -433,3 +441,11 @@ class TopicalPageMixin:
     @cached_property
     def time_periods_chronological(self) -> List[TimePeriodExplorerPage]:
         return sorted(self.time_periods, key=lambda item: item.start_year)
+
+    @property
+    def time_period_names(self) -> str:
+        """
+        Returns the titles of all related time periods, joined together into
+        one big comma-separated string. Ideal for indexing!
+        """
+        return ", ".join(item.title for item in self.time_periods)
