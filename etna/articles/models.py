@@ -309,6 +309,15 @@ class RecordArticlePage(
 
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
+    search_fields = BasePage.search_fields + [
+        index.SearchField("standfirst", boost=3),
+        index.SearchField("gallery_text"),
+        index.SearchField("date_text"),
+        index.SearchField("about"),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
     @cached_property
     def gallery_items(self):
         """
@@ -321,6 +330,21 @@ class RecordArticlePage(
             .select_related("image")
             .prefetch_related("image__renditions")
         )
+
+    @property
+    def gallery_text(self) -> str:
+        """
+        Returns all of the relevant text defined on this page's gallery images,
+        joined into one giant string to faciliate indexing.
+        """
+        strings = []
+        for item in self.gallery_images.all():
+            strings.extend([item.alt_text, item.caption])
+            if item.has_transcription:
+                strings.extend([item.transcription_header, item.transcription_text])
+            if item.has_translation:
+                strings.extend([item.translation_header, item.translation_text])
+        return " ".join(strings)
 
 
 class PageGalleryImage(Orderable):
