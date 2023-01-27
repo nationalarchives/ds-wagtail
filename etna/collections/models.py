@@ -401,8 +401,9 @@ class TopicalPageMixin:
     def topics(self) -> Tuple[TopicExplorerPage]:
         return tuple(
             item.topic
-            for item in self.page_topics.select_related("topic")
-            .filter(topic__live=True)
+            for item in self.page_topics.select_related("topic").filter(
+                topic__live=True
+            )
         )
 
     @cached_property
@@ -428,8 +429,9 @@ class TopicalPageMixin:
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
             item.time_period
-            for item in self.page_time_periods.select_related("time_period")
-            .filter(time_period__live=True)
+            for item in self.page_time_periods.select_related("time_period").filter(
+                time_period__live=True
+            )
         )
 
     @cached_property
