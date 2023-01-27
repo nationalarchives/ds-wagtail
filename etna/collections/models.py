@@ -1,3 +1,5 @@
+from typing import List, Optional, Tuple, Union
+
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
@@ -9,8 +11,6 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 
 from wagtailmetadata.models import MetadataPageMixin
-
-from etna.articles.models import ArticlePage
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
@@ -138,6 +138,8 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     @cached_property
     def related_articles(self):
+        from etna.articles.models import ArticlePage
+
         return (
             ArticlePage.objects.filter(topic=self)
             .live()
@@ -237,6 +239,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
 
     @cached_property
     def related_articles(self):
+        from etna.articles.models import ArticlePage
+
         return (
             ArticlePage.objects.filter(time_period=self)
             .live()
@@ -355,3 +359,76 @@ class PageTimePeriod(Orderable):
         on_delete=models.SET_NULL,
         null=True,
     )
+
+
+class TopicalPageMixin:
+    """
+    A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
+    in order to be associated with one or many topics/time periods. It simply
+    adds a few properies to support robust, efficient access the related topic
+    and time period pages.
+    """
+
+    @classmethod
+    def get_time_periods_inlinepanel(
+        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
+    ) -> InlinePanel:
+        kwargs = {
+            "heading": _("Related time periods"),
+            "max_num": max_num,
+        }
+        if min_num:
+            kwargs["min_num"] = min_num
+        return InlinePanel("page_time_periods", **kwargs)
+
+    @classmethod
+    def get_topics_inlinepanel(
+        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
+    ) -> InlinePanel:
+        kwargs = {
+            "heading": _("Related topics"),
+            "max_num": max_num,
+        }
+        if min_num:
+            kwargs["min_num"] = min_num
+        return InlinePanel("page_topics", **kwargs)
+
+    @cached_property
+    def primary_topic(self) -> Union[TopicExplorerPage, None]:
+        try:
+            return self.topics[0]
+        except IndexError:
+            return None
+
+    @cached_property
+    def topics(self) -> Tuple[TopicExplorerPage]:
+        return tuple(
+            item.topic
+            for item in self.page_topics.select_related("topic")
+            .filter(topic__live=True)
+            .exclude(topic__isnull=True)
+        )
+
+    @cached_property
+    def topics_alphabetical(self) -> List[TopicExplorerPage]:
+        return sorted(self.topic, key=lambda item: item.title.lower())
+
+    @cached_property
+    def primary_time_period(self) -> Union[TopicExplorerPage, None]:
+        try:
+            return self.time_periods[0]
+        except IndexError:
+            return None
+
+    @cached_property
+    def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
+        return tuple(
+            item.time_period
+            for item in self.page_time_periods.select_related("time_period")
+            .filter(time_period__live=True)
+            .exclude(time_period__isnull=True)
+        )
+
+    @cached_property
+    def time_periods_chronological(self) -> List[TimePeriodExplorerPage]:
+        return sorted(self.time_periods, key=lambda item: item.start_year)
