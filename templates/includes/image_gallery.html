@@ -3,93 +3,95 @@
     <div class="container">
         <div class="row">
             <div class="transcription__preview">
-                <p class="transcription__image-counter">Image 1 of {{ page.image_gallery.all|length }}</p>
-                <picture>
-                    {% with first_gallery_item=page.image_gallery.all.0 %}
-                        {% image first_gallery_item.image fill-1110x500 format-webp as image_webp %}
-                        <source srcset="{{ image_webp.url }}"
-                                type="image/webp"
-                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1110x500 as image_png %}
-                        <source srcset="{{ image_png.url }}"
-                                type="image/png"
-                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1110x500 as base_img %}
-                        <img width="1110"
-                             height="500"
-                             src="{{ base_img.url }}"
-                             {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                    {% endwith %}
-                </picture>
-            </div>
-        </div>
-        <div class="row d-flex justify-content-center">
-            <button id="showButton" class="tna-button--yellow reveal-button">View images and transcripts</button>
-        </div>
-        <!--start of transcript element-->
-        {% for item in page.image_gallery.all %}
-            <div id="item-{{ forloop.counter }}" class="hidden">
-                <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ page.image_gallery.all|length }}</p>
-                <div class="transcription__content">
+                {% with gallery_length=page.image_gallery.all|length %}
+                    <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
                     <picture>
-                        {% image item.image fill-540x540 format-webp as image_webp %}
-                        <source srcset="{{ image_webp.url }}"
-                                type="image/webp"
-                                {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
-                        {% image item.image fill-540x540 format-png as image_png %}
-                        <source srcset="{{ image_png.url }}"
-                                type="image/png"
-                                {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
-                        {% image item.image fill-540x540 as base_img %}
-                        <img width="540"
-                             height="540"
-                             src="{{ base_img.url }}"
-                             {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
+                        {% with first_gallery_item=page.image_gallery.all.0 %}
+                            {% image first_gallery_item.image fill-1110x500 format-webp as image_webp %}
+                            <source srcset="{{ image_webp.url }}"
+                                    type="image/webp"
+                                    {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                            {% image first_gallery_item.image fill-1110x500 as image_png %}
+                            <source srcset="{{ image_png.url }}"
+                                    type="image/png"
+                                    {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                            {% image first_gallery_item.image fill-1110x500 as base_img %}
+                            <img width="1110"
+                                 height="500"
+                                 src="{{ base_img.url }}"
+                                 {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                        {% endwith %}
                     </picture>
-                    <div role="tablist"
-                         aria-labelledby="tablist-1-{{ forloop.counter }}"
-                         class="automatic col-md-6">
-                        <button id="tab-1-{{ forloop.counter }}"
-                                class="tabset"
-                                type="button"
-                                role="tab"
-                                aria-selected="true"
-                                aria-controls="tabpanel-1-{{ forloop.counter }}">
-                            <span class="focus">{% firstof item.transcription_header "Transcription" %}</span>
-                        </button>
-                        {% if item.translation_text %}
-                            <button id="tab-2-{{ forloop.counter }}"
-                                    type="button"
-                                    role="tab"
-                                    aria-selected="false"
-                                    aria-controls="tabpanel-2-{{ forloop.counter }}"
-                                    tabindex="-1">
-                                <span class="focus">{% firstof item.translation_header "Translation" %}</span>
-                            </button>
-                        {% endif %}
-                        <div id="tabpanel-1-{{ forloop.counter }}"
-                             role="tabpanel"
-                             tabindex="0"
-                             aria-labelledby="tab-1-{{ forloop.counter }}">
-                            <p>{{ item.transcription_text|richtext }}</p>
-                        </div>
-                        {% if item.translation_text %}
-                            <div id="tabpanel-2-{{ forloop.counter }}"
-                                 role="tabpanel"
-                                 tabindex="0"
-                                 aria-labelledby="tab-2-{{ forloop.counter }}"
-                                 class="hidden">
-                                <p>{{ item.translation_text|richtext }}</p>
-                            </div>
-                        {% endif %}
-                    </div>
                 </div>
             </div>
-        {% endfor %}
+            <button id="showButton" class="transcription__open">
+                View {{ gallery_length }} images and transcripts
+            </button>
+            <!--start of transcript element-->
+            {% for item in page.image_gallery.all %}
+                <div id="item-{{ forloop.counter }}" class="hidden">
+                    <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ gallery_length }}</p>
+                    <div class="transcription__content">
+                        <picture>
+                            {% image item.image fill-540x540 format-webp as image_webp %}
+                            <source srcset="{{ image_webp.url }}"
+                                    type="image/webp"
+                                    {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
+                            {% image item.image fill-540x540 format-png as image_png %}
+                            <source srcset="{{ image_png.url }}"
+                                    type="image/png"
+                                    {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
+                            {% image item.image fill-540x540 as base_img %}
+                            <img width="540"
+                                 height="540"
+                                 src="{{ base_img.url }}"
+                                 {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
+                        </picture>
+                        <div role="tablist"
+                             aria-labelledby="tablist-1-{{ forloop.counter }}"
+                             class="automatic col-md-6">
+                            <button id="tab-1-{{ forloop.counter }}"
+                                    class="tabset"
+                                    type="button"
+                                    role="tab"
+                                    aria-selected="true"
+                                    aria-controls="tabpanel-1-{{ forloop.counter }}">
+                                <span class="focus">{% firstof item.transcription_header "Transcription" %}</span>
+                            </button>
+                            {% if item.translation_text %}
+                                <button id="tab-2-{{ forloop.counter }}"
+                                        type="button"
+                                        role="tab"
+                                        aria-selected="false"
+                                        aria-controls="tabpanel-2-{{ forloop.counter }}"
+                                        tabindex="-1">
+                                    <span class="focus">{% firstof item.translation_header "Translation" %}</span>
+                                </button>
+                            {% endif %}
+                            <div id="tabpanel-1-{{ forloop.counter }}"
+                                 role="tabpanel"
+                                 tabindex="0"
+                                 aria-labelledby="tab-1-{{ forloop.counter }}">
+                                <p>{{ item.transcription_text|richtext }}</p>
+                            </div>
+                            {% if item.translation_text %}
+                                <div id="tabpanel-2-{{ forloop.counter }}"
+                                     role="tabpanel"
+                                     tabindex="0"
+                                     aria-labelledby="tab-2-{{ forloop.counter }}"
+                                     class="hidden">
+                                    <p>{{ item.translation_text|richtext }}</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endwith %}
     </div>
-    <button class="transcription__close" id="closeButton" type="button">
+    <button class="transcription__close hidden" id="closeButton" type="button">
         Close
-        {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="" %}
+        {% include "static/images/fontawesome-svgs/x-mark.svg" %}
     </button>
 </div>
 <!--end of transcript element-->

@@ -7,13 +7,14 @@
   }
 
   &__content {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 4rem;
-    grid-template-columns: 50% 50%;
-    row-gap: 30px;
-
-    @media screen and (max-width: map-get($grid-breakpoints, "md")) {
-      grid-template-columns: 100%;
+    
+    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+      display: grid;
+      row-gap: 30px;
+      grid-template-columns: 50% 50%;
     }
   }
 
@@ -21,8 +22,6 @@
     margin: auto;
     display: block;
     width: 100%;
-    max-height: 513px;
-    border-bottom: dashed $color__white 10px;
   }
 
   &__image-counter {
@@ -30,11 +29,27 @@
     margin-top: 1.5em;
   }
 
+  &__sensitive_image {
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  }
+
+  &__open {
+    @extend .tna-button--yellow;
+    display: flex;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
   &__close {
+    display: block;
     padding: 1em;
     background-color: inherit;
     border: none;
     color: $yellow;
+    margin-left: auto;
+    margin-right: auto;
     margin-bottom: 2em;
 
     svg {
@@ -80,7 +95,6 @@
       font-size: 1.3em;
     }
   }
-
 
   [role="tabpanel"] {
     margin-top: 40px;
