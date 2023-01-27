@@ -6,7 +6,7 @@ from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
-from wagtail.models import Orderable
+from wagtail.models import Orderable, Page
 
 from wagtailmetadata.models import MetadataPageMixin
 
@@ -309,3 +309,49 @@ class ResultsPageRecord(Orderable, models.Model):
         FieldPanel("teaser_image"),
         FieldPanel("description"),
     ]
+
+
+class PageTopic(Orderable):
+    """
+    This model allows any page type to be associated with one or more topics
+    in a way that retains the order of topics selected.
+
+    The ``sort_order`` field value from ``Orderable`` can be used to pull out
+    the 'first' topic to treat as the 'primary topic' for a page, and can also
+    used to prioritise items for a list of 'pages related to a topic'.
+
+    Just add `InlinePanel("page_topics")` to a page type's panel
+    configuration to use it!
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_topics")
+    topic = models.ForeignKey(
+        TopicExplorerPage,
+        verbose_name=_("topic"),
+        related_name="topic_pages",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
+
+
+class PageTimePeriod(Orderable):
+    """
+    This model allows any page type to be associated with one or more topics
+    in a way that retains the order of topics selected.
+
+    The ``sort_order`` field value from ``Orderable`` can be used to pull out
+    the 'first' topic to treat as the 'primary topic' for a page, and can also
+    used to prioritise items for a list of 'pages related to a topic'.
+
+    Just add `InlinePanel("page_time_periods")` to a page type's panel
+    configuration to use it!
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_time_periods")
+    time_period = models.ForeignKey(
+        TimePeriodExplorerPage,
+        verbose_name=_("time period"),
+        related_name="time_period_pages",
+        on_delete=models.SET_NULL,
+        null=True,
+    )
