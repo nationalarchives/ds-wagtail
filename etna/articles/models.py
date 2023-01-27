@@ -401,10 +401,20 @@ class PageGalleryImage(Orderable):
 
     @property
     def has_transcription(self) -> bool:
+        """
+        Convenience property to support cleaner template code.
+
+        e.g. `{% if item.has_transcription %}` instead of `{% if item.transcription_text != "" %}`
+        """
         return self.transcription_text != ""
 
     @property
     def has_translation(self) -> bool:
+        """
+        Convenience property to support cleaner template code.
+
+        e.g. `{% if item.has_translation %}` instead of `{% if item.translation_text != "" %}`
+        """
         return self.translation_text != ""
 
     class Meta(Orderable.Meta):
