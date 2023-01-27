@@ -40,8 +40,7 @@ class Migration(migrations.Migration):
                 (
                     "topic",
                     models.ForeignKey(
-                        null=True,
-                        on_delete=django.db.models.deletion.SET_NULL,
+                        on_delete=django.db.models.deletion.CASCADE,
                         related_name="topic_pages",
                         to="collections.topicexplorerpage",
                         verbose_name="topic",
@@ -80,8 +79,7 @@ class Migration(migrations.Migration):
                 (
                     "time_period",
                     models.ForeignKey(
-                        null=True,
-                        on_delete=django.db.models.deletion.SET_NULL,
+                        on_delete=django.db.models.deletion.CASCADE,
                         related_name="time_period_pages",
                         to="collections.timeperiodexplorerpage",
                         verbose_name="time period",

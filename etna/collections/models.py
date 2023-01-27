@@ -334,8 +334,7 @@ class PageTopic(Orderable):
         TopicExplorerPage,
         verbose_name=_("topic"),
         related_name="topic_pages",
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
     )
 
 
@@ -357,8 +356,7 @@ class PageTimePeriod(Orderable):
         TimePeriodExplorerPage,
         verbose_name=_("time period"),
         related_name="time_period_pages",
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
     )
 
 
@@ -405,7 +403,6 @@ class TopicalPageMixin:
             item.topic
             for item in self.page_topics.select_related("topic")
             .filter(topic__live=True)
-            .exclude(topic__isnull=True)
         )
 
     @cached_property
@@ -433,7 +430,6 @@ class TopicalPageMixin:
             item.time_period
             for item in self.page_time_periods.select_related("time_period")
             .filter(time_period__live=True)
-            .exclude(time_period__isnull=True)
         )
 
     @cached_property
