@@ -415,7 +415,7 @@ class TopicalPageMixin:
         return sorted(self.topic, key=lambda item: item.title.lower())
 
     @cached_property
-    def primary_time_period(self) -> Union[TopicExplorerPage, None]:
+    def primary_time_period(self) -> Union[TimePeriodExplorerPage, None]:
         try:
             return self.time_periods[0]
         except IndexError:
