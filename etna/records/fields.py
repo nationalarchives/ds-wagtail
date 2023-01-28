@@ -13,10 +13,10 @@ from .widgets import RecordChooser
 
 class LazyRecord(SimpleLazyObject):
     """
-    The return type for ``RecordReferenceField.from_db_value()``, which lazily
-    fetches the record details from CIIM when the value is interacted
-    with in some way. For example, when requesting a ``Record`` attribute
-    value, like: ``obj.record.title``
+    The return type for ``RecordField``, which lazily fetches the
+    record details from CIIM when the value is interacted with in some way;
+    For example, when requesting a ``Record`` attribute value other than
+    ``iaid``, or requesting a string representation of it.
     """
 
     def __init__(self, iaid: str):
@@ -100,21 +100,14 @@ class RecordField(Field):
 
     def to_python(self, value):
         """
-        Return ``None`` if the value is null or an empty string. Otherwise, use
-        the "iaid" string to fetch and return a ``Record`` instance from CIIM.
-
-        NOTE: We do not use ``LazyRecord`` here, because we want to attempt a
-        record fetch as a means of validating the "iaid" value (``to_python()``
-        is used in model/form validation).
+        Return ``None`` if the value is empty. Otherwise, create and return a
+        ``LazyRecord`` from the stored "iaid" value.
         """
-        if isinstance(value, str):
-            try:
-                return Record.api.fetch(iaid=value)
-            except HTTPError:
-                return ValidationError(
-                    "CIIM could not return a record with iaid '{value}'. "
-                )
-        return value
+        if isinstance(value, (Record, LazyRecord)):
+            return value
+        if value in self.empty_values:
+            return None
+        return LazyRecord(iaid=value)
 
     def from_db_value(self, value, expression, connection):
         """
