@@ -98,32 +98,39 @@ class RecordField(Field):
     def get_internal_type(self):
         return "CharField"
 
+    @classmethod
+    def _convert_to_record_instance(cls, value):
+        if isinstance(value, (Record, LazyRecord)):
+            return value
+        if value in cls.empty_values:
+            return None
+        return LazyRecord(iaid=value)
+
+    @classmethod
+    def _extract_record_iaid(cls, value):
+        if isinstance(value, (Record, LazyRecord)):
+            return value.iaid
+        if value in cls.empty_values:
+            return None
+        return value
+
     def to_python(self, value):
         """
         Return ``None`` if the value is empty. Otherwise, create and return a
         ``LazyRecord`` from the stored "iaid" value.
         """
-        if isinstance(value, (Record, LazyRecord)):
-            return value
-        if value in self.empty_values:
-            return None
-        return LazyRecord(iaid=value)
+        return self._convert_to_record_instance(value)
 
     def from_db_value(self, value, expression, connection):
         """
-        Return ``None`` if the value is null or an empty string. Otherwise,
-        create and return a ``LazyRecord`` from the stored "iaid" value.
+        Return ``None`` if the value is empty. Otherwise, create and return a
+        ``LazyRecord`` from the stored "iaid" value.
         """
-        if isinstance(value, str):
-            return LazyRecord(value)
-        return value
+        return self._convert_to_record_instance(value)
 
     def get_prep_value(self, value):
         """
-        ``None`` and string values can be used as is, but if the value is a
-        ``Record`` or ``LazyRecord`` instance, extract the "iaid" value to
-        store in the DB.
+        If the value is a ``Record`` or ``LazyRecord`` instance, extract the
+        "iaid" string to store in the DB for this field.
         """
-        if isinstance(value, str):
-            return value or None
-        return getattr(value, "iaid", None)
+        return self._extract_record_iaid(value)
