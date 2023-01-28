@@ -54,7 +54,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "record",
-                    etna.records.fields.RecordChooserField(
+                    etna.records.fields.RecordField(
                         db_index=True, verbose_name="record"
                     ),
                 ),
