@@ -134,3 +134,12 @@ class RecordField(Field):
         "iaid" string to store in the DB for this field.
         """
         return self._extract_record_iaid(value)
+
+    def value_to_string(self, model_instance):
+        """
+        Overrides ``Field.value_to_string`` to ensure the "iaid" string
+        value is used for serialization (e.g. when converting field values
+        into JSON for Wagtail revision content, or surfacing in a REST api).
+        """
+        value = getattr(model_instance, self.get_attname(), None)
+        return self._extract_record_iaid(value)
