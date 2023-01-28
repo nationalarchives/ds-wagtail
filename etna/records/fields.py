@@ -2,6 +2,7 @@ from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.db.models.fields import Field
+from django.forms import CharField
 from django.utils.functional import SimpleLazyObject
 
 from requests import HTTPError
@@ -12,7 +13,7 @@ from .widgets import RecordChooser
 
 class LazyRecord(SimpleLazyObject):
     """
-    The return type for ``RecordChooserField.from_db_value()``, which lazily
+    The return type for ``RecordReferenceField.from_db_value()``, which lazily
     fetches the record details from CIIM when the value is interacted
     with in some way. For example, when requesting a ``Record`` attribute
     value, like: ``obj.record.title``
@@ -38,7 +39,29 @@ class LazyRecord(SimpleLazyObject):
         return super().__getattribute__(name)
 
 
-class RecordChooserField(Field):
+class RecordChoiceField(CharField):
+    """
+    A custom Django form field that presents a record chooser widget
+    by default and validates that a record can be found again from
+    the selected record's ``iaid`` value.
+    """
+
+    widget = RecordChooser
+
+    def validate(self, value: Any) -> None:
+        super().validate(value)
+        if value in self.empty_values:
+            return None
+        try:
+            Record.api.fetch(iaid=value)
+        except HTTPError:
+            raise ValidationError(
+                f"Record data could not be retrieved using iaid '{value}'.",
+                code="invalid",
+            )
+
+
+class RecordField(Field):
     """
     A model field that presents editors with a ``RecordChooser`` widget
     to allow selection of a record from CIIM, stores the ``iaid`` of
@@ -46,13 +69,15 @@ class RecordChooserField(Field):
     when the model instance is retrieved again from the database.
     """
 
+    empty_values = (None, "")
+
     def __init__(self, *args, **kwargs):
         kwargs.update(max_length=50, null=True)
         super().__init__(*args, **kwargs)
 
     def deconstruct(self):
         """
-        RecordChooserFields have fixed "max_length" and "null" options,
+        RecordFields have fixed "max_length" and "null" options,
         so we can ignore them in field breakdowns (in migrations).
         """
         name, path, args, kwargs = super().deconstruct()
@@ -62,10 +87,10 @@ class RecordChooserField(Field):
 
     def formfield(self, **kwargs):
         """
-        Changes the default form field widget to a RecordChooser.
+        Changes the default form field to RecordChoiceField.
         """
         defaults = {
-            "widget": RecordChooser(),
+            "form_class": RecordChoiceField,
         }
         defaults.update(kwargs)
         return super().formfield(**defaults)
