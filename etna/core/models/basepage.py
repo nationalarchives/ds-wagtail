@@ -18,7 +18,7 @@ __all__ = [
 
 GTM_CONTENT_GROUPS = {
     "home": "Homepage",
-    "articles": "Articles",
+    "articles": "Stories",
     "collections": "Explorer",
 }
 
