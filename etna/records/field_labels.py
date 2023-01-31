@@ -5,7 +5,7 @@ FIELD_LABELS = {
     "legal_status": "Legal status",
     "created_by": "Creator",
     "description": "Description",
-    "origination_date": "Date",
+    "date_created": "Date",
     "closure_status": "Closure status",
     "held_by": "Held by",
     "parent": "This record is in",

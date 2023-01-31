@@ -9,10 +9,10 @@
                     <td id="analytics-record-reference">{{ page.reference_number }}</td>
                 </tr>
             {% endif %}
-            {% if page.origination_date %}
+            {% if page.date_created %}
                 <tr>
-                    <th scope="row">{{ 'origination_date'|as_label }}</th>
-                    <td>{{ page.origination_date }}</td>
+                    <th scope="row">{{ 'date_created'|as_label }}</th>
+                    <td>{{ page.date_created }}</td>
                 </tr>
             {% endif %}
             {% if page.description %}

@@ -247,7 +247,7 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("heldBy", "")
 
     @cached_property
-    def origination_date(self) -> str:
+    def date_created(self) -> str:
         return self.template.get("dateCreated", "")
 
     @cached_property

@@ -24,9 +24,9 @@
                 {% if value.record.reference_number %}
                     <p class="featured-record__reference">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
                 {% endif %}
-                {% if value.record.origination_date %}
+                {% if value.record.date_created %}
                     <p class="featured-record__date">
-                    {{ 'origination_date'|as_label }}: {{ value.record.origination_date }}
+                    {{ 'date_created'|as_label }}: {{ value.record.date_created }}
                     </p>
                 {% endif %}
             </div>

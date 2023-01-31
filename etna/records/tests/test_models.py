@@ -106,8 +106,8 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
-    def test_origination_date(self):
-        self.assertEqual(self.record.origination_date, "1885-1979")
+    def test_date_created(self):
+        self.assertEqual(self.record.date_created, "1885-1979")
 
     def test_legal_status(self):
         self.assertEqual(self.record.legal_status, "Public Record(s)")
@@ -353,7 +353,7 @@ class UnexpectedParsingIssueTest(TestCase):
 
         record = Record.api.fetch(iaid="C123456")
 
-        self.assertEqual(record.origination_date, "")
+        self.assertEqual(record.date_created, "")
 
     @responses.activate
     def test_related_record_with_no_identifier(self):
