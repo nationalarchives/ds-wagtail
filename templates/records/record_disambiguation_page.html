@@ -24,8 +24,8 @@
             <ul class="card-group--list-style-none" data-container-name="associated-records"
                 id="analytics-associated-records">
 
-                {% for record_page in record_results_page %}
-                    {% include 'includes/card-group-record-summary-no-image.html' with record=record_page %}
+                {% for record in record_results_page %}
+                    {% include 'includes/card-group-record-summary-no-image.html' %}
                 {% endfor %}
 
             </ul>
