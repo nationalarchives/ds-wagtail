@@ -5,7 +5,7 @@ from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.snippets.models import register_snippet
 
-from etna.records.fields import RecordChooserField
+from etna.records.fields import RecordField
 
 
 @register_snippet
@@ -20,7 +20,7 @@ class Highlight(models.Model):
         related_name="+",
     )
 
-    record = RecordChooserField(verbose_name=_("record"))
+    record = RecordField(verbose_name=_("record"))
 
     date_text = models.CharField(
         verbose_name=_("date text"),

@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ("title", models.CharField(max_length=255, null=True)),
                 (
                     "record",
-                    etna.records.fields.RecordChooserField(verbose_name="record"),
+                    etna.records.fields.RecordField(verbose_name="record"),
                 ),
                 (
                     "date_text",
