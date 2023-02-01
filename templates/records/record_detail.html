@@ -5,7 +5,7 @@
 {% load records_tags %}
 
 {% block extra_gtm_js %}
-    {% render_gtm_datalayer page %}
+    {% render_gtm_datalayer record %}
 {% endblock extra_gtm_js %}
 
 {% block content %}
@@ -21,25 +21,25 @@
 
         {% include "includes/records/record-details.html" %}
 
-        {% if page.hierarchy %}
-            {% if page.hierarchy|length > 2 %}
+        {% if record.hierarchy %}
+            {% if record.hierarchy|length > 2 %}
                 <h2>This record is in the series</h2>
 
                 {% include "includes/records/record-series-panel.html" %}
             {% endif %}
         {% endif %}
 
-        {% if page.topics %}
+        {% if record.topics %}
             <h2>{{ 'topics'|as_label }}</h2>
             {% include "includes/records/taxonomy-tags.html" %}
         {% endif %}
 
-        {% if page.related_records %}
+        {% if record.related_records %}
             <h2>{{ 'related_records'|as_label }}</h2>
             {% include "includes/records/record-related-records.html" %}
         {% endif %}
 
-        {% if page.related_articles %}
+        {% if record.related_articles %}
             <h2>{{ 'related_articles'|as_label }}</h2>
             {% include "includes/records/record-related-content.html" %}
         {% endif %}
