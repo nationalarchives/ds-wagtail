@@ -24,7 +24,7 @@
             <ul class="card-group--list-style-none" data-container-name="associated-records"
                 id="analytics-associated-records">
 
-                {% for record_page in record_pages %}
+                {% for record_page in record_results_page %}
                     {% include 'includes/card-group-record-summary-no-image.html' with record=record_page %}
                 {% endfor %}
 
@@ -34,11 +34,11 @@
 
     <nav class="pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination"
          id="analytics-disambiguation-pagination">
-        {% if record_pages.has_other_pages %}
+        {% if record_results_page.has_other_pages %}
             <ul class="pagination__list">
-                {% if record_pages.has_previous %}
+                {% if record_results_page.has_previous %}
                     <li class="pagination__list-item">
-                        <a class="pagination__page-chevron-previous" href="?page={{ record_pages.previous_page_number }}"><span
+                        <a class="pagination__page-chevron-previous" href="?page={{ record_results_page.previous_page_number }}"><span
                                 class="sr-only" data-link="Previous page">Previous page</span></a>
                     </li>
                 {% else %}
@@ -48,8 +48,8 @@
                 {% endif %}
                 <li class="pagination__list-pages" aria-label="Page numbers">
                     <ol>
-                        {% for i in record_pages.paginator.page_range %}
-                            {% if record_pages.number == i %}
+                        {% for i in record_results_page.paginator.page_range %}
+                            {% if record_results_page.number == i %}
                                 <li class="pagination__list-item">
                                     <a class="pagination__page-link-current" href="?page={{ i }}"
                                        aria-label="Current page, Page {{ i }}"
@@ -66,9 +66,9 @@
                         {% endfor %}
                     </ol>
                 </li>
-                {% if record_pages.has_next %}
+                {% if record_results_page.has_next %}
                     <li class="pagination__list-item">
-                        <a class="pagination__page-chevron-next" href="?page={{ record_pages.next_page_number }}"
+                        <a class="pagination__page-chevron-next" href="?page={{ record_results_page.next_page_number }}"
                            data-link="Next page"><span class="sr-only">Next page</span></a>
                     </li>
                 {% else %}

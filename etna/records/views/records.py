@@ -37,13 +37,13 @@ def record_disambiguation_view(request, reference_number):
         return record_detail_view(request, record.iaid)
 
     paginator = APIPaginator(count, per_page=per_page)
-    record_pages = Page(records, number=page_number, paginator=paginator)
+    record_results_page = Page(records, number=page_number, paginator=paginator)
 
     return render(
         request,
         "records/record_disambiguation_page.html",
         {
-            "record_pages": record_pages,
+            "record_results_page": record_results_page,
             "queried_reference_number": reference_number,
         },
     )
