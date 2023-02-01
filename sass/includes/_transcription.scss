@@ -10,11 +10,22 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 4rem;
+    margin-right: 1.25rem;
 
     @media screen and (min-width: map-get($grid-breakpoints, "md")) {
       display: grid;
       row-gap: 1.875rem;
+      column-gap: 1.25rem;
       grid-template-columns: 50% 50%;
+    }
+  }
+
+  &__text {
+    margin-top: 0;
+    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+      h2 {
+        margin-top: 0;
+      }
     }
   }
 
