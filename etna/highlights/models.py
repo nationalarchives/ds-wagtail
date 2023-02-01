@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
+from wagtail.images import get_image_model_string
 from wagtail.snippets.models import register_snippet
 
 from etna.records.fields import RecordField
@@ -13,7 +14,7 @@ class Highlight(models.Model):
     title = models.CharField(max_length=255, blank=False, null=True)
 
     image = models.ForeignKey(
-        "wagtailimages.Image",
+        get_image_model_string(),
         null=True,
         blank=True,
         on_delete=models.SET_NULL,

@@ -11,6 +11,7 @@ from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
+from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -354,7 +355,7 @@ class RecordArticlePage(
 class PageGalleryImage(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
     image = models.ForeignKey(
-        "wagtailimages.Image", on_delete=models.SET_NULL, null=True, related_name="+"
+        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
     )
     is_sensitive = models.BooleanField(
         verbose_name="Is this image sensitive?",
