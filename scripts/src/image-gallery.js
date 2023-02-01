@@ -3,15 +3,27 @@ import TabManager from './modules/tab_manager';
 class ImageGallery {
     constructor(galleryNode) {
         this.node = galleryNode;
+        this.nonJsNodes = this.node.querySelectorAll('.transcription__text');
         this.closeButton = this.node.querySelector('#closeButton');
         this.openButton = this.node.querySelector('#showButton');
         this.transcriptionContentNode = this.node.querySelectorAll("[id^='item-']");
         this.transcriptionPreview = this.node.querySelector('.transcription__preview');
-        this.tablist = document.querySelectorAll('[role=tablist].automatic');
+        this.tabList = this.node.querySelectorAll('[role=tablist]');
         this.setUp();
     }
 
     setUp() {
+        // Hide non-js nodes
+        for (let i= 0; i < this.nonJsNodes.length; i++) {
+            this.hide(this.nonJsNodes[i]);
+        }
+        // Show JS nodes
+        for (let i= 0; i < this.transcriptionContentNode.length; i++) {
+            this.hide(this.transcriptionContentNode[i]);
+        }
+        this.show(this.openButton);
+        this.show(this.transcriptionPreview);
+
         // Event listeners
         this.closeButton.addEventListener('click', (e) =>{ 
             e.preventDefault();
@@ -33,8 +45,9 @@ class ImageGallery {
         })
 
         // tabs
-        for (var i = 0; i < this.tablist.length; i++) {
-            new TabManager(this.tablist[i]);
+        for (var i = 0; i < this.tabList.length; i++) {
+            new TabManager(this.tabList[i]);
+            this.show(this.tabList[i]);
         }
     }
 

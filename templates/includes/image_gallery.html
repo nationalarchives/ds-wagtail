@@ -2,7 +2,7 @@
 <div class="transcription">
     <div class="container">
         <div class="row">
-            <div class="transcription__preview">
+            <div class="transcription__preview hidden">
                 {% with gallery_length=page.image_gallery.all|length %}
                     <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
                     <picture>
@@ -28,7 +28,7 @@
             </div>
             <!--start of transcript element-->
             {% for item in page.image_gallery.all %}
-                <div id="item-{{ forloop.counter }}" class="hidden">
+                <div id="item-{{ forloop.counter }}">
                     <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ gallery_length }}</p>
                     <div class="transcription__content">
                         <picture>
@@ -46,9 +46,19 @@
                                  src="{{ base_img.url }}"
                                  {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
                         </picture>
+                        {# non-JS version #}
+                        <div class="transcription__text">
+                            <h2>{% firstof item.transcription_header "Transcription" %}</h2>
+                            <p>{{ item.transcription_text|richtext }}</p>
+                            {% if item.translation_text %}
+                                <h2>{% firstof item.translation_header "Translation" %}</h2>
+                                <p>{{ item.translation_text|richtext }}</p>
+                            {% endif %}
+                        </div>
+                        {# JS version #}
                         <div role="tablist"
                              aria-labelledby="tablist-1-{{ forloop.counter }}"
-                             class="automatic col-md-6">
+                             class="automatic col-md-6 hidden">
                             <button id="tab-1-{{ forloop.counter }}"
                                     class="tabset"
                                     type="button"
