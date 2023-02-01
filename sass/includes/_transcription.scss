@@ -10,18 +10,27 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 4rem;
-    
+
     @media screen and (min-width: map-get($grid-breakpoints, "md")) {
       display: grid;
-      row-gap: 30px;
+      row-gap: 1.875rem;
       grid-template-columns: 50% 50%;
     }
   }
 
   &__preview {
     margin: auto;
+    margin-bottom: 4rem;
     display: block;
+    position: relative;
     width: 100%;
+
+    >svg {
+      width: 100%;
+      display: block;
+      position: absolute;
+      bottom: 0;
+    }
   }
 
   &__image-counter {
@@ -36,10 +45,11 @@
 
   &__open {
     @extend .tna-button--yellow;
-    display: flex;
-    position: relative;
-    margin-left: auto;
-    margin-right: auto;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    bottom: -5%
   }
 
   &__close {
@@ -50,13 +60,13 @@
     color: $yellow;
     margin-left: auto;
     margin-right: auto;
-    margin-bottom: 2em;
+    margin-bottom: 2rem;
 
     svg {
       fill: $yellow;
-      width: 2em;
-      height: 2em;
-      padding-left: 5px;
+      width: 2rem;
+      height: 2rem;
+      padding-left: 0.3rem;
     }
   }
 
@@ -75,7 +85,7 @@
   }
 
   [role="tab"]:first-of-type {
-    margin-right: 30px;
+    margin-right: 1.875rem;
   }
 
   [role="tab"]:focus,
@@ -86,21 +96,21 @@
 
   [role="tab"] span.focus {
     display: inline-block;
-    margin: 2px;
+    margin: 0.125rem;
     color: $color__white;
     font-size: $h2-font-size;
     font-weight: $headings-font-weight;
 
     @media only screen and (max-width: $screen__md) {
-      font-size: 1.3em;
+      font-size: 1.3rem;
     }
   }
 
   [role="tabpanel"] {
-    margin-top: 40px;
+    margin-top: 2.5rem;
     color: $color__white;
 
-    > p {
+    >p {
       margin: 0;
     }
   }
