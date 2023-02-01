@@ -12,7 +12,7 @@
     margin-bottom: 4rem;
     margin-right: 1.25rem;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
       display: grid;
       row-gap: 1.875rem;
       column-gap: 1.25rem;
@@ -22,7 +22,7 @@
 
   &__text {
     margin-top: 0;
-    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
       h2 {
         margin-top: 0;
       }
