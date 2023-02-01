@@ -20,7 +20,7 @@ from wagtailmetadata.models import MetadataPageMixin
 
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePage, ContentWarningMixin
-from etna.records.fields import RecordChooserField
+from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
 from ..teasers.models import TeaserImageMixin
@@ -241,7 +241,7 @@ class RecordArticlePage(
         verbose_name=_("standfirst"), max_length=350, blank=False
     )
 
-    record = RecordChooserField(verbose_name=_("record"), db_index=True)
+    record = RecordField(verbose_name=_("record"), db_index=True)
 
     date_text = models.CharField(
         verbose_name=_("date text"),

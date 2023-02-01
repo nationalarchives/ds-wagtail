@@ -17,7 +17,7 @@ Related ticket(s):
 - [ ] Waited for all CI jobs to pass before requesting a review.
 - [ ] Added/updated tests and documentation where relevant.
 
-## For Reviewer
+## For Reviewer/Developer
 
 - Before merging PR
 
@@ -32,8 +32,6 @@ Related ticket(s):
         - check if merges into base branch are `not to be kept On Hold` and then proceed.
         - check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
         - select `Squash and merge`
-
-## For Reviewer/Developer
 
 - After merging PR:
 

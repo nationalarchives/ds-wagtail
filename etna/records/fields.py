@@ -2,6 +2,7 @@ from typing import Any
 
 from django.core.exceptions import ValidationError
 from django.db.models.fields import Field
+from django.forms import CharField
 from django.utils.functional import SimpleLazyObject
 
 from requests import HTTPError
@@ -12,10 +13,10 @@ from .widgets import RecordChooser
 
 class LazyRecord(SimpleLazyObject):
     """
-    The return type for ``RecordChooserField.from_db_value()``, which lazily
-    fetches the record details from CIIM when the value is interacted
-    with in some way. For example, when requesting a ``Record`` attribute
-    value, like: ``obj.record.title``
+    The return type for ``RecordField``, which lazily fetches the
+    record details from CIIM when the value is interacted with in some way;
+    For example, when requesting a ``Record`` attribute value other than
+    ``iaid``, or requesting a string representation of it.
     """
 
     def __init__(self, iaid: str):
@@ -38,7 +39,29 @@ class LazyRecord(SimpleLazyObject):
         return super().__getattribute__(name)
 
 
-class RecordChooserField(Field):
+class RecordChoiceField(CharField):
+    """
+    A custom Django form field that presents a record chooser widget
+    by default and validates that a record can be found again from
+    the selected record's ``iaid`` value.
+    """
+
+    widget = RecordChooser
+
+    def validate(self, value: Any) -> None:
+        super().validate(value)
+        if value in self.empty_values:
+            return None
+        try:
+            Record.api.fetch(iaid=value)
+        except HTTPError:
+            raise ValidationError(
+                f"Record data could not be retrieved using iaid '{value}'.",
+                code="invalid",
+            )
+
+
+class RecordField(Field):
     """
     A model field that presents editors with a ``RecordChooser`` widget
     to allow selection of a record from CIIM, stores the ``iaid`` of
@@ -46,13 +69,15 @@ class RecordChooserField(Field):
     when the model instance is retrieved again from the database.
     """
 
+    empty_values = (None, "")
+
     def __init__(self, *args, **kwargs):
         kwargs.update(max_length=50, null=True)
         super().__init__(*args, **kwargs)
 
     def deconstruct(self):
         """
-        RecordChooserFields have fixed "max_length" and "null" options,
+        RecordFields have fixed "max_length" and "null" options,
         so we can ignore them in field breakdowns (in migrations).
         """
         name, path, args, kwargs = super().deconstruct()
@@ -62,10 +87,10 @@ class RecordChooserField(Field):
 
     def formfield(self, **kwargs):
         """
-        Changes the default form field widget to a RecordChooser.
+        Changes the default form field to RecordChoiceField.
         """
         defaults = {
-            "widget": RecordChooser(),
+            "form_class": RecordChoiceField,
         }
         defaults.update(kwargs)
         return super().formfield(**defaults)
@@ -73,39 +98,48 @@ class RecordChooserField(Field):
     def get_internal_type(self):
         return "CharField"
 
+    @classmethod
+    def _convert_to_record_instance(cls, value):
+        if isinstance(value, (Record, LazyRecord)):
+            return value
+        if value in cls.empty_values:
+            return None
+        return LazyRecord(iaid=value)
+
+    @classmethod
+    def _extract_record_iaid(cls, value):
+        if isinstance(value, (Record, LazyRecord)):
+            return value.iaid
+        if value in cls.empty_values:
+            return None
+        return value
+
     def to_python(self, value):
         """
-        Return ``None`` if the value is null or an empty string. Otherwise, use
-        the "iaid" string to fetch and return a ``Record`` instance from CIIM.
-
-        NOTE: We do not use ``LazyRecord`` here, because we want to attempt a
-        record fetch as a means of validating the "iaid" value (``to_python()``
-        is used in model/form validation).
+        Return ``None`` if the value is empty. Otherwise, create and return a
+        ``LazyRecord`` from the stored "iaid" value.
         """
-        if isinstance(value, str):
-            try:
-                return Record.api.fetch(iaid=value)
-            except HTTPError:
-                return ValidationError(
-                    "CIIM could not return a record with iaid '{value}'. "
-                )
-        return value
+        return self._convert_to_record_instance(value)
 
     def from_db_value(self, value, expression, connection):
         """
-        Return ``None`` if the value is null or an empty string. Otherwise,
-        create and return a ``LazyRecord`` from the stored "iaid" value.
+        Return ``None`` if the value is empty. Otherwise, create and return a
+        ``LazyRecord`` from the stored "iaid" value.
         """
-        if isinstance(value, str):
-            return LazyRecord(value)
-        return value
+        return self._convert_to_record_instance(value)
 
     def get_prep_value(self, value):
         """
-        ``None`` and string values can be used as is, but if the value is a
-        ``Record`` or ``LazyRecord`` instance, extract the "iaid" value to
-        store in the DB.
+        If the value is a ``Record`` or ``LazyRecord`` instance, extract the
+        "iaid" string to store in the DB for this field.
         """
-        if isinstance(value, str):
-            return value or None
-        return getattr(value, "iaid", None)
+        return self._extract_record_iaid(value)
+
+    def value_to_string(self, model_instance):
+        """
+        Overrides ``Field.value_to_string`` to ensure the "iaid" string
+        value is used for serialization (e.g. when converting field values
+        into JSON for Wagtail revision content, or surfacing in a REST api).
+        """
+        value = getattr(model_instance, self.get_attname(), None)
+        return self._extract_record_iaid(value)
