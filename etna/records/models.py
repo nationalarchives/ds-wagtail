@@ -41,7 +41,7 @@ class Record(DataLayerMixin, APIModel):
         return cls(response)
 
     def __str__(self):
-        return f"{self.title} ({self.iaid})"
+        return f"{self.summary_title} ({self.iaid})"
 
     def get(self, key: str, default: Optional[Any] = NOT_PROVIDED):
         """
@@ -163,7 +163,7 @@ class Record(DataLayerMixin, APIModel):
             return True
 
     @cached_property
-    def title(self) -> str:
+    def summary_title(self) -> str:
         try:
             return self.highlights["@template.details.summaryTitle"]
         except KeyError:
@@ -393,15 +393,15 @@ class Record(DataLayerMixin, APIModel):
             if (
                 ancestor.level_code == 3
                 and ancestor.has_reference_number()
-                and ancestor.title
+                and ancestor.summary_title
             ):
-                return f"{ancestor.reference_number} - {ancestor.title}"
+                return f"{ancestor.reference_number} - {ancestor.summary_title}"
         return ""
 
     @property
     def custom_dimension_14(self) -> str:
-        if self.has_reference_number() and self.title:
-            return f"{self.reference_number} - {self.title}"
+        if self.has_reference_number() and self.summary_title:
+            return f"{self.reference_number} - {self.summary_title}"
         return ""
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:

@@ -6,7 +6,7 @@
         {# limit output to three related records #}
         {% for record in record.related_records|slice:":3" %}
             <li>
-                <a href="{% record_url record %}" data-link="{{ record.title }}">{{ record.title }}</a>
+                <a href="{% record_url record %}" data-link="{{ record.summary_title }}">{{ record.summary_title }}</a>
             </li>
         {% endfor %}
     </ul>

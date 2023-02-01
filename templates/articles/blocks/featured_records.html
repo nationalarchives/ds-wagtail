@@ -19,7 +19,7 @@
                                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
                             </a>
                         </dt>
-                        <dd class="featured-records__list-item-description">{{ item.record.title|striptags }}</dd>
+                        <dd class="featured-records__list-item-description">{{ item.record.summary_title|striptags }}</dd>
                     </div>
                 {% endfor %}
             </dl>

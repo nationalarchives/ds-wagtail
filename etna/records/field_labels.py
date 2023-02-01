@@ -1,6 +1,6 @@
 # format <record_field_name> : <human readable label name>
 FIELD_LABELS = {
-    "title": "Title",
+    "summary_title": "Summary title",
     "reference_number": "Reference",
     "legal_status": "Legal status",
     "created_by": "Creator",

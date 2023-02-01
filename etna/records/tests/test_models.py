@@ -65,9 +65,9 @@ class RecordModelTests(SimpleTestCase):
         with self.assertRaises(ValueError):
             self.record.iaid
 
-    def test_title(self):
+    def test_summary_title(self):
         self.assertEqual(
-            self.record.title,
+            self.record.summary_title,
             "Law Officers' Department: Registered Files",
         )
 
@@ -118,7 +118,7 @@ class RecordModelTests(SimpleTestCase):
     def test_parent(self):
         r = self.record.parent
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.iaid, r.reference_number, r.summary_title),
             (
                 "C199",
                 "LO",
@@ -129,7 +129,7 @@ class RecordModelTests(SimpleTestCase):
     def test_hierarchy(self):
         self.assertEqual(
             [
-                (r.level_code, r.reference_number, r.title)
+                (r.level_code, r.reference_number, r.summary_title)
                 for r in self.record.hierarchy
             ],
             [
@@ -231,21 +231,21 @@ class RecordModelTests(SimpleTestCase):
     def test_next_record(self):
         r = self.record.next_record
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.iaid, r.reference_number, r.summary_title),
             ("C10298", "LO 1", "Law Officers' Department: Law Officers' Opinions"),
         )
 
     def test_previous_record(self):
         r = self.record.previous_record
         self.assertEqual(
-            (r.iaid, r.reference_number, r.title),
+            (r.iaid, r.reference_number, r.summary_title),
             ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
         )
 
     @unittest.skip("Data not supported for the json record")
     def test_related_records(self):
         self.assertEqual(
-            [(r.iaid, r.title) for r in self.record.related_records],
+            [(r.iaid, r.summary_title) for r in self.record.related_records],
             [
                 (
                     "C8981250",
@@ -258,7 +258,7 @@ class RecordModelTests(SimpleTestCase):
     @unittest.skip("Data not supported for the json record")
     def test_related_articles(self):
         self.assertEqual(
-            [(r.title, r.url) for r in self.record.related_articles],
+            [(r.summary_title, r.url) for r in self.record.related_articles],
             [
                 (
                     "Irish maps c.1558-c.1610",
@@ -391,7 +391,7 @@ class UnexpectedParsingIssueTest(TestCase):
         # reference_nubmers were skipped but now we're linking to the details
         # page using the iaid, these records should be present
         self.assertEqual(
-            [(r.iaid, r.title) for r in record.related_records],
+            [(r.iaid, r.summary_title) for r in record.related_records],
             [
                 ("C568", "Records of the Office of First Fruits and Tenths"),
             ],
