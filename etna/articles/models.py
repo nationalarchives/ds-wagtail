@@ -123,7 +123,8 @@ class ArticlePage(
     template = "articles/article_page.html"
 
     class Meta:
-        verbose_name = _("article page")
+        verbose_name = _("article")
+        verbose_name_plural = _("articles")
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -275,8 +276,8 @@ class RecordArticlePage(
     )
 
     class Meta:
-        verbose_name = "Record Revealed article"
-        verbose_name_plural = "Record Revealed articles"
+        verbose_name = _("record article")
+        verbose_name_plural = _("record articles")
 
     content_panels = BasePage.content_panels + [
         FieldPanel("standfirst"),
