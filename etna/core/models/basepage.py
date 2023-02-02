@@ -16,13 +16,6 @@ __all__ = [
 ]
 
 
-GTM_CONTENT_GROUPS = {
-    "home": "Homepage",
-    "articles": "Stories",
-    "collections": "Explorer",
-}
-
-
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
 class BasePage(DataLayerMixin, Page):
