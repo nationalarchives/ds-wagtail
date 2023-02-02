@@ -259,13 +259,13 @@ class Record(DataLayerMixin, APIModel):
         return self.get("level.code", None)
 
     @cached_property
-    def availability_delivery_condition(self) -> str:
+    def delivery_option(self) -> str:
         return self.template.get("deliveryOption", "")
 
     @property
     def availability_condition_category(self) -> str:
         return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
-            self.availability_delivery_condition, ""
+            self.delivery_option, ""
         )
 
     @cached_property
@@ -423,7 +423,7 @@ class Record(DataLayerMixin, APIModel):
             customDimension14=self.custom_dimension_14,
             customDimension15=self.catalogue_source,
             customDimension16=self.availability_condition_category,
-            customDimension17=self.availability_delivery_condition,
+            customDimension17=self.delivery_option,
         )
         return data
 
