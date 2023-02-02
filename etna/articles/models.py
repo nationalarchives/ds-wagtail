@@ -357,10 +357,6 @@ class PageGalleryImage(Orderable):
     image = models.ForeignKey(
         get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
     )
-    is_sensitive = models.BooleanField(
-        verbose_name="Is this image sensitive?",
-        default=False,
-    )
     alt_text = models.CharField(
         verbose_name=_("alternative text"),
         max_length=100,
@@ -378,27 +374,11 @@ class PageGalleryImage(Orderable):
         default="Transcript",
         help_text=_("Header for the transcription (max length: 50 chars)."),
     )
-    transcription_text = RichTextField(
-        verbose_name=_("transcription text"),
-        features=["bold", "italic", "ol", "ul"],
-        max_length=1500,
-        help_text=_("An optional transcription of the image (max length: 1500 chars),"),
-        blank=True,
-    )
     translation_header = models.CharField(
         verbose_name=_("translation header"),
         max_length=50,
         default="Translation",
         help_text=_("Header for the translation (max length: 50 chars)"),
-    )
-    translation_text = RichTextField(
-        verbose_name=_("translation text"),
-        features=["bold", "italic", "ol", "ul"],
-        max_length=1500,
-        help_text=_(
-            "An optional translation of the transcription (max length: 1500 chars)."
-        ),
-        blank=True,
     )
 
     @property
@@ -406,18 +386,18 @@ class PageGalleryImage(Orderable):
         """
         Convenience property to support cleaner template code.
 
-        e.g. `{% if item.has_transcription %}` instead of `{% if item.transcription_text != "" %}`
+        e.g. `{% if item.has_transcription %}` instead of `{% if item.image.transcription != "" %}`
         """
-        return self.transcription_text != ""
+        return getattr(self.image, "transcription", "") != ""
 
     @property
     def has_translation(self) -> bool:
         """
         Convenience property to support cleaner template code.
 
-        e.g. `{% if item.has_translation %}` instead of `{% if item.translation_text != "" %}`
+        e.g. `{% if item.has_translation %}` instead of `{% if item.image.translation != "" %}`
         """
-        return self.translation_text != ""
+        return getattr(self.image, "translation", "") != ""
 
     class Meta(Orderable.Meta):
         verbose_name = _("gallery image")
@@ -425,11 +405,8 @@ class PageGalleryImage(Orderable):
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("is_sensitive"),
         FieldPanel("alt_text"),
         FieldPanel("caption"),
         FieldPanel("transcription_header"),
-        FieldPanel("transcription_text"),
         FieldPanel("translation_header"),
-        FieldPanel("translation_text"),
     ]
