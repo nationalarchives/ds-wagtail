@@ -182,7 +182,7 @@ class Record(DataLayerMixin, APIModel):
         return False
 
     @cached_property
-    def closure_status(self) -> str:
+    def access_condition(self) -> str:
         try:
             return self.template["accessCondition"]
         except KeyError:

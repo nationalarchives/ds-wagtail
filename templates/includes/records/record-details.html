@@ -52,10 +52,10 @@
                     <td>{{ record.legal_status }}</td>
                 </tr>
             {% endif %}
-            {% if record.closure_status %}
+            {% if record.access_condition %}
                 <tr>
-                    <th scope="row">{{ 'closure_status'|as_label }}</th>
-                    <td>{{ record.closure_status }}</td>
+                    <th scope="row">{{ 'access_condition'|as_label }}</th>
+                    <td>{{ record.access_condition }}</td>
                 </tr>
             {% endif %}
         </tbody>
