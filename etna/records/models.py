@@ -264,9 +264,7 @@ class Record(DataLayerMixin, APIModel):
 
     @property
     def availability_condition_category(self) -> str:
-        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
-            self.delivery_option, ""
-        )
+        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(self.delivery_option, "")
 
     @cached_property
     def repo_summary_title(self) -> str:

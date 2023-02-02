@@ -166,9 +166,7 @@ class RecordModelTests(SimpleTestCase):
 
     @unittest.skip("Data not supported for the json record")
     def test_delivery_option(self):
-        self.assertEqual(
-            self.record.delivery_option, "DigitizedDiscovery"
-        )
+        self.assertEqual(self.record.delivery_option, "DigitizedDiscovery")
 
     @unittest.skip("Data not supported for the json record")
     def test_availability_delivery_surrogates(self):
