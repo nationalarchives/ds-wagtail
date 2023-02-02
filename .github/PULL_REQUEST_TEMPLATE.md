@@ -1,13 +1,12 @@
-Related ticket(s):
-- <- Paste ticket URL here ->
+Ticket URL: paste URL here
 
 ## About these changes
 
-<- Add human-readable description here ->
+Add a human-readable description here
 
 ## How to check these changes
 
-<- Where possible, provide guidance to help your reviewer ->
+Where possible, provide guidance to help your reviewer
 
 ## Before assigning to reviewer, please make sure you have
 
@@ -17,24 +16,19 @@ Related ticket(s):
 - [ ] Waited for all CI jobs to pass before requesting a review.
 - [ ] Added/updated tests and documentation where relevant.
 
-## For Reviewer/Developer
+## Merging a feature or bug fix?
 
-- Before merging PR
+1. Use the `Squash and merge` option to keep the target branch's commit history nice and clean.
+2. Where relevant, include the ticket number in commit title, e.g. `DF-XXX: Ticket name / short description`.
 
-    `main` branch :
+## Merging a release branch?
 
-        - check PR merge tile begins with `release/<major.minor.patch>:<default/custom description>`
-        - check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
-        - select `Create a merge commit`
+1. Use the `Create a merge commit` option to preserve the original commit IDs.
+2. Use the message format `release/<major.minor.patch>` when merging.
 
-    `develop` branch:
+## Deployment guidance
 
-        - check if merges into base branch are `not to be kept On Hold` and then proceed.
-        - check PR merge tile begins with ticket number Ex `DF-XXX: Ticket name / short description`
-        - select `Squash and merge`
-
-- After merging PR:
-
-  - check and arrange to deploy on platform-sh.
-  - update status on JIRA ticket on deployment.
-  - update slack on deployment progress of the JIRA ticket once deployed.
+1. Post to the appropriate Slack channel to check that it is okay to continue.
+2. To start a deployment, push the relevant branch to the `platform` remote.
+3. Update the appropriate Slack channel when the deployment is complete.
+4. Update the status on the corresponding Jira ticket (where relevant).
