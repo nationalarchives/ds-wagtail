@@ -45,24 +45,13 @@ $ fab sh
 ```
 
 ### 5. Apply database migrations
-Windows
 ```console
 $ python manage.py migrate
 ```
 
-Linux / OSX
-```console
-$ dj migrate
-```
-
 ### 6. Run the 'development' web server
-Windows
 ```console
 $ python manage.py runserver 0:8000
-```
-Linux / OSX
-```console
-$ djrun
 ```
 
 ### 7. Access the site
@@ -72,14 +61,8 @@ $ djrun
 **Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section**
 
 ### 8. Create a Django user for yourself
-
-Windows
 ```console
 $ python manage.py createsuperuser
-```
-Linux / OSX
-```console
-$ dj createsuperuser
 ```
 
 ### 9. Access the Wagtail admin
@@ -107,9 +90,26 @@ You can then access the site in your browser as usual:
 
 <http://127.0.0.1:8000>
 
+## Linux / OSX
+If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
+
+Running the development server:
+``` console
+$ djrun
+```
+Run migrations:
+```console
+$ dj migrate
+```
+Create a super user:
+```console
+$ dj createsuperuser
+```
+
 ## Issues with your local environment?
 
 Check out the [Local development gotchas](https://nationalarchives.github.io/ds-wagtail/developer-guide/local-development-gotchas/) page for solutions to common issues.
+
 
 ## Discover more
 
