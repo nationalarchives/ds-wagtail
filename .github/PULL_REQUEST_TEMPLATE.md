@@ -28,7 +28,7 @@ Where possible, provide guidance to help your reviewer
 
 ## Deployment guidance
 
-1. Check on the `#dev-etna` Slack channel whether it's okay to deploy.
+1. Post to the appropriate Slack channel to check that it is okay to continue.
 2. To start a deployment, push the relevant branch to the `platform` remote.
 3. Update the `#dev-etna` Slack channel when the deployment is complete.
 4. Update the status on the corresponding Jira ticket (where relevant).
