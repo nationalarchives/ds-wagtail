@@ -45,13 +45,22 @@ $ fab sh
 ```
 
 ### 5. Apply database migrations
+Windows
+```console
+$ python manage.py migrate
+```
 
+Linux / OSX
 ```console
 $ dj migrate
 ```
 
 ### 6. Run the 'development' web server
-
+Windows
+```console
+$ python manage.py runserver 0:8000
+```
+Linux / OSX
 ```console
 $ djrun
 ```
@@ -64,6 +73,11 @@ $ djrun
 
 ### 8. Create a Django user for yourself
 
+Windows
+```console
+$ python manage.py createsuperuser
+```
+Linux / OSX
 ```console
 $ dj createsuperuser
 ```
