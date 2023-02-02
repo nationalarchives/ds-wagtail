@@ -282,6 +282,9 @@ class RecordArticlePage(
         verbose_name=_("featured article"),
     )
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Record articles"
+
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
