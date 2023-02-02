@@ -32,16 +32,11 @@ class BasePage(DataLayerMixin, Page):
     functionality can be added here.
     """
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Page"
+
     class Meta:
         abstract = True
-
-    def get_gtm_content_group(self) -> str:
-        """
-        Overrides DataLayerMixin.get_gtm_content_group() to
-        derive a string from the model's app label.
-        """
-        app_label = self._meta.label.split(".")[0]
-        return GTM_CONTENT_GROUPS.get(app_label, self.title)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """

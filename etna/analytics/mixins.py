@@ -10,8 +10,18 @@ class DataLayerMixin:
     datalayer.
     """
 
+    gtm_content_group: str = "Page"
+
     def get_gtm_content_group(self) -> str:
-        raise NotImplementedError
+        """
+        Return a string to use as the 'contentGroup1' value in DataLayer
+        for this object.
+
+        For most cases, setting `gtm_content_group` on the class should be
+        sufficient, but this method can be overridden to support cases where
+        different per-instance values are required.
+        """
+        return self.gtm_content_group
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """
@@ -62,8 +72,7 @@ class SearchDataLayerMixin(DataLayerMixin):
     datalayer.
     """
 
-    def get_gtm_content_group(self) -> str:
-        return "Search"
+    gtm_content_group: str = "Search"
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
