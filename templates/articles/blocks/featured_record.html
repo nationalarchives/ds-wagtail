@@ -16,22 +16,22 @@
 
             <h4 class="featured-record__standfirst">{{ value.title }}</h4>
 
-            {% if value.record.title %}
-                <p class="featured-record__title"><span class="sr-only">{{ 'title'|as_label }}:</span> {{ value.record.title }}</p>
+            {% if value.record.summary_title %}
+                <p class="featured-record__title"><span class="sr-only">{{ 'summary_title'|as_label }}:</span> {{ value.record.summary_title }}</p>
             {% endif %}
 
             <div class="featured-record__metadata">
                 {% if value.record.reference_number %}
                     <p class="featured-record__reference">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
                 {% endif %}
-                {% if value.record.origination_date %}
+                {% if value.record.date_created %}
                     <p class="featured-record__date">
-                    {{ 'origination_date'|as_label }}: {{ value.record.origination_date }}
+                    {{ 'date_created'|as_label }}: {{ value.record.date_created }}
                     </p>
                 {% endif %}
             </div>
 
-            <a class="tna-button--dark" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>View <span class="sr-only">{{ value.record.title }}</span> in the catalogue{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
+            <a class="tna-button--dark" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>View <span class="sr-only">{{ value.record.summary_title }}</span> in the catalogue{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
         </div>
     </div>
 </div>

@@ -41,7 +41,7 @@ class Record(DataLayerMixin, APIModel):
         return cls(response)
 
     def __str__(self):
-        return f"{self.title} ({self.iaid})"
+        return f"{self.summary_title} ({self.iaid})"
 
     def get(self, key: str, default: Optional[Any] = NOT_PROVIDED):
         """
@@ -163,7 +163,7 @@ class Record(DataLayerMixin, APIModel):
             return True
 
     @cached_property
-    def title(self) -> str:
+    def summary_title(self) -> str:
         try:
             return self.highlights["@template.details.summaryTitle"]
         except KeyError:
@@ -182,7 +182,7 @@ class Record(DataLayerMixin, APIModel):
         return False
 
     @cached_property
-    def closure_status(self) -> str:
+    def access_condition(self) -> str:
         try:
             return self.template["accessCondition"]
         except KeyError:
@@ -247,7 +247,7 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("heldBy", "")
 
     @cached_property
-    def origination_date(self) -> str:
+    def date_created(self) -> str:
         return self.template.get("dateCreated", "")
 
     @cached_property
@@ -259,14 +259,12 @@ class Record(DataLayerMixin, APIModel):
         return self.get("level.code", None)
 
     @cached_property
-    def availability_delivery_condition(self) -> str:
+    def delivery_option(self) -> str:
         return self.template.get("deliveryOption", "")
 
     @property
     def availability_condition_category(self) -> str:
-        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
-            self.availability_delivery_condition, ""
-        )
+        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(self.delivery_option, "")
 
     @cached_property
     def repo_summary_title(self) -> str:
@@ -393,15 +391,15 @@ class Record(DataLayerMixin, APIModel):
             if (
                 ancestor.level_code == 3
                 and ancestor.has_reference_number()
-                and ancestor.title
+                and ancestor.summary_title
             ):
-                return f"{ancestor.reference_number} - {ancestor.title}"
+                return f"{ancestor.reference_number} - {ancestor.summary_title}"
         return ""
 
     @property
     def custom_dimension_14(self) -> str:
-        if self.has_reference_number() and self.title:
-            return f"{self.reference_number} - {self.title}"
+        if self.has_reference_number() and self.summary_title:
+            return f"{self.reference_number} - {self.summary_title}"
         return ""
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -423,7 +421,7 @@ class Record(DataLayerMixin, APIModel):
             customDimension14=self.custom_dimension_14,
             customDimension15=self.catalogue_source,
             customDimension16=self.availability_condition_category,
-            customDimension17=self.availability_delivery_condition,
+            customDimension17=self.delivery_option,
         )
         return data
 

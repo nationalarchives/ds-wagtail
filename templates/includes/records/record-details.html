@@ -9,10 +9,10 @@
                     <td id="analytics-record-reference">{{ record.reference_number }}</td>
                 </tr>
             {% endif %}
-            {% if record.origination_date %}
+            {% if record.date_created %}
                 <tr>
-                    <th scope="row">{{ 'origination_date'|as_label }}</th>
-                    <td>{{ record.origination_date }}</td>
+                    <th scope="row">{{ 'date_created'|as_label }}</th>
+                    <td>{{ record.date_created }}</td>
                 </tr>
             {% endif %}
             {% if record.description %}
@@ -52,10 +52,10 @@
                     <td>{{ record.legal_status }}</td>
                 </tr>
             {% endif %}
-            {% if record.closure_status %}
+            {% if record.access_condition %}
                 <tr>
-                    <th scope="row">{{ 'closure_status'|as_label }}</th>
-                    <td>{{ record.closure_status }}</td>
+                    <th scope="row">{{ 'access_condition'|as_label }}</th>
+                    <td>{{ record.access_condition }}</td>
                 </tr>
             {% endif %}
         </tbody>
