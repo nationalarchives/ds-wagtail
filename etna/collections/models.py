@@ -51,6 +51,9 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         "articles.RecordArticlePage",
     ]
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
 
 class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """Topic explorer BasePage.
@@ -69,6 +72,9 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -126,6 +132,9 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
@@ -166,6 +175,9 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -227,6 +239,9 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
@@ -278,6 +293,9 @@ class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         "collections.TopicExplorerPage",
     ]
     subpage_types = []
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
 
 class ResultsPageRecord(Orderable, models.Model):
