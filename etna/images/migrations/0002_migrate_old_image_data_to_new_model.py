@@ -43,18 +43,6 @@ def migrate_forwards(apps, schema_editor):
     TaggedItem.objects.bulk_create(to_create)
 
 
-def migrate_backwards(apps, schema_editor):
-    # Delete custom image tags
-    TaggedItem = apps.get_model("taggit.TaggedItem")
-    TaggedItem.objects.filter(
-        content_type__app_label="images", content_type__model="CustomImage"
-    ).delete()
-
-    # Delete custom images
-    CustomImage = apps.get_model("images", "CustomImage")
-    CustomImage.objects.all().delete()
-
-
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -65,7 +53,7 @@ class Migration(migrations.Migration):
 
     operations = [
         # Copy data from existing tables
-        migrations.RunPython(migrate_forwards, migrate_backwards),
+        migrations.RunPython(migrate_forwards, migrations.RunPython.noop),
         # When running forwards, increment autoid to reflect additions
         migrations.RunSQL(
             'SELECT setval(pg_get_serial_sequence(\'"images_customimage"\',\'id\'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "images_customimage";',
