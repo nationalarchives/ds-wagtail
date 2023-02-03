@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "etna.heroes",
     "etna.highlights",
     "etna.home",
+    "etna.images",
     "etna.media",
     "etna.navigation",
     "etna.records",
@@ -275,6 +276,8 @@ WAGTAILSEARCH_BACKENDS = {
         "BACKEND": "wagtail.search.backends.database",
     }
 }
+
+WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 # Kong client
 
