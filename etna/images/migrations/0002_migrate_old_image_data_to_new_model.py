@@ -8,7 +8,12 @@ def migrate_forwards(apps, schema_editor):
     Image = apps.get_model("wagtailimages", "Image")
     CustomImage = apps.get_model("images", "CustomImage")
     to_create = []
-    for item in Image.objects.all().values().iterator():
+
+    pre_existing_custom_image_ids = CustomImage.objects.values_list("id", flat=True)
+
+    for item in (
+        Image.objects.exclude(id__in=pre_existing_custom_image_ids).values().iterator()
+    ):
         to_create.append(CustomImage(**item))
         # Save in batches of 1000 to avoid memory spikes
         if len(to_create) > 1000:
@@ -16,6 +21,24 @@ def migrate_forwards(apps, schema_editor):
             to_create.clear()
     # Save any left-overs
     CustomImage.objects.bulk_create(to_create)
+
+    # Copy renditions to new table
+    Rendition = apps.get_model("wagtailimages", "Rendition")
+    CustomImageRendition = apps.get_model("images", "CustomImageRendition")
+    to_create = []
+
+    for item in (
+        Rendition.objects.exclude(image_id__in=pre_existing_custom_image_ids)
+        .values()
+        .iterator()
+    ):
+        to_create.append(CustomImageRendition(**item))
+        # Save in batches of 1000 to avoid memory spikes
+        if len(to_create) > 1000:
+            CustomImageRendition.objects.bulk_create(to_create)
+            to_create.clear()
+    # Save any left-overs
+    CustomImageRendition.objects.bulk_create(to_create)
 
     # Get content types for tag copying
     ContentType = apps.get_model("contenttypes", "ContentType")
@@ -29,6 +52,7 @@ def migrate_forwards(apps, schema_editor):
     to_create = []
     for tag_id, object_id in (
         TaggedItem.objects.filter(content_type=old_ctype)
+        .exclude(object_id__in=pre_existing_custom_image_ids)
         .values_list("tag_id", "object_id")
         .iterator()
     ):
