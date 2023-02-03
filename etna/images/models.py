@@ -88,6 +88,24 @@ class CustomImage(ClusterableModel, AbstractImage):
         "tags",
     ]
 
+    @property
+    def transcription_heading(self) -> str:
+        return _("Transcription")
+
+    @property
+    def translation_heading(self) -> str:
+        """
+        Used to change the 'Translation' tab label when this image
+        is used in some galleries
+        """
+        if self.transcription_language in (
+            TranscriptionLanguageChoices.OLD_ENGLISH,
+            TranscriptionLanguageChoices.EARLY_MODERN_ENGLISH,
+            TranscriptionLanguageChoices.MIDDLE_ENGLISH,
+        ):
+            return _("Modern English")
+        return _("Translation")
+
 
 class CustomImageRendition(AbstractRendition):
     image = models.ForeignKey(

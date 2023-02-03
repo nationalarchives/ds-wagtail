@@ -368,36 +368,6 @@ class PageGalleryImage(Orderable):
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,
     )
-    transcription_header = models.CharField(
-        verbose_name=_("transcription header"),
-        max_length=50,
-        default="Transcript",
-        help_text=_("Header for the transcription (max length: 50 chars)."),
-    )
-    translation_header = models.CharField(
-        verbose_name=_("translation header"),
-        max_length=50,
-        default="Translation",
-        help_text=_("Header for the translation (max length: 50 chars)"),
-    )
-
-    @property
-    def has_transcription(self) -> bool:
-        """
-        Convenience property to support cleaner template code.
-
-        e.g. `{% if item.has_transcription %}` instead of `{% if item.image.transcription != "" %}`
-        """
-        return getattr(self.image, "transcription", "") != ""
-
-    @property
-    def has_translation(self) -> bool:
-        """
-        Convenience property to support cleaner template code.
-
-        e.g. `{% if item.has_translation %}` instead of `{% if item.image.translation != "" %}`
-        """
-        return getattr(self.image, "translation", "") != ""
 
     class Meta(Orderable.Meta):
         verbose_name = _("gallery image")
@@ -407,6 +377,4 @@ class PageGalleryImage(Orderable):
         FieldPanel("image"),
         FieldPanel("alt_text"),
         FieldPanel("caption"),
-        FieldPanel("transcription_header"),
-        FieldPanel("translation_header"),
     ]
