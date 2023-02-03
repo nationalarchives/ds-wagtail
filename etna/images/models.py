@@ -9,6 +9,14 @@ from wagtail.images.models import AbstractImage, AbstractRendition
 from etna.records.fields import RecordField
 
 
+class TranscriptionLanguageChoices(models.TextChoices):
+    OLD_ENGLISH = "Old English", _("Old English")
+    MIDDLE_ENGLISH = "Middle English", _("Middle English")
+    EARLY_MODERN_ENGLISH = "Early Modern English", _("Early Modern English")
+    MODERN_ENGLISH = "Modern English", _("Modern English")
+    LATIN = "Latin", _("Latin")
+
+
 class CustomImage(ClusterableModel, AbstractImage):
     is_sensitive = models.BooleanField(
         verbose_name=_("This image is sensitive"), default=False
@@ -34,7 +42,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name=_("description"),
         blank=True,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=500,
+        max_length=300,
     )
 
     transcription = RichTextField(
@@ -47,24 +55,19 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     transcription_language = models.CharField(
         verbose_name=_("transcription language"),
+        choices=TranscriptionLanguageChoices.choices,
+        max_length=20,
         blank=True,
-        help_text="e.g. Old English.",
-        max_length=50,
     )
 
     translation = RichTextField(
         verbose_name=_("translation"),
         features=["bold", "italic", "ol", "ul"],
         max_length=1500,
-        help_text=_("An optional translation of the above transcription."),
+        help_text=_(
+            "An optional English / Modern English translation of the transcription. This is only required if the original language is something other than Modern English."
+        ),
         blank=True,
-    )
-
-    translation_language = models.CharField(
-        verbose_name=_("translation language"),
-        blank=True,
-        help_text="e.g. Modern English.",
-        max_length=50,
     )
 
     admin_form_fields = [
@@ -82,7 +85,6 @@ class CustomImage(ClusterableModel, AbstractImage):
         "transcription",
         "transcription_language",
         "translation",
-        "translation_language",
         "tags",
     ]
 
