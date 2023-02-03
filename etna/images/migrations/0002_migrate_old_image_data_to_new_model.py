@@ -9,7 +9,9 @@ def migrate_forwards(apps, schema_editor):
     CustomImage = apps.get_model("images", "CustomImage")
     to_create = []
 
-    pre_existing_custom_image_ids = CustomImage.objects.values_list("id", flat=True)
+    pre_existing_custom_image_ids = tuple(
+        CustomImage.objects.values_list("id", flat=True)
+    )
 
     for item in (
         Image.objects.exclude(id__in=pre_existing_custom_image_ids).values().iterator()
