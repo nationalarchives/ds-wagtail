@@ -1,15 +1,32 @@
-{% extends 'base_page.html' %}
+{% extends "base_page.html" %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load sections_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
-
+{% load static wagtailcore_tags sections_tags %}
 {% block content %}
-{% endblock %}
+    {% include "includes/record-revealed.html" %}
+    {% include "includes/image_gallery.html" %}
+    {% include "includes/record-matters.html" %}
+    {% if page.related_records %}
+        {% include "includes/more-records.html" %}
+    {% endif %}
+    {% if page.featured_insight %}
+        {% include "includes/spotlight-on.html" %}
+    {% endif %}
+    {% if page.promoted_pages %}
+        <div class="container" id="analytics-topic-explorer">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for block in page.promoted_pages %}
+                        {% include_block block %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {% if page.topic or page.time_period %}
+        {% include "includes/interested.html" %}
+    {% endif %}
+{% endblock content %}
 
 {% block extra_js %}
- {% endblock %}
+    <script src="{% static "scripts/image_gallery.js" %}"></script>
+{% endblock extra_js %}
