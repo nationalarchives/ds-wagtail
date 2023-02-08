@@ -1,11 +1,12 @@
 .header {
+  $root: &;
   background-color: $color__yellow_2;
 
   @media screen and (min-width: 768px) {
     display: flex;
     flex-wrap: wrap;
-
   }
+
   &__logo {
     &-holder {
       display: inline-block;
@@ -43,25 +44,32 @@
   }
 
   &__mobile-icons {
-    display:inline-block;
-    float:right;
-    position:relative;
+    display: inline-block;
+    float: right;
+    position: relative;
     //top:4rem;
-
 
     @media screen and (min-width: 768px) {
       display: none;
-
     }
   }
+
   &__nav {
     margin-left: auto;
     align-items: flex-end;
+    z-index: 2;
+    display: none;
+
+    &.active {
+      display: block;
+    }
 
     @media only screen and (max-width: $screen__md) {
-      //display: block;
-      //display:none;
       text-align: right;
+    }
+
+    @media only screen and (min-width: $screen__md) {
+      display: block;
     }
 
     &-list {
@@ -92,7 +100,8 @@
           position: relative;
 
           // IE11 styles
-          @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+          @media all and (-ms-high-contrast: none),
+            (-ms-high-contrast: active) {
             bottom: -6px;
           }
         }
@@ -142,10 +151,10 @@
             &:hover,
             &[aria-current="true"],
             &:focus {
-                background-color: $color__white;
-                color: $color__black;
+              background-color: $color__white;
+              color: $color__black;
             }
-         }
+          }
 
           &:focus {
             outline-color: $color__black;
@@ -180,31 +189,109 @@
       }
     }
   }
-  &__show-hide-button {
-    display: inline-block;
-    background-color: $color__grey-2;
-    margin-right: 0.3rem;
-    width: 3rem;
-    height: 3rem;
-    color: $color__white;
-    border: 0;
-    margin-left: auto;
-    cursor: pointer;
-    background-image: url("/static/images/icons/hamburger-white.svg");
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: 0.6rem;
-    background-size: 1.5rem;
 
-    &[aria-expanded="true"],
-    &:hover,
-    &:focus {
-      background-color: $color__grey-1;
-      background-image: url("/static/images/icons/hamburger-black.svg");
-      color: #000;
+  // this is currently unused
+  //   &__show-hide-button {
+  //     display: inline-block;
+  //     background-color: $color__grey-2;
+  //     margin-right: 0.3rem;
+  //     width: 3rem;
+  //     height: 3rem;
+  //     color: $color__white;
+  //     border: 0;
+  //     margin-left: auto;
+  //     cursor: pointer;
+  //     background-image: url("/static/images/icons/hamburger-white.svg");
+  //     background-repeat: no-repeat;
+  //     background-position-x: center;
+  //     background-position-y: 0.6rem;
+  //     background-size: 1.5rem;
+
+  //     &[aria-expanded="true"],
+  //     &:hover,
+  //     &:focus {
+  //       background-color: $color__grey-1;
+  //       background-image: url("/static/images/icons/hamburger-black.svg");
+  //       color: #000;
+  //     }
+  //     &:focus {
+  //       outline: 5px solid $color__black;
+  //     }
+  //   }
+
+  &__overlay-button {
+    position: absolute;
+    right: 0em;
+    top: 110px;
+    padding: 23px 11px;
+    z-index: 5;
+    cursor: pointer;
+    user-select: none;
+
+    @media only screen and (max-width: 481px) {
+      top: 85px;
     }
-    &:focus {
-      outline: 5px solid $color__black;
+
+    @media only screen and (max-width: 390px) {
+      top: 105px;
+    }
+
+    @media only screen and (min-width: $screen__md) {
+      display: none;
+    }
+  }
+
+  &__overlay-input {
+    display: none;
+
+    &:checked ~ #{$root}__nav {
+      display: block;
+    }
+
+    &:checked ~ #{$root}__overlay-button {
+      &:hover #{$root}__overlay-icon,
+      #{$root}__overlay-icon {
+        background: transparent;
+      }
+      #{$root}__overlay-icon {
+        &:before {
+          transform: rotate(45deg) translate(7px, 7px);
+          opacity: 1;
+        }
+        &:after {
+          transform: rotate(-45deg) translate(7px, -7px);
+        }
+      }
+    }
+  }
+
+  &__overlay-icon {
+    height: 4px;
+    width: 35px;
+    border-radius: 2px;
+    background-color: black;
+    position: relative;
+    display: block;
+    transition: all 0.2s ease-in-out;
+
+    &:before {
+      top: -10px;
+      visibility: visible;
+    }
+
+    &:after {
+      top: 10px;
+    }
+
+    &:before,
+    &:after {
+      height: 4px;
+      width: 35px;
+      border-radius: 2px;
+      background-color: black;
+      position: absolute;
+      content: "";
+      transition: all 0.2s ease-in-out;
     }
   }
 }
@@ -246,95 +333,19 @@ body {
   -webkit-animation: bugfix infinite 1s;
 }
 
-@keyframes bugfix { from {padding:0;} to {padding:0;}}
-@-webkit-keyframes bugfix { from {padding:0;} to {padding:0;}}
-
-#overlay-button {
-  position: absolute;
-  right: 0em;
-  top: 110px;
-  padding: 23px 11px;
-  z-index: 5;
-  cursor: pointer;
-  user-select: none;
-  @media only screen and (max-width: 481px) {
-    top:85px;
+@keyframes bugfix {
+  from {
+    padding: 0;
   }
-  @media only screen and (max-width: 390px) {
-    top:105px;
-
-  }
-  span {
-    height: 4px;
-    width: 35px;
-    border-radius: 2px;
-    background-color: black;
-    position: relative;
-    display: block;
-    transition: all .2s ease-in-out;
-    &:before {
-      top: -10px;
-      visibility: visible;
-    }
-    &:after {
-      top: 10px;
-    }
-    &:before, &:after {
-      height: 4px;
-      width: 35px;
-      border-radius: 2px;
-      background-color: black;
-      position: absolute;
-      content: "";
-      transition: all .2s ease-in-out;
-    }
-  }
-  &:hover span, &:hover span:before, &:hover span:after {
-    background: #333332;
-  }
-  @media only screen and (min-width: $screen__md) {
-    display:none;
+  to {
+    padding: 0;
   }
 }
-
-
-input[type=checkbox]#overlay-input  {
-  display:none;
-}
-input[type=checkbox] {
-  //display: none;
-
-  &:checked ~ #overlay {
-    //visibility: visible;
-    display:block;
+@-webkit-keyframes bugfix {
+  from {
+    padding: 0;
   }
-
-  &:checked ~ #overlay-button {
-    &:hover span, span{
-      background: transparent;
-    }
-    span {
-      &:before {
-        transform: rotate(45deg) translate(7px, 7px);
-        opacity: 1;
-      }
-      &:after {
-        transform: rotate(-45deg) translate(7px, -7px);
-      }
-    }
-  }
-}
-
-#overlay {
-  z-index: 2;
-  display:none;
-  //visibility: hidden;
-
-  &.active {
-    //visibility: visible;
-    display:block;
-  }
-  @media only screen and (min-width: $screen__md) {
-    display:block;
+  to {
+    padding: 0;
   }
 }
