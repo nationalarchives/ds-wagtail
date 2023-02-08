@@ -242,7 +242,13 @@
   }
 
   &__overlay-input {
-    display: none;
+    // using opacity instead of display: none allows the input to be toggled by keyboards
+    opacity: 0;
+
+    // give label focus style when input is focussed
+    &:focus ~ #{$root}__overlay-button {
+      outline: 0.313rem solid $color__black;
+    }
 
     &:checked ~ #{$root}__nav {
       display: block;
