@@ -48,7 +48,7 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     # DataLayerMixin overrides
-    gtm_content_group = "Stories from the archives"
+    gtm_content_group = "stories"
 
     class Meta:
         verbose_name = _("article index page")
@@ -125,7 +125,7 @@ class ArticlePage(
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     # DataLayerMixin overrides
-    gtm_content_group = "Stories from the archives"
+    gtm_content_group = "stories"
 
     template = "articles/article_page.html"
 
