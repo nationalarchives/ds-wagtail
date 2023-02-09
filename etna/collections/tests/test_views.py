@@ -19,6 +19,7 @@ from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 class TestRecordChooseView(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         responses.add(
             responses.GET,
@@ -115,6 +116,7 @@ class TestRecordChooseView(WagtailPageTestCase):
 class TestEditResultsPage(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         root = Site.objects.get().root_page
 

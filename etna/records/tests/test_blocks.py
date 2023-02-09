@@ -15,6 +15,7 @@ from ...ciim.tests.factories import create_record, create_response
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         response = create_response(
             records=[
