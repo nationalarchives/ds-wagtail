@@ -2,10 +2,10 @@
 <div class="transcription">
         <div class="row">
             <div class="transcription__preview hidden">
-                {% with gallery_length=page.image_gallery.all|length %}
+                {% with gallery_length=gallery|length %}
                     <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
                     <picture>
-                        {% with first_gallery_item=page.image_gallery.all.0 %}
+                        {% with first_gallery_item=gallery.0 %}
                             {% image first_gallery_item.image fill-1100x700 format-webp as image_webp %}
                             <source srcset="{{ image_webp.url }}"
                                     type="image/webp"
@@ -26,7 +26,7 @@
                 </div>
             </div>
             <!--start of transcript element-->
-            {% for item in page.image_gallery.all %}
+            {% for item in gallery %}
                 <div id="item-{{ forloop.counter }}">
                     <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ gallery_length }}</p>
                     <div class="transcription__content">
@@ -47,11 +47,11 @@
                         </picture>
                         {# non-JS version #}
                         <div class="transcription__text">
-                            <h2>{% firstof item.transcription_header "Transcription" %}</h2>
-                            <p>{{ item.transcription_text|richtext }}</p>
-                            {% if item.translation_text %}
-                                <h2>{% firstof item.translation_header "Translation" %}</h2>
-                                <p>{{ item.translation_text|richtext }}</p>
+                            <h2>{{ item.image.transcription_heading }}</h2>
+                            <p>{{ item.image.transcription|richtext }}</p>
+                            {% if item.image.translation %}
+                                <h2>{{ item.image.translation_heading }}</h2>
+                                <p>{{ item.image.translation|richtext }}</p>
                             {% endif %}
                         </div>
                         {# JS version #}
@@ -65,16 +65,16 @@
                                         role="tab"
                                         aria-selected="true"
                                         aria-controls="tabpanel-1-{{ forloop.counter }}">
-                                    <span class="focus">{% firstof item.transcription_header "Transcription" %}</span>
+                                    <span class="focus">{{ item.image.transcription_heading }}</span>
                                 </button>
-                                {% if item.translation_text %}
+                                {% if item.image.translation %}
                                     <button id="tab-2-{{ forloop.counter }}"
                                             type="button"
                                             role="tab"
                                             aria-selected="false"
                                             aria-controls="tabpanel-2-{{ forloop.counter }}"
                                             tabindex="-1">
-                                        <span class="focus">{% firstof item.translation_header "Translation" %}</span>
+                                        <span class="focus">{{ item.image.translation_heading }}</span>
                                     </button>
                                 </div>
                             {% endif %}
@@ -84,15 +84,15 @@
                                  aria-labelledby="tab-1-{{ forloop.counter }}"
                                  class="hidden"
                                  >
-                                <p>{{ item.transcription_text|richtext }}</p>
+                                <p>{{ item.image.transcription|richtext }}</p>
                             </div>
-                            {% if item.translation_text %}
+                            {% if item.image.translation %}
                                 <div id="tabpanel-2-{{ forloop.counter }}"
                                      role="tabpanel"
                                      tabindex="0"
                                      aria-labelledby="tab-2-{{ forloop.counter }}"
                                      class="hidden">
-                                    <p>{{ item.translation_text|richtext }}</p>
+                                    <p>{{ item.image.translation|richtext }}</p>
                                 </div>
                             {% endif %}
                         </div>

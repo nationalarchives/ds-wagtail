@@ -3,24 +3,12 @@
 {% load static wagtailcore_tags sections_tags %}
 {% block content %}
     {% include "includes/record-revealed.html" %}
-    {% include "includes/image_gallery.html" %}
+    {% if page.gallery_items %}
+      {% include "includes/image_gallery.html" with gallery=page.gallery_items %}
+      {% endif %}
     {% include "includes/record-matters.html" %}
-    {% if page.related_records %}
-        {% include "includes/more-records.html" %}
-    {% endif %}
-    {% if page.featured_insight %}
-        {% include "includes/spotlight-on.html" %}
-    {% endif %}
-    {% if page.promoted_pages %}
-        <div class="container" id="analytics-topic-explorer">
-            <div class="row">
-                <div class="col-md-12">
-                    {% for block in page.promoted_pages %}
-                        {% include_block block %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
     {% if page.topic or page.time_period %}
         {% include "includes/interested.html" %}

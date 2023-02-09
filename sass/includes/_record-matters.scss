@@ -1,0 +1,23 @@
+.story-title {
+    font-size:1.3em;
+    font-weight: bold;
+  }
+  
+  
+  #readmore {display:none;}
+  .reveal-text {display: block;padding-bottom:1em;}
+  
+  
+  .record-buttons {
+    @media (max-width: $screen__md) {
+  
+      margin:auto;
+      //width:50%;
+      text-align:center;
+    }
+  }
+  
+  .record-buttons a {
+    width:220px;
+    text-align:center;
+  }

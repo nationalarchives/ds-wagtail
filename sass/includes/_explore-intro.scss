@@ -1,52 +1,54 @@
 .explore-intro {
     padding-top: 1rem;
+    padding-bottom: 1rem;
     background-color: $color__white;
     color: $color__black;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-
-    &__content {
-      margin-left: 4rem;
-      margin-right: auto;
-      margin-bottom: auto;
-
-      @media (max-width: $screen__lg) {
-        margin: 2rem;
-        margin-top: 0;
-      }
-
-      h1 {
-        font-size:$h1-font-size;
-        font-weight: $font-weight-normal;
-        margin-bottom: 0.5rem;
-        font-family: $font__supria-sans;
-        line-height: $line-height-sm;
-
-        @media (max-width: $screen__lg) {
-          margin-top: 0;
-        }
-      }
-    }
-    
-    &__meta-text {
+  
+    h1 {
+  
       font-size:1.4rem;
-      font-weight: $font-weight-bold;
-      margin-bottom: 0.5rem;
-      font-family: $font__supria-sans;
     }
-    
+  
+    h2 {
+      //margin-bottom:0.5em;
+    }
+  
+    a {
+      color: $color__black;
+    }
+  
     &__image {
-      margin-left: 0.3rem;
-      @media (max-width: $screen__lg) {
-        display: none ;
+  
+      @media (max-width: $screen__md) {
+        display:none ;
+      }
+    }
+  
+    &__title {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 2.5rem;
+      font-family: $font__supria-sans;
+      @media (max-width: $screen__md) {
+        font-size: 2.5rem;
+      }
+  
+      &-prefix {
+        display: block;
+        @media (max-width: $screen__md) {
+          font-size: 1.25rem;
+          line-height: 1.3rem;
+        }
+        font-size: 2rem;
+        line-height: 0.3rem;
+        margin-top: 1rem;
       }
     }
   
     &__paragraph {
       margin-bottom: 0.5rem;
-      @media (max-width: $screen__lg) {
-        padding-bottom: 1em;
+      @media (max-width: $screen__md) {
+        padding-bottom:1em;
       }
     }
   }
