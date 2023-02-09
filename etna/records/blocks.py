@@ -98,5 +98,8 @@ class RecordChooserBlock(ChooserBlock):
     def get_form_state(self, value):
         return self.widget.get_value_data(value)
 
+    def extract_references(self, value):
+        return []
+
     class Meta:
         icon = "archive"
