@@ -3,7 +3,7 @@ import json
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTests
+from wagtail.tests.utils import WagtailPageTestCase
 from wagtail.tests.utils.form_data import nested_form_data, streamfield
 
 import responses
@@ -12,7 +12,7 @@ from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
 
 
-class TestFeaturedRecordBlockIntegration(WagtailPageTests):
+class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
 
