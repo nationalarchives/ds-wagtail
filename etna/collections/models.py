@@ -1,15 +1,16 @@
+from typing import List, Optional, Tuple, Union
+
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
-from wagtail.models import Orderable
+from wagtail.models import Orderable, Page
 
 from wagtailmetadata.models import MetadataPageMixin
-
-from etna.insights.models import InsightsPage
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
@@ -47,7 +48,11 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
+        "articles.RecordArticlePage",
     ]
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
 
 class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
@@ -67,6 +72,9 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -110,19 +118,22 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
 
     sub_heading = models.CharField(max_length=200, blank=False)
 
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @property
     def results_pages(self):
@@ -136,9 +147,11 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_insights(self):
+    def related_articles(self):
+        from etna.articles.models import ArticlePage
+
         return (
-            InsightsPage.objects.filter(topic=self)
+            ArticlePage.objects.filter(topic=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
@@ -162,6 +175,9 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -205,8 +221,8 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
 
     sub_heading = models.CharField(max_length=200, blank=False)
 
-    featured_insight = models.ForeignKey(
-        "insights.InsightsPage", blank=True, null=True, on_delete=models.SET_NULL
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
@@ -215,13 +231,16 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     end_year = models.IntegerField(blank=False)
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
-        FieldPanel("featured_insight"),
+        FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @property
     def results_pages(self):
@@ -235,9 +254,11 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
 
     @cached_property
-    def related_insights(self):
+    def related_articles(self):
+        from etna.articles.models import ArticlePage
+
         return (
-            InsightsPage.objects.filter(time_period=self)
+            ArticlePage.objects.filter(time_period=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
@@ -272,6 +293,9 @@ class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         "collections.TopicExplorerPage",
     ]
     subpage_types = []
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
 
 class ResultsPageRecord(Orderable, models.Model):
@@ -308,3 +332,134 @@ class ResultsPageRecord(Orderable, models.Model):
         FieldPanel("teaser_image"),
         FieldPanel("description"),
     ]
+
+
+class PageTopic(Orderable):
+    """
+    This model allows any page type to be associated with one or more topics
+    in a way that retains the order of topics selected.
+
+    The ``sort_order`` field value from ``Orderable`` can be used to pull out
+    the 'first' topic to treat as the 'primary topic' for a page, and can also
+    used to prioritise items for a list of 'pages related to a topic'.
+
+    Just add `InlinePanel("page_topics")` to a page type's panel
+    configuration to use it!
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_topics")
+    topic = models.ForeignKey(
+        TopicExplorerPage,
+        verbose_name=_("topic"),
+        related_name="topic_pages",
+        on_delete=models.CASCADE,
+    )
+
+
+class PageTimePeriod(Orderable):
+    """
+    This model allows any page type to be associated with one or more topics
+    in a way that retains the order of topics selected.
+
+    The ``sort_order`` field value from ``Orderable`` can be used to pull out
+    the 'first' topic to treat as the 'primary topic' for a page, and can also
+    used to prioritise items for a list of 'pages related to a topic'.
+
+    Just add `InlinePanel("page_time_periods")` to a page type's panel
+    configuration to use it!
+    """
+
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_time_periods")
+    time_period = models.ForeignKey(
+        TimePeriodExplorerPage,
+        verbose_name=_("time period"),
+        related_name="time_period_pages",
+        on_delete=models.CASCADE,
+    )
+
+
+class TopicalPageMixin:
+    """
+    A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
+    in order to be associated with one or many topics/time periods. It simply
+    adds a few properies to support robust, efficient access the related topic
+    and time period pages.
+    """
+
+    @classmethod
+    def get_time_periods_inlinepanel(
+        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
+    ) -> InlinePanel:
+        return InlinePanel(
+            "page_time_periods",
+            heading=_("Related time periods"),
+            min_num=min_num,
+            max_num=max_num,
+        )
+
+    @classmethod
+    def get_topics_inlinepanel(
+        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
+    ) -> InlinePanel:
+        return InlinePanel(
+            "page_topics",
+            heading=_("Related topics"),
+            min_num=min_num,
+            max_num=max_num,
+        )
+
+    @cached_property
+    def primary_topic(self) -> Union[TopicExplorerPage, None]:
+        try:
+            return self.topics[0]
+        except IndexError:
+            return None
+
+    @cached_property
+    def topics(self) -> Tuple[TopicExplorerPage]:
+        return tuple(
+            item.topic
+            for item in self.page_topics.select_related("topic").filter(
+                topic__live=True
+            )
+        )
+
+    @cached_property
+    def topics_alphabetical(self) -> List[TopicExplorerPage]:
+        return sorted(self.topic, key=lambda item: item.title.lower())
+
+    @property
+    def topic_names(self) -> str:
+        """
+        Returns the titles of all related topics, joined together into one big
+        comma-separated string. Ideal for indexing!
+        """
+        return ", ".join(item.title for item in self.topics)
+
+    @cached_property
+    def primary_time_period(self) -> Union[TimePeriodExplorerPage, None]:
+        try:
+            return self.time_periods[0]
+        except IndexError:
+            return None
+
+    @cached_property
+    def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
+        return tuple(
+            item.time_period
+            for item in self.page_time_periods.select_related("time_period").filter(
+                time_period__live=True
+            )
+        )
+
+    @cached_property
+    def time_periods_chronological(self) -> List[TimePeriodExplorerPage]:
+        return sorted(self.time_periods, key=lambda item: item.start_year)
+
+    @property
+    def time_period_names(self) -> str:
+        """
+        Returns the titles of all related time periods, joined together into
+        one big comma-separated string. Ideal for indexing!
+        """
+        return ", ".join(item.title for item in self.time_periods)

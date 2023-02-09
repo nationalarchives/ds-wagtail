@@ -35,13 +35,15 @@ INSTALLED_APPS = [
     "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
+    "etna.articles",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
     "etna.core",
     "etna.heroes",
+    "etna.highlights",
     "etna.home",
-    "etna.insights",
+    "etna.images",
     "etna.media",
     "etna.navigation",
     "etna.records",
@@ -275,6 +277,8 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
+
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
@@ -383,8 +387,8 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
-FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES = strtobool(
-    os.getenv("FEATURE_RELATED_INSIGHTS_ON_EXPLORE_PAGES", "True")
+FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES = strtobool(
+    os.getenv("FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES", "True")
 )
 FEATURE_BETA_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
@@ -392,3 +396,4 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
+FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")

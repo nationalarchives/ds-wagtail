@@ -37,13 +37,13 @@ def record_disambiguation_view(request, reference_number):
         return record_detail_view(request, record.iaid)
 
     paginator = APIPaginator(count, per_page=per_page)
-    page = Page(records, number=page_number, paginator=paginator)
+    record_results_page = Page(records, number=page_number, paginator=paginator)
 
     return render(
         request,
         "records/record_disambiguation_page.html",
         {
-            "pages": page,
+            "record_results_page": record_results_page,
             "queried_reference_number": reference_number,
         },
     )
@@ -57,7 +57,7 @@ def record_detail_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        page = Record.api.fetch(iaid=iaid, expand=True)
+        record = Record.api.fetch(iaid=iaid, expand=True)
     except DoesNotExist:
         raise Http404
 
@@ -71,7 +71,7 @@ def record_detail_view(request, iaid):
         request,
         "records/record_detail.html",
         {
-            "page": page,
+            "record": record,
             "image": image,
         },
     )

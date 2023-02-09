@@ -3,29 +3,29 @@
 <div class="record-details">
     <table class="record-details__table">
         <tbody>
-            {% if page.reference_number %}
+            {% if record.reference_number %}
                 <tr>
                     <th scope="row">{{ 'reference_number'|as_label }}</th>
-                    <td id="analytics-record-reference">{{ page.reference_number }}</td>
+                    <td id="analytics-record-reference">{{ record.reference_number }}</td>
                 </tr>
             {% endif %}
-            {% if page.origination_date %}
+            {% if record.date_created %}
                 <tr>
-                    <th scope="row">{{ 'origination_date'|as_label }}</th>
-                    <td>{{ page.origination_date }}</td>
+                    <th scope="row">{{ 'date_created'|as_label }}</th>
+                    <td>{{ record.date_created }}</td>
                 </tr>
             {% endif %}
-            {% if page.description %}
+            {% if record.description %}
                 <tr>
                     <th scope="row">{{ 'description'|as_label }}</th>
-                    <td class="xslt_patches">{{ page.description|safe }}</td>
+                    <td class="xslt_patches">{{ record.description|safe }}</td>
                 </tr>
             {% endif %}
-            {% if page.related_materials %}
+            {% if record.related_materials %}
                 <tr>
                     <th scope="row">{{ 'related_materials'|as_label }}</th>
                     <td>
-                        {% for related_material in page.related_materials %}
+                        {% for related_material in record.related_materials %}
                             {% if related_material.description %}
                                 <p>{{related_material.description}}</p>
                             {% endif %}
@@ -40,22 +40,22 @@
                     </td>
                 </tr>
             {% endif %}
-            {% if page.held_by %}
+            {% if record.held_by %}
                 <tr>
                     <th scope="row">{{ 'held_by'|as_label }}</th>
-                    <td>{{ page.held_by }}</td>
+                    <td>{{ record.held_by }}</td>
                 </tr>
             {% endif %}
-            {% if page.legal_status %}
+            {% if record.legal_status %}
                 <tr>
                     <th scope="row">{{ 'legal_status'|as_label }}</th>
-                    <td>{{ page.legal_status }}</td>
+                    <td>{{ record.legal_status }}</td>
                 </tr>
             {% endif %}
-            {% if page.closure_status %}
+            {% if record.access_condition %}
                 <tr>
-                    <th scope="row">{{ 'closure_status'|as_label }}</th>
-                    <td>{{ page.closure_status }}</td>
+                    <th scope="row">{{ 'access_condition'|as_label }}</th>
+                    <td>{{ record.access_condition }}</td>
                 </tr>
             {% endif %}
         </tbody>

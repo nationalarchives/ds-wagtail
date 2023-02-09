@@ -16,29 +16,29 @@
             -->
         
             <ul class="hierarchy-short-panel__list">
-                {% if page.hierarchy %}
-                    {% if page.hierarchy|length <= 2 %}
+                {% if record.hierarchy %}
+                    {% if record.hierarchy|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
                                 <a href="#">Archive</a>
-                            </span>({{ page.template.heldBy }})
+                            </span>({{ record.template.heldBy }})
                         </li>
                     {% endif %}
                     
-                    {% for item in page.hierarchy %}
-                        {% is_page_current_item_in_hierarchy page item as is_current_item %}
+                    {% for item in record.hierarchy %}
+                        {% is_page_current_item_in_hierarchy record item as is_current_item %}
     
                         {% if forloop.counter == 1 and not is_current_item %}
-                            {% if page.hierarchy|length == 3 %}
+                            {% if record.hierarchy|length == 3 %}
                                 {% with trail_off=True %}
                                     {% include "includes/records/hierarchy-short-item.html" %}
                                 {% endwith %}
-                            {% elif page.hierarchy|length == 2 %}
+                            {% elif record.hierarchy|length == 2 %}
                                 {% include "includes/records/hierarchy-short-item.html" %}
                             {% endif %}
 
                         {% elif forloop.counter == 2 and not is_current_item %}
-                            {% if page.hierarchy|length > 3 %}
+                            {% if record.hierarchy|length > 3 %}
                                 {% with trail_off=True %}
                                     {% include "includes/records/hierarchy-short-item.html" %}
                                 {% endwith %}
@@ -51,7 +51,7 @@
 
                         {% elif is_current_item %}
                             <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                                <span class="hierarchy-short-panel__level">This {{ page.level|lower }}</span>({{ item.reference_number }})
+                                <span class="hierarchy-short-panel__level">This {{ record.level|lower }}</span>({{ item.reference_number }})
                             </li>
                         {% endif %}
                     {% endfor %}
@@ -59,10 +59,10 @@
                     <li class="hierarchy-short-panel__list-item">
                         <span class="hierarchy-short-panel__level">
                             <a href="#">Archive</a>
-                        </span>({{ page.template.heldBy }})
+                        </span>({{ record.template.heldBy }})
                     </li>
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                        <span class="hierarchy-short-panel__level">This department</span>({{ page.reference_number }})
+                        <span class="hierarchy-short-panel__level">This department</span>({{ record.reference_number }})
                     </li>
                 {% endif %}
             </ul>
@@ -87,13 +87,13 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                 </div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{page.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{record.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
                 </div>
             </div>
-            {% if page.hierarchy %}
-                {% for item in page.hierarchy %}
-                    {% is_page_current_item_in_hierarchy page item as is_current_item %}
+            {% if record.hierarchy %}
+                {% for item in record.hierarchy %}
+                    {% is_page_current_item_in_hierarchy record item as is_current_item %}
                     
                     {% include "includes/records/hierarchy-full-item.html" %}
                 {%endfor%}
@@ -104,8 +104,8 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                     </div>
                     <div class="hierarchy-full-panel__text-container">
-                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url page %}">{{page.reference_number}}</a></p>
-                        <p class="hierarchy-full-panel__text-title">{{page.title}}</p>
+                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url record %}">{{record.reference_number}}</a></p>
+                        <p class="hierarchy-full-panel__text-title">{{record.summary_title}}</p>
                     </div>
                 </div>
             {%endif%}
@@ -116,15 +116,15 @@
         -->
 
         <!-- PREVIOUS/CURRENT/NEXT NAVIGATION -->
-        {% if page.previous_record or page.next_record %}
+        {% if record.previous_record or record.next_record %}
             <nav class="hierarchy-local-nav" role="navigation" aria-label="Next and previous records">
                 <!-- Previous item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
-                    {% if page.previous_record %}
-                        {% if page.previous_record.has_reference_number %}
-                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url page.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ page.previous_record.reference_number }}</a></p>
-                        {% elif page.is_tna %}
-                                {{ 'previous_record'|as_label }} {{ page.level.lower|default:"record" }}
+                    {% if record.previous_record %}
+                        {% if record.previous_record.has_reference_number %}
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url record.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ record.previous_record.reference_number }}</a></p>
+                        {% elif record.is_tna %}
+                                {{ 'previous_record'|as_label }} {{ record.level.lower|default:"record" }}
                         {% else %}
                                 {{ 'previous_record'|as_label }} record
                         {% endif %}
@@ -133,16 +133,16 @@
 
                 <!-- Current item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--current">
-                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ page.reference_number }}</span></p>
+                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ record.reference_number }}</span></p>
                 </div>
 
                 <!-- Next item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
-                    {% if page.next_record %}
-                        {% if page.next_record.has_reference_number %}
-                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url page.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ page.next_record.reference_number }}</a></p>
-                            {% elif page.is_tna %}
-                                {{ 'next_record'|as_label }} {{ page.level.lower|default:"record" }}
+                    {% if record.next_record %}
+                        {% if record.next_record.has_reference_number %}
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url record.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ record.next_record.reference_number }}</a></p>
+                            {% elif record.is_tna %}
+                                {{ 'next_record'|as_label }} {{ record.level.lower|default:"record" }}
                             {% else %}
                                 {{ 'next_record'|as_label }} record
                         {% endif %}
