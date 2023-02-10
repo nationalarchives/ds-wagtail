@@ -1,24 +1,9 @@
 .explore-intro {
     padding-top: 1rem;
-    padding-bottom: 1rem;
     background-color: $color__white;
     color: $color__black;
   
-    h1 {
-  
-      font-size:1.4rem;
-    }
-  
-    h2 {
-      //margin-bottom:0.5em;
-    }
-  
-    a {
-      color: $color__black;
-    }
-  
     &__image {
-  
       @media (max-width: $screen__md) {
         display:none ;
       }
@@ -42,6 +27,10 @@
         font-size: 2rem;
         line-height: 0.3rem;
         margin-top: 1rem;
+      }
+
+      &--meta {
+        font-size:1.4rem;
       }
     }
   

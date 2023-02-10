@@ -1,24 +1,15 @@
-{% load static %}
-{% load wagtailimages_tags %}
-
+{% load static wagtailimages_tags %}
 <div class="explore-intro">
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-12">
-                <h1 class="explore-intro__title">
-                    Record revealed
-                </h1>
-                <h2 class="explore-intro__title">
-                    {{ page.title }}
-                </h2>
-
-                <p class="explore-intro__paragraph">
-                    {{ page.standfirst }}
-                </p>
+                <p class="explore-intro__title explore-intro__title--meta">Record revealed</p>
+                <h1 class="explore-intro__title">{{ page.title }}</h1>
+                <p class="explore-intro__paragraph">{{ page.standfirst }}</p>
             </div>
             <div class="col-4 explore-intro__image">
                 {% image page.teaser_image fill-390x300 as teaser_image %}
-                <img src="{{teaser_image.url}}" alt="" />
+                <img height=390 width=300 src="{{ teaser_image.url }}" alt="" />
             </div>
         </div>
     </div>

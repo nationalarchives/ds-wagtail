@@ -13,7 +13,7 @@
                     {% image page.teaser_image fill-1000x600-c100 as hero %}
                     <source media="(max-width: 1200px)" srcset="{{ hero.url }}"/>
 
-                    <img width=1000 height=600 src="{{ hero.url }}" {% page.hero_image_decorative %}alt=""{% else %}alt="{{ page.hero_image_alt_text }}{% endif %}" />
+                    <img width=1000 height=600 src="{{ hero.url }}" {% if page.hero_image_decorative %}alt=""{% else %}alt="{{ page.hero_image_alt_text }}{% endif %}" />
                 </picture>
             </a>
         {% endif %}
