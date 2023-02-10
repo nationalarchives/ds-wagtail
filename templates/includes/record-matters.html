@@ -1,83 +1,66 @@
-{% load records_tags %}
-{% load wagtailcore_tags %}
-
-<div class="generic-intro">
+{% load records_tags wagtailcore_tags %}
+<div class="generic-intro record-matters">
     <div class="container">
-        <div class="row d-flex justify-content-center">
+        <div class="row justify-content-center">
             <div class="col-md-10 col-sm-12">
-                <h2 class="story-title">Why this record matters</h2>
-                {% for item in page.body %}
-                    {% if item.value.date %}
-                        <p>Date: <b>{{ item.value.date }}</b><br>
-                    {%endif%}
-                    {% if item.value.record.reference_number %}
-                        Catalogue ref: <b><a href="{% record_url item.value.record is_editorial=True %}">{{ item.value.record.reference_number }}</a></b></p>
-                    {%endif%}
-                    {% if item.value.paragraph.text %}
-                        <div class="generic-intro__paragraph" id="readlesscontent">
-                            {{ item.value.paragraph.text|richtext|truncatewords_html:50 }}
-                        </div>
-
-                        <p><a id="readmore" href="">Read more <span>+</span></a></p>
-
-                        <div class="generic-intro__paragraph reveal-text" id="readmorecontent">
-                            {{ item.value.paragraph.text|richtext }}
-                            <br><br><a id="readless" href="">Read less <span>-</span></a>
-                        </div>
-                    {% endif %}
-                {%endfor%}
+                <h2 class="story-title">The story of this record</h2>
+                {% if record.date_created or record.reference_number %}
+                    <div class="record-matters__content">
+                        {% if record.date_created %}
+                            <p class="record-matters__text">Date: <strong>{{ record.date_created }}</strong></p>
+                        {% endif %}
+                        {% if record.reference_number %}
+                            <p class="record-matters__text">
+                                Catalogue ref: <a class="record-matters__text record-matters__text--bold"
+    href="{% record_url record is_editorial=True %}">{{ record.reference_number }}</a>
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                {% if record.description %}
+                    <div id="readLessContent" class="generic-intro__paragraph">
+                        {{ record.description|richtext|truncatewords_html:50 }}
+                        <button id="readMoreButton" class="record-matters__plain-button" href="">
+                            Read more
+                            {% include "static/images/fontawesome-svgs/plus.svg" %}
+                        </button>
+                    </div>
+                    <div class="generic-intro__paragraph reveal-text hidden"
+                         id="readMoreContent">
+                        {{ record.description|richtext }}
+                        <button id="readLessButton"
+                                class="record-matters__plain-button"
+                                type="button"
+                                href="">
+                            Read less
+                            {% include "static/images/fontawesome-svgs/x-mark.svg" %}
+                        </button>
+                    </div>
+                {% endif %}
             </div>
         </div>
-        <div class="row d-flex justify-content-center record-buttons">
-            {% if page.body.0.value.record %}
-            <div class="col-sm-12 col-md-3">
-                <a class="tna-button--yellow" href="{% record_url page.body.0.value.record is_editorial=True %}" rel="noopener noreferrer">View record details</a>
-            </div>
+        <div class="row d-flex justify-content-center record-matters__buttons">
+            {% if record %}
+                <div class="col-sm-12 col-md-3">
+                    <a class="tna-button--yellow tna-button--full-width"
+                       href="{% record_url record is_editorial=True %}"
+                       rel="noopener noreferrer">View record details</a>
+                </div>
             {% endif %}
-
             {% if page.image_library_link %}
-                <div class="col-sm-12 col-md-3"><a class="tna-button--yellow" href="{{page.image_library_link}}" rel="noopener noreferrer">Use this image</a></div>
+                <div class="col-sm-12 col-md-3">
+                    <a class="tna-button--yellow tna-button--full-width"
+                       href="{{ page.image_library_link }}"
+                       rel="noopener noreferrer">Use this image</a>
+                </div>
             {% endif %}
-
             {% if page.print_on_demand_link %}
-                <div class="col-sm-12 col-md-3"><a class="tna-button--yellow" href="{{page.print_on_demand_link}}" rel="noopener noreferrer">Buy an art print</a></div>
+                <div class="col-sm-12 col-md-3">
+                    <a class="tna-button--yellow tna-button--full-width"
+                       href="{{ page.print_on_demand_link }}"
+                       rel="noopener noreferrer">Buy an art print</a>
+                </div>
             {% endif %}
         </div>
     </div>
 </div>
-
-<script>
-    //read more functionality
-
-    //variables
-    const readmore = document.getElementById("readmore");
-    const readless = document.getElementById("readless");
-    const readmorecontent = document.getElementById("readmorecontent");
-    const readlesscontent = document.getElementById("readlesscontent");
-
-    readmore.style.display="block";
-    readlesscontent.style.display="block";
-    readmorecontent.style.display="none";
-    readless.style.display="none";
-
-    //actions
-    readmore.addEventListener("click", ()=>{
-        //button clicked
-        event.preventDefault();
-        readmorecontent.style.display="block";
-        readless.style.display="block";
-        readlesscontent.style.display="none";
-        readmore.style.display="none";
-    })
-
-    readless.addEventListener("click", ()=>{
-        //button clicked
-        event.preventDefault();
-        readmorecontent.style.display="none";
-        readless.style.display="none";
-        readlesscontent.style.display="block";
-        readmore.style.display="block";
-    })
-
-
-</script>

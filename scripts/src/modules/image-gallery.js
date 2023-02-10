@@ -1,4 +1,4 @@
-import TabManager from './modules/tab_manager';
+import TabManager from './tab_manager';
 
 class ImageGallery {
     constructor(galleryNode) {
@@ -59,12 +59,6 @@ class ImageGallery {
         node.classList.add('hidden');
     }
 
-}
-
-
-const imageGallery = document.querySelector('.transcription')
-if (imageGallery) {
-    new ImageGallery(imageGallery);
 }
 
 export default ImageGallery;

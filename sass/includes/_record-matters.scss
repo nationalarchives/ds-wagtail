@@ -1,23 +1,47 @@
-.story-title {
-    font-size:1.3em;
-    font-weight: bold;
+.record-matters {
+    &__plain-button {
+      background: none;
+      color: $color__link;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      outline: inherit;
+  
+      svg {
+        fill: $color__link;
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: 0.5rem;
+      }
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      padding-bottom: 2rem;
+    }
+
+    &__text {
+      margin-bottom: 0;
+
+      &--bold {
+        font-weight: bold;
+      }
+
+    }
+
+  .hidden {
+    display: none;
   }
   
-  
-  #readmore {display:none;}
-  .reveal-text {display: block;padding-bottom:1em;}
-  
-  
-  .record-buttons {
+  &__buttons {
+    margin-top: 1rem;
+    text-align: center;
     @media (max-width: $screen__md) {
-  
-      margin:auto;
-      //width:50%;
-      text-align:center;
+      margin-left:auto;
+      margin-right:auto;
+      width: 80%;
     }
   }
-  
-  .record-buttons a {
-    width:220px;
-    text-align:center;
-  }
+}
