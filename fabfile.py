@@ -178,7 +178,7 @@ def psql(c, command=None):
 
 
 def delete_local_renditions(c):
-    psql(c, "TRUNCATE wagtailimages_rendition;")
+    psql(c, "TRUNCATE images_customimagerendition;")
 
 
 def delete_db(c):
