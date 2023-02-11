@@ -5,7 +5,7 @@ from http import HTTPStatus
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTests
+from wagtail.tests.utils import WagtailPageTestCase
 from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
 import responses
@@ -16,9 +16,10 @@ from ...ciim.tests.factories import create_record, create_response
 from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
 
-class TestRecordChooseView(WagtailPageTests):
+class TestRecordChooseView(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         responses.add(
             responses.GET,
@@ -112,9 +113,10 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(response.status_code, 404)
 
 
-class TestEditResultsPage(WagtailPageTests):
+class TestEditResultsPage(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         root = Site.objects.get().root_page
 

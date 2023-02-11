@@ -250,6 +250,7 @@ class RecordArticlePage(
     )
 
     record = RecordField(verbose_name=_("record"), db_index=True)
+    record.wagtail_reference_index_ignore = True
 
     date_text = models.CharField(
         verbose_name=_("date text"),
