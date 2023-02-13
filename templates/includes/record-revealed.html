@@ -8,8 +8,10 @@
                 <p class="explore-intro__paragraph">{{ page.standfirst }}</p>
             </div>
             <div class="col-4 explore-intro__image">
-                {% image page.teaser_image fill-390x300 as teaser_image %}
-                <img height=390 width=300 src="{{ teaser_image.url }}" alt="" />
+                {% if page.teaser_image %}
+                    {% image page.teaser_image fill-390x300 as teaser_image %}
+                    <img height=390 width=300 src="{{ teaser_image.url }}" alt="" />
+                {% endif %}
             </div>
         </div>
     </div>
