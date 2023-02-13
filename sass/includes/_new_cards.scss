@@ -1,0 +1,31 @@
+.card {
+    $root: &;
+    position: relative;
+    display: flex;
+
+    &__container {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        align-items: center;
+        background: $white;
+        width: 100%;
+        
+        &--dark {
+            background: $color__grey-2;
+        }
+    }
+
+    &__image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    &__text {
+        color: $color__white;
+        font-size: 1.5em;
+        margin: 2rem 0;
+    }
+}

@@ -1,0 +1,22 @@
+.card-grid {
+    display: grid;
+    @extend .row;
+    grid-gap: 1rem;
+    margin: 1rem 0;
+
+    &__title {
+        font-size: $h2-font-size * 0.9;
+        font-weight: bold;
+        padding: 0.5rem 0;
+
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            font-size: $h2-font-size;
+        }
+    }
+
+    &--duo {
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+}
