@@ -27,6 +27,7 @@
 
   &__text {
     margin-top: 0;
+
     @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
       h2 {
         margin-top: 0;
@@ -78,12 +79,13 @@
     margin-right: auto;
     margin-bottom: 2rem;
 
-    svg {
-      fill: $yellow;
-      width: 2rem;
-      height: 2rem;
-      padding-left: 0.3rem;
-    }
+  }
+
+  &__icon {
+    fill: $yellow;
+    width: 2rem;
+    height: 2rem;
+    padding-left: 0.3rem;
   }
 
   &__image {
@@ -91,44 +93,46 @@
     height: auto;
   }
 
-  [role="tablist"] {
+  &__tablist {
     max-width: 65em;
-    margin-top: 2rem;
     font-family: "lucida grande", sans-serif
   }
 
-  [role="tab"] {
+  &__tab {
     background-color: inherit;
     border: none;
-  }
-
-  [role="tab"]:first-of-type {
-    margin-right: 1.875rem;
-  }
-
-  [role="tab"]:focus,
-  [role="tab"]:hover,
-  [role="tab"][aria-selected="true"] {
-    border-bottom: $color__white solid 3px;
-  }
-
-  [role="tab"] span.focus {
     display: inline-block;
     margin: 0.125rem;
     color: $color__white;
     font-size: $h2-font-size;
     font-weight: $headings-font-weight;
 
-    @media only screen and (max-width: $screen__md) {
-      font-size: 1.3rem;
+    @media screen and (min-width: map-get($grid-breakpoints, "lg")){
+      font-size: 1.4rem;
     }
+
+    @media screen and (min-width: map-get($grid-breakpoints, "xl")){
+      font-size: 1.8rem;
+    }
+
+    &:first-of-type {
+      margin-right: 1.875rem;
+    }
+
+    &:focus,
+    &:hover,
+    &[aria-selected="true"] {
+      border-bottom: $color__white solid 3px;
+    }
+
   }
 
-  [role="tabpanel"] {
+  &__tabpanel {
     margin-top: 2.5rem;
     color: $color__white;
 
     >p {
+      // Normalise the rich-text output
       margin: 0;
     }
   }

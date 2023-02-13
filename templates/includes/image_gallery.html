@@ -60,31 +60,32 @@
                     <div>
                         <div role="tablist"
                              aria-labelledby="tablist-1-{{ forloop.counter }}"
-                             class="hidden">
+                             class="transcription__tablist hidden">
                             <button id="tab-1-{{ forloop.counter }}"
-                                    class="tabset"
+                                    class="transcription__tab"
                                     type="button"
                                     role="tab"
                                     aria-selected="true"
                                     aria-controls="tabpanel-1-{{ forloop.counter }}">
-                                <span class="focus">{{ item.image.transcription_heading }}</span>
+                                <span>{{ item.image.transcription_heading }}</span>
                             </button>
                             {% if item.image.translation %}
                                 <button id="tab-2-{{ forloop.counter }}"
+                                        class="transcription__tab"
                                         type="button"
                                         role="tab"
                                         aria-selected="false"
                                         aria-controls="tabpanel-2-{{ forloop.counter }}"
                                         tabindex="-1">
-                                    <span class="focus">{{ item.image.translation_heading }}</span>
+                                    <span>{{ item.image.translation_heading }}</span>
                                 </button>
-                            </div>
-                        {% endif %}
+                            {% endif %}
+                        </div>
                         <div id="tabpanel-1-{{ forloop.counter }}"
                              role="tabpanel"
                              tabindex="0"
                              aria-labelledby="tab-1-{{ forloop.counter }}"
-                             class="hidden">
+                             class="tabpanel hidden">
                             <p>{{ item.image.transcription|richtext }}</p>
                         </div>
                         {% if item.image.translation %}
@@ -92,7 +93,7 @@
                                  role="tabpanel"
                                  tabindex="0"
                                  aria-labelledby="tab-2-{{ forloop.counter }}"
-                                 class="hidden">
+                                 class="tabpanel hidden">
                                 <p>{{ item.image.translation|richtext }}</p>
                             </div>
                         {% endif %}
@@ -103,8 +104,7 @@
     {% endwith %}
     <button class="transcription__close hidden" id="closeButton" type="button">
         Close
-        {% include "static/images/fontawesome-svgs/x-mark.svg" %}
+        {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="transcription__icon" %}
     </button>
-</div>
 </div>
 <!--end of transcript element-->
