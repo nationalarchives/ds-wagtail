@@ -36,7 +36,7 @@
     </div>
 
     {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article title="Spotlight on" %}
     {% endif %}
 
     {% if page.featured_pages %}
