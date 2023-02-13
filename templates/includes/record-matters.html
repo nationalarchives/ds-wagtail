@@ -7,60 +7,58 @@
                 {% if record.date_created or record.reference_number %}
                     <div class="record-matters__content">
                         {% if record.date_created %}
-                            <p class="record-matters__text">Date: <strong>{{ record.date_created }}</strong></p>
+                            <p class="record-matters__text">
+                                Date: <strong>{{ record.date_created }}</strong>
+                            </p>
                         {% endif %}
                         {% if record.reference_number %}
                             <p class="record-matters__text">
-                                Catalogue ref: <a class="record-matters__text record-matters__text--bold"
+                                Catalogue reference: <a class="record-matters__text record-matters__text--bold"
     href="{% record_url record is_editorial=True %}">{{ record.reference_number }}</a>
                             </p>
                         {% endif %}
                     </div>
                 {% endif %}
                 {% if record.description %}
-                    <div id="readLessContent" class="generic-intro__paragraph">
+                    <div id="readLessContent">
                         {{ record.description|richtext|truncatewords_html:50 }}
                         <button id="readMoreButton" class="record-matters__plain-button" href="">
                             Read more
-                            {% include "static/images/fontawesome-svgs/plus.svg" %}
+                            {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>
-                    <div class="generic-intro__paragraph reveal-text hidden"
-                         id="readMoreContent">
+                    <div class="hidden" id="readMoreContent">
                         {{ record.description|richtext }}
                         <button id="readLessButton"
                                 class="record-matters__plain-button"
                                 type="button"
                                 href="">
                             Read less
-                            {% include "static/images/fontawesome-svgs/x-mark.svg" %}
+                            {% include "static/images/fontawesome-svgs/circle-x-mark.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>
                 {% endif %}
             </div>
-        </div>
-        <div class="row d-flex justify-content-center record-matters__buttons">
-            {% if record %}
-                <div class="col-sm-12 col-md-3">
+            <div class="col-md-10 col-sm-12 record-matters__buttons">
+                {% if record %}
                     <a class="tna-button--yellow tna-button--full-width"
+                       target="_blank"
                        href="{% record_url record is_editorial=True %}"
                        rel="noopener noreferrer">View record details</a>
-                </div>
-            {% endif %}
-            {% if page.image_library_link %}
-                <div class="col-sm-12 col-md-3">
+                {% endif %}
+                {% if page.image_library_link %}
                     <a class="tna-button--yellow tna-button--full-width"
+                       target="_blank"
                        href="{{ page.image_library_link }}"
                        rel="noopener noreferrer">Use this image</a>
-                </div>
-            {% endif %}
-            {% if page.print_on_demand_link %}
-                <div class="col-sm-12 col-md-3">
+                {% endif %}
+                {% if page.print_on_demand_link %}
                     <a class="tna-button--yellow tna-button--full-width"
+                       target="_blank"
                        href="{{ page.print_on_demand_link }}"
                        rel="noopener noreferrer">Buy an art print</a>
                 </div>
             {% endif %}
-        </div>
     </div>
+        </div>
 </div>
