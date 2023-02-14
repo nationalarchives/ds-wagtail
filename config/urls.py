@@ -48,7 +48,7 @@ if settings.SENTRY_DEBUG_URL_ENABLED:
 # Public URLs that are meant to be cached.
 public_urls = [
     path(
-        r"catalogue/id/<iaid:iaid>/",
+        r"catalogue/id/<iaid:metadata_id>/",
         setting_controlled_login_required(
             records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
         ),
@@ -67,14 +67,14 @@ public_urls = [
         name="image-serve",
     ),
     path(
-        r"records/images/<iaid:iaid>/<str:sort>/",
+        r"records/images/<iaid:metadata_id>/<str:sort>/",
         setting_controlled_login_required(
             records_views.image_viewer, "IMAGE_VIEWER_REQUIRE_LOGIN"
         ),
         name="image-viewer",
     ),
     path(
-        r"records/images/<iaid:iaid>/",
+        r"records/images/<iaid:metadata_id>/",
         setting_controlled_login_required(
             records_views.image_browse, "IMAGE_VIEWER_REQUIRE_LOGIN"
         ),

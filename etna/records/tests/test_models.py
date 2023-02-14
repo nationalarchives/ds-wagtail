@@ -332,7 +332,7 @@ class UnexpectedParsingIssueTest(TestCase):
             ),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadata_id="C123456")
 
         self.assertEqual(record.hierarchy, ())
 
@@ -349,7 +349,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadata_id="C123456")
 
         self.assertEqual(record.date_created, "")
 
@@ -383,7 +383,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadata_id="C123456")
 
         # Related records with no 'identifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
@@ -424,7 +424,7 @@ class UnexpectedParsingIssueTest(TestCase):
             json=create_response(records=[record]),
         )
 
-        record = Record.api.fetch(iaid="C123456")
+        record = Record.api.fetch(metadata_id="C123456")
 
         self.assertEqual(record.related_articles, ())
 

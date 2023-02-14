@@ -62,7 +62,9 @@ def record_url(
         ):
             return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
         try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+            return reverse(
+                "details-page-machine-readable", kwargs={"metadata_id": iaid}
+            )
         except NoReverseMatch:
             pass
     if ref:

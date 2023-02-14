@@ -49,7 +49,7 @@ def record_disambiguation_view(request, reference_number):
     )
 
 
-def record_detail_view(request, iaid):
+def record_detail_view(request, metadata_id):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -57,7 +57,7 @@ def record_detail_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        record = Record.api.fetch(iaid=iaid, expand=True)
+        record = Record.api.fetch(metadata_id=metadata_id, expand=True)
     except DoesNotExist:
         raise Http404
 

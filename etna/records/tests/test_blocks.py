@@ -96,15 +96,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C123456",
+            "https://kong.test/data/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetch?iaid=C123456",
+            "https://kong.test/data/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[2].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
@@ -144,7 +144,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
         # View the page to check rendering also
@@ -153,7 +153,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetchAll?iaids=C123456",
+            "https://kong.test/data/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate

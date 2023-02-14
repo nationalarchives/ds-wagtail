@@ -52,4 +52,4 @@ class RecordChooser(AdminChooser):
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
-        return Record.api.fetch(iaid=pk)
+        return Record.api.fetch(metadata_id=pk)

@@ -23,7 +23,7 @@ class LazyRecord(SimpleLazyObject):
         self.__dict__["iaid"] = iaid
 
         def _fetch_record():
-            return Record.api.fetch(iaid=iaid)
+            return Record.api.fetch(metadata_id=iaid)
 
         super().__init__(_fetch_record)
 
@@ -53,7 +53,7 @@ class RecordChoiceField(CharField):
         if value in self.empty_values:
             return None
         try:
-            Record.api.fetch(iaid=value)
+            Record.api.fetch(metadata_id=value)
         except HTTPError:
             raise ValidationError(
                 f"Record data could not be retrieved using iaid '{value}'.",

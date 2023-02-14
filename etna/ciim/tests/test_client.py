@@ -620,12 +620,12 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaid(self):
-        self.client.fetch(iaid="C198022")
+        self.client.fetch(metadata_id="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C198022",
+            "https://kong.test/data/fetch?metadataId=C198022",
         )
 
     @responses.activate
@@ -706,12 +706,12 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaids(self):
-        self.client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
+        self.client.fetch_all(metadata_ids=["iaid-one", "iaid-two", "iaid-three"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?iaids=iaid-one&iaids=iaid-two&iaids=iaid-three",
+            "https://kong.test/data/fetchAll?metadataIds=iaid-one&metadataIds=iaid-two&metadataIds=iaid-three",
         )
 
     @responses.activate

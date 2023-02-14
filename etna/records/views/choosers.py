@@ -43,7 +43,7 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return self.model.api.fetch(iaid=pk)
+        return self.model.api.fetch(metadata_id=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.

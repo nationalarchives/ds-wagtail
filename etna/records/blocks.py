@@ -61,7 +61,7 @@ class RecordChooserBlock(ChooserBlock):
         if not values:
             return []
         records_by_id = {
-            r.iaid: r for r in self.target_model.api.fetch_all(iaids=values)[1]
+            r.iaid: r for r in self.target_model.api.fetch_all(metadata_ids=values)[1]
         }
         return list(records_by_id.get(iaid) for iaid in values)
 
@@ -89,11 +89,11 @@ class RecordChooserBlock(ChooserBlock):
             return value
 
         try:
-            return self.target_model.api.fetch(iaid=value)
+            return self.target_model.api.fetch(metadata_id=value)
         except (KongAPIError, APIManagerException):
             # If there's a connection issue with Kong, return a stub Record
             # so we have something to render on the ResultsPage edit form.
-            return self.target_model(iaid=value)
+            return self.target_model(metadata_id=value)
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)

@@ -160,7 +160,7 @@ class KongClient:
     def fetch(
         self,
         *,
-        iaid: Optional[str] = None,
+        metadata_id: Optional[str] = None,
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
@@ -171,8 +171,8 @@ class KongClient:
 
         Keyword arguments:
 
-        iaid:
-            Return match on Information Asset Identifier
+        metadata_id:
+            Return match on @admin.id for various Information Asset Identifier (IAID) formats.
         id:
             Generic identifier. Matches on references_number or iaid
         template:
@@ -181,7 +181,7 @@ class KongClient:
             include @next and @previous record with response. Kong defaults to false
         """
         params = {
-            "iaid": iaid,
+            "metadataId": metadata_id,
             "id": id,
             "template": template,
             "expand": expand,
@@ -396,7 +396,7 @@ class KongClient:
         self,
         *,
         ids: Optional[list[str]] = None,
-        iaids: Optional[list[str]] = None,
+        metadata_ids: Optional[list[str]] = None,
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
@@ -405,14 +405,15 @@ class KongClient:
 
         Used to fetch a all items by for the given identifier(s).
 
-        Fetch all metadata with a generic identifier, iaid or replicaId (rid).
+        Fetch all metadata with a generic identifier, IAID's of various formats or
+        replicaId (rid).
 
         Keyword arguments:
 
         ids:
             Generic identifiers. Matches on references_number or iaid
-        iaids:
-            Return matches on Information Asset Identifier
+        metadata_ids:
+            Return match on @admin.id for various Information Asset Identifier (IAID) formats.
         rid:
             Return matches on replic ID
         offset:
@@ -422,7 +423,7 @@ class KongClient:
         """
         params = {
             "ids": ids,
-            "iaids": iaids,
+            "metadataIds": metadata_ids,
             "rid": rid,
             "from": offset,
             "size": size,
