@@ -15,6 +15,7 @@ $ mkdocs serve
 ```
 
 The documentation will be available at:
+
 http://localhost:8001/
 
 ## Setting up a local build
@@ -45,13 +46,15 @@ $ fab sh
 ```
 
 ### 5. Apply database migrations
+
 ```console
 $ python manage.py migrate
 ```
 
 ### 6. Run the 'development' web server
+
 ```console
-$ python manage.py runserver 0:8000
+$ python manage.py runserver 0.0.0.0:8000
 ```
 
 ### 7. Access the site
@@ -61,6 +64,7 @@ $ python manage.py runserver 0:8000
 **Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section**
 
 ### 8. Create a Django user for yourself
+
 ```console
 $ python manage.py createsuperuser
 ```
@@ -94,14 +98,17 @@ You can then access the site in your browser as usual:
 If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
 Running the development server:
+
 ``` console
 $ djrun
 ```
 Run migrations:
+
 ```console
 $ dj migrate
 ```
 Create a super user:
+
 ```console
 $ dj createsuperuser
 ```
@@ -109,7 +116,6 @@ $ dj createsuperuser
 ## Issues with your local environment?
 
 Check out the [Local development gotchas](https://nationalarchives.github.io/ds-wagtail/developer-guide/local-development-gotchas/) page for solutions to common issues.
-
 
 ## Discover more
 
