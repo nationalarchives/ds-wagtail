@@ -10,6 +10,12 @@ class RecordMatters {
     }
 
     setUp() {
+
+        // set-up from the non-js version
+        this.hide(this.readMoreContent);
+        this.show(this.readLessContent);
+        this.show(this.readLessButton);
+
         this.readMoreButton.addEventListener("click", (e) => {
             e.preventDefault();
             this.show(this.readMoreContent);

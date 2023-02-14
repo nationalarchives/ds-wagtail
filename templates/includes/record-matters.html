@@ -20,17 +20,17 @@
                     </div>
                 {% endif %}
                 {% if record.description %}
-                    <div id="readLessContent">
+                    <div id="readLessContent" class="hidden">
                         {{ record.description|richtext|truncatewords_html:50 }}
                         <button id="readMoreButton" class="record-matters__plain-button" href="">
                             Read more
                             {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>
-                    <div class="hidden" id="readMoreContent">
+                    <div id="readMoreContent">
                         {{ record.description|richtext }}
                         <button id="readLessButton"
-                                class="record-matters__plain-button"
+                                class="record-matters__plain-button hidden"
                                 type="button"
                                 href="">
                             Read less
