@@ -2,6 +2,14 @@
     $root: &;
     position: relative;
     display: flex;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+        background-color: $color__dark;
+        color: $color__white;
+        outline: 0.3125rem solid $color__dark;
+    }
 
     &__container {
         display: flex;
@@ -10,7 +18,7 @@
         align-items: center;
         background: $white;
         width: 100%;
-        
+
         &--dark {
             background: $color__grey-2;
         }
