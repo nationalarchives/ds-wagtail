@@ -335,6 +335,9 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
+            help_text=_(
+                "Where possible, specify these in relevancy order (most relevant first)."
+            ),
             min_num=min_num,
             max_num=max_num,
         )
@@ -346,6 +349,9 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_topics",
             heading=_("Related topics"),
+            help_text=_(
+                "Where possible, specify these in relevancy order (most relevant first)."
+            ),
             min_num=min_num,
             max_num=max_num,
         )
