@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.utils.html import format_html
 
-from wagtail.core import blocks
+from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 

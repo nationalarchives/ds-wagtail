@@ -60,7 +60,7 @@ INSTALLED_APPS = [
     "wagtail.images",
     "wagtail.search",
     "wagtail.admin",
-    "wagtail.core",
+    "wagtail",
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",

@@ -1,7 +1,7 @@
 from django.urls import path, reverse
 
 from wagtail.admin.menu import AdminOnlyMenuItem
-from wagtail.core import hooks
+from wagtail import hooks
 
 from .views import beta_testers_report
 

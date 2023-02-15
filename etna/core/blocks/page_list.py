@@ -3,7 +3,7 @@ from typing import Any, Optional, Sequence
 from django.utils.functional import cached_property
 
 from wagtail.blocks.list_block import ListValue
-from wagtail.core import blocks
+from wagtail import blocks
 from wagtail.coreutils import resolve_model_string
 from wagtail.models import Page, PageBase
 from wagtail.query import PageQuerySet
