@@ -1,14 +1,16 @@
 from typing import List, Optional, Tuple, Union
 
+from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
+from wagtail.search import index
 
 from wagtailmetadata.models import MetadataPageMixin
 
@@ -394,6 +396,133 @@ class TopicalPageMixin:
         one big comma-separated string. Ideal for indexing!
         """
         return ", ".join(item.title for item in self.time_periods)
+
+
+class HighlightGalleryPage(
+    TopicalPageMixin, TeaserImageMixin, MetadataPageMixin, BasePage
+):
+    parent_page_types = [TimePeriodExplorerPage]
+    subpage_types = []
+
+    # NOTE: To be moved to a mixin as part of UN-471
+    intro = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the article and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage",
+        verbose_name=_("featured record article"),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage",
+        verbose_name=_("featured article"),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    # NOTE: To be moved to a mixin as part of UN-471
+    teaser_text = models.TextField(
+        verbose_name=_("teaser text"),
+        help_text=_(
+            "A short, enticing description of the article. This will appear in promos and under thumbnails around the site."
+        ),
+        max_length=160,
+    )
+
+    class Meta:
+        verbose_name = _("highlight gallery page")
+        verbose_name_plural = _("highlight gallery pages")
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("intro"),
+        InlinePanel(
+            "page_highlights",
+            heading=_("Highlights"),
+            label=_("Item"),
+            min_num=2,
+            max_num=15,
+        ),
+        FieldPanel("featured_record_article"),
+        FieldPanel("featured_article"),
+        TopicalPageMixin.get_topics_inlinepanel(),
+    ]
+
+    promote_panels = (
+        MetadataPageMixin.promote_panels
+        + TeaserImageMixin.promote_panels
+        + [
+            FieldPanel("teaser_text"),
+        ]
+    )
+
+    search_fields = BasePage.search_fields + [
+        index.SearchField("intro", boost=1),
+        index.SearchField("highlights_text", boost=1),
+        index.SearchField("topic_names"),
+        index.SearchField("teaser_text"),
+    ]
+
+    @cached_property
+    def highlights(self):
+        """
+        Used to access the page's 'highlights' for output. Makes use of
+        Django's select_related() and prefetch_related() to efficiently
+        prefetch image and rendition data from the database.
+        """
+        return (
+            self.page_highlights.exclude(image__isnull=True)
+            .select_related("image")
+            .prefetch_related("image__renditions")
+        )
+
+    @cached_property
+    def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
+        """
+        Overrides `TopicalPageMixin.time_periods` to use the placement of this
+        page in the tree to indicate the related time periods.
+        """
+        return [TimePeriodExplorerPage.objects.parent_of(self).get()]
+
+    @property
+    def highlights_text(self) -> str:
+        """
+        Returns all of the relevant text defined for this page's highlights,
+        joined into one giant string to faciliate indexing.
+        """
+        strings = []
+        for item in self.highlights:
+            strings.extend([item.image.title, item.long_description])
+        return " | ".join(strings)
+
+
+class Highlight(Orderable):
+    page = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
+    )
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("image"),
+    )
+    long_description = RichTextField(
+        verbose_name=_("long description"),
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=400,
+    )
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("long_description"),
+    ]
 
 
 class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
