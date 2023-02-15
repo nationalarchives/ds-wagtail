@@ -299,6 +299,7 @@ RESTRICTED_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "ol",
     "ul",
 ]
 
