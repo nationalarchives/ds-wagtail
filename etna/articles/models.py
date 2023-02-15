@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
@@ -260,7 +261,7 @@ class RecordArticlePage(
 
     about = RichTextField(
         verbose_name=_("why this record matters"),
-        features=["bold", "italic", "link", "ol", "ul"],
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     image_library_link = models.URLField(
