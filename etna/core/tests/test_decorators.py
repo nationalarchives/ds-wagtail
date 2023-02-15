@@ -1,7 +1,7 @@
 from django.test import TestCase, override_settings
 from django.urls import reverse_lazy
 
-from wagtail.tests.utils import WagtailTestUtils
+from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
