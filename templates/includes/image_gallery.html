@@ -1,30 +1,28 @@
 {% load static wagtailimages_tags wagtailcore_tags %}
 <div class="transcription">
-    <div class="row">
-        <div class="transcription__preview hidden">
-            {% with gallery_length=gallery|length %}
-                <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
-                <picture>
-                    {% with first_gallery_item=gallery.0 %}
-                        {% image first_gallery_item.image fill-1000x600 format-webp as image_webp %}
-                        <source srcset="{{ image_webp.url }}"
-                                type="image/webp"
-                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1100x600 as image_png %}
-                        <source srcset="{{ image_png.url }}"
-                                type="image/png"
-                                {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1100x600 as base_img %}
-                        <img width="1000"
-                             height="600"
-                             src="{{ base_img.url }}"
-                             class="transcription__image"
-                             {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                    {% endwith %}
-                </picture>
-                {% include "static/images/icons/dashed-line.svg" with classes="transcription__underline" %}
-                <button id="showButton" class="transcription__open">View images and transcripts</button>
-            </div>
+    <div class="transcription__preview hidden">
+        {% with gallery_length=gallery|length %}
+            <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
+            <picture>
+                {% with first_gallery_item=gallery.0 %}
+                    {% image first_gallery_item.image fill-1000x600 format-webp as image_webp %}
+                    <source srcset="{{ image_webp.url }}"
+                            type="image/webp"
+                            {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                    {% image first_gallery_item.image fill-1100x600 as image_png %}
+                    <source srcset="{{ image_png.url }}"
+                            type="image/png"
+                            {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                    {% image first_gallery_item.image fill-1100x600 as base_img %}
+                    <img width="1000"
+                         height="600"
+                         src="{{ base_img.url }}"
+                         class="transcription__image"
+                         {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
+                {% endwith %}
+            </picture>
+            {% include "static/images/icons/dashed-line.svg" with classes="transcription__underline" %}
+            <button id="showButton" class="transcription__open">View images and transcripts</button>
         </div>
         <!--start of transcript element-->
         {% for item in gallery %}
@@ -85,7 +83,7 @@
                              role="tabpanel"
                              tabindex="0"
                              aria-labelledby="tab-1-{{ forloop.counter }}"
-                             class="tabpanel hidden">
+                             class="transcription__tabpanel hidden">
                             <p>{{ item.image.transcription|richtext }}</p>
                         </div>
                         {% if item.image.translation %}
@@ -93,7 +91,7 @@
                                  role="tabpanel"
                                  tabindex="0"
                                  aria-labelledby="tab-2-{{ forloop.counter }}"
-                                 class="tabpanel hidden">
+                                 class="transcription__tabpanel hidden">
                                 <p>{{ item.image.translation|richtext }}</p>
                             </div>
                         {% endif %}

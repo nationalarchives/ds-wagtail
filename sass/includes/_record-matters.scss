@@ -20,6 +20,19 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
+
+    &:visited {
+      outline: 0.1875rem solid $color__yellow_2;
+    }
+
+    &:hover {
+      outline: 0.1875rem solid $color__dark;
+    }
+
+    &:focus {
+      outline: 0.312rem solid $color__blue_4;
+      outline-offset: 0.125rem;
+    }
   }
 
   &__svg {
@@ -49,7 +62,7 @@
   &__buttons {
     margin-top: 1rem;
     text-align: center;
-    display: grid; 
+    display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     grid-gap: 1.5rem;
 

@@ -22,7 +22,7 @@
                 {% if record.description %}
                     <div id="readLessContent" class="hidden">
                         {{ record.description|richtext|truncatewords_html:50 }}
-                        <button id="readMoreButton" class="record-matters__plain-button" href="">
+                        <button id="readMoreButton" class="record-matters__plain-button" href="" aria-label="Expand to read more about this record">
                             Read more
                             {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
                         </button>

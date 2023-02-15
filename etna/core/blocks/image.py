@@ -89,6 +89,7 @@ class NoCaptionImageBlock(ImageBlock):
 class ContentImageBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=False)
     alt_text = blocks.CharBlock(
+        required=True,
         max_length=100,
         label="Alternative text",
         help_text=mark_safe(
@@ -113,3 +114,17 @@ class ContentImageBlock(blocks.StructBlock):
         template = "blocks/content_image.html"
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
+
+    def clean(self, value):
+        image = value.get("image")
+        alt_text = value.get("alt_text")
+
+        errors = {}
+        if image and not alt_text:
+            message = "Images must contain alt text."
+            errors["alt_text"] = ErrorList([message])
+
+        if errors:
+            raise StructBlockValidationError(errors)
+
+        return super().clean(value)
