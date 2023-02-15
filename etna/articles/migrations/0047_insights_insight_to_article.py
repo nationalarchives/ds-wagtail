@@ -137,6 +137,7 @@ class Migration(migrations.Migration):
                                                                     "bold",
                                                                     "italic",
                                                                     "link",
+                                                                    "ol",
                                                                     "ul",
                                                                 ]
                                                             ),
