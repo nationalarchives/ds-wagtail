@@ -146,7 +146,11 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         "collections.TopicExplorerIndexPage",
         "collections.TopicExplorerPage",
     ]
-    subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
+    subpage_types = [
+        "collections.TopicExplorerPage",
+        "collections.HighlightGalleryPage",
+        "collections.ResultsPage",
+    ]
 
     @cached_property
     def related_articles(self):
@@ -253,7 +257,11 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
         "collections.TimePeriodExplorerIndexPage",
         "collections.TimePeriodExplorerPage",
     ]
-    subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
+    subpage_types = [
+        "collections.TimePeriodExplorerPage",
+        "collections.HighlightGalleryPage",
+        "collections.ResultsPage",
+    ]
 
     @cached_property
     def related_articles(self):
@@ -401,10 +409,10 @@ class TopicalPageMixin:
 class HighlightGalleryPage(
     TopicalPageMixin, TeaserImageMixin, MetadataPageMixin, BasePage
 ):
-    parent_page_types = [TimePeriodExplorerPage]
+    parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
-    # NOTE: To be moved to a mixin as part of UN-471
+    # NOTE: To be moved to mixin/base page as part of UN-471
     intro = RichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
@@ -413,6 +421,7 @@ class HighlightGalleryPage(
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,
     )
+
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage",
         verbose_name=_("featured record article"),
@@ -420,6 +429,7 @@ class HighlightGalleryPage(
         null=True,
         on_delete=models.SET_NULL,
     )
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage",
         verbose_name=_("featured article"),
@@ -428,7 +438,7 @@ class HighlightGalleryPage(
         on_delete=models.SET_NULL,
     )
 
-    # NOTE: To be moved to a mixin as part of UN-471
+    # NOTE: To be moved to mixin/base page as part of UN-471
     teaser_text = models.TextField(
         verbose_name=_("teaser text"),
         help_text=_(
@@ -453,6 +463,7 @@ class HighlightGalleryPage(
         FieldPanel("featured_record_article"),
         FieldPanel("featured_article"),
         TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
 
     promote_panels = (
@@ -467,6 +478,7 @@ class HighlightGalleryPage(
         index.SearchField("intro", boost=1),
         index.SearchField("highlights_text", boost=1),
         index.SearchField("topic_names"),
+        index.SearchField("time_period_names"),
         index.SearchField("teaser_text"),
     ]
 
@@ -482,14 +494,6 @@ class HighlightGalleryPage(
             .select_related("image")
             .prefetch_related("image__renditions")
         )
-
-    @cached_property
-    def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
-        """
-        Overrides `TopicalPageMixin.time_periods` to use the placement of this
-        page in the tree to indicate the related time periods.
-        """
-        return [TimePeriodExplorerPage.objects.parent_of(self).get()]
 
     @property
     def highlights_text(self) -> str:
