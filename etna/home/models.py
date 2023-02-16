@@ -4,17 +4,14 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 
-from wagtailmetadata.models import MetadataPageMixin
-
 from etna.alerts.models import AlertMixin
 from etna.articles.blocks import FeaturedCollectionBlock
 from etna.core.models import BasePage
-from etna.teasers.models import TeaserImageMixin
 
 from .blocks import HomePageStreamBlock
 
 
-class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+class HomePage(AlertMixin, BasePage):
     sub_heading = models.CharField(
         max_length=255,
         blank=False,
@@ -31,14 +28,15 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         null=True,
         use_json_field=True,
     )
+
     content_panels = BasePage.content_panels + [
         FieldPanel("sub_heading"),
         FieldPanel("body"),
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
+
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     # DataLayerMixin overrides
     gtm_content_group = "Homepage"

@@ -18,18 +18,16 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
-from wagtailmetadata.models import MetadataPageMixin
 
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePage, ContentWarningMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
-from ..teasers.models import TeaserImageMixin
 from .blocks import ArticlePageStreamBlock, FeaturedCollectionBlock
 
 
-class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
+class ArticleIndexPage(BasePage):
     """ArticleIndexPage
 
     This page lists the ArticlePage objects that are children of this page.
@@ -65,8 +63,6 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("featured_pages"),
     ]
 
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
-
     subpage_types = ["articles.ArticlePage"]
 
 
@@ -90,9 +86,7 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(
-    HeroImageMixin, TeaserImageMixin, ContentWarningMixin, MetadataPageMixin, BasePage
-):
+class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePage):
     """ArticlePage
 
     The ArticlePage model.
@@ -234,15 +228,11 @@ class ArticlePage(
         ]
     )
 
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
-
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
 
-class RecordArticlePage(
-    TopicalPageMixin, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, BasePage
-):
+class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePage):
     template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
@@ -323,8 +313,6 @@ class RecordArticlePage(
         TopicalPageMixin.get_time_periods_inlinepanel(),
         TopicalPageMixin.get_topics_inlinepanel(),
     ]
-
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     search_fields = BasePage.search_fields + [
         index.SearchField("standfirst", boost=3),
