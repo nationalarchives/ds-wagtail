@@ -1,8 +1,9 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 
 from etna.alerts.models import AlertMixin
 from etna.articles.blocks import FeaturedCollectionBlock
@@ -12,11 +13,13 @@ from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, BasePage):
-    sub_heading = models.CharField(
-        max_length=255,
-        blank=False,
-        default="Discover some of the most important and unusual records from over 1000 "
-        "years of history.",
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
     )
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL

@@ -34,7 +34,14 @@ class ExplorerIndexPage(AlertMixin, BasePage):
     explorer.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePage.content_panels + [
@@ -60,7 +67,14 @@ class TopicExplorerIndexPage(BasePage):
     This page lists all child TopicExplorerPages
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
 
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
@@ -114,7 +128,14 @@ class TopicExplorerPage(AlertMixin, BasePage):
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -166,7 +187,14 @@ class TimePeriodExplorerIndexPage(BasePage):
     This page lists all child TimePeriodExplorerPage
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
 
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
@@ -220,7 +248,14 @@ class TimePeriodExplorerPage(AlertMixin, BasePage):
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -414,7 +449,7 @@ class HighlightGalleryPage(TopicalPageMixin, BasePage):
     intro = RichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
-            "1-2 sentences introducing the subject of the article and explaining why a user should read on."
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
         ),
         features=settings.INLINE_RICH_TEXT_FEATURES,
         max_length=300,

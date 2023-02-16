@@ -33,7 +33,14 @@ class ArticleIndexPage(BasePage):
     This page lists the ArticlePage objects that are children of this page.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -92,7 +99,14 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePage):
     The ArticlePage model.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
+    sub_heading = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
