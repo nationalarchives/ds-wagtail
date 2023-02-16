@@ -1,13 +1,17 @@
 from typing import Any, Dict
 
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
-from wagtail.models import Page
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.models import Page
+from wagtail.search import index
+
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.analytics.mixins import DataLayerMixin
@@ -18,6 +22,7 @@ from etna.core.cache_control import (
 
 __all__ = [
     "BasePage",
+    "BasePageWithIntro",
 ]
 
 
@@ -68,3 +73,28 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         data = super().get_datalayer_data(request)
         data.update(customDimension3=self._meta.verbose_name)
         return data
+
+
+class BasePageWithIntro(BasePage):
+    """
+    An abstract base model for more long-form content pages that
+    start with a required 'intro'.
+    """
+
+    intro = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = BasePage.content_panels + [FieldPanel("intro")]
+
+    search_fields = BasePage.search_fields + [
+        index.SearchField("intro", boost=3),
+    ]
