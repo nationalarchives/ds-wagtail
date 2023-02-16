@@ -17,7 +17,9 @@
         {% include "includes/records/record-title.html" %}
         {% include "includes/records/hierarchy-global.html" %}
 
-        {% include "includes/records/image-viewer-panel.html" %}
+        {% if page.is_digitised and image %}
+            {% include "includes/records/image-viewer-panel.html" %}
+        {% endif %}
 
         <h2 id="record-details-heading">Description and record details</h2>
 

@@ -3,7 +3,7 @@
         <figure>
             <a class="image-viewer-panel__image-link" href="{% comment %} {% url 'image-browse' iaid=page.iaid %} {% endcomment %}">
                 <span class="sr-only">Open in our image viewer</span>
-                <img src="https://www.nationalarchives.gov.uk/wp-content/uploads/2021/08/HO334-409-1-Peter-Santi-Certificate-of-Naturalisation-July-1957-449x720-1.jpg{% comment %} {% url 'image-serve' location=image.location %} {% endcomment %}" alt="">
+                <img src="{% comment %} {% url 'image-serve' location=image.location %} {% endcomment %}" alt="">
             </a>
             <figcaption>
                 <a class="image-viewer-panel__text-link" href="{% comment %} {% url 'image-browse' iaid=page.iaid %} {% endcomment %}" title="#">Open in our image viewer</a>
