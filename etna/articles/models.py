@@ -20,27 +20,19 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePage, ContentWarningMixin
+from etna.core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
 from .blocks import ArticlePageStreamBlock, FeaturedCollectionBlock
 
 
-class ArticleIndexPage(BasePage):
+class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
 
     This page lists the ArticlePage objects that are children of this page.
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -64,8 +56,7 @@ class ArticleIndexPage(BasePage):
         context["article_pages"] = self.get_children().public().live().specific()
         return context
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
@@ -93,20 +84,12 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePage):
+class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
     """ArticlePage
 
     The ArticlePage model.
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
@@ -127,7 +110,7 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePage):
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
-    search_fields = Page.search_fields + [
+    search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("article_tag_names"),
     ]
 
@@ -223,10 +206,9 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePage):
         return tuple(filterlatestpages[:3])
 
     content_panels = (
-        BasePage.content_panels
+        BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
-            FieldPanel("sub_heading"),
             FieldPanel("topic"),
             FieldPanel("time_period"),
             FieldPanel("tags"),

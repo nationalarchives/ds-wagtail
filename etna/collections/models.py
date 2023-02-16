@@ -15,7 +15,7 @@ from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
-from ..core.models import BasePage
+from ..core.models import BasePage, BasePageWithIntro
 from ..records.models import Record
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -27,28 +27,19 @@ from .blocks import (
 )
 
 
-class ExplorerIndexPage(AlertMixin, BasePage):
+class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
     explorer.
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -61,27 +52,17 @@ class ExplorerIndexPage(AlertMixin, BasePage):
     gtm_content_group = "Explorer"
 
 
-class TopicExplorerIndexPage(BasePage):
+class TopicExplorerIndexPage(BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
-
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
 
@@ -117,7 +98,7 @@ class TopicExplorerIndexPage(BasePage):
     ]
 
 
-class TopicExplorerPage(AlertMixin, BasePage):
+class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -128,23 +109,13 @@ class TopicExplorerPage(AlertMixin, BasePage):
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
-
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
     ]
@@ -181,27 +152,17 @@ class TopicExplorerPage(AlertMixin, BasePage):
         )
 
 
-class TimePeriodExplorerIndexPage(BasePage):
+class TimePeriodExplorerIndexPage(BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
-
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
 
@@ -237,7 +198,7 @@ class TimePeriodExplorerIndexPage(BasePage):
     ]
 
 
-class TimePeriodExplorerPage(AlertMixin, BasePage):
+class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -248,15 +209,6 @@ class TimePeriodExplorerPage(AlertMixin, BasePage):
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
-
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -265,8 +217,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePage):
     )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
@@ -442,18 +393,9 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(TopicalPageMixin, BasePage):
+class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
-
-    intro = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
 
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage",
@@ -475,8 +417,7 @@ class HighlightGalleryPage(TopicalPageMixin, BasePage):
         verbose_name = _("highlight gallery page")
         verbose_name_plural = _("highlight gallery pages")
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("intro"),
+    content_panels = BasePageWithIntro.content_panels + [
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
@@ -491,7 +432,6 @@ class HighlightGalleryPage(TopicalPageMixin, BasePage):
     ]
 
     search_fields = BasePage.search_fields + [
-        index.SearchField("intro", boost=1),
         index.SearchField("highlights_text", boost=1),
         index.SearchField("topic_names"),
         index.SearchField("time_period_names"),
