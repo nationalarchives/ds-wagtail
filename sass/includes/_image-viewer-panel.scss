@@ -1,5 +1,5 @@
 .image-viewer-panel {
-  margin-top: 1rem;
+  margin: 1rem 0 3rem;
   text-align: center;
   width: 100%;
   background-color: $color__dark;
@@ -25,11 +25,10 @@
     display: inline-block;
     color: $color__white;
     background: url($fa_search_plus) no-repeat center left;
-    background-size: 1.75rem;
+    background-size: 1.5rem;
     text-align: center;
-    font-weight: bold;
     vertical-align: top;
-    font-size: 1.1rem;
+    font-size: 1rem;
 
     &:visited {
       color: $color__white;
