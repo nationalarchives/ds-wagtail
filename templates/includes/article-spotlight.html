@@ -1,0 +1,36 @@
+{% load wagtailimages_tags wagtailcore_tags i18n %}
+
+<div class="container">
+    <h2 class="extra-padding">{% translate title %}</h2>
+    <div class="featured-article">
+        {% if page.hero_image %}
+            <a href="{% pageurl page %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.title }}" data-link-type="Image" {% if page.first_published_at.date > page.new_label_end_date.date %}data-label="New"{% endif %}>
+                <picture>
+                    {% image page.teaser_image fill-500x400-c100 as hero %}
+                    <source media="(max-width: 768px)" srcset="{{ hero.url }}"/>
+                    {% image page.teaser_image fill-500x500-c100 as hero %}
+                    <source media="(max-width: 991px)" srcset="{{ hero.url }}"/>
+                    {% image page.teaser_image fill-1000x600-c100 as hero %}
+                    <source media="(max-width: 1200px)" srcset="{{ hero.url }}"/>
+
+                    <img width=1000 height=600 src="{{ hero.url }}" {% if page.hero_image_decorative %}alt=""{% else %}alt="{{ page.hero_image_alt_text }}{% endif %}" />
+                </picture>
+            </a>
+        {% endif %}
+
+        <div class="featured-article__description">
+            <h2 class="featured-article__heading">
+                <small>{% trans "Spotlight on" %}</small>
+                {{ page.title }}
+                {% if page.first_published_at.date > page.new_label_end_date.date %}
+                    <span aria-describedby="article-desc" role="link">NEW</span>
+                {% endif %}
+            </h2>
+
+            <p id="article-desc" class="aria-desc">This is a link to a new story about {{ page.title }}</p>
+
+            <p>{{ page.sub_heading }}</p>
+            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Story: {{ page.title }}" data-link-type="Button" {% if page.first_published_at.date > page.new_label_end_date.date %}data-label="New"{% endif %}>Read</a>
+        </div>
+    </div>
+</div>

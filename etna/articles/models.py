@@ -243,6 +243,7 @@ class ArticlePage(
 class RecordArticlePage(
     TopicalPageMixin, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, BasePage
 ):
+    template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
 
