@@ -244,8 +244,8 @@ class Record(DataLayerMixin, APIModel):
 
     @property
     def raw_content(self) -> str:
-        for item in self.get("source.content.items", ()):
-            return item.get("value", "")
+        for item in self.get("source.content", ()):
+            return item
         return ""
 
     @cached_property
