@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
@@ -46,6 +47,9 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     )
 
     new_label_end_date = datetime.now() - timedelta(days=21)
+
+    # DataLayerMixin overrides
+    gtm_content_group = "stories"
 
     class Meta:
         verbose_name = _("article index page")
@@ -120,6 +124,9 @@ class ArticlePage(
     ]
 
     new_label_end_date = datetime.now() - timedelta(days=21)
+
+    # DataLayerMixin overrides
+    gtm_content_group = "stories"
 
     template = "articles/article_page.html"
 
@@ -245,6 +252,7 @@ class RecordArticlePage(
     )
 
     record = RecordField(verbose_name=_("record"), db_index=True)
+    record.wagtail_reference_index_ignore = True
 
     date_text = models.CharField(
         verbose_name=_("date text"),
@@ -254,7 +262,7 @@ class RecordArticlePage(
 
     about = RichTextField(
         verbose_name=_("why this record matters"),
-        features=["bold", "italic", "link", "ol", "ul"],
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     image_library_link = models.URLField(
@@ -276,6 +284,9 @@ class RecordArticlePage(
         on_delete=models.SET_NULL,
         verbose_name=_("featured article"),
     )
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Record articles"
 
     class Meta:
         verbose_name = _("record article")

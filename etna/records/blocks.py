@@ -98,5 +98,10 @@ class RecordChooserBlock(ChooserBlock):
     def get_form_state(self, value):
         return self.widget.get_value_data(value)
 
+    def extract_references(self, value):
+        """This overrides the extract_references function from ChooserBlock to prevent
+        Wagtail's reference index from rebuilding this block"""
+        return []
+
     class Meta:
         icon = "archive"

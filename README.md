@@ -15,6 +15,7 @@ $ mkdocs serve
 ```
 
 The documentation will be available at:
+
 http://localhost:8001/
 
 ## Setting up a local build
@@ -25,25 +26,20 @@ Convenience commands have been added to `fabfile.py` to help you interact with t
 
 Once installed, you can type `fab -l` to see a list of available commands.
 
-### 1. Create `.env`
 
-```console
-$ cp .env.example .env
-```
-
-### 2. Build Docker containers
+### 1. Build Docker containers
 
 ```console
 $ fab build
 ```
 
-### 3. Start Docker containers
+### 2. Start Docker containers
 
 ```console
 $ fab start
 ```
 
-### 4. Start a shell session with the 'web' container
+### 3. Start a shell session with the 'web' container
 
 ```console
 $ fab sh
@@ -97,6 +93,25 @@ This command takes care of the following:
 You can then access the site in your browser as usual:
 
 <http://127.0.0.1:8000>
+
+## Linux / OSX
+If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
+
+Running the development server:
+
+``` console
+$ djrun
+```
+Run migrations:
+
+```console
+$ dj migrate
+```
+Create a super user:
+
+```console
+$ dj createsuperuser
+```
 
 ## Issues with your local environment?
 

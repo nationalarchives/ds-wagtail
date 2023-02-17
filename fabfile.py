@@ -71,6 +71,9 @@ def build(c):
     """
     Build (or rebuild) local development containers.
     """
+    # bash copy .env.example .env if .env does not exist
+    if not os.path.exists(".env"):
+        local("cp .env.example .env")
     local("docker-compose build")
 
 
@@ -178,7 +181,7 @@ def psql(c, command=None):
 
 
 def delete_local_renditions(c):
-    psql(c, "TRUNCATE wagtailimages_rendition;")
+    psql(c, "TRUNCATE images_customimagerendition;")
 
 
 def delete_db(c):
@@ -287,9 +290,6 @@ def pull_database_from_platform(c, environment_name):
     )
 
     try:
-        # TODO: Rename command to be removed once applied in all local environments
-        print("Renaming app...")
-        run_management_command(c, "rename_app insights articles", check_returncode=True)
         print("Applying migrations from local environment...")
         run_management_command(c, "migrate", check_returncode=True)
     except subprocess.CalledProcessError:

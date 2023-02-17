@@ -1,14 +1,17 @@
 from typing import List, Optional, Tuple, Union
 
+from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import StreamField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
+from wagtail.search import index
 
 from wagtailmetadata.models import MetadataPageMixin
 
@@ -51,6 +54,9 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         "articles.RecordArticlePage",
     ]
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
 
 class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     """Topic explorer BasePage.
@@ -69,6 +75,9 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -126,6 +135,9 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
@@ -135,7 +147,11 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         "collections.TopicExplorerIndexPage",
         "collections.TopicExplorerPage",
     ]
-    subpage_types = ["collections.TopicExplorerPage", "collections.ResultsPage"]
+    subpage_types = [
+        "collections.TopicExplorerPage",
+        "collections.HighlightGalleryPage",
+        "collections.ResultsPage",
+    ]
 
     @cached_property
     def related_articles(self):
@@ -166,6 +182,9 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
         FieldPanel("body"),
     ]
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
 
     @cached_property
     def featured_pages(self):
@@ -227,6 +246,9 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
     @property
     def results_pages(self):
         """Fetch child results period pages for rendering on the front end."""
@@ -236,7 +258,11 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
         "collections.TimePeriodExplorerIndexPage",
         "collections.TimePeriodExplorerPage",
     ]
-    subpage_types = ["collections.TimePeriodExplorerPage", "collections.ResultsPage"]
+    subpage_types = [
+        "collections.TimePeriodExplorerPage",
+        "collections.HighlightGalleryPage",
+        "collections.ResultsPage",
+    ]
 
     @cached_property
     def related_articles(self):
@@ -248,72 +274,6 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
             .select_related("teaser_image")
             .order_by("title")[:3]
         )
-
-
-class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
-    """Results BasePage.
-
-    This page is a placeholder for the results page at the end of a user's
-    journey through the collection explorer.
-
-    Eventually this page will run an editor-defined query against the
-    collections API and display the results.
-    """
-
-    title_prefix = models.CharField(max_length=200, blank=True)
-    sub_heading = models.CharField(max_length=200, blank=False)
-    introduction = models.TextField(blank=False)
-
-    content_panels = BasePage.content_panels + [
-        FieldPanel("title_prefix"),
-        FieldPanel("sub_heading"),
-        FieldPanel("introduction"),
-        InlinePanel("records", heading="Records"),
-    ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
-
-    parent_page_types = [
-        "collections.TimePeriodExplorerPage",
-        "collections.TopicExplorerPage",
-    ]
-    subpage_types = []
-
-
-class ResultsPageRecord(Orderable, models.Model):
-    """Map orderable records data to ResultsPage"""
-
-    page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
-    record_iaid = models.TextField(verbose_name="Record")
-    teaser_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    description = models.TextField(
-        help_text="Optional field to override the description for this record in the teaser.",
-        blank=True,
-    )
-
-    @cached_property
-    def record(self):
-        """Fetch associated record BasePage.
-
-        Capture any exception thrown by KongClient and return None so we can
-        skip this record on the results BasePage.
-        """
-        try:
-            return Record.api.fetch(iaid=self.record_iaid)
-        except (KongAPIError, APIManagerException):
-            return None
-
-    panels = [
-        FieldPanel("record_iaid", widget=RecordChooser),
-        FieldPanel("teaser_image"),
-        FieldPanel("description"),
-    ]
 
 
 class PageTopic(Orderable):
@@ -375,6 +335,9 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
+            help_text=_(
+                "Where possible, specify these in relevancy order (most relevant first)."
+            ),
             min_num=min_num,
             max_num=max_num,
         )
@@ -386,6 +349,9 @@ class TopicalPageMixin:
         return InlinePanel(
             "page_topics",
             heading=_("Related topics"),
+            help_text=_(
+                "Where possible, specify these in relevancy order (most relevant first)."
+            ),
             min_num=min_num,
             max_num=max_num,
         )
@@ -445,3 +411,206 @@ class TopicalPageMixin:
         one big comma-separated string. Ideal for indexing!
         """
         return ", ".join(item.title for item in self.time_periods)
+
+
+class HighlightGalleryPage(
+    TopicalPageMixin, TeaserImageMixin, MetadataPageMixin, BasePage
+):
+    parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
+    subpage_types = []
+
+    # NOTE: To be moved to mixin/base page as part of UN-471
+    intro = RichTextField(
+        verbose_name=_("introductory text"),
+        help_text=_(
+            "1-2 sentences introducing the subject of the article and explaining why a user should read on."
+        ),
+        features=settings.INLINE_RICH_TEXT_FEATURES,
+        max_length=300,
+    )
+
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage",
+        verbose_name=_("featured record article"),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    featured_article = models.ForeignKey(
+        "articles.ArticlePage",
+        verbose_name=_("featured article"),
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+    )
+
+    # NOTE: To be moved to mixin/base page as part of UN-471
+    teaser_text = models.TextField(
+        verbose_name=_("teaser text"),
+        help_text=_(
+            "A short, enticing description of the article. This will appear in promos and under thumbnails around the site."
+        ),
+        max_length=160,
+    )
+
+    class Meta:
+        verbose_name = _("highlight gallery page")
+        verbose_name_plural = _("highlight gallery pages")
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("intro"),
+        InlinePanel(
+            "page_highlights",
+            heading=_("Highlights"),
+            label=_("Item"),
+            min_num=2,
+            max_num=15,
+        ),
+        FieldPanel("featured_record_article"),
+        FieldPanel("featured_article"),
+        TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    promote_panels = (
+        MetadataPageMixin.promote_panels
+        + TeaserImageMixin.promote_panels
+        + [
+            FieldPanel("teaser_text"),
+        ]
+    )
+
+    search_fields = BasePage.search_fields + [
+        index.SearchField("intro", boost=1),
+        index.SearchField("highlights_text", boost=1),
+        index.SearchField("topic_names"),
+        index.SearchField("time_period_names"),
+        index.SearchField("teaser_text"),
+    ]
+
+    @cached_property
+    def highlights(self):
+        """
+        Used to access the page's 'highlights' for output. Makes use of
+        Django's select_related() and prefetch_related() to efficiently
+        prefetch image and rendition data from the database.
+        """
+        return (
+            self.page_highlights.exclude(image__isnull=True)
+            .select_related("image")
+            .prefetch_related("image__renditions")
+        )
+
+    @property
+    def highlights_text(self) -> str:
+        """
+        Returns all of the relevant text defined for this page's highlights,
+        joined into one giant string to faciliate indexing.
+        """
+        strings = []
+        for item in self.highlights:
+            strings.extend([item.image.title, item.long_description])
+        return " | ".join(strings)
+
+
+class Highlight(Orderable):
+    page = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
+    )
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("image"),
+    )
+    long_description = RichTextField(
+        verbose_name=_("long description"),
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=400,
+    )
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("long_description"),
+    ]
+
+    def clean(self) -> None:
+        if self.image and self.image.record is None:
+            raise ValidationError(
+                {
+                    "image": [
+                        "Only images with a 'record' specified can be used for highlights."
+                    ]
+                }
+            )
+        return super().clean()
+
+
+class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+    """Results BasePage.
+
+    This page is a placeholder for the results page at the end of a user's
+    journey through the collection explorer.
+
+    Eventually this page will run an editor-defined query against the
+    collections API and display the results.
+    """
+
+    title_prefix = models.CharField(max_length=200, blank=True)
+    sub_heading = models.CharField(max_length=200, blank=False)
+    introduction = models.TextField(blank=False)
+
+    content_panels = BasePage.content_panels + [
+        FieldPanel("title_prefix"),
+        FieldPanel("sub_heading"),
+        FieldPanel("introduction"),
+        InlinePanel("records", heading="Records"),
+    ]
+    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+
+    parent_page_types = [
+        "collections.TimePeriodExplorerPage",
+        "collections.TopicExplorerPage",
+    ]
+    subpage_types = []
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explorer"
+
+
+class ResultsPageRecord(Orderable, models.Model):
+    """Map orderable records data to ResultsPage"""
+
+    page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
+    record_iaid = models.TextField(verbose_name="Record")
+    teaser_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+    description = models.TextField(
+        help_text="Optional field to override the description for this record in the teaser.",
+        blank=True,
+    )
+
+    @cached_property
+    def record(self):
+        """Fetch associated record BasePage.
+
+        Capture any exception thrown by KongClient and return None so we can
+        skip this record on the results BasePage.
+        """
+        try:
+            return Record.api.fetch(iaid=self.record_iaid)
+        except (KongAPIError, APIManagerException):
+            return None
+
+    panels = [
+        FieldPanel("record_iaid", widget=RecordChooser),
+        FieldPanel("teaser_image"),
+        FieldPanel("description"),
+    ]

@@ -30,6 +30,7 @@ class CustomImage(ClusterableModel, AbstractImage):
             "If the image relates to a specific record, select that record here."
         ),
     )
+    record.wagtail_reference_index_ignore = True
 
     record_dates = models.CharField(
         verbose_name=_("record date(s)"),

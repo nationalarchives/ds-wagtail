@@ -40,6 +40,9 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
     promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Homepage"
+
     def get_context(self, request):
         context = super().get_context(request)
         article_pages = self.get_children().live().specific()

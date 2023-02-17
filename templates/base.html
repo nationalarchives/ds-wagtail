@@ -61,6 +61,9 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
+        {# icon sprites #}
+        {% include "includes/icons/sprites.html" %}
+
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
