@@ -14,7 +14,7 @@
     {% if record.is_digitised %}
     <div class="search-results__list-card-delivery-options--grid">
 
-        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
 
             <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
         </a>
@@ -33,7 +33,7 @@
                     </picture>
                 </div>
             {% endif %}
-            <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_title }}">
+            <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                 {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span>{% endif %}
                 {{ record.summary_title }}
             </a>

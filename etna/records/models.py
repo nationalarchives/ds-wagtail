@@ -102,7 +102,7 @@ class Record(DataLayerMixin, APIModel):
                 pass
         return ""
 
-    def reference_prefixed_title(self):
+    def reference_prefixed_summary_title(self):
         return f"{self.reference_number or 'N/A'} - {self.summary_title}"
 
     @cached_property

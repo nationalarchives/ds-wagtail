@@ -32,7 +32,7 @@
             <div class="col-md-9 order-md-1">
 
                 <h3 class="search-results__list-card-heading">
-                    <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_title }}">
+                    <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                     {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span> {% endif %}
                     {{ record.summary_title }}
                     </a>
@@ -88,13 +88,13 @@
             {% if record.is_digitised %}
             <div class="search-results__list-card-delivery-options">
 
-                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
 
                     <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
                 </a>
                 <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
                     <p class="search-results__list-card-delivery-options-desc">
-                        <span class="sr-only">{{ record.reference_prefixed_title }} is</span>
+                        <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
                         Available to download and view online
                     </p>
                 </a>
