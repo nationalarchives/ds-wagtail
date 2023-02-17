@@ -14,7 +14,8 @@ class TestArticlePageSectionBlockIntegration(TestCase):
 
         self.article_page = ArticlePage(
             title="Article page",
-            sub_heading="Introduction",
+            intro="test",
+            teaser_text="test",
             body=json.dumps(
                 [
                     {

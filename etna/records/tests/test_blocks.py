@@ -4,7 +4,7 @@ from django.urls import reverse
 
 from wagtail.models import Site
 from wagtail.tests.utils import WagtailPageTestCase
-from wagtail.tests.utils.form_data import nested_form_data, streamfield
+from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
 
@@ -31,14 +31,12 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         root = Site.objects.get().root_page
 
         self.article_index_page = ArticleIndexPage(
-            title="Article Index Page",
-            sub_heading="Introduction",
+            title="Article Index Page", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.article_index_page)
 
         self.article_page = ArticlePage(
-            title="Article page",
-            sub_heading="Introduction",
+            title="Article page", intro="test", teaser_text="test"
         )
         self.article_index_page.add_child(instance=self.article_page)
 
@@ -48,7 +46,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             {
                 "title": "Article page changed",
                 "slug": "stories-page",
-                "sub_heading": "Introduction",
+                "intro": rich_text("test"),
+                "teaser_text": "test",
                 "body": streamfield(
                     [
                         (

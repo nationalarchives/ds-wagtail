@@ -13,14 +13,11 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
-from wagtailmetadata.models import MetadataPageMixin
-
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import APIManagerException, KongAPIError
-from ..core.models import BasePage
+from ..core.models import BasePage, BasePageWithIntro
 from ..records.models import Record
 from ..records.widgets import RecordChooser
-from ..teasers.models import TeaserImageMixin
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     TimePeriodExplorerIndexPageStreamBlock,
@@ -30,22 +27,19 @@ from .blocks import (
 )
 
 
-class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     """Collection Explorer landing BasePage.
 
     This page is the starting point for a user's journey through the collection
     explorer.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -58,23 +52,19 @@ class ExplorerIndexPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     gtm_content_group = "Explorer"
 
 
-class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
+class TopicExplorerIndexPage(BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
-
     body = StreamField(
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
@@ -108,7 +98,7 @@ class TopicExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
     ]
 
 
-class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -119,20 +109,17 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
-
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
@@ -165,23 +152,19 @@ class TopicExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePag
         )
 
 
-class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
+class TimePeriodExplorerIndexPage(BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
-
     body = StreamField(
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
@@ -215,7 +198,7 @@ class TimePeriodExplorerIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage)
     ]
 
 
-class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -226,8 +209,6 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     single ResultsPage (to output the results of their selection).
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
-
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -236,14 +217,13 @@ class TimePeriodExplorerPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, Ba
     )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
@@ -413,21 +393,9 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(
-    TopicalPageMixin, TeaserImageMixin, MetadataPageMixin, BasePage
-):
+class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
-
-    # NOTE: To be moved to mixin/base page as part of UN-471
-    intro = RichTextField(
-        verbose_name=_("introductory text"),
-        help_text=_(
-            "1-2 sentences introducing the subject of the article and explaining why a user should read on."
-        ),
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
-    )
 
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage",
@@ -445,21 +413,11 @@ class HighlightGalleryPage(
         on_delete=models.SET_NULL,
     )
 
-    # NOTE: To be moved to mixin/base page as part of UN-471
-    teaser_text = models.TextField(
-        verbose_name=_("teaser text"),
-        help_text=_(
-            "A short, enticing description of the article. This will appear in promos and under thumbnails around the site."
-        ),
-        max_length=160,
-    )
-
     class Meta:
         verbose_name = _("highlight gallery page")
         verbose_name_plural = _("highlight gallery pages")
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("intro"),
+    content_panels = BasePageWithIntro.content_panels + [
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
@@ -473,16 +431,7 @@ class HighlightGalleryPage(
         TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
 
-    promote_panels = (
-        MetadataPageMixin.promote_panels
-        + TeaserImageMixin.promote_panels
-        + [
-            FieldPanel("teaser_text"),
-        ]
-    )
-
     search_fields = BasePage.search_fields + [
-        index.SearchField("intro", boost=1),
         index.SearchField("highlights_text", boost=1),
         index.SearchField("topic_names"),
         index.SearchField("time_period_names"),
@@ -547,7 +496,7 @@ class Highlight(Orderable):
         return super().clean()
 
 
-class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
+class ResultsPage(AlertMixin, BasePage):
     """Results BasePage.
 
     This page is a placeholder for the results page at the end of a user's
@@ -567,7 +516,7 @@ class ResultsPage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         FieldPanel("introduction"),
         InlinePanel("records", heading="Records"),
     ]
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = [

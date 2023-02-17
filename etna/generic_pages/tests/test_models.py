@@ -13,6 +13,7 @@ class TestGeneral(TestCase):
 
         self.general_page = GeneralPage(
             title="General page",
+            teaser_text="test",
             body=json.dumps(
                 [
                     {"type": "paragraph", "value": {"text": "This is a paragraph"}},
