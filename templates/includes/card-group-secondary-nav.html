@@ -7,19 +7,19 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
-        <a 
-            href='{{ page.url }}' 
-            class="card-group-secondary-nav__image-link" 
+        <a
+            href='{{ page.url }}'
+            class="card-group-secondary-nav__image-link"
             data-card-type="card-group-secondary-nav"
             {% if value.block.meta.label or heading %}
                 data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
             {% endif %}
-            data-link-type="Card image" 
+            data-link-type="Card image"
             data-card-title="{{ page.title }}"
             {% if page.first_published_at.date > page.new_label_end_date.date %}
                 data-label = "New"
             {%endif%}
-            aria-hidden="true" 
+            aria-hidden="true"
             tabindex="-1"
         >
             <div class="card-group-secondary-nav__image">
@@ -56,7 +56,7 @@
                     </h3>
                 <p id ="article-desc{{ page.id }}" class="aria-desc-card">This is a link to a story about {{ page.title }}</p>
 
-                <p class="card-group-secondary-nav__paragraph">{{ page.sub_heading }}</p>
+                <p class="card-group-secondary-nav__paragraph">{{ page.teaser_text }}</p>
             </div>
 
     </div>

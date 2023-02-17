@@ -21,7 +21,7 @@ class TestTopicExplorerIndexPages(TestCase):
         root_page = Site.objects.get().root_page
 
         self.topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Explorer Page", sub_heading="Introduction"
+            title="Explorer Page", intro="test", teaser_text="test"
         )
         root_page.add_child(instance=self.topic_explorer_index_page)
 
@@ -32,7 +32,7 @@ class TestTopicExplorerIndexPages(TestCase):
 
     def test_unpublish_page_excluded(self):
         unpublished_topic_page = TopicExplorerPage(
-            title="Unpublished Topic Page", sub_heading="Introduction"
+            title="Unpublished Topic Page", intro="test", teaser_text="test"
         )
         self.topic_explorer_index_page.add_child(instance=unpublished_topic_page)
         unpublished_topic_page.unpublish()
@@ -46,7 +46,7 @@ class TestTopicExplorerIndexPages(TestCase):
     )
     def test_private_page_excluded(self):
         private_topic_page = TopicExplorerPage(
-            title="Private Topic Page", sub_heading="Introduction"
+            title="Private Topic Page", intro="test", teaser_text="test"
         )
         self.topic_explorer_index_page.add_child(instance=private_topic_page)
         PageViewRestriction.objects.create(page=private_topic_page)
@@ -56,7 +56,9 @@ class TestTopicExplorerIndexPages(TestCase):
         )
 
     def test_published_public_pages(self):
-        topic_page = TopicExplorerPage(title="Topic Page", sub_heading="Introduction")
+        topic_page = TopicExplorerPage(
+            title="Topic Page", intro="test", teaser_text="test"
+        )
         self.topic_explorer_index_page.add_child(instance=topic_page)
 
         self.assertEquals(
@@ -66,7 +68,8 @@ class TestTopicExplorerIndexPages(TestCase):
     def test_published_time_period_pages_excluded(self):
         topic_page = TimePeriodExplorerPage(
             title="Time Period Page",
-            sub_heading="Introduction",
+            intro="test",
+            teaser_text="test",
             start_year=1900,
             end_year=1950,
         )
@@ -82,7 +85,7 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         root_page = Site.objects.get().root_page
 
         self.time_period_explorer_index_page = TimePeriodExplorerIndexPage(
-            title="Explorer Page", sub_heading="Introduction"
+            title="Explorer Page", intro="test", teaser_text="test"
         )
         root_page.add_child(instance=self.time_period_explorer_index_page)
 
@@ -94,7 +97,8 @@ class TestTimePeriodExplorerIndexPages(TestCase):
     def test_unpublish_page_excluded(self):
         unpublished_topic_page = TimePeriodExplorerPage(
             title="Unpublished Time Period Page",
-            sub_heading="Introduction",
+            intro="test",
+            teaser_text="test",
             start_year=1900,
             end_year=1950,
         )
@@ -111,7 +115,8 @@ class TestTimePeriodExplorerIndexPages(TestCase):
     def test_private_page_excluded(self):
         private_topic_page = TimePeriodExplorerPage(
             title="Private Time Period Page",
-            sub_heading="Introduction",
+            intro="test",
+            teaser_text="test",
             start_year=1900,
             end_year=1950,
         )
@@ -125,7 +130,8 @@ class TestTimePeriodExplorerIndexPages(TestCase):
     def test_published_public_pages(self):
         topic_page = TimePeriodExplorerPage(
             title="Time Period Page",
-            sub_heading="Introduction",
+            intro="test",
+            teaser_text="test",
             start_year=1900,
             end_year=1950,
         )
@@ -136,7 +142,9 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
 
     def test_topic_pages_excluded(self):
-        topic_page = TopicExplorerPage(title="Topic Page", sub_heading="Introduction")
+        topic_page = TopicExplorerPage(
+            title="Topic Page", intro="test", teaser_text="test"
+        )
         self.time_period_explorer_index_page.add_child(instance=topic_page)
 
         self.assertEquals(
@@ -150,7 +158,10 @@ class TestRecordDescriptionOverride(TestCase):
         root_page = Site.objects.get().root_page
 
         self.results_page = ResultsPage(
-            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+            title="Results Page",
+            sub_heading="Sub heading",
+            introduction="Introduction",
+            teaser_text="teaser",
         )
 
         root_page.add_child(instance=self.results_page)
@@ -185,7 +196,10 @@ class TestResultsPageIntegration(TestCase):
         root_page = Site.objects.get().root_page
 
         self.results_page = ResultsPage(
-            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+            title="Results Page",
+            sub_heading="Sub heading",
+            introduction="Introduction",
+            teaser_text="teaser",
         )
 
         root_page.add_child(instance=self.results_page)
@@ -232,7 +246,10 @@ class TestResultsPage(TestCase):
         root_page = Site.objects.get().root_page
 
         self.results_page = ResultsPage(
-            title="Results Page", sub_heading="Sub heading", introduction="Introduction"
+            title="Results Page",
+            sub_heading="Sub heading",
+            introduction="Introduction",
+            teaser_text="teaser",
         )
 
         root_page.add_child(instance=self.results_page)

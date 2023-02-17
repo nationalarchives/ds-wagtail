@@ -47,7 +47,7 @@
 
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_article.title }}</p>
 
-                <p>{{ page.featured_article.sub_heading }}</p>
+                <p>{{ page.featured_article.teaser_text }}</p>
                 <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" {% if page.featured_article.first_published_at.date > page.new_label_end_date.date %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
