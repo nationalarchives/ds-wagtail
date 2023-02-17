@@ -10,9 +10,7 @@
                         {{ record.summary_title }}
                     </h3>
                 </a>
-                {% if record.reference_number %}
-                    <p>Catalogue reference: {{ record.reference_number }}</p>
-                {% endif %}
+                <p>Catalogue reference: {{ record.reference_number|default:"N/A" }}</p>
             </li>
         {% endfor %}
     </ul>
