@@ -3,6 +3,9 @@ import re
 from typing import Any, Dict, Optional
 
 from django.urls import NoReverseMatch, reverse
+from django.utils.safestring import mark_safe
+
+import bleach
 
 from pyquery import PyQuery as pq
 
@@ -183,8 +186,7 @@ def find_all(collection, predicate=lambda: False):
 
 
 def format_description_markup(markup):
-    markup = resolve_links(markup)
-    return markup
+    return resolve_links(markup)
 
 
 def strip_scope_and_content(markup):
@@ -254,3 +256,10 @@ def format_link(link_html: str) -> Dict[str, str]:
     except NoReverseMatch:
         href = ""
     return {"href": href, "id": id, "text": document.text()}
+
+
+def strip_html(value: str, preserve_marks=False):
+    tags = []
+    if preserve_marks:
+        tags.append("mark")
+    return mark_safe(bleach.clean(value, tags=tags, strip=True))

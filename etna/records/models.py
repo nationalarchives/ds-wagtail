@@ -19,6 +19,7 @@ from ..ciim.utils import (
     extract,
     format_description_markup,
     format_link,
+    strip_html,
 )
 from .converters import IAIDConverter
 
@@ -251,7 +252,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def content(self) -> str:
         if raw := self.raw_content:
-            return format_description_markup(raw)
+            return strip_html(raw)
         return ""
 
     @cached_property
