@@ -25,8 +25,7 @@
                 id="analytics-associated-records">
 
                 {% for record in record_results_page %}
-                    {# passing empty string as this template does not share description_override  #}
-                    {% include 'includes/card-group-record-summary-no-image.html' with description_override='' %}
+                    {% include 'includes/card-group-record-summary-no-image.html' %}
                 {% endfor %}
 
             </ul>
