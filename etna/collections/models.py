@@ -554,7 +554,7 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
+            return Record.api.fetch(metadata_id=self.record_iaid)
         except (KongAPIError, APIManagerException):
             return None
 
