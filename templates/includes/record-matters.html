@@ -1,9 +1,9 @@
-{% load records_tags wagtailcore_tags %}
+{% load records_tags wagtailcore_tags i18n %}
 <div class="generic-intro record-matters">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 col-sm-12">
-                <h2 class="story-title">The story of this record</h2>
+                <h2 class="story-title">{% trans title %}</h2>
                 {% if record.date_created or record.reference_number %}
                     <div class="record-matters__content">
                         {% if record.date_created %}
@@ -19,16 +19,16 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                {% if record.description %}
+                {% if page.about %}
                     <div id="readLessContent" class="hidden">
-                        {{ record.description|richtext|truncatewords_html:50 }}
-                        <button id="readMoreButton" class="record-matters__plain-button" href="" aria-label="Expand to read more about this record">
+                        {{ page.about|richtext|truncatechars_html:50 }}
+                        <button id="readMoreButton" class="record-matters__plain-button {% if page.about|length <= 50 %}hidden{% endif %}" href="" aria-label="Expand to read more about this record">
                             Read more
                             {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>
                     <div id="readMoreContent">
-                        {{ record.description|richtext }}
+                        {{ page.about|richtext }}
                         <button id="readLessButton"
                                 class="record-matters__plain-button hidden"
                                 type="button"
