@@ -15,7 +15,8 @@
                     {{ record.reference_number }} -
                 </span>
                 {% endif %}
-                {% firstof description_override|safe record.summary_title|striptags %}
+                {# default_if_none for those template calls that do not share description_override  #}
+                {% firstof description_override|default_if_none:""|safe record.summary_title|striptags %}
                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %}<span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
