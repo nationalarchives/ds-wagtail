@@ -64,7 +64,7 @@ class Migration(migrations.Migration):
                                 (
                                     "text",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"]
+                                        features=["bold", "italic", "link", "ol", "ul"]
                                     ),
                                 )
                             ]
@@ -83,7 +83,7 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"],
+                                        features=["bold", "italic", "link", "ol", "ul"],
                                         required=True,
                                     ),
                                 ),

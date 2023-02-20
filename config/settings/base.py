@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "etna.navigation",
     "etna.records",
     "etna.search",
-    "etna.teasers",
     "etna.users",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -299,6 +298,7 @@ RESTRICTED_RICH_TEXT_FEATURES = [
     "bold",
     "italic",
     "link",
+    "ol",
     "ul",
 ]
 

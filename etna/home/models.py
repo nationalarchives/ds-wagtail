@@ -4,23 +4,14 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 
-from wagtailmetadata.models import MetadataPageMixin
-
 from etna.alerts.models import AlertMixin
 from etna.articles.blocks import FeaturedCollectionBlock
-from etna.core.models import BasePage
-from etna.teasers.models import TeaserImageMixin
+from etna.core.models import BasePageWithIntro
 
 from .blocks import HomePageStreamBlock
 
 
-class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
-    sub_heading = models.CharField(
-        max_length=255,
-        blank=False,
-        default="Discover some of the most important and unusual records from over 1000 "
-        "years of history.",
-    )
+class HomePage(AlertMixin, BasePageWithIntro):
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -31,14 +22,14 @@ class HomePage(AlertMixin, TeaserImageMixin, MetadataPageMixin, BasePage):
         null=True,
         use_json_field=True,
     )
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
+
+    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
     gtm_content_group = "Homepage"

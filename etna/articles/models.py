@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
+from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
@@ -17,24 +18,21 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
-from wagtailmetadata.models import MetadataPageMixin
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePage, ContentWarningMixin
+from etna.core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
-from ..teasers.models import TeaserImageMixin
 from .blocks import ArticlePageStreamBlock, FeaturedCollectionBlock
 
 
-class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
+class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
 
     This page lists the ArticlePage objects that are children of this page.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -58,13 +56,10 @@ class ArticleIndexPage(TeaserImageMixin, MetadataPageMixin, BasePage):
         context["article_pages"] = self.get_children().public().live().specific()
         return context
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("sub_heading"),
+    content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_pages"),
     ]
-
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     subpage_types = ["articles.ArticlePage"]
 
@@ -89,15 +84,12 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(
-    HeroImageMixin, TeaserImageMixin, ContentWarningMixin, MetadataPageMixin, BasePage
-):
+class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
     """ArticlePage
 
     The ArticlePage model.
     """
 
-    sub_heading = models.CharField(max_length=200, blank=False)
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
@@ -118,7 +110,7 @@ class ArticlePage(
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
-    search_fields = Page.search_fields + [
+    search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("article_tag_names"),
     ]
 
@@ -214,10 +206,9 @@ class ArticlePage(
         return tuple(filterlatestpages[:3])
 
     content_panels = (
-        BasePage.content_panels
+        BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
-            FieldPanel("sub_heading"),
             FieldPanel("topic"),
             FieldPanel("time_period"),
             FieldPanel("tags"),
@@ -233,15 +224,12 @@ class ArticlePage(
         ]
     )
 
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
-
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
 
-class RecordArticlePage(
-    TopicalPageMixin, ContentWarningMixin, TeaserImageMixin, MetadataPageMixin, BasePage
-):
+class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePage):
+    template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
 
@@ -260,7 +248,7 @@ class RecordArticlePage(
 
     about = RichTextField(
         verbose_name=_("why this record matters"),
-        features=["bold", "italic", "link", "ol", "ul"],
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     image_library_link = models.URLField(
@@ -321,8 +309,6 @@ class RecordArticlePage(
         TopicalPageMixin.get_time_periods_inlinepanel(),
         TopicalPageMixin.get_topics_inlinepanel(),
     ]
-
-    promote_panels = MetadataPageMixin.promote_panels + TeaserImageMixin.promote_panels
 
     search_fields = BasePage.search_fields + [
         index.SearchField("standfirst", boost=3),

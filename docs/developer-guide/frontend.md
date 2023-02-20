@@ -11,9 +11,10 @@ If you have any question about any aspect of front end development seek advice f
 ### Working with SASS/CSS
 
 - Ensure you have NodeJS & NPM installed.
-- Install SASS globally by running `npm install -g sass`.
-- To watch and build the public facing site SASS, run `sass --watch sass/etna.scss:templates/static/css/dist/etna.css`
-- To watch and build the Wagtail editor SASS, run `sass --watch sass/etna-wagtail-editor.scss:templates/static/css/dist/etna-wagtail-editor.css`
+```
+    npm install 
+```
+- To watch and build the public facing site and wagtail editor SASS, run `npm run compile:css`
 - To modify styles, navigate to the `sass` folder in your editor.
 
 ### Working with JavaScript

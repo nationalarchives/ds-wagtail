@@ -1,3 +1,4 @@
+{% load wagtailcore_tags %}
 <div class="generic-intro">
     <div class="container">
         <div class="row">
@@ -5,10 +6,10 @@
                 <h1 class="generic-intro__title">
                     {{ self.title }}
                 </h1>
-                {% if page.sub_heading %}
-                    <p class="generic-intro__paragraph">
-                        {{ page.sub_heading }}
-                    </p>
+                {% if page.intro %}
+                    <div class="generic-intro__paragraph">
+                        {{ page.intro|richtext }}
+                    </div>
                 {% endif %}
             </div>
         </div>

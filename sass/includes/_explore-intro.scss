@@ -1,0 +1,34 @@
+.explore-intro {
+    padding-top: 1rem;
+    background-color: $color__white;
+    color: $color__black;
+  
+    &__image {
+      @media (max-width: $screen__md) {
+        display:none ;
+      }
+    }
+  
+    &__title {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 2.5rem;
+      font-family: $font__supria-sans;
+
+      @media (max-width: $screen__md) {
+        font-size: 2.5rem;
+      }
+  
+      &--meta {
+        font-size:1.4rem;
+      }
+    }
+  
+    &__paragraph {
+      margin-bottom: 1rem;
+
+      @media (max-width: $screen__md) {
+        padding-bottom: 1.5em;
+      }
+    }
+  }
