@@ -1,0 +1,17 @@
+.highlight-gallery {
+    background-color: $color__grey-6;
+    color: $color__white; 
+
+    &__item {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin: 2rem 0;
+        padding-top: 2rem;
+        gap: 2rem;
+    }
+
+    &__image {
+        display: flex;
+        justify-content: center;
+    }
+}

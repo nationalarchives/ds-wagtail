@@ -1,0 +1,50 @@
+{% load wagtailimages_tags wagtailcore_tags records_tags %}
+<section class="highlight-gallery" data-container-name="topic-explorer" id="analytics-topic-explorer">
+    {% for highlight in highlights %}
+        <div class="highlight-gallery__item">
+            <div class="highlight-gallery__content">
+                <h2>{{ highlight.image.title }}</h2>
+                {% if highlight.image.record_dates %}<p>Date: {{ highlight.image.record_dates }}</p>{% endif %}
+                {% if highlight.image.record %}
+                    <p>
+                        Catalogue reference: <a href="{% record_url highlight.image.record %}">{{ highlight.image.record.reference_number|default:"N/A" }}</a>
+                    </p>
+                {% endif %}
+                <div>{{ highlight.long_description|richtext }}</div>
+                {% if highlight.image.record %}
+                    <div>
+                        <p>
+                            <a href="{% record_url highlight.image.record %}">View record details</a>
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+            <picture class="highlight-gallery__image">
+                {% image highlight.image original format-webp as image_webp_mobile %}
+                <source srcset="{{ image_webp_mobile.url }}"
+                        type="image/webp"
+                        media="(max-width: 334px)"
+                        width="334"
+                        height="390"/>
+                {% image highlight.image original format-webp as image_webp_desktop %}
+                <source srcset="{{ image_webp_desktop.url }}"
+                        type="image/webp"
+                        media="(max-width: 472px)"
+                        width="472"
+                        height="440"/>
+                {% image highlight.image original as base_img_desktop %}
+                <source srcset="{{ base_img_desktop.url }}"
+                        type="image/jpeg"
+                        media="(max-width: 472px)"
+                        width="472"
+                        height="440"/>
+                {% image highlight.image original as base_img_mobile %}
+                <img id="image-{{ forloop.counter }}"
+                     src="{{ base_img_mobile.url }}"
+                     width="334"
+                     height="390"
+                     {% if highlight.image.alt_text %}alt="{{ highlight.image.alt_text }}"{% endif %}/>
+            </picture>
+        </div>
+    {% endfor %}
+</section>
