@@ -4,11 +4,11 @@
         <div class="row justify-content-center">
             <div class="col-md-10 col-sm-12">
                 <h2 class="story-title">{% trans title %}</h2>
-                {% if record.date_created or record.reference_number %}
+                {% if page.date_text or record.reference_number %}
                     <div class="record-matters__content">
-                        {% if record.date_created %}
+                        {% if page.date_text %}
                             <p class="record-matters__text">
-                                Date: <strong>{{ record.date_created }}</strong>
+                                Date: <strong>{{ page.date_text }}</strong>
                             </p>
                         {% endif %}
                         {% if record.reference_number %}
