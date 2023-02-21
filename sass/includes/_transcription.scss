@@ -58,15 +58,24 @@
     }
   }
 
+  &__caption {
+    border-left: 2px solid $color__white;
+    padding-left: 0.5rem;
+    margin-top: 0.5rem;
+    font-weight: $font-weight-bold;
+    p {
+    display: inline;
+    margin: 0;
+    }
+
+    a {
+      color: $color__yellow_2
+    }
+  }
+
   &__image-counter {
     text-align: center;
     padding-top: 1.5em;
-
-    &:hover {
-      background-color: $color__dark;
-      color: $color__white;
-      outline: 0.1875rem solid $color__dark;
-    }
 
     &:focus {
       outline: 0.312rem solid $color__blue_4;
@@ -86,21 +95,28 @@
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
-    bottom: -5%
+    bottom: -5%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $color__white;
+      color: $color__black;
+      outline: 0.1875rem solid $color__dark;
+    }
   }
 
   &__close {
     @extend .tna-button--yellow;
     display: block;
-    padding: 1em;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 2rem;
+    cursor: pointer;
 
     &:hover {
-      background-color: $color__yellow_2;
-      color: $color__dark;
-      outline: 0.1875rem solid $color__yellow_2;
+      background-color: $color__white;
+      color: $color__black;
+      outline: 0.1875rem solid $color__white;
       
       #{$root}__icon {
         fill: $color__dark;
@@ -120,6 +136,7 @@
     object-fit: cover;
     object-position: center;
     display: block;
+    max-height: 700px;
 
     &--preview {
       @media screen and (min-width: $screen__sm) {
@@ -138,6 +155,7 @@
   &__tab {
     background-color: inherit;
     border: none;
+    cursor: pointer;
     display: inline-block;
     margin: 0.125rem;
     color: $color__white;
