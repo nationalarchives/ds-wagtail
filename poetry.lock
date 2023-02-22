@@ -1272,7 +1272,7 @@ wagtail = ">=3.0"
 
 [[package]]
 name = "wagtailmedia"
-version = "0.12.0"
+version = "0.13.0"
 description = "A module for Wagtail that provides functionality similar to wagtail.documents module, but for audio and video files."
 category = "main"
 optional = false
@@ -1280,10 +1280,10 @@ python-versions = "*"
 
 [package.dependencies]
 Django = ">=3.2"
-wagtail = ">=2.15"
+wagtail = ">=4.1"
 
 [package.extras]
-testing = ["mock (>=1.0.0)", "coverage (>=3.7.0)", "tox (>=3.24,<4.0)"]
+testing = ["coverage (>=7.0,<8.0)", "tox (>=4.0,<5.0)"]
 
 [[package]]
 name = "watchdog"
@@ -1338,7 +1338,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0697627a5f39e75ead52b5173bb6732fdaf3665f39219cd3f1f193d08c6efe6b"
+content-hash = "d10898eb475a07466dc4fa54a269f084a1e38f251f25952a5e8e0e9babf0786d"
 
 [metadata.files]
 anyascii = []
