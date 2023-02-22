@@ -129,12 +129,12 @@ class ArticlePage(
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
-        if self.topic:
-            data["customDimension4"] = self.topic.title
+        if self.primary_topic:
+            data["customDimension4"] = self.primary_topic.title
         if self.article_tag_names:
             data["customDimension6"] = ";".join(self.article_tag_names.split("\n"))
-        if self.time_period:
-            data["customDimension7"] = self.time_period.title
+        if self.primary_time_period:
+            data["customDimension7"] = self.primary_time_period.title
         return data
 
     def save(self, *args, **kwargs):
