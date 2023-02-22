@@ -20,7 +20,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePage, BasePageWithIntro, ContentWarningMixin
+from etna.core.models import BasePageWithIntro, ContentWarningMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
