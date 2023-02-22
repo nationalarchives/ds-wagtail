@@ -343,12 +343,13 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
         # explict slug so that title does not default to slug
         article_index_page = ArticleIndexPage(
             title="Insight Pages",
-            sub_heading="Sub heading",
+            intro="test",
+            teaser_text="test",
             slug="insight-pages",
         )
         home.add_child(instance=article_index_page)
         article_page = ArticlePage(
-            title="William Shakespeare", sub_heading="Sub heading"
+            title="William Shakespeare", intro="test", teaser_text="test"
         )
         article_index_page.add_child(instance=article_page)
 
@@ -470,40 +471,47 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         # create results page object each for Topic and Time
         home_page = HomePage.objects.get()
         explorer_index_page = ExplorerIndexPage(
-            title="Explore the collection", sub_heading="Sub Heading"
+            title="Explore the collection", intro="test", teaser_text="test"
         )
         home_page.add_child(instance=explorer_index_page)
 
         time_period_explorer_index_page = TimePeriodExplorerIndexPage(
-            title="Explore by time period", sub_heading="Sub Heading"
+            title="Explore by time period", intro="test", teaser_text="test"
         )
         explorer_index_page.add_child(instance=time_period_explorer_index_page)
 
         time_period_explorer_page = TimePeriodExplorerPage(
             title="Early modern",
-            sub_heading="Sub Heading",
+            intro="test",
+            teaser_text="test",
             start_year="1485",
             end_year="1714",
         )
         time_period_explorer_index_page.add_child(instance=time_period_explorer_page)
 
         results_page = ResultsPage(
-            title="Shakespeare", introduction="Introduction", sub_heading="Sub Heading"
+            title="Shakespeare",
+            introduction="test",
+            sub_heading="test",
+            teaser_text="test",
         )
         time_period_explorer_page.add_child(instance=results_page)
 
         topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Explore by topic", sub_heading="Sub Heading"
+            title="Explore by topic", intro="test", teaser_text="test"
         )
         explorer_index_page.add_child(instance=topic_explorer_index_page)
 
         topic_explorer_page = TopicExplorerPage(
-            title="Agriculture and Environment", sub_heading="Sub Heading"
+            title="Agriculture and Environment", intro="test", teaser_text="test"
         )
         topic_explorer_index_page.add_child(instance=topic_explorer_page)
 
         results_page = ResultsPage(
-            title="Farm Survey", introduction="Introduction", sub_heading="Sub Heading"
+            title="Farm Survey",
+            introduction="test",
+            sub_heading="test",
+            teaser_text="test",
         )
         topic_explorer_page.add_child(instance=results_page)
 

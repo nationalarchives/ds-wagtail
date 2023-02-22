@@ -10,20 +10,32 @@ class TestArticlePageSimilarItems(TestCase):
         root = Site.objects.get().root_page
 
         # Add pages
-        self.original_page = ArticlePage(title="Original", sub_heading="Original")
+        self.original_page = ArticlePage(
+            title="Original", intro="test", teaser_text="test"
+        )
         root.add_child(instance=self.original_page)
-        self.untagged_page = ArticlePage(title="Untagged", sub_heading="Untagged")
+        self.untagged_page = ArticlePage(
+            title="Untagged", intro="test", teaser_text="test"
+        )
         root.add_child(instance=self.untagged_page)
-        self.single_match_page = ArticlePage(title="Single", sub_heading="Single")
+        self.single_match_page = ArticlePage(
+            title="Single", intro="test", teaser_text="test"
+        )
         root.add_child(instance=self.single_match_page)
-        self.two_matches_page = ArticlePage(title="Two", sub_heading="Two")
+        self.two_matches_page = ArticlePage(
+            title="Two", intro="test", teaser_text="test"
+        )
         root.add_child(instance=self.two_matches_page)
-        self.three_matches_page = ArticlePage(title="Three", sub_heading="Three")
+        self.three_matches_page = ArticlePage(
+            title="Three", intro="test", teaser_text="test"
+        )
         root.add_child(instance=self.three_matches_page)
-        self.draft_page = ArticlePage(title="Draft", sub_heading="Draft", live=False)
+        self.draft_page = ArticlePage(
+            title="Draft", intro="test", teaser_text="test", live=False
+        )
         root.add_child(instance=self.draft_page)
         self.different_tags_page = ArticlePage(
-            title="Different", sub_heading="Different"
+            title="Different", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.different_tags_page)
 

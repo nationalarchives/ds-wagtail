@@ -121,15 +121,17 @@ class TestEditResultsPage(WagtailPageTestCase):
         root = Site.objects.get().root_page
 
         explorer_page = ExplorerIndexPage(
-            title="Explorer Index Page", sub_heading="Sub Heading"
+            title="Explorer Index Page", intro="test", teaser_text="test"
         )
         root.add_child(instance=explorer_page)
 
-        self.topic_page = TopicExplorerPage(title="Topic", sub_heading="Sub Heading")
+        self.topic_page = TopicExplorerPage(
+            title="Topic", intro="test", teaser_text="test"
+        )
         explorer_page.add_child(instance=self.topic_page)
 
         self.results_page = ResultsPage(
-            title="Results", introduction="Introduction", sub_heading="Sub Heading"
+            title="Results", introduction="test", sub_heading="test", teaser_text="test"
         )
         self.topic_page.add_child(instance=self.results_page)
 
@@ -140,6 +142,7 @@ class TestEditResultsPage(WagtailPageTestCase):
                 "slug": "results",
                 "sub_heading": "Sub Heading",
                 "introduction": "Introduction",
+                "teaser_text": "teaser",
                 "records": inline_formset(
                     [
                         {
@@ -172,6 +175,7 @@ class TestEditResultsPage(WagtailPageTestCase):
                 "slug": "results",
                 "sub_heading": "Sub Heading",
                 "introduction": "Introduction",
+                "teaser_text": "teaser",
                 "records": inline_formset(
                     [
                         {
