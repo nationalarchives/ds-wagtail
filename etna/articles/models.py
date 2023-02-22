@@ -84,7 +84,9 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
+class ArticlePage(
+    TopicalPageMixin, HeroImageMixin, ContentWarningMixin, BasePageWithIntro
+):
     """ArticlePage
 
     The ArticlePage model.
@@ -223,6 +225,11 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
             FieldPanel("body"),
         ]
     )
+
+    promote_panels = BasePageWithIntro.promote_panels + [
+        TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
 
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
