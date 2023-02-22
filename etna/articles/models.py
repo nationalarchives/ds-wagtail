@@ -308,8 +308,11 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
             ],
         ),
         FieldPanel("featured_article"),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    promote_panels = BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
 
     search_fields = BasePageWithIntro.search_fields + [
