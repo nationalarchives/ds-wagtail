@@ -1,8 +1,9 @@
 from django.db import models
 
 from wagtail.fields import RichTextField
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 
-__all__ = ["ContentWarningMixin"]
+__all__ = ["ContentWarningMixin", "NewLabelMixin"]
 
 
 class ContentWarningMixin(models.Model):
@@ -22,6 +23,31 @@ class ContentWarningMixin(models.Model):
             "Otherwise the default text will be used."
         ),
     )
+
+    class Meta:
+        abstract = True
+
+
+class NewLabelMixin(models.Model):
+    """Mixin to allow editors to toggle 'new' label to be applied on-publish"""
+
+    mark_new_on_next_publish = models.BooleanField(
+        verbose_name="display a new label on the card of this page",
+        default=False,
+        help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks",
+    )
+
+    newly_published_at = models.DateField(
+        editable=False,
+        default=None,
+        null=True,
+    )
+
+    promote_panels = [
+        MultiFieldPanel([
+            FieldPanel('mark_new_on_next_publish'),
+        ]),
+    ]
 
     class Meta:
         abstract = True

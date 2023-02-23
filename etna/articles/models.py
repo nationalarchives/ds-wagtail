@@ -20,7 +20,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePageWithIntro, ContentWarningMixin
+from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
@@ -84,7 +84,7 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
+class ArticlePage(HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro):
     """ArticlePage
 
     The ArticlePage model.
@@ -223,6 +223,8 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
             FieldPanel("body"),
         ]
     )
+
+    promote_panels = NewLabelMixin.promote_panels + BasePageWithIntro.promote_panels
 
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
