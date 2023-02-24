@@ -44,23 +44,25 @@
                     </div>
                 {% endif %}
             </div>
-            <div class="col-md-10 col-sm-12 record-matters__buttons">
-                {% if record %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{% record_url record is_editorial=True %}"
-                       rel="noopener noreferrer">View record details</a>
-                {% endif %}
-                {% if page.image_library_link %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{{ page.image_library_link }}"
-                       rel="noopener noreferrer">Use this image</a>
-                {% endif %}
-                {% if page.print_on_demand_link %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{{ page.print_on_demand_link }}"
-                       rel="noopener noreferrer">Buy an art print</a>
-                {% endif %}
-            </div>
+            {% if record or page.image_library_link or page.print_on_demand_link %}
+                <div class="col-md-10 col-sm-12 record-matters__buttons">
+                    {% if record %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{% record_url record is_editorial=True %}"
+                           rel="noopener noreferrer">View record details</a>
+                    {% endif %}
+                    {% if page.image_library_link %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{{ page.image_library_link }}"
+                           rel="noopener noreferrer">Use this image</a>
+                    {% endif %}
+                    {% if page.print_on_demand_link %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{{ page.print_on_demand_link }}"
+                           rel="noopener noreferrer">Buy an art print</a>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

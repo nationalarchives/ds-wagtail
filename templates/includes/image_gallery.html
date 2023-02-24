@@ -22,7 +22,7 @@
                 {% endwith %}
             </picture>
             {% include "static/images/icons/dashed-line.svg" with classes="transcription__underline" %}
-            <button id="showButton" class="transcription__open">View images and transcripts</button>
+            <button id="showButton" class="transcription__open">View images{% if has_text %} and transcripts{% endif %}</button>
         </div>
         <!--start of transcript element-->
         {% for item in gallery %}
