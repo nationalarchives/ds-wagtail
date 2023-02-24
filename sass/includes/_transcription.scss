@@ -24,6 +24,11 @@
       column-gap: 3rem;
       grid-template-columns: 55% 45%;
     }
+
+    &--full-width {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__text {
