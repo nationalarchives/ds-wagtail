@@ -90,6 +90,13 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWi
     The ArticlePage model.
     """
 
+    def with_content_json(self, content):
+        obj = super().with_content_json(content)
+        if self.live and obj.mark_new_on_next_publish:
+            obj.mark_new_on_next_publish = False
+            obj.newly_published_at = datetime.now().date()
+        return obj
+
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
