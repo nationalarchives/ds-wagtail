@@ -1,7 +1,7 @@
 from django.db import models
 
-from wagtail.fields import RichTextField
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import RichTextField
 
 __all__ = ["ContentWarningMixin", "NewLabelMixin"]
 
@@ -44,9 +44,11 @@ class NewLabelMixin(models.Model):
     )
 
     promote_panels = [
-        MultiFieldPanel([
-            FieldPanel('mark_new_on_next_publish'),
-        ]),
+        MultiFieldPanel(
+            [
+                FieldPanel("mark_new_on_next_publish"),
+            ]
+        ),
     ]
 
     class Meta:

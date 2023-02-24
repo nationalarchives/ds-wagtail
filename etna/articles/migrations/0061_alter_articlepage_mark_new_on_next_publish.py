@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0060_articlepage_mark_new_on_next_publish_and_more'),
+        ("articles", "0060_articlepage_mark_new_on_next_publish_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='articlepage',
-            name='mark_new_on_next_publish',
-            field=models.BooleanField(default=True, help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks", verbose_name='display a new label on the card of this page'),
+            model_name="articlepage",
+            name="mark_new_on_next_publish",
+            field=models.BooleanField(
+                default=True,
+                help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks",
+                verbose_name="display a new label on the card of this page",
+            ),
         ),
     ]

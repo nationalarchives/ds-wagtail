@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('articles', '0059_update_revisions_to_reflect_intro_field_change'),
+        ("articles", "0059_update_revisions_to_reflect_intro_field_change"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='articlepage',
-            name='mark_new_on_next_publish',
-            field=models.BooleanField(default=False, help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks", verbose_name='display a new label on the card of this page'),
+            model_name="articlepage",
+            name="mark_new_on_next_publish",
+            field=models.BooleanField(
+                default=False,
+                help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks",
+                verbose_name="display a new label on the card of this page",
+            ),
         ),
         migrations.AddField(
-            model_name='articlepage',
-            name='newly_published_at',
+            model_name="articlepage",
+            name="newly_published_at",
             field=models.DateField(default=None, editable=False, null=True),
         ),
     ]

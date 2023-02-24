@@ -86,7 +86,9 @@ class TaggedArticle(ItemBase):
     )
 
 
-class ArticlePage(HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro):
+class ArticlePage(
+    HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+):
     """ArticlePage
 
     The ArticlePage model.
