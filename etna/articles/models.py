@@ -43,7 +43,9 @@ class ArticleIndexPage(BasePageWithIntro):
         use_json_field=True,
     )
 
-    new_label_end_date = datetime.now() - timedelta(days=21)
+    @cached_property
+    def new_label_end_date(self):
+        return datetime.now() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
@@ -121,7 +123,9 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWi
         index.SearchField("article_tag_names"),
     ]
 
-    new_label_end_date = datetime.now() - timedelta(days=21)
+    @cached_property
+    def new_label_end_date(self):
+        return datetime.now().date() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
