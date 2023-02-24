@@ -33,7 +33,7 @@ class NewLabelMixin(models.Model):
 
     mark_new_on_next_publish = models.BooleanField(
         verbose_name="display a new label on the card of this page",
-        default=False,
+        default=True,
         help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks",
     )
 
