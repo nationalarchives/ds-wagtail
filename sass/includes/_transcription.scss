@@ -131,20 +131,22 @@
   }
 
   &__image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: center;
+    max-width: 100%;
+    max-height: 100%;
     display: block;
-    max-height: 700px;
 
     &--preview {
       @media screen and (min-width: $screen__sm) {
-        max-width: 80%;
         max-height: 800px;
         margin: 0 auto;
       }
     }
+  }
+  
+  &__figure-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
   }
 
   &__tablist {
