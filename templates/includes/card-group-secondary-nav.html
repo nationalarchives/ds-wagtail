@@ -16,7 +16,7 @@
             {% endif %}
             data-link-type="Card image"
             data-card-title="{{ page.title }}"
-            {% if page.first_published_at.date > page.new_label_end_date.date %}
+            {% if page.newly_published_at > page.new_label_end_date %}
                 data-label = "New"
             {%endif%}
             aria-hidden="true"
@@ -45,11 +45,11 @@
                                 {% endif %}
                                 data-link-type="Card text"
                                 data-card-title="{{ page.title }}"
-                                {% if page.first_published_at.date > page.new_label_end_date.date %}
+                                {% if page.newly_published_at > page.new_label_end_date %}
                             data-label = "New"
                             {%endif%}
                             >{{ page.title }}</a>
-                        {% if page.first_published_at.date > page.new_label_end_date.date %}
+                        {% if page.newly_published_at > page.new_label_end_date %}
                         <span>NEW</span>
 
                         {% endif %}
