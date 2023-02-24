@@ -45,7 +45,7 @@ class ArticleIndexPage(BasePageWithIntro):
 
     @cached_property
     def new_label_end_date(self):
-        return datetime.now() - timedelta(days=21)
+        return datetime.now().date() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
