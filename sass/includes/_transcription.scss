@@ -142,6 +142,7 @@
 
     &--preview {
       @media screen and (min-width: $screen__sm) {
+        max-width: 80%;
         max-height: 800px;
         margin: 0 auto;
       }
