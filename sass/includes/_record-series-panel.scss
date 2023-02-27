@@ -2,16 +2,30 @@
   position: relative;
   border: 3px solid $color__yellow_2;
   margin: 0 0 3rem 0;
-  background: $color__yellow_2 url($fa_folder) no-repeat 11px 12px;
-  background-size: 35px;
+  background: $color__yellow_2;
   padding: 0;
 
   @media screen and (min-width: $screen__lg) {
     padding: 0 0 0 3.5rem;
   }
 
+  &__icon {
+    display: none;
+    height: 35px;
+    width: 35px;
+    position: absolute;
+    top: 11px;
+    left: 12px;
+
+    @media screen and (min-width: $screen__lg) {
+        display: block;
+    }
+  }
+
   &__container {
     background: $color__white;
+    // adds a visual separating border in high contrast mode
+    border-left: 2px solid transparent;
     overflow: auto;
     padding: 1rem;
   }

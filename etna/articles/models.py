@@ -20,7 +20,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePage, BasePageWithIntro, ContentWarningMixin
+from etna.core.models import BasePageWithIntro, ContentWarningMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
@@ -228,14 +228,10 @@ class ArticlePage(HeroImageMixin, ContentWarningMixin, BasePageWithIntro):
     subpage_types = []
 
 
-class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePage):
+class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
-
-    standfirst = models.CharField(
-        verbose_name=_("standfirst"), max_length=350, blank=False
-    )
 
     record = RecordField(verbose_name=_("record"), db_index=True)
     record.wagtail_reference_index_ignore = True
@@ -278,8 +274,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePage):
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
 
-    content_panels = BasePage.content_panels + [
-        FieldPanel("standfirst"),
+    content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Content Warning Options",
             classname="collapsible collapsed",
@@ -310,8 +305,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePage):
         TopicalPageMixin.get_topics_inlinepanel(),
     ]
 
-    search_fields = BasePage.search_fields + [
-        index.SearchField("standfirst", boost=3),
+    search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("gallery_text"),
         index.SearchField("date_text"),
         index.SearchField("about"),
