@@ -620,7 +620,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaid(self):
-        self.client.fetch(metadata_id="C198022")
+        self.client.fetch(iaid="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -706,7 +706,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaids(self):
-        self.client.fetch_all(metadata_ids=["iaid-one", "iaid-two", "iaid-three"])
+        self.client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(

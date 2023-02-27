@@ -14,7 +14,7 @@ class DeprecatedSearchManagerTest(SimpleTestCase):
         with self.assertRaisesMessage(
             DeprecationWarning, "Record.search is deprecated. Use Record.api instead."
         ):
-            Record.search.fetch(metadata_id="C140")
+            Record.search.fetch(iaid="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
@@ -31,7 +31,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(DoesNotExist):
-            self.manager.fetch(metadata_id="C140")
+            self.manager.fetch(iaid="C140")
 
     @responses.activate
     def test_raises_multiple_objects_returned(self):
@@ -42,7 +42,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.manager.fetch(metadata_id="C140")
+            self.manager.fetch(iaid="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
@@ -107,4 +107,4 @@ class KongExceptionTest(TestCase):
         )
 
         with self.assertRaises(KongAPIError):
-            self.manager.fetch(metadata_id="C140")
+            self.manager.fetch(iaid="C140")

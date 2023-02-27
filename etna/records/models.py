@@ -20,7 +20,7 @@ from ..ciim.utils import (
     format_description_markup,
     format_link,
 )
-from .converters import MetadataIdConverter
+from .converters import IAIDConverter
 
 logger = logging.getLogger(__name__)
 
@@ -84,7 +84,7 @@ class Record(DataLayerMixin, APIModel):
 
         # value is not guaranteed to be a valid 'iaid', so we must
         # check it before returning it as one
-        if not re.match(MetadataIdConverter.regex, candidate):
+        if not re.match(IAIDConverter.regex, candidate):
             raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
         return candidate
 

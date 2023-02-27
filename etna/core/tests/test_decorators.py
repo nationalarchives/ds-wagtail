@@ -9,7 +9,7 @@ from ...ciim.tests.factories import create_record, create_response
 
 CONDITIONALLY_PROTECTED_URLS = (
     reverse_lazy("search-catalogue"),
-    reverse_lazy("details-page-machine-readable", kwargs={"metadata_id": "C140"}),
+    reverse_lazy("details-page-machine-readable", kwargs={"iaid": "C140"}),
 )
 
 

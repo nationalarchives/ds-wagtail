@@ -2,7 +2,7 @@ import re
 
 from django.test import SimpleTestCase
 
-from etna.records.converters import MetadataIdConverter
+from etna.records.converters import IAIDConverter
 
 
 class TestIaidFormats(SimpleTestCase):
@@ -17,6 +17,6 @@ class TestIaidFormats(SimpleTestCase):
             ("iaid_F", "F257629"),
             ("iaid_N", "N14562581"),
         ):
-            iaid_regex = re.compile(MetadataIdConverter.regex)
+            iaid_regex = re.compile(IAIDConverter.regex)
             with self.subTest(label):
                 self.assertTrue(iaid_regex.match(value))

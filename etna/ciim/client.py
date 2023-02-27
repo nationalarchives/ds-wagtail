@@ -160,7 +160,7 @@ class KongClient:
     def fetch(
         self,
         *,
-        metadata_id: Optional[str] = None,
+        iaid: Optional[str] = None,
         id: Optional[str] = None,
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
@@ -171,8 +171,8 @@ class KongClient:
 
         Keyword arguments:
 
-        metadata_id:
-            Return match on @admin.id for various Information Asset Identifier (IAID) formats.
+        iaid:
+            Return match on Information Asset Identifier
         id:
             Generic identifier. Matches on references_number or iaid
         template:
@@ -180,14 +180,16 @@ class KongClient:
         expand:
             include @next and @previous record with response. Kong defaults to false
         """
-        params = {
-            "metadataId": metadata_id,
+        api_params = {
+            "metadataId": iaid,  # returns match on @admin.id for various Information Asset Identifier (IAID) formats.
             "id": id,
             "template": template,
             "expand": expand,
         }
 
-        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
+        return self.make_request(
+            f"{self.base_url}/data/fetch", api_params=api_params
+        ).json()
 
     @staticmethod
     def format_datetime(
@@ -257,7 +259,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        params = {
+        api_params = {
             "q": q,
             "webReference": web_reference,
             "stream": stream,
@@ -272,26 +274,28 @@ class KongClient:
         }
 
         if opening_start_date:
-            params["openingStartDate"] = self.format_datetime(
+            api_params["openingStartDate"] = self.format_datetime(
                 opening_start_date, supplementary_time=time.min
             )
 
         if opening_end_date:
-            params["openingEndDate"] = self.format_datetime(
+            api_params["openingEndDate"] = self.format_datetime(
                 opening_end_date, supplementary_time=time.max
             )
 
         if created_start_date:
-            params["createdStartDate"] = self.format_datetime(
+            api_params["createdStartDate"] = self.format_datetime(
                 created_start_date, supplementary_time=time.min
             )
 
         if created_end_date:
-            params["createdEndDate"] = self.format_datetime(
+            api_params["createdEndDate"] = self.format_datetime(
                 created_end_date, supplementary_time=time.max
             )
 
-        return self.make_request(f"{self.base_url}/data/search", params=params).json()
+        return self.make_request(
+            f"{self.base_url}/data/search", api_params=api_params
+        ).json()
 
     def search_all(
         self,
@@ -324,7 +328,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        params = {
+        api_params = {
             "q": q,
             "aggregations": aggregations,
             "filterAggregations": prepare_filter_aggregations(filter_aggregations),
@@ -334,7 +338,7 @@ class KongClient:
         }
 
         return self.make_request(
-            f"{self.base_url}/data/searchAll", params=params
+            f"{self.base_url}/data/searchAll", api_params=api_params
         ).json()
 
     def search_unified(
@@ -377,7 +381,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        params = {
+        api_params = {
             "q": q,
             "webReference": web_reference,
             "stream": stream,
@@ -389,14 +393,14 @@ class KongClient:
         }
 
         return self.make_request(
-            f"{self.base_url}/data/searchUnified", params=params
+            f"{self.base_url}/data/searchUnified", api_params=api_params
         ).json()
 
     def fetch_all(
         self,
         *,
         ids: Optional[list[str]] = None,
-        metadata_ids: Optional[list[str]] = None,
+        iaids: Optional[list[str]] = None,
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
@@ -405,15 +409,14 @@ class KongClient:
 
         Used to fetch a all items by for the given identifier(s).
 
-        Fetch all metadata with a generic identifier, IAID's of various formats or
-        replicaId (rid).
+        Fetch all metadata with a generic identifier, iaid or replicaId (rid).
 
         Keyword arguments:
 
         ids:
             Generic identifiers. Matches on references_number or iaid
-        metadata_ids:
-            Return match on @admin.id for various Information Asset Identifier (IAID) formats.
+        iaids:
+            Return matches on Information Asset Identifier
         rid:
             Return matches on replic ID
         offset:
@@ -421,15 +424,17 @@ class KongClient:
         size:
             Number of results to return
         """
-        params = {
+        api_params = {
             "ids": ids,
-            "metadataIds": metadata_ids,
+            "metadataIds": iaids,  # returns match on @admin.id for various Information Asset Identifier (IAID) formats.
             "rid": rid,
             "from": offset,
             "size": size,
         }
 
-        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        return self.make_request(
+            f"{self.base_url}/data/fetchAll", api_params=api_params
+        ).json()
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None
@@ -444,10 +449,10 @@ class KongClient:
         return {k: v for k, v in data.items() if v is not None}
 
     def make_request(
-        self, url: str, params: Optional[dict[str, Any]] = None
+        self, url: str, api_params: Optional[dict[str, Any]] = None
     ) -> requests.Response:
         """Make request to Kong API."""
-        params = self.prepare_request_params(params)
+        params = self.prepare_request_params(api_params)
         response = self.session.get(url, params=params, timeout=self.timeout)
         self._raise_for_status(response)
         return response
