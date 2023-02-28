@@ -959,3 +959,29 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         html_decoded_response = response.content.decode("utf8")
         desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: video", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 348, "customMetric2": 0}</script>"""
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
+
+
+class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
+    test_url = reverse_lazy(
+        "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
+    )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.get_url(self.test_url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=interpretive"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=topic%3A100"
+                "&filterAggregations=group%3Ablog"
+                "&from=0"
+                "&size=20"
+            ),
+        )

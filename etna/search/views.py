@@ -590,6 +590,50 @@ class BaseFilteredSearchView(BaseSearchView):
         return return_value
 
 
+class BaseLongFilteredSearchView(BaseFilteredSearchView):
+    """
+    A more specialized version `BaseFilteredSearchView` for long filters that has methods that
+    only apply to a subset of views:
+    """
+
+    def get_meta_title(self) -> str:
+        return f'Filter options for "{self.form_field.label}"'
+
+    def get(self, request: HttpRequest, field_name: str) -> HttpResponse:
+        """
+        Handle GET requests: instantiate a form instance using
+        request.GET as the data, then check if it's valid.
+        """
+        self.form = form = self.get_form()
+        if field_name not in self.dynamic_choice_fields:
+            raise Http404(
+                f"'{field_name}' is not a valid field name. The value must be "
+                f"one of: {self.dynamic_choice_fields}."
+            )
+        self.field_name = field_name
+        self.bound_field = form[field_name]
+        self.form_field = self.bound_field.field
+        if form.is_valid():
+            return self.form_valid(form)
+        return self.form_invalid(form)
+
+    def get_api_aggregations(self) -> List[str]:
+        """
+        Overrides get_api_aggregations() to only request
+        aggregations for the form field that options have been requested for.
+        """
+        aggregation_name = underscore_to_camelcase(self.field_name)
+        return [f"{aggregation_name}:100"]
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs.update(
+            field_name=self.field_name,
+            bound_field=self.bound_field,
+            field=self.form_field,
+        )
+        return super().get_context_data(**kwargs)
+
+
 class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
@@ -616,49 +660,12 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         return super().get_context_data(**kwargs)
 
 
-class CatalogueSearchLongFilterView(BaseFilteredSearchView):
+class CatalogueSearchLongFilterView(BaseLongFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search_long_filter_chooser.html"
-
-    def get_meta_title(self) -> str:
-        return f'Filter options for "{self.form_field.label}"'
-
-    def get(self, request: HttpRequest, field_name: str) -> HttpResponse:
-        """
-        Handle GET requests: instantiate a form instance using
-        request.GET as the data, then check if it's valid.
-        """
-        self.form = form = self.get_form()
-        if field_name not in self.dynamic_choice_fields:
-            raise Http404(
-                f"'{field_name}' is not a valid field name. The value must be "
-                f"one of: {self.dynamic_choice_fields}."
-            )
-        self.field_name = field_name
-        self.bound_field = form[field_name]
-        self.form_field = self.bound_field.field
-        if form.is_valid():
-            return self.form_valid(form)
-        return self.form_invalid(form)
-
-    def get_api_aggregations(self) -> List[str]:
-        """
-        Overrides CatalogueSearchView.get_api_aggregations() to only request
-        aggregations for the form field that options have been requested for.
-        """
-        aggregation_name = underscore_to_camelcase(self.field_name)
-        return [f"{aggregation_name}:100"]
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        kwargs.update(
-            field_name=self.field_name,
-            bound_field=self.bound_field,
-            field=self.form_field,
-        )
-        return super().get_context_data(**kwargs)
 
 
 class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
@@ -765,6 +772,14 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
             if filter_aggregation == "highlight" and "page" in context:
                 self.add_results_page_for_url(context["page"])
         return context
+
+
+class WebsiteSearchLongFilterView(BaseLongFilteredSearchView):
+    api_method_name = "search"
+    api_stream = Stream.INTERPRETIVE
+    default_group = "blog"
+    form_class = WebsiteSearchForm
+    template_name = "search/website_search_long_filter_chooser.html"
 
 
 class FeaturedSearchView(BaseSearchView):

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+{% load search_tags %}
+
+{% load static %}
+{% block breadcrumb %}
+{% endblock %}
+{% block content %}
+    <div class="long-filters">
+        <h1 class="long-filters__heading">Select filters to apply to your results</h1>
+        <form method="get" action="{% url 'search-website' %}" data-id="long-filter-form" id="analytics-long-filter-form">
+
+            <div class="long-filters__options">
+                <input type="submit" value="Apply filters" class="search-filters__submit">
+                <a href="{% url 'search-website' %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
+            </div>
+
+
+            <div class="long-filters__filters" data-id="long-filters-container">
+                <fieldset data-id="long-filters-fieldset">
+                    <legend class="sr-only" data-id="long-filters-legend">Filters</legend>
+                    <ul class="long-filters__filters-list" data-id="long-filters-list">
+                        {% for option in bound_field %}
+                            <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
+                        {% endfor %}
+                    </ul>
+                </fieldset>
+            </div>
+
+            {{ field_name|include_hidden_fields:form }}
+
+            <div class="long-filters__submit-section">
+                <input type="submit" value="Apply filters" class="search-filters__submit">
+            </div>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/catalogue_search.js' %}"></script>
+{% endblock %}

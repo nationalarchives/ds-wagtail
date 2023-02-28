@@ -116,6 +116,14 @@ public_urls = [
         ),
         name="search-catalogue-long-filter-chooser",
     ),
+    path(
+        r"search/website/long-filter-chooser/<str:field_name>/",
+        setting_controlled_login_required(
+            search_views.WebsiteSearchLongFilterView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
+        ),
+        name="search-website-long-filter-chooser",
+    ),
 ]
 
 if settings.DEBUG or settings.DJANGO_SERVE_STATIC:
