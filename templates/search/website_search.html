@@ -54,9 +54,7 @@
                     {% include './blocks/search_filters.html' %}
                 </div>
                 <div class="catalogue-search-grid__results">
-                    {% if page.paginator.count %}
-                        {% include './blocks/search_results.html' %}
-                    {% endif %}
+                    {% include './blocks/search_results.html' %}
                 </div>
             </div>
         {% endif %}
