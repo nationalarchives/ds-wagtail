@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
 from django.conf import settings
@@ -42,10 +41,6 @@ class ArticleIndexPage(BasePageWithIntro):
         null=True,
         use_json_field=True,
     )
-
-    @cached_property
-    def new_label_end_date(self):
-        return datetime.now().date() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
@@ -94,13 +89,6 @@ class ArticlePage(
     The ArticlePage model.
     """
 
-    def with_content_json(self, content):
-        obj = super().with_content_json(content)
-        if self.live and obj.mark_new_on_next_publish:
-            obj.mark_new_on_next_publish = False
-            obj.newly_published_at = datetime.now().date()
-        return obj
-
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
@@ -124,10 +112,6 @@ class ArticlePage(
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("article_tag_names"),
     ]
-
-    @cached_property
-    def new_label_end_date(self):
-        return datetime.now().date() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"

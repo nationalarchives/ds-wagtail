@@ -1,4 +1,7 @@
+from datetime import datetime, timedelta
+
 from django.db import models
+from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
@@ -32,9 +35,9 @@ class NewLabelMixin(models.Model):
     """Mixin to allow editors to toggle 'new' label to be applied on-publish"""
 
     mark_new_on_next_publish = models.BooleanField(
-        verbose_name="display a new label on the card of this page",
+        verbose_name="mark this page as 'new' when published",
         default=True,
-        help_text="Mark this as true before publishing, if you want to display the 'new label' for 3 weeks",
+        help_text="Mark this as true before publishing, to display the 'new label'",
     )
 
     newly_published_at = models.DateField(
@@ -42,6 +45,23 @@ class NewLabelMixin(models.Model):
         default=None,
         null=True,
     )
+
+    new_label_end_date = 21
+
+    def with_content_json(self, content):
+        obj = super().with_content_json(content)
+        if obj.mark_new_on_next_publish:
+            obj.mark_new_on_next_publish = False
+            obj.newly_published_at = datetime.now().date()
+        return obj
+
+    @cached_property
+    def is_new(self):
+        expiry_date = datetime.now().date() - timedelta(days=self.new_label_end_date)
+        if self.newly_published_at != None:
+            if self.newly_published_at > expiry_date:
+                return True
+        return False
 
     promote_panels = [
         MultiFieldPanel(
