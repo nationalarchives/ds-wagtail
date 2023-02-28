@@ -31,12 +31,19 @@ class AlertTestCase(TestCase):
         )
         # Create page heirarchy
         self.root = Site.objects.get().root_page
-        self.home_page = HomePage(title="Home", live=True, alert=self.alert_high)
+        self.home_page = HomePage(
+            title="Home",
+            live=True,
+            intro="test",
+            teaser_text="test",
+            alert=self.alert_high,
+        )
         self.root.add_child(instance=self.home_page)
 
         self.explorer_index_page = ExplorerIndexPage(
             title="Explorer page",
-            sub_heading="Sub heading",
+            intro="test",
+            teaser_text="test",
             live=True,
             alert=self.alert_medium,
         )
@@ -44,7 +51,8 @@ class AlertTestCase(TestCase):
 
         self.topic_explorer_page = TopicExplorerPage(
             title="Category page",
-            sub_heading="Sub heading",
+            intro="test",
+            teaser_text="test",
             live=True,
             alert=self.alert_low,
         )

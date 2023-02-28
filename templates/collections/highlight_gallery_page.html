@@ -1,0 +1,85 @@
+{% extends 'base_page.html' %}
+
+{% load i18n static wagtailcore_tags wagtailimages_tags records_tags %}
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
+{% block content %}
+    {% include 'includes/generic-intro.html' %}
+
+    <div class="container" data-container-name="topic-explorer" id="analytics-topic-explorer">
+        <div class="row">
+            <div class="col-md-12">
+                {% for item in page.highlights %}
+                    <div id="highlight-{% forloop.counter %}">
+                        <div>
+                            {% image item.image width-640 %}
+                        </div>
+                        <div>
+                            <h2>{{ item.image.title }}</h2>
+                            {% if item.image.record_dates %}
+                                <p>Date: {{ item.image.record_dates }}</p>
+                            {% endif %}
+                            {% if item.image.record %}
+                                <p>Catalogue reference: <a href="{% record_url item.image.record %}">{{ item.image.record.reference_number|default:"N/A" }}</a></p>
+                            {% endif %}
+
+                            <div>
+                                {{ item.long_description|richtext }}
+                            </div>
+
+                            {% if item.image.record %}
+                                <div>
+                                    <p><a href="{% record_url item.image.record %}">View record details</a></p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% if page.featured_record_article %}
+        <p>TBC</p>
+    {% endif %}
+
+    {% if page.featured_article %}
+        <div class="container">
+            <div class="featured-article">
+                {% if page.featured_article.teaser_image %}
+                    <div class="featured-article__image">
+                        <picture>
+                            {% image page.featured_article.teaser_image fill-412x361 as hero %}
+                            <source media="(max-width: 480px)" srcset="{{ hero.url }}">
+                            {% image page.featured_article.teaser_image fill-510x351 as hero %}
+                            <source media="(max-width: 640px)" srcset="{{ hero.url }}">
+                            {% image page.featured_article.teaser_image fill-510x304 as hero %}
+                            <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+                            {% image page.featured_article.teaser_image fill-345x495 as hero %}
+                            <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+                            {% image page.featured_article.teaser_image fill-555x367 as hero %}
+                            <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+                            {% if page.featured_article.hero_image_decorative %}
+                                <img src="{{ hero.url }}" alt="" />
+                            {% else %}
+                                <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
+                            {% endif %}
+                        </picture>
+                    </div>
+                {% endif %}
+                <div class="featured-article__description">
+                    <h2 class="featured-article__heading">
+                        <small>{% trans "Spotlight on" %}</small>
+                        {{ page.featured_article.title }}
+                    </h2>
+                    <p>{{ page.featured_article.teaser_text }}</p>
+                    <a class="tna-button--dark" href="{% pageurl page.featured_article %}">Read</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+
+{% endblock %}

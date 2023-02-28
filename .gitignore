@@ -65,3 +65,7 @@ templates/static/css/libraries/*
 
 # local config
 config/settings/local.py
+
+# CSS
+*.css
+*.css.map

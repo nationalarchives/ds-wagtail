@@ -17,8 +17,13 @@
           alt="The National Archives logo"
       /></a>
     </div>
-    <input type="checkbox" id="overlay-input" />
-    <label for="overlay-input" id="overlay-button"><span></span></label>
+    
+    <input type="checkbox" id="overlay-input" class="header__overlay-input" />
+    <label for="overlay-input" id="overlay-button" class="header__overlay-button">
+        <span class="header__overlay-icon"></span>
+        <span class="sr-only">Toggle mobile navigation</span>
+    </label>
+
     <div class="header__mobile-icons">
         <!--<a href="" class="header__show-hide-button"></a>-->
 
@@ -26,21 +31,21 @@
     </div>
 
     {% if settings.core.SiteSettings.main_menu_items %}
-      <nav id="overlay" class="header__nav" aria-label="Site menu" data-id="site-menu" >
+    <nav id="overlay" class="header__nav" aria-label="Site menu" data-id="site-menu" >
         <ul class="header__nav-list" data-id="site-menu-list">
-          {% for item in settings.core.SiteSettings.main_menu_items %}
+        {% for item in settings.core.SiteSettings.main_menu_items %}
             <li class="header__nav-list-item" {% if not item.handle == 'search' %} data-isSearch="false" {% else %} id="js-site-menu-search" {% endif %}>
-              {% if item.handle == 'search' %}
+            {% if item.handle == 'search' %}
                 <a class="header__nav-list-item-link header__nav-list-item-link-search" href="{{ item.url }}" {% if item.is_active %}aria-current="true"{% else %}data-id="search-nav-link"{% endif %}>
-                  {{ item.label }}
+                {{ item.label }}
                 </a>
-              {% else %}
+            {% else %}
                 <a class="header__nav-list-item-link" href="{{ item.url }}"{% if item.is_active %} aria-current="true"{% endif %}>{{ item.label }}</a>
-              {% endif %}
+            {% endif %}
             </li>
-          {% endfor %}
+        {% endfor %}
         </ul>
-      </nav>
+    </nav>
     {% endif %}
 
  </header>

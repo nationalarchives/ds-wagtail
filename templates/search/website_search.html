@@ -1,7 +1,19 @@
 {% extends "base.html" %}
 
+{% load humanize %}
 {% load datalayer_tags %}
 {% load search_tags %}
+
+{% comment %} prepend number of search results to page title {% endcomment %}
+{% block prepend_title %}
+    {% with count=page.paginator.count %}
+        {% if count > 0 %}            
+            {{ count|intcomma }}
+        {% else %}
+            0
+        {% endif %}
+    {% endwith %}
+{% endblock %}
 
 {% block extra_gtm_js %}
     {% render_gtm_datalayer view %}

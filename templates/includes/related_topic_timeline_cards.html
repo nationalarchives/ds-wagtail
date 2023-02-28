@@ -1,0 +1,28 @@
+{% load static wagtailimages_tags wagtailcore_tags %}
+<div class="container">
+    <h2 class="card-grid__title">You may be interested in</h2>
+    <div class="card-grid card-grid--duo">
+        {% if topic %}
+            <a class="card" href="{% pageurl topic %}">
+                <div class="card__container card__container--dark">
+                    {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
+                    <img height="350"
+                         width="540"
+                         src="{{ teaser_image.url }}"
+                         class="card__image"
+                         alt=""/>
+                    <p class="card__text">{{ topic.title }}</p>
+                </div>
+            </a>
+        {% endif %}
+        {% if time_period %}
+            <a class="card" href="{% pageurl time_period %}">
+                <div class="card__container card__container--dark">
+                    {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
+                    <img height="350" width="540" class="card__image" src="{{ teaser_image.url }}" alt=""/>
+                    <p class="card__text">{{ time_period.title }}</p>
+                </div>
+            </a>
+        {% endif %}
+    </div>
+</div>
