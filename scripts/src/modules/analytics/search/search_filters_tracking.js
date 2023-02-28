@@ -22,8 +22,6 @@ const loopFilters = (filters) => {
         }; 
 
         push_to_data_layer(filterData);
-
-        console.log(filterData);
     });
 }
 
