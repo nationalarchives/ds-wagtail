@@ -16,7 +16,6 @@ const loopFilters = (filters) => {
         const name = filter.getAttribute('data-filter-name');
 
         const filterData = {
-            'search-type':  dataLayer[0].customDimension3 || '',
             'search-bucket': bucket || '',
             'search-filter-value': value || '',
             'search-filter-name': name || '',
