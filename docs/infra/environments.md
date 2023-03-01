@@ -14,7 +14,7 @@ The GitHub branch and Hosted environments have the same name:
 ### Pre-requisites
 
 - Requires user access on the hosted environment for deployments. Check with management if you need one.
-- Follow Branching Model and Naming branches [docs\developer-guide\project-conventions.md] (https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/)
+- Follow Branching Model and Naming branches [project-conventions] (<https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/>)
 - Check if it is Ok to deploy see guidance on deployment [.github\PULL_REQUEST_TEMPLATE.md](https://github.com/nationalarchives/ds-wagtail/blob/develop/.github/PULL_REQUEST_TEMPLATE.md)
 - Test on local before deploy to environment
 
