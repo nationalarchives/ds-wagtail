@@ -2,7 +2,11 @@
 
 <div class="cta-primary-panel">
     <div class="container" data-id="cta-toggle-link">
-        <a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{% url 'search' %}">Back to search results</a>
+        <a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{% url 'search' %}">
+            {% include "includes/icon.html" with name="list-ul" classname="cta-primary-panel__link-icon" %}
+            
+            Back to search results
+        </a>
     </div>
 </div>
 

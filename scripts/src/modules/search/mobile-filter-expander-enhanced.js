@@ -17,13 +17,12 @@ export default function() {
         $showHideButton.innerHTML=$buttonHtml;
 
     } else {
-        // no filters selected
-        $showHideButton.innerHTML = 'Filters';
+        // no filters selected (always display number of active filters)
+        $showHideButton.innerHTML = 'Show filters<span class="filter-indicator">'+ $noOfFilters +'<span class="sr-only"> active</span></span>';
     }
     $showHideButton.classList.add('search-results__filter-button');
     $showHideButton.setAttribute('aria-expanded', false);
     $showHideButton.setAttribute('aria-controls', 'searchFilterContainer');
-    $showHideButton.setAttribute('aria-label', 'Show or hide filters');
     $showHideButton.setAttribute('data-link-type', 'Mobile Button');
     $showHideButton.setAttribute('data-link', 'Show search filters');
     $showHideButton.hidden = true;
@@ -42,8 +41,7 @@ export default function() {
             $showHideButton.innerHTML = 'Hide filters';
         }
         else {
-            $showHideButton.innerHTML = 'Filters<span class="filter-indicator">'+ $noOfFilters +'</span>';
-
+            $showHideButton.innerHTML = 'Show filters<span class="filter-indicator">'+ $noOfFilters +'<span class="sr-only"> active</span></span>';
         }
     });
 
