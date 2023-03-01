@@ -1,0 +1,25 @@
+.record-creator-collections {
+
+  h3 {
+    font-family: supria-sans-condensed, sans-serif;
+    margin: 1.5rem 0 1rem;
+    font-size: 1.4rem;
+    font-weight: normal;
+  }
+
+  &__table {
+    margin: 1rem 0 5rem;
+    width: 100%;
+    border: 2px solid $color__yellow-2;
+
+      th, td {
+        padding: 1rem;
+        border: 1px solid $color__yellow-2;
+      }
+  }
+
+  &__list {
+    margin: 0;
+  }
+
+}
