@@ -8,7 +8,7 @@ from wagtail import hooks
 @hooks.register("insert_editor_css")
 def editor_css():
     return format_html(
-        '<link rel="stylesheet" href="{}">', static("css/dist/etna-wagtail-editor.css")
+        '<link rel="stylesheet" href="{}">', static("css/wagtail-overrides.css")
     )
 
 

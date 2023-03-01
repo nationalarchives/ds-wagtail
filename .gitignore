@@ -69,3 +69,4 @@ config/settings/local.py
 # CSS
 *.css
 *.css.map
+!wagtail-overrides.css
