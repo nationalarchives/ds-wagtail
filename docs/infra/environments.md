@@ -9,60 +9,64 @@ The GitHub branch and Hosted environments have the same name:
 
 ## How deployments are triggered
 
-- Deployments are manual at this time.
+- Deployments are manual
 
-### Pre-requisites
+## Pre-requisites for deployment
 
 - Requires user access on the hosted environment for deployments. Check with management if you need one.
-- Follow Branching Model and Naming branches [project-conventions] (<https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/>)
-- Check if it is Ok to deploy see guidance on deployment [.github\PULL_REQUEST_TEMPLATE.md](https://github.com/nationalarchives/ds-wagtail/blob/develop/.github/PULL_REQUEST_TEMPLATE.md)
+- Follow Branching Model and Naming branches [project-conventions](https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/)
+- Post to the appropriate Slack channel to check that it is okay to continue.
 - Test on local before deploy to environment
 
-### main
+## Deployment to main
 
-#### Set environment variables from the UI console for `main` environment
+1. Set environment variables from the UI console for `main` environment
 
-- env:MAINTENANCE_MODE=True
-- env:MAINTENENCE_MODE_ALLOW_IPS='< ip >'
-- any others as required (for `main` environment or at project level)
+    - env:MAINTENANCE_MODE=True
+    - env:MAINTENENCE_MODE_ALLOW_IPS='< ip >'
+    - any others as required (for `main` environment or at project level)
 
-#### Deploy to the environment
+2. Deploy to the environment
 
-```console
-platform project:set-remote <project_id>
-```
+    ```console
+    platform project:set-remote <project_id>
+    ```
 
-```console
-git push platform main
-```
+    ```console
+    git push platform main
+    ```
 
-#### Run a check from the IP to see if the site works
+3. Run a check from the IP to see if the site works
 
-#### Reset environment variables from the UI console
+4. Reset environment variables from the UI console
 
-- env:MAINTENANCE_MODE=False
-- env:MAINTENENCE_MODE_ALLOW_IPS (Remove)
-- any others as required
+    - env:MAINTENANCE_MODE=False
+    - env:MAINTENENCE_MODE_ALLOW_IPS (Remove)
+    - any others as required
 
-#### Convey the deployment is completed
+5. Update the appropriate Slack channel when the deployment is complete.
 
-### develop
+6. Update the status on the corresponding Jira ticket (where relevant).
 
-#### Set environment variables from the UI console for `develop` environment
+## Deployment to develop
 
-- set as required
+1. Set environment variables from the UI console for `develop` environment
 
-#### Deploy
+    - set as required
 
-```console
-platform project:set-remote <project_id>
-```
+2. Deploy to the environment
 
-```console
-git push platform develop
-```
+    ```console
+    platform project:set-remote <project_id>
+    ```
 
-#### Convey the deployment is completed
+    ```console
+    git push platform develop
+    ```
+
+3. Update the appropriate Slack channel when the deployment is complete.
+
+4. Update the status on the corresponding Jira ticket (where relevant).
 
 ## General advice: Trust the pipeline and deploy small changes regularly
 
