@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.10
 LABEL maintainer="dan@numiko.com"
 
 ARG POETRY_HOME=/opt/poetry
@@ -38,6 +38,9 @@ COPY pyproject.toml poetry.lock ./
 
 # Copy application code
 COPY . .
+
+# Load shortcuts
+RUN cp ./bash/bashrc.sh /root/.bashrc
 
 # Install Python dependencies AND the 'etna' app
 RUN poetry install

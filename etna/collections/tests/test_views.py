@@ -5,7 +5,7 @@ from http import HTTPStatus
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTests
+from wagtail.tests.utils import WagtailPageTestCase
 from wagtail.tests.utils.form_data import inline_formset, nested_form_data
 
 import responses
@@ -16,9 +16,10 @@ from ...ciim.tests.factories import create_record, create_response
 from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
 
 
-class TestRecordChooseView(WagtailPageTests):
+class TestRecordChooseView(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         responses.add(
             responses.GET,
@@ -112,22 +113,25 @@ class TestRecordChooseView(WagtailPageTests):
         self.assertEqual(response.status_code, 404)
 
 
-class TestEditResultsPage(WagtailPageTests):
+class TestEditResultsPage(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         root = Site.objects.get().root_page
 
         explorer_page = ExplorerIndexPage(
-            title="Explorer Index Page", sub_heading="Sub Heading"
+            title="Explorer Index Page", intro="test", teaser_text="test"
         )
         root.add_child(instance=explorer_page)
 
-        self.topic_page = TopicExplorerPage(title="Topic", sub_heading="Sub Heading")
+        self.topic_page = TopicExplorerPage(
+            title="Topic", intro="test", teaser_text="test"
+        )
         explorer_page.add_child(instance=self.topic_page)
 
         self.results_page = ResultsPage(
-            title="Results", introduction="Introduction", sub_heading="Sub Heading"
+            title="Results", introduction="test", sub_heading="test", teaser_text="test"
         )
         self.topic_page.add_child(instance=self.results_page)
 
@@ -138,6 +142,7 @@ class TestEditResultsPage(WagtailPageTests):
                 "slug": "results",
                 "sub_heading": "Sub Heading",
                 "introduction": "Introduction",
+                "teaser_text": "teaser",
                 "records": inline_formset(
                     [
                         {
@@ -170,6 +175,7 @@ class TestEditResultsPage(WagtailPageTests):
                 "slug": "results",
                 "sub_heading": "Sub Heading",
                 "introduction": "Introduction",
+                "teaser_text": "teaser",
                 "records": inline_formset(
                     [
                         {

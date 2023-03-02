@@ -8,6 +8,7 @@
         <meta charset="utf-8" />
     {% block meta_tag %}
         <title>
+            {% block prepend_title %}{% endblock %}
             {% block title_prefix %}
                 {% if form.errors %}Error: {% endif %}
             {% endblock %}
@@ -61,10 +62,17 @@
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
+        {# icon sprites #}
+        {% include "includes/icons/sprites.html" %}
+
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
+        
+        {% if search_query %}
+            <a href="#search-results-title" class="skip-to-content-link sr-only sr-only-focusable">Skip to search results</a>
+        {% endif %}
 
         {% if cookies_permitted %}
             {% include 'includes/gtm-no-script.html' %}

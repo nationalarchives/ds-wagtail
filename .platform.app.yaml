@@ -7,7 +7,7 @@ name: app
 # in multiple versions. Check the Python documentation
 # (https://docs.platform.sh/languages/python.html#supported-versions)
 # to find the supported versions for the 'python' type.
-type: 'python:3.9'
+type: 'python:3.10'
 
 variables:
   env:
@@ -58,9 +58,7 @@ hooks:
 
     python manage.py collectstatic --no-input
 
-   # TODO: Rename command to be removed once applied in all local environments
   deploy: |
-    python manage.py rename_app insights articles
     python manage.py migrate
 
 web:

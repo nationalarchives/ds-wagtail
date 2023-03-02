@@ -24,6 +24,10 @@
     outline: 0.312rem solid $color__blue_4;
     outline-offset: 0.125rem;
   }
+
+  &--full-width {
+    width: 100%;
+  }
 }
 
 .tna-button--dark, .tna-button--dark:visited {

@@ -3,8 +3,8 @@ import json
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTests
-from wagtail.tests.utils.form_data import nested_form_data, streamfield
+from wagtail.tests.utils import WagtailPageTestCase
+from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
 
@@ -12,9 +12,10 @@ from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
 
 
-class TestFeaturedRecordBlockIntegration(WagtailPageTests):
+class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
+        self.login()
 
         response = create_response(
             records=[
@@ -30,14 +31,12 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         root = Site.objects.get().root_page
 
         self.article_index_page = ArticleIndexPage(
-            title="Article Index Page",
-            sub_heading="Introduction",
+            title="Article Index Page", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.article_index_page)
 
         self.article_page = ArticlePage(
-            title="Article page",
-            sub_heading="Introduction",
+            title="Article page", intro="test", teaser_text="test"
         )
         self.article_index_page.add_child(instance=self.article_page)
 
@@ -47,7 +46,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
             {
                 "title": "Article page changed",
                 "slug": "stories-page",
-                "sub_heading": "Introduction",
+                "intro": rich_text("test"),
+                "teaser_text": "test",
                 "body": streamfield(
                     [
                         (
@@ -76,6 +76,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         response = self.client.post(
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)), data
         )
+        self.assertEqual(len(responses.calls), 3)
         self.assertRedirects(
             response,
             reverse("wagtailadmin_explore", args=(self.article_index_page.id,)),
@@ -91,7 +92,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         self.assertEqual(featured_record.value["record"].iaid, "C123456")
         self.assertEqual(featured_record.value["image"]["image"], None)
 
-        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/fetch?iaid=C123456",
@@ -128,13 +129,18 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         )
         self.article_page.save()
 
+        # Wagtail's reference index population will cause the body to be evaluated
+        self.assertEqual(len(responses.calls), 1)
+
         # Check the edit view first
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
         self.assertContains(response, "This record is sooooo featured!")
         self.assertContains(response, "Test record")
-        self.assertEqual(len(responses.calls), 1)
+
+        # The record details are requested again to display for the field value
+        self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
             "https://kong.test/data/fetchAll?iaids=C123456",
@@ -143,7 +149,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTests):
         # View the page to check rendering also
         response = self.client.get(self.article_page.get_url())
         self.assertContains(response, "Test record")
-        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
             "https://kong.test/data/fetchAll?iaids=C123456",
