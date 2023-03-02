@@ -12,6 +12,7 @@ $ fab sh
 
 From there, you can interact with Django exactly as you can see outlined in [the official documentation](https://docs.djangoproject.com/en/stable/topics/migrations/#module-django.db.migrations) and the many tutorials you'll find on the web.
 
+
 ## Common Django management commands
 
 Below are some commands you'll use regularly:
