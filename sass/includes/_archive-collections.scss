@@ -1,0 +1,22 @@
+.archive-collections {
+
+  h3 {
+    font-family: supria-sans-condensed, sans-serif;
+    margin: 1.5rem 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  &__container {
+    padding: 1rem;
+    max-height: 15rem;
+    background: $color__grey-5;
+    border: $color__yellow-2 solid 2px;
+    overflow: auto;
+    margin: 0 0 4rem;
+  }
+
+  &__list {
+    margin: 0;
+  }
+
+}
