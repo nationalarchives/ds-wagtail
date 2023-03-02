@@ -5,19 +5,26 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.models import ClusterableModel
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
+from wagtail.search import index
 
 from etna.records.fields import RecordField
 
 
-class TranscriptionLanguageChoices(models.TextChoices):
-    OLD_ENGLISH = "Old English", _("Old English")
-    MIDDLE_ENGLISH = "Middle English", _("Middle English")
-    EARLY_MODERN_ENGLISH = "Early Modern English", _("Early Modern English")
-    MODERN_ENGLISH = "Modern English", _("Modern English")
-    LATIN = "Latin", _("Latin")
+class TranscriptionHeadingChoices(models.TextChoices):
+    DEFAULT = "default", _("Transcription")
+    PARTIAL_TRANSCRIPTION = "partial-transcription", _("Partial transcription")
+
+
+class TranslationHeadingChoices(models.TextChoices):
+    DEFAULT = "default", _("Translation")
+    MODERN_ENGLISH = "modern-english", _("Modern English")
 
 
 class CustomImage(ClusterableModel, AbstractImage):
+    copyright = models.CharField(
+        verbose_name=_("Copyright"), blank=True, max_length=120, help_text="???"
+    )
+
     is_sensitive = models.BooleanField(
         verbose_name=_("This image is sensitive"), default=False
     )
@@ -41,9 +48,17 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     description = RichTextField(
         verbose_name=_("description"),
+        help_text="??",
         blank=True,
         features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=300,
+        max_length=900,
+    )
+
+    transcription_heading = models.CharField(
+        max_length=30,
+        choices=TranscriptionHeadingChoices.choices,
+        default=TranscriptionHeadingChoices.DEFAULT,
+        help_text="???",
     )
 
     transcription = RichTextField(
@@ -54,11 +69,11 @@ class CustomImage(ClusterableModel, AbstractImage):
         blank=True,
     )
 
-    transcription_language = models.CharField(
-        verbose_name=_("transcription language"),
-        choices=TranscriptionLanguageChoices.choices,
-        max_length=20,
-        blank=True,
+    translation_heading = models.CharField(
+        max_length=30,
+        choices=TranslationHeadingChoices.choices,
+        default=TranslationHeadingChoices.DEFAULT,
+        help_text="???",
     )
 
     translation = RichTextField(
@@ -66,46 +81,38 @@ class CustomImage(ClusterableModel, AbstractImage):
         features=["bold", "italic", "ol", "ul"],
         max_length=1500,
         help_text=_(
-            "An optional English / Modern English translation of the transcription. This is only required if the original language is something other than Modern English."
+            "An optional English / Modern English translation of the transcription."
         ),
         blank=True,
     )
+
+    search_fields = [
+        index.SearchField("transcription", boost=1),
+        index.SearchField("translation", boost=1),
+        index.SearchField("description"),
+        index.SearchField("copyright"),
+        index.FilterField("record"),
+        index.FilterField("is_sensitive"),
+    ]
 
     admin_form_fields = [
         "collection",
         "title",
         "file",
         "is_sensitive",
-        "record",
-        "record_dates",
-        "description",
+        "tags",
         "focal_point_x",
         "focal_point_y",
         "focal_point_width",
         "focal_point_height",
+        "transcription_heading",
         "transcription",
-        "transcription_language",
+        "translation_heading",
         "translation",
-        "tags",
+        "record",
+        "record_dates",
+        "description",
     ]
-
-    @property
-    def transcription_heading(self) -> str:
-        return _("Transcription")
-
-    @property
-    def translation_heading(self) -> str:
-        """
-        Used to change the 'Translation' tab label when this image
-        is used in some galleries
-        """
-        if self.transcription_language in (
-            TranscriptionLanguageChoices.OLD_ENGLISH,
-            TranscriptionLanguageChoices.EARLY_MODERN_ENGLISH,
-            TranscriptionLanguageChoices.MIDDLE_ENGLISH,
-        ):
-            return _("Modern English")
-        return _("Translation")
 
 
 class CustomImageRendition(AbstractRendition):
