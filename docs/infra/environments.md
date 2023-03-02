@@ -18,7 +18,7 @@ The GitHub branch and Hosted environments have the same name:
 - Post to the appropriate Slack channel to check that it is okay to continue.
 - Test on local before deploy to environment
 
-## Deployment to main
+## Deploying to main
 
 1. Set environment variables from the UI console for `main` environment
 
@@ -48,7 +48,7 @@ The GitHub branch and Hosted environments have the same name:
 
 6. Update the status on the corresponding Jira ticket (where relevant).
 
-## Deployment to develop
+## Deploying to develop
 
 1. Set environment variables from the UI console for `develop` environment
 
