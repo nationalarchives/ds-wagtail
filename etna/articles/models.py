@@ -98,10 +98,6 @@ class ArticlePage(
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
-    ]
-
     new_label_end_date = datetime.now() - timedelta(days=21)
 
     # DataLayerMixin overrides
@@ -140,6 +136,7 @@ class ArticlePage(
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("body"),
+        index.SearchField("article_tag_names", boost=2),
         index.SearchField("topic_names", boost=1),
         index.SearchField("time_period_names", boost=1),
     ]
