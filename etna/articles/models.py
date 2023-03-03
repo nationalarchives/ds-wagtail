@@ -214,7 +214,8 @@ class ArticlePage(
             ArticlePage.objects.public()
             .live()
             .not_page(self)
-            .select_related("hero_image", "topic", "time_period")
+            .select_related("hero_image")
+            .prefetch_related("hero_image__renditions")
             .order_by("-first_published_at")
         )
         filterlatestpages = [
