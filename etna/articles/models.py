@@ -95,20 +95,6 @@ class ArticlePage(
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
-    topic = models.ForeignKey(
-        "collections.TopicExplorerPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    time_period = models.ForeignKey(
-        "collections.TimePeriodExplorerPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
@@ -126,6 +112,31 @@ class ArticlePage(
     class Meta:
         verbose_name = _("article")
         verbose_name_plural = _("articles")
+
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("tags"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible collapsed",
+            ),
+            FieldPanel("body"),
+        ]
+    )
+
+    promote_panels = BasePageWithIntro.promote_panels + [
+        TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    parent_page_types = ["articles.ArticleIndexPage"]
+    subpage_types = []
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("body"),
@@ -213,32 +224,7 @@ class ArticlePage(
 
         return tuple(filterlatestpages[:3])
 
-    content_panels = (
-        BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
-        + [
-            FieldPanel("topic"),
-            FieldPanel("time_period"),
-            FieldPanel("tags"),
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible collapsed",
-            ),
-            FieldPanel("body"),
-        ]
-    )
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
-
-    parent_page_types = ["articles.ArticleIndexPage"]
-    subpage_types = []
 
 
 class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
