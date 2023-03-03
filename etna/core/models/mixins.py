@@ -56,7 +56,7 @@ class NewLabelMixin(models.Model):
         return obj
 
     @cached_property
-    def is_new(self):
+    def is_newly_published(self):
         expiry_date = datetime.now().date() - timedelta(days=self.new_label_end_date)
         if self.newly_published_at is not None:
             if self.newly_published_at > expiry_date:

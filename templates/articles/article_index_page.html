@@ -18,7 +18,7 @@
     <div class="container">
         <div class="featured-article">
             {% if page.featured_article.hero_image %}
-                <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.is_new %}data-label = "New"{%endif%}>
+                <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.is_newly_published %}data-label = "New"{%endif%}>
                     <picture>
                         {% image page.featured_article.teaser_image fill-500x400-c100 as hero %}
                         <source media="(max-width: 768px)" srcset="{{ hero.url }}">
@@ -40,7 +40,7 @@
                 <h2 class="featured-article__heading">
                     <small>{% trans "Spotlight on" %}</small>
                     {{ page.featured_article.title }}
-                    {% if page.featured_article.is_new %}
+                    {% if page.featured_article.is_newly_published %}
                         <span aria-describedby="article-desc" role="link">NEW</span>
                     {% endif %}
                 </h2>
@@ -48,7 +48,7 @@
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_article.title }}</p>
 
                 <p>{{ page.featured_article.teaser_text }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.is_new %}data-label = "New"{%endif%}>Read</a>
+                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.is_newly_published %}data-label = "New"{%endif%}>Read</a>
             </div>
         </div>
     </div>
