@@ -625,7 +625,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?iaid=C198022",
+            "https://kong.test/data/fetch?metadataId=C198022",
         )
 
     @responses.activate
@@ -711,7 +711,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?iaids=iaid-one&iaids=iaid-two&iaids=iaid-three",
+            "https://kong.test/data/fetchAll?metadataIds=iaid-one&metadataIds=iaid-two&metadataIds=iaid-three",
         )
 
     @responses.activate
