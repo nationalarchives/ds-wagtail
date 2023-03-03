@@ -221,8 +221,13 @@ class Record(DataLayerMixin, APIModel):
     def catalogue_source(self) -> str:
         return self.get("source.value", default="")
 
-    @property
-    def raw_description(self) -> str:
+    @cached_property
+    def description(self) -> str:
+        if raw := self._get_raw_description():
+            return format_description_markup(raw)
+        return ""
+
+    def _get_raw_description(self) -> str:
         try:
             return self.highlights["@template.details.description"]
         except KeyError:
@@ -238,21 +243,14 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def description(self) -> str:
-        if raw := self.raw_description:
-            return format_description_markup(raw)
+    def content(self) -> str:
+        if raw := self._get_raw_content():
+            return strip_html(raw)
         return ""
 
-    @property
-    def raw_content(self) -> str:
+    def _get_raw_content(self) -> str:
         for item in self.get("source.content", ()):
             return item
-        return ""
-
-    @cached_property
-    def content(self) -> str:
-        if raw := self.raw_content:
-            return strip_html(raw)
         return ""
 
     @cached_property
