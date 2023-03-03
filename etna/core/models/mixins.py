@@ -45,7 +45,7 @@ class NewLabelMixin(models.Model):
         null=True,
     )
 
-    new_label_end_date = 21
+    new_label_display_for_days = 21
 
     def with_content_json(self, content):
         obj = super().with_content_json(content)
@@ -56,7 +56,7 @@ class NewLabelMixin(models.Model):
 
     @cached_property
     def is_newly_published(self):
-        expiry_date = datetime.now().date() - timedelta(days=self.new_label_end_date)
+        expiry_date = datetime.now().date() - timedelta(days=self.new_label_display_for_days)
         if self.newly_published_at is not None:
             if self.newly_published_at > expiry_date:
                 return True
