@@ -127,6 +127,12 @@ class ArticlePage(
         verbose_name = _("article")
         verbose_name_plural = _("articles")
 
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("body"),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         if self.primary_topic:
