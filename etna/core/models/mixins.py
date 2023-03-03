@@ -37,7 +37,6 @@ class NewLabelMixin(models.Model):
     mark_new_on_next_publish = models.BooleanField(
         verbose_name="mark this page as 'new' when published",
         default=True,
-        help_text="Mark this as true before publishing, to display the 'new label'",
     )
 
     newly_published_at = models.DateField(
