@@ -703,7 +703,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension15": "",
                 "customDimension16": "",
                 "customDimension17": "",
-                "customMetric1": 10001,
+                "customMetric1": 10000,
                 "customMetric2": 0,
             },
         )
@@ -763,7 +763,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension15": "",
                 "customDimension16": "",
                 "customDimension17": "",
-                "customMetric1": 10001,
+                "customMetric1": 10000,
                 "customMetric2": 0,
             },
         )
@@ -853,7 +853,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension15": "",
                 "customDimension16": "",
                 "customDimension17": "",
-                "customMetric1": 10001,
+                "customMetric1": 10000,
                 "customMetric2": 0,
             },
         )
@@ -883,7 +883,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension15": "",
                 "customDimension16": "",
                 "customDimension17": "",
-                "customMetric1": 10001,
+                "customMetric1": 10000,
                 "customMetric2": 0,
             },
         )

@@ -300,13 +300,12 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         custom_dimension9 = self.form.cleaned_data.get("q") or "*"
 
         result_count = self.get_result_count()
-        if result_count > 10000:
-            result_count = 10001
 
         data.update(
             customDimension8=custom_dimension8,
             customDimension9=custom_dimension9,
-            customMetric1=result_count,
+            # Value is capped to improve reporting reliability
+            customMetric1=result_count if result_count < 10000 else 10000,
         )
         return data
 
