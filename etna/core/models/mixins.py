@@ -1,7 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils import timezone
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
@@ -51,12 +52,12 @@ class NewLabelMixin(models.Model):
         obj = super().with_content_json(content)
         if obj.mark_new_on_next_publish:
             obj.mark_new_on_next_publish = False
-            obj.newly_published_at = datetime.now().date()
+            obj.newly_published_at = timezone.now().date()
         return obj
 
     @cached_property
     def is_newly_published(self):
-        expiry_date = datetime.now().date() - timedelta(days=self.new_label_display_for_days)
+        expiry_date = timezone.now().date() - timedelta(days=self.new_label_display_for_days)
         if self.newly_published_at is not None:
             if self.newly_published_at > expiry_date:
                 return True
