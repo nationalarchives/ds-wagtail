@@ -48,12 +48,11 @@ class NewLabelMixin(models.Model):
 
     new_label_display_for_days = 21
 
-    def with_content_json(self, content):
-        obj = super().with_content_json(content)
-        if obj.mark_new_on_next_publish:
-            obj.mark_new_on_next_publish = False
-            obj.newly_published_at = timezone.now().date()
-        return obj
+    def save(self, *args, **kwargs):
+        if self.live and self.mark_new_on_next_publish:
+            self.mark_new_on_next_publish = False
+            self.newly_published_at = timezone.now().date()
+        return super().save(*args, **kwargs)
 
     @cached_property
     def is_newly_published(self):
