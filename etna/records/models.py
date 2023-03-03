@@ -210,9 +210,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def is_digitised(self) -> bool:
-        return self.get(
-            "digitised", default=self.get("template.digitised", default=False)
-        )
+        return self.get("digitised", default=self.template.get("digitised", False))
 
     @cached_property
     def availability_delivery_surrogates(self) -> str:
