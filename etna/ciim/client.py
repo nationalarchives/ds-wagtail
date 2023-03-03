@@ -172,7 +172,7 @@ class KongClient:
         Keyword arguments:
 
         iaid:
-            Return match on Information Asset Identifier
+            Return match on iaid (or similar primary identifier)
         id:
             Generic identifier. Matches on references_number or iaid
         template:
@@ -181,7 +181,10 @@ class KongClient:
             include @next and @previous record with response. Kong defaults to false
         """
         params = {
-            "iaid": iaid,
+            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but the is
+            # API argument name is temporary, and 'iaid' will be replaced more broadly with
+            # something more generic soon
+            "metadata_id": iaid,
             "id": id,
             "template": template,
             "expand": expand,
