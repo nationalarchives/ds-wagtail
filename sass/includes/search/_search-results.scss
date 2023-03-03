@@ -1,5 +1,6 @@
 .search-results {
     &__metadata {
+
         &-count {
             margin-bottom: 0.5rem;
             &-highlight {
@@ -65,6 +66,7 @@
 
     &__list {
         list-style: none;
+        margin-top: 1.5rem;
         padding-left: 0;
 
         &--grid {
@@ -122,7 +124,7 @@
 
         }
 
-        @media only screen and (max-width: $screen__md) {
+        @media only screen and (max-width: $screen__xl) {
             background:$color__black;
             color: $color__white;
             margin-left: 1.5rem;
@@ -137,7 +139,7 @@
             content: " ";
             height: 10px;
             width: 10px;
-            background-image: url('/static/images/icons/triangle-right.svg');
+            //background-image: url('/static/images/icons/triangle-right.svg');
             background-repeat: no-repeat;
             background-size: 100%;
 
@@ -149,7 +151,7 @@
         &[aria-expanded=true] {
 
             &:before {
-                background-image: url('/static/images/icons/triangle-down.svg');
+                //background-image: url('/static/images/icons/triangle-down.svg');
                 @media only screen and (max-width: $screen__md) {
                     background-image: none;
                 }

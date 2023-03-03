@@ -23,9 +23,7 @@
     }
 
     &--secondary {
-      background: #fff url($fa_list_blue) no-repeat 15px;
-      background-size: 20px;
-      padding: 0.5rem 1rem 0.5rem 2rem;
+      padding: 0.5rem 1rem;
       text-decoration: none;
 
       &:link {
@@ -73,6 +71,14 @@
       }
     }
   }
+
+  &__link-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 1.5rem;
+    margin-left: -1rem;
+  }
+
   .open {
     background: #1A67A2 url($fa_chevron_up_white) no-repeat 15px;
     background-size: 15px;

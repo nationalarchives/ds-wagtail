@@ -5,8 +5,8 @@ from http import HTTPStatus
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTestCase
-from wagtail.tests.utils.form_data import inline_formset, nested_form_data
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail.test.utils.form_data import inline_formset, nested_form_data
 
 import responses
 

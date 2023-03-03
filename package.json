@@ -4,7 +4,7 @@
   "description": "## Local development",
   "private": true,
   "scripts": {
-    "compile:css": "sass --watch sass/etna-wagtail-editor.scss:templates/static/css/dist/etna-wagtail-editor.css sass/etna.scss:templates/static/css/dist/etna.css",
+    "compile:css": "sass --watch sass/etna.scss:templates/static/css/dist/etna.css",
     "start": "npx webpack --config webpack.config.js --mode=development --watch",
     "test": "jest --coverage"
   },
