@@ -146,12 +146,11 @@ class ArticlePage(
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
-        if self.primary_topic:
-            data["customDimension4"] = self.primary_topic.title
-        if self.article_tag_names:
-            data["customDimension6"] = ";".join(self.article_tag_names.split("\n"))
-        if self.primary_time_period:
-            data["customDimension7"] = self.primary_time_period.title
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
         return data
 
     def save(self, *args, **kwargs):
@@ -223,8 +222,6 @@ class ArticlePage(
         ]
 
         return tuple(filterlatestpages[:3])
-
-
 
 
 class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
