@@ -172,7 +172,7 @@ class KongClient:
         Keyword arguments:
 
         iaid:
-            Return match on Information Asset Identifier
+            Return match on Information Asset Identifier - iaid (or similar primary identifier)
         id:
             Generic identifier. Matches on references_number or iaid
         template:
@@ -180,16 +180,17 @@ class KongClient:
         expand:
             include @next and @previous record with response. Kong defaults to false
         """
-        api_params = {
-            "metadataId": iaid,  # returns match on @admin.id for various Information Asset Identifier (IAID) formats.
+        params = {
+            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
+            # API argument name is temporary, and 'iaid' will be replaced more broadly with
+            # something more generic soon
+            "metadataId": iaid,
             "id": id,
             "template": template,
             "expand": expand,
         }
 
-        return self.make_request(
-            f"{self.base_url}/data/fetch", api_params=api_params
-        ).json()
+        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
 
     @staticmethod
     def format_datetime(
@@ -259,7 +260,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        api_params = {
+        params = {
             "q": q,
             "webReference": web_reference,
             "stream": stream,
@@ -274,28 +275,26 @@ class KongClient:
         }
 
         if opening_start_date:
-            api_params["openingStartDate"] = self.format_datetime(
+            params["openingStartDate"] = self.format_datetime(
                 opening_start_date, supplementary_time=time.min
             )
 
         if opening_end_date:
-            api_params["openingEndDate"] = self.format_datetime(
+            params["openingEndDate"] = self.format_datetime(
                 opening_end_date, supplementary_time=time.max
             )
 
         if created_start_date:
-            api_params["createdStartDate"] = self.format_datetime(
+            params["createdStartDate"] = self.format_datetime(
                 created_start_date, supplementary_time=time.min
             )
 
         if created_end_date:
-            api_params["createdEndDate"] = self.format_datetime(
+            params["createdEndDate"] = self.format_datetime(
                 created_end_date, supplementary_time=time.max
             )
 
-        return self.make_request(
-            f"{self.base_url}/data/search", api_params=api_params
-        ).json()
+        return self.make_request(f"{self.base_url}/data/search", params=params).json()
 
     def search_all(
         self,
@@ -328,7 +327,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        api_params = {
+        params = {
             "q": q,
             "aggregations": aggregations,
             "filterAggregations": prepare_filter_aggregations(filter_aggregations),
@@ -338,7 +337,7 @@ class KongClient:
         }
 
         return self.make_request(
-            f"{self.base_url}/data/searchAll", api_params=api_params
+            f"{self.base_url}/data/searchAll", params=params
         ).json()
 
     def search_unified(
@@ -381,7 +380,7 @@ class KongClient:
         size:
             Number of results to return
         """
-        api_params = {
+        params = {
             "q": q,
             "webReference": web_reference,
             "stream": stream,
@@ -393,7 +392,7 @@ class KongClient:
         }
 
         return self.make_request(
-            f"{self.base_url}/data/searchUnified", api_params=api_params
+            f"{self.base_url}/data/searchUnified", params=params
         ).json()
 
     def fetch_all(
@@ -416,7 +415,7 @@ class KongClient:
         ids:
             Generic identifiers. Matches on references_number or iaid
         iaids:
-            Return matches on Information Asset Identifier
+            Return matches on Information Asset Identifier - iaid (or similar primary identifier)
         rid:
             Return matches on replic ID
         offset:
@@ -424,17 +423,18 @@ class KongClient:
         size:
             Number of results to return
         """
-        api_params = {
+        params = {
+            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
+            # API argument name is temporary, and 'iaid' will be replaced more broadly with
+            # something more generic soon
+            "metadataIds": iaids,
             "ids": ids,
-            "metadataIds": iaids,  # returns match on @admin.id for various Information Asset Identifier (IAID) formats.
             "rid": rid,
             "from": offset,
             "size": size,
         }
 
-        return self.make_request(
-            f"{self.base_url}/data/fetchAll", api_params=api_params
-        ).json()
+        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None
@@ -449,10 +449,10 @@ class KongClient:
         return {k: v for k, v in data.items() if v is not None}
 
     def make_request(
-        self, url: str, api_params: Optional[dict[str, Any]] = None
+        self, url: str, params: Optional[dict[str, Any]] = None
     ) -> requests.Response:
         """Make request to Kong API."""
-        params = self.prepare_request_params(api_params)
+        params = self.prepare_request_params(params)
         response = self.session.get(url, params=params, timeout=self.timeout)
         self._raise_for_status(response)
         return response
