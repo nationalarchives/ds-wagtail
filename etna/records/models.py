@@ -135,6 +135,11 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def summary_title(self) -> str:
+        if raw := self._get_raw_summary_title():
+            return strip_html(raw, preserve_marks=True)
+        return raw
+
+    def _get_raw_summary_title(self) -> str:
         try:
             return self.highlights["@template.details.summaryTitle"]
         except KeyError:
