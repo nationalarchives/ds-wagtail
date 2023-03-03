@@ -20,7 +20,7 @@ Where possible, provide guidance to help your reviewer
 
 1. Use the `Squash and merge` option to keep the target branch's commit history nice and clean.
 2. Where relevant, include the ticket number in commit title, e.g. `DF-XXX: Ticket name / short description`.
-3. Once PR is merged, check and arrange to deploy on hosted environment.
+3. Once PR is merged, contact someone with environment access to arrange a deployment.
 
 ## Merging a release branch?
 
