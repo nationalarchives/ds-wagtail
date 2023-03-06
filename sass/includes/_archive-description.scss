@@ -1,21 +1,36 @@
 .archive-description {
   margin: 6.5rem 0 3rem;
 
-    &__heading {
-
-    }
-
     &__address {
-      font-family: sans-serif;
-      font-weight: normal;
       margin-bottom: 0;
-      font-size: 1.4rem;
     }
 
     &__url {
-      font-family: supria-sans-condensed, sans-serif;
       font-size: 1.6rem;
       margin: 0;
+    }
+
+    &__contact {
+      padding: 2rem;
+      font-family: $font__open-sans;
+      background: $color__grey-5;
+
+      h2 {
+        margin: 0 0 1rem;
+      }
+
+      p {
+        font-weight: normal;
+        margin-bottom: 0.25rem;
+      }
+
+      ul {
+
+        li {
+          font-family: $font__open-sans;
+        }
+
+      }
     }
 
     &__container {
