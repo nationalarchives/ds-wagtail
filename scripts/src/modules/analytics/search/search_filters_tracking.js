@@ -28,9 +28,10 @@ const loopFilters = (filters) => {
     
         // setup the dataLayer variables for each filter
         let filterData = {
+            'event': 'search-filters',
             'search_bucket': searchBucket || '',
-            'search_filter_value': value || '',
             'search_filter_name': name || '',
+            'search_filter_value': value || '',
         };
 
         // add currently active filters to activeFilters array
@@ -44,9 +45,10 @@ const loopFilters = (filters) => {
     // if start date isn't active, create a custom object with the value 'No'
     if (!startDate) {
         startDate = {
+            'event': 'search-filters',
             'search_bucket': searchBucket || '',
-            'search_filter_value': 'No',
             'search_filter_name': 'opening_start_date',
+            'search_filter_value': 'No',
         };
 
         activeFilters.push(startDate);
@@ -55,9 +57,10 @@ const loopFilters = (filters) => {
     // if end date isn't active, create a custom object with the value 'No'
     if (!endDate) {
         endDate = {
+            'event': 'search-filters',
             'search_bucket': searchBucket || '',
-            'search_filter_value': 'No',
             'search_filter_name': 'opening_end_date',
+            'search_filter_value': 'No',
         };
 
         activeFilters.push(endDate);
