@@ -1,6 +1,6 @@
 from django.conf import settings
 
-from wagtail.core import blocks
+from wagtail import blocks
 
 
 class ParagraphBlock(blocks.StructBlock):
