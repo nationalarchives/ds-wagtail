@@ -73,5 +73,6 @@ def record_detail_view(request, iaid):
         {
             "record": record,
             "image": image,
+            "meta_title": record.summary_title,
         },
     )
