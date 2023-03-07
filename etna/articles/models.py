@@ -341,6 +341,16 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 strings.extend([item.translation_header, item.translation_text])
         return " ".join(strings)
 
+    @cached_property
+    def gallery_has_translations_transcriptions(self):
+        """
+        Returns boolean indicating whether this page has any gallery transcriptions or translations.
+        """
+        for item in self.gallery_items.all():
+            if item.image.translation or item.image.transcription:
+                return True
+        return False
+
 
 class PageGalleryImage(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
