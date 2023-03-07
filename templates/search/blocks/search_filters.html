@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <form action='' method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form">
+    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form">
         <h2 class="search-sort-view__heading">
             <label for="{{form.sort_by.id_for_label}}">Sort by</label>
         </h2>
@@ -18,7 +18,7 @@
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
     <h2 class="search-filters__heading">Refine results</h2>
             
-    <form action="" method="GET" data-id="filters-form"  id="catalogue-filters-form">
+    <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
         {% comment %}
          {% if form.group.value == 'tna' %}
             <div class="search-filters__form-block">
