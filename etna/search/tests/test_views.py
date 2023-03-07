@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse_lazy
 
-from wagtail.tests.utils import WagtailTestUtils
+from wagtail.test.utils import WagtailTestUtils
 
 import responses
 

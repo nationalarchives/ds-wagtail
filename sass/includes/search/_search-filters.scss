@@ -3,6 +3,10 @@
     border: 1px solid $color__grey-3;
     padding: 1rem;
 
+    &__heading {
+        font-size: 1.3em;
+    }
+
     &__list {
         list-style: none;
         padding-left: 0.5rem;
@@ -29,6 +33,7 @@
     &__label {
         max-width: 80%;
         vertical-align: top;
+
         &--block {
             display: block;
             max-width: 100%;

@@ -1,5 +1,6 @@
 .search-results {
     &__metadata {
+
         &-count {
             margin-bottom: 0.5rem;
             &-highlight {
@@ -65,6 +66,7 @@
 
     &__list {
         list-style: none;
+        margin-top: 1.5rem;
         padding-left: 0;
 
         &--grid {
