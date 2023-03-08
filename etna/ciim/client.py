@@ -154,10 +154,9 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
 
 class ResultList:
     """
-    Wrapper class for JSON-decoded list of search results, that lazily converts
-    raw "hits" into instances of `item_type` when iterated, as well
-    providing the following helper attributes for a more developer-friendly
-    interface:
+    A convenience class that lazily converts a raw list of "hits" (from various
+    API endpoints) into instances of `item_type` when iterated, as well
+    providing the following developer-friendly helper attributes:
 
     `total_count`:
         The total number of results available
