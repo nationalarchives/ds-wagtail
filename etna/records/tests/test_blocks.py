@@ -69,6 +69,10 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                         ),
                     ]
                 ),
+                "page_time_periods-TOTAL_FORMS": 0,
+                "page_time_periods-INITIAL_FORMS": 0,
+                "page_topics-TOTAL_FORMS": 0,
+                "page_topics-INITIAL_FORMS": 0,
                 "action-publish": "Publish",
             }
         )
