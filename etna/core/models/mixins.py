@@ -65,11 +65,7 @@ class NewLabelMixin(models.Model):
         return False
 
     promote_panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel("mark_new_on_next_publish"),
-            ]
-        ),
+        FieldPanel("mark_new_on_next_publish"),
     ]
 
     class Meta:
