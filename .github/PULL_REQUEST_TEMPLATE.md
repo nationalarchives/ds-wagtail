@@ -16,15 +16,9 @@ Where possible, provide guidance to help your reviewer
 - [ ] Waited for all CI jobs to pass before requesting a review.
 - [ ] Added/updated tests and documentation where relevant.
 
-## Merging a feature or bug fix?
+## Merging PR guidance
 
-1. Use the `Squash and merge` option to keep the target branch's commit history nice and clean.
-2. Where relevant, include the ticket number in commit title, e.g. `DF-XXX: Ticket name / short description`.
-
-## Merging a release branch?
-
-1. Use the `Create a merge commit` option to preserve the original commit IDs.
-2. Use the message format `release/<major.minor.patch>` when merging.
+Follow [docs\developer-guide\contributing.md](https://nationalarchives.github.io/ds-wagtail/developer-guide/contributing/)
 
 ## Deployment guidance
 

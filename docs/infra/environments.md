@@ -7,6 +7,13 @@ The GitHub branch and Hosted environments have the same name:
 - `main`: for Live/Production
 - `develop` : for Development
 
+## Deployment guidance
+
+1. Post to the appropriate Slack channel to check that it is okay to continue.
+2. To start a deployment, view further Deploying to `main`, `develop` on this page.
+3. Update the appropriate Slack channel when the deployment is complete.
+4. Update the status on the corresponding Jira ticket (where relevant).
+
 ## How deployments are triggered
 
 - Deployments are manual
