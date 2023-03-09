@@ -34,8 +34,9 @@ class Record(DataLayerMixin, APIModel):
         This method recieves the raw JSON data dict recieved from
         Kong and makes it available to the instance as `self._raw`.
         """
-        self.score = raw_data.get("_score")
         self._raw = raw_data.get("_source") or raw_data
+        self.score = raw_data.get("_score")
+        self.highlights = raw_data.get("highlight") or {}
 
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
@@ -62,10 +63,6 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def template(self) -> Dict[str, Any]:
         return self.get("@template.details", default=self.get("@template.results", {}))
-
-    @cached_property
-    def highlights(self) -> Dict[str, Any]:
-        return self.get("highlight", default={})
 
     @cached_property
     def iaid(self) -> str:
