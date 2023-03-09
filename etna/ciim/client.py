@@ -174,14 +174,14 @@ class ResultList:
         hits: Sequence[Dict[str, Any]],
         total_count: int,
         item_type: Type,
-        aggregations: Dict[str, Any] = None,
-        bucket_counts: List[Dict[str, Union[str, int]]] = None,
+        aggregations: Dict[str, Any],
+        bucket_counts: List[Dict[str, Union[str, int]]],
     ):
         self._hits = hits or []
         self.total_count = total_count
         self.item_type = item_type
-        self.aggregations = aggregations or {}
-        self.bucket_counts = bucket_counts or []
+        self.aggregations = aggregations
+        self.bucket_counts = bucket_counts
 
     @cached_property
     def hits(self) -> Tuple["APIModel"]:
