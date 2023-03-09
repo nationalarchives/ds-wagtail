@@ -138,7 +138,7 @@ class Record(DataLayerMixin, APIModel):
 
     def _get_raw_summary_title(self) -> str:
         try:
-            return self.highlights["@template.details.summaryTitle"]
+            return "... ".join(self.highlights["@template.details.summaryTitle"])
         except KeyError:
             pass
         try:
@@ -229,7 +229,7 @@ class Record(DataLayerMixin, APIModel):
 
     def _get_raw_description(self) -> str:
         try:
-            return self.highlights["@template.details.description"]
+            return "... ".join(self.highlights["@template.details.description"])
         except KeyError:
             pass
         try:
