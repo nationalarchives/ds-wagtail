@@ -62,7 +62,7 @@ class BucketsMixin:
         """
         if api_result is None:
             return ()
-        aggregations = api_result.filter_aggregations or {}
+        aggregations = api_result.bucket_aggregations or {}
         return aggregations.get("group", {}).get("buckets", ())
 
     def get_current_bucket_key(self):
