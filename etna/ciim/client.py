@@ -164,10 +164,10 @@ class ResultList:
     `aggregations`:
         A dict of "aggregation" values from the results themselves
 
-    `filter_aggregations`:
-        A dict of "aggregation" values populated from the separate 'filter aggregations'
-        response from the API. For endpoints that do not include such data in their
-        response (e.g. 'searchAll/' and 'searchUnified/'), the value will be `None`.
+    `bucket_aggregations`:
+        A dict of "aggregation" values from the first of the two 'responses' returned
+        for 'search' endpoint requests. For endpoints where this separate response is
+        not provided, this value will be `None`.
     """
 
     def __init__(
@@ -176,13 +176,13 @@ class ResultList:
         total_count: int,
         item_type: Type,
         aggregations: Dict[str, Any] = None,
-        filter_aggregations: Dict[str, Any] = None,
+        bucket_aggregations: Dict[str, Any] = None,
     ):
         self._hits = hits or []
         self.total_count = total_count
         self.item_type = item_type
         self.aggregations = aggregations or {}
-        self.filter_aggregations = filter_aggregations
+        self.bucket_aggregations = bucket_aggregations
 
     @cached_property
     def hits(self) -> Tuple["APIModel"]:
@@ -251,7 +251,7 @@ class KongClient:
     def resultlist_from_response(
         self,
         response: Dict[str, Any],
-        filter_aggregations: Dict[str, Any] = None,
+        bucket_aggregations: Dict[str, Any] = None,
         item_type: Type = Record,
     ) -> ResultList:
         try:
@@ -267,7 +267,7 @@ class KongClient:
             total_count=total_count,
             item_type=item_type,
             aggregations=response.get("aggregations", {}),
-            filter_aggregations=filter_aggregations,
+            bucket_aggregations=bucket_aggregations,
         )
 
     def fetch(
@@ -396,11 +396,15 @@ class KongClient:
                 created_end_date, supplementary_time=time.max
             )
 
+        # Convert the full the API response to a dict
         resp = self.make_request(f"{self.base_url}/data/search", params=params).json()
-        filter_aggregations_response, results_response = resp["responses"]
-        return self.resultlist_from_response(
-            results_response, filter_aggregations_response.get("aggregations")
-        )
+
+        # Pull out the separate, converted ES 'responses'
+        bucket_aggregations_response, results_response = resp["responses"]
+
+        # Return a single ResultList, using only the aggregation values from the first ES response
+        # (which the API provides specifically to allow 'counts' to be displayed for different 'buckets').
+        return self.resultlist_from_response(results_response, bucket_aggregations=bucket_aggregations_response["aggregations"])
 
     def search_all(
         self,
@@ -441,9 +445,15 @@ class KongClient:
             "from": offset,
             "size": size,
         }
+
+        # Convert the full the API response to a dict
         resp = self.make_request(
             f"{self.base_url}/data/searchAll", params=params
         ).json()
+
+        # The API returns a series of ES 'responses', with results for each 'bucket'.
+        # Each of these responses is converted to it's own `ResultList`, and the collective
+        # `ResultList` objects returned as tuple.
         return tuple(
             self.resultlist_from_response(r) for r in resp.get("responses", ())
         )
@@ -499,9 +509,13 @@ class KongClient:
             "size": size,
         }
 
+        # Convert the full the API response to a dict
         resp = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
         ).json()
+
+        # The API returns a single ES response for this endpoint, which can be directly converted
+        # to a ResultList.
         return self.resultlist_from_response(resp)
 
     def fetch_all(
@@ -542,7 +556,12 @@ class KongClient:
             "from": offset,
             "size": size,
         }
+
+        # Convert the full the API response to a dict
         resp = self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+
+        # The API returns a single ES response for this endpoint, which can be directly converted
+        # to a ResultList.
         return self.resultlist_from_response(resp)
 
     def prepare_request_params(
