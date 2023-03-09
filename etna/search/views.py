@@ -15,7 +15,7 @@ from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticlePage
-from ..ciim.client import Aggregation, ResultList, SortBy, SortOrder, Stream, Template
+from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CUSTOM_ERROR_MESSAGES,
@@ -51,19 +51,6 @@ class BucketsMixin:
     bucket_list: BucketList = None
     # Can be updated by the view for get_current_bucket_key() to pick up
     current_bucket_key: str = None
-
-    def extract_group_buckets(
-        self, api_result: Union[None, ResultList]
-    ) -> Tuple[Dict[str, Union[str, int]]]:
-        """
-        Attempts to find and return a list of values from `api_result`
-        that can be passed to `get_buckets()`, allowing it to set the
-        `result_count` value for each bucket.
-        """
-        if api_result is None:
-            return ()
-        aggregations = api_result.bucket_aggregations or {}
-        return aggregations.get("group", {}).get("buckets", ())
 
     def get_current_bucket_key(self):
         return self.current_bucket_key
@@ -107,11 +94,12 @@ class BucketsMixin:
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            group_buckets = self.extract_group_buckets(
-                getattr(self, "api_result", None)
-            )
             current_bucket_key = self.get_current_bucket_key()
-            kwargs["buckets"] = self.get_buckets(group_buckets, current_bucket_key)
+            try:
+                bucket_count_data = self.api_result.bucket_counts
+            except AttributeError:
+                bucket_count_data = self.api_result.aggrega
+            kwargs["buckets"] = self.get_buckets(bucket_count_data, current_bucket_key)
         return super().get_context_data(**kwargs)
 
 

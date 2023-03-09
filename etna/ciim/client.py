@@ -9,6 +9,7 @@ from typing import (
     Any,
     Dict,
     Iterable,
+    List,
     Optional,
     Sequence,
     Tuple,
@@ -164,10 +165,10 @@ class ResultList:
     `aggregations`:
         A dict of "aggregation" values from the results themselves
 
-    `bucket_aggregations`:
-        A dict of "aggregation" values from the first of the two 'responses' returned
-        for 'search' endpoint requests. For endpoints where this separate response is
-        not provided, this value will be `None`.
+    `bucket_counts`:
+        A list of count values for each 'bucket', taken from the first of the ES
+        'responses' returned by 'search' API endpoint. Where this data is not provided
+        by the API, the value will be an empty list.
     """
 
     def __init__(
@@ -176,13 +177,13 @@ class ResultList:
         total_count: int,
         item_type: Type,
         aggregations: Dict[str, Any] = None,
-        bucket_aggregations: Dict[str, Any] = None,
+        bucket_counts: List[Dict[str, Union[str, int]]] = None,
     ):
         self._hits = hits or []
         self.total_count = total_count
         self.item_type = item_type
         self.aggregations = aggregations or {}
-        self.bucket_aggregations = bucket_aggregations
+        self.bucket_counts = bucket_counts or []
 
     @cached_property
     def hits(self) -> Tuple["APIModel"]:
@@ -251,7 +252,7 @@ class KongClient:
     def resultlist_from_response(
         self,
         response: Dict[str, Any],
-        bucket_aggregations: Dict[str, Any] = None,
+        bucket_counts: List[Dict[str, Union[str, int]]] = None,
         item_type: Type = Record,
     ) -> ResultList:
         try:
@@ -267,7 +268,7 @@ class KongClient:
             total_count=total_count,
             item_type=item_type,
             aggregations=response.get("aggregations", {}),
-            bucket_aggregations=bucket_aggregations,
+            bucket_counts=bucket_counts,
         )
 
     def fetch(
@@ -400,11 +401,14 @@ class KongClient:
         resp = self.make_request(f"{self.base_url}/data/search", params=params).json()
 
         # Pull out the separate, converted ES 'responses'
-        bucket_aggregations_response, results_response = resp["responses"]
+        bucket_counts_response, results_response = resp["responses"]
 
-        # Return a single ResultList, using only the aggregation values from the first ES response
-        # (which the API provides specifically to allow 'counts' to be displayed for different 'buckets').
-        return self.resultlist_from_response(results_response, bucket_aggregations=bucket_aggregations_response["aggregations"])
+        # Extract the useful data from this response (the rest can be discarded)
+        bucket_counts = bucket_counts_response["aggregations"].get("group", {}).get("buckets", ())
+
+        # Return a single ResultList, using bucket counts from the first ES response,
+        # and full hit/aggregation data from the second.
+        return self.resultlist_from_response(results_response, bucket_counts)
 
     def search_all(
         self,
