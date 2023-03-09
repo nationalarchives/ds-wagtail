@@ -995,7 +995,7 @@ class TestClientSearchReponse(SimpleTestCase):
                 "skipped": 0,
                 "failed": 0,
             },
-            "aggregations": [],
+            "aggregations": {},
         }
         responses.add(
             responses.GET,
@@ -1012,7 +1012,7 @@ class TestClientSearchReponse(SimpleTestCase):
                             "skipped": 0,
                             "failed": 0,
                         },
-                        "aggregations": [],
+                        "aggregations": {},
                         "hits": {
                             "total": {"value": 0, "relation": "eq"},
                             "max_score": 14.217057,
