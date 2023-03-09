@@ -129,7 +129,7 @@ class ArticlePage(
         ]
     )
 
-    promote_panels = BasePageWithIntro.promote_panels + [
+    promote_panels = NewLabelMixin.promote_panels + BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
