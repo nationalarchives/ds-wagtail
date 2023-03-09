@@ -82,7 +82,11 @@ class TaggedArticle(ItemBase):
 
 
 class ArticlePage(
-    TopicalPageMixin, HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+    TopicalPageMixin,
+    HeroImageMixin,
+    ContentWarningMixin,
+    NewLabelMixin,
+    BasePageWithIntro,
 ):
     """ArticlePage
 
