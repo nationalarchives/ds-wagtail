@@ -166,9 +166,7 @@ class ResultList:
         A dict of "aggregation" values from the results themselves
 
     `bucket_counts`:
-        A list of count values for each 'bucket', taken from the first of the ES
-        'responses' returned by 'search' API endpoint. Where this data is not provided
-        by the API, the value will be an empty list.
+        A list of count values for each 'bucket'
     """
 
     def __init__(
@@ -251,23 +249,28 @@ class KongClient:
 
     def resultlist_from_response(
         self,
-        response: Dict[str, Any],
+        response_data: Dict[str, Any],
         bucket_counts: List[Dict[str, Union[str, int]]] = None,
         item_type: Type = Record,
     ) -> ResultList:
         try:
-            hits = response["hits"]["hits"]
+            hits = response_data["hits"]["hits"]
         except KeyError:
             hits = []
         try:
-            total_count = response["hits"]["total"]["value"]
+            total_count = response_data["hits"]["total"]["value"]
         except KeyError:
             total_count = len(hits)
+
+        aggregations_data = response_data.get("aggregations", {})
+        if bucket_counts is None:
+            bucket_counts = aggregations_data.get("group", {}).get("buckets", [])
+
         return ResultList(
             hits=hits,
             total_count=total_count,
             item_type=item_type,
-            aggregations=response.get("aggregations", {}),
+            aggregations=aggregations_data,
             bucket_counts=bucket_counts,
         )
 
@@ -303,13 +306,21 @@ class KongClient:
             "template": template,
             "expand": expand,
         }
-        resp = self.make_request(f"{self.base_url}/data/fetch", params=params).json()
-        results = self.resultlist_from_response(resp)
-        if not results:
+
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/fetch", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # Convert the Python dict to a ResultList
+        result_list = self.resultlist_from_response(response_data)
+
+        if not result_list:
             raise DoesNotExist
-        if len(results) > 1:
+        if len(result_list) > 1:
             raise MultipleObjectsReturned
-        return results.hits[0]
+        return result_list.hits[0]
 
     def search(
         self,
@@ -397,18 +408,23 @@ class KongClient:
                 created_end_date, supplementary_time=time.max
             )
 
-        # Convert the full the API response to a dict
-        resp = self.make_request(f"{self.base_url}/data/search", params=params).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/search", params=params)
 
-        # Pull out the separate, converted ES 'responses'
-        bucket_counts_response, results_response = resp["responses"]
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
 
-        # Extract the useful data from this response (the rest can be discarded)
-        bucket_counts = bucket_counts_response["aggregations"].get("group", {}).get("buckets", ())
+        # Pull out the separate ES responses
+        bucket_counts_data, results_data = response_data["responses"]
 
         # Return a single ResultList, using bucket counts from the first ES response,
         # and full hit/aggregation data from the second.
-        return self.resultlist_from_response(results_response, bucket_counts)
+        return self.resultlist_from_response(
+            results_data,
+            bucket_counts=bucket_counts_data["aggregations"]
+            .get("group", {})
+            .get("buckets", ()),
+        )
 
     def search_all(
         self,
@@ -450,16 +466,17 @@ class KongClient:
             "size": size,
         }
 
-        # Convert the full the API response to a dict
-        resp = self.make_request(
-            f"{self.base_url}/data/searchAll", params=params
-        ).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/searchAll", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
 
         # The API returns a series of ES 'responses', with results for each 'bucket'.
         # Each of these responses is converted to it's own `ResultList`, and the collective
         # `ResultList` objects returned as tuple.
         return tuple(
-            self.resultlist_from_response(r) for r in resp.get("responses", ())
+            self.resultlist_from_response(r) for r in response_data.get("responses", ())
         )
 
     def search_unified(
@@ -513,14 +530,17 @@ class KongClient:
             "size": size,
         }
 
-        # Convert the full the API response to a dict
-        resp = self.make_request(
+        # Get HTTP response from the API
+        response = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
-        ).json()
+        )
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
 
         # The API returns a single ES response for this endpoint, which can be directly converted
         # to a ResultList.
-        return self.resultlist_from_response(resp)
+        return self.resultlist_from_response(response_data)
 
     def fetch_all(
         self,
@@ -561,12 +581,15 @@ class KongClient:
             "size": size,
         }
 
-        # Convert the full the API response to a dict
-        resp = self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/fetchAll", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
 
         # The API returns a single ES response for this endpoint, which can be directly converted
         # to a ResultList.
-        return self.resultlist_from_response(resp)
+        return self.resultlist_from_response(response_data)
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None
