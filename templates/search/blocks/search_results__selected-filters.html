@@ -3,11 +3,11 @@
 {% if selected_filters %}
     <h2 class="sr-only">Selected filters</h2>
 
-    <ul class="search-results__selected-filters">
+    <ul class="search-results__selected-filters" data-search-bucket="{{ buckets.current.label }}">
         {% for field_name, selected_options in selected_filters.items %}
             {% for value, label in selected_options %}
                 {# IMPORTANT: Never apply '|safe' to value or label here, as validation is not applied to most of these fields #}
-                <li class="search-results__selected-filters-item">
+                <li class="search-results__selected-filters-item" data-filter data-filter-value="{% if field_name == 'opening_start_date' %}{{ value|date:"o-m-d" }}{% elif field_name == 'opening_end_date' %}{{ value|date:"o-m-d" }}{% else %}{{ label }}{% endif %}" data-filter-name="{{ field_name }}">
                     {{ label }}
                     <a href="?{% query_string_exclude field_name value %}" class="search-results__selected-filters-item-link" data-link-type="Search Button" data-link="Remove a filter"><span class="sr-only">Remove {{ label }} from search</span></a>
                 </li>

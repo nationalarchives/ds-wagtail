@@ -82,7 +82,7 @@ class TaggedArticle(ItemBase):
 
 
 class ArticlePage(
-    HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+    TopicalPageMixin,HeroImageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
 ):
     """ArticlePage
 
@@ -91,20 +91,6 @@ class ArticlePage(
 
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
-    topic = models.ForeignKey(
-        "collections.TopicExplorerPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-    time_period = models.ForeignKey(
-        "collections.TimePeriodExplorerPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
     )
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
@@ -122,14 +108,45 @@ class ArticlePage(
         verbose_name = _("article")
         verbose_name_plural = _("articles")
 
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("tags"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible",
+            ),
+            FieldPanel("body"),
+        ]
+    )
+
+    promote_panels = BasePageWithIntro.promote_panels + [
+        TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    parent_page_types = ["articles.ArticleIndexPage"]
+    subpage_types = []
+
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("body"),
+        index.SearchField("article_tag_names", boost=2),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
-        if self.topic:
-            data["customDimension4"] = self.topic.title
-        if self.article_tag_names:
-            data["customDimension6"] = ";".join(self.article_tag_names.split("\n"))
-        if self.time_period:
-            data["customDimension7"] = self.time_period.title
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
         return data
 
     def save(self, *args, **kwargs):
@@ -193,7 +210,8 @@ class ArticlePage(
             ArticlePage.objects.public()
             .live()
             .not_page(self)
-            .select_related("hero_image", "topic", "time_period")
+            .select_related("hero_image")
+            .prefetch_related("hero_image__renditions")
             .order_by("-first_published_at")
         )
         filterlatestpages = [
@@ -201,30 +219,6 @@ class ArticlePage(
         ]
 
         return tuple(filterlatestpages[:3])
-
-    content_panels = (
-        BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
-        + [
-            FieldPanel("topic"),
-            FieldPanel("time_period"),
-            FieldPanel("tags"),
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible collapsed",
-            ),
-            FieldPanel("body"),
-        ]
-    )
-
-    promote_panels = NewLabelMixin.promote_panels + BasePageWithIntro.promote_panels
-
-    parent_page_types = ["articles.ArticleIndexPage"]
-    subpage_types = []
 
 
 class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
@@ -276,7 +270,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Content Warning Options",
-            classname="collapsible collapsed",
+            classname="collapsible",
             children=[
                 FieldPanel("display_content_warning"),
                 FieldPanel("custom_warning_text"),
@@ -300,8 +294,11 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
             ],
         ),
         FieldPanel("featured_article"),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
+    ]
+
+    promote_panels = BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
+        TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
 
     search_fields = BasePageWithIntro.search_fields + [
@@ -339,6 +336,16 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
             if item.has_translation:
                 strings.extend([item.translation_header, item.translation_text])
         return " ".join(strings)
+
+    @cached_property
+    def gallery_has_translations_transcriptions(self):
+        """
+        Returns boolean indicating whether this page has any gallery transcriptions or translations.
+        """
+        for item in self.gallery_items.all():
+            if item.image.translation or item.image.transcription:
+                return True
+        return False
 
 
 class PageGalleryImage(Orderable):

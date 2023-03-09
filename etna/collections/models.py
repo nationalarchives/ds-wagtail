@@ -427,6 +427,9 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         ),
         FieldPanel("featured_record_article"),
         FieldPanel("featured_article"),
+    ]
+
+    promote_panels = BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
