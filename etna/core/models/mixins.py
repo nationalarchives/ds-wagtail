@@ -4,7 +4,7 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 
 __all__ = ["ContentWarningMixin", "NewLabelMixin"]
