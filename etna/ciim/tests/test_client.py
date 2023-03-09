@@ -986,7 +986,7 @@ class TestClientSearchReponse(SimpleTestCase):
 
     @responses.activate
     def test_valid_response(self):
-        aggregations_response = {
+        bucket_counts_response = {
             "took": 85,
             "timed_out": False,
             "_shards": {
@@ -995,14 +995,14 @@ class TestClientSearchReponse(SimpleTestCase):
                 "skipped": 0,
                 "failed": 0,
             },
-            "aggregations": {},
+            "aggregations": {"groups": {"buckets": []}},
         }
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
             json={
                 "responses": [
-                    aggregations_response,
+                    bucket_counts_response,
                     {
                         "took": 85,
                         "timed_out": False,
@@ -1024,9 +1024,7 @@ class TestClientSearchReponse(SimpleTestCase):
         )
         response = self.records_client.search()
         self.assertIsInstance(response, ResultList)
-        self.assertEqual(
-            response.filter_aggregations, aggregations_response["aggregations"]
-        )
+        self.assertFalse(response.bucket_counts)
         self.assertEqual(response.hits, ())
 
 
