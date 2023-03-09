@@ -10,6 +10,7 @@ from django.conf import settings
 from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 
 from ..analytics.mixins import DataLayerMixin
 from ..ciim.models import APIModel
@@ -133,7 +134,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def summary_title(self) -> str:
         if raw := self._get_raw_summary_title():
-            return strip_html(raw, preserve_marks=True)
+            return mark_safe(strip_html(raw, preserve_marks=True))
         return raw
 
     def _get_raw_summary_title(self) -> str:
