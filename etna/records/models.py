@@ -225,7 +225,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def description(self) -> str:
         if raw := self._get_raw_description():
-            return format_description_markup(raw)
+            return mark_safe(strip_html(raw, preserve_marks=True))
         return ""
 
     def _get_raw_description(self) -> str:
