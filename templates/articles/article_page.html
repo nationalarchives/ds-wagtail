@@ -37,7 +37,9 @@
                     </ul>
                 {% endif %}
 
-                {% include 'includes/related-ce-content.html' %}
+                {% if page.primary_topic or page.primary_time_period %}
+                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+                {% endif %}
 
                 {% if page.latest_items %}
                     <h2 class="article-container-related-content__heading">More stories</h2>

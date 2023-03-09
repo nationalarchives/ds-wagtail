@@ -24,6 +24,11 @@
       column-gap: 3rem;
       grid-template-columns: 55% 45%;
     }
+
+    &--full-width {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__text {
@@ -37,12 +42,25 @@
   }
 
   &__preview {
-    display: flex;
-    margin-left: auto;
-    margin-right: auto;
     margin-bottom: 4rem;
     display: block;
     position: relative;
+  }
+
+  &__container {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+
+    @media screen and (min-width: $screen__sm) {
+      max-width: 80%;
+      max-height: 800px;
+      margin: 0 auto;
+    }
   }
 
   &__underline {
@@ -63,9 +81,10 @@
     padding-left: 0.5rem;
     margin-top: 0.5rem;
     font-weight: $font-weight-bold;
+
     p {
-    display: inline;
-    margin: 0;
+      display: inline;
+      margin: 0;
     }
 
     a {
@@ -95,7 +114,7 @@
     left: 50%;
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
-    bottom: -5%;
+    bottom: -3%;
     cursor: pointer;
 
     &:hover {
@@ -117,7 +136,7 @@
       background-color: $color__white;
       color: $color__black;
       outline: 0.1875rem solid $color__white;
-      
+
       #{$root}__icon {
         fill: $color__dark;
       }
@@ -131,20 +150,15 @@
   }
 
   &__image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    object-position: center;
+    max-width: 100%;
+    max-height: 100%;
     display: block;
-    max-height: 700px;
+  }
 
-    &--preview {
-      @media screen and (min-width: $screen__sm) {
-        max-width: 80%;
-        max-height: 800px;
-        margin: 0 auto;
-      }
-    }
+  &__figure-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   &__tablist {

@@ -18,3 +18,14 @@ Before contributing code, please familiarise yourself with the [Project conventi
     - For housekeeping tasks or other unticketed work, use the convention: `Chore: Short description`.
 3. To mark a PR as a draft, look for the **"Convert to draft"** link (after submitting) and click on it.
 4. When you are finished (and CI is passing): Add a useful description, mark the PR as "Ready to review", and request a review from another developer.
+
+## Merging a feature or bug fix?
+
+1. Use the `Squash and merge` option to keep the target branch's commit history nice and clean.
+2. Where relevant, include the ticket number in commit title, e.g. `DF-XXX: Ticket name / short description`.
+3. Once PR is merged, contact someone with environment access to arrange a deployment.
+
+## Merging a release branch?
+
+1. Use the `Create a merge commit` option to preserve the original commit IDs.
+2. Use the message format `release/<major.minor.patch>` when merging.
