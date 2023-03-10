@@ -217,7 +217,7 @@ class QuoteBlock(SectionDepthAwareStructBlock):
 
 
 class SubHeadingBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100)
+    heading = blocks.CharBlock(max_length=100, label="Sub-heading")
 
     class Meta:
         icon = "heading"
