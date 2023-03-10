@@ -11,13 +11,8 @@
     }
 
     &__title {
-        font-size: $h3-font-size;
-        font-weight: bold;
+        font-size: $h2-font-size;
+        font-weight: $font-weight-normal;
         padding: 0.5rem 0;
-
-        @media (min-width: map-get($grid-breakpoints, "lg")) {
-            font-size: $h2-font-size;
-        }
     }
-
 }
