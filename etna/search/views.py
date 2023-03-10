@@ -451,12 +451,7 @@ class BaseFilteredSearchView(BaseSearchView):
 
         See also: `get_api_aggregations()`.
         """
-        try:
-            aggregations = api_result.filter_aggregations.items()
-        except AttributeError:
-            return
-
-        for key, value in aggregations:
+        for key, value in api_result.aggregations.items():
             if buckets := value.get("buckets"):
                 field_name = camelcase_to_underscore(key)
                 if field_name in self.dynamic_choice_fields:
