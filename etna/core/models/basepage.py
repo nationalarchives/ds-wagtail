@@ -49,6 +49,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
 
     # DataLayerMixin overrides
