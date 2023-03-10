@@ -46,6 +46,7 @@ hooks:
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
     wget https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css --directory-prefix templates/static/css/libraries/
+    touch templates/static/css/libraries/tna-toolkit.0.0.1.css.map
 
     nvm install v14.19.1
     nvm use v14.19.1
