@@ -52,17 +52,6 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
-    # Default help_text overrides
-    Page._meta.get_field("slug").help_text = _(
-        "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
-    )
-    Page._meta.get_field("search_description").help_text = _(
-        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
-    )
-    MetadataPageMixin._meta.get_field("search_image").help_text = _(
-        "Image that will appear as a promo when this page is shared on social media."
-    )
-
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
@@ -85,6 +74,18 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         data = super().get_datalayer_data(request)
         data.update(customDimension3=self._meta.verbose_name)
         return data
+
+
+# Default BasePage help_text overrides
+BasePage._meta.get_field("slug").help_text = _(
+    "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
+)
+BasePage._meta.get_field("search_description").help_text = _(
+    "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
+)
+BasePage._meta.get_field("search_image").help_text = _(
+    "Image that will appear as a promo when this page is shared on social media."
+)
 
 
 class BasePageWithIntro(BasePage):
