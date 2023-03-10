@@ -316,7 +316,7 @@ class TopicalPageMixin:
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
             min_num=min_num,
             max_num=max_num,
