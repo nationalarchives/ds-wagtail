@@ -239,11 +239,11 @@ bcrypt = ["bcrypt"]
 
 [[package]]
 name = "django-allauth"
-version = "0.45.0"
+version = "0.52.0"
 description = "Integrated set of Django applications addressing authentication, registration, account management as well as 3rd party (social) account authentication."
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.5"
 
 [package.dependencies]
 Django = ">=2.0"
@@ -254,14 +254,17 @@ requests-oauthlib = ">=0.3.0"
 
 [[package]]
 name = "django-birdbath"
-version = "0.0.5"
+version = "1.1.0"
 description = ""
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-Faker = ">=8,<9"
+Faker = ">=8,<14"
+
+[package.extras]
+dev = ["black (==23.1.0)", "flake8 (==6.0.0)", "isort (==5.12.0)"]
 
 [[package]]
 name = "django-debug-toolbar"
@@ -1338,7 +1341,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "aa13710aeeb3f66c9f82283a7f7435bdab39803a67b8e13aa287baab6c0ca7ba"
+content-hash = "e61d2d4029cd1d1433faaf5c16f73ccca8f460327b6d724fb30fb5ce7164a930"
 
 [metadata.files]
 anyascii = []
