@@ -11,22 +11,70 @@ from etna.records.fields import RecordField
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
-    DEFAULT = "default", _("Transcription")
-    PARTIAL_TRANSCRIPTION = "partial-transcription", _("Partial transcription")
+    TRANSCRIPT = "transcript", _("Transcript")
+    PARTIAL_TRANSCRIPTION = "partial-transcript", _("Partial transcript")
 
 
 class TranslationHeadingChoices(models.TextChoices):
-    DEFAULT = "default", _("Translation")
+    TRANSLATION = "translation", _("Translation")
     MODERN_ENGLISH = "modern-english", _("Modern English")
 
 
 class CustomImage(ClusterableModel, AbstractImage):
+    title = models.CharField(
+        max_length=255,
+        verbose_name=_("title"),
+        help_text=_(
+            "The descriptive name of the image. If this image features in a highlights gallery, this title will be visible on the page."
+        ),
+    )
+
     copyright = models.CharField(
-        verbose_name=_("Copyright"), blank=True, max_length=120, help_text="???"
+        verbose_name=_("copyright"),
+        blank=True,
+        max_length=120,
+        help_text=_(
+            "Credit for images not owned by TNA. Do not include the copyright symbol."
+        ),
     )
 
     is_sensitive = models.BooleanField(
         verbose_name=_("This image is sensitive"), default=False
+    )
+
+    transcription_heading = models.CharField(
+        verbose_name=_("transcription heading"),
+        max_length=30,
+        choices=TranscriptionHeadingChoices.choices,
+        default=TranscriptionHeadingChoices.TRANSCRIPT,
+    )
+
+    transcription = RichTextField(
+        verbose_name=_("transcription"),
+        features=["bold", "italic", "ol", "ul"],
+        blank=True,
+        max_length=1500,
+        help_text=_("If the image contains text consider adding a transcript."),
+    )
+
+    translation_heading = models.CharField(
+        verbose_name=_("translation heading"),
+        max_length=30,
+        choices=TranslationHeadingChoices.choices,
+        default=TranslationHeadingChoices.TRANSLATION,
+        help_text=_(
+            'If the original transcription language is some earlier form of English, choose "Modern English". If not, choose “Translation”.'
+        ),
+    )
+
+    translation = RichTextField(
+        verbose_name=_("translation"),
+        features=["bold", "italic", "ol", "ul"],
+        blank=True,
+        max_length=1500,
+        help_text=_(
+            "An optional English / Modern English translation of the transcription."
+        ),
     )
 
     record = RecordField(
@@ -48,42 +96,13 @@ class CustomImage(ClusterableModel, AbstractImage):
 
     description = RichTextField(
         verbose_name=_("description"),
-        help_text="??",
-        blank=True,
-        features=settings.INLINE_RICH_TEXT_FEATURES,
-        max_length=900,
-    )
-
-    transcription_heading = models.CharField(
-        max_length=30,
-        choices=TranscriptionHeadingChoices.choices,
-        default=TranscriptionHeadingChoices.DEFAULT,
-        help_text="???",
-    )
-
-    transcription = RichTextField(
-        verbose_name=_("transcription"),
-        features=["bold", "italic", "ol", "ul"],
-        max_length=1500,
-        help_text=_("An optional transcription of the image."),
-        blank=True,
-    )
-
-    translation_heading = models.CharField(
-        max_length=30,
-        choices=TranslationHeadingChoices.choices,
-        default=TranslationHeadingChoices.DEFAULT,
-        help_text="???",
-    )
-
-    translation = RichTextField(
-        verbose_name=_("translation"),
-        features=["bold", "italic", "ol", "ul"],
-        max_length=1500,
-        help_text=_(
-            "An optional English / Modern English translation of the transcription."
+        help_text=(
+            "This text will appear in highlights galleries. A 100-300 word "
+            "description of the story of the record and why it is significant."
         ),
         blank=True,
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=900,
     )
 
     search_fields = [
@@ -99,6 +118,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         "collection",
         "title",
         "file",
+        "copyright",
         "is_sensitive",
         "tags",
         "focal_point_x",

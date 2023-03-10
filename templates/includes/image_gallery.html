@@ -62,11 +62,11 @@
                 {% if item.image.transcription or item.image.translation %}
                     <div class="transcription__text">
                         {% if item.image.transcription %}
-                            <h2>{{ item.image.transcription_heading }}</h2>
+                            <h2>{{ item.image.get_transcription_heading_display }}</h2>
                             <p>{{ item.image.transcription|richtext }}</p>
                         {% endif %}
                         {% if item.image.translation %}
-                            <h2>{{ item.image.translation_heading }}</h2>
+                            <h2>{{ item.image.get_translation_heading_display }}</h2>
                             <p>{{ item.image.translation|richtext }}</p>
                         {% endif %}
                     </div>
@@ -84,7 +84,7 @@
                                         role="tab"
                                         aria-selected="true"
                                         aria-controls="tabpanel-1-{{ forloop.counter }}">
-                                    <span>{{ item.image.transcription_heading }}</span>
+                                    <span>{{ item.image.get_transcription_heading_display }}</span>
                                 </button>
                             {% endif %}
                             {% if item.image.translation %}
@@ -95,7 +95,7 @@
                                         aria-selected="false"
                                         aria-controls="tabpanel-2-{{ forloop.counter }}"
                                         tabindex="-1">
-                                    <span>{{ item.image.translation_heading }}</span>
+                                    <span>{{ item.image.get_translation_heading_display }}</span>
                                 </button>
                             {% endif %}
                         </div>
