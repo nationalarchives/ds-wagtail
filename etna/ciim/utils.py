@@ -2,7 +2,10 @@ import re
 
 from typing import Any, Dict, Optional
 
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
+from django.utils.safestring import mark_safe
+
+import bleach
 
 from pyquery import PyQuery as pq
 
@@ -183,8 +186,7 @@ def find_all(collection, predicate=lambda: False):
 
 
 def format_description_markup(markup):
-    markup = resolve_links(markup)
-    return markup
+    return resolve_links(markup)
 
 
 def strip_scope_and_content(markup):
@@ -245,7 +247,19 @@ def convert_sort_key_to_index(sort):
 def format_link(link_html: str) -> Dict[str, str]:
     """
     Extracts iaid and text from a link HTML string, e.g. "<a href="C5789">DEFE 31</a>"
-    and returns as dict in the format: `{"iaid":"C5789", "text":"DEFE 31"}
+    and returns as dict in the format: `{"id":"C5789", "href": "/catalogue/id/C5789/", "text":"DEFE 31"}
     """
     document = pq(link_html)
-    return {"iaid": document.attr("href"), "text": document.text()}
+    id = document.attr("href")
+    try:
+        href = reverse("details-page-machine-readable", kwargs={"iaid": id})
+    except NoReverseMatch:
+        href = ""
+    return {"href": href, "id": id, "text": document.text()}
+
+
+def strip_html(value: str, preserve_marks=False):
+    tags = []
+    if preserve_marks:
+        tags.append("mark")
+    return mark_safe(bleach.clean(value, tags=tags, strip=True))
