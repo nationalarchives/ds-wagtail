@@ -82,7 +82,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         required=False,
         max_length=50,
         label="Duration",
-        help_text="Podcast or video duration. Or estimated read time of article.",
+        help_text="Podcast or video duration.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     target_blank = blocks.BooleanBlock(
