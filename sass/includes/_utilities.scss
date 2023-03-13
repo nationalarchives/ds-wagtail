@@ -1,0 +1,27 @@
+.u {
+  &-margin {
+    &-xxs {
+      margin-bottom: 8px;
+    }
+
+    &-xs {
+      margin-bottom: 12px;
+    }
+
+    &-s {
+      margin-bottom: 24px;
+    }
+
+    &-m {
+      margin-bottom: 48px;
+    }
+
+    &-l {
+      margin-bottom: 72px;
+    }
+
+    &-xl {
+      margin-bottom: 96px;
+    }
+  }
+}
