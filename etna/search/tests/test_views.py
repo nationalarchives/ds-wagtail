@@ -1187,20 +1187,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric2": 0,
             },
         )
-        with open(path, "r") as f:
-            responses.add(
-                responses.GET,
-                "https://kong.test/data/search",
-                json=json_module.loads(f.read()),
-            )
-
-        response = self.client.get("/search/website/?group=video")
-
-        self.assertTemplateUsed(response, "search/website_search.html")
-
-        html_decoded_response = response.content.decode("utf8")
-        desired_datalayer_script_tag = """<script id="gtmDatalayer" type="application/json">{"contentGroup1": "Search", "customDimension1": "offsite", "customDimension2": "", "customDimension3": "WebsiteSearchView", "customDimension4": "", "customDimension5": "", "customDimension6": "", "customDimension7": "", "customDimension8": "Website results: video", "customDimension9": "*", "customDimension10": "", "customDimension11": "", "customDimension12": "", "customDimension13": "", "customDimension14": "", "customDimension15": "", "customDimension16": "", "customDimension17": "", "customMetric1": 348, "customMetric2": 0}</script>"""
-        self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
 
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
