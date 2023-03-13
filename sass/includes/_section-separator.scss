@@ -4,13 +4,12 @@
     font-weight: 500;
     font-family: $font__supria-sans;
     color: $color__dark;
-    padding-top: 2rem;
     background: transparent;
 
     &-text {
       display: inline-block;
 
-      @media only screen and (max-width: $screen__md) { 
+      @media only screen and (max-width: $screen__md) {
         width: 100%;
         overflow-wrap: break-word;
       }
@@ -33,23 +32,26 @@
           display: flex;
           justify-content: space-between;
           font-size: 2rem;
-          border-bottom: 0.25rem solid $color__grey-4;
+          align-items: center;
+          cursor: pointer;
 
           &:hover {
             cursor: pointer;
           }
+
           &:focus {
             outline: 0.3125rem solid $color__blue_4;
           }
 
-          &[aria-expanded="true"] {
+          &[aria-expanded='true'] {
             .section-separator__heading-chevron {
-              background: url($fa_chevron_up) no-repeat right 95%/2rem;
+              background-image: url($fa_chevron_up);
             }
           }
         }
 
-        &-text, &-chevron {
+        &-text,
+        &-chevron {
           pointer-events: none;
         }
 
@@ -59,11 +61,12 @@
           }
           &-chevron {
             display: inline-block;
-            align-self: flex-end;
-            font-size: 2rem;
-            background: url($fa_chevron_down) no-repeat right 90%/2rem;
-            width: 3rem;
-            height: 3rem;
+            background-image: url($fa_chevron_down);
+            background-repeat: no-repeat;
+            background-position: top right;
+            background-size: 30px 30px;
+            width: 30px;
+            height: 30px;
           }
         }
       }
