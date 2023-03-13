@@ -42,11 +42,11 @@
   } @else {
     @include rem-font-size($small-size);
 
-    @media (max-width: $screen__md) {
+    @media (min-width: $screen__md) {
       @include rem-font-size($medium-size);
     }
 
-    @media (max-width: $screen__lg) {
+    @media (min-width: $screen__lg) {
       @include rem-font-size($large-size);
     }
   }
