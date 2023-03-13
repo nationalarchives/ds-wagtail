@@ -89,3 +89,40 @@ $fa_list_blue: '#{$fa_path}list-ul-blue.svg';
 $fa_folder: '#{$fa_path}folder.svg';
 $fa_x-mark: '#{$fa_path}x-mark.svg';
 $fa_plus: '#{$fa_path}plus.svg';
+
+// Font sizes
+$base-font-size: 16px;
+$base-line-height: 1.6;
+
+$large-font-sizes: (
+  xxxl: 64px,
+  xxl: 32px,
+  xl: 20.8px,
+  l: 20px,
+  m: 18px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);
+
+$medium-font-sizes: (
+  xxxl: 42px,
+  xxl: 26px,
+  xl: 22px,
+  l: 18px,
+  m: 16px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);
+
+$small-font-sizes: (
+  xxxl: 36px,
+  xxl: 24px,
+  xl: 20px,
+  l: 18px,
+  m: 16px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);
