@@ -19,9 +19,11 @@
 
     &__form {
         margin-left: auto;
+        //width: 100%;
 
         @media only screen and (max-width: $screen__md) {
             margin-left: 0;
+            width: 100%;
         }
 
         &-select {
@@ -137,7 +139,9 @@
         padding-right: 1rem;
         border-radius: 5px;
         background: #eeedf3;
+        min-height: 44px;
         width: 100%;
+        margin-bottom:1rem;
     }
 
 }

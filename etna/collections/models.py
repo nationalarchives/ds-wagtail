@@ -14,9 +14,9 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..ciim.exceptions import KongAPIError
 from ..core.models import BasePage, BasePageWithIntro
-from ..records.models import Record
+from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -427,6 +427,9 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         ),
         FieldPanel("featured_record_article"),
         FieldPanel("featured_article"),
+    ]
+
+    promote_panels = BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
     ]
@@ -554,8 +557,8 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
-        except (KongAPIError, APIManagerException):
+            return records_client.fetch(iaid=self.record_iaid)
+        except KongAPIError:
             return None
 
     panels = [

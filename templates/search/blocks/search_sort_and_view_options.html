@@ -2,7 +2,7 @@
 
 
 <div class="search-sort-view">
-    <form action='' method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
+    <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form" search-type="{% with request.resolver_match.url_name as url_name  %} {% if url_name == 'search-featured' %} {{searchtabs.ALL.value}} {% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
 {{searchtabs.WEBSITE.value}} {% endif %} {%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="">
 
         <h2 class="search-sort-view__heading">
@@ -31,7 +31,6 @@
                     <span class="sr-only">Displaying results as a list</span>
                 </a>
             {% endif %}
-            </a>
         </li>
         <li class="search-sort-view__list-item">
             {% if form.cleaned_data.display == 'grid' %}

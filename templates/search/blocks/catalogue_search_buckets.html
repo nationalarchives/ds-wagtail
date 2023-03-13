@@ -2,13 +2,13 @@
 <!--new form element-->
 <div class="search-sort-view search-others">
 
-   <form action='' method="GET" class="search-sort-view__form" data-id="search-bucket-mobile" id="search-bucket-mobile">
+   <form method="GET" class="search-sort-view__form" data-id="search-bucket-mobile" id="search-bucket-mobile">
    
     
         <h2 class="search-sort-view__heading">
             <label for="id-for-this-dropdown">Show results from:</label>
         </h2>
-        <select name="group" id="id-for-this-dropdown">
+        <select name="group" id="id-for-this-dropdown" class="search-sort-view__form-select">
             {% for bucket in buckets %}
                 {% if bucket.result_count != None %}
                     <option value="{{ bucket.key }}" {% if bucket.is_current %}selected{% endif %} >{{ bucket.label_with_count }}</option>
@@ -26,7 +26,7 @@
 </div>
 <!-- end new form element-->
 
-<nav class="search-buckets" aria-label="Result categories">
+<nav class="search-buckets" aria-label="Record categories">
     <ul class="search-buckets__list" data-id="search-buckets-list">
         {% for bucket in buckets %}
             {% if bucket.result_count != None %}
