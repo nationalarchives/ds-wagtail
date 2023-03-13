@@ -1196,7 +1196,7 @@ class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
 
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.get_url(self.test_url)
+        self.client.get(self.test_url)
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
