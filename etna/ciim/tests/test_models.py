@@ -1,26 +1,17 @@
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, override_settings
 
 import responses
 
+from ...records.api import get_records_client
 from ...records.models import Record
 from ..exceptions import DoesNotExist, KongAPIError, MultipleObjectsReturned
-from ..models import APIManager
-from .factories import create_record, create_response
-
-
-class DeprecatedSearchManagerTest(SimpleTestCase):
-    @responses.activate
-    def test_search_property_raises_deprecation_warning(self):
-        with self.assertRaisesMessage(
-            DeprecationWarning, "Record.search is deprecated. Use Record.api instead."
-        ):
-            Record.search.fetch(iaid="C140")
+from .factories import create_record, create_search_response
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-class ManagerExceptionTest(TestCase):
+class APIClientExceptionTest(SimpleTestCase):
     def setUp(self):
-        self.manager = APIManager("records.Record")
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_raises_does_not_exist(self):
@@ -31,7 +22,7 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(DoesNotExist):
-            self.manager.fetch(iaid="C140")
+            self.records_client.fetch(iaid="C140")
 
     @responses.activate
     def test_raises_multiple_objects_returned(self):
@@ -42,61 +33,54 @@ class ManagerExceptionTest(TestCase):
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.manager.fetch(iaid="C140")
+            self.records_client.fetch(iaid="C140")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-class SearchManagerFilterTest(TestCase):
+class APIClientFilterTest(SimpleTestCase):
     def setUp(self):
-        self.manager = Record.api
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_hits_returns_list(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
-            json=create_response(
-                records=[create_record(iaid="C4122893"), create_record(iaid="C4122894")]
+            json=create_search_response(
+                total_count=2,
+                records=[
+                    create_record(iaid="C4122893"),
+                    create_record(iaid="C4122894"),
+                ],
             ),
         )
 
-        count, results = self.manager.search(web_reference="ADM 223/3")
+        result = self.records_client.search(web_reference="ADM 223/3")
 
-        self.assertEqual(count, 2)
-        self.assertEqual(len(results), 2)
-        self.assertTrue(isinstance(results[0], Record))
-        self.assertTrue(isinstance(results[1], Record))
-        self.assertEqual(results[0].iaid, "C4122893")
-        self.assertEqual(results[1].iaid, "C4122894")
+        self.assertEqual(result.total_count, 2)
+        self.assertEqual(len(result), 2)
+        self.assertTrue(isinstance(result.hits[0], Record))
+        self.assertTrue(isinstance(result.hits[1], Record))
+        self.assertEqual(result.hits[0].iaid, "C4122893")
+        self.assertEqual(result.hits[1].iaid, "C4122894")
 
     @responses.activate
-    def test_fetch_for_record_out_of_bounds_raises_key_error(self):
+    def test_fetch_for_record_out_of_bounds_raises_index_error(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/search",
-            json=create_response(records=[create_record()]),
+            json=create_search_response(records=[create_record()]),
         )
 
-        _, results = self.manager.search(web_reference="ADM 223/3")
+        result = self.records_client.search(web_reference="ADM 223/3")
 
         with self.assertRaises(IndexError):
-            results[1]
+            result.hits[1]
 
 
-class SearchManagerKongCount(TestCase):
+class KongExceptionTest(SimpleTestCase):
     def setUp(self):
-        self.manager = APIManager("records.Record")
-
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/search",
-            json=create_response(records=[create_record()]),
-        )
-
-
-class KongExceptionTest(TestCase):
-    def setUp(self):
-        self.manager = APIManager("records.Record")
+        self.records_client = get_records_client()
 
     @responses.activate
     def test_raises_invalid_iaid_match(self):
@@ -107,4 +91,4 @@ class KongExceptionTest(TestCase):
         )
 
         with self.assertRaises(KongAPIError):
-            self.manager.fetch(iaid="C140")
+            self.records_client.fetch(iaid="C140")

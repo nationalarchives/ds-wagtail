@@ -1,14 +1,14 @@
-{% load records_tags wagtailcore_tags %}
+{% load records_tags wagtailcore_tags i18n %}
 <div class="generic-intro record-matters">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-10 col-sm-12">
-                <h2 class="story-title">The story of this record</h2>
-                {% if record.date_created or record.reference_number %}
+                <h2 class="story-title">{% trans title %}</h2>
+                {% if page.date_text or record.reference_number %}
                     <div class="record-matters__content">
-                        {% if record.date_created %}
+                        {% if page.date_text %}
                             <p class="record-matters__text">
-                                Date: <strong>{{ record.date_created }}</strong>
+                                Date: <strong>{{ page.date_text }}</strong>
                             </p>
                         {% endif %}
                         {% if record.reference_number %}
@@ -19,41 +19,48 @@
                         {% endif %}
                     </div>
                 {% endif %}
-                {% if record.description %}
+                {% if page.about %}
                     <div id="readLessContent" class="hidden">
-                        {{ record.description|richtext|truncatewords_html:50 }}
-                        <button id="readMoreButton" class="record-matters__plain-button" href="" aria-label="Expand to read more about this record">
-                            Read more
-                            {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
-                        </button>
+                        {% with about=page.about|richtext|truncatechars_html:300 %}
+                            {{ about }}
+                            <button id="readMoreButton"
+                                    class="record-matters__plain-button {% if about|length <= 300 %}hidden{% endif %}"
+                                    href=""
+                                    aria-label="Expand to read more about this record">
+                                Read more
+                                {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
+                            </button>
+                        {% endwith %}
                     </div>
                     <div id="readMoreContent">
-                        {{ record.description|richtext }}
+                        {{ page.about|richtext }}
                         <button id="readLessButton"
                                 class="record-matters__plain-button hidden"
                                 type="button"
-                                href="">
+                                aria-label="Close to read less about this record">
                             Read less
                             {% include "static/images/fontawesome-svgs/circle-x-mark.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>
                 {% endif %}
             </div>
-            <div class="col-md-10 col-sm-12 record-matters__buttons">
-                {% if record %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{% record_url record is_editorial=True %}"
-                       rel="noopener noreferrer">View record details</a>
-                {% endif %}
-                {% if page.image_library_link %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{{ page.image_library_link }}"
-                       rel="noopener noreferrer">Use this image</a>
-                {% endif %}
-                {% if page.print_on_demand_link %}
-                    <a class="tna-button--yellow tna-button--full-width"
-                       href="{{ page.print_on_demand_link }}"
-                       rel="noopener noreferrer">Buy an art print</a>
+            {% if record or page.image_library_link or page.print_on_demand_link %}
+                <div class="col-md-10 col-sm-12 record-matters__buttons">
+                    {% if record %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{% record_url record is_editorial=True %}"
+                           rel="noopener noreferrer">View record details</a>
+                    {% endif %}
+                    {% if page.image_library_link %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{{ page.image_library_link }}"
+                           rel="noopener noreferrer">Use this image</a>
+                    {% endif %}
+                    {% if page.print_on_demand_link %}
+                        <a class="tna-button--yellow tna-button--full-width"
+                           href="{{ page.print_on_demand_link }}"
+                           rel="noopener noreferrer">Buy an art print</a>
+                    {% endif %}
                 </div>
             {% endif %}
         </div>

@@ -8,8 +8,9 @@ from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
-from django.urls import reverse
+from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 
 from ..analytics.mixins import DataLayerMixin
 from ..ciim.models import APIModel
@@ -19,6 +20,7 @@ from ..ciim.utils import (
     extract,
     format_description_markup,
     format_link,
+    strip_html,
 )
 from .converters import IAIDConverter
 
@@ -33,8 +35,9 @@ class Record(DataLayerMixin, APIModel):
         This method recieves the raw JSON data dict recieved from
         Kong and makes it available to the instance as `self._raw`.
         """
-        self.score = raw_data.get("_score")
         self._raw = raw_data.get("_source") or raw_data
+        self.score = raw_data.get("_score")
+        self.highlights = raw_data.get("highlight") or {}
 
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
@@ -63,50 +66,27 @@ class Record(DataLayerMixin, APIModel):
         return self.get("@template.details", default=self.get("@template.results", {}))
 
     @cached_property
-    def highlights(self) -> Dict[str, Any]:
-        return self.get("highlight", default={})
-
-    @cached_property
     def iaid(self) -> str:
         """
-        Return the "iaid" value for this record (if one is available).
-
-        Raises `ValueExtractionError` when the raw data does not include
-        any candidate values.
-
-        Raises `ValueError` when the raw data includes a value where iaids
-        are usually found, but the value is not a valid iaid.
+        Return the "iaid" value for this record. If the data is unavailable,
+        or is not a valid iaid, a blank string is returned.
         """
         try:
             candidate = self.template["iaid"]
         except KeyError:
-            candidate = self.get("@admin.id")
+            candidate = self.get("@admin.id", default="")
 
-        # value is not guaranteed to be a valid 'iaid', so we must
-        # check it before returning it as one
-        if not re.match(IAIDConverter.regex, candidate):
-            raise ValueError(f"Value '{candidate}' from API is not a valid iaid.")
-        return candidate
-
-    def has_iaid(self) -> bool:
-        """
-        Returns `True` if a valid 'iaid' value can be extracted from the
-        raw data for this record. Otherwise `False`.
-        """
-        try:
-            self.iaid
-        except (ValueExtractionError, ValueError):
-            return False
-        else:
-            return True
+        if candidate and re.match(IAIDConverter.regex, candidate):
+            # value is not guaranteed to be a valid 'iaid', so we must
+            # check it before returning it as one
+            return candidate
+        return ""
 
     @cached_property
     def reference_number(self) -> str:
         """
-        Return the "reference_number" value for this record (if one is available).
-
-        Raises `ValueExtractionError` when the raw data does not include
-        values in any of the expected positions.
+        Return the "reference_number" value for this record, or a blank
+        string if no such value can be found in the usual places.
         """
         try:
             return self.template["referenceNumber"]
@@ -118,24 +98,13 @@ class Record(DataLayerMixin, APIModel):
                 return item["reference_number"]
             except KeyError:
                 pass
-        raise ValueExtractionError(
-            f"'reference_number' could not be extracted from source data: {self._raw}"
-        )
+        return ""
 
-    def has_reference_number(self) -> bool:
-        """
-        Returns `True` if a 'reference_number' value can be extracted from the
-        raw data for this record. Otherwise `False`.
-        """
-        try:
-            self.reference_number
-        except ValueExtractionError:
-            return False
-        else:
-            return True
+    def reference_prefixed_summary_title(self):
+        return f"{self.reference_number or 'N/A'} - {self.summary_title}"
 
     @cached_property
-    def url(self):
+    def source_url(self):
         """
         Return the "url" value for this record. This value is typically
         only present for 'interpretive' results from other websites.
@@ -147,16 +116,16 @@ class Record(DataLayerMixin, APIModel):
             return self.template["sourceUrl"]
         except KeyError:
             raise ValueExtractionError(
-                f"'url' could not be extracted from source data: {self._raw}"
+                f"'source_url' could not be extracted from source data: {self._raw}"
             )
 
-    def has_url(self) -> bool:
+    def has_source_url(self) -> bool:
         """
-        Returns `True` if a 'url' value can be extracted from the raw data
+        Returns `True` if a 'source_url' value can be extracted from the raw data
         for this record. Otherwise `False`.
         """
         try:
-            self.url
+            self.source_url
         except ValueExtractionError:
             return False
         else:
@@ -164,8 +133,13 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def summary_title(self) -> str:
+        if raw := self._get_raw_summary_title():
+            return mark_safe(strip_html(raw, preserve_marks=True))
+        return raw
+
+    def _get_raw_summary_title(self) -> str:
         try:
-            return self.highlights["@template.details.summaryTitle"]
+            return "... ".join(self.highlights["@template.details.summaryTitle"])
         except KeyError:
             pass
         try:
@@ -175,11 +149,39 @@ class Record(DataLayerMixin, APIModel):
         return self.get("summary.title", default="")
 
     @cached_property
+    def url(self) -> str:
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+        if self.reference_number:
+            try:
+                return reverse(
+                    "details-page-human-readable",
+                    kwargs={"reference_number": self.reference_number},
+                )
+            except NoReverseMatch:
+                pass
+        if self.has_source_url():
+            return self.source_url
+        return ""
+
+    @cached_property
     def is_tna(self):
         for item in self.get("@datatype.group", ()):
             if item.get("value", "") == "tna":
                 return True
         return False
+
+    @cached_property
+    def type(self) -> Union[str, None]:
+        try:
+            return self.template["type"]
+        except KeyError:
+            return self.get("@datatype.base", None)
 
     @cached_property
     def access_condition(self) -> str:
@@ -206,7 +208,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def is_digitised(self) -> bool:
-        return self.get("digitised", default=False)
+        return self.get("digitised", default=self.template.get("digitised", False))
 
     @cached_property
     def availability_delivery_surrogates(self) -> str:
@@ -220,10 +222,15 @@ class Record(DataLayerMixin, APIModel):
     def catalogue_source(self) -> str:
         return self.get("source.value", default="")
 
-    @property
-    def raw_description(self) -> str:
+    @cached_property
+    def description(self) -> str:
+        if raw := self._get_raw_description():
+            return mark_safe(strip_html(raw, preserve_marks=True))
+        return ""
+
+    def _get_raw_description(self) -> str:
         try:
-            return self.highlights["@template.details.description"]
+            return "... ".join(self.highlights["@template.details.description"])
         except KeyError:
             pass
         try:
@@ -237,9 +244,14 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def description(self) -> str:
-        if raw := self.raw_description:
-            return format_description_markup(raw)
+    def content(self) -> str:
+        if raw := self._get_raw_content():
+            return strip_html(raw)
+        return ""
+
+    def _get_raw_content(self) -> str:
+        for item in self.get("source.content", ()):
+            return item
         return ""
 
     @cached_property
@@ -249,6 +261,10 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def date_created(self) -> str:
         return self.template.get("dateCreated", "")
+
+    @cached_property
+    def record_opening(self) -> str:
+        return self.template.get("recordOpening", "")
 
     @cached_property
     def level(self) -> str:
@@ -390,7 +406,7 @@ class Record(DataLayerMixin, APIModel):
         for ancestor in self.hierarchy:
             if (
                 ancestor.level_code == 3
-                and ancestor.has_reference_number()
+                and ancestor.reference_number
                 and ancestor.summary_title
             ):
                 return f"{ancestor.reference_number} - {ancestor.summary_title}"
@@ -398,7 +414,7 @@ class Record(DataLayerMixin, APIModel):
 
     @property
     def custom_dimension_14(self) -> str:
-        if self.has_reference_number() and self.summary_title:
+        if self.reference_number and self.summary_title:
             return f"{self.reference_number} - {self.summary_title}"
         return ""
 

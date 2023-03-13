@@ -4,20 +4,39 @@ import logging
 import re
 
 from datetime import date, datetime, time
-from typing import Any, Optional, Union
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Dict,
+    Iterable,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+    Type,
+    Union,
+)
 
+from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
 
 import requests
 
+from etna.records.models import Record
+
 from .exceptions import (
+    DoesNotExist,
     KongBadRequestError,
     KongCommunicationError,
     KongInternalServerError,
     KongServiceUnavailableError,
+    MultipleObjectsReturned,
 )
 
 logger = logging.getLogger(__name__)
+
+if TYPE_CHECKING:
+    from etna.ciim.models import APIModel
 
 
 class Stream(str, enum.Enum):
@@ -134,6 +153,61 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
     return filter_prepared_list
 
 
+class ResultList:
+    """
+    A convenience class that lazily converts a raw list of "hits" (from various
+    API endpoints) into instances of `item_type` when iterated, as well
+    providing the following developer-friendly helper attributes:
+
+    `total_count`:
+        The total number of results available
+
+    `aggregations`:
+        A dict of "aggregation" values from the results themselves
+
+    `bucket_counts`:
+        A list of count values for each 'bucket'
+    """
+
+    def __init__(
+        self,
+        hits: Sequence[Dict[str, Any]],
+        total_count: int,
+        item_type: Type,
+        aggregations: Dict[str, Any],
+        bucket_counts: List[Dict[str, Union[str, int]]],
+    ):
+        self._hits = hits or []
+        self.total_count = total_count
+        self.item_type = item_type
+        self.aggregations = aggregations
+        self.bucket_counts = bucket_counts
+
+    @cached_property
+    def hits(self) -> Tuple["APIModel"]:
+        """
+        Return a tuple of APIModel instances representative of the raw `_hits`
+        data. The return value is cached to support reuse without any
+        transformation overhead.
+        """
+        return tuple(
+            self.item_type.from_api_response(h) if isinstance(h, dict) else h
+            for h in self._hits
+        )
+
+    def __iter__(self) -> Iterable["APIModel"]:
+        yield from self.hits
+
+    def __len__(self) -> int:
+        return len(self._hits)
+
+    def __bool__(self) -> bool:
+        return bool(self._hits)
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name} {self.hits}>"
+
+
 class KongClient:
     """Client used to Fetch and validate data from Kong."""
 
@@ -157,42 +231,10 @@ class KongClient:
         self.session.verify = verify_certificates
         self.timeout = timeout
 
-    def fetch(
-        self,
-        *,
-        iaid: Optional[str] = None,
-        id: Optional[str] = None,
-        template: Optional[Template] = None,
-        expand: Optional[bool] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
-
-        Used to fetch a single item by its identifier.
-
-        Keyword arguments:
-
-        iaid:
-            Return match on Information Asset Identifier
-        id:
-            Generic identifier. Matches on references_number or iaid
-        template:
-            @template data to include with response
-        expand:
-            include @next and @previous record with response. Kong defaults to false
-        """
-        params = {
-            "iaid": iaid,
-            "id": id,
-            "template": template,
-            "expand": expand,
-        }
-
-        return self.make_request(f"{self.base_url}/data/fetch", params=params).json()
-
     @staticmethod
     def format_datetime(
         value: Union[date, datetime], supplementary_time: Optional[time] = None
-    ):
+    ) -> datetime:
         """
         Converts a `date` or `datetime` value to an isoformat string that the API
         will understand. If value is `date`, it will be converted into a `datetime`,
@@ -204,6 +246,81 @@ class KongClient:
                 value, supplementary_time or time.min, tzinfo=get_current_timezone()
             )
         return value.isoformat()
+
+    def resultlist_from_response(
+        self,
+        response_data: Dict[str, Any],
+        bucket_counts: List[Dict[str, Union[str, int]]] = None,
+        item_type: Type = Record,
+    ) -> ResultList:
+        try:
+            hits = response_data["hits"]["hits"]
+        except KeyError:
+            hits = []
+        try:
+            total_count = response_data["hits"]["total"]["value"]
+        except KeyError:
+            total_count = len(hits)
+
+        aggregations_data = response_data.get("aggregations", {})
+        if bucket_counts is None:
+            bucket_counts = aggregations_data.get("group", {}).get("buckets", [])
+
+        return ResultList(
+            hits=hits,
+            total_count=total_count,
+            item_type=item_type,
+            aggregations=aggregations_data,
+            bucket_counts=bucket_counts,
+        )
+
+    def fetch(
+        self,
+        *,
+        iaid: Optional[str] = None,
+        id: Optional[str] = None,
+        template: Optional[Template] = None,
+        expand: Optional[bool] = None,
+    ) -> Record:
+        """Make request and return response for Kong's /fetch endpoint.
+
+        Used to fetch a single item by its identifier.
+
+        Keyword arguments:
+
+        iaid:
+            Return match on Information Asset Identifier - iaid (or similar primary identifier)
+        id:
+            Generic identifier. Matches on references_number or iaid
+        template:
+            @template data to include with response
+        expand:
+            include @next and @previous record with response. Kong defaults to false
+        """
+        params = {
+            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
+            # API argument name is temporary, and 'iaid' will be replaced more broadly with
+            # something more generic soon
+            "metadataId": iaid,
+            "id": id,
+            "template": template,
+            "expand": expand,
+        }
+
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/fetch", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # Convert the Python dict to a ResultList
+        result_list = self.resultlist_from_response(response_data)
+
+        if not result_list:
+            raise DoesNotExist
+        if len(result_list) > 1:
+            raise MultipleObjectsReturned
+        return result_list.hits[0]
 
     def search(
         self,
@@ -223,8 +340,8 @@ class KongClient:
         filter_keyword: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> ResultList:
+        """Make request and return response for Kong's /search endpoint.
 
         Search all metadata by keyword or web_reference. Results can be
         bucketed, and the search restricted by bucket, reference, topic and
@@ -291,7 +408,23 @@ class KongClient:
                 created_end_date, supplementary_time=time.max
             )
 
-        return self.make_request(f"{self.base_url}/data/search", params=params).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/search", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # Pull out the separate ES responses
+        bucket_counts_data, results_data = response_data["responses"]
+
+        # Return a single ResultList, using bucket counts from the first ES response,
+        # and full hit/aggregation data from the second.
+        return self.resultlist_from_response(
+            results_data,
+            bucket_counts=bucket_counts_data["aggregations"]
+            .get("group", {})
+            .get("buckets", ()),
+        )
 
     def search_all(
         self,
@@ -302,8 +435,8 @@ class KongClient:
         template: Optional[Template] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
-        """Make request and return response for Kong's /fetch endpoint.
+    ) -> Tuple[ResultList]:
+        """Make request and return response for Kong's /searchAll endpoint.
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
@@ -333,9 +466,18 @@ class KongClient:
             "size": size,
         }
 
-        return self.make_request(
-            f"{self.base_url}/data/searchAll", params=params
-        ).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/searchAll", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # The API returns a series of ES 'responses', with results for each 'bucket'.
+        # Each of these responses is converted to it's own `ResultList`, and the collective
+        # `ResultList` objects returned as tuple.
+        return tuple(
+            self.resultlist_from_response(r) for r in response_data.get("responses", ())
+        )
 
     def search_unified(
         self,
@@ -348,7 +490,7 @@ class KongClient:
         sort_order: Optional[SortOrder] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /searchUnified endpoint.
 
         /searchUnified reproduces the private beta’s /search endpoint, turning
@@ -388,9 +530,17 @@ class KongClient:
             "size": size,
         }
 
-        return self.make_request(
+        # Get HTTP response from the API
+        response = self.make_request(
             f"{self.base_url}/data/searchUnified", params=params
-        ).json()
+        )
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # The API returns a single ES response for this endpoint, which can be directly converted
+        # to a ResultList.
+        return self.resultlist_from_response(response_data)
 
     def fetch_all(
         self,
@@ -400,7 +550,7 @@ class KongClient:
         rid: Optional[str] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
-    ) -> dict:
+    ) -> ResultList:
         """Make request and return response for Kong's /fetchAll endpoint.
 
         Used to fetch a all items by for the given identifier(s).
@@ -412,7 +562,7 @@ class KongClient:
         ids:
             Generic identifiers. Matches on references_number or iaid
         iaids:
-            Return matches on Information Asset Identifier
+            Return matches on Information Asset Identifier - iaid (or similar primary identifier)
         rid:
             Return matches on replic ID
         offset:
@@ -421,14 +571,25 @@ class KongClient:
             Number of results to return
         """
         params = {
+            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
+            # API argument name is temporary, and 'iaid' will be replaced more broadly with
+            # something more generic soon
+            "metadataIds": iaids,
             "ids": ids,
-            "iaids": iaids,
             "rid": rid,
             "from": offset,
             "size": size,
         }
 
-        return self.make_request(f"{self.base_url}/data/fetchAll", params=params).json()
+        # Get HTTP response from the API
+        response = self.make_request(f"{self.base_url}/data/fetchAll", params=params)
+
+        # Convert the HTTP response to a Python dict
+        response_data = response.json()
+
+        # The API returns a single ES response for this endpoint, which can be directly converted
+        # to a ResultList.
+        return self.resultlist_from_response(response_data)
 
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None

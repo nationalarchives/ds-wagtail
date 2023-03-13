@@ -1,6 +1,6 @@
 from django.utils.text import slugify
 
-from wagtail.core import blocks
+from wagtail import blocks
 
 
 class SectionBlock(blocks.StructBlock):

@@ -1,6 +1,6 @@
 {% load static wagtailimages_tags wagtailcore_tags %}
 <div class="container">
-    <h2 class="card-grid__title">You may be interested in</h2>
+    <h2 class="card-grid__title">{{ title|default:"You may be interested in" }}</h2>
     <div class="card-grid card-grid--duo">
         {% if topic %}
             <a class="card" href="{% pageurl topic %}">

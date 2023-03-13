@@ -1,10 +1,5 @@
-from typing import Any, Dict, Union
-
 from django import template
 from django.conf import settings
-from django.urls import NoReverseMatch, reverse
-
-from etna.ciim.utils import ValueExtractionError
 
 from ...ciim.constants import LevelKeys
 from ..field_labels import FIELD_LABELS
@@ -14,71 +9,17 @@ register = template.Library()
 
 
 @register.simple_tag
-def record_url(
-    record: Union[Record, Dict[str, Any]],
-    is_editorial: bool = False,
-    is_downloadable: bool = False,
-) -> str:
+def record_url(record: Record, is_editorial: bool = False) -> str:
     """
-    Return the URL for the provided `record` dict; which could either be a
-    full/transformed result from the fetch() endpoint, OR a raw result from
-    the search() endpoint.
+    Return the URL for the provided `record`, which should always be a
+    fully-transformed `etna.records.models.Record` instance.
+
     Handling of Iaid as priority to allow Iaid in disambiguation pages when
     returning more than one record
     """
-    try:
-        # Use Record property if available
-        iaid = record.iaid
-    except AttributeError:
-        # 'record' is likely just a dict
-        iaid = record.get("iaid")
-    except (
-        ValueExtractionError,  # Value was not present
-        ValueError,  # Value was invalid
-    ):
-        iaid = None
-
-    try:
-        # Use Record property if available
-        ref = record.reference_number
-    except AttributeError:
-        # 'record' is likely just a dict
-        ref = record.get("reference_number", record.get("referenceNumber"))
-    except ValueExtractionError:
-        ref = None
-
-    try:
-        # Use Record property if available
-        url = record.url
-    except AttributeError:
-        # 'record' is likely just a dict
-        url = record.get("sourceUrl")
-    except ValueExtractionError:
-        url = None
-
-    if iaid:
-        if (is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY) or (
-            is_downloadable and settings.FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY
-        ):
-            return f"https://discovery.nationalarchives.gov.uk/details/r/{iaid}"
-        try:
-            return reverse("details-page-machine-readable", kwargs={"iaid": iaid})
-        except NoReverseMatch:
-            pass
-    if ref:
-        try:
-            return reverse(
-                "details-page-human-readable", kwargs={"reference_number": ref}
-            )
-        except NoReverseMatch:
-            pass
-    if url:
-        return url
-    try:
-        # Assume `record` is an un-transformed search result
-        return record_url(record["_source"]["@template"]["details"], is_editorial)
-    except (TypeError, KeyError):
-        return ""
+    if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
+        return f"https://discovery.nationalarchives.gov.uk/details/r/{record.iaid}"
+    return record.url
 
 
 @register.simple_tag

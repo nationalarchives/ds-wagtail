@@ -1,16 +1,16 @@
-{% load static wagtailimages_tags %}
+{% load static wagtailimages_tags wagtailcore_tags %}
 <div class="explore-intro">
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-12">
                 <p class="explore-intro__title explore-intro__title--meta">Record revealed</p>
                 <h1 class="explore-intro__title">{{ page.title }}</h1>
-                <p class="explore-intro__paragraph">{{ page.teaser_text }}</p>
+                <p class="explore-intro__paragraph">{{ page.intro|richtext }}</p>
             </div>
             <div class="col-4 explore-intro__image">
                 {% if page.teaser_image %}
-                    {% image page.teaser_image fill-390x300 as teaser_image %}
-                    <img height=390 width=300 src="{{ teaser_image.url }}" alt="" />
+                    {% image page.teaser_image fill-390x390 as teaser_image %}
+                    <img height=390 width=390 src="{{ teaser_image.url }}" alt="" />
                 {% endif %}
             </div>
         </div>
