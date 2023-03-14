@@ -7,7 +7,9 @@
     <ul class="pagination__list">
         {% if page.has_previous %}
         <li class="pagination__list-item">
+
           <a class="pagination__page-chevron-previous" href="?{% query_string_include 'page' page.previous_page_number %}" data-link-type="Pagination" aria-label="Go to Previous Page" data-link="Previous page">&lt; Previous</a>
+
         </li>
         {% else %}
         <li class="pagination__list-item">
@@ -38,7 +40,9 @@
         {% if page.has_next %}
         <li class="pagination__list-item">
             <a class="pagination__page-chevron-next" href="?{% query_string_include 'page' page.next_page_number %}"
+
                data-link="Next page" data-link-type="Pagination" aria-label="Go to Next Page">Next &gt;</a>
+
         </li>
         {% else %}
         <li class="pagination__list-item">
