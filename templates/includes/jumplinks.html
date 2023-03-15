@@ -1,23 +1,21 @@
 {% if sections %}
     <nav class="jumplinks">
-        <div class="container">
-            <h2 class="jumplinks__heading u-margin-s">On this page</h2>
-            <ol class="jumplinks__list">
-                {% for section in sections %}
-                    <li class="jumplinks__list-item">
-                        <a 
-                            class="jumplink" 
-                            href="#{{ section.heading_id }}"
-                            data-component-name="Desktop in page navigation"
-                            data-link-type="Jump links"
-                            data-position="{{ forloop.counter0 }}"
-                            data-link="{{ section.heading_text }}"
-                        >
-                            {{ section.heading_text }}
-                        </a>
-                    </li>
-                {% endfor %}
-            </ol>
-        </div>
+        <h2 class="jumplinks__heading u-margin-s">On this page</h2>
+        <ol class="jumplinks__list">
+            {% for section in sections %}
+                <li class="jumplinks__list-item">
+                    <a 
+                        class="jumplink" 
+                        href="#{{ section.heading_id }}"
+                        data-component-name="Desktop in page navigation"
+                        data-link-type="Jump links"
+                        data-position="{{ forloop.counter0 }}"
+                        data-link="{{ section.heading_text }}"
+                    >
+                        {{ section.heading_text }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ol>
     </nav>
 {% endif %}

@@ -1,9 +1,7 @@
 .jumplinks {
   position: sticky;
   top: 0;
-  padding: 2.5rem 0 0 1rem;
-  //height: 100vh;
-  overflow: scroll;
+  padding-top: 2.5rem;
   -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
   scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
