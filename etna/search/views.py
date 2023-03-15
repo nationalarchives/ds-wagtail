@@ -95,12 +95,20 @@ class BucketsMixin:
     def get_context_data(self, **kwargs):
         if self.bucket_list:
             current_bucket_key = self.get_current_bucket_key()
-            try:
-                bucket_count_data = self.api_result.bucket_counts
-            except AttributeError:
-                bucket_count_data = self.api_result.aggrega
-            kwargs["buckets"] = self.get_buckets(bucket_count_data, current_bucket_key)
-        return super().get_context_data(**kwargs)
+            buckets = self.get_buckets(self.api_result.bucket_counts, current_bucket_key)
+
+            # Set this to True if any buckets have results
+            buckets_contain_results = False
+            for bucket in buckets:
+                if bucket.result_count:
+                    buckets_contain_results = True
+                    break
+
+        return super().get_context_data(
+            buckets=buckets,
+            buckets_contain_results=buckets_contain_results,
+            **kwargs
+        )
 
 
 class KongAPIMixin:
