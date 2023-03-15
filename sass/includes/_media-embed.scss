@@ -1,9 +1,22 @@
 .media-embed {
-  min-height: 37.5rem;
+  $root: &;
   position: relative;
 
-  &__audio-container, &__video-container {
+  &--transcript {
+    #{$root}__content-panel {
+      padding-bottom: 0; // so transcription toggle is flush
+    }
+  }
+
+  &__audio-container,
+  &__video-container {
     text-align: center;
+  }
+
+  &__audio-container {
+    audio {
+      width: 100%;
+    }
   }
 
   &__overlay {
@@ -15,7 +28,7 @@
   }
 
   &__content-panel {
-    padding: 3rem 0;
+    padding: 2rem;
     position: relative;
     z-index: 998;
   }
@@ -40,7 +53,8 @@
   }
 
   &__heading {
-    font-size: 2rem;
+    @include font-size(xxl);
+    margin: 0;
   }
 
   &__date {
@@ -64,7 +78,7 @@
 
     details {
       text-align: left;
-      summary{
+      summary {
         padding: 1rem;
 
         &:focus {
@@ -72,7 +86,8 @@
         }
       }
 
-      summary::marker, summary::-webkit-details-marker {
+      summary::marker,
+      summary::-webkit-details-marker {
         color: $color__white;
       }
     }
@@ -89,6 +104,9 @@
   }
 }
 
-.media-embed__icon-label, .media-embed__heading, .media-embed__description, .media-embed__date {
+.media-embed__icon-label,
+.media-embed__heading,
+.media-embed__description,
+.media-embed__date {
   color: $color__white;
 }
