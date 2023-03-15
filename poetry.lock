@@ -1214,7 +1214,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "wagtail"
-version = "4.2"
+version = "4.2.1"
 description = "A Django content management system."
 category = "main"
 optional = false
@@ -1240,7 +1240,7 @@ telepath = ">=0.1.1,<1"
 Willow = ">=1.4,<1.5"
 
 [package.extras]
-docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==5.3.2)", "myst-parser (==0.18.1)", "sphinx-copybutton (>=0.5,<1.0)"]
+docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==6.0.0)", "myst-parser (==0.18.1)", "sphinx-copybutton (>=0.5,<1.0)"]
 testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=3.0,<3.2)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-frontdoor (>=1.0,<1.1)", "django-pattern-library (>=0.7,<0.8)", "coverage (>=3.7.0)", "black (==22.3.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-comprehensions (==3.8.0)", "flake8-print (==5.0.0)", "doc8 (==0.8.1)", "flake8-assertive (==2.0.0)", "semgrep (==1.3.0)", "curlylint (==0.13.1)", "djhtml (==1.4.13)", "polib (>=1.1,<2.0)", "wagtail-factories (>=4.0,<5)"]
 
 [[package]]
@@ -1341,7 +1341,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "e61d2d4029cd1d1433faaf5c16f73ccca8f460327b6d724fb30fb5ce7164a930"
+content-hash = "2135d35c0259232b8270db559e150c02a26a8cb256887db868c5df78323c23f3"
 
 [metadata.files]
 anyascii = []
