@@ -63,19 +63,6 @@
     }
   }
 
-  &__underline {
-    width: 100%;
-    display: block;
-    position: absolute;
-    bottom: 0;
-
-    @media screen and (min-width: $screen__sm) {
-      max-width: 80%;
-      margin: 0 auto;
-      left: 10%;
-    }
-  }
-
   &__caption {
     border-left: 2px solid $color__white;
     padding-left: 0.5rem;
@@ -151,8 +138,12 @@
 
   &__image {
     max-width: 100%;
-    max-height: 100%;
+    height: auto;
     display: block;
+
+    &--preview {
+      margin: 0 auto;
+    }
   }
 
   &__figure-image {
