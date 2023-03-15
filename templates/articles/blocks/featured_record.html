@@ -3,35 +3,31 @@
 {% load wagtailcore_tags %}
 {% load records_tags %}
 
-<div class="featured-record" data-container-name="featured-record">
-    <div class="container">
-        <{{ heading_level }} class="featured-record__heading">
-            Record details
-        </{{ heading_level }}>
-
-        <div class="featured-record__content">
+<div class="featured-record u-margin-l container" data-container-name="featured-record">
+    <div class="featured-record__container">
+        <div class="featured-record__image-text">
             {% if value.image %}
-                {% include_block value.image %}
+                <picture class="featured-record__image">
+                    {% image value.image.image fill-390x176 as teaser_image %}
+                    <source media="(max-width: 991px)" srcset="{{ teaser_image.url }}">
+                    {% image value.image.image fill-217x133 as teaser_image %}
+                    <source media="(min-width: 992px)" srcset="{{ teaser_image.url }}">
+                    <img src="{{ teaser_image.url }}" {% if value.decorative %}alt=""{% else %}alt="{{ value.alt_text }}"{% endif %}>
+                </picture>
             {% endif %}
 
-            <h4 class="featured-record__standfirst">{{ value.title }}</h4>
-
-            {% if value.record.summary_title %}
-                <p class="featured-record__title"><span class="sr-only">{{ 'summary_title'|as_label }}:</span> {{ value.record.summary_title }}</p>
-            {% endif %}
-
-            <div class="featured-record__metadata">
+            <div class="featured-record__text">
+                <h3 class="featured-record__standfirst">{{ value.title }}</h3>
                 {% if value.record.reference_number %}
-                    <p class="featured-record__reference">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
-                {% endif %}
-                {% if value.record.date_created %}
-                    <p class="featured-record__date">
-                    {{ 'date_created'|as_label }}: {{ value.record.date_created }}
-                    </p>
+                    <div class="featured-record__metadata">
+                        <p class="featured-record__reference">{{ 'reference_number'|as_label }}: {{ value.record.reference_number }}</p>
+                    </div>
                 {% endif %}
             </div>
+        </div>
 
-            <a class="tna-button--dark" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>View <span class="sr-only">{{ value.record.summary_title }}</span> in the catalogue{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
+        <div class="featured-record__action">
+            <a class="featured-record__button tna-button--yellow" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>Visit <span class="sr-only">{{ value.record.summary_title }}</span> the record{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
         </div>
     </div>
 </div>
