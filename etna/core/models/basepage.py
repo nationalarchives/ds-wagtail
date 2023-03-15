@@ -57,14 +57,14 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
 
     # Overriding the original help_text set by default in MetadataPageMixin, turned formatting off here as it's hard to follow
     # fmt: off
-    promote_panels = [
+    promote_panels = [ # noqa: F401
     MultiFieldPanel([
-            FieldPanel('slug', help_text=_("The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]")),
-            FieldPanel('seo_title'),
-            FieldPanel('show_in_menus'),
-            FieldPanel('search_description', help_text=_("The descriptive text displayed underneath a headline in search engine results and when shared on social media.")),
-            FieldPanel('search_image', help_text=_('Description used in indices and search results')),
-        ], _('Common page configuration')),
+            FieldPanel("slug", help_text=_("The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]")),
+            FieldPanel("seo_title"),
+            FieldPanel("show_in_menus"),
+            FieldPanel("search_description", help_text=_("The descriptive text displayed underneath a headline in search engine results and when shared on social media.")),
+            FieldPanel("search_image", help_text=_("Description used in indices and search results")),
+        ], _("Common page configuration")),
         FieldPanel("teaser_image"),
         FieldPanel("teaser_text"),
     ]
