@@ -95,7 +95,9 @@ class BucketsMixin:
     def get_context_data(self, **kwargs):
         if self.bucket_list:
             current_bucket_key = self.get_current_bucket_key()
-            buckets = self.get_buckets(self.api_result.bucket_counts, current_bucket_key)
+            buckets = self.get_buckets(
+                self.api_result.bucket_counts, current_bucket_key
+            )
 
             # Set this to True if any buckets have results
             buckets_contain_results = False
@@ -105,9 +107,7 @@ class BucketsMixin:
                     break
 
         return super().get_context_data(
-            buckets=buckets,
-            buckets_contain_results=buckets_contain_results,
-            **kwargs
+            buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
         )
 
 
