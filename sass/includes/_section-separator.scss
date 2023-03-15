@@ -1,6 +1,6 @@
 .section-separator {
   &__heading {
-    font-size: 3rem;
+    @include font-size(xxl);
     font-weight: 500;
     font-family: $font__supria-sans;
     color: $color__dark;
