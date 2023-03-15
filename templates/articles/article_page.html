@@ -7,12 +7,13 @@
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
+{% block breadcrumb %}{% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' %}
+    {% include 'includes/generic-intro.html' with breadcrumb=True %}
     {% include 'includes/hero-img.html' %}
 
     <div class="article-container container">
-        <div class="article-container__sidebar">
+    <div class="article-container__sidebar">
             {% jumplinks page %}
         </div>
 
