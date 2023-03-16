@@ -75,7 +75,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
                 ),
                 FieldPanel(
                     "search_image",
-                    help_text=_("Description used in indices and search results"),
+                    help_text=_("Image that will appear as a promo when this page is shared on social media."),
                 ),
             ],
             _("Common page configuration"),
