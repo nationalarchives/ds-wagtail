@@ -72,14 +72,22 @@
   }
 
   &__transcript {
-    background-color: $color__dark;
     margin-top: 2rem;
-    padding: 1rem;
+    margin-left: -2rem;
+    margin-right: -2rem;
+    width: calc(100% + 4rem);
 
     details {
+      display: inline-block;
       text-align: left;
+      width: 100%;
+
       summary {
-        padding: 1rem;
+        padding: 0.5rem;
+        width: 180px;
+        background-color: $color__black;
+        margin: 0 auto;
+        text-align: center;
 
         &:focus {
           outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
@@ -88,19 +96,26 @@
 
       summary::marker,
       summary::-webkit-details-marker {
-        color: $color__white;
+        color: $color__yellow_2;
       }
     }
   }
 
   &__transcript-heading {
+    @include font-size(xs);
+    font-weight: normal;
+    font-family: $font__open-sans;
     color: $color__white;
     display: inline;
   }
 
   &__transcript-text {
+    display: block;
+    width: 100%;
+    background-color: $color__dark;
     color: $color__white;
-    margin-top: 2rem;
+    padding: 2rem 2rem 0;
+    overflow: hidden;
   }
 }
 
