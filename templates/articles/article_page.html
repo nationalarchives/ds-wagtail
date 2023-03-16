@@ -13,7 +13,7 @@
     {% include 'includes/hero-img.html' %}
 
     <div class="article-container container">
-    <div class="article-container__sidebar">
+        <div class="article-container__sidebar">
             {% jumplinks page %}
         </div>
 
@@ -25,33 +25,33 @@
                 {% include_block block %}
             {% endfor %}
         </div>
+    </div>
 
-        <div class="article-container-related-content">
-            <div class="container">
-                {% if page.similar_items %}
-                    <h2 class="article-container-related-content__heading">You may also be interested in</h2>
+    <div class="related-content">
+        <div class="container">
+            {% if page.similar_items %}
+                <h2 class="related-content__heading">You may also be interested in</h2>
 
-                    <ul class="card-group--list-style-none">
-                        {% for item in page.similar_items %}
-                            {% include 'includes/card-group-secondary-nav.html' with page=item heading="You may also be interested in" %}
-                        {% endfor %}
-                    </ul>
-                {% endif %}
+                <ul class="card-group--list-style-none">
+                    {% for item in page.similar_items %}
+                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="You may also be interested in" %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
 
-                {% if page.primary_topic or page.primary_time_period %}
-                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
-                {% endif %}
+            {% if page.primary_topic or page.primary_time_period %}
+                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+            {% endif %}
 
-                {% if page.latest_items %}
-                    <h2 class="article-container-related-content__heading">More stories</h2>
+            {% if page.latest_items %}
+                <h2 class="related-content__heading">More stories</h2>
 
-                    <ul class="card-group--list-style-none">
-                        {% for item in page.latest_items %}
-                            {% include 'includes/card-group-secondary-nav.html' with page=item heading="More stories" %}
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </div>
+                <ul class="card-group--list-style-none">
+                    {% for item in page.latest_items %}
+                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="More stories" %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
 

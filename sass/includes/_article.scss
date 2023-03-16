@@ -31,19 +31,4 @@
       padding: 0 1rem;
     }
   }
-
-  &-related-content {
-    grid-column-start: span 4;
-    -ms-grid-column-span: 4;
-    -ms-grid-row: 2;
-    -ms-grid-column: 1;
-    margin-top: 2rem;
-
-    &__heading {
-      @include font-size(xxl);
-      font-family: $font__supria-sans;
-      font-weight: 400;
-      padding: 1rem 0;
-    }
-  }
 }
