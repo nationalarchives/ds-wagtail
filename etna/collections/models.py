@@ -153,7 +153,20 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             ArticlePage.objects.filter(page_topics__topic=self)
             .live()
             .select_related("teaser_image")
-            .order_by("title")[:3]
+            .order_by("-first_published_at")
+            .exclude(title=self.featured_article)
+        )
+
+    @cached_property
+    def related_record_articles(self):
+        from etna.articles.models import RecordArticlePage
+
+        return (
+            RecordArticlePage.objects.filter(page_topics__topic=self)
+            .live()
+            .select_related("teaser_image")
+            .order_by("-first_published_at")
+            .exclude(title=self.featured_article)
         )
     
     @cached_property
