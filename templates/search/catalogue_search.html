@@ -55,12 +55,7 @@
                     {% include './blocks/search_filters.html' %}
                 </div>
                 <div class="catalogue-search-grid__results">
-                    {% if paginator.count %}
-                        {# The refined/filtered search failed to yield results #}
-                        {% include './blocks/search_results.html' %}
-                    {% else %}
-                        {% include './blocks/no_results.html' %}
-                    {% endif %}
+                    {% include './blocks/search_results.html' %}
                 </div>
             </div>
 
