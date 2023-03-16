@@ -223,6 +223,361 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+class EndToEndSearchTestCase(TestCase):
+    # The following HTML snippets must be updated to reflect any future HTML changes
+    results_html = '<ul class="search-results__list" id="analytics-results-list">'
+    no_results_messaging_html = '<h2 class="featured-search__heading">We did not find any results for your search</h2>'
+    bucket_links_html = (
+        '<ul class="search-buckets__list" data-id="search-buckets-list">'
+    )
+    current_bucket_description_html = (
+        '<p class="search-results__explainer search-results__explainer--bucket">'
+    )
+    search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
+    sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
+    filter_options_html = '<form method="GET" data-id="filters-form"'
+
+    def patch_api_endpoint(self, url: str, fixture_path: str):
+        full_fixture_path = (
+            settings.BASE_DIR + "/etna/search/tests/fixtures/" + fixture_path
+        )
+        fixture_content = ""
+        with open(full_fixture_path) as f:
+            fixture_content = json_module.loads(f.read())
+        responses.add(responses.GET, url, json=fixture_content, status=200)
+
+    def patch_search_endpoint(self, fixture_path: str):
+        self.patch_api_endpoint("https://kong.test/data/search", fixture_path)
+
+    def assertNoResultsMessagingRendered(self, response):
+        self.assertIn(self.no_results_messaging_html, response)
+
+    def assertNoResultsMessagingNotRendered(self, response):
+        self.assertNotIn(self.no_results_messaging_html, response)
+
+    def assertBucketLinksRendered(self, response):
+        self.assertIn(self.bucket_links_html, response)
+
+    def assertBucketLinksNotRendered(self, response):
+        self.assertNotIn(self.bucket_links_html, response)
+
+    def assertCurrentBucketDescriptionRendered(self, response):
+        self.assertIn(self.current_bucket_description_html, response)
+
+    def assertCurrentBucketDescriptionNotRendered(self, response):
+        self.assertNotIn(self.current_bucket_description_html, response)
+
+    def assertSearchWithinOptionRendered(self, response):
+        self.assertIn(self.search_within_option_html, response)
+
+    def assertSearchWithinOptionNotRendered(self, response):
+        self.assertNotIn(self.search_within_option_html, response)
+
+    def assertSortOrderOptionsRendered(self, response):
+        self.assertIn(self.sort_order_options_html, response)
+
+    def assertSortOrderOptionsNotRendered(self, response):
+        self.assertNotIn(self.sort_order_options_html, response)
+
+    def assertFilterOptionsRendered(self, response):
+        self.assertIn(self.filter_options_html, response)
+
+    def assertFilterOptionsNotRendered(self, response):
+        self.assertNotIn(self.filter_options_html, response)
+
+    def assertResultsRendered(self, response):
+        self.assertIn(self.results_html, response)
+
+    def assertResultsNotRendered(self, response):
+        self.assertNotIn(self.results_html, response)
+
+
+class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
+    test_url = reverse_lazy("search-catalogue")
+
+    @responses.activate
+    def test_no_matches_for_original_search(self):
+        """
+        When a user does an initial search for something with no matches:
+
+        They SHOULD see:
+        - A "No results" message
+
+        They SHOULD NOT see:
+        - Names, result counts and links for all buckets
+        - A description of the current bucket
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+        """
+
+        self.patch_search_endpoint("catalogue_search_no_results.json")
+        response = self.client.get(self.test_url, data={"q": "foobar"})
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertBucketLinksNotRendered(content)
+        self.assertCurrentBucketDescriptionNotRendered(content)
+        self.assertSearchWithinOptionNotRendered(content)
+        self.assertSortOrderOptionsNotRendered(content)
+        self.assertFilterOptionsNotRendered(content)
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_no_matches_for_the_current_bucket(self):
+        """
+        When a user searches for something that has results for SOME buckets,
+        but they are currently viewing a bucket with no results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A "No results" message.
+
+        They SHOULD NOT see:
+        - A description of the current bucket
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+        """
+
+        self.patch_search_endpoint("catalogue_search_with_some_empty_buckets.json")
+        response = self.client.get(
+            self.test_url, data={"q": "snub", "group": "creator"}
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertCurrentBucketDescriptionNotRendered(content)
+        self.assertSearchWithinOptionNotRendered(content)
+        self.assertSortOrderOptionsNotRendered(content)
+        self.assertFilterOptionsNotRendered(content)
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_no_matches_for_the_refined_search(self):
+        """
+        When a user is viewing a bucket with results for the original search,
+        then uses the "Search within these results" option to refine it, and
+        that 'refined' search has no results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A description of the current bucket
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - A "No results" message.
+
+        They SHOULD NOT see:
+        - Search results
+        """
+
+        self.patch_search_endpoint("catalogue_search_empty_when_refined.json")
+        response = self.client.get(
+            self.test_url,
+            data={"q": "japan", "filter_keyword": "qwerty"},
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertCurrentBucketDescriptionRendered(content)
+        self.assertSearchWithinOptionRendered(content)
+        self.assertSortOrderOptionsRendered(content)
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertFilterOptionsRendered(content)
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_refined_search_with_matches(self):
+        """
+        When a user is viewing a bucket with results for the original search,
+        then uses the "Search within these results" option to refine it, and
+        that 'refined' search has results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A description of the current bucket
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+
+        They SHOULD NOT see:
+        -  A "No results" message.
+        """
+
+        self.patch_search_endpoint("catalogue_search_refined_with_matches.json")
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "japan",
+                "group": "nonTna",
+                "held_by": "London Metropolitan Archives: City of London",
+            },
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertCurrentBucketDescriptionRendered(content)
+        self.assertSearchWithinOptionRendered(content)
+        self.assertSortOrderOptionsRendered(content)
+        self.assertFilterOptionsRendered(content)
+        self.assertResultsRendered(content)
+
+        # SHOULD NOT see
+        self.assertNoResultsMessagingNotRendered(content)
+
+
+class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
+    test_url = reverse_lazy("search-website")
+
+    @responses.activate
+    def test_no_matches_for_original_search(self):
+        """
+        When a user does an initial search for something with no matches:
+
+        They SHOULD see:
+        - A "No results" message
+
+        They SHOULD NOT see:
+        - Names, result counts and links for all buckets
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+        """
+        self.patch_search_endpoint("website_search_no_results.json")
+        response = self.client.get(self.test_url, data={"q": "qwerty"})
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertBucketLinksNotRendered(content)
+        self.assertSearchWithinOptionNotRendered(content)
+        self.assertSortOrderOptionsNotRendered(content)
+        self.assertFilterOptionsNotRendered(content)
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_no_matches_for_the_current_bucket(self):
+        """
+        When a user searches for something that has results for SOME buckets,
+        but they are currently viewing a bucket with no results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A "No results" message.
+
+        They SHOULD NOT see:
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+        """
+        self.patch_search_endpoint("website_search_with_some_empty_buckets.json")
+        response = self.client.get(self.test_url, data={"q": "japan", "group": "audio"})
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertSearchWithinOptionNotRendered(content)
+        self.assertSortOrderOptionsNotRendered(content)
+        self.assertFilterOptionsNotRendered(content)
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_no_matches_for_the_refined_search(self):
+        """
+        When a user is viewing a bucket with results for the original search,
+        then uses the "Search within these results" option to refine it, and
+        that 'refined' search has no results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - A "No results" message.
+
+        They SHOULD NOT see:
+        - Search results
+        """
+
+        self.patch_search_endpoint("website_search_empty_after_refining.json")
+        response = self.client.get(
+            self.test_url,
+            data={"q": "japan", "group": "blog", "filter_keyword": "qwerty"},
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertSearchWithinOptionRendered(content)
+        self.assertSortOrderOptionsRendered(content)
+        self.assertFilterOptionsRendered(content)
+        self.assertNoResultsMessagingRendered(content)
+
+        # SHOULD NOT see
+        self.assertResultsNotRendered(content)
+
+    @responses.activate
+    def test_refined_search_with_matches(self):
+        """
+        When a user is viewing a bucket with results for the original search,
+        then uses the "Search within these results" option to refine it, and
+        that 'refined' search has results:
+
+        They SHOULD see:
+        - Names, result counts and links for all buckets
+        - A "Search within these results" option
+        - Options to change sort order and display style of results
+        - Filter options to refine the search
+        - Search results
+
+        They SHOULD NOT see:
+        -  A "No results" message.
+        """
+        self.patch_search_endpoint("website_search_refined_with_matches.json")
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "japan",
+                "group": "blog",
+                "topic": "East India Company",
+            },
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertBucketLinksRendered(content)
+        self.assertSearchWithinOptionRendered(content)
+        self.assertSortOrderOptionsRendered(content)
+        self.assertFilterOptionsRendered(content)
+        self.assertResultsRendered(content)
+
+        # SHOULD NOT see
+        self.assertNoResultsMessagingNotRendered(content)
+
+
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
@@ -620,7 +975,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         api_resonse_path: str,
         expected: Dict[str, Any],
     ):
-
         # Read the API response content into a variable
         with open(api_resonse_path, "r") as f:
             json = json_module.loads(f.read())
