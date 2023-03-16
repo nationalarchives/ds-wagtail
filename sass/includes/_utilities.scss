@@ -17,11 +17,19 @@
     }
 
     &-l {
-      margin-bottom: 72px;
+      margin-bottom: 48px;
+
+      @media only screen and (min-width: $screen__md) {
+        font-size: 72px;
+      }
     }
 
     &-xl {
-      margin-bottom: 96px;
+      margin-bottom: 48px;
+
+      @media only screen and (min-width: $screen__md) {
+        font-size: 96px;
+      }
     }
   }
 }
