@@ -43,7 +43,7 @@
             {% include './blocks/no_results.html' %}
         {% else %}
             {% if buckets.current.description %}
-                <p class="search-results__explainer">
+                <p class="search-results__explainer search-results__explainer--bucket">
                     {{ buckets.current.description }}
                 </p>
             {% endif %}
