@@ -150,7 +150,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(topic=self)
+            ArticlePage.objects.filter(page_topics__topic=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
@@ -267,7 +267,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(time_period=self)
+            ArticlePage.objects.filter(page_time_periods__time_period=self)
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
