@@ -155,6 +155,15 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             .select_related("teaser_image")
             .order_by("title")[:3]
         )
+    
+    @cached_property
+    def related_highlight_galleries(self):
+        return (
+            HighlightGalleryPage.objects.filter(page_topics__topic=self)
+            .live()
+            .select_related("teaser_image")
+            .order_by("title")
+        )
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -262,6 +271,15 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
             .live()
             .select_related("teaser_image")
             .order_by("title")[:3]
+        )
+    
+    @cached_property
+    def related_highlight_galleries(self):
+        return (
+            HighlightGalleryPage.objects.filter(page_time_periods__time_period=self)
+            .live()
+            .select_related("teaser_image")
+            .order_by("title")
         )
 
 
