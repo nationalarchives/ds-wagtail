@@ -170,7 +170,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             .order_by("-first_published_at")
             .exclude(title=self.featured_article)
         )
-    
+
     @cached_property
     def related_highlight_galleries(self):
         return (
@@ -303,7 +303,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
             .order_by("-first_published_at")
             .exclude(title=self.featured_article)
         )
-    
+
     @cached_property
     def related_highlight_galleries(self):
         return (
