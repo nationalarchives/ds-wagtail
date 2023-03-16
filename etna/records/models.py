@@ -224,15 +224,28 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def description(self) -> str:
-        if raw := self._get_raw_description():
+        """
+        Returns the records full description value with all HTML left intact.
+        """
+        return mark_safe(self._get_raw_description(use_highlights=False))
+
+    @cached_property
+    def listing_description(self) -> str:
+        """
+        Returns a version of the record's description that is safe to use
+        anywhere. When highlight data is provided by the API, <mark> tags
+        will be left in-tact, but and other HTML is stripped.
+        """
+        if raw := self._get_raw_description(use_highlights=False):
             return mark_safe(strip_html(raw, preserve_marks=True))
         return ""
 
-    def _get_raw_description(self) -> str:
-        try:
-            return "... ".join(self.highlights["@template.details.description"])
-        except KeyError:
-            pass
+    def _get_raw_description(self, use_highlights: bool = True) -> str:
+        if use_highlights:
+            try:
+                return "... ".join(self.highlights["@template.details.description"])
+            except KeyError:
+                pass
         try:
             return self.template["description"]
         except KeyError:
@@ -300,7 +313,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
-
         # TODO Leaving this here for potential later use for testing the data for the front-end aspects.
         # This is to create spoof data for the missing API data from K-int. Can be removed from code when
 
