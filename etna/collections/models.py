@@ -113,10 +113,15 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
+
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
     ]
 
@@ -212,6 +217,9 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
     )
@@ -219,6 +227,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
