@@ -55,7 +55,7 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
-    # Overriding the original help_text set by default in MetadataPageMixin
+    # Overriding the default/core help_text set in MetadataPageMixin
     promote_panels = [
         MultiFieldPanel(
             [
