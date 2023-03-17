@@ -5,8 +5,9 @@ from django.urls import re_path
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.client import Stream
-from ...ciim.exceptions import APIManagerException, KongAPIError
+from ...ciim.exceptions import KongAPIError
 from ...ciim.paginator import APIPaginator
+from ..api import records_client
 from ..models import Record
 
 
@@ -30,12 +31,13 @@ class KongModelChooserMixinIn(ChooserMixin):
         results = []
 
         if search_term:
-            count, results = self.model.api.search_unified(
+            results = records_client.search_unified(
                 q=search_term,
                 stream=Stream.EVIDENTIAL,
                 size=self.per_page,
                 offset=offset,
             )
+            count = results.total_count
 
         paginator = APIPaginator(count, self.per_page)
         page = Page(results, page_number, paginator)
@@ -43,7 +45,7 @@ class KongModelChooserMixinIn(ChooserMixin):
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return self.model.api.fetch(iaid=pk)
+        return records_client.fetch(iaid=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.
@@ -70,7 +72,7 @@ class KongChosenView(BaseChosenView):
         """
         try:
             return super().get(request, pk)
-        except (KongAPIError, APIManagerException):
+        except KongAPIError:
             raise Http404
 
 

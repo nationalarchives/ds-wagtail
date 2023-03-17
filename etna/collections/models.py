@@ -14,9 +14,9 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..ciim.exceptions import KongAPIError
 from ..core.models import BasePage, BasePageWithIntro
-from ..records.models import Record
+from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -316,7 +316,7 @@ class TopicalPageMixin:
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
             min_num=min_num,
             max_num=max_num,
@@ -330,7 +330,7 @@ class TopicalPageMixin:
             "page_topics",
             heading=_("Related topics"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
             min_num=min_num,
             max_num=max_num,
@@ -543,6 +543,7 @@ class ResultsPageRecord(Orderable, models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
     description = models.TextField(
         help_text="Optional field to override the description for this record in the teaser.",
@@ -557,8 +558,8 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
-        except (KongAPIError, APIManagerException):
+            return records_client.fetch(iaid=self.record_iaid)
+        except KongAPIError:
             return None
 
     panels = [
