@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Credit for images not owned by TNA. Do not include the copyright symbol.",
-                max_length=120,
+                max_length=200,
                 verbose_name="copyright",
             ),
         ),
@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
                 ],
                 default="transcript",
                 max_length=30,
-                verbose_name="transcription heading",
+                verbose_name="transcript heading",
             ),
         ),
         migrations.AddField(
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
                 blank=True,
                 help_text="If the image contains text consider adding a transcript.",
                 max_length=1500,
-                verbose_name="transcription",
+                verbose_name="transcript",
             ),
         ),
         migrations.AlterField(
