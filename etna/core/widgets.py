@@ -1,6 +1,10 @@
 from django import forms
 from django.utils.translation import gettext_lazy as _
 
+from wagtail.admin.staticfiles import versioned_static
+from wagtail.telepath import register
+from wagtail.widget_adapters import WidgetAdapter
+
 
 class LabelWidgetMixin:
     """
@@ -77,3 +81,27 @@ class DateInputWidget(forms.MultiWidget):
         if value:
             return value.day, value.month, value.year
         return None, None, None
+
+
+class TextAreaWithCharacterCount(forms.Textarea):
+
+    def media(self):
+        media = forms.Media(
+            js=[
+                "admin/js/textarea-with-character-count.js",
+            ],
+            css={"all": [versioned_static("wagtailadmin/css/panels/draftail.css")]},
+        )
+        return media
+
+
+class TextAreaWithCharacterCountAdapter(WidgetAdapter):
+    js_constructor = "etna.core.widgets.TextAreaWithCharacterCount"
+
+    def js_args(self, widget):
+        return [
+            widget.options,
+        ]
+
+
+register(TextAreaWithCharacterCountAdapter(), TextAreaWithCharacterCount)
