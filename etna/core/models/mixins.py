@@ -52,6 +52,8 @@ class NewLabelMixin(models.Model):
         if self.live and self.mark_new_on_next_publish:
             self.mark_new_on_next_publish = False
             self.newly_published_at = timezone.now().date()
+            self.latest_revision.content["mark_new_on_next_publish"] = False
+            self.latest_revision.save()
         return super().save(*args, **kwargs)
 
     @cached_property
