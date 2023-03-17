@@ -32,7 +32,7 @@ class CustomImage(ClusterableModel, AbstractImage):
     copyright = models.CharField(
         verbose_name=_("copyright"),
         blank=True,
-        max_length=120,
+        max_length=200,
         help_text=_(
             "Credit for images not owned by TNA. Do not include the copyright symbol."
         ),
@@ -43,14 +43,14 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     transcription_heading = models.CharField(
-        verbose_name=_("transcription heading"),
+        verbose_name=_("transcript heading"),
         max_length=30,
         choices=TranscriptionHeadingChoices.choices,
         default=TranscriptionHeadingChoices.TRANSCRIPT,
     )
 
     transcription = RichTextField(
-        verbose_name=_("transcription"),
+        verbose_name=_("transcript"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
         max_length=1500,
