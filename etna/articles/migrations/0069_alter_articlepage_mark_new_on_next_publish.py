@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("articles", "0064_alter_articlepage_mark_new_on_next_publish"),
+        ("articles", "0068_alter_articlepage_mark_new_on_next_publish"),
     ]
 
     operations = [

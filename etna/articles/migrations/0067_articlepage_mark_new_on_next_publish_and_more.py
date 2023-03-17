@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("articles", "0062_fix_incorrectly_formatted_article_revision_content"),
+        ("articles", "0066_alter_articleindexpage_search_image_and_more"),
     ]
 
     operations = [
