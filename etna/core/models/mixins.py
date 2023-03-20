@@ -52,7 +52,7 @@ class NewLabelMixin(models.Model):
         if self.live and self.mark_new_on_next_publish:
             self.mark_new_on_next_publish = False
             self.newly_published_at = timezone.now().date()
-            if self.latest_revision is not None:
+            if self.latest_revision:
                 self.latest_revision.content["mark_new_on_next_publish"] = False
                 self.latest_revision.save()
         return super().save(*args, **kwargs)
@@ -62,7 +62,7 @@ class NewLabelMixin(models.Model):
         expiry_date = timezone.now().date() - timedelta(
             days=self.new_label_display_for_days
         )
-        if self.newly_published_at is not None:
+        if self.newly_published_at:
             if self.newly_published_at > expiry_date:
                 return True
         return False
