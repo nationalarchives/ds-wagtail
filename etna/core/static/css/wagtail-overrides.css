@@ -2,9 +2,26 @@
   font-size: 11px;
 }
 
+.inputlengthindicator {
+  display: block;
+  background-color: #fff;
+  position: absolute;
+  bottom: -1.6rem;
+  right: 0;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.inputlengthindicator--exceeded {
+  color: #cd4444;
+}
+
+
 /* CSS to be applied to record chooser widget, due to
 Wagtail 4.1 upgrade changes breaking the CSS to display on hover */
-@media (hover: hover) { 
+@media (hover: hover) {
   .chooser__actions {
     opacity: 0;
   }

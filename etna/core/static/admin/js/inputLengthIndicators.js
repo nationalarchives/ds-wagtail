@@ -1,0 +1,74 @@
+const lengthIndicatorClassname = "inputlengthindicator";
+const lengthIndicatorExceededClassname = "inputlengthindicator--exceeded";
+const truthyValues = ["True", "true", "yes", "y", "1"];
+const countHTMLBase = '<span class="w-sr-only">Character count:</span> ';
+
+const countChars = function (text) {
+    /*
+  Count characters in a string, with special processing to account for astral symbols in UCS-2. See:
+  - https://github.com/RadLikeWhoa/Countable/blob/master/Countable.js#L29
+  - https://mathiasbynens.be/notes/javascript-unicode
+  - https://github.com/tc39/proposal-intl-segmenter
+  */
+    if (text) {
+        // Find as many matches as there are (g), matching newlines as characters (s), as unicode code points (u).
+        // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions#advanced_searching_with_flags.
+        const matches = text.match(/./gsu);
+        return matches ? matches.length : 0;
+    }
+    return 0;
+};
+
+const updateLengthIndicator = function (
+    lengthIndicator,
+    length,
+    maxChars = null,
+) {
+    if (maxChars === null) {
+        lengthIndicator.innerHTML = countHTMLBase + `${length}`;
+    }
+    else {
+        lengthIndicator.innerHTML = countHTMLBase + `${length}/${maxChars}`;
+    }
+
+    if (maxChars !== null && length > maxChars) {
+        lengthIndicator.classList.add(lengthIndicatorExceededClassname);
+    } else {
+        lengthIndicator.classList.remove(lengthIndicatorExceededClassname);
+    }
+};
+
+const initializeLengthIndicator = function (input) {
+    // Look for relevant attributes on the input
+    const maxChars = input.getAttribute("maxlength");
+
+    // Add hidden HTML element to display the count
+    const lengthIndicator = document.createElement("div");
+    lengthIndicator.className = lengthIndicatorClassname;
+    lengthIndicator.style.display = "none";
+    input.after(lengthIndicator);
+
+    // Add initial value to indicator
+    const charCount = countChars(input.value);
+    updateLengthIndicator(lengthIndicator, charCount, maxChars);
+
+    input.onfocus = function () {
+        lengthIndicator.style.display = "block";
+    };
+
+    input.onblur = function () {
+        lengthIndicator.style.display = "none";
+    };
+
+    input.oninput = function () {
+        // Update indicator to reflect changes
+        const charCount = countChars(input.value);
+        updateLengthIndicator(lengthIndicator, charCount, maxChars);
+    };
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    for (input of document.querySelectorAll(".w-field__input input[type='text'], .w-field__input textarea")) {
+        initializeLengthIndicator(input);
+    }
+});
