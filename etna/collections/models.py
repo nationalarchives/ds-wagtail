@@ -150,37 +150,40 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.live()
+            ArticlePage.objects.exclude(pk=self.featured_article)
+            .live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .exclude(title=self.featured_article)
+            .select_related("teaser_image")
         )
 
     @cached_property
-    def related_record_articles(self):
+    def related_record_article(self):
         from etna.articles.models import RecordArticlePage
 
         return (
-            RecordArticlePage.objects.live()
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .exclude(title=self.featured_record_article)
+            .select_related("teaser_image")
         )
 
     @cached_property
-    def related_highlight_galleries(self):
+    def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("title")
+            .select_related("teaser_image")
         )
 
     @cached_property
-    def related_page_ids(self):
-        return tuple(self.topic_pages.values_list("page_id", flat=True))
+    def related_page_pks(self):
+        return tuple(self.topic_pages.values_list("page_pk", flat=True))
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -284,11 +287,12 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.live()
+            ArticlePage.objects.exclude(pk=self.featured_article)
+            .live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .exclude(title=self.featured_article)
+            .select_related("teaser_image")
         )
 
     @cached_property
@@ -296,25 +300,27 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import RecordArticlePage
 
         return (
-            RecordArticlePage.objects.live()
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .exclude(title=self.featured_record_article)
+            .select_related("teaser_image")
         )
 
     @cached_property
-    def related_highlight_galleries(self):
+    def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
             .public()
-            .filter(id__in=self.related_page_ids)
+            .filter(pk__in=self.related_page_pks)
             .order_by("title")
+            .select_related("teaser_image")
         )
 
     @cached_property
-    def related_page_ids(self):
-        return tuple(self.time_period_pages.values_list("page_id", flat=True))
+    def related_page_pks(self):
+        return tuple(self.time_period_pages.values_list("page_pk", flat=True))
 
 
 class PageTopic(Orderable):

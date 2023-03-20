@@ -64,6 +64,18 @@
         </div>
         {% endif %}
 
+        {%comment%}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for highlight_gallery in page.related_highlight_gallery_pages %}
+                        <li>
+                        <a href="{% pageurl highlight_gallery %}">{{ highlight_gallery.title }}</a>
+                        </li>
+                    {% endfor %}
+                </div>
+            </div>
+        {%endcomment%}
+
     </div>
 
 {% endblock %}
