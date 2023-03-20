@@ -183,7 +183,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_page_pks(self):
-        return tuple(self.topic_pages.values_list("page_pk", flat=True))
+        return tuple(self.topic_pages.values_list("page__pk", flat=True))
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -320,7 +320,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_page_pks(self):
-        return tuple(self.time_period_pages.values_list("page_pk", flat=True))
+        return tuple(self.time_period_pages.values_list("page__pk", flat=True))
 
 
 class PageTopic(Orderable):
