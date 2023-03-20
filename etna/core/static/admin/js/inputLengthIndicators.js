@@ -4,7 +4,7 @@ const truthyValues = ["True", "true", "yes", "y", "1"];
 const countHTMLBase = '<span class="w-sr-only">Character count:</span> ';
 
 const countChars = function (text) {
-    /*
+  /*
   Count characters in a string, with special processing to account for astral symbols in UCS-2. See:
   - https://github.com/RadLikeWhoa/Countable/blob/master/Countable.js#L29
   - https://mathiasbynens.be/notes/javascript-unicode
