@@ -46,7 +46,7 @@ class NewLabelMixin(models.Model):
         null=True,
     )
 
-    new_label_display_for_days = 21
+    NEW_LABEL_DISPLAY_DAYS = 21
 
     def save(self, *args, **kwargs):
         if self.live and self.mark_new_on_next_publish:
@@ -60,7 +60,7 @@ class NewLabelMixin(models.Model):
     @cached_property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
-            days=self.new_label_display_for_days
+            days=self.NEW_LABEL_DISPLAY_DAYS
         )
         if self.newly_published_at:
             if self.newly_published_at > expiry_date:
