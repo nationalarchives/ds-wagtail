@@ -54,7 +54,9 @@ class NewLabelMixin(models.Model):
             self.newly_published_at = timezone.now().date()
             if self.latest_revision:
                 self.latest_revision.content["mark_new_on_next_publish"] = False
-                self.latest_revision.content["newly_published_at"] = self.newly_published_at
+                self.latest_revision.content[
+                    "newly_published_at"
+                ] = self.newly_published_at
                 self.latest_revision.save()
         return super().save(*args, **kwargs)
 
