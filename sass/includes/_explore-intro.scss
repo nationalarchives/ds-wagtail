@@ -10,7 +10,7 @@
     &__image {
       display: block;
       max-width: 100%;
-      width: auto;
+      height: auto;
       
       @media (max-width: $screen__md) {
         display:none ;
