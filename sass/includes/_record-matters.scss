@@ -20,6 +20,7 @@
     font: inherit;
     cursor: pointer;
     outline: inherit;
+    font-weight: $font-weight-bold;
 
     &:visited {
       outline: 0.1875rem solid $color__yellow_2;
