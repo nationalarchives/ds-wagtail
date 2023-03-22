@@ -46,21 +46,43 @@ class NewLabelMixin(models.Model):
         null=True,
     )
 
-    NEW_LABEL_DISPLAY_DAYS = 21
+    new_label_display_for_days = 21
+
+    def with_content_json(self, content):
+        """
+        Overrides Page.with_content_json() to ensure page's `newly_published_at`
+        value is always preserved between revisions.
+        """
+        obj = super().with_content_json(content)
+        obj.newly_published_at = self.newly_published_at
+        return obj
 
     def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to set `newly_published_at` under the right
+        circumstances, and to ensure `mark_new_on_next_publish` is unset
+        once that wish has been fulfilled.
+        """
+        # Set/reset newly_published_at where requested
         if self.live and self.mark_new_on_next_publish:
-            self.mark_new_on_next_publish = False
             self.newly_published_at = timezone.now().date()
-            if self.latest_revision:
-                self.latest_revision.content["mark_new_on_next_publish"] = False
-                self.latest_revision.save()
-        return super().save(*args, **kwargs)
+            self.mark_new_on_next_publish = False
+
+        # Save page changes to the database
+        super().save(*args, **kwargs)
+
+        if self.live and self.mark_new_on_next_publish and self.latest_revision:
+            # If `mark_new_on_next_publish` is still 'True' in the latest revision,
+            # The checkbox will remain checked when the page is next edited in Wagtail.
+            # Checking the box has had the desired effect now, so we 'uncheck' it
+            # in the revision content to avoid unexpected resetting.
+            self.latest_revision.content["mark_new_on_next_publish"] = False
+            self.latest_revision.save()
 
     @cached_property
     def is_newly_published(self):
         expiry_date = timezone.now().date() - timedelta(
-            days=self.NEW_LABEL_DISPLAY_DAYS
+            days=self.new_label_display_for_days
         )
         if self.newly_published_at:
             if self.newly_published_at > expiry_date:
