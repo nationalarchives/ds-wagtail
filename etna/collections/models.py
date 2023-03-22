@@ -7,7 +7,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -485,6 +485,14 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         verbose_name_plural = _("highlight gallery pages")
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Content Warning Options",
+            classname="collapsible",
+            children=[
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+        ),
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
