@@ -49,16 +49,21 @@ class NewLabelMixin(models.Model):
     NEW_LABEL_DISPLAY_DAYS = 21
 
     def save(self, *args, **kwargs):
+        # Set/reset newly_published_at where requested
         if self.live and self.mark_new_on_next_publish:
-            self.mark_new_on_next_publish = False
             self.newly_published_at = timezone.now().date()
-            if self.latest_revision:
-                self.latest_revision.content["mark_new_on_next_publish"] = False
-                self.latest_revision.content[
-                    "newly_published_at"
-                ] = self.newly_published_at
-                self.latest_revision.save()
-        return super().save(*args, **kwargs)
+            self.mark_new_on_next_publish = False
+
+        # Save changes to the database
+        super().save(*args, **kwargs)
+
+        if self.live and self.mark_new_on_next_publish and self.latest_revision:
+            # If `mark_new_on_next_publish` is still 'True' in the latest revision,
+            # The checkbox will remain checked when the page is next edited in Wagtail.
+            # Checking the box has had the desired effect now, so we 'uncheck' it
+            # in the revision content to avoid unexpected resetting.
+            self.latest_revision.content["mark_new_on_next_publish"] = False
+            self.latest_revision.save()
 
     @cached_property
     def is_newly_published(self):
