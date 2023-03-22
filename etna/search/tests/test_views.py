@@ -297,7 +297,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-catalogue")
 
     @responses.activate
-    def test_no_matches_for_original_search(self):
+    def test_no_matches_for_q_param_only_search(self):
         """
         When a user does an initial search for something with no matches:
 
@@ -446,7 +446,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
     @responses.activate
-    def test_no_matches_for_original_search(self):
+    def test_no_matches_for_q_param_only_search(self):
         """
         When a user does an initial search for something with no matches:
 
