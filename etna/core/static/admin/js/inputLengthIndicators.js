@@ -22,16 +22,11 @@ const countChars = function (text) {
 const updateLengthIndicator = function (
     lengthIndicator,
     length,
-    maxChars = null,
+    maxChars,
 ) {
-    if (maxChars === null) {
-        lengthIndicator.innerHTML = countHTMLBase + `${length}`;
-    }
-    else {
-        lengthIndicator.innerHTML = countHTMLBase + `${length}/${maxChars}`;
-    }
+    lengthIndicator.innerHTML = countHTMLBase + `${length}/${maxChars}`;
 
-    if (maxChars !== null && length > maxChars) {
+    if (length > maxChars) {
         lengthIndicator.classList.add(lengthIndicatorExceededClassname);
     } else {
         lengthIndicator.classList.remove(lengthIndicatorExceededClassname);
@@ -68,7 +63,7 @@ const initializeLengthIndicator = function (input) {
 };
 
 document.addEventListener("DOMContentLoaded", function () {
-    for (input of document.querySelectorAll(".w-field__input input[maxlength], .w-field__input textarea")) {
+    for (input of document.querySelectorAll(".w-field__input input[maxlength], .w-field__input textarea[maxlength]")) {
         initializeLengthIndicator(input);
     }
 });
