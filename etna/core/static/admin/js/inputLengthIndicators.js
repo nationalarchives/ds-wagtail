@@ -1,6 +1,5 @@
 const lengthIndicatorClassname = "inputlengthindicator";
 const lengthIndicatorExceededClassname = "inputlengthindicator--exceeded";
-const truthyValues = ["True", "true", "yes", "y", "1"];
 const countHTMLBase = '<span class="w-sr-only">Character count:</span> ';
 
 const countChars = function (text) {
