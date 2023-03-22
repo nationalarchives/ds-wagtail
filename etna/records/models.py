@@ -227,7 +227,7 @@ class Record(DataLayerMixin, APIModel):
         """
         Returns the records full description value with all HTML left intact.
         """
-        return mark_safe(self._get_raw_description(use_highlights=False))
+        return mark_safe(self._get_raw_description())
 
     @cached_property
     def listing_description(self) -> str:
@@ -236,7 +236,7 @@ class Record(DataLayerMixin, APIModel):
         anywhere. When highlight data is provided by the API, <mark> tags
         will be left in-tact, but and other HTML is stripped.
         """
-        if raw := self._get_raw_description(use_highlights=False):
+        if raw := self._get_raw_description(use_highlights=True):
             return mark_safe(strip_html(raw, preserve_marks=True))
         return ""
 
