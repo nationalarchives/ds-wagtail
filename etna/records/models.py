@@ -240,7 +240,7 @@ class Record(DataLayerMixin, APIModel):
             return mark_safe(strip_html(raw, preserve_marks=True))
         return ""
 
-    def _get_raw_description(self, use_highlights: bool = True) -> str:
+    def _get_raw_description(self, use_highlights: bool = False) -> str:
         if use_highlights:
             try:
                 return "... ".join(self.highlights["@template.details.description"])
