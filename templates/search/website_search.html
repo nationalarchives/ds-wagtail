@@ -31,7 +31,7 @@
         {% endwith %}
 
         {% if not buckets_contain_results %}
-            {# The original/unfiltered search failed to yield results #}
+            {# No results were found when searching only with the 'q' param value #}
             {% include './blocks/no_results.html' %}
         {% else %}
             {% include './blocks/catalogue_search_buckets.html' %}
