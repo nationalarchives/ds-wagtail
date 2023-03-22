@@ -48,6 +48,13 @@ class NewLabelMixin(models.Model):
 
     NEW_LABEL_DISPLAY_DAYS = 21
 
+    def with_content_json(self, content):
+        obj = super().with_content_json(content)
+        # `newly_published_at` applies the object as a whole (rather than
+        # to a specific revision), so should always be preserved.
+        obj.newly_published_at = self.newly_published_at
+        return obj
+
     def save(self, *args, **kwargs):
         # Set/reset newly_published_at where requested
         if self.live and self.mark_new_on_next_publish:
