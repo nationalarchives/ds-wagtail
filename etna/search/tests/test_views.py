@@ -227,7 +227,7 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
 class EndToEndSearchTestCase(TestCase):
     # The following HTML snippets must be updated to reflect any future HTML changes
     results_html = '<ul class="search-results__list" id="analytics-results-list">'
-    no_results_messaging_html = '<h2 class="featured-search__heading">We did not find any results for your search</h2>'
+    no_results_messaging_html = '<div class="no-results">'
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
