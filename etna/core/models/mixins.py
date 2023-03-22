@@ -49,19 +49,26 @@ class NewLabelMixin(models.Model):
     NEW_LABEL_DISPLAY_DAYS = 21
 
     def with_content_json(self, content):
+        """
+        Overrides Page.with_content_json() to ensure page's `newly_published_at`
+        value is always preserved between revisions.
+        """
         obj = super().with_content_json(content)
-        # `newly_published_at` applies the object as a whole (rather than
-        # to a specific revision), so should always be preserved.
         obj.newly_published_at = self.newly_published_at
         return obj
 
     def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to set `newly_published_at` under the right
+        circumstances, and to ensure `mark_new_on_next_publish` is unset
+        once that wish has been fulfilled.
+        """
         # Set/reset newly_published_at where requested
         if self.live and self.mark_new_on_next_publish:
             self.newly_published_at = timezone.now().date()
             self.mark_new_on_next_publish = False
 
-        # Save changes to the database
+        # Save page changes to the database
         super().save(*args, **kwargs)
 
         if self.live and self.mark_new_on_next_publish and self.latest_revision:
