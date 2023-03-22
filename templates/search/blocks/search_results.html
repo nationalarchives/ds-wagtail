@@ -8,23 +8,28 @@
 </script>
 
 <div class="search-results">
-    {% with count=page.paginator.count %}
-        <div class="search-results__metadata">
-            
-            {% if count > 0 %}            
-            <p id="search-results-title" class="search-results__metadata-count">Showing 
-                {{page.start_index}}-{{page.end_index}} (of {{ count|intcomma }}) result{{ count|pluralize}} for "{{ form.q.value|default:'*' }}" in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"</p>
-            {% endif %}    
-            
-            {% include './search_results__selected-filters.html' %}
 
-            {% if form.errors or count < 1 %}
-                <!-- add in the no results -->
-                {% include './no_results_catalogue_website.html' %}
-            {% endif %}              
+    <div class="search-results__metadata">
 
-        </div>
+        {% if paginator.count %}
+            <p id="search-results-title" class="search-results__metadata-count">
+                Showing
+                {{page.start_index}}-{{page.end_index}}
+                (of {{ count|intcomma }}) result{{ count|pluralize}}
+                for "{{ form.q.value|default:'*' }}"
+                in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"
+            </p>
+        {% endif %}
 
+        {% include './search_results__selected-filters.html' %}
+
+        {% if form.errors or not paginator.count %}
+            {% include './no_results_catalogue_website.html' %}
+        {% endif %}
+
+    </div>
+
+    {% if page.object_list %}
         <h2 class="sr-only">Results</h2>
 
         {% if form.cleaned_data.display == "grid" %}
@@ -40,5 +45,5 @@
                 {% endfor %}
             </ul>
         {% endif %}
-    {% endwith %} 
+    {% endif %}
 </div>
