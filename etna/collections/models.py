@@ -15,7 +15,7 @@ from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro
+from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -460,7 +460,7 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
+class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
