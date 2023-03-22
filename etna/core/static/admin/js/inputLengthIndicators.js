@@ -38,8 +38,7 @@ const initializeLengthIndicator = function (input) {
 
     // Add hidden HTML element to display the count
     const lengthIndicator = document.createElement("div");
-    lengthIndicator.className = lengthIndicatorClassname;
-    lengthIndicator.classList.add("w-help-text");
+    lengthIndicator.classList.add(lengthIndicatorClassname, "w-help-text");
     lengthIndicator.style.visibility = "hidden";
     input.after(lengthIndicator);
 
