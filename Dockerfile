@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM python:3.11
 LABEL maintainer="dan@numiko.com"
 
 ARG POETRY_HOME=/opt/poetry

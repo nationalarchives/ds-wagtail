@@ -154,6 +154,18 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(
             self.record.description,
             (
+                '<span class="scopecontent"><p>This series contains papers concering a wide variety of legal matters referred '
+                "to the Law Officers for their advice or approval and includes applications for the "
+                "Attorney General's General Fiat for leave to appeal to the House of Lords in criminal "
+                "cases.</p><p>Also included are a number of opinions, more of which can be found in "
+                '<a class="extref" href="C10298">LO 3</a></p></span>'
+            ),
+        )
+
+    def test_listing_description(self):
+        self.assertEqual(
+            self.record.listing_description,
+            (
                 "\nThis series contains papers concering a wide variety of legal matters referred "
                 "to the Law Officers for their advice or approval and includes applications for the "
                 "Attorney General's General Fiat for leave to appeal to the House of Lords in criminal "
