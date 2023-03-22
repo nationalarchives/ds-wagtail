@@ -40,7 +40,8 @@ const initializeLengthIndicator = function (input) {
     // Add hidden HTML element to display the count
     const lengthIndicator = document.createElement("div");
     lengthIndicator.className = lengthIndicatorClassname;
-    lengthIndicator.style.display = "none";
+    lengthIndicator.classList.add("w-help-text");
+    lengthIndicator.style.visibility = "hidden";
     input.after(lengthIndicator);
 
     // Add initial value to indicator
@@ -48,11 +49,11 @@ const initializeLengthIndicator = function (input) {
     updateLengthIndicator(lengthIndicator, charCount, maxChars);
 
     input.onfocus = function () {
-        lengthIndicator.style.display = "block";
+        lengthIndicator.style.visibility = "visible";
     };
 
     input.onblur = function () {
-        lengthIndicator.style.display = "none";
+        lengthIndicator.style.visibility = "hidden";
     };
 
     input.oninput = function () {
