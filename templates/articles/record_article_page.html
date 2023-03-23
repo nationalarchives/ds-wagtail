@@ -8,6 +8,9 @@
     {% if page.record %}
         {% include "includes/record-matters.html" with record=page.record title="Why this record matters" page=page %}
     {% endif %}
+    {% if page.featured_highlight_gallery %}
+        {% include "includes/featured_highlight_gallery.html" with highlight_gallery=page.featured_highlight_gallery %}
+    {% endif %}
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
