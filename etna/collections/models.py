@@ -1,6 +1,5 @@
 from typing import List, Optional, Tuple, Union
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -8,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
