@@ -580,7 +580,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return data
 
 
-class BaseLongFilteredSearchView(BaseFilteredSearchView):
+class BaseLongFilterOptionsView(BaseFilteredSearchView):
     """
     A more specialized version `BaseFilteredSearchView` for long filters that has methods that
     only apply to a subset of views:
@@ -634,12 +634,15 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     search_tab = SearchTabs.CATALOGUE.value
 
 
-class CatalogueSearchLongFilterView(BaseLongFilteredSearchView):
+class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     default_group = "tna"
     form_class = CatalogueSearchForm
-    template_name = "search/catalogue_search_long_filter_chooser.html"
+    template_name = "search/long_filter_options.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return super().get_context_data(url_pattern_name="search-catalogue", **kwargs)
 
 
 class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
@@ -722,12 +725,15 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         return context
 
 
-class WebsiteSearchLongFilterView(BaseLongFilteredSearchView):
+class WebsiteSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
     api_stream = Stream.INTERPRETIVE
     default_group = "blog"
     form_class = WebsiteSearchForm
-    template_name = "search/website_search_long_filter_chooser.html"
+    template_name = "search/long_filter_options.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return super().get_context_data(url_pattern_name="search-website", **kwargs)
 
 
 class FeaturedSearchView(BaseSearchView):
