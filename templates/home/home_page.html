@@ -14,7 +14,7 @@
 {% endblock %}
 {% block content %}
 
-    {% include 'includes/generic-intro.html' %}
+    {% include 'includes/generic-intro.html' with title=page.title intro=page.intro %}
     <div class="container pt-2">
         <div class="row">
             {% for item in page.body %}
