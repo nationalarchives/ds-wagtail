@@ -529,7 +529,7 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.long_description])
+            strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
 
 
@@ -543,15 +543,9 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
-    long_description = RichTextField(
-        verbose_name=_("long description"),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        max_length=400,
-    )
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:
