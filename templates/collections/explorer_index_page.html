@@ -7,7 +7,7 @@
   {% meta_tags %}
 {% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' %}
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
     <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
        <div class="row">
