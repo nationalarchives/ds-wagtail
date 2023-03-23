@@ -260,6 +260,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    featured_highlight_gallery = models.ForeignKey(
+        "collections.HighlightGalleryPage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("featured highlight gallery"),
+    )
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage",
         blank=True,
@@ -301,6 +309,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 FieldPanel("print_on_demand_link"),
             ],
         ),
+        FieldPanel("featured_highlight_gallery"),
         FieldPanel("featured_article"),
     ]
 
@@ -354,6 +363,13 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
             if item.image.translation or item.image.transcription:
                 return True
         return False
+
+    @cached_property
+    def featured_highlight_gallery_items(self):
+        """
+        Retrieves the highlights inside of the featured highlight gallery which is selected
+        """
+        return self.featured_highlight_gallery.highlights
 
 
 class PageGalleryImage(Orderable):
