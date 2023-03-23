@@ -14,9 +14,9 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
-from ..ciim.exceptions import APIManagerException, KongAPIError
+from ..ciim.exceptions import KongAPIError
 from ..core.models import BasePage, BasePageWithIntro
-from ..records.models import Record
+from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
@@ -113,10 +113,15 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
+
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
     ]
 
@@ -145,11 +150,40 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(topic=self)
+            ArticlePage.objects.exclude(pk=self.featured_article)
             .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
             .select_related("teaser_image")
-            .order_by("title")[:3]
         )
+
+    @cached_property
+    def related_record_article(self):
+        from etna.articles.models import RecordArticlePage
+
+        return (
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_highlight_gallery_pages(self):
+        return (
+            HighlightGalleryPage.objects.live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("title")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_page_pks(self):
+        return tuple(self.topic_pages.values_list("page__pk", flat=True))
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -212,6 +246,9 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
     )
@@ -219,6 +256,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
@@ -249,11 +287,40 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(time_period=self)
+            ArticlePage.objects.exclude(pk=self.featured_article)
             .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
             .select_related("teaser_image")
-            .order_by("title")[:3]
         )
+
+    @cached_property
+    def related_record_articles(self):
+        from etna.articles.models import RecordArticlePage
+
+        return (
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_highlight_gallery_pages(self):
+        return (
+            HighlightGalleryPage.objects.live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("title")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_page_pks(self):
+        return tuple(self.time_period_pages.values_list("page__pk", flat=True))
 
 
 class PageTopic(Orderable):
@@ -316,7 +383,7 @@ class TopicalPageMixin:
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
             min_num=min_num,
             max_num=max_num,
@@ -330,7 +397,7 @@ class TopicalPageMixin:
             "page_topics",
             heading=_("Related topics"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
             min_num=min_num,
             max_num=max_num,
@@ -543,6 +610,7 @@ class ResultsPageRecord(Orderable, models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
     description = models.TextField(
         help_text="Optional field to override the description for this record in the teaser.",
@@ -557,8 +625,8 @@ class ResultsPageRecord(Orderable, models.Model):
         skip this record on the results BasePage.
         """
         try:
-            return Record.api.fetch(iaid=self.record_iaid)
-        except (KongAPIError, APIManagerException):
+            return records_client.fetch(iaid=self.record_iaid)
+        except KongAPIError:
             return None
 
     panels = [

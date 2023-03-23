@@ -7,7 +7,7 @@
 {% comment %} prepend number of search results to page title {% endcomment %}
 {% block prepend_title %}
     {% with count=page.paginator.count %}
-        {% if count > 0 %}            
+        {% if count > 0 %}
             {{ count|intcomma }}
         {% else %}
             0
@@ -24,51 +24,44 @@
 {% endblock %}
 {% block content %}
     <form method="get" data-id="search-form" id="analytics-search-form">
-        {% has_result_count buckets as buckets_have_a_result_count %}
-
         {{ form.non_field_errors }}
 
         {% with search_tab=searchtabs.WEBSITE.value %}
             {% include './blocks/search_results_hero.html' %}
         {% endwith %}
-        
-        {% if buckets.current.result_count > 0 %}
-            <p class="search-results__explainer--desktop">This page displays search results from our website.</p>
-        {% endif %}
 
-        {% if buckets_have_a_result_count %}
-            {% include './blocks/catalogue_search_buckets.html' %}
-        {% endif %}
-        
-        <p class="search-results__explainer--mobile">Results from our website.</p>
-
-        {% if buckets_have_a_result_count %}
-            {% include './blocks/search_sort_and_view_options.html' %}
-        {% endif %}
-
-        {% if not buckets_have_a_result_count and not form.errors %}
+        {% if not buckets_contain_results %}
+            {# No results were found when searching only with the 'q' param value #}
             {% include './blocks/no_results.html' %}
         {% else %}
-            <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-                <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                    {% include './blocks/search_filters.html' %}
-                </div>
-                <div class="catalogue-search-grid__results">
-                    {% if page.paginator.count %}
+            {% include './blocks/catalogue_search_buckets.html' %}
+
+            {% if not buckets.current.result_count %}
+                {% include './blocks/no_results.html' %}
+            {% else %}
+                <p class="search-results__explainer--mobile">Results from our website.</p>
+
+                {% include './blocks/search_sort_and_view_options.html' %}
+
+                <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+                    <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                        {% include './blocks/search_filters.html' %}
+                    </div>
+                    <div class="catalogue-search-grid__results">
                         {% include './blocks/search_results.html' %}
-                    {% endif %}
+                    </div>
                 </div>
-            </div>
-        {% endif %}
 
-        {% if page.paginator.count %}
-            {% include './blocks/search_pagination.html' %}
-        {% endif %}
+                {% if page.paginator.count %}
+                    {% include './blocks/search_pagination.html' %}
+                {% endif %}
 
-        <div>
-            {{ form.group.errors }}
-            {{ form.group.as_hidden }}
-        </div>
+                <div>
+                    {{ form.group.errors }}
+                    {{ form.group.as_hidden }}
+                </div>
+            {% endif %}
+        {% endif %}
     </form>
 {% endblock %}
 

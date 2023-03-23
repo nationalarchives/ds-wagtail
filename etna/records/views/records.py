@@ -3,7 +3,7 @@ from django.shortcuts import Http404, render
 
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from ..models import Record
+from ..api import records_client
 
 
 def record_disambiguation_view(request, reference_number):
@@ -24,26 +24,26 @@ def record_disambiguation_view(request, reference_number):
     page_number = int(request.GET.get("page", 1))
     offset = (page_number - 1) * per_page
 
-    count, records = Record.api.search_unified(
+    result = records_client.search_unified(
         web_reference=reference_number, offset=offset, size=per_page
     )
 
-    if len(records) == 0:
+    if not result:
         raise Http404
 
     # if the results contain a single record page, redirect to the details page.
-    if len(records) == 1:
-        record = records[0]
+    if len(result) == 1:
+        record = result.hits[0]
         return record_detail_view(request, record.iaid)
 
-    paginator = APIPaginator(count, per_page=per_page)
-    record_results_page = Page(records, number=page_number, paginator=paginator)
+    paginator = APIPaginator(result.total_count, per_page=per_page)
+    page = Page(result, number=page_number, paginator=paginator)
 
     return render(
         request,
         "records/record_disambiguation_page.html",
         {
-            "record_results_page": record_results_page,
+            "record_results_page": page,
             "queried_reference_number": reference_number,
         },
     )
@@ -57,7 +57,7 @@ def record_detail_view(request, iaid):
     view is accessible from a fixed URL.
     """
     try:
-        record = Record.api.fetch(iaid=iaid, expand=True)
+        record = records_client.fetch(iaid=iaid, expand=True)
     except DoesNotExist:
         raise Http404
 

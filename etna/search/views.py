@@ -3,7 +3,7 @@ import json
 import logging
 import re
 
-from typing import Any, Dict, Iterator, List, Optional, Sequence, Tuple, Union
+from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 from django.core.paginator import Page
@@ -30,7 +30,7 @@ from ..ciim.constants import (
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..collections.models import ResultsPage
-from ..records.models import Record
+from ..records.api import records_client
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
 logger = logging.getLogger(__name__)
@@ -51,30 +51,6 @@ class BucketsMixin:
     bucket_list: BucketList = None
     # Can be updated by the view for get_current_bucket_key() to pick up
     current_bucket_key: str = None
-
-    def extract_group_buckets(
-        self, api_result: Union[None, Dict[str, Any]]
-    ) -> Sequence[Dict[str, Union[str, int]]]:
-        """
-        Attempts to find and return a list or values from `api_result`
-        that can be passed to `get_buckets()`, allowing it to set the
-        `result_count` value for each bucket.
-        """
-        if not api_result:
-            return ()
-
-        # Account for different API response structures
-        aggregations = {}
-        if api_result.get("responses"):
-            aggregations = api_result["responses"][0].get("aggregations", {})
-        else:
-            aggregations = api_result.get("aggregations", {})
-
-        # The API response has an unfamiliar structure
-        if not aggregations:
-            return ()
-
-        return aggregations.get("group", {}).get("buckets", ())
 
     def get_current_bucket_key(self):
         return self.current_bucket_key
@@ -118,12 +94,21 @@ class BucketsMixin:
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            group_buckets = self.extract_group_buckets(
-                getattr(self, "api_result", None)
-            )
             current_bucket_key = self.get_current_bucket_key()
-            kwargs["buckets"] = self.get_buckets(group_buckets, current_bucket_key)
-        return super().get_context_data(**kwargs)
+            buckets = self.get_buckets(
+                self.api_result.bucket_counts, current_bucket_key
+            )
+
+            # Set this to True if any buckets have results
+            buckets_contain_results = False
+            for bucket in buckets:
+                if bucket.result_count:
+                    buckets_contain_results = True
+                    break
+
+        return super().get_context_data(
+            buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
+        )
 
 
 class KongAPIMixin:
@@ -140,9 +125,8 @@ class KongAPIMixin:
         Queries the API, and returns a `dict` containing any data from the
         response that is useful for the request.
         """
-        client = Record.api.client
         # variabalize the method for calling below
-        client_method_to_call = getattr(client, self.api_method_name)
+        client_method_to_call = getattr(records_client, self.api_method_name)
         # call the variabalized api client method
         response = client_method_to_call(**self.get_api_kwargs(form))
         # add response to view state for use in other methods
@@ -196,7 +180,7 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
-        self.api_result = Record.api.client.search(
+        self.api_result = records_client.search(
             template=Template.DETAILS,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
@@ -290,6 +274,16 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
             title += ' for "' + query.replace('"', "'") + '"'
         return title
 
+    def get_result_count(self) -> int:
+        """
+        Return the total number of results that match the user's search terms
+        and/or filter preferences.
+
+        NOTE: Views using an API endpoint that returns something other than a
+        `ResultList` should override this method as required.
+        """
+        return self.api_result.total_count
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         if self.form.cleaned_data.get("group"):
@@ -301,9 +295,13 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
 
         custom_dimension9 = self.form.cleaned_data.get("q") or "*"
 
+        result_count = self.get_result_count()
+
         data.update(
             customDimension8=custom_dimension8,
             customDimension9=custom_dimension9,
+            # Value is capped to improve reporting reliability
+            customMetric1=result_count if result_count < 10000 else 10000,
         )
         return data
 
@@ -337,9 +335,6 @@ class BaseFilteredSearchView(BaseSearchView):
     default_sort_by: str = SortBy.RELEVANCE.value
     default_sort_order: str = SortOrder.ASC.value
     default_display: str = Display.LIST.value
-
-    # create a _var to avoid repetitive call to self.get_context_data().get(<VAR>) in get_datalayer_data() to extract value
-    _custom_metric2 = 0
 
     dynamic_choice_fields = (
         "collection",
@@ -457,15 +452,14 @@ class BaseFilteredSearchView(BaseSearchView):
         filter_aggregations.append(f"group:{form.cleaned_data['group']}")
         return filter_aggregations
 
-    def process_api_result(self, form: Form, api_result: Dict[str, Any]):
+    def process_api_result(self, form: Form, api_result: Any):
         """
-        Update the `choices` value on the form's `dynamic_choice_fields` to
-        reflect the 'aggregations' data included in the API response.
+        Update `choices` values on the form's `dynamic_choice_fields` to
+        reflect data included in the API's 'filter_aggregations' response.
 
         See also: `get_api_aggregations()`.
         """
-        aggregations = api_result["responses"][1].get("aggregations", {})
-        for key, value in aggregations.items():
+        for key, value in api_result.aggregations.items():
             if buckets := value.get("buckets"):
                 field_name = camelcase_to_underscore(key)
                 if field_name in self.dynamic_choice_fields:
@@ -474,31 +468,18 @@ class BaseFilteredSearchView(BaseSearchView):
                         value.get("sum_other_doc_count", 0)
                     )
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-
-        data.update(
-            customMetric2=self._custom_metric2,
-        )
-        return data
-
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
         context["selected_filters"] = self.get_selected_filters(self.form)
-
-        # sum of all values accross all selected filters
-        self._custom_metric2 = context["selected_filters_count"] = sum(
+        self.selected_filters_count = context["selected_filters_count"] = sum(
             map(len, context["selected_filters"].values())
         )
 
         if self.api_result:
-            result_response = self.api_result["responses"][1]
-            total_count = result_response["hits"]["total"]["value"]
-            per_page = self.form.cleaned_data["per_page"]
             paginator, page, page_range = self.paginate_api_result(
-                result_list=result_response["hits"]["hits"],
-                per_page=per_page,
-                total_count=total_count,
+                result_list=self.api_result.hits,
+                per_page=self.form.cleaned_data["per_page"],
+                total_count=self.api_result.total_count,
             )
             context.update(
                 paginator=paginator,
@@ -589,6 +570,15 @@ class BaseFilteredSearchView(BaseSearchView):
 
         return return_value
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        """
+        Overrides BaseSearchView.get_datalayer_data() to include the number
+        of filters selected by the user as 'customMetric2'.
+        """
+        data = super().get_datalayer_data(request)
+        data.update(customMetric2=self.selected_filters_count)
+        return data
+
 
 class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
@@ -598,22 +588,6 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
     search_tab = SearchTabs.CATALOGUE.value
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        total_count = 0
-        if self.api_result:
-            # a respose is returned for valid input
-            if aggregations := self.api_result["responses"][1].get("aggregations"):
-                for bucket in aggregations["catalogueSource"]["buckets"]:
-                    total_count += bucket["doc_count"]
-        if total_count > 10000:
-            total_count = 10001
-        data.update(customMetric1=total_count)
-        return data
-
-    def get_context_data(self, **kwargs):
-        return super().get_context_data(**kwargs)
 
 
 class CatalogueSearchLongFilterView(BaseFilteredSearchView):
@@ -670,53 +644,35 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/website_search.html"
     search_tab = SearchTabs.WEBSITE.value
 
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        total_count = self.api_result["responses"][1]["hits"]["total"]["value"]
-        if total_count > 10000:
-            total_count = 10001
-        data.update(customMetric1=total_count)
-        return data
-
     def add_article_page_for_url(self, page: Page) -> None:
         """
         Finds the Article page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
         """
         slugs = [
-            result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+            result.url.rstrip("/").split("/").pop()
             for result in page.object_list
+            if result.has_source_url()
         ]
         # filter by slug for performance boost
-        article_page_by_url = {
+        wagtail_pages = {
             page.get_url(self.request): page
             for page in ArticlePage.objects.live()
             .filter(slug__in=slugs)
             .defer("body")
             .select_related("teaser_image")
         }
-        page_list = []
+
+        # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            if source_page := article_page_by_url.get(urlparse(url).path, ""):
-                result["source_page"] = source_page
-            else:
-                logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in article_page_by_url={article_page_by_url}"
-                )
-            page_list.append(result)
-        page.object_list = page_list
+            if result.has_source_url():
+                absolute_url = urlparse(result.url).path
+                if source_page := wagtail_pages.get(absolute_url):
+                    result.source_page = source_page
+                else:
+                    logger.debug(
+                        f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
+                    )
 
     def add_results_page_for_url(self, page: Page) -> None:
         """
@@ -724,37 +680,29 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         Unmatched url is bypassed but logged.
         """
         slugs = [
-            result["_source"]
-            .get("@template", {})
-            .get("details", {})
-            .get("sourceUrl", "")
-            .rstrip("/")
-            .split("/")
-            .pop()
+            result.url.rstrip("/").split("/").pop()
             for result in page.object_list
+            if result.has_source_url()
         ]
-        results_page_by_url = {
-            page.get_url(self.request): page
-            for page in ResultsPage.objects.live()
+
+        # find pages with matching slugs, and key them by their absolute URL
+        wagtail_pages = {
+            p.get_url(self.request): p
+            for p in ResultsPage.objects.live()
             .filter(slug__in=slugs)
             .select_related("teaser_image")
         }
-        page_list = []
+
+        # Set 'source_page' on results with matching pages
         for result in page.object_list:
-            url = (
-                result["_source"]
-                .get("@template", {})
-                .get("details", {})
-                .get("sourceUrl", "")
-            )
-            if source_page := results_page_by_url.get(urlparse(url).path, ""):
-                result["source_page"] = source_page
+            if result.has_source_url():
+                absolute_url = urlparse(result.url).path
+                if source_page := wagtail_pages.get(absolute_url):
+                    result.source_page = source_page
             else:
                 logger.debug(
-                    f"WebsiteSearchView:scrapped/ingested url={url} not found in results_page_by_url={results_page_by_url}"
+                    f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
                 )
-            page_list.append(result)
-        page.object_list = page_list
 
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
@@ -793,20 +741,21 @@ class FeaturedSearchView(BaseSearchView):
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
-            response = self.api_result["responses"][i]
-            bucket.result_count = response["hits"]["total"]["value"]
-            bucket.results = response["hits"]["hits"]
+            results = self.api_result[i]
+            bucket.result_count = results.total_count
+            bucket.results = results.hits
             buckets[bucket.key] = bucket
-            self.featured_search_total_count += bucket.result_count
         return buckets
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        total_count = self.featured_search_total_count
-        if total_count > 10000:
-            total_count = 10001
-        data.update(customMetric1=total_count)
-        return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(buckets=self.get_buckets(), **kwargs)
+
+    def get_result_count(self):
+        """
+        Overrides BaseSearchView.get_result_count() to return the combined
+        totals from all buckets.
+        """
+        total = 0
+        for bucket in self.get_buckets().values():
+            total += bucket.result_count
+        return total
