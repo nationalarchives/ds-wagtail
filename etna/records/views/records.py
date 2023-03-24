@@ -60,15 +60,13 @@ def record_detail_view(request, iaid):
     template_name = "records/record_detail.html"
     context = {}
     try:
+        # for any record
         record = records_client.fetch(iaid=iaid, expand=True)
-        # try block to handle those api responses that do not confim to source
-        try:
-            if record.source == "ARCHON":
-                template_name = "records/archive_detail.html"
-                context.update(tna_details=TNA_DETAILS)
-        except:
-            # allow initial value
-            pass
+
+        # check archive record
+        if record.source == "ARCHON":
+            template_name = "records/archive_detail.html"
+            context.update(tna_details=TNA_DETAILS)
     except DoesNotExist:
         raise Http404
 
