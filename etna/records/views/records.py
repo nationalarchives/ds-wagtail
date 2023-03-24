@@ -1,6 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
 
+from ...ciim.constants import TNA_DETAILS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
@@ -64,6 +65,7 @@ def record_detail_view(request, iaid):
         try:
             if record.source == "ARCHON":
                 template_name = "records/archive_detail.html"
+                context.update(tna_details=TNA_DETAILS)
         except:
             # allow initial value
             pass

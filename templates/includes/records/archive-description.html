@@ -1,17 +1,17 @@
 <div class="archive-description">
-    <h1>The National Archives</h1>
+    <h1>{{tna_details.name}}</h1>
     <div class="archive-description__contact">
         <h2>Contact information</h2>
-        <p><b>Address:</b> Kew, Richmond, England. TW9 4DU <a href="#">(view on a map)</a></p>
-        <p><b>Telephone:</b> <a href="tel:00000 000 000">00000 000 000</a></p>
-        <p><b>Email:</b> <a href="#">webmaster@nationalarchives.gov.uk</a></p>
-        <p><b>Website:</b> <a href="#">www.nationalarchives.gov.uk</a></p>
-        <p><b>Open:</b> Wednesday-Friday 9-5 (document retrieval 9-12.45, 2-4.30); 1st Saturday of month 9-4.30 (document retrieval 9-4)</p>
-        <p><b>Closed:</b> Bank holidays, Easter Saturday</p>
+        <p><b>Address:</b> {{tna_details.address_line1}}, {{tna_details.address_line2}}, {{tna_details.address_line3}}. {{tna_details.postcode}}<a href="{{tna_details.view_on_map}}">(view on a map)</a></p>
+        <p><b>Telephone:</b> <a href="tel:{{tna_details.telephone}}">{{tna_details.telephone}}</a></p>
+        <p><b>Email:</b> <a href="#">{{tna_details.email}}</a></p>
+        <p><b>Website:</b> <a href="#">{{tna_details.website}}</a></p>
+        <p><b>Open:</b> {{tna_details.open_details}}</p>
+        <p><b>Closed:</b> {{tna_details.close_details}}</p>
         <ul>
-            <li>Wheelchair access</li>
-            <li>Research Service</li>
-            <li>Readers ticket required</li>
+            {% for access_conditon in tna_details.access_conditons_as_list %}
+                <li>{{access_conditon}}</li>
+            {% endfor %}
         </ul>
     </div>
 
@@ -24,13 +24,31 @@
             </div>
             <div class="col-lg-4">
                 <h2>Summary of collections</h2>
+                {% comment %} Listings here are in the specific order {% endcomment %}
                 <ul>
-                    <li><a href="">Businesses (1123)</a></li>
-                    <li><a href="">Organisations (648)</a></li>
-                    <li><a href="">Persons (1348)</a></li>
-                    <li><a href="">Diaries (1)</a></li>
-                    <li><a href="">Families (165)</a></li>
-                    <li><a href="">Paper catalogues (27)</a></li>
+                    {% if record.archive_collection_business.count > 0 %}
+                        <li><a href="">{{record.archive_collection_business.display_name}}({{record.archive_collection_business.count}})</a></li>
+                    {% endif %}
+
+                    {% if record.archive_collection_organisation.count > 0 %}
+                        <li><a href="">{{record.archive_collection_organisation.display_name}}({{record.archive_collection_organisation.count}})</a></li>
+                    {% endif %}
+
+                    {% if record.archive_collection_person.count > 0 %}
+                        <li><a href="">{{record.archive_collection_person.display_name}}({{record.archive_collection_person.count}})</a></li>
+                    {% endif %}
+
+                    {% if record.archive_collection_diary.count > 0 %}
+                        <li><a href="">{{record.archive_collection_diary.display_name}}({{record.archive_collection_diary.count}})</a></li>
+                    {% endif %}
+
+                    {% if record.archive_collection_family.count > 0 %}
+                        <li><a href="">{{record.archive_collection_family.display_name}}({{record.archive_collection_family.count}})</a></li>
+                    {% endif %}
+
+                    {% if record.archive_paper_catalogue.display_name %}
+                        <li><a href="">{{record.archive_paper_catalogue.display_name}}({{record.archive_paper_catalogue.count}})</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

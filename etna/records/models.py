@@ -13,11 +13,13 @@ from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 
 from ..analytics.mixins import DataLayerMixin
+from ..ciim.constants import ARCHIVE_COLLECTION_NAMES, ARCHIVE_OTHER_COLLECTION_NAMES
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
+    find_all,
     format_description_markup,
     format_link,
     strip_html,
@@ -452,6 +454,135 @@ class Record(DataLayerMixin, APIModel):
             customDimension17=self.delivery_option,
         )
         return data
+
+    def _archive_links(self) -> Tuple[Dict[str, Any]]:
+        """
+        returns: the record creators - collection info for an archive record
+        """
+        return self.get("links", ())
+
+    def _get_trasformed_archive_record_creators_info(self, collection_name):
+        """
+        collection_name: configured archive collection whose data will be retrieved
+        returns: the specific transformed for display record creators - collection info related to collection_name for an archive record
+        """
+        info_list = []
+        if archive_links := self._archive_links():
+            filtered_values = find_all(
+                archive_links,
+                predicate=lambda i: i["identifier"][0]["value"]
+                == collection_name.get("api_links_indentifier_value"),
+            )
+            for item in filtered_values:
+                info_list.append(
+                    {
+                        "summary_title": item.get("summary", {}).get("title", ""),
+                        "url": reverse(
+                            "details-page-machine-readable",
+                            kwargs={"iaid": item.get("@admin", {}).get("id", "")},
+                        ),
+                        "place": item.get("place", {})
+                        .get("name", [{}])[0]
+                        .get("value", ""),
+                    }
+                )
+
+        return {
+            "display_name": collection_name.get("display_name"),
+            "count": len(info_list),
+            "info_list": info_list,
+        }
+
+    @cached_property
+    def archive_collection_business(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["business"]
+        )
+
+    @cached_property
+    def archive_collection_organisation(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["organisation"]
+        )
+
+    @cached_property
+    def archive_collection_person(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["person"]
+        )
+
+    @cached_property
+    def archive_collection_diary(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["diary"]
+        )
+
+    @cached_property
+    def archive_collection_family(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["family"]
+        )
+
+    @cached_property
+    def archive_collection_manor(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_trasformed_archive_record_creators_info(
+            ARCHIVE_COLLECTION_NAMES["manor"]
+        )
+
+    def _archive_manifestations(self) -> Tuple[Dict[str, Any]]:
+        """
+        returns: the nra info - paper catalogues info for an archive record
+        """
+        return self.get("manifestations", ())
+
+    def _get_transformed_nra_records_info(self, collection_name):
+        """
+        collection_name: configured archive collection whose data will be retrieved
+        returns: the specific transformed for display nra info - paper catalogues info related to collection_name for an archive record
+        """
+        info_list = []
+        if manifestations := self._archive_manifestations():
+            for item in manifestations:
+                info_list.append(
+                    {
+                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
+                        "url": item.get("url", ""),
+                    }
+                )
+
+        return {
+            "display_name": collection_name.get("display_name"),
+            "long_display_name": collection_name.get("long_display_name"),
+            "count": len(info_list),
+            "info_list": info_list,
+        }
+
+    @cached_property
+    def archive_paper_catalogue(self):
+        """
+        returns: the specific archive collection info
+        """
+        return self._get_transformed_nra_records_info(
+            ARCHIVE_OTHER_COLLECTION_NAMES["paper_catalogue"]
+        )
 
 
 @dataclass
