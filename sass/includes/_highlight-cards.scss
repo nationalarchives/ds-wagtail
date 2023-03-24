@@ -1,0 +1,42 @@
+.highlight-cards {
+    background-color: $color__yellow_6;
+
+    &__container {
+        padding: 3% 8%;
+    }
+
+    &__link {
+        text-decoration: none !important; // TODO: figure out why this is needed
+        color: $color__grey-6;
+
+        &:hover {
+            color: $color__grey-6;
+        }
+
+        &:visited {
+            color: $color__grey-6;
+        }
+    }
+
+    &__card {
+        &--highlight {
+            grid-column: span 1;
+            grid-row: span 2;
+
+            @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+                grid-column: span 2;
+                grid-row: span 2;
+            }
+        }
+        &--normal {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+    }
+
+    &__image {
+        display: block;
+        width: 100%;
+        height: auto;
+    }
+}

@@ -260,6 +260,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
+        InlinePanel("page_time_periods", label="Time Period Pages")
     ]
 
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -288,11 +289,9 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
 
         return (
             ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
+            .exclude(teaser_image=None)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
