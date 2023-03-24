@@ -642,7 +642,7 @@ class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     template_name = "search/long_filter_options.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(url_pattern_name="search-catalogue", **kwargs)
+        return super().get_context_data(url_name="search-catalogue", **kwargs)
 
 
 class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
@@ -733,7 +733,7 @@ class WebsiteSearchLongFilterView(BaseLongFilterOptionsView):
     template_name = "search/long_filter_options.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(url_pattern_name="search-website", **kwargs)
+        return super().get_context_data(url_name="search-website", **kwargs)
 
 
 class FeaturedSearchView(BaseSearchView):
