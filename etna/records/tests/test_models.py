@@ -336,8 +336,8 @@ class RecordModelTests(SimpleTestCase):
             ],
         )
 
-    def test_catalogue_source(self):
-        self.assertEqual(self.record.catalogue_source, "CAT")
+    def test_source_catalogue(self):
+        self.assertEqual(self.record.source, "CAT")
 
     def test_repo_summary_title(self):
         self.assertEqual(self.record.repo_summary_title, "The National Archives")

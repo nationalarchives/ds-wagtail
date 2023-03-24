@@ -219,7 +219,7 @@ class Record(DataLayerMixin, APIModel):
         return self.get("multimedia.@admin.id", default="")
 
     @cached_property
-    def catalogue_source(self) -> str:
+    def source(self) -> str:
         return self.get("source.value", default="")
 
     @cached_property
@@ -391,11 +391,11 @@ class Record(DataLayerMixin, APIModel):
         Overrides DataLayerMixin.get_gtm_content_group() to
         return content group otherwise the name of the class.
         """
-        if self.catalogue_source == "CAT":
+        if self.source == "CAT":
             return "Catalogue: The National Archives"
-        elif self.catalogue_source == "ARCHON":
+        elif self.source == "ARCHON":
             return "Catalogue: Archive Details"
-        elif self.catalogue_source:
+        elif self.source:
             return "Catalogue: Other Archive Records"
         else:
             return self.__class__.__name__
@@ -447,7 +447,7 @@ class Record(DataLayerMixin, APIModel):
             customDimension12=self.custom_dimension_12,
             customDimension13=self.custom_dimension_13,
             customDimension14=self.custom_dimension_14,
-            customDimension15=self.catalogue_source,
+            customDimension15=self.source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.delivery_option,
         )

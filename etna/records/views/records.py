@@ -56,8 +56,17 @@ def record_detail_view(request, iaid):
     data isn't fetched from the CMS but an external API. And unlike pages, this
     view is accessible from a fixed URL.
     """
+    template_name = "records/record_detail.html"
+    context = {}
     try:
         record = records_client.fetch(iaid=iaid, expand=True)
+        # try block to handle those api responses that do not confim to source
+        try:
+            if record.source == "ARCHON":
+                template_name = "records/archive_detail.html"
+        except:
+            # allow initial value
+            pass
     except DoesNotExist:
         raise Http404
 
@@ -67,12 +76,14 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
+    context.update(
+        record=record,
+        image=image,
+        meta_title=record.summary_title,
+    )
+
     return render(
         request,
-        "records/record_detail.html",
-        {
-            "record": record,
-            "image": image,
-            "meta_title": record.summary_title,
-        },
+        template_name,
+        context,
     )
