@@ -642,7 +642,7 @@ ARCHIVE_COLLECTION_NAMES = {
 ARCHIVE_OTHER_COLLECTION_NAMES = {
     "paper_catalogue": {
         "display_name": "Paper catalogues",
-        "long_display_name": f"Paper catalogues available to view at The National Archives",
+        "long_display_name": "Paper catalogues available to view at The National Archives",
     },
 }
 
