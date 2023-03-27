@@ -2,22 +2,37 @@
     <h1>{{record.title}}</h1>
     <div class="archive-description__contact">
         <h2>Contact information</h2>
+        
         <p><b>Address:</b> {{record.archive_contact_info.address_line1}}, {{record.archive_contact_info.address_town}}, {{record.archive_contact_info.address_country}}. {{record.archive_contact_info.postcode}}<a href="{{record.archive_contact_info.map_url}}<">(view on a map)</a></p>
-        <p><b>Telephone:</b> <a href="tel:{{record.archive_contact_info.telephone}}">{{record.archive_contact_info.telephone}}</a></p>
+        
+        {% if record.archive_contact_info.telephone %}
+            <p><b>Telephone:</b> <a href="tel:{{record.archive_contact_info.telephone}}">{{record.archive_contact_info.telephone}}</a></p>
+        {% endif %}
+        
         {% if record.archive_contact_info.fax %}
             <p><b>Fax:</b> <a href="fax:{{record.archive_contact_info.fax}}">{{record.archive_contact_info.fax}}</a></p>
         {% endif %}
-        <p><b>Email:</b> <a href="mailto:{{record.archive_contact_info.email}}">{{record.archive_contact_info.email}}</a></p>
-        <p><b>Website:</b> <a href="{{record.archive_contact_info.url}}">{{record.archive_contact_info.url}}</a></p>
+        
+        {% if record.archive_contact_info.email %}
+            <p><b>Email:</b> <a href="mailto:{{record.archive_contact_info.email}}">{{record.archive_contact_info.email}}</a></p>
+        {% endif %}
+        
+        {% if record.archive_contact_info.url %}
+            <p><b>Website:</b> <a href="{{record.archive_contact_info.url}}">{{record.archive_contact_info.url}}</a></p>
+        {% endif %}
+
         {% if record.archive_contact_info.corresp_addr %}
             <p><b>Correspondence address:</b> {{record.archive_contact_info.corresp_addr}}</p>
         {% endif %}
+        
         {% if record.archive_further_info.opening_hours %}
             <p><b>Open:</b> {{record.archive_further_info.opening_hours}}</p>
         {% endif %}
+        
         {% if record.archive_further_info.holidays %}
             <p><b>Closed:</b> {{record.archive_further_info.holidays}}</p>
         {% endif %}
+        
         {% if record.archive_further_info.facilities %}
             <ul>
                 {% for facility in record.archive_further_info.facilities %}
@@ -31,6 +46,7 @@
         <div class="row">
             <div class="col-lg-8">
                 <h2>Key information</h2>
+                ARCHON code:{{record.reference_number}}</br>
                 {{record.archive_further_info.comments}}
             </div>
             <div class="col-lg-4">

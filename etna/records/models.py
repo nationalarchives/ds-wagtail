@@ -525,7 +525,7 @@ class Record(DataLayerMixin, APIModel):
                     )
                 )
                 further_info = FurtherInfo(
-                    opening_hours=document("openinghours").text(),
+                    opening_hours=mark_safe(document("openinghours").text()),
                     holidays=document("holidays").text(),
                     facilities=facilities,
                     comments=mark_safe(document("comments").text()),
