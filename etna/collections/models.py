@@ -542,15 +542,9 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
-    long_description = RichTextField(
-        verbose_name=_("long description"),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        max_length=400,
-    )
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:

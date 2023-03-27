@@ -7,22 +7,24 @@
                 {% if forloop.first %}
                     <div class="highlight-cards__card--highlight">
                         <a href="{{ article.url }}" class="highlight-cards__link">
-                            {% image article.teaser_image fill-495x432-c100 format-webp as image_webp %}
+                            {# Desktop/ tablet image #}
+                            {% image article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                             <source srcset="{{ image_webp.url }}"
                                     type="image/webp"
                                     {% if article.teaser_image.alt_text %}alt="{{ article.teaser_image.alt_text }}"{% endif %}/>
-                            {% image article.teaser_image fill-495x432-c100 as base_img %}
+                            {% image article.teaser_image fill-534x413-c100 as base_img %}
                             <img src="{{ base_img.url }}"
                                  height="{{ base_img.height }}"
                                  width="{{ base_img.width }}"
                                  class="highlight-cards__image"
                                  {% if article.teaser_image.alt_text %}alt="{{ article.image.alt_text }}"{% endif %}/>
-                            <div class="highlight-cards__content--large">
-                                <h3 class="highlight-cards__title--large">{{ article.title }}</h3>
+         
+                            <div class="highlight-cards__content">
+                                <h3 class="highlight-cards__card_title">{{ article.title }}</h3>
                                 {% if article.teaser_image.record and article.teaser_image.record.record_dates %}
-                                    <p class="highlight-cards__description--large">{{ article.teaser_image.record.record_dates }}</p>
+                                    <p class="highlight-cards__description">{{ article.teaser_image.record.record_dates }}</p>
                                 {% endif %}
-                                <p class="highlight-cards__description--large">{{ article.teaser_text }}</p>
+                                <p class="highlight-cards__description">{{ article.teaser_text }}</p>
                             </div>
                         </a>
                     </div>
@@ -40,7 +42,7 @@
                              class="highlight-cards__image"
                              {% if article.teaser_image.alt_text %}alt="{{ article.image.alt_text }}"{% endif %}/>
                         <div class="highlight-cards__card__content">
-                            <h3 class="highlight-cards__title">{{ article.title }}</h3>
+                            <h3 class="highlight-cards__card_title">{{ article.title }}</h3>
                             <p class="highlight-cards__description">{{ article.teaser_text }}</p>
                         </div>
                     </a>
