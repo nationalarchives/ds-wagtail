@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, List
 
@@ -639,49 +639,39 @@ ARCHIVE_COLLECTION_NAMES = {
     "manor": {"api_links_indentifier_value": "M", "display_name": "Manors"},
 }
 
-
-@dataclass
-class TnaDetails:
-    name: str
-    address_line1: str
-    address_line2: str
-    address_line3: str
-    postcode: str
-    telephone: str
-    email: str
-    website: str
-    view_on_map: str
-    open_details: str
-    close_details: str
-    access_conditons: List[str]
-
-    def access_conditons_as_list(self):
-        for item in self.access_conditons:
-            yield item
-
-
-TNA_DETAILS = TnaDetails(
-    name="The National Archives",
-    address_line1="Kew",
-    address_line2="Richmond",
-    address_line3="England",
-    postcode="TW9 4DU",
-    telephone="00000 000 000",
-    email="webmaster@nationalarchives.gov.uk",
-    website="www.nationalarchives.gov.uk",
-    view_on_map="https://www.google.com/maps/search/?api=1&query=The+National+Archives+Kew+Richmond+England+TW9+4DU",
-    open_details="Wednesday-Friday 9-5 (document retrieval 9-12.45, 2-4.30); 1st Saturday of month 9-4.30 (document retrieval 9-4)",
-    close_details="Bank holidays, Easter Saturday",
-    access_conditons=[
-        "Wheelchair access",
-        "Research Service",
-        "Readers ticket required",
-    ],
-)
-
 ARCHIVE_OTHER_COLLECTION_NAMES = {
     "paper_catalogue": {
         "display_name": "Paper catalogues",
-        "long_display_name": f"Paper catalogues available to view at {TNA_DETAILS.name}",
+        "long_display_name": f"Paper catalogues available to view at The National Archives",
     },
 }
+
+
+@dataclass
+class ContactInfo:
+    address_line1: str = ""
+    address_town: str = ""
+    postcode: str = ""
+    address_country: str = ""
+    map_url: str = ""
+    url: str = ""
+    telephone: str = ""
+    fax: str = ""
+    email: str = ""
+    corresp_addr: str = ""
+    contact_job_title: str = ""
+    contact_title: str = ""
+    contact_first_name: str = ""
+    contact_last_name: str = ""
+
+
+@dataclass
+class FurtherInfo:
+    opening_hours: str = ""
+    holidays: str = ""
+    facilities: List[str] = field(default_factory=list)
+    comments: str = ""
+
+    def facilities_as_list(self):
+        for item in self.facilities:
+            yield item

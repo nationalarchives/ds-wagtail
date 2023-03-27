@@ -2,7 +2,7 @@
     <h2>Collections information</h2>
     {% comment %} Listings here are in the specific order {% endcomment %}
 
-    {% comment %} Businesses {% endcomment %}
+    {% comment %} 1:Business {% endcomment %}
     {% if record.archive_collection_business.count > 0 %}
         <h3>{{record.archive_collection_business.display_name}}({{record.archive_collection_business.count}})</h3>
 
@@ -18,7 +18,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Organisations {% endcomment %}
+    {% comment %} 2:Organisation {% endcomment %}
     {% if record.archive_collection_organisation.count > 0 %}
         <h3>{{record.archive_collection_organisation.display_name}}({{record.archive_collection_organisation.count}})</h3>
 
@@ -34,7 +34,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Persons {% endcomment %}
+    {% comment %} 3:Person {% endcomment %}
     {% if record.archive_collection_person.count > 0 %}
         <h3>{{record.archive_collection_person.display_name}}({{record.archive_collection_person.count}})</h3>
 
@@ -50,7 +50,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Diaries {% endcomment %}
+    {% comment %} 4:Diary {% endcomment %}
     {% if record.archive_collection_diary.count > 0 %}
         <h3>{{record.archive_collection_diary.display_name}}({{record.archive_collection_diary.count}})</h3>
 
@@ -66,7 +66,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Families {% endcomment %}
+    {% comment %} 5:Family {% endcomment %}
     {% if record.archive_collection_family.count > 0 %}
         <h3>{{record.archive_collection_family.display_name}}({{record.archive_collection_family.count}})</h3>
 
@@ -82,7 +82,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Manors {% endcomment %}
+    {% comment %} 6:Manor {% endcomment %}
     {% if record.archive_collection_manor.count > 0 %}
         <h3>{{record.archive_collection_manor.display_name}}({{record.archive_collection_manor.count}})</h3>
 
@@ -98,7 +98,7 @@
         </div>
     {% endif %}
 
-    {% comment %} Paper catalogues {% endcomment %}
+    {% comment %} 7:Paper catalogue {% endcomment %}
     {% if record.archive_paper_catalogue.count > 0 %}
         <h3>{{record.archive_paper_catalogue.long_display_name}}({{record.archive_paper_catalogue.count}})</h3>
 

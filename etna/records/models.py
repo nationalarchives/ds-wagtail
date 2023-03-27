@@ -12,8 +12,15 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 
+from pyquery import PyQuery as pq
+
 from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import ARCHIVE_COLLECTION_NAMES, ARCHIVE_OTHER_COLLECTION_NAMES
+from ..ciim.constants import (
+    ARCHIVE_COLLECTION_NAMES,
+    ARCHIVE_OTHER_COLLECTION_NAMES,
+    ContactInfo,
+    FurtherInfo,
+)
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
@@ -455,6 +462,76 @@ class Record(DataLayerMixin, APIModel):
         )
         return data
 
+    @cached_property
+    def title(self) -> str:
+        return self.template.get("title", "")
+
+    @cached_property
+    def archive_contact_info(self) -> ContactInfo:
+        """
+        Transforms the description.ephemara value into contact information dataclass
+        returns contact information
+        """
+        contact_info = ContactInfo()
+        description_items = self.get("description", ())
+        for item in description_items:
+            if value := item.get("ephemera", {}).get("value", ""):
+                # convert to lower case for extraction
+                value = value.replace("mapURL", "mapurl")
+                value = value.replace("jobTitle", "jobtitle")
+                value = value.replace("firstName", "firstname")
+                value = value.replace("lastName", "lastname")
+                document = pq(value)
+                contact_info = ContactInfo(
+                    address_line1=document("addressline1").text(),
+                    address_town=document("addresstown").text(),
+                    postcode=document("postcode").text(),
+                    address_country=document("addresscountry").text(),
+                    map_url=document("mapurl").text(),
+                    url=document("url").text(),
+                    telephone=document("telephone").text(),
+                    fax=document("fax").text(),
+                    email=document("email").text(),
+                    corresp_addr=document("correspaddr").text(),
+                    contact_job_title=document("jobtitle").text(),
+                    contact_title=document("title").text(),
+                    contact_first_name=document("firstname").text(),
+                    contact_last_name=document("lastname").text(),
+                )
+        return contact_info
+
+    @cached_property
+    def archive_further_info(self) -> FurtherInfo:
+        """
+        Transforms the description.ephemara value into contact information dataclass
+        returns contact information
+        """
+        further_info = FurtherInfo()
+        place_items = self.get("place", ())
+        for item in place_items:
+            if value := item.get("description", {}).get("value", ""):
+                document = pq(value)
+                # remove empty values
+                facilities = list(
+                    filter(
+                        None,
+                        [
+                            document("disabledaccess").text(),
+                            document("researchservice").text(),
+                            document("appointment").text(),
+                            document("idrequired").text(),
+                            document("ticket").text(),
+                        ],
+                    )
+                )
+                further_info = FurtherInfo(
+                    opening_hours=document("openinghours").text(),
+                    holidays=document("holidays").text(),
+                    facilities=facilities,
+                    comments=mark_safe(document("comments").text()),
+                )
+        return further_info
+
     def _archive_links(self) -> Tuple[Dict[str, Any]]:
         """
         returns: the record creators - collection info for an archive record
@@ -553,7 +630,7 @@ class Record(DataLayerMixin, APIModel):
         """
         return self.get("manifestations", ())
 
-    def _get_transformed_nra_records_info(self, collection_name):
+    def _get_transformed_archive_nra_records_info(self, collection_name):
         """
         collection_name: configured archive collection whose data will be retrieved
         returns: the specific transformed for display nra info - paper catalogues info related to collection_name for an archive record
@@ -580,7 +657,7 @@ class Record(DataLayerMixin, APIModel):
         """
         returns: the specific archive collection info
         """
-        return self._get_transformed_nra_records_info(
+        return self._get_transformed_archive_nra_records_info(
             ARCHIVE_OTHER_COLLECTION_NAMES["paper_catalogue"]
         )
 
