@@ -7,7 +7,7 @@ from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -15,7 +15,7 @@ from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro
+from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -460,7 +460,7 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
+class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
@@ -485,6 +485,14 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         verbose_name_plural = _("highlight gallery pages")
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Content Warning Options",
+            classname="collapsible",
+            children=[
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+        ),
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
