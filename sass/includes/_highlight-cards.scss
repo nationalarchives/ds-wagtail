@@ -13,21 +13,13 @@
     }
 
     &__link {
-        text-decoration: none !important; // TODO: figure out why this is needed
+        text-decoration: none !important;
         color: $color__grey-6;
-
-        &:hover {
-            color: $color__grey-6;
-        }
-
-        &:visited {
-            color: $color__grey-6;
-        }
     }
 
     &__title {
         font-size: 1.875rem;
-        font-weight: 500;   
+        font-weight: $font-weight-normal;   
         line-height: 2.83rem;
         letter-spacing: 0em;
     }

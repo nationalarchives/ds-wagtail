@@ -260,7 +260,6 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
-        InlinePanel("page_time_periods", label="Time Period Pages")
     ]
 
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
@@ -289,9 +288,11 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
 
         return (
             ArticlePage.objects.exclude(pk=self.featured_article)
-            .exclude(teaser_image=None)
+            .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")[:4]
+            .select_related("teaser_image")
         )
 
     @cached_property
@@ -542,9 +543,15 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
+    long_description = RichTextField(
+        verbose_name=_("long description"),
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
+        max_length=400,
+    )
 
     panels = [
         FieldPanel("image"),
+        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:
