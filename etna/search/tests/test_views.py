@@ -1541,3 +1541,29 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric2": 0,
             },
         )
+
+
+class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
+    test_url = reverse_lazy(
+        "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
+    )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.client.get(self.test_url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=interpretive"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=topic%3A100"
+                "&filterAggregations=group%3Ablog"
+                "&from=0"
+                "&size=20"
+            ),
+        )
