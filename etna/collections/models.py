@@ -561,7 +561,7 @@ class Highlight(Orderable):
                 raise ValidationError(
                     {
                         "image": [
-                            f"Only images with a 'record' and a 'description' specified can be used for highlights."
+                            "Only images with a 'record' and a 'description' specified can be used for highlights."
                         ]
                     }
                 )
