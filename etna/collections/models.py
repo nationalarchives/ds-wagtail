@@ -549,16 +549,11 @@ class Highlight(Orderable):
 
     def clean(self) -> None:
         if self.image:
-            error_fields = []
-            if self.image.record is None:
-                error_fields.append("'record'")
-            if self.image.description == "":
-                error_fields.append("'description'")
-            if error_fields:
+            if not self.image.record or not self.image.description:
                 raise ValidationError(
                     {
                         "image": [
-                            f"Only images with a {' and '.join(error_fields)} specified can be used for highlights."
+                            f"Only images with a 'record' and a 'description' specified can be used for highlights."
                         ]
                     }
                 )
