@@ -1,21 +1,20 @@
 from typing import List, Optional, Tuple, Union
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro
+from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -460,7 +459,7 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
+class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
@@ -485,6 +484,14 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         verbose_name_plural = _("highlight gallery pages")
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Content Warning Options",
+            classname="collapsible",
+            children=[
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+        ),
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
@@ -529,7 +536,7 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.long_description])
+            strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
 
 
@@ -543,26 +550,21 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
-    long_description = RichTextField(
-        verbose_name=_("long description"),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        max_length=400,
-    )
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:
-        if self.image and self.image.record is None:
-            raise ValidationError(
-                {
-                    "image": [
-                        "Only images with a 'record' specified can be used for highlights."
-                    ]
-                }
-            )
+        if self.image:
+            if not self.image.record or not self.image.description:
+                raise ValidationError(
+                    {
+                        "image": [
+                            "Only images with a 'record' and a 'description' specified can be used for highlights."
+                        ]
+                    }
+                )
         return super().clean()
 
 
