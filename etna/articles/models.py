@@ -19,8 +19,8 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
 from etna.core.blocks import PromotedLinkWithDateAuthorBlock
+from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin

@@ -1,4 +1,5 @@
 from wagtail import blocks
+
 from etna.core.blocks import PromotedLinkBlock
 
 
@@ -22,6 +23,7 @@ class FeaturedPageBlock(blocks.StructBlock):
         template = "collections/blocks/featured_page.html"
         help_text = "Block used feature a page from within Wagtail"
         icon = "arrow-up"
+
 
 class PromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)

@@ -1,6 +1,7 @@
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
+
 class PromotedLinkBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
@@ -10,6 +11,7 @@ class PromotedLinkBlock(blocks.StructBlock):
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"
     )
+
 
 class PromotedLinkWithDateAuthorBlock(PromotedLinkBlock):
     publication_date = blocks.DateBlock(required=False)
