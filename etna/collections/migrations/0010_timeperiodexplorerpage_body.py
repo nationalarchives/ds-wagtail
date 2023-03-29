@@ -58,7 +58,7 @@ class Migration(migrations.Migration):
                                 (
                                     "promoted_items",
                                     wagtail.blocks.ListBlock(
-                                        etna.collections.blocks.PromotedItemBlock,
+                                        etna.collections.blocks.PromotedLinkBlock,
                                         max=3,
                                         min=3,
                                     ),
