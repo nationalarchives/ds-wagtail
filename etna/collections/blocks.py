@@ -1,5 +1,5 @@
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
+from etna.core.blocks import PromotedLinkBlock
 
 
 class CollectionHighlightsBlock(blocks.StructBlock):
@@ -23,22 +23,10 @@ class FeaturedPageBlock(blocks.StructBlock):
         help_text = "Block used feature a page from within Wagtail"
         icon = "arrow-up"
 
-
-class PromotedItemBlock(blocks.StructBlock):
-    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
-    teaser_image = ImageChooserBlock(
-        help_text="Image that will appear on thumbnails and promos around the site."
-    )
-    description = blocks.CharBlock(
-        max_length=200, help_text="A description of the promoted page"
-    )
-
-
 class PromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
     sub_heading = blocks.CharBlock(max_length=200)
-    promoted_items = blocks.ListBlock(PromotedItemBlock, min=3, max=3)
+    promoted_items = blocks.ListBlock(PromotedLinkBlock, min=3, max=3)
 
     class Meta:
         template = "collections/blocks/promoted_pages.html"
