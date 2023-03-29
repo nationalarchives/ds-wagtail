@@ -181,8 +181,18 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_page_pks(self):
-        return tuple(self.topic_pages.values_list("page__pk", flat=True))
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTopic` inline
+        to indicate a relationship with this topic. The values are ordered by:
+        - The order in which this topic was specified (more important topics are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.topic_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
+        )
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -318,8 +328,18 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_page_pks(self):
-        return tuple(self.time_period_pages.values_list("page__pk", flat=True))
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTimePeriod` inline
+        to indicate a relationship with this time period. The values are ordered by:
+        - The order in which this time period was specified (more important time periods are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.time_period_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
+        )
 
 
 class PageTopic(Orderable):
