@@ -1,12 +1,26 @@
 .card-grid {
     @extend .row;
     display: grid;
-    grid-gap: 1rem;
-    margin: 1rem 0;
     
     &--duo {
+        grid-gap: 1rem;
+        margin: 1rem 0;
+
         @media (min-width: map-get($grid-breakpoints, "md")) {
             grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    &--quad {
+        grid-gap: 40px;
+        margin: 20px 0;
+        
+        @media (min-width: map-get($grid-breakpoints, "sm")) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            grid-template-columns: repeat(4, 1fr);
         }
     }
 
