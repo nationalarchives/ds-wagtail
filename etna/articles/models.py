@@ -20,6 +20,7 @@ from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
+from etna.core.blocks import PromotedLinkWithDateAuthorBlock
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
@@ -260,6 +261,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    promoted_links = StreamField(
+        [("promoted_link", PromotedLinkWithDateAuthorBlock())],
+        max_num=3,
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage",
         blank=True,
@@ -301,6 +310,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 FieldPanel("print_on_demand_link"),
             ],
         ),
+        FieldPanel("promoted_links"),
         FieldPanel("featured_article"),
     ]
 
