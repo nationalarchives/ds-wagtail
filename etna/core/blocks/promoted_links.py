@@ -10,3 +10,7 @@ class PromotedLinkBlock(blocks.StructBlock):
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"
     )
+
+class PromotedLinkWithDateAuthorBlock(PromotedLinkBlock):
+    publication_date = blocks.DateBlock(required=False)
+    author = blocks.CharBlock(required=False)
