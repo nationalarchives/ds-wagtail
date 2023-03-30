@@ -1,9 +1,9 @@
-import enum
 import json
 import logging
 import re
 
 from datetime import date, datetime, time
+from enum import StrEnum
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -39,7 +39,7 @@ if TYPE_CHECKING:
     from etna.ciim.models import APIModel
 
 
-class Stream(str, enum.Enum):
+class Stream(StrEnum):
     """Options for restricting /search results to a given stream.
 
     Evidential:
@@ -53,7 +53,7 @@ class Stream(str, enum.Enum):
     INTERPRETIVE = "interpretive"
 
 
-class SortBy(str, enum.Enum):
+class SortBy(StrEnum):
     """Options for sorting /search results by a given field."""
 
     RELEVANCE = ""
@@ -62,14 +62,14 @@ class SortBy(str, enum.Enum):
     DATE_OPENING = "dateOpening"
 
 
-class SortOrder(str, enum.Enum):
+class SortOrder(StrEnum):
     """Options for sort order for /search results."""
 
     ASC = "asc"
     DESC = "desc"
 
 
-class Template(str, enum.Enum):
+class Template(StrEnum):
     """@template block to include with response.
 
     Supported by all endpoints.
@@ -79,7 +79,7 @@ class Template(str, enum.Enum):
     RESULTS = "results"
 
 
-class Aggregation(str, enum.Enum):
+class Aggregation(StrEnum):
     """Aggregated counts to include with response.
 
     Supported by /search and /searchAll endpoints.

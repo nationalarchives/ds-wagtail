@@ -6,23 +6,23 @@
                 <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
                 <picture>
                     {% with first_gallery_item=gallery.0 %}
-                        {% image first_gallery_item.image fill-1200x700 format-webp as image_webp %}
+                        {% image first_gallery_item.image original format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
                                 {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1200x700 as image_png %}
+                        {% image first_gallery_item.image original as image_png %}
                         <source srcset="{{ image_png.url }}"
                                 type="image/png"
                                 {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image fill-1200x700 as base_img %}
-                        <img width="1200"
-                             height="700"
+                        {% image first_gallery_item.image original as base_img %}
+                        <img 
                              src="{{ base_img.url }}"
+                             height="{{ base_img.height }}"
+                             width="{{ base_img.width }}"
                              class="transcription__image transcription__image--preview"
                              {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
                     {% endwith %}
                 </picture>
-                {% include "static/images/icons/dashed-line.svg" with classes="transcription__underline" %}
                 <button id="showButton" class="transcription__open">
                     View images
                     {% if has_text %}and transcripts{% endif %}
@@ -47,6 +47,9 @@
                             {% image item.image original as base_img %}
                             <img src="{{ base_img.url }}"
                                  class="transcription__image"
+                                 loading="lazy"
+                                 height="{{ base_img.height }}"
+                                 width="{{ base_img.width }}"
                                  {% if item.alt_text %}alt="{{ item.alt_text }}"{% endif %}/>
                         </picture>
                         <figcaption class="transcription__caption"
@@ -62,11 +65,11 @@
                 {% if item.image.transcription or item.image.translation %}
                     <div class="transcription__text">
                         {% if item.image.transcription %}
-                            <h2>{{ item.image.transcription_heading }}</h2>
+                            <h2>{{ item.image.get_transcription_heading_display }}</h2>
                             <p>{{ item.image.transcription|richtext }}</p>
                         {% endif %}
                         {% if item.image.translation %}
-                            <h2>{{ item.image.translation_heading }}</h2>
+                            <h2>{{ item.image.get_translation_heading_display }}</h2>
                             <p>{{ item.image.translation|richtext }}</p>
                         {% endif %}
                     </div>
@@ -84,7 +87,7 @@
                                         role="tab"
                                         aria-selected="true"
                                         aria-controls="tabpanel-1-{{ forloop.counter }}">
-                                    <span>{{ item.image.transcription_heading }}</span>
+                                    <span>{{ item.image.get_transcription_heading_display }}</span>
                                 </button>
                             {% endif %}
                             {% if item.image.translation %}
@@ -95,7 +98,7 @@
                                         aria-selected="false"
                                         aria-controls="tabpanel-2-{{ forloop.counter }}"
                                         tabindex="-1">
-                                    <span>{{ item.image.translation_heading }}</span>
+                                    <span>{{ item.image.get_translation_heading_display }}</span>
                                 </button>
                             {% endif %}
                         </div>

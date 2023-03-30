@@ -1,8 +1,13 @@
-from django.db import models
+from datetime import timedelta
 
+from django.db import models
+from django.utils import timezone
+from django.utils.functional import cached_property
+
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 
-__all__ = ["ContentWarningMixin"]
+__all__ = ["ContentWarningMixin", "NewLabelMixin"]
 
 
 class ContentWarningMixin(models.Model):
@@ -22,6 +27,71 @@ class ContentWarningMixin(models.Model):
             "Otherwise the default text will be used."
         ),
     )
+
+    class Meta:
+        abstract = True
+
+
+class NewLabelMixin(models.Model):
+    """Mixin to allow editors to toggle 'new' label to be applied on-publish"""
+
+    mark_new_on_next_publish = models.BooleanField(
+        verbose_name="mark this page as 'new' when published",
+        default=True,
+    )
+
+    newly_published_at = models.DateField(
+        editable=False,
+        default=None,
+        null=True,
+    )
+
+    new_label_display_for_days = 21
+
+    def with_content_json(self, content):
+        """
+        Overrides Page.with_content_json() to ensure page's `newly_published_at`
+        value is always preserved between revisions.
+        """
+        obj = super().with_content_json(content)
+        obj.newly_published_at = self.newly_published_at
+        return obj
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to set `newly_published_at` under the right
+        circumstances, and to ensure `mark_new_on_next_publish` is unset
+        once that wish has been fulfilled.
+        """
+        # Set/reset newly_published_at where requested
+        if self.live and self.mark_new_on_next_publish:
+            self.newly_published_at = timezone.now().date()
+            self.mark_new_on_next_publish = False
+
+        # Save page changes to the database
+        super().save(*args, **kwargs)
+
+        if self.live and self.mark_new_on_next_publish and self.latest_revision:
+            # If `mark_new_on_next_publish` is still 'True' in the latest revision,
+            # The checkbox will remain checked when the page is next edited in Wagtail.
+            # Checking the box has had the desired effect now, so we 'uncheck' it
+            # in the revision content to avoid unexpected resetting.
+            self.latest_revision.content["mark_new_on_next_publish"] = False
+            self.latest_revision.save()
+
+    @cached_property
+    def is_newly_published(self):
+        expiry_date = timezone.now().date() - timedelta(
+            days=self.new_label_display_for_days
+        )
+        if self.newly_published_at:
+            if self.newly_published_at > expiry_date:
+                return True
+        return False
+
+    promote_panels = [
+        FieldPanel("mark_new_on_next_publish"),
+    ]
 
     class Meta:
         abstract = True

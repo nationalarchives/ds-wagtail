@@ -1,12 +1,11 @@
 {% extends 'base_page.html' %}
-
 {% load i18n static wagtailcore_tags wagtailimages_tags %}
 {% load wagtailmetadata_tags %}
 {% block meta_tag %}
-  {% meta_tags %}
+    {% meta_tags %}
 {% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' %}
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     {% if page.featured_article %}
         <div class="container">
             <div class="featured-article">
@@ -14,24 +13,24 @@
                     <div class="featured-article__image">
                         <picture>
                             {% image page.featured_article.teaser_image fill-412x361 as hero %}
-                            <source media="(max-width: 480px)" srcset="{{ hero.url }}">
+                            <source media="(max-width: 480px)" srcset="{{ hero.url }}"/>
                             {% image page.featured_article.teaser_image fill-510x351 as hero %}
-                            <source media="(max-width: 640px)" srcset="{{ hero.url }}">
+                            <source media="(max-width: 640px)" srcset="{{ hero.url }}"/>
                             {% image page.featured_article.teaser_image fill-510x304 as hero %}
-                            <source media="(max-width: 768px)" srcset="{{ hero.url }}">
+                            <source media="(max-width: 768px)" srcset="{{ hero.url }}"/>
                             {% image page.featured_article.teaser_image fill-345x495 as hero %}
-                            <source media="(max-width: 991px)" srcset="{{ hero.url }}">
+                            <source media="(max-width: 991px)" srcset="{{ hero.url }}"/>
                             {% image page.featured_article.teaser_image fill-555x367 as hero %}
-                            <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+                            <source media="(max-width: 1200px)" srcset="{{ hero.url }}"/>
                             {% if page.featured_article.hero_image_decorative %}
                                 <img src="{{ hero.url }}" alt="" />
                             {% else %}
-                                <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
+                                <img src="{{ hero.url }}"
+                                     alt="{{ page.featured_article.hero_image_alt_text }}"/>
                             {% endif %}
                         </picture>
                     </div>
                 {% endif %}
-
                 <div class="featured-article__description">
                     <h2 class="featured-article__heading">
                         <small>{% trans "Spotlight on" %}</small>
@@ -43,8 +42,9 @@
             </div>
         </div>
     {% endif %}
-
-    <div class="container" data-container-name="time-period-explorer" id="analytics-time-period-explorer">
+    <div class="container"
+         data-container-name="time-period-explorer"
+         id="analytics-time-period-explorer">
         <div class="row">
             <div class="col-md-12">
                 {% for block in page.body %}
@@ -52,22 +52,25 @@
                 {% endfor %}
             </div>
         </div>
-        {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
-        <div class="row">
-            <div class="col-md-12">
-                 {% for article_page in page.related_article %}
-                <li>
-                       <a href="{% pageurl article_page %}">{{ article_page.title }}</a>
-                </li>
-            {% endfor %}
-            </div>
-        </div>
-        {% endif %}
-
     </div>
-
-{% endblock %}
-
+    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
+        {% if page.related_articles %}
+            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
+        {% endif %}
+    {% endif %}
+        {%comment%}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for highlight_gallery in page.related_highlight_gallery_pages %}
+                        <li>
+                            <a href="{% pageurl highlight_gallery %}">{{ highlight_gallery.title }}</a>
+                        </li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endcomment %}
+</div>
+{% endblock content %}
 {% block extra_js %}
     <script src="{% static 'scripts/explorer.js' %}"></script>
-{% endblock %}
+{% endblock extra_js %}

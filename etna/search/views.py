@@ -95,12 +95,20 @@ class BucketsMixin:
     def get_context_data(self, **kwargs):
         if self.bucket_list:
             current_bucket_key = self.get_current_bucket_key()
-            try:
-                bucket_count_data = self.api_result.bucket_counts
-            except AttributeError:
-                bucket_count_data = self.api_result.aggrega
-            kwargs["buckets"] = self.get_buckets(bucket_count_data, current_bucket_key)
-        return super().get_context_data(**kwargs)
+            buckets = self.get_buckets(
+                self.api_result.bucket_counts, current_bucket_key
+            )
+
+            # Set this to True if any buckets have results
+            buckets_contain_results = False
+            for bucket in buckets:
+                if bucket.result_count:
+                    buckets_contain_results = True
+                    break
+
+        return super().get_context_data(
+            buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
+        )
 
 
 class KongAPIMixin:
@@ -572,22 +580,11 @@ class BaseFilteredSearchView(BaseSearchView):
         return data
 
 
-class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
-    api_method_name = "search"
-    api_stream = Stream.EVIDENTIAL
-    bucket_list = CATALOGUE_BUCKETS
-    default_group = "tna"
-    form_class = CatalogueSearchForm
-    template_name = "search/catalogue_search.html"
-    search_tab = SearchTabs.CATALOGUE.value
-
-
-class CatalogueSearchLongFilterView(BaseFilteredSearchView):
-    api_method_name = "search"
-    api_stream = Stream.EVIDENTIAL
-    default_group = "tna"
-    form_class = CatalogueSearchForm
-    template_name = "search/catalogue_search_long_filter_chooser.html"
+class BaseLongFilterOptionsView(BaseFilteredSearchView):
+    """
+    A more specialized version `BaseFilteredSearchView` for long filters that has methods that
+    only apply to a subset of views:
+    """
 
     def get_meta_title(self) -> str:
         return f'Filter options for "{self.form_field.label}"'
@@ -612,7 +609,7 @@ class CatalogueSearchLongFilterView(BaseFilteredSearchView):
 
     def get_api_aggregations(self) -> List[str]:
         """
-        Overrides CatalogueSearchView.get_api_aggregations() to only request
+        Overrides get_api_aggregations() to only request
         aggregations for the form field that options have been requested for.
         """
         aggregation_name = underscore_to_camelcase(self.field_name)
@@ -625,6 +622,27 @@ class CatalogueSearchLongFilterView(BaseFilteredSearchView):
             field=self.form_field,
         )
         return super().get_context_data(**kwargs)
+
+
+class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
+    api_method_name = "search"
+    api_stream = Stream.EVIDENTIAL
+    bucket_list = CATALOGUE_BUCKETS
+    default_group = "tna"
+    form_class = CatalogueSearchForm
+    template_name = "search/catalogue_search.html"
+    search_tab = SearchTabs.CATALOGUE.value
+
+
+class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
+    api_method_name = "search"
+    api_stream = Stream.EVIDENTIAL
+    default_group = "tna"
+    form_class = CatalogueSearchForm
+    template_name = "search/long_filter_options.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return super().get_context_data(url_name="search-catalogue", **kwargs)
 
 
 class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
@@ -705,6 +723,17 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
             if filter_aggregation == "highlight" and "page" in context:
                 self.add_results_page_for_url(context["page"])
         return context
+
+
+class WebsiteSearchLongFilterView(BaseLongFilterOptionsView):
+    api_method_name = "search"
+    api_stream = Stream.INTERPRETIVE
+    default_group = "blog"
+    form_class = WebsiteSearchForm
+    template_name = "search/long_filter_options.html"
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        return super().get_context_data(url_name="search-website", **kwargs)
 
 
 class FeaturedSearchView(BaseSearchView):

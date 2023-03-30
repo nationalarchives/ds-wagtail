@@ -84,17 +84,6 @@ def include_hidden_fields(visible_field_names, form) -> str:
     return mark_safe(html)
 
 
-@register.simple_tag(takes_context=True)
-def has_result_count(context, bucket) -> bool:
-    """Returns True if at least one bucket contains count returned by api response, otherwise False"""
-    buckets = context["buckets"]
-    for bucket in buckets:
-        if bucket.result_count:  # checks api has returned a count
-            if bucket.result_count > 0:
-                return True
-    return False
-
-
 @register.filter
 def hidden_fields_for_date_filter(selected_filters, form) -> str:
     """

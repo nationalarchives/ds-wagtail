@@ -2,9 +2,41 @@
   font-size: 11px;
 }
 
+/* Add padding and background colour to Draftail character counts to
+aid legibility when appearing over help text */
+
+.inputlengthindicator {
+  display: block;
+  background-color: #fff;
+  position: absolute;
+  bottom: -1.6rem;
+  right: 0;
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  pointer-events: none;
+  font-variant-numeric: tabular-nums;
+}
+
+.inputlengthindicator--exceeded {
+  color: #cd4444;
+}
+
+/* Add padding and background colour to Draftail character counts to
+aid legibility when appearing over help text */
+
+.Draftail-MetaToolbar {
+  padding-right: 0 !important;
+}
+
+.Draftail-MetaToolbar .w-help-text {
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+  background-color: #ffffff;
+}
+
 /* CSS to be applied to record chooser widget, due to
 Wagtail 4.1 upgrade changes breaking the CSS to display on hover */
-@media (hover: hover) { 
+@media (hover: hover) {
   .chooser__actions {
     opacity: 0;
   }

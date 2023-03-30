@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any, List
 
 from django.contrib.humanize.templatetags.humanize import intcomma
@@ -13,7 +13,7 @@ def forTemplate(cls):
 
 
 @forTemplate
-class BucketKeys(Enum):
+class BucketKeys(StrEnum):
     NONTNA = "nonTna"
     CREATOR = "creator"
     INSIGHT = "insight"
@@ -21,7 +21,7 @@ class BucketKeys(Enum):
 
 
 @forTemplate
-class SearchTabs(Enum):
+class SearchTabs(StrEnum):
     ALL = "All results"
     CATALOGUE = "Catalogue results"
     WEBSITE = "Website results"
@@ -580,7 +580,7 @@ COLLECTION_CHOICES = tuple(
 
 
 @forTemplate
-class LevelKeys(Enum):
+class LevelKeys(StrEnum):
     LEVEL_1 = "Department"
     LEVEL_2 = "Division"
     LEVEL_3 = "Series"
@@ -603,7 +603,7 @@ LEVELS = (
 LEVEL_CHOICES = tuple((level, level) for level in LEVELS)
 
 
-class Display(str, Enum):
+class Display(StrEnum):
     """Display type to support veiw, template."""
 
     LIST = "list"

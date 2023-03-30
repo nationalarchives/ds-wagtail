@@ -21,7 +21,7 @@ The database service built from the official [postgres](https://hub.docker.com/_
 ### `web`
 
 Our custom container responsible for running the application. Built from the
-official [python 3.10](https://hub.docker.com/_/python/) base image
+official [python 3.11](https://hub.docker.com/_/python/) base image
 
 During the build step our custom container installs our project's dependencies
 using [Poetry](https://python-poetry.org) as defined in

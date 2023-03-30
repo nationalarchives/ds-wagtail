@@ -1,21 +1,20 @@
 from typing import List, Optional, Tuple, Union
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro
+from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -113,10 +112,15 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
+
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
     ]
 
@@ -145,10 +149,49 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(topic=self)
+            ArticlePage.objects.exclude(pk=self.featured_article)
             .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
             .select_related("teaser_image")
-            .order_by("title")[:3]
+        )
+
+    @cached_property
+    def related_record_article(self):
+        from etna.articles.models import RecordArticlePage
+
+        return (
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_highlight_gallery_pages(self):
+        return (
+            HighlightGalleryPage.objects.live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("title")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTopic` inline
+        to indicate a relationship with this topic. The values are ordered by:
+        - The order in which this topic was specified (more important topics are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.topic_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
         )
 
 
@@ -212,6 +255,9 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
+    featured_record_article = models.ForeignKey(
+        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+    )
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
     )
@@ -219,6 +265,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_article", heading=_("Featured article")),
+        FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
         FieldPanel("start_year"),
         FieldPanel("end_year"),
@@ -249,10 +296,49 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         from etna.articles.models import ArticlePage
 
         return (
-            ArticlePage.objects.filter(time_period=self)
+            ArticlePage.objects.exclude(pk=self.featured_article)
             .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
             .select_related("teaser_image")
-            .order_by("title")[:3]
+        )
+
+    @cached_property
+    def related_record_articles(self):
+        from etna.articles.models import RecordArticlePage
+
+        return (
+            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
+            .live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("-first_published_at")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_highlight_gallery_pages(self):
+        return (
+            HighlightGalleryPage.objects.live()
+            .public()
+            .filter(pk__in=self.related_page_pks)
+            .order_by("title")
+            .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTimePeriod` inline
+        to indicate a relationship with this time period. The values are ordered by:
+        - The order in which this time period was specified (more important time periods are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.time_period_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
         )
 
 
@@ -316,7 +402,7 @@ class TopicalPageMixin:
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
             min_num=min_num,
             max_num=max_num,
@@ -330,7 +416,7 @@ class TopicalPageMixin:
             "page_topics",
             heading=_("Related topics"),
             help_text=_(
-                "Where possible, specify these in relevancy order (most relevant first)."
+                "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
             min_num=min_num,
             max_num=max_num,
@@ -393,7 +479,7 @@ class TopicalPageMixin:
         return ", ".join(item.title for item in self.time_periods)
 
 
-class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
+class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
@@ -418,6 +504,14 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         verbose_name_plural = _("highlight gallery pages")
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Content Warning Options",
+            classname="collapsible",
+            children=[
+                FieldPanel("display_content_warning"),
+                FieldPanel("custom_warning_text"),
+            ],
+        ),
         InlinePanel(
             "page_highlights",
             heading=_("Highlights"),
@@ -462,7 +556,7 @@ class HighlightGalleryPage(TopicalPageMixin, BasePageWithIntro):
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.long_description])
+            strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
 
 
@@ -476,26 +570,21 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
-    long_description = RichTextField(
-        verbose_name=_("long description"),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        max_length=400,
-    )
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:
-        if self.image and self.image.record is None:
-            raise ValidationError(
-                {
-                    "image": [
-                        "Only images with a 'record' specified can be used for highlights."
-                    ]
-                }
-            )
+        if self.image:
+            if not self.image.record or not self.image.description:
+                raise ValidationError(
+                    {
+                        "image": [
+                            "Only images with a 'record' and a 'description' specified can be used for highlights."
+                        ]
+                    }
+                )
         return super().clean()
 
 
@@ -543,6 +632,7 @@ class ResultsPageRecord(Orderable, models.Model):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text="Image that will appear on thumbnails and promos around the site.",
     )
     description = models.TextField(
         help_text="Optional field to override the description for this record in the teaser.",
