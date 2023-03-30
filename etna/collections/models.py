@@ -64,7 +64,7 @@ class TopicExplorerIndexPage(BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -231,7 +231,7 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
