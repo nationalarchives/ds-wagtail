@@ -30,11 +30,12 @@
   }
 
   &__paragraph {
+    max-width: 50rem; // 800px for decent reading line length
+    font-size: 1.125rem; // one off font size (18px)
     margin-bottom: 0.5rem;
-    font-size: 1.313rem; 
 
-    p {
-      margin-bottom: 0.5rem;
+    @media only screen and (min-width: $screen__lg) {
+      font-size: 1.313rem; // one off font size (21px)
     }
   }
 }
