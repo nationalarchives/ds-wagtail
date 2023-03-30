@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import StreamField, RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
@@ -73,9 +73,7 @@ class TopicExplorerIndexPage(BasePageWithIntro):
         verbose_name="hero image caption",
         features=["link"],
         blank=True,
-        help_text=(
-            "An optional caption for the hero image"
-        ),
+        help_text=("An optional caption for the hero image"),
     )
 
     content_panels = BasePageWithIntro.content_panels + [
@@ -242,9 +240,7 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
         verbose_name="hero image caption",
         features=["link"],
         blank=True,
-        help_text=(
-            "An optional caption for the hero image"
-        ),
+        help_text=("An optional caption for the hero image"),
     )
 
     content_panels = BasePageWithIntro.content_panels + [
