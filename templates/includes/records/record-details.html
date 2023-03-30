@@ -18,7 +18,7 @@
             {% if record.description %}
                 <tr>
                     <th scope="row">{{ 'description'|as_label }}</th>
-                    <td class="xslt_patches">{{ record.description|safe }}</td>
+                    <td class="xslt_patches">{{ record.description }}</td>
                 </tr>
             {% endif %}
             {% if record.related_materials %}
@@ -32,7 +32,7 @@
                             {% if related_material.links %}
                                 <ul>
                                     {% for link in related_material.links %}
-                                        <li><a href="{% record_url link %}">{{ link.text }}</a></li>
+                                        <li><a href="{{ link.href }}">{{ link.text }}</a></li>
                                     {% endfor %}
                                 </ul>
                             {% endif %}

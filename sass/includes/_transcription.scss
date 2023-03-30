@@ -58,21 +58,7 @@
 
     @media screen and (min-width: $screen__sm) {
       max-width: 80%;
-      max-height: 800px;
       margin: 0 auto;
-    }
-  }
-
-  &__underline {
-    width: 100%;
-    display: block;
-    position: absolute;
-    bottom: 0;
-
-    @media screen and (min-width: $screen__sm) {
-      max-width: 80%;
-      margin: 0 auto;
-      left: 10%;
     }
   }
 
@@ -151,8 +137,12 @@
 
   &__image {
     max-width: 100%;
-    max-height: 100%;
+    height: auto;
     display: block;
+
+    &--preview {
+      margin: 0 auto;
+    }
   }
 
   &__figure-image {

@@ -21,13 +21,9 @@ class KongCommunicationError(KongAPIError):
     """Raised if Kong responds with a non-200 status code"""
 
 
-class APIManagerException(Exception):
-    """Exception to group exceptions raised by APIManager"""
-
-
-class DoesNotExist(APIManagerException):
+class DoesNotExist(KongAPIError):
     """Raised if item is requested from Kong but doesn't exist"""
 
 
-class MultipleObjectsReturned(APIManagerException):
+class MultipleObjectsReturned(KongAPIError):
     """Raised if single item is requested but multiple returned"""

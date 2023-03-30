@@ -6,7 +6,7 @@ from django.http import HttpRequest
 from django.utils.decorators import method_decorator
 from django.utils.translation import gettext_lazy as _
 
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
@@ -49,12 +49,39 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
+        help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
-    promote_panels = MetadataPageMixin.promote_panels + [
+    # Overriding the default/core help_text set in MetadataPageMixin
+    promote_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel(
+                    "slug",
+                    help_text=_(
+                        "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
+                    ),
+                ),
+                FieldPanel("seo_title"),
+                FieldPanel("show_in_menus"),
+                FieldPanel(
+                    "search_description",
+                    help_text=_(
+                        "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
+                    ),
+                ),
+                FieldPanel(
+                    "search_image",
+                    help_text=_(
+                        "Image that will appear as a promo when this page is shared on social media."
+                    ),
+                ),
+            ],
+            _("Common page configuration"),
+        ),
         FieldPanel("teaser_image"),
         FieldPanel("teaser_text"),
     ]

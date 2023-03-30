@@ -113,6 +113,24 @@ def create_response(records=None, aggregations=None, total_count=None):
     }
 
 
+def create_search_response(records=None, aggregations=None, total_count=None):
+    if not records:
+        records = []
+
+    if not aggregations:
+        aggregations = {}
+
+    if not total_count:
+        total_count = len(records)
+
+    return {
+        "responses": [
+            create_response(aggregations=aggregations, total_count=total_count),
+            create_response(records=records, total_count=total_count),
+        ]
+    }
+
+
 def paginate_records_callback(records, request):
     """Responses callback to simulate paginating through results.
 

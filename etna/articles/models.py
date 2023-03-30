@@ -1,4 +1,3 @@
-from datetime import datetime, timedelta
 from typing import Any, Dict, Tuple
 
 from django.conf import settings
@@ -20,7 +19,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePageWithIntro, ContentWarningMixin
+from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
@@ -42,8 +41,6 @@ class ArticleIndexPage(BasePageWithIntro):
         null=True,
         use_json_field=True,
     )
-
-    new_label_end_date = datetime.now() - timedelta(days=21)
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
@@ -85,7 +82,11 @@ class TaggedArticle(ItemBase):
 
 
 class ArticlePage(
-    TopicalPageMixin, HeroImageMixin, ContentWarningMixin, BasePageWithIntro
+    TopicalPageMixin,
+    HeroImageMixin,
+    ContentWarningMixin,
+    NewLabelMixin,
+    BasePageWithIntro,
 ):
     """ArticlePage
 
@@ -98,7 +99,9 @@ class ArticlePage(
     article_tag_names = models.TextField(editable=False)
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
-    new_label_end_date = datetime.now() - timedelta(days=21)
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("article_tag_names"),
+    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
@@ -126,10 +129,14 @@ class ArticlePage(
         ]
     )
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
 
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []

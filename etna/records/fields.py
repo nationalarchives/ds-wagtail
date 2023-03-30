@@ -7,6 +7,7 @@ from django.utils.functional import SimpleLazyObject
 
 from requests import HTTPError
 
+from .api import records_client
 from .models import Record
 from .widgets import RecordChooser
 
@@ -23,7 +24,7 @@ class LazyRecord(SimpleLazyObject):
         self.__dict__["iaid"] = iaid
 
         def _fetch_record():
-            return Record.api.fetch(iaid=iaid)
+            return records_client.fetch(iaid=iaid)
 
         super().__init__(_fetch_record)
 
@@ -53,7 +54,7 @@ class RecordChoiceField(CharField):
         if value in self.empty_values:
             return None
         try:
-            Record.api.fetch(iaid=value)
+            records_client.fetch(iaid=value)
         except HTTPError:
             raise ValidationError(
                 f"Record data could not be retrieved using iaid '{value}'.",
