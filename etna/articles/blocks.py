@@ -82,7 +82,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         required=False,
         max_length=50,
         label="Duration",
-        help_text="Podcast or video duration. Or estimated read time of article.",
+        help_text="Podcast or video duration.",
     )
     url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
     target_blank = blocks.BooleanBlock(
@@ -169,7 +169,7 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
         help_text="A description of the promoted page",
     )
     teaser_image = ImageChooserBlock(
-        help_text="An image used to create a teaser for the promoted page"
+        help_text="Image that will appear on thumbnails and promos around the site."
     )
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
 
@@ -217,7 +217,7 @@ class QuoteBlock(SectionDepthAwareStructBlock):
 
 
 class SubHeadingBlock(SectionDepthAwareStructBlock):
-    heading = blocks.CharBlock(max_length=100)
+    heading = blocks.CharBlock(max_length=100, label="Sub-heading")
 
     class Meta:
         icon = "heading"

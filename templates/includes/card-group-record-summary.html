@@ -3,14 +3,14 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{% firstof description_override|safe record.summary_title|striptags %}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{% firstof description_override|safe record.summary_title %}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
             <p class="card-group-record-summary__heading">
                 {% if record.reference_number %}
                 <span class="sr-only">
                     {{ record.reference_number }} -
                 </span>
                 {% endif %}
-                {% firstof description_override|safe record.summary_title|striptags %}
+                {% firstof description_override|safe record.summary_title %}
                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
             </p>
         </a>
@@ -20,7 +20,7 @@
             {% image teaser_image fill-348x352 as teaser_image_large %}
             {% image teaser_image fill-543x549 as teaser_image_extra_large %}
 
-            <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.description|striptags|escape|truncatewords:20 }}" aria-hidden="true" tabindex="-1"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+            <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary" data-card-title="{{ record.description|truncatewords:20 }}" aria-hidden="true" tabindex="-1"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
                 <div class="card-group-record-summary__image">
                     <picture>
                         <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">

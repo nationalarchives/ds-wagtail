@@ -18,10 +18,10 @@
                 <div>
                     <a href={% record_url record %} class="featured-search__results-link">
                         <h3 class="featured-search__heading">
-                            {{ record|record_detail:"summaryTitle"|striptags }}
+                            {{ record.summary_title }}
                         </h3>
                     </a>
-                    <p class="featured-search__interpretive-card-description">{{ record|interpretive_detail:"content"|safe|striptags|truncatewords:40 }}</p>
+                    <p class="featured-search__interpretive-card-description">{{ record.content|truncatewords:40 }}</p>
                 </div>
         </div>
     {% endfor %}

@@ -9,7 +9,7 @@
 {% endblock %}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True %}
+    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
     {% include 'includes/hero-img.html' %}
 
     <div class="article-container container">

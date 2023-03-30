@@ -9,11 +9,11 @@
                     </div>
                 {% endif %}
                 <h1 class="generic-intro__title">
-                    {{ self.title }}
+                    {{ title }}
                 </h1>
-                {% if page.intro %}
+                {% if intro %}
                     <div class="generic-intro__paragraph">
-                        {{ page.intro|richtext }}
+                        {{ intro|richtext }}
                     </div>
                 {% endif %}
             </div>
