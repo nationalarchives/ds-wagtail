@@ -599,7 +599,7 @@ class Record(DataLayerMixin, APIModel):
         return collection_info
 
     @cached_property
-    def archive_collections(self) -> CollectionInfo:
+    def archive_collections(self) -> ArchiveCollections:
         """
         returns archive collection info for record creators and nra records
         """
