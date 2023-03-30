@@ -24,7 +24,9 @@ These are Etna specific components, created using BEM and following our guidelin
 
 */
 
+@import 'includes/functions';
 @import 'includes/variables';
+@import 'includes/mixins';
 @import 'includes/global';
 @import 'includes/buttons';
 @import 'includes/generic-intro';
@@ -103,3 +105,4 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/new_cards';
 @import 'includes/highlight-gallery';
 @import 'includes/highlight-cards';
+@import 'includes/utilities';
