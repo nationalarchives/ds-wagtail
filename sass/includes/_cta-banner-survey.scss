@@ -1,53 +1,48 @@
-.cta-banner-survey-js{
-    display: none;
-}
-
 .cta-banner-survey {
-    border-top: 2px dotted $color__grey-4;
-    padding: 1rem 0;
+  border-top: 2px dotted $color__grey-4;
+  padding: 1rem 0;
+  display: none;
+
+  &--js {
     display: none;
+  }
 
+  &--no-js {
+    margin: auto;
+    width: 50%;
+    text-align: center;
+    margin-bottom: 1em;
+  }
 
-
-
-
-    &__heading {
-        font-size: 1.55rem;
-        @media only screen and (max-width: $screen__md) {
-            font-size: 1.4rem;
-        }
-        margin-top: 0;
-        font-weight: 400;
-    }
-
-    &__heading, &__description {
-        margin-bottom: .5rem;
-    }
-
-    &__icon {
-        @media only screen and (max-width: $screen__lg) {
-            display: none;
-        }
-        height: 3.75rem;
-    }
-}
-
-.cta-banner-border {
-    //border:solid 1px black;
-    margin:auto;
-    width:90%;
-    margin-bottom:1em;
+  &--border {
+    margin: auto;
+    margin-bottom: 1em;
 
     p {
-        margin-bottom:1rem;
+      margin-bottom: 1rem;
     }
+  }
 
-}
+  &__heading {
+    font-size: 1.55rem;
+    margin-top: 0;
+    font-weight: 400;
 
-.no-js-survey {
-    //background:red;
-    margin:auto;
-    width:50%;
-    text-align: center;
-    margin-bottom:1em;
+    @media only screen and (max-width: $screen__md) {
+      font-size: 1.4rem;
+    }
+  }
+
+  &__heading,
+  &__description {
+    margin-bottom: 0.5rem;
+  }
+
+  &__icon {
+    height: 3.75rem;
+
+    @media only screen and (max-width: $screen__lg) {
+      display: none;
+    }
+  }
 }

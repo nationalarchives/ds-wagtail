@@ -1,6 +1,5 @@
 from typing import List, Optional, Tuple, Union
 
-from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -8,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
@@ -182,8 +181,18 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_page_pks(self):
-        return tuple(self.topic_pages.values_list("page__pk", flat=True))
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTopic` inline
+        to indicate a relationship with this topic. The values are ordered by:
+        - The order in which this topic was specified (more important topics are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.topic_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
+        )
 
 
 class TimePeriodExplorerIndexPage(BasePageWithIntro):
@@ -319,8 +328,18 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_page_pks(self):
-        return tuple(self.time_period_pages.values_list("page__pk", flat=True))
+    def related_page_pks(self) -> Tuple[int]:
+        """
+        Returns a list of ids of pages that have used the `PageTimePeriod` inline
+        to indicate a relationship with this time period. The values are ordered by:
+        - The order in which this time period was specified (more important time periods are specified first)
+        - When the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.time_period_pages.values_list("page_id", flat=True).order_by(
+                "sort_order", "-page__first_published_at"
+            )
+        )
 
 
 class PageTopic(Orderable):
@@ -537,7 +556,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.long_description])
+            strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
 
 
@@ -551,26 +570,21 @@ class Highlight(Orderable):
         on_delete=models.SET_NULL,
         verbose_name=_("image"),
     )
-    long_description = RichTextField(
-        verbose_name=_("long description"),
-        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
-        max_length=400,
-    )
 
     panels = [
         FieldPanel("image"),
-        FieldPanel("long_description"),
     ]
 
     def clean(self) -> None:
-        if self.image and self.image.record is None:
-            raise ValidationError(
-                {
-                    "image": [
-                        "Only images with a 'record' specified can be used for highlights."
-                    ]
-                }
-            )
+        if self.image:
+            if not self.image.record or not self.image.description:
+                raise ValidationError(
+                    {
+                        "image": [
+                            "Only images with a 'record' and a 'description' specified can be used for highlights."
+                        ]
+                    }
+                )
         return super().clean()
 
 

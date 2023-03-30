@@ -15,7 +15,7 @@
                             </p>
                         </div>
                     {% endif %}
-                    <div class="highlight-gallery__richtext">{{ highlight.long_description|richtext }}</div>
+                    <div class="highlight-gallery__richtext">{{ highlight.image.description|richtext }}</div>
                     {% if highlight.image.record %}
                         <a class="highlight-gallery__link" href="{{ highlight.image.record.url }}">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
                     {% endif %}
