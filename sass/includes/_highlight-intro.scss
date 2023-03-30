@@ -1,0 +1,66 @@
+.highlight-intro {
+    position: relative;
+
+    &__image {
+        width: 100%;
+        height: auto;
+    }    
+
+    &__standout {
+        position: relative;
+        height: auto;
+        background: $color__grey-6;
+        left: 0;
+        color: $color__white;
+        padding: 28px 24px 36px 24px;
+        
+        // normalise font-size and spacing
+        p {
+            line-height: 1.5;
+            margin: 0;
+        }
+        
+        
+        h1 {
+            font-size: $h1-font-size;
+            margin: 0;
+        }
+        
+        // tablet and up
+        @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+            width: 736px;
+            color: $color__black;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+          
+            background: $color__white;
+        }
+        // desktop and up
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            left: 132px;
+            bottom: 52px;
+            margin: auto;
+        }
+
+    }
+
+    &__title {
+        @include font-size("xxxl");
+        font-weight: $font-weight-bold;
+        line-height: 78px;
+        padding-bottom: 0.75rem;
+        font-family: $font__supria-sans;
+
+    }
+
+    &__intro {
+        font-size: $h3-font-size;
+        @include font-size("xl");
+        line-height: 36px;
+        font-weight: $font-weight-normal;
+        padding: 0;
+        font-family: $font__open-sans;
+    }
+}
