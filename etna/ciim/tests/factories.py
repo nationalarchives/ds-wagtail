@@ -3,32 +3,38 @@ import json
 
 def create_record(
     iaid="C0000000",
-    source="mongo",
+    admin_source="mongo",
     reference_number="ADM 223/3",
-    title="Title",
-    description="description",
+    summary_title="Summary Title",
+    description=None,
     earliest="1900",
     latest="2100",
     is_digitised=False,
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
+    source_value=None,
+    links=None,
+    place=None,
+    manifestations=None,
+    repository=None,
+    template_details=None,
 ):
+    """Return a sample response for a record.
+
+    Useful for tidying up tests where response needs to be mocked
+    """
     if not hierarchy:
         hierarchy = []
 
     if not related:
         related = []
 
-    """Return a sample response for a record.
-
-    Useful for tidying up tests where response needs to be mocked
-    """
-    return {
+    hits_hits_source = {
         "_source": {
             "@admin": {
                 "id": iaid,
-                "source": source,
+                "source": admin_source,
             },
             "access": {"conditions": "open"},
             "identifier": [
@@ -46,7 +52,7 @@ def create_record(
             "digitised": is_digitised,
             "@hierarchy": [hierarchy],
             "summary": {
-                "title": title,
+                "title": summary_title,
             },
             "multimedia": [
                 {
@@ -57,10 +63,34 @@ def create_record(
                 }
             ],
             "related": related,
-            "description": [{"value": description}],
             "legal": {"status": "Open"},
         }
     }
+
+    if description:
+        hits_hits_source.get("_source").update(description=description)
+
+    if source_value:
+        hits_hits_source.get("_source").update(source={"value": source_value})
+
+    if place:
+        hits_hits_source.get("_source").update({"place": place})
+
+    if links:
+        hits_hits_source.get("_source").update({"links": links})
+
+    if manifestations:
+        hits_hits_source.get("_source").update({"manifestations": manifestations})
+
+    if repository:
+        hits_hits_source.get("_source").update({"repository": repository})
+
+    if template_details:
+        hits_hits_source.get("_source").update(
+            {"@template": {"details": template_details}}
+        )
+
+    return hits_hits_source
 
 
 def create_media(
