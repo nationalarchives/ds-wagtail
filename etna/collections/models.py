@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import StreamField
+from wagtail.fields import StreamField, RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
@@ -61,7 +61,32 @@ class TopicExplorerIndexPage(BasePageWithIntro):
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_image_caption = RichTextField(
+        verbose_name="hero image caption",
+        features=["link"],
+        blank=True,
+        help_text=(
+            "An optional caption for the hero image"
+        ),
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+                FieldPanel("hero_image_caption"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
@@ -205,7 +230,32 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_image_caption = RichTextField(
+        verbose_name="hero image caption",
+        features=["link"],
+        blank=True,
+        help_text=(
+            "An optional caption for the hero image"
+        ),
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+                FieldPanel("hero_image_caption"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
