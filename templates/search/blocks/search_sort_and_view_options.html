@@ -2,8 +2,7 @@
 
 
 <div class="search-sort-view">
-    <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form-desktop" search-type="{%with request.resolver_match.url_name as url_name%}{% if url_name == 'search-featured' %}{{searchtabs.ALL.value}}{% elif url_name == 'search-catalogue' %}{{searchtabs.CATALOGUE.value}}{% elif url_name == 'search-website' %}
-{{searchtabs.WEBSITE.value}}{% endif %}{%endwith%}"  search-bucket="{{buckets.current.label}}" search-filter-name="Sort results" search-filter-value="">
+    <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form-desktop" search-type="{% with request.resolver_match.url_name as url_name %}{% if url_name == 'search-featured' %}{{ searchtabs.ALL.value }}{% elif url_name == 'search-catalogue' %}{{ searchtabs.CATALOGUE.value }}{% elif url_name == 'search-website' %}{{ searchtabs.WEBSITE.value }}{% endif %}{% endwith %}"  search-bucket="{{ buckets.current.label }}" search-filter-name="{{ form.sort_by.name }}" search-filter-value="">
 
         <h2 class="search-sort-view__heading">
            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
