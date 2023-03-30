@@ -626,25 +626,54 @@ CUSTOM_ERROR_MESSAGES = {
     "invalid_date_range": "There is a problem. Start date cannot be after end date."
 }
 
-#  associate readable names with api identifiers
-ARCHIVE_COLLECTION_NAMES = {
-    "business": {"api_links_indentifier_value": "B", "display_name": "Businesses"},
-    "organisation": {
-        "api_links_indentifier_value": "O",
-        "display_name": "Organisations",
-    },
-    "person": {"api_links_indentifier_value": "P", "display_name": "Persons"},
-    "diary": {"api_links_indentifier_value": "D", "display_name": "Diaries"},
-    "family": {"api_links_indentifier_value": "F", "display_name": "Families"},
-    "manor": {"api_links_indentifier_value": "M", "display_name": "Manors"},
+TNA_URLS = {
+    "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
+    "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
 }
 
-ARCHIVE_OTHER_COLLECTION_NAMES = {
-    "paper_catalogue": {
+#  associate readable names with api identifiers
+ARCHIVE_RECORD_CREATORS_COLLECTION = [
+    {
+        "name": "business",
+        "api_links_indentifier_value": "B",
+        "display_name": "Businesses",
+        "long_display_name": "Businesses",
+    },
+    {
+        "name": "organisation",
+        "api_links_indentifier_value": "O",
+        "display_name": "Organisations",
+        "long_display_name": "Organisations",
+    },
+    {
+        "name": "person",
+        "api_links_indentifier_value": "P",
+        "display_name": "Persons",
+        "long_display_name": "Persons",
+    },
+    {
+        "name": "diary",
+        "api_links_indentifier_value": "D",
+        "display_name": "Diaries",
+        "long_display_name": "Diaries",
+    },
+    {
+        "name": "family",
+        "api_links_indentifier_value": "F",
+        "display_name": "Families",
+        "long_display_name": "Families",
+    },
+    # {"name":"manor", "api_links_indentifier_value": "M", "display_name": "Manors"}, # TODO until API response is ready
+]
+
+
+ARCHIVE_NRA_RECORDS_COLLECTION = [
+    {
+        "name": "paper_catalogue",
         "display_name": "Paper catalogues",
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
-}
+]
 
 
 @dataclass
@@ -669,9 +698,24 @@ class ContactInfo:
 class FurtherInfo:
     opening_hours: str = ""
     holidays: str = ""
-    facilities: List[str] = field(default_factory=list)
+    facilities: List = field(default_factory=list)
     comments: str = ""
 
-    def facilities_as_list(self):
-        for item in self.facilities:
-            yield item
+
+@dataclass
+class CollectionInfo:
+    name: str = ""
+    display_name: str = ""
+    long_display_name: str = ""
+    count: int = 0
+    info_list: List = field(default_factory=list)
+
+
+@dataclass
+class ArchiveCollections:
+    collection_info_list: List = field(default_factory=list)
+
+
+@dataclass
+class AccessionsInfo:
+    accession_years: dict = field(default_factory=dict)

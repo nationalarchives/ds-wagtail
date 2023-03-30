@@ -1,119 +1,28 @@
-<div class="archive-collections">
-    <h2>Collections information</h2>
-    {% comment %} Listings here are in the specific order {% endcomment %}
-
-    {% comment %} 1:Business {% endcomment %}
-    {% if record.archive_collection_business.count > 0 %}
-        <h3>{{record.archive_collection_business.display_name}}({{record.archive_collection_business.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_business.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 2:Organisation {% endcomment %}
-    {% if record.archive_collection_organisation.count > 0 %}
-        <h3>{{record.archive_collection_organisation.display_name}}({{record.archive_collection_organisation.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_organisation.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 3:Person {% endcomment %}
-    {% if record.archive_collection_person.count > 0 %}
-        <h3>{{record.archive_collection_person.display_name}}({{record.archive_collection_person.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_person.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 4:Diary {% endcomment %}
-    {% if record.archive_collection_diary.count > 0 %}
-        <h3>{{record.archive_collection_diary.display_name}}({{record.archive_collection_diary.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_diary.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 5:Family {% endcomment %}
-    {% if record.archive_collection_family.count > 0 %}
-        <h3>{{record.archive_collection_family.display_name}}({{record.archive_collection_family.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_family.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 6:Manor {% endcomment %}
-    {% if record.archive_collection_manor.count > 0 %}
-        <h3>{{record.archive_collection_manor.display_name}}({{record.archive_collection_manor.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_collection_manor.info_list %}
-                    <li>
-                        <a href="{{info.url}}">{{info.summary_title}}</a>
-                        {{info.place}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-
-    {% comment %} 7:Paper catalogue {% endcomment %}
-    {% if record.archive_paper_catalogue.count > 0 %}
-        <h3>{{record.archive_paper_catalogue.long_display_name}}({{record.archive_paper_catalogue.count}})</h3>
-
-        <div class="archive-collections__container">
-            <ul class="archive-collections__list">
-                {% for info in record.archive_paper_catalogue.info_list %}
-                    <li>
-                        {{info.identifier_title}}
-                        {% if info.url %}
-                            <a href="{{info.url}}">link to online catalogue</a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
-    
-</div>
+{% if record.archive_collections.collection_info_list %}
+    <div class="archive-collections">
+        <h2>Collections information</h2>
+            {% for collection in record.archive_collections.collection_info_list %}
+                {% if collection.count > 0 %}
+                    <h3>{{ collection.long_display_name }}({{ collection.count }})</h3>                    
+                    <div class="archive-collections__container">
+                        <ul class="archive-collections__list">
+                            {% for info in collection.info_list %}
+                                <li>                                    
+                                    {# NOTE: The order is preserved with the condition  #}
+                                    {% if collection.name == "paper_catalogue" %}            
+                                        {{ info.identifier_title }}
+                                        {% if info.url %}
+                                            <a href="{{ info.url }}">link to online catalogue</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ info.url }}">{{ info.summary_title }}</a>
+                                        {{ info.place }}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
+            {% endfor %}
+    </div>
+{% endif %}

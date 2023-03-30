@@ -1,6 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
 
+from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
@@ -57,6 +58,7 @@ def record_detail_view(request, iaid):
     view is accessible from a fixed URL.
     """
     template_name = "records/record_detail.html"
+    context = {}
     try:
         # for any record
         record = records_client.fetch(iaid=iaid, expand=True)
@@ -64,6 +66,7 @@ def record_detail_view(request, iaid):
         # check archive record
         if record.source == "ARCHON":
             template_name = "records/archive_detail.html"
+            context.update(discovery_browse=TNA_URLS.get("discovery_browse"))
     except DoesNotExist:
         raise Http404
 
@@ -73,12 +76,14 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
+    context.update(
+        record=record,
+        image=image,
+        meta_title=record.summary_title,
+    )
+
     return render(
         request,
         template_name,
-        {
-            "record": record,
-            "image": image,
-            "meta_title": record.summary_title,
-        },
+        context,
     )

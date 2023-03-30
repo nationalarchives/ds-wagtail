@@ -16,8 +16,12 @@ from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin
 from ..ciim.constants import (
-    ARCHIVE_COLLECTION_NAMES,
-    ARCHIVE_OTHER_COLLECTION_NAMES,
+    ARCHIVE_NRA_RECORDS_COLLECTION,
+    ARCHIVE_RECORD_CREATORS_COLLECTION,
+    TNA_URLS,
+    AccessionsInfo,
+    ArchiveCollections,
+    CollectionInfo,
     ContactInfo,
     FurtherInfo,
 )
@@ -469,13 +473,11 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def archive_contact_info(self) -> ContactInfo:
         """
-        Transforms the description.ephemara value into contact information dataclass
-        returns contact information
+        returns transformed contact information
         """
         contact_info = ContactInfo()
-        description_items = self.get("description", ())
-        for item in description_items:
-            if value := item.get("ephemera", {}).get("value", ""):
+        for description in self.get("description", ()):
+            if value := description.get("ephemera", {}).get("value", ""):
                 # convert to lower case for extraction
                 value = value.replace("mapURL", "mapurl")
                 value = value.replace("jobTitle", "jobtitle")
@@ -503,13 +505,11 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def archive_further_info(self) -> FurtherInfo:
         """
-        Transforms the description.ephemara value into contact information dataclass
-        returns contact information
+        returns transformed further info
         """
         further_info = FurtherInfo()
-        place_items = self.get("place", ())
-        for item in place_items:
-            if value := item.get("description", {}).get("value", ""):
+        for place in self.get("place", ()):
+            if value := place.get("description", {}).get("value", ""):
                 document = pq(value)
                 # remove empty values
                 facilities = list(
@@ -519,8 +519,9 @@ class Record(DataLayerMixin, APIModel):
                             document("disabledaccess").text(),
                             document("researchservice").text(),
                             document("appointment").text(),
-                            document("idrequired").text(),
                             document("ticket").text(),
+                            document("idrequired").text(),
+                            document("fee").text(),
                         ],
                     )
                 )
@@ -532,24 +533,20 @@ class Record(DataLayerMixin, APIModel):
                 )
         return further_info
 
-    def _archive_links(self) -> Tuple[Dict[str, Any]]:
+    def _get_trasformed_archive_record_creators_info(
+        self, collection_name
+    ) -> Tuple(CollectionInfo, None):
         """
-        returns: the record creators - collection info for an archive record
+        returns transformed record creators info
         """
-        return self.get("links", ())
-
-    def _get_trasformed_archive_record_creators_info(self, collection_name):
-        """
-        collection_name: configured archive collection whose data will be retrieved
-        returns: the specific transformed for display record creators - collection info related to collection_name for an archive record
-        """
-        info_list = []
-        if archive_links := self._archive_links():
+        collection_info = None
+        if archive_links := self.get("links", ()):
             filtered_values = find_all(
                 archive_links,
                 predicate=lambda i: i["identifier"][0]["value"]
                 == collection_name.get("api_links_indentifier_value"),
             )
+            info_list = []
             for item in filtered_values:
                 info_list.append(
                     {
@@ -563,80 +560,26 @@ class Record(DataLayerMixin, APIModel):
                         .get("value", ""),
                     }
                 )
+            if info_list:
+                collection_info = CollectionInfo(
+                    name=collection_name.get("name"),
+                    display_name=collection_name.get("display_name"),
+                    long_display_name=collection_name.get("long_display_name"),
+                    count=len(info_list),
+                    info_list=info_list,
+                )
 
-        return {
-            "display_name": collection_name.get("display_name"),
-            "count": len(info_list),
-            "info_list": info_list,
-        }
+        return collection_info
 
-    @cached_property
-    def archive_collection_business(self):
+    def _get_transformed_archive_nra_records_info(
+        self, collection_name
+    ) -> Tuple(CollectionInfo, None):
         """
-        returns: the specific archive collection info
+        returns transformed nra records info
         """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["business"]
-        )
-
-    @cached_property
-    def archive_collection_organisation(self):
-        """
-        returns: the specific archive collection info
-        """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["organisation"]
-        )
-
-    @cached_property
-    def archive_collection_person(self):
-        """
-        returns: the specific archive collection info
-        """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["person"]
-        )
-
-    @cached_property
-    def archive_collection_diary(self):
-        """
-        returns: the specific archive collection info
-        """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["diary"]
-        )
-
-    @cached_property
-    def archive_collection_family(self):
-        """
-        returns: the specific archive collection info
-        """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["family"]
-        )
-
-    @cached_property
-    def archive_collection_manor(self):
-        """
-        returns: the specific archive collection info
-        """
-        return self._get_trasformed_archive_record_creators_info(
-            ARCHIVE_COLLECTION_NAMES["manor"]
-        )
-
-    def _archive_manifestations(self) -> Tuple[Dict[str, Any]]:
-        """
-        returns: the nra info - paper catalogues info for an archive record
-        """
-        return self.get("manifestations", ())
-
-    def _get_transformed_archive_nra_records_info(self, collection_name):
-        """
-        collection_name: configured archive collection whose data will be retrieved
-        returns: the specific transformed for display nra info - paper catalogues info related to collection_name for an archive record
-        """
-        info_list = []
-        if manifestations := self._archive_manifestations():
+        collection_info = None
+        if manifestations := self.get("manifestations", ()):
+            info_list = []
             for item in manifestations:
                 info_list.append(
                     {
@@ -644,22 +587,68 @@ class Record(DataLayerMixin, APIModel):
                         "url": item.get("url", ""),
                     }
                 )
+            if info_list:
+                collection_info = CollectionInfo(
+                    name=collection_name.get("name"),
+                    display_name=collection_name.get("display_name"),
+                    long_display_name=collection_name.get("long_display_name"),
+                    count=len(info_list),
+                    info_list=info_list,
+                )
 
-        return {
-            "display_name": collection_name.get("display_name"),
-            "long_display_name": collection_name.get("long_display_name"),
-            "count": len(info_list),
-            "info_list": info_list,
-        }
+        return collection_info
 
     @cached_property
-    def archive_paper_catalogue(self):
+    def archive_collections(self) -> CollectionInfo:
         """
-        returns: the specific archive collection info
+        returns archive collection info for record creators and nra records
         """
-        return self._get_transformed_archive_nra_records_info(
-            ARCHIVE_OTHER_COLLECTION_NAMES["paper_catalogue"]
+        # NOTE: this is the specicfic order of these list record creators and nra records
+        collection_info_list = [
+            self._get_trasformed_archive_record_creators_info(collection)
+            for collection in ARCHIVE_RECORD_CREATORS_COLLECTION
+        ]
+        collection_info_list.extend(
+            [
+                self._get_transformed_archive_nra_records_info(collection)
+                for collection in ARCHIVE_NRA_RECORDS_COLLECTION
+            ]
         )
+
+        archive_collections = ArchiveCollections(
+            # remove empty values
+            collection_info_list=[
+                item for item in collection_info_list if item is not None
+            ]
+        )
+        return archive_collections
+
+    @cached_property
+    def archive_accessions(self) -> AccessionsInfo:
+        """
+        returns transformed accumulationDates values {year:url}
+        """
+        accessions_info = AccessionsInfo()
+        if accumulation_dates := self.template.get("accumulationDates", ""):
+            document = pq(accumulation_dates)
+            # extract year as a list of strings
+            year_list = document.find("accessionyear").text().split()
+            accession_years = {}
+            for year in year_list:
+                # transfrom year values {year:url}
+                accession_years.update(
+                    {
+                        year: f"{TNA_URLS.get('tna_accessions')}/{year}/{year[2:]}returns/{year[2:]}ac{self.reference_number}.htm"
+                    }
+                )
+            accessions_info = AccessionsInfo(
+                accession_years=accession_years,
+            )
+        return accessions_info
+
+    @cached_property
+    def archive_repository_url(self) -> str:
+        return self.get("repository.url", "")
 
 
 @dataclass
