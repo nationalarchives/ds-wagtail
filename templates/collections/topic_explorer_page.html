@@ -5,8 +5,13 @@
 {% endblock meta_tag %}
 {% block content %}
     {% include "includes/highlight-intro.html" with background_image=page.teaser_image title=page.title intro=page.intro %}
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    {% if page.related_highlight_gallery_pages %}
+        {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
+    {% endif %}
+    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
+        {% if page.related_articles %}
+            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
+        {% endif %}
     {% endif %}
     <div class="container"
          data-container-name="topic-explorer"
@@ -19,16 +24,8 @@
             </div>
         </div>
     </div>
-    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
-        {% if page.related_articles %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% for block in page.body %}
-                        {% include_block block %}
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
     {%comment%}
             <div class="row">

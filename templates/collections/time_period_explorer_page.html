@@ -5,8 +5,16 @@
 {% endblock meta_tag %}
 {% block content %}
     {% include "includes/highlight-intro.html" with background_image=page.teaser_image title=page.title intro=page.intro %}
+    {% if page.related_highlight_gallery_pages %}
+        {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
+    {% endif %}
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    {% endif %}
+    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
+        {% if page.related_articles %}
+            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
+        {% endif %}
     {% endif %}
     <div class="container"
          data-container-name="time-period-explorer"
@@ -19,22 +27,6 @@
             </div>
         </div>
     </div>
-    {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
-        {% if page.related_articles %}
-            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
-        {% endif %}
-    {% endif %}
-    {%comment%}
-                <div class="row">
-                    <div class="col-md-12">
-                        {% for article_page in page.related_article %}
-                            <li>
-                            <a href="{% pageurl highlight_gallery %}">{{ highlight_gallery.title }}</a>
-                        </li>
-                    {% endfor %}
-                </div>
-            </div>
-{% endcomment %}
 {% endblock content %}
 {% block extra_js %}
     <script src="{% static 'scripts/explorer.js' %}"></script>
