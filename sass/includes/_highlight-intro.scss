@@ -29,16 +29,16 @@
         // tablet and up
         @media screen and (min-width: map-get($grid-breakpoints, "md")) {
             width: 736px;
-            color: $color__black;
             position: absolute;
             left: 0;
             bottom: 0;
             margin: auto;
-          
-            background: $color__white;
+            
         }
         // desktop and up
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            background: $color__white;
+            color: $color__black;
             left: 132px;
             bottom: 52px;
             margin: auto;

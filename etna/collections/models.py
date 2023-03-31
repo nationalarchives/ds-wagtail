@@ -189,8 +189,6 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
         )
@@ -351,8 +349,6 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
         )
@@ -577,6 +573,10 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             .select_related("image")
             .prefetch_related("image__renditions")
         )
+
+    @cached_property
+    def highlight_image_count(self):
+        return self.highlights.count()
 
     @property
     def highlights_text(self) -> str:
