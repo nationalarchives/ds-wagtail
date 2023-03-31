@@ -19,7 +19,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks import PromotedLinkWithDateAuthorBlock
+from etna.core.blocks import AuthorPromotedLinkBlock
 from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
 from etna.records.fields import RecordField
 
@@ -262,7 +262,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     )
 
     promoted_links = StreamField(
-        [("promoted_link", PromotedLinkWithDateAuthorBlock())],
+        [("promoted_link", AuthorPromotedLinkBlock())],
         max_num=3,
         blank=True,
         null=True,
