@@ -581,7 +581,12 @@ class ArchiveRecordModelTests(SimpleTestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="A13532479", source_value="ARCHON"),
+                    create_record(
+                        iaid="A13532479",
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                        ],
+                    ),
                 ]
             ),
         )
@@ -599,8 +604,16 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        template_details={"title": "Some title value"},
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                            {
+                                "@template": {
+                                    "details": {
+                                        "title": "Some title value",
+                                    }
+                                }
+                            },
+                        ],
                     ),
                 ]
             ),
@@ -619,13 +632,17 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        description=[
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
                             {
-                                "ephemera": {
-                                    "value": "<contacts><addressline1><![CDATA[this is line1]]></addressline1><addresstown><![CDATA[this town]]></addresstown><postcode><![CDATA[KW1 1AB]]></postcode><addresscountry><![CDATA[England]]></addresscountry><telephone><![CDATA[0123 456 789]]></telephone><fax><![CDATA[0321 456 789]]></fax><email><![CDATA[test@test.uk]]></email><url><![CDATA[https://www3.townshire.gov.uk/councilservices/archives-and-heritage/townshire-archives/Pages/default.aspx]]></url><mapURL><![CDATA[http://www.streetmap.co.uk/streetmap.dll?postcode2map?KW1 1AB]]></mapURL><contactpeople><contact><jobTitle><![CDATA[Manager]]></jobTitle><title><![CDATA[X]]></title><firstName><![CDATA[fname]]></firstName><lastName><![CDATA[lname]]></lastName></contact></contactpeople><correspaddr><![CDATA[this is corresp address]]></correspaddr></contacts>"
-                                },
-                            }
+                                "description": [
+                                    {
+                                        "ephemera": {
+                                            "value": "<contacts><addressline1><![CDATA[this is line1]]></addressline1><addresstown><![CDATA[this town]]></addresstown><postcode><![CDATA[KW1 1AB]]></postcode><addresscountry><![CDATA[England]]></addresscountry><telephone><![CDATA[0123 456 789]]></telephone><fax><![CDATA[0321 456 789]]></fax><email><![CDATA[test@test.uk]]></email><url><![CDATA[https://www3.townshire.gov.uk/councilservices/archives-and-heritage/townshire-archives/Pages/default.aspx]]></url><mapURL><![CDATA[http://www.streetmap.co.uk/streetmap.dll?postcode2map?KW1 1AB]]></mapURL><contactpeople><contact><jobTitle><![CDATA[Manager]]></jobTitle><title><![CDATA[X]]></title><firstName><![CDATA[fname]]></firstName><lastName><![CDATA[lname]]></lastName></contact></contactpeople><correspaddr><![CDATA[this is corresp address]]></correspaddr></contacts>"
+                                        },
+                                    }
+                                ]
+                            },
                         ],
                     ),
                 ]
@@ -666,13 +683,17 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        place=[
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
                             {
-                                "description": {
-                                    "value": '<accessconditions><openinghours><![CDATA[this is opening hours]]></openinghours><holidays><![CDATA[this is holidays]]></holidays><disabledaccess>this is disabled access</disabledaccess><comments><![CDATA[<b>this is comments with html tags</b><a href="http://www.northamptonshire.gov.uk/heritage" target="_blank">website</a>]]></comments><researchservice>this is research service</researchservice><appointment>this is appointment</appointment><ticket>this is ticket</ticket><idrequired>this is idrequired</idrequired><fee>this is fee</fee></accessconditions>'
-                                },
-                            }
+                                "place": [
+                                    {
+                                        "description": {
+                                            "value": '<accessconditions><openinghours><![CDATA[this is opening hours]]></openinghours><holidays><![CDATA[this is holidays]]></holidays><disabledaccess>this is disabled access</disabledaccess><comments><![CDATA[<b>this is comments with html tags</b><a href="http://www.northamptonshire.gov.uk/heritage" target="_blank">website</a>]]></comments><researchservice>this is research service</researchservice><appointment>this is appointment</appointment><ticket>this is ticket</ticket><idrequired>this is idrequired</idrequired><fee>this is fee</fee></accessconditions>'
+                                        },
+                                    }
+                                ]
+                            },
                         ],
                     ),
                 ]
@@ -710,71 +731,87 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        links=[
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
                             {
-                                "@admin": {
-                                    "id": "F169344",
-                                },
-                                "identifier": [{"value": "B"}],
-                                "name": {
-                                    "value": "A Bell & Co Ltd, fireplace manufacturers, builders' merchants and ironmongers"
-                                },
-                                "place": {
-                                    "name": [{"value": "Kingsthorpe, Northamptonshire"}]
-                                },
-                                "summary": {
-                                    "title": "A Bell & Co Ltd, fireplace manufacturers, builders' merchants and ironmongers"
-                                },
-                            },
-                            {
-                                "@admin": {
-                                    "id": "F109065",
-                                },
-                                "identifier": [{"value": "O"}],
-                                "place": {
-                                    "name": [{"value": "Abbeycwmhir, Radnorshire"}]
-                                },
-                                "summary": {"title": "Abbey Cwmhir Abbey"},
-                            },
-                            {
-                                "@admin": {
-                                    "id": "F77667",
-                                },
-                                "identifier": [{"value": "P"}],
-                                "place": {
-                                    "name": [{"value": "Kettering, Northamptonshire"}]
-                                },
-                                "summary": {
-                                    "title": "Abbott, Charles Henry Herbert, (1910-1977), diarist"
-                                },
-                            },
-                            {
-                                "@admin": {
-                                    "id": "F30530",
-                                },
-                                "identifier": [{"value": "D"}],
-                                "place": {
-                                    "name": [{"value": "Blisworth, Northamptonshire"}]
-                                },
-                                "summary": {
-                                    "title": "Allen, Lily May, (1888-1982), Schoolteacher"
-                                },
-                            },
-                            {
-                                "@admin": {
-                                    "id": "F23087",
-                                },
-                                "@entity": "reference",
-                                "identifier": [{"value": "F"}],
-                                "place": {
-                                    "name": [
-                                        {
-                                            "value": "Harlestone, Northamptonshire;Daventry, Northamptonshire;Great Creaton, Northamptonshire;Upper Shuckburgh, Warwickshire"
-                                        }
-                                    ]
-                                },
-                                "summary": {"title": "Andrew family of Harlestone"},
+                                "links": [
+                                    {
+                                        "@admin": {
+                                            "id": "F169344",
+                                        },
+                                        "identifier": [{"value": "B"}],
+                                        "name": {
+                                            "value": "A Bell & Co Ltd, fireplace manufacturers, builders' merchants and ironmongers"
+                                        },
+                                        "place": {
+                                            "name": [
+                                                {
+                                                    "value": "Kingsthorpe, Northamptonshire"
+                                                }
+                                            ]
+                                        },
+                                        "summary": {
+                                            "title": "A Bell & Co Ltd, fireplace manufacturers, builders' merchants and ironmongers"
+                                        },
+                                    },
+                                    {
+                                        "@admin": {
+                                            "id": "F109065",
+                                        },
+                                        "identifier": [{"value": "O"}],
+                                        "place": {
+                                            "name": [
+                                                {"value": "Abbeycwmhir, Radnorshire"}
+                                            ]
+                                        },
+                                        "summary": {"title": "Abbey Cwmhir Abbey"},
+                                    },
+                                    {
+                                        "@admin": {
+                                            "id": "F77667",
+                                        },
+                                        "identifier": [{"value": "P"}],
+                                        "place": {
+                                            "name": [
+                                                {"value": "Kettering, Northamptonshire"}
+                                            ]
+                                        },
+                                        "summary": {
+                                            "title": "Abbott, Charles Henry Herbert, (1910-1977), diarist"
+                                        },
+                                    },
+                                    {
+                                        "@admin": {
+                                            "id": "F30530",
+                                        },
+                                        "identifier": [{"value": "D"}],
+                                        "place": {
+                                            "name": [
+                                                {"value": "Blisworth, Northamptonshire"}
+                                            ]
+                                        },
+                                        "summary": {
+                                            "title": "Allen, Lily May, (1888-1982), Schoolteacher"
+                                        },
+                                    },
+                                    {
+                                        "@admin": {
+                                            "id": "F23087",
+                                        },
+                                        "@entity": "reference",
+                                        "identifier": [{"value": "F"}],
+                                        "place": {
+                                            "name": [
+                                                {
+                                                    "value": "Harlestone, Northamptonshire;Daventry, Northamptonshire;Great Creaton, Northamptonshire;Upper Shuckburgh, Warwickshire"
+                                                }
+                                            ]
+                                        },
+                                        "summary": {
+                                            "title": "Andrew family of Harlestone"
+                                        },
+                                    },
+                                ]
                             },
                         ],
                     ),
@@ -905,16 +942,22 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        manifestations=[
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
                             {
-                                "identifier": [
-                                    {"value": "9358"},
-                                ],
-                                "title": [
-                                    {"value": "Adnitt Road Baptist Church, Northampton"}
-                                ],
-                                "url": "SCANNED_LIST",
+                                "manifestations": [
+                                    {
+                                        "identifier": [
+                                            {"value": "9358"},
+                                        ],
+                                        "title": [
+                                            {
+                                                "value": "Adnitt Road Baptist Church, Northampton"
+                                            }
+                                        ],
+                                        "url": "SCANNED_LIST",
+                                    },
+                                ]
                             },
                         ],
                     ),
@@ -955,11 +998,17 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        template_details={
-                            "referenceNumber": "154",
-                            "accumulationDates": "<accessionyears><accessionyear>1998</accessionyear><accessionyear>2013</accessionyear></accessionyears>",
-                        },
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                            {
+                                "@template": {
+                                    "details": {
+                                        "referenceNumber": "154",
+                                        "accumulationDates": "<accessionyears><accessionyear>1998</accessionyear><accessionyear>2013</accessionyear></accessionyears>",
+                                    }
+                                }
+                            },
+                        ],
                     ),
                 ]
             ),
@@ -984,8 +1033,10 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        source_value="ARCHON",
-                        repository={"url": "http://nro.adlibhosting.com/"},
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                            {"repository": {"url": "http://nro.adlibhosting.com/"}},
+                        ],
                     ),
                 ]
             ),

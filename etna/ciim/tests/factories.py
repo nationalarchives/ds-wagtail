@@ -6,23 +6,23 @@ def create_record(
     admin_source="mongo",
     reference_number="ADM 223/3",
     summary_title="Summary Title",
-    description=None,
+    description="description",
     earliest="1900",
     latest="2100",
     is_digitised=False,
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
-    source_value=None,
-    links=None,
-    place=None,
-    manifestations=None,
-    repository=None,
-    template_details=None,
+    hits_source_key_value_list=None,
 ):
     """Return a sample response for a record.
 
     Useful for tidying up tests where response needs to be mocked
+
+    hits_source_key_value_list: use to setup multiple key-values in _source attribute
+    Ex: hits_source_key_value_list=[{"key1": <value1>, "key2": <value2>}]
+
+    Note: keys used in existing source will be overridden
     """
     if not hierarchy:
         hierarchy = []
@@ -30,67 +30,49 @@ def create_record(
     if not related:
         related = []
 
-    hits_hits_source = {
-        "_source": {
-            "@admin": {
-                "id": iaid,
-                "source": admin_source,
+    source = {
+        "@admin": {
+            "id": iaid,
+            "source": admin_source,
+        },
+        "access": {"conditions": "open"},
+        "identifier": [
+            {"iaid": iaid},
+            {"reference_number": reference_number},
+        ],
+        "origination": {
+            "creator": [{"name": [{"value": "test"}]}],
+            "date": {
+                "earliest": {"from": earliest},
+                "latest": {"to": latest},
+                "value": f"{earliest}-{latest}",
             },
-            "access": {"conditions": "open"},
-            "identifier": [
-                {"iaid": iaid},
-                {"reference_number": reference_number},
-            ],
-            "origination": {
-                "creator": [{"name": [{"value": "test"}]}],
-                "date": {
-                    "earliest": {"from": earliest},
-                    "latest": {"to": latest},
-                    "value": f"{earliest}-{latest}",
+        },
+        "digitised": is_digitised,
+        "@hierarchy": [hierarchy],
+        "summary": {
+            "title": summary_title,
+        },
+        "multimedia": [
+            {
+                "@entity": "reference",
+                "@admin": {
+                    "id": media_reference_id,
                 },
-            },
-            "digitised": is_digitised,
-            "@hierarchy": [hierarchy],
-            "summary": {
-                "title": summary_title,
-            },
-            "multimedia": [
-                {
-                    "@entity": "reference",
-                    "@admin": {
-                        "id": media_reference_id,
-                    },
-                }
-            ],
-            "related": related,
-            "legal": {"status": "Open"},
-        }
+            }
+        ],
+        "related": related,
+        "description": [{"value": description}],
+        "legal": {"status": "Open"},
     }
 
-    if description:
-        hits_hits_source.get("_source").update(description=description)
+    # note keys used in existing source will be overridden
+    if hits_source_key_value_list:
+        for source_key_value in hits_source_key_value_list:
+            for key, value in source_key_value.items():
+                source[key] = value
 
-    if source_value:
-        hits_hits_source.get("_source").update(source={"value": source_value})
-
-    if place:
-        hits_hits_source.get("_source").update({"place": place})
-
-    if links:
-        hits_hits_source.get("_source").update({"links": links})
-
-    if manifestations:
-        hits_hits_source.get("_source").update({"manifestations": manifestations})
-
-    if repository:
-        hits_hits_source.get("_source").update({"repository": repository})
-
-    if template_details:
-        hits_hits_source.get("_source").update(
-            {"@template": {"details": template_details}}
-        )
-
-    return hits_hits_source
+    return {"_source": source}
 
 
 def create_media(

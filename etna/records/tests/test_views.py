@@ -198,7 +198,12 @@ class TestRecordView(TestCase):
             "https://kong.test/data/fetch",
             json=create_response(
                 records=[
-                    create_record(iaid="A13532479", source_value="ARCHON"),
+                    create_record(
+                        iaid="A13532479",
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                        ],
+                    ),
                 ]
             ),
         )
