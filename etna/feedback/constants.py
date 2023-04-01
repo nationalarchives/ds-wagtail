@@ -18,3 +18,6 @@ class SentimentChoices(IntegerChoices):
     NEUTRAL = 0, _("Neutral")
     POSITIVE = 1, _("Positive")
     V_POSITIVE = 2, _("Very positive")
+
+
+SENTIMENT_LABELS = dict(SentimentChoices.choices)
