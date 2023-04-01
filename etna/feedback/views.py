@@ -19,6 +19,8 @@ from django.utils.http import urlencode
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView
 
+from wagtail.admin.auth import permission_denied
+from wagtail.admin.views.reports import ReportView
 from wagtail.models import Revision
 
 from etna.feedback.forms import FeedbackForm
@@ -147,3 +149,49 @@ class FeedbackSuccessView(VersionedFeedbackViewMixin, TemplateView):
             submission_id=submission_id,
             **kwargs,
         )
+
+
+class FeedbackSubmissionReportView(ReportView):
+    title = "Feedback submissions"
+    header_icon = "form"
+    model = FeedbackSubmission
+    is_searchable = False
+    template_name = "feedback/reports/submission_report.html"
+
+    list_display = [
+        "received_at",
+        "path",
+        "prompt_text",
+        "response",
+        "comment_truncated",
+    ]
+    list_export = [
+        "id",
+        "public_id",
+        "received_at",
+        "full_url",
+        "path",
+        "query_params",
+        "prompt_text",
+        "response_label",
+        "response_sentiment",
+        "sentiment_label",
+        "comment",
+        "prompt_id",
+        "prompt_revision_id",
+        "page_id",
+        "page_revision_id",
+        "page_revision_published",
+        "user_id",
+        "site_id",
+    ]
+
+    def dispatch(self, request, *args, **kwargs):
+        if not self.request.user.is_superuser:
+            return permission_denied(request)
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["table"].base_url = self.request.path
+        return context
