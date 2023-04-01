@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% load i18n datalayer_tags wagtailcore_tags %}
+
+{% block title %}{{ prompt.thank_you_heading }}{% endblock %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer view %}
+{% endblock extra_gtm_js %}
+
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+    <h1>{{ prompt.thank_you_heading }}</h1>
+
+    {% if prompt.thank_you_message %}
+        {{ prompt.thank_you_message|richtext }}
+    {% endif %}
+
+    <p><a href="{{ next_url }}" class="tna-button--dark">{{ prompt.continue_link_text }}</a></p>
+{% endblock %}
