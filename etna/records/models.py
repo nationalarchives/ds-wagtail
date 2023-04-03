@@ -473,7 +473,7 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("title", "")
 
     @cached_property
-    def archive_contact_info(self) ->  Optional[ContactInfo]:
+    def archive_contact_info(self) -> Optional[ContactInfo]:
         """
         Extracts data from the api "_source.description" attribute if available.
         Then transforms that data to be represented by ContactInfo.
@@ -508,8 +508,8 @@ class Record(DataLayerMixin, APIModel):
         return contact_info
 
     @cached_property
-    def archive_further_info(self) ->  Optional[FurtherInfo]:
-       
+    def archive_further_info(self) -> Optional[FurtherInfo]:
+
         """
         Extracts data from the api "_source.place" attribute if available.
         Then transforms that data to be represented by FurtherInfo.
@@ -546,7 +546,7 @@ class Record(DataLayerMixin, APIModel):
         self, collection_name
     ) -> Optional[CollectionInfo]:
         """
-        Extracts data from the api "_source.links" attribute if available. It holds record creators info. 
+        Extracts data from the api "_source.links" attribute if available. It holds record creators info.
         Then transforms that data to be represented by CollectionInfo.
 
         returns CollectionInfo or None if data is not available.
@@ -600,9 +600,9 @@ class Record(DataLayerMixin, APIModel):
         self, collection_name
     ) -> Optional[CollectionInfo]:
         """
-        Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info. 
+        Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info.
         Then transforms that data to be represented by CollectionInfo.
-        
+
         returns CollectionInfo or None if data is not available.
         """
         collection_info = None
@@ -657,9 +657,9 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def archive_accessions(self) -> Optional[AccessionsInfo]:
         """
-        Extracts data from the api "_source.@template.accumulationDates" attribute if available. 
+        Extracts data from the api "_source.@template.accumulationDates" attribute if available.
         Then transforms that data to be represented by AccessionsInfo.
-        
+
         returns AccessionsInfo or None if data is not available.
         """
         accessions_info = None

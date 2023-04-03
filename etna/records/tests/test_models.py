@@ -595,7 +595,6 @@ class ArchiveRecordModelTests(SimpleTestCase):
 
         self.assertEqual(record.source, "ARCHON")
 
-
     @responses.activate
     def test_no_data_for_archive_attributes(self):
         responses.add(
@@ -618,7 +617,6 @@ class ArchiveRecordModelTests(SimpleTestCase):
         self.assertEqual(record.archive_contact_info, None)
         self.assertEqual(record.archive_further_info, None)
         self.assertEqual(record.archive_accessions, None)
-        
 
     @responses.activate
     def test_title(self):
@@ -698,7 +696,6 @@ class ArchiveRecordModelTests(SimpleTestCase):
         self.assertEqual(record.archive_contact_info.contact_title, "X")
         self.assertEqual(record.archive_contact_info.contact_first_name, "fname")
         self.assertEqual(record.archive_contact_info.contact_last_name, "lname")
-
 
     @responses.activate
     def test_archive_further_info(self):
