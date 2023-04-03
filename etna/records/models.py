@@ -19,11 +19,6 @@ from ..ciim.constants import (
     ARCHIVE_NRA_RECORDS_COLLECTION,
     ARCHIVE_RECORD_CREATORS_COLLECTION,
     TNA_URLS,
-    AccessionsInfo,
-    ArchiveCollections,
-    CollectionInfo,
-    ContactInfo,
-    FurtherInfo,
 )
 from ..ciim.models import APIModel
 from ..ciim.utils import (
@@ -34,6 +29,13 @@ from ..ciim.utils import (
     format_description_markup,
     format_link,
     strip_html,
+)
+from ..records.classes import (
+    AccessionsInfo,
+    ArchiveCollections,
+    CollectionInfo,
+    ContactInfo,
+    FurtherInfo,
 )
 from .converters import IAIDConverter
 
