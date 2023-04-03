@@ -54,8 +54,8 @@
         </div>
     </div>
     {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
-        {% if page.related_articles %}
-            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
+        {% if page.related_record_articles %}
+            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_record_articles title="Records revealed" %}
         {% endif %}
     {% endif %}
         {%comment%}
