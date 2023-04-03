@@ -1,11 +1,27 @@
 .content-warning {
-    background-color: #26262a;
-    padding: 2rem;
-    margin-top: 2rem;
+  display: flex;
+  background-color: $color__yellow_3;
+  border-left: 4px solid $color__yellow_2;
+  padding: 1.25rem 2rem;
+  margin-top: 2rem;
 
-    p {
-        color: #fff;
-        font-size: 1.25rem;
-        margin-bottom: 0;
+  p {
+    @include font-size(xs);
+    color: $color__black;
+    margin-bottom: 0;
+  }
+
+  &__icon {
+    display: none;
+    fill: $color__grey-4;
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
+    min-width: 34px;
+    margin-right: 18px;
+
+    @media (min-width: $screen__md) {
+      display: block;
     }
+  }
 }
