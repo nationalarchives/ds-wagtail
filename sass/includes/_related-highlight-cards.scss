@@ -6,8 +6,6 @@
         margin-bottom: 96px;
     }
 
-
-
     &__title {
         @include font-size("xxl");
         margin: 0;
@@ -26,7 +24,6 @@
 
     &__card {
         background-color: $color__grey-6;
-
         text-decoration: none !important;
     }
 

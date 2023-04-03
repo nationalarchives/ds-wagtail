@@ -512,6 +512,7 @@ class TopicalPageMixin:
     def highlight_image_count(self):
         return self.highlights.count()
 
+
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
