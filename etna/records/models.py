@@ -473,11 +473,14 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("title", "")
 
     @cached_property
-    def archive_contact_info(self) -> ContactInfo:
+    def archive_contact_info(self) ->  Optional[ContactInfo]:
         """
-        returns transformed contact information
+        Extracts data from the api "_source.description" attribute if available.
+        Then transforms that data to be represented by ContactInfo.
+
+        returns ContactInfo or None if data is not available.
         """
-        contact_info = ContactInfo()
+        contact_info = None
         for description in self.get("description", ()):
             if value := description.get("ephemera", {}).get("value", ""):
                 # convert to lower case for extraction
@@ -505,11 +508,15 @@ class Record(DataLayerMixin, APIModel):
         return contact_info
 
     @cached_property
-    def archive_further_info(self) -> FurtherInfo:
+    def archive_further_info(self) ->  Optional[FurtherInfo]:
+       
         """
-        returns transformed further info
+        Extracts data from the api "_source.place" attribute if available.
+        Then transforms that data to be represented by FurtherInfo.
+
+        returns FurtherInfo or None if data is not available.
         """
-        further_info = FurtherInfo()
+        further_info = None
         for place in self.get("place", ()):
             if value := place.get("description", {}).get("value", ""):
                 document = pq(value)
@@ -537,9 +544,12 @@ class Record(DataLayerMixin, APIModel):
 
     def _get_trasformed_archive_record_creators_info(
         self, collection_name
-    ) -> Tuple(CollectionInfo, None):
+    ) -> Optional[CollectionInfo]:
         """
-        returns transformed record creators info
+        Extracts data from the api "_source.links" attribute if available. It holds record creators info. 
+        Then transforms that data to be represented by CollectionInfo.
+
+        returns CollectionInfo or None if data is not available.
         """
         collection_info = None
         if archive_links := self.get("links", ()):
@@ -575,9 +585,12 @@ class Record(DataLayerMixin, APIModel):
 
     def _get_transformed_archive_nra_records_info(
         self, collection_name
-    ) -> Tuple(CollectionInfo, None):
+    ) -> Optional[CollectionInfo]:
         """
-        returns transformed nra records info
+        Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info. 
+        Then transforms that data to be represented by CollectionInfo.
+        
+        returns CollectionInfo or None if data is not available.
         """
         collection_info = None
         if manifestations := self.get("manifestations", ()):
@@ -603,6 +616,9 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def archive_collections(self) -> ArchiveCollections:
         """
+        Combines record creators info and nra records info as both have similar structure representations.
+        The combined data is is then represented by ArchiveCollections.
+
         returns archive collection info for record creators and nra records
         """
         # NOTE: this is the specicfic order of these list record creators and nra records
@@ -626,11 +642,14 @@ class Record(DataLayerMixin, APIModel):
         return archive_collections
 
     @cached_property
-    def archive_accessions(self) -> AccessionsInfo:
+    def archive_accessions(self) -> Optional[AccessionsInfo]:
         """
-        returns transformed accumulationDates values {year:url}
+        Extracts data from the api "_source.@template.accumulationDates" attribute if available. 
+        Then transforms that data to be represented by AccessionsInfo.
+        
+        returns AccessionsInfo or None if data is not available.
         """
-        accessions_info = AccessionsInfo()
+        accessions_info = None
         if accumulation_dates := self.template.get("accumulationDates", ""):
             document = pq(accumulation_dates)
             # extract year as a list of strings

@@ -595,6 +595,31 @@ class ArchiveRecordModelTests(SimpleTestCase):
 
         self.assertEqual(record.source, "ARCHON")
 
+
+    @responses.activate
+    def test_no_data_for_archive_attributes(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="A13532479",
+                        hits_source_key_value_list=[
+                            {"source": {"value": "ARCHON"}},
+                        ],
+                    ),
+                ]
+            ),
+        )
+
+        record = self.records_client.fetch(iaid="A13532479")
+
+        self.assertEqual(record.archive_contact_info, None)
+        self.assertEqual(record.archive_further_info, None)
+        self.assertEqual(record.archive_accessions, None)
+        
+
     @responses.activate
     def test_title(self):
         responses.add(
@@ -674,6 +699,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
         self.assertEqual(record.archive_contact_info.contact_first_name, "fname")
         self.assertEqual(record.archive_contact_info.contact_last_name, "lname")
 
+
     @responses.activate
     def test_archive_further_info(self):
         responses.add(
@@ -723,7 +749,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
         )
 
     @responses.activate
-    def test_archive_collection_record_creators_business(self):
+    def test_archive_collection_record_creators(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
