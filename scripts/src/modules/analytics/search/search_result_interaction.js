@@ -1,5 +1,6 @@
 import push_to_data_layer from "./../push_to_data_layer";
 
+
 const addPositionToSearchResults = () => {
     const results = document.querySelectorAll('[data-analytics-link]');
 
