@@ -17,7 +17,7 @@
         padding: 0 1rem 1rem 1rem;
 
         @media (min-width: map-get($grid-breakpoints, "sm")) {
-            grid-template-columns: repeat(2, 1fr);        row-gap: 3rem;
+            grid-template-columns: repeat(2, 1fr);
             row-gap: 3rem;
         }
 
