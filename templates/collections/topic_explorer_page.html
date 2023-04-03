@@ -27,17 +27,6 @@
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
-    {%comment%}
-            <div class="row">
-                <div class="col-md-12">
-                    {% for highlight_gallery in page.related_highlight_gallery_pages %}
-                        <li>
-                        <a href="{% pageurl highlight_gallery %}">{{ highlight_gallery.title }}</a>
-                    </li>
-                {% endfor %}
-            </div>
-        </div>
-{% endcomment %}
 {% endblock content %}
 {% block extra_js %}
     <script src="{% static 'scripts/explorer.js' %}"></script>

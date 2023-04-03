@@ -8,9 +8,6 @@
     {% if page.related_highlight_gallery_pages %}
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
-    {% endif %}
     {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
         {% if page.related_articles %}
             {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
@@ -27,6 +24,9 @@
             </div>
         </div>
     </div>
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    {% endif %}
 {% endblock content %}
 {% block extra_js %}
     <script src="{% static 'scripts/explorer.js' %}"></script>
