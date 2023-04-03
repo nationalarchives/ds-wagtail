@@ -560,18 +560,31 @@ class Record(DataLayerMixin, APIModel):
             )
             info_list = []
             for item in filtered_values:
-                info_list.append(
-                    {
-                        "summary_title": item.get("summary", {}).get("title", ""),
-                        "url": reverse(
-                            "details-page-machine-readable",
-                            kwargs={"iaid": item.get("@admin", {}).get("id", "")},
-                        ),
-                        "place": item.get("place", {})
-                        .get("name", [{}])[0]
-                        .get("value", ""),
-                    }
-                )
+                info_dict = {
+                    "summary_title": item.get("summary", {}).get("title", ""),
+                    "place": item.get("place", {})
+                    .get("name", [{}])[0]
+                    .get("value", ""),
+                }
+
+                if admin_id := item.get("@admin", {}).get("id", ""):
+                    # update url only when id is available
+                    try:
+                        info_dict.update(
+                            {
+                                "url": reverse(
+                                    "details-page-machine-readable",
+                                    kwargs={"iaid": admin_id},
+                                )
+                            }
+                        )
+                    except NoReverseMatch:
+                        logger.debug(
+                            f"_get_trasformed_archive_record_creators_info:No reverse match for details-page-machine-readable with admin_id = {admin_id}"
+                        )
+
+                info_list.append(info_dict)
+
             if info_list:
                 collection_info = CollectionInfo(
                     name=collection_name.get("name"),
