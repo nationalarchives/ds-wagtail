@@ -1,4 +1,5 @@
 import json as json_module
+import unittest
 
 from typing import Any, Dict
 
@@ -773,13 +774,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     results=None,
                 ),
                 Bucket(
-                    key="highlight",
-                    label="Highlights",
-                    result_count=1,
-                    is_current=False,
-                    results=None,
-                ),
-                Bucket(
                     key="audio",
                     label="Audio",
                     result_count=0,
@@ -805,6 +799,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
         )
 
 
+@unittest.skip("Highlights bucket to be re-instated at a later date")
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -929,13 +924,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
                     label="Insights",
                     result_count=1,
                     is_current=False,
-                    results=None,
-                ),
-                Bucket(
-                    key="highlight",
-                    label="Highlights",
-                    result_count=2,
-                    is_current=True,
                     results=None,
                 ),
                 Bucket(
@@ -1452,6 +1440,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
+    @unittest.skip("Highlights bucket to be re-instated at a later date")
     @responses.activate
     def test_datalayer_website_search_highlight(self):
         self.assertDataLayerEquals(
