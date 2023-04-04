@@ -773,6 +773,14 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     is_current=True,
                     results=None,
                 ),
+                # TODO: Restore when we are succesfully indexing new highlight pages
+                # Bucket(
+                #   key="highlight",
+                #   label="Highlights",
+                #   result_count=1,
+                #   is_current=True,
+                #   results=None,
+                # ),
                 Bucket(
                     key="audio",
                     label="Audio",
@@ -926,6 +934,14 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
                     is_current=False,
                     results=None,
                 ),
+                # TODO: Restore when we are succesfully indexing new highlight pages
+                # Bucket(
+                #   key="highlight",
+                #   label="Highlights",
+                #   result_count=2,
+                #   is_current=True,
+                #   results=None,
+                # ),
                 Bucket(
                     key="audio",
                     label="Audio",
