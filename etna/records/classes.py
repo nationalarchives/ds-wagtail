@@ -24,7 +24,7 @@ class ContactInfo:
 class FurtherInfo:
     opening_hours: str = ""
     holidays: str = ""
-    facilities: List = field(default_factory=list)
+    facilities: List[str] = field(default_factory=list)
     comments: str = ""
 
 
@@ -34,7 +34,7 @@ class CollectionInfo:
     display_name: str = ""
     long_display_name: str = ""
     count: int = 0
-    info_list: List = field(default_factory=list)
+    info_list: List[dict] = field(default_factory=list)
 
 
 @dataclass

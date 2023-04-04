@@ -477,8 +477,10 @@ class Record(DataLayerMixin, APIModel):
         """
         Extracts data from the api "_source.description" attribute if available.
         Then transforms that data to be represented by ContactInfo.
+        The data is extracted from html tags that are stored in the 'value' attribute.
+        These tags are fixed and only for this method.
 
-        returns ContactInfo or None if data is not available.
+        Returns ContactInfo or None if data is not available.
         """
         contact_info = None
         for description in self.get("description", ()):
@@ -513,8 +515,10 @@ class Record(DataLayerMixin, APIModel):
         """
         Extracts data from the api "_source.place" attribute if available.
         Then transforms that data to be represented by FurtherInfo.
+        The data is extracted from html tags that are stored in the 'value' attribute.
+        These tags are fixed and only for this method.
 
-        returns FurtherInfo or None if data is not available.
+        Returns FurtherInfo or None if data is not available.
         """
         further_info = None
         for place in self.get("place", ()):
@@ -549,7 +553,7 @@ class Record(DataLayerMixin, APIModel):
         Extracts data from the api "_source.links" attribute if available. It holds record creators info.
         Then transforms that data to be represented by CollectionInfo.
 
-        returns CollectionInfo or None if data is not available.
+        Returns CollectionInfo or None if data is not available.
         """
         collection_info = None
         if archive_links := self.get("links", ()):
@@ -603,7 +607,7 @@ class Record(DataLayerMixin, APIModel):
         Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info.
         Then transforms that data to be represented by CollectionInfo.
 
-        returns CollectionInfo or None if data is not available.
+        Returns CollectionInfo or None if data is not available.
         """
         collection_info = None
         if manifestations := self.get("manifestations", ()):
@@ -632,7 +636,7 @@ class Record(DataLayerMixin, APIModel):
         Combines record creators info and nra records info as both have similar structure representations.
         The combined data is is then represented by ArchiveCollections.
 
-        returns archive collection info for record creators and nra records
+        Returns archive collection info for record creators and nra records
         """
         # NOTE: this is the specicfic order of these list record creators and nra records
         collection_info_list = [
@@ -659,8 +663,10 @@ class Record(DataLayerMixin, APIModel):
         """
         Extracts data from the api "_source.@template.accumulationDates" attribute if available.
         Then transforms that data to be represented by AccessionsInfo.
+        The data is extracted from html tags that are stored with the 'accumulationDates' attribute.
+        These tags are fixed and only for this method.
 
-        returns AccessionsInfo or None if data is not available.
+        Returns AccessionsInfo or None if data is not available.
         """
         accessions_info = None
         if accumulation_dates := self.template.get("accumulationDates", ""):
