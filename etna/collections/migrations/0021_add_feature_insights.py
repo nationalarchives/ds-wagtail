@@ -9,7 +9,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0042_alter_insightspage_body"),
         ("collections", "0020_rename_result_page_record_relationship"),

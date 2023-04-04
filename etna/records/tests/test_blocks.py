@@ -21,7 +21,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             records=[
                 create_record(
                     iaid="C123456",
-                    title="Test record",
+                    summary_title="Test record",
                 ),
             ]
         )

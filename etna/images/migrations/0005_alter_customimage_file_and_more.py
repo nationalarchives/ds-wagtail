@@ -5,7 +5,6 @@ import wagtail.images.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0004_remove_customimage_translation_language_and_more"),
     ]

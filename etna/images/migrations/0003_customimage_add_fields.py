@@ -5,7 +5,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0002_migrate_old_image_data_to_new_model"),
     ]

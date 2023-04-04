@@ -13,7 +13,6 @@ def move_alt_text(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0028_migrate_image_block_values_to_new_block_structure"),
     ]

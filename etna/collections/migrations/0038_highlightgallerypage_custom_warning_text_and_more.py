@@ -5,7 +5,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0037_timeperiodexplorerpage_featured_record_article_and_more"),
     ]

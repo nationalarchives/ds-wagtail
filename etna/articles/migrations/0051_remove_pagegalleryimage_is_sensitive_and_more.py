@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0050_swap_image_reference_fields_to_new_model"),
     ]

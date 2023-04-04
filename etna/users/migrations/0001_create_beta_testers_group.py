@@ -16,7 +16,6 @@ def remove_beta_testers_group(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0040_page_draft_title"),
     ]

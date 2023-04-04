@@ -6,7 +6,6 @@ import modelcluster.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0077_alter_revision_user"),
         ("collections", "0026_collections_insight_to_article"),

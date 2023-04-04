@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0025_timeperiodexplorerindexpage_sub_heading_and_more"),
     ]

@@ -28,7 +28,6 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, path_to_user_ids_to_exclude_file, **options):
-
         users_to_deactivate = User.objects.all()
 
         excluded_user_ids = [

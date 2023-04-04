@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0031_alter_sub_heading_fields"),
     ]
