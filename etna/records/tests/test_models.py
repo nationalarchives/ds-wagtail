@@ -583,7 +583,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                         ],
                     ),
@@ -604,7 +604,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                         ],
                     ),
@@ -627,7 +627,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "@template": {
@@ -655,7 +655,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "description": [
@@ -706,7 +706,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "place": [
@@ -754,7 +754,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "links": [
@@ -965,7 +965,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "manifestations": [
@@ -1021,7 +1021,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {
                                 "@template": {
@@ -1056,7 +1056,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                             {"repository": {"url": "http://nro.adlibhosting.com/"}},
                         ],

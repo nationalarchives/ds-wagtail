@@ -1,5 +1,7 @@
 import json
 
+from typing import Any, Dict, Optional
+
 
 def create_record(
     iaid="C0000000",
@@ -13,14 +15,14 @@ def create_record(
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
-    hits_source_key_value_list=None,
+    source_values: Optional[Dict[str, Any]] = None,
 ):
     """Return a sample response for a record.
 
     Useful for tidying up tests where response needs to be mocked
 
-    hits_source_key_value_list: use to setup multiple key-values in _source attribute
-    Ex: hits_source_key_value_list=[{"key1": <value1>, "key2": <value2>}]
+    source_values: use to setup multiple key-values in _source attribute
+    Ex: source_values=[{"key1": <value1>, "key2": <value2>}]
 
     Note: keys used in existing source will be overridden
     """
@@ -67,8 +69,8 @@ def create_record(
     }
 
     # note keys used in existing source will be overridden
-    if hits_source_key_value_list:
-        for source_key_value in hits_source_key_value_list:
+    if source_values:
+        for source_key_value in source_values:
             for key, value in source_key_value.items():
                 source[key] = value
 

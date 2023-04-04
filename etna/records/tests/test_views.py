@@ -200,7 +200,7 @@ class TestRecordView(TestCase):
                 records=[
                     create_record(
                         iaid="A13532479",
-                        hits_source_key_value_list=[
+                        source_values=[
                             {"source": {"value": "ARCHON"}},
                         ],
                     ),
