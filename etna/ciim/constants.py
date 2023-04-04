@@ -102,7 +102,8 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(key="blog", label="Blog posts"),
         Bucket(key="researchGuide", label="Research Guides"),
         Bucket(key=BucketKeys.INSIGHT.value, label="Insights"),
-        Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
+        # TODO: Restore when we are succesfully indexing new highlight pages
+        # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
         Bucket(key="audio", label="Audio"),
         Bucket(key="video", label="Video"),
     ]
