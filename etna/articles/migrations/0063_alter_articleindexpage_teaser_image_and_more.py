@@ -12,7 +12,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0005_alter_customimage_file_and_more"),
         ("articles", "0062_fix_incorrectly_formatted_article_revision_content"),

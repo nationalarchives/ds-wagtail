@@ -8,7 +8,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0008_add_teaser_image"),
     ]

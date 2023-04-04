@@ -23,11 +23,9 @@ class Command(BaseCommand):
         parser.add_argument("password", help="Password for users")
 
     def handle(self, *args, path_to_user_file, password, **options):
-
         beta_testers_group = Group.objects.get(name="Beta Testers")
 
         for first_name, last_name, email in get_users(path_to_user_file):
-
             try:
                 user = User.objects.get(email=email)
             except User.DoesNotExist:

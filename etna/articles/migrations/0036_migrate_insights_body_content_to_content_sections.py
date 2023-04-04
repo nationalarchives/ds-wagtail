@@ -43,7 +43,6 @@ def migrate_forwards(apps, schema_editor):
                 current_section_content.clear()
 
         for block in page.body._raw_data:
-
             if (
                 block["type"] == "section"
                 or block["type"] == "paragraph_with_heading"
@@ -112,7 +111,6 @@ def migrate_forwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0077_alter_revision_user"),
         ("articles", "0035_add_content_section_blocks_to_insights_body"),

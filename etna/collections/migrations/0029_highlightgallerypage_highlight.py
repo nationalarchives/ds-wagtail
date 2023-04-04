@@ -10,7 +10,6 @@ import wagtailmetadata.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0078_referenceindex"),
         ("images", "0004_remove_customimage_translation_language_and_more"),

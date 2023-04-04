@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0004_remove_customimage_translation_language_and_more"),
         ("generic_pages", "0002_streamfield_use_json_field"),
