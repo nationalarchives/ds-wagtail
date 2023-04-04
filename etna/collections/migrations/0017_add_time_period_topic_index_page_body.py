@@ -6,7 +6,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0016_alter_explorer_page_blocks"),
     ]

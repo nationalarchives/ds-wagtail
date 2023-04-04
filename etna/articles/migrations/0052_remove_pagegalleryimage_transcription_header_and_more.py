@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0051_remove_pagegalleryimage_is_sensitive_and_more"),
     ]

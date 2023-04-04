@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0023_add_choose_permissions"),
         ("articles", "0014_alter_field_body"),

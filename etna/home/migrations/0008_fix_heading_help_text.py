@@ -7,7 +7,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("home", "0007_make_paragraph_heading_editable"),
     ]

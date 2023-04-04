@@ -30,7 +30,6 @@ def migrate_forwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0059_update_revisions_to_reflect_intro_field_change"),
         ("collections", "0030_add_teaser_text"),

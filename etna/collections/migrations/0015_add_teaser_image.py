@@ -7,7 +7,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0023_add_choose_permissions"),
         ("collections", "0014_auto_20210713_1340"),

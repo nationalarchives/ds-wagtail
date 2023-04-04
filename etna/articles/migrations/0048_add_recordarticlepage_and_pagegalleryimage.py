@@ -11,7 +11,6 @@ import wagtailmetadata.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0024_index_image_file_hash"),
         ("wagtailcore", "0077_alter_revision_user"),

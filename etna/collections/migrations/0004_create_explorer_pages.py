@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailforms", "0004_add_verbose_name_plural"),
         ("wagtailredirects", "0006_redirect_increase_max_length"),

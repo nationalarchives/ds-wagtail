@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0052_remove_pagegalleryimage_transcription_header_and_more"),
     ]

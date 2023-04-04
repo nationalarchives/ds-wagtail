@@ -32,7 +32,6 @@ def remove_categories(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("categories", "0001_initial"),
     ]

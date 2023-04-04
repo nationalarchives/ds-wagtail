@@ -6,7 +6,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0004_insightspage_hero_image"),
     ]

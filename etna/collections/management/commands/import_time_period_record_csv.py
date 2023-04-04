@@ -33,7 +33,6 @@ def get_row(file_name):
         reader = csv.reader(f, delimiter=",", quotechar='"')
 
         for time_period, result_page_name, iaid, description, image_url in reader:
-
             row = {
                 "time_period": time_period,
                 "result_page_name": result_page_name,
@@ -72,7 +71,6 @@ class Command(BaseCommand):
         parser.add_argument("path_to_csv", help="Path to CSV file")
 
     def handle(self, *args, path_to_csv=None, **options):
-
         time_period_explorer_index_page = TimePeriodExplorerIndexPage.objects.get()
 
         result_page_iaids = defaultdict(list)
