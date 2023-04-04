@@ -266,7 +266,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
 
     promoted_links = StreamField(
         [("promoted_link", AuthorPromotedPagesBlock())],
-        max_num=3,
+        max_num=1,
         blank=True,
         null=True,
         use_json_field=True,

@@ -63,7 +63,7 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
 
 class AuthorPromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
-    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, min=3, max=3)
+    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max=3)
 
     class Meta:
         template = "articles/blocks/promoted_pages.html"
