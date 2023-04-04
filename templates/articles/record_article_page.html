@@ -16,9 +16,7 @@
             id="analytics-topic-explorer">
             <div class="row">
                 <div class="col-md-12">
-                    {% for block in page.promoted_links %}
-                        {% include_block block %}
-                    {% endfor %}
+                    {% include_block page.promoted_links %}
                 </div>
             </div>
         </div>
