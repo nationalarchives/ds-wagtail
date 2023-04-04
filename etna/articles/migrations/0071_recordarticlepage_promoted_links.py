@@ -7,7 +7,6 @@ import wagtail.images.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0070_alter_articlepage_mark_new_on_next_publish"),
     ]
