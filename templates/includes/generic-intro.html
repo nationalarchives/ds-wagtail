@@ -3,12 +3,17 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
+                {% if breadcrumb %}
+                    <div class="generic-intro__breadcrumb">
+                        {% include 'includes/breadcrumb.html' %}
+                    </div>
+                {% endif %}
                 <h1 class="generic-intro__title">
-                    {{ self.title }}
+                    {{ title }}
                 </h1>
-                {% if page.intro %}
+                {% if intro %}
                     <div class="generic-intro__paragraph">
-                        {{ page.intro|richtext }}
+                        {{ intro|richtext }}
                     </div>
                 {% endif %}
             </div>

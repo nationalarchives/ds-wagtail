@@ -1,17 +1,23 @@
 .section-image {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 
-    img {
-        width: 100%;
-    }
+  img {
+    width: 100%;
+  }
 
-    figure, p {
-        margin-bottom: 0;
-    }
+  figure,
+  p {
+    margin-bottom: 0;
+  }
 
-    figcaption {
-        background-color: $color__grey-5;
-        padding: 1rem;
-        border-bottom: 0.1875rem solid $color__grey-7;
-    }
+  figure {
+    text-align: center;
+  }
+
+  figcaption {
+    @include font-size(xs);
+    display: inline-block;
+    padding: 1rem;
+    border-bottom: 1px solid $color__grey-7;
+  }
 }

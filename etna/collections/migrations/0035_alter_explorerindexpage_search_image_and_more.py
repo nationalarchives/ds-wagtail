@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0005_alter_customimage_file_and_more"),
         ("collections", "0034_alter_explorerindexpage_teaser_image_and_more"),

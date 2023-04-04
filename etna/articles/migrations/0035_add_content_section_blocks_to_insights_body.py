@@ -11,7 +11,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0034_insightsindexpage_featured_collections"),
     ]

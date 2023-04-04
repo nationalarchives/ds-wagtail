@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0024_index_image_file_hash"),
         ("collections", "0022_streamfield_use_json_field"),

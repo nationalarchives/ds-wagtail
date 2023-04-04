@@ -12,7 +12,6 @@ import wagtail.search.index
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

@@ -11,7 +11,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0013_rename_introduction_to_sub_heading"),
     ]

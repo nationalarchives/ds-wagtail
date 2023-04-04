@@ -28,40 +28,41 @@
 
         {% with search_tab=searchtabs.WEBSITE.value %}
             {% include './blocks/search_results_hero.html' %}
-        {% endwith %}
 
-        {% if not buckets_contain_results %}
-            {# No results were found when searching only with the 'q' param value #}
-            {% include './blocks/no_results.html' %}
-        {% else %}
-            {% include './blocks/catalogue_search_buckets.html' %}
-
-            {% if not buckets.current.result_count %}
+            {% if not buckets_contain_results %}
+                {# No results were found when searching only with the 'q' param value #}
                 {% include './blocks/no_results.html' %}
             {% else %}
-                <p class="search-results__explainer--mobile">Results from our website.</p>
+                {% include './blocks/catalogue_search_buckets.html' %}
 
-                {% include './blocks/search_sort_and_view_options.html' %}
+                {% if not buckets.current.result_count %}
+                    {% include './blocks/no_results.html' %}
+                {% else %}
+                    <p class="search-results__explainer--mobile">Results from our website.</p>
 
-                <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-                    <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                        {% include './blocks/search_filters.html' %}
+                    {% include './blocks/search_sort_and_view_options.html' %}
+
+                    <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+                        <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                            {% include './blocks/search_filters.html' %}
+                        </div>
+                        <div class="catalogue-search-grid__results">
+                            {% include './blocks/search_results.html' %}
+                        </div>
                     </div>
-                    <div class="catalogue-search-grid__results">
-                        {% include './blocks/search_results.html' %}
-                    </div>
-                </div>
 
-                {% if page.paginator.count %}
-                    {% include './blocks/search_pagination.html' %}
+                    {% if page.paginator.count %}
+                        {% include './blocks/search_pagination.html' %}
+                    {% endif %}
+
+                    <div>
+                        {{ form.group.errors }}
+                        {{ form.group.as_hidden }}
+                    </div>
                 {% endif %}
-
-                <div>
-                    {{ form.group.errors }}
-                    {{ form.group.as_hidden }}
-                </div>
             {% endif %}
-        {% endif %}
+        
+        {% endwith %}
     </form>
 {% endblock %}
 

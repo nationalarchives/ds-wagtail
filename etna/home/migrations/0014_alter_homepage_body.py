@@ -6,7 +6,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("home", "0013_rename_block_to_feature_pages_remove_subheading"),
     ]

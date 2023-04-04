@@ -6,7 +6,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0024_remove_timeperiodexplorerindexpage_sub_heading_and_more"),
     ]

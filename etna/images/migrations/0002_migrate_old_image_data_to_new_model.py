@@ -70,7 +70,6 @@ def migrate_forwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0024_index_image_file_hash"),
         ("taggit", "0004_alter_taggeditem_content_type_alter_taggeditem_tag"),

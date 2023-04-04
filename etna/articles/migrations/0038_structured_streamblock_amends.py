@@ -11,7 +11,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0037_remove_top_level_content_options_from_insights_body"),
     ]
