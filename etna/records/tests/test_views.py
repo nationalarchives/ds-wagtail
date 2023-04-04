@@ -191,6 +191,31 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
+    @responses.activate
+    def test_record_rendered_for_archive_record(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="A13532479",
+                        source_values=[
+                            {"source": {"value": "ARCHON"}},
+                        ],
+                    ),
+                ]
+            ),
+        )
+
+        response = self.client.get("/catalogue/id/A13532479/")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertEquals(
+            response.resolver_match.view_name, "details-page-machine-readable"
+        )
+        self.assertTemplateUsed(response, "records/archive_detail.html")
+
 
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     @responses.activate

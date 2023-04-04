@@ -625,3 +625,52 @@ TYPE_CHOICES = tuple(
 CUSTOM_ERROR_MESSAGES = {
     "invalid_date_range": "There is a problem. Start date cannot be after end date."
 }
+
+TNA_URLS = {
+    "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
+    "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
+}
+
+#  associate readable names with api identifiers
+ARCHIVE_RECORD_CREATORS_COLLECTION = [
+    {
+        "name": "business",
+        "api_links_indentifier_value": "B",
+        "display_name": "Businesses",
+        "long_display_name": "Businesses",
+    },
+    {
+        "name": "organisation",
+        "api_links_indentifier_value": "O",
+        "display_name": "Organisations",
+        "long_display_name": "Organisations",
+    },
+    {
+        "name": "person",
+        "api_links_indentifier_value": "P",
+        "display_name": "Persons",
+        "long_display_name": "Persons",
+    },
+    {
+        "name": "diary",
+        "api_links_indentifier_value": "D",
+        "display_name": "Diaries",
+        "long_display_name": "Diaries",
+    },
+    {
+        "name": "family",
+        "api_links_indentifier_value": "F",
+        "display_name": "Families",
+        "long_display_name": "Families",
+    },
+    # {"name":"manor", "api_links_indentifier_value": "M", "display_name": "Manors"}, # TODO until API response is ready
+]
+
+
+ARCHIVE_NRA_RECORDS_COLLECTION = [
+    {
+        "name": "paper_catalogue",
+        "display_name": "Paper catalogues",
+        "long_display_name": "Paper catalogues available to view at The National Archives",
+    },
+]
