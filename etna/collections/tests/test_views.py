@@ -100,7 +100,6 @@ class TestRecordChooseView(WagtailPageTestCase):
     @responses.activate
     @prevent_request_warnings
     def test_select_failed(self):
-
         responses.reset()
         responses.add(
             responses.GET,

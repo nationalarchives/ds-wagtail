@@ -32,7 +32,6 @@ def migrate_forwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0032_rename_sub_heading_fields"),
     ]

@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0002_migrate_old_image_data_to_new_model"),
         ("articles", "0049_modify_page_type_labels"),

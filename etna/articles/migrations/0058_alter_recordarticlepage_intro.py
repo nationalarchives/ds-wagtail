@@ -5,7 +5,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0057_rename_standfirst_recordarticlepage_intro"),
     ]

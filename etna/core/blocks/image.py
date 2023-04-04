@@ -55,7 +55,6 @@ class ImageBlock(blocks.StructBlock):
 
         errors = {}
         if image:
-
             if not decorative and not alt_text:
                 message = "Non-decorative images must contain alt text."
                 errors["alt_text"] = ErrorList([message])

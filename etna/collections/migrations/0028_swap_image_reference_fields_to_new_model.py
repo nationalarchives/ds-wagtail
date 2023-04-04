@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0002_migrate_old_image_data_to_new_model"),
         ("collections", "0027_add_pagetopic_pagetimeperiod"),

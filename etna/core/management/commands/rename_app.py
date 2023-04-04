@@ -25,7 +25,6 @@ class Command(BaseCommand):
 
     @atomic
     def handle(self, old_app_name, new_app_name, *args, **options):
-
         with connection.cursor() as cursor:
             old_app_name = old_app_name[0]
             new_app_name = new_app_name[0]
@@ -63,7 +62,6 @@ class Command(BaseCommand):
             app_content_types = cursor.fetchall()
 
             for content_type in app_content_types:
-
                 old_table_name = truncate_name(
                     f"{old_app_name}_{content_type[2]}",
                     connection.ops.max_name_length(),

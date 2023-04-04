@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0029_migrate_hero_image_alt_text"),
     ]

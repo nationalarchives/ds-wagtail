@@ -5,7 +5,6 @@ import etna.categories.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("categories", "0002_create_categories"),
     ]

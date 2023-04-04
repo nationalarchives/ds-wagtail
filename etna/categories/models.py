@@ -24,7 +24,6 @@ def icons_path():
 
 @register_snippet
 class Category(models.Model):
-
     name = models.CharField(max_length=255)
     icon = models.FilePathField(path=icons_path, max_length=250, null=True, blank=True)
 

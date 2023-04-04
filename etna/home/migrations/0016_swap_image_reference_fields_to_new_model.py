@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("images", "0002_migrate_old_image_data_to_new_model"),
         ("home", "0015_home_insight_to_article"),

@@ -17,7 +17,6 @@ def migrate_forwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0058_alter_recordarticlepage_intro"),
     ]
