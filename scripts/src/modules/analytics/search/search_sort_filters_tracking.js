@@ -10,6 +10,7 @@ const getSortBy = () => {
         const searchValue = sortBy.getAttribute('data-search-filter-value');
         
         let filterData = {
+            'event_type': 'sort-results',
             'search_type': searchType || '',
             'search_bucket': searchBucket || '',
             'search_filter_name': searchName || '',
