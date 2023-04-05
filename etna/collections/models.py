@@ -69,20 +69,12 @@ class TopicExplorerIndexPage(BasePageWithIntro):
         related_name="+",
     )
 
-    hero_image_caption = RichTextField(
-        verbose_name="hero image caption",
-        features=["link"],
-        blank=True,
-        help_text=("An optional caption for the hero image"),
-    )
-
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
             classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
-                FieldPanel("hero_image_caption"),
             ],
         ),
         FieldPanel("body"),
@@ -236,20 +228,12 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
         related_name="+",
     )
 
-    hero_image_caption = RichTextField(
-        verbose_name="hero image caption",
-        features=["link"],
-        blank=True,
-        help_text=("An optional caption for the hero image"),
-    )
-
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
             classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
-                FieldPanel("hero_image_caption"),
             ],
         ),
         FieldPanel("body"),
