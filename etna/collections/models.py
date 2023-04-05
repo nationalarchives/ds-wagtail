@@ -158,7 +158,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_record_article(self):
+    def related_record_articles(self):
         from etna.articles.models import RecordArticlePage
 
         return (
@@ -167,7 +167,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
@@ -314,7 +314,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
