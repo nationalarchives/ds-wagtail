@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile">
+    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile" data-search-type="{% with request.resolver_match.url_name as url_name %}{% if url_name == 'search-featured' %}{{ searchtabs.ALL.value }}{% elif url_name == 'search-catalogue' %}{{ searchtabs.CATALOGUE.value }}{% elif url_name == 'search-website' %}{{ searchtabs.WEBSITE.value }}{% endif %}{% endwith %}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
         <h2 class="search-sort-view__heading">
             <label for="{{form.sort_by.id_for_label}}">Sort by</label>
         </h2>
