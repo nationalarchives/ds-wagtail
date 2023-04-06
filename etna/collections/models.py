@@ -189,6 +189,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
+            .live()
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
@@ -507,6 +508,10 @@ class TopicalPageMixin:
         one big comma-separated string. Ideal for indexing!
         """
         return ", ".join(item.title for item in self.time_periods)
+
+    @cached_property
+    def highlight_image_count(self):
+        return self.highlights.count()
 
 
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
