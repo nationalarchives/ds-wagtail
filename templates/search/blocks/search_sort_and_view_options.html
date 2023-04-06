@@ -56,9 +56,14 @@
 
     function getOption() {
         selectElement = document.querySelector('#id_sort_by');
-        // TODO: this needs updating in the BE 
-        output = selectElement.value;
+        output = selectElement.options[selectElement.selectedIndex].value.trim();
         document.getElementById("catalogue-sort-form-desktop").setAttribute("data-search-filter-value", output);
+
+        selectElement.onchange = function() {
+            let output = this.options[this.selectedIndex].value.trim();
+
+            document.getElementById("catalogue-sort-form-desktop").setAttribute("data-search-filter-value", output);
+        }
     }
 
     getOption();
