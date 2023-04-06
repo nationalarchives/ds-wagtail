@@ -377,14 +377,6 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 return True
         return False
 
-    @cached_property
-    def featured_highlight_gallery_items(self):
-        """
-        Retrieves and returns the Highlights inside the highlight gallery
-        of the HighlightGalleryPage that is selected
-        """
-        return self.featured_highlight_gallery.highlights
-
 
 class PageGalleryImage(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")

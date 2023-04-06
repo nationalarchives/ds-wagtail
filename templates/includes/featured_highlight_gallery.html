@@ -4,7 +4,7 @@
 <div class="container mt-4" data-container-name="{{ highlight_gallery.title }}">
     <h2>Explore records about <a href='{% pageurl highlight_gallery %}'>{{highlight_gallery.title}}</a></h2>
     <ul class="card-group--list-style-none">
-        {% for item in page.featured_highlight_gallery_items %}
+        {% for item in highlight_gallery.highlights %}
             {% with highlight=item.image %}
                 {% image highlight fill-288x172 as teaser_image_small %}
                 {% image highlight fill-328x196 as teaser_image_medium %}
