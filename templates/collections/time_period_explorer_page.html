@@ -9,23 +9,36 @@
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
     {% if FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES %}
-        {% if page.related_articles %}
-            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_articles title="Records revealed" %}
+        {% if page.related_record_articles %}
+            {% include "includes/related-articles-highlight-cards.html" with articles=page.related_record_articles title="Records revealed" %}
         {% endif %}
-    {% endif %}
-    <div class="container"
-         data-container-name="time-period-explorer"
-         id="analytics-time-period-explorer">
-        <div class="row">
-            <div class="col-md-12">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
+        {% if page.body %}
+            <div class="container"
+                 data-container-name="time-period-explorer"
+                 id="analytics-time-period-explorer">
+                <div class="row">
+                    <div class="col-md-12">
+                        {% for block in page.body %}
+                            {% include_block block %}
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+        {% endif %}
+        {% if page.featured_article %}
+            {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
+        {% endif %}
+        {% if page.related_articles %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for article_page in page.related_articles %}
+                        <li>
+                            <a href="{% pageurl article_page %}">{{ article_page.title }}</a>
+                        </li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
     {% endif %}
 {% endblock content %}
 {% block extra_js %}
