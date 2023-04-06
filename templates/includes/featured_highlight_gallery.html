@@ -2,7 +2,7 @@
 
 <!--TODO: Boilerplate HTML added. This is not the final product, work to be done by FE dev-->
 <div class="container mt-4" data-container-name="{{ highlight_gallery.title }}">
-    <h2>Explore records about <a href='{% pageurl highlight_gallery %}'>{{highlight_gallery.title}}</a></h2>
+    <h2>Explore records about <a href='{% pageurl highlight_gallery %}'>{{ highlight_gallery.title }}</a></h2>
     <ul class="card-group--list-style-none">
         {% for item in highlight_gallery.highlights %}
             {% with highlight=item.image %}
