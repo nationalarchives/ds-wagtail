@@ -61,7 +61,22 @@ class TopicExplorerIndexPage(BasePageWithIntro):
         TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
@@ -158,7 +173,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_record_article(self):
+    def related_record_articles(self):
         from etna.articles.models import RecordArticlePage
 
         return (
@@ -167,7 +182,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
@@ -205,7 +220,22 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
         TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
     )
 
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
@@ -314,7 +344,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property

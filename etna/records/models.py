@@ -12,15 +12,30 @@ from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 
+from pyquery import PyQuery as pq
+
 from ..analytics.mixins import DataLayerMixin
+from ..ciim.constants import (
+    ARCHIVE_NRA_RECORDS_COLLECTION,
+    ARCHIVE_RECORD_CREATORS_COLLECTION,
+    TNA_URLS,
+)
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
+    find_all,
     format_description_markup,
     format_link,
     strip_html,
+)
+from ..records.classes import (
+    AccessionsInfo,
+    ArchiveCollections,
+    CollectionInfo,
+    ContactInfo,
+    FurtherInfo,
 )
 from .converters import IAIDConverter
 
@@ -219,7 +234,7 @@ class Record(DataLayerMixin, APIModel):
         return self.get("multimedia.@admin.id", default="")
 
     @cached_property
-    def catalogue_source(self) -> str:
+    def source(self) -> str:
         return self.get("source.value", default="")
 
     @cached_property
@@ -391,11 +406,11 @@ class Record(DataLayerMixin, APIModel):
         Overrides DataLayerMixin.get_gtm_content_group() to
         return content group otherwise the name of the class.
         """
-        if self.catalogue_source == "CAT":
+        if self.source == "CAT":
             return "Catalogue: The National Archives"
-        elif self.catalogue_source == "ARCHON":
+        elif self.source == "ARCHON":
             return "Catalogue: Archive Details"
-        elif self.catalogue_source:
+        elif self.source:
             return "Catalogue: Other Archive Records"
         else:
             return self.__class__.__name__
@@ -447,11 +462,232 @@ class Record(DataLayerMixin, APIModel):
             customDimension12=self.custom_dimension_12,
             customDimension13=self.custom_dimension_13,
             customDimension14=self.custom_dimension_14,
-            customDimension15=self.catalogue_source,
+            customDimension15=self.source,
             customDimension16=self.availability_condition_category,
             customDimension17=self.delivery_option,
         )
         return data
+
+    @cached_property
+    def title(self) -> str:
+        return self.template.get("title", "")
+
+    @cached_property
+    def archive_contact_info(self) -> Optional[ContactInfo]:
+        """
+        Extracts data from the api "_source.description" attribute if available.
+        Then transforms that data to be represented by ContactInfo.
+        The data is extracted from html tags that are stored in the 'value' attribute.
+        These tags are fixed and only for this method.
+
+        Returns ContactInfo or None if data is not available.
+        """
+        contact_info = None
+        for description in self.get("description", ()):
+            if value := description.get("ephemera", {}).get("value", ""):
+                # convert to lower case for extraction
+                value = value.replace("mapURL", "mapurl")
+                value = value.replace("jobTitle", "jobtitle")
+                value = value.replace("firstName", "firstname")
+                value = value.replace("lastName", "lastname")
+                document = pq(value)
+                contact_info = ContactInfo(
+                    address_line1=document("addressline1").text(),
+                    address_town=document("addresstown").text(),
+                    postcode=document("postcode").text(),
+                    address_country=document("addresscountry").text(),
+                    map_url=document("mapurl").text(),
+                    url=document("url").text(),
+                    telephone=document("telephone").text(),
+                    fax=document("fax").text(),
+                    email=document("email").text(),
+                    corresp_addr=document("correspaddr").text(),
+                    contact_job_title=document("jobtitle").text(),
+                    contact_title=document("title").text(),
+                    contact_first_name=document("firstname").text(),
+                    contact_last_name=document("lastname").text(),
+                )
+        return contact_info
+
+    @cached_property
+    def archive_further_info(self) -> Optional[FurtherInfo]:
+        """
+        Extracts data from the api "_source.place" attribute if available.
+        Then transforms that data to be represented by FurtherInfo.
+        The data is extracted from html tags that are stored in the 'value' attribute.
+        These tags are fixed and only for this method.
+
+        Returns FurtherInfo or None if data is not available.
+        """
+        further_info = None
+        for place in self.get("place", ()):
+            if value := place.get("description", {}).get("value", ""):
+                document = pq(value)
+                # remove empty values
+                facilities = list(
+                    filter(
+                        None,
+                        [
+                            document("disabledaccess").text(),
+                            document("researchservice").text(),
+                            document("appointment").text(),
+                            document("ticket").text(),
+                            document("idrequired").text(),
+                            document("fee").text(),
+                        ],
+                    )
+                )
+                further_info = FurtherInfo(
+                    opening_hours=mark_safe(document("openinghours").text()),
+                    holidays=document("holidays").text(),
+                    facilities=facilities,
+                    comments=mark_safe(document("comments").text()),
+                )
+        return further_info
+
+    def _get_trasformed_archive_record_creators_info(
+        self, collection_name
+    ) -> Optional[CollectionInfo]:
+        """
+        Extracts data from the api "_source.links" attribute if available. It holds record creators info.
+        Then transforms that data to be represented by CollectionInfo.
+
+        Returns CollectionInfo or None if data is not available.
+        """
+        collection_info = None
+        if archive_links := self.get("links", ()):
+            filtered_values = find_all(
+                archive_links,
+                predicate=lambda i: i["identifier"][0]["value"]
+                == collection_name.get("api_links_indentifier_value"),
+            )
+            info_list = []
+            for item in filtered_values:
+                info_dict = {
+                    "summary_title": item.get("summary", {}).get("title", ""),
+                    "place": item.get("place", {})
+                    .get("name", [{}])[0]
+                    .get("value", ""),
+                }
+
+                if admin_id := item.get("@admin", {}).get("id", ""):
+                    # update url only when id is available
+                    try:
+                        info_dict.update(
+                            {
+                                "url": reverse(
+                                    "details-page-machine-readable",
+                                    kwargs={"iaid": admin_id},
+                                )
+                            }
+                        )
+                    except NoReverseMatch:
+                        logger.debug(
+                            f"_get_trasformed_archive_record_creators_info:No reverse match for details-page-machine-readable with admin_id = {admin_id}"
+                        )
+
+                info_list.append(info_dict)
+
+            if info_list:
+                collection_info = CollectionInfo(
+                    name=collection_name.get("name"),
+                    display_name=collection_name.get("display_name"),
+                    long_display_name=collection_name.get("long_display_name"),
+                    count=len(info_list),
+                    info_list=info_list,
+                )
+
+        return collection_info
+
+    def _get_transformed_archive_nra_records_info(
+        self, collection_name
+    ) -> Optional[CollectionInfo]:
+        """
+        Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info.
+        Then transforms that data to be represented by CollectionInfo.
+
+        Returns CollectionInfo or None if data is not available.
+        """
+        collection_info = None
+        if manifestations := self.get("manifestations", ()):
+            info_list = []
+            for item in manifestations:
+                info_list.append(
+                    {
+                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
+                        "url": item.get("url", ""),
+                    }
+                )
+            if info_list:
+                collection_info = CollectionInfo(
+                    name=collection_name.get("name"),
+                    display_name=collection_name.get("display_name"),
+                    long_display_name=collection_name.get("long_display_name"),
+                    count=len(info_list),
+                    info_list=info_list,
+                )
+
+        return collection_info
+
+    @cached_property
+    def archive_collections(self) -> ArchiveCollections:
+        """
+        Combines record creators info and nra records info as both have similar structure representations.
+        The combined data is is then represented by ArchiveCollections.
+
+        Returns archive collection info for record creators and nra records
+        """
+        # NOTE: this is the specicfic order of these list record creators and nra records
+        collection_info_list = [
+            self._get_trasformed_archive_record_creators_info(collection)
+            for collection in ARCHIVE_RECORD_CREATORS_COLLECTION
+        ]
+        collection_info_list.extend(
+            [
+                self._get_transformed_archive_nra_records_info(collection)
+                for collection in ARCHIVE_NRA_RECORDS_COLLECTION
+            ]
+        )
+
+        archive_collections = ArchiveCollections(
+            # remove empty values
+            collection_info_list=[
+                item for item in collection_info_list if item is not None
+            ]
+        )
+        return archive_collections
+
+    @cached_property
+    def archive_accessions(self) -> Optional[AccessionsInfo]:
+        """
+        Extracts data from the api "_source.@template.accumulationDates" attribute if available.
+        Then transforms that data to be represented by AccessionsInfo.
+        The data is extracted from html tags that are stored with the 'accumulationDates' attribute.
+        These tags are fixed and only for this method.
+
+        Returns AccessionsInfo or None if data is not available.
+        """
+        accessions_info = None
+        if accumulation_dates := self.template.get("accumulationDates", ""):
+            document = pq(accumulation_dates)
+            # extract year as a list of strings
+            year_list = document.find("accessionyear").text().split()
+            accession_years = {}
+            for year in year_list:
+                # transfrom year values {year:url}
+                accession_years.update(
+                    {
+                        year: f"{TNA_URLS.get('tna_accessions')}/{year}/{year[2:]}returns/{year[2:]}ac{self.reference_number}.htm"
+                    }
+                )
+            accessions_info = AccessionsInfo(
+                accession_years=accession_years,
+            )
+        return accessions_info
+
+    @cached_property
+    def archive_repository_url(self) -> str:
+        return self.get("repository.url", "")
 
 
 @dataclass
