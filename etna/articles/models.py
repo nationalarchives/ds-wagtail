@@ -380,7 +380,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     @cached_property
     def featured_highlight_gallery_items(self):
         """
-        Retrieves and returns the Highlights inside the highlight gallery 
+        Retrieves and returns the Highlights inside the highlight gallery
         of the HighlightGalleryPage that is selected
         """
         return self.featured_highlight_gallery.highlights
