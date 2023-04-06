@@ -348,14 +348,14 @@ hiredis = ["redis[hiredis] (>=3,!=4.0.0,!=4.0.1)"]
 
 [[package]]
 name = "django-taggit"
-version = "2.1.0"
+version = "3.1.0"
 description = "django-taggit is a reusable Django application for simple tagging."
 category = "main"
 optional = false
 python-versions = ">=3.6"
 
 [package.dependencies]
-Django = ">=2.2"
+Django = ">=3.2"
 
 [[package]]
 name = "django-treebeard"
@@ -1344,7 +1344,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ec25b7c3665fee66684b52ccde09f9e91c19a4acb3e8c0a049cea733aa9f2b2b"
+content-hash = "9c655a00e749adf4a6d69ea23233d3407d33057f8746f5d881fda16768e950bb"
 
 [metadata.files]
 anyascii = []
