@@ -40,6 +40,9 @@
             </div>
         {% endif %}
     {% endif %}
+    {% if page.related_articles %}
+        {% include "includes/related-article-cards.html" with articles=page.related_articles %}
+    {% endif %}
 {% endblock content %}
 {% block extra_js %}
     <script src="{% static 'scripts/explorer.js' %}"></script>

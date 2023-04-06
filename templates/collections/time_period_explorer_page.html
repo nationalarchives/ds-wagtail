@@ -28,17 +28,9 @@
         {% if page.featured_article %}
             {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
         {% endif %}
-        {% if page.related_articles %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% for article_page in page.related_articles %}
-                        <li>
-                            <a href="{% pageurl article_page %}">{{ article_page.title }}</a>
-                        </li>
-                    {% endfor %}
-                </div>
-            </div>
-        {% endif %}
+    {% endif %}
+    {% if page.related_articles %}
+        {% include "includes/related-article-cards.html" with articles=page.related_articles title="Records revealed" %}
     {% endif %}
 {% endblock content %}
 {% block extra_js %}

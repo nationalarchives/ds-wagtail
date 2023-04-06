@@ -11,7 +11,7 @@
         }
     }
 
-    &--trio {
+    &__trio {
         grid-gap: 1.5rem;
         row-gap: 1.8rem;
         padding: 0 1rem 1rem 1rem;
@@ -23,6 +23,10 @@
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
             grid-template-columns: repeat(3, 1fr);
+        }
+
+        &--large-gaps {
+            grid-gap: 3.625rem;
         }
     }
 
