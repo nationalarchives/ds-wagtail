@@ -263,7 +263,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         verbose_name="Print on demand link",
         help_text="Link to an external print on demand service",
     )
-    
+
     featured_highlight_gallery = models.ForeignKey(
         "collections.HighlightGalleryPage",
         blank=True,
@@ -281,12 +281,12 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     )
 
     promoted_links = StreamField(
-            [("promoted_link", AuthorPromotedPagesBlock())],
-            max_num=1,
-            blank=True,
-            null=True,
-            use_json_field=True,
-        )
+        [("promoted_link", AuthorPromotedPagesBlock())],
+        max_num=1,
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
 
     # DataLayerMixin overrides
     gtm_content_group = "Record articles"
