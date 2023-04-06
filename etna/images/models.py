@@ -39,7 +39,20 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     is_sensitive = models.BooleanField(
-        verbose_name=_("This image is sensitive"), default=False
+        verbose_name=_("This image is considered sensitive"),
+        default=False,
+        help_text=_(
+            "Tick this if the image contains content which some people may find offensive or distressing. For example, photographs of violence or injury detail."
+        ),
+    )
+
+    custom_sensitive_image_warning = models.TextField(
+        verbose_name=_("Why might this image be considered sensitive? (optional)"),
+        help_text=_(
+            'Replaces the default warning message where the image is displayed. For example: "This image has been marked as potentially sensitive because it contains depictions of violence".'
+        ),
+        max_length=200,
+        blank=True,
     )
 
     transcription_heading = models.CharField(
@@ -76,6 +89,8 @@ class CustomImage(ClusterableModel, AbstractImage):
             "An optional English / Modern English translation of the transcription."
         ),
     )
+
+    # For Highlights
 
     record = RecordField(
         verbose_name=_("related record"),
@@ -120,6 +135,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         "file",
         "copyright",
         "is_sensitive",
+        "custom_sensitive_image_warning",
         "tags",
         "focal_point_x",
         "focal_point_y",
