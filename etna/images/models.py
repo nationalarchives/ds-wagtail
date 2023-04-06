@@ -9,6 +9,10 @@ from wagtail.search import index
 
 from etna.records.fields import RecordField
 
+DEFAULT_SENSITIVE_IMAGE_WARNING = (
+    "This image contains content which some people may find offensive or distressing."
+)
+
 
 class TranscriptionHeadingChoices(models.TextChoices):
     TRANSCRIPT = "transcript", _("Transcript")
@@ -128,6 +132,13 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.FilterField("record"),
         index.FilterField("is_sensitive"),
     ]
+
+    @property
+    def sensitive_image_warning(self):
+        return (
+            self.custom_sensitive_image_warning.strip()
+            or DEFAULT_SENSITIVE_IMAGE_WARNING
+        )
 
     admin_form_fields = [
         "collection",
