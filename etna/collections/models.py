@@ -19,10 +19,9 @@ from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
-    TimePeriodExplorerIndexPageStreamBlock,
     TimePeriodExplorerPageStreamBlock,
-    TopicExplorerIndexPageStreamBlock,
     TopicExplorerPageStreamBlock,
+    TopicIndexPageStreamBlock,
 )
 
 
@@ -57,9 +56,7 @@ class TopicExplorerIndexPage(BasePageWithIntro):
     This page lists all child TopicExplorerPages
     """
 
-    body = StreamField(
-        TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
-    )
+    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
 
     hero_image = models.ForeignKey(
         get_image_model_string(),
@@ -217,9 +214,7 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
     This page lists all child TimePeriodExplorerPage
     """
 
-    body = StreamField(
-        TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
-    )
+    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
 
     hero_image = models.ForeignKey(
         get_image_model_string(),

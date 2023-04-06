@@ -1,6 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import PromotedLinkBlock
+from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock
 
 
 class CollectionHighlightsBlock(blocks.StructBlock):
@@ -78,15 +78,6 @@ class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
         }
 
 
-class TimePeriodExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    topic_explorer_index = TopicExplorerIndexBlock()
-
-    class Meta:
-        block_counts = {
-            "topic_explorer_index": {"min_num": 1, "max_num": 1},
-        }
-
-
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     collection_highlights = CollectionHighlightsBlock()
     promoted_pages = PromotedPagesBlock()
@@ -98,10 +89,10 @@ class TopicExplorerPageStreamBlock(blocks.StreamBlock):
         }
 
 
-class TopicExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    time_period_explorer_index = TimePeriodExplorerIndexBlock()
+class TopicIndexPageStreamBlock(blocks.StreamBlock):
+    large_card_links = LargeCardLinksBlock()
 
     class Meta:
         block_counts = {
-            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
+            "large_card_links": {"max_num": 1},
         }
