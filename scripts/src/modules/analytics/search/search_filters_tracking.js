@@ -1,21 +1,24 @@
 import push_to_data_layer from "./../push_to_data_layer";
 
-const getFilters = () => {
+const pushActiveFilterDataOnLoad = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener('load', () => {
-        const filters = document.querySelectorAll('[data-filter]');
-
-        loopFilters(filters);
+        const filterList = document.querySelector('.search-results__selected-filters')
+        if(filterList !== null) {
+            pushActiveFilterData(filterList);
+        }
     });
 }
 
-const loopFilters = (filters) => {
+const pushActiveFilterData = (filterList) => {
     // get current search bucket
-    const searchBucket = document.querySelector('[data-search-bucket]').getAttribute('data-search-bucket');
-    
+    const searchBucket = filterList.getAttribute('data-search-bucket');
+
+    const filters = filterList.querySelector("[data-filter]");
+
     // create array to store currently active filters
     const activeFilters = [];
-    
+
     // loop through all currently active filters
     filters.forEach((filter) => {
         let value = filter.getAttribute('data-filter-value');
@@ -25,7 +28,7 @@ const loopFilters = (filters) => {
         if (name === 'opening_start_date' || name === 'opening_end_date') {
             value = 'Yes';
         }
-    
+
         // setup the dataLayer variables for each filter
         let filterData = {
             'event': 'search-filters',
@@ -41,7 +44,7 @@ const loopFilters = (filters) => {
     // check if start and end date filters are active (do they already exist in array?)
     let startDate = activeFilters.some(e => e.search_filter_name === 'opening_start_date');
     let endDate = activeFilters.some(e => e.search_filter_name === 'opening_end_date');
-    
+
     // if start date isn't active, create a custom object with the value 'No'
     if (!startDate) {
         startDate = {
@@ -72,8 +75,4 @@ const loopFilters = (filters) => {
     });
 }
 
-const searchFiltersTracking = () => {
-    getFilters();
-};
-
-export default searchFiltersTracking;
+export default pushActiveFilterDataOnLoad;
