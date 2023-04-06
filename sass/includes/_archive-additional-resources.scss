@@ -1,0 +1,53 @@
+.archive-additional-resources {
+  margin: 0 0 4rem;
+
+  &__label {
+    display: block;
+  }
+
+  &__submit {
+    background-color: $color__dark;
+    text-decoration: none;
+    color: $color__white;
+    border: 0.125rem solid $color__black;
+    padding: 0.45em 0.9em;
+    display: inline-block;
+    min-width: 1.5rem;
+    text-align: center;
+    transition: background-color 0.5s, color 0.5s;
+
+      &:hover {
+        background-color: $color__white;
+        color: $color__dark;
+        cursor: pointer;
+      }
+
+      &:focus {
+        outline: 0.312rem solid $color__blue_4;
+        outline-offset: 0.125rem;
+        z-index: 999;
+      }
+  }
+
+  &__label {
+    font-size: 1.1rem;
+    font-weight: bold;
+  }
+  &__select {
+    line-height: 1.25;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    min-width: 11.5em;
+    max-width: 100%;
+    height: 2.75rem;
+    padding: 0.25rem;
+    border: 0.125rem solid $color__black;
+    vertical-align: top;
+
+    &:focus {
+      outline: 0.312rem solid $color__blue_4;
+      outline-offset: 0.125rem;
+      z-index: 999;
+    }
+  }
+}

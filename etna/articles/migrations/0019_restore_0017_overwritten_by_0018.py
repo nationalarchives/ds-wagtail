@@ -11,7 +11,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0018_replace_pubdate_with_duration"),
     ]

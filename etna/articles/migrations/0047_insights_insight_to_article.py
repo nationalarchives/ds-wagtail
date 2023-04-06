@@ -17,7 +17,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0026_collections_insight_to_article"),
         ("home", "0015_home_insight_to_article"),

@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("records", "0011_remove_date_start_and_end_rename_date_range"),
     ]

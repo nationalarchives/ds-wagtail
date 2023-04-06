@@ -7,7 +7,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0006_record_embed_blocks"),
     ]

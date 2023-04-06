@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0018_alter_time_period_topic_index_page_body"),
     ]

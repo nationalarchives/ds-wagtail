@@ -5,7 +5,6 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailcore", "0060_fix_workflow_unique_constraint"),
         ("collections", "0012_add_description_override"),

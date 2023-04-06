@@ -9,7 +9,7 @@
   {% meta_tags %}
 {% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' %}
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     <div class="container">
         <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>

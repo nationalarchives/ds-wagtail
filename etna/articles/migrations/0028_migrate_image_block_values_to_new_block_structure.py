@@ -25,7 +25,6 @@ def update_body_values(apps, schema_editor, forwards=True):
     InsightsPage = apps.get_model("articles", "InsightsPage")
 
     for obj in InsightsPage.objects.only("id", "body").iterator():
-
         page_updated = False
 
         for block in obj.body._raw_data:
@@ -53,7 +52,6 @@ def migrate_backwards(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0027_change_accessible_image_required"),
     ]

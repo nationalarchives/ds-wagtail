@@ -1,11 +1,13 @@
 import json
 
+from typing import Any, Dict, Optional
+
 
 def create_record(
     iaid="C0000000",
-    source="mongo",
+    admin_source="mongo",
     reference_number="ADM 223/3",
-    title="Title",
+    summary_title="Summary Title",
     description="description",
     earliest="1900",
     latest="2100",
@@ -13,54 +15,66 @@ def create_record(
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
+    source_values: Optional[Dict[str, Any]] = None,
 ):
+    """Return a sample response for a record.
+
+    Useful for tidying up tests where response needs to be mocked
+
+    source_values: use to setup multiple key-values in _source attribute
+    Ex: source_values=[{"key1": <value1>, "key2": <value2>}]
+
+    Note: keys used in existing source will be overridden
+    """
     if not hierarchy:
         hierarchy = []
 
     if not related:
         related = []
 
-    """Return a sample response for a record.
-
-    Useful for tidying up tests where response needs to be mocked
-    """
-    return {
-        "_source": {
-            "@admin": {
-                "id": iaid,
-                "source": source,
+    source = {
+        "@admin": {
+            "id": iaid,
+            "source": admin_source,
+        },
+        "access": {"conditions": "open"},
+        "identifier": [
+            {"iaid": iaid},
+            {"reference_number": reference_number},
+        ],
+        "origination": {
+            "creator": [{"name": [{"value": "test"}]}],
+            "date": {
+                "earliest": {"from": earliest},
+                "latest": {"to": latest},
+                "value": f"{earliest}-{latest}",
             },
-            "access": {"conditions": "open"},
-            "identifier": [
-                {"iaid": iaid},
-                {"reference_number": reference_number},
-            ],
-            "origination": {
-                "creator": [{"name": [{"value": "test"}]}],
-                "date": {
-                    "earliest": {"from": earliest},
-                    "latest": {"to": latest},
-                    "value": f"{earliest}-{latest}",
+        },
+        "digitised": is_digitised,
+        "@hierarchy": [hierarchy],
+        "summary": {
+            "title": summary_title,
+        },
+        "multimedia": [
+            {
+                "@entity": "reference",
+                "@admin": {
+                    "id": media_reference_id,
                 },
-            },
-            "digitised": is_digitised,
-            "@hierarchy": [hierarchy],
-            "summary": {
-                "title": title,
-            },
-            "multimedia": [
-                {
-                    "@entity": "reference",
-                    "@admin": {
-                        "id": media_reference_id,
-                    },
-                }
-            ],
-            "related": related,
-            "description": [{"value": description}],
-            "legal": {"status": "Open"},
-        }
+            }
+        ],
+        "related": related,
+        "description": [{"value": description}],
+        "legal": {"status": "Open"},
     }
+
+    # note keys used in existing source will be overridden
+    if source_values:
+        for source_key_value in source_values:
+            for key, value in source_key_value.items():
+                source[key] = value
+
+    return {"_source": source}
 
 
 def create_media(

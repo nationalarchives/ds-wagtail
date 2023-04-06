@@ -28,7 +28,7 @@ class TestRecordChooseView(WagtailPageTestCase):
                 records=[
                     create_record(
                         iaid="C10297",
-                        title="Law Officers' Department: Registered Files",
+                        summary_title="Law Officers' Department: Registered Files",
                     ),
                 ]
             ),
@@ -41,7 +41,7 @@ class TestRecordChooseView(WagtailPageTestCase):
                 records=[
                     create_record(
                         iaid="C10297",
-                        title="Law Officers' Department: Registered Files",
+                        summary_title="Law Officers' Department: Registered Files",
                     ),
                 ]
             ),
@@ -100,7 +100,6 @@ class TestRecordChooseView(WagtailPageTestCase):
     @responses.activate
     @prevent_request_warnings
     def test_select_failed(self):
-
         responses.reset()
         responses.add(
             responses.GET,

@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("wagtailimages", "0023_add_choose_permissions"),
         ("collections", "0019_resultspage_title_prefix"),

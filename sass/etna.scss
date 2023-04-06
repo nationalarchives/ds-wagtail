@@ -12,9 +12,7 @@ This was discussed in an Etna developers meeting on 5 July 2021.
 
 */
 
-
 @import 'tna-toolkit/tna-toolkit';
-
 
 /*
 
@@ -26,7 +24,9 @@ These are Etna specific components, created using BEM and following our guidelin
 
 */
 
-@import "includes/variables";
+@import 'includes/functions';
+@import 'includes/variables';
+@import 'includes/mixins';
 @import 'includes/global';
 @import 'includes/buttons';
 @import 'includes/generic-intro';
@@ -94,13 +94,18 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/cookie-consent';
 @import 'includes/maintenance-503';
 @import 'includes/beta-banner';
-@import "includes/breadcrumb";
+@import 'includes/breadcrumb';
 @import 'includes/record-cta-panel';
 @import 'includes/record-series-panel';
-@import "includes/home-refresh";
-@import "includes/explore-intro";
-@import "includes/record-matters";
-@import "includes/transcription";
-@import "includes/card-grid";
-@import "includes/new_cards";
-@import "includes/highlight-gallery";
+@import 'includes/home-refresh';
+@import 'includes/explore-intro';
+@import 'includes/record-matters';
+@import 'includes/transcription';
+@import 'includes/card-grid';
+@import 'includes/new_cards';
+@import 'includes/highlight-gallery';
+@import 'includes/highlight-cards';
+@import 'includes/utilities';
+@import "includes/archive-description";
+@import "includes/archive-collections";
+@import "includes/archive-additional-resources";

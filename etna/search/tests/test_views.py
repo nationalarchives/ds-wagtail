@@ -1,4 +1,5 @@
 import json as json_module
+import unittest
 
 from typing import Any, Dict
 
@@ -772,13 +773,14 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     is_current=True,
                     results=None,
                 ),
-                Bucket(
-                    key="highlight",
-                    label="Highlights",
-                    result_count=1,
-                    is_current=False,
-                    results=None,
-                ),
+                # TODO: Restore when we are succesfully indexing new highlight pages
+                # Bucket(
+                #   key="highlight",
+                #   label="Highlights",
+                #   result_count=1,
+                #   is_current=True,
+                #   results=None,
+                # ),
                 Bucket(
                     key="audio",
                     label="Audio",
@@ -805,6 +807,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
         )
 
 
+@unittest.skip("Highlights bucket to be re-instated at a later date")
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -931,13 +934,14 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
                     is_current=False,
                     results=None,
                 ),
-                Bucket(
-                    key="highlight",
-                    label="Highlights",
-                    result_count=2,
-                    is_current=True,
-                    results=None,
-                ),
+                # TODO: Restore when we are succesfully indexing new highlight pages
+                # Bucket(
+                #   key="highlight",
+                #   label="Highlights",
+                #   result_count=2,
+                #   is_current=True,
+                #   results=None,
+                # ),
                 Bucket(
                     key="audio",
                     label="Audio",
@@ -1452,6 +1456,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
+    @unittest.skip("Highlights bucket to be re-instated at a later date")
     @responses.activate
     def test_datalayer_website_search_highlight(self):
         self.assertDataLayerEquals(
@@ -1540,4 +1545,30 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric1": 348,
                 "customMetric2": 0,
             },
+        )
+
+
+class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
+    test_url = reverse_lazy(
+        "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
+    )
+
+    @responses.activate
+    def test_accessing_page_with_no_params_performs_empty_search(self):
+        self.client.get(self.test_url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=interpretive"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=topic%3A100"
+                "&filterAggregations=group%3Ablog"
+                "&from=0"
+                "&size=20"
+            ),
         )

@@ -19,27 +19,28 @@ $color__black: #000000;
 $color__dark: #26262a;
 $color__white: #ffffff;
 $color__yellow: #fbe2bc;
-$color__yellow_2: #FFCC00;
-$color__yellow_3: #F9F7E2;
+$color__yellow_2: #ffcc00;
+$color__yellow_3: #f9f7e2;
 $color__yellow_4: #ffcc002b;
 $color__yellow_5: #faf6e0;
+$color__yellow_6: #FBF8EA;
 $color__green: #dde5d5;
 $color__pink: #fad3d4;
 $color__blue_2: #1e1e2a;
 $color__blue_3: #134571;
-$color__blue_4: #1A67A2;
-$color__blue_5: #8EC0EC;
+$color__blue_4: #1a67a2;
+$color__blue_5: #8ec0ec;
 $color__purple: #4c2c92;
-$color__red: #A72916;
+$color__red: #a72916;
 
-$color__grey-8: #4E5A5A;
+$color__grey-8: #4e5a5a;
 $color__grey-7: #cccccc;
 $color__grey-6: #333333;
 $color__grey-5: #efefef;
 $color__grey-4: #dddddd;
 $color__grey-3: #6f777b;
 $color__grey-2: #26262a;
-$color__grey-1: #F1F1F1;
+$color__grey-1: #f1f1f1;
 
 $color__alert: $color__yellow;
 $color__success: $color__green;
@@ -89,3 +90,40 @@ $fa_list_blue: '#{$fa_path}list-ul-blue.svg';
 $fa_folder: '#{$fa_path}folder.svg';
 $fa_x-mark: '#{$fa_path}x-mark.svg';
 $fa_plus: '#{$fa_path}plus.svg';
+
+// Font sizes
+$base-font-size: 16px;
+$base-line-height: 1.6;
+
+$large-font-sizes: (
+  xxxl: 64px,
+  xxl: 30px,
+  xl: 20.8px,
+  l: 20px,
+  m: 18px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);
+
+$medium-font-sizes: (
+  xxxl: 42px,
+  xxl: 26px,
+  xl: 22px,
+  l: 18px,
+  m: 16px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);
+
+$small-font-sizes: (
+  xxxl: 36px,
+  xxl: 24px,
+  xl: 20px,
+  l: 18px,
+  m: 16px,
+  s: 16px,
+  xs: 14px,
+  xxs: 12px,
+);

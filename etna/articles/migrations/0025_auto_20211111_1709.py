@@ -11,7 +11,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0024_fix_heading_help_text"),
     ]

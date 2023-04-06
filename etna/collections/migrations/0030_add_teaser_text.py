@@ -5,7 +5,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("collections", "0029_highlightgallerypage_highlight"),
     ]

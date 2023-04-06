@@ -9,7 +9,6 @@ import wagtail.snippets.blocks
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0009_add_author_block"),
     ]

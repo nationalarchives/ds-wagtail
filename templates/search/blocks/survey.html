@@ -1,7 +1,7 @@
 {% load static %}
 
 <!--new survey element-->
-<div class="cta-banner-survey cta-banner-survey-js cta-banner-border">
+<div class="cta-banner-survey cta-banner-survey--js cta-banner--border">
     <div class="container py-3">
         <div class="row justify-content-md-center text-center">
 
@@ -26,7 +26,7 @@
 <!--end new survey element-->
 
 <noscript>
-    <div class="cta-banner-survey cta-banner-border no-js-survey">
+    <div class="cta-banner-survey cta-banner-survey--border cta-banner-survey--no-js">
     <div class="container py-3">
         <h3>What did you think of this page?</h3>
         <div class="rowr">
@@ -37,7 +37,7 @@
 </noscript>
 
 <script>
-    document.querySelector('.cta-banner-survey-js').style.display = 'block';
+    document.querySelector('.cta-banner-survey--js').style.display = 'block';
 
 
     const buttonEasy = document.getElementById("easy");

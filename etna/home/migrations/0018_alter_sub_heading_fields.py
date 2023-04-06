@@ -5,7 +5,6 @@ import wagtail.fields
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("home", "0017_add_teaser_text"),
     ]

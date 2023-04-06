@@ -32,7 +32,6 @@ def get_row(file_name):
         reader = csv.reader(f, delimiter=",", quotechar='"')
 
         for topic, result_page_name, iaid, description, image_url in reader:
-
             row = {
                 "topic": topic,
                 "result_page_name": result_page_name,
@@ -59,13 +58,11 @@ class Command(BaseCommand):
         parser.add_argument("path_to_csv", help="Path to CSV file")
 
     def handle(self, *args, path_to_csv=None, **options):
-
         topic_explorer_index_page = TopicExplorerIndexPage.objects.get()
 
         result_page_iaids = defaultdict(list)
 
         for row in get_row(path_to_csv):
-
             try:
                 topic_page = TopicExplorerPage.objects.get(title=row["topic"])
             except TopicExplorerPage.DoesNotExist:

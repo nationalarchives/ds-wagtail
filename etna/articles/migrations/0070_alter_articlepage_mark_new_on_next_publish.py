@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("articles", "0069_alter_articlepage_mark_new_on_next_publish"),
     ]
