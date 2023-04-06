@@ -23,7 +23,11 @@ from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMix
 from etna.records.fields import RecordField
 
 from ..heroes.models import HeroImageMixin
-from .blocks import ArticlePageStreamBlock, FeaturedCollectionBlock
+from .blocks import (
+    ArticlePageStreamBlock,
+    AuthorPromotedPagesBlock,
+    FeaturedCollectionBlock,
+)
 
 
 class ArticleIndexPage(BasePageWithIntro):
@@ -260,6 +264,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    promoted_links = StreamField(
+        [("promoted_link", AuthorPromotedPagesBlock())],
+        max_num=1,
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage",
         blank=True,
@@ -301,6 +313,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 FieldPanel("print_on_demand_link"),
             ],
         ),
+        FieldPanel("promoted_links"),
         FieldPanel("featured_article"),
     ]
 

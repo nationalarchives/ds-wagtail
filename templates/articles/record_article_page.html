@@ -8,6 +8,20 @@
     {% if page.record %}
         {% include "includes/record-matters.html" with record=page.record title="Why this record matters" page=page %}
     {% endif %}
+    <!-- TODO: HTML Boilerplate added for Blogs and Podcasts section. 
+    templates/articles/blocks/promoted_pages.html will also need editing -->
+    {% if page.promoted_links %}
+        <div class="container"
+            data-container-name="topic-explorer"
+            id="analytics-topic-explorer">
+            <div class="row">
+                <div class="col-md-12">
+                    {% include_block page.promoted_links %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <!-- TODO: End of HTML Boilerplate -->
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
