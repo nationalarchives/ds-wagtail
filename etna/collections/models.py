@@ -15,7 +15,12 @@ from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
+from ..core.models import (
+    BasePage,
+    BasePageWithIntro,
+    ContentWarningMixin,
+    RequiredHeroImagePageForm,
+)
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -109,6 +114,8 @@ class TopicExplorerIndexPage(BasePageWithIntro):
         "collections.TopicExplorerPage",
     ]
 
+    base_form_class = RequiredHeroImagePageForm
+
 
 class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
@@ -134,7 +141,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -171,6 +178,8 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         "collections.HighlightGalleryPage",
         "collections.ResultsPage",
     ]
+
+    base_form_class = RequiredHeroImagePageForm
 
     @cached_property
     def related_articles(self):
@@ -282,6 +291,8 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
         "collections.TimePeriodExplorerPage",
     ]
 
+    base_form_class = RequiredHeroImagePageForm
+
 
 class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     """Time period BasePage.
@@ -306,7 +317,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -346,6 +357,8 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
         "collections.HighlightGalleryPage",
         "collections.ResultsPage",
     ]
+
+    base_form_class = RequiredHeroImagePageForm
 
     @cached_property
     def related_articles(self):
