@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 
-{% load i18n datalayer_tags wagtailcore_tags %}
+{% load i18n wagtailcore_tags %}
 
 {% block title %}{{ prompt.thank_you_heading }}{% endblock %}
-
-{% block extra_gtm_js %}
-    {% render_gtm_datalayer view %}
-{% endblock extra_gtm_js %}
 
 {% block breadcrumb %}{% endblock %}
 
