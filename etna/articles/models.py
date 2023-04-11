@@ -127,7 +127,6 @@ class ArticlePage(
                     FieldPanel("custom_warning_text"),
                 ],
                 heading="Content Warning Options",
-                classname="collapsible",
             ),
             FieldPanel("body"),
         ]
@@ -298,7 +297,6 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Content Warning Options",
-            classname="collapsible",
             children=[
                 FieldPanel("display_content_warning"),
                 FieldPanel("custom_warning_text"),

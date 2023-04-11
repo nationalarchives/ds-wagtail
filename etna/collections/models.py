@@ -75,7 +75,6 @@ class TopicExplorerIndexPage(BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
-            classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
             ],
@@ -149,7 +148,6 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
-            classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
             ],
@@ -252,7 +250,6 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
-            classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
             ],
@@ -326,7 +323,6 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Hero image",
-            classname="collapsible",
             children=[
                 FieldPanel("hero_image"),
             ],
@@ -579,7 +575,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
             heading="Content Warning Options",
-            classname="collapsible",
             children=[
                 FieldPanel("display_content_warning"),
                 FieldPanel("custom_warning_text"),
