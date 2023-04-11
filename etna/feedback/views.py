@@ -1,7 +1,7 @@
 import logging
 import uuid
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from django.contrib.contenttypes.models import ContentType
 from django.forms import Form
@@ -39,28 +39,21 @@ class VersionedFeedbackViewMixin:
         self,
         request: HttpRequest,
         prompt_id: uuid.UUID,
-        version: Optional[int] = None,
+        version: int,
         **kwargs,
     ) -> None:
         super().setup(request, **kwargs)
         self.prompt_id = prompt_id
         self.version = version
         self.is_ajax = request.POST.get("is_ajax", "false") == "true"
-        if version:
-            self.prompt_revision = get_object_or_404(
-                Revision,
-                content_type=ContentType.objects.get_for_model(FeedbackPrompt),
-                id=version,
-            )
-            self.prompt = self.prompt_revision.as_object()
-            if self.prompt.public_id != prompt_id:
-                raise Http404("Bad prompt_id / version combination.")
-        else:
-            self.prompt = get_object_or_404(
-                FeedbackPrompt.objects.all().select_related("latest_revision"),
-                public_id=prompt_id,
-            )
-            self.prompt_revision = self.prompt.latest_revision
+        self.prompt_revision = get_object_or_404(
+            Revision,
+            content_type=ContentType.objects.get_for_model(FeedbackPrompt),
+            id=version,
+        )
+        self.prompt = self.prompt_revision.as_object()
+        if self.prompt.public_id != prompt_id:
+            raise Http404("Bad prompt_id / version combination.")
 
 
 @method_decorator(csrf_exempt, name="dispatch")
