@@ -131,7 +131,22 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
@@ -288,9 +303,23 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     body = StreamField(
         TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
     )
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("featured_article", heading=_("Featured article")),
         FieldPanel("featured_record_article", heading=_("Featured record article")),
         FieldPanel("body"),
