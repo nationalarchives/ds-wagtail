@@ -3,6 +3,7 @@ from typing import List, Optional, Tuple, Union
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
@@ -601,8 +602,18 @@ class Highlight(Orderable):
         verbose_name=_("image"),
     )
 
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        null=True,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+
     panels = [
         FieldPanel("image"),
+        FieldPanel("alt_text"),
     ]
 
     def clean(self) -> None:
