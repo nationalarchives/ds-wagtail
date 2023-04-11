@@ -19,10 +19,9 @@ from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
     ExplorerIndexPageStreamBlock,
-    TimePeriodExplorerIndexPageStreamBlock,
     TimePeriodExplorerPageStreamBlock,
-    TopicExplorerIndexPageStreamBlock,
     TopicExplorerPageStreamBlock,
+    TopicIndexPageStreamBlock,
 )
 
 
@@ -57,11 +56,24 @@ class TopicExplorerIndexPage(BasePageWithIntro):
     This page lists all child TopicExplorerPages
     """
 
-    body = StreamField(
-        TopicExplorerIndexPageStreamBlock, blank=True, use_json_field=True
+    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
@@ -158,7 +170,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def related_record_article(self):
+    def related_record_articles(self):
         from etna.articles.models import RecordArticlePage
 
         return (
@@ -167,13 +179,14 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
+            .live()
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
@@ -201,11 +214,24 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
     This page lists all child TimePeriodExplorerPage
     """
 
-    body = StreamField(
-        TimePeriodExplorerIndexPageStreamBlock, blank=True, use_json_field=True
+    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
     )
 
     content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            heading="Hero image",
+            classname="collapsible",
+            children=[
+                FieldPanel("hero_image"),
+            ],
+        ),
         FieldPanel("body"),
     ]
 
@@ -314,7 +340,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")
+            .select_related("teaser_image")[:4]
         )
 
     @cached_property
@@ -477,6 +503,10 @@ class TopicalPageMixin:
         one big comma-separated string. Ideal for indexing!
         """
         return ", ".join(item.title for item in self.time_periods)
+
+    @cached_property
+    def highlight_image_count(self):
+        return self.highlights.count()
 
 
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):

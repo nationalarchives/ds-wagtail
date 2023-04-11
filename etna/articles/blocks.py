@@ -6,6 +6,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
+    AuthorPromotedLinkBlock,
     ContentImageBlock,
     ImageBlock,
     NoCaptionImageBlock,
@@ -58,6 +59,16 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
         icon = "archive"
         template = "articles/blocks/featured_records.html"
         label = "Featured records"
+
+
+class AuthorPromotedPagesBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100)
+    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max=3)
+
+    class Meta:
+        template = "articles/blocks/promoted_pages.html"
+        help_text = "Block used promote external pages"
+        icon = "th-large"
 
 
 class PromotedItemBlock(SectionDepthAwareStructBlock):

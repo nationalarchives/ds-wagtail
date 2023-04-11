@@ -2,6 +2,7 @@
 
 from django.db import migrations
 import etna.collections.blocks
+import etna.core.blocks
 import wagtail.blocks
 import wagtail.fields
 
@@ -142,7 +143,7 @@ class Migration(migrations.Migration):
                                 (
                                     "promoted_items",
                                     wagtail.blocks.ListBlock(
-                                        etna.collections.blocks.PromotedItemBlock,
+                                        etna.core.blocks.PromotedLinkBlock,
                                         max=3,
                                         min=3,
                                     ),
@@ -223,7 +224,7 @@ class Migration(migrations.Migration):
                                 (
                                     "promoted_items",
                                     wagtail.blocks.ListBlock(
-                                        etna.collections.blocks.PromotedItemBlock,
+                                        etna.core.blocks.PromotedLinkBlock,
                                         max=3,
                                         min=3,
                                     ),

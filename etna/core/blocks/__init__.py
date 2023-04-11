@@ -1,7 +1,9 @@
 from .base import SectionDepthAwareStructBlock
+from .cta import LargeCardLinksBlock
 from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
+from .promoted_links import AuthorPromotedLinkBlock, PromotedLinkBlock
 from .quote import QuoteBlock
 from .section import SectionBlock
 
@@ -12,6 +14,9 @@ __all__ = [
     "PageListBlock",
     "ParagraphBlock",
     "ParagraphWithHeading",
+    "PromotedLinkBlock",
+    "AuthorPromotedLinkBlock",
+    "LargeCardLinksBlock",
     "QuoteBlock",
     "SectionBlock",
     "SectionDepthAwareStructBlock",

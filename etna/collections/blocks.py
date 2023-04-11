@@ -1,5 +1,6 @@
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
+
+from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock
 
 
 class CollectionHighlightsBlock(blocks.StructBlock):
@@ -24,21 +25,10 @@ class FeaturedPageBlock(blocks.StructBlock):
         icon = "arrow-up"
 
 
-class PromotedItemBlock(blocks.StructBlock):
-    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
-    title = blocks.CharBlock(max_length=100, help_text="Title of the promoted page")
-    teaser_image = ImageChooserBlock(
-        help_text="Image that will appear on thumbnails and promos around the site."
-    )
-    description = blocks.CharBlock(
-        max_length=200, help_text="A description of the promoted page"
-    )
-
-
 class PromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
     sub_heading = blocks.CharBlock(max_length=200)
-    promoted_items = blocks.ListBlock(PromotedItemBlock, min=3, max=3)
+    promoted_items = blocks.ListBlock(PromotedLinkBlock, min=3, max=3)
 
     class Meta:
         template = "collections/blocks/promoted_pages.html"
@@ -88,15 +78,6 @@ class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
         }
 
 
-class TimePeriodExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    topic_explorer_index = TopicExplorerIndexBlock()
-
-    class Meta:
-        block_counts = {
-            "topic_explorer_index": {"min_num": 1, "max_num": 1},
-        }
-
-
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
     collection_highlights = CollectionHighlightsBlock()
     promoted_pages = PromotedPagesBlock()
@@ -108,10 +89,10 @@ class TopicExplorerPageStreamBlock(blocks.StreamBlock):
         }
 
 
-class TopicExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    time_period_explorer_index = TimePeriodExplorerIndexBlock()
+class TopicIndexPageStreamBlock(blocks.StreamBlock):
+    large_card_links = LargeCardLinksBlock()
 
     class Meta:
         block_counts = {
-            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
+            "large_card_links": {"max_num": 1},
         }
