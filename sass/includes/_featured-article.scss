@@ -1,7 +1,10 @@
 .featured-article {
     display: flex;
-    //margin-bottom: 4rem;
-    margin-bottom: 2rem;
+    flex-direction: row;
+
+    @media only screen and (max-width: $screen__md) {
+        flex-direction: column;
+    }
 
     //class to hide aria descriptions
     .aria-desc {
