@@ -124,7 +124,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         max_length=900,
     )
 
-    search_fields = [
+    search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
         index.SearchField("translation", boost=1),
         index.SearchField("description"),
