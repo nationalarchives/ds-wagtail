@@ -50,3 +50,13 @@
 @if $enable-grid-classes {
   @include make-grid-columns();
 }
+
+
+.body-container {
+  padding: 3% 5%;
+
+  @media screen  and (min-width: map-get($grid-breakpoints, "sm")) {
+      padding: 3% 9%;
+      
+  }
+}

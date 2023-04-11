@@ -3,15 +3,6 @@
     $root: &;
     font-family: $font__supria-sans;
 
-    &__container {
-        padding: 3% 5%;
-
-        @media screen  and (min-width: map-get($grid-breakpoints, "sm")) {
-            padding: 3% 9%;
-            
-        }
-    }
-
     &__link {
         text-decoration: none !important;
         color: $color__grey-6;

@@ -12,7 +12,7 @@
     @media screen and (min-width: map-get($grid-breakpoints, "md")) {
         margin-bottom: 96px;
     }
-
+    
     &__title {
         @include font-size("xl");
         font-weight: $font-weight-bold;
