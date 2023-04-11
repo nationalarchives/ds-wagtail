@@ -6,7 +6,7 @@
                 <form
                     class="feedback__form"
                     id="feedback-form"
-                    action="{% url 'feedback:submit' prompt.public_id prompt.latest_revision_id %}"
+                    action="{% url 'feedback:submit' prompt.public_id prompt.live_revision_id %}"
                     method="post"
                 >
                     <h3 class="feedback__form__heading">{{ prompt.text }}</h3>

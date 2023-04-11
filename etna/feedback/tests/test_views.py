@@ -30,14 +30,14 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
             "feedback:submit",
             kwargs={
                 "prompt_id": cls.prompt.public_id,
-                "version": cls.prompt.latest_revision_id,
+                "version": cls.prompt.live_revision_id,
             },
         )
         cls.success_url = reverse(
             "feedback:success",
             kwargs={
                 "prompt_id": cls.prompt.public_id,
-                "version": cls.prompt.latest_revision_id,
+                "version": cls.prompt.live_revision_id,
             },
         )
 
@@ -49,9 +49,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         page = Page.objects.get(depth=2).specific
         page.teaser_text = "New teaser text"
         revision = page.save_revision(clean=False, changed=True)
-        revision.save()
-        page.latest_revision = revision
-        page.save(update_fields=["latest_revision"])
+        revision.publish()
         cls.page = page
         cls.page_revision = revision
 
@@ -63,7 +61,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         self.assertFalse(response.context["form"].is_bound)
 
     def test_raises_404_if_version_not_recognised(self):
-        url = self.url.replace(str(self.prompt.latest_revision_id), "999")
+        url = self.url.replace(str(self.prompt.live_revision_id), "999")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -76,7 +74,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
 
     def test_raises_404_if_version_is_does_not_match_the_prompt(self):
         url = self.url.replace(
-            str(self.prompt.latest_revision_id), str(self.page_revision.id)
+            str(self.prompt.live_revision_id), str(self.page_revision.id)
         )
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
@@ -172,7 +170,7 @@ class TestFeedbackSuccessView(TestCase):
             "feedback:success",
             kwargs={
                 "prompt_id": cls.prompt.public_id,
-                "version": cls.prompt.latest_revision_id,
+                "version": cls.prompt.live_revision_id,
             },
         )
         cls.next_url = "/some-path"

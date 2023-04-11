@@ -13,7 +13,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
 from wagtail.fields import RichTextField, StreamField
-from wagtail.models import RevisionMixin
+from wagtail.models import DraftStateMixin, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
 from etna.feedback import constants
@@ -40,7 +40,8 @@ class FeedbackPromptManager(models.Manager):
             exact_path_variations = (path,)
 
         obj = (
-            self.annotate(
+            self.filter(live=True)
+            .annotate(
                 match=Case(
                     When(
                         path__in=exact_path_variations,
@@ -72,7 +73,7 @@ class FeedbackPromptManager(models.Manager):
 
 
 @register_snippet
-class FeedbackPrompt(RevisionMixin, ClusterableModel):
+class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     public_id = models.UUIDField(
         editable=False, unique=True, default=uuid.uuid4, verbose_name=_("public ID")
     )
