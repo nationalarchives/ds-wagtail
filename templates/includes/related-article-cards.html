@@ -1,7 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <div class="related-article-cards">
     <div class="container">
-    <div class="card-grid card-grid__trio">
+    <div class="card-grid card-grid__trio card-grid__trio--large-gaps">
         {% for article in articles %}
             <a class="related-article-cards__card" href={% pageurl article %}>
                 <picture>

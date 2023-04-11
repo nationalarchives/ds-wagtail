@@ -24,6 +24,14 @@
         text-decoration: none !important;
         color: $color__black;
         margin-bottom: none;
+
+        &:hover {
+            outline: 0.3125rem solid $color__dark;
+        }
+
+        &:visited {
+            color: inherit; 
+        }
     }
 
     &__content {

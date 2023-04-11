@@ -2,7 +2,7 @@
     @extend .row;
     display: grid;
     
-    &--duo {
+    &__duo {
         grid-gap: 1rem;
         margin: 1rem 0;
 
@@ -27,10 +27,14 @@
 
         &--large-gaps {
             grid-gap: 3.625rem;
+
+            @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
+                grid-gap: 1.875em;
+            }
         }
     }
 
-    &--quad {
+    &__quad {
         grid-gap: 40px;
         margin: 20px 0;
         

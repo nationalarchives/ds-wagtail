@@ -2,7 +2,7 @@
 <div class="highlight-cards">
     <div class="highlight-cards__container">
         <h2 class="highlight-cards__title">{{ title }}</h2>
-        <div class="card-grid card-grid--quad">
+        <div class="card-grid card-grid__quad">
             {% for article in articles %}
                 {% if forloop.first %}
                     <a href="{% pageurl article %}"

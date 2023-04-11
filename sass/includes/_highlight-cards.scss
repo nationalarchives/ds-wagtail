@@ -15,6 +15,10 @@
     &__link {
         text-decoration: none !important;
         color: $color__grey-6;
+
+        &:visited {
+            color: inherit; 
+        }
     }
 
     &__title {
