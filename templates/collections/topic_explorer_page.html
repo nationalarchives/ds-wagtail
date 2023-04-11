@@ -4,7 +4,7 @@
     {% meta_tags %}
 {% endblock meta_tag %}
 {% block content %}
-    {% include "includes/highlight-intro.html" with background_image=page.teaser_image title=page.title intro=page.intro %}
+    {% include "includes/highlight-intro.html" with background_image=page.hero_image title=page.title intro=page.intro %}
     {% if page.related_highlight_gallery_pages %}
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
