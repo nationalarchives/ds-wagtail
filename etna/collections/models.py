@@ -134,7 +134,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -306,7 +306,7 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
