@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "etna.ciim",
     "etna.collections",
     "etna.core",
+    "etna.feedback",
     "etna.highlights",
     "etna.home",
     "etna.images",
@@ -386,9 +387,6 @@ FEATURE_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
 FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY = strtobool(
     os.getenv("FEATURE_DOWNLOAD_RECORD_LINKS_GO_TO_DISCOVERY", "False")
 )
-FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES = strtobool(
-    os.getenv("FEATURE_RELATED_ARTICLE_ON_EXPLORE_PAGES", "True")
-)
 FEATURE_BETA_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
 )
@@ -396,3 +394,6 @@ FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
+FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
+    os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
+)

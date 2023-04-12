@@ -39,6 +39,7 @@ private_urls = [
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+    path("feedback/", include("etna.feedback.urls")),
 ]
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
