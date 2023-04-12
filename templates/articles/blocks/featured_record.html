@@ -27,7 +27,7 @@
         </div>
 
         <div class="featured-record__action">
-            <a class="featured-record__button tna-button--yellow" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>Visit <span class="sr-only">{{ value.record.summary_title }}</span> the record{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
+            <a class="featured-record__button tna-button--yellow" href="{% record_url value.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Button" data-link="View in the catalogue"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>View <span class="sr-only">{{ value.record.summary_title }}</span> in the catalogue{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}</a>
         </div>
     </div>
 </div>
