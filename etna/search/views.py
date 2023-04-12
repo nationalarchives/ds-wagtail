@@ -398,6 +398,22 @@ class BaseFilteredSearchView(BaseSearchView):
             sort_order=form.cleaned_data.get("sort_order"),
         )
 
+    def aggregations_params(self) -> Tuple[str]:
+        """
+        Returns a list of aggregation params.
+        """
+        aggregations = (
+            Aggregation.COLLECTION,
+            Aggregation.LEVEL,
+            Aggregation.TOPIC,
+            Aggregation.CLOSURE,
+            Aggregation.HELD_BY,
+            Aggregation.CATALOGUE_SOURCE,
+            Aggregation.GROUP,
+            Aggregation.TYPE,
+        )
+        return aggregations
+
     def get_api_aggregations(self) -> List[str]:
         """
         Called by `get_api_kwargs()` to get a value to include as 'aggregations'
@@ -409,16 +425,7 @@ class BaseFilteredSearchView(BaseSearchView):
         the most relevant filter options are shown.
         """
         values = []
-        for aggregation in (
-            Aggregation.COLLECTION,
-            Aggregation.LEVEL,
-            Aggregation.TOPIC,
-            Aggregation.CLOSURE,
-            Aggregation.HELD_BY,
-            Aggregation.CATALOGUE_SOURCE,
-            Aggregation.GROUP,
-            Aggregation.TYPE,
-        ):
+        for aggregation in self.aggregations_params():
             item_count = 10
             if aggregation == Aggregation.GROUP:
                 # Fetch more 'groups' so that we receive a counts
