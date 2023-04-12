@@ -2,12 +2,13 @@ import json
 
 from django.urls import reverse
 
-from etna.images.models import CustomImage
 from wagtail.models import Site
 from wagtail.tests.utils import WagtailPageTestCase
 from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
+
+from etna.images.models import CustomImage
 
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
