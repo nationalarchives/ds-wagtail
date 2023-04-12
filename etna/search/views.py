@@ -758,13 +758,15 @@ class FeaturedSearchView(BaseSearchView):
         but to support template/rendering needs, it returns a `dict` instead of
         a `BucketList`, and instead of receiving additional argument values,
         `result_count` and `results` are set on each bucket using data
-        directly from `self.api_result`.
+        from `self.api_result`.
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
-            results = self.api_result[i]
-            bucket.result_count = results.total_count
-            bucket.results = results.hits
+            # NOTE: The API might not have been called if the form was invalid
+            if self.api_result:
+                results_for_bucket = self.api_result[i]
+                bucket.result_count = results_for_bucket.total_count
+                bucket.results = results_for_bucket.hits
             buckets[bucket.key] = bucket
         return buckets
 

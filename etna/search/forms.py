@@ -1,7 +1,6 @@
 from typing import Dict, List, Union
 
 from django import forms
-from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
 from etna.core.fields import END_OF_MONTH, DateInputField
@@ -79,7 +78,6 @@ class FeaturedSearchForm(forms.Form):
         # If no query is provided, pass None to client to fetch all results.
         empty_value=None,
         required=False,
-        validators=[MinLengthValidator(2)],
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
 
