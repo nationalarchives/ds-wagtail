@@ -36,10 +36,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             title="Article Index Page", intro="test", teaser_text="test"
         )
         root.add_child(instance=self.article_index_page)
-        
+
         test_image = CustomImage.objects.create(width=0, height=0)
         self.article_page = ArticlePage(
-            title="Article page", intro="test", teaser_text="test", hero_image=test_image
+            title="Article page",
+            intro="test",
+            teaser_text="test",
+            hero_image=test_image,
         )
         self.article_index_page.add_child(instance=self.article_page)
 
