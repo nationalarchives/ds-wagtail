@@ -12,6 +12,7 @@ from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
+from wagtail.admin import panels
 from wagtail.fields import RichTextField, StreamField
 from wagtail.models import DraftStateMixin, RevisionMixin
 from wagtail.snippets.models import register_snippet
@@ -126,6 +127,31 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     )
 
     objects = FeedbackPromptManager()
+
+    panels = [
+        panels.MultiFieldPanel(
+            heading=_("Prompt form"),
+            children=[
+                panels.FieldPanel("text"),
+                panels.FieldPanel("response_options"),
+            ],
+        ),
+        panels.MultiFieldPanel(
+            heading=_("Success page"),
+            children=[
+                panels.FieldPanel("thank_you_heading"),
+                panels.FieldPanel("thank_you_message"),
+                panels.FieldPanel("continue_link_text"),
+            ],
+        ),
+        panels.MultiFieldPanel(
+            heading=_("Visibility options"),
+            children=[
+                panels.FieldPanel("path"),
+                panels.FieldPanel("startswith_path"),
+            ],
+        ),
+    ]
 
     class Meta:
         unique_together = ("path", "startswith_path")
