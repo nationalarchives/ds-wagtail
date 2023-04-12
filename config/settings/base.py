@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "etna.ciim",
     "etna.collections",
     "etna.core",
+    "etna.feedback",
     "etna.heroes",
     "etna.highlights",
     "etna.home",
@@ -394,3 +395,6 @@ FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
+FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
+    os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
+)

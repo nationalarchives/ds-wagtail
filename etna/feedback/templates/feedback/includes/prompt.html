@@ -1,0 +1,71 @@
+{% load static i18n wagtailcore_tags %}
+<div class="feedback">
+    <div class="container py-3 feedback__container">
+        <div class="row justify-content-md-center text-center feedback__content">
+            <div class="col-sm-12">
+                <form
+                    class="feedback__form"
+                    id="feedback-form"
+                    action="{% url 'feedback:submit' prompt.public_id prompt.live_revision_id %}"
+                    method="post"
+                >
+                    <h3 class="feedback__form__heading">{{ prompt.text }}</h3>
+
+                    {{ form.as_div }}
+
+                    <button class="tna-button--dark feedback__form__submit" type="submit">
+                        {% trans "Submit feedback" %}
+                    </button>
+                </form>
+                <div id="feedback-success" class="feedback__success" style="display: none;">
+
+                    <h3 class="feedback__success__heading">
+                        {{ prompt.thank_you_heading }}
+                    </h3>
+
+                    {% if prompt.thank_you_message %}
+                        <div class="feedback__success__message">
+                            {{ prompt.thank_you_message|richtext }}
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById("feedback-form");
+const successContent = document.getElementById("feedback-success");
+let submitted = false;
+
+// submit via the fetch API instead
+form.onsubmit = function () {
+    event.preventDefault();
+    if(submitted){
+        return;
+    }
+    const body = new FormData(form);
+    body.set("is_ajax", "true");
+    submitted = true;
+    fetch(
+        form.getAttribute("action"),
+        {
+        method: "post",
+        body: body,
+        }
+    )
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        form.remove();
+        successContent.style.display = "block";
+        window.location.hash = successContent.id;
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+
+};
+</script>
