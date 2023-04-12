@@ -37,23 +37,22 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
         root.add_child(instance=self.article_index_page)
 
-        test_image = CustomImage.objects.create(width=0, height=0)
         self.article_page = ArticlePage(
             title="Article page",
             intro="test",
             teaser_text="test",
-            hero_image=test_image,
         )
         self.article_index_page.add_child(instance=self.article_page)
 
     @responses.activate
     def test_add_featured_record(self):
+        test_image = CustomImage.objects.create(width=0, height=0)
         data = nested_form_data(
             {
                 "title": "Article page changed",
                 "slug": "stories-page",
                 "intro": rich_text("test"),
-                "hero_image": self.article_page.hero_image.id,
+                "hero_image": test_image.id,
                 "teaser_text": "test",
                 "body": streamfield(
                     [
