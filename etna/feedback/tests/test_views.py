@@ -111,6 +111,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         self.assertIsNone(submission.page)
         self.assertIsNone(submission.page_revision)
 
+    @prevent_request_warnings
     def test_post_invalid_regular(self):
         response = self.client.post(
             self.url,
@@ -148,6 +149,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         self.assertIsNone(submission.page)
         self.assertIsNone(submission.page_revision)
 
+    @prevent_request_warnings
     def test_post_invalid_ajax(self):
         response = self.client.post(
             self.url,
