@@ -7,6 +7,7 @@ from django.utils.http import urlencode
 from wagtail.models import Page
 from wagtail.test.utils import WagtailTestUtils
 
+from etna.core.test_utils import prevent_request_warnings
 from etna.feedback.constants import SentimentChoices
 from etna.feedback.forms import FeedbackForm
 from etna.feedback.models import FeedbackPrompt, FeedbackSubmission
@@ -60,11 +61,13 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         self.assertIsInstance(response.context["form"], FeedbackForm)
         self.assertFalse(response.context["form"].is_bound)
 
+    @prevent_request_warnings
     def test_raises_404_if_version_not_recognised(self):
         url = self.url.replace(str(self.prompt.live_revision_id), "999")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    @prevent_request_warnings
     def test_raises_404_if_prompt_id_is_invalid(self):
         url = self.url.replace(
             str(self.prompt.public_id), "7cca5b94-3da0-4057-af60-0b0dc45451cb"
@@ -72,6 +75,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
+    @prevent_request_warnings
     def test_raises_404_if_version_is_does_not_match_the_prompt(self):
         url = self.url.replace(
             str(self.prompt.live_revision_id), str(self.page_revision.id)
@@ -249,6 +253,7 @@ class TestSubmissionReportView(WagtailTestUtils, TestCase):
         self.assertEqual(export_response.status_code, 200)
         self.assertEqual(export_response.headers["Content-Type"], "text/csv")
 
+    @prevent_request_warnings
     def test_access_not_permitted(self):
         expected_redirect_url = self.login_url + "?" + urlencode({"next": self.url})
         self.client.force_login(self.normal_user)
