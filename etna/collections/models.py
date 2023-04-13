@@ -185,6 +185,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
+            .live()
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
