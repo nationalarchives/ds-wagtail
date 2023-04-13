@@ -14,7 +14,7 @@ const pushActiveFilterData = (filterList) => {
     // get current search bucket
     const searchBucket = filterList.getAttribute('data-search-bucket');
 
-    const filters = filterList.querySelector("[data-filter]");
+    const filters = filterList.querySelectorAll("[data-filter]");
 
     // create array to store currently active filters
     const activeFilters = [];
