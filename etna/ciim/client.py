@@ -93,6 +93,7 @@ class Aggregation(StrEnum):
     CATALOGUE_SOURCE = "catalogueSource"
     HELD_BY = "heldBy"
     TYPE = "type"
+    COUNTRY = "country"
 
 
 def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:

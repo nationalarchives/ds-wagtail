@@ -344,6 +344,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "held_by",
         "catalogue_source",
         "type",
+        "country",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:
@@ -400,6 +401,8 @@ class BaseFilteredSearchView(BaseSearchView):
 
     def aggregations_params(self) -> Tuple[str]:
         """
+        The aggregations params may be specific to a bucket and will be filtered upon.
+        There is a max (8) params that can be passed to the api aggregations search param.
         Returns a list of aggregation params.
         """
         aggregations = (
@@ -412,6 +415,12 @@ class BaseFilteredSearchView(BaseSearchView):
             Aggregation.GROUP,
             Aggregation.TYPE,
         )
+        if self.current_bucket_key == "creator":
+            aggregations = (
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+                Aggregation.COUNTRY,
+            )
         return aggregations
 
     def get_api_aggregations(self) -> List[str]:
