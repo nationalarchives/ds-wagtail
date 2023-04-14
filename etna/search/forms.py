@@ -52,7 +52,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         self,
         choice_data: List[Dict[str, Union[str, int]]],
         selected_values: Optional[List[Union[str, int]]] = (),
-        order_alphabetically: Optional[bool] = True,
     ):
         """
         Updates this fields `choices` list using aggregation data from the most recent
@@ -86,8 +85,8 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
                 label_base = missing_value
             choices.append((missing_value, f"{label_base} (0)"))
 
-        if order_alphabetically:
-            choices.sort(key=lambda x: x[1])
+        # Order alphabetically
+        choices.sort(key=lambda x: x[1])
 
         # Replace the field's attribute value
         self.choices = choices
