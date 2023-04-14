@@ -19,6 +19,8 @@ from ..ciim.constants import (
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
+    widget = forms.widgets.CheckboxSelectMultiple
+
     def __init__(self, *args, **kwargs):
         self.validate_input = bool(kwargs.get("choices")) and kwargs.pop(
             "validate_input", True
@@ -34,6 +36,12 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         if not self.validate_input:
             return True
         return super().valid_value(value)
+
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        if not widget.is_hidden:
+            attrs["class"] = "search-filters__list"
+        return attrs
 
     @cached_property
     def configured_choice_labels(self):
@@ -134,16 +142,10 @@ class BaseCollectionSearchForm(forms.Form):
     level = DynamicMultipleChoiceField(
         label="Level",
         choices=LEVEL_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"},
-        ),
         required=False,
     )
     topic = DynamicMultipleChoiceField(
         label="Topics",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     # Choices are supplied to this field to influence labels only. The options
@@ -151,31 +153,19 @@ class BaseCollectionSearchForm(forms.Form):
     collection = DynamicMultipleChoiceField(
         label="Collections",
         choices=COLLECTION_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
         validate_input=False,
     )
     closure = DynamicMultipleChoiceField(
         label="Closure Status",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     catalogue_source = DynamicMultipleChoiceField(
         label="Catalogue Sources",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     held_by = DynamicMultipleChoiceField(
         label="Held By",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     # Choices are supplied to this field to influence labels only. The options
@@ -183,9 +173,6 @@ class BaseCollectionSearchForm(forms.Form):
     type = DynamicMultipleChoiceField(
         label="Creator type",
         choices=TYPE_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
         validate_input=False,
     )
