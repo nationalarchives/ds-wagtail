@@ -8,6 +8,8 @@ from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfie
 
 import responses
 
+from etna.images.models import CustomImage
+
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
 
@@ -36,17 +38,21 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         root.add_child(instance=self.article_index_page)
 
         self.article_page = ArticlePage(
-            title="Article page", intro="test", teaser_text="test"
+            title="Article page",
+            intro="test",
+            teaser_text="test",
         )
         self.article_index_page.add_child(instance=self.article_page)
 
     @responses.activate
     def test_add_featured_record(self):
+        test_image = CustomImage.objects.create(width=0, height=0)
         data = nested_form_data(
             {
                 "title": "Article page changed",
                 "slug": "stories-page",
                 "intro": rich_text("test"),
+                "hero_image": test_image.id,
                 "teaser_text": "test",
                 "body": streamfield(
                     [
