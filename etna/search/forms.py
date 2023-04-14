@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from django import forms
 from django.utils.functional import cached_property
@@ -49,11 +49,18 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             return f"{data['key']} ({count})"
 
     def update_choices(
-        self, data: List[Dict[str, Union[str, int]]], order_alphabetically: bool = True
+        self,
+        choice_data: List[Dict[str, Union[str, int]]],
+        selected_values: Optional[List[Union[str, int]]] = (),
+        order_alphabetically: Optional[bool] = True,
     ):
-        """Populate choice list with aggregation data from the API.
+        """
+        Updates this fields `choices` list using aggregation data from the most recent
+        API result. If `selected_values` is provided, options with values matching items
+        in that list will be preserved in the new `choices` list, even if they are not
+        present in `choice_data`.
 
-        Expected ``data`` format:
+        Expected `choice_data` format:
         [
             {
                 "key": "item",
@@ -62,12 +69,29 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             …
         ]
         """
-        choices = [
-            (item["key"], self.choice_label_from_api_data(item)) for item in data
-        ]
+
+        # Generate a new list of choices
+        choice_vals_with_hits = set()
+        choices = []
+        for item in choice_data:
+            choices.append((item["key"], self.choice_label_from_api_data(item)))
+            choice_vals_with_hits.add(item["key"])
+
+        for missing_value in [
+            v for v in selected_values if v not in choice_vals_with_hits
+        ]:
+            try:
+                label_base = self.configured_choice_labels[missing_value]
+            except KeyError:
+                label_base = missing_value
+            choices.append((missing_value, f"{label_base} (0)"))
+
         if order_alphabetically:
             choices.sort(key=lambda x: x[1])
+
+        # Replace the field's attribute value
         self.choices = choices
+
         # Indicate that this field is okay to be rendered
         self.choices_updated = True
 
