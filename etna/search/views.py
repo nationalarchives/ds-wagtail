@@ -476,13 +476,15 @@ class BaseFilteredSearchView(BaseSearchView):
         See also: `get_api_aggregations()`.
         """
         for key, value in api_result.aggregations.items():
-            if buckets := value.get("buckets"):
-                field_name = camelcase_to_underscore(key)
-                if field_name in self.dynamic_choice_fields:
-                    form.fields[field_name].update_choices(buckets)
-                    form[field_name].more_filter_options_available = bool(
-                        value.get("sum_other_doc_count", 0)
-                    )
+            field_name = camelcase_to_underscore(key)
+            if field_name in self.dynamic_choice_fields:
+                choice_data = value.get("buckets", ())
+                form.fields[field_name].update_choices(
+                    choice_data, selected_values=form.cleaned_data.get(field_name, ())
+                )
+                form[field_name].more_filter_options_available = bool(
+                    value.get("sum_other_doc_count", 0)
+                )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
