@@ -46,13 +46,11 @@ class Aggregation(StrEnum):
 
 def get_api_aggregations(*api_aggregations_params) -> List[str]:
     """
-    Called by `get_api_kwargs()` to get a value to include as 'aggregations'
-    in the API request.
-
     In the API response, the items with the highest number of matches are
     included for each aggregation. Those values are used to indicate
     counts for each 'bucket', and to update the form field choices, so that
     the most relevant filter options are shown.
+    Ex: ["group:30", "catalogue:10",]
     """
     values = []
     for aggregation in api_aggregations_params:
