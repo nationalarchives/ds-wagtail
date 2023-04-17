@@ -396,9 +396,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
+        self.assertFilterOptionsRendered(content)
 
         # SHOULD NOT see
-        self.assertFilterOptionsRendered(content)
         self.assertResultsNotRendered(content)
 
     @responses.activate
@@ -441,6 +441,32 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertNoResultsMessagingNotRendered(content)
+
+    @responses.activate
+    def test_selected_filter_options_remain_visible(self):
+        """
+        When a user is viewing search results for a particular bucket,
+        then uses filter options to further refine that search,
+        all selected filters should remain available as filter options,
+        even if they were excluded from the API results 'aggregations'
+        list due to not having any matches.
+        """
+        self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "test+search+term",
+                "group": "tna",
+                "collection": ["DEFE", "HW", "RGO"],
+                "level": "Piece",
+                "closure": "Open+Document%2C+Open+Description",
+            },
+        )
+        content = str(response.content)
+
+        self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
+        self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
+        self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
 
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
