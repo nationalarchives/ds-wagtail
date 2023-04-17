@@ -178,9 +178,6 @@ class BaseCollectionSearchForm(forms.Form):
     )
     country = DynamicMultipleChoiceField(
         label="Country",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     opening_start_date = DateInputField(
