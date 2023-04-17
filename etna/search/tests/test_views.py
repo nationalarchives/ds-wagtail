@@ -794,6 +794,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=8,
                     is_current=False,
                     results=None,
+                    api_aggregations_params=[
+                        "collection:10",
+                        "level:10",
+                        "topic:10",
+                        "closure:10",
+                        "heldBy:10",
+                        "catalogueSource:10",
+                        "group:30",
+                        "type:10",
+                    ],
                 ),
                 Bucket(
                     key="researchGuide",
@@ -801,6 +811,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=False,
                     results=None,
+                    api_aggregations_params=[
+                        "collection:10",
+                        "level:10",
+                        "topic:10",
+                        "closure:10",
+                        "heldBy:10",
+                        "catalogueSource:10",
+                        "group:30",
+                        "type:10",
+                    ],
                 ),
                 Bucket(
                     key="insight",
@@ -808,6 +828,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=True,
                     results=None,
+                    api_aggregations_params=[
+                        "collection:10",
+                        "level:10",
+                        "topic:10",
+                        "closure:10",
+                        "heldBy:10",
+                        "catalogueSource:10",
+                        "group:30",
+                        "type:10",
+                    ],
                 ),
                 # TODO: Restore when we are succesfully indexing new highlight pages
                 # Bucket(
@@ -823,6 +853,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
+                    api_aggregations_params=[
+                        "collection:10",
+                        "level:10",
+                        "topic:10",
+                        "closure:10",
+                        "heldBy:10",
+                        "catalogueSource:10",
+                        "group:30",
+                        "type:10",
+                    ],
                 ),
                 Bucket(
                     key="video",
@@ -830,6 +870,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
+                    api_aggregations_params=[
+                        "collection:10",
+                        "level:10",
+                        "topic:10",
+                        "closure:10",
+                        "heldBy:10",
+                        "catalogueSource:10",
+                        "group:30",
+                        "type:10",
+                    ],
                 ),
             ]
         )

@@ -15,12 +15,13 @@ from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticlePage
-from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
+from ..ciim.client import SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
+    Aggregation,
     Bucket,
     BucketKeys,
     BucketList,
@@ -49,16 +50,27 @@ class BucketsMixin:
 
     # The source data for get_buckets()
     bucket_list: BucketList = None
-    # Can be updated by the view for get_current_bucket_key() to pick up
+
     current_bucket_key: str = None
 
-    def get_current_bucket_key(self):
-        return self.current_bucket_key
+    def set_current_bucket(
+        self,
+        current_bucket_key: str,
+    ) -> None:
+        """
+        The `current_bucket_key` is provided, any bucket with a `key` value matching
+        the provided value will have it's `is_current` value set to `True`,
+        other buckets are reset `False`.
+        """
+        for bucket in self.bucket_list:
+            bucket.is_current = False
+            if bucket.key == current_bucket_key:
+                bucket.is_current = True
+        return None
 
     def get_buckets(
         self,
         group_buckets: List[Dict[str, Union[str, int]]] = None,
-        current_bucket_key: str = None,
     ) -> Optional[BucketList]:
         """
         Returns a modified `BucketList` value representing the 'buckets'
@@ -66,9 +78,6 @@ class BucketsMixin:
 
         If `group_buckets` is provided, the data will be used to set the `result_count`
         attribute for each bucket.
-
-        The `current_bucket_key` is provided, any bucket with a `key` value matching
-        the provided value will have it's `is_current` value set to `True`.
         """
         if not self.bucket_list:
             return None
@@ -83,21 +92,11 @@ class BucketsMixin:
             for bucket in bucket_list:
                 bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
 
-        if current_bucket_key:
-            # set 'is_current=True' for the relevant bucket
-            for bucket in bucket_list:
-                if bucket.key == current_bucket_key:
-                    bucket.is_current = True
-                    break
-
         return bucket_list
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            current_bucket_key = self.get_current_bucket_key()
-            buckets = self.get_buckets(
-                self.api_result.bucket_counts, current_bucket_key
-            )
+            buckets = self.get_buckets(self.api_result.bucket_counts)
 
             # Set this to True if any buckets have results
             buckets_contain_results = False
@@ -222,11 +221,17 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         """
         Handle GET requests: instantiate a form instance using
         request.GET as the data, then check if it's valid.
+
+        Sets the current bucket when a valid group is given.
         """
         form = self.form = self.get_form()
         is_valid = form.is_valid()
         self.api_result = None
         self.current_bucket_key = form.cleaned_data.get("group")
+
+        if self.current_bucket_key:
+            self.set_current_bucket(current_bucket_key=self.current_bucket_key)
+
         if is_valid:
             return self.form_valid(form)
         return self.form_invalid(form)
@@ -399,50 +404,19 @@ class BaseFilteredSearchView(BaseSearchView):
             sort_order=form.cleaned_data.get("sort_order"),
         )
 
-    def aggregations_params(self) -> Tuple[str]:
-        """
-        The aggregations params may be specific to a bucket and will be filtered upon.
-        There is a max (8) params that can be passed to the api aggregations search param.
-        Returns a list of aggregation params.
-        """
-        aggregations = (
-            Aggregation.COLLECTION,
-            Aggregation.LEVEL,
-            Aggregation.TOPIC,
-            Aggregation.CLOSURE,
-            Aggregation.HELD_BY,
-            Aggregation.CATALOGUE_SOURCE,
-            Aggregation.GROUP,
-            Aggregation.TYPE,
-        )
-        if self.current_bucket_key == "creator":
-            aggregations = (
-                Aggregation.GROUP,
-                Aggregation.TYPE,
-                Aggregation.COUNTRY,
-            )
-        return aggregations
-
     def get_api_aggregations(self) -> List[str]:
         """
         Called by `get_api_kwargs()` to get a value to include as 'aggregations'
         in the API request.
 
-        In the API response, the items with the highest number of matches are
-        included for each aggregation. Those values are used to indicate
-        counts for each 'bucket', and to update the form field choices, so that
-        the most relevant filter options are shown.
+        The aggregations params may be specific to a bucket and will be filtered upon.
+        Returns a list of aggregation params.
+        Ex: ["group:30", "catalogue:10",]
         """
-        values = []
-        for aggregation in self.aggregations_params():
-            item_count = 10
-            if aggregation == Aggregation.GROUP:
-                # Fetch more 'groups' so that we receive a counts
-                # for any bucket/tab options we might be showing
-                # (not just the 10 most popular)
-                item_count = 30
-            values.append(f"{aggregation}:{item_count}")
-        return values
+        for bucket in self.bucket_list:
+            if bucket.is_current:
+                return bucket.api_aggregations_params
+        return []
 
     def get_api_filter_aggregations(self, form: Form) -> List[str]:
         """

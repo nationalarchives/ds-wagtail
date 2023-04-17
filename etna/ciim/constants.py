@@ -27,6 +27,45 @@ class SearchTabs(StrEnum):
     WEBSITE = "Website results"
 
 
+class Aggregation(StrEnum):
+    """Aggregated counts to include with response.
+
+    Supported by /search and /searchAll endpoints.
+    """
+
+    TOPIC = "topic"
+    COLLECTION = "collection"
+    GROUP = "group"
+    LEVEL = "level"
+    CLOSURE = "closure"
+    CATALOGUE_SOURCE = "catalogueSource"
+    HELD_BY = "heldBy"
+    TYPE = "type"
+    COUNTRY = "country"
+
+
+def get_api_aggregations(*api_aggregations_params) -> List[str]:
+    """
+    Called by `get_api_kwargs()` to get a value to include as 'aggregations'
+    in the API request.
+
+    In the API response, the items with the highest number of matches are
+    included for each aggregation. Those values are used to indicate
+    counts for each 'bucket', and to update the form field choices, so that
+    the most relevant filter options are shown.
+    """
+    values = []
+    for aggregation in api_aggregations_params:
+        item_count = 10
+        if aggregation == Aggregation.GROUP:
+            # Fetch more 'groups' so that we receive a counts
+            # for any bucket/tab options we might be showing
+            # (not just the 10 most popular)
+            item_count = 30
+        values.append(f"{aggregation}:{item_count}")
+    return values
+
+
 @dataclass
 class Bucket:
     key: str
@@ -35,6 +74,7 @@ class Bucket:
     result_count: int = None
     is_current: bool = False
     results: List[Any] = None
+    api_aggregations_params: List[str] = None
 
     @property
     def label_with_count(self):
@@ -73,39 +113,149 @@ CATALOGUE_BUCKETS = BucketList(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
         ),
         Bucket(
             key="digitised",
             label="Online records at The National Archives",
             description="Results for records available to download and held at The National Archives that match your search term.",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
         ),
         Bucket(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
         ),
         Bucket(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+                Aggregation.COUNTRY,
+            ),
         ),
         Bucket(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
         ),
     ]
 )
 
 WEBSITE_BUCKETS = BucketList(
     [
-        Bucket(key="blog", label="Blog posts"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Insights"),
+        Bucket(
+            key="blog",
+            label="Blog posts",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
+        ),
+        Bucket(
+            key="researchGuide",
+            label="Research Guides",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
+        ),
+        Bucket(
+            key=BucketKeys.INSIGHT.value,
+            label="Insights",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
+        ),
         # TODO: Restore when we are succesfully indexing new highlight pages
         # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
-        Bucket(key="audio", label="Audio"),
-        Bucket(key="video", label="Video"),
+        Bucket(
+            key="audio",
+            label="Audio",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
+        ),
+        Bucket(
+            key="video",
+            label="Video",
+            api_aggregations_params=get_api_aggregations(
+                Aggregation.COLLECTION,
+                Aggregation.LEVEL,
+                Aggregation.TOPIC,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+                Aggregation.GROUP,
+                Aggregation.TYPE,
+            ),
+        ),
     ]
 )
 

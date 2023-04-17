@@ -22,6 +22,7 @@ from django.utils.timezone import get_current_timezone
 
 import requests
 
+from etna.ciim.constants import Aggregation
 from etna.records.models import Record
 
 from .exceptions import (
@@ -77,23 +78,6 @@ class Template(StrEnum):
 
     DETAILS = "details"
     RESULTS = "results"
-
-
-class Aggregation(StrEnum):
-    """Aggregated counts to include with response.
-
-    Supported by /search and /searchAll endpoints.
-    """
-
-    TOPIC = "topic"
-    COLLECTION = "collection"
-    GROUP = "group"
-    LEVEL = "level"
-    CLOSURE = "closure"
-    CATALOGUE_SOURCE = "catalogueSource"
-    HELD_BY = "heldBy"
-    TYPE = "type"
-    COUNTRY = "country"
 
 
 def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
