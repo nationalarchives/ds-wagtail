@@ -11,7 +11,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from etna.ciim.constants import Bucket, BucketList
+from etna.ciim.constants import Aggregation, Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
@@ -794,16 +794,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=8,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=[
-                        "collection:10",
-                        "level:10",
-                        "topic:10",
-                        "closure:10",
-                        "heldBy:10",
-                        "catalogueSource:10",
-                        "group:30",
-                        "type:10",
-                    ],
+                    api_aggregations_params=(
+                        Aggregation.COLLECTION,
+                        Aggregation.LEVEL,
+                        Aggregation.TOPIC,
+                        Aggregation.CLOSURE,
+                        Aggregation.HELD_BY,
+                        Aggregation.CATALOGUE_SOURCE,
+                        Aggregation.GROUP,
+                        Aggregation.TYPE,
+                    ),
                 ),
                 Bucket(
                     key="researchGuide",
@@ -811,16 +811,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=[
-                        "collection:10",
-                        "level:10",
-                        "topic:10",
-                        "closure:10",
-                        "heldBy:10",
-                        "catalogueSource:10",
-                        "group:30",
-                        "type:10",
-                    ],
+                    api_aggregations_params=(
+                        Aggregation.COLLECTION,
+                        Aggregation.LEVEL,
+                        Aggregation.TOPIC,
+                        Aggregation.CLOSURE,
+                        Aggregation.HELD_BY,
+                        Aggregation.CATALOGUE_SOURCE,
+                        Aggregation.GROUP,
+                        Aggregation.TYPE,
+                    ),
                 ),
                 Bucket(
                     key="insight",
@@ -828,16 +828,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=True,
                     results=None,
-                    api_aggregations_params=[
-                        "collection:10",
-                        "level:10",
-                        "topic:10",
-                        "closure:10",
-                        "heldBy:10",
-                        "catalogueSource:10",
-                        "group:30",
-                        "type:10",
-                    ],
+                    api_aggregations_params=(
+                        Aggregation.COLLECTION,
+                        Aggregation.LEVEL,
+                        Aggregation.TOPIC,
+                        Aggregation.CLOSURE,
+                        Aggregation.HELD_BY,
+                        Aggregation.CATALOGUE_SOURCE,
+                        Aggregation.GROUP,
+                        Aggregation.TYPE,
+                    ),
                 ),
                 # TODO: Restore when we are succesfully indexing new highlight pages
                 # Bucket(
@@ -853,16 +853,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=[
-                        "collection:10",
-                        "level:10",
-                        "topic:10",
-                        "closure:10",
-                        "heldBy:10",
-                        "catalogueSource:10",
-                        "group:30",
-                        "type:10",
-                    ],
+                    api_aggregations_params=(
+                        Aggregation.COLLECTION,
+                        Aggregation.LEVEL,
+                        Aggregation.TOPIC,
+                        Aggregation.CLOSURE,
+                        Aggregation.HELD_BY,
+                        Aggregation.CATALOGUE_SOURCE,
+                        Aggregation.GROUP,
+                        Aggregation.TYPE,
+                    ),
                 ),
                 Bucket(
                     key="video",
@@ -870,16 +870,16 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=[
-                        "collection:10",
-                        "level:10",
-                        "topic:10",
-                        "closure:10",
-                        "heldBy:10",
-                        "catalogueSource:10",
-                        "group:30",
-                        "type:10",
-                    ],
+                    api_aggregations_params=(
+                        Aggregation.COLLECTION,
+                        Aggregation.LEVEL,
+                        Aggregation.TOPIC,
+                        Aggregation.CLOSURE,
+                        Aggregation.HELD_BY,
+                        Aggregation.CATALOGUE_SOURCE,
+                        Aggregation.GROUP,
+                        Aggregation.TYPE,
+                    ),
                 ),
             ]
         )
