@@ -410,13 +410,10 @@ class BaseFilteredSearchView(BaseSearchView):
         in the API request.
 
         The aggregations params may be specific to a bucket and will be filtered upon.
-        Returns a list of aggregation params.
+        Returns a list of aggregation params for the current bucket.
         Ex: ["group:30", "catalogue:10",]
         """
-        for bucket in self.bucket_list:
-            if bucket.is_current:
-                return bucket.api_aggregations_params
-        return []
+        return self.bucket_list.current.api_aggregations_params
 
     def get_api_filter_aggregations(self, form: Form) -> List[str]:
         """
