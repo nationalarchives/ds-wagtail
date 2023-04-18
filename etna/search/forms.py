@@ -41,12 +41,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             return True
         return super().valid_value(value)
 
-    def widget_attrs(self, widget):
-        attrs = super().widget_attrs(widget)
-        if not widget.is_hidden:
-            attrs["class"] = "search-filters__list"
-        return attrs
-
     @cached_property
     def configured_choice_labels(self):
         return {value: label for value, label in self.configured_choices}
