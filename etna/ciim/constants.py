@@ -53,7 +53,7 @@ class Bucket:
     is_current: bool = False
     results: List[Any] = None
 
-    api_aggregations_params: List[str] = field(default_factory=list)
+    aggregations: List[str] = field(default_factory=list)
 
     @property
     def get_normalised_aggregations(self) -> List[str]:
@@ -65,7 +65,7 @@ class Bucket:
         Ex: ["group:30", "catalogue:10",]
         """
         values = []
-        for aggregation in self.api_aggregations_params:
+        for aggregation in self.aggregations:
             item_count = 10
             if aggregation == Aggregation.GROUP:
                 # Fetch more 'groups' so that we receive a counts
@@ -76,7 +76,7 @@ class Bucket:
         return values
 
     def __post_init__(self):
-        self.api_aggregations_params = self.get_normalised_aggregations
+        self.aggregations = self.get_normalised_aggregations
 
     @property
     def label_with_count(self):
@@ -115,7 +115,7 @@ CATALOGUE_BUCKETS = BucketList(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -130,7 +130,7 @@ CATALOGUE_BUCKETS = BucketList(
             key="digitised",
             label="Online records at The National Archives",
             description="Results for records available to download and held at The National Archives that match your search term.",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -145,7 +145,7 @@ CATALOGUE_BUCKETS = BucketList(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -160,7 +160,7 @@ CATALOGUE_BUCKETS = BucketList(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.GROUP,
                 Aggregation.TYPE,
                 Aggregation.COUNTRY,
@@ -170,7 +170,7 @@ CATALOGUE_BUCKETS = BucketList(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -189,7 +189,7 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key="blog",
             label="Blog posts",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -203,7 +203,7 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key="researchGuide",
             label="Research Guides",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -217,7 +217,7 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key=BucketKeys.INSIGHT.value,
             label="Insights",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -233,7 +233,7 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key="audio",
             label="Audio",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,
@@ -247,7 +247,7 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key="video",
             label="Video",
-            api_aggregations_params=(
+            aggregations=(
                 Aggregation.COLLECTION,
                 Aggregation.LEVEL,
                 Aggregation.TOPIC,

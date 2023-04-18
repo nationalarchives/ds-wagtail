@@ -794,7 +794,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=8,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=(
+                    aggregations=(
                         Aggregation.COLLECTION,
                         Aggregation.LEVEL,
                         Aggregation.TOPIC,
@@ -811,7 +811,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=(
+                    aggregations=(
                         Aggregation.COLLECTION,
                         Aggregation.LEVEL,
                         Aggregation.TOPIC,
@@ -828,7 +828,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=True,
                     results=None,
-                    api_aggregations_params=(
+                    aggregations=(
                         Aggregation.COLLECTION,
                         Aggregation.LEVEL,
                         Aggregation.TOPIC,
@@ -853,7 +853,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=(
+                    aggregations=(
                         Aggregation.COLLECTION,
                         Aggregation.LEVEL,
                         Aggregation.TOPIC,
@@ -870,7 +870,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    api_aggregations_params=(
+                    aggregations=(
                         Aggregation.COLLECTION,
                         Aggregation.LEVEL,
                         Aggregation.TOPIC,
