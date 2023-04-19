@@ -53,12 +53,13 @@ class Bucket:
     is_current: bool = False
     results: List[Any] = None
 
+    # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing Ex: ["group:30"]
     aggregations: List[str] = field(default_factory=list)
 
     @property
     def aggregations_normalised(self) -> List[str]:
         """
-        Returns the a list of strings to include as the 'aggregations' option value when assembling
+        Returns a list of strings to include as the 'aggregations' option value when assembling
         an API request for this bucket. Each string must be in the format "filter-name:item-count".
         """
         values = []
@@ -117,8 +118,7 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -133,8 +133,7 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -149,8 +148,7 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -159,8 +157,7 @@ CATALOGUE_BUCKETS = BucketList(
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
             aggregations=(
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
                 Aggregation.COUNTRY,
             ),
@@ -176,8 +173,7 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -196,8 +192,7 @@ WEBSITE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -211,8 +206,7 @@ WEBSITE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -226,8 +220,7 @@ WEBSITE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -243,8 +236,7 @@ WEBSITE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
@@ -258,8 +250,7 @@ WEBSITE_BUCKETS = BucketList(
                 Aggregation.CLOSURE,
                 Aggregation.HELD_BY,
                 Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP
-                + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing (not just the 10 most popular)
+                Aggregation.GROUP + ":30",
                 Aggregation.TYPE,
             ),
         ),
