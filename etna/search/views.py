@@ -52,6 +52,7 @@ class BucketsMixin:
 
     # To be updated by the view in get() or post()
     current_bucket_key: str = None
+    current_bucket: Bucket = None
 
     def get_buckets(
         self,
@@ -223,9 +224,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         form = self.form = self.get_form()
         is_valid = form.is_valid()
         self.api_result = None
-        self.current_bucket = None
-        self.current_bucket_key = form.cleaned_data.get("group")
 
+        self.current_bucket_key = form.cleaned_data.get("group")
         if self.current_bucket_key and getattr(self, "bucket_list", None):
             self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
 
