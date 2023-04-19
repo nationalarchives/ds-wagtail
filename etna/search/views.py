@@ -42,26 +42,26 @@ class BucketsMixin:
 
     The `bucket_list` attribute should be set to one of the `BucketList`
     values from `etna.ciim.constants`. This value is copied and enhanced
-    in the `get_buckets()` method to make the value more useful for
-    rendering, then added to the template context as "buckets" by
+    in the `get_buckets_for_display()` method to make the value more useful
+    for rendering, then added to the template context as "buckets" by
     `get_context_data()`
     """
 
-    # The source data for get_buckets()
+    # The source data for get_buckets_for_display()
     bucket_list: BucketList = None
 
     # To be updated by the view in get() or post()
     current_bucket_key: str = None
     current_bucket: Bucket = None
 
-    def get_buckets(
+    def get_buckets_for_display(
         self,
-        group_buckets: List[Dict[str, Union[str, int]]] = None,
+        aggregations_data: List[Dict[str, Union[str, int]]] = None,
         current_bucket_key: str = None,
     ) -> Optional[BucketList]:
         """
-        Returns a modified `BucketList` value representing the 'buckets'
-        that are available for the user to explore.
+        Returns a modified `BucketList` value that can be used in the template,
+        representing the 'buckets' that available for the user to explore.
 
         If `group_buckets` is provided, the data will be used to set the `result_count`
         attribute for each bucket.
@@ -74,10 +74,10 @@ class BucketsMixin:
 
         bucket_list = copy.deepcopy(self.bucket_list)
 
-        if group_buckets:
+        if aggregations_data:
             # set `result_count` for each bucket
             doc_counts_by_key = {
-                group["key"]: group["doc_count"] for group in group_buckets
+                group["key"]: group["doc_count"] for group in aggregations_data
             }
             for bucket in bucket_list:
                 bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
@@ -93,7 +93,7 @@ class BucketsMixin:
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            buckets = self.get_buckets(
+            buckets = self.get_buckets_for_display(
                 self.api_result.bucket_counts, self.current_bucket_key
             )
 
@@ -756,13 +756,12 @@ class FeaturedSearchView(BaseSearchView):
             "size": 3,
         }
 
-    def get_buckets(self) -> Dict[str, Bucket]:
+    def get_buckets_for_display(self) -> Dict[str, Bucket]:
         """
-        This method is similar in principal to `BucketMixin.get_buckets()`,
-        but to support template/rendering needs, it returns a `dict` instead of
-        a `BucketList`, and instead of receiving additional argument values,
-        `result_count` and `results` are set on each bucket using data
-        from `self.api_result`.
+        This method is similar in principal to the `BucketMixin` version, but
+        to work for this view, returns a `dict` instead of a `BucketList`, and
+        instead of receiving additional argument values, `result_count` and
+        `results` are set on each bucket using data from `self.api_result`.
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
@@ -775,7 +774,9 @@ class FeaturedSearchView(BaseSearchView):
         return buckets
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(buckets=self.get_buckets(), **kwargs)
+        return super().get_context_data(
+            buckets=self.get_buckets_for_display(), **kwargs
+        )
 
     def get_result_count(self):
         """
@@ -783,6 +784,6 @@ class FeaturedSearchView(BaseSearchView):
         totals from all buckets.
         """
         total = 0
-        for bucket in self.get_buckets().values():
+        for bucket in self.get_buckets_for_display().values():
             total += bucket.result_count
         return total
