@@ -50,19 +50,8 @@ class BucketsMixin:
     # The source data for get_buckets()
     bucket_list: BucketList = None
 
-    # To be updated by the view for get_current_bucket() to pick up
+    # To be updated by the view in get() or post()
     current_bucket_key: str = None
-
-    def get_current_bucket(self) -> Union[None, Bucket]:
-        """
-        Returns the `Bucket` from `self.bucket_list` that matches the
-        'current_bucket_key' value set by the view, or `None` if there
-        is no match (or 'current_bucket_key' has not been set).
-        """
-        if self.current_bucket_key:
-            for bucket in self.bucket_list:
-                if bucket.key == self.current_bucket_key:
-                    return bucket
 
     def get_buckets(
         self,
@@ -234,10 +223,11 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         form = self.form = self.get_form()
         is_valid = form.is_valid()
         self.api_result = None
+        self.current_bucket = None
         self.current_bucket_key = form.cleaned_data.get("group")
-        self.current_bucket = (
-            self.get_current_bucket() if hasattr(self, "get_current_bucket") else None
-        )
+
+        if self.current_bucket_key and getattr(self, "bucket_list", None):
+            self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
 
         if is_valid:
             return self.form_valid(form)
