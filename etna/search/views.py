@@ -49,9 +49,20 @@ class BucketsMixin:
 
     # The source data for get_buckets()
     bucket_list: BucketList = None
-    # Can be updated by the view for get_current_bucket_key() to pick up
+
+    # To be updated by the view for get_current_bucket() to pick up
     current_bucket_key: str = None
 
+    def get_current_bucket(self) -> Union[None, Bucket]:
+        """
+        Returns the `Bucket` from `self.bucket_list` that matches the
+        'current_bucket_key' value set by the view, or `None` if there
+        is no match (or 'current_bucket_key' has not been set).
+        """
+        if self.current_bucket_key:
+            for bucket in self.bucket_list:
+                if bucket.key == self.current_bucket_key:
+                    return bucket
 
     def get_buckets(
         self,
