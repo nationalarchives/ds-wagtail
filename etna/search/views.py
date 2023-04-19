@@ -51,8 +51,6 @@ class BucketsMixin:
     # The source data for get_buckets()
     bucket_list: BucketList = None
 
-    current_bucket_key: str = None
-
     def set_current_bucket(
         self,
         current_bucket_key: str,
@@ -227,10 +225,9 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         form = self.form = self.get_form()
         is_valid = form.is_valid()
         self.api_result = None
-        self.current_bucket_key = form.cleaned_data.get("group")
 
-        if self.current_bucket_key:
-            self.set_current_bucket(current_bucket_key=self.current_bucket_key)
+        if current_bucket_key := form.cleaned_data.get("group"):
+            self.set_current_bucket(current_bucket_key)
 
         if is_valid:
             return self.form_valid(form)
