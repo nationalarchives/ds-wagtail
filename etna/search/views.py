@@ -235,6 +235,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         is_valid = form.is_valid()
         self.api_result = None
         self.current_bucket_key = form.cleaned_data.get("group")
+        self.current_bucket = self.get_current_bucket() if hasattr(self, 'get_current_bucket') else None
+
         if is_valid:
             return self.form_valid(form)
         return self.form_invalid(form)
