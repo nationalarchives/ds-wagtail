@@ -52,8 +52,6 @@ class BucketsMixin:
     # Can be updated by the view for get_current_bucket_key() to pick up
     current_bucket_key: str = None
 
-    def get_current_bucket_key(self):
-        return self.current_bucket_key
 
     def get_buckets(
         self,
@@ -94,9 +92,8 @@ class BucketsMixin:
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            current_bucket_key = self.get_current_bucket_key()
             buckets = self.get_buckets(
-                self.api_result.bucket_counts, current_bucket_key
+                self.api_result.bucket_counts, self.current_bucket_key
             )
 
             # Set this to True if any buckets have results
