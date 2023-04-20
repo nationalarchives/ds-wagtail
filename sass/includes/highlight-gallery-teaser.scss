@@ -1,6 +1,6 @@
 .highlight-gallery-teaser {
     $root: &;
-    padding-bottom: 48px;
+    padding-bottom: 3rem;
     background-color: $color__yellow_6;
 
     @media screen and (min-width: map-get($grid-breakpoints, "md")) {
