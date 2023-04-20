@@ -66,11 +66,11 @@
                     <div class="transcription__text">
                         {% if item.image.transcription %}
                             <h2>{{ item.image.get_transcription_heading_display }}</h2>
-                            <p>{{ item.image.transcription|richtext }}</p>
+                            {{ item.image.transcription|richtext }}
                         {% endif %}
                         {% if item.image.translation %}
                             <h2>{{ item.image.get_translation_heading_display }}</h2>
-                            <p>{{ item.image.translation|richtext }}</p>
+                            {{ item.image.translation|richtext }}
                         {% endif %}
                     </div>
                 {% endif %}
@@ -108,7 +108,7 @@
                                  tabindex="0"
                                  aria-labelledby="tab-1-{{ forloop.counter }}"
                                  class="transcription__tabpanel hidden">
-                                <p>{{ item.image.transcription|richtext }}</p>
+                                {{ item.image.transcription|richtext }}
                             </div>
                         {% endif %}
                         {% if item.image.translation %}
@@ -117,7 +117,7 @@
                                  tabindex="0"
                                  aria-labelledby="tab-2-{{ forloop.counter }}"
                                  class="transcription__tabpanel hidden">
-                                <p>{{ item.image.translation|richtext }}</p>
+                                {{ item.image.translation|richtext }}
                             </div>
                         {% endif %}
                     </div>
