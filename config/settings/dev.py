@@ -1,3 +1,4 @@
+import logging
 import os
 
 from distutils.util import strtobool
@@ -27,8 +28,14 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
+FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
+    os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "True")
+)
 DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
+
+# Silence noisy localization messages/warnings when initializing faker
+logging.getLogger("faker").setLevel(logging.ERROR)
 
 try:
     from .local import *  # noqa: F401

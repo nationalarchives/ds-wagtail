@@ -50,3 +50,24 @@
 @if $enable-grid-classes {
   @include make-grid-columns();
 }
+
+
+// Generic container for components that need to be larger than the default container.
+.body-container {
+  padding: 1.5% 5%;
+
+  @media screen  and (min-width: map-get($grid-breakpoints, "sm")) {
+      padding: 1.5% 9%;
+      
+  }
+
+  &--short {
+      padding: 1.5% 0%;
+  }
+
+  .template-homepage & {
+    // Note: This likely will be redundant when the homepage is updated to use the new layout.
+    @include make-container();
+    @include make-container-max-widths();
+  }
+}

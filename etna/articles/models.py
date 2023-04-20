@@ -19,11 +19,19 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
-from etna.core.models import BasePageWithIntro, ContentWarningMixin, NewLabelMixin
+from etna.core.models import (
+    BasePageWithIntro,
+    ContentWarningMixin,
+    HeroImageMixin,
+    NewLabelMixin,
+)
 from etna.records.fields import RecordField
 
-from ..heroes.models import HeroImageMixin
-from .blocks import ArticlePageStreamBlock, FeaturedCollectionBlock
+from .blocks import (
+    ArticlePageStreamBlock,
+    AuthorPromotedPagesBlock,
+    FeaturedCollectionBlock,
+)
 
 
 class ArticleIndexPage(BasePageWithIntro):
@@ -260,12 +268,28 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    featured_highlight_gallery = models.ForeignKey(
+        "collections.HighlightGalleryPage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("featured highlight gallery"),
+    )
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage",
         blank=True,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("featured article"),
+    )
+
+    promoted_links = StreamField(
+        [("promoted_link", AuthorPromotedPagesBlock())],
+        max_num=1,
+        blank=True,
+        null=True,
+        use_json_field=True,
     )
 
     # DataLayerMixin overrides
@@ -301,7 +325,9 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 FieldPanel("print_on_demand_link"),
             ],
         ),
+        FieldPanel("featured_highlight_gallery"),
         FieldPanel("featured_article"),
+        FieldPanel("promoted_links"),
     ]
 
     promote_panels = BasePageWithIntro.promote_panels + [

@@ -511,7 +511,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def archive_further_info(self) -> Optional[FurtherInfo]:
-
         """
         Extracts data from the api "_source.place" attribute if available.
         Then transforms that data to be represented by FurtherInfo.

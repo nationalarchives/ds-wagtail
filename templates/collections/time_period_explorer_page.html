@@ -4,45 +4,31 @@
     {% meta_tags %}
 {% endblock meta_tag %}
 {% block content %}
-    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
-    {% comment %}
-    <div class="row">
-        <div class="col-md-12">
-            {% for highlight_gallery in page.related_highlight_gallery_pages %}
-                <li>
-                    <a href="{% pageurl highlight_gallery %}">{{ highlight_gallery.title }}</a>
-                </li>
-            {% endfor %}
-        </div>
-    </div>
-    {% endcomment %}
+    {% include "includes/highlight-intro.html" with background_image=page.teaser_image title=page.title intro=page.intro %}
+    {% if page.related_highlight_gallery_pages %}
+        {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
+    {% endif %}
     {% if page.related_record_articles %}
         {% include "includes/related-articles-highlight-cards.html" with articles=page.related_record_articles title="Records revealed" %}
     {% endif %}
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    {% if page.body %}
+        <div class="body-container"
+             data-container-name="time-period-explorer"
+             id="analytics-time-period-explorer">
+            <div class="row">
+                <div class="col-md-12">
+                    {% for block in page.body %}
+                        {% include_block block %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
-    <div class="container"
-        data-container-name="time-period-explorer"
-        id="analytics-time-period-explorer">
-        <div class="row">
-            <div class="col-md-12">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
+    {% endif %}
     {% if page.related_articles %}
-        <div class="row">
-            <div class="col-md-12">
-                {% for article_page in page.related_articles %}
-                    <li>
-                        <a href="{% pageurl article_page %}">{{ article_page.title }}</a>
-                    </li>
-                {% endfor %}
-            </div>
-        </div>
+        {% include "includes/related-article-cards.html" with articles=page.related_articles title="Records revealed" %}
     {% endif %}
 {% endblock content %}
 {% block extra_js %}

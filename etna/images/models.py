@@ -9,6 +9,10 @@ from wagtail.search import index
 
 from etna.records.fields import RecordField
 
+DEFAULT_SENSITIVE_IMAGE_WARNING = (
+    "This image contains content which some people may find offensive or distressing."
+)
+
 
 class TranscriptionHeadingChoices(models.TextChoices):
     TRANSCRIPT = "transcript", _("Transcript")
@@ -39,7 +43,20 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     is_sensitive = models.BooleanField(
-        verbose_name=_("This image is sensitive"), default=False
+        verbose_name=_("This image is considered sensitive"),
+        default=False,
+        help_text=_(
+            "Tick this if the image contains content which some people may find offensive or distressing. For example, photographs of violence or injury detail."
+        ),
+    )
+
+    custom_sensitive_image_warning = models.TextField(
+        verbose_name=_("Why might this image be considered sensitive? (optional)"),
+        help_text=_(
+            'Replaces the default warning message where the image is displayed. For example: "This image has been marked as potentially sensitive because it contains depictions of violence".'
+        ),
+        max_length=200,
+        blank=True,
     )
 
     transcription_heading = models.CharField(
@@ -77,6 +94,8 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
+    # For Highlights
+
     record = RecordField(
         verbose_name=_("related record"),
         db_index=True,
@@ -105,7 +124,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         max_length=900,
     )
 
-    search_fields = [
+    search_fields = AbstractImage.search_fields + [
         index.SearchField("transcription", boost=1),
         index.SearchField("translation", boost=1),
         index.SearchField("description"),
@@ -114,12 +133,20 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.FilterField("is_sensitive"),
     ]
 
+    @property
+    def sensitive_image_warning(self):
+        return (
+            self.custom_sensitive_image_warning.strip()
+            or DEFAULT_SENSITIVE_IMAGE_WARNING
+        )
+
     admin_form_fields = [
         "collection",
         "title",
         "file",
         "copyright",
         "is_sensitive",
+        "custom_sensitive_image_warning",
         "tags",
         "focal_point_x",
         "focal_point_y",

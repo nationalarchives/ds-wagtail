@@ -1,0 +1,53 @@
+.highlight-intro {
+    position: relative;
+
+    &__image {
+        width: 100%;
+        height: auto;
+    }    
+
+    &__standout {
+        position: relative;
+        height: auto;
+        background: $color__grey-6;
+        left: 0;
+        color: $color__white;
+        padding: 28px 24px 36px 24px;
+        
+        // tablet and up
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+            width: 736px;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            margin: auto;
+            
+        }
+        // desktop and up
+        @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
+            background: $color__white;
+            color: $color__black;
+            left: 132px;
+            bottom: 52px;
+            margin: auto;
+        }
+
+    }
+
+    &__title {
+        font-family: $font__supria-sans;
+        @include font-size("xxxl");
+        font-weight: $font-weight-bold;
+        line-height: 78px;
+        padding-bottom: 0.75rem;
+        margin: 0;
+    }
+
+    &__intro {
+        @include font-size("xl");
+        font-family: $font__open-sans;
+        line-height: 36px;
+        padding: 0;
+        margin: 0;
+    }
+}

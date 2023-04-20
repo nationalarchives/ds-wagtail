@@ -1,7 +1,6 @@
-from typing import Dict, List, Union
+from typing import Dict, List, Optional, Union
 
 from django import forms
-from django.core.validators import MinLengthValidator
 from django.utils.functional import cached_property
 
 from etna.core.fields import END_OF_MONTH, DateInputField
@@ -20,6 +19,8 @@ from ..ciim.constants import (
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
+    widget = forms.widgets.CheckboxSelectMultiple
+
     def __init__(self, *args, **kwargs):
         self.validate_input = bool(kwargs.get("choices")) and kwargs.pop(
             "validate_input", True
@@ -36,6 +37,12 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             return True
         return super().valid_value(value)
 
+    def widget_attrs(self, widget):
+        attrs = super().widget_attrs(widget)
+        if not widget.is_hidden:
+            attrs["class"] = "search-filters__list"
+        return attrs
+
     @cached_property
     def configured_choice_labels(self):
         return {value: label for value, label in self.configured_choices}
@@ -50,11 +57,17 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             return f"{data['key']} ({count})"
 
     def update_choices(
-        self, data: List[Dict[str, Union[str, int]]], order_alphabetically: bool = True
+        self,
+        choice_data: List[Dict[str, Union[str, int]]],
+        selected_values: Optional[List[Union[str, int]]] = (),
     ):
-        """Populate choice list with aggregation data from the API.
+        """
+        Updates this fields `choices` list using aggregation data from the most recent
+        API result. If `selected_values` is provided, options with values matching items
+        in that list will be preserved in the new `choices` list, even if they are not
+        present in `choice_data`.
 
-        Expected ``data`` format:
+        Expected `choice_data` format:
         [
             {
                 "key": "item",
@@ -63,12 +76,29 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
             …
         ]
         """
-        choices = [
-            (item["key"], self.choice_label_from_api_data(item)) for item in data
-        ]
-        if order_alphabetically:
-            choices.sort(key=lambda x: x[1])
+
+        # Generate a new list of choices
+        choice_vals_with_hits = set()
+        choices = []
+        for item in choice_data:
+            choices.append((item["key"], self.choice_label_from_api_data(item)))
+            choice_vals_with_hits.add(item["key"])
+
+        for missing_value in [
+            v for v in selected_values if v not in choice_vals_with_hits
+        ]:
+            try:
+                label_base = self.configured_choice_labels[missing_value]
+            except KeyError:
+                label_base = missing_value
+            choices.append((missing_value, f"{label_base} (0)"))
+
+        # Order alphabetically
+        choices.sort(key=lambda x: x[1])
+
+        # Replace the field's attribute value
         self.choices = choices
+
         # Indicate that this field is okay to be rendered
         self.choices_updated = True
 
@@ -79,7 +109,6 @@ class FeaturedSearchForm(forms.Form):
         # If no query is provided, pass None to client to fetch all results.
         empty_value=None,
         required=False,
-        validators=[MinLengthValidator(2)],
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
 
@@ -113,16 +142,10 @@ class BaseCollectionSearchForm(forms.Form):
     level = DynamicMultipleChoiceField(
         label="Level",
         choices=LEVEL_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"},
-        ),
         required=False,
     )
     topic = DynamicMultipleChoiceField(
         label="Topics",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     # Choices are supplied to this field to influence labels only. The options
@@ -130,31 +153,19 @@ class BaseCollectionSearchForm(forms.Form):
     collection = DynamicMultipleChoiceField(
         label="Collections",
         choices=COLLECTION_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
         validate_input=False,
     )
     closure = DynamicMultipleChoiceField(
         label="Closure Status",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     catalogue_source = DynamicMultipleChoiceField(
         label="Catalogue Sources",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     held_by = DynamicMultipleChoiceField(
         label="Held By",
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
     )
     # Choices are supplied to this field to influence labels only. The options
@@ -162,9 +173,6 @@ class BaseCollectionSearchForm(forms.Form):
     type = DynamicMultipleChoiceField(
         label="Creator type",
         choices=TYPE_CHOICES,
-        widget=forms.widgets.CheckboxSelectMultiple(
-            attrs={"class": "search-filters__list"}
-        ),
         required=False,
         validate_input=False,
     )
