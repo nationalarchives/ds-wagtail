@@ -44,6 +44,19 @@ class Aggregation(StrEnum):
     COUNTRY = "country"
 
 
+DEFAULT_AGGREGATIONS = (
+    Aggregation.COLLECTION,
+    Aggregation.LEVEL,
+    Aggregation.TOPIC,
+    Aggregation.CLOSURE,
+    Aggregation.HELD_BY,
+    Aggregation.CATALOGUE_SOURCE,
+    Aggregation.GROUP
+    + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
+    Aggregation.TYPE,
+)
+
+
 @dataclass
 class Bucket:
     key: str
@@ -53,7 +66,7 @@ class Bucket:
     is_current: bool = False
     results: List[Any] = None
 
-    # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing Ex: ["group:30"]
+    # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
     aggregations: List[str] = field(default_factory=list)
 
     @property
@@ -72,6 +85,8 @@ class Bucket:
         return values
 
     def __post_init__(self):
+        if not self.aggregations:
+            self.aggregations = DEFAULT_AGGREGATIONS
         self.aggregations = self.aggregations_normalised
 
     @property
@@ -111,46 +126,16 @@ CATALOGUE_BUCKETS = BucketList(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key="digitised",
             label="Online records at The National Archives",
             description="Results for records available to download and held at The National Archives that match your search term.",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key="creator",
@@ -166,16 +151,6 @@ CATALOGUE_BUCKETS = BucketList(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
     ]
 )
@@ -185,74 +160,24 @@ WEBSITE_BUCKETS = BucketList(
         Bucket(
             key="blog",
             label="Blog posts",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key="researchGuide",
             label="Research Guides",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key=BucketKeys.INSIGHT.value,
             label="Insights",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         # TODO: Restore when we are succesfully indexing new highlight pages
         # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
         Bucket(
             key="audio",
             label="Audio",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
         Bucket(
             key="video",
             label="Video",
-            aggregations=(
-                Aggregation.COLLECTION,
-                Aggregation.LEVEL,
-                Aggregation.TOPIC,
-                Aggregation.CLOSURE,
-                Aggregation.HELD_BY,
-                Aggregation.CATALOGUE_SOURCE,
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-            ),
         ),
     ]
 )
