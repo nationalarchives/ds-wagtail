@@ -18,9 +18,6 @@
 
   &__widget-list-item {
     input {
-      margin-bottom: 1rem;
-      margin-right: 0.5rem;
-
       &:focus {
         outline: 5px solid $color__focus-blue-outline-light-bg;
       }
@@ -28,7 +25,8 @@
 
     label {
       cursor: pointer;
-      display: block;
+      display: inline-block;
+      margin-bottom: 0.5rem;
       max-width: 100%;
     }
   }
