@@ -127,7 +127,8 @@
     {% endfor %}
 {% endwith %}
 <button class="transcription__close hidden" id="closeButton" type="button">
-    Close
+    Close <span class="sr-only">images
+    {% if has_text %}and transcripts{% endif %}</span>
     {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="transcription__icon" %}
 </button>
 </div>
