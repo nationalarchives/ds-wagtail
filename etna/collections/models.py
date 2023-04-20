@@ -3,6 +3,7 @@ from typing import List, Optional, Tuple, Union
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
@@ -14,7 +15,12 @@ from wagtail.search import index
 
 from ..alerts.models import AlertMixin
 from ..ciim.exceptions import KongAPIError
-from ..core.models import BasePage, BasePageWithIntro, ContentWarningMixin
+from ..core.models import (
+    BasePage,
+    BasePageWithIntro,
+    ContentWarningMixin,
+    HeroImageMixin,
+)
 from ..records.api import records_client
 from ..records.widgets import RecordChooser
 from .blocks import (
@@ -50,7 +56,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     gtm_content_group = "Explorer"
 
 
-class TopicExplorerIndexPage(BasePageWithIntro):
+class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -58,24 +64,13 @@ class TopicExplorerIndexPage(BasePageWithIntro):
 
     body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
 
-    hero_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
     )
-
-    content_panels = BasePageWithIntro.content_panels + [
-        MultiFieldPanel(
-            heading="Hero image",
-            classname="collapsible",
-            children=[
-                FieldPanel("hero_image"),
-            ],
-        ),
-        FieldPanel("body"),
-    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
@@ -109,7 +104,7 @@ class TopicExplorerIndexPage(BasePageWithIntro):
     ]
 
 
-class TopicExplorerPage(AlertMixin, BasePageWithIntro):
+class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -130,11 +125,15 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
-    content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
-        FieldPanel("featured_record_article", heading=_("Featured record article")),
-        FieldPanel("body"),
-    ]
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("featured_article", heading=_("Featured article")),
+            FieldPanel("featured_record_article", heading=_("Featured record article")),
+            FieldPanel("body"),
+        ]
+    )
 
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
@@ -208,7 +207,7 @@ class TopicExplorerPage(AlertMixin, BasePageWithIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(BasePageWithIntro):
+class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -216,24 +215,13 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
 
     body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
 
-    hero_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("body"),
+        ]
     )
-
-    content_panels = BasePageWithIntro.content_panels + [
-        MultiFieldPanel(
-            heading="Hero image",
-            classname="collapsible",
-            children=[
-                FieldPanel("hero_image"),
-            ],
-        ),
-        FieldPanel("body"),
-    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
@@ -267,7 +255,7 @@ class TimePeriodExplorerIndexPage(BasePageWithIntro):
     ]
 
 
-class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -289,13 +277,17 @@ class TimePeriodExplorerPage(AlertMixin, BasePageWithIntro):
     )
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
-    content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
-        FieldPanel("featured_record_article", heading=_("Featured record article")),
-        FieldPanel("body"),
-        FieldPanel("start_year"),
-        FieldPanel("end_year"),
-    ]
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("featured_article", heading=_("Featured article")),
+            FieldPanel("featured_record_article", heading=_("Featured record article")),
+            FieldPanel("body"),
+            FieldPanel("start_year"),
+            FieldPanel("end_year"),
+        ]
+    )
 
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
@@ -601,8 +593,18 @@ class Highlight(Orderable):
         verbose_name=_("image"),
     )
 
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        null=True,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+
     panels = [
         FieldPanel("image"),
+        FieldPanel("alt_text"),
     ]
 
     def clean(self) -> None:

@@ -4,10 +4,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
 
-from wagtail.admin.panels import FieldPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
+from wagtail.images import get_image_model_string
 
-__all__ = ["ContentWarningMixin", "NewLabelMixin"]
+from .forms import RequiredHeroImagePageForm
+
+__all__ = ["ContentWarningMixin", "NewLabelMixin", "HeroImageMixin"]
 
 
 class ContentWarningMixin(models.Model):
@@ -95,3 +98,39 @@ class NewLabelMixin(models.Model):
 
     class Meta:
         abstract = True
+
+
+class HeroImageMixin(models.Model):
+    """Mixin to add hero_image attribute to a Page."""
+
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_image_caption = RichTextField(
+        verbose_name="hero image caption (optional)",
+        features=["link"],
+        blank=True,
+        help_text=(
+            "An optional caption for hero images. This could be used for image sources or for other useful metadata."
+        ),
+    )
+
+    class Meta:
+        abstract = True
+
+    content_panels = [
+        MultiFieldPanel(
+            [
+                FieldPanel("hero_image"),
+                FieldPanel("hero_image_caption"),
+            ],
+            heading="Hero image",
+        )
+    ]
+
+    base_form_class = RequiredHeroImagePageForm

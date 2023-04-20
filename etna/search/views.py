@@ -460,13 +460,15 @@ class BaseFilteredSearchView(BaseSearchView):
         See also: `get_api_aggregations()`.
         """
         for key, value in api_result.aggregations.items():
-            if buckets := value.get("buckets"):
-                field_name = camelcase_to_underscore(key)
-                if field_name in self.dynamic_choice_fields:
-                    form.fields[field_name].update_choices(buckets)
-                    form[field_name].more_filter_options_available = bool(
-                        value.get("sum_other_doc_count", 0)
-                    )
+            field_name = camelcase_to_underscore(key)
+            if field_name in self.dynamic_choice_fields:
+                choice_data = value.get("buckets", ())
+                form.fields[field_name].update_choices(
+                    choice_data, selected_values=form.cleaned_data.get(field_name, ())
+                )
+                form[field_name].more_filter_options_available = bool(
+                    value.get("sum_other_doc_count", 0)
+                )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -758,13 +760,15 @@ class FeaturedSearchView(BaseSearchView):
         but to support template/rendering needs, it returns a `dict` instead of
         a `BucketList`, and instead of receiving additional argument values,
         `result_count` and `results` are set on each bucket using data
-        directly from `self.api_result`.
+        from `self.api_result`.
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
-            results = self.api_result[i]
-            bucket.result_count = results.total_count
-            bucket.results = results.hits
+            # NOTE: The API might not have been called if the form was invalid
+            if self.api_result:
+                results_for_bucket = self.api_result[i]
+                bucket.result_count = results_for_bucket.total_count
+                bucket.results = results_for_bucket.hits
             buckets[bucket.key] = bucket
         return buckets
 
