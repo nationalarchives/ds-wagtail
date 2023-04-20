@@ -1,13 +1,13 @@
 {% with id=widget.attrs.id %}
     <div{% if id %} id="{{ id }}"{% endif %} class="search-filters__widget {{ widget.attrs.class }}">
-        <ol class="search-filters__widget__option-list">
+        <ul class="search-filters__widget-list">
             {% for group, options, index in widget.optgroups %}
                 {% for option in options %}
-                    <li class="search-filter__widget__option-list__item">
+                    <li class="search-filter__widget-list-item">
                         {% include option.template_name with widget=option %}
                     </li>
                 {% endfor %}
             {% endfor %}
-        </ol>
+        </ul>
     </div>
 {% endwith %}
