@@ -56,17 +56,17 @@ class BucketsMixin:
 
     def get_buckets_for_display(
         self,
-        aggregations_data: List[Dict[str, Union[str, int]]] = None,
+        bucket_counts: List[Dict[str, Union[str, int]]],
         current_bucket_key: str = None,
     ) -> Optional[BucketList]:
         """
         Returns a modified `BucketList` value that can be used in the template,
         representing the 'buckets' that available for the user to explore.
 
-        If `group_buckets` is provided, the data will be used to set the `result_count`
+        The provided `bucket_counts` data is used to set the `result_count`
         attribute for each bucket.
 
-        The `current_bucket_key` is provided, any bucket with a `key` value matching
+        If `current_bucket_key` is provided, any bucket with a `key` value matching
         the provided value will have it's `is_current` value set to `True`.
         """
         if not self.bucket_list:
@@ -74,13 +74,12 @@ class BucketsMixin:
 
         bucket_list = copy.deepcopy(self.bucket_list)
 
-        if aggregations_data:
-            # set `result_count` for each bucket
-            doc_counts_by_key = {
-                group["key"]: group["doc_count"] for group in aggregations_data
-            }
-            for bucket in bucket_list:
-                bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
+        # set `result_count` for each bucket
+        doc_counts_by_key = {
+            group["key"]: group["doc_count"] for group in bucket_counts
+        }
+        for bucket in bucket_list:
+            bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
 
         if current_bucket_key:
             # set 'is_current=True' for the relevant bucket
