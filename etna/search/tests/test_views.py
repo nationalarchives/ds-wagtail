@@ -794,16 +794,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=8,
                     is_current=False,
                     results=None,
-                    aggregations=(
-                        Aggregation.COLLECTION,
-                        Aggregation.LEVEL,
-                        Aggregation.TOPIC,
-                        Aggregation.CLOSURE,
-                        Aggregation.HELD_BY,
-                        Aggregation.CATALOGUE_SOURCE,
-                        Aggregation.GROUP + ":30",
-                        Aggregation.TYPE,
-                    ),
                 ),
                 Bucket(
                     key="researchGuide",
@@ -811,16 +801,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=False,
                     results=None,
-                    aggregations=(
-                        Aggregation.COLLECTION,
-                        Aggregation.LEVEL,
-                        Aggregation.TOPIC,
-                        Aggregation.CLOSURE,
-                        Aggregation.HELD_BY,
-                        Aggregation.CATALOGUE_SOURCE,
-                        Aggregation.GROUP + ":30",
-                        Aggregation.TYPE,
-                    ),
                 ),
                 Bucket(
                     key="insight",
@@ -828,16 +808,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=True,
                     results=None,
-                    aggregations=(
-                        Aggregation.COLLECTION,
-                        Aggregation.LEVEL,
-                        Aggregation.TOPIC,
-                        Aggregation.CLOSURE,
-                        Aggregation.HELD_BY,
-                        Aggregation.CATALOGUE_SOURCE,
-                        Aggregation.GROUP + ":30",
-                        Aggregation.TYPE,
-                    ),
                 ),
                 # TODO: Restore when we are succesfully indexing new highlight pages
                 # Bucket(
@@ -853,16 +823,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    aggregations=(
-                        Aggregation.COLLECTION,
-                        Aggregation.LEVEL,
-                        Aggregation.TOPIC,
-                        Aggregation.CLOSURE,
-                        Aggregation.HELD_BY,
-                        Aggregation.CATALOGUE_SOURCE,
-                        Aggregation.GROUP + ":30",
-                        Aggregation.TYPE,
-                    ),
                 ),
                 Bucket(
                     key="video",
@@ -870,16 +830,6 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
-                    aggregations=(
-                        Aggregation.COLLECTION,
-                        Aggregation.LEVEL,
-                        Aggregation.TOPIC,
-                        Aggregation.CLOSURE,
-                        Aggregation.HELD_BY,
-                        Aggregation.CATALOGUE_SOURCE,
-                        Aggregation.GROUP + ":30",
-                        Aggregation.TYPE,
-                    ),
                 ),
             ]
         )
