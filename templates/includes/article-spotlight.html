@@ -32,7 +32,7 @@
             <p id="article-desc" class="aria-desc">This is a link to a new story about {{ page.title }}</p>
 
             <p>{{ page.teaser_text }}</p>
-            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Story: {{ page.title }}" data-link-type="Button" {% if page.is_newly_published %}data-label="New"{% endif %}>Read</a>
+            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Story: {{ page.title }}" data-link-type="Button" {% if page.is_newly_published %}data-label="New"{% endif %}>Read <span class="sr-only">about {{ page.title }}</span></a>
         </div>
     </div>
 </div>

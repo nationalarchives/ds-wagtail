@@ -45,7 +45,7 @@
                         {{ page.featured_article.title }}
                     </h2>
                     <p>{{ page.featured_article.teaser_text }}</p>
-                    <a class="tna-button--dark" href="{% pageurl page.featured_article %}">Read</a>
+                    <a class="tna-button--dark" href="{% pageurl page.featured_article %}">Read <span class="sr-only">about {{ page.featured_article.title }}</span></a>
                 </div>
             </div>
         </div>
