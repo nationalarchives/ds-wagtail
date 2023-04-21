@@ -1,9 +1,7 @@
 {% load wagtailimages_tags wagtailcore_tags i18n %}
-<section class="body-container highlight-gallery-teaser"
-         data-container-name="{{ title }}">
-    <h2 class="highlight-gallery-teaser__title">
-        {% trans "Explore records about" %} <a class="highlight-gallery-teaser__title-link"
-    href='{% pageurl page %}'>{% trans title %}</a>
+<section class="body-container highlight-gallery-teaser" data-container-name="{{ title }}">
+    <h2 class="highlight-gallery-teaser__title"> 
+        {% trans "Explore records about" %} <a class="highlight-gallery-teaser__title-link" href='{% pageurl page %}'>{% trans title %}</a>
     </h2>
     <ul class="card-grid card-grid__quint card-grid--list">
         {% for card in cards %}

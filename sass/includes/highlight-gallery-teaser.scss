@@ -1,10 +1,15 @@
 .highlight-gallery-teaser {
     $root: &;
     padding-bottom: 3rem;
+    
     background-color: $color__yellow_6;
+    
+    @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
+        margin-bottom: 3rem;
+    }
 
     @media screen and (min-width: map-get($grid-breakpoints, "md")) {
-        padding-bottom: 82px;
+        padding-bottom: 5.125rem;
     }
 
     &__title {
@@ -39,6 +44,10 @@
 
     &__link {
         text-decoration-color: $color__white;
+
+        &:visited{
+            color: $color__grey-8;
+        }
     }
 
     &__card {
@@ -46,6 +55,11 @@
         text-decoration: none !important;
         font-family: $font__supria-sans;
         list-style: none;
+
+        &:hover,
+        &:focus {            
+            outline: 0.313rem solid #1a67a2 !important;
+        }
     }
 
     &__content {
@@ -64,5 +78,6 @@
         width: 100%;
         height: auto;
         object-fit: cover;
+        outline: none;
     }
 }
