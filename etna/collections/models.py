@@ -20,6 +20,7 @@ from ..core.models import (
     ContentWarningMixin,
     HeroImageMixin,
 )
+from ..core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     TimePeriodExplorerPageStreamBlock,
@@ -121,6 +122,14 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
+    skos_id = models.CharField(
+        blank=True,
+        editable=False,
+        max_length=255,
+        verbose_name="SKOS identifier",
+        help_text="Used as the identifier for this topic when sending page metadata to the CIIM API.",
+    )
+
     content_panels = (
         BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
@@ -144,6 +153,30 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
     ]
+
+    def clean(self, *args, **kwargs):
+        if not self.skos_id and self.title:
+            # Generate a unique skos_id value for new pages
+            base_value = skos_id_from_text(self.title)
+            self.skos_id = base_value
+            i = 2
+            while (
+                TopicExplorerPage.objects.exclude(id=self.id)
+                .filter(skos_id=self.skos_id)
+                .exists()
+            ):
+                self.skos_id = f"{base_value[:252]}_{i}"
+                i += 1
+        return super().clean(*args, **kwargs)
+
+    def with_content_json(self, content):
+        """
+        Overrides :meth:`Page.with_content_json` to always take the ``skos_id``
+        value from the page object.
+        """
+        obj = super().with_content_json(content)
+        obj.skos_id = self.skos_id
+        return obj
 
     @cached_property
     def related_articles(self):
