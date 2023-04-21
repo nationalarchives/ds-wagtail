@@ -33,15 +33,17 @@ class ImageGallery {
             this.show(this.transcriptionPreview)
             this.show(this.openButton);
             this.hide(this.closeButton);
+            this.transcriptionPreview.scrollIntoView();
         })
         this.openButton.addEventListener('click', (e) =>{
             e.preventDefault();
             for (let i= 0; i < this.transcriptionContentNode.length; i++) {
                 this.show(this.transcriptionContentNode[i]);
-            }            
+            }
             this.hide(this.transcriptionPreview);
             this.hide(this.openButton);
             this.show(this.closeButton);
+            this.transcriptionContentNode[0].scrollIntoView();
         })
 
         // tabs
