@@ -123,7 +123,8 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
 
     skos_id = models.CharField(
-        blank=True,
+        unique=True,
+        db_index=True,
         editable=False,
         max_length=255,
         verbose_name="SKOS identifier",

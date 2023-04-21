@@ -74,7 +74,8 @@ class ArticleIndexPage(BasePageWithIntro):
 class ArticleTag(TagBase):
     free_tagging = False
     skos_id = models.CharField(
-        blank=True,
+        unique=True,
+        db_index=True,
         editable=False,
         max_length=100,
         verbose_name="SKOS identifier",
