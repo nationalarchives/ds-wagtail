@@ -25,6 +25,7 @@ from etna.core.models import (
     HeroImageMixin,
     NewLabelMixin,
 )
+from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
 from .blocks import (
@@ -72,10 +73,37 @@ class ArticleIndexPage(BasePageWithIntro):
 @register_snippet
 class ArticleTag(TagBase):
     free_tagging = False
+    skos_id = models.CharField(
+        blank=True,
+        editable=False,
+        max_length=100,
+        verbose_name="SKOS identifier",
+        help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
+    )
 
     class Meta:
         verbose_name = "article tag"
         verbose_name_plural = "article tags"
+
+    panels = (
+        FieldPanel("name"),
+        FieldPanel("slug"),
+    )
+
+    def clean(self, *args, **kwargs):
+        if not self.skos_id and self.name:
+            # Generate a unique skos_id value for new tags
+            base_value = skos_id_from_text(self.name)
+            self.skos_id = base_value
+            i = 2
+            while (
+                ArticleTag.objects.exclude(id=self.id)
+                .filter(skos_id=self.skos_id)
+                .exists()
+            ):
+                self.skos_id = f"{base_value[:97]}_{i}"
+                i += 1
+        return super().clean(*args, **kwargs)
 
 
 class TaggedArticle(ItemBase):
