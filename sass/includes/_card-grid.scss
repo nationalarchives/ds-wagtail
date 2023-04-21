@@ -1,6 +1,12 @@
 .card-grid {
     @extend .row;
     display: grid;
+
+    &--list {
+        // A modifier to normalise the grid for list items.
+        padding: 0;
+        margin: 0;
+    }
     
     &__duo {
         grid-gap: 1rem;
@@ -44,6 +50,19 @@
 
         @media (min-width: map-get($grid-breakpoints, "lg")) {
             grid-template-columns: repeat(4, 1fr);
+        }
+    }
+
+    &__quint {
+        gap: 14px;
+        grid-template-columns: repeat(2, 1fr);
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            gap: 42px;
+        }
+        
+        @media (min-width: map-get($grid-breakpoints, "lg")) {
+            grid-template-columns: repeat(5, 1fr);
         }
     }
 
