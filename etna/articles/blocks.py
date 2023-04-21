@@ -8,6 +8,7 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
     ContentImageBlock,
+    FeaturedRecordArticleBlock,
     ImageBlock,
     NoCaptionImageBlock,
     PageListBlock,
@@ -242,6 +243,7 @@ class SectionContentBlock(blocks.StreamBlock):
     sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
+    featured_record_article = FeaturedRecordArticleBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
