@@ -16,10 +16,14 @@ from ..ciim.constants import (
 )
 
 
+class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
+    template_name = "search/widgets/search-filter-checkbox-list.html"
+
+
 class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     """MultipleChoiceField whose choices can be updated to reflect API response data."""
 
-    widget = forms.widgets.CheckboxSelectMultiple
+    widget = SearchFilterCheckboxList
 
     def __init__(self, *args, **kwargs):
         self.validate_input = bool(kwargs.get("choices")) and kwargs.pop(
@@ -36,12 +40,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         if not self.validate_input:
             return True
         return super().valid_value(value)
-
-    def widget_attrs(self, widget):
-        attrs = super().widget_attrs(widget)
-        if not widget.is_hidden:
-            attrs["class"] = "search-filters__list"
-        return attrs
 
     @cached_property
     def configured_choice_labels(self):
