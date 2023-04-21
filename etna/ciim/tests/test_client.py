@@ -4,6 +4,7 @@ from django.test import SimpleTestCase
 
 import responses
 
+from etna.ciim.constants import Aggregation
 from etna.ciim.tests.factories import (
     create_record,
     create_response,
@@ -12,7 +13,7 @@ from etna.ciim.tests.factories import (
 from etna.records.api import get_records_client
 from etna.records.models import Record
 
-from ..client import Aggregation, ResultList, SortBy, SortOrder, Stream, Template
+from ..client import ResultList, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
     DoesNotExist,
     KongBadRequestError,

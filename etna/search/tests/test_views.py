@@ -15,7 +15,7 @@ from etna.ciim.constants import Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
-from ...ciim.tests.factories import create_response
+from ...ciim.tests.factories import create_response, create_search_response
 from ...collections.models import (
     ExplorerIndexPage,
     ResultsPage,
@@ -92,6 +92,7 @@ class SelectedFiltersTest(SimpleTestCase):
                 "topic": ["topic-one"],
                 "level": ["Division"],
                 "collection": ["WO", "AK"],
+                "country": ["England", "Yorkshire, North Riding"],
             }
         )
 
@@ -109,6 +110,10 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
                 "level": [("Division", "Division")],
                 "topic": [("topic-one", "topic-one")],
+                "country": [
+                    ("England", "England"),
+                    ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                ],
             },
         )
 
@@ -170,6 +175,7 @@ class SelectedFiltersTest(SimpleTestCase):
                 "topic": ["topic-one", "topic-two"],  # valid
                 "catalogue_source": ["catalogue-source-one"],  # valid
                 "collection": ["bar"],
+                "country": ["England", "Yorkshire, North Riding"],  # valid
                 "level": ["foo"],  # invalid
             }
         )
@@ -188,6 +194,10 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
                 "catalogue_source": [
                     ("catalogue-source-one", "catalogue-source-one"),
+                ],
+                "country": [
+                    ("England", "England"),
+                    ("Yorkshire, North Riding", "Yorkshire, North Riding"),
                 ],
             },
         )
@@ -1594,6 +1604,72 @@ class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
                 "&template=details"
                 "&aggregations=topic%3A100"
                 "&filterAggregations=group%3Ablog"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
+    maxDiff = None
+
+    @responses.activate
+    def test_record_creators_default_params(self):
+        test_url = reverse_lazy(
+            "search-catalogue",
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "creator"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
+                "&aggregations=country%3A10"
+                "&filterAggregations=group%3Acreator"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+    @responses.activate
+    def test_record_creators_country_long_filter(self):
+        test_url = reverse_lazy(
+            "search-catalogue-long-filter-chooser", kwargs={"field_name": "country"}
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "creator"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=country%3A100"
+                "&filterAggregations=group%3Acreator"
                 "&from=0"
                 "&size=20"
             ),
