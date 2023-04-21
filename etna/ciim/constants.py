@@ -2,9 +2,8 @@ from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, List
 
-
-from django.utils.functional import cached_property
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.utils.functional import cached_property
 
 
 def forTemplate(cls):
@@ -69,7 +68,7 @@ class Bucket:
     results: List[Any] = None
 
     # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
-    aggregations: List[str] = field(default_factory=lambda:DEFAULT_AGGREGATIONS)
+    aggregations: List[str] = field(default_factory=lambda: DEFAULT_AGGREGATIONS)
 
     @cached_property
     def aggregations_normalised(self) -> List[str]:
