@@ -345,6 +345,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "held_by",
         "catalogue_source",
         "type",
+        "country",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:
@@ -404,30 +405,11 @@ class BaseFilteredSearchView(BaseSearchView):
         Called by `get_api_kwargs()` to get a value to include as 'aggregations'
         in the API request.
 
-        In the API response, the items with the highest number of matches are
-        included for each aggregation. Those values are used to indicate
-        counts for each 'bucket', and to update the form field choices, so that
-        the most relevant filter options are shown.
+        The aggregations params may be specific to a bucket and will be filtered upon.
+        Returns a list of aggregation params for the current bucket.
+        Ex: ["group:30", "catalogue:10",]
         """
-        values = []
-        for aggregation in (
-            Aggregation.COLLECTION,
-            Aggregation.LEVEL,
-            Aggregation.TOPIC,
-            Aggregation.CLOSURE,
-            Aggregation.HELD_BY,
-            Aggregation.CATALOGUE_SOURCE,
-            Aggregation.GROUP,
-            Aggregation.TYPE,
-        ):
-            item_count = 10
-            if aggregation == Aggregation.GROUP:
-                # Fetch more 'groups' so that we receive a counts
-                # for any bucket/tab options we might be showing
-                # (not just the 10 most popular)
-                item_count = 30
-            values.append(f"{aggregation}:{item_count}")
-        return values
+        return self.current_bucket.aggregations_normalised
 
     def get_api_filter_aggregations(self, form: Form) -> List[str]:
         """
