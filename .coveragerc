@@ -1,8 +1,10 @@
 [run]
 omit =
     config/*
-    etna/**/migrations/*.py
-    etna/**/tests/*.py
-    locustfile.py
-
+    docs/*
+    etna/**/migrations/*
+    etna/**/tests/*
+    fabfile.py
+    gunicorn.conf.py
+    manage.py
 source = .
