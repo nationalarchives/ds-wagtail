@@ -17,8 +17,8 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
-          cache-dependency-path: '**/lint-requirements.txt'
+          cache: "pip"
+          cache-dependency-path: "**/lint-requirements.txt"
       - run: pip install -r lint-requirements.txt
       - name: Check compliance with flake8
         run: flake8 .
@@ -68,7 +68,16 @@ jobs:
       - name: Run Django checks
         run: poetry run python manage.py check
       - name: Run test suite
-        run: poetry run python manage.py test etna
+        run: poetry run coverage run manage.py test etna
+      - name: Prepare coverage report
+        run: poetry run coverage xml
+      - name: Upload coverage report to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          env_vars: OS,PYTHON_VERSION
+          fail_ci_if_error: true
+          move_coverage_to_trash: true
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
 
