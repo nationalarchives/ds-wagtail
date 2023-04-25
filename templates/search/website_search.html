@@ -23,7 +23,6 @@
 {% block breadcrumb %}
 {% endblock %}
 {% block content %}
-    <form method="get" data-id="search-form" id="analytics-search-form">
         {{ form.non_field_errors }}
 
         {% with search_tab=searchtabs.WEBSITE.value %}
@@ -63,7 +62,6 @@
             {% endif %}
         
         {% endwith %}
-    </form>
 {% endblock %}
 
 {% block extra_js %}
