@@ -41,6 +41,10 @@
       outline: 0.1875rem solid $color__yellow_2;
       outline-offset: 0.25rem;
       text-decoration: none;
+
+      &:focus {
+        outline-color: $color__blue_4;
+      }
     }
   }
 
