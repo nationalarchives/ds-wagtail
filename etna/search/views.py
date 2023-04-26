@@ -346,6 +346,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "catalogue_source",
         "type",
         "country",
+        "location",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:

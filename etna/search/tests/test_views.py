@@ -93,6 +93,7 @@ class SelectedFiltersTest(SimpleTestCase):
                 "level": ["Division"],
                 "collection": ["WO", "AK"],
                 "country": ["England", "Yorkshire, North Riding"],
+                "location": ["Australia", "United States of America"],
             }
         )
 
@@ -113,6 +114,10 @@ class SelectedFiltersTest(SimpleTestCase):
                 "country": [
                     ("England", "England"),
                     ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                ],
+                "location": [
+                    ("Australia", "Australia"),
+                    ("United States of America", "United States of America"),
                 ],
             },
         )
@@ -176,6 +181,7 @@ class SelectedFiltersTest(SimpleTestCase):
                 "catalogue_source": ["catalogue-source-one"],  # valid
                 "collection": ["bar"],
                 "country": ["England", "Yorkshire, North Riding"],  # valid
+                "location": ["Australia", "United States of America"],  # valid
                 "level": ["foo"],  # invalid
             }
         )
@@ -198,6 +204,10 @@ class SelectedFiltersTest(SimpleTestCase):
                 "country": [
                     ("England", "England"),
                     ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                ],
+                "location": [
+                    ("Australia", "Australia"),
+                    ("United States of America", "United States of America"),
                 ],
             },
         )
@@ -1670,6 +1680,71 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
                 "&template=details"
                 "&aggregations=country%3A100"
                 "&filterAggregations=group%3Acreator"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+class ArchiveTestCase(WagtailTestUtils, TestCase):
+    maxDiff = None
+
+    @responses.activate
+    def test_archive_default_params(self):
+        test_url = reverse_lazy(
+            "search-catalogue",
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "archive"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=group%3A30"
+                "&aggregations=location%3A10"
+                "&filterAggregations=group%3Aarchive"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+    @responses.activate
+    def test_record_creators_country_long_filter(self):
+        test_url = reverse_lazy(
+            "search-catalogue-long-filter-chooser", kwargs={"field_name": "location"}
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "archive"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=location%3A100"
+                "&filterAggregations=group%3Aarchive"
                 "&from=0"
                 "&size=20"
             ),
