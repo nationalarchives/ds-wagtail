@@ -3,8 +3,8 @@
     {% include "includes/icon.html" with name="content-warning" classname="content-warning__icon" %}
     
     <div class="content-warning__content">
-        {% if page.custom_warning_text %}
-            {{ page.custom_warning_text | richtext }}
+        {% if custom_warning_text %}
+            {{ custom_warning_text | richtext }}
         {% else %}
             <p>This article contains content that some people may find offensive.</p>
         {% endif %}
