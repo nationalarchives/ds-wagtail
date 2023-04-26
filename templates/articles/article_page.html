@@ -19,7 +19,7 @@
 
         <div class="article-container__main">
             {% if page.display_content_warning %}
-                {% include 'includes/content-warning.html' %}
+                {% include "includes/content-warning.html" %}
             {% endif %}
             {% for block in page.body %}
                 {% include_block block %}
