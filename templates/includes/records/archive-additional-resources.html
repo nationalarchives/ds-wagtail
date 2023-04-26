@@ -3,7 +3,7 @@
         <h2>Accessions</h2>
         <p>These are selected lists of new or additional collections that were acquired by this archive during a specific year. If a date is not displayed there are no accessions for that year.</p>
 
-        <form action="" id="archive" method="post">
+        <form action="" id="archive" method="GET">
             <label class="archive-additional-resources__label" for="accessionYear">Select a year</label>
             <select class="archive-additional-resources__select" name="accessionYear" onchange="updateAction()" id="accessionYear">
                 {% for year, url in record.archive_accessions.accession_years.items %}
