@@ -59,7 +59,7 @@
                     <ul>
                         {% for collection in record.archive_collections.collection_info_list %}
                             {% if collection.count > 0 %}
-                                <li><a href="#heading-{{collection.name}}">{{ collection.display_name }}({{ collection.count }})</a></li>
+                                <li><a href="#heading-{{collection.name}}">{{ collection.display_name }} ({{ collection.count }})</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>
