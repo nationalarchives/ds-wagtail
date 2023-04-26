@@ -10,7 +10,7 @@
         {% endif %}
         
         {% if record.archive_contact_info.fax %}
-            <p><b>Fax:</b> <a href="fax:{{ record.archive_contact_info.fax }}">{{ record.archive_contact_info.fax }}</a></p>
+            <p><b>Fax:</b> {{ record.archive_contact_info.fax }}</p>
         {% endif %}
         
         {% if record.archive_contact_info.email %}
@@ -59,7 +59,7 @@
                     <ul>
                         {% for collection in record.archive_collections.collection_info_list %}
                             {% if collection.count > 0 %}
-                                <li><a href="">{{ collection.display_name }}({{ collection.count }})</a></li>
+                                <li><a href="#{{collection.name}}">{{ collection.display_name }}({{ collection.count }})</a></li>
                             {% endif %}
                         {% endfor %}
                     </ul>

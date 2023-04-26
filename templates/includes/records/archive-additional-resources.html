@@ -6,7 +6,6 @@
         <form action="" id="archive" method="post">
             <label class="archive-additional-resources__label" for="accessionYear">Select a year</label>
             <select class="archive-additional-resources__select" name="accessionYear" onchange="updateAction()" id="accessionYear">
-                <option value="">--Please choose an option--</option>
                 {% for year, url in record.archive_accessions.accession_years.items %}
                     <option value="{{ url }}">{{year}}</option>
                 {% endfor %}
