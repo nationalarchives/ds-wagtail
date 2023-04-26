@@ -4,7 +4,7 @@
   border-left: 4px solid #FFCC00;
   padding: 24px 28px;
 
-  .container & {
+  &--normalise-margin {
     // normalise full-wdith mobile display
     margin-left: -15px;
     margin-right: -15px;
@@ -17,7 +17,13 @@
   }
 
   @media screen and (min-width: $screen__md) {
-    margin-bottom: 48px;
+    margin-bottom: 3rem;
+  }
+
+  &--short {
+    @media screen and (min-width: $screen__md) {
+      margin-bottom: 1.25rem;
+    }
   }
 
   p {
