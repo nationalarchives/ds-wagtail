@@ -3,15 +3,6 @@ from wagtail import blocks
 from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock
 
 
-class CollectionHighlightsBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="Collection Highlights")
-
-    class Meta:
-        template = "collections/blocks/collection_highlights.html"
-        help_text = "Block used to output the list of collection highlights"
-        icon = "th"
-
-
 class FeaturedPageBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
     description = blocks.CharBlock(
@@ -68,23 +59,19 @@ class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
 
 
 class TimePeriodExplorerPageStreamBlock(blocks.StreamBlock):
-    collection_highlights = CollectionHighlightsBlock()
     promoted_pages = PromotedPagesBlock()
 
     class Meta:
         block_counts = {
-            "collection_highlights": {"min_num": 1, "max_num": 1},
             "promoted_pages": {"max_num": 1},
         }
 
 
 class TopicExplorerPageStreamBlock(blocks.StreamBlock):
-    collection_highlights = CollectionHighlightsBlock()
     promoted_pages = PromotedPagesBlock()
 
     class Meta:
         block_counts = {
-            "collection_highlights": {"min_num": 1, "max_num": 1},
             "promoted_pages": {"max_num": 1},
         }
 
