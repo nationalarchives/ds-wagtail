@@ -16,7 +16,6 @@ from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
-
 from ...home.models import HomePage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
