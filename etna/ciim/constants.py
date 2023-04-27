@@ -17,6 +17,7 @@ def forTemplate(cls):
 class BucketKeys(StrEnum):
     NONTNA = "nonTna"
     CREATOR = "creator"
+    ARCHIVE = "archive"
     INSIGHT = "insight"
     HIGHLIGHT = "highlight"
 
@@ -43,6 +44,7 @@ class Aggregation(StrEnum):
     HELD_BY = "heldBy"
     TYPE = "type"
     COUNTRY = "country"
+    LOCATION = "location"
 
 
 DEFAULT_AGGREGATIONS = (
@@ -150,6 +152,10 @@ CATALOGUE_BUCKETS = BucketList(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
+            aggregations=(
+                Aggregation.GROUP + ":30",
+                Aggregation.LOCATION,
+            ),
         ),
     ]
 )
