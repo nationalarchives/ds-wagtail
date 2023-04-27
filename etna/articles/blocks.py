@@ -216,7 +216,6 @@ class QuoteBlock(SectionDepthAwareStructBlock):
     the content depth.
     """
 
-    heading = blocks.CharBlock(required=False, max_length=100)
     quote = blocks.RichTextBlock(
         required=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
