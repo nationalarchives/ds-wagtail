@@ -52,6 +52,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
+    uuid = models.UUIDField(null=True)
+
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
