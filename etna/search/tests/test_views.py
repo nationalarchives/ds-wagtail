@@ -18,7 +18,6 @@ from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
 from ...collections.models import (
     ExplorerIndexPage,
-    ResultsPage,
     TimePeriodExplorerIndexPage,
     TimePeriodExplorerPage,
     TopicExplorerIndexPage,
@@ -885,14 +884,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         )
         time_period_explorer_index_page.add_child(instance=time_period_explorer_page)
 
-        results_page = ResultsPage(
-            title="Shakespeare",
-            introduction="test",
-            sub_heading="test",
-            teaser_text="test",
-        )
-        time_period_explorer_page.add_child(instance=results_page)
-
         topic_explorer_index_page = TopicExplorerIndexPage(
             title="Explore by topic", intro="test", teaser_text="test"
         )
@@ -902,14 +893,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
             title="Agriculture and Environment", intro="test", teaser_text="test"
         )
         topic_explorer_index_page.add_child(instance=topic_explorer_page)
-
-        results_page = ResultsPage(
-            title="Farm Survey",
-            introduction="test",
-            sub_heading="test",
-            teaser_text="test",
-        )
-        topic_explorer_page.add_child(instance=results_page)
 
         # create article page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
@@ -1005,16 +988,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
             ]
         )
         self.assertEqual(response.context_data["buckets"], expected_bucket_list)
-
-    @responses.activate
-    def test_page_instance_added_for_source_url(self):
-        response = self.client.get(self.test_url, data={"group": "highlight"})
-        self.assertIsInstance(
-            response.context_data["page"].object_list[0].source_page, ResultsPage
-        )
-        self.assertIsInstance(
-            response.context_data["page"].object_list[1].source_page, ResultsPage
-        )
 
 
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):

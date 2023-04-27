@@ -140,11 +140,6 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
 
-    @property
-    def results_pages(self):
-        """Fetch child results period pages for rendering on the front end."""
-        return self.get_children().type(ResultsPage).order_by("title").live().specific()
-
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TopicExplorerPage",
@@ -152,7 +147,6 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
-        "collections.ResultsPage",
     ]
 
     @cached_property
@@ -294,11 +288,6 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
 
-    @property
-    def results_pages(self):
-        """Fetch child results period pages for rendering on the front end."""
-        return self.get_children().type(ResultsPage).order_by("title").live().specific()
-
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
         "collections.TimePeriodExplorerPage",
@@ -306,7 +295,6 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
-        "collections.ResultsPage",
     ]
 
     @cached_property
@@ -618,73 +606,3 @@ class Highlight(Orderable):
                     }
                 )
         return super().clean()
-
-
-class ResultsPage(AlertMixin, BasePage):
-    """Results BasePage.
-
-    This page is a placeholder for the results page at the end of a user's
-    journey through the collection explorer.
-
-    Eventually this page will run an editor-defined query against the
-    collections API and display the results.
-    """
-
-    title_prefix = models.CharField(max_length=200, blank=True)
-    sub_heading = models.CharField(max_length=200, blank=False)
-    introduction = models.TextField(blank=False)
-
-    content_panels = BasePage.content_panels + [
-        FieldPanel("title_prefix"),
-        FieldPanel("sub_heading"),
-        FieldPanel("introduction"),
-        InlinePanel("records", heading="Records"),
-    ]
-
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
-
-    parent_page_types = [
-        "collections.TimePeriodExplorerPage",
-        "collections.TopicExplorerPage",
-    ]
-    subpage_types = []
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
-
-
-class ResultsPageRecord(Orderable, models.Model):
-    """Map orderable records data to ResultsPage"""
-
-    page = ParentalKey("ResultsPage", on_delete=models.CASCADE, related_name="records")
-    record_iaid = models.TextField(verbose_name="Record")
-    teaser_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-        help_text="Image that will appear on thumbnails and promos around the site.",
-    )
-    description = models.TextField(
-        help_text="Optional field to override the description for this record in the teaser.",
-        blank=True,
-    )
-
-    @cached_property
-    def record(self):
-        """Fetch associated record BasePage.
-
-        Capture any exception thrown by KongClient and return None so we can
-        skip this record on the results BasePage.
-        """
-        try:
-            return records_client.fetch(iaid=self.record_iaid)
-        except KongAPIError:
-            return None
-
-    panels = [
-        FieldPanel("record_iaid", widget=RecordChooser),
-        FieldPanel("teaser_image"),
-        FieldPanel("description"),
-    ]

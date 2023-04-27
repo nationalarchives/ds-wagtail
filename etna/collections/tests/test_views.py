@@ -13,7 +13,7 @@ import responses
 from etna.core.test_utils import prevent_request_warnings
 
 from ...ciim.tests.factories import create_record, create_response
-from ..models import ExplorerIndexPage, ResultsPage, TopicExplorerPage
+from ..models import ExplorerIndexPage, TopicExplorerPage
 
 
 class TestRecordChooseView(WagtailPageTestCase):
@@ -110,105 +110,3 @@ class TestRecordChooseView(WagtailPageTestCase):
         response = self.client.get("/admin/record-chooser/invalid/")
 
         self.assertEqual(response.status_code, 404)
-
-
-class TestEditResultsPage(WagtailPageTestCase):
-    def setUp(self):
-        super().setUp()
-        self.login()
-
-        root = Site.objects.get().root_page
-
-        explorer_page = ExplorerIndexPage(
-            title="Explorer Index Page", intro="test", teaser_text="test"
-        )
-        root.add_child(instance=explorer_page)
-
-        self.topic_page = TopicExplorerPage(
-            title="Topic", intro="test", teaser_text="test"
-        )
-        explorer_page.add_child(instance=self.topic_page)
-
-        self.results_page = ResultsPage(
-            title="Results", introduction="test", sub_heading="test", teaser_text="test"
-        )
-        self.topic_page.add_child(instance=self.results_page)
-
-    def test_add_records(self):
-        data = nested_form_data(
-            {
-                "title": "Results",
-                "slug": "results",
-                "sub_heading": "Sub Heading",
-                "introduction": "Introduction",
-                "teaser_text": "teaser",
-                "records": inline_formset(
-                    [
-                        {
-                            "id": "",
-                            "record_iaid": "C10297",
-                        }
-                    ],
-                ),
-                "action-publish": "Publish",
-                "search_description": "",
-            }
-        )
-
-        response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.results_page.id,)), data
-        )
-
-        self.assertRedirects(
-            response, reverse("wagtailadmin_explore", args=(self.topic_page.id,))
-        )
-        self.assertEqual(self.results_page.records.count(), 1)
-
-    def test_remove_records(self):
-        self.results_page.records.create(record_iaid="C140", page=self.results_page)
-        self.results_page.save()
-
-        data = nested_form_data(
-            {
-                "title": "Results",
-                "slug": "results",
-                "sub_heading": "Sub Heading",
-                "introduction": "Introduction",
-                "teaser_text": "teaser",
-                "records": inline_formset(
-                    [
-                        {
-                            "id": "",
-                            "record_iaid": "C10297",
-                        }
-                    ],
-                    initial=1,
-                ),
-                "action-publish": "Publish",
-                "search_description": "",
-            }
-        )
-        data["records-0-DELETE"] = "1"
-        data["records-0-id"] = self.results_page.records.first().id
-
-        response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.results_page.id,)), data
-        )
-
-        self.assertRedirects(
-            response, reverse("wagtailadmin_explore", args=(self.topic_page.id,))
-        )
-        self.assertEqual(self.results_page.records.count(), 0)
-
-    def test_view_edit_page(self):
-        """Viewing an edit page for a ResultsPage with associated records requires a
-        request to Kong to fetch the record details. This test is a smoke test to ensure
-        the page can load.
-        """
-        self.results_page.records.create(record_iaid="C140", page=self.results_page)
-
-        response = self.client.get(
-            reverse("wagtailadmin_pages:edit", args=(self.results_page.id,))
-        )
-
-        self.assertEqual(response.status_code, HTTPStatus.OK)
