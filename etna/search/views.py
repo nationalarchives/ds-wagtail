@@ -675,8 +675,6 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
                 self.add_article_page_for_url(context["page"])
-            if filter_aggregation == "highlight" and "page" in context:
-                self.add_results_page_for_url(context["page"])
         return context
 
 
