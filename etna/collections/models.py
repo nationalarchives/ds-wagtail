@@ -124,9 +124,9 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
 
     skos_id = models.CharField(
         unique=True,
+        blank=True,
         db_index=True,
-        editable=False,
-        max_length=255,
+        max_length=100,
         verbose_name="SKOS identifier",
         help_text="Used as the identifier for this topic when sending page metadata to the CIIM API.",
     )
@@ -141,7 +141,9 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         ]
     )
 
-    settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
+    settings_panels = (
+        BasePage.settings_panels + [FieldPanel("skos_id")] + AlertMixin.settings_panels
+    )
 
     # DataLayerMixin overrides
     gtm_content_group = "Explorer"
@@ -158,7 +160,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def clean(self, *args, **kwargs):
         if not self.skos_id and self.title:
             # Generate a unique skos_id value for new pages
-            base_value = skos_id_from_text(self.title)
+            base_value = skos_id_from_text(self.title[:100])
             self.skos_id = base_value
             i = 2
             while (
@@ -166,7 +168,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
                 .filter(skos_id=self.skos_id)
                 .exists()
             ):
-                self.skos_id = f"{base_value[:252]}_{i}"
+                self.skos_id = f"{base_value[:97]}_{i}"
                 i += 1
         return super().clean(*args, **kwargs)
 

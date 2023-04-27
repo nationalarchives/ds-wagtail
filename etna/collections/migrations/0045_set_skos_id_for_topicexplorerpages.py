@@ -8,12 +8,12 @@ def migrate_forwards(apps, schema_editor):
     TopicExplorerPage = apps.get_model("collections.TopicExplorerPage")
     to_update = []
     for obj in TopicExplorerPage.objects.all():
-        base_value = skos_id_from_text(obj.title)
+        base_value = skos_id_from_text(obj.title[:100])
         obj.skos_id = base_value
         i = 2
         while obj.skos_id in (other.skos_id for other in to_update):
             # NOTE: Trimming base_value to ensure there are 3 chars left over for the suffix
-            obj.skos_id = f"{base_value[:252]}_{i}"
+            obj.skos_id = f"{base_value[:97]}_{i}"
             i += 1
         to_update.append(obj)
     TopicExplorerPage.objects.bulk_update(to_update, fields=["skos_id"])

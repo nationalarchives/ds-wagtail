@@ -74,9 +74,9 @@ class ArticleIndexPage(BasePageWithIntro):
 class ArticleTag(TagBase):
     free_tagging = False
     skos_id = models.CharField(
+        blank=True,
         unique=True,
         db_index=True,
-        editable=False,
         max_length=100,
         verbose_name="SKOS identifier",
         help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
@@ -89,6 +89,7 @@ class ArticleTag(TagBase):
     panels = (
         FieldPanel("name"),
         FieldPanel("slug"),
+        FieldPanel("skos_id"),
     )
 
     def clean(self, *args, **kwargs):

@@ -8,7 +8,7 @@ def migrate_forwards(apps, schema_editor):
     ArticleTag = apps.get_model("articles.ArticleTag")
     to_update = []
     for obj in ArticleTag.objects.all():
-        base_value = skos_id_from_text(obj.name)
+        base_value = skos_id_from_text(obj.name[:100])
         obj.skos_id = base_value
         i = 2
         while obj.skos_id in (other.skos_id for other in to_update):

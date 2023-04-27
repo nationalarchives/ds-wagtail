@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             field=models.CharField(
                 blank=True,
                 help_text="Used as the identifier for this topic when sending page metadata to the CIIM API.",
-                max_length=255,
+                max_length=100,
                 verbose_name="SKOS identifier",
             ),
         ),
