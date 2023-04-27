@@ -64,11 +64,13 @@
     <body class="{% block body_class %}{% endblock %}">
         {# icon sprites #}
         {% include "includes/icons/sprites.html" %}
+
         {% if show_cookie_notice %}
-        {% include 'includes/cookie-consent.html' %}
+            {% include 'includes/cookie-consent.html' %}
         {% endif %}
         <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
         {% wagtailuserbar %}
+
         {% if search_query %}
             <a href="#search-results-title" class="skip-to-content-link sr-only sr-only-focusable">Skip to search results</a>
         {% endif %}

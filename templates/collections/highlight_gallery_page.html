@@ -16,40 +16,6 @@
     {% endif %}
 
     {% if page.featured_article %}
-        <div class="container">
-            <div class="featured-article">
-                {% if page.featured_article.teaser_image %}
-                    <div class="featured-article__image">
-                        <picture>
-                            {% image page.featured_article.teaser_image fill-412x361 as hero %}
-                            <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                            {% image page.featured_article.teaser_image fill-510x351 as hero %}
-                            <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                            {% image page.featured_article.teaser_image fill-510x304 as hero %}
-                            <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                            {% image page.featured_article.teaser_image fill-345x495 as hero %}
-                            <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                            {% image page.featured_article.teaser_image fill-555x367 as hero %}
-                            <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                            {% if page.featured_article.hero_image_decorative %}
-                                <img src="{{ hero.url }}" alt="" />
-                            {% else %}
-                                <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
-                            {% endif %}
-                        </picture>
-                    </div>
-                {% endif %}
-                <div class="featured-article__description">
-                    <h2 class="featured-article__heading">
-                        <small>{% trans "Spotlight on" %}</small>
-                        {{ page.featured_article.title }}
-                    </h2>
-                    <p>{{ page.featured_article.teaser_text }}</p>
-                    <a class="tna-button--dark" href="{% pageurl page.featured_article %}">Read <span class="sr-only">about {{ page.featured_article.title }}</span></a>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-
-
+        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    {% endif %}    
 {% endblock %}
