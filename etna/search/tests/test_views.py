@@ -863,37 +863,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     def setUp(self):
         super().setUp()
 
-        # create results page object each for Topic and Time
-        home_page = HomePage.objects.get()
-        explorer_index_page = ExplorerIndexPage(
-            title="Explore the collection", intro="test", teaser_text="test"
-        )
-        home_page.add_child(instance=explorer_index_page)
-
-        time_period_explorer_index_page = TimePeriodExplorerIndexPage(
-            title="Explore by time period", intro="test", teaser_text="test"
-        )
-        explorer_index_page.add_child(instance=time_period_explorer_index_page)
-
-        time_period_explorer_page = TimePeriodExplorerPage(
-            title="Early modern",
-            intro="test",
-            teaser_text="test",
-            start_year="1485",
-            end_year="1714",
-        )
-        time_period_explorer_index_page.add_child(instance=time_period_explorer_page)
-
-        topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Explore by topic", intro="test", teaser_text="test"
-        )
-        explorer_index_page.add_child(instance=topic_explorer_index_page)
-
-        topic_explorer_page = TopicExplorerPage(
-            title="Agriculture and Environment", intro="test", teaser_text="test"
-        )
-        topic_explorer_index_page.add_child(instance=topic_explorer_page)
-
         # create article page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
