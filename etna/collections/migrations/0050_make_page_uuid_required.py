@@ -6,7 +6,8 @@ import uuid
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0044_add_page_uuid"),
+        ("core", "0003_set_page_uuid"),
+        ("collections", "0049_add_page_uuid"),
     ]
 
     operations = [
@@ -19,13 +20,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name="highlightgallerypage",
-            name="uuid",
-            field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
-            ),
-        ),
-        migrations.AlterField(
-            model_name="resultspage",
             name="uuid",
             field=models.UUIDField(
                 default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"

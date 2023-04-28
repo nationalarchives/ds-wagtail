@@ -6,7 +6,8 @@ import uuid
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("articles", "0076_add_page_uuid"),
+        ("core", "0003_set_page_uuid"),
+        ("articles", "0079_add_page_uuid"),
     ]
 
     operations = [

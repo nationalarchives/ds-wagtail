@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0043_timeperiodexplorerindexpage_hero_image_caption_and_more"),
+        ("collections", "0048_alter_topicexplorerpage_skos_id"),
     ]
 
     operations = [
@@ -16,11 +16,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name="highlightgallerypage",
-            name="uuid",
-            field=models.UUIDField(null=True),
-        ),
-        migrations.AddField(
-            model_name="resultspage",
             name="uuid",
             field=models.UUIDField(null=True),
         ),

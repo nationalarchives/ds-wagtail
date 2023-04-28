@@ -38,8 +38,8 @@ def migrate_backwards(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("core", "0002_add_beta_banner_fields"),
-        ("articles", "0076_add_page_uuid"),
-        ("collections", "0044_add_page_uuid"),
+        ("articles", "0079_add_page_uuid"),
+        ("collections", "0049_add_page_uuid"),
         ("generic_pages", "0007_add_page_uuid"),
         ("home", "0023_add_page_uuid"),
     ]
