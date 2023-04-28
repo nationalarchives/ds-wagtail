@@ -107,9 +107,8 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     This page represents one of the many categories a user may select in the
     collection explorer.
 
-    A category page is responsible for listing its child pages, which may be either
-    another CategoryPage (to allow the user to make a more fine-grained choice) or a
-    single ResultsPage (to output the results of their selection).
+    An explorer page is responsible for listing pages related to its topic/time period,
+    which may be a HighlightGallery, Article, or RecordArticle.
     """
 
     featured_article = models.ForeignKey(
@@ -252,9 +251,8 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     This page represents one of the many categories a user may select in the
     collection explorer.
 
-    A category page is responsible for listing its child pages, which may be either
-    another CategoryPage (to allow the user to make a more fine-grained choice) or a
-    single ResultsPage (to output the results of their selection).
+    An explorer page is responsible for listing pages related to its topic/time period,
+    which may be a HighlightGallery, Article, or RecordArticle.
     """
 
     featured_article = models.ForeignKey(
