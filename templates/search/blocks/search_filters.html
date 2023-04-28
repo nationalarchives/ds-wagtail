@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile">
+    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
         <h2 class="search-sort-view__heading">
             <label for="{{form.sort_by.id_for_label}}">Sort by</label>
         </h2>
@@ -105,9 +105,13 @@
                 {% include "search/includes/filter.html" with field=form.type %}
                 {% include "search/includes/filter.html" with field=form.country %}
             {% endif %}
+
+            {% if form.group.value == bucketkeys.ARCHIVE.value %}
+                {% include "search/includes/filter.html" with field=form.location %}
+            {% endif %}
         </div>
 
-        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country'|include_hidden_fields:form }}
+        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location'|include_hidden_fields:form }}
       
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
