@@ -76,7 +76,7 @@ class TestTopicExplorerIndexPages(TestCase):
         )
 
 
-class TestTopicExplorerPageClean(TestCase):
+class TestTopicExplorerPage(TestCase):
     def setUp(self):
         root_page = Site.objects.get().root_page
         self.index_page = TopicExplorerIndexPage(
@@ -134,6 +134,18 @@ class TestTopicExplorerPageClean(TestCase):
         obj = TopicExplorerPage(title="Test Topic")
         obj.clean()
         self.assertEqual(obj.skos_id, "Test_Topic_4")
+
+    def test_page_skos_id_preserved_when_revision_value_differs(self):
+        self.topic_page.skos_id = "SomeOtherValue"
+        revision = self.topic_page.save_revision()
+        self.topic_page.refresh_from_db()
+
+        topic_page_recreated = revision.as_object()
+
+        # Thanks to with_content_json() overrides, the recreated topic page
+        # should retain the `skos_id` value saved for `self.topic_page`
+        # initally, and ignore the new value from the revision
+        self.assertEqual(topic_page_recreated.skos_id, "Test_Topic")
 
 
 class TestTimePeriodExplorerIndexPages(TestCase):
