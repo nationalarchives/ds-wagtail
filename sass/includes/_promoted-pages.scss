@@ -1,0 +1,51 @@
+.promoted-pages {
+    background-color: $color__yellow_5;
+
+    &__image {
+        width: 100%;
+        height: auto;
+    }
+
+    &__heading {
+        @include font-size(xxl);
+        font-weight: $font-weight-bold;
+        font-family: $font__supria-sans;
+        margin: 0;
+        padding: 0;
+
+        line-height: 45px;
+        letter-spacing: 0em;
+        margin-bottom: 48px;
+        margin-top: 60px;
+    }
+
+    &__cards {
+        padding: 0;
+    }
+
+    &__card {
+        color: $color__black;
+        margin-bottom: 0;
+        text-decoration: none;
+
+        @media screen and (min-width: $screen__lg) {
+            margin-bottom: 72px;
+            }
+        }
+
+    &__title {
+        @include font-size(l);
+        font-weight: 700;
+        line-height: 31px;
+        letter-spacing: 0em;
+    }
+
+    &__text {
+        @include font-size(xs);
+
+        &--gap {
+            margin-bottom: 12px;
+        }
+    }
+
+}

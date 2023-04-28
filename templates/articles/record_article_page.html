@@ -14,13 +14,7 @@
     <!-- TODO: HTML Boilerplate added for Blogs and Podcasts section.
     templates/articles/blocks/promoted_pages.html will also need editing -->
     {% if page.promoted_links %}
-        <div class="container"
-             data-container-name="topic-explorer"
-             id="analytics-topic-explorer">
-            <div class="row">
-                <div class="col-md-12">{% include_block page.promoted_links %}</div>
-            </div>
-        </div>
+        {% include_block page.promoted_links %}
     {% endif %}
     <!-- TODO: End of HTML Boilerplate -->
     {% if page.featured_article %}
