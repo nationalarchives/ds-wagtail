@@ -175,7 +175,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            .public()
+            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -185,8 +185,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            .live()
-            .public()
+            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
@@ -329,7 +328,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            .public()
+            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -339,7 +338,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            .public()
+            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
