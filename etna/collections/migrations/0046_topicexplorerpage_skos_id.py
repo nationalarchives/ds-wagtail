@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0043_timeperiodexplorerindexpage_hero_image_caption_and_more"),
+        ("collections", "0045_alter_timeperiodexplorerpage_body_and_more"),
     ]
 
     operations = [

@@ -26,7 +26,7 @@ def migrate_backwards(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0044_topicexplorerpage_skos_id"),
+        ("collections", "0046_topicexplorerpage_skos_id"),
     ]
 
     operations = [migrations.RunPython(migrate_forwards, migrate_backwards)]

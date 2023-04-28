@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0045_set_skos_id_for_topicexplorerpages"),
+        ("collections", "0047_set_skos_id_for_topicexplorerpages"),
     ]
 
     operations = [
