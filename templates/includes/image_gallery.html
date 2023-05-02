@@ -77,7 +77,6 @@
                 {% if item.image.transcription or item.image.translation %}
                     <div>
                         <div role="tablist"
-                             aria-labelledby="tablist-1-{{ forloop.counter }}"
                              class="transcription__tablist hidden">
                             {% if item.image.transcription %}
                                 <button id="tab-1-{{ forloop.counter }}"
@@ -126,8 +125,9 @@
     {% endfor %}
 {% endwith %}
 <button class="transcription__close hidden" id="closeButton" type="button">
-    Close
-
+    Close images
+    {% if has_text %}and transcripts{% endif %}
+    
     {% include "includes/icon.html" with name="x-mark" classname="transcription__icon" %}
 </button>
 </div>

@@ -33,7 +33,13 @@ class ImageGallery {
             this.show(this.transcriptionPreview)
             this.show(this.openButton);
             this.hide(this.closeButton);
-            this.transcriptionPreview.scrollIntoView();
+            this.openButton.scrollIntoView(
+                {            
+                    behavior: 'auto',
+                    block: 'center',
+                    inline: 'center'
+                }
+            );
         })
         this.openButton.addEventListener('click', (e) =>{
             e.preventDefault();
