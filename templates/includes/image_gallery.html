@@ -32,7 +32,7 @@
         <!--start of transcript element-->
         {% for item in gallery %}
             <div id="item-{{ forloop.counter }}">
-                <p class="transcription__image-counter" tabindex="0">Image {{ forloop.counter }} of {{ gallery_length }}</p>
+                <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ gallery_length }}</p>
                 <div class="transcription__content {% if not item.image.transcription and not item.image.translation %}transcription__content--full-width{% endif %}">
                     <figure aria-labelledby="item-{{ forloop.counter }}-caption">
                         <picture class="transcription__figure-image">
@@ -77,7 +77,6 @@
                 {% if item.image.transcription or item.image.translation %}
                     <div>
                         <div role="tablist"
-                             aria-labelledby="tablist-1-{{ forloop.counter }}"
                              class="transcription__tablist hidden">
                             {% if item.image.transcription %}
                                 <button id="tab-1-{{ forloop.counter }}"
@@ -126,8 +125,10 @@
     {% endfor %}
 {% endwith %}
 <button class="transcription__close hidden" id="closeButton" type="button">
-    Close
-    {% include "static/images/fontawesome-svgs/x-mark.svg" with classes="transcription__icon" %}
+    Close images
+    {% if has_text %}and transcripts{% endif %}
+    
+    {% include "includes/icon.html" with name="x-mark" classname="transcription__icon" %}
 </button>
 </div>
 <!--end of transcript element-->

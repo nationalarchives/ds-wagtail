@@ -1,6 +1,5 @@
 .generic-intro {
   padding-top: 1rem;
-  padding-bottom: 1rem;
   background-color: $color__white;
   color: $color__black;
 
@@ -30,7 +29,6 @@
   }
 
   &__paragraph {
-    max-width: 50rem; // 800px for decent reading line length
     font-size: 1.125rem; // one off font size (18px)
     margin-bottom: 0.5rem;
 

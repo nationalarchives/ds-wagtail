@@ -158,7 +158,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         # View the page to check rendering also
         response = self.client.get(self.article_page.get_url())
-        self.assertContains(response, "Test record")
+        self.assertContains(response, "C123456")
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,

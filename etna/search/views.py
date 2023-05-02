@@ -29,7 +29,6 @@ from ..ciim.constants import (
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
-from ..collections.models import ResultsPage
 from ..records.api import records_client
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
@@ -670,44 +669,12 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
                         f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
                     )
 
-    def add_results_page_for_url(self, page: Page) -> None:
-        """
-        Finds the Results page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
-        Unmatched url is bypassed but logged.
-        """
-        slugs = [
-            result.url.rstrip("/").split("/").pop()
-            for result in page.object_list
-            if result.has_source_url()
-        ]
-
-        # find pages with matching slugs, and key them by their absolute URL
-        wagtail_pages = {
-            p.get_url(self.request): p
-            for p in ResultsPage.objects.live()
-            .filter(slug__in=slugs)
-            .select_related("teaser_image")
-        }
-
-        # Set 'source_page' on results with matching pages
-        for result in page.object_list:
-            if result.has_source_url():
-                absolute_url = urlparse(result.url).path
-                if source_page := wagtail_pages.get(absolute_url):
-                    result.source_page = source_page
-            else:
-                logger.debug(
-                    f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
-                )
-
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
                 self.add_article_page_for_url(context["page"])
-            if filter_aggregation == "highlight" and "page" in context:
-                self.add_results_page_for_url(context["page"])
         return context
 
 
