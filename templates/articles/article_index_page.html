@@ -48,7 +48,7 @@
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_article.title }}</p>
 
                 <p>{{ page.featured_article.teaser_text }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.is_newly_published %}data-label="New"{%endif%}>Read more about {{ page.featured_article.title }}</a>
+                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.is_newly_published %}data-label="New"{%endif%}>Read about {{ page.featured_article.title }}</a>
             </div>
         </div>
     </div>
