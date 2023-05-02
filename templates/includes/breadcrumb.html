@@ -7,6 +7,7 @@
            </li>
             {% for p in self.get_ancestors %}
                 {% if  p.depth > 2 %}
+                <span aria-hidden="true">></span>
                     <li class="govuk-breadcrumbs__list-item">
                         <a data-component-name="Breadcrumb" data-link-type="Breadcrumb link" data-link="{{ p.title }}" href="{{ p.url }}" >{{ p.title }}</a>
                     </li>
