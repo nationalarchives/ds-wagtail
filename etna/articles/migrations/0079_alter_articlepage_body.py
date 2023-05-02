@@ -12,7 +12,7 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("articles", "0075_alter_articlepage_body"),
+        ("articles", "0078_alter_articletag_skos_id"),
     ]
 
     operations = [
