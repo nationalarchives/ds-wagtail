@@ -11,12 +11,9 @@
     {% if page.featured_highlight_gallery %}
         {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all page=page.featured_highlight_gallery %}
     {% endif %}
-    <!-- TODO: HTML Boilerplate added for Blogs and Podcasts section.
-    templates/articles/blocks/promoted_pages.html will also need editing -->
     {% if page.promoted_links %}
         {% include_block page.promoted_links %}
     {% endif %}
-    <!-- TODO: End of HTML Boilerplate -->
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
