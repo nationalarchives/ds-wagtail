@@ -32,7 +32,7 @@
         <!--start of transcript element-->
         {% for item in gallery %}
             <div id="item-{{ forloop.counter }}">
-                <p class="transcription__image-counter" tabindex="0">Image {{ forloop.counter }} of {{ gallery_length }}</p>
+                <p class="transcription__image-counter">Image {{ forloop.counter }} of {{ gallery_length }}</p>
                 <div class="transcription__content {% if not item.image.transcription and not item.image.translation %}transcription__content--full-width{% endif %}">
                     <figure aria-labelledby="item-{{ forloop.counter }}-caption">
                         <picture class="transcription__figure-image">
