@@ -7,6 +7,7 @@
     padding: 0;
   }
 }
+
 ul.breadcrumb {
   padding: 10px 16px;
   list-style: none;
@@ -21,9 +22,10 @@ ul.breadcrumb li {
   display: inline;
   font-family: 'Open Sans', sans-serif;
 }
-ul.breadcrumb li + li:before {
-  padding: 2px;
-  color: black;
+
+ul.breadcrumb {
+    padding: 2px;
+    color: black;
 }
 ul.breadcrumb li a {
   color: black;
@@ -31,6 +33,12 @@ ul.breadcrumb li a {
 }
 ul.breadcrumb li a:hover {
   text-decoration: none;
+}
+
+.breadcrumb__separator {
+    @include font-size(xs);
+    padding: 2px;
+    color: black;
 }
 
 //hide the first child - The National Archives - now handled by python logic
