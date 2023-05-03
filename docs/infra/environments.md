@@ -5,7 +5,7 @@
 The GitHub branch and Hosted environments have the same name:
 
 - `main`: for Live/Production
-- `develop` : for Development
+- `develop`: for Development
 
 
 ## Pre-requisites for deployment to develop

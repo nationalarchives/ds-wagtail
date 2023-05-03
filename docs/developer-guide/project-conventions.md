@@ -24,11 +24,9 @@ Our custom container responsible for running the application. Built from the
 official [python 3.11](https://hub.docker.com/_/python/) base image
 
 During the build step our custom container installs our project's dependencies
-using [Poetry](https://python-poetry.org) as defined in
-[`pypproject.toml`](pyproject.toml) using the approprpriate versions outlined
-in [`Poetry.lock`](Poetry.lock)
+using [Poetry](https://python-poetry.org) as defined in `pypproject.toml` using the approprpriate versions outlined in `Poetry.lock`
 
-Build steps for the `web` container are defined in the project's [`Dockerfile`](Dockerfile).
+Build steps for the `web` container are defined in the project's `Dockerfile`.
 
 Our `web` container has a [dependency](https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on) on the `db` container, as Django/Wagtail will not run without a database to connect to.
 
@@ -89,10 +87,10 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Branch names for releases should follow: `release/major.minor.patch`
 - Branch names for housekeeping tasks or other unticketed work should follow: `chore/short-description`
 - For example:
-  - `feature/UN-123-extra-squiggles`
-  - `fix/DF-999-image-view-error`
-  - `release/1.0.0`
-  - `chore/update-documentation`
+    - `feature/UN-123-extra-squiggles`
+    - `fix/DF-999-image-view-error`
+    - `release/1.0.0`
+    - `chore/update-documentation`
 
 ### Naming pull requests
 
@@ -100,10 +98,10 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Pull requests for release branches should be titled: `Release X.X.X into main`
 - Pull requests for housekeeping tasks or other unticketed work should be titled: `CHORE: short-description`
 - For example:
-  - `UN-123: Add extra squiggles`
-  - `DF-999: Fix image view error`
-  - `Release 1.0.0 into main`
-  - `CHORE: Update documentation`
+    - `UN-123: Add extra squiggles`
+    - `DF-999: Fix image view error`
+    - `Release 1.0.0 into main`
+    - `CHORE: Update documentation`
 
 ### Merging branches
 
