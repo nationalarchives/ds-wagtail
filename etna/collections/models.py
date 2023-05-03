@@ -569,10 +569,10 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     ]
 
     search_fields = BasePage.search_fields + [
-        index.SearchField("highlights_text", boost=1),
-        index.SearchField("topic_names"),
-        index.SearchField("time_period_names"),
-        index.SearchField("teaser_text"),
+        index.AutocompleteField("highlights_text", boost=1),
+        index.AutocompleteField("topic_names"),
+        index.AutocompleteField("time_period_names"),
+        index.AutocompleteField("teaser_text"),
     ]
 
     @cached_property

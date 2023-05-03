@@ -138,7 +138,7 @@ class ArticlePage(
     tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
     search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
+        index.AutocompleteField("article_tag_names"),
     ]
 
     # DataLayerMixin overrides
@@ -180,10 +180,10 @@ class ArticlePage(
     subpage_types = []
 
     search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("article_tag_names", boost=2),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
+        index.AutocompleteField("body"),
+        index.AutocompleteField("article_tag_names", boost=2),
+        index.AutocompleteField("topic_names", boost=1),
+        index.AutocompleteField("time_period_names", boost=1),
     ]
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -366,11 +366,11 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     ]
 
     search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("gallery_text"),
-        index.SearchField("date_text"),
-        index.SearchField("about"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
+        index.AutocompleteField("gallery_text"),
+        index.AutocompleteField("date_text"),
+        index.AutocompleteField("about"),
+        index.AutocompleteField("topic_names", boost=1),
+        index.AutocompleteField("time_period_names", boost=1),
     ]
 
     @cached_property

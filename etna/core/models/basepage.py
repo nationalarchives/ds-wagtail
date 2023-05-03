@@ -126,5 +126,5 @@ class BasePageWithIntro(BasePage):
     content_panels = BasePage.content_panels + [FieldPanel("intro")]
 
     search_fields = BasePage.search_fields + [
-        index.SearchField("intro", boost=3),
+        index.AutocompleteField("intro", boost=3),
     ]

@@ -125,10 +125,10 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     search_fields = AbstractImage.search_fields + [
-        index.SearchField("transcription", boost=1),
-        index.SearchField("translation", boost=1),
-        index.SearchField("description"),
-        index.SearchField("copyright"),
+        index.AutocompleteField("transcription", boost=1),
+        index.AutocompleteField("translation", boost=1),
+        index.AutocompleteField("description"),
+        index.AutocompleteField("copyright"),
         index.FilterField("record"),
         index.FilterField("is_sensitive"),
     ]
