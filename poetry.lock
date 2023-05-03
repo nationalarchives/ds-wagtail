@@ -424,6 +424,14 @@ python-versions = ">=3.6"
 python-dateutil = ">=2.4"
 
 [[package]]
+name = "filetype"
+version = "1.2.0"
+description = "Infer file type and MIME type of any file/buffer. No external dependencies."
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "flake8"
 version = "5.0.4"
 description = "the modular source code checker: pep8 pyflakes and co"
@@ -1231,7 +1239,7 @@ socks = ["PySocks (>=1.5.6,!=1.5.7,<2.0)"]
 
 [[package]]
 name = "wagtail"
-version = "4.2.2"
+version = "5.0"
 description = "A Django content management system."
 category = "main"
 optional = false
@@ -1240,7 +1248,7 @@ python-versions = ">=3.7"
 [package.dependencies]
 anyascii = ">=0.1.5"
 beautifulsoup4 = ">=4.8,<4.12"
-Django = ">=3.2,<4.2"
+Django = ">=3.2,<4.3"
 django-filter = ">=2.2,<23"
 django-modelcluster = ">=6.0,<7.0"
 django-permissionedforms = ">=0.1,<1.0"
@@ -1254,11 +1262,11 @@ openpyxl = ">=3.0.10,<4.0"
 Pillow = ">=4.0.0,<10.0.0"
 requests = ">=2.11.1,<3.0"
 telepath = ">=0.1.1,<1"
-Willow = ">=1.4,<1.5"
+Willow = ">=1.5,<1.6"
 
 [package.extras]
 docs = ["pyenchant (>=3.1.1,<4)", "sphinxcontrib-spelling (>=5.4.0,<6)", "Sphinx (>=1.5.2)", "sphinx-autobuild (>=0.6.0)", "sphinx-wagtail-theme (==6.0.0)", "myst-parser (==0.18.1)", "sphinx-copybutton (>=0.5,<1.0)"]
-testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=3.0,<3.2)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-frontdoor (>=1.0,<1.1)", "django-pattern-library (>=0.7,<0.8)", "coverage (>=3.7.0)", "black (==22.3.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-comprehensions (==3.8.0)", "flake8-print (==5.0.0)", "doc8 (==0.8.1)", "flake8-assertive (==2.0.0)", "semgrep (==1.3.0)", "curlylint (==0.13.1)", "djhtml (==1.4.13)", "polib (>=1.1,<2.0)", "wagtail-factories (>=4.0,<5)"]
+testing = ["python-dateutil (>=2.7)", "pytz (>=2014.7)", "elasticsearch (>=5.0,<6.0)", "Jinja2 (>=3.0,<3.2)", "boto3 (>=1.16,<1.17)", "freezegun (>=0.3.8)", "azure-mgmt-cdn (>=12.0,<13.0)", "azure-mgmt-frontdoor (>=1.0,<1.1)", "django-pattern-library (>=0.7,<0.8)", "coverage (>=3.7.0)", "black (==22.3.0)", "flake8 (>=3.6.0)", "isort (==5.6.4)", "flake8-blind-except (==0.1.1)", "flake8-comprehensions (==3.8.0)", "flake8-print (==5.0.0)", "doc8 (==0.8.1)", "flake8-assertive (==2.0.0)", "semgrep (==1.3.0)", "curlylint (==0.13.1)", "djhtml (==1.5.2)", "polib (>=1.1,<2.0)", "factory-boy (>=3.2)"]
 
 [[package]]
 name = "wagtail-font-awesome-svg"
@@ -1334,14 +1342,18 @@ python-versions = "*"
 
 [[package]]
 name = "willow"
-version = "1.4.1"
+version = "1.5"
 description = "A Python image library that sits on top of Pillow, Wand and OpenCV"
 category = "main"
 optional = false
-python-versions = ">=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*"
+python-versions = ">=3.7"
+
+[package.dependencies]
+defusedxml = ">=0.7,<1.0"
+filetype = ">=1.0.10,<1.1.0 || >1.1.0"
 
 [package.extras]
-testing = ["Pillow (>=6.0.0,<10.0.0)", "Wand (>=0.6,<1.0)", "mock (>=3.0,<4.0)"]
+testing = ["Pillow (>=9.1.0,<11.0.0)", "Wand (>=0.6,<1.0)", "mock (>=3.0,<4.0)", "pillow-heif (>=0.7.0,<1.0.0)"]
 
 [[package]]
 name = "zipp"
@@ -1358,7 +1370,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "flake8 (<5)", "pytest-co
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "5dccf267d71ed8982faf745527912fd2ddbeb1be72b66a771d7868fc1708a473"
+content-hash = "82cb970ea51a4b7b5803ae189d56e3a9240cc278a6218ff64074cdadcc0bc005"
 
 [metadata.files]
 anyascii = []
@@ -1397,6 +1409,7 @@ draftjs-exporter = []
 et-xmlfile = []
 executing = []
 faker = []
+filetype = []
 flake8 = []
 ghp-import = []
 gunicorn = []
