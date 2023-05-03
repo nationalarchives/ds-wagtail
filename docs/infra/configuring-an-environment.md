@@ -1,4 +1,4 @@
-# Configuration an environment
+# Configuring an environment
 
 Most app configuration is controlled via **env** vars, which are managed from the 'Configuration' panel in AWS.
 

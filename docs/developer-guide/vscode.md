@@ -2,8 +2,7 @@
 
 [VSCode](https://code.visualstudio.com/) is a great editor, but due to the way project is set up, getting richer editor integration requires some hoop-jumping. Because projects are run under Docker, VSCode doesn't simply have access to the Python virtual environment, so some very useful features are disabled.
 
-!!! warning
-The following steps require the official VSCode distribution, rather than offshoots like [VSCodium](https://vscodium.com/).
+!!! Warning: The following steps require the official VSCode distribution, rather than offshoots like [VSCodium](https://vscodium.com/).
 
 ## Virutal environment integration
 

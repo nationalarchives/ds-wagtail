@@ -1,6 +1,6 @@
 # Dependency management
 
-## For Python/Django
+## For the backend
 
 The Etna project uses [Poetry](https://python-poetry.org/docs/) to manage Python dependencies, which uses lock-file to help ensure environment consistency.
 
