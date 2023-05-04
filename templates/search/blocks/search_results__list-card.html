@@ -12,29 +12,13 @@
 
 <li class="search-results__list-card">
     <div class="search-results__list-card-content">
+
         <div class="row">
-            <div class="col-md-3 order-md-2">
-                {% if apply_teaser_image %}
-                    <div class="search-results__list-card-image">
-                        <picture>
-                            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
-                            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
-                            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
-                            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
-                            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-                            <img src="{{ teaser_image_large.url }}" alt="" class="card-group-secondary-nav__image-fallback"/>
-                        </picture>
-                    </div>
-                {% endif %}
-            </div>
-
-
-            <div class="col-md-9 order-md-1">
-
+            <div class="col-md-9">
                 <h3 class="search-results__list-card-heading">
                     <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
-                    {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span> {% endif %}
-                    {{ record.summary_title }}
+                        {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span> {% endif %}
+                        {{ record.summary_title }}
                     </a>
                 </h3>
 
@@ -59,9 +43,9 @@
                     {% if record.reference_number %}
                     <li class="search-results__list-card-metadata-item">
                         {% if form.group.value == 'archive' %}
-                            Archon code:
+                        Archon code:
                         {% else %}
-                            Catalogue reference:
+                        Catalogue reference:
                         {% endif %}
 
                         {{ record.reference_number }}
@@ -83,23 +67,51 @@
                     </li>
                     {% comment %}End debug attributes.{% endcomment %}
                 </ul>
+
             </div>
 
-            {% if record.is_digitised %}
-            <div class="search-results__list-card-delivery-options">
+            <div class="col-md-3">
+                {% if record.is_digitised %}
+                <div class="search-results__list-card-delivery-options">
 
-                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+                    <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
 
-                    <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-                </a>
-                <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-                    <p class="search-results__list-card-delivery-options-desc">
-                        <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
-                        Available to download and view online
-                    </p>
-                </a>
+                        <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
+                    </a>
+                    <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                        <p class="search-results__list-card-delivery-options-desc">
+                            <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                            Available online
+                        </p>
+                    </a>
+                </div>
+                {% endif %}
+
             </div>
-            {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-3 order-md-2">
+                {% if apply_teaser_image %}
+                    <div class="search-results__list-card-image">
+                        <picture>
+                            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
+                            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
+                            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
+                            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
+                            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
+                            <img src="{{ teaser_image_large.url }}" alt="" class="card-group-secondary-nav__image-fallback"/>
+                        </picture>
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="col-md-9 order-md-1">
+                <!--previous structure -- 04 may 2023 -->
+            </div>
+
+
         </div>
     </div>
 </li>
