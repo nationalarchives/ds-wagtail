@@ -112,7 +112,9 @@ class RecordLinkBlock(blocks.StructBlock):
     record = RecordChooserBlock(label=_("Record"))
     descriptive_title = blocks.CharBlock(label=_("Descriptive title"), max_length=255)
     record_dates = blocks.CharBlock(label=_("Date(s)"), max_length=100)
-    thumbnail_image = ImageChooserBlock(label=_("Thumbnail image (optional)"), required=False)
+    thumbnail_image = ImageChooserBlock(
+        label=_("Thumbnail image (optional)"), required=False
+    )
 
     class Meta:
         icon = "archive"
