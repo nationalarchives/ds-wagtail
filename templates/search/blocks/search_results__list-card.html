@@ -29,19 +29,19 @@
                 <ul class="search-results__list-card-metadata">
 
                     {% if record.held_by %}
-                    <li class="search-results__list-card-metadata-item">
+                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
                         Held by: {{ record.held_by }}
                     </li>
                     {% endif %}
 
                     {% if record.date_created %}
-                    <li class="search-results__list-card-metadata-item">
+                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
                         Date: {{ record.date_created }}
                     </li>
                     {% endif %}
 
                     {% if record.reference_number %}
-                    <li class="search-results__list-card-metadata-item">
+                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
                         {% if form.group.value == 'archive' %}
                         Archon code:
                         {% else %}

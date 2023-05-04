@@ -57,8 +57,28 @@
     &-description {
         margin-bottom: 0.5rem;
         //max-width:70%;
+        font-weight: 100;
 
     }
+
+    &-metadata-item {
+
+        font-weight:100;
+    }
+
+    &-metadata-item-held-by-icon {
+        list-style-image: url(/static/images/icons/search-archive-icon.svg);
+    }
+
+    &-metadata-item-date-icon{
+        list-style-image: url(/static/images/icons/search-calendar-icon.svg);
+    }
+
+    &-metadata-item-data-icon{
+        list-style-image: url(/static/images/icons/search-data-icon.svg);
+    }
+
+
 
     &-delivery-options {
 
