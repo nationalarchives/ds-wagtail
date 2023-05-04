@@ -21,6 +21,9 @@
     }
 
     &__heading {
+        // provides visual boundary in high contrast mode
+        border-top: 1px solid transparent;
+
         &-main-title {
             font-size: 1.6rem;
         }

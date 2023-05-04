@@ -8,10 +8,12 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
     ContentImageBlock,
+    FeaturedRecordArticleBlock,
     ImageBlock,
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
+    QuoteBlock,
     SectionDepthAwareStructBlock,
 )
 
@@ -208,25 +210,6 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
         template = "articles/blocks/featured_collection.html"
 
 
-class QuoteBlock(SectionDepthAwareStructBlock):
-    """
-    A unique version of QuoteBlock for use in multi-level 'section'
-    blocks, where the heading element automatically changes to match
-    the content depth.
-    """
-
-    heading = blocks.CharBlock(required=False, max_length=100)
-    quote = blocks.RichTextBlock(
-        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
-    )
-    attribution = blocks.CharBlock(required=False, max_length=100)
-
-    class Meta:
-        icon = "openquote"
-        label = "Quote"
-        template = "articles/blocks/quote.html"
-
-
 class SubHeadingBlock(SectionDepthAwareStructBlock):
     heading = blocks.CharBlock(max_length=100, label="Sub-heading")
 
@@ -242,6 +225,7 @@ class SectionContentBlock(blocks.StreamBlock):
     sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
     media = MediaBlock()
+    featured_record_article = FeaturedRecordArticleBlock()
     featured_record = FeaturedRecordBlock()
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
