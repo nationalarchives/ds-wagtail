@@ -25,7 +25,7 @@ class TopicExplorerBlock(blocks.StructBlock):
 
 
 class LargeCardLinksBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100, default="More to explore")
+    heading = blocks.CharBlock(max_length=100, required=False)
     page_1 = blocks.PageChooserBlock(label=_("Link one target"))
     page_2 = blocks.PageChooserBlock(label=_("Link two target"))
 
