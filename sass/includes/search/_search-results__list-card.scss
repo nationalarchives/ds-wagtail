@@ -104,14 +104,23 @@
         }
 
         &-desc {
-            max-width: 12rem;
+            //max-width: 12rem;
+            max-width: 154px;
             margin-bottom: 0;
             margin-top: 0.2rem;
-            padding-left:1em;
+            padding:1em 2em;
+            background:black;
+            text-align: center;
         }
 
         &-link {
             display: block;
+            color: white;
+            text-decoration: none;
+        }
+
+        &-link:hover {
+            color:white;
         }
 
         @media only screen and (max-width: $screen__md) {
