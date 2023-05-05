@@ -34,13 +34,11 @@ class TimePeriodExplorerIndexBlock(blocks.StructBlock):
 
 
 class ExplorerIndexPageStreamBlock(blocks.StreamBlock):
-    time_period_explorer_index = TimePeriodExplorerIndexBlock()
-    topic_explorer_index = TopicExplorerIndexBlock()
+    large_card_links = LargeCardLinksBlock()
 
     class Meta:
         block_counts = {
-            "time_period_explorer_index": {"min_num": 1, "max_num": 1},
-            "topic_explorer_index": {"min_num": 1, "max_num": 1},
+            "large_card_links": {"max_num": 1},
         }
 
 
