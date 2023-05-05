@@ -9,7 +9,7 @@ class PromotedPagesBlock(blocks.StructBlock):
 
     class Meta:
         template = "collections/blocks/promoted_pages.html"
-        help_text = "Block used promote external pages"
+        help_text = "Block used to promote external pages"
         icon = "th-large"
 
 
