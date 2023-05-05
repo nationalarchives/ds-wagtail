@@ -16,6 +16,10 @@
         margin-right: 1rem;
     }
 
+    &-item {
+        margin-bottom:0;
+    }
+
     &-heading {
         font-family: $font__supria-sans;
         font-size: 1.7rem;
@@ -26,6 +30,8 @@
 
         }
     }
+
+
 
     &-full-width-image img{
 
@@ -44,7 +50,10 @@
         @media only screen and (min-width: 57rem) {
 
         }
+
     }
+
+
 
     &-link {
         color: $color__blue_4;
@@ -64,6 +73,7 @@
     &-metadata-item {
 
         font-weight:100;
+        line-height:2em;
     }
 
     &-metadata-item-held-by-icon {
@@ -76,6 +86,10 @@
 
     &-metadata-item-data-icon{
         list-style-image: url(/static/images/icons/search-data-icon.svg);
+    }
+
+    &-metadata-item-subjects-icon{
+        list-style-image: url(/static/images/icons/search-tag-icon.svg);
     }
 
 
