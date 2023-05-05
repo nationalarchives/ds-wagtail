@@ -2,20 +2,6 @@ from wagtail import blocks
 
 from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock
 
-
-class FeaturedPageBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100)
-    description = blocks.CharBlock(
-        required=False, max_length=200, help_text="A description of the featured page"
-    )
-    page = blocks.PageChooserBlock()
-
-    class Meta:
-        template = "collections/blocks/featured_page.html"
-        help_text = "Block used feature a page from within Wagtail"
-        icon = "arrow-up"
-
-
 class PromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
     sub_heading = blocks.CharBlock(max_length=200)
