@@ -124,6 +124,10 @@
             color:white;
         }
 
+        &-link:visited {
+            color:white;
+        }
+
         @media only screen and (max-width: $screen__md) {
             margin-left: auto;
             margin-right: auto;
