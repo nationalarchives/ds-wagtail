@@ -1,8 +1,7 @@
 {% extends 'base_page.html' %}
 
 {% load static %}
-{% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
+{% load wagtailmetadata_tags wagtailimages_tags wagtailcore_tags i18n %}
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
@@ -10,8 +9,7 @@
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
     <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row">
-        <h2 class="sr-only">Select a way to explore</h2>
+       <div class="row"> <!-- row for large link cards -->
             <ul class="card-group--no-flex">
                 {% for block in page.body %}
                     {% include_block block %}
@@ -19,6 +17,7 @@
             </ul>
        </div>
     </div>
+
 {% endblock %}
 
 {% block extra_js %}
