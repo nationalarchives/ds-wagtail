@@ -20,6 +20,10 @@ class MediaBlock(blocks.StructBlock):
     Embedded media block with a selectable background image.
     """
 
+    title = blocks.CharBlock(
+        required=True,
+        help_text="A descriptive title for the media block",
+    )
     background_image = ImageChooserBlock(
         help_text="A background image for the media block"
     )
