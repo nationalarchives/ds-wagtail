@@ -1,6 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import LargeCardLinksBlock, PromotedLinkBlock, PageListBlock
+from etna.core.blocks import LargeCardLinksBlock, PageListBlock, PromotedLinkBlock
 
 
 class PromotedPagesBlock(blocks.StructBlock):
@@ -48,6 +48,7 @@ class TopicIndexPageStreamBlock(blocks.StreamBlock):
         block_counts = {
             "large_card_links": {"max_num": 1},
         }
+
 
 class FeaturedCollectionBlock(blocks.StructBlock):
     items = PageListBlock(

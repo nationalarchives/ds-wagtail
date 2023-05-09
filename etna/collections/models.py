@@ -7,7 +7,12 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, PageChooserPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -23,10 +28,10 @@ from ..core.models import (
 from ..core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
+    FeaturedCollectionBlock,
     TimePeriodExplorerPageStreamBlock,
     TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
-    FeaturedCollectionBlock,
 )
 
 
@@ -45,7 +50,9 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Select a page to display in the featured area. This can be an Article, or Record Article."),
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
     )
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
@@ -54,10 +61,11 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         use_json_field=True,
     )
 
-
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
-        PageChooserPanel("featured_article", ["articles.ArticlePage", "articles.RecordArticlePage"]),
+        PageChooserPanel(
+            "featured_article", ["articles.ArticlePage", "articles.RecordArticlePage"]
+        ),
         FieldPanel("featured_pages"),
     ]
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
