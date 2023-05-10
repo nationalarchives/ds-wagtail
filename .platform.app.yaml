@@ -38,7 +38,7 @@ hooks:
 
     poetry config virtualenvs.create false
     poetry config virtualenvs.in-project true
-    poetry install --no-dev
+    poetry install --only main
 
     unset NPM_CONFIG_PREFIX
     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
