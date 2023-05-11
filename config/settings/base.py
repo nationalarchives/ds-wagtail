@@ -94,6 +94,7 @@ MIDDLEWARE = [
     "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.InterpretCookiesMiddleware",
+    "etna.core.middleware.SearchMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")
@@ -397,3 +398,7 @@ FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "prod
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+# NOTE: use INTEGER value
+SESSION_EXPIRY_VALUE = os.getenv("SESSION_EXPIRY_VALUE", 0)

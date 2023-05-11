@@ -10,6 +10,9 @@ from django.template.response import SimpleTemplateResponse, TemplateResponse
 
 from pytz import timezone
 
+from etna.records.views import record_detail_view
+from etna.search.views import CatalogueSearchView, FeaturedSearchView
+
 logger = logging.getLogger(__name__)
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
@@ -122,3 +125,53 @@ class InterpretCookiesMiddleware:
             ),
         )
         return response
+
+
+class SearchMiddleware:
+    """
+    Handles the session settings for "back to search results" functionality in the record details page.
+    """
+
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+        response = self.get_response(request)
+
+        return response
+
+    def process_view(self, request, view_func, view_args, view_kwargs):
+        # create or retain session var
+        if hasattr(view_func, "view_class"):
+            # set session when navigating from search view containing links to record details page
+            if view_func.view_class in (CatalogueSearchView, FeaturedSearchView):
+                request.session.set_expiry(settings.SESSION_EXPIRY_VALUE)
+                request.session["back_to_search_url"] = request.get_full_path()
+                return None
+        else:
+            if view_func.__name__ == record_detail_view.__name__:
+                # retain session var regardless of is exitence
+                return None
+
+        # delete session var a non-search view or function
+        if request.session.get("back_to_search_url", ""):
+            del request.session["back_to_search_url"]
+        return None
+        # if hasattr(view_func, "view_class"):
+        #     if view_func.view_class in (CatalogueSearchView, FeaturedSearchView):
+        #         # set session when navigating from search view containing links to record details page
+        #         request.session.set_expiry(settings.SESSION_EXPIRY_VALUE)
+        #         request.session["back_to_search_url"] = request.get_full_path()
+        #     else:
+        #         # delete session for a non-search view class
+        #         if request.session.get("back_to_search_url", ""):
+        #             del request.session["back_to_search_url"]
+        # else:
+        #     if view_func.__name__ == record_detail_view.__name__:
+        #         # retain session var regardless of is exitence
+        #         pass
+        #     else:
+        #         # delete session for a non-search, record details page view function
+        #         if request.session.get("back_to_search_url", ""):
+        #             del request.session["back_to_search_url"]
+        # return None

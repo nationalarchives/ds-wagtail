@@ -1,5 +1,6 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
+from django.urls import reverse
 
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
@@ -76,10 +77,20 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
+    if request.session.get("back_to_search_url", ""):
+        back_to_search_url = request.session.get("back_to_search_url")
+        back_to_search_label = "Back to search results"
+    else:
+        url = reverse("search-featured")
+        back_to_search_url = f"{url}"
+        back_to_search_label = "Start a new search"
+
     context.update(
         record=record,
         image=image,
         meta_title=record.summary_title,
+        back_to_search_label=back_to_search_label,
+        back_to_search_url=back_to_search_url,
     )
 
     return render(
