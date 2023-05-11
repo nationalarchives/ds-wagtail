@@ -11,9 +11,9 @@
             <div class="media-embed__overlay"></div>
             <div class="media-embed__content-panel container">
                 {% if media.type == "audio"%}
-                    {% audio media %}
+                    {% audio value.title media %}
                 {% else %}
-                    {% video media %}
+                    {% video value.title media %}
                 {% endif %}
             </div>
         </div>
