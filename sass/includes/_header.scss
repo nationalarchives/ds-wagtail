@@ -243,7 +243,14 @@
 
   &__overlay-input {
     // using opacity instead of display: none allows the input to be toggled by keyboards
-    opacity: 0;
+    //opacity: 0;
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
 
     // give label focus style when input is focussed
     &:focus ~ #{$root}__overlay-button {
