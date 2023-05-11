@@ -157,21 +157,3 @@ class SearchMiddleware:
         if request.session.get("back_to_search_url", ""):
             del request.session["back_to_search_url"]
         return None
-        # if hasattr(view_func, "view_class"):
-        #     if view_func.view_class in (CatalogueSearchView, FeaturedSearchView):
-        #         # set session when navigating from search view containing links to record details page
-        #         request.session.set_expiry(settings.SESSION_EXPIRY_VALUE)
-        #         request.session["back_to_search_url"] = request.get_full_path()
-        #     else:
-        #         # delete session for a non-search view class
-        #         if request.session.get("back_to_search_url", ""):
-        #             del request.session["back_to_search_url"]
-        # else:
-        #     if view_func.__name__ == record_detail_view.__name__:
-        #         # retain session var regardless of is exitence
-        #         pass
-        #     else:
-        #         # delete session for a non-search, record details page view function
-        #         if request.session.get("back_to_search_url", ""):
-        #             del request.session["back_to_search_url"]
-        # return None
