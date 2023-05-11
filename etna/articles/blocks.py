@@ -13,6 +13,7 @@ from etna.core.blocks import (
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
+    QuoteBlock,
     SectionDepthAwareStructBlock,
 )
 
@@ -207,25 +208,6 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
         icon = "list"
         label = "Featured pages"
         template = "articles/blocks/featured_collection.html"
-
-
-class QuoteBlock(SectionDepthAwareStructBlock):
-    """
-    A unique version of QuoteBlock for use in multi-level 'section'
-    blocks, where the heading element automatically changes to match
-    the content depth.
-    """
-
-    heading = blocks.CharBlock(required=False, max_length=100)
-    quote = blocks.RichTextBlock(
-        required=True, features=settings.INLINE_RICH_TEXT_FEATURES
-    )
-    attribution = blocks.CharBlock(required=False, max_length=100)
-
-    class Meta:
-        icon = "openquote"
-        label = "Quote"
-        template = "articles/blocks/quote.html"
 
 
 class SubHeadingBlock(SectionDepthAwareStructBlock):

@@ -32,8 +32,15 @@ class ImageGallery {
             }
             this.show(this.transcriptionPreview)
             this.show(this.openButton);
+            this.openButton.setAttribute('aria-expanded', 'false');
             this.hide(this.closeButton);
-            this.transcriptionPreview.scrollIntoView();
+            this.openButton.scrollIntoView(
+                {            
+                    behavior: 'auto',
+                    block: 'center',
+                    inline: 'center'
+                }
+            );
         })
         this.openButton.addEventListener('click', (e) =>{
             e.preventDefault();
@@ -42,6 +49,7 @@ class ImageGallery {
             }
             this.hide(this.transcriptionPreview);
             this.hide(this.openButton);
+            this.openButton.setAttribute('aria-expanded', 'true');
             this.show(this.closeButton);
             this.transcriptionContentNode[0].scrollIntoView();
         })

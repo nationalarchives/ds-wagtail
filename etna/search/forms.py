@@ -178,6 +178,10 @@ class BaseCollectionSearchForm(forms.Form):
         label="Country",
         required=False,
     )
+    location = DynamicMultipleChoiceField(
+        label="Location",
+        required=False,
+    )
     opening_start_date = DateInputField(
         label="From",
         required=False,

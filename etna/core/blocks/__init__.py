@@ -10,6 +10,7 @@ from .section import SectionBlock
 
 __all__ = [
     "ContentImageBlock",
+    "FeaturedRecordArticleBlock",
     "ImageBlock",
     "NoCaptionImageBlock",
     "PageListBlock",
