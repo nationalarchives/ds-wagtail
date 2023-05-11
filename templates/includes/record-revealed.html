@@ -11,9 +11,9 @@
                 {% endif %}
             </div>
             <div class="col-4 explore-intro__image-container">
-                {% if page.teaser_image %}
-                    {% image page.teaser_image fill-390x390 as teaser_image %}
-                    <img height=390 width=390 src="{{ teaser_image.url }}" alt="" class="explore-intro__image" />
+                {% if page.intro_image %}
+                    {% image page.intro_image fill-390x390 as intro_image %}
+                    <img height=390 width=390 src="{{ intro_image.url }}" alt="" class="explore-intro__image" />
                 {% endif %}
             </div>
         </div>
