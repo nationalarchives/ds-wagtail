@@ -12,7 +12,7 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("articles", "0081_merge_20230504_1135"),
+        ("articles", "0082_recordarticlepage_intro_image"),
     ]
 
     operations = [
