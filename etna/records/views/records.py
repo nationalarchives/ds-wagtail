@@ -77,13 +77,15 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
-    if request.session.get("back_to_search_url", ""):
-        back_to_search_url = request.session.get("back_to_search_url")
-        back_to_search_label = "Back to search results"
-    else:
-        url = reverse("search-featured")
-        back_to_search_url = f"{url}"
-        back_to_search_label = "Start a new search"
+    featured_search_url = reverse("search-featured")
+    back_to_search_url = (
+        request.session.get("back_to_search_url") or featured_search_url
+    )
+    back_to_search_label = (
+        "Start a new search"
+        if back_to_search_url == featured_search_url
+        else "Back to search results"
+    )
 
     context.update(
         record=record,
