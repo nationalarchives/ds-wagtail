@@ -40,7 +40,7 @@ class MediaBlock(blocks.StructBlock):
         context["src"] = value["media"].sources[0]["src"]
         context["type"] = value["media"].sources[0]["type"]
         return context
-    
+
     @property
     def admin_label(self):
         return self.meta.label
