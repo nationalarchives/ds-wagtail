@@ -94,7 +94,6 @@ MIDDLEWARE = [
     "etna.core.middleware.MaintenanceModeMiddleware",
     "wagtail.contrib.redirects.middleware.RedirectMiddleware",
     "etna.core.middleware.InterpretCookiesMiddleware",
-    "etna.core.middleware.SearchMiddleware",
 ]
 
 COOKIE_DOMAIN = os.getenv("COOKIE_DOMAIN", "nationalarchives.gov.uk")

@@ -10,8 +10,6 @@ from django.template.response import SimpleTemplateResponse, TemplateResponse
 
 from pytz import timezone
 
-from etna.records.views import record_detail_view
-
 logger = logging.getLogger(__name__)
 
 # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Date, example "Wed, 21 Oct 2015 07:28:00 GMT"
@@ -124,27 +122,3 @@ class InterpretCookiesMiddleware:
             ),
         )
         return response
-
-
-class SearchMiddleware:
-    """
-    Handles the session settings for "back to search results" functionality in the record details page.
-    """
-
-    def __init__(self, get_response):
-        self.get_response = get_response
-
-    def __call__(self, request):
-        response = self.get_response(request)
-
-        return response
-
-    def process_view(self, request, view_func, view_args, view_kwargs):
-        if view_func.__name__ == record_detail_view.__name__:
-            # retain session var regardless of is exitence
-            return None
-
-        # delete session var a non-search view or function
-        if request.session.get("back_to_search_url", ""):
-            del request.session["back_to_search_url"]
-        return None
