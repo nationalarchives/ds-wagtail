@@ -11,7 +11,6 @@ from django.template.response import SimpleTemplateResponse, TemplateResponse
 from pytz import timezone
 
 from etna.records.views import record_detail_view
-from etna.search.views import CatalogueSearchView, FeaturedSearchView
 
 logger = logging.getLogger(__name__)
 
@@ -141,17 +140,9 @@ class SearchMiddleware:
         return response
 
     def process_view(self, request, view_func, view_args, view_kwargs):
-        # create or retain session var
-        if hasattr(view_func, "view_class"):
-            # set session when navigating from search view containing links to record details page
-            if view_func.view_class in (CatalogueSearchView, FeaturedSearchView):
-                request.session.set_expiry(settings.SESSION_EXPIRY_VALUE)
-                request.session["back_to_search_url"] = request.get_full_path()
-                return None
-        else:
-            if view_func.__name__ == record_detail_view.__name__:
-                # retain session var regardless of is exitence
-                return None
+        if view_func.__name__ == record_detail_view.__name__:
+            # retain session var regardless of is exitence
+            return None
 
         # delete session var a non-search view or function
         if request.session.get("back_to_search_url", ""):
