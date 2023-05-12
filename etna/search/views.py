@@ -6,7 +6,6 @@ import re
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
-from django.conf import settings
 from django.core.paginator import Page
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
@@ -320,7 +319,6 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         Usually called where there are links to the record details page in the search results.
         Sets session in order for it to be used in record details page when navigating from search results.
         """
-        self.request.session.set_expiry(settings.SESSION_EXPIRY_VALUE)
         self.request.session["back_to_search_url"] = self.request.get_full_path()
         return None
 
