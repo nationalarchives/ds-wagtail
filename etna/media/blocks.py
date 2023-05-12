@@ -39,7 +39,6 @@ class MediaBlock(blocks.StructBlock):
         context = super().get_context(value, parent_context=parent_context)
         context["src"] = value["media"].sources[0]["src"]
         context["type"] = value["media"].sources[0]["type"]
-        print(context)
         return context
     
     @property
