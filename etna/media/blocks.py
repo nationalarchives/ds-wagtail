@@ -35,6 +35,13 @@ class MediaBlock(blocks.StructBlock):
         icon = "play"
         label = "Media"
 
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context["src"] = value["media"].sources[0]["src"]
+        context["type"] = value["media"].sources[0]["type"]
+        print(context)
+        return context
+    
     @property
     def admin_label(self):
         return self.meta.label
