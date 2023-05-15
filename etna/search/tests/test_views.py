@@ -1684,3 +1684,47 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
                 "&size=20"
             ),
         )
+
+
+class CreateSessionInfoForBackToSearchTest(SearchViewTestCase):
+    @responses.activate
+    def test_create_session_info_for_catalogue_search(self):
+        search_url = reverse("search-catalogue")
+        expected_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
+
+        self.client.get(
+            search_url,
+            data={
+                "sort_by": "title",
+                "q": "london",
+                "filter_keyword": "paper",
+                "level": "Item",
+                "collection": ["ADM", "BT"],
+                "closure": "Open Document, Open Description",
+                "opening_start_date_0": "",
+                "opening_start_date_1": "",
+                "opening_start_date_2": "1900",
+                "opening_end_date_0": "",
+                "opening_end_date_1": "",
+                "opening_end_date_2": "2020",
+                "per_page": "20",
+                "sort_order": "asc",
+                "display": "list",
+                "page": "2",
+                "group": "tna",
+            },
+        )
+        session = self.client.session
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+    @responses.activate
+    def test_create_session_info_for_featured_search(self):
+        search_url = reverse("search-featured")
+        expected_url = "/search/featured/?q=london"
+
+        self.client.get(search_url, data={"q": "london"})
+        session = self.client.session
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
