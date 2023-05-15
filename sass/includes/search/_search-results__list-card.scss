@@ -24,7 +24,7 @@
         font-family: $font__supria-sans;
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
-
+       
         @media only screen and (min-width: 57rem) {
             margin-top: 0;
 
@@ -133,8 +133,10 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
+            //margin-top:1em;
             &-desc {
                 max-width: 100%;
+                margin:auto;
             }
         }
 
@@ -143,6 +145,7 @@
 
             &-desc {
                 max-width: 100%;
+
             }
         }
     }
