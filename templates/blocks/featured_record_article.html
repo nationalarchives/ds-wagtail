@@ -6,14 +6,14 @@
             <a href="{% pageurl value.page %}">
                 <span class="sr-only">{{ value.page.title }}</span>
                 <picture>
-                    {% image value.page.teaser_image fill-626x486 as teaser_image %}
-                    <source media="(min-width: 991px)" srcset="{{ teaser_image.url }}"/>
-                    {% image value.page.teaser_image fill-390x303 as teaser_image %}
-                    <source media="(max-width: 992px)" srcset="{{ teaser_image.url }}"/>
+                    {% image value.page.teaser_image fill-626x486-c100 as mobile_img %}
+                    <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
+                    {% image value.page.teaser_image fill-390x303-c100 as desktop_img %}
+                    <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
                     <img class="featured-record-article__image"
-                         height="{{ teaser_image.height }}"
-                         width="{{ teaser_image.width }}"
-                         src="{{ teaser_image.url }}"
+                         height="{{ mobile_img.height }}"
+                         width="{{ mobile_img.width }}"
+                         src="{{ mobile_img.url }}"
                          alt=""/>
                 </picture>
             </a>
