@@ -101,12 +101,13 @@
 
         &-img {
             //border: 1px solid $color__grey-3;
-            width:100%;
+            //width:100%;
         }
 
         &-desc {
             //max-width: 12rem;
-            max-width: 100%;
+            //max-width: 100%;
+            width:183px;
             margin-bottom: 0;
             //margin-top: 0.2rem;
             padding:1em 2em;
@@ -139,6 +140,7 @@
 
         &--grid {
             @extend .search-results__list-card-delivery-options;
+
             &-desc {
                 max-width: 100%;
             }
