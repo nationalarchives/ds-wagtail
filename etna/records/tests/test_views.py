@@ -5,6 +5,7 @@ import unittest
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
+from django.urls import reverse
 
 from wagtail.models import Group
 from wagtail.test.utils import WagtailTestUtils
@@ -722,3 +723,72 @@ class TestImageViewerView(TestCase):
         response = self.client.get("/records/images/C123456/11000000000000000000/")
 
         self.assertEquals(response.status_code, 404)
+
+
+class RecordDetailBackToSearchTest(TestCase):
+    @responses.activate
+    def test_back_to_search_context_with_catalogue_search(self):
+        expected_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C13359805"),
+                ]
+            ),
+        )
+        record_detail_url = reverse(
+            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
+        )
+        session = self.client.session
+        session["back_to_search_url"] = expected_url
+        session.save()
+        response = self.client.get(record_detail_url)
+        expected_label = "Back to search results"
+        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
+        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
+
+    @responses.activate
+    def test_new_search_context_without_session(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C13359805"),
+                ]
+            ),
+        )
+        record_detail_url = reverse(
+            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
+        )
+        response = self.client.get(record_detail_url)
+        expected_label = "Start a new search"
+        expected_url = reverse("search-featured")
+        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
+        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
+
+    @responses.activate
+    def test_new_search_context_with_session(self):
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C13359805"),
+                ]
+            ),
+        )
+        record_detail_url = reverse(
+            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
+        )
+        expected_url = reverse("search-featured")
+        session = self.client.session
+        session["back_to_search_url"] = expected_url
+        session.save()
+        response = self.client.get(record_detail_url)
+        expected_label = "Start a new search"
+        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
+        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
