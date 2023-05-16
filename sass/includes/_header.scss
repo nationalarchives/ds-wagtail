@@ -277,6 +277,10 @@
         }
       }
     }
+
+    @media only screen and (min-width: $screen__md) {
+        display: none;
+    }
   }
 
   &__overlay-icon {
