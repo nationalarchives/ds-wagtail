@@ -157,5 +157,15 @@
 
 .search-list-image {
   position: absolute;
-  right:1.4em;
+  right:40px;
+  @media only screen and (max-width: 1320px) {
+    right:80px;
+  }
+  @media only screen and (max-width: 1080px) {
+    right:120px;
+  }
+  @media only screen and (max-width: 768px) {
+    position: unset;
+  }
+
 }
