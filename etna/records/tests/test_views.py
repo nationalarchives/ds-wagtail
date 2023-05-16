@@ -2,6 +2,8 @@ import io
 import re
 import unittest
 
+from urllib import parse
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -747,15 +749,16 @@ class RecordDetailBackToSearchTest(TestCase):
 
         back_to_search_label = "Back to search results"
         browser_search_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
+        parsed_url = parse.quote(browser_search_url, safe="")
 
         session = self.client.session
-        session["back_to_search_url"] = browser_search_url
+        session["back_to_search_url"] = parsed_url
         session.save()
 
         response = self.client.get(self.record_detail_url)
 
         self.assertContains(response, back_to_search_label)
-        self.assertContains(response, f'href="{browser_search_url}"')
+        self.assertContains(response, f'href="{parsed_url}"')
 
     @responses.activate
     def test_new_search_render_without_session(self):
