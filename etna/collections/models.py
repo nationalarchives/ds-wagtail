@@ -44,6 +44,20 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
+
+    articles_title = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Stories from the collection",
+        help_text=_("The title to display for the articles section."),
+    )
+
+    articles_introduction = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text=_("The introduction to display for the articles section."),
+    )
+
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -54,6 +68,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
             "Select a page to display in the featured area. This can be an Article, or Record Article."
         ),
     )
+
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
@@ -63,11 +78,19 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
-        PageChooserPanel(
-            "featured_article", ["articles.ArticlePage", "articles.RecordArticlePage"]
+        MultiFieldPanel(
+            [
+                FieldPanel("articles_title"),
+                FieldPanel("articles_introduction"),
+                PageChooserPanel(
+                    "featured_article", ["articles.ArticlePage", "articles.RecordArticlePage"]
+                ),
+                FieldPanel("featured_pages"),
+            ],
+            heading=_("Articles section"),
         ),
-        FieldPanel("featured_pages"),
     ]
+    
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
