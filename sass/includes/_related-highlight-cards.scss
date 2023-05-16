@@ -1,40 +1,64 @@
 .related-highlight-cards {
     $root: &;
-    margin-bottom: 72px;
+    margin-bottom: 1rem;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
-        margin-bottom: 96px;
-    }
+    // Deprecated
 
     &__title {
-        @include font-size("xxl");
-        margin: 0;
-        padding: 3rem 0 1.5rem 0;
+        color: $color__white;
+        font-family: $font__body;
+        font-weight: 400;
+        // TODO: font sizes need updating in line with the new design guide
+        font-size: 1.25rem;
+        margin: 0 0 0.5rem 0;
 
-        @media (min-width: map-get($grid-breakpoints, "md")) {
-            padding: 4.5rem 0 3rem 0;
+        @media only screen and (min-width: $screen__md) {
+            font-size: 1.3rem;
         }
 
-        &--small {
-            @include font-size("xl");
-            font-weight: $font-weight-bold;
-            padding: 0.5rem 0;
+        // Deprecated
+
+        // &--small {
+        //     @include font-size("xl");
+        //     font-weight: $font-weight-bold;
+        //     padding: 0.5rem 0;
+        // }
+    }
+
+    &__title-link {
+        color: $color__white;
+
+        // TODO: Consolidate link styles
+
+        &:focus {
+            color: $color__blue_6;
+            outline-color: $color__blue_6;
+            text-decoration: none;
+        }
+        
+        &:visited {
+            color: $color__grey-1;
+
+            &:focus {
+                color: $color__blue_6;
+                outline-color: $color__blue_6;
+                text-decoration: none;
+            }
         }
     }
 
     &__card {
-        background-color: $color__grey-6;
-        text-decoration: none !important;
+        background-color: $color__black;
     }
 
     &__content {
         margin: 1.75rem;
-        color: $color__white;
+        color: $color__grey-9;
     }
 
     &__text {
-        @include font-size("s");
-        color: $color__grey-7;
+        font-size: 1rem;
+        color: $color__grey-9;
         margin: 0;
     }
 
