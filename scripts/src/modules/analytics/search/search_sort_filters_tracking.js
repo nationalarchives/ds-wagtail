@@ -9,16 +9,20 @@ const getSortBy = () => {
         const searchName = sortBy.getAttribute('data-search-filter-name');
         const searchValue = sortBy.getAttribute('data-search-filter-value');
 
-        sortBy.addEventListener('submit', () => {
+        sortBy.addEventListener('submit', (e) => {
+            e.preventDefault();
+
             let filterData = {
                 'event_type': 'sort-results',
                 'search_type': searchType || '',
                 'search_bucket': searchBucket || '',
                 'search_filter_name': searchName || '',
-                'search_filter_value': searchValue || '',
+                'search_filter_value': searchValue || 'relevance',
             };
 
             push_to_data_layer(filterData);
+
+            sortBy.submit();
         });
     });
 }
