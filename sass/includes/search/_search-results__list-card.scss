@@ -24,11 +24,14 @@
         font-family: $font__supria-sans;
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
-        //width:83%;
+        width:500px;
+        //max-width:500px;
+        background:red;
         @media only screen and (min-width: 57rem) {
             margin-top: 0;
-
-        }
+            //background:green;
+            width:700px;
+ ;       }
     }
 
 
