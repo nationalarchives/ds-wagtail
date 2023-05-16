@@ -44,7 +44,6 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
-
     articles_title = models.CharField(
         max_length=100,
         blank=True,
@@ -53,7 +52,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     )
 
     articles_introduction = models.CharField(
-        max_length=100,
+        max_length=200,
         blank=True,
         help_text=_("The introduction to display for the articles section."),
     )
@@ -83,14 +82,15 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
                 FieldPanel("articles_title"),
                 FieldPanel("articles_introduction"),
                 PageChooserPanel(
-                    "featured_article", ["articles.ArticlePage", "articles.RecordArticlePage"]
+                    "featured_article",
+                    ["articles.ArticlePage", "articles.RecordArticlePage"],
                 ),
                 FieldPanel("featured_pages"),
             ],
             heading=_("Articles section"),
         ),
     ]
-    
+
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
