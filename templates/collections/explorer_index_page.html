@@ -15,7 +15,15 @@
                     {% include_block block %}
                 {% endfor %}
             </ul>
-       </div>
+        </div>
+        {{ page.articles_title }}
+        {{ page.articles_introduction }}
+        {% if page.featured_article %}
+            {% include "includes/article-spotlight.html" with page=page.featured_article %}
+        {% endif %}
+        <div class="container">
+            {% include_block page.featured_pages %}
+        </div>
     </div>
 
 {% endblock %}
