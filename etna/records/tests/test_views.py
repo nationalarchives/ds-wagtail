@@ -726,10 +726,7 @@ class TestImageViewerView(TestCase):
 
 
 class RecordDetailBackToSearchTest(TestCase):
-    @responses.activate
-    def test_back_to_search_context_with_catalogue_search(self):
-        expected_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
-
+    def setUp(self):
         responses.add(
             responses.GET,
             "https://kong.test/data/fetch",
@@ -739,56 +736,51 @@ class RecordDetailBackToSearchTest(TestCase):
                 ]
             ),
         )
-        record_detail_url = reverse(
+
+        self.record_detail_url = reverse(
             "details-page-machine-readable", kwargs={"iaid": "C13359805"}
         )
+
+    @responses.activate
+    def test_back_to_search_render_with_catalogue_search(self):
+        """navigation to record details from previous search (session is set since its coming from search catalogue)"""
+
+        back_to_search_label = "Back to search results"
+        browser_search_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
+
         session = self.client.session
-        session["back_to_search_url"] = expected_url
+        session["back_to_search_url"] = browser_search_url
         session.save()
-        response = self.client.get(record_detail_url)
-        expected_label = "Back to search results"
-        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
-        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
+
+        response = self.client.get(self.record_detail_url)
+
+        self.assertContains(response, back_to_search_label)
+        self.assertContains(response, f'href="{browser_search_url}"')
 
     @responses.activate
-    def test_new_search_context_without_session(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/fetch",
-            json=create_response(
-                records=[
-                    create_record(iaid="C13359805"),
-                ]
-            ),
-        )
-        record_detail_url = reverse(
-            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
-        )
-        response = self.client.get(record_detail_url)
-        expected_label = "Start a new search"
+    def test_new_search_render_without_session(self):
+        """navigation to record details without previous search (session is not set since its not coming from search)"""
+
+        back_to_search_label = "Start a new search"
         expected_url = reverse("search-featured")
-        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
-        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
+
+        response = self.client.get(self.record_detail_url)
+
+        self.assertContains(response, back_to_search_label)
+        self.assertContains(response, f'href="{expected_url}"')
 
     @responses.activate
-    def test_new_search_context_with_session(self):
-        responses.add(
-            responses.GET,
-            "https://kong.test/data/fetch",
-            json=create_response(
-                records=[
-                    create_record(iaid="C13359805"),
-                ]
-            ),
-        )
-        record_detail_url = reverse(
-            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
-        )
-        expected_url = reverse("search-featured")
+    def test_new_search_render_with_session(self):
+        """navigation to record details from previous search (session is set since its coming from search featuerd, but without query)"""
+
+        back_to_search_label = "Start a new search"
+        browser_search_url = "/search/featured/"
+
         session = self.client.session
-        session["back_to_search_url"] = expected_url
+        session["back_to_search_url"] = browser_search_url
         session.save()
-        response = self.client.get(record_detail_url)
-        expected_label = "Start a new search"
-        self.assertEqual(response.context.get("back_to_search_label"), expected_label)
-        self.assertEqual(response.context.get("back_to_search_url"), expected_url)
+
+        response = self.client.get(self.record_detail_url)
+
+        self.assertContains(response, back_to_search_label)
+        self.assertContains(response, f'href="{browser_search_url}"')
