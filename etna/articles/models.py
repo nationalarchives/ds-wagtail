@@ -272,6 +272,16 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
 
+    intro_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_("Square, rotated image to display in the page introduction"),
+        verbose_name=_("intro image"),
+    )
+
     record = RecordField(verbose_name=_("record"), db_index=True)
     record.wagtail_reference_index_ignore = True
 
@@ -330,6 +340,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         verbose_name_plural = _("record articles")
 
     content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("intro_image"),
         MultiFieldPanel(
             heading="Content Warning Options",
             classname="collapsible",
