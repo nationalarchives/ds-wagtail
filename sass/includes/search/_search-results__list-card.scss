@@ -24,13 +24,13 @@
         font-family: $font__supria-sans;
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
-        width:300px;
+        //width:300px;
         //max-width:500px;
         //background:red;
         @media only screen and (min-width: 57rem) {
             margin-top: 0;
             //background:green;
-            width:50%;
+            //width:50%;
  ;       }
     }
 
@@ -110,7 +110,7 @@
         &-desc {
             //max-width: 12rem;
             //max-width: 100%;
-            width:183px;
+              width:183px;
             margin-bottom: 0;
             //margin-top: 0.2rem;
             padding:1em 2em;
@@ -157,7 +157,7 @@
 
 .search-list-image {
   position: absolute;
-  right:40px;
+  right:50px;
   @media only screen and (max-width: 1320px) {
     right:80px;
   }
@@ -168,4 +168,9 @@
     position: unset;
   }
 
+}
+
+.search-image-grid,
+.search-results-grid{
+  width:100%;
 }
