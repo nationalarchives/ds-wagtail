@@ -22,21 +22,13 @@ class TestPages(WagtailPageTestCase):
             title="Explorer Page",
             intro="test",
             teaser_text="test",
-            body=json.dumps(
-                [
-                    {
-                        "type": "paragraph",
-                        "value": {
-                            "text": "Test paragraph",
-                        },
-                    }
-                ]
-            ),
         )
         self.root_page.add_child(instance=self.explorer_index_page)
 
         self.topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Topics", intro="topics", teaser_text="topic index"
+            title="Topics",
+            intro="topics",
+            teaser_text="topic index",
         )
         self.explorer_index_page.add_child(instance=self.topic_explorer_index_page)
 
