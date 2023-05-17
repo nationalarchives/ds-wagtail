@@ -1,16 +1,15 @@
 import json
 
-from wagtail.test.utils import WagtailPageTestCase
-
 from wagtail.models import PageViewRestriction, Site
+from wagtail.test.utils import WagtailPageTestCase
 
 from ..models import (
     ExplorerIndexPage,
+    HighlightGalleryPage,
     TimePeriodExplorerIndexPage,
     TimePeriodExplorerPage,
     TopicExplorerIndexPage,
     TopicExplorerPage,
-    HighlightGalleryPage,
 )
 
 
@@ -19,7 +18,9 @@ class TestPages(WagtailPageTestCase):
         self.root_page = Site.objects.get().root_page
 
         self.explorer_index_page = ExplorerIndexPage(
-            title="Explorer Page", intro="test", teaser_text="test"
+            title="Explorer Page",
+            intro="test",
+            teaser_text="test",
         )
         self.root_page.add_child(instance=self.explorer_index_page)
 
@@ -34,14 +35,16 @@ class TestPages(WagtailPageTestCase):
             teaser_text="test",
             intro="test",
         )
-        self.explorer_index_page.add_child(instance=self.topic_explorer_page)
+        self.topic_explorer_index_page.add_child(instance=self.topic_explorer_page)
 
         self.time_period_explorer_index_page = TimePeriodExplorerIndexPage(
             title="Time Periods",
             intro="time periods",
             teaser_text="time period index",
         )
-        self.explorer_index_page.add_child(instance=self.time_period_explorer_index_page)
+        self.explorer_index_page.add_child(
+            instance=self.time_period_explorer_index_page
+        )
 
         self.time_period_explorer_page = TimePeriodExplorerPage(
             title="Test Time Period",
@@ -51,7 +54,9 @@ class TestPages(WagtailPageTestCase):
             start_year=1000,
             end_year=2000,
         )
-        self.explorer_index_page.add_child(instance=self.time_period_explorer_page)
+        self.time_period_explorer_index_page.add_child(
+            instance=self.time_period_explorer_page
+        )
 
         self.highlight_gallery_page = HighlightGalleryPage(
             title="Highlight Gallery",
@@ -62,3 +67,18 @@ class TestPages(WagtailPageTestCase):
 
     def test_explorer_index_page(self):
         self.assertPageIsRenderable(self.explorer_index_page)
+
+    def test_topic_explorer_index_page(self):
+        self.assertPageIsRenderable(self.topic_explorer_index_page)
+
+    def test_topic_explorer_page(self):
+        self.assertPageIsRenderable(self.topic_explorer_page)
+
+    def test_time_period_explorer_index_page(self):
+        self.assertPageIsRenderable(self.time_period_explorer_index_page)
+
+    def test_time_period_explorer_page(self):
+        self.assertPageIsRenderable(self.time_period_explorer_page)
+
+    def test_highlight_gallery_page(self):
+        self.assertPageIsRenderable(self.highlight_gallery_page)
