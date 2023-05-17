@@ -24,6 +24,7 @@
         {% include './search_results__selected-filters.html' %}
 
         {% if form.errors or not paginator.count %}
+            {# No results were found due to criteria not staisfying the refine results filters #}
             {% include './no_results_catalogue_website.html' %}
         {% endif %}
 

@@ -480,6 +480,58 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
         self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
 
+    @responses.activate
+    def test_render_invalid_date_range_message(self):
+        """
+        When a user does search with an invalid date range:
+
+        They SHOULD see:
+        - A "No results" message in search results
+        - A "Search within these results" option
+        - Error message in area of Record opening date
+
+        They SHOULD NOT see:
+        - Names, result counts and links for all buckets
+        - A description of the current bucket
+        - Options to change sort order and display style of results
+        - Checkbox filter options in refine the search
+        """
+        response = self.client.get(
+            self.test_url,
+            data={
+                "group": "tna",
+                "opening_start_date_2": "2000",
+                "opening_end_date_2": "1900",
+                "q": "london",
+                "filter_keyword": "kew",
+                "collection": [
+                    "ADM",
+                ],
+            },
+        )
+        content = str(response.content)
+
+        self.assertIn(
+            '<h2 class="featured-search__heading">We did not find any results for your search</h2>',
+            content,
+        )
+        self.assertIn(
+            '"<li>Try removing any filters that you may have applied</li>"', content
+        )
+        self.assertIn(
+            '<h2 class="search-filters__heading">Refine results</h2>', content
+        )
+        self.assertIn(
+            '<input type="text" name="filter_keyword" value="kew" class="search-filters__search" id="id_filter_keyword">',
+            content,
+        )
+        self.assertIn(
+            "<li>There is a problem. Start date cannot be after end date.</li>", content
+        )
+        self.assertNotIn(
+            '<input type="checkbox" name="collection" value="ADM"', content
+        )
+
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
