@@ -12,22 +12,16 @@ from ..models import (
     TopicExplorerPage,
     HighlightGalleryPage,
 )
-from ...home.models import HomePage
 
 
 class TestPages(WagtailPageTestCase):
     def setUp(self):
         self.root_page = Site.objects.get().root_page
 
-        self.home_page = HomePage(
-            title="Home", intro="test", teaser_text="test", body=json.dumps([])
-        )
-        self.root_page.add_child(instance=self.home_page)
-
         self.explorer_index_page = ExplorerIndexPage(
             title="Explorer Page", intro="test", teaser_text="test"
         )
-        self.home_page.add_child(instance=self.explorer_index_page)
+        self.root_page.add_child(instance=self.explorer_index_page)
 
         self.topic_explorer_index_page = TopicExplorerIndexPage(
             title="Topics", intro="topics", teaser_text="topic index"
@@ -67,4 +61,4 @@ class TestPages(WagtailPageTestCase):
         self.explorer_index_page.add_child(instance=self.highlight_gallery_page)
 
     def test_explorer_index_page(self):
-        self.assertPageIsEditable(self.home_page)
+        self.assertPageIsRenderable(self.explorer_index_page)
