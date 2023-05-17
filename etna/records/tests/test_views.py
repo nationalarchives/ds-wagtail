@@ -743,34 +743,36 @@ class RecordDetailBackToSearchTest(TestCase):
             "details-page-machine-readable", kwargs={"iaid": "C13359805"}
         )
 
+        self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{search_url}">\n            \n\n\n\n<svg\n    class="icon icon--list-ul cta-primary-panel__link-icon"\n    aria-hidden="true"\n    focusable="false"\n>\n    <use xlink:href="#list-ul" href="#list-ul"></use>\n</svg>\n\n            {back_to_search_label}\n        </a>'
+
     @responses.activate
     def test_back_to_search_render_with_catalogue_search(self):
         """navigation to record details from previous search (session is set since its coming from search catalogue)"""
 
         back_to_search_label = "Back to search results"
-        browser_search_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
-        parsed_url = parse.quote(browser_search_url, safe="")
+        # raw search value: "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
+        search_url_gen_html_resp = "%2Fsearch%2Fcatalogue%2F%3Fsort_by%3Dtitle%26q%3Dlondon%26filter_keyword%3Dpaper%26level%3DItem%26collection%3DADM%26collection%3DBT%26closure%3DOpen%2BDocument%252C%2BOpen%2BDescription%26opening_start_date_0%3D%26opening_start_date_1%3D%26opening_start_date_2%3D1900%26opening_end_date_0%3D%26opening_end_date_1%3D%26opening_end_date_2%3D2020%26per_page%3D20%26sort_order%3Dasc%26display%3Dlist%26page%3D2%26group%3Dtna"
 
         session = self.client.session
-        session["back_to_search_url"] = parsed_url
+        session["back_to_search_url"] = search_url_gen_html_resp
         session.save()
 
         response = self.client.get(self.record_detail_url)
 
-        self.assertContains(response, back_to_search_label)
-        self.assertContains(response, f'href="{parsed_url}"')
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=search_url_gen_html_resp, back_to_search_label=back_to_search_label)
+        self.assertContains(response, expected_button_link_gen_value)
 
     @responses.activate
     def test_new_search_render_without_session(self):
         """navigation to record details without previous search (session is not set since its not coming from search)"""
 
         back_to_search_label = "Start a new search"
-        expected_url = reverse("search-featured")
+        new_search_url = reverse("search-featured")
 
         response = self.client.get(self.record_detail_url)
 
-        self.assertContains(response, back_to_search_label)
-        self.assertContains(response, f'href="{expected_url}"')
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=new_search_url, back_to_search_label=back_to_search_label)
+        self.assertContains(response, expected_button_link_gen_value)
 
     @responses.activate
     def test_new_search_render_with_session(self):
@@ -785,5 +787,5 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        self.assertContains(response, back_to_search_label)
-        self.assertContains(response, f'href="{browser_search_url}"')
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=browser_search_url, back_to_search_label=back_to_search_label)
+        self.assertContains(response, expected_button_link_gen_value)
