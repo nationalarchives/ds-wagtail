@@ -27,8 +27,9 @@
 
     &__title-link {
         color: $color__white;
-
         // TODO: Consolidate link styles
+
+        text-decoration-thickness: 1px;
 
         &:focus {
             color: $color__blue_6;
