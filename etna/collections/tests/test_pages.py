@@ -1,6 +1,6 @@
 import json
 
-from wagtail.models import PageViewRestriction, Site
+from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 
 from ..models import (
@@ -21,6 +21,16 @@ class TestPages(WagtailPageTestCase):
             title="Explorer Page",
             intro="test",
             teaser_text="test",
+            body=json.dumps(
+                [
+                    {
+                        "type": "paragraph",
+                        "value": {
+                            "text": "Test paragraph",
+                        },
+                    }
+                ]
+            ),
         )
         self.root_page.add_child(instance=self.explorer_index_page)
 
