@@ -432,10 +432,10 @@ class Migration(migrations.Migration):
                                                 wagtail.blocks.StructBlock(
                                                     [
                                                         (
-                                                            "records",
+                                                            "items",
                                                             wagtail.blocks.ListBlock(
                                                                 etna.records.blocks.RecordLinkBlock,
-                                                                label="Record(s)",
+                                                                label="Items",
                                                             ),
                                                         )
                                                     ]

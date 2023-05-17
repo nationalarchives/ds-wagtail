@@ -121,7 +121,7 @@ class RecordLinkBlock(blocks.StructBlock):
 
 
 class RecordLinksBlock(blocks.StructBlock):
-    records = blocks.ListBlock(RecordLinkBlock, label=_("Record(s)"))
+    items = blocks.ListBlock(RecordLinkBlock, label=_("Items"))
 
     class Meta:
         template = "records/blocks/record_links_block.html"

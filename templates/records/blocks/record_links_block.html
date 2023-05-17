@@ -1,7 +1,7 @@
 {% load wagtailimages_tags %}
 <div class="recordlinks__wrapper">
     <ul class="recordlinks__list">
-        {% for item in value.records %}
+        {% for item in value.items %}
             {% with item.record.url as url %}
                 <li class="recordlinks__item">
                     {% if item.thumbnail_image %}
