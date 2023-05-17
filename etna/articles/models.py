@@ -25,6 +25,7 @@ from etna.core.models import (
     HeroImageMixin,
     NewLabelMixin,
 )
+from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
 from .blocks import (
@@ -72,10 +73,39 @@ class ArticleIndexPage(BasePageWithIntro):
 @register_snippet
 class ArticleTag(TagBase):
     free_tagging = False
+    skos_id = models.CharField(
+        blank=True,
+        unique=True,
+        db_index=True,
+        max_length=100,
+        verbose_name="SKOS identifier",
+        help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
+    )
 
     class Meta:
         verbose_name = "article tag"
         verbose_name_plural = "article tags"
+
+    panels = (
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("skos_id"),
+    )
+
+    def clean(self, *args, **kwargs):
+        if not self.skos_id and self.name:
+            # Generate a unique skos_id value for new tags
+            base_value = skos_id_from_text(self.name)
+            self.skos_id = base_value
+            i = 2
+            while (
+                ArticleTag.objects.exclude(id=self.id)
+                .filter(skos_id=self.skos_id)
+                .exists()
+            ):
+                self.skos_id = f"{base_value[:97]}_{i}"
+                i += 1
+        return super().clean(*args, **kwargs)
 
 
 class TaggedArticle(ItemBase):
@@ -242,6 +272,16 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
 
+    intro_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_("Square, rotated image to display in the page introduction"),
+        verbose_name=_("intro image"),
+    )
+
     record = RecordField(verbose_name=_("record"), db_index=True)
     record.wagtail_reference_index_ignore = True
 
@@ -300,6 +340,7 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         verbose_name_plural = _("record articles")
 
     content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("intro_image"),
         MultiFieldPanel(
             heading="Content Warning Options",
             classname="collapsible",

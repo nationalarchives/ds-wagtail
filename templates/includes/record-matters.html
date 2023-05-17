@@ -25,9 +25,8 @@
                             {{ about }}
                             <button id="readMoreButton"
                                     class="record-matters__plain-button {% if about|length <= 300 %}hidden{% endif %}"
-                                    href=""
                                     aria-label="Expand to read more about this record">
-                                Read more
+                                Expand to read more
                                 {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
                             </button>
                         {% endwith %}
@@ -38,7 +37,7 @@
                                 class="record-matters__plain-button hidden"
                                 type="button"
                                 aria-label="Close to read less about this record">
-                            Read less
+                            Collapse content
                             {% include "static/images/fontawesome-svgs/circle-x-mark.svg" with classes="record-matters__svg" %}
                         </button>
                     </div>

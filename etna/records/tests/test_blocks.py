@@ -3,8 +3,8 @@ import json
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTestCase
-from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfield
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
 
@@ -158,7 +158,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         # View the page to check rendering also
         response = self.client.get(self.article_page.get_url())
-        self.assertContains(response, "Test record")
+        self.assertContains(response, "C123456")
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,

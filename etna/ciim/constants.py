@@ -3,6 +3,7 @@ from enum import StrEnum
 from typing import Any, List
 
 from django.contrib.humanize.templatetags.humanize import intcomma
+from django.utils.functional import cached_property
 
 
 def forTemplate(cls):
@@ -16,6 +17,7 @@ def forTemplate(cls):
 class BucketKeys(StrEnum):
     NONTNA = "nonTna"
     CREATOR = "creator"
+    ARCHIVE = "archive"
     INSIGHT = "insight"
     HIGHLIGHT = "highlight"
 
@@ -27,6 +29,37 @@ class SearchTabs(StrEnum):
     WEBSITE = "Website results"
 
 
+class Aggregation(StrEnum):
+    """Aggregated counts to include with response.
+
+    Supported by /search and /searchAll endpoints.
+    """
+
+    TOPIC = "topic"
+    COLLECTION = "collection"
+    GROUP = "group"
+    LEVEL = "level"
+    CLOSURE = "closure"
+    CATALOGUE_SOURCE = "catalogueSource"
+    HELD_BY = "heldBy"
+    TYPE = "type"
+    COUNTRY = "country"
+    LOCATION = "location"
+
+
+DEFAULT_AGGREGATIONS = (
+    Aggregation.COLLECTION,
+    Aggregation.LEVEL,
+    Aggregation.TOPIC,
+    Aggregation.CLOSURE,
+    Aggregation.HELD_BY,
+    Aggregation.CATALOGUE_SOURCE,
+    Aggregation.GROUP
+    + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
+    Aggregation.TYPE,
+)
+
+
 @dataclass
 class Bucket:
     key: str
@@ -35,6 +68,27 @@ class Bucket:
     result_count: int = None
     is_current: bool = False
     results: List[Any] = None
+
+    # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
+    aggregations: List[str] = DEFAULT_AGGREGATIONS
+
+    @cached_property
+    def aggregations_normalised(self) -> List[str]:
+        """
+        Returns a list of strings to include as the 'aggregations' option value when assembling
+        an API request for this bucket. Each string must be in the format "filter-name:item-count".
+        """
+        values = []
+        for aggregation in self.aggregations:
+            bits = aggregation.split(":")
+            if len(bits) == 2:
+                values.append(bits[0] + ":" + bits[1])
+            else:
+                values.append(bits[0] + ":10")
+        return values
+
+    def __post_init__(self):
+        self.aggregations = self.aggregations_normalised
 
     @property
     def label_with_count(self):
@@ -88,24 +142,48 @@ CATALOGUE_BUCKETS = BucketList(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
+            aggregations=(
+                Aggregation.GROUP + ":30",
+                Aggregation.TYPE,
+                Aggregation.COUNTRY,
+            ),
         ),
         Bucket(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
+            aggregations=(
+                Aggregation.GROUP + ":30",
+                Aggregation.LOCATION,
+            ),
         ),
     ]
 )
 
 WEBSITE_BUCKETS = BucketList(
     [
-        Bucket(key="blog", label="Blog posts"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Insights"),
+        Bucket(
+            key="blog",
+            label="Blog posts",
+        ),
+        Bucket(
+            key="researchGuide",
+            label="Research Guides",
+        ),
+        Bucket(
+            key=BucketKeys.INSIGHT.value,
+            label="Insights",
+        ),
         # TODO: Restore when we are succesfully indexing new highlight pages
         # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
-        Bucket(key="audio", label="Audio"),
-        Bucket(key="video", label="Video"),
+        Bucket(
+            key="audio",
+            label="Audio",
+        ),
+        Bucket(
+            key="video",
+            label="Video",
+        ),
     ]
 )
 

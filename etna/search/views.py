@@ -29,7 +29,6 @@ from ..ciim.constants import (
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
-from ..collections.models import ResultsPage
 from ..records.api import records_client
 from .forms import CatalogueSearchForm, FeaturedSearchForm, WebsiteSearchForm
 
@@ -42,32 +41,31 @@ class BucketsMixin:
 
     The `bucket_list` attribute should be set to one of the `BucketList`
     values from `etna.ciim.constants`. This value is copied and enhanced
-    in the `get_buckets()` method to make the value more useful for
-    rendering, then added to the template context as "buckets" by
+    in the `get_buckets_for_display()` method to make the value more useful
+    for rendering, then added to the template context as "buckets" by
     `get_context_data()`
     """
 
-    # The source data for get_buckets()
+    # The source data for get_buckets_for_display()
     bucket_list: BucketList = None
-    # Can be updated by the view for get_current_bucket_key() to pick up
+
+    # To be updated by the view in get() or post()
     current_bucket_key: str = None
+    current_bucket: Bucket = None
 
-    def get_current_bucket_key(self):
-        return self.current_bucket_key
-
-    def get_buckets(
+    def get_buckets_for_display(
         self,
-        group_buckets: List[Dict[str, Union[str, int]]] = None,
+        bucket_counts: List[Dict[str, Union[str, int]]],
         current_bucket_key: str = None,
     ) -> Optional[BucketList]:
         """
-        Returns a modified `BucketList` value representing the 'buckets'
-        that are available for the user to explore.
+        Returns a modified `BucketList` value that can be used in the template,
+        representing the 'buckets' that available for the user to explore.
 
-        If `group_buckets` is provided, the data will be used to set the `result_count`
+        The provided `bucket_counts` data is used to set the `result_count`
         attribute for each bucket.
 
-        The `current_bucket_key` is provided, any bucket with a `key` value matching
+        If `current_bucket_key` is provided, any bucket with a `key` value matching
         the provided value will have it's `is_current` value set to `True`.
         """
         if not self.bucket_list:
@@ -75,13 +73,12 @@ class BucketsMixin:
 
         bucket_list = copy.deepcopy(self.bucket_list)
 
-        if group_buckets:
-            # set `result_count` for each bucket
-            doc_counts_by_key = {
-                group["key"]: group["doc_count"] for group in group_buckets
-            }
-            for bucket in bucket_list:
-                bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
+        # set `result_count` for each bucket
+        doc_counts_by_key = {
+            group["key"]: group["doc_count"] for group in bucket_counts
+        }
+        for bucket in bucket_list:
+            bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
 
         if current_bucket_key:
             # set 'is_current=True' for the relevant bucket
@@ -94,9 +91,8 @@ class BucketsMixin:
 
     def get_context_data(self, **kwargs):
         if self.bucket_list:
-            current_bucket_key = self.get_current_bucket_key()
-            buckets = self.get_buckets(
-                self.api_result.bucket_counts, current_bucket_key
+            buckets = self.get_buckets_for_display(
+                self.api_result.bucket_counts, self.current_bucket_key
             )
 
             # Set this to True if any buckets have results
@@ -226,7 +222,11 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         form = self.form = self.get_form()
         is_valid = form.is_valid()
         self.api_result = None
+
         self.current_bucket_key = form.cleaned_data.get("group")
+        if self.current_bucket_key and getattr(self, "bucket_list", None):
+            self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
+
         if is_valid:
             return self.form_valid(form)
         return self.form_invalid(form)
@@ -344,6 +344,8 @@ class BaseFilteredSearchView(BaseSearchView):
         "held_by",
         "catalogue_source",
         "type",
+        "country",
+        "location",
     )
 
     def get_form_defaults(self) -> Dict[str, Any]:
@@ -403,30 +405,11 @@ class BaseFilteredSearchView(BaseSearchView):
         Called by `get_api_kwargs()` to get a value to include as 'aggregations'
         in the API request.
 
-        In the API response, the items with the highest number of matches are
-        included for each aggregation. Those values are used to indicate
-        counts for each 'bucket', and to update the form field choices, so that
-        the most relevant filter options are shown.
+        The aggregations params may be specific to a bucket and will be filtered upon.
+        Returns a list of aggregation params for the current bucket.
+        Ex: ["group:30", "catalogue:10",]
         """
-        values = []
-        for aggregation in (
-            Aggregation.COLLECTION,
-            Aggregation.LEVEL,
-            Aggregation.TOPIC,
-            Aggregation.CLOSURE,
-            Aggregation.HELD_BY,
-            Aggregation.CATALOGUE_SOURCE,
-            Aggregation.GROUP,
-            Aggregation.TYPE,
-        ):
-            item_count = 10
-            if aggregation == Aggregation.GROUP:
-                # Fetch more 'groups' so that we receive a counts
-                # for any bucket/tab options we might be showing
-                # (not just the 10 most popular)
-                item_count = 30
-            values.append(f"{aggregation}:{item_count}")
-        return values
+        return self.current_bucket.aggregations_normalised
 
     def get_api_filter_aggregations(self, form: Form) -> List[str]:
         """
@@ -686,44 +669,12 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
                         f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
                     )
 
-    def add_results_page_for_url(self, page: Page) -> None:
-        """
-        Finds the Results page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
-        Unmatched url is bypassed but logged.
-        """
-        slugs = [
-            result.url.rstrip("/").split("/").pop()
-            for result in page.object_list
-            if result.has_source_url()
-        ]
-
-        # find pages with matching slugs, and key them by their absolute URL
-        wagtail_pages = {
-            p.get_url(self.request): p
-            for p in ResultsPage.objects.live()
-            .filter(slug__in=slugs)
-            .select_related("teaser_image")
-        }
-
-        # Set 'source_page' on results with matching pages
-        for result in page.object_list:
-            if result.has_source_url():
-                absolute_url = urlparse(result.url).path
-                if source_page := wagtail_pages.get(absolute_url):
-                    result.source_page = source_page
-            else:
-                logger.debug(
-                    f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
-                )
-
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
                 self.add_article_page_for_url(context["page"])
-            if filter_aggregation == "highlight" and "page" in context:
-                self.add_results_page_for_url(context["page"])
         return context
 
 
@@ -754,13 +705,12 @@ class FeaturedSearchView(BaseSearchView):
             "size": 3,
         }
 
-    def get_buckets(self) -> Dict[str, Bucket]:
+    def get_buckets_for_display(self) -> Dict[str, Bucket]:
         """
-        This method is similar in principal to `BucketMixin.get_buckets()`,
-        but to support template/rendering needs, it returns a `dict` instead of
-        a `BucketList`, and instead of receiving additional argument values,
-        `result_count` and `results` are set on each bucket using data
-        from `self.api_result`.
+        This method is similar in principal to the `BucketMixin` version, but
+        to work for this view, returns a `dict` instead of a `BucketList`, and
+        instead of receiving additional argument values, `result_count` and
+        `results` are set on each bucket using data from `self.api_result`.
         """
         buckets = {}
         for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
@@ -773,7 +723,9 @@ class FeaturedSearchView(BaseSearchView):
         return buckets
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(buckets=self.get_buckets(), **kwargs)
+        return super().get_context_data(
+            buckets=self.get_buckets_for_display(), **kwargs
+        )
 
     def get_result_count(self):
         """
@@ -781,6 +733,6 @@ class FeaturedSearchView(BaseSearchView):
         totals from all buckets.
         """
         total = 0
-        for bucket in self.get_buckets().values():
+        for bucket in self.get_buckets_for_display().values():
             total += bucket.result_count
         return total

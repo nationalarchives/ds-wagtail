@@ -1,15 +1,10 @@
 {% load static %}
 
 <div class="quote">
-    <div class="container">
-        <img class="quote__icon" src="{% static 'images/fontawesome-svgs/quote-left.svg' %}" alt="" />
-        {% if value.heading %}
-            <h3 class="sr-only">{{ value.heading }}</h3>
-        {% endif %}
-
+    <div class="container quote__container">
         {% if value.attribution %}
             <figure>
-                <blockquote class="quote__container quote__text">
+                <blockquote class="quote__text">
                     {{ value.quote }}
                 </blockquote>
                 <figcaption class="quote__citation">
@@ -17,7 +12,7 @@
                 </figcaption>
             </figure>
         {% else %}
-            <blockquote class="quote__container quote__text">
+            <blockquote class="quote__text">
                 {{ value.quote }}
             </blockquote>
         {% endif %}

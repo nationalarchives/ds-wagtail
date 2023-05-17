@@ -15,15 +15,7 @@ from etna.ciim.constants import Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
-from ...ciim.tests.factories import create_response
-from ...collections.models import (
-    ExplorerIndexPage,
-    ResultsPage,
-    TimePeriodExplorerIndexPage,
-    TimePeriodExplorerPage,
-    TopicExplorerIndexPage,
-    TopicExplorerPage,
-)
+from ...ciim.tests.factories import create_response, create_search_response
 from ...home.models import HomePage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
@@ -92,6 +84,8 @@ class SelectedFiltersTest(SimpleTestCase):
                 "topic": ["topic-one"],
                 "level": ["Division"],
                 "collection": ["WO", "AK"],
+                "country": ["England", "Yorkshire, North Riding"],
+                "location": ["Australia", "United States of America"],
             }
         )
 
@@ -109,6 +103,14 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
                 "level": [("Division", "Division")],
                 "topic": [("topic-one", "topic-one")],
+                "country": [
+                    ("England", "England"),
+                    ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                ],
+                "location": [
+                    ("Australia", "Australia"),
+                    ("United States of America", "United States of America"),
+                ],
             },
         )
 
@@ -170,6 +172,8 @@ class SelectedFiltersTest(SimpleTestCase):
                 "topic": ["topic-one", "topic-two"],  # valid
                 "catalogue_source": ["catalogue-source-one"],  # valid
                 "collection": ["bar"],
+                "country": ["England", "Yorkshire, North Riding"],  # valid
+                "location": ["Australia", "United States of America"],  # valid
                 "level": ["foo"],  # invalid
             }
         )
@@ -188,6 +192,14 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
                 "catalogue_source": [
                     ("catalogue-source-one", "catalogue-source-one"),
+                ],
+                "country": [
+                    ("England", "England"),
+                    ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                ],
+                "location": [
+                    ("Australia", "Australia"),
+                    ("United States of America", "United States of America"),
                 ],
             },
         )
@@ -844,53 +856,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     def setUp(self):
         super().setUp()
 
-        # create results page object each for Topic and Time
-        home_page = HomePage.objects.get()
-        explorer_index_page = ExplorerIndexPage(
-            title="Explore the collection", intro="test", teaser_text="test"
-        )
-        home_page.add_child(instance=explorer_index_page)
-
-        time_period_explorer_index_page = TimePeriodExplorerIndexPage(
-            title="Explore by time period", intro="test", teaser_text="test"
-        )
-        explorer_index_page.add_child(instance=time_period_explorer_index_page)
-
-        time_period_explorer_page = TimePeriodExplorerPage(
-            title="Early modern",
-            intro="test",
-            teaser_text="test",
-            start_year="1485",
-            end_year="1714",
-        )
-        time_period_explorer_index_page.add_child(instance=time_period_explorer_page)
-
-        results_page = ResultsPage(
-            title="Shakespeare",
-            introduction="test",
-            sub_heading="test",
-            teaser_text="test",
-        )
-        time_period_explorer_page.add_child(instance=results_page)
-
-        topic_explorer_index_page = TopicExplorerIndexPage(
-            title="Explore by topic", intro="test", teaser_text="test"
-        )
-        explorer_index_page.add_child(instance=topic_explorer_index_page)
-
-        topic_explorer_page = TopicExplorerPage(
-            title="Agriculture and Environment", intro="test", teaser_text="test"
-        )
-        topic_explorer_index_page.add_child(instance=topic_explorer_page)
-
-        results_page = ResultsPage(
-            title="Farm Survey",
-            introduction="test",
-            sub_heading="test",
-            teaser_text="test",
-        )
-        topic_explorer_page.add_child(instance=results_page)
-
         # create article page response in sourceUrl
         path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
         with open(path, "r") as f:
@@ -985,16 +950,6 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
             ]
         )
         self.assertEqual(response.context_data["buckets"], expected_bucket_list)
-
-    @responses.activate
-    def test_page_instance_added_for_source_url(self):
-        response = self.client.get(self.test_url, data={"group": "highlight"})
-        self.assertIsInstance(
-            response.context_data["page"].object_list[0].source_page, ResultsPage
-        )
-        self.assertIsInstance(
-            response.context_data["page"].object_list[1].source_page, ResultsPage
-        )
 
 
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
@@ -1594,6 +1549,137 @@ class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
                 "&template=details"
                 "&aggregations=topic%3A100"
                 "&filterAggregations=group%3Ablog"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
+    maxDiff = None
+
+    @responses.activate
+    def test_record_creators_default_params(self):
+        test_url = reverse_lazy(
+            "search-catalogue",
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "creator"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=group%3A30"
+                "&aggregations=type%3A10"
+                "&aggregations=country%3A10"
+                "&filterAggregations=group%3Acreator"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+    @responses.activate
+    def test_record_creators_country_long_filter(self):
+        test_url = reverse_lazy(
+            "search-catalogue-long-filter-chooser", kwargs={"field_name": "country"}
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "creator"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=country%3A100"
+                "&filterAggregations=group%3Acreator"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+
+class ArchiveTestCase(WagtailTestUtils, TestCase):
+    maxDiff = None
+
+    @responses.activate
+    def test_archive_default_params(self):
+        test_url = reverse_lazy(
+            "search-catalogue",
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "archive"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=group%3A30"
+                "&aggregations=location%3A10"
+                "&filterAggregations=group%3Aarchive"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+    @responses.activate
+    def test_record_creators_country_long_filter(self):
+        test_url = reverse_lazy(
+            "search-catalogue-long-filter-chooser", kwargs={"field_name": "location"}
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(),
+        )
+
+        self.client.get(test_url, data={"group": "archive"})
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                "https://kong.test/data/search"
+                "?stream=evidential"
+                "&sort="
+                "&sortOrder=asc"
+                "&template=details"
+                "&aggregations=location%3A100"
+                "&filterAggregations=group%3Aarchive"
                 "&from=0"
                 "&size=20"
             ),
