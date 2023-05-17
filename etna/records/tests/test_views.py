@@ -759,7 +759,10 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=search_url_gen_html_resp, back_to_search_label=back_to_search_label)
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            search_url=search_url_gen_html_resp,
+            back_to_search_label=back_to_search_label,
+        )
         self.assertContains(response, expected_button_link_gen_value)
 
     @responses.activate
@@ -771,7 +774,9 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=new_search_url, back_to_search_label=back_to_search_label)
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            search_url=new_search_url, back_to_search_label=back_to_search_label
+        )
         self.assertContains(response, expected_button_link_gen_value)
 
     @responses.activate
@@ -787,5 +792,7 @@ class RecordDetailBackToSearchTest(TestCase):
 
         response = self.client.get(self.record_detail_url)
 
-        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(search_url=browser_search_url, back_to_search_label=back_to_search_label)
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            search_url=browser_search_url, back_to_search_label=back_to_search_label
+        )
         self.assertContains(response, expected_button_link_gen_value)
