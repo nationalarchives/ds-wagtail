@@ -9,7 +9,6 @@ class TestPages(WagtailPageTestCase):
     def setUpTestData(self):
         self.root_page = Site.objects.get().root_page
 
-
         self.article_index_page = ArticleIndexPage(
             title="Article Index Page",
             intro="test",
@@ -33,12 +32,12 @@ class TestPages(WagtailPageTestCase):
         #     about="Test about",
         # )
         # self.root_page.add_child(instance=self.record_article_page)
-    
+
     def test_article_index_page(self):
         self.assertPageIsRenderable(self.article_index_page)
 
     def test_article_page(self):
         self.assertPageIsRenderable(self.article_page)
-    
+
     # def test_record_article_page(self):
     #     self.assertPageIsRenderable(self.record_article_page)
