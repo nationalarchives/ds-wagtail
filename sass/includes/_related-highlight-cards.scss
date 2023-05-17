@@ -5,6 +5,14 @@
     // Deprecated
 
     &__title {
+        color: $color__black;
+        font-family: $font__supria-sans;
+        // TODO: font sizes need updating in line with the new design guide
+        font-size: 1.875rem;
+        margin: 0 0 1.5rem 0;
+    }
+
+    &__card-title {
         color: $color__white;
         font-family: $font__body;
         font-weight: 400;
@@ -25,11 +33,15 @@
         // }
     }
 
-    &__title-link {
+    &__card-title-link {
         color: $color__white;
         // TODO: Consolidate link styles
 
         text-decoration-thickness: 1px;
+
+        &:hover {
+            color: $color__white;
+        }
 
         &:focus {
             color: $color__blue_6;
@@ -38,7 +50,11 @@
         }
         
         &:visited {
-            color: $color__grey-1;
+            color: $color__white;
+
+            &:hover {
+                color: $color__white;
+            }
 
             &:focus {
                 color: $color__blue_6;

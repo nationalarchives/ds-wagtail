@@ -30,7 +30,12 @@
     }
 
     &__card-title-link {
+        color: $color__black;
         text-decoration-thickness: 1px;
+
+        &:visited {
+            color: $color__black;
+        }
     }
 
     &__description {
@@ -76,7 +81,6 @@
     }
 
     &__image {
-        display: block;
         width: 100%;
         height: auto;
     }
