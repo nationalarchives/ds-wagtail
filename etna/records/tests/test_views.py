@@ -741,7 +741,7 @@ class RecordDetailBackToSearchTest(TestCase):
             "details-page-machine-readable", kwargs={"iaid": "C13359805"}
         )
 
-        self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{search_url}">\n            \n\n\n\n<svg\n    class="icon icon--list-ul cta-primary-panel__link-icon"\n    aria-hidden="true"\n    focusable="false"\n>\n    <use xlink:href="#list-ul" href="#list-ul"></use>\n</svg>\n\n            {back_to_search_label}\n        </a>'
+        self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{back_to_search_url}">\n            \n\n\n\n<svg\n    class="icon icon--list-ul cta-primary-panel__link-icon"\n    aria-hidden="true"\n    focusable="false"\n>\n    <use xlink:href="#list-ul" href="#list-ul"></use>\n</svg>\n\n            {back_to_search_label}\n        </a>'
 
     @responses.activate
     def test_back_to_search_render_with_catalogue_search(self):
@@ -758,7 +758,7 @@ class RecordDetailBackToSearchTest(TestCase):
         response = self.client.get(self.record_detail_url)
 
         expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
-            search_url=search_url_gen_html_resp,
+            back_to_search_url=search_url_gen_html_resp,
             back_to_search_label=back_to_search_label,
         )
         self.assertContains(response, expected_button_link_gen_value)
@@ -773,7 +773,7 @@ class RecordDetailBackToSearchTest(TestCase):
         response = self.client.get(self.record_detail_url)
 
         expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
-            search_url=new_search_url, back_to_search_label=back_to_search_label
+            back_to_search_url=new_search_url, back_to_search_label=back_to_search_label
         )
         self.assertContains(response, expected_button_link_gen_value)
 
@@ -791,6 +791,6 @@ class RecordDetailBackToSearchTest(TestCase):
         response = self.client.get(self.record_detail_url)
 
         expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
-            search_url=browser_search_url, back_to_search_label=back_to_search_label
+            back_to_search_url=browser_search_url, back_to_search_label=back_to_search_label
         )
         self.assertContains(response, expected_button_link_gen_value)
