@@ -2,8 +2,6 @@ import io
 import re
 import unittest
 
-from urllib import parse
-
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
