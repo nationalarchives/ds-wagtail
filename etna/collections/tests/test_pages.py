@@ -1,5 +1,3 @@
-import json
-
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 
