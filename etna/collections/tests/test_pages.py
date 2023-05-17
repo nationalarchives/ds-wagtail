@@ -14,7 +14,8 @@ from ..models import (
 
 
 class TestPages(WagtailPageTestCase):
-    def setUp(self):
+    @classmethod
+    def setUpTestData(self):
         self.root_page = Site.objects.get().root_page
 
         self.explorer_index_page = ExplorerIndexPage(
