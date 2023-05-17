@@ -791,6 +791,7 @@ class RecordDetailBackToSearchTest(TestCase):
         response = self.client.get(self.record_detail_url)
 
         expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
-            back_to_search_url=browser_search_url, back_to_search_label=back_to_search_label
+            back_to_search_url=browser_search_url,
+            back_to_search_label=back_to_search_label,
         )
         self.assertContains(response, expected_button_link_gen_value)
