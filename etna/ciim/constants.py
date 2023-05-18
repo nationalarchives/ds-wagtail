@@ -756,4 +756,3 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
 ]
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
-
