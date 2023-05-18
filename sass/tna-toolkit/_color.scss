@@ -2,7 +2,7 @@
   background-color: $color__grey-light;
 
   &--dark {
-    background-color: $color__grey-700;
+    background-color: $color__dark;
     color: $color__white;
 
     a {
@@ -16,19 +16,19 @@
   }
 
   &--green {
-    background-color: $color__pastel-green;
+    background-color: $color__green;
   }
 
   &--pink {
-    background-color: $color__pastel-pink;
+    background-color: $color__pink;
   }
 }
 
 .tna-text {
-  color: $color__grey-700;
+  color: $color__dark;
 
   &--default {
-    color: $color__grey-700;
+    color: $color__dark;
   }
 
   &--white {
