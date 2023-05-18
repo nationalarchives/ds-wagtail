@@ -378,11 +378,10 @@ class BaseFilteredSearchView(BaseSearchView):
             if field_name in form.errors:
                 return HttpResponseBadRequest(str(form.errors[field_name]))
 
-        if not self.api_result:
-            # initialise empty result for an invalid form
-            self.api_result = records_client.resultlist_from_response(
-                response_data={}, bucket_counts=[]
-            )
+        # initialise empty result for an invalid form
+        self.api_result = records_client.resultlist_from_response(
+            response_data={}, bucket_counts=[]
+        )
 
         return super().form_invalid(form)
 
