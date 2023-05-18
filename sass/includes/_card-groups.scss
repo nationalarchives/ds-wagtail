@@ -3,7 +3,7 @@
   display: flex;
   flex-wrap: wrap;
   width: 100%;
-  
+
   &--list-style-none {
     @extend .card-group;
     list-style: none;
@@ -25,7 +25,7 @@
     }
 
     .aria-desc-card {
-      display:none;
+      display: none;
     }
 
     &__title-link {
@@ -41,8 +41,9 @@
         font-size: 1.25rem;
       }
 
-      &:hover, &:active {
-        color: $color__blue_3;
+      &:hover,
+      &:active {
+        color: $color__navy;
       }
 
       &:visited {
@@ -50,7 +51,7 @@
       }
 
       &:focus {
-        outline-offset: .2rem;
+        outline-offset: 0.2rem;
       }
     }
 
@@ -58,13 +59,12 @@
       display: inline;
 
       span {
-        background:green;
+        background: green;
         font-size: 0.8rem;
-        color:white;
-        padding:3px 3px 0px 3px;
+        color: white;
+        padding: 3px 3px 0px 3px;
         margin-left: 1px;
       }
-
     }
 
     &__image {
@@ -76,7 +76,7 @@
     }
 
     &__body {
-        color: $color__grey-6;
+      color: $color__grey-700;
       padding-left: 0.28rem;
       padding-right: 0.28rem;
       padding-top: 0.28rem;
@@ -111,21 +111,21 @@
     &__link {
       @extend .tna-card__link;
       display: inline-block;
-      color: $color__blue_3;
+      color: $color__navy;
       text-decoration: underline;
       margin-left: 0.5rem;
       &:active {
-        color: $color__blue_3;
+        color: $color__navy;
       }
       &:hover {
-        color: $color__blue_3;
+        color: $color__navy;
         text-decoration: none;
       }
       &:focus {
-        outline-offset: .2rem;
+        outline-offset: 0.2rem;
       }
     }
- 
+
     &__heading {
       font-size: 1.3rem;
       font-weight: 700;
@@ -144,19 +144,20 @@
       color: $color__black;
       padding: 1rem 2rem;
 
-      a, hr {
+      a,
+      hr {
         color: $color__black;
       }
-
     }
 
     &--dark {
       @extend .card-group-promo;
-      background-color: $color__dark;
+      background-color: $color__grey-700;
       color: $color__white;
       padding: 1rem 2rem;
 
-      a, hr {
+      a,
+      hr {
         color: $color__white;
       }
     }
@@ -182,7 +183,7 @@
         padding-left: 1rem;
         margin-bottom: 1rem;
         &-item {
-            list-style-type: '- ';
+          list-style-type: '- ';
         }
       }
 

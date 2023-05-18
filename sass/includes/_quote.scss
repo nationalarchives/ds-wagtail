@@ -1,6 +1,6 @@
 .quote {
   &__container {
-    background-color: $color__grey-5;
+    background-color: $color__grey-800;
     padding: 2rem;
     margin: 3rem 0;
     max-width: 100%;
@@ -21,7 +21,8 @@
   }
 
   &--no-citation {
-    blockquote, p {
+    blockquote,
+    p {
       margin-bottom: 0;
     }
   }
