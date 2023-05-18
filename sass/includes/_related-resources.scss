@@ -18,7 +18,7 @@
   }
 
   &__list-item {
-    background-color: $color__light-grey;
+    background-color: $color__grey-100;
     margin-bottom: 1rem;
     padding: 1rem 1.5rem;
     border-left: 0.25rem solid $color__yellow_2;
@@ -65,6 +65,10 @@
   }
 
   &__link, &__link-text {
-    color: $color__black !important;
+    color: $color__black;
+
+    &:hover, &:visited, &:focus {
+        color: $color__black;
+    }
   }
 }
