@@ -511,26 +511,22 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         )
         content = str(response.content)
 
-        self.assertIn(
-            '<h2 class="featured-search__heading">We did not find any results for your search</h2>',
-            content,
-        )
+        # SHOULD see
+        self.assertNoResultsMessagingRendered(content)    
+        self.assertSearchWithinOptionRendered(content)
         self.assertIn(
             "<li>Try removing any filters that you may have applied</li>", content
-        )
-        self.assertIn(
-            '<h2 class="search-filters__heading">Refine results</h2>', content
-        )
-        self.assertIn(
-            '<input type="text" name="filter_keyword" value="kew" class="search-filters__search" id="id_filter_keyword">',
-            content,
-        )
+        )       
         self.assertIn(
             "<li>There is a problem. Start date cannot be after end date.</li>", content
         )
+
+        # SHOULD NOT see        
         self.assertNotIn(
             '<input type="checkbox" name="collection" value="ADM"', content
         )
+        
+        
 
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
