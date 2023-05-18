@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from django.core.paginator import Page
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.utils import timezone
 from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
@@ -319,6 +320,10 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         Usually called where there are links to the record details page in the search results.
         Sets session in order for it to be used in record details page when navigating from search results.
         """
+        back_to_search_url_timestamp = timezone.now()
+        self.request.session[
+            "back_to_search_url_timestamp"
+        ] = back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
         self.request.session["back_to_search_url"] = self.request.get_full_path()
         return None
 

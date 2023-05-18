@@ -6,6 +6,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
 from wagtail.models import Group
 from wagtail.test.utils import WagtailTestUtils
@@ -14,6 +15,7 @@ import responses
 
 from etna.core.test_utils import prevent_request_warnings
 
+from ...ciim.constants import SEARCH_URL_RETAIN_DELTA
 from ...ciim.tests.factories import create_media, create_record, create_response
 
 User = get_user_model()
@@ -742,9 +744,10 @@ class RecordDetailBackToSearchTest(TestCase):
         )
 
         self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link cta-primary-panel__link--secondary" href="{back_to_search_url}">\n            \n\n\n\n<svg\n    class="icon icon--list-ul cta-primary-panel__link-icon"\n    aria-hidden="true"\n    focusable="false"\n>\n    <use xlink:href="#list-ul" href="#list-ul"></use>\n</svg>\n\n            {back_to_search_label}\n        </a>'
+        self.back_to_search_url_timestamp = timezone.now()
 
     @responses.activate
-    def test_back_to_search_render_with_catalogue_search(self):
+    def test_back_to_search_render_with_catalogue_search_within_expiry(self):
         """navigation to record details from previous search (session is set since its coming from search catalogue)"""
 
         back_to_search_label = "Back to search results"
@@ -752,6 +755,34 @@ class RecordDetailBackToSearchTest(TestCase):
         search_url_gen_html_resp = "%2Fsearch%2Fcatalogue%2F%3Fsort_by%3Dtitle%26q%3Dlondon%26filter_keyword%3Dpaper%26level%3DItem%26collection%3DADM%26collection%3DBT%26closure%3DOpen%2BDocument%252C%2BOpen%2BDescription%26opening_start_date_0%3D%26opening_start_date_1%3D%26opening_start_date_2%3D1900%26opening_end_date_0%3D%26opening_end_date_1%3D%26opening_end_date_2%3D2020%26per_page%3D20%26sort_order%3Dasc%26display%3Dlist%26page%3D2%26group%3Dtna"
 
         session = self.client.session
+        session[
+            "back_to_search_url_timestamp"
+        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
+        session["back_to_search_url"] = search_url_gen_html_resp
+        session.save()
+
+        response = self.client.get(self.record_detail_url)
+
+        expected_button_link_gen_value = self.expected_button_link_gen_value_fmt.format(
+            back_to_search_url=search_url_gen_html_resp,
+            back_to_search_label=back_to_search_label,
+        )
+        self.assertContains(response, expected_button_link_gen_value)
+
+    @responses.activate
+    def test_back_to_search_render_with_catalogue_search_beyond_expiry(self):
+        """navigation to record details from previous search (session is set since its coming from search catalogue)"""
+
+        back_to_search_label = "Start a new search"
+        search_url_gen_html_resp = "/search/featured/"
+
+        session = self.client.session
+        session["back_to_search_url"] = search_url_gen_html_resp
+        # set time behind the setup value for expiry
+        self.back_to_search_url_timestamp = timezone.now() - SEARCH_URL_RETAIN_DELTA
+        session[
+            "back_to_search_url_timestamp"
+        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
         session["back_to_search_url"] = search_url_gen_html_resp
         session.save()
 
@@ -785,6 +816,9 @@ class RecordDetailBackToSearchTest(TestCase):
         browser_search_url = "/search/featured/"
 
         session = self.client.session
+        session[
+            "back_to_search_url_timestamp"
+        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
         session["back_to_search_url"] = browser_search_url
         session.save()
 

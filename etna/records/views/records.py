@@ -1,8 +1,13 @@
+import datetime
+
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
 from django.urls import reverse
+from django.utils import timezone
 
-from ...ciim.constants import TNA_URLS
+import pytz
+
+from ...ciim.constants import SEARCH_URL_RETAIN_DELTA, TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
@@ -57,6 +62,7 @@ def record_detail_view(request, iaid):
     Details pages differ from all other page types within Etna in that their
     data isn't fetched from the CMS but an external API. And unlike pages, this
     view is accessible from a fixed URL.
+    Sets context for Back to search button.
     """
     template_name = "records/record_detail.html"
     context = {}
@@ -77,10 +83,23 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
-    featured_search_url = reverse("search-featured")
-    back_to_search_url = (
-        request.session.get("back_to_search_url") or featured_search_url
-    )
+    # Back to search button - default url
+    back_to_search_url = featured_search_url = reverse("search-featured")
+
+    # Back to search button - update url when timestamp is not expired
+    if back_to_search_url_timestamp := request.session.get(
+        "back_to_search_url_timestamp"
+    ):
+        back_to_search_url_timestamp = datetime.datetime.strptime(
+            back_to_search_url_timestamp, "%Y%m%d-%H%M%S"
+        )
+        back_to_search_url_timestamp = back_to_search_url_timestamp.astimezone(pytz.utc)
+        back_to_search_url_timestamp_delta = (
+            back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
+        )
+        if timezone.now() <= back_to_search_url_timestamp_delta:
+            back_to_search_url = request.session.get("back_to_search_url")
+
     back_to_search_label = (
         "Start a new search"
         if back_to_search_url == featured_search_url
