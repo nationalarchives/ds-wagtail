@@ -64,7 +64,6 @@ INSTALLED_APPS = [
     "wagtailmedia",
     "wagtail.contrib.settings",
     "wagtail.contrib.styleguide",
-    "generic_chooser",
     "wagtailmetadata",
     "modelcluster",
     "taggit",
