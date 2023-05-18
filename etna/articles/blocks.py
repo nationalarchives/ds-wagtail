@@ -18,7 +18,7 @@ from etna.core.blocks import (
 )
 
 from ..media.blocks import MediaBlock
-from ..records.blocks import RecordChooserBlock
+from ..records.blocks import RecordChooserBlock, RecordLinksBlock
 
 
 class FeaturedRecordBlock(SectionDepthAwareStructBlock):
@@ -230,6 +230,7 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
+    record_links = RecordLinksBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
