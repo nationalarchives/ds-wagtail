@@ -1,6 +1,5 @@
 from typing import Any, Dict, List, Optional, Tuple, Union
 
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.http import HttpRequest
 from django.utils.functional import cached_property
@@ -15,7 +14,6 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.fields import StreamField
-from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
@@ -27,6 +25,7 @@ from ..core.models import (
     RequiredHeroImageMixin,
 )
 from ..core.utils import skos_id_from_text
+from ..highlights.models import Highlight
 from .blocks import (
     ExplorerIndexPageStreamBlock,
     FeaturedArticlesBlock,
@@ -642,17 +641,20 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     gtm_content_group = "Explore the collection"
 
     @cached_property
-    def highlights(self):
+    def highlights(self) -> List[Highlight]:
         """
         Used to access the page's 'highlights' for output. Makes use of
         Django's select_related() and prefetch_related() to efficiently
         prefetch image and rendition data from the database.
         """
-        return (
-            self.page_highlights.exclude(image__isnull=True)
-            .select_related("image")
-            .prefetch_related("image__renditions")
-        )
+        items = []
+        for obj in (
+            self.page_highlights.exclude(highlight__isnull=True)
+            .select_related("highlight", "highlight__teaser_image")
+            .prefetch_related("highlight__teaser_image__renditions")
+        ):
+            items.append(obj.highlight)
+        return items
 
     @property
     def highlights_text(self) -> str:
@@ -662,7 +664,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         """
         strings = []
         for item in self.highlights:
-            strings.extend([item.image.title, item.image.description])
+            strings.extend([item.title, item.description])
         return " | ".join(strings)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -674,39 +676,17 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         return data
 
 
-class Highlight(Orderable):
+class PageHighlight(Orderable):
     page = ParentalKey(
         "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
     )
-    image = models.ForeignKey(
-        get_image_model_string(),
+    highlight = models.ForeignKey(
+        Highlight,
         null=True,
         on_delete=models.SET_NULL,
-        verbose_name=_("image"),
-    )
-
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        null=True,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
+        verbose_name=_("highlight"),
     )
 
     panels = [
-        FieldPanel("image"),
-        FieldPanel("alt_text"),
+        FieldPanel("highlight"),
     ]
-
-    def clean(self) -> None:
-        if self.image:
-            if not self.image.record or not self.image.description:
-                raise ValidationError(
-                    {
-                        "image": [
-                            "Only images with a 'record' and a 'description' specified can be used for highlights."
-                        ]
-                    }
-                )
-        return super().clean()
