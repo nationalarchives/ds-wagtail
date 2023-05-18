@@ -512,21 +512,19 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         content = str(response.content)
 
         # SHOULD see
-        self.assertNoResultsMessagingRendered(content)    
+        self.assertNoResultsMessagingRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertIn(
             "<li>Try removing any filters that you may have applied</li>", content
-        )       
+        )
         self.assertIn(
             "<li>There is a problem. Start date cannot be after end date.</li>", content
         )
 
-        # SHOULD NOT see        
+        # SHOULD NOT see
         self.assertNotIn(
             '<input type="checkbox" name="collection" value="ADM"', content
         )
-        
-        
 
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
