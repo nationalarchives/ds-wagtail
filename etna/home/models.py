@@ -1,11 +1,9 @@
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
 
 from etna.alerts.models import AlertMixin
-from etna.articles.blocks import FeaturedCollectionBlock
 from etna.core.models import BasePageWithIntro
 
 from .blocks import HomePageStreamBlock
