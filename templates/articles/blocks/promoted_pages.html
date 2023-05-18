@@ -6,7 +6,7 @@
         id="analytics-promoted-pages">
         {% for promoted_item in value.promoted_items %}
             <li class="promoted-pages__card">
-                <a class="promoted-pages__card" href="{{ promoted_item.url }}">
+                <a href="{{ promoted_item.url }}">
                     <picture>
                         {% image promoted_item.teaser_image fill-350x229-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 390px)"
@@ -21,12 +21,16 @@
                              height="{{ base_img.height }}"
                              width="{{ base_img.width }}"
                              class="promoted-pages__image"
-                             {% if promoted_item.teaser_image.alt_text %} alt="{{ promoted_item.teaser_image.alt_text }}"{% endif %}/>
+                             alt="{% if promoted_item.teaser_image.alt_text %}{{ promoted_item.teaser_image.alt_text }}{% endif %}"/>
                     </picture>
-                        <h3 class="promoted-pages__title">{{ promoted_item.title }}</h3>
-                        <p class="promoted-pages__text promoted-pages__text--gap">By {{ promoted_item.author }} - {{ promoted_item.publication_date }}</p>
-                        <p class="promoted-pages__text">{{ promoted_item.description }}</p>
                 </a>
+                <h3 class="promoted-pages__title">
+                    <a class="promoted-pages__title-link" href="{{ promoted_item.url }}">
+                        {{ promoted_item.title }}
+                    </a>
+                </h3>
+                <p class="promoted-pages__text promoted-pages__text--gap">By {{ promoted_item.author }} - {{ promoted_item.publication_date }}</p>
+                <p class="promoted-pages__text">{{ promoted_item.description }}</p>
             </li>
         {% endfor %}
     </ul>

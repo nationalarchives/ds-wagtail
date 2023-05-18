@@ -18,6 +18,7 @@
 
         margin-bottom: 1.5rem;
         margin-top: 3rem;
+
         @media screen and (min-width: $screen__lg) {
             margin-bottom: 3rem;
             margin-top: 3.75rem;
@@ -40,13 +41,23 @@
 
     &__title {
         @include font-size(l);
-        font-weight: 700;
-        line-height: 31px;
-        letter-spacing: 0em;
+        font-family: $font__body;
+        font-weight: $font-weight-bold;
+        line-height: 1.5;
+        margin-bottom: 1rem;
+    }
+
+    &__title-link {
+        &:hover, &:visited, &:focus {
+            color: $color__black;
+        }
     }
 
     &__text {
-        @include font-size(xs);
+        @include font-size(s);
+        color: $color__grey-6;
+        font-family: $font__body;
+        line-height: 1.5;
 
         &--gap {
             margin-bottom: 0.75rem;
