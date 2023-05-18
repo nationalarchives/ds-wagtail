@@ -27,18 +27,18 @@ $color__yellow_2: #ffcc00;
 $color__yellow_3: #f9f7e2;
 $color__yellow_4: #ffcc002b;
 $color__yellow_5: #faf6e0;
-$color__yellow_6: #FBF8EA;
+$color__yellow_6: #fbf8ea;
 $color__green: #dde5d5;
 $color__pink: #fad3d4;
 $color__blue_2: #1e1e2a;
 $color__blue_3: #134571;
 $color__blue_4: #1a67a2;
-$color__blue_6: #00B0FF; // new colour
+$color__blue_6: #00b0ff; // new colour
 
 $color__purple: #4c2c92;
 $color__red: #a72916;
 
-$color__grey-9: #D9D9D6; // new colour
+$color__grey-9: #d9d9d6; // new colour
 $color__grey-8: #4e5a5a;
 $color__grey-7: #cccccc;
 $color__grey-6: #343338;
@@ -59,13 +59,13 @@ $color__link-active: $color__blue_2;
 $color__card-hover: $color__dark;
 
 $color__focus-blue-outline-light-bg: $color__link;
-$color__focus-blue-outline-dark-bg: $color__blue_5;
+$color__focus-blue-outline-dark-bg: $color__blue_6;
 
 // Borders
 $default__border: 0.125rem solid $color__black;
 
 // Transitions
-$transition_duration: 0.5s;
+$transition_duration: 0.25s;
 
 // Paths
 $fa_path: '../../images/fontawesome-svgs/';
@@ -102,34 +102,34 @@ $base-font-size: 16px;
 $base-line-height: 1.6;
 
 $large-font-sizes: (
-  xxxl: 64px,
-  xxl: 30px,
-  xl: 20.8px,
-  l: 20px,
-  m: 18px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 64px,
+    xxl: 30px,
+    xl: 20px,
+    l: 18px,
+    m: 16px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );
 
 $medium-font-sizes: (
-  xxxl: 42px,
-  xxl: 26px,
-  xl: 22px,
-  l: 18px,
-  m: 16px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 42px,
+    xxl: 26px,
+    xl: 20px,
+    l: 18px,
+    m: 16px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );
 
 $small-font-sizes: (
-  xxxl: 36px,
-  xxl: 24px,
-  xl: 20px,
-  l: 18px,
-  m: 16px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 36px,
+    xxl: 24px,
+    xl: 20px,
+    l: 18px,
+    m: 16px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );
