@@ -7,6 +7,7 @@ $screen__xl: 75rem;
 // Fonts
 $font__open-sans: 'Open Sans', sans-serif;
 $font__roboto: 'Roboto', sans-serif;
+$font__roboto-mono: 'Roboto Mono', sans-serif;
 $font__supria-sans: supria-sans-condensed, sans-serif;
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
@@ -30,9 +31,12 @@ $color__blue_2: #1e1e2a;
 $color__blue_3: #134571;
 $color__blue_4: #1a67a2;
 $color__blue_5: #8ec0ec;
+$color__blue_6: #00B0FF; // new colour
+
 $color__purple: #4c2c92;
 $color__red: #a72916;
 
+$color__grey-9: #D9D9D6; // new colour
 $color__grey-8: #4e5a5a;
 $color__grey-7: #cccccc;
 $color__grey-6: #343338;
