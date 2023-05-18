@@ -516,7 +516,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             content,
         )
         self.assertIn(
-            '"<li>Try removing any filters that you may have applied</li>"', content
+            "<li>Try removing any filters that you may have applied</li>", content
         )
         self.assertIn(
             '<h2 class="search-filters__heading">Refine results</h2>', content
