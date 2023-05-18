@@ -1,3 +1,4 @@
+
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -12,21 +13,11 @@ from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, BasePageWithIntro):
-    featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    )
+
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
-    featured_pages = StreamField(
-        [("featuredpages", FeaturedCollectionBlock())],
-        blank=True,
-        null=True,
-        use_json_field=True,
-    )
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
-        FieldPanel("featured_article", heading=_("Featured article")),
-        FieldPanel("featured_pages"),
     ]
 
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels

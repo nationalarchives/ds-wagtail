@@ -55,7 +55,5 @@ class FeaturedItemsBlock(blocks.ListBlock):
 
 
 class HomePageStreamBlock(blocks.StreamBlock):
-    time_period = TimePeriodBlock()
-    topic_explorer = TopicExplorerBlock()
     paragraph = ParagraphBlock()
     paragraph_with_heading = ParagraphWithHeading()
