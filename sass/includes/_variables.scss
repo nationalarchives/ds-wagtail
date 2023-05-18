@@ -9,8 +9,11 @@ $font__open-sans: 'Open Sans', sans-serif;
 $font__roboto: 'Roboto', sans-serif;
 $font__roboto-mono: 'Roboto Mono', sans-serif;
 $font__supria-sans: supria-sans-condensed, sans-serif;
+
+// Mapping fonts
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
+$font__mono: $font__roboto-mono;
 
 // Colours
 $color__text: #26262a;
