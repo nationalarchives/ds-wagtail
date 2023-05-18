@@ -24,6 +24,14 @@
         line-height: 2rem;
     }
 
+    &__title-link {
+        color: $color__black;
+
+        &:visited, &:active, &:hover {
+            color: $color__black;
+        }
+    }
+
     &__content {
         margin-top: 1rem;
     }
