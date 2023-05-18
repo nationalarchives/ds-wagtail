@@ -1,4 +1,3 @@
-
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -13,7 +12,6 @@ from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, BasePageWithIntro):
-
     body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
 
     content_panels = BasePageWithIntro.content_panels + [
