@@ -1,22 +1,22 @@
 {% load wagtailimages_tags %}
-<div class="recordlinks__wrapper">
-    <ul class="recordlinks__list">
+<div class="record-links__wrapper">
+    <ul class="record-links__list">
         {% for item in value.items %}
             {% with item.record.url as url %}
-                <li class="recordlinks__item">
+            <a href="{{ url }}">
+                <li class="record-links__item">
                     {% if item.thumbnail_image %}
-                        <div class="recordlinks__item__thumbnail">
-                            <a href="{{ url }}">
-                                {% image item.thumbnail_image fill-200x200 alt="" class="recordlinks__thumbnail-image" %}
-                            </a>
+                        <div class="record-links__item__thumbnail">
+                            {% image item.thumbnail_image fill-200x200 alt="" class="record-links__item__thumbnail-image" %}
                         </div>
                     {% endif %}
-                    <div class="recordlinks__item__text">
-                        <p class="recordlinks__item__reference"><a href="{{ url }}">FROM OUR COLLECTION: {{ item.record.reference_number }}</a></p>
-                        <p class="recordlinks__item__title"><a href="{{ url }}">{{ item.descriptive_title }}</a></p>
-                        <p class="recordlinks__item__dates">{{ item.record_dates }}</p>
+                    <div class="record-links__item__text">
+                        <p class="record-links__item__reference">FROM OUR COLLECTION: {{ item.record.reference_number }}</p>
+                        <p class="record-links__item__title">{{ item.descriptive_title }}</p>
+                        <p class="record-links__item__dates">{{ item.record_dates }}</p>
                     </div>
                 </li>
+            </a>
             {% endwith %}
         {% endfor %}
     </ul>
