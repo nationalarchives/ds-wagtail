@@ -1,0 +1,91 @@
+.record-links {
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding-left:10%;
+        padding-right:10%;
+        @media (max-width: $screen__md) {
+            padding-left:5%;
+            padding-right:5%;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        margin-bottom: 0px;
+        width: 100%;
+        padding-left: 0;
+        border-top: 0.3rem solid #ffcc00;
+    }
+
+    &__item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #D9D9D6;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        width: 100%;
+
+        @media (max-width: $screen__md) {
+            display: block;
+        }
+    }
+
+    &__item__thumbnail {
+        flex-shrink: 0;
+        width: 7.5rem;
+        height: 7.5rem;
+        margin-left: 2rem;
+
+        @media (max-width: $screen__md) {
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__item__thumbnail-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    &__item__text {
+        flex: 100%;
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
+
+    &__item__reference {
+        font-size: 0.9rem;
+        font-weight: 400;
+        font-family: $font__roboto-mono;
+        margin: 0;
+        color: #004C7E;
+    }
+
+    &__list a {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    &__list a:hover &__item,
+    &__list a:focus &__item{
+        outline: 0.312rem solid $color__dark;
+    }
+
+    &__item__title {
+        margin: 5px 0;
+        color: #000000;
+        text-decoration-line: underline;
+        font-family: $font__roboto-mono;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    &__item__dates {
+        color: #747474;
+        font-size: 0.9rem;
+        margin: 0;
+    }
+}
