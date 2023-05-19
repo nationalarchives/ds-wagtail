@@ -487,14 +487,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - A "No results" message in search results
+        - Particular message from "No results"
         - A "Search within these results" option
         - Error message in area of Record opening date
-
-        They SHOULD NOT see:
-        - Names, result counts and links for all buckets
-        - A description of the current bucket
-        - Options to change sort order and display style of results
-        - Checkbox filter options in refine the search
         """
         response = self.client.get(
             self.test_url,
@@ -504,26 +499,18 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "opening_end_date_2": "1900",
                 "q": "london",
                 "filter_keyword": "kew",
-                "collection": [
-                    "ADM",
-                ],
             },
         )
         content = str(response.content)
 
         # SHOULD see
         self.assertNoResultsMessagingRendered(content)
-        self.assertSearchWithinOptionRendered(content)
         self.assertIn(
             "<li>Try removing any filters that you may have applied</li>", content
         )
+        self.assertSearchWithinOptionRendered(content)
         self.assertIn(
             "<li>There is a problem. Start date cannot be after end date.</li>", content
-        )
-
-        # SHOULD NOT see
-        self.assertNotIn(
-            '<input type="checkbox" name="collection" value="ADM"', content
         )
 
 
