@@ -38,7 +38,7 @@
         padding-bottom: 2rem;
         width: 100%;
 
-        @media (max-width: $screen__md) {
+        @media (max-width: $screen__lg) {
             display: block;
         }
 
@@ -48,7 +48,7 @@
             height: 7.5rem;
             margin-left: 2rem;
     
-            @media (max-width: $screen__md) {
+            @media (max-width: $screen__lg) {
                 margin-bottom: 1rem;
             }
         }
