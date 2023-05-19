@@ -88,7 +88,11 @@ class Highlight(index.Indexed, models.Model):
     )
 
     def __str__(self) -> str:
-        return f"{self.title} ({self.reference_number})"
+        return f"{self.title} ({self.record_identifier})"
+
+    @property
+    def record_identifier(self) -> str:
+        return self.reference_number or self.record.iaid
 
     def full_clean(self, *args, **kwargs) -> None:
         if not self.title:
