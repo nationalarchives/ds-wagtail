@@ -2,8 +2,7 @@
 <div class="record-links__wrapper">
     <ul class="record-links__list">
         {% for item in value.items %}
-            {% with item.record.url as url %}
-            <a href="{{ url }}">
+            <a href="{{ item.record.url }}">
                 <li class="record-links__item">
                     {% if item.thumbnail_image %}
                         <div class="record-links__item__thumbnail">
@@ -17,7 +16,6 @@
                     </div>
                 </li>
             </a>
-            {% endwith %}
         {% endfor %}
     </ul>
 </div>
