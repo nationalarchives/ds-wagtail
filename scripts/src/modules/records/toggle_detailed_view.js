@@ -15,6 +15,7 @@ export default function() {
     $showHideButton.setAttribute('aria-label', 'Show or hide detailed view');
     $showHideButton.setAttribute('data-link-type', 'Link');
     $showHideButton.setAttribute('data-link', 'Show detailed view');
+    $showHideButton.setAttribute('data-component-name', 'Catalogue hierarchy');
     $toggleLink.appendChild($showHideButton);
 
     $detailedView.id = 'hierarchyTogglee';
@@ -30,10 +31,12 @@ export default function() {
         if(newAriaExpanded) {
             $showHideButton.innerHTML = 'Hide detailed view';
             $showHideButton.setAttribute('class', 'open');
+            $showHideButton.setAttribute('data-link', 'Hide detailed view');
         }
         else {
             $showHideButton.innerHTML = 'Show detailed view';
             $showHideButton.setAttribute('class', '');
+            $showHideButton.setAttribute('data-link', 'Show detailed view');
         }
     });
 };
