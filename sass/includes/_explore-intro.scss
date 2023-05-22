@@ -3,6 +3,7 @@
   padding-top: 1rem;
   background-color: $color__white;
   color: $color__black;
+  overflow: hidden; // cut off image when browser is narrow
 
   &__image-container {
     display: flex;
