@@ -8,5 +8,4 @@ document.addEventListener("DOMContentLoaded", () => {
     push_reference_and_series();
     add_unique_ids();
     toggle_detailed_view();
-    toggle_order_options();
 });
