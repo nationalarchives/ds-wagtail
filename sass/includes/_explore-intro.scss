@@ -10,8 +10,10 @@
 
   &__image {
     display: block;
-    max-width: 100%;
+    max-width: 390px; // match wagtail image rendition width
+    max-height: 390px; // match wagtail image rendition height
     height: auto;
+    width: auto;
 
     @media (max-width: $screen__lg) {
       display: none;
