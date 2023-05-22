@@ -480,6 +480,39 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
         self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
 
+    @responses.activate
+    def test_render_invalid_date_range_message(self):
+        """
+        When a user does search with an invalid date range:
+
+        They SHOULD see:
+        - A "No results" message in search results
+        - Particular message from "No results"
+        - A "Search within these results" option
+        - Error message in area of Record opening date
+        """
+        response = self.client.get(
+            self.test_url,
+            data={
+                "group": "tna",
+                "opening_start_date_2": "2000",
+                "opening_end_date_2": "1900",
+                "q": "london",
+                "filter_keyword": "kew",
+            },
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertNoResultsMessagingRendered(content)
+        self.assertIn(
+            "<li>Try removing any filters that you may have applied</li>", content
+        )
+        self.assertSearchWithinOptionRendered(content)
+        self.assertIn(
+            "<li>There is a problem. Start date cannot be after end date.</li>", content
+        )
+
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
