@@ -3,22 +3,47 @@
 {% load static %}
 {% load wagtailcore_tags %}
 {% load wagtailmetadata_tags %}
+{% load wagtailimages_tags %}
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
-    <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row">
-        <h2 class="sr-only">Select a way to explore</h2>
-            <ul class="card-group--no-flex">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </ul>
-       </div>
+    <div class="container">
+        <div class="card-grid card-grid__duo">
+            {% for item in page.body %}
+                <div class="related-highlight-cards__card">
+                    <a href="{{ item.value.page.url }}">
+                        {% image item.value.page.specific.teaser_image fill-540x350 as teaser_image %}
+                        <img height="350"
+                            width="540"
+                            src="{{ teaser_image.url }}"
+                            class="card__image"
+                            alt="{% if item.value.heading %}{{ item.value.heading }}{% endif %}" />
+                    </a>
+                    <div class="related-highlight-cards__content">
+                        <h3 class="related-highlight-cards__card-title">
+                            <a href="{{ item.value.page.url }}" class="related-highlight-cards__card-title-link">{{ item.value.heading }}</a>
+                        </h3>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
     </div>
+
+    {% comment %} Needs integrating with BE {% endcomment %}
+    {% comment %} {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article title="Spotlight on" %}
+    {% endif %} {% endcomment %}
+
+    {% comment %} Needs integrating with BE {% endcomment %}
+    {% comment %} {% if page.featured_pages %}
+        <div class="container">
+            {% include_block page.featured_pages %}
+        </div>
+    {% endif %} {% endcomment %}
+
 {% endblock %}
 
 {% block extra_js %}
