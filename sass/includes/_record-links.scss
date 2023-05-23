@@ -73,7 +73,11 @@
         
         &__title a:hover,
         &__title a:focus{
-            outline: 0.312rem solid $color__dark;
+            color: #004C7E;
+        }
+
+        &__title a:focus{
+            outline: 0.312rem solid #004C7E;
         }
 
         &__dates {
