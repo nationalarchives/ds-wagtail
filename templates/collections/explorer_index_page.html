@@ -15,8 +15,10 @@
                 {% endfor %}
             </ul>
         </div>
-        {{ page.articles_title }}
-        {{ page.articles_introduction }}
+
+        <h2>{{ page.articles_title }}</h3> {% comment %} TODO: Not sure about the choice of h2 and p, something to pick up in the FE work {% endcomment %}
+
+        <p>{{ page.articles_introduction }}</p>
         {% if page.featured_article %}
             {% include "includes/article-spotlight.html" with page=page.featured_article %}
         {% endif %}
