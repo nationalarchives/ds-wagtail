@@ -1,7 +1,11 @@
+from unittest.mock import patch
+
 from django.test import RequestFactory, SimpleTestCase
 
+from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
     extended_in_operator,
+    include_hidden_fields,
     query_string_exclude,
     query_string_include,
 )
@@ -90,3 +94,35 @@ class TestExtendedInOperator(SimpleTestCase):
             with self.subTest(label):
                 result = extended_in_operator(value[0], value[1], value[2])
                 self.assertEqual(result, expected)
+
+
+class IncludeHiddenFieldsTest(SimpleTestCase):
+    @patch("etna.search.templatetags.search_tags.get_random_string", return_value="123")
+    def test_escape_search_input(self, mock_get_random_string):
+        """tests hidden field html for inputs having special chars ex double-quote accross search term and search within results params"""
+
+        for label, form_data, visible_field_names, expected_output in (
+            (
+                "test search term",
+                {
+                    "group": "tna",
+                    "q": '"wo 439"',
+                },
+                "group per_page sort_order sort_by display filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location",
+                '<input type="hidden" name="q" value="&quot;wo 439&quot;" id="id_q_123"',
+            ),
+            (
+                "test search within results",
+                {
+                    "group": "tna",
+                    "filter_keyword": '"kew"',
+                },
+                "group per_page sort_order sort_by display q collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location",
+                '<input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_123"',
+            ),
+        ):
+            with self.subTest(label):
+                form = CatalogueSearchForm(form_data)
+                self.assertTrue(form.is_valid(), label)
+                html = include_hidden_fields(visible_field_names, form)
+                self.assertIn(expected_output, html)
