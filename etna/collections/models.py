@@ -481,30 +481,24 @@ class TopicalPageMixin:
     """
 
     @classmethod
-    def get_time_periods_inlinepanel(
-        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
-    ) -> InlinePanel:
+    def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
                 "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
-            min_num=min_num,
             max_num=max_num,
         )
 
     @classmethod
-    def get_topics_inlinepanel(
-        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
-    ) -> InlinePanel:
+    def get_topics_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
             "page_topics",
             heading=_("Related topics"),
             help_text=_(
                 "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
-            min_num=min_num,
             max_num=max_num,
         )
 
@@ -606,7 +600,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             "page_highlights",
             heading=_("Highlights"),
             label=_("Item"),
-            min_num=2,
             max_num=15,
         ),
         FieldPanel("featured_record_article"),
