@@ -57,6 +57,8 @@ hooks:
     
     nvm install v18.14.0
     nvm use v18.14.0
+    npm install -g npm@9.6.7
+    npm install -D webpack-cli
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
 
