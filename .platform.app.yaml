@@ -55,8 +55,8 @@ hooks:
     curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     
-    nvm install v14.19.1
-    nvm use v14.19.1
+    nvm install v18.14.0
+    nvm use v18.14.0
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
 
