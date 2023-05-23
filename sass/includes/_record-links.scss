@@ -3,12 +3,11 @@
         display: flex;
         align-items: center;
         flex-direction: column;
-        padding-left:10%;
-        padding-right:10%;
+        margin-bottom:2rem;
 
-        @media (max-width: $screen__md) {
-            padding-left:5%;
-            padding-right:5%;
+        @media (min-width: $screen__lg) {
+            padding-left:10%;
+            padding-right:10%;
         }
     }
 
@@ -17,29 +16,20 @@
         margin-bottom: 0px;
         width: 100%;
         padding-left: 0;
-        border-top: 0.3rem solid #ffcc00;
-    }
-
-    &__list a {
-        text-decoration: none;
-        color: inherit;
-    }
-    
-    &__list a:hover &__item,
-    &__list a:focus &__item{
-        outline: 0.312rem solid $color__dark;
+        border-top: 0.3rem solid $color__yellow_2;
     }
 
     &__item {
-        display: flex;
+        display: block;
         align-items: center;
-        border: 1px solid #D9D9D6;
+        border: 1px solid $color__grey-9;
+        border-top: 0;
         padding-top: 2rem;
         padding-bottom: 2rem;
         width: 100%;
 
-        @media (max-width: $screen__lg) {
-            display: block;
+        @media (min-width: $screen__lg) {
+            display: flex;
         }
 
         &__thumbnail {
@@ -47,9 +37,10 @@
             width: 7.5rem;
             height: 7.5rem;
             margin-left: 2rem;
+            margin-bottom: 1rem;
     
-            @media (max-width: $screen__lg) {
-                margin-bottom: 1rem;
+            @media (min-width: $screen__lg) {
+                margin-bottom: 0;
             }
         }
 
@@ -67,12 +58,22 @@
 
         &__title {
             margin: 5px 0;
-            color: #000000;
+            color: $color__black;
             text-decoration-line: underline;
             font-family: $font__roboto-mono;
             font-style: normal;
             font-weight: 700;
             font-size: 1.1rem;
+        }
+
+        &__title a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        &__title a:hover,
+        &__title a:focus{
+            outline: 0.312rem solid $color__dark;
         }
 
         &__dates {
