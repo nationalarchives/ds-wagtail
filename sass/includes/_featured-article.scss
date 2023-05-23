@@ -45,10 +45,19 @@
 
     &__heading {
         border-bottom: 0.125rem solid $color__dark;
+        line-height: 1.3;
 
         small {
             display: block;
-            font-size: 1.2rem;
+            color: $color__grey-6;
+            font-family: $font__roboto-mono;
+            font-size: 0.875rem;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+
+            @media only screen and (min-width: $screen__md) {
+                font-size: 0.9rem;
+            }
         }
 
         span {
