@@ -2,6 +2,7 @@ import json as json_module
 import unittest
 
 from typing import Any, Dict
+from unittest.mock import patch
 
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
@@ -511,6 +512,52 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertSearchWithinOptionRendered(content)
         self.assertIn(
             "<li>There is a problem. Start date cannot be after end date.</li>", content
+        )
+
+    @patch("etna.search.templatetags.search_tags.get_random_string", return_value="123")
+    @responses.activate
+    def test_render_hidden_search_escape_values(self, mock_get_random_string):
+        """tests hidden field html rendered for inputs having special chars ex double-quote accross search term and search within results params"""
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(
+                aggregations={"group": {"buckets": [{"key": "tna", "doc_count": 101}]}}
+            ),
+            status=200,
+        )
+        response = self.client.get(
+            self.test_url,
+            data={
+                "group": "tna",
+                "q": '"wo 409"',
+                "filter_keyword": '"kew"',
+            },
+        )
+        self.assertContains(
+            response,
+            '<input type="text" name="q" value="&quot;wo 409&quot;" class="search-results-hero__form-search-box" id="id_q"',
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q_123"',
+            count=3,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q"',
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            '<input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_123">',
+            count=3,
+            status_code=200,
         )
 
 
