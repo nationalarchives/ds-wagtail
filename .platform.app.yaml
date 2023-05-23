@@ -62,7 +62,6 @@ hooks:
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
 
-    npm install -D webpack-cli
     npx webpack --config webpack.config.js
 
     poetry run python manage.py collectstatic --no-input
