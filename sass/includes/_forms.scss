@@ -75,11 +75,11 @@
       text-indent: 0.312rem;
 
       &:disabled {
-        background: $color__grey-800;
+        background: $color__grey-300;
       }
 
       &:read-only {
-        background: $color__grey-800;
+        background: $color__grey-300;
       }
 
       &:focus {
