@@ -4,11 +4,11 @@
     used below because they are used in explorer.js for tracking purposes.
 {% endcomment %}
 <div class="container">
-    <h2 class="card-grid__title">
-        {% if value.heading %}
+    {% if value.heading %}
+        <h2 class="card-grid__title">
             {{ value.heading }}
-        {% endif %}
-    </h2>
+        </h2>
+    {% endif %}
     <div class="card-grid card-grid__duo" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
         {% for page in link_pages %}
             <a class="card" href="{% pageurl page %}">
