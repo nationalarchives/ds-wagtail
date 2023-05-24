@@ -1,8 +1,6 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
+{% load static wagtailmetadata_tags wagtailimages_tags wagtailcore_tags i18n %}
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
@@ -10,15 +8,25 @@
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
     <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row">
-        <h2 class="sr-only">Select a way to explore</h2>
+       <div class="row"> <!-- row for large link cards -->
             <ul class="card-group--no-flex">
                 {% for block in page.body %}
                     {% include_block block %}
                 {% endfor %}
             </ul>
-       </div>
+        </div>
+
+        <h2>{{ page.articles_title }}</h3> {% comment %} TODO: Not sure about the choice of h2 and p, something to pick up in the FE work {% endcomment %}
+
+        <p>{{ page.articles_introduction }}</p>
+        {% if page.featured_article %}
+            {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
+        {% endif %}
+        <div class="container">
+            {% include_block page.featured_articles %}
+        </div>
     </div>
+
 {% endblock %}
 
 {% block extra_js %}
