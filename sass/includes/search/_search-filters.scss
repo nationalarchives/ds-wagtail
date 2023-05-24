@@ -1,6 +1,6 @@
 .search-filters {
-  background-color: $color__grey-5;
-  border: 1px solid $color__grey-3;
+  background-color: $color__grey-300;
+  border: 1px solid $color__grey-500;
   padding: 1rem;
 
   &__heading {
@@ -12,14 +12,14 @@
     padding-left: 0.5rem;
 
     &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
+      outline: 5px solid $color__focus-outline-light-bg;
     }
   }
 
   &__widget-list-item {
     input {
       &:focus {
-        outline: 5px solid $color__focus-blue-outline-light-bg;
+        outline: 5px solid $color__focus-outline-light-bg;
       }
     }
 
@@ -59,7 +59,7 @@
 
   &__search {
     margin-bottom: 0.5rem;
-    border: 1px solid $color__grey-3;
+    border: 1px solid $color__grey-500;
     border-radius: 0.5rem;
     width: 100%;
     height: 3rem;
@@ -67,10 +67,10 @@
   }
 
   &__accordion-section {
-    background-color: $color__grey-1;
+    background-color: $color__grey-100;
     padding: 0.5rem;
     margin-bottom: 1rem;
-    border: 1px solid $color__grey-7;
+    border: 1px solid $color__grey-400;
 
     &-heading {
       font-size: 1rem;
@@ -78,11 +78,11 @@
     }
 
     &-link {
-      color: $color__blue_3;
+      color: $color__navy;
 
       &:visited,
       &:hover {
-        color: $color__blue_3;
+        color: $color__navy;
       }
     }
   }
@@ -92,7 +92,7 @@
     margin-right: 0.5rem;
 
     &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
+      outline: 5px solid $color__focus-outline-light-bg;
     }
   }
 
@@ -100,7 +100,7 @@
     width: 5rem;
 
     &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
+      outline: 5px solid $color__focus-outline-light-bg;
     }
 
     &-section {
