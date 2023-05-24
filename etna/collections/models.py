@@ -568,6 +568,8 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("teaser_text"),
     ]
 
+    gtm_content_group = "Highlight Gallery"
+
     @cached_property
     def highlights(self):
         """
