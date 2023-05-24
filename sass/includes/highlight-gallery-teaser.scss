@@ -43,10 +43,11 @@
   }
 
   &__link {
+    color: $color__white;
     text-decoration-color: $color__white;
 
     &:visited {
-      color: $color__grey-700;
+      color: $color__grey-200;
     }
   }
 
