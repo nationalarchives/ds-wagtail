@@ -11,8 +11,9 @@
     {% if page.highlights %}
         {% include 'includes/highlights-gallery.html' with highlights=page.highlights %}
     {% endif %}
+
     {% if page.featured_record_article %}
-        <p>TBC</p>
+        {% include 'includes/record-revealed.html' with record=page.featured_record_article %}
     {% endif %}
 
     {% if page.featured_article %}
