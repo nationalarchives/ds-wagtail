@@ -1,5 +1,5 @@
 from .base import SectionDepthAwareStructBlock
-from .cta import LargeCardLinksBlock, TimePeriodBlock, TopicExplorerBlock
+from .cta import LargeCardLinksBlock
 from .featured_content import FeaturedRecordArticleBlock
 from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
 from .page_list import PageListBlock
@@ -23,6 +23,4 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
-    "TimePeriodBlock",
-    "TopicExplorerBlock",
 ]
