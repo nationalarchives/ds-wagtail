@@ -20,7 +20,7 @@
 
         <p>{{ page.articles_introduction }}</p>
         {% if page.featured_article %}
-            {% include "includes/article-spotlight.html" with page=page.featured_article %}
+            {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
         {% endif %}
         <div class="container">
             {% include_block page.featured_pages %}
