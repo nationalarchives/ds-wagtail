@@ -13,7 +13,8 @@
 
   &__heading {
     @include font-size(xl);
-    font-family: $font__supria-sans;
+    font-family: $font__body;
+    font-weight: 700;
     margin: 0;
   }
 

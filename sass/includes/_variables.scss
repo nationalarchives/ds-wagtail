@@ -11,6 +11,7 @@ $font__roboto-mono: 'Roboto Mono', sans-serif;
 $font__supria-sans: supria-sans-condensed, sans-serif;
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
+$font__mono: $font__roboto-mono;
 
 // Colours
 // Defined in the design system here
@@ -90,34 +91,34 @@ $base-font-size: 16px;
 $base-line-height: 1.6;
 
 $large-font-sizes: (
-  xxxl: 64px,
-  xxl: 30px,
-  xl: 20.8px,
-  l: 20px,
-  m: 18px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 64px,
+    xxl: 30px,
+    xl: 20.8px,
+    l: 20px,
+    m: 18px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );
 
 $medium-font-sizes: (
-  xxxl: 42px,
-  xxl: 26px,
-  xl: 22px,
-  l: 18px,
-  m: 16px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 42px,
+    xxl: 26px,
+    xl: 22px,
+    l: 18px,
+    m: 16px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );
 
 $small-font-sizes: (
-  xxxl: 36px,
-  xxl: 24px,
-  xl: 20px,
-  l: 18px,
-  m: 16px,
-  s: 16px,
-  xs: 14px,
-  xxs: 12px,
+    xxxl: 36px,
+    xxl: 24px,
+    xl: 20px,
+    l: 18px,
+    m: 16px,
+    s: 16px,
+    xs: 14px,
+    xxs: 12px,
 );

@@ -90,17 +90,16 @@ class BucketsMixin:
         return bucket_list
 
     def get_context_data(self, **kwargs):
-        if self.bucket_list:
-            buckets = self.get_buckets_for_display(
-                self.api_result.bucket_counts, self.current_bucket_key
-            )
+        buckets = self.get_buckets_for_display(
+            self.api_result.bucket_counts, self.current_bucket_key
+        )
 
-            # Set this to True if any buckets have results
-            buckets_contain_results = False
-            for bucket in buckets:
-                if bucket.result_count:
-                    buckets_contain_results = True
-                    break
+        # Set this to True if any buckets have results
+        buckets_contain_results = False
+        for bucket in buckets:
+            if bucket.result_count:
+                buckets_contain_results = True
+                break
 
         return super().get_context_data(
             buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
@@ -378,6 +377,11 @@ class BaseFilteredSearchView(BaseSearchView):
         ):
             if field_name in form.errors:
                 return HttpResponseBadRequest(str(form.errors[field_name]))
+
+        # initialise empty result for an invalid form
+        self.api_result = records_client.resultlist_from_response(
+            response_data={}, bucket_counts=[]
+        )
 
         return super().form_invalid(form)
 
