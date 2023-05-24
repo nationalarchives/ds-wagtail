@@ -516,8 +516,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
     @patch("etna.search.templatetags.search_tags.get_random_string", return_value="123")
     @responses.activate
-    def test_render_hidden_search_escape_values(self, mock_get_random_string):
-        """tests hidden field html rendered for inputs having special chars ex double-quote accross search term and search within results params"""
+    def test_render_html_for_escape_search_values(self, mock_get_random_string):
+        """tests html rendered for input values containing special chars ex double-quote for search term and search within results params"""
 
         responses.add(
             responses.GET,

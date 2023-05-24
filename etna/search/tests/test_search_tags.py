@@ -98,8 +98,10 @@ class TestExtendedInOperator(SimpleTestCase):
 
 class IncludeHiddenFieldsTest(SimpleTestCase):
     @patch("etna.search.templatetags.search_tags.get_random_string", return_value="123")
-    def test_escape_search_input(self, mock_get_random_string):
-        """tests hidden field html for inputs having special chars ex double-quote accross search term and search within results params"""
+    def test_generate_hidden_html_for_escape_search_values(
+        self, mock_get_random_string
+    ):
+        """tests generated hidden field html for input values containing special chars ex double-quote for search term and search within results params"""
 
         for label, form_data, visible_field_names, expected_output in (
             (
