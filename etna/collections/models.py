@@ -28,7 +28,7 @@ from ..core.models import (
 from ..core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
-    FeaturedCollectionBlock,
+    FeaturedArticlesBlock,
     TimePeriodExplorerPageStreamBlock,
     TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
@@ -68,8 +68,8 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         ),
     )
 
-    featured_pages = StreamField(
-        [("featuredpages", FeaturedCollectionBlock())],
+    featured_articles = StreamField(
+        [("featuredarticles", FeaturedArticlesBlock())],
         blank=True,
         null=True,
         use_json_field=True,
@@ -85,7 +85,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
                     "featured_article",
                     ["articles.ArticlePage", "articles.RecordArticlePage"],
                 ),
-                FieldPanel("featured_pages"),
+                FieldPanel("featured_articles"),
             ],
             heading=_("Articles section"),
         ),

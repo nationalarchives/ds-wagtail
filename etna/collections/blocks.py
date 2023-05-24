@@ -50,7 +50,7 @@ class TopicIndexPageStreamBlock(blocks.StreamBlock):
         }
 
 
-class FeaturedCollectionBlock(blocks.StructBlock):
+class FeaturedArticlesBlock(blocks.StructBlock):
     items = PageListBlock(
         "articles.ArticlePage",
         "articles.RecordArticlePage",
@@ -63,5 +63,5 @@ class FeaturedCollectionBlock(blocks.StructBlock):
 
     class Meta:
         icon = "list"
-        label = "Featured pages"
-        template = "articles/blocks/featured_collection.html"
+        label = "Featured articles"
+        template = "collections/blocks/featured_articles.html"
