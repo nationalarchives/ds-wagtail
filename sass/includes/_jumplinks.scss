@@ -13,7 +13,8 @@
 
   &__heading {
     @include font-size(xl);
-    font-family: $font__supria-sans;
+    font-family: $font__body;
+    font-weight: 700;
     margin: 0;
   }
 
@@ -26,7 +27,7 @@
     padding: 0.3rem 0;
 
     a {
-      color: $color__dark;
+      color: $color__link;
       position: relative;
       bottom: 3px;
     }
@@ -37,15 +38,15 @@
   }
 
   &__list-item.active {
-    color: $color__yellow_2;
+    color: $color__yellow;
 
     a {
-      outline: 0.1875rem solid $color__yellow_2;
+      outline: 0.1875rem solid $color__yellow;
       outline-offset: 0.25rem;
       text-decoration: none;
 
       &:focus {
-        outline-color: $color__blue_4;
+        outline-color: $color__navy;
       }
     }
   }

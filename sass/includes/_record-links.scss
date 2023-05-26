@@ -1,0 +1,97 @@
+.record-links {
+    &__wrapper {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        margin-bottom: 2rem;
+
+        @media (min-width: $screen__lg) {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        margin-bottom: 0px;
+        width: 100%;
+        padding-left: 0;
+        border-top: 0.3rem solid $color__yellow;
+    }
+
+    &__item {
+        display: block;
+        align-items: center;
+        border: 1px solid $color__grey-300;
+        border-top: 0;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+        width: 100%;
+
+        @media (min-width: $screen__lg) {
+            display: flex;
+        }
+
+        &__thumbnail {
+            flex-shrink: 0;
+            width: 7.5rem;
+            height: 7.5rem;
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+
+            @media (min-width: $screen__lg) {
+                margin-bottom: 0;
+            }
+        }
+
+        &__thumbnail-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        &__text {
+            flex: 100%;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        &__title {
+            margin: 5px 0;
+            color: $color__black;
+            text-decoration-line: underline;
+            font-family: $font__roboto-mono;
+            font-style: normal;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        &__title a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        &__title a:hover,
+        &__title a:focus {
+            color: #004c7e;
+        }
+
+        &__title a:focus {
+            outline: 0.312rem solid #004c7e;
+        }
+
+        &__dates {
+            color: #747474;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        &__reference {
+            font-size: 0.9rem;
+            font-weight: 400;
+            font-family: $font__roboto-mono;
+            margin: 0;
+            color: #004c7e;
+        }
+    }
+}
