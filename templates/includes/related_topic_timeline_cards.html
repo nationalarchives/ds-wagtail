@@ -4,7 +4,12 @@
     <div class="card-grid card-grid__duo">
         {% if topic %}
             <div class="card__container card__container--dark">
-                <a class="card__image" data-component-name="Navigation card:{{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}" href="{% pageurl topic %}">
+                <a class="card__image"
+                   data-component-name="Navigation card:{{ title|default:"You may be interested in" }}"
+                   data-link-type="Card image"
+                   data-card-position="0"
+                   data-card-title="{{ topic.title }}"
+                   href="{% pageurl topic %}">
                     {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
                     <img height="350"
                          width="540"
@@ -12,21 +17,33 @@
                          src="{{ teaser_image.url }}"
                          alt=""/>
                 </a>
-                <a class="card__link-text" data-component-name="Navigation card:{{ title|default:"You may be interested in" }}" data-link-type="Card text" data-card-position="0" data-card-title="{{ topic.title }}" href="{% pageurl topic %}">
+                <a class="card__link-text"
+                   data-component-name="Navigation card:{{ title|default:"You may be interested in" }}"
+                   data-link-type="Card text"
+                   data-card-position="0"
+                   data-card-title="{{ topic.title }}"
+                   href="{% pageurl topic %}">
                     <p class="card__text">{{ topic.title }}</p>
                 </a>
             </div>
         {% endif %}
         {% if time_period %}
             <div class="card card__container card__container--dark">
-                <a class="card__image" data-component-name="Navigation card:{{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="1" data-card-title="{{ time_period.title }}" href="{% pageurl time_period %}">
+                <a class="card__image"
+                   data-component-name="Navigation card:{{ title|default:"You may be interested in" }}"
+                   data-link-type="Card image"
+                   data-card-position="1"
+                   data-card-title="{{ time_period.title }}"
+                   href="{% pageurl time_period %}">
                     {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
-                    <img height="350"
-                         width="540"
-                         class="card__image"
-                         alt=""/>
+                    <img height="350" width="540" class="card__image" alt=""/>
                 </a>
-                <a class="card__link-text" data-component-name="Navigation card:{{ title|default:"You may be interested in" }}" data-link-type="Card text" data-card-position="1" data-card-title="{{ time_period.title }}" href="{% pageurl time_period %}">
+                <a class="card__link-text"
+                   data-component-name="Navigation card:{{ title|default:"You may be interested in" }}"
+                   data-link-type="Card text"
+                   data-card-position="1"
+                   data-card-title="{{ time_period.title }}"
+                   href="{% pageurl time_period %}">
                     <p class="card__text">{{ time_period.title }}</p>
                 </a>
             </div>
