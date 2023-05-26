@@ -436,6 +436,7 @@ class PageGalleryImage(Orderable):
         ),
     )
     caption = RichTextField(
+        features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,
     )
