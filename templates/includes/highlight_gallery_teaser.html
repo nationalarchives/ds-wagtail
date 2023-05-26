@@ -7,8 +7,8 @@
     <ul class="card-grid card-grid__quint card-grid--list">
         {% for card in cards %}
             <li class="highlight-gallery-teaser__card">
-                <a href="{% pageurl card.page %}#highlight{{ forloop.counter }}"
-                   data-card-position="{{ forloop.counter }}"
+                <a href="{% pageurl card.page %}#highlight{{ forloop.counter0 }}"
+                   data-card-position="{{ forloop.counter0 }}"
                    class="highlight-gallery-teaser__link"
                    data-card-title="{{ card.image.title }}"
                    data-link-type="Card image"
@@ -31,8 +31,8 @@
                 <div class="highlight-gallery-teaser__content">
                     <h3 class="highlight-gallery-teaser__text">
                         <a class="highlight-gallery-teaser__link"
-                           href="{% pageurl card.page %}#highlight{{ forloop.counter }}"
-                           data-card-position="{{ forloop.counter }}"
+                           href="{% pageurl card.page %}#highlight{{ forloop.counter0 }}"
+                           data-card-position="{{ forloop.counter0 }}"
                            data-link-type="Card text"
                            data-card-title="{{ card.image.title }}"
                            data-component-name="{{ value.block.meta.label }}:{% trans "Explore records about" %} {% trans title %}"
