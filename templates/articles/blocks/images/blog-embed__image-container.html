@@ -1,5 +1,4 @@
-{% load wagtailimages_tags %}
-{% load wagtailcore_tags %}
+{% load wagtailimages_tags wagtailcore_tags %}
 {% if value.image %}
     <div class="blog-embed__image-container">
         {% if value.caption %}
@@ -27,7 +26,7 @@
                 {% endif %}
             </picture>
         {% if value.caption %}
-        <figcaption>{{value.caption}}</figcaption>
+        <figcaption>{{value.caption|richtext}}</figcaption>
         </figure>
         {% endif %}
     </div>

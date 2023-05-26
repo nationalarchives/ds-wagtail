@@ -6,7 +6,7 @@
   font-size: 1rem;
   padding: 0.75rem 1rem 2rem;
   margin: 0 auto;
-  border-bottom: 2px dotted $color__grey-4;
+  border-bottom: 2px dotted $color__grey-500;
 
   &__link {
     display: inline-block;
@@ -37,11 +37,11 @@
       }
       &:hover {
         color: $color__link;
-        background-color: $color__grey-4;
+        background-color: $color__grey-500;
       }
       &:active {
         color: $color__link;
-        background-color: $color__grey-4;
+        background-color: $color__grey-500;
       }
     }
 
@@ -59,11 +59,11 @@
       }
       &:focus {
         @include focus-default;
-        outline: 5px solid $color__dark;
+        outline: 5px solid $color__grey-700;
       }
       &:hover {
         color: $color__white;
-        background-color: $color__dark;
+        background-color: $color__grey-700;
       }
       &:active {
         color: $color__white;
@@ -80,16 +80,16 @@
   }
 
   .open {
-    background: #1A67A2 url($fa_chevron_up_white) no-repeat 15px;
+    background: #1a67a2 url($fa_chevron_up_white) no-repeat 15px;
     background-size: 15px;
   }
 }
 
 .cta-secondary-panel {
   text-align: left;
-  background: $color__grey-1;
+  background: $color__grey-100;
   padding: 2rem 0;
-  border-bottom: 2px dotted $color__grey-4;
+  border-bottom: 2px dotted $color__grey-500;
 
   &__heading {
     font-size: 1.25rem;
@@ -101,7 +101,7 @@
   }
 
   &__link {
-    border-bottom: 5px solid $color__yellow_2;
+    border-bottom: 5px solid $color__yellow;
     display: inline-block;
     font-size: 1.1rem;
     padding: 0.25rem 0;
@@ -114,5 +114,4 @@
       color: $color__black;
     }
   }
-
 }

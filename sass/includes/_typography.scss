@@ -1,9 +1,14 @@
-h1, h2 {
-    font-weight: 400;
+body {
+  color: $color__grey-700;
+}
+
+h1,
+h2 {
+  font-weight: 400;
 }
 
 h2 {
-    font-size: 2rem;
+  font-size: 2rem;
 }
 
 p {
