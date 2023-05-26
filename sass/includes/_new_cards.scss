@@ -1,39 +1,39 @@
 .card {
-    $root: &;
-    position: relative;
+  $root: &;
+  position: relative;
+  display: flex;
+  text-decoration: none;
+
+  &:hover,
+  &:focus {
+    background-color: $color__grey-700;
+    color: $color__white;
+    outline: 0.3125rem solid $color__grey-700;
+  }
+
+  &__container {
     display: flex;
-    text-decoration: none;
+    flex-direction: column;
+    flex-grow: 1;
+    align-items: center;
+    background: $white;
+    width: 100%;
 
-    &:hover,
-    &:focus {
-        background-color: $color__dark;
-        color: $color__white;
-        outline: 0.3125rem solid $color__dark;
+    &--dark {
+      background: $color__grey-800;
     }
+  }
 
-    &__container {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-        align-items: center;
-        background: $white;
-        width: 100%;
+  &__image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+  }
 
-        &--dark {
-            background: $color__grey-2;
-        }
-    }
-
-    &__image {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-        object-position: center;
-    }
-
-    &__text {
-        color: $color__white;
-        font-size: 1.5em;
-        margin: 2rem 0;
-    }
+  &__text {
+    color: $color__white;
+    font-size: 1.5em;
+    margin: 2rem 0;
+  }
 }
