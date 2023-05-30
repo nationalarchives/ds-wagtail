@@ -83,8 +83,8 @@ def record_detail_view(request, iaid):
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
-    # Back to search button - default url
-    back_to_search_url = featured_search_url = reverse("search-featured")
+    # Back to search - default url
+    back_to_search_url = reverse("search-featured")
 
     # Back to search button - update url when timestamp is not expired
     if back_to_search_url_timestamp := request.session.get(
@@ -100,17 +100,10 @@ def record_detail_view(request, iaid):
         if timezone.now() <= back_to_search_url_timestamp_delta:
             back_to_search_url = request.session.get("back_to_search_url")
 
-    back_to_search_label = (
-        "Start a new search"
-        if back_to_search_url == featured_search_url
-        else "Back to search results"
-    )
-
     context.update(
         record=record,
         image=image,
         meta_title=record.summary_title,
-        back_to_search_label=back_to_search_label,
         back_to_search_url=back_to_search_url,
     )
 
