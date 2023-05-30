@@ -1,120 +1,120 @@
 .search-filters {
-  background-color: $color__grey-5;
-  border: 1px solid $color__grey-3;
-  padding: 1rem;
-
-  &__heading {
-    font-size: 1.3em;
-  }
-
-  &__widget-list {
-    list-style: none;
-    padding-left: 0.5rem;
-
-    &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
-    }
-  }
-
-  &__widget-list-item {
-    input {
-      &:focus {
-        outline: 5px solid $color__focus-blue-outline-light-bg;
-      }
-    }
-
-    label {
-      cursor: pointer;
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      max-width: 100%;
-    }
-  }
-
-  &__form-block {
-    margin-bottom: 1rem;
-  }
-
-  &__submit {
-    @extend .search-button;
-    display: block;
-    margin-top: 0.5rem;
-  }
-
-  &__label,
-  &__checkbox,
-  &__submit {
-    cursor: pointer;
-  }
-
-  &__label {
-    max-width: 80%;
-    vertical-align: top;
-
-    &--block {
-      display: block;
-      max-width: 100%;
-    }
-  }
-
-  &__search {
-    margin-bottom: 0.5rem;
-    border: 1px solid $color__grey-3;
-    border-radius: 0.5rem;
-    width: 100%;
-    height: 3rem;
+    background-color: $color__grey-200;
+    border: 1px solid $color__grey-500;
     padding: 1rem;
-  }
 
-  &__accordion-section {
-    background-color: $color__grey-1;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid $color__grey-7;
-
-    &-heading {
-      font-size: 1rem;
-      font-weight: normal;
+    &__heading {
+        font-size: 1.3em;
     }
 
-    &-link {
-      color: $color__blue_3;
+    &__widget-list {
+        list-style: none;
+        padding-left: 0.5rem;
 
-      &:visited,
-      &:hover {
-        color: $color__blue_3;
-      }
-    }
-  }
-
-  &__checkbox {
-    margin-bottom: 1rem;
-    margin-right: 0.5rem;
-
-    &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
-    }
-  }
-
-  &__opening-date {
-    width: 5rem;
-
-    &:focus {
-      outline: 5px solid $color__focus-blue-outline-light-bg;
+        &:focus {
+            outline: 5px solid $color__focus-outline-light-bg;
+        }
     }
 
-    &-section {
-      margin-bottom: 1rem;
-    }
-  }
+    &__widget-list-item {
+        input {
+            &:focus {
+                outline: 5px solid $color__focus-outline-light-bg;
+            }
+        }
 
-  .errorlist {
-    list-style-type: none;
-    padding-left: 0;
-    font-weight: 700;
-    padding: 1rem 2rem;
-    background-color: #a72916;
-    color: #ffffff;
-    margin-bottom: 2rem;
-  }
+        label {
+            cursor: pointer;
+            display: inline-block;
+            margin-bottom: 0.5rem;
+            max-width: 100%;
+        }
+    }
+
+    &__form-block {
+        margin-bottom: 1rem;
+    }
+
+    &__submit {
+        @extend .search-button;
+        display: block;
+        margin-top: 0.5rem;
+    }
+
+    &__label,
+    &__checkbox,
+    &__submit {
+        cursor: pointer;
+    }
+
+    &__label {
+        max-width: 80%;
+        vertical-align: top;
+
+        &--block {
+            display: block;
+            max-width: 100%;
+        }
+    }
+
+    &__search {
+        margin-bottom: 0.5rem;
+        border: 1px solid $color__grey-500;
+        border-radius: 0.5rem;
+        width: 100%;
+        height: 3rem;
+        padding: 1rem;
+    }
+
+    &__accordion-section {
+        background-color: $color__grey-100;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 1px solid $color__grey-400;
+
+        &-heading {
+            font-size: 1rem;
+            font-weight: normal;
+        }
+
+        &-link {
+            color: $color__navy;
+
+            &:visited,
+            &:hover {
+                color: $color__navy;
+            }
+        }
+    }
+
+    &__checkbox {
+        margin-bottom: 1rem;
+        margin-right: 0.5rem;
+
+        &:focus {
+            outline: 5px solid $color__focus-outline-light-bg;
+        }
+    }
+
+    &__opening-date {
+        width: 5rem;
+
+        &:focus {
+            outline: 5px solid $color__focus-outline-light-bg;
+        }
+
+        &-section {
+            margin-bottom: 1rem;
+        }
+    }
+
+    .errorlist {
+        list-style-type: none;
+        padding-left: 0;
+        font-weight: 700;
+        padding: 1rem 2rem;
+        background-color: #a72916;
+        color: #ffffff;
+        margin-bottom: 2rem;
+    }
 }

@@ -6,7 +6,7 @@
     grid-template-columns: 1fr;
     border-width: 1px 0px;
     border-style: solid;
-    border-color: $color__grey-7;
+    border-color: $color__grey-300;
     // Removes parent margin to ensure it's flush with viewport edge
     margin-left: calc((3rem + 14px) / -2);
     margin-right: calc((3rem + 14px) / -2);
@@ -34,6 +34,10 @@
         @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             margin: 23px 40px;
         }
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            margin: 23px 40px;
+        }
     }
 
     &__meta {
@@ -46,7 +50,7 @@
 
     &__title {
         @include font-size('xxl');
-        color: $color__grey-2;
+        color: $color__grey-800;
         margin-top: 0;
         font-weight: 600;
         transition: color $transition_duration ease-in-out;
@@ -62,7 +66,7 @@
 
     &__text {
         @include font-size('m');
-        color: $color__grey-6;
+        color: $color__grey-700;
         margin-bottom: 0;
     }
 
