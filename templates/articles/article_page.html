@@ -10,7 +10,7 @@
 {% block breadcrumb %}{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
-    {% include 'includes/hero-img.html' %}
+    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
     <div class="article-container container">
         <div class="article-container__sidebar">
@@ -38,9 +38,11 @@
                     {% endfor %}
                 </ul>
             {% endif %}
-
-            {% if page.primary_topic or page.primary_time_period %}
-                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+            
+            {% if FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED %}
+                {% if page.primary_topic or page.primary_time_period %}
+                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+                {% endif %}
             {% endif %}
 
             {% if page.latest_items %}

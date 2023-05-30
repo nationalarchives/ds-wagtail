@@ -2,7 +2,7 @@
   margin-top: 1rem;
   text-align: center;
   width: 100%;
-  background-color: $color__dark;
+  background-color: $color__grey-700;
   padding: 2.5rem 0 0;
 
   figure {
@@ -36,7 +36,7 @@
     }
 
     &:focus {
-      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+      outline: 0.313rem solid $color__focus-outline-dark-bg;
     }
 
     &:hover {
@@ -45,10 +45,10 @@
     }
   }
 
-  &__image-link:hover, &__image-link:focus {
+  &__image-link:hover,
+  &__image-link:focus {
     img {
-      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+      outline: 0.313rem solid $color__focus-outline-dark-bg;
     }
   }
 }
-

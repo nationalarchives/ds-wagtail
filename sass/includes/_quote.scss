@@ -1,28 +1,51 @@
 .quote {
-  &__container {
-    background-color: $color__grey-5;
-    padding: 2rem;
-    margin: 3rem 0;
-    max-width: 100%;
-  }
+    margin-left: calc((2rem + 15px) * -1);
+    margin-right: calc((2rem + 15px) * -1);
+    width: calc((4rem + 30px) + 100%);
 
-  &__text {
-    font-family: $font__open-sans;
-    font-size: 1.25rem;
-  }
-
-  &__citation {
-    text-align: right;
-    padding-right: 2rem;
-
-    cite {
-      font-style: normal;
+    @media only screen and (min-width: $screen__md) {
+        margin-left: 0;
+        margin-right: 0;
+        width: 100%;
     }
-  }
 
-  &--no-citation {
-    blockquote, p {
-      margin-bottom: 0;
+    &__container {
+        padding: 2rem;
+        margin-top: 1rem; // ideally this would be managed on the element preceeding, but not for now
+        max-width: 100%;
+        border-top: $default__border;
+        border-bottom: $default__border;
+        text-align: center;
+
+        @media only screen and (min-width: $screen__lg) {
+            padding: 3rem;
+            margin-top: 2rem; // ideally this would be managed on the element preceeding, but not for now
+        }
     }
-  }
+
+    &__text {
+        @include font-size(m);
+        font-family: $font__open-sans;
+        font-weight: 700;
+        color: $color--black;
+
+        p {
+            &:last-of-type {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    &__citation {
+        @include font-size(xs);
+        color: $color__grey-800;
+
+        cite {
+            font-style: normal;
+        }
+    }
+
+    &__figure {
+        margin-bottom: 0;
+    }
 }

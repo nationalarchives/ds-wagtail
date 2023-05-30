@@ -8,11 +8,11 @@
     {% if page.related_highlight_gallery_pages %}
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
-    {% if page.related_record_articles %}
-        {% include "includes/related-articles-highlight-cards.html" with articles=page.related_record_articles title="Records revealed" %}
+    {% if page.related_record_articles or page.featured_record_article %}
+        {% include "includes/related-articles-highlight-cards.html" with featured_article=page.featured_record_article articles=page.related_record_articles title="Records revealed" %}
     {% endif %}
     {% if page.body %}
-        <div class="container"
+        <div class="body-container"
              data-container-name="topic-explorer"
              id="analytics-topic-explorer">
             <div class="row">

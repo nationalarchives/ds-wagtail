@@ -1,13 +1,22 @@
 .featured-record-article {
+    $root: &;
     box-sizing: border-box;
     display: grid;
     margin-bottom: 40px;
     grid-template-columns: 1fr;
     border-width: 1px 0px;
     border-style: solid;
-    border-color: $color__grey-7;
-    
-    @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
+    border-color: $color__grey-300;
+    // Removes parent margin to ensure it's flush with viewport edge
+    margin-left: calc((3rem + 14px) / -2);
+    margin-right: calc((3rem + 14px) / -2);
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
         margin-right: 15px;
         margin-left: 15px;
         grid-template-columns: 1fr 1fr;
@@ -15,37 +24,54 @@
 
     &__image {
         width: 100%;
-        height: auto;
+        height: 100%;
         object-fit: cover;
     }
 
     &__container {
         margin: 24px;
 
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            margin: 23px 40px;
+        }
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             margin: 23px 40px;
         }
     }
 
     &__meta {
-        color: $color__grey-3;
         @include font-size(xs);
-        font-weight: 400;
+        font-family: $font__mono;
+        color: $color__black;
         line-height: 31px;
-        margin-bottom: 8px;
+        text-transform: uppercase;
     }
 
     &__title {
+        @include font-size('xxl');
+        color: $color__grey-800;
         margin-top: 0;
-        margin-bottom: 0;
-        @include font-size("l");
-        color: $color__grey-2;
-        font-weight: 700;
-        margin-bottom: 12pz
+        font-weight: 600;
+        transition: color $transition_duration ease-in-out;
+    }
+
+    &__link {
+        &:hover {
+            #{$root}__title {
+                color: $color__link-hover;
+            }
+        }
     }
 
     &__text {
-        @include font-size("s");
-        margin-bottom: 12px;
+        @include font-size('m');
+        color: $color__grey-700;
+        margin-bottom: 0;
+    }
+
+    &__date {
+        @include font-size('m');
+        color: $color__black;
     }
 }

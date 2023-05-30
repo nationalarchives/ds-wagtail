@@ -7,7 +7,12 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -23,6 +28,7 @@ from ..core.models import (
 from ..core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
+    FeaturedArticlesBlock,
     TimePeriodExplorerPageStreamBlock,
     TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
@@ -38,9 +44,53 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
+    articles_title = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Stories from the collection",
+        help_text=_("The title to display for the articles section."),
+    )
+
+    articles_introduction = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text=_("The introduction to display for the articles section."),
+    )
+
+    featured_article = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
+    )
+
+    featured_articles = StreamField(
+        [("featuredarticles", FeaturedArticlesBlock())],
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("articles_title"),
+                FieldPanel("articles_introduction"),
+                PageChooserPanel(
+                    "featured_article",
+                    ["articles.ArticlePage", "articles.RecordArticlePage"],
+                ),
+                FieldPanel("featured_articles"),
+            ],
+            heading=_("Articles section"),
+        ),
     ]
+
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
@@ -431,30 +481,24 @@ class TopicalPageMixin:
     """
 
     @classmethod
-    def get_time_periods_inlinepanel(
-        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
-    ) -> InlinePanel:
+    def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
             help_text=_(
                 "If the page relates to more than one time period, please add these in order of relevance from most to least"
             ),
-            min_num=min_num,
             max_num=max_num,
         )
 
     @classmethod
-    def get_topics_inlinepanel(
-        cls, max_num: Optional[int] = 4, min_num: Optional[int] = None
-    ) -> InlinePanel:
+    def get_topics_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
         return InlinePanel(
             "page_topics",
             heading=_("Related topics"),
             help_text=_(
                 "If the page relates to more than one topic, please add these in order of relevance from most to least."
             ),
-            min_num=min_num,
             max_num=max_num,
         )
 
@@ -556,7 +600,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             "page_highlights",
             heading=_("Highlights"),
             label=_("Item"),
-            min_num=2,
             max_num=15,
         ),
         FieldPanel("featured_record_article"),
@@ -574,6 +617,8 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("time_period_names"),
         index.SearchField("teaser_text"),
     ]
+
+    gtm_content_group = "Highlight Gallery"
 
     @cached_property
     def highlights(self):

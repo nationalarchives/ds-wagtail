@@ -26,7 +26,9 @@ def query_string_include(context, key: str, value: Union[str, int]) -> str:
 
 
 @register.simple_tag(takes_context=True)
-def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
+def query_string_exclude(
+    context, key: str, value: Union[str, int, datetime.date]
+) -> str:
     """Remove matching entry from current query string."""
 
     request = context["request"]
@@ -39,7 +41,9 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
         day = str(query_dict.getlist(f"{key}_0", "")[0]) or value.day
         month = str(query_dict.getlist(f"{key}_1", "")[0]) or value.month
         year = str(query_dict.getlist(f"{key}_2", "")[0])
-        qd_dt = datetime.datetime.strptime(f"{day} {month} {year}", "%d %m %Y").date()
+        qd_dt = datetime.datetime.strptime(
+            f"{day} {month} {year.zfill(4)}", "%d %m %Y"
+        ).date()
         if qd_dt == value:
             query_dict.pop(f"{key}_0")
             query_dict.pop(f"{key}_1")

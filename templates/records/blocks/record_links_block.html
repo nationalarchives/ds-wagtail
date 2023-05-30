@@ -1,0 +1,21 @@
+{% load wagtailimages_tags %}
+<div class="record-links__wrapper">
+    <ul class="record-links__list">
+        {% for item in value.items %}
+            <li>
+                <div class="record-links__item">
+                    {% if item.thumbnail_image %}
+                        <div class="record-links__item__thumbnail">
+                            {% image item.thumbnail_image fill-200x200 alt="" class="record-links__item__thumbnail-image" %}
+                        </div>
+                    {% endif %}
+                    <div class="record-links__item__text">
+                        <p class="record-links__item__reference"><span class="sr-only">Link to record </span>FROM OUR COLLECTION: {{ item.record.reference_number }}</p>
+                        <p class="record-links__item__title"><a href="{{ item.record.url }}">{{ item.descriptive_title }}</a></p>
+                        <p class="record-links__item__dates">{{ item.record_dates }}</p>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
