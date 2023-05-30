@@ -33,7 +33,9 @@
             </div>
         </a>
         <div class="card-group-secondary-nav__body">
-            <p class="card-group-secondary-nav__title-label">{{ page.title_label }}</p>
+            {% if page.title_label %}
+                <p class="card-group-secondary-nav__title-label">{{ page.title_label }}</p>
+            {% endif %}
             <h3 class="card-group-secondary-nav__heading">
                 <a
                     href='{{ page.url }}'
