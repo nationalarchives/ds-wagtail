@@ -3,7 +3,7 @@
     @include font-size(xxl);
     font-weight: 500;
     font-family: $font__supria-sans;
-    color: $color__dark;
+    color: $color__grey-700;
     background: transparent;
 
     &-text {
@@ -40,7 +40,7 @@
           }
 
           &:focus {
-            outline: 0.3125rem solid $color__blue_4;
+            outline: 0.3125rem solid $color__navy;
           }
 
           &[aria-expanded='true'] {

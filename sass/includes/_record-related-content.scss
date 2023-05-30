@@ -6,25 +6,24 @@
     padding-left: 0;
 
     li {
-      background-color: $color__grey-5;
+      background-color: $color__grey-800;
       margin-bottom: 1rem;
       padding: 1rem;
-      border-left: 1.25rem solid $color__blue_3;
+      border-left: 1.25rem solid $color__navy;
 
       a {
         text-decoration: underline;
-        color: $color__blue_3;
+        color: $color__navy;
         display: inline-block;
         &:hover {
           text-decoration: none;
         }
 
         &:focus {
-          outline: 0.313rem solid $color__blue_3;
-          outline-offset: .25rem;
+          outline: 0.313rem solid $color__navy;
+          outline-offset: 0.25rem;
         }
       }
     }
   }
-
 }
