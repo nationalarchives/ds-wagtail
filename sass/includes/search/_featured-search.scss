@@ -64,7 +64,7 @@
     }
     &-image {
       width: 100%;
-        display: none;
+        //display: none;
 
 
     }
@@ -86,7 +86,7 @@
       grid-template-columns: 1fr 1fr 1fr;
       margin-left: 2rem;
       &-section {
-          display:none;
+          //display:none;
         margin-right: 2rem;
         &:nth-of-type(1) {
           -ms-grid-column: 1;
