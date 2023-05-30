@@ -144,6 +144,8 @@ class ArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "stories"
 
+    title_label = "THE STORY OF"
+
     template = "articles/article_page.html"
 
     class Meta:
@@ -334,6 +336,8 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
 
     # DataLayerMixin overrides
     gtm_content_group = "Record articles"
+
+    title_label = "RECORD REVEALED"
 
     class Meta:
         verbose_name = _("record article")
