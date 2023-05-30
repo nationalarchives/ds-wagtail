@@ -9,7 +9,12 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -42,8 +47,16 @@ class ArticleIndexPage(BasePageWithIntro):
     """
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
     )
+
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
@@ -63,7 +76,10 @@ class ArticleIndexPage(BasePageWithIntro):
         return context
 
     content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.RecordArticlePage"],
+        ),
         FieldPanel("featured_pages"),
     ]
 
