@@ -4,7 +4,7 @@
   padding: 2rem 0;
 
   &__icon {
-    background-color: $color__blue_3;
+    background-color: $color__navy;
     border-radius: 50%;
     margin: 0 auto 1rem;
     padding: 1rem;
@@ -37,10 +37,10 @@
   }
 
   &__list-item {
-    background-color: $color__blue_3;
+    background-color: $color__navy;
     margin-bottom: 1rem;
     padding: 1rem;
-    border-left: 1.25rem solid $color__blue_4;
+    border-left: 1.25rem solid $color__navy;
     text-align: left;
   }
 
@@ -67,7 +67,8 @@
     font-size: 1.625rem;
   }
 
-  &__link-heading, &__link-text {
+  &__link-heading,
+  &__link-text {
     color: $color__white;
   }
 }

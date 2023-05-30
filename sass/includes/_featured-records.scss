@@ -2,8 +2,8 @@
     margin-bottom: 2rem;
 
     &__heading {
-        color: $color__dark;
-        background-color: $color__yellow_2;
+        color: $color__grey-700;
+        background-color: $color__yellow;
         margin-bottom: 0;
         padding: 1rem 0 1rem 1rem;
         font-weight: 400;
@@ -12,13 +12,13 @@
     }
 
     &__content {
-        border: 3px solid $color__grey-7;
+        border: 3px solid $color__grey-400;
         padding: 1rem;
         border-top: none;
     }
 
     &__standfirst {
-        color: $color__dark;
+        color: $color__grey-700;
         font-family: $font__supria-sans;
         font-size: 1.4rem;
     }
@@ -29,10 +29,10 @@
     }
 
     &__list-item {
-        background-color: $color__dark;
+        background-color: $color__grey-700;
         margin-bottom: 1rem;
         padding: 1rem;
-        border-left: 1.25rem solid $color__yellow_2;
+        border-left: 1.25rem solid $color__yellow;
     }
 
     &__list-item-description {
@@ -47,13 +47,14 @@
         color: $color__white !important;
         display: inline-block;
         width: 100%;
+
         &:hover {
             text-decoration: none;
             color: $color__white;
         }
 
         &:focus {
-            outline: 0.313rem solid $color__blue_6;
+            outline: 0.313rem solid $color__blue;
             outline-offset: 0.25rem;
         }
     }
