@@ -11,7 +11,9 @@
                     {% endif %}
                     <div class="record-links__item__text">
                         <p class="record-links__item__reference"><span class="sr-only">Link to record </span>FROM OUR COLLECTION: {{ item.record.reference_number }}</p>
-                        <p class="record-links__item__title"><a href="{{ item.record.url }}">{{ item.descriptive_title }}</a></p>
+                        <h2 class="record-links__item__title">
+                            <a data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}" href="{{ item.record.url }}">{{ item.descriptive_title }}</a>
+                        </h2>
                         <p class="record-links__item__dates">{{ item.record_dates }}</p>
                     </div>
                 </div>
