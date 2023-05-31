@@ -2,7 +2,10 @@
 <section class="body-container highlight-gallery-teaser">
     <h2 class="highlight-gallery-teaser__title">
         {% trans "Explore records about" %} <a class="highlight-gallery-teaser__title-link"
-    href='{% pageurl page %}'>{% trans title %}</a>
+    href="{% pageurl page %}" 
+    data-component-name="Featured card: {% trans "Explore records about" %} {% trans title %}"
+    data-link-type="Link"
+    data-link="{% trans title %}">{% trans title %}</a>
     </h2>
     <ul class="card-grid card-grid__quint card-grid--list">
         {% for card in cards %}
