@@ -7,26 +7,28 @@
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
-    <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row"> <!-- row for large link cards -->
-            <ul class="card-group--no-flex">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </ul>
-        </div>
-
-        <h2>{{ page.articles_title }}</h3> {% comment %} TODO: Not sure about the choice of h2 and p, something to pick up in the FE work {% endcomment %}
-
-        <p>{{ page.articles_introduction }}</p>
-        {% if page.featured_article %}
-            {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
-        {% endif %}
-        <div class="container">
-            {% include_block page.featured_articles %}
-        </div>
+    <div id="analytics-explorer-index" data-container-name="explorer-index">
+        <ul class="card-group--no-flex">
+            {% for block in page.body %}
+                {% include_block block %}
+            {% endfor %}
+        </ul>
     </div>
 
+    <div class="container">
+        <h2 class="extra-padding">{{ page.articles_title }}</h3>
+
+        <p>{{ page.articles_introduction }}</p>
+    </div>
+
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
+    {% endif %}
+
+    <div class="container">
+        {% include_block page.featured_articles %}
+    </div>
+    
 {% endblock %}
 
 {% block extra_js %}

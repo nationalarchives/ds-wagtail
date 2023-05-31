@@ -3,25 +3,33 @@
     This template requires refinement by FE. Note 'card-group--no-flex' and 'card-group-promo__card' classes have been
     used below because they are used in explorer.js for tracking purposes.
 {% endcomment %}
-<div class="container">
-    {% if value.heading %}
-        <h2 class="card-grid__title">
-            {{ value.heading }}
-        </h2>
-    {% endif %}
-    <div class="card-grid card-grid__duo" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
-        {% for page in link_pages %}
-            <a class="card" href="{% pageurl page %}">
-                <div class="card__container card__container--dark">
-                    {% image page.teaser_image fill-540x350 as teaser_image %}
-                    <img height="350"
-                        width="540"
-                        src="{{ teaser_image.url }}"
-                        class="card__image"
-                        alt=""/>
-                    <p class="card__text">{{ page.title }}</p>
+<div class="related-highlight-cards">
+    <div class="container">
+        {% if value.heading %}
+            <h2 class="card-grid__title">
+                {{ value.heading }}
+            </h2>
+        {% endif %}
+        <div class="card-grid card-grid__duo" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
+            {% for page in link_pages %}
+                <div class="related-highlight-cards__card">
+                    <a href="{% pageurl page %}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}">
+                        {% image page.teaser_image fill-540x350 as teaser_image %}
+                        <img height="350"
+                            width="540"
+                            src="{{ teaser_image.url }}"
+                            class="related-highlight-cards__image"
+                            alt="" />
+                    </a>
+                    <div class="related-highlight-cards__content">
+                        <h3 class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
+                            <a href="{% pageurl page %}" class="related-highlight-cards__card-title-link">
+                                {{ page.title }}
+                            </a>
+                        </h3>
+                    </div>
                 </div>
-            </a>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
 </div>
