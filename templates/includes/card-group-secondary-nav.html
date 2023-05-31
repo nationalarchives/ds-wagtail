@@ -41,7 +41,7 @@
                     href='{{ page.url }}'
                     class="card-group-secondary-nav__title-link"
                     data-card-type="card-group-secondary-nav"
-                    aria-describedby="article-desc{{page.id}}{% if instance_id %}-{{ instance_id }}{% endif %}"
+                    aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
                     {% if value.block.meta.label or heading %}
                     data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
                     {% endif %}
