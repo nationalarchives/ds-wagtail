@@ -12,7 +12,7 @@
                    class="highlight-gallery-teaser__link"
                    data-card-title="{{ card.image.title }}"
                    data-link-type="Card image"
-                   data-component-name="{{ value.block.meta.label }}:{% trans "Explore records about" %} {% trans title %}">
+                   data-component-name="Featured card: {% trans "Explore records about" %} {% trans title %}">
                     {% image card.image fill-168x1448-c100 format-webp as mobile_webp_image %}
                     <source media="(max-width: 390px)"
                             srcset="{{ mobile_webp_image.url }}"
@@ -35,12 +35,11 @@
                            data-card-position="{{ forloop.counter0 }}"
                            data-link-type="Card text"
                            data-card-title="{{ card.image.title }}"
-                           data-component-name="{{ value.block.meta.label }}:{% trans "Explore records about" %} {% trans title %}"
+                           data-component-name="Featured card: {% trans "Explore records about" %} {% trans title %}"
                            >{{ card.image.title }}</a>
                     </h3>
                 </div>
-            </a>
-        </li>
-    {% endfor %}
-</ul>
+            </li>
+        {% endfor %}
+    </ul>
 </section>
