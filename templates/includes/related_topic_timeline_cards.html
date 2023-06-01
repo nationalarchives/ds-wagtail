@@ -15,7 +15,7 @@
                     </a>
                     <div class="related-highlight-cards__content">
                         <p class="related-highlight-cards__card-title" id="topic-card-title">
-                            <a href="{% pageurl topic %}" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card title" data-card-position="0" data-card-title="{{ topic.title }}">
+                            <a href="{% pageurl topic %}" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card text" data-card-position="0" data-card-title="{{ topic.title }}">
                                 {{ topic.title }}
                             </a>
                         </p>
@@ -42,7 +42,7 @@
                         <p class="related-highlight-cards__card-title" id="time-period-card-title">
                             <a href="{% pageurl time_period %}" class="related-highlight-cards__card-title-link" 
                             data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
-                            data-link-type="Card title"
+                            data-link-type="Card text"
                             data-card-position="1"
                             data-card-title="{{ time_period.title }}">
                                 {{ time_period.title }}
