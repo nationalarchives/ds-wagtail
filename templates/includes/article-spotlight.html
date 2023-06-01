@@ -4,7 +4,7 @@
     {% if title %}
         <h2 class="extra-padding">{% translate title %}</h2>
     {% endif %}
-    <div class="featured-article">
+    <div class="featured-article u-margin-m">
         {% if page.teaser_image %}
             <a href="{% pageurl page %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.title }}" data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
                 <picture>
