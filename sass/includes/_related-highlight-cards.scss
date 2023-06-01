@@ -44,8 +44,8 @@
     }
 
     &:focus {
-      color: $color__link-hover;
-      outline-color: $color__link-hover;
+      color: $color__blue;
+      outline-color: $color__blue;
       text-decoration: none;
     }
 
@@ -57,8 +57,8 @@
       }
 
       &:focus {
-        color: $color__link-hover;
-        outline-color: $color__link-hover;
+        color: $color__blue;
+        outline-color: $color__blue;
         text-decoration: none;
       }
     }
