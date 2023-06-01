@@ -1,0 +1,39 @@
+{% extends 'base_page.html' %}
+
+{% load static %}
+{% load wagtailcore_tags %}
+{% load sections_tags %}
+{% load wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
+{% block breadcrumb %}{% endblock %}
+{% block content %}
+    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
+    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
+
+    <div class="article-container container">
+        <div class="article-container__main">
+            {% if page.display_content_warning %}
+                {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
+            {% endif %}
+            {% for block in page.body %}
+                {% include_block block %}
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="related-content">
+        <div class="container">
+            {% if FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED %}
+                {% if page.primary_topic or page.primary_time_period %}
+                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/article.js' %}"></script>
+ {% endblock %}
