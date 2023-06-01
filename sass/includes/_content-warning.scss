@@ -1,7 +1,6 @@
 .content-warning {
-
-  background-color: $color__yellow_6;
-  border-left: 4px solid #FFCC00;
+  background-color: $color__cream;
+  border-left: 4px solid #ffcc00;
   padding: 1.5rem 1.75rem;
 
   @media screen and (min-width: $screen__sm) {
@@ -43,7 +42,7 @@
 
   &__icon {
     display: none;
-    color: $color__grey-2;
+    color: $color__grey-800;
     width: 34px;
     height: 34px;
     flex-basis: 34px;

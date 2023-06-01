@@ -1,5 +1,4 @@
 .archive-collections {
-
   h3 {
     font-family: $font__supria-sans;
     margin: 1.5rem 0 1rem;
@@ -9,14 +8,13 @@
   &__container {
     padding: 1rem;
     max-height: 15rem;
-    border: 0.125rem solid $color__yellow-2;
+    border: 0.125rem solid $color__yellow;
     overflow: auto;
     margin: 0 0 4rem;
-    background: $color__yellow_5;
+    background: $color__cream;
   }
 
   &__list {
     margin: 0;
   }
-
 }

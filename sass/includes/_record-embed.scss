@@ -1,16 +1,15 @@
 .record-embed {
-
   &__image-container {
     background-color: $color__black;
     text-align: center;
-    padding:  2rem 0;
+    padding: 2rem 0;
   }
 
   &__heading {
     font-size: 2rem;
     font-weight: 400;
     text-align: left;
-    border-bottom: 0.3125rem solid $color__grey-3;
+    border-bottom: 0.3125rem solid $color__grey-500;
     padding-bottom: 0.625rem;
     margin-bottom: 2rem;
   }
@@ -24,34 +23,38 @@
     margin: 0 1rem 1rem 0;
   }
 
- &__description {
-   background-color: $color__grey-2;
-   padding: 2rem 0;
- }
+  &__description {
+    background-color: $color__grey-800;
+    padding: 2rem 0;
+  }
 
- &__image-viewer-link, &__image-viewer-link:visited {
-   padding: 2rem 1rem 2rem 2.5rem;
-   display: inline-block;
-   color: $color__white;
-   background: url($fa_search_plus) no-repeat center left;
-   background-size: 1.75rem;
-   text-align: center;
-   font-weight: bold;
-   vertical-align: top;
-   font-size: 1.2rem;
-   transition: none;
- }
+  &__image-viewer-link,
+  &__image-viewer-link:visited {
+    padding: 2rem 1rem 2rem 2.5rem;
+    display: inline-block;
+    color: $color__white;
+    background: url($fa_search_plus) no-repeat center left;
+    background-size: 1.75rem;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: top;
+    font-size: 1.2rem;
+    transition: none;
+  }
 
- &__image-viewer-link:hover {
-   color: $color__white !important;
- }
+  &__image-viewer-link:hover {
+    color: $color__white !important;
+  }
 }
 
-.record-embed__text, .record-embed__text--roboto-mono {
+.record-embed__text,
+.record-embed__text--roboto-mono {
   font-size: 1.2rem;
 }
 
-.record-embed__text, a.record-embed__text:visited, .record-embed__heading {
+.record-embed__text,
+a.record-embed__text:visited,
+.record-embed__heading {
   color: $color__white;
 }
 
@@ -76,7 +79,7 @@
   }
 }
 
-@media only screen and (max-width: $screen__md)  {
+@media only screen and (max-width: $screen__md) {
   .record-embed__image {
     width: 20rem;
   }

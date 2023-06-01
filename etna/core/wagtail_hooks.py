@@ -22,5 +22,5 @@ def editor_js():
 @hooks.register("insert_global_admin_css")
 def global_admin_css():
     if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "production":
-        return "<style> :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} </style>"
+        return "<style> @media (prefers-color-scheme: light) { :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} } @media (prefers-color-scheme: dark) { :root {--w-color-surface-menus: #002510; --w-color-surface-menu-item-active: #001810;} }</style>"
     return ""

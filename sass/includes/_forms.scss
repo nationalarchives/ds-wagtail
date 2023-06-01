@@ -1,5 +1,4 @@
 .tna-form {
-
   &--error {
     .tna-form__error-summary {
       padding: 1rem 2rem;
@@ -51,20 +50,21 @@
     max-width: 100%;
     margin-bottom: 1.6rem;
 
-    &:before, &:after {
+    &:before,
+    &:after {
       display: table;
-      content: " ";
+      content: ' ';
       clear: both;
     }
 
-    input[type=color],
-    input[type=email],
-    input[type=number],
-    input[type=tel],
-    input[type=text],
-    input[type=date],
-    input[type=url],
-    input[type=password],
+    input[type='color'],
+    input[type='email'],
+    input[type='number'],
+    input[type='tel'],
+    input[type='text'],
+    input[type='date'],
+    input[type='url'],
+    input[type='password'],
     select,
     textarea {
       width: 100%;
@@ -75,11 +75,11 @@
       text-indent: 0.312rem;
 
       &:disabled {
-        background: $color__grey-5;
+        background: $color__grey-300;
       }
 
       &:read-only {
-        background: $color__grey-5;
+        background: $color__grey-300;
       }
 
       &:focus {
@@ -89,14 +89,14 @@
     }
 
     &--error {
-      input[type=color],
-      input[type=email],
-      input[type=number],
-      input[type=tel],
-      input[type=text],
-      input[type=date],
-      input[type=url],
-      input[type=password],
+      input[type='color'],
+      input[type='email'],
+      input[type='number'],
+      input[type='tel'],
+      input[type='text'],
+      input[type='date'],
+      input[type='url'],
+      input[type='password'],
       select,
       textarea {
         border-color: $color__error;
@@ -113,8 +113,7 @@
   }
 
   &__checkbox {
-
-    input[type="checkbox"] {
+    input[type='checkbox'] {
       position: absolute;
       opacity: 0;
     }
@@ -128,7 +127,7 @@
     label::before,
     label::after {
       position: absolute;
-      content: "";
+      content: '';
       display: inline-block;
     }
 
@@ -150,22 +149,21 @@
       top: 0.5625rem;
     }
 
-    input[type="checkbox"] + label::after {
+    input[type='checkbox'] + label::after {
       content: none;
     }
 
-    input[type="checkbox"]:checked + label::after {
-      content: "";
+    input[type='checkbox']:checked + label::after {
+      content: '';
     }
 
-    input[type="checkbox"]:focus + label::before {
+    input[type='checkbox']:focus + label::before {
       @include focus-default;
     }
   }
 
   &__radio {
-
-    input[type="radio"] {
+    input[type='radio'] {
       position: absolute;
       opacity: 0;
     }
@@ -179,7 +177,7 @@
     label::before,
     label::after {
       position: absolute;
-      content: "";
+      content: '';
       display: inline-block;
     }
 
@@ -201,15 +199,15 @@
       top: 0.5rem;
     }
 
-    input[type="radio"] + label::after {
+    input[type='radio'] + label::after {
       content: none;
     }
 
-    input[type="radio"]:checked + label::after {
-      content: "";
+    input[type='radio']:checked + label::after {
+      content: '';
     }
 
-    input[type="radio"]:focus + label::before {
+    input[type='radio']:focus + label::before {
       @include focus-default;
     }
   }

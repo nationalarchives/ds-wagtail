@@ -4,6 +4,7 @@
 
     &--list {
         // A modifier to normalise the grid for list items.
+        list-style: none;
         padding: 0;
         margin: 0;
     }
@@ -19,7 +20,7 @@
 
     &__trio {
         grid-gap: 1.5rem;
-        row-gap: 1.8rem;
+        row-gap: 1.875rem;
         padding: 0 1rem 1rem 1rem;
 
         @media (min-width: map-get($grid-breakpoints, "sm")) {
@@ -38,6 +39,8 @@
                 grid-gap: 1.875em;
             }
         }
+
+        
     }
 
     &__quad {

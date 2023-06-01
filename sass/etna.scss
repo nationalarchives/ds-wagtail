@@ -59,7 +59,9 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/quote';
 @import 'includes/featured-record';
 @import 'includes/featured-records';
+@import 'includes/record-links';
 @import 'includes/featured-article';
+@import 'includes/featured-articles';
 @import 'includes/media-embed';
 @import 'includes/record-embed';
 @import 'includes/record-embed__no-image';
@@ -111,5 +113,10 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/archive-additional-resources";
 @import 'includes/related-highlight-cards';
 @import 'includes/related-article-cards';
+@import 'includes/related-highlight-cards';
 @import 'includes/highlight-gallery-teaser';
 @import 'includes/_feedback';
+@import 'includes/promoted-pages';
+@import 'includes/featured-record-article';
+@import 'includes/record-crosslink-panel';
+

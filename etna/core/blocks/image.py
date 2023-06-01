@@ -38,7 +38,7 @@ class ImageBlock(blocks.StructBlock):
     )
 
     caption = blocks.RichTextBlock(
-        features=["link"],
+        features=["bold", "italic", "link"],
         help_text=(
             "An optional caption for non-decorative images, which will be displayed directly below the image. "
             "This could be used for image sources or for other useful metadata."
@@ -98,7 +98,7 @@ class ContentImageBlock(blocks.StructBlock):
         ),
     )
     caption = blocks.RichTextBlock(
-        features=["link"],
+        features=["bold", "italic", "link"],
         help_text=(
             "If provided, displays directly below the image. Can be used to specify sources, transcripts or "
             "other useful metadata."

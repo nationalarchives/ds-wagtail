@@ -1,185 +1,179 @@
 .search-results {
-    &__metadata {
+  &__metadata {
+    &-count {
+      margin-bottom: 0.5rem;
+      &-highlight {
+        font-weight: bold;
+      }
+    }
+    @media only screen and (max-width: $screen__sm) {
+      padding-left: 1rem;
+    }
+  }
 
-        &-count {
-            margin-bottom: 0.5rem;
-            &-highlight {
-                font-weight: bold;
-            }
-        }
-        @media only screen and (max-width: $screen__sm) {
-            padding-left: 1rem;
-        }
+  &__selected-filters {
+    display: flex;
+    padding-left: 0;
+    flex-wrap: wrap;
+
+    @media only screen and (max-width: $screen__sm) {
+      display: none; //hiding on mobile
     }
 
-    &__selected-filters {
-        display: flex;
-        padding-left: 0;
-        flex-wrap: wrap;
+    &-item {
+      list-style: none;
+      display: inline-block;
+      color: #000;
+      padding-left: 0.5rem;
+      padding-right: 0.7rem;
+      padding-top: 0.3rem;
+      padding-bottom: 0.3rem;
+      border: 1px solid black;
+      border-radius: 0.3rem;
+      margin-right: 0.5rem;
+      margin-top: 0.5rem;
 
-        @media only screen and (max-width: $screen__sm) {
-            display:none; //hiding on mobile
-        }
+      &-link {
+        display: inline-block;
+        width: 1rem;
+        height: 1rem;
+        background-image: url('/static/images/icons/close.svg');
+        background-repeat: no-repeat;
+        background-size: 1rem;
+        background-position: center;
+        vertical-align: middle;
+      }
 
-        &-item {
-            list-style: none;
-            display: inline-block;
-            color: #000;
-            padding-left: 0.5rem;
-            padding-right: 0.7rem;
-            padding-top: 0.3rem;
-            padding-bottom: 0.3rem;
-            border: 1px solid black;
-            border-radius: 0.3rem;
-            margin-right: 0.5rem;
-            margin-top: 0.5rem;
-
-
-            &-link {
-                display: inline-block;
-                width: 1rem;
-                height: 1rem;
-                background-image: url('/static/images/icons/close.svg');
-                background-repeat: no-repeat;
-                background-size: 1rem;
-                background-position: center;
-                vertical-align: middle;
-            }
-
-            &-remove-all {
-                @extend .search-results__selected-filters-item;
-                border: 0;
-                list-style: none;
-                padding-left: 0;
-                padding-right: 0;
-
-                &-link {
-                    color: $color__blue_4;
-
-                    &:visited {
-                        color: $color__blue_4;
-                    }
-                }
-            }
-        }
-    }
-
-    &__list {
+      &-remove-all {
+        @extend .search-results__selected-filters-item;
+        border: 0;
         list-style: none;
-        margin-top: 1.5rem;
         padding-left: 0;
-
-        &--grid {
-            @extend .search-results__list;
-
-            @media only screen and (min-width: 57rem) {
-                // Using flex here, as grid doesn't work for dynamic elements in IE11. Grid on IE11 requires a specific column and row set for every child element as 'auto' for columns and rows does not work.
-                display: flex;
-                flex-wrap: wrap;
-            }
-        }
-    }
-
-    &__export, &__share {
-
-        &-container {
-            background-color: $color__grey-4;
-            border: 1px solid $color__grey-7;
-            display: block;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-        }
+        padding-right: 0;
 
         &-link {
-            color: $color__blue_3;
+          color: $color__navy;
 
-            &:visited, &:hover {
-                color: $color__blue_3;
-            }
+          &:visited {
+            color: $color__navy;
+          }
         }
-        &-icon {
+      }
+    }
+  }
 
-            margin-left: auto;
-            margin-right: 1rem;
-            height: 35px;
-            width: 35px;
-        }
+  &__list {
+    list-style: none;
+    margin-top: 1.5rem;
+    padding-left: 0;
+
+    &--grid {
+      @extend .search-results__list;
+
+      @media only screen and (min-width: 57rem) {
+        // Using flex here, as grid doesn't work for dynamic elements in IE11. Grid on IE11 requires a specific column and row set for every child element as 'auto' for columns and rows does not work.
+        display: flex;
+        flex-wrap: wrap;
+      }
+    }
+  }
+
+  &__export,
+  &__share {
+    &-container {
+      background-color: $color__grey-500;
+      border: 1px solid $color__grey-400;
+      display: block;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
     }
 
-    &__filter-button {
-        background-color: $color__white;
-        text-decoration: underline;
-        border: 0;
-        padding: 0;
-        cursor: pointer;
-        margin-top: 2rem;
-        margin-left: 4rem;
-        position: relative;
-        font-weight: bold;
+    &-link {
+      color: $color__navy;
 
-        &:focus {
-            outline: 5px solid $color__focus-blue-outline-light-bg;
+      &:visited,
+      &:hover {
+        color: $color__navy;
+      }
+    }
+    &-icon {
+      margin-left: auto;
+      margin-right: 1rem;
+      height: 35px;
+      width: 35px;
+    }
+  }
 
-        }
+  &__filter-button {
+    background-color: $color__white;
+    text-decoration: underline;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+    margin-top: 2rem;
+    margin-left: 4rem;
+    position: relative;
+    font-weight: bold;
 
-        @media only screen and (max-width: $screen__xl) {
-            background:$color__black;
-            color: $color__white;
-            margin-left: 1.5rem;
-            width:90%;
-            padding:0.8rem;
-        }
-
-        &:before {
-            position: absolute;
-            left: -14px;
-            bottom: 7px;
-            content: " ";
-            height: 10px;
-            width: 10px;
-            //background-image: url('/static/images/icons/triangle-right.svg');
-            background-repeat: no-repeat;
-            background-size: 100%;
-
-            @media only screen and (max-width: $screen__md) {
-                background-image: none;
-            }
-        }
-
-        &[aria-expanded=true] {
-
-            &:before {
-                //background-image: url('/static/images/icons/triangle-down.svg');
-                @media only screen and (max-width: $screen__md) {
-                    background-image: none;
-                }
-            }
-        }
+    &:focus {
+      outline: 5px solid $color__focus-outline-light-bg;
     }
 
-
-    &__explainer {
-        margin-left: 1rem;
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-        display:none; //hiding on mobile
-        @media only screen and (min-width: $screen__md) {
-            margin-left: 2rem;
-            margin-right: 2rem;
-            display: block;
-
-        }
+    @media only screen and (max-width: $screen__xl) {
+      background: $color__black;
+      color: $color__white;
+      margin-left: 1.5rem;
+      width: 90%;
+      padding: 0.8rem;
     }
+
+    &:before {
+      position: absolute;
+      left: -14px;
+      bottom: 7px;
+      content: ' ';
+      height: 10px;
+      width: 10px;
+      //background-image: url('/static/images/icons/triangle-right.svg');
+      background-repeat: no-repeat;
+      background-size: 100%;
+
+      @media only screen and (max-width: $screen__md) {
+        background-image: none;
+      }
+    }
+
+    &[aria-expanded='true'] {
+      &:before {
+        //background-image: url('/static/images/icons/triangle-down.svg');
+        @media only screen and (max-width: $screen__md) {
+          background-image: none;
+        }
+      }
+    }
+  }
+
+  &__explainer {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1rem;
+    display: none; //hiding on mobile
+    @media only screen and (min-width: $screen__md) {
+      margin-left: 2rem;
+      margin-right: 2rem;
+      display: block;
+    }
+  }
 }
 
 .filter-indicator {
-    background: #FFCC00;
-    color: #1d2124;
-    padding: 0.4rem 1rem;
-    text-decoration: none;
-    margin-left: 0.8rem;
-    border-radius: 5px;
-    display:inline-block;
+  background: #ffcc00;
+  color: #1d2124;
+  padding: 0.4rem 1rem;
+  text-decoration: none;
+  margin-left: 0.8rem;
+  border-radius: 5px;
+  display: inline-block;
 }

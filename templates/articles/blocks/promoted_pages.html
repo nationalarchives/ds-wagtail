@@ -1,47 +1,37 @@
-{% load wagtailimages_tags %}
-
-<h2>{{ value.heading }}</h2>
-<div class="row">
-    <ul class="card-group--list-style-none" data-container-name="promoted-pages" id="analytics-promoted-pages">
+{% load wagtailcore_tags wagtailimages_tags i18n %}
+<section class="promoted-pages body-container">
+    <h2 class="promoted-pages__heading">{% trans value.heading %}</h2>
+    <ul class="card-grid card-grid__trio card-grid--list promoted-pages__cards"
+        data-container-name="promoted-pages"
+        id="analytics-promoted-pages">
         {% for promoted_item in value.promoted_items %}
-
-        {% image promoted_item.teaser_image fill-288x172 as teaser_image_small %}
-        {% image promoted_item.teaser_image fill-328x196 as teaser_image_medium %}
-        {% image promoted_item.teaser_image fill-348x208 as teaser_image_large %}
-        {% image promoted_item.teaser_image fill-508x304 as teaser_image_extra_large %}
-
-        {% comment %}
-        Source copied from templates/includes/card-group-secondary-nav.html
-
-        Modified slightly to support data from a streamfield.
-
-        This is not intended to be production-ready code.
-
-        To discuss an approach to allow for reusability going forward.
-        {% endcomment %}
-
-        <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
-            <div class="card-group-secondary-nav">
-                <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-card-title="{{ promoted_item.title }}" aria-hidden="true" tabindex="-1">
-                    <div class="card-group-secondary-nav__image">
-                        <picture>
-                            <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                            <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                            <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
-                            <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                            <img src="{{ teaser_image_small.url }}" alt="{{ image.title }}" class="card-group-secondary-nav__image-fallback">
-                        </picture>
-                    </div>
+            <li class="promoted-pages__card">
+                <a data-component-name="Featured card: {{ value.block.label }}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" href="{{ promoted_item.url }}">
+                    <picture>
+                        {% image promoted_item.teaser_image fill-350x229-c100 format-webp as mobile_webp_image %}
+                        <source media="(max-width: 390px)"
+                                srcset="{{ mobile_webp_image.url }}"
+                                type="image/webp"/>
+                        {% image promoted_item.teaser_image fill-370x229-c100 format-webp as desktop_webp_image %}
+                        <source srcset="{{ desktop_webp_image.url }}" type="image/webp"/>
+                        {% image promoted_item.teaser_image fill-350x229-c100 as mobile_img %}
+                        <source srcset="{{ mobile_img.url }}" media="(max-width: 390px)"/>
+                        {% image promoted_item.teaser_image fill-370x229-c100 as base_img %}
+                        <img src="{{ base_img.url }}"
+                             height="{{ base_img.height }}"
+                             width="{{ base_img.width }}"
+                             class="promoted-pages__image"
+                             alt="{% if promoted_item.teaser_image.alt_text %}{{ promoted_item.teaser_image.alt_text }}{% endif %}"/>
+                    </picture>
                 </a>
-                <div class="card-group-secondary-nav__body">
-                    <a href="{{ promoted_item.url }}" class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-card-title="{{ promoted_item.title }}">
-                        <h3 class="card-group-secondary-nav__heading">{{ promoted_item.title }}</h3>
+                <h3 class="promoted-pages__title">
+                    <a data-component-name="Featured card: {{ value.block.label }}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" class="promoted-pages__title-link" href="{{ promoted_item.url }}">
+                        {{ promoted_item.title }}
                     </a>
-                    <p class="card-group-secondary-nav__paragraph">By {{ promoted_item.author }} - {{ promoted_item.publication_date }}</p>
-                    <p class="card-group-secondary-nav__paragraph">{{ promoted_item.description }}</p>
-                </div>
-            </div>
-        </li>
+                </h3>
+                <p class="promoted-pages__text promoted-pages__text--gap">By {{ promoted_item.author }} - {{ promoted_item.publication_date }}</p>
+                <p class="promoted-pages__text">{{ promoted_item.description }}</p>
+            </li>
         {% endfor %}
     </ul>
-</div>
+</section>
