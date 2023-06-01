@@ -6,7 +6,7 @@
         id="analytics-promoted-pages">
         {% for promoted_item in value.promoted_items %}
             <li class="promoted-pages__card">
-                <a href="{{ promoted_item.url }}">
+                <a data-component-name="Featured card: {{ value.block.label }}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" href="{{ promoted_item.url }}">
                     <picture>
                         {% image promoted_item.teaser_image fill-350x229-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 390px)"
@@ -25,7 +25,7 @@
                     </picture>
                 </a>
                 <h3 class="promoted-pages__title">
-                    <a class="promoted-pages__title-link" href="{{ promoted_item.url }}">
+                    <a data-component-name="Featured card: {{ value.block.label }}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" class="promoted-pages__title-link" href="{{ promoted_item.url }}">
                         {{ promoted_item.title }}
                     </a>
                 </h3>

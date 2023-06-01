@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.test import RequestFactory, SimpleTestCase
 
 from ..templatetags.search_tags import (
@@ -61,6 +63,29 @@ class QueryStringExcludeTest(SimpleTestCase):
         result = query_string_exclude(context, "page", "1")
 
         self.assertEqual(result, "test=true")
+
+    def test_record_opening_year_lessthan_four_digits(self):
+        context = {
+            "request": self.factory.get(
+                "?opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200"
+            )
+        }
+
+        for field_name, value, expected_result in (
+            (
+                "opening_start_date",
+                date(19, 1, 1),
+                "opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
+            ),
+            (
+                "opening_end_date",
+                date(200, 1, 1),
+                "opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19",
+            ),
+        ):
+            with self.subTest(field_name):
+                result = query_string_exclude(context, field_name, value)
+                self.assertEqual(result, expected_result)
 
 
 class TestExtendedInOperator(SimpleTestCase):
