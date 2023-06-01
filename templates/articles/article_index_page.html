@@ -34,7 +34,7 @@
 
             <div class="featured-article__description">
                 <h2 class="featured-article__heading">
-                    <small>{% trans "Spotlight on" %}</small>
+                    <small>{{ page.featured_article.title_label }}</small>
                     {{ page.featured_article.title }}
                     {% if page.featured_article.specific.is_newly_published %}
                         <span aria-describedby="article-desc">NEW</span>

@@ -13,7 +13,8 @@
   &__contact {
     padding: 2rem;
     font-family: $font__open-sans;
-    background: $color__grey-800;
+    background: $color__grey-200;
+    border: 0.125rem solid $color__grey-400;
 
     h2 {
       margin: 0 0 1rem;

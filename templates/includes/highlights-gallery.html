@@ -20,7 +20,7 @@
                         <a class="highlight-gallery__link" href="{{ highlight.image.record.url }}" data-component-name="Highlight Gallery: {{ page.title }}" data-link-type="Link" data-position="{{ forloop.counter0 }}" data-link="View record details">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
                     {% endif %}
                 </div>
-                <div id="highlight{{ forloop.counter }}" class="highlight-gallery__image-container">
+                <div id="highlight{{ forloop.counter0 }}" class="highlight-gallery__image-container">
                     <picture>
                         {% image highlight.image original format-webp as webp_img %}
                         <source srcset="{{ webp_img.url }}" type="image/webp" />
