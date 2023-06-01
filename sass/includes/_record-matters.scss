@@ -23,15 +23,15 @@
     font-weight: $font-weight-bold;
 
     &:visited {
-      outline: 0.1875rem solid $color__yellow_2;
+      outline: 0.1875rem solid $color__yellow;
     }
 
     &:hover {
-      outline: 0.1875rem solid $color__dark;
+      outline: 0.1875rem solid $color__grey-700;
     }
 
     &:focus {
-      outline: 0.312rem solid $color__blue_4;
+      outline: 0.312rem solid $color__navy;
       outline-offset: 0.125rem;
     }
   }

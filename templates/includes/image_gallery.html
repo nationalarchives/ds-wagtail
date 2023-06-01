@@ -24,8 +24,8 @@
                     {% endwith %}
                 </picture>
                 <button id="showButton" class="transcription__open" aria-expanded="false">
-                    View images
-                    {% if has_text %}and transcripts{% endif %}
+                    View image{{ gallery_length|pluralize }}
+                    {% if has_text %}and transcript{{ gallery_length|pluralize }}{% endif %}
                 </button>
             </div>
         </div>

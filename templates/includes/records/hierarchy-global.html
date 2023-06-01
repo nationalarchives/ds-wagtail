@@ -22,7 +22,7 @@
                     {% if record.hierarchy|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
-                                <a href="#">Archive</a>
+                                <a href="#" data-link-type="Link" data-link="Archive" data-catalogue-level="0" data-component-name="Hierarchy links">Archive</a>
                             </span>({{ record.template.heldBy }})
                         </li>
                     {% endif %}
@@ -89,7 +89,7 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                 </div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#">{{record.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
                 </div>
             </div>
@@ -106,7 +106,7 @@
                     <span class="hierarchy-full-panel__bar-label">records</span></p>
                     </div>
                     <div class="hierarchy-full-panel__text-container">
-                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url record %}">{{record.reference_number}}</a></p>
+                        <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url record %}" data-link-type="Link" data-link="{{record.reference_number}}" data-catalogue-level="1" data-component-name="Hierarchy links">{{record.reference_number}}</a></p>
                         <p class="hierarchy-full-panel__text-title">{{record.summary_title}}</p>
                     </div>
                 </div>
@@ -124,7 +124,7 @@
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--previous">
                     {% if record.previous_record %}
                         {% if record.previous_record.reference_number %}
-                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url record.previous_record %}" class="hierarchy-local-nav__list-link" data-link="Previous" rel="prev">{{ record.previous_record.reference_number }}</a></p>
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--left">{{ 'previous_record'|as_label }} in series <a href="{% record_url record.previous_record %}" class="hierarchy-local-nav__list-link" data-link-type="Link" data-link="Previous in series" data-component-name="Catalogue pagination" rel="prev">{{ record.previous_record.reference_number }}</a></p>
                         {% elif record.is_tna %}
                                 {{ 'previous_record'|as_label }} {{ record.level.lower|default:"record" }}
                         {% else %}
@@ -142,7 +142,7 @@
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--next">
                     {% if record.next_record %}
                         {% if record.next_record.reference_number %}
-                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url record.next_record %}" class="hierarchy-local-nav__list-link" data-link="Next" rel="next">{{ record.next_record.reference_number }}</a></p>
+                            <p class="hierarchy-local-nav__list-label hierarchy-local-nav__list-label--right">{{ 'next_record'|as_label }} in series <a href="{% record_url record.next_record %}" class="hierarchy-local-nav__list-link" data-link-type="Link" data-link="Next in series" data-component-name="Catalogue pagination" rel="next">{{ record.next_record.reference_number }}</a></p>
                             {% elif record.is_tna %}
                                 {{ 'next_record'|as_label }} {{ record.level.lower|default:"record" }}
                             {% else %}

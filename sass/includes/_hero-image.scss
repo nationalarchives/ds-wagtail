@@ -8,12 +8,13 @@
   }
 
   &__figcaption {
-    background-color: $color__grey-5;
+    background-color: $color__grey-800;
     padding: 1rem;
-    border-bottom: 0.1875rem solid $color__grey-7;
+    border-bottom: 0.1875rem solid $color__grey-900;
 
     p {
       margin-bottom: 0;
+      color: $color__grey-300;
     }
   }
 }

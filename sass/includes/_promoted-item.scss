@@ -1,5 +1,5 @@
 .promoted-item {
-  border: 0.1875rem solid $color__dark;
+  border: 0.1875rem solid $color__grey-700;
   margin: 2rem 0;
 
   &__heading {
@@ -8,7 +8,8 @@
     font-size: 2rem;
   }
 
-  &__image-container, &__text-container {
+  &__image-container,
+  &__text-container {
     text-align: center;
   }
 
@@ -26,10 +27,10 @@
   }
 
   &__list-item {
-    background-color: $color__blue_3;
+    background-color: $color__navy;
     margin-bottom: 1rem;
     padding: 1rem;
-    border-left: 1.25rem solid $color__blue_4;
+    border-left: 1.25rem solid $color__navy;
     text-align: left;
   }
 
@@ -60,7 +61,8 @@
     font-size: 1.625rem;
   }
 
-  &__link-heading, &__link-text {
+  &__link-heading,
+  &__link-text {
     color: $color__white;
   }
 }

@@ -113,7 +113,7 @@ class HeroImageMixin(models.Model):
 
     hero_image_caption = RichTextField(
         verbose_name="hero image caption (optional)",
-        features=["link"],
+        features=["bold", "italic", "link"],
         blank=True,
         help_text=(
             "An optional caption for hero images. This could be used for image sources or for other useful metadata."

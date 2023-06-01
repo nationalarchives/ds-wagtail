@@ -6,6 +6,6 @@
 
 <li class="hierarchy-short-panel__list-item {% if trail_off %}hierarchy-short-panel__list-item--more{% endif %}">
     <span class="hierarchy-short-panel__level">
-        <a href="{% record_url item%}">{% if hierarchy_level %}{{ hierarchy_level }}{% else %}UNAVAILABLE{% endif %}</a>
+        <a href="{% record_url item%}" data-link-type="Link" data-link="{{ hierarchy_level }}" data-catalogue-level="{{ item.level_code }}" data-component-name="Hierarchy links">{% if hierarchy_level %}{{ hierarchy_level }}{% else %}UNAVAILABLE{% endif %}</a>
     </span>({{ item.reference_number }})
 </li>

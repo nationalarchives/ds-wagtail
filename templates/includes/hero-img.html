@@ -2,7 +2,7 @@
 {% load wagtailcore_tags %}
 {% if hero_image %}
     <div class="hero-image__container">
-        {% if hero_image_caption %}<figure>{% endif %}
+        {% if caption %}<figure>{% endif %}
         <picture>
             {% image hero_image fill-1440x500-c100 format-webp as webp_img %}
             <source srcset="{{ webp_img.url }}"
@@ -29,9 +29,9 @@
                  class="hero-image__image"
                  {% if hero_image.alt_text %}alt="{{ hero_image.alt_text }}"{% endif %}/>
         </picture>
-        {% if hero_image_caption %}
+        {% if caption %}
             <figcaption class="hero-image__figcaption">
-                {{ hero_image_caption|richtext }}
+                {{ caption|richtext }}
             </figcaption>
         </figure>
     {% endif %}

@@ -1,23 +1,23 @@
 {% load wagtailimages_tags %}
-<div class="recordlinks__wrapper">
-    <ul class="recordlinks__list">
+<div class="record-links__wrapper">
+    <ul class="record-links__list">
         {% for item in value.items %}
-            {% with item.record.url as url %}
-                <li class="recordlinks__item">
+            <li>
+                <div class="record-links__item">
                     {% if item.thumbnail_image %}
-                        <div class="recordlinks__item__thumbnail">
-                            <a href="{{ url }}">
-                                {% image item.thumbnail_image fill-200x200 alt="" class="recordlinks__thumbnail-image" %}
-                            </a>
+                        <div class="record-links__item__thumbnail">
+                            {% image item.thumbnail_image fill-200x200 alt="" class="record-links__item__thumbnail-image" %}
                         </div>
                     {% endif %}
-                    <div class="recordlinks__item__text">
-                        <p class="recordlinks__item__reference"><a href="{{ url }}">{{ item.record.reference_number }}</a></p>
-                        <p class="recordlinks__item__title"><a href="{{ url }}">{{ item.descriptive_title }}</a></p>
-                        <p class="recordlinks__item__dates">{{ item.record_dates }}</p>
+                    <div class="record-links__item__text">
+                        <p class="record-links__item__reference"><span class="sr-only">Link to record </span>FROM OUR COLLECTION: {{ item.record.reference_number }}</p>
+                        <h2 class="record-links__item__title">
+                            <a data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}" href="{{ item.record.url }}">{{ item.descriptive_title }}</a>
+                        </h2>
+                        <p class="record-links__item__dates">{{ item.record_dates }}</p>
                     </div>
-                </li>
-            {% endwith %}
+                </div>
+            </li>
         {% endfor %}
     </ul>
 </div>
