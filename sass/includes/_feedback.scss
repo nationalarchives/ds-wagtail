@@ -1,5 +1,8 @@
 #feedback-form {
 
+    legend {
+        display:none;
+    }
   .feedback-response-option__label {
       background:black;
       padding:20px;
@@ -7,19 +10,20 @@
       font-weight: bold;
       //width:50%;
 
+
+
     :hover {
       cursor: pointer;
     }
 
 
+
   }
   
   input[type="radio"]{
-    visibility: hidden;
+    //visibility: hidden;
+
   }
-
-
-
 
 }
 
