@@ -1,8 +1,5 @@
 {% load static %}
 
-<div class="row">
-    <div class="col-md-6">
-
 <label class="feedback-response-option__label" data-option-label="{{ widget.label }}" data-option-sentiment="{{ widget.sentiment }}">
     {% include "django/forms/widgets/input.html" %}
     {% if widget.icon %}
@@ -10,6 +7,3 @@
     {% endif %}
     <span class="label-text">{{ widget.label }}</span>
 </label>
-
-    </div>
-</div>
