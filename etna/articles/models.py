@@ -83,7 +83,7 @@ class ArticleIndexPage(BasePageWithIntro):
         FieldPanel("featured_pages"),
     ]
 
-    subpage_types = ["articles.ArticlePage"]
+    subpage_types = ["articles.ArticlePage", "articles.FocusedArticlePage"]
 
 
 @register_snippet
@@ -283,6 +283,83 @@ class ArticlePage(
         ]
 
         return tuple(filterlatestpages[:3])
+
+
+class FocusedArticlePage(
+    TopicalPageMixin,
+    HeroImageMixin,
+    ContentWarningMixin,
+    NewLabelMixin,
+    BasePageWithIntro,
+):
+    """FocusedArticlePage
+
+    The FocusedArticlePage model.
+    """
+
+    author = models.CharField(
+        max_length=100, blank=True, null=True, help_text="The author of this article."
+    )
+
+    body = StreamField(
+        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
+    )
+
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("article_tag_names"),
+    ]
+
+    # DataLayerMixin overrides
+    gtm_content_group = "focused articles"
+
+    template = "articles/focused_article_page.html"
+
+    class Meta:
+        verbose_name = _("focused article")
+        verbose_name_plural = _("focused articles")
+
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("author"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible",
+            ),
+            FieldPanel("body"),
+        ]
+    )
+
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    parent_page_types = ["articles.ArticleIndexPage"]
+    subpage_types = []
+
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("body"),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
 
 class RecordArticlePage(
