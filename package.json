@@ -1,6 +1,6 @@
 {
   "name": "ds-wagtail",
-  "version": "6.0.0",
+  "version": "6.2.1",
   "description": "## Local development",
   "private": true,
   "scripts": {
@@ -20,18 +20,18 @@
   },
   "homepage": "https://github.com/nationalarchives/ds-wagtail#readme",
   "devDependencies": {
-    "@babel/core": "^7.14.6",
-    "@babel/preset-env": "^7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/preset-env": "^7.22.4",
     "babel-loader": "^9.1.2",
     "jest-environment-jsdom": "^29.5.0",
-    "sass": "^1.57.1",
-    "webpack": "^5.76.3",
+    "sass": "^1.62.1",
+    "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
   },
   "dependencies": {
     "jest": "^29.5.0",
-    "jquery": "^3.6.0",
-    "openseadragon": "^4.0.0"
+    "jquery": "^3.7.0",
+    "openseadragon": "^4.1.0"
   },
   "jest": {
     "testEnvironment": "jest-environment-jsdom"

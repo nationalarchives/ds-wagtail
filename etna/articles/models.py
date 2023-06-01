@@ -144,6 +144,8 @@ class ArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "stories"
 
+    title_label = "THE STORY OF"
+
     template = "articles/article_page.html"
 
     class Meta:
@@ -267,7 +269,9 @@ class ArticlePage(
         return tuple(filterlatestpages[:3])
 
 
-class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class RecordArticlePage(
+    TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+):
     template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
@@ -335,6 +339,8 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     # DataLayerMixin overrides
     gtm_content_group = "Record articles"
 
+    title_label = "RECORD REVEALED"
+
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
@@ -371,10 +377,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         FieldPanel("promoted_links"),
     ]
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("gallery_text"),
