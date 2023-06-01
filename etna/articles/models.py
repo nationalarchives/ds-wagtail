@@ -15,6 +15,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -309,6 +310,8 @@ class FocusedArticlePage(
         index.SearchField("article_tag_names"),
     ]
 
+    
+
     # DataLayerMixin overrides
     gtm_content_group = "focused articles"
 
@@ -360,6 +363,8 @@ class FocusedArticlePage(
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
+    
+FocusedArticlePage.base_form_class = WagtailAdminPageForm
 
 
 class RecordArticlePage(
