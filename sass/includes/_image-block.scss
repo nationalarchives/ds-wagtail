@@ -1,6 +1,6 @@
 .image-block {
     $root: &;
-    background-color: $color__grey-light;
+    background-color: $color__grey-200;
 
     // Removes parent margin to ensure it's flush with viewport edge
     margin-left: -30px;
@@ -22,6 +22,7 @@
 
         &--portrait {
             width: auto;
+            
             @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
                 padding: 21px 0 21px 0;
             }
@@ -29,12 +30,11 @@
     }
 
     &__caption {
-        background-color: white;
         @include font-size("xs");
+        background-color: $color__white;
         display: inline-block;
         width: 100%;
-        
-        border-bottom: 1px solid $color__grey-7;
+        border-bottom: 1px solid $color__grey-300;
 
         @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             border-bottom: none;
@@ -47,7 +47,7 @@
             margin-bottom: 0;
 
             @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-                border-bottom: 1px solid $color__grey-7;
+                border-bottom: 1px solid $color__grey-300;
                 margin: 18px auto 18px auto;
                 padding: 0 18px 18px 18px;
                 width: 80%;
