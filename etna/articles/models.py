@@ -15,7 +15,6 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
-from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -30,6 +29,7 @@ from etna.core.models import (
     ContentWarningMixin,
     HeroImageMixin,
     NewLabelMixin,
+    RequiredHeroImageMixin,
 )
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
@@ -138,7 +138,7 @@ class TaggedArticle(ItemBase):
 
 class ArticlePage(
     TopicalPageMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
     BasePageWithIntro,
@@ -171,7 +171,7 @@ class ArticlePage(
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("tags"),
             MultiFieldPanel(
@@ -363,8 +363,6 @@ class FocusedArticlePage(
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
-    
-FocusedArticlePage.base_form_class = WagtailAdminPageForm
 
 
 class RecordArticlePage(
