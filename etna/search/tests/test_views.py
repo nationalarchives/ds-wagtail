@@ -462,8 +462,13 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         all selected filters should remain available as filter options,
         even if they were excluded from the API results 'aggregations'
         list due to not having any matches.
+
+        Test covers create session info for Catalogue search with query.
         """
         self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+
+        expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
+
         response = self.client.get(
             self.test_url,
             data={
@@ -474,7 +479,11 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "closure": "Open+Document%2C+Open+Description",
             },
         )
+        session = self.client.session
         content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
@@ -700,7 +709,12 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
 
     @responses.activate
     def test_search_with_query(self):
+        """
+        Test covers create session info for Featured search with query.
+        """
+        expected_url = "/search/featured/?q=query"
         self.client.get(self.test_url, data={"q": "query"})
+        session = self.client.session
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -717,6 +731,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&size=3"
             ),
         )
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
 
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
@@ -1717,47 +1732,3 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
                 "&size=20"
             ),
         )
-
-
-class CreateSessionInfoForBackToSearchTest(SearchViewTestCase):
-    @responses.activate
-    def test_create_session_info_for_catalogue_search(self):
-        search_url = reverse("search-catalogue")
-        expected_url = "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
-
-        self.client.get(
-            search_url,
-            data={
-                "sort_by": "title",
-                "q": "london",
-                "filter_keyword": "paper",
-                "level": "Item",
-                "collection": ["ADM", "BT"],
-                "closure": "Open Document, Open Description",
-                "opening_start_date_0": "",
-                "opening_start_date_1": "",
-                "opening_start_date_2": "1900",
-                "opening_end_date_0": "",
-                "opening_end_date_1": "",
-                "opening_end_date_2": "2020",
-                "per_page": "20",
-                "sort_order": "asc",
-                "display": "list",
-                "page": "2",
-                "group": "tna",
-            },
-        )
-        session = self.client.session
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(session.get("back_to_search_url"), expected_url)
-
-    @responses.activate
-    def test_create_session_info_for_featured_search(self):
-        search_url = reverse("search-featured")
-        expected_url = "/search/featured/?q=london"
-
-        self.client.get(search_url, data={"q": "london"})
-        session = self.client.session
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(session.get("back_to_search_url"), expected_url)
