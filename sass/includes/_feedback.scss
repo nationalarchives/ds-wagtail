@@ -1,37 +1,26 @@
 #feedback-form {
+  textarea {
+      @media only screen and (max-width: 990px) {
+          width:90%;
+      }
+  }
 
-    textarea {
-        @media only screen and (max-width: 990px) {
-            width:90%;
-        }
-    }
+  legend {
+      display:none;
+  }
 
-    legend {
-        display:none;
-    }
   .feedback-response-option__label {
-      background:black;
-      padding:20px;
-      color:white;
-      font-weight: bold;
-      //width:50%;
-
-
+    background:black;
+    padding:20px;
+    color:white;
+    font-weight: bold;
 
     :hover {
       cursor: pointer;
     }
-
-
-
   }
   
   input[type="radio"]{
-    //visibility: hidden;
-      
-
+    visibility: hidden;
   }
-
 }
-
-
