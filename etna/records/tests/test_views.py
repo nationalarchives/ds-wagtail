@@ -14,8 +14,8 @@ from wagtail.test.utils import WagtailTestUtils
 import responses
 
 from etna.core.test_utils import prevent_request_warnings
+from etna.records.views.records import SEARCH_URL_RETAIN_DELTA
 
-from ...ciim.constants import SEARCH_URL_RETAIN_DELTA
 from ...ciim.tests.factories import create_media, create_record, create_response
 
 User = get_user_model()
@@ -743,7 +743,7 @@ class RecordDetailBackToSearchTest(TestCase):
             "details-page-machine-readable", kwargs={"iaid": "C13359805"}
         )
 
-        self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link" href="{back_to_search_url}" data-link-type="Link" data-link="Back to search results" data-component-name="Navigation">\n\n\n\n<svg\n    class="icon icon--chevron-left cta-primary-panel__link-icon"\n    aria-hidden="true"\n    focusable="false"\n>\n    <use xlink:href="#chevron-left" href="#chevron-left"></use>\n</svg>\nBack to search results</a>'
+        self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link" href="{back_to_search_url}" data-link-type="Link" data-link="Back to search results" data-component-name="Navigation">'
         self.back_to_search_url_timestamp = timezone.now()
 
     @responses.activate
@@ -754,10 +754,10 @@ class RecordDetailBackToSearchTest(TestCase):
         search_url_gen_html_resp = "%2Fsearch%2Fcatalogue%2F%3Fsort_by%3Dtitle%26q%3Dlondon%26filter_keyword%3Dpaper%26level%3DItem%26collection%3DADM%26collection%3DBT%26closure%3DOpen%2BDocument%252C%2BOpen%2BDescription%26opening_start_date_0%3D%26opening_start_date_1%3D%26opening_start_date_2%3D1900%26opening_end_date_0%3D%26opening_end_date_1%3D%26opening_end_date_2%3D2020%26per_page%3D20%26sort_order%3Dasc%26display%3Dlist%26page%3D2%26group%3Dtna"
 
         session = self.client.session
+        session["back_to_search_url"] = search_url_gen_html_resp
         session[
             "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
-        session["back_to_search_url"] = search_url_gen_html_resp
+        ] = self.back_to_search_url_timestamp.isoformat()
         session.save()
 
         response = self.client.get(self.record_detail_url)
@@ -776,11 +776,9 @@ class RecordDetailBackToSearchTest(TestCase):
         session = self.client.session
         session["back_to_search_url"] = search_url_gen_html_resp
         # set time behind the setup value for expiry
-        self.back_to_search_url_timestamp = timezone.now() - SEARCH_URL_RETAIN_DELTA
-        session[
-            "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
-        session["back_to_search_url"] = search_url_gen_html_resp
+        session["back_to_search_url_timestamp"] = (
+            self.back_to_search_url_timestamp - SEARCH_URL_RETAIN_DELTA
+        ).isoformat()
         session.save()
 
         response = self.client.get(self.record_detail_url)
@@ -810,10 +808,10 @@ class RecordDetailBackToSearchTest(TestCase):
         browser_search_url = "/search/featured/"
 
         session = self.client.session
+        session["back_to_search_url"] = browser_search_url
         session[
             "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.strftime("%Y%m%d-%H%M%S")
-        session["back_to_search_url"] = browser_search_url
+        ] = self.back_to_search_url_timestamp.isoformat()
         session.save()
 
         response = self.client.get(self.record_detail_url)

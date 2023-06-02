@@ -5,12 +5,12 @@ from django.shortcuts import Http404, render
 from django.urls import reverse
 from django.utils import timezone
 
-import pytz
-
-from ...ciim.constants import SEARCH_URL_RETAIN_DELTA, TNA_URLS
+from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
+
+SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
 
 def record_disambiguation_view(request, reference_number):
@@ -87,13 +87,13 @@ def record_detail_view(request, iaid):
     back_to_search_url = reverse("search-featured")
 
     # Back to search button - update url when timestamp is not expired
+
     if back_to_search_url_timestamp := request.session.get(
         "back_to_search_url_timestamp"
     ):
-        back_to_search_url_timestamp = datetime.datetime.strptime(
-            back_to_search_url_timestamp, "%Y%m%d-%H%M%S"
+        back_to_search_url_timestamp = datetime.datetime.fromisoformat(
+            back_to_search_url_timestamp
         )
-        back_to_search_url_timestamp = back_to_search_url_timestamp.astimezone(pytz.utc)
         back_to_search_url_timestamp_delta = (
             back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
         )

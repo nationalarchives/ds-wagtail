@@ -3,7 +3,6 @@ from enum import StrEnum
 from typing import Any, List
 
 from django.contrib.humanize.templatetags.humanize import intcomma
-from django.utils import timezone
 from django.utils.functional import cached_property
 
 
@@ -754,5 +753,3 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
 ]
-
-SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
