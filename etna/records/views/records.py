@@ -94,10 +94,8 @@ def record_detail_view(request, iaid):
         back_to_search_url_timestamp = datetime.datetime.fromisoformat(
             back_to_search_url_timestamp
         )
-        back_to_search_url_timestamp_delta = (
-            back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
-        )
-        if timezone.now() <= back_to_search_url_timestamp_delta:
+
+        if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
             back_to_search_url = request.session.get("back_to_search_url")
 
     context.update(
