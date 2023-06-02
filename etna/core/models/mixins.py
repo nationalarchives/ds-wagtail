@@ -133,4 +133,8 @@ class HeroImageMixin(models.Model):
         )
     ]
 
+
+class RequiredHeroImageMixin(HeroImageMixin):
+    """Mixin to add hero_image attribute to a Page, and make it required."""
+
     base_form_class = RequiredHeroImagePageForm
