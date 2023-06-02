@@ -3,15 +3,19 @@
   padding-top: 1rem;
   background-color: $color__white;
   color: $color__black;
+  overflow: hidden; // cut off image when browser is narrow
 
   &__image-container {
     display: flex;
+    align-self: flex-end;
   }
 
   &__image {
     display: block;
-    max-width: 100%;
+    max-width: 390px; // match wagtail image rendition width
+    max-height: 390px; // match wagtail image rendition height
     height: auto;
+    width: auto;
 
     @media (max-width: $screen__lg) {
       display: none;
