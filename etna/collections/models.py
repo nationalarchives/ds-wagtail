@@ -24,6 +24,7 @@ from ..core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
     HeroImageMixin,
+    RequiredHeroImageMixin,
 )
 from ..core.utils import skos_id_from_text
 from .blocks import (
@@ -104,7 +105,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     gtm_content_group = "Explorer"
 
 
-class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -114,7 +115,7 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
@@ -152,7 +153,7 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
+class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -183,7 +184,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
@@ -282,7 +283,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -292,7 +293,7 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
@@ -330,7 +331,7 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -353,7 +354,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
