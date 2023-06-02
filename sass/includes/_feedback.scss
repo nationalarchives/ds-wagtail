@@ -1,26 +1,45 @@
-#feedback-form {
-  textarea {
-      @media only screen and (max-width: 990px) {
-          width:90%;
-      }
+#feedback-form{
+  textarea{
+    width: 80%;
+    @media only screen and (min-width: $screen__lg){
+      width: 60%;
+    }
   }
 
   legend {
-      display:none;
+    display:none;
   }
+}
 
-  .feedback-response-option__label {
-    background:black;
-    padding:20px;
-    color:white;
-    font-weight: bold;
+.feedback-response-option {
+  margin-bottom: 1rem;
+  
+  &__container {
+    color: $color__white;
+    background: $color__black;
+    
+    input[type="radio"]{
+      display: none;
+    }
 
-    :hover {
-      cursor: pointer;
+    &:hover,
+    &:focus,
+    input[type="radio"]:checked + .feedback-response-option__label {
+      background: $color__white;
+      color: $color__black;
+      outline: 0.312rem solid $color__navy;
     }
   }
-  
-  input[type="radio"]{
-    visibility: hidden;
+
+  &__label {
+    width:100%;
+    height:100%;
+    padding:1rem;
+    margin:0;
+    font-weight: bold;
+    
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
