@@ -23,8 +23,7 @@
                     </picture>
                 </a>
                 <div class="related-article-cards__content">
-                    {% comment %} BE needs adding for subtitle {% endcomment %}
-                    {% comment %} <p class="related-article-cards__subtitle">Record revealed</p> {% endcomment %}
+                    <p class="related-article-cards__title-label">{{ article.title_label }}</p>
                     <h3 class="related-article-cards__title">
                         <a class="related-article-cards__title-link" href={% pageurl article %}>
                             {{ article.title }}

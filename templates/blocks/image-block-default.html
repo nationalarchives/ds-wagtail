@@ -1,20 +1,35 @@
 {% load wagtailimages_tags wagtailcore_tags %}
 {% image value.image width-600 as block_image %}
+
 {% if value.image %}
     {% if value.caption %}
-        <figure>
+        <figure class="image-block">
             <picture>
-                <img src="{{block_image.url}}" alt="{{value.alt_text}}" />
+                {% image value.image max-832x591 format-webp as desktop_img %}
+                <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
+                {% image value.image max-832x591 as desktop_image %}
+                <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
+                {% image value.image max-390x265 format-webp as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% image value.image max-390x265 as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{{ mobile_img.alt_text }}" />
             </picture>
-            <figcaption>{{value.caption|richtext}}</figcaption>
+            <figcaption class="image-block__caption">
+                {{ value.caption|richtext }}
+            </figcaption>
         </figure>
     {% else %}
-
-        {% if value.decorative %}
-            <img src="{{block_image.url}}" alt=""/>
-        {% else %}
-            <img src="{{block_image.url}}" alt="{{value.alt_text}}"/>
-        {% endif %}
-
+        <picture class="image-block">
+            {% image value.image max-832x591 format-webp as desktop_img %}
+            <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
+            {% image value.image max-832x591 as desktop_image %}
+            <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
+            {% image value.image max-390x265 format-webp as mobile_img %}
+            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% image value.image max-390x265 as mobile_img %}
+            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            <img class="image-block__image" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
+        </picture>
     {% endif %}
 {% endif %}
