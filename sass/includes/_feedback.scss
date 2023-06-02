@@ -1,5 +1,11 @@
 #feedback-form {
 
+    textarea {
+        @media only screen and (max-width: 990px) {
+            width:90%;
+        }
+    }
+
     legend {
         display:none;
     }
