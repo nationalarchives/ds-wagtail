@@ -5,6 +5,7 @@ from typing import Union
 
 from django import template
 from django.utils.crypto import get_random_string
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from ...ciim.constants import SearchTabs
@@ -70,6 +71,8 @@ def include_hidden_fields(visible_field_names, form) -> str:
             try:
                 if value := form.cleaned_data.get(field):
                     if isinstance(value, (str, int)):
+                        if field in ("q", "filter_keyword"):
+                            value = escape(value)
                         html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
                     elif isinstance(value, list):
                         for value_in_list in value:
