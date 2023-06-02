@@ -789,7 +789,7 @@ class RecordDetailBackToSearchTest(TestCase):
 
     @responses.activate
     def test_new_search_render_without_session(self):
-        """navigation to record details without previous search (session is not set since its not coming from search)"""
+        """Test covers navigation to record details without a previous search (session is not set since its not coming from search)"""
 
         new_search_url = reverse("search-featured")
 
