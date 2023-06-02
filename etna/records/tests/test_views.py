@@ -750,7 +750,6 @@ class RecordDetailBackToSearchTest(TestCase):
     def test_back_to_search_render_with_catalogue_search_within_expiry(self):
         """navigation to record details from previous search (session is set since its coming from search catalogue)"""
 
-        # raw search value: "/search/catalogue/?sort_by=title&q=london&filter_keyword=paper&level=Item&collection=ADM&collection=BT&closure=Open+Document%2C+Open+Description&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=1900&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=2020&per_page=20&sort_order=asc&display=list&page=2&group=tna"
         search_url_gen_html_resp = "%2Fsearch%2Fcatalogue%2F%3Fsort_by%3Dtitle%26q%3Dlondon%26filter_keyword%3Dpaper%26level%3DItem%26collection%3DADM%26collection%3DBT%26closure%3DOpen%2BDocument%252C%2BOpen%2BDescription%26opening_start_date_0%3D%26opening_start_date_1%3D%26opening_start_date_2%3D1900%26opening_end_date_0%3D%26opening_end_date_1%3D%26opening_end_date_2%3D2020%26per_page%3D20%26sort_order%3Dasc%26display%3Dlist%26page%3D2%26group%3Dtna"
 
         session = self.client.session
