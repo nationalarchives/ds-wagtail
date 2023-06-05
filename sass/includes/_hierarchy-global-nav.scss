@@ -26,7 +26,7 @@
   &__container {
     background: $color__cream;
     // adds a visual separating border in high contrast mode
-    border-left: 2px solid transparent;
+    border-left: 2px solid $color__yellow;
     overflow: auto;
     padding: 0 0 1rem;
   }
