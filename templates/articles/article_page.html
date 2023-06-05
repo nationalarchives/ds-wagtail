@@ -34,7 +34,7 @@
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="You may also be interested in" %}
+                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="You may also be interested in" card_type="Featured" %}
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -50,7 +50,7 @@
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="More stories" %}
+                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="More stories" card_type="Featured" %}
                     {% endfor %}
                 </ul>
             {% endif %}

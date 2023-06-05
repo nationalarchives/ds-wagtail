@@ -4,7 +4,7 @@
 <div class="featured-articles">
     <ul class="card-group--list-style-none">
         {% for item in value.items %}
-            {% include 'includes/card-group-secondary-nav.html' with heading=value.heading page=item.specific %}
+            {% include 'includes/card-group-secondary-nav.html' with heading=value.heading page=item.specific card_type="Featured" %}
         {% endfor %}
     </ul>
 </div>
