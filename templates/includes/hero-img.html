@@ -1,34 +1,39 @@
 {% load wagtailimages_tags %}
 {% load wagtailcore_tags %}
-{% if page.hero_image %}
+{% if hero_image %}
     <div class="hero-image__container">
-        {% if page.hero_image_caption %}
-        <figure>
-        {% endif %}
-            <picture>
-                {% image page.hero_image fill-800x700 as hero %}
-                <source media="(max-width: 480px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x550 as hero %}
-                <source media="(max-width: 640px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x475 as hero %}
-                <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x400 as hero %}
-                <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x325 as hero %}
-                <source media="(max-width: 1199px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x250 as hero %}
-                <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
-                {% image page.hero_image fill-800x250 as hero %}
-
-                {% if page.hero_image_decorative %}
-                    <img src="{{ hero.url }}" alt="" class="hero-image" />
-                {% else %}
-                    <img src="{{ hero.url }}" alt="{{page.hero_image_alt_text}}" class="hero-image" />
-                {% endif %}
-            </picture>
-        {% if page.hero_image_caption %}
-            <figcaption class="hero-image__figcaption">{{ page.hero_image_caption|richtext }}</figcaption>
+        {% if caption %}<figure>{% endif %}
+        <picture>
+            {% image hero_image fill-1440x500-c100 format-webp as webp_img %}
+            <source srcset="{{ webp_img.url }}"
+                    media="(min-width: 577px)"
+                    width="1440"
+                    height="550"
+                    type="image/webp"/>
+            {% image hero_image fill-390x320-c100 format-webp as mobile_webp_img %}
+            <source srcset="{{ mobile_webp_img.url }}"
+                    media="(max-width: 576px)"
+                    width="390"
+                    height="320"
+                    type="image/webp"/>
+            {% image hero_image fill-390x320-c100 as mobile_jpeg_img %}
+            <source srcset="{{ mobile_jpeg_img.url }}"
+                    media="(max-width: 576px)"
+                    width="390"
+                    height="320"
+                    type="image/jpeg"/>
+            {% image hero_image fill-1440x500-c100 as base_img %}
+            <img src="{{ base_img.url }}"
+                 width="1440"
+                 height="500"
+                 class="hero-image__image"
+                 {% if hero_image.alt_text %}alt="{{ hero_image.alt_text }}"{% endif %}/>
+        </picture>
+        {% if caption %}
+            <figcaption class="hero-image__figcaption">
+                {{ caption|richtext }}
+            </figcaption>
         </figure>
-        {% endif %}
-    </div>
+    {% endif %}
+</div>
 {% endif %}

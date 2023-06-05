@@ -17,38 +17,34 @@
     {% if page.featured_article %}
     <div class="container">
         <div class="featured-article">
-            {% if page.featured_article.hero_image %}
-                <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.is_newly_published %}data-label="New"{%endif%}>
+            {% if page.featured_article.specific.teaser_image %}
+                <a href="{% pageurl page.featured_article %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Image" {% if page.featured_article.specific.is_newly_published %}data-label="New"{%endif%}>
                     <picture>
-                        {% image page.featured_article.teaser_image fill-500x400-c100 as hero %}
-                        <source media="(max-width: 768px)" srcset="{{ hero.url }}">
-                        {% image page.featured_article.teaser_image fill-500x500-c100 as hero %}
-                        <source media="(max-width: 991px)" srcset="{{ hero.url }}">
-                        {% image page.featured_article.teaser_image fill-1000x600-c100 as hero %}
-                        <source media="(max-width: 1200px)" srcset="{{ hero.url }}">
+                        {% image page.featured_article.specific.teaser_image fill-500x400-c100 as teaser %}
+                        <source media="(max-width: 768px)" srcset="{{ teaser.url }}">
+                        {% image page.featured_article.specific.teaser_image fill-500x500-c100 as teaser %}
+                        <source media="(max-width: 991px)" srcset="{{ teaser.url }}">
+                        {% image page.featured_article.specific.teaser_image fill-1000x600-c100 as teaser %}
+                        <source media="(max-width: 1200px)" srcset="{{ teaser.url }}">
 
-                        {% if page.featured_article.hero_image_decorative %}
-                            <img src="{{ hero.url }}" alt="" />
-                        {% else %}
-                            <img src="{{ hero.url }}" alt="{{page.featured_article.hero_image_alt_text}}" />
-                        {% endif %}
+                        <img src="{{ teaser.url }}" alt="" />
                     </picture>
                 </a>
             {% endif %}
 
             <div class="featured-article__description">
                 <h2 class="featured-article__heading">
-                    <small>{% trans "Spotlight on" %}</small>
+                    <small>{{ page.featured_article.title_label }}</small>
                     {{ page.featured_article.title }}
-                    {% if page.featured_article.is_newly_published %}
+                    {% if page.featured_article.specific.is_newly_published %}
                         <span aria-describedby="article-desc">NEW</span>
                     {% endif %}
                 </h2>
 
                 <p id ="article-desc" class="aria-desc">This is a link to a new story about {{ page.featured_article.title }}</p>
 
-                <p>{{ page.featured_article.teaser_text }}</p>
-                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.is_newly_published %}data-label="New"{%endif%}>Read about {{ page.featured_article.title }}</a>
+                <p>{{ page.featured_article.specific.teaser_text }}</p>
+                <a class="tna-button--dark" href="{% pageurl page.featured_article %}" data-component-name="Featured Article: {{ page.featured_article.title }}" data-link-type="Button" data-link="Read" {% if page.featured_article.specific.is_newly_published %}data-label="New"{%endif%}>Read about {{ page.featured_article.title }}</a>
             </div>
         </div>
     </div>

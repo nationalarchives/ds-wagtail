@@ -7,6 +7,8 @@
 {% block extra_gtm_js %}
     {% render_gtm_datalayer record %}
 {% endblock extra_gtm_js %}
+{% block breadcrumb %}
+{% endblock %}
 
 {% block content %}
 
@@ -20,6 +22,7 @@
         <h2 id="record-details-heading">Description and record details</h2>
 
         {% include "includes/records/record-details.html" %}
+        {% include "includes/records/record-crosslink-panel.html" %}
 
         {% if record.hierarchy %}
             {% if record.hierarchy|length > 2 %}

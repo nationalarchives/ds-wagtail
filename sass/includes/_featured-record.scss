@@ -9,8 +9,8 @@
   }
 
   &__container {
-    border-bottom: 1px solid $color__grey-7;
-    border-top: 1px solid $color__grey-7;
+    border-bottom: 1px solid $color__grey-400;
+    border-top: 1px solid $color__grey-400;
     padding-bottom: 1rem;
 
     @media only screen and (min-width: $screen__lg) {
@@ -64,7 +64,7 @@
   }
 
   &__standfirst {
-    color: $color__dark;
+    color: $color__grey-700;
     font-family: $font__supria-sans;
     font-size: 1.4rem;
     margin: 0;

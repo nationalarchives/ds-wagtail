@@ -45,7 +45,6 @@
   }
 
   &__reference {
-
     h1 {
       font-size: 1.3rem;
       margin-left: 1.3rem;
@@ -98,7 +97,7 @@
       margin: 0.5rem;
 
       &:focus {
-        outline: 5px solid $color__focus-blue-outline-dark-bg;
+        outline: 5px solid $color__focus-outline-dark-bg;
         text-decoration: none;
       }
     }
@@ -116,7 +115,6 @@
     justify-content: space-between;
     background-color: $color__black;
 
-
     ul {
       margin: 0;
       padding: 0;
@@ -132,7 +130,7 @@
   }
 
   &__navigation {
-    background-color: $color__green;
+    background-color: $color__pastel-green;
     padding: 1.3rem 2rem;
 
     ul {
@@ -144,7 +142,7 @@
       display: inline-block;
       padding: 0 0.5rem;
 
-      @media (max-width: $screen__md) {        
+      @media (max-width: $screen__md) {
         text-align: center;
         width: 48%;
       }
@@ -172,7 +170,7 @@
 
       &:focus {
         text-decoration: none;
-        outline-color: $color__focus-blue-outline-light-bg;
+        outline-color: $color__focus-outline-light-bg;
       }
     }
   }
@@ -196,14 +194,14 @@
       &:focus {
         text-decoration: none;
         color: $color__white;
-        outline-color: $color__focus-blue-outline-dark-bg;
+        outline-color: $color__focus-outline-dark-bg;
       }
     }
   }
 
   .openseadragon-canvas {
     &:focus {
-      border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
+      border: 0.3125rem solid $color__focus-outline-dark-bg !important;
     }
     &:focus-visible {
       outline: none;
@@ -215,7 +213,7 @@
       height: 95% !important;
 
       &:focus {
-        border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
+        border: 0.3125rem solid $color__focus-outline-dark-bg !important;
       }
       &:focus-visible {
         outline: none;
