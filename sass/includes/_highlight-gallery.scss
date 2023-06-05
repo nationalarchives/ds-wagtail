@@ -29,6 +29,13 @@
         }
     }
 
+    &__richtext {
+        p {
+            margin-bottom: 1rem;
+            color: $color__grey-300;
+        }
+    }
+
     &__heading {
         margin-top: 0;
         font-weight: $font-weight-normal;
