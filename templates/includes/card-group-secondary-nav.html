@@ -1,20 +1,20 @@
 {% load wagtailimages_tags %}
 
-{% image page.teaser_image fill-288x172 as teaser_image_small %}
-{% image page.teaser_image fill-328x196 as teaser_image_medium %}
-{% image page.teaser_image fill-348x208 as teaser_image_large %}
-{% image page.teaser_image fill-508x304 as teaser_image_extra_large %}
+{% image link_page.teaser_image fill-288x172 as teaser_image_small %}
+{% image link_page.teaser_image fill-328x196 as teaser_image_medium %}
+{% image link_page.teaser_image fill-348x208 as teaser_image_large %}
+{% image link_page.teaser_image fill-508x304 as teaser_image_extra_large %}
 
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
         <a
-            href="{{ page.url }}"
+            href="{{ link_page.url }}"
             class="card-group-secondary-nav__image-link"
             data-card-type="card-group-secondary-nav"
             data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
             data-link-type="Card image"
-            data-card-title="{{ page.title }}"
-            {% if page.is_newly_published %}
+            data-card-title="{{ link_page.title }}"
+            {% if link_page.is_newly_published %}
                 data-label="New"
             {%endif%}
             aria-hidden="true"
@@ -31,28 +31,28 @@
             </div>
         </a>
         <div class="card-group-secondary-nav__body">
-            {% if page.title_label %}
-                <p class="card-group-secondary-nav__title-label">{{ page.title_label }}</p>
+            {% if link_page.title_label %}
+                <p class="card-group-secondary-nav__title-label">{{ link_page.title_label }}</p>
             {% endif %}
             <h3 class="card-group-secondary-nav__heading">
                 <a
-                    href="{{ page.url }}"
+                    href="{{ link_page.url }}"
                     class="card-group-secondary-nav__title-link"
                     data-card-type="card-group-secondary-nav"
-                    aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
+                    aria-describedby="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
                     data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
                     data-link-type="Card text"
-                    data-card-title="{{ page.title }}"
-                    {% if page.is_newly_published %}
+                    data-card-title="{{ link_page.title }}"
+                    {% if link_page.is_newly_published %}
                     data-label="New"
                     {%endif%}
-                    >{{ page.title }}</a>
-                {% if page.is_newly_published %}
+                    >{{ link_page.title }}</a>
+                {% if link_page.is_newly_published %}
                 <span>NEW</span>
                 {% endif %}
             </h3>
-            <p id ="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}" class="aria-desc-card">This is a link to a story about {{ page.title }}</p>
-            <p class="card-group-secondary-nav__paragraph">{{ page.teaser_text }}</p>
+            <p id ="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}" class="aria-desc-card">This is a link to a story about {{ link_page.title }}</p>
+            <p class="card-group-secondary-nav__paragraph">{{ link_page.teaser_text }}</p>
         </div>
     </div>
 </li>
