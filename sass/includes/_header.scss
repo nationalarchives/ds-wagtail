@@ -87,11 +87,10 @@
       justify-content: space-around; // IE11 only supports space-around and space-between.
       &-item {
         list-style: none;
+        text-indent: 0.7em;
         @media only screen and (min-width: $screen__md) {
           height: 3rem;
-        }
-        @media only screen and (min-width: 480px) {
-          text-indent: 0.7em;
+          text-indent: 0;
         }
         display: block;
 
