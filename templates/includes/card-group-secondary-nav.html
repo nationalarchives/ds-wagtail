@@ -19,8 +19,7 @@
             {% if page.is_newly_published %}
                 data-label="New"
             {%endif%}
-            aria-hidden="true"
-            tabindex="-1"
+            aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
         >
             <div class="card-group-secondary-nav__image">
                 <picture>

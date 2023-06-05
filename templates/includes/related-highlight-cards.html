@@ -5,7 +5,10 @@
         <div class="card-grid card-grid__trio">
             {% for card in cards %}
                 <div class="related-highlight-cards__card">
-                    <a href="{{ card.url }}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}">
+                    <a href="{{ card.url }}"
+                    {% comment %} remove image link from taborder and hide from screenreaders {% endcomment %}
+                    aria-hidden="true"
+                    tabindex="-1">
                         <picture>
                         {% image card.teaser_image fill-374x370-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 370px)"
