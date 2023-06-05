@@ -9,7 +9,7 @@
                 <picture>
                     {% image record.teaser_image fill-626x486-c100 as mobile_img %}
                     <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
-                    {% image record.teaser_image fill-390x303-c100 as desktop_img %}
+                    {% image record.teaser_image fill-395x330-c100 as desktop_img %}
                     <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
                     <img class="featured-record-article__image"
                         height="{{ mobile_img.height }}"
