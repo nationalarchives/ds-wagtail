@@ -33,14 +33,14 @@
         height: 100%;
         object-fit: cover;
         max-height: 330px; // prevent image getting huge on smaller viewports
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            max-height: 390px;
+        }
     }
 
     &__container {
         margin: 24px;
-
-        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-            margin: 23px 40px;
-        }
 
         @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             margin: 23px 40px;
@@ -57,17 +57,18 @@
 
     &__title {
         @include font-size('xxl');
-        color: $color__grey-800;
+        line-height: 1.2;
         margin-top: 0;
         font-weight: 600;
         transition: color $transition_duration ease-in-out;
     }
 
     &__link {
-        &:hover {
-            #{$root}__title {
-                color: $color__link-hover;
-            }
+        color: $color__grey-800;
+
+        &:hover,
+        &:active {
+            color: $color__link-hover;
         }
     }
 
