@@ -20,6 +20,10 @@
     margin: 0;
     position: relative;
 
+    &:visited {
+      color: $color__link-blue;
+    }
+
     @media screen and (min-width: $screen__lg) {
       margin: 0 0.5rem 0.5rem 0;
     }

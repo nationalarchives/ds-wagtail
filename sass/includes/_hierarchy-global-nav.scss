@@ -71,6 +71,10 @@
       &:focus {
         @include focus-default;
       }
+
+      &:visited {
+        color: $color__link-blue;
+      }
     }
 
     .open {
@@ -101,6 +105,10 @@
     padding-left: 1.8rem;
     display: block;
     font-size: 1.1rem;
+
+    a:visited {
+      color: $color__link-blue;
+    }
 
     &:first-child {
       background: url($fa_chevron_double_right_yellow) no-repeat left center;
@@ -301,6 +309,10 @@
       display: block;
       line-height: 2rem;
 
+      &:visited {
+        color: $color__link-blue;
+      }
+
       @media screen and (min-width: $screen__lg) {
         display: inline-block;
         line-height: 1.4rem;
@@ -331,6 +343,10 @@
   margin: 1rem;
   font-family: supria-sans-condensed, sans-serif;
   text-align: center;
+
+  a:visited {
+    color: $color__link-blue;
+  }
 
   @media screen and (min-width: $screen__md) {
     margin: 2rem 0 0.5rem;
