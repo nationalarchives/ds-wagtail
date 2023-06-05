@@ -60,7 +60,7 @@
     font-weight: $font-weight-bold;
     font-size: 1rem;
     line-height: 1.25rem;
-    color: $color__white;
+    color: $color__link-dark-bg;
     text-decoration: none;
     position: relative;
     display: unset;
@@ -69,17 +69,25 @@
       position: absolute;
       right: -1.5rem;
       bottom: 4px;
-      fill: $color__white;
+      fill: $color__link-dark-bg;
       width: 8px;
       height: 12px;
     }
 
     &:hover,
-    &:visited {
-      color: $color__white;
+    &:focus {
+      color: $color__link-hover-dark-bg;
 
       svg {
-        fill: $color__white;
+        fill: $color__link-hover-dark-bg;
+      }
+    }
+    
+    &:visited {
+      color: $color__link-dark-bg;
+
+      svg {
+        fill: $color__link-dark-bg;
       }
     }
   }
