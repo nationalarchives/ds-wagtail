@@ -1,9 +1,10 @@
 .crosslink-panel {
   background-color: $color__yellow;
+  color: $color__grey-800;
   padding: 2rem 2rem 3rem;
   margin: 0 0 5rem;
   // adds a visual separating border in high contrast mode
-  border: 2px solid $color__yellow;
+  border: 3px solid $color__yellow;
 
   h2 {
     margin: 0 0 1rem;
