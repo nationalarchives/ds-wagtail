@@ -21,7 +21,7 @@ django-redis = "~5.2"
 wagtail-font-awesome-svg = "~0.0"
 django-birdbath = "~1.1"
 bleach = "~6.0"
-sentry-sdk = "~1.24"
+sentry-sdk = "~1.25"
 wagtail-metadata = "~4.0"
 
 [tool.poetry.dev-dependencies]
