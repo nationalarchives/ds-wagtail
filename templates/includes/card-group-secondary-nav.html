@@ -49,6 +49,9 @@
                     {% if link_page.is_newly_published %}
                     data-label="New"
                     {%endif%}
+                    {% if forloop.counter %}
+                        data-card-position="{{ forloop.counter0 }}"
+                    {% endif %}
                     >{{ link_page.title }}</a>
                 {% if link_page.is_newly_published %}
                 <span>NEW</span>
