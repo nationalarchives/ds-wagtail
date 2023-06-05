@@ -8,12 +8,10 @@
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
         <a
-            href='{{ page.url }}'
+            href="{{ page.url }}"
             class="card-group-secondary-nav__image-link"
             data-card-type="card-group-secondary-nav"
-            {% if value.block.meta.label or heading %}
-                data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
-            {% endif %}
+            data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
             data-link-type="Card image"
             data-card-title="{{ page.title }}"
             {% if page.is_newly_published %}
@@ -38,13 +36,11 @@
             {% endif %}
             <h3 class="card-group-secondary-nav__heading">
                 <a
-                    href='{{ page.url }}'
+                    href="{{ page.url }}"
                     class="card-group-secondary-nav__title-link"
                     data-card-type="card-group-secondary-nav"
                     aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
-                    {% if value.block.meta.label or heading %}
-                    data-component-name="{% if value.block.meta.label %}{{ value.block.meta.label }}: {{ heading }}{% else %}{{ heading }}{% endif %}"
-                    {% endif %}
+                    data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
                     data-link-type="Card text"
                     data-card-title="{{ page.title }}"
                     {% if page.is_newly_published %}
