@@ -16,8 +16,9 @@
         <div class="row">
             <div class="col-md-10 col-sm-12">
                 <!---placeholder for ITEM, SERIES etc -->
+                <!--
                 <p class="search-results__list-card-item">ITEM</p>
-
+                 _-->
                 <h3 class="search-results__list-card-heading">
                     <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                         {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span> {% endif %}
@@ -56,9 +57,11 @@
                     </li>
 
                     <!--placeholder for Subjects -->
+                    <!--
                     <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
                         Subjects: <a href="">Armed Forces (General Administration)</a> <a href="">UFOs</a>
                     </li>
+                    -->
 
                     {% endif %}
 
