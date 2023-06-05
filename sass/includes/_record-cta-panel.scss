@@ -23,55 +23,6 @@
     @media screen and (min-width: $screen__lg) {
       margin: 0 0.5rem 0.5rem 0;
     }
-
-    &--secondary {
-      padding: 0.5rem 1rem;
-      text-decoration: none;
-
-      &:link {
-        color: $color__link;
-      }
-      &:visited {
-        color: $color__link;
-      }
-      &:focus {
-        @include focus-default;
-      }
-      &:hover {
-        color: $color__link;
-        background-color: $color__grey-500;
-      }
-      &:active {
-        color: $color__link;
-        background-color: $color__grey-500;
-      }
-    }
-
-    &--primary {
-      background: $color__link url($fa_chevron_down_white) no-repeat 15px;
-      background-size: 15px;
-      color: $color__white;
-      text-decoration: none;
-
-      &:link {
-        color: $color__white;
-      }
-      &:visited {
-        color: $color__white;
-      }
-      &:focus {
-        @include focus-default;
-        outline: 5px solid $color__grey-700;
-      }
-      &:hover {
-        color: $color__white;
-        background-color: $color__grey-700;
-      }
-      &:active {
-        color: $color__white;
-        background-color: $color__white;
-      }
-    }
   }
 
   &__link-icon {
