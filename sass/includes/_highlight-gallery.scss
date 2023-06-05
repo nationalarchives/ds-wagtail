@@ -69,7 +69,7 @@
       position: absolute;
       right: -1.5rem;
       bottom: 4px;
-      fill: $color__link-dark-bg;
+      fill: currentColor;
       width: 8px;
       height: 12px;
     }
@@ -77,18 +77,10 @@
     &:hover,
     &:focus {
       color: $color__link-hover-dark-bg;
-
-      svg {
-        fill: $color__link-hover-dark-bg;
-      }
     }
     
     &:visited {
       color: $color__link-dark-bg;
-
-      svg {
-        fill: $color__link-dark-bg;
-      }
     }
   }
 
