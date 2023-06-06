@@ -45,8 +45,12 @@
   }
 
   &__link {
-    color: $color__link;
+    color: $color__link-blue;
     font-family: $font__supria-sans;
     font-size: 1.2rem;
+
+    &:visited {
+      color: $color__link-blue;
+    }
   }
 }

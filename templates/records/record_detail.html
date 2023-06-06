@@ -32,20 +32,6 @@
             {% endif %}
         {% endif %}
 
-        {% if record.topics %}
-            <h2>{{ 'topics'|as_label }}</h2>
-            {% include "includes/records/taxonomy-tags.html" %}
-        {% endif %}
-
-        {% if record.related_records %}
-            <h2>{{ 'related_records'|as_label }}</h2>
-            {% include "includes/records/record-related-records.html" %}
-        {% endif %}
-
-        {% if record.related_articles %}
-            <h2>{{ 'related_articles'|as_label }}</h2>
-            {% include "includes/records/record-related-content.html" %}
-        {% endif %}
     </div>
 
 {% endblock %}
