@@ -1,39 +1,39 @@
 .generic-intro {
-  padding-top: 1rem;
-  background-color: $color__white;
-  color: $color__black;
-
-  a {
+    padding-top: 1rem;
+    background-color: $color__white;
     color: $color__black;
-  }
 
-  &__title {
-    margin-top: 0;
-    margin-bottom: 0;
-    font-size: 4rem;
-    font-family: $font__supria-sans;
-    @media (max-width: $screen__md) {
-      font-size: 2.5rem;
+    a {
+        color: $color__black;
     }
 
-    &-prefix {
-      display: block;
-      @media (max-width: $screen__md) {
-        font-size: 1.25rem;
-        line-height: 1.3rem;
-      }
-      font-size: 2rem;
-      line-height: 0.3rem;
-      margin-top: 1rem;
-    }
-  }
+    &__title {
+        margin-top: 0;
+        margin-bottom: 0;
+        font-size: 4rem;
+        font-family: $font__supria-sans;
+        @media (max-width: $screen__md) {
+            font-size: 2.5rem;
+        }
 
-  &__paragraph {
-    font-size: 1.125rem; // one off font size (18px)
-    margin-bottom: 0.5rem;
-
-    @media only screen and (min-width: $screen__lg) {
-      font-size: 1.313rem; // one off font size (21px)
+        &-prefix {
+            display: block;
+            @media (max-width: $screen__md) {
+                font-size: 1.25rem;
+                line-height: 1.3rem;
+            }
+            font-size: 2rem;
+            line-height: 0.3rem;
+            margin-top: 1rem;
+        }
     }
-  }
+
+    &__paragraph {
+        font-size: 1.125rem; // one off font size (18px)
+        margin-bottom: 0.5rem;
+
+        @media only screen and (min-width: $screen__lg) {
+            font-size: 1.313rem; // one off font size (21px)
+        }
+    }
 }

@@ -2,17 +2,19 @@ import push_to_data_layer from "./../push_to_data_layer";
 
 const pushActiveFilterDataOnLoad = () => {
     // get filters after DOM has loaded and they have rendered on page
-    window.addEventListener('load', () => {
-        const filterList = document.querySelector('.search-results__selected-filters')
-        if(filterList !== null) {
+    window.addEventListener("load", () => {
+        const filterList = document.querySelector(
+            ".search-results__selected-filters"
+        );
+        if (filterList !== null) {
             pushActiveFilterData(filterList);
         }
     });
-}
+};
 
 const pushActiveFilterData = (filterList) => {
     // get current search bucket
-    const searchBucket = filterList.getAttribute('data-search-bucket');
+    const searchBucket = filterList.getAttribute("data-search-bucket");
 
     const filters = filterList.querySelectorAll("[data-filter]");
 
@@ -21,20 +23,20 @@ const pushActiveFilterData = (filterList) => {
 
     // loop through all currently active filters
     filters.forEach((filter) => {
-        let value = filter.getAttribute('data-filter-value');
-        const name = filter.getAttribute('data-filter-name');
+        let value = filter.getAttribute("data-filter-value");
+        const name = filter.getAttribute("data-filter-name");
 
         // if filter is a start or end date, set its value to 'Yes'
-        if (name === 'opening_start_date' || name === 'opening_end_date') {
-            value = 'Yes';
+        if (name === "opening_start_date" || name === "opening_end_date") {
+            value = "Yes";
         }
 
         // setup the dataLayer variables for each filter
         let filterData = {
-            'event': 'search-filters',
-            'search_bucket': searchBucket || '',
-            'search_filter_name': name || '',
-            'search_filter_value': value || '',
+            event: "search-filters",
+            search_bucket: searchBucket || "",
+            search_filter_name: name || "",
+            search_filter_value: value || "",
         };
 
         // add currently active filters to activeFilters array
@@ -42,16 +44,20 @@ const pushActiveFilterData = (filterList) => {
     });
 
     // check if start and end date filters are active (do they already exist in array?)
-    let startDate = activeFilters.some(e => e.search_filter_name === 'opening_start_date');
-    let endDate = activeFilters.some(e => e.search_filter_name === 'opening_end_date');
+    let startDate = activeFilters.some(
+        (e) => e.search_filter_name === "opening_start_date"
+    );
+    let endDate = activeFilters.some(
+        (e) => e.search_filter_name === "opening_end_date"
+    );
 
     // if start date isn't active, create a custom object with the value 'No'
     if (!startDate) {
         startDate = {
-            'event': 'search-filters',
-            'search_bucket': searchBucket || '',
-            'search_filter_name': 'opening_start_date',
-            'search_filter_value': 'No',
+            event: "search-filters",
+            search_bucket: searchBucket || "",
+            search_filter_name: "opening_start_date",
+            search_filter_value: "No",
         };
 
         activeFilters.push(startDate);
@@ -60,10 +66,10 @@ const pushActiveFilterData = (filterList) => {
     // if end date isn't active, create a custom object with the value 'No'
     if (!endDate) {
         endDate = {
-            'event': 'search-filters',
-            'search_bucket': searchBucket || '',
-            'search_filter_name': 'opening_end_date',
-            'search_filter_value': 'No',
+            event: "search-filters",
+            search_bucket: searchBucket || "",
+            search_filter_name: "opening_end_date",
+            search_filter_value: "No",
         };
 
         activeFilters.push(endDate);
@@ -73,6 +79,6 @@ const pushActiveFilterData = (filterList) => {
     activeFilters.forEach((filter) => {
         push_to_data_layer(filter);
     });
-}
+};
 
 export default pushActiveFilterDataOnLoad;

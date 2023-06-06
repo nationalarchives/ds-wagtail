@@ -14,9 +14,8 @@ export default function () {
     }
 
     let isGlobalSearchFocused = function () {
-
         /* Global search doesn't exist on Etna search pages (/search/), so we must check if it exists before we check if it's focused. */
-        if(!$globalSearchButton) {
+        if (!$globalSearchButton) {
             return false;
         }
 
@@ -30,9 +29,7 @@ export default function () {
         }
 
         // Only move the element if it's in the wrong place
-        if (
-            $headerMenuList.childNodes[newIndex].id !== $searchListItem.id
-        ) {
+        if ($headerMenuList.childNodes[newIndex].id !== $searchListItem.id) {
             $headerMenuList.insertBefore(
                 $searchListItem,
                 $headerMenuList.childNodes[newIndex]
@@ -54,8 +51,8 @@ export default function () {
 
     $showHideListItem.appendChild($showHideButton);
 
-    $searchListItem.style.display = 'inline-block';
-    $searchListItem.style.verticalAlign = 'bottom';
+    $searchListItem.style.display = "inline-block";
+    $searchListItem.style.verticalAlign = "bottom";
 
     $headerMenuList.insertBefore(
         $showHideListItem,
@@ -91,7 +88,7 @@ export default function () {
         }
 
         // Hide global search component when the navigation menu is expanded
-        if($globalSearch && $globalSearchButton) {
+        if ($globalSearch && $globalSearchButton) {
             $globalSearch.hidden = true;
             $globalSearchButton.setAttribute("aria-expanded", "false");
         }

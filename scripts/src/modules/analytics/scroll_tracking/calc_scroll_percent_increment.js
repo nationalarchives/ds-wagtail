@@ -1,12 +1,14 @@
 const pageHeight = document.documentElement;
 const body = document.body;
-const scrollTop = 'scrollTop';
-const scrollHeight = 'scrollHeight';
+const scrollTop = "scrollTop";
+const scrollHeight = "scrollHeight";
 
 const calc_scroll_percent_increment = () => {
-
     const scrollPercentage = Math.floor(
-        (pageHeight[scrollTop] || body[scrollTop]) / ((pageHeight[scrollHeight] || body[scrollHeight]) - pageHeight.clientHeight) * 100
+        ((pageHeight[scrollTop] || body[scrollTop]) /
+            ((pageHeight[scrollHeight] || body[scrollHeight]) -
+                pageHeight.clientHeight)) *
+            100
     );
 
     if (scrollPercentage < 25) {

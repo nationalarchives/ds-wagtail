@@ -1,34 +1,34 @@
 .breadcrumb-content {
-  background-color: white;
-  display: inline-block;
-  padding: 0.1rem 1rem 0rem;
+    background-color: white;
+    display: inline-block;
+    padding: 0.1rem 1rem 0rem;
 
-  .generic-intro & {
-    padding: 0;
-  }
+    .generic-intro & {
+        padding: 0;
+    }
 }
 
 ul.breadcrumb {
-  padding: 10px 16px;
-  list-style: none;
+    padding: 10px 16px;
+    list-style: none;
 
-  .generic-intro & {
-    padding: 0;
-    padding-top: 2rem;
-  }
+    .generic-intro & {
+        padding: 0;
+        padding-top: 2rem;
+    }
 }
 ul.breadcrumb li {
-  @include font-size(xs);
-  display: inline;
-  font-family: 'Open Sans', sans-serif;
+    @include font-size(xs);
+    display: inline;
+    font-family: "Open Sans", sans-serif;
 }
 
 ul.breadcrumb li a {
-  color: black;
-  text-decoration: underline;
+    color: black;
+    text-decoration: underline;
 }
 ul.breadcrumb li a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .breadcrumb__separator {
@@ -46,23 +46,24 @@ ul.breadcrumb li a:hover {
 
 //media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media (max-width: 768px) {
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
-    display: none;
-  }
-  .govuk-breadcrumbs--collapse-on-mobile
-    .govuk-breadcrumbs__list-item:first-child,
-  .govuk-breadcrumbs--collapse-on-mobile
-    .govuk-breadcrumbs__list-item:last-child {
-    display: inline-block;
-  }
+    .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
+        display: none;
+    }
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:first-child,
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:last-child {
+        display: inline-block;
+    }
 
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
-    top: 6px;
-    margin: 0;
-  }
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list {
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
-  }
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:before {
+        top: 6px;
+        margin: 0;
+    }
+    .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list {
+        display: -ms-flexbox;
+        display: -webkit-box;
+        display: flex;
+    }
 }

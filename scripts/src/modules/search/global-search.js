@@ -1,9 +1,13 @@
 export default function () {
-    const $headerElementsToHide = document.querySelectorAll('[data-isSearch="false"]');
-    let $gsFallbackLink = document.querySelector("a[data-id='search-nav-link']");
-    let $main = document.querySelector('main');
+    const $headerElementsToHide = document.querySelectorAll(
+        '[data-isSearch="false"]'
+    );
+    let $gsFallbackLink = document.querySelector(
+        "a[data-id='search-nav-link']"
+    );
+    let $main = document.querySelector("main");
 
-    if(!$gsFallbackLink) {
+    if (!$gsFallbackLink) {
         return;
     }
 
@@ -11,14 +15,13 @@ export default function () {
         <span class="global-search__button-text">Search</span>
     </button>`;
 
-    let $gsToggleButton = document.querySelector('#gs-show-hide');
+    let $gsToggleButton = document.querySelector("#gs-show-hide");
 
-    let $globalSearchComponent = document.createElement('div');
+    let $globalSearchComponent = document.createElement("div");
     $globalSearchComponent.hidden = true;
-    $globalSearchComponent.id = 'gs-component';
-    $globalSearchComponent.classList.add('global-search'); 
-    $globalSearchComponent.innerHTML = 
-    `<div class="global-search__container">
+    $globalSearchComponent.id = "gs-component";
+    $globalSearchComponent.classList.add("global-search");
+    $globalSearchComponent.innerHTML = `<div class="global-search__container">
         <h1 class="global-search__heading">Search</h1>
         <form class="global-search__form" action='/search/featured/' method='GET' id='global-search-form' role='search' aria-label="Search our website">
             <label for="search_term" class="global-search__label">
@@ -37,19 +40,26 @@ export default function () {
 
     $main.insertBefore($globalSearchComponent, $main.childNodes[0]); //IE11 compatible prepend
 
-    $gsToggleButton.addEventListener('click', function(e) {
-        const $showHideButton = document.querySelector('.header__show-hide-button');
-        let ariaExpanded = $gsToggleButton.getAttribute('aria-expanded') == 'true';
-        $gsToggleButton.setAttribute('aria-expanded', !ariaExpanded);
+    $gsToggleButton.addEventListener("click", function (e) {
+        const $showHideButton = document.querySelector(
+            ".header__show-hide-button"
+        );
+        let ariaExpanded =
+            $gsToggleButton.getAttribute("aria-expanded") == "true";
+        $gsToggleButton.setAttribute("aria-expanded", !ariaExpanded);
 
         $globalSearchComponent.hidden = !$globalSearchComponent.hidden;
 
         // Hide navigation menu when global search component is expanded
-        if(window.innerWidth < 768 && $headerElementsToHide && $showHideButton) {
+        if (
+            window.innerWidth < 768 &&
+            $headerElementsToHide &&
+            $showHideButton
+        ) {
             for (let i = 0; i < $headerElementsToHide.length; i++) {
                 $headerElementsToHide[i].hidden = true;
             }
             $showHideButton.setAttribute("aria-expanded", "false");
         }
-    })
+    });
 }

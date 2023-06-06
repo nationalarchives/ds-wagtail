@@ -20,8 +20,8 @@
             display: inline-block;
             width: 100%;
         }
-    
-        h3{
+
+        h3 {
             font-size: 1.5rem;
         }
     }
@@ -42,23 +42,23 @@
         padding: 2rem;
         width: 100%;
     }
-    
+
     @media only screen and (max-width: 56.25rem) {
         &__list {
             flex-direction: column;
         }
-    
+
         &__item {
             flex: 1 1 auto;
             margin-right: 0;
             margin-bottom: 2rem;
             width: 100%;
             max-width: 100%;
-    
+
             picture {
                 width: 50%;
             }
-    
+
             a {
                 display: flex;
                 height: 15.625rem;
@@ -74,14 +74,14 @@
             width: 50%;
         }
     }
-    
+
     @media only screen and (max-width: $screen__md) {
         &__item {
             a {
                 flex-direction: column;
                 height: auto;
             }
-    
+
             picture {
                 width: 100%;
             }
@@ -91,7 +91,7 @@
             width: 100%;
         }
     }
-    
+
     @media only screen and (max-width: 36rem) {
         &__item {
             picture {

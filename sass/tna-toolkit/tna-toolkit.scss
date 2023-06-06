@@ -7,15 +7,15 @@
  */
 
 html {
-  box-sizing: border-box;
-  -ms-overflow-style: scrollbar;
-  scroll-behavior: smooth;
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
+    scroll-behavior: smooth;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 @import "bootstrap/functions";

@@ -1,52 +1,52 @@
 .series-panel {
-  position: relative;
-  border: 3px solid $color__yellow;
-  margin: 0 0 3rem 0;
-  background: $color__yellow;
-  padding: 0;
-
-  @media screen and (min-width: $screen__lg) {
-    padding: 0 0 0 3.5rem;
-  }
-
-  &__icon {
-    display: none;
-    height: 35px;
-    width: 35px;
-    position: absolute;
-    top: 11px;
-    left: 12px;
+    position: relative;
+    border: 3px solid $color__yellow;
+    margin: 0 0 3rem 0;
+    background: $color__yellow;
+    padding: 0;
 
     @media screen and (min-width: $screen__lg) {
-      display: block;
+        padding: 0 0 0 3.5rem;
     }
-  }
 
-  &__container {
-    background: $color__white;
-    // adds a visual separating border in high contrast mode
-    border-left: 2px solid transparent;
-    overflow: auto;
-    padding: 1rem;
-  }
+    &__icon {
+        display: none;
+        height: 35px;
+        width: 35px;
+        position: absolute;
+        top: 11px;
+        left: 12px;
 
-  &__heading {
-    overflow: auto;
-    margin: 0 0 0.5rem 0;
-    font-family: $font__supria-sans;
-    font-weight: normal;
-  }
+        @media screen and (min-width: $screen__lg) {
+            display: block;
+        }
+    }
 
-  &__reference {
-    font-size: 1rem;
-    font-weight: normal;
-    margin-bottom: 0.5rem;
-    display: block;
-  }
+    &__container {
+        background: $color__white;
+        // adds a visual separating border in high contrast mode
+        border-left: 2px solid transparent;
+        overflow: auto;
+        padding: 1rem;
+    }
 
-  &__link {
-    color: $color__link;
-    font-family: $font__supria-sans;
-    font-size: 1.2rem;
-  }
+    &__heading {
+        overflow: auto;
+        margin: 0 0 0.5rem 0;
+        font-family: $font__supria-sans;
+        font-weight: normal;
+    }
+
+    &__reference {
+        font-size: 1rem;
+        font-weight: normal;
+        margin-bottom: 0.5rem;
+        display: block;
+    }
+
+    &__link {
+        color: $color__link;
+        font-family: $font__supria-sans;
+        font-size: 1.2rem;
+    }
 }

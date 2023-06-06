@@ -1,381 +1,382 @@
 .hierarchy {
-  position: relative;
-  color: $color__black;
-  border: 3px solid $color__yellow;
-  margin: 0 0 3rem 0;
-  background-color: $color__yellow;
-  padding: 0;
-
-  @media screen and (min-width: $screen__lg) {
-    padding: 0 0 0 3.5rem;
-  }
-
-  &__icon {
-    display: none;
-    height: 35px;
-    width: 35px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    position: relative;
+    color: $color__black;
+    border: 3px solid $color__yellow;
+    margin: 0 0 3rem 0;
+    background-color: $color__yellow;
+    padding: 0;
 
     @media screen and (min-width: $screen__lg) {
-      display: block;
+        padding: 0 0 0 3.5rem;
     }
-  }
 
-  &__container {
-    background: $color__cream;
-    // adds a visual separating border in high contrast mode
-    border-left: 2px solid transparent;
-    overflow: auto;
-    padding: 0 0 1rem;
-  }
+    &__icon {
+        display: none;
+        height: 35px;
+        width: 35px;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+
+        @media screen and (min-width: $screen__lg) {
+            display: block;
+        }
+    }
+
+    &__container {
+        background: $color__cream;
+        // adds a visual separating border in high contrast mode
+        border-left: 2px solid transparent;
+        overflow: auto;
+        padding: 0 0 1rem;
+    }
 }
 
 .hierarchy-short-panel {
-  padding: 1rem;
-  font-family: $font__supria-sans;
+    padding: 1rem;
+    font-family: $font__supria-sans;
 
-  &__heading {
-    display: inline;
-  }
-
-  &__label {
-    margin: 0;
-    font-size: 1.3rem;
-  }
-
-  &__toggle-link {
-    position: relative;
-    text-align: center;
-    margin: 0;
-
-    button {
-      font-family: $font-_supria-sans;
-      color: $color__link;
-      display: inline-block;
-      background: url($fa_chevron_down) no-repeat left center;
-      background-size: 10px;
-      margin: 0 auto 1rem;
-      padding: 0 0 0 1.25rem;
-      border: 0;
-      text-decoration: underline;
-      font-size: 1.1rem;
-
-      &:focus {
-        @include focus-default;
-      }
+    &__heading {
+        display: inline;
     }
 
-    .open {
-      background: url($fa_chevron_up) no-repeat left center;
-      background-size: 10px;
-      min-width: 5rem;
+    &__label {
+        margin: 0;
+        font-size: 1.3rem;
     }
 
-    @media screen and (min-width: $screen__lg) {
-      position: absolute;
-      top: 0;
-      right: 25px;
-      margin: 1rem auto;
+    &__toggle-link {
+        position: relative;
+        text-align: center;
+        margin: 0;
+
+        button {
+            font-family: $font-_supria-sans;
+            color: $color__link;
+            display: inline-block;
+            background: url($fa_chevron_down) no-repeat left center;
+            background-size: 10px;
+            margin: 0 auto 1rem;
+            padding: 0 0 0 1.25rem;
+            border: 0;
+            text-decoration: underline;
+            font-size: 1.1rem;
+
+            &:focus {
+                @include focus-default;
+            }
+        }
+
+        .open {
+            background: url($fa_chevron_up) no-repeat left center;
+            background-size: 10px;
+            min-width: 5rem;
+        }
+
+        @media screen and (min-width: $screen__lg) {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            margin: 1rem auto;
+        }
     }
-  }
 
-  &__list {
-    display: block;
-    padding: 0;
-    margin: 1rem 0;
-  }
-
-  &__list-item {
-    list-style: none;
-    background: url($fa_chevron_double_right_yellow) no-repeat left center;
-    background-size: 16px;
-    margin: 0 0.75rem 0.75rem 0;
-    padding-left: 1.8rem;
-    display: block;
-    font-size: 1.1rem;
-
-    &:first-child {
-      background: url($fa_chevron_double_right_yellow) no-repeat left center;
-      padding-left: 1.8rem;
-
-      @media screen and (min-width: $screen__lg) {
-        background: transparent;
-        padding-left: 0;
-      }
+    &__list {
+        display: block;
+        padding: 0;
+        margin: 1rem 0;
     }
 
-    @media screen and (min-width: $screen__lg) {
-      display: inline-block;
-      margin: 0 0.75rem 0 0;
-    }
-    &--more:before {
-      content: '...';
-      display: none;
+    &__list-item {
+        list-style: none;
+        background: url($fa_chevron_double_right_yellow) no-repeat left center;
+        background-size: 16px;
+        margin: 0 0.75rem 0.75rem 0;
+        padding-left: 1.8rem;
+        display: block;
+        font-size: 1.1rem;
 
-      @media screen and (min-width: $screen__lg) {
-        display: inline-block;
-        margin: 0 0.75rem 0 0;
-      }
-    }
-  }
+        &:first-child {
+            background: url($fa_chevron_double_right_yellow) no-repeat left
+                center;
+            padding-left: 1.8rem;
 
-  &__level {
-    margin: 0 0.2rem 0 0;
-    font-size: 1.1rem;
-  }
+            @media screen and (min-width: $screen__lg) {
+                background: transparent;
+                padding-left: 0;
+            }
+        }
+
+        @media screen and (min-width: $screen__lg) {
+            display: inline-block;
+            margin: 0 0.75rem 0 0;
+        }
+        &--more:before {
+            content: "...";
+            display: none;
+
+            @media screen and (min-width: $screen__lg) {
+                display: inline-block;
+                margin: 0 0.75rem 0 0;
+            }
+        }
+    }
+
+    &__level {
+        margin: 0 0.2rem 0 0;
+        font-size: 1.1rem;
+    }
 }
 
 .hierarchy-full-panel {
-  &__heading {
-    display: inline-block;
-    margin: 1rem 0 1rem 1rem;
-    font-family: $font__supria-sans;
-    font-size: 1.3rem;
-  }
-
-  &__bar-container-outer {
-    min-height: 60px;
-    padding: 0.25rem 0 1rem;
-    border-top: 2px solid $color__yellow;
-    background: $color__yellow-dark;
-
-    @media screen and (min-width: $screen__lg) {
-      border-top: 0;
-      padding: 0.25rem 0;
-      background: transparent;
+    &__heading {
+        display: inline-block;
+        margin: 1rem 0 1rem 1rem;
+        font-family: $font__supria-sans;
+        font-size: 1.3rem;
     }
 
-    &--active {
-      border-bottom: 2px solid $color__yellow;
-      background: $color__yellow;
-
-      @media screen and (min-width: $screen__lg) {
-        border-bottom: 0;
-        background: transparent;
-      }
-    }
-  }
-
-  &__bar-container-inner {
-    padding: 0.5rem 1rem 0;
-    display: block;
-    vertical-align: top;
-    color: $color__black;
-
-    @media screen and (min-width: $screen__lg) {
-      background-color: $color__yellow-dark;
-      padding: 0.5rem 0.75rem;
-      display: inline-block;
-      min-height: 60px;
-      border: 2px solid $color__yellow;
-      border-left: 0;
-      width: 11.5%;
-    }
-
-    p {
-      margin: 0 0 0.5rem;
-      display: inline-block;
-      color: $color__grey-800;
-      background: $color__yellow;
-      padding: 0.4rem 0.35rem 0.4rem;
-      margin-top: 0.25rem;
-      line-height: 1.2rem;
-
-      @media screen and (min-width: $screen__sm) {
-        display: block;
-        float: right;
-      }
-
-      @media screen and (min-width: $screen__lg) {
-        display: block;
-        text-align: left;
-        background: transparent;
-        float: none;
-      }
-    }
-
-    &--level-1 {
-      @media screen and (min-width: $screen__xl) {
-        width: 22%;
-      }
-    }
-    &--level-2 {
-      @media screen and (min-width: $screen__xl) {
-        width: 20%;
-      }
-    }
-    &--level-3 {
-      @media screen and (min-width: $screen__xl) {
-        width: 18%;
-      }
-    }
-    &--level-4 {
-      @media screen and (min-width: $screen__xl) {
-        width: 16%;
-      }
-    }
-    &--level-5 {
-      @media screen and (min-width: $screen__xl) {
-        width: 14%;
-      }
-    }
-    &--level-6 {
-      @media screen and (min-width: $screen__xl) {
-        width: 12%;
-      }
-    }
-    &--level-7 {
-      @media screen and (min-width: $screen__xl) {
-        width: 10%;
-      }
-    }
-    &--active {
-      @media screen and (min-width: $screen__lg) {
-        background: $color__yellow;
-        border-left: 0;
-      }
-
-      p {
-        border: 1px solid $color__grey-800;
-        border-bottom: 2px solid $color__grey-800;
-        font-weight: bold;
+    &__bar-container-outer {
+        min-height: 60px;
+        padding: 0.25rem 0 1rem;
+        border-top: 2px solid $color__yellow;
+        background: $color__yellow-dark;
 
         @media screen and (min-width: $screen__lg) {
-          border: 0;
+            border-top: 0;
+            padding: 0.25rem 0;
+            background: transparent;
         }
-      }
-    }
-  }
 
-  &__bar-number {
-    display: inline-block;
-    font-size: 0.9rem;
-    width: auto;
-    color: $color__grey-700;
-    letter-spacing: -0.4px;
+        &--active {
+            border-bottom: 2px solid $color__yellow;
+            background: $color__yellow;
 
-    @media screen and (min-width: $screen__lg) {
-      display: inline-block;
-      font-size: 1.1rem;
-      width: 100%;
-      font-family: $font__roboto;
-    }
-  }
-  &__bar-label {
-    font-size: 0.85rem;
-    display: inline-block;
-    text-align: right;
-
-    @media screen and (min-width: $screen__lg) {
-      display: inline-block;
-      font-size: 0.8rem;
-    }
-  }
-  &__text-container {
-    display: inline-block;
-    vertical-align: top;
-    margin: 0 1rem;
-    line-height: 1.8rem;
-    width: auto;
-
-    @media screen and (min-width: $screen__sm) {
-      width: 60%;
+            @media screen and (min-width: $screen__lg) {
+                border-bottom: 0;
+                background: transparent;
+            }
+        }
     }
 
-    @media screen and (min-width: $screen__lg) {
-      width: 80%;
-    }
-    @media screen and (min-width: $screen__xl) {
-      width: auto;
+    &__bar-container-inner {
+        padding: 0.5rem 1rem 0;
+        display: block;
+        vertical-align: top;
+        color: $color__black;
+
+        @media screen and (min-width: $screen__lg) {
+            background-color: $color__yellow-dark;
+            padding: 0.5rem 0.75rem;
+            display: inline-block;
+            min-height: 60px;
+            border: 2px solid $color__yellow;
+            border-left: 0;
+            width: 11.5%;
+        }
+
+        p {
+            margin: 0 0 0.5rem;
+            display: inline-block;
+            color: $color__grey-800;
+            background: $color__yellow;
+            padding: 0.4rem 0.35rem 0.4rem;
+            margin-top: 0.25rem;
+            line-height: 1.2rem;
+
+            @media screen and (min-width: $screen__sm) {
+                display: block;
+                float: right;
+            }
+
+            @media screen and (min-width: $screen__lg) {
+                display: block;
+                text-align: left;
+                background: transparent;
+                float: none;
+            }
+        }
+
+        &--level-1 {
+            @media screen and (min-width: $screen__xl) {
+                width: 22%;
+            }
+        }
+        &--level-2 {
+            @media screen and (min-width: $screen__xl) {
+                width: 20%;
+            }
+        }
+        &--level-3 {
+            @media screen and (min-width: $screen__xl) {
+                width: 18%;
+            }
+        }
+        &--level-4 {
+            @media screen and (min-width: $screen__xl) {
+                width: 16%;
+            }
+        }
+        &--level-5 {
+            @media screen and (min-width: $screen__xl) {
+                width: 14%;
+            }
+        }
+        &--level-6 {
+            @media screen and (min-width: $screen__xl) {
+                width: 12%;
+            }
+        }
+        &--level-7 {
+            @media screen and (min-width: $screen__xl) {
+                width: 10%;
+            }
+        }
+        &--active {
+            @media screen and (min-width: $screen__lg) {
+                background: $color__yellow;
+                border-left: 0;
+            }
+
+            p {
+                border: 1px solid $color__grey-800;
+                border-bottom: 2px solid $color__grey-800;
+                font-weight: bold;
+
+                @media screen and (min-width: $screen__lg) {
+                    border: 0;
+                }
+            }
+        }
     }
 
-    a {
-      display: block;
-      line-height: 2rem;
-
-      @media screen and (min-width: $screen__lg) {
+    &__bar-number {
         display: inline-block;
-        line-height: 1.4rem;
-      }
-    }
-  }
-  &__text-level {
-    font-family: $font__supria-sans;
-    margin: 0;
-    padding: 0;
-    font-size: 1.15rem;
-    display: inline-block;
+        font-size: 0.9rem;
+        width: auto;
+        color: $color__grey-700;
+        letter-spacing: -0.4px;
 
-    @media screen and (min-width: $screen__lg) {
-      margin: 0.7rem 0 0;
+        @media screen and (min-width: $screen__lg) {
+            display: inline-block;
+            font-size: 1.1rem;
+            width: 100%;
+            font-family: $font__roboto;
+        }
     }
-  }
-  &__text-title {
-    margin: 0;
-    padding: 0;
-    font-size: 0.95rem;
-    line-height: 1.2rem;
-  }
+    &__bar-label {
+        font-size: 0.85rem;
+        display: inline-block;
+        text-align: right;
+
+        @media screen and (min-width: $screen__lg) {
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+    }
+    &__text-container {
+        display: inline-block;
+        vertical-align: top;
+        margin: 0 1rem;
+        line-height: 1.8rem;
+        width: auto;
+
+        @media screen and (min-width: $screen__sm) {
+            width: 60%;
+        }
+
+        @media screen and (min-width: $screen__lg) {
+            width: 80%;
+        }
+        @media screen and (min-width: $screen__xl) {
+            width: auto;
+        }
+
+        a {
+            display: block;
+            line-height: 2rem;
+
+            @media screen and (min-width: $screen__lg) {
+                display: inline-block;
+                line-height: 1.4rem;
+            }
+        }
+    }
+    &__text-level {
+        font-family: $font__supria-sans;
+        margin: 0;
+        padding: 0;
+        font-size: 1.15rem;
+        display: inline-block;
+
+        @media screen and (min-width: $screen__lg) {
+            margin: 0.7rem 0 0;
+        }
+    }
+    &__text-title {
+        margin: 0;
+        padding: 0;
+        font-size: 0.95rem;
+        line-height: 1.2rem;
+    }
 }
 
 .hierarchy-local-nav {
-  vertical-align: middle;
-  margin: 1rem;
-  font-family: supria-sans-condensed, sans-serif;
-  text-align: center;
+    vertical-align: middle;
+    margin: 1rem;
+    font-family: supria-sans-condensed, sans-serif;
+    text-align: center;
 
-  @media screen and (min-width: $screen__md) {
-    margin: 2rem 0 0.5rem;
-  }
-
-  &__container {
     @media screen and (min-width: $screen__md) {
-      display: inline-block;
-      text-align: center;
-      min-width: 19%;
+        margin: 2rem 0 0.5rem;
     }
 
-    &--previous {
-      @media screen and (min-width: $screen__md) {
-        margin: 0 2rem;
-        padding-right: 2rem;
-        text-align: right;
-      }
+    &__container {
+        @media screen and (min-width: $screen__md) {
+            display: inline-block;
+            text-align: center;
+            min-width: 19%;
+        }
+
+        &--previous {
+            @media screen and (min-width: $screen__md) {
+                margin: 0 2rem;
+                padding-right: 2rem;
+                text-align: right;
+            }
+        }
+
+        &--next {
+            @media screen and (min-width: $screen__md) {
+                margin: 0 2rem;
+                padding-left: 2rem;
+                text-align: left;
+            }
+        }
     }
 
-    &--next {
-      @media screen and (min-width: $screen__md) {
-        margin: 0 2rem;
-        padding-left: 2rem;
-        text-align: left;
-      }
-    }
-  }
+    &__list-label {
+        display: block;
+        font-size: 1.1rem;
+        margin-bottom: 0.75rem;
 
-  &__list-label {
-    display: block;
-    font-size: 1.1rem;
-    margin-bottom: 0.75rem;
+        &--left {
+            @media screen and (min-width: $screen__xl) {
+                background: url($fa_chevron_left) no-repeat left 7px;
+                background-size: 8px;
+                padding: 0 1.5rem 0 0;
+            }
+        }
 
-    &--left {
-      @media screen and (min-width: $screen__xl) {
-        background: url($fa_chevron_left) no-repeat left 7px;
-        background-size: 8px;
-        padding: 0 1.5rem 0 0;
-      }
+        &--right {
+            @media screen and (min-width: $screen__xl) {
+                background: url($fa_chevron_right) no-repeat 75% 7px;
+                background-size: 8px;
+                padding: 0 1.5rem 0 0;
+            }
+        }
     }
-
-    &--right {
-      @media screen and (min-width: $screen__xl) {
-        background: url($fa_chevron_right) no-repeat 75% 7px;
-        background-size: 8px;
-        padding: 0 1.5rem 0 0;
-      }
+    &__list-link {
+        display: block;
     }
-  }
-  &__list-link {
-    display: block;
-  }
 }

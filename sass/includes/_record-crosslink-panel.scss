@@ -1,19 +1,19 @@
 .crosslink-panel {
-  background-color: $color__yellow;
-  padding: 2rem 2rem 3rem;
-  margin: 0 0 5rem;
-  // adds a visual separating border in high contrast mode
-  border-left: 2px solid transparent;
+    background-color: $color__yellow;
+    padding: 2rem 2rem 3rem;
+    margin: 0 0 5rem;
+    // adds a visual separating border in high contrast mode
+    border-left: 2px solid transparent;
 
-  h2 {
-    margin: 0 0 1rem;
-    font-size: 1.75rem;
-  }
-  ol {
-    margin: 1.5rem 0;
-    padding: 0 0 0 1.25rem;
-  }
-  &__link {
-    @extend .search-button;
-  }
+    h2 {
+        margin: 0 0 1rem;
+        font-size: 1.75rem;
+    }
+    ol {
+        margin: 1.5rem 0;
+        padding: 0 0 0 1.25rem;
+    }
+    &__link {
+        @extend .search-button;
+    }
 }

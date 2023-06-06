@@ -1,18 +1,18 @@
 .content-block {
-  padding: 0.5rem 0;
+    padding: 0.5rem 0;
 
-  &__heading {
-    font-size: 2rem;
-    font-weight: 400;
-  }
+    &__heading {
+        font-size: 2rem;
+        font-weight: 400;
+    }
 
-  &__text {
-    font-size: 1.2rem;
-  }
+    &__text {
+        font-size: 1.2rem;
+    }
 
-  &--bordered {
-    border-top: 0.3125rem solid $color__grey-500;
-    border-bottom: 0.3125rem solid $color__grey-500;
-    padding: 2rem 0;
-  }
+    &--bordered {
+        border-top: 0.3125rem solid $color__grey-500;
+        border-bottom: 0.3125rem solid $color__grey-500;
+        padding: 2rem 0;
+    }
 }

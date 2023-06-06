@@ -1,148 +1,148 @@
 .search-sort-view {
-  $root: &;
-  display: flex;
-
-  @media only screen and (max-width: $screen__md) {
-    margin-left: 1rem;
-    margin-right: 1rem;
-  }
-
-  &__heading {
-    font-size: 1rem;
-    margin: 0;
-    font-family: $font__supria-sans;
-    display: inline-block;
-    @media only screen and (max-width: $screen__md) {
-      display: block;
-    }
-  }
-
-  &__form {
-    margin-left: auto;
-    //width: 100%;
-
-    @media only screen and (max-width: $screen__md) {
-      margin-left: 0;
-      width: 100%;
-    }
-
-    &-select {
-      padding: 0.2rem;
-      width: 10rem;
-      height: 2.3rem;
-      margin-bottom: 0.25rem;
-
-      &:focus {
-        outline: 5px solid $color__focus-outline-light-bg;
-      }
-    }
-    &-submit {
-      @extend .search-button;
-      padding: 0.2rem;
-      cursor: pointer;
-    }
-  }
-
-  &__mobile {
-    padding-bottom: 1em;
-    @media only screen and (min-width: $screen__md) {
-      display: none;
-    }
-  }
-
-  &__desktop {
-    @media only screen and (max-width: $screen__md) {
-      display: none;
-    }
-  }
-
-  &__list {
+    $root: &;
     display: flex;
-    align-items: center;
-
-    margin-bottom: 0;
-    margin-right: 3rem;
-    padding: 0;
-
-    &-item {
-      display: inline-block;
-      margin-left: 0.5rem;
-    }
 
     @media only screen and (max-width: $screen__md) {
-      margin-left: auto;
-      align-items: flex-end;
-      margin-right: 0;
-      display: none;
-    }
-  }
-
-  &__icon {
-    color: $color__grey-700;
-    display: inline-block;
-
-    &[aria-current='true'] {
-      #{$root}__svg {
-        background-color: $color__yellow;
-      }
+        margin-left: 1rem;
+        margin-right: 1rem;
     }
 
-    &:hover,
-    &:focus {
-      #{$root}__svg {
-        background-color: $color__yellow;
-      }
-    }
-
-    @media (forced-colors: active) {
-      &[aria-current='true'] {
-        #{$root}__svg {
-          // system colour keywords for high-contrast mode
-          color: HighlightText;
-          background-color: Highlight;
+    &__heading {
+        font-size: 1rem;
+        margin: 0;
+        font-family: $font__supria-sans;
+        display: inline-block;
+        @media only screen and (max-width: $screen__md) {
+            display: block;
         }
-      }
+    }
 
-      &:hover,
-      &:focus {
-        #{$root}__svg {
-          // system colour keywords for high-contrast mode
-          color: HighlightText;
-          background-color: Highlight;
+    &__form {
+        margin-left: auto;
+        //width: 100%;
+
+        @media only screen and (max-width: $screen__md) {
+            margin-left: 0;
+            width: 100%;
         }
-      }
-    }
-  }
 
-  &__svg {
-    color: $color__grey-700;
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-    padding: 5px;
-    transition: background-color $transition_duration,
-      color $transition_duration;
+        &-select {
+            padding: 0.2rem;
+            width: 10rem;
+            height: 2.3rem;
+            margin-bottom: 0.25rem;
 
-    @media (forced-colors: active) {
-      // system colour keyword for high-contrast mode
-      color: ButtonText;
+            &:focus {
+                outline: 5px solid $color__focus-outline-light-bg;
+            }
+        }
+        &-submit {
+            @extend .search-button;
+            padding: 0.2rem;
+            cursor: pointer;
+        }
     }
-  }
+
+    &__mobile {
+        padding-bottom: 1em;
+        @media only screen and (min-width: $screen__md) {
+            display: none;
+        }
+    }
+
+    &__desktop {
+        @media only screen and (max-width: $screen__md) {
+            display: none;
+        }
+    }
+
+    &__list {
+        display: flex;
+        align-items: center;
+
+        margin-bottom: 0;
+        margin-right: 3rem;
+        padding: 0;
+
+        &-item {
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        @media only screen and (max-width: $screen__md) {
+            margin-left: auto;
+            align-items: flex-end;
+            margin-right: 0;
+            display: none;
+        }
+    }
+
+    &__icon {
+        color: $color__grey-700;
+        display: inline-block;
+
+        &[aria-current="true"] {
+            #{$root}__svg {
+                background-color: $color__yellow;
+            }
+        }
+
+        &:hover,
+        &:focus {
+            #{$root}__svg {
+                background-color: $color__yellow;
+            }
+        }
+
+        @media (forced-colors: active) {
+            &[aria-current="true"] {
+                #{$root}__svg {
+                    // system colour keywords for high-contrast mode
+                    color: HighlightText;
+                    background-color: Highlight;
+                }
+            }
+
+            &:hover,
+            &:focus {
+                #{$root}__svg {
+                    // system colour keywords for high-contrast mode
+                    color: HighlightText;
+                    background-color: Highlight;
+                }
+            }
+        }
+    }
+
+    &__svg {
+        color: $color__grey-700;
+        width: 30px;
+        height: 30px;
+        vertical-align: middle;
+        padding: 5px;
+        transition: background-color $transition_duration,
+            color $transition_duration;
+
+        @media (forced-colors: active) {
+            // system colour keyword for high-contrast mode
+            color: ButtonText;
+        }
+    }
 }
 
 .search-others {
-  margin-bottom: 1rem;
-  @media only screen and (min-width: $screen__md) {
-    display: none;
-  }
-
-  select {
-    padding: 0.5rem;
-    padding-right: 1rem;
-    border-radius: 5px;
-    background: #eeedf3;
-    min-height: 44px;
-    width: 100%;
     margin-bottom: 1rem;
-  }
+    @media only screen and (min-width: $screen__md) {
+        display: none;
+    }
+
+    select {
+        padding: 0.5rem;
+        padding-right: 1rem;
+        border-radius: 5px;
+        background: #eeedf3;
+        min-height: 44px;
+        width: 100%;
+        margin-bottom: 1rem;
+    }
 }

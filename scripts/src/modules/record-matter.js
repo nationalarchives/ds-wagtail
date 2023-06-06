@@ -1,4 +1,3 @@
-
 class RecordMatters {
     constructor(node) {
         this.node = node;
@@ -10,7 +9,6 @@ class RecordMatters {
     }
 
     setUp() {
-
         // set-up from the non-js version
         this.hide(this.readMoreContent);
         this.show(this.readLessContent);
@@ -20,21 +18,21 @@ class RecordMatters {
             e.preventDefault();
             this.show(this.readMoreContent);
             this.hide(this.readLessContent);
-        })
+        });
 
         this.readLessButton.addEventListener("click", (e) => {
             e.preventDefault();
             this.show(this.readLessContent);
             this.hide(this.readMoreContent);
-        })
+        });
     }
 
     show(node) {
-        node.classList.remove('hidden');
+        node.classList.remove("hidden");
     }
 
     hide(node) {
-        node.classList.add('hidden');
+        node.classList.add("hidden");
     }
 }
 
