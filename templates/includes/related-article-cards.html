@@ -4,7 +4,10 @@
     <div class="card-grid card-grid__trio card-grid__trio--large-gaps">
         {% for article in articles %}
             <div class="related-article-cards__card">
-                <a href={% pageurl article %}>
+                <a href={% pageurl article %}
+                {% comment %} remove image link from taborder and hide from screenreaders {% endcomment %}
+                aria-hidden="true"
+                tabindex="-1">
                     <picture>
                         {% image article.teaser_image fill-342x229-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 390px)"
