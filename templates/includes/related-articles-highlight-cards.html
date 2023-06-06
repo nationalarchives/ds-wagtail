@@ -7,7 +7,11 @@
                 <div class="highlight-cards__card highlight-cards__card--highlight highlight-cards__link">
                     <a href="{% pageurl featured_article %}"
                     aria-hidden="true"
-                    tabindex="-1">
+                    tabindex="-1"
+                    data-component-name="Featured card: {{ title }}"
+                    data-link-type="Card image"
+                    data-card-position="0"
+                    data-card-title="{{ featured_article.title }}">
                         {# Desktop/ tablet image #}
                         {% image featured_article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
@@ -22,7 +26,12 @@
                     </a>
                     <div class="highlight-cards__content">
                         <h3 class="highlight-cards__card_title">
-                            <a href="{% pageurl featured_article %}" class="highlight-cards__card-title-link">
+                            <a href="{% pageurl featured_article %}"
+                            class="highlight-cards__card-title-link"
+                            data-component-name="Featured card: {{ title }}"
+                            data-link-type="Card text"
+                            data-card-position="0"
+                            data-card-title="{{ featured_article.title }}">
                                 {{ featured_article.title }}
                             </a>
                         </h3>
@@ -37,7 +46,15 @@
                 <div class="highlight-cards__card highlight-cards__card--normal highlight-cards__link">
                     <a href="{% pageurl article %}"
                     aria-hidden="true"
-                    tabindex="-1">
+                    tabindex="-1"
+                    data-component-name="Featured card: {{ title }}"
+                    data-link-type="Card image"
+                    {% if featured_article %}
+                        data-card-position="{{ forloop.counter }}"
+                    {% else %}
+                        data-card-position="{{ forloop.counter0 }}"
+                    {% endif %}
+                    data-card-title="{{ article.title }}">
                         {% image article.teaser_image fill-268x171-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
@@ -51,7 +68,16 @@
                     </a>
                     <div class="highlight-cards__card__content">
                         <h3 class="highlight-cards__card_title">
-                            <a href="{% pageurl article %}" class="highlight-cards__card-title-link">
+                            <a href="{% pageurl article %}"
+                            class="highlight-cards__card-title-link"
+                            data-component-name="Featured card: {{ title }}"
+                            data-link-type="Card text"
+                            {% if featured_article %}
+                                data-card-position="{{ forloop.counter }}"
+                            {% else %}
+                                data-card-position="{{ forloop.counter0 }}"
+                            {% endif %}
+                            data-card-title="{{ article.title }}">
                                 {{ article.title }}
                             </a>
                         </h3>
