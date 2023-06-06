@@ -10,34 +10,58 @@
         padding: 0 0 0 3.5rem;
     }
 
-    &__icon {
-        display: none;
-        height: 35px;
-        width: 35px;
-        position: absolute;
-        top: 10px;
-        left: 10px;
-
-        @media screen and (min-width: $screen__lg) {
-            display: block;
-        }
-    }
-
-    &__container {
-        background: $color__cream;
-        // adds a visual separating border in high contrast mode
-        border-left: 2px solid transparent;
-        overflow: auto;
-        padding: 0 0 1rem;
-    }
+  &__container {
+    background: $color__cream;
+    // adds a visual separating border in high contrast mode
+    border-left: 2px solid $color__yellow;
+    overflow: auto;
+    padding: 0 0 1rem;
+  }
 }
 
 .hierarchy-short-panel {
-    padding: 1rem;
-    font-family: $font__supria-sans;
+  padding: 1rem 1rem 0;
+  font-family: $font__supria-sans;
 
-    &__heading {
-        display: inline;
+  &__heading {
+    display: inline;
+  }
+
+  &__label {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  &__toggle-link {
+    position: relative;
+    text-align: center;
+    margin: 0;
+
+    button {
+      font-family: $font-_supria-sans;
+      color: $color__link-blue;
+      display: inline-block;
+      background: url($fa_chevron_down) no-repeat left center;
+      background-size: 10px;
+      margin: 0 auto 1rem;
+      padding: 0 0 0 1.25rem;
+      border: 0;
+      text-decoration: underline;
+      font-size: 1.1rem;
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+        color: $color__link-blue-hover;
+      }
+
+      &:focus {
+        @include focus-default;
+      }
+
+      &:visited {
+        color: $color__link-blue;
+      }
     }
 
     &__label {
@@ -50,28 +74,28 @@
         text-align: center;
         margin: 0;
 
-        button {
-            font-family: $font-_supria-sans;
-            color: $color__link;
-            display: inline-block;
-            background: url($fa_chevron_down) no-repeat left center;
-            background-size: 10px;
-            margin: 0 auto 1rem;
-            padding: 0 0 0 1.25rem;
-            border: 0;
-            text-decoration: underline;
-            font-size: 1.1rem;
+  &__list {
+    display: block;
+    padding: 0;
+    margin: 1rem 0;
+
+    @media screen and (min-width: $screen__lg) {
+      margin: 1rem 0 0.25rem;
+    }
+  }
 
             &:focus {
                 @include focus-default;
             }
         }
 
-        .open {
-            background: url($fa_chevron_up) no-repeat left center;
-            background-size: 10px;
-            min-width: 5rem;
-        }
+    a:visited {
+      color: $color__link-blue;
+    }
+
+    &:first-child {
+      background: url($fa_chevron_double_right_yellow) no-repeat left center;
+      padding-left: 1.8rem;
 
         @media screen and (min-width: $screen__lg) {
             position: absolute;
@@ -129,11 +153,27 @@
 }
 
 .hierarchy-full-panel {
-    &__heading {
-        display: inline-block;
-        margin: 1rem 0 1rem 1rem;
-        font-family: $font__supria-sans;
-        font-size: 1.3rem;
+  &__heading {
+    display: inline-block;
+    margin: 1rem 0 1rem 1rem;
+    font-family: $font__supria-sans;
+    font-size: 1.3rem;
+
+    @media screen and (min-width: $screen__lg) {
+      margin: 2.75rem 0 1rem 1rem;
+    }
+  }
+
+  &__bar-container-outer {
+    min-height: 60px;
+    padding: 0.25rem 0 1rem;
+    border-top: 2px solid $color__yellow;
+    background: $color__yellow-dark;
+
+    @media screen and (min-width: $screen__lg) {
+      border-top: 0;
+      padding: 0.25rem 0;
+      background: transparent;
     }
 
     &__bar-container-outer {
@@ -250,7 +290,15 @@
         }
     }
 
-    &__bar-number {
+    a {
+      display: block;
+      line-height: 2rem;
+
+      &:visited {
+        color: $color__link-blue;
+      }
+
+      @media screen and (min-width: $screen__lg) {
         display: inline-block;
         font-size: 0.9rem;
         width: auto;
@@ -327,6 +375,15 @@
     font-family: supria-sans-condensed, sans-serif;
     text-align: center;
 
+  a:visited {
+    color: $color__link-blue;
+  }
+
+  @media screen and (min-width: $screen__md) {
+    margin: 2rem 0 0.5rem;
+  }
+
+  &__container {
     @media screen and (min-width: $screen__md) {
         margin: 2rem 0 0.5rem;
     }

@@ -30,23 +30,13 @@
         padding: 1rem;
     }
 
-    &__heading {
-        overflow: auto;
-        margin: 0 0 0.5rem 0;
-        font-family: $font__supria-sans;
-        font-weight: normal;
-    }
+  &__link {
+    color: $color__link-blue;
+    font-family: $font__supria-sans;
+    font-size: 1.2rem;
 
-    &__reference {
-        font-size: 1rem;
-        font-weight: normal;
-        margin-bottom: 0.5rem;
-        display: block;
+    &:visited {
+      color: $color__link-blue;
     }
-
-    &__link {
-        color: $color__link;
-        font-family: $font__supria-sans;
-        font-size: 1.2rem;
-    }
+  }
 }
