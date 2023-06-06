@@ -10,7 +10,12 @@ from wagtail.images import get_image_model_string
 
 from .forms import RequiredHeroImagePageForm
 
-__all__ = ["ContentWarningMixin", "NewLabelMixin", "HeroImageMixin", "RequiredHeroImageMixin"]
+__all__ = [
+    "ContentWarningMixin",
+    "NewLabelMixin",
+    "HeroImageMixin",
+    "RequiredHeroImageMixin",
+]
 
 
 class ContentWarningMixin(models.Model):

@@ -310,8 +310,6 @@ class FocusedArticlePage(
         index.SearchField("article_tag_names"),
     ]
 
-    
-
     # DataLayerMixin overrides
     gtm_content_group = "focused articles"
 
