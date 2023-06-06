@@ -6,7 +6,9 @@
   "scripts": {
     "compile:css": "sass --watch sass/etna.scss:templates/static/css/dist/etna.css",
     "start": "npx webpack --config webpack.config.js --mode=development --watch",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "prettier": "prettier \"**/*.{scss,js}\" --check",
+    "prettier:fix": "prettier \"**/*.{scss,js}\" --write"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,7 @@
     "@babel/preset-env": "^7.22.4",
     "babel-loader": "^9.1.2",
     "jest-environment-jsdom": "^29.5.0",
+    "prettier": "^2.8.8",
     "sass": "^1.62.1",
     "webpack": "^5.84.1",
     "webpack-cli": "^5.1.1"
