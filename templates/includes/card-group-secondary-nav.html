@@ -17,8 +17,7 @@
             {% if link_page.is_newly_published %}
                 data-label="New"
             {%endif%}
-            aria-hidden="true"
-            tabindex="-1"
+            aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
             {% if forloop.counter %}
                 data-card-position="{{ forloop.counter0 }}"
             {% endif %}
