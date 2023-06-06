@@ -11,10 +11,10 @@
             </h2>
         {% endif %}
         <div class="card-grid card-grid__duo" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
-            {% for page in link_pages %}
+            {% for link_page in link_pages %}
                 <div class="related-highlight-cards__card">
-                    <a href="{% pageurl page %}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}">
-                        {% image page.teaser_image fill-540x350 as teaser_image %}
+                    <a href="{% pageurl link_page %}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+                        {% image link_page.teaser_image fill-540x350 as teaser_image %}
                         <img height="350"
                             width="540"
                             src="{{ teaser_image.url }}"
@@ -23,8 +23,8 @@
                     </a>
                     <div class="related-highlight-cards__content">
                         <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-                            <a href="{% pageurl page %}" class="related-highlight-cards__card-title-link">
-                                {{ page.title }}
+                            <a href="{% pageurl link_page %}" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+                                {{ link_page.title }}
                             </a>
                         </p>
                     </div>

@@ -61,9 +61,9 @@
 
             {% for article_page in article_pages %}
 
-                {% with page=article_page.specific %}
+                {% with link_page=article_page.specific %}
                     {% comment %} instance id adds a unique id to stories if they're included twice on the page {% endcomment %}
-                    {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" instance_id=forloop.counter %}
+                    {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" instance_id=forloop.counter card_type="Featured" %}
                 {% endwith %}
 
             {% endfor %}
