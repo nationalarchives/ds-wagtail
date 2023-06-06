@@ -23,7 +23,6 @@ from ..core.models import (
     BasePage,
     BasePageWithIntro,
     ContentWarningMixin,
-    HeroImageMixin,
     RequiredHeroImageMixin,
 )
 from ..core.utils import skos_id_from_text
