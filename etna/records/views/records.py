@@ -2,6 +2,7 @@ import datetime
 
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
@@ -105,8 +106,4 @@ def record_detail_view(request, iaid):
         back_to_search_url=back_to_search_url,
     )
 
-    return render(
-        request,
-        template_name,
-        context,
-    )
+    return TemplateResponse(request=request, template=template_name, context=context)
