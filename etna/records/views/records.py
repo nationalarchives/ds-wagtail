@@ -106,4 +106,5 @@ def record_detail_view(request, iaid):
         back_to_search_url=back_to_search_url,
     )
 
+    # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
     return TemplateResponse(request=request, template=template_name, context=context)
