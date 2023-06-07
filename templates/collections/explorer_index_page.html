@@ -30,7 +30,11 @@
 
         <div class="featured-articles__cta">
             {% comment %} TODO: update BEM button styles for consistency across site {% endcomment %}
-            <a href="/stories" class="tna-button--dark">Browse all stories</a>
+            <a href="/stories"
+            class="tna-button--dark"
+            data-link-type="Button"
+            data-component-name="{{ page.articles_title }}"
+            data-link="Browse all stories">Browse all stories</a>
         </div>
     </div>
     
