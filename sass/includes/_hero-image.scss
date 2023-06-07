@@ -1,19 +1,19 @@
 .hero-image {
+  width: 100%;
+
+  &__image {
     width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 
-    &__image {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
+  &__figcaption {
+    background-color: $color__grey-800;
+    padding: 1rem;
+    border-bottom: 0.1875rem solid $color__grey-400;
+
+    p {
+      margin-bottom: 0;
     }
-
-    &__figcaption {
-        background-color: $color__grey-300;
-        padding: 1rem;
-        border-bottom: 0.1875rem solid $color__grey-400;
-
-        p {
-            margin-bottom: 0;
-        }
-    }
+  }
 }
