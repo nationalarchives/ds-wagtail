@@ -79,7 +79,7 @@ export default function imageGalleryTracking() {
         // 'translation' tab tracking - on click
         tab.addEventListener("click", e => {
             push_to_data_layer({
-                "event": "Translation",
+                "event": "Transcript",
                 "data-component-name": e.target.getAttribute("data-component-name"),
                 "data-link-type": e.target.getAttribute("data-link-type"),
                 "data-link": e.target.getAttribute("data-link")
@@ -90,7 +90,7 @@ export default function imageGalleryTracking() {
         tab.addEventListener("keyup", e => {
             if(e.key === "Enter") {
                 push_to_data_layer({
-                    "event": "Translation",
+                    "event": "Transcript",
                     "data-component-name": e.target.getAttribute("data-component-name"),
                     "data-link-type": e.target.getAttribute("data-link-type"),
                     "data-link": e.target.getAttribute("data-link")
