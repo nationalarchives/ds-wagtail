@@ -527,12 +527,12 @@ class BaseFilteredSearchView(BaseSearchView):
             return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
 
         # prepare filter labels for date fields
-        for date_item in [
+        for date_item in (
             ("opening_start_date", "Record Opening from: %d-%m-%Y"),
             ("opening_end_date", "Record Opening to:  %d-%m-%Y"),
             ("created_start_date", "Date from: %d-%m-%Y"),
             ("created_end_date", "Date to: %d-%m-%Y"),
-        ]:
+        ):
             if cleaned_date := form.cleaned_data.get(date_item[0]):
                 return_value.update(
                     {
