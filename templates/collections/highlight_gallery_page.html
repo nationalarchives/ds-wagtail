@@ -13,9 +13,7 @@
     {% endif %}
 
     {% if page.featured_record_article %}
-        <div class="container">
-            {% include 'includes/record-revealed.html' with record=page.featured_record_article %}
-        </div>
+        {% include 'includes/record-revealed.html' with record=page.featured_record_article %}
     {% endif %}
 
     {% if page.featured_article %}

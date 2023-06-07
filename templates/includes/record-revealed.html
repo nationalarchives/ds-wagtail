@@ -1,35 +1,37 @@
 {% load i18n wagtailimages_tags wagtailcore_tags records_tags %}
 
 {% if record.live or request.is_preview %}
-    <div class="featured-record-article featured-record-article--standalone"
-        data-container-name="featured-record-article">
-        {% if record.teaser_image %}
-            <a href="{{ record.record.url }}">
-                <span class="sr-only">{{ record.title }}</span>
-                <picture>
-                    {% image record.teaser_image fill-626x486-c100 as mobile_img %}
-                    <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
-                    {% image record.teaser_image fill-395x330-c100 as desktop_img %}
-                    <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
-                    <img class="featured-record-article__image"
-                        height="{{ mobile_img.height }}"
-                        width="{{ mobile_img.width }}"
-                        src="{{ mobile_img.url }}"
-                        alt=""/>
-                </picture>
-            </a>
-        {% endif %}
-        <div class="featured-record-article__container">
-            <p class="featured-record-article__meta u-margin-xxs">{{ record.title_label }}</p>
-            <a href="{{ record.record.url }}" class="featured-record-article__link">
-                <h3 class="featured-record-article__title u-margin-xs">{{ record.title }}</h3>
-            </a>
-            {% if record.date_text %}
-                <p class="featured-record-article__date u-margin-xs">{{ record.date_text }}</p>
+    <div class="container">
+        <div class="featured-record-article featured-record-article--standalone"
+            data-container-name="featured-record-article">
+            {% if record.teaser_image %}
+                <a href="{{ record.record.url }}">
+                    <span class="sr-only">{{ record.title }}</span>
+                    <picture>
+                        {% image record.teaser_image fill-626x486-c100 as mobile_img %}
+                        <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
+                        {% image record.teaser_image fill-395x330-c100 as desktop_img %}
+                        <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
+                        <img class="featured-record-article__image"
+                            height="{{ mobile_img.height }}"
+                            width="{{ mobile_img.width }}"
+                            src="{{ mobile_img.url }}"
+                            alt=""/>
+                    </picture>
+                </a>
             {% endif %}
-            {% if record.teaser_text %}
-                <p class="featured-record-article__text">{{ record.teaser_text }}</p>
-            {% endif %}
+            <div class="featured-record-article__container">
+                <p class="featured-record-article__meta u-margin-xxs">{{ record.title_label }}</p>
+                <a href="{{ record.record.url }}" class="featured-record-article__link">
+                    <h3 class="featured-record-article__title u-margin-xs">{{ record.title }}</h3>
+                </a>
+                {% if record.date_text %}
+                    <p class="featured-record-article__date u-margin-xs">{{ record.date_text }}</p>
+                {% endif %}
+                {% if record.teaser_text %}
+                    <p class="featured-record-article__text">{{ record.teaser_text }}</p>
+                {% endif %}
+            </div>
         </div>
     </div>
 {% endif %}
