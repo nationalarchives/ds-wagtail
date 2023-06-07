@@ -447,6 +447,14 @@ class RecordArticlePage(
             if item.image.translation or item.image.transcription:
                 return True
         return False
+    
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
 
 class PageGalleryImage(Orderable):

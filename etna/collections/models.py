@@ -1,7 +1,8 @@
-from typing import List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -643,6 +644,14 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         for item in self.highlights:
             strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
+    
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
 
 class Highlight(Orderable):
