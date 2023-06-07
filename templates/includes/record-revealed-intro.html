@@ -1,0 +1,21 @@
+{% load static wagtailimages_tags wagtailcore_tags %}
+<div class="explore-intro">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-sm-12">
+                <p class="explore-intro__title explore-intro__title--meta">Record revealed</p>
+                <h1 class="explore-intro__title">{{ page.title }}</h1>
+                <div class="explore-intro__paragraph{% if display_content_warning %} explore-intro__paragraph--short{% endif %}">{{ page.intro|richtext }}</div>
+                {% if display_content_warning %}    
+                    {% include "includes/content-warning.html" with custom_warning_text=custom_warning_text %} 
+                {% endif %}
+            </div>
+            <div class="col-4 explore-intro__image-container">
+                {% if page.intro_image %}
+                    {% image page.intro_image fill-390x390 as intro_image %}
+                    <img height=390 width=390 src="{{ intro_image.url }}" alt="" class="explore-intro__image" />
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
