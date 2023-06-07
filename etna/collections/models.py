@@ -231,6 +231,13 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         obj = super().with_content_json(content)
         obj.skos_id = self.skos_id
         return obj
+    
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4=self.title,
+        )
+        return data
 
     @cached_property
     def related_articles(self):
@@ -377,6 +384,13 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
     ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension7=self.title,
+        )
+        return data
 
     @cached_property
     def related_articles(self):
