@@ -231,7 +231,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         obj = super().with_content_json(content)
         obj.skos_id = self.skos_id
         return obj
-    
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         data.update(
