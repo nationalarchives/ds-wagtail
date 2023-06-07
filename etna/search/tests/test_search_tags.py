@@ -70,20 +70,35 @@ class QueryStringExcludeTest(SimpleTestCase):
     def test_record_opening_year_lessthan_four_digits(self):
         context = {
             "request": self.factory.get(
-                "?opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200"
+                "?created_start_date_0=&created_start_date_1=&created_start_date_2=19&created_end_date_0=&created_end_date_1=&created_end_date_2=200"
+                "&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200"
             )
         }
 
         for field_name, value, expected_result in (
             (
+                "created_start_date",
+                date(19, 1, 1),
+                "created_end_date_0=&created_end_date_1=&created_end_date_2=200"
+                "&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
+            ),
+            (
+                "created_end_date",
+                date(200, 1, 1),
+                "created_start_date_0=&created_start_date_1=&created_start_date_2=19"
+                "&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
+            ),
+            (
                 "opening_start_date",
                 date(19, 1, 1),
-                "opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
+                "created_start_date_0=&created_start_date_1=&created_start_date_2=19&created_end_date_0=&created_end_date_1=&created_end_date_2=200"
+                "&opening_end_date_0=&opening_end_date_1=&opening_end_date_2=200",
             ),
             (
                 "opening_end_date",
                 date(200, 1, 1),
-                "opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19",
+                "created_start_date_0=&created_start_date_1=&created_start_date_2=19&created_end_date_0=&created_end_date_1=&created_end_date_2=200"
+                "&opening_start_date_0=&opening_start_date_1=&opening_start_date_2=19",
             ),
         ):
             with self.subTest(field_name):

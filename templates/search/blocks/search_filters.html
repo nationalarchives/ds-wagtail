@@ -93,8 +93,6 @@
             {% include "search/includes/filter.html" with field=form.closure %}
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                {# show date filter on filtered results count or date validation error #}
-                {% if page.paginator.count > 0 or form.opening_start_date.errors or form.opening_end_date.errors %}
                     <div class="search-filters__accordion-section">
                         <fieldset>
                             <legend>
@@ -120,7 +118,6 @@
 
                         </fieldset>
                     </div>
-                {% endif %}
             {% endif %}
 
             {% if form.group.value == bucketkeys.NONTNA.value %}

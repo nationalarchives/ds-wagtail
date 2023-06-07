@@ -12,7 +12,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from etna.ciim.constants import Bucket, BucketList
+from etna.ciim.constants import CUSTOM_ERROR_MESSAGES, Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
@@ -505,7 +505,17 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             self.test_url,
             data={
                 "group": "tna",
+                "created_start_date_0": "",
+                "created_start_date_1": "",
+                "created_start_date_2": "2010",
+                "created_end_date_0": "",
+                "created_end_date_1": "",
+                "created_end_date_2": "2005",
+                "opening_start_date_0": "",
+                "opening_start_date_1": "",
                 "opening_start_date_2": "2000",
+                "opening_end_date_0": "",
+                "opening_end_date_1": "",
                 "opening_end_date_2": "1900",
                 "q": "london",
                 "filter_keyword": "kew",
@@ -519,9 +529,10 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             "<li>Try removing any filters that you may have applied</li>", content
         )
         self.assertSearchWithinOptionRendered(content)
-        self.assertIn(
-            "<li>There is a problem. Start date cannot be after end date.</li>", content
+        content_error_message_count = content.count(
+            f'<ul class="errorlist nonfield"><li>{CUSTOM_ERROR_MESSAGES.get("invalid_date_range")}</li></ul>'
         )
+        self.assertEqual(content_error_message_count, 2)
 
     @patch("etna.search.templatetags.search_tags.get_random_string")
     @responses.activate
