@@ -313,6 +313,8 @@ class FocusedArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "focused articles"
 
+    title_label = "IN FOCUS"
+
     template = "articles/focused_article_page.html"
 
     class Meta:
