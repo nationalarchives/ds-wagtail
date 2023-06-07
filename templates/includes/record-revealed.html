@@ -20,7 +20,7 @@
             </a>
         {% endif %}
         <div class="featured-record-article__container">
-            <p class="featured-record-article__meta u-margin-xxs">{% trans "Record Revealed" %}</p>
+            <p class="featured-record-article__meta u-margin-xxs">{{ record.title_label }}</p>
             <a href="{{ record.record.url }}" class="featured-record-article__link">
                 <h3 class="featured-record-article__title u-margin-xs">{{ record.title }}</h3>
             </a>
