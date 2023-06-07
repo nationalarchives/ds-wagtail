@@ -251,7 +251,7 @@ class BaseCollectionSearchForm(forms.Form):
                     None,
                     ValidationError(
                         _(CUSTOM_ERROR_MESSAGES.get("invalid_date_range")),
-                        code="invalid_date_range_for_opening_dates",
+                        code="invalid_date_range",
                     ),
                 )
         except TypeError:
@@ -266,7 +266,7 @@ class BaseCollectionSearchForm(forms.Form):
                     None,
                     ValidationError(
                         _(CUSTOM_ERROR_MESSAGES.get("invalid_date_range")),
-                        code="invalid_date_range_for_created_dates",
+                        code="invalid_date_range",
                     ),
                 )
         except TypeError:
