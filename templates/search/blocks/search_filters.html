@@ -56,6 +56,30 @@
 
             </div> {% endcomment %}
 
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend>
+                            <h4 class="search-filters__accordion-section-heading" id="record_created_date">Date</h4>
+                        </legend>
+
+                        <div class="search-filters__opening-date-section">
+                            {{ form.created_start_date.errors }}
+                            {{ form.created_start_date.label_tag }}
+                            {{ form.created_start_date }}
+                        </div>
+                        <div class="search-filters__opening-date-section">
+                            {{ form.created_end_date.errors }}
+                            {{ form.created_end_date.label_tag }}
+                            {{ form.created_end_date }}
+                        </div>
+
+                        <input type="submit" value="Update" class="search-filters__submit">
+
+                    </fieldset>
+                </div>
+            {% endif %}
+
             {% include "search/includes/filter.html" with field=form.collection %}
 
             {% include "search/includes/filter.html" with field=form.topic %}
