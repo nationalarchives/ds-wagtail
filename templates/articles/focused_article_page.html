@@ -1,13 +1,13 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load sections_tags %}
-{% load wagtailmetadata_tags %}
+{% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
+
 {% block meta_tag %}
-  {% meta_tags %}
+    {% meta_tags %}
 {% endblock %}
+
 {% block breadcrumb %}{% endblock %}
+
 {% block content %}
     {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
@@ -19,9 +19,9 @@
             {% if page.display_content_warning %}
                 {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
             {% endif %}
-            {% for block in page.body %}
-                {% include_block block %}
-            {% endfor %}
+
+            {% include_block page.body %}
+            
         </div>
     </div>
 
