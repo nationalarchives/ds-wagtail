@@ -36,7 +36,12 @@ def query_string_exclude(
 
     query_dict = request.GET.copy()
 
-    if key in ("opening_start_date", "opening_end_date"):
+    if key in (
+        "opening_start_date",
+        "opening_end_date",
+        "created_start_date",
+        "created_end_date",
+    ):
         # prepare query_dict date for comparison
         # substitute unkeyed input date field value with derived value
         day = str(query_dict.getlist(f"{key}_0", "")[0]) or value.day
