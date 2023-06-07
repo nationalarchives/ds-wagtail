@@ -1,9 +1,10 @@
 .crosslink-panel {
   background-color: $color__yellow;
+  color: $color__grey-800;
   padding: 2rem 2rem 3rem;
   margin: 0 0 5rem;
   // adds a visual separating border in high contrast mode
-  border-left: 2px solid transparent;
+  border: 3px solid $color__yellow;
 
   h2 {
     margin: 0 0 1rem;
@@ -14,6 +15,9 @@
     padding: 0 0 0 1.25rem;
   }
   &__link {
+    font-family: $font__supria-sans;
+    font-size: 1.2rem;
+    border: 1px solid $color__grey-800;
     @extend .search-button;
   }
 }
