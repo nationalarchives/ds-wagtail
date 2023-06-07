@@ -1,5 +1,4 @@
 import copy
-import json
 import logging
 import re
 
@@ -19,7 +18,6 @@ from ..articles.models import ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
-    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
