@@ -24,18 +24,18 @@
             </div>
         </div>
     {% endif %}
-    {% if page.featured_article %}
+    {% if page.featured_article or page.related_articles %}
         <div class="container">
-            {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
-        </div>
-    {% endif %}
-    {% if page.related_articles %}
-        <div class="container">
-            <ul class="card-group--list-style-none">
-                {% for item in page.related_articles %}
-                    {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="Stories from the collection" card_type="Featured" %}
-                {% endfor %}
-            </ul>
+            {% if page.featured_article %}
+                {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
+            {% endif %}
+            {% if page.related_articles %}
+                <ul class="card-group--list-style-none">
+                    {% for item in page.related_articles %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="Stories from the collection" card_type="Featured" %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     {% endif %}
 {% endblock content %}
