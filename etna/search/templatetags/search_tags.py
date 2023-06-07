@@ -117,3 +117,19 @@ def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
     Returns True when rhs_operand_list contains lhs_operand value, False otherwise
     """
     return (lhs_operand in rhs_operand_list) or False
+
+
+@register.filter
+def non_field_error_by_code(non_field_error_code, form) -> str:
+    """
+    Returns non field error html for the error code.
+    """
+    for item in form.non_field_errors().data:
+        if item.code == non_field_error_code:
+            error_text = item.error_list[0].message
+            html = '<ul class="errorlist nonfield"><li>{error_text}</li></ul>'.format(
+                error_text=error_text
+            )
+            return mark_safe(html)
+
+    return ""

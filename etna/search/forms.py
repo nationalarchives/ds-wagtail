@@ -1,7 +1,9 @@
 from typing import Dict, List, Optional, Union
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
+from django.utils.translation import gettext as _
 
 from etna.core.fields import END_OF_MONTH, DateInputField
 
@@ -246,8 +248,26 @@ class BaseCollectionSearchForm(forms.Form):
                 "opening_end_date"
             ):
                 self.add_error(
-                    "opening_start_date",
-                    CUSTOM_ERROR_MESSAGES.get("invalid_date_range"),
+                    None,
+                    ValidationError(
+                        _(CUSTOM_ERROR_MESSAGES.get("invalid_date_range")),
+                        code="invalid_date_range_for_opening_dates",
+                    ),
+                )
+        except TypeError:
+            # Either one or both date fields are empty. No further validation necessary.
+            pass
+
+        try:
+            if cleaned_data.get("created_start_date") > cleaned_data.get(
+                "created_end_date"
+            ):
+                self.add_error(
+                    None,
+                    ValidationError(
+                        _(CUSTOM_ERROR_MESSAGES.get("invalid_date_range")),
+                        code="invalid_date_range_for_created_dates",
+                    ),
                 )
         except TypeError:
             # Either one or both date fields are empty. No further validation necessary.

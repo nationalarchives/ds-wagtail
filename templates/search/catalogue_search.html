@@ -23,7 +23,8 @@
 {% endblock %}
 
 {% block content %}
-    {{ form.non_field_errors }}
+    {# commented for future requirements #}
+    {% comment %} {{ form.non_field_errors }} {% endcomment %}
 
     {% with search_tab=searchtabs.CATALOGUE.value %}
         {% include './blocks/search_results_hero.html' %}
