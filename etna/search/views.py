@@ -402,6 +402,8 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         opening_start_date = form.cleaned_data.get("opening_start_date")
         opening_end_date = form.cleaned_data.get("opening_end_date")
+        created_start_date = form.cleaned_data.get("created_start_date")
+        created_end_date = form.cleaned_data.get("created_end_date")
         return dict(
             stream=self.api_stream,
             q=form.cleaned_data.get("q"),
@@ -410,6 +412,8 @@ class BaseFilteredSearchView(BaseSearchView):
             filter_keyword=form.cleaned_data.get("filter_keyword"),
             opening_start_date=opening_start_date,
             opening_end_date=opening_end_date,
+            created_start_date=created_start_date,
+            created_end_date=created_end_date,
             offset=(self.page_number - 1) * page_size,
             size=page_size,
             template=Template.DETAILS,
