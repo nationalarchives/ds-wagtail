@@ -26,15 +26,11 @@
         padding: 28px 24px 36px 24px;
 
         // tablet and up
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen and (min-width: $screen__lg) {
             width: 46rem;
             position: absolute;
             left: auto;
             bottom: 3.25rem;
-        }
-
-        // desktop and up
-        @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
             background: $color__white;
             color: $color__black;
         }
