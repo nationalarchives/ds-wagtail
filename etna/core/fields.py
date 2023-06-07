@@ -80,6 +80,8 @@ class DateInputField(forms.MultiValueField):
 
         super().__init__(fields=fields, **kwargs)
 
+        self.label_suffix = ""  # Removes : as label suffix
+
     def clean(self, value):
         """
         Validate the values entered into the day, month and year fields.
