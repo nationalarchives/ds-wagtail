@@ -1,5 +1,5 @@
 {% load static wagtailimages_tags wagtailcore_tags records_tags %}
-<div class="transcription">
+<div class="transcription" data-image-gallery>
     <div class="transcription__preview hidden">
         <div class="transcription__container">
             {% with gallery_length=gallery|length %}
@@ -23,7 +23,10 @@
                              {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
                     {% endwith %}
                 </picture>
-                <button id="showButton" class="transcription__open" aria-expanded="false">
+                <button id="showButton" data-image-gallery-open class="transcription__open" aria-expanded="false" 
+                data-component-name="Image gallery"
+                data-link-type="Button"
+                data-link="View image{{ gallery_length|pluralize }}{% if has_text %} and transcript{{ gallery_length|pluralize }}{% endif %}">
                     View image{{ gallery_length|pluralize }}
                     {% if has_text %}and transcript{{ gallery_length|pluralize }}{% endif %}
                 </button>
@@ -84,8 +87,12 @@
                                         type="button"
                                         role="tab"
                                         aria-selected="true"
-                                        aria-controls="tabpanel-1-{{ forloop.counter }}">
-                                    <span>{{ item.image.get_transcription_heading_display }}</span>
+                                        aria-controls="tabpanel-1-{{ forloop.counter }}"
+                                        data-component-name="Image gallery"
+                                        data-link-type="Tab"
+                                        data-link="{{ item.image.get_transcription_heading_display }}"
+                                        data-transcription-tab>
+                                    {{ item.image.get_transcription_heading_display }}
                                 </button>
                             {% endif %}
                             {% if item.image.translation %}
@@ -95,8 +102,12 @@
                                         role="tab"
                                         aria-selected="false"
                                         aria-controls="tabpanel-2-{{ forloop.counter }}"
-                                        tabindex="-1">
-                                    <span>{{ item.image.get_translation_heading_display }}</span>
+                                        tabindex="-1"
+                                        data-component-name="Image gallery"
+                                        data-link-type="Tab"
+                                        data-link="{{ item.image.get_translation_heading_display }}"
+                                        data-translation-tab>
+                                    {{ item.image.get_translation_heading_display }}
                                 </button>
                             {% endif %}
                         </div>
@@ -124,7 +135,12 @@
         </div>
     {% endfor %}
 {% endwith %}
-<button class="transcription__close hidden" id="closeButton" type="button">
+<button class="transcription__close hidden" id="closeButton" 
+type="button"
+data-component-name="Image gallery"
+data-link-type="Button"
+data-link="Close images{% if has_text %} and transcripts{% endif %}"
+data-image-gallery-close>
     Close images
     {% if has_text %}and transcripts{% endif %}
     
