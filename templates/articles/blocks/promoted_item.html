@@ -30,10 +30,16 @@
                 By {{ value.author }}
             </p>
             {% endif %}
-
+            
             {% if value.publication_date %}
-            <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+                <p>{{ value.publication_date }}</p>
             {% endif %}
+
+            {% comment %} TODO: Re-add this when we properly launch blogs, and use an actual a date field
+                {% if value.publication_date %}
+                    <time datetime="{{ value.publication_date|date:'Y-m-d' }}">{{ value.publication_date|date:'l j F Y' }}</time>
+                {% endif %}
+            {% endcomment %}
         </div>
 
         {% if value.duration %}
