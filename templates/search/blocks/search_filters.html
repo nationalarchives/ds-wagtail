@@ -91,8 +91,6 @@
 
                             <input type="submit" value="Update" class="search-filters__submit">
 
-                            {# include hidden fields when date is errored or updated #}
-                            {{ selected_filters.items|hidden_fields_for_date_filter:form }}
                         </fieldset>
                     </div>
                 {% endif %}
