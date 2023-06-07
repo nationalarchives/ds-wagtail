@@ -12,7 +12,7 @@
         padding: 0;
 
         // mimics left & right padding of body-container to match page content
-        @media screen  and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen  and (min-width: $screen__lg) {
             padding: 0 9%;
         }
     }
@@ -20,21 +20,17 @@
     &__standout {
         position: relative;
         height: auto;
-        background: $color__black;
+        background: $color__grey-dark;
         left: 0;
         color: $color__white;
         padding: 28px 24px 36px 24px;
 
         // tablet and up
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen and (min-width: $screen__lg) {
             width: 46rem;
             position: absolute;
             left: auto;
             bottom: 3.25rem;
-        }
-
-        // desktop and up
-        @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
             background: $color__white;
             color: $color__black;
         }
