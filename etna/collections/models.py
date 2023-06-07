@@ -644,7 +644,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         for item in self.highlights:
             strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
-    
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         data.update(
