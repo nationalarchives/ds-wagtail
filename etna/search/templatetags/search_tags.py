@@ -62,7 +62,7 @@ def query_string_exclude(
 
 
 @register.filter
-def include_hidden_fields(visible_field_names, form) -> str:
+def include_hidden_fields(form_id_or_visible_field_names, form) -> str:
     """
     Returns automatically generated html hidden fields for the input form.
     The hidden fields are derived from the input form less the visible field names.
@@ -70,6 +70,20 @@ def include_hidden_fields(visible_field_names, form) -> str:
     multiple times without field ID clashes.
     """
     html = ""
+    if form_id_or_visible_field_names == "catalogue-sort-form-mobile":
+        visible_field_names = "sort_by"
+    elif form_id_or_visible_field_names == "catalogue-filters-form":
+        visible_field_names = "filter_keyword collection topic level closure opening_start_date opening_end_date created_start_date created_end_date catalogue_source held_by type country location"
+        if form.errors:
+            # visible non dynamic input fields when in error, includes hidden dynamic input fields
+            visible_field_names = "created_start_date created_end_date opening_start_date opening_end_date"
+    elif form_id_or_visible_field_names == "catalogue-search-form":
+        visible_field_names = "q"
+    elif form_id_or_visible_field_names == "catalogue-sort-form-desktop":
+        visible_field_names = "sort_by"
+    else:
+        visible_field_names = form_id_or_visible_field_names
+
     visible_field_list = visible_field_names.split()
     for field in form.fields:
         if field not in visible_field_list:

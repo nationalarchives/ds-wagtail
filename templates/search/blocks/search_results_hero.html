@@ -8,7 +8,7 @@
         {{ form.q }}
         
         {% if search_tab == searchtabs.CATALOGUE.value or search_tab == searchtabs.WEBSITE.value %}
-            {{ 'q'|include_hidden_fields:form }}
+            {{ 'catalogue-search-form'|include_hidden_fields:form }}
         {% endif %}
 
         <input type="submit" value="Search" class="search-results-hero__form-submit">
