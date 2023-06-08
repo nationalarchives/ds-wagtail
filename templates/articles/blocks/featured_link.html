@@ -37,35 +37,37 @@
         <div class="featured-link__content">
             <{{ heading_level }} class="featured-link__heading u-margin-xs">
                 {% if value.target_blank %}
-                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.cta_label }}" data-category="{{ value.category }}" target="_blank">
+                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.title }}" data-category="{{ value.category }}" target="_blank">
                         {{ value.title }}
 
                         {% include "includes/icon.html" with name="external-link" classname="featured-link__heading-link-icon" %}
                         <span class="sr-only">(Opens in a new tab)</span>
                     </a>
                 {% else %}
-                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.cta_label }}" data-category="{{ value.category }}">{{ value.title }}</a>
+                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.title }}" data-category="{{ value.category }}">{{ value.title }}</a>
                 {% endif %}
                 
             </{{ heading_level }}>
 
-            <div class="featured-link__metadata u-margin-xs">
-                {% if value.author %}
-                    <p class="featured-link__metadata-item">
-                        By {{ value.author }}
-                    </p>
-                {% endif %}
-    
-                {% if value.publication_date %}
-                    <time datetime="{{ value.publication_date|date:'Y-m-d' }}" class="featured-link__metadata-item">{{ value.publication_date|date:'l j F Y' }}</time>
-                {% endif %}
+            {% if value.author or value.publication_date or value.duration %}
+                <div class="featured-link__metadata u-margin-xs">
+                    {% if value.author %}
+                        <p class="featured-link__metadata-item">
+                            By {{ value.author }}
+                        </p>
+                    {% endif %}
+        
+                    {% if value.publication_date %}
+                        <time datetime="{{ value.publication_date|date:'Y-m-d' }}" class="featured-link__metadata-item">{{ value.publication_date|date:'l j F Y' }}</time>
+                    {% endif %}
 
-                {% if value.duration %}
-                    <p class="featured-link__text featured-link__metadata-item">
-                        {{ value.duration }}
-                    </p>
-                {% endif %}
-            </div>
+                    {% if value.duration %}
+                        <p class="featured-link__text featured-link__metadata-item">
+                            {{ value.duration }}
+                        </p>
+                    {% endif %}
+                </div>
+            {% endif %}
 
             <div class="featured-link__text">
                 {{ value.description|richtext }}
