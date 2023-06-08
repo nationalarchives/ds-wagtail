@@ -35,7 +35,7 @@ class RecordMatters {
             this.hide(this.readMoreContent);
 
             push_to_data_layer({
-                "event": "Collapse accordion",
+                "event": "Expand accordion",
                 "data-component-name": e.target.getAttribute("data-component-name"),
                 "data-link-type": e.target.getAttribute("data-link-type"),
                 "data-link": e.target.getAttribute("data-link")
