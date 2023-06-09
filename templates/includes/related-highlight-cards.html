@@ -8,7 +8,11 @@
                     <a href="{{ card.url }}"
                     {% comment %} remove image link from taborder and hide from screenreaders {% endcomment %}
                     aria-hidden="true"
-                    tabindex="-1">
+                    tabindex="-1"
+                    data-component-name="Featured card: {{ title }} highlights in pictures"
+                    data-link-type="Card image"
+                    data-card-position="{{ forloop.counter0 }}"
+                    data-card-title="{{ card.title }}">
                         <picture>
                         {% image card.teaser_image fill-374x370-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 370px)"
@@ -29,7 +33,14 @@
                     </a>
                     <div class="related-highlight-cards__content">
                         <h3 class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-                            <a href="{{ card.url }}" class="related-highlight-cards__card-title-link">{{ card.title }}</a>
+                            <a href="{{ card.url }}"
+                                class="related-highlight-cards__card-title-link"
+                                data-component-name="Featured card: {{ title }} highlights in pictures"
+                                data-link-type="Card text"
+                                data-card-position="{{ forloop.counter0 }}"
+                                data-card-title="{{ card.title }}">
+                                {{ card.title }}
+                            </a>
                         </h3>
                         <p class="related-highlight-cards__text">{{ card.highlight_image_count }} images</p>
                     </div>
