@@ -12,7 +12,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from etna.ciim.constants import CUSTOM_ERROR_MESSAGES, Bucket, BucketList
+from etna.ciim.constants import Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.models import ArticleIndexPage, ArticlePage
