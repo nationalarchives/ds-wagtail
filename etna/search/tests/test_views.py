@@ -626,9 +626,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             response, "<li>Try removing any filters that you may have applied</li>"
         )
         self.assertSearchWithinOptionRendered(content)
-        expected_created_dates_error_msg = f'<ul class="errorlist nonfield" id="invalid_date_range_for_created_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
+        expected_created_dates_error_msg = '<ul class="errorlist nonfield" id="invalid_date_range_for_created_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
         self.assertContains(response, expected_created_dates_error_msg)
-        expected_opening_dates_error_msg = f'<ul class="errorlist nonfield" id="invalid_date_range_for_opening_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
+        expected_opening_dates_error_msg = '<ul class="errorlist nonfield" id="invalid_date_range_for_opening_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
         self.assertContains(response, expected_opening_dates_error_msg)
         self.assertContains(
             response,
