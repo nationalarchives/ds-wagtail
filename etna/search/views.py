@@ -6,6 +6,7 @@ from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 from django.core.paginator import Page
+from django.core.paginator import Page as PaginatorPage
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
@@ -148,7 +149,7 @@ class KongAPIMixin:
 
     def paginate_api_result(
         self, result_list: List[Dict[str, Any]], per_page: int, total_count: int
-    ) -> Tuple[APIPaginator, Page, Iterator[int]]:
+    ) -> Tuple[APIPaginator, PaginatorPage, Iterator[int]]:
         """
         Returns pagination-related objects to facilitate rendering of
         pagination links etc. The correct page of results should have
@@ -156,7 +157,7 @@ class KongAPIMixin:
         has no impact on the results that are displayed.
         """
         paginator = APIPaginator(total_count, per_page=per_page)
-        page = Page(result_list, number=self.page_number, paginator=paginator)
+        page = PaginatorPage(result_list, number=self.page_number, paginator=paginator)
         page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
         return paginator, page, page_range
 
@@ -200,37 +201,51 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
         )
 
 
-class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
+class GETFormView(FormView):
     """
-    A base view that uses a Django form to interpret/clean querystring
-    data, then uses those values to make an API request and render
-    results to a template.
+    A customised version of Django's FormView that processes the form on GET
+    requests (using querystring data), rather than POST requests.
 
     To learn more about FormView, see:
-    * https://docs.djangoproject.com/en/3.2/topics/class-based-views/generic-editing/
-    * https://ccbv.co.uk/projects/Django/3.2/django.views.generic.edit/FormView/
+    * https://docs.djangoproject.com/en/stable/topics/class-based-views/generic-editing/
+    * https://ccbv.co.uk/projects/Django/stable/django.views.generic.edit/FormView/
     """
-
-    base_title = "Search results"
 
     http_method_names = ["get", "head"]
 
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        """
+        Create a form instance that any method can use, then bind and validate it.
+        """
+        super().setup(request, *args, **kwargs)
+        self.form = self.get_form()
+        self.form.is_valid()
+
     def get(self, request: HttpRequest, **kwargs: Any) -> HttpResponse:
         """
-        Handle GET requests: instantiate a form instance using
-        request.GET as the data, then check if it's valid.
+        Overrides FormView.get() to process the form and continue to
+        form_valid() or form_invalid() as appropriate.
         """
-        form = self.form = self.get_form()
-        is_valid = form.is_valid()
-        self.api_result = None
+        if self.form.is_valid():
+            return self.form_valid(self.form)
+        return self.form_invalid(self.form)
 
-        self.current_bucket_key = form.cleaned_data.get("group")
-        if self.current_bucket_key and getattr(self, "bucket_list", None):
-            self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
+    def process_valid_form(self, form: Form) -> None:
+        """
+        A hook that allows views to take any additional actions after
+        the form has been validated, but before gathering context data
+        and rendering the response.
+        """
+        return None
 
-        if is_valid:
-            return self.form_valid(form)
-        return self.form_invalid(form)
+    def form_valid(self, form: Form) -> HttpResponse:
+        """
+        Instead of the redirecting to success_url (FormView behaviour),
+        continue with rendering.
+        """
+        self.process_valid_form(form)
+        context = self.get_context_data(form=form)
+        return self.render_to_response(context)
 
     def get_form_kwargs(self) -> Dict[str, Any]:
         """
@@ -239,32 +254,41 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         to initialise the form object used by the view.
         """
         kwargs = super().get_form_kwargs()
+
         data = self.request.GET.copy()
-        for k, v in self.get_form_defaults().items():
+
+        # Add any initial values
+        for k, v in kwargs.get("initial", {}).items():
             data.setdefault(k, v)
+
         kwargs["data"] = data
         return kwargs
 
-    def get_form_defaults(self) -> Dict[str, Any]:
-        """
-        Form views have a `get_initial()` method to set initial values on form
-        fields, but because we're ALWAYS providing GET data to the form, those
-        initial values are always overriden. To make up for this,
-        get_form_kwargs() mixes this method's return value into the GET data
-        where no value has been specified, so that the data makes it into the
-        form.
-        """
-        return {}
 
-    def form_valid(self, form: Form) -> HttpResponse:
+class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
+    """
+    A base view that extends GETFormView to call the API when the form
+    data is valid, and render results to a template.
+    """
+
+    base_title = "Search results"
+
+    http_method_names = ["get", "head"]
+
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        super().setup(request, *args, **kwargs)
+        self.api_result = None
+        self.current_bucket_key = self.form.cleaned_data.get("group")
+        if self.current_bucket_key and getattr(self, "bucket_list", None):
+            self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
+
+    def process_valid_form(self, form: Form) -> HttpResponse:
         """
         When the form is valid, fetch results from the API, take any actions
         based on the result, then render everything to a template.
         """
-        self.api_result = api_result = self.get_api_result(form)
-        self.process_api_result(form, api_result)
-        context = self.get_context_data(form=form)
-        return self.render_to_response(context)
+        self.api_result = self.get_api_result(form)
+        self.process_api_result(form, self.api_result)
 
     def get_meta_title(self) -> str:
         """
@@ -361,7 +385,7 @@ class BaseFilteredSearchView(BaseSearchView):
         "location",
     )
 
-    def get_form_defaults(self) -> Dict[str, Any]:
+    def get_initial(self) -> Dict[str, Any]:
         return {
             "group": self.default_group,
             "sort_by": self.default_sort_by,
@@ -647,7 +671,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/website_search.html"
     search_tab = SearchTabs.WEBSITE.value
 
-    def add_article_page_for_url(self, page: Page) -> None:
+    def add_article_page_for_url(self, page: PaginatorPage) -> None:
         """
         Finds the Article page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
         Unmatched url is bypassed but logged.
