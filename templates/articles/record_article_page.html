@@ -9,7 +9,7 @@
         {% include "includes/record-matters.html" with record=page.record title="Why this record matters" page=page %}
     {% endif %}
     {% if page.featured_highlight_gallery %}
-        {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all page=page.featured_highlight_gallery %}
+        {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all|slice:":5" page=page.featured_highlight_gallery %}
     {% endif %}
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
