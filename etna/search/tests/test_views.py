@@ -490,49 +490,158 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
         self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
 
+    @patch("etna.search.templatetags.search_tags.get_random_string")
     @responses.activate
-    def test_render_invalid_date_range_message(self):
+    def test_render_invalid_date_range_all_dates(self, mock_get_random_string):
         """
-        When a user does search with an invalid date range:
+        When a user does search with an invalid date range with search criteria:
 
         They SHOULD see:
         - A "No results" message in search results
         - Particular message from "No results"
         - A "Search within these results" option
+        - Error message in area of Date
         - Error message in area of Record opening date
+        - Expected hidden fields for one form in search_results_hero html
+        - Expected hidden fields for two forms in search_filters html
         """
+
+        catalogue_search_form_suffix_ids = [f"a{i}" for i in range(0, 21)]
+
+        expected_search_results_hero_hidden_html = (
+            '<input type="hidden" name="filter_keyword" value="kew" id="id_filter_keyword_{0}">  '
+            '<input type="hidden" name="level" value="Item" id="id_level_{1}">  '
+            '<input type="hidden" name="collection" value="ADM" id="id_collection_{2}">  '
+            '<input type="hidden" name="collection" value="BT" id="id_collection_{3}">  '
+            '<input type="hidden" name="closure" value="Open Document, Open Description" id="id_closure_{4}">  '
+            '<input type="hidden" name="opening_start_date_0" value="1" id="id_opening_start_date_0_{5}">  '
+            '<input type="hidden" name="opening_start_date_1" value="1" id="id_opening_start_date_1_{6}">  '
+            '<input type="hidden" name="opening_start_date_2" value="2010" id="id_opening_start_date_2_{7}">  '
+            '<input type="hidden" name="opening_end_date_0" value="31" id="id_opening_end_date_0_{8}">  '
+            '<input type="hidden" name="opening_end_date_1" value="12" id="id_opening_end_date_1_{9}">  '
+            '<input type="hidden" name="opening_end_date_2" value="2005" id="id_opening_end_date_2_{10}">  '
+            '<input type="hidden" name="created_start_date_0" value="1" id="id_created_start_date_0_{11}">  '
+            '<input type="hidden" name="created_start_date_1" value="1" id="id_created_start_date_1_{12}">  '
+            '<input type="hidden" name="created_start_date_2" value="2020" id="id_created_start_date_2_{13}">  '
+            '<input type="hidden" name="created_end_date_0" value="31" id="id_created_end_date_0_{14}">  '
+            '<input type="hidden" name="created_end_date_1" value="12" id="id_created_end_date_1_{15}">  '
+            '<input type="hidden" name="created_end_date_2" value="1900" id="id_created_end_date_2_{16}">  '
+            '<input type="hidden" name="per_page" value="20" id="id_per_page_{17}">  '
+            '<input type="hidden" name="sort_order" value="asc" id="id_sort_order_{18}">  '
+            '<input type="hidden" name="display" value="list" id="id_display_{19}">  '
+            '<input type="hidden" name="group" value="tna" id="id_group_{20}">'.format(
+                *catalogue_search_form_suffix_ids
+            )
+        )
+
+        search_sort_view_mobile_suffix_ids = [f"b{i}" for i in range(22, 44)]
+
+        expected_search_filters_1_hidden_html = (
+            '<input type="hidden" name="q" value="london" id="id_q_{0}">  '
+            '<input type="hidden" name="filter_keyword" value="kew" id="id_filter_keyword_{1}">  '
+            '<input type="hidden" name="level" value="Item" id="id_level_{2}">  '
+            '<input type="hidden" name="collection" value="ADM" id="id_collection_{3}">  '
+            '<input type="hidden" name="collection" value="BT" id="id_collection_{4}">  '
+            '<input type="hidden" name="closure" value="Open Document, Open Description" id="id_closure_{5}">  '
+            '<input type="hidden" name="opening_start_date_0" value="1" id="id_opening_start_date_0_{6}">  '
+            '<input type="hidden" name="opening_start_date_1" value="1" id="id_opening_start_date_1_{7}">  '
+            '<input type="hidden" name="opening_start_date_2" value="2010" id="id_opening_start_date_2_{8}">  '
+            '<input type="hidden" name="opening_end_date_0" value="31" id="id_opening_end_date_0_{9}">  '
+            '<input type="hidden" name="opening_end_date_1" value="12" id="id_opening_end_date_1_{10}">  '
+            '<input type="hidden" name="opening_end_date_2" value="2005" id="id_opening_end_date_2_{11}">  '
+            '<input type="hidden" name="created_start_date_0" value="1" id="id_created_start_date_0_{12}">  '
+            '<input type="hidden" name="created_start_date_1" value="1" id="id_created_start_date_1_{13}">  '
+            '<input type="hidden" name="created_start_date_2" value="2020" id="id_created_start_date_2_{14}">  '
+            '<input type="hidden" name="created_end_date_0" value="31" id="id_created_end_date_0_{15}">  '
+            '<input type="hidden" name="created_end_date_1" value="12" id="id_created_end_date_1_{16}">  '
+            '<input type="hidden" name="created_end_date_2" value="1900" id="id_created_end_date_2_{17}">  '
+            '<input type="hidden" name="per_page" value="20" id="id_per_page_{18}">  '
+            '<input type="hidden" name="sort_order" value="asc" id="id_sort_order_{19}">  '
+            '<input type="hidden" name="display" value="list" id="id_display_{20}">  '
+            '<input type="hidden" name="group" value="tna" id="id_group_{21}">'.format(
+                *search_sort_view_mobile_suffix_ids
+            )
+        )
+
+        catalogue_filters_form_suffix_ids = [f"c{i}" for i in range(45, 57)]
+        expected_search_filters_2_hidden_html = (
+            '<input type="hidden" name="q" value="london" id="id_q_{0}">  '
+            '<input type="hidden" name="filter_keyword" value="kew" id="id_filter_keyword_{1}">  '
+            '<input type="hidden" name="level" value="Item" id="id_level_{2}">  '
+            '<input type="hidden" name="collection" value="ADM" id="id_collection_{3}">  '
+            '<input type="hidden" name="collection" value="BT" id="id_collection_{4}">  '
+            '<input type="hidden" name="closure" value="Open Document, Open Description" id="id_closure_{5}">  '
+            '<input type="hidden" name="per_page" value="20" id="id_per_page_{6}">  '
+            '<input type="hidden" name="sort_order" value="asc" id="id_sort_order_{7}">  '
+            '<input type="hidden" name="display" value="list" id="id_display_{8}">  '
+            '<input type="hidden" name="group" value="tna" id="id_group_{9}">'.format(
+                *catalogue_filters_form_suffix_ids
+            )
+        )
+
+        # Note: side_effect assignment is in the order of the suffix ids that appears rendered in the html
+        mock_get_random_string.side_effect = (
+            catalogue_search_form_suffix_ids
+            + search_sort_view_mobile_suffix_ids
+            + catalogue_filters_form_suffix_ids
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(
+                aggregations={"group": {"buckets": [{"key": "tna", "doc_count": 101}]}}
+            ),
+            status=200,
+        )
+
         response = self.client.get(
             self.test_url,
             data={
                 "group": "tna",
-                "created_start_date_0": "",
-                "created_start_date_1": "",
-                "created_start_date_2": "2010",
-                "created_end_date_0": "",
-                "created_end_date_1": "",
-                "created_end_date_2": "2005",
-                "opening_start_date_0": "",
-                "opening_start_date_1": "",
-                "opening_start_date_2": "2000",
-                "opening_end_date_0": "",
-                "opening_end_date_1": "",
-                "opening_end_date_2": "1900",
                 "q": "london",
                 "filter_keyword": "kew",
+                "collection": ["ADM", "BT"],
+                "level": ["Item"],
+                "closure": ["Open Document, Open Description"],
+                "created_start_date_0": "",
+                "created_start_date_1": "",
+                "created_start_date_2": "2020",
+                "created_end_date_0": "",
+                "created_end_date_1": "",
+                "created_end_date_2": "1900",
+                "opening_start_date_0": "",
+                "opening_start_date_1": "",
+                "opening_start_date_2": "2010",
+                "opening_end_date_0": "",
+                "opening_end_date_1": "",
+                "opening_end_date_2": "2005",
             },
         )
         content = str(response.content)
 
         # SHOULD see
         self.assertNoResultsMessagingRendered(content)
-        self.assertIn(
-            "<li>Try removing any filters that you may have applied</li>", content
+        self.assertContains(
+            response, "<li>Try removing any filters that you may have applied</li>"
         )
         self.assertSearchWithinOptionRendered(content)
-        content_error_message_count = content.count(
-            f'<ul class="errorlist nonfield"><li>{CUSTOM_ERROR_MESSAGES.get("invalid_date_range")}</li></ul>'
+        expected_created_dates_error_msg = f'<ul class="errorlist nonfield" id="invalid_date_range_for_created_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
+        self.assertContains(response, expected_created_dates_error_msg)
+        expected_opening_dates_error_msg = f'<ul class="errorlist nonfield" id="invalid_date_range_for_opening_dates"><li>There is a problem. Start date cannot be after end date.</li></ul>'
+        self.assertContains(response, expected_opening_dates_error_msg)
+        self.assertContains(
+            response,
+            expected_search_results_hero_hidden_html,
         )
-        self.assertEqual(content_error_message_count, 2)
+        self.assertContains(
+            response,
+            expected_search_filters_1_hidden_html,
+        )
+        self.assertContains(
+            response,
+            expected_search_filters_2_hidden_html,
+        )
 
     @patch("etna.search.templatetags.search_tags.get_random_string")
     @responses.activate

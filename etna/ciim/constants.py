@@ -701,8 +701,10 @@ TYPE_CHOICES = tuple(
     (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
 )
 
+# non field errors messages for invalid date ranges
 CUSTOM_ERROR_MESSAGES = {
-    "invalid_date_range": "There is a problem. Start date cannot be after end date."
+    "invalid_date_range_for_created_dates": "There is a problem. Start date cannot be after end date.",
+    "invalid_date_range_for_opening_dates": "There is a problem. Start date cannot be after end date.",
 }
 
 TNA_URLS = {

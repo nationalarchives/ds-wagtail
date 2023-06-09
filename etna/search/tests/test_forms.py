@@ -139,5 +139,12 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 self.assertFormError(
                     form,
                     None,
-                    [CUSTOM_ERROR_MESSAGES.get("invalid_date_range")] * 2,
+                    [
+                        CUSTOM_ERROR_MESSAGES.get(
+                            "invalid_date_range_for_created_dates"
+                        ),
+                        CUSTOM_ERROR_MESSAGES.get(
+                            "invalid_date_range_for_opening_dates"
+                        ),
+                    ],
                 )

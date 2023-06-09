@@ -136,13 +136,13 @@ def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
 @register.filter
 def non_field_error_by_code(non_field_error_code, form) -> str:
     """
-    Returns non field error html for the error code.
+    Returns customised non field error html for the error code.
     """
     for item in form.non_field_errors().data:
         if item.code == non_field_error_code:
             error_text = item.error_list[0].message
-            html = '<ul class="errorlist nonfield"><li>{error_text}</li></ul>'.format(
-                error_text=error_text
+            html = '<ul class="errorlist nonfield" id="{non_field_error_code}"><li>{error_text}</li></ul>'.format(
+                non_field_error_code=non_field_error_code, error_text=error_text
             )
             return mark_safe(html)
 
