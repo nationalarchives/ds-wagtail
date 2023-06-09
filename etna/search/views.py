@@ -52,20 +52,25 @@ class BucketsMixin:
     current_bucket_key: str = None
     current_bucket: Bucket = None
 
-    def get_buckets_for_display(
-        self,
-        bucket_counts: List[Dict[str, Union[str, int]]],
-        current_bucket_key: str = None,
-    ) -> Optional[BucketList]:
+    def get_bucket_counts(self) -> List[Dict[str, Union[str, int]]]:
+        """
+        Returns a list of dicts that are used by `get_buckets_for_display()`
+        to set the `result_count` attribute for each bucket.
+        """
+        return self.api_result.bucket_counts
+
+    def get_current_bucket_key(self) -> Optional[str]:
+        """
+        Returns the key of the 'currently active' bucket, where relevant.
+        Used by `get_buckets_for_display()` to set the 'is_current' attribute
+        value to `True` on the matching bucket.
+        """
+        return self.current_bucket_key
+
+    def get_buckets_for_display(self) -> Optional[BucketList]:
         """
         Returns a modified `BucketList` value that can be used in the template,
         representing the 'buckets' that available for the user to explore.
-
-        The provided `bucket_counts` data is used to set the `result_count`
-        attribute for each bucket.
-
-        If `current_bucket_key` is provided, any bucket with a `key` value matching
-        the provided value will have it's `is_current` value set to `True`.
         """
         if not self.bucket_list:
             return None
@@ -74,24 +79,22 @@ class BucketsMixin:
 
         # set `result_count` for each bucket
         doc_counts_by_key = {
-            group["key"]: group["doc_count"] for group in bucket_counts
+            group["key"]: group["doc_count"] for group in self.get_bucket_counts()
         }
         for bucket in bucket_list:
             bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
 
-        if current_bucket_key:
+        if current := self.get_current_bucket_key():
             # set 'is_current=True' for the relevant bucket
             for bucket in bucket_list:
-                if bucket.key == current_bucket_key:
+                if bucket.key == current:
                     bucket.is_current = True
                     break
 
         return bucket_list
 
     def get_context_data(self, **kwargs):
-        buckets = self.get_buckets_for_display(
-            self.api_result.bucket_counts, self.current_bucket_key
-        )
+        buckets = self.get_buckets_for_display()
 
         # Set this to True if any buckets have results
         buckets_contain_results = False
