@@ -619,8 +619,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             },
         )
         content = str(response.content)
-        # print(f"......expected_search_results_hero_hidden_html={expected_search_results_hero_hidden_html}")
-        # print(f"......content={content}")
 
         # SHOULD see
         self.assertNoResultsMessagingRendered(content)
