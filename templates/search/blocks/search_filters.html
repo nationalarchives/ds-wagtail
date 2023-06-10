@@ -8,7 +8,7 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {{ 'catalogue-sort-form-mobile'|include_hidden_fields:form }}
+        {% render_form_fields_as_hidden form "sort_by" %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
@@ -135,7 +135,7 @@
             {% endif %}
         </div>
 
-        {{ 'catalogue-filters-form'|include_hidden_fields:form }}
+        {% render_form_fields_as_hidden form "filter_keyword collection topic level closure opening_start_date opening_end_date created_start_date created_end_date catalogue_source held_by type country location" "created_start_date created_end_date opening_start_date opening_end_date" %}
       
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}

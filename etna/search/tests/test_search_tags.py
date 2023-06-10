@@ -6,9 +6,9 @@ from django.test import RequestFactory, SimpleTestCase
 from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
     extended_in_operator,
-    include_hidden_fields,
     query_string_exclude,
     query_string_include,
+    render_form_fields_as_hidden,
 )
 
 
@@ -142,7 +142,7 @@ class IncludeHiddenFieldsTest(SimpleTestCase):
     ):
         """tests generated hidden field html for input values containing special chars ex double-quote for search term and search within results params"""
 
-        for label, form_data, visible_field_names, expected_output in (
+        for label, form_data, exclude, expected_output in (
             (
                 "test search term",
                 {
@@ -165,5 +165,5 @@ class IncludeHiddenFieldsTest(SimpleTestCase):
             with self.subTest(label):
                 form = CatalogueSearchForm(form_data)
                 self.assertTrue(form.is_valid(), label)
-                html = include_hidden_fields(visible_field_names, form)
+                html = render_form_fields_as_hidden(form, exclude)
                 self.assertIn(expected_output, html)

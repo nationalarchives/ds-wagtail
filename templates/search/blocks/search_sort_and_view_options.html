@@ -11,7 +11,7 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {{ 'catalogue-sort-form-desktop'|include_hidden_fields:form }}
+        {% render_form_fields_as_hidden form "sort_by" %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>

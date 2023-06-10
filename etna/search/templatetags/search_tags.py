@@ -61,32 +61,29 @@ def query_string_exclude(
     return query_dict.urlencode()
 
 
-@register.filter
-def include_hidden_fields(form_id_or_visible_field_names, form) -> str:
+@register.simple_tag
+def render_form_fields_as_hidden(form, exclude="", exclude_on_error="") -> str:
     """
     Returns automatically generated html hidden fields for the input form.
-    The hidden fields are derived from the input form less the visible field names.
+    The hidden fields are derived from the input form less the field names from exclude/exclude_on_error.
     A random suffix is applied to html id allowing the same form to be rendered
     multiple times without field ID clashes.
+    form: fields of the form to be rendered as hidden
+    exclude: string of fields to be excluded if found in the form. Ex field1 field2
+    exclude_on_error: String of fields which overides exclude on form error. Ex field1 field2.
     """
     html = ""
-    if form_id_or_visible_field_names == "catalogue-sort-form-mobile":
-        visible_field_names = "sort_by"
-    elif form_id_or_visible_field_names == "catalogue-filters-form":
-        visible_field_names = "filter_keyword collection topic level closure opening_start_date opening_end_date created_start_date created_end_date catalogue_source held_by type country location"
-        if form.errors:
-            # visible non dynamic input fields when in error, includes hidden dynamic input fields
-            visible_field_names = "created_start_date created_end_date opening_start_date opening_end_date"
-    elif form_id_or_visible_field_names == "catalogue-search-form":
-        visible_field_names = "q"
-    elif form_id_or_visible_field_names == "catalogue-sort-form-desktop":
-        visible_field_names = "sort_by"
-    else:
-        visible_field_names = form_id_or_visible_field_names
 
-    visible_field_list = visible_field_names.split()
+    if not exclude:
+        return html
+
+    if form.errors and exclude_on_error:
+        exclude = exclude_on_error
+
+    exclude_list = exclude.split()
+
     for field in form.fields:
-        if field not in visible_field_list:
+        if field not in exclude_list:
             try:
                 if value := form.cleaned_data.get(field):
                     if isinstance(value, (str, int)):
@@ -102,7 +99,7 @@ def include_hidden_fields(form_id_or_visible_field_names, form) -> str:
                         html += f""" <input type="hidden" name="{field}_2" value="{value.year}" id="id_{field}_2_{get_random_string(3)}"> """
                     else:
                         logger.debug(
-                            f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
+                            f"Type {type(value)} of the field-{field}'s value not supported in render_form_fields_as_hidden ."
                         )
             except KeyError:
                 # for invalid input - example invalid date, value is not cleaned

@@ -28,7 +28,7 @@
                 </fieldset>
             </div>
 
-            {{ field_name|include_hidden_fields:form }}
+            {% render_form_fields_as_hidden form field_name %}
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
