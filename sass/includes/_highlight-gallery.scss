@@ -92,12 +92,6 @@
     }
 
     &__wrapper {
-        padding: 0 4%;
-
-        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-            padding: 3% 11% 0 11%;
-        }
-
         &:last-of-type {
             #{$root}__item {
                 border-bottom: none;
