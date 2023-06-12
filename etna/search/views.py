@@ -505,6 +505,7 @@ class BaseFilteredSearchView(BaseSearchView):
             for field_name in self.dynamic_choice_fields
             if form.cleaned_data.get(field_name)
         }
+
         form_error_messages = []
 
         # Replace field 'values' with (value, label) tuples,
