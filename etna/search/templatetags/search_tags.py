@@ -139,7 +139,7 @@ def non_field_error_by_code(non_field_error_code, form) -> str:
         if item.code == non_field_error_code:
             error_text = item.error_list[0].message
             html = '<ul class="errorlist nonfield"><li>{error_text}</li></ul>'.format(
-                non_field_error_code=non_field_error_code, error_text=error_text
+                error_text=error_text
             )
             return mark_safe(html)
 
