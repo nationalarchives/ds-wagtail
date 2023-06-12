@@ -588,9 +588,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     }
                 )
 
-        if opening_end_date := form.cleaned_data.get(
-            "opening_end_date"
-        ):
+        if opening_end_date := form.cleaned_data.get("opening_end_date"):
             # if both dates have valid values but invalid when together
             if (
                 CUSTOM_ERROR_MESSAGES.get("invalid_date_range_for_opening_dates")
