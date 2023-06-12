@@ -175,7 +175,7 @@ class BaseCollectionSearchForm(forms.Form):
         validate_input=False,
     )
     country = DynamicMultipleChoiceField(
-        label="Country",
+        label="Location",  # TODO: This label is a temporary update until we have the api adjusted.
         required=False,
     )
     location = DynamicMultipleChoiceField(
