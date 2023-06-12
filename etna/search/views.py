@@ -552,9 +552,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     }
                 )
 
-        if created_end_date := form.cleaned_data.get(
-            "invalid_date_range_for_created_dates"
-        ):
+        if created_end_date := form.cleaned_data.get("created_end_date"):
             # if both dates have valid values but invalid when together
             if (
                 CUSTOM_ERROR_MESSAGES.get("invalid_date_range_for_created_dates")
@@ -591,11 +589,11 @@ class BaseFilteredSearchView(BaseSearchView):
                 )
 
         if opening_end_date := form.cleaned_data.get(
-            "invalid_date_range_for_opening_dates"
+            "opening_end_date"
         ):
             # if both dates have valid values but invalid when together
             if (
-                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
+                CUSTOM_ERROR_MESSAGES.get("invalid_date_range_for_opening_dates")
                 not in form_error_messages
             ):
                 return_value.update(
