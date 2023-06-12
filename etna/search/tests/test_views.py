@@ -245,7 +245,6 @@ class EndToEndSearchTestCase(TestCase):
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
-
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
     sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
