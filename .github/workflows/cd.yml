@@ -99,6 +99,15 @@ jobs:
       - name: Run prettier
         run: npm run prettier
 
+  compile-sass:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm modules
+        run: npm install
+      - name: Compile SCSS
+        run: npm run compile:css
+
   deploy:
     runs-on: ubuntu-latest
     needs: [notify-slack, test-python, test-javascript]
