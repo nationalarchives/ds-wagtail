@@ -1,5 +1,5 @@
 {% load static wagtailimages_tags wagtailcore_tags records_tags %}
-<div class="transcription" data-image-gallery>
+<div class="transcription u-margin-xs" data-image-gallery>
     <div class="transcription__preview hidden">
         <div class="transcription__container">
             {% with gallery_length=gallery|length %}
@@ -27,7 +27,7 @@
                 data-component-name="Image gallery"
                 data-link-type="Button"
                 data-link="View image{{ gallery_length|pluralize }}{% if has_text %} and transcript{{ gallery_length|pluralize }}{% endif %}">
-                    View image{{ gallery_length|pluralize }}
+                    View {{ gallery_length }} image{{ gallery_length|pluralize }}
                     {% if has_text %}and transcript{{ gallery_length|pluralize }}{% endif %}
                 </button>
             </div>
