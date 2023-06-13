@@ -23,30 +23,29 @@
   }
 
   &__title {
+    @include font-size(xxxl);
+    line-height: 1.2;
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 2.5rem;
     font-family: $font__supria-sans;
-
-    @media (max-width: $screen__md) {
-      font-size: 2.5rem;
-    }
+    font-weight: $font-weight-bold;
 
     &--meta {
-      font-size: 1.4rem;
+        @include font-size(xxl);
+        font-weight: $font-weight-normal;
     }
   }
 
   &__paragraph {
-    margin-bottom: 1rem;
-    font-size: 1.313rem;
+    @include font-size(m);
+    line-height: 1.5;
 
-    @media (max-width: $screen__md) {
-      padding-bottom: 1.5em;
+    @media (min-width: $screen__md) {
+        @include font-size(xl);
     }
 
     &--short {
-      padding-bottom: 0;
+        margin-bottom: 0;
     }
   }
 }

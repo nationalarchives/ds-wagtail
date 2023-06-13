@@ -5,7 +5,7 @@
         <div class="featured-record-article featured-record-article--standalone"
             data-container-name="featured-record-article">
             {% if record.teaser_image %}
-                <a href="{{ record.record.url }}">
+                <a href="{{ record.record.url }}" data-component-name="Featured record article" data-link-type="Image" data-link="{{ record.title }}">
                     <span class="sr-only">{{ record.title }}</span>
                     <picture>
                         {% image record.teaser_image fill-626x486-c100 as mobile_img %}
@@ -22,7 +22,7 @@
             {% endif %}
             <div class="featured-record-article__container">
                 <p class="featured-record-article__meta u-margin-xxs">{{ record.title_label }}</p>
-                <a href="{{ record.record.url }}" class="featured-record-article__link">
+                <a href="{{ record.record.url }}" class="featured-record-article__link" data-component-name="Featured record article" data-link-type="Banner title" data-link="{{ record.title }}">
                     <h3 class="featured-record-article__title u-margin-xs">{{ record.title }}</h3>
                 </a>
                 {% if record.date_text %}
