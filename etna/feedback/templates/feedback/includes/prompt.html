@@ -13,7 +13,7 @@
 
                     {{ form.as_div }}
 
-                    <button class="tna-button--dark feedback__form__submit" type="submit" id="feedbackSubmit" disabled>
+                    <button class="tna-button--dark feedback__form__submit" type="submit" id="feedbackSubmit">
                         {% trans "Submit feedback" %}
                     </button>
                 </form>
@@ -70,6 +70,8 @@ form.onsubmit = function () {
 };
 
 // Enhancement for radio button / submit functionality
+
+document.querySelector('#feedbackSubmit').disabled = true;
 
 let btns = document.querySelectorAll('[id^="id_response"]');
 
