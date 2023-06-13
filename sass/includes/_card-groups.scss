@@ -28,12 +28,27 @@
       display: none;
     }
 
+    &__title-label {
+      color: $color__grey-700;
+      font-family: $font__roboto-mono;
+      // TODO: update global font sizes to match new style guide
+      margin-bottom: 0rem;
+      margin-top: 1.05rem;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+  
+      @media only screen and (min-width: $screen__md) {
+        font-size: 0.9rem;
+      }
+    }
+
     &__title-link {
       font-family: $font__body;
       font-weight: $font-weight-bold;
       font-size: 1.125rem;
       display: inline-block;
       color: $color__black;
+      margin-top: 0.3rem;
       margin-bottom: 0.5rem;
       text-decoration-thickness: 1px;
 

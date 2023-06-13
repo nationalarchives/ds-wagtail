@@ -5,6 +5,7 @@ from typing import Union
 
 from django import template
 from django.utils.crypto import get_random_string
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from ...ciim.constants import SearchTabs
@@ -26,7 +27,9 @@ def query_string_include(context, key: str, value: Union[str, int]) -> str:
 
 
 @register.simple_tag(takes_context=True)
-def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
+def query_string_exclude(
+    context, key: str, value: Union[str, int, datetime.date]
+) -> str:
     """Remove matching entry from current query string."""
 
     request = context["request"]
@@ -39,7 +42,9 @@ def query_string_exclude(context, key: str, value: Union[str, int]) -> str:
         day = str(query_dict.getlist(f"{key}_0", "")[0]) or value.day
         month = str(query_dict.getlist(f"{key}_1", "")[0]) or value.month
         year = str(query_dict.getlist(f"{key}_2", "")[0])
-        qd_dt = datetime.datetime.strptime(f"{day} {month} {year}", "%d %m %Y").date()
+        qd_dt = datetime.datetime.strptime(
+            f"{day} {month} {year.zfill(4)}", "%d %m %Y"
+        ).date()
         if qd_dt == value:
             query_dict.pop(f"{key}_0")
             query_dict.pop(f"{key}_1")
@@ -66,6 +71,8 @@ def include_hidden_fields(visible_field_names, form) -> str:
             try:
                 if value := form.cleaned_data.get(field):
                     if isinstance(value, (str, int)):
+                        if field in ("q", "filter_keyword"):
+                            value = escape(value)
                         html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
                     elif isinstance(value, list):
                         for value_in_list in value:

@@ -38,14 +38,16 @@ $color__grey-700: #343338; // Previously $color__grey-6
 $color__grey-800: #26262a; // Previously $color__grey-2
 $color__grey-900: #0f1517;
 
-$color__black-80pc: rgba($color--black, 0.8);
+$color__black-80pc: rgba($color__black, 0.8);
 
 $color__alert: $color__cream;
 $color__success: $color__pastel-green;
 $color__error: $color__red;
 
 $color__link: $color__black;
+$color__link-dark-bg: $color__white;
 $color__link-hover: $color__navy;
+$color__link-hover-dark-bg: $color__blue;
 $color__link-visited: $color__purple;
 $color__card-hover: $color__grey-700;
 
@@ -56,7 +58,7 @@ $color__focus-outline-dark-bg: $color__blue;
 $default__border: 0.063rem solid $color__grey-400;
 
 // Transitions
-$transition_duration: 0.5s;
+$transition_duration: 0.25s;
 
 // Paths
 $fa_path: '../../images/fontawesome-svgs/';

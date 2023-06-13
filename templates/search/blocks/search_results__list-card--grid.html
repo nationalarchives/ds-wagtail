@@ -10,17 +10,19 @@
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 
+
 <li class="search-results__list-card--grid">
-    {% if record.is_digitised %}
-    <div class="search-results__list-card-delivery-options--grid">
 
-        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
 
-            <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-        </a>
-    </div>
-    {% endif %}
+
+
+
     <div class="search-results__list-card-content">
+        <!---placeholder for ITEM, SERIES etc -->
+        <!--
+        <p class="search-results__list-card-item">ITEM</p>
+        -->
+
         <h4 class="search-results__list-card-heading">
             {% if apply_teaser_image %}
                 <div class="search-results__list-card-full-width-image">
@@ -43,19 +45,19 @@
         </p>
         <ul class="search-results__list-card-metadata">
             {% if record.held_by %}
-                <li class="search-results__list-card-metadata-item">
+                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
                     Held by: {{ record.held_by }}
                 </li>
             {% endif %}
 
             {% if record.date_created %}
-                <li class="search-results__list-card-metadata-item">
+                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
                     Date: {{ record.date_created }}
                 </li>
             {% endif %}
 
             {% if record.reference_number %}
-            <li class="search-results__list-card-metadata-item">
+            <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
 
                 {% if form.group.value == 'archive' %}
                 Archon code:
@@ -68,7 +70,7 @@
             {% endif %}
 
             {% if record.record_opening %}
-                <li class="search-results__list-card-metadata-item">
+                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
                     Record Opening Date: {{ record.record_opening }}
                 </li>
             {% endif %}
@@ -78,6 +80,13 @@
                     Type: {{ record.type }}
                 </li>
             {% endif %}
+
+            <!--placeholder for Subjects -->
+            <!--
+            <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
+                Subjects: <a href="">Armed Forces (General Administration)</a> <a href="">UFOs</a>
+            </li>
+            -->
 
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
             <li class="search-results__list-card-metadata-item" style="display:none;">
@@ -89,4 +98,20 @@
             {% comment %}End debug attributes.{% endcomment %}
         </ul>
     </div>
+
+    {% if record.is_digitised %}
+    <div class="search-results__list-card-delivery-options--grid">
+
+        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+
+            <img src="{% static 'images/grid-placeholder.png' %}"  class="search-results__list-card-delivery-options-img search-image-grid" alt="" />
+        </a>
+        <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+            <p class="search-results__list-card-delivery-options-desc search-results-grid">
+                <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                Available online
+            </p>
+        </a>
+    </div>
+    {% endif %}
 </li>

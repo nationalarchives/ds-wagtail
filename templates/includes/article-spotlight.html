@@ -1,12 +1,12 @@
 {% load wagtailimages_tags wagtailcore_tags i18n %}
 
-<div class="body-container">
+<div class="container">
     {% if title %}
         <h2 class="extra-padding">{% translate title %}</h2>
     {% endif %}
-    <div class="featured-article">
+    <div class="featured-article u-margin-m">
         {% if page.teaser_image %}
-            <a href="{% pageurl page %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Story: {{ page.title }}" data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
+            <a href="{% pageurl page %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.title }}" data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
                 <picture>
                     {% image page.teaser_image fill-500x400-c100 as teaser %}
                     <source media="(max-width: 768px)" srcset="{{ teaser.url }}"/>
@@ -22,7 +22,7 @@
 
         <div class="featured-article__description">
             <h2 class="featured-article__heading">
-                <small>{% trans "Spotlight on" %}</small>
+                <small>{{ page.title_label }}</small>
                 {{ page.title }}
                 {% if page.is_newly_published %}
                     <span aria-describedby="article-desc">NEW</span>
@@ -32,7 +32,7 @@
             <p id="article-desc" class="aria-desc">This is a link to a new story about {{ page.title }}</p>
 
             <p>{{ page.teaser_text }}</p>
-            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Story: {{ page.title }}" data-link-type="Button" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
+            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
         </div>
     </div>
 </div>
