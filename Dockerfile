@@ -1,3 +1,17 @@
+# Generate static assets (CSS and JavaScript)
+FROM node:18.16 AS staticassets
+WORKDIR /home
+COPY package.json package-lock.json webpack.config.js ./
+RUN npm install
+COPY scripts ./scripts
+COPY sass ./sass
+RUN npx sass sass/etna.scss:css/etna.css
+RUN npx webpack --config webpack.config.js
+
+
+
+
+
 FROM python:3.11
 LABEL maintainer="dan@numiko.com"
 
@@ -38,6 +52,10 @@ COPY pyproject.toml poetry.lock ./
 
 # Copy application code
 COPY . .
+
+# Copy static assets
+COPY --from=staticassets /home/css/etna.css /home/css/etna.css.map templates/static/css/dist/
+COPY --from=staticassets /home/templates/static/scripts templates/static
 
 # Load shortcuts
 RUN cp ./bash/bashrc.sh /root/.bashrc

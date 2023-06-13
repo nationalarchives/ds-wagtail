@@ -61,8 +61,6 @@ $ python manage.py runserver 0.0.0.0:8000
 
 <http://127.0.0.1:8000>
 
-**Note: compiled CSS is not included and therefore needs to be built initially, and after each git pull. See the "Working with SASS/CSS section**
-
 ### 8. Create a Django user for yourself
 
 ```console
