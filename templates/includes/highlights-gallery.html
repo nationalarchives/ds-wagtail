@@ -17,7 +17,7 @@
                     {% endif %}
                     <div class="highlight-gallery__richtext">{{ highlight.image.description|richtext }}</div>
                     {% if highlight.image.record %}
-                        <a class="highlight-gallery__link" href="{{ highlight.image.record.url }}" data-component-name="Highlight Gallery: {{ page.title }}" data-link-type="Link" data-position="{{ forloop.counter0 }}" data-link="View record details">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
+                        <a class="highlight-gallery__link" href="{{ highlight.image.record.url }}" data-component-name="Highlight Gallery: {{ page.title }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="View record details">View record details {% include "static/images/fontawesome-svgs/chevron-right.svg" %}</a>
                     {% endif %}
                 </div>
                 <div id="highlight{{ forloop.counter0 }}" class="highlight-gallery__image-container">
