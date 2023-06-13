@@ -23,7 +23,7 @@ const longFiltersTracking = () => {
 
                 checkedLongFilters.forEach((filter) => {
                     let filterName = filter.name;
-                    let filterValue = filter.value;
+                    let filterValue = document.querySelector(`label[for="${filter.id}"]`).textContent.trim();
 
                     let filterData = {
                         'event': 'search-long-filter',
