@@ -47,8 +47,14 @@ RUN curl -sSL "https://install.python-poetry.org" | python -
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
+# Load shortcuts
+COPY ./bash/bashrc.sh /root/.bashrc
+
 # Copy files used by poetry
 COPY pyproject.toml poetry.lock ./
+
+# Install Python dependencies AND the 'etna' app
+RUN poetry install
 
 # Copy application code
 COPY . .
@@ -56,12 +62,6 @@ COPY . .
 # Copy static assets
 COPY --from=staticassets /home/css/etna.css /home/css/etna.css.map templates/static/css/dist/
 COPY --from=staticassets /home/templates/static/scripts templates/static
-
-# Load shortcuts
-RUN cp ./bash/bashrc.sh /root/.bashrc
-
-# Install Python dependencies AND the 'etna' app
-RUN poetry install
 
 # Do nothing forever (use 'exec' to resuse the container)
 CMD tail -f /dev/null
