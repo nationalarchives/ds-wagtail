@@ -5,8 +5,8 @@ COPY package.json package-lock.json webpack.config.js ./
 RUN npm install
 COPY scripts ./scripts
 COPY sass ./sass
-RUN npx sass sass/etna.scss:css/etna.css
 RUN npx webpack --config webpack.config.js
+RUN npx sass sass/etna.scss:css/etna.css
 
 
 
