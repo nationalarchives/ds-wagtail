@@ -34,14 +34,14 @@
         <div class="featured-link__content">
             <{{ heading_level }} class="featured-link__heading u-margin-xs">
                 {% if value.target_blank %}
-                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.title }}" data-category="{{ value.category }}" target="_blank">
+                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Banner title" data-link="{{ value.title }}" data-category="{{ value.category }}" target="_blank">
                         {{ value.title }}
 
                         {% include "includes/icon.html" with name="external-link" classname="featured-link__heading-link-icon" %}
                         <span class="sr-only">(Opens in a new tab)</span>
                     </a>
                 {% else %}
-                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Link" data-link="{{ value.title }}" data-category="{{ value.category }}">{{ value.title }}</a>
+                    <a class="featured-link__heading-link" href="{{ value.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.category }}" data-link-type="Banner title" data-link="{{ value.title }}" data-category="{{ value.category }}">{{ value.title }}</a>
                 {% endif %}
                 
             </{{ heading_level }}>
