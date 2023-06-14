@@ -3,8 +3,8 @@ import json
 from django.urls import reverse
 
 from wagtail.models import Site
-from wagtail.tests.utils import WagtailPageTestCase
-from wagtail.tests.utils.form_data import nested_form_data, rich_text, streamfield
+from wagtail.test.utils import WagtailPageTestCase
+from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
 
 import responses
 

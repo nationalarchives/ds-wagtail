@@ -12,11 +12,10 @@ type: 'python:3.11'
 variables:
   env:
     DJANGO_SETTINGS_MODULE: 'config.settings.platform'
-
-dependencies:
-  python3:
-    poetry: '1.1.12'
-    pip: '21.3.1'
+    # pip
+    POETRY_VIRTUALENVS_IN_PROJECT: true
+    POETRY_VIRTUALENVS_CREATE: true
+    POETRY_VERSION: 1.4.2
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
@@ -30,42 +29,50 @@ relationships:
     db: 'db:postgresql'
     redis: "redis:redis"
 
-
 hooks:
   build: |
     # Add platform CLI
     curl -sS https://platform.sh/cli/installer | php
+    
+    # Download the latest version of pip
+    python3.11 -m pip install --upgrade pip
 
-    poetry config virtualenvs.create false
-    poetry config virtualenvs.in-project true
-    poetry install --no-dev
+    # Install and configure Poetry
+    # Set user to false to install Poetry globally
+    export PIP_USER=false
+    curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
+    # Update PATH to make Poetry available in this hook
+    export PATH="/app/.local/bin:$PATH"
+    # Set user to true to install dependencies only in the virtual environment
+    export PIP_USER=true
 
+    # Install dependencies
+    poetry install --only main
+
+    # Install NVM
     unset NPM_CONFIG_PREFIX
-    curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.8/install.sh | dash
-    export NVM_DIR="$HOME/.nvm"
+    export NVM_DIR="$PLATFORM_APP_DIR/.nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-    # TODO commented to allow upgrade to Django 4.1.X;Kong open beta API does not support media. Re-enable/update once media is available.
-    # wget https://raw.githubusercontent.com/nationalarchives/tna-frontend-design-toolkit/main/dist/css/tna-toolkit.0.0.1.css --directory-prefix templates/static/css/libraries/
-
-    nvm install v14.19.1
-    nvm use v14.19.1
+    
+    nvm install v18.16.0
+    nvm use v18.16.0
+    
+    npm install
     npm install -g sass
     sass sass/etna.scss:templates/static/css/dist/etna.css
 
-    npm install
     npx webpack --config webpack.config.js
 
-    python manage.py collectstatic --no-input
-
+    poetry run python manage.py collectstatic --no-input
   deploy: |
-    python manage.py migrate
+    poetry run python manage.py migrate
 
 web:
   upstream:
     socket_family: unix
   commands:
-    start: gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
+    start: poetry run gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
   locations:
     "/":
       root: ""
@@ -101,7 +108,6 @@ mounts:
   logs:
     source: local
     source_path: logs
-
 
 crons:
   # Publish scheduled pages once an hour

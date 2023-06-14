@@ -1,17 +1,17 @@
 .disambiguation-explanation {
-    background-color: $color__blue_3;
-    color: $color__white;
-    padding: 2rem;
+  background-color: $color__navy;
+  color: $color__white;
+  padding: 2rem;
 
-    @media only screen and (max-width: $screen__md) {
-        padding-left: 0.3rem;
-        padding-right: 0.3rem;
-    }
-    
-    &__subheading {
-        font-size: 1.3rem;
-        font-weight: 800;
-        margin-top: 0;
-        margin-bottom: 1rem;
-    }
+  @media only screen and (max-width: $screen__md) {
+    padding-left: 0.3rem;
+    padding-right: 0.3rem;
+  }
+
+  &__subheading {
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
 }

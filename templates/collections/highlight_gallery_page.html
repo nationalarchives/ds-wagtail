@@ -11,11 +11,16 @@
     {% if page.highlights %}
         {% include 'includes/highlights-gallery.html' with highlights=page.highlights %}
     {% endif %}
+
     {% if page.featured_record_article %}
-        <p>TBC</p>
+        {% include 'includes/record-revealed.html' with record=page.featured_record_article %}
     {% endif %}
 
     {% if page.featured_article %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
-    {% endif %}    
+    {% endif %}
+
+    {% if page.primary_topic or page.time_period %}
+        {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="More to explore" %}
+    {% endif %}
 {% endblock %}

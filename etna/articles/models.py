@@ -9,7 +9,12 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -42,8 +47,16 @@ class ArticleIndexPage(BasePageWithIntro):
     """
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
     )
+
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
@@ -63,7 +76,10 @@ class ArticleIndexPage(BasePageWithIntro):
         return context
 
     content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.RecordArticlePage"],
+        ),
         FieldPanel("featured_pages"),
     ]
 
@@ -143,6 +159,8 @@ class ArticlePage(
 
     # DataLayerMixin overrides
     gtm_content_group = "stories"
+
+    title_label = "THE STORY OF"
 
     template = "articles/article_page.html"
 
@@ -267,10 +285,22 @@ class ArticlePage(
         return tuple(filterlatestpages[:3])
 
 
-class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class RecordArticlePage(
+    TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+):
     template = "articles/record_article_page.html"
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = []
+
+    intro_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_("Square, rotated image to display in the page introduction"),
+        verbose_name=_("intro image"),
+    )
 
     record = RecordField(verbose_name=_("record"), db_index=True)
     record.wagtail_reference_index_ignore = True
@@ -325,11 +355,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     # DataLayerMixin overrides
     gtm_content_group = "Record articles"
 
+    title_label = "RECORD REVEALED"
+
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
 
     content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("intro_image"),
         MultiFieldPanel(
             heading="Content Warning Options",
             classname="collapsible",
@@ -360,10 +393,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         FieldPanel("promoted_links"),
     ]
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("gallery_text"),
@@ -425,6 +462,7 @@ class PageGalleryImage(Orderable):
         ),
     )
     caption = RichTextField(
+        features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,
     )

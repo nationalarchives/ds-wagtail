@@ -2,6 +2,7 @@ import json as json_module
 import unittest
 
 from typing import Any, Dict
+from unittest.mock import patch
 
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
@@ -244,9 +245,6 @@ class EndToEndSearchTestCase(TestCase):
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
-    current_bucket_description_html = (
-        '<p class="search-results__explainer search-results__explainer--bucket">'
-    )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
     sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
@@ -274,12 +272,6 @@ class EndToEndSearchTestCase(TestCase):
 
     def assertBucketLinksNotRendered(self, response):
         self.assertNotIn(self.bucket_links_html, response)
-
-    def assertCurrentBucketDescriptionRendered(self, response):
-        self.assertIn(self.current_bucket_description_html, response)
-
-    def assertCurrentBucketDescriptionNotRendered(self, response):
-        self.assertNotIn(self.current_bucket_description_html, response)
 
     def assertSearchWithinOptionRendered(self, response):
         self.assertIn(self.search_within_option_html, response)
@@ -319,7 +311,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD NOT see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -335,7 +326,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -352,7 +342,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message.
 
         They SHOULD NOT see:
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -370,7 +359,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertNoResultsMessagingRendered(content)
 
         # SHOULD NOT see
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -385,7 +373,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -404,7 +391,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
@@ -422,7 +408,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -445,7 +430,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
@@ -462,8 +446,13 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         all selected filters should remain available as filter options,
         even if they were excluded from the API results 'aggregations'
         list due to not having any matches.
+
+        Test covers create session info for Catalogue search with query.
         """
         self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+
+        expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
+
         response = self.client.get(
             self.test_url,
             data={
@@ -474,11 +463,145 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "closure": "Open+Document%2C+Open+Description",
             },
         )
+        session = self.client.session
         content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
         self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
+
+    @responses.activate
+    def test_render_invalid_date_range_message(self):
+        """
+        When a user does search with an invalid date range:
+
+        They SHOULD see:
+        - A "No results" message in search results
+        - Particular message from "No results"
+        - A "Search within these results" option
+        - Error message in area of Record opening date
+        """
+        response = self.client.get(
+            self.test_url,
+            data={
+                "group": "tna",
+                "opening_start_date_2": "2000",
+                "opening_end_date_2": "1900",
+                "q": "london",
+                "filter_keyword": "kew",
+            },
+        )
+        content = str(response.content)
+
+        # SHOULD see
+        self.assertNoResultsMessagingRendered(content)
+        self.assertIn(
+            "<li>Try removing any filters that you may have applied</li>", content
+        )
+        self.assertSearchWithinOptionRendered(content)
+        self.assertIn(
+            "<li>There is a problem. Start date cannot be after end date.</li>", content
+        )
+
+    @patch("etna.search.templatetags.search_tags.get_random_string")
+    @responses.activate
+    def test_render_html_for_escape_search_values(self, mock_get_random_string):
+        """tests html rendered for input values containing special chars ex double-quote for search term and search within results params"""
+
+        search_results_hero_suffix_ids = [
+            "fk1",
+            "pp1",
+            "so1",
+            "d01",
+            "g01",
+        ]
+        search_results_hero_hidden_html = '<input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_fk1">  <input type="hidden" name="per_page" value="20" id="id_per_page_pp1">  <input type="hidden" name="sort_order" value="asc" id="id_sort_order_so1">  <input type="hidden" name="display" value="list" id="id_display_d01">  <input type="hidden" name="group" value="tna" id="id_group_g01">'
+
+        search_sort_and_view_options_suffix_ids = [
+            "q01",
+            "fk2",
+            "pp2",
+            "so2",
+            "d02",
+            "g02",
+        ]
+        search_sort_and_view_options_hidden_html = '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q_q01">  <input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_fk2">  <input type="hidden" name="per_page" value="20" id="id_per_page_pp2">  <input type="hidden" name="sort_order" value="asc" id="id_sort_order_so2">  <input type="hidden" name="display" value="list" id="id_display_d02">  <input type="hidden" name="group" value="tna" id="id_group_g02">'
+
+        search_filters_1_suffix_ids = ["q02", "fk3", "pp3", "so3", "d03", "g03"]
+        search_filters_1_hidden_html = '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q_q02">  <input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_fk3">  <input type="hidden" name="per_page" value="20" id="id_per_page_pp3">  <input type="hidden" name="sort_order" value="asc" id="id_sort_order_so3">  <input type="hidden" name="display" value="list" id="id_display_d03">  <input type="hidden" name="group" value="tna" id="id_group_g03">'
+
+        search_filters_2_suffix_ids = ["q03", "pp4", "so4", "d04", "g04"]
+        search_filters_2_hidden_html = '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q_q03">  <input type="hidden" name="per_page" value="20" id="id_per_page_pp4">  <input type="hidden" name="sort_order" value="asc" id="id_sort_order_so4">  <input type="hidden" name="display" value="list" id="id_display_d04">  <input type="hidden" name="group" value="tna" id="id_group_g04">'
+
+        # Note: side_effect assignment is in the order of the suffix ids that appears rendered in the html
+        mock_get_random_string.side_effect = (
+            search_results_hero_suffix_ids
+            + search_sort_and_view_options_suffix_ids
+            + search_filters_1_suffix_ids
+            + search_filters_2_suffix_ids
+        )
+
+        search_results_hero_text_html = '<input type="text" name="q" value="&quot;wo 409&quot;" class="search-results-hero__form-search-box" id="id_q"'
+        catalogue_search_bucket_hidden_html = (
+            '<input type="hidden" name="q" value="&quot;wo 409&quot;" id="id_q"'
+        )
+
+        responses.add(
+            responses.GET,
+            "https://kong.test/data/search",
+            json=create_search_response(
+                aggregations={"group": {"buckets": [{"key": "tna", "doc_count": 101}]}}
+            ),
+            status=200,
+        )
+        response = self.client.get(
+            self.test_url,
+            data={
+                "group": "tna",
+                "q": '"wo 409"',
+                "filter_keyword": '"kew"',
+            },
+        )
+
+        self.assertContains(
+            response,
+            search_results_hero_text_html,
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            search_results_hero_hidden_html,
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            search_sort_and_view_options_hidden_html,
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            search_filters_1_hidden_html,
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            search_filters_2_hidden_html,
+            count=1,
+            status_code=200,
+        )
+        self.assertContains(
+            response,
+            catalogue_search_bucket_hidden_html,
+            count=1,
+            status_code=200,
+        )
 
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
@@ -667,7 +790,12 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
 
     @responses.activate
     def test_search_with_query(self):
+        """
+        Test covers create session info for Featured search with query.
+        """
+        expected_url = "/search/featured/?q=query"
         self.client.get(self.test_url, data={"q": "query"})
+        session = self.client.session
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -684,6 +812,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&size=3"
             ),
         )
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
 
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):

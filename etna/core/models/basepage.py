@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
@@ -51,6 +52,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         related_name="+",
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
+
+    uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
 
     # DataLayerMixin overrides
     gtm_content_group = "Page"

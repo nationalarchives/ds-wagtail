@@ -10,19 +10,19 @@
                 </p>
             {% endif %}
 
-            <dl class="featured-records__list" data-container-name="featured-records">
+            <ul class="featured-records__list" data-container-name="featured-records">
                 {% for item in value.items %}
-                    <div class="featured-records__list-item">
-                        <dt>
+                    <li class="featured-records__list-item">
+                        <h4 class="featured-records__link-heading">
                             <a class="featured-records__link" href="{% record_url item.record is_editorial=True %}" data-component-name="{{ value.block.meta.label }}" data-link-type="Links" data-position="{{ forloop.counter0 }}" data-link="{{ item.title }}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
-                                <h4 class="featured-records__link-heading">{{ item.title }}</h4>
+                                {{ item.title }}
                                 {% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} <span class="sr-only">(link opens in a new window)</span>{% endif %}
                             </a>
-                        </dt>
-                        <dd class="featured-records__list-item-description">{{ item.record.summary_title }}</dd>
-                    </div>
+                        </h4>
+                        <p class="featured-records__list-item-description">{{ item.record.summary_title }}</p>
+                    </li>
                 {% endfor %}
-            </dl>
+            </ul>
         </div>
     </div>
 </div>

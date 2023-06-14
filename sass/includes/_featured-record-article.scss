@@ -1,0 +1,86 @@
+.featured-record-article {
+    $root: &;
+    box-sizing: border-box;
+    display: grid;
+    margin-bottom: 40px;
+    grid-template-columns: 1fr;
+    border-width: 1px 0px;
+    border-style: solid;
+    border-color: $color__grey-300;
+    // Removes parent margin to ensure it's flush with viewport edge
+    margin-left: calc((3rem + 14px) / -2);
+    margin-right: calc((3rem + 14px) / -2);
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        margin-right: 15px;
+        margin-left: 15px;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    &--standalone {
+        max-width: 1168px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        max-height: 330px; // prevent image getting huge on smaller viewports
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            max-height: 390px;
+        }
+    }
+
+    &__container {
+        align-self: center;
+        margin: 24px;
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            margin: 23px 40px;
+        }
+    }
+
+    &__meta {
+        @include font-size(xs);
+        font-family: $font__mono;
+        color: $color__black;
+        line-height: 31px;
+        text-transform: uppercase;
+    }
+
+    &__title {
+        @include font-size('xxl');
+        line-height: 1.2;
+        margin-top: 0;
+        font-weight: 600;
+        transition: color $transition_duration ease-in-out;
+    }
+
+    &__link {
+        color: $color__grey-800;
+
+        &:hover,
+        &:active {
+            color: $color__link-hover;
+        }
+    }
+
+    &__text {
+        @include font-size('m');
+        color: $color__grey-700;
+        margin-bottom: 0;
+    }
+
+    &__date {
+        @include font-size('m');
+        color: $color__black;
+    }
+}

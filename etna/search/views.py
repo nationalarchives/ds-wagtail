@@ -9,6 +9,7 @@ from urllib.parse import urlparse
 from django.core.paginator import Page
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.utils import timezone
 from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
@@ -90,17 +91,16 @@ class BucketsMixin:
         return bucket_list
 
     def get_context_data(self, **kwargs):
-        if self.bucket_list:
-            buckets = self.get_buckets_for_display(
-                self.api_result.bucket_counts, self.current_bucket_key
-            )
+        buckets = self.get_buckets_for_display(
+            self.api_result.bucket_counts, self.current_bucket_key
+        )
 
-            # Set this to True if any buckets have results
-            buckets_contain_results = False
-            for bucket in buckets:
-                if bucket.result_count:
-                    buckets_contain_results = True
-                    break
+        # Set this to True if any buckets have results
+        buckets_contain_results = False
+        for bucket in buckets:
+            if bucket.result_count:
+                buckets_contain_results = True
+                break
 
         return super().get_context_data(
             buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
@@ -314,6 +314,18 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, FormView):
         )
         return super().get_context_data(**kwargs)
 
+    def set_session_info(self) -> None:
+        """
+        Usually called where there are links to the record details page in the search results.
+        Sets session in order for it to be used in record details page when navigating from search results.
+        """
+
+        self.request.session["back_to_search_url"] = self.request.get_full_path()
+        self.request.session[
+            "back_to_search_url_timestamp"
+        ] = timezone.now().isoformat()
+        return None
+
 
 class BaseFilteredSearchView(BaseSearchView):
     """
@@ -378,6 +390,11 @@ class BaseFilteredSearchView(BaseSearchView):
         ):
             if field_name in form.errors:
                 return HttpResponseBadRequest(str(form.errors[field_name]))
+
+        # initialise empty result for an invalid form
+        self.api_result = records_client.resultlist_from_response(
+            response_data={}, bucket_counts=[]
+        )
 
         return super().form_invalid(form)
 
@@ -618,6 +635,10 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     template_name = "search/catalogue_search.html"
     search_tab = SearchTabs.CATALOGUE.value
 
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        self.set_session_info()
+        return super().get_context_data(**kwargs)
+
 
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
@@ -723,6 +744,7 @@ class FeaturedSearchView(BaseSearchView):
         return buckets
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        self.set_session_info()
         return super().get_context_data(
             buckets=self.get_buckets_for_display(), **kwargs
         )

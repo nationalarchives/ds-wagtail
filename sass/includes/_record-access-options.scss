@@ -1,7 +1,7 @@
 .record-access {
   padding: 1rem 2rem;
   margin-bottom: 5rem;
-  background-color: $color__grey-5;
+  background-color: $color__grey-800;
   color: $color__black;
 
   summary {
@@ -17,7 +17,6 @@
       outline: 0.312rem solid $color__link;
       outline-offset: 0.125rem;
     }
-
   }
 
   &__list {
@@ -27,7 +26,6 @@
 
     li {
       display: inline-block;
-
     }
   }
 
@@ -54,7 +52,8 @@
       background: $color__black;
       outline-offset: 0.2rem;
     }
-    &:hover, &:focus {
+    &:hover,
+    &:focus {
       color: $color__white;
     }
   }

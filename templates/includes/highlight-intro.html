@@ -26,8 +26,10 @@
              class="highlight-intro__image"
              {% if background_image.alt_text %}alt="{{ background_image.alt_text }}"{% endif %}/>
     </picture>
-    <div class="highlight-intro__standout">
-        <h1 class="highlight-intro__title">{{ title }}</h1>
-        <div class="highlight-intro__intro">{{ intro|richtext }}</div>
+    <div class="highlight-intro__standout-container">
+        <div class="highlight-intro__standout">
+            <h1 class="highlight-intro__title">{{ title }}</h1>
+            <div class="highlight-intro__intro">{{ intro|richtext }}</div>
+        </div>
     </div>
 </div>
