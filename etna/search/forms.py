@@ -184,12 +184,14 @@ class BaseCollectionSearchForm(forms.Form):
     )
     opening_start_date = DateInputField(
         label="From",
+        label_suffix="",
         required=False,
         default_day=1,
         default_month=1,
     )
     opening_end_date = DateInputField(
         label="to",
+        label_suffix="",
         required=False,
         default_day=END_OF_MONTH,
         default_month=12,
