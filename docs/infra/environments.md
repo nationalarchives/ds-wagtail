@@ -10,7 +10,7 @@ The GitHub branch and Hosted environments have the same name:
 
 ## Pre-requisites for deployment to develop
 
-1. If your new code requires any Platform.SH environment variables to either be updated or created, please speak to someone who has access to the Platform.SH environment before deploying/merging your code.
+1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
 - The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
 
 ## Deploying to develop
@@ -30,7 +30,7 @@ Otherwise, you will need to manually move the ticket into the `READY TO TEST ON 
 
 ## Pre-requisites for deployment to main
 
-1. If your new code requires any Platform.SH environment variables to either be updated or created, please speak to someone who has access to the Platform.SH environment before deploying/merging your code.
+1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
 - The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
 2. A branch must be created from `develop`, you should call this `release/X.X.X`, with the `X`s being relative to the major, minor, and patch level of the release.
 3. A pull request should be created to merge `release/X.X.X` into `main`, titled `Release X.X.X into main`.
@@ -77,12 +77,12 @@ git push platform develop
 git push platform main
 ```
 
-## How to access the Platform.SH shell
+## How to access the Platform.sh shell
 
-1. Go to the Platform.SH dashboard
+1. Go to the Platform.sh dashboard
 2. Click on the environment you want to access
 3. Click on the `SSH` tab
 4. Copy the SSH command
 5. Open your `ds-wagtail-cli1` container in Docker Desktop
 6. Paste the command into the CLI
-7. You should now be in the Platform.SH shell
+7. You should now be in the Platform.sh shell

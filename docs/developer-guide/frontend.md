@@ -4,7 +4,7 @@
 
 To ensure we are working in a way that is compatible with the front end technology aspects of the [GOV.UK Service Manual](https://www.gov.uk/service-manual/technology) **all front end development should follow The National Archives [front end development guide](https://github.com/nationalarchives/front-end-development-guide)** on GitHub. This will ensure user interfaces are robust, inclusive and meet relevant regulations. 
 
-If you have any questions about any aspect of frontend development seek advice from the lead frontend developer or another frontend developer.
+If you have any questions about any aspect of frontend development seek advice from the Lead Frontend Developer or another Frontend Developer.
 
 ## Setting up the front end development environment
 

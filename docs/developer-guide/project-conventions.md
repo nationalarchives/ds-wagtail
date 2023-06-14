@@ -32,7 +32,7 @@ Our `web` container has a [dependency](https://docs.docker.com/compose/compose-f
 
 ### `cli`
 
-A service with the Platform.SH CLI, PHP and few other packages to help with copying of data and media from the environments running in Platform.SH.
+A service with the Platform.sh CLI, PHP and few other packages to help with copying of data and media from the environments running in Platform.sh.
 
 ## Code style and standards
 
@@ -75,7 +75,7 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Changes are developed in feature branches and submitted as pull requests via Github
 - Feature branches should always be based on: `develop`
 - Release branches should always be based on: `develop`
-- Release branches should be merged via PR into `main`, followed by PR to merge `main` into `develop`.
+- Release branches should be merged via PR into `main`, followed by PR to merge `main` into `develop`
 
 **See below for merging guidance**
 
@@ -105,6 +105,9 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 
 ### Merging branches
 
-- When merging a feature branch into `develop`, use the `Squash and merge` option to keep the commit history clean.
-- When merging a release branch into `main`, use the `Merge commit` option to keep the commit history continuous from `develop`.
-- When merging `main` back into `develop` (after merging a release branch into `main`), use the `Merge commit` option to prevent any conflicts when merging future releases into `main` to keep the history in sync.
+**NOTE:** Where possible, a feature branch should be kept up-to-date with `develop` by regularly merging `develop` into the feature branch. This will help to prevent conflicts when merging the feature branch back into `develop`, and ensure there are no inconsistencies.
+
+- When merging a feature branch into `develop`, use the `Squash and merge` option to keep the commit history clean
+- When merging a release branch into `main`, use the `Merge commit` option to keep the commit history continuous from `develop`
+- When merging `main` back into `develop` (after merging a release branch into `main`), use the `Merge commit` option to prevent any conflicts when merging future releases into `main` to keep the history in sync
+    - This should be named `Release X.X.X main into develop` to make it clear what the merge is for
