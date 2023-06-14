@@ -25,6 +25,7 @@ from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
+    find,
     find_all,
     format_description_markup,
     format_link,
@@ -400,6 +401,16 @@ class Record(DataLayerMixin, APIModel):
             )
             for item in self.template.get("relatedMaterials", ())
         )
+
+    @cached_property
+    def custom_record_type(self) -> str:
+        if source := self.source:
+            return source
+        else:
+            identifier = self.get("identifier", ())
+            if find(identifier, predicate=lambda i: i["faid"] == self.iaid):
+                return "CREATORS"
+        return ""
 
     def get_gtm_content_group(self) -> str:
         """
