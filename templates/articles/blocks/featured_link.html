@@ -15,24 +15,21 @@
 <div class="featured-link" data-container-name="featured-link">
     <div class="featured-link__container">
         <div class="featured-link__image">
-            {% include_block value.image %}
-
-            {% comment %} 
-            Update this to use new image ratio and picture markup
-                {% if value.image %}
+            {% with value.image as image %}
+                {% if image %}
                     <picture>
-                        {% image value.image fill-626x486-c100 as mobile_img %}
+                        {% image image.image fill-626x486-c100 as mobile_img %}
                         <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
-                        {% image value.image fill-395x330-c100 as desktop_img %}
+                        {% image image.image fill-395x330-c100 as desktop_img %}
                         <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
                         <img class="promoted-image__img"
                             height="{{ mobile_img.height }}"
                             width="{{ mobile_img.width }}"
                             src="{{ mobile_img.url }}"
-                            alt=""/>
+                            alt="{{ image.image }}"/>
                     </picture>
-                {% endif %} 
-            {% endcomment %}
+                {% endif %}
+            {% endwith %}
         </div>
         <div class="featured-link__content">
             <{{ heading_level }} class="featured-link__heading u-margin-xs">
