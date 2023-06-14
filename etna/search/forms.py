@@ -1,6 +1,7 @@
 from typing import Dict, List, Optional, Union
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
 from etna.core.fields import END_OF_MONTH, DateInputField
@@ -9,7 +10,6 @@ from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
-    CUSTOM_ERROR_MESSAGES,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
@@ -226,20 +226,25 @@ class BaseCollectionSearchForm(forms.Form):
     )
 
     def clean(self):
-        """Collect selected filters to pass to the client in view."""
+        """
+        Overrides Form.clean() to perform additional validation on date ranges within the form.
+        """
         cleaned_data = super().clean()
 
-        try:
-            if cleaned_data.get("opening_start_date") > cleaned_data.get(
-                "opening_end_date"
-            ):
-                self.add_error(
-                    "opening_start_date",
-                    CUSTOM_ERROR_MESSAGES.get("invalid_date_range"),
-                )
-        except TypeError:
-            # Either one or both date fields are empty. No further validation necessary.
-            pass
+        opening_start = cleaned_data.get("opening_start_date")
+        opening_end = cleaned_data.get("opening_end_date")
+
+        if opening_start and opening_end and opening_start > opening_end:
+            # if both dates have valid values but invalid when together
+            self.add_error(
+                "opening_start_date",
+                ValidationError(
+                    "This date must be earlier than or equal to the 'to' date.",
+                    code="range_invalid",
+                ),
+            )
+            # remove from cleaned data
+            cleaned_data.pop("opening_start_date", None)
 
         return cleaned_data
 
