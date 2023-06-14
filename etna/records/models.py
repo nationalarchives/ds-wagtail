@@ -408,7 +408,7 @@ class Record(DataLayerMixin, APIModel):
             return source
         else:
             identifier = self.get("identifier", ())
-            if find(identifier, predicate=lambda i: i["faid"] == self.iaid):
+            if find(identifier, predicate=lambda i: i["type"] == "faid"):
                 return "CREATORS"
         return ""
 
