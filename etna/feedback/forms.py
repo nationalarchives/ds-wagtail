@@ -26,7 +26,7 @@ class FeedbackForm(forms.Form):
     )
     comment = forms.CharField(
         label=_("Comment (optional)"),
-        help_text=f"Please note: A length limit of {constants.COMMENT_MAX_LENGTH} characters applies.",
+        help_text=f"Length limit {constants.COMMENT_MAX_LENGTH} characters.",
         max_length=constants.COMMENT_MAX_LENGTH,
         required=False,
         widget=forms.Textarea(
