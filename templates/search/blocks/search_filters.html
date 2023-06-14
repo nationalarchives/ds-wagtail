@@ -67,30 +67,27 @@
             {% include "search/includes/filter.html" with field=form.closure %}
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                {# show date filter on filtered results count or date validation error #}
-                {% if page.paginator.count > 0 or form.opening_start_date.errors or form.opening_end_date.errors %}
-                    <div class="search-filters__accordion-section">
-                        <fieldset>
-                            <legend>
-                                <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
-                            </legend>
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend>
+                            <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                        </legend>
 
-                            <div class="search-filters__opening-date-section">
-                                {{ form.opening_start_date.label_tag }}
-                                {{ form.opening_start_date.errors }}
-                                {{ form.opening_start_date }}
-                            </div>
+                        <div class="search-filters__opening-date-section">
+                            {{ form.opening_start_date.label_tag }}
+                            {{ form.opening_start_date.errors }}
+                            {{ form.opening_start_date }}
+                        </div>
 
-                            <div class="search-filters__opening-date-section">
-                                {{ form.opening_end_date.label_tag }}
-                                {{ form.opening_end_date.errors }}
-                                {{ form.opening_end_date }}
-                            </div>
+                        <div class="search-filters__opening-date-section">
+                            {{ form.opening_end_date.label_tag }}
+                            {{ form.opening_end_date.errors }}
+                            {{ form.opening_end_date }}
+                        </div>
 
-                            <input type="submit" value="Update" class="search-filters__submit">
-                        </fieldset>
-                    </div>
-                {% endif %}
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
             {% endif %}
 
             {% if form.group.value == bucketkeys.NONTNA.value %}
