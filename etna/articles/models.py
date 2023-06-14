@@ -328,6 +328,14 @@ class RecordArticlePage(
         help_text="Link to an external print on demand service",
     )
 
+    gallery_heading = models.CharField(
+        verbose_name=_("gallery heading"),
+        max_length=250,
+        blank=True,
+        null=True,
+        help_text=_("Optional heading for the gallery"),
+    )
+
     featured_highlight_gallery = models.ForeignKey(
         "collections.HighlightGalleryPage",
         blank=True,
@@ -371,12 +379,19 @@ class RecordArticlePage(
                 FieldPanel("custom_warning_text"),
             ],
         ),
-        InlinePanel(
-            "gallery_images",
+        MultiFieldPanel(
             heading="Image Gallery",
-            label="Item",
-            min_num=1,
-            max_num=6,
+            classname="collapsible",
+            children=[
+                FieldPanel("gallery_heading"),
+                InlinePanel(
+                    "gallery_images",
+                    heading="Image Gallery",
+                    label="Item",
+                    min_num=1,
+                    max_num=6,
+                ),
+            ],
         ),
         MultiFieldPanel(
             heading="Body",
