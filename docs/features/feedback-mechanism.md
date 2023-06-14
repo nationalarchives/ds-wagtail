@@ -52,7 +52,9 @@ For a thorough understanding of the validation that is applied to submissions, y
 
 ### Versioning of prompts
 
-Because feedback prompts are converted to forms and shown on most pages, having a single version of that `FeedbackPrompt` instance is tricky, because it's quite possible for changes to be made between the time the form is rendered and when it is proccessed.
+Because feedback prompts are converted to forms and shown on most pages, having a single version of that `FeedbackPrompt` instance is tricky, because it's quite possible for changes to be saved to the database between the time the form is rendered and when it is proccessed.
+
+This is why the `FeedbackPrompt` model is revisible (has drafts and revisions in Wagtail). With the `prompt_id` and `prompt_revision` both included in submission URLs, we can recreate the `FeedbackPrompt` exactly as it was when the form was rendered to the user, and from that, can recreate a `FeedbackForm` instance that can be used for validation.
 
 ## Accessing and exporting submission data
 
