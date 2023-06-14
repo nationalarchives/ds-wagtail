@@ -19,7 +19,6 @@ from ..articles.models import ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
-    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
@@ -533,42 +532,30 @@ class BaseFilteredSearchView(BaseSearchView):
                     form_error_messages.append(item["message"])
 
         if opening_start_date := form.cleaned_data.get("opening_start_date"):
-            # if both dates have valid values but invalid when together
-            if (
-                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
-                not in form_error_messages
-            ):
-                return_value.update(
-                    {
-                        "opening_start_date": [
-                            (
-                                opening_start_date,
-                                opening_start_date.strftime(
-                                    "Record Opening From: %d-%m-%Y"
-                                ),
-                            )
-                        ]
-                    }
-                )
+            return_value.update(
+                {
+                    "opening_start_date": [
+                        (
+                            opening_start_date,
+                            "Record Opening From:"
+                            + opening_start_date.strftime("%d-%m-%Y"),
+                        )
+                    ]
+                }
+            )
 
         if opening_end_date := form.cleaned_data.get("opening_end_date"):
-            # if both dates have valid values but invalid when together
-            if (
-                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
-                not in form_error_messages
-            ):
-                return_value.update(
-                    {
-                        "opening_end_date": [
-                            (
-                                opening_end_date,
-                                opening_end_date.strftime(
-                                    "Record Opening To:  %d-%m-%Y"
-                                ),
-                            )
-                        ]
-                    }
-                )
+            return_value.update(
+                {
+                    "opening_end_date": [
+                        (
+                            opening_end_date,
+                            "Record Opening To:"
+                            + opening_end_date.strftime("%d-%m-%Y"),
+                        )
+                    ]
+                }
+            )
 
         return return_value
 
