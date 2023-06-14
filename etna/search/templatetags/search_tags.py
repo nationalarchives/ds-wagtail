@@ -14,6 +14,12 @@ register = template.Library()
 logger = logging.getLogger(__name__)
 
 
+@register.filter
+def is_date(value) -> bool:
+    """Return True if value is a date."""
+    return isinstance(value, datetime.date)
+
+
 @register.simple_tag(takes_context=True)
 def query_string_include(context, key: str, value: Union[str, int]) -> str:
     """Add key, value to current query string."""
