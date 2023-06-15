@@ -1,11 +1,10 @@
 from django.test import SimpleTestCase
 
-from ...ciim.constants import CUSTOM_ERROR_MESSAGES
 from ..forms import CatalogueSearchForm
 
 
 class CatalogueSearchFormTest(SimpleTestCase):
-    def test_various_opening_date_inputs_is_valid(self):
+    def test_valid_opening_date_range_values(self):
         """tests inputs accross both date fields with various input formats for form validity"""
         for label, form_data in (
             (
@@ -55,9 +54,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 form = CatalogueSearchForm(form_data)
                 self.assertTrue(form.is_valid(), label)
 
-    def test_opening_start_date_before_opening_end_date_is_invalid(self):
-        """tests inputs accross both date fields for form invalidity"""
-
+    def test_invalid_opening_date_range_values(self):
         for label, form_data in (
             (
                 "input start date after end date with all fields input DDMMYYY",
@@ -95,5 +92,5 @@ class CatalogueSearchFormTest(SimpleTestCase):
                 self.assertFalse(form.is_valid(), label)
                 self.assertEqual(
                     form.errors.get("opening_start_date", None),
-                    [CUSTOM_ERROR_MESSAGES.get("invalid_date_range")],
+                    ["This date must be earlier than or equal to the 'to' date."],
                 )

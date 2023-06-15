@@ -63,7 +63,7 @@ export default function () {
 
     //check to see if it is 'collections' results or 'held by' results that is being searched for.
     if (window.location.href.indexOf("collection") != -1) {
-        console.log('collections');
+        // console.log('collections');
         //append intro paragraph
         $filterCount.appendChild($introCopy);
     }

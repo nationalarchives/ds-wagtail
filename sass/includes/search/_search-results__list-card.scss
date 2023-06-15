@@ -9,12 +9,14 @@
     padding-bottom: 2rem;
     @media only screen and (max-width: 57rem) {
         padding-bottom:1rem;
+    
     }
 
   &--grid {
     @extend .search-results__list-card;
     @media only screen and (min-width: 57rem) {
       width: 48%;
+        max-height:100%;
     }
     margin-right: 1rem;
   }
@@ -30,7 +32,7 @@
 
     @media only screen and (min-width: 57rem) {
       margin-top: 0;
-        //max-width:90%;
+
     }
   }
 
@@ -48,6 +50,9 @@
     //max-width: 46rem;
     @media only screen and (min-width: 57rem) {
     }
+      .title-fix {
+          max-width: fit-content;
+      }
   }
 
   &-link {
@@ -202,5 +207,6 @@
 
 .search-results__list-card-metadata {
     padding-left:1.5rem;
+    white-space: nowrap;
 
 }

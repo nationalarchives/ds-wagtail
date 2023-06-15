@@ -1,23 +1,17 @@
 .highlight-gallery {
     $root: &;
     background-color: $color__grey-700;
-    padding-top: 3%;
+    padding-top: 3rem;
     font-family: $font__open-sans;
-    margin-bottom: 3rem;
-
-    @media screen and (min-width: map-get($grid-breakpoints, 'sm')) {
-        margin-bottom: 4.5rem;
-    }
 
     &__item {
         display: grid;
         grid-template-columns: 1fr;
-        padding-bottom: 5%;
         border-bottom: 1px dashed $color__grey-500;
+        padding-bottom: 3rem;
 
         @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             grid-template-columns: 50% 50%;
-            padding-bottom: 3%;
         }
     }
 
@@ -92,12 +86,6 @@
     }
 
     &__wrapper {
-        padding: 0 4%;
-
-        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
-            padding: 3% 11% 0 11%;
-        }
-
         &:last-of-type {
             #{$root}__item {
                 border-bottom: none;
