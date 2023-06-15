@@ -1,17 +1,14 @@
 .search-results__list-card {
   list-style: none;
   padding: 1rem;
-  //border: 1px solid $color__grey-500;
-  //border-bottom: 3px solid $color__grey-300;
     border-bottom: 1px solid #8c9694;
-  //border-radius: 0.3rem;
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
   display: flex;
   flex-wrap: wrap;
     min-height:320px;
     padding-bottom: 2rem;
     @media only screen and (max-width: 57rem) {
-        padding-bottom:0;
+        padding-bottom:1rem;
     }
 
   &--grid {
