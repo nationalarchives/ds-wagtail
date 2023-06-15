@@ -3,13 +3,19 @@
   padding: 1rem;
   //border: 1px solid $color__grey-500;
   //border-bottom: 3px solid $color__grey-300;
-  border-radius: 0.3rem;
+    border-bottom: 1px solid #8c9694;
+  //border-radius: 0.3rem;
   margin-bottom: 0.5rem;
   display: flex;
   flex-wrap: wrap;
+    max-height:320px;
+
+
     padding-bottom: 2rem;
     @media only screen and (max-width: 57rem) {
         padding-bottom:0;
+        max-height:100%;
+        
     }
 
   &--grid {
@@ -31,6 +37,8 @@
 
     @media only screen and (min-width: 57rem) {
       margin-top: 0;
+
+
     }
   }
 
@@ -48,6 +56,9 @@
     //max-width: 46rem;
     @media only screen and (min-width: 57rem) {
     }
+      .title-fix {
+          max-width: fit-content;
+      }
   }
 
   &-link {
@@ -61,7 +72,7 @@
 
   &-description {
     margin-bottom: 0.5rem;
-    //max-width:70%;
+    max-width:90%;
   }
 
   &-delivery-options {
@@ -202,5 +213,6 @@
 
 .search-results__list-card-metadata {
     padding-left:1.5rem;
+    white-space: nowrap;
 
 }

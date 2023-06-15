@@ -9,7 +9,7 @@
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
     {% if page.related_record_articles or page.featured_record_article %}
-        {% include "includes/related-articles-highlight-cards.html" with articles=page.related_record_articles title="Records revealed" %}
+        {% include "includes/related-articles-highlight-cards.html" with featured_article=page.featured_record_article articles=page.related_record_articles title="Records revealed" %}
     {% endif %}
     {% if page.body %}
         <div class="body-container"
@@ -24,11 +24,19 @@
             </div>
         </div>
     {% endif %}
-    {% if page.featured_article %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
-    {% endif %}
-    {% if page.related_articles %}
-        {% include "includes/related-article-cards.html" with articles=page.related_articles title="Records revealed" %}
+    {% if page.featured_article or page.related_articles %}
+        <div class="container">
+            {% if page.featured_article %}
+                {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
+            {% endif %}
+            {% if page.related_articles %}
+                <ul class="card-group--list-style-none">
+                    {% for item in page.related_articles %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="Stories from the collection" card_type="Featured" %}
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
     {% endif %}
 {% endblock content %}
 {% block extra_js %}

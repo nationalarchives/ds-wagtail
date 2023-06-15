@@ -245,9 +245,6 @@ class EndToEndSearchTestCase(TestCase):
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
-    current_bucket_description_html = (
-        '<p class="search-results__explainer search-results__explainer--bucket">'
-    )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
     sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
@@ -275,12 +272,6 @@ class EndToEndSearchTestCase(TestCase):
 
     def assertBucketLinksNotRendered(self, response):
         self.assertNotIn(self.bucket_links_html, response)
-
-    def assertCurrentBucketDescriptionRendered(self, response):
-        self.assertIn(self.current_bucket_description_html, response)
-
-    def assertCurrentBucketDescriptionNotRendered(self, response):
-        self.assertNotIn(self.current_bucket_description_html, response)
 
     def assertSearchWithinOptionRendered(self, response):
         self.assertIn(self.search_within_option_html, response)
@@ -320,7 +311,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD NOT see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -336,7 +326,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -353,7 +342,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message.
 
         They SHOULD NOT see:
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -371,7 +359,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertNoResultsMessagingRendered(content)
 
         # SHOULD NOT see
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -386,7 +373,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -405,7 +391,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
@@ -423,7 +408,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -446,7 +430,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
@@ -520,7 +503,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         )
         self.assertSearchWithinOptionRendered(content)
         self.assertIn(
-            "<li>There is a problem. Start date cannot be after end date.</li>", content
+            "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
+            content,
         )
 
     @patch("etna.search.templatetags.search_tags.get_random_string")
