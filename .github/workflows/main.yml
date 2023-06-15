@@ -64,7 +64,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: .venv
-          key: ds-wagtail-venv-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}
+          key: ds-wagtail-venv-${{ runner.os }}-${{ env.POETRY_VERSION }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
