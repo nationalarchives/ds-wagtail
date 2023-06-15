@@ -4,13 +4,14 @@ const longFiltersTracking = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener('load', () => {
         const longFilters = document.querySelector('[data-long-filters]');
-        const longFiltersList = longFilters.querySelector('[data-long-filters-list]');
-        const longFilterItems = longFiltersList.querySelectorAll('[data-long-filters-item] input');
-        // create array to store checked filters
-        const checkedLongFilters = [];
-        const activeLongFilters = [];
 
         if (longFilters) {
+            const longFiltersList = longFilters.querySelector('[data-long-filters-list]');
+            const longFilterItems = longFiltersList.querySelectorAll('[data-long-filters-item] input');
+            // create array to store checked filters
+            const checkedLongFilters = [];
+            const activeLongFilters = [];
+            
             // listen for checkboxes and store in array
             longFilterItems.forEach((filter) => {
                 filter.addEventListener('change', function () {
