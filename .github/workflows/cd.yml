@@ -26,6 +26,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.11"
+  POETRY_VERSION: "1.5.1"
 
 jobs:
   notify-slack:
@@ -64,13 +65,15 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
       - uses: snok/install-poetry@v1
         with:
+          version: ${{ env.POETRY_VERSION }}
           virtualenvs-create: true
           virtualenvs-in-project: true
+          virtualenvs-dir: .venv
       - id: cached-poetry-dependencies
         uses: actions/cache@v3
         with:
           path: .venv
-          key: ds-wagtail-venv-${{ runner.os }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}
+          key: ds-wagtail-venv-${{ runner.os }}-${{ env.POETRY_VERSION }}-${{ env.PYTHON_VERSION }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
