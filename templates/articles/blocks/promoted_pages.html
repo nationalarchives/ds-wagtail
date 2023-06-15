@@ -29,7 +29,9 @@
                         {{ promoted_item.title }}
                     </a>
                 </h3>
-                <p class="promoted-pages__text promoted-pages__text--gap">{% if promoted_item.author %}By {{ promoted_item.author }}{% endif %}{% if promoted_item.publication_date and promoted_item.author %} – {% endif %}{{ promoted_item.publication_date }}</p>
+                {% if promoted_item.author or promoted_item.publication_date %}
+                    <p class="promoted-pages__text promoted-pages__text--gap">{% if promoted_item.author %}By {{ promoted_item.author }}{% endif %}{% if promoted_item.publication_date and promoted_item.author %} – {% endif %}{{ promoted_item.publication_date }}</p>
+                {% endif %}
                 <p class="promoted-pages__text">{{ promoted_item.description }}</p>
             </li>
         {% endfor %}
