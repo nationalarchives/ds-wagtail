@@ -1,20 +1,27 @@
 .header {
   $root: &;
   background-color: $color__yellow;
+  position: relative;
 
-  @media screen and (min-width: 768px) {
-    display: flex;
-    flex-wrap: wrap;
+  &__container {
+    @extend .container;
+
+    @media screen and (min-width: 768px) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
   }
 
   &__logo {
     &-holder {
       display: inline-block;
-      padding: 1rem;
-      padding-bottom: 1.5rem;
+      padding: 1rem 0;
+
       @media only screen and (max-width: $screen__md) {
         vertical-align: top;
       }
+      
       @media screen and (max-width: $screen__sm) {
         padding-left: 0.1rem;
         padding-right: 0.1rem;
@@ -25,7 +32,6 @@
 
     &-link {
       align-self: center;
-      margin-left: 1rem;
       display: inline-block;
       &:hover {
         outline: 0.3125rem solid $color__grey-700;
@@ -35,10 +41,10 @@
       }
     }
     &-image {
-      height: 6.25rem;
+      height: 2.49rem;
 
-      @media screen and (max-width: $screen__sm) {
-        height: 4.6875rem;
+      @media only screen and (min-width: $screen__md) {
+        height: 6.18rem;
       }
     }
   }
@@ -55,10 +61,13 @@
   }
 
   &__nav {
-    margin-left: auto;
+    align-self: flex-end;
     align-items: flex-end;
     z-index: 2;
     display: none;
+    left: calc(50% - 50vw);
+	  width: 100vw;
+    position: relative;
 
     &.active {
       display: block;
@@ -70,6 +79,8 @@
 
     @media only screen and (min-width: $screen__md) {
       display: block;
+      width: max-content;
+      left: unset;
     }
 
     &-list {
@@ -220,19 +231,15 @@
 
   &__overlay-button {
     position: absolute;
-    right: 0em;
-    top: 110px;
-    padding: 23px 11px;
+    top: 0.15rem;
+    right: 0;
+    padding: 23px 0.9375rem;
     z-index: 5;
     cursor: pointer;
     user-select: none;
 
-    @media only screen and (max-width: 481px) {
-      top: 85px;
-    }
-
-    @media only screen and (max-width: 390px) {
-      top: 105px;
+    @media only screen and (min-width: $screen__sm) {
+      top: 0.65rem;
     }
 
     @media only screen and (min-width: $screen__md) {
@@ -243,12 +250,12 @@
   &__overlay-input {
     // using opacity instead of display: none allows the input to be toggled by keyboards
     opacity: 0;
+    position: absolute;
     /*
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
     overflow: hidden;
-    position: absolute;
     white-space: nowrap;
     width: 1px;
     */
@@ -259,6 +266,10 @@
 
     &:checked ~ #{$root}__nav {
       display: block;
+
+      @media only screen and (min-width: $screen__md) {
+        display: none;
+      }
     }
 
     &:checked ~ #{$root}__overlay-button {
