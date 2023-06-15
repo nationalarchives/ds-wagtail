@@ -139,37 +139,10 @@ class HeroImageMixin(models.Model):
     ]
 
 
-class RequiredHeroImageMixin(models.Model):
+class RequiredHeroImageMixin(HeroImageMixin):
     """Mixin to add hero_image attribute to a Page, and make it required."""
-
-    hero_image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    hero_image_caption = RichTextField(
-        verbose_name="hero image caption (optional)",
-        features=["bold", "italic", "link"],
-        blank=True,
-        help_text=(
-            "An optional caption for hero images. This could be used for image sources or for other useful metadata."
-        ),
-    )
 
     class Meta:
         abstract = True
-
-    content_panels = [
-        MultiFieldPanel(
-            [
-                FieldPanel("hero_image"),
-                FieldPanel("hero_image_caption"),
-            ],
-            heading="Hero image",
-        )
-    ]
 
     base_form_class = RequiredHeroImagePageForm
