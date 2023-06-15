@@ -190,6 +190,10 @@ class Record(DataLayerMixin, APIModel):
         return self.get_url()
 
     @cached_property
+    def non_reference_number_url(self) -> str:
+        return self.get_url(use_reference_number=False)
+
+    @cached_property
     def is_tna(self):
         for item in self.get("@datatype.group", ()):
             if item.get("value", "") == "tna":
