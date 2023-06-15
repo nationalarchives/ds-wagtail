@@ -1,5 +1,4 @@
 import copy
-import json
 import logging
 import re
 
@@ -19,7 +18,6 @@ from ..articles.models import ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
-    CUSTOM_ERROR_MESSAGES,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
@@ -491,18 +489,16 @@ class BaseFilteredSearchView(BaseSearchView):
         return context
 
     def get_selected_filters(self, form: Form) -> Dict[str, List[Tuple[str, str]]]:
-        """Returns a list of selected dynamic_choice_fields values, refined filter values, keyed by
-        the corresponding field name.
-
-        Used by template to output a list of selected filters.
+        """
+        Returns a dictionary of selected filters, keyed by form field name.
+        Each value is a series of tuples where the first item is the 'value', and
+        the second a user-freindly 'label' suitable for display in the template.
         """
         return_value = {
             field_name: form.cleaned_data[field_name]
             for field_name in self.dynamic_choice_fields
             if form.cleaned_data.get(field_name)
         }
-
-        form_error_messages = []
 
         # Replace field 'values' with (value, label) tuples,
         # allowing both to be used in the template
@@ -526,49 +522,21 @@ class BaseFilteredSearchView(BaseSearchView):
         if filter_keyword := form.cleaned_data.get("filter_keyword"):
             return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
 
-        # get form error messages
-        if error_dict := json.loads(form.errors.as_json()):
-            for dict_values in error_dict.values():
-                for item in dict_values:
-                    form_error_messages.append(item["message"])
-
         if opening_start_date := form.cleaned_data.get("opening_start_date"):
-            # if both dates have valid values but invalid when together
-            if (
-                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
-                not in form_error_messages
-            ):
-                return_value.update(
-                    {
-                        "opening_start_date": [
-                            (
-                                opening_start_date,
-                                opening_start_date.strftime(
-                                    "Record Opening From: %d-%m-%Y"
-                                ),
-                            )
-                        ]
-                    }
+            return_value["opening_start_date"] = [
+                (
+                    opening_start_date,
+                    "Record opening from: " + opening_start_date.strftime("%d %m %Y"),
                 )
+            ]
 
         if opening_end_date := form.cleaned_data.get("opening_end_date"):
-            # if both dates have valid values but invalid when together
-            if (
-                CUSTOM_ERROR_MESSAGES.get("invalid_date_range")
-                not in form_error_messages
-            ):
-                return_value.update(
-                    {
-                        "opening_end_date": [
-                            (
-                                opening_end_date,
-                                opening_end_date.strftime(
-                                    "Record Opening To:  %d-%m-%Y"
-                                ),
-                            )
-                        ]
-                    }
+            return_value["opening_end_date"] = [
+                (
+                    opening_end_date,
+                    "Record opening to: " + opening_end_date.strftime("%d %m %Y"),
                 )
+            ]
 
         return return_value
 
