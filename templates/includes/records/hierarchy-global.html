@@ -84,10 +84,7 @@
 
             <!-- Level 1 -->
             <div class="hierarchy-full-panel__bar-container-outer">
-                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-1">
-                    <p><span class="hierarchy-full-panel__bar-number">N</span>
-                    <span class="hierarchy-full-panel__bar-label">records</span></p>
-                </div>
+                <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-1"></div>
                 <div class="hierarchy-full-panel__text-container">
                     <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
@@ -101,10 +98,7 @@
                 {%endfor%}
             {% else %}
                 <div class="hierarchy-full-panel__bar-container-outer">
-                    <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-2">
-                        <p><span class="hierarchy-full-panel__bar-number">N</span>
-                    <span class="hierarchy-full-panel__bar-label">records</span></p>
-                    </div>
+                    <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--active hierarchy-full-panel__bar-container-inner--level-2"></div>
                     <div class="hierarchy-full-panel__text-container">
                         <p class="hierarchy-full-panel__text-level">You are currently looking at the department: <a href="{% record_url record %}" data-link-type="Link" data-link="{{record.reference_number}}" data-catalogue-level="1" data-component-name="Hierarchy links">{{record.reference_number}}</a></p>
                         <p class="hierarchy-full-panel__text-title">{{record.summary_title}}</p>
