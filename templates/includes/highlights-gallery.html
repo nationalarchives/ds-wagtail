@@ -11,7 +11,7 @@
                         {% if highlight.image.record_dates %}<p>Date: {{ highlight.image.record_dates }}</p>{% endif %}
                         {% if highlight.image.record %}
                             <p>
-                                Catalogue reference: {{ highlight.image.record.reference_number|default:"N/A" }}
+                                Catalogue reference: <a class="highlight-gallery__link" href="{{ highlight.image.record.url }}"><span class="sr-only">View the record </span>{{ highlight.image.record.reference_number|default:"N/A" }} <span class="sr-only"> in the catalogue</span></a>
                             </p>
                         </div>
                     {% endif %}
