@@ -89,7 +89,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             ("external-link", "External link"),
         ],
     )
-    publication_date = blocks.DateBlock(required=False)
+    publication_date = blocks.CharBlock(required=False)
     author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,

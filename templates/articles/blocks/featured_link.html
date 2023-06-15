@@ -53,9 +53,11 @@
                             By {{ value.author }}
                         </p>
                     {% endif %}
-        
+
                     {% if value.publication_date %}
-                        <time datetime="{{ value.publication_date|date:'Y-m-d' }}" class="featured-link__metadata-item">{{ value.publication_date|date:'l j F Y' }}</time>
+                        <p class="featured-link__metadata-item">
+                            {{ value.publication_date }}
+                        </p>
                     {% endif %}
 
                     {% if value.duration %}
