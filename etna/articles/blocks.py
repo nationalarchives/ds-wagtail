@@ -129,7 +129,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Featured link"
-        template = "articles/blocks/promoted_item.html"
+        template = "articles/blocks/featured_link.html"
         help_text = "Block used promote an external page"
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
