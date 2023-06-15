@@ -242,7 +242,7 @@ class BaseCollectionSearchForm(forms.Form):
                 "opening_start_date",
                 ValidationError(
                     "This date must be earlier than or equal to the 'to' date.",
-                    code="range_invalid",
+                    code="date_range_invalid",
                 ),
             )
             # remove from cleaned data
