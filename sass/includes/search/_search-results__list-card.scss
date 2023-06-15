@@ -8,10 +8,14 @@
   margin-bottom: 0.5rem;
   display: flex;
   flex-wrap: wrap;
-    min-height:320px;
+    max-height:320px;
+
+
     padding-bottom: 2rem;
     @media only screen and (max-width: 57rem) {
         padding-bottom:0;
+        max-height:100%;
+        
     }
 
   &--grid {
@@ -33,8 +37,7 @@
 
     @media only screen and (min-width: 57rem) {
       margin-top: 0;
-        //min-width:150%;
-        white-space: revert;
+
 
     }
   }
@@ -53,6 +56,9 @@
     //max-width: 46rem;
     @media only screen and (min-width: 57rem) {
     }
+      .title-fix {
+          max-width: fit-content;
+      }
   }
 
   &-link {
