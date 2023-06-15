@@ -13,20 +13,25 @@ const addListenersToResultsList = () => {
 
     const bucket = document.getElementById('analytics-current-bucket')?.dataset?.currentBucket;
 
-    resultsList.addEventListener('click', (event) => {
-        if (event.target.classList.contains("search-results__list-card-link")) {
+    // check if resultsList exists to avoid errors on other search pages
+    if (resultsList) {
+        resultsList.addEventListener('click', (event) => {
+            if (event.target.classList.contains("search-results__list-card-link")) {
+    
+                const eventData = {
+                    'event': 'search-result' || '',
+                    'search-bucket': bucket || '',
+                    'data-link-type': 'Search results list' || '',
+                    'data-link': event.target.dataset.analyticsLink || '',
+                    'data-position': event.target.dataset.analyticsPosition || '',
+                };
+    
+                push_to_data_layer(eventData);
+            }
+        });
+    }
 
-            const eventData = {
-                'event': 'search-result' || '',
-                'search-bucket': bucket || '',
-                'data-link-type': 'Search results list' || '',
-                'data-link': event.target.dataset.analyticsLink || '',
-                'data-position': event.target.dataset.analyticsPosition || '',
-            };
-
-            push_to_data_layer(eventData);
-        }
-    });
+    
 };
 
 const intialiseSearchResultTracking = () => {

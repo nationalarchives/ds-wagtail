@@ -503,7 +503,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         )
         self.assertSearchWithinOptionRendered(content)
         self.assertIn(
-            "<li>There is a problem. Start date cannot be after end date.</li>", content
+            "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
+            content,
         )
 
     @patch("etna.search.templatetags.search_tags.get_random_string")

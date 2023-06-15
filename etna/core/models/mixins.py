@@ -10,7 +10,12 @@ from wagtail.images import get_image_model_string
 
 from .forms import RequiredHeroImagePageForm
 
-__all__ = ["ContentWarningMixin", "NewLabelMixin", "HeroImageMixin"]
+__all__ = [
+    "ContentWarningMixin",
+    "NewLabelMixin",
+    "HeroImageMixin",
+    "RequiredHeroImageMixin",
+]
 
 
 class ContentWarningMixin(models.Model):
@@ -132,5 +137,12 @@ class HeroImageMixin(models.Model):
             heading="Hero image",
         )
     ]
+
+
+class RequiredHeroImageMixin(HeroImageMixin):
+    """Mixin to add hero_image attribute to a Page, and make it required."""
+
+    class Meta:
+        abstract = True
 
     base_form_class = RequiredHeroImagePageForm
