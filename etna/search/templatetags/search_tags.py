@@ -4,8 +4,8 @@ import logging
 from typing import Union
 
 from django import template
+from django.forms import Form
 from django.utils.crypto import get_random_string
-from django.utils.html import escape
 from django.utils.safestring import mark_safe
 
 from ...ciim.constants import SearchTabs
@@ -61,63 +61,37 @@ def query_string_exclude(
     return query_dict.urlencode()
 
 
-@register.filter
-def include_hidden_fields(visible_field_names, form) -> str:
+@register.simple_tag
+def render_fields_as_hidden(form: Form, exclude: str = "", include: str = "") -> str:
     """
-    Returns automatically generated html hidden fields for the input form.
-    The hidden fields are derived from the input form less the visible field names.
-    A random suffix is applied to html id allowing the same form to be rendered
-    multiple times without field ID clashes.
+    Render the supplied `form`'s fields as hidden inputs. Used within a <form> tag
+    to preserve state between requests when the same Django form is rendered in
+    multiple places on the same page (with different visible fields each time).
+
+    `form`: The Django form to render fields for.
+    `exclude`: A space-separated string of field names to NOT be rendered as hidden.
+    `include`: A space-separated string of field names to be rendered as hidden.
     """
+    include_names = include.split()
+    exclude_names = exclude.split()
+
+    # Gather the relevant `BoundField` instances into a list
+    boundfields = []
+    for field in form:
+        if include_names:
+            if field.name in include_names:
+                boundfields.append(field)
+        elif field.name not in exclude_names:
+            boundfields.append(field)
+
+    # Utilize `BoundField.as_hidden()` to generate the return html
     html = ""
-    visible_field_list = visible_field_names.split()
-    for field in form.fields:
-        if field not in visible_field_list:
-            try:
-                if value := form.cleaned_data.get(field):
-                    if isinstance(value, (str, int)):
-                        if field in ("q", "filter_keyword"):
-                            value = escape(value)
-                        html += f""" <input type="hidden" name="{field}" value="{value}" id="id_{field}_{get_random_string(3)}"> """
-                    elif isinstance(value, list):
-                        for value_in_list in value:
-                            html += f""" <input type="hidden" name="{field}" value="{value_in_list}" id="id_{field}_{get_random_string(3)}"> """
-                    elif isinstance(value, datetime.date):
-                        html += f""" <input type="hidden" name="{field}_0" value="{value.day}" id="id_{field}_0_{get_random_string(3)}"> """
-                        html += f""" <input type="hidden" name="{field}_1" value="{value.month}" id="id_{field}_1_{get_random_string(3)}"> """
-                        html += f""" <input type="hidden" name="{field}_2" value="{value.year}" id="id_{field}_2_{get_random_string(3)}"> """
-                    else:
-                        logger.debug(
-                            f"Type {type(value)} of the field-{field}'s value not supported in include_hidden_fields."
-                        )
-            except KeyError:
-                # for invalid input - example invalid date, value is not cleaned
-                pass
-    return mark_safe(html)
-
-
-@register.filter
-def hidden_fields_for_date_filter(selected_filters, form) -> str:
-    """
-    Returns automatically generated html hidden fields.
-    The hidden fields are derived from the selected_filters and fields outside form of selected filters
-    A random suffix is applied to html id allowing the same form to be rendered
-    multiple times without field ID clashes.
-    selected_filters:[('field_name', [('value', 'display_value')]), ]
-    """
-    html = ""
-    visible_field_names_str = ""
-    if form.has_error("opening_start_date") or form.has_error("opening_end_date"):
-        for field_name, selected_options in selected_filters:
-            for value, _ in selected_options:
-                visible_field_names_str += f"{field_name} "
-                html += f""" <input type="hidden" name="{field_name}" value="{value}" id="id_{field_name}_{get_random_string(3)}"> """
-        # date fields are visible, editable and can have errors
-        visible_field_names_str += " opening_start_date opening_end_date"
-        # fields outside form of selected filters
-        if visible_field_names_str:
-            html += include_hidden_fields(visible_field_names_str, form)
-
+    for field in boundfields:
+        html += field.as_hidden(
+            # Add a random string to the field ID to avoid collisions with
+            # the editable versions of fields on the same page
+            attrs={"id": f"id_{field.name}_{get_random_string(3)}"}
+        )
     return mark_safe(html)
 
 
