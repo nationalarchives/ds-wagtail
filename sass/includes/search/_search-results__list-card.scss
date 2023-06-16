@@ -66,11 +66,6 @@
     }
   }
 
-  &-description {
-    margin-bottom: 0.5rem;
-    max-width:90%;
-  }
-
   &-desc {
     max-width: 12rem;
     margin-bottom: 0;
@@ -85,6 +80,7 @@
     margin-bottom: 0.5rem;
     //max-width:70%;
     font-weight: 100;
+    max-width:90%;
   }
 
   &-metadata-item {
@@ -127,6 +123,7 @@
       display: block;
       color: white;
       text-decoration: none;
+      width: 100%;
 
       @media only screen and (min-width: 57rem) {
         width: 100%;
