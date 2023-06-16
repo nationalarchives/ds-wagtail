@@ -86,7 +86,7 @@
             <div class="hierarchy-full-panel__bar-container-outer">
                 <div class="hierarchy-full-panel__bar-container-inner hierarchy-full-panel__bar-container-inner--level-1"></div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="#" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="{% record_url record.repository %}" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
                 </div>
             </div>
