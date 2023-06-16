@@ -7,13 +7,18 @@ from etna.records.templatetags.records_tags import record_url
 class TestRecordURLTag(SimpleTestCase):
     record_instance = Record(
         raw_data={
+            "repository": {
+                "@admin": {
+                    "id": "A13531109",
+                }
+            },
             "@template": {
                 "details": {
                     "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
                     "referenceNumber": "2515/300/1",
                     "summaryTitle": "Test",
                 }
-            }
+            },
         }
     )
 
@@ -216,3 +221,12 @@ class TestRecordURLTag(SimpleTestCase):
                 self.assertEqual(
                     record_url(record, order_from_discovery=True), expected_result
                 )
+
+    def test_repository_links(self):
+        for attribute_name, expected_result in (
+            ("record_instance", "/catalogue/id/A13531109/"),
+            ("record_instance_no_reference", ""),
+        ):
+            with self.subTest(attribute_name):
+                source = getattr(self, attribute_name)
+                self.assertEqual(record_url(source.repository), expected_result)

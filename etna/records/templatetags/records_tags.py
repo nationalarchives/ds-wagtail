@@ -20,7 +20,7 @@ def record_url(
     returning more than one record
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
-        return f"https://discovery.nationalarchives.gov.uk/details/r/{record.iaid}"
+        return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if order_from_discovery:
         if record.custom_record_type == "ARCHON":
@@ -29,7 +29,8 @@ def record_url(
             return TNA_URLS.get("discovery_rec_creators_fmt").format(iaid=record.iaid)
         else:
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
-    return record.url
+
+    return record.url if record is not None else ""
 
 
 @register.simple_tag
