@@ -482,30 +482,39 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message in search results
         - Particular message from "No results"
         - A "Search within these results" option
-        - Error message in area of Record opening date
+        - Error message next to the 'to' date field
         """
-        response = self.client.get(
-            self.test_url,
-            data={
-                "group": "tna",
-                "opening_start_date_2": "2000",
-                "opening_end_date_2": "1900",
-                "q": "london",
-                "filter_keyword": "kew",
-            },
-        )
-        content = str(response.content)
+        for from_date_field, to_date_field in (
+            ("opening_start_date", "opening_end_date"),
+            ("covering_date_from", "covering_date_to"),
+        ):
+            response = self.client.get(
+                self.test_url,
+                data={
+                    "group": "tna",
+                    f"{from_date_field}_0": "01",
+                    f"{from_date_field}_1": "01",
+                    f"{from_date_field}_2": "2000",
+                    f"{to_date_field}_0": "01",
+                    f"{to_date_field}_1": "01",
+                    f"{to_date_field}_2": "1999",
+                    "q": "london",
+                    "filter_keyword": "kew",
+                },
+            )
+            content = str(response.content)
 
-        # SHOULD see
-        self.assertNoResultsMessagingRendered(content)
-        self.assertIn(
-            "<li>Try removing any filters that you may have applied</li>", content
-        )
-        self.assertSearchWithinOptionRendered(content)
-        self.assertIn(
-            "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
-            content,
-        )
+            # SHOULD see
+            self.assertNoResultsMessagingRendered(content)
+            self.assertIn(
+                "<li>Try removing any filters that you may have applied</li>", content
+            )
+            self.assertSearchWithinOptionRendered(content)
+            self.assertIn(from_date_field, response.context["form"].errors)
+            self.assertIn(
+                "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
+                content,
+            )
 
     @patch("etna.search.templatetags.search_tags.get_random_string")
     @responses.activate
