@@ -19,7 +19,8 @@ def record_url(record: Record, is_editorial: bool = False) -> str:
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return f"https://discovery.nationalarchives.gov.uk/details/r/{record.iaid}"
-    return record.url
+
+    return record.url if record is not None else ""
 
 
 @register.simple_tag

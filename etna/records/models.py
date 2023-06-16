@@ -315,6 +315,11 @@ class Record(DataLayerMixin, APIModel):
         return self.get("repository.summary.title", default="")
 
     @cached_property
+    def repository(self) -> Union["Record", None]:
+        if repository := self.get("repository", default=None):
+            return Record(repository)
+
+    @cached_property
     def repo_archon_value(self) -> str:
         for item in self.get("repository.identifier", ()):
             if item["type"] == "Archon number":
