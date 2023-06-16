@@ -193,7 +193,7 @@
       min-height: 75px;
       border: 2px solid $color__yellow;
       border-left: 0;
-      width: 11.5%;
+      min-width: 10%;
     }
 
     p {
@@ -215,42 +215,6 @@
         text-align: left;
         background: transparent;
         float: none;
-      }
-    }
-
-    &--level-1 {
-      @media screen and (min-width: $screen__xl) {
-        width: 22%;
-      }
-    }
-    &--level-2 {
-      @media screen and (min-width: $screen__xl) {
-        width: 20%;
-      }
-    }
-    &--level-3 {
-      @media screen and (min-width: $screen__xl) {
-        width: 18%;
-      }
-    }
-    &--level-4 {
-      @media screen and (min-width: $screen__xl) {
-        width: 16%;
-      }
-    }
-    &--level-5 {
-      @media screen and (min-width: $screen__xl) {
-        width: 14%;
-      }
-    }
-    &--level-6 {
-      @media screen and (min-width: $screen__xl) {
-        width: 12%;
-      }
-    }
-    &--level-7 {
-      @media screen and (min-width: $screen__xl) {
-        width: 10%;
       }
     }
     &--active {
@@ -344,6 +308,28 @@
     font-size: 0.95rem;
     line-height: 1.2rem;
   }
+}
+
+#tna-record {
+    $initial-width: 24%;
+
+    @for $i from 1 through 8 {
+        $width: calc(#{$initial-width} - 2% * (#{$i} - 1));
+        .hierarchy-full-panel__bar-container-outer:nth-child(#{$i + 1}) .hierarchy-full-panel__bar-container-inner {
+            width: $width;
+        }
+    }
+}
+
+#non-tna-record {
+  $initial-width: 26.5%;
+
+    @for $i from 1 through 12 {
+        $width: calc(#{$initial-width} - 1.5% * (#{$i} - 1));
+        .hierarchy-full-panel__bar-container-outer:nth-child(#{$i + 1}) .hierarchy-full-panel__bar-container-inner {
+            width: $width;
+        }
+    }
 }
 
 .hierarchy-local-nav {
