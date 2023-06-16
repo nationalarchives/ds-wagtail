@@ -40,21 +40,29 @@
         <div class="search-filters__form-block">
             <h3 class="sr-only">Edit filters</h3>
 
-            {% comment %} <div class="search-filters__accordion-section">
-                <fieldset>
-                    <legend>
-                        <h4 class="search-filters__accordion-section-heading">Date</h4>
-                    </legend>
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend>
+                            <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Covering date</h4>
+                        </legend>
 
-                    <div>
-                        <input type="checkbox" name="date-example" id="date-example">
-                        <label for="date-example" class='search-filters__label'>Example century goes here</label>
-                    </div>
+                        <div class="search-filters__creation-date-section">
+                            {{ form.covering_date_from.label_tag }}
+                            {{ form.covering_date_from.errors }}
+                            {{ form.covering_date_from }}
+                        </div>
 
-                    <input type="submit" value="Update" class="search-filters__submit">
-                </fieldset>
+                        <div class="search-filters__creation-date-section">
+                            {{ form.covering_date_to.label_tag }}
+                            {{ form.covering_date_to.errors }}
+                            {{ form.covering_date_to }}
+                        </div>
 
-            </div> {% endcomment %}
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+            {% endif %}
 
             {% include "search/includes/filter.html" with field=form.collection %}
 

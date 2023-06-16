@@ -398,16 +398,16 @@ class BaseFilteredSearchView(BaseSearchView):
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         page_size = form.cleaned_data.get("per_page")
-        opening_start_date = form.cleaned_data.get("opening_start_date")
-        opening_end_date = form.cleaned_data.get("opening_end_date")
         return dict(
             stream=self.api_stream,
             q=form.cleaned_data.get("q"),
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
             filter_keyword=form.cleaned_data.get("filter_keyword"),
-            opening_start_date=opening_start_date,
-            opening_end_date=opening_end_date,
+            opening_start_date=form.cleaned_data.get("opening_start_date"),
+            opening_end_date=form.cleaned_data.get("opening_end_date"),
+            created_start_date=form.cleaned_data.get("covering_date_from"),
+            created_end_date=form.cleaned_data.get("covering_date_to"),
             offset=(self.page_number - 1) * page_size,
             size=page_size,
             template=Template.DETAILS,
@@ -535,6 +535,22 @@ class BaseFilteredSearchView(BaseSearchView):
                 (
                     opening_end_date,
                     "Record opening to: " + opening_end_date.strftime("%d %m %Y"),
+                )
+            ]
+
+        if covering_date_from := form.cleaned_data.get("covering_date_from"):
+            return_value["covering_date_from"] = [
+                (
+                    covering_date_from,
+                    "Covering date from: " + covering_date_from.strftime("%d %m %Y"),
+                )
+            ]
+
+        if covering_date_to := form.cleaned_data.get("covering_date_to"):
+            return_value["covering_date_to"] = [
+                (
+                    covering_date_to,
+                    "Covering date to: " + covering_date_to.strftime("%d %m %Y"),
                 )
             ]
 
