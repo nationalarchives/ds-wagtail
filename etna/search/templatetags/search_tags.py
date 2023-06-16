@@ -42,7 +42,12 @@ def query_string_exclude(
 
     query_dict = request.GET.copy()
 
-    if key in ("opening_start_date", "opening_end_date"):
+    if key in (
+        "opening_start_date",
+        "opening_end_date",
+        "covering_date_from",
+        "covering_date_to",
+    ):
         # We're only ever dealing with single date values for these fields, so can
         # safely remove all date segments from the querystring regardless of
         # whether they match the supplied `value`

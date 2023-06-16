@@ -196,6 +196,20 @@ class BaseCollectionSearchForm(forms.Form):
         default_day=END_OF_MONTH,
         default_month=12,
     )
+    covering_date_from = DateInputField(
+        label="From",
+        label_suffix="",
+        required=False,
+        default_day=1,
+        default_month=1,
+    )
+    covering_date_to = DateInputField(
+        label="to",
+        label_suffix="",
+        required=False,
+        default_day=END_OF_MONTH,
+        default_month=12,
+    )
     per_page = forms.IntegerField(
         min_value=20,
         max_value=50,
@@ -233,20 +247,24 @@ class BaseCollectionSearchForm(forms.Form):
         """
         cleaned_data = super().clean()
 
-        opening_start = cleaned_data.get("opening_start_date")
-        opening_end = cleaned_data.get("opening_end_date")
+        for from_field_name, to_field_name in (
+            ("opening_start_date", "opening_end_date"),
+            ("covering_date_from", "covering_date_to"),
+        ):
+            from_val = cleaned_data.get(from_field_name)
+            to_val = cleaned_data.get(to_field_name)
 
-        if opening_start and opening_end and opening_start > opening_end:
-            # if both dates have valid values but invalid when together
-            self.add_error(
-                "opening_start_date",
-                ValidationError(
-                    "This date must be earlier than or equal to the 'to' date.",
-                    code="date_range_invalid",
-                ),
-            )
-            # remove from cleaned data
-            cleaned_data.pop("opening_start_date", None)
+            if from_val and to_val and from_val > to_val:
+                # if both dates have valid values but invalid when together
+                self.add_error(
+                    from_field_name,
+                    ValidationError(
+                        "This date must be earlier than or equal to the 'to' date.",
+                        code="date_range_invalid",
+                    ),
+                )
+                # remove from cleaned data
+                cleaned_data.pop(from_field_name, None)
 
         return cleaned_data
 
