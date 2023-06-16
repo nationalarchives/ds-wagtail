@@ -1,15 +1,5 @@
 {% load records_tags %}
 
-<!--
-    TODO This is using the forloop for the CSS level, due to missing API data. If the API data is added by K-Int,
-    the forloop.counter will need to be changed to item.level_code. If it's done currently, it will give styling issues.
-
-    TODO "N" will need to be replaced with API data for the count of records inside this level.
-
-    TODO "UNAVAILABLE" will need to be removed when API data is added. Currently some level codes are missing on some
-    record levels. e.g. C11541262.
--->
-
 {% if item.level_code %}
     {% level_name item.level_code as hierarchy_level %}
 {% endif %}

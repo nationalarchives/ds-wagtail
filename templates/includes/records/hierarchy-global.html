@@ -10,13 +10,6 @@
             <h2 class="hierarchy-short-panel__heading sr-only" id="short-hierarchy-title">Catalogue location at a glance</h2>
             <p class="hierarchy-short-panel__label">You are here:</p>
 
-            <!--
-            The 'short panel__list' section should only display up to a maximum of 3 list items at one time.
-            These should display only the 'major' levels above the level you're on i.e Archive, Dept, Division, Series (don't include 'sub-levels' or 'sub-sub-levels').
-            If the archive level is not the first item in the list, the first item should display the 'hierarchy-short-panel__list-item--more' modifier class to indicate there are more levels above by displaying the '...' before the list item, which is automatically handled by the CSS.
-            If the Archive level is visible as the first item, this modifier doesn't need to be added.
-            -->
-
             <ul class="hierarchy-short-panel__list">
                 {% if record.hierarchy %}
                     {% if record.hierarchy|length <= 2 %}
@@ -73,11 +66,6 @@
 
         <div class="hierarchy-short-panel__toggle-link" data-id="hierarchy-toggle-link"></div>
 
-        <!--
-            The 'hierarchy-full-panel__bar-container-inner--level-1' modifier adds the width of the bar depending on the level.
-            These always need to be added in stepped order - don't skip levels - so the widths descend by 2% each time (eg. only 1, 2, 3, 4 and not 1, 3, 4, 6).
-        -->
-
         <!-- DETAILED HIERARCHY VIEW -->
         <nav class="hierarchy-full-panel" role="navigation" data-id="hierarchy-detailed-view" aria-labelledby="detailed-hierarchy-title">
             <h2 class="hierarchy-full-panel__heading" id="detailed-hierarchy-title">Detailed catalogue location:</h2>
@@ -105,11 +93,6 @@
                     </div>
                 </div>
             {%endif%}
-
-        <!--
-            The next section 'hierarchy-local-nav' section will only need to be shown if there is a previous and/or a next item available.
-            It won't need it to be shown if it's only showing the current item
-        -->
 
         <!-- PREVIOUS/CURRENT/NEXT NAVIGATION -->
         {% if record.previous_record or record.next_record %}
