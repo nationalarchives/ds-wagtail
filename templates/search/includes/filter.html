@@ -16,8 +16,6 @@
             <input type="submit" value="Update" class="search-filters__submit">
         </fieldset>
     </div>
-{% elif field.data and not field.errors %}
-    {% for value in field.data %}
-        <input type="hidden" name="{{ field.name }}" value="{{ value }}">
-    {% endfor %}
+{% else %}
+    {{ field.as_hidden }}
 {% endif %}
