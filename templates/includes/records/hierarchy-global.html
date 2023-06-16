@@ -22,7 +22,7 @@
                     {% if record.hierarchy|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
-                                <a href="#" data-link-type="Link" data-link="Archive" data-catalogue-level="0" data-component-name="Hierarchy links">Archive</a>
+                                <a href="{% record_url record.repository %}" data-link-type="Link" data-link="Archive" data-catalogue-level="0" data-component-name="Hierarchy links">Archive</a>
                             </span>({{ record.template.heldBy }})
                         </li>
                     {% endif %}
@@ -60,7 +60,7 @@
                 {% else %}
                     <li class="hierarchy-short-panel__list-item">
                         <span class="hierarchy-short-panel__level">
-                            <a href="#">Archive</a>
+                            <a href="{% record_url record.repository %}">Archive</a>
                         </span>({{ record.template.heldBy }})
                     </li>
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
