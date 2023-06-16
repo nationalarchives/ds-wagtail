@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 
-from ...ciim.constants import LevelKeys
+from ...ciim.constants import TNA_URLS, LevelKeys
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -9,7 +9,9 @@ register = template.Library()
 
 
 @register.simple_tag
-def record_url(record: Record, is_editorial: bool = False) -> str:
+def record_url(
+    record: Record, is_editorial: bool = False, order_from_discovery: bool = False
+) -> str:
     """
     Return the URL for the provided `record`, which should always be a
     fully-transformed `etna.records.models.Record` instance.
@@ -19,6 +21,14 @@ def record_url(record: Record, is_editorial: bool = False) -> str:
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return f"https://discovery.nationalarchives.gov.uk/details/r/{record.iaid}"
+
+    if order_from_discovery:
+        if record.custom_record_type == "ARCHON":
+            return TNA_URLS.get("discovery_rec_archon_fmt").format(iaid=record.iaid)
+        elif record.custom_record_type == "CREATORS":
+            return TNA_URLS.get("discovery_rec_creators_fmt").format(iaid=record.iaid)
+        else:
+            return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
     return record.url
 
 

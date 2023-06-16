@@ -72,7 +72,7 @@ def record_detail_view(request, iaid):
         record = records_client.fetch(iaid=iaid, expand=True)
 
         # check archive record
-        if record.source == "ARCHON":
+        if record.custom_record_type == "ARCHON":
             template_name = "records/archive_detail.html"
             context.update(discovery_browse=TNA_URLS.get("discovery_browse"))
     except DoesNotExist:
