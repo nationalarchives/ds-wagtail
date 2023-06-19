@@ -670,15 +670,15 @@ class LevelKeys(StrEnum):
 
 @forTemplate
 class NonTNALevelKeys(StrEnum):
-    LEVEL_1 = "Fond"
-    LEVEL_2 = "Sub-fond"
-    LEVEL_3 = "Sub-sub-fond"
-    LEVEL_4 = "Sub-sub-sub-fond"
+    LEVEL_1 = "Fonds"
+    LEVEL_2 = "Sub-fonds"
+    LEVEL_3 = "Sub-sub-fonds"
+    LEVEL_4 = "Sub-sub-sub-fonds"
     LEVEL_5 = "Series"
     LEVEL_6 = "Sub-series"
     LEVEL_7 = "Sub-sub-series"
     LEVEL_8 = "Sub-sub-sub-series"
-    LEVEL_9 = "Piece"
+    LEVEL_9 = "File"
     LEVEL_10 = "Item"
     LEVEL_11 = "Sub-item"
 
