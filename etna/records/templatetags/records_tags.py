@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 
-from ...ciim.constants import TNA_URLS, LevelKeys
+from ...ciim.constants import TNA_URLS, LevelKeys, NonTNALevelKeys
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -44,8 +44,11 @@ def as_label(record_field_name: str) -> str:
     """returns human readable label for pre configured record field name, otherwise Invalid name"""
     return FIELD_LABELS.get(record_field_name, "UNRECOGNISED FIELD NAME")
 
-
+    
 @register.simple_tag
-def level_name(level_code: int) -> str:
+def level_name(level_code: int, is_tna: bool) -> str:
     """returns level as a human readable string"""
-    return LevelKeys["LEVEL_" + str(level_code)].value
+    if is_tna:
+        return LevelKeys["LEVEL_" + str(level_code)].value
+    else:
+        return NonTNALevelKeys["LEVEL_" + str(level_code)].value
