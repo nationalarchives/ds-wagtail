@@ -668,6 +668,7 @@ class LevelKeys(StrEnum):
     LEVEL_6 = "Piece"
     LEVEL_7 = "Item"
 
+
 @forTemplate
 class NonTNALevelKeys(StrEnum):
     LEVEL_1 = "Fonds"
@@ -681,6 +682,7 @@ class NonTNALevelKeys(StrEnum):
     LEVEL_9 = "File"
     LEVEL_10 = "Item"
     LEVEL_11 = "Sub-item"
+
 
 LEVELS = (
     "Division",
