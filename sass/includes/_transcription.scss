@@ -167,6 +167,14 @@
     font-size: $font-size-base;
     font-weight: $headings-font-weight;
 
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+      font-size: 1.4rem;
+    }
+
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
+      font-size: 1.8rem;
+    }
+
     &:first-of-type {
       margin-right: 1.875rem;
     }
