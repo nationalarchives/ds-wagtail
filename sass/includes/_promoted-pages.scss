@@ -1,5 +1,7 @@
 .promoted-pages {
-    background-color: $color__cream;
+    &--bg {
+        background-color: $color__cream;
+    }
 
     &__image {
         width: 100%;
