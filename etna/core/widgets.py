@@ -77,3 +77,36 @@ class DateInputWidget(forms.MultiWidget):
         if value:
             return value.day, value.month, value.year
         return None, None, None
+
+
+class HiddenDateInputWidget(forms.widgets.MultiWidget):
+    """
+    Allows DateField's to be rendered as a series of hidden inputs in a form,
+    with the separate hidden input for each component of the date value.
+    """
+
+    def __init__(
+        self,
+        attrs=None,
+    ):
+        widgets = (
+            forms.HiddenInput(attrs=attrs),
+            forms.HiddenInput(attrs=attrs),
+            forms.HiddenInput(attrs=attrs),
+        )
+        super().__init__(widgets, attrs)
+
+    def decompress(self, value):
+        """
+        Convert a ``date`` into values for the day, month and year so it can be
+        displayed in the widget's fields.
+
+        Args:
+            value (date): the date to be displayed
+
+        Returns:
+            a 3-tuple containing the day, month and year components of the date.
+        """
+        if value:
+            return [value.day, value.month, value.year]
+        return [None, None, None]
