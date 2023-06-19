@@ -223,4 +223,9 @@
       margin: 0;
     }
   }
+
+  &__gallery-heading {
+    @extend .container;
+    text-align: center;
+  }
 }
