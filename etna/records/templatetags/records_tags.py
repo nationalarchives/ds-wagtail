@@ -36,7 +36,7 @@ def record_url(
 @register.simple_tag
 def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: Record):
     """Checks whether given page matches item from a record's hierarchy"""
-    return page.reference_number == hierarchy_item.reference_number
+    return page.iaid == hierarchy_item.iaid
 
 
 @register.filter
