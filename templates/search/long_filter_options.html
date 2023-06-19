@@ -10,8 +10,8 @@
 
     <div class="long-filters">
         <h1 class="long-filters__heading">Select filters to apply to your results</h1>
-        <form method="get" action="{% url url_name %}" data-id="long-filter-form" id="analytics-long-filter-form">
-            
+        <form method="get" action="{% url url_name %}" data-id="long-filter-form" id="analytics-long-filter-form" data-long-filters>
+
             <div class="long-filters__options">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
                 <a href="{% url url_name %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
@@ -20,15 +20,15 @@
             <div class="long-filters__filters" data-id="long-filters-container">
                 <fieldset data-id="long-filters-fieldset">
                     <legend class="sr-only" data-id="long-filters-legend">Filters</legend>
-                    <ul class="long-filters__filters-list" data-id="long-filters-list">
+                    <ul class="long-filters__filters-list" data-id="long-filters-list" data-long-filters-list>
                         {% for option in bound_field %}
-                            <li class="long-filters__filters-list-item" data-class="long-filters-list-item">{{ option }}</li>
+                            <li class="long-filters__filters-list-item" data-class="long-filters-list-item" data-long-filters-item>{{ option }}</li>
                         {% endfor %}
                     </ul>
                 </fieldset>
             </div>
 
-            {{ field_name|include_hidden_fields:form }}
+            {% render_fields_as_hidden form exclude=field_name %}
 
             <div class="long-filters__submit-section">
                 <input type="submit" value="Apply filters" class="search-filters__submit">
