@@ -8,7 +8,8 @@
         {{ form.sort_by.errors }}
         {{ form.sort_by }}
 
-        {{ 'sort_by'|include_hidden_fields:form }}
+        {# render hidden inputs for fields controlled by other forms #}
+        {% render_fields_as_hidden form exclude='sort_by' %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
@@ -113,7 +114,8 @@
             {% endif %}
         </div>
 
-        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location'|include_hidden_fields:form }}
+        {# render hidden inputs for fields controlled by other forms #}
+        {% render_fields_as_hidden form include='q group sort_by sort_order' %}
 
     </form>
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}

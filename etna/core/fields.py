@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .validators import PositiveIntegerStringValidator
-from .widgets import DateInputWidget
+from .widgets import DateInputWidget, HiddenDateInputWidget
 
 END_OF_MONTH = "END_OF_MONTH"
 ERR_MSG_REAL_DATE = "Entered date must be a real date, for example 23 9 2017."
@@ -26,6 +26,7 @@ class DateInputField(forms.MultiValueField):
     """
 
     widget = DateInputWidget
+    hidden_widget = HiddenDateInputWidget
 
     def __init__(
         self,

@@ -704,6 +704,9 @@ TYPE_CHOICES = tuple(
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
 }
 
 #  associate readable names with api identifiers

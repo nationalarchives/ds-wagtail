@@ -1,14 +1,16 @@
 from datetime import date
-from unittest.mock import patch
+from unittest import mock
 
+from django.forms.boundfield import BoundField
 from django.test import RequestFactory, SimpleTestCase
+from django.utils.datastructures import MultiValueDict
 
 from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
     extended_in_operator,
-    include_hidden_fields,
     query_string_exclude,
     query_string_include,
+    render_fields_as_hidden,
 )
 
 
@@ -120,35 +122,73 @@ class TestExtendedInOperator(SimpleTestCase):
                 self.assertEqual(result, expected)
 
 
-class IncludeHiddenFieldsTest(SimpleTestCase):
-    @patch("etna.search.templatetags.search_tags.get_random_string", return_value="123")
-    def test_generate_hidden_html_for_escape_search_values(
-        self, mock_get_random_string
-    ):
-        """tests generated hidden field html for input values containing special chars ex double-quote for search term and search within results params"""
+class RenderFieldsAsHiddenTest(SimpleTestCase):
+    def setUp(self):
+        self.form = CatalogueSearchForm(
+            data=MultiValueDict(
+                {
+                    "q": "test",
+                    "group": "tna",
+                    "sort_by": "relevance",
+                    "sort_order": "asc",
+                    "opening_start_date_0": "01",
+                    "opening_start_date_1": "01",
+                    "opening_start_date_2": "2000",
+                    "collection": ["ADM", "AIR", "WO"],
+                }
+            )
+        )
 
-        for label, form_data, visible_field_names, expected_output in (
-            (
-                "test search term",
-                {
-                    "group": "tna",
-                    "q": '"wo 439"',
-                },
-                "group per_page sort_order sort_by display filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location",
-                '<input type="hidden" name="q" value="&quot;wo 439&quot;" id="id_q_123"',
-            ),
-            (
-                "test search within results",
-                {
-                    "group": "tna",
-                    "filter_keyword": '"kew"',
-                },
-                "group per_page sort_order sort_by display q collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location",
-                '<input type="hidden" name="filter_keyword" value="&quot;kew&quot;" id="id_filter_keyword_123"',
-            ),
-        ):
-            with self.subTest(label):
-                form = CatalogueSearchForm(form_data)
-                self.assertTrue(form.is_valid(), label)
-                html = include_hidden_fields(visible_field_names, form)
-                self.assertIn(expected_output, html)
+    @mock.patch(
+        "etna.search.templatetags.search_tags.get_random_string", return_value="123"
+    )
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_generates_random_suffixes_for_input_ids(
+        self, mocked_as_hidden, mocked_get_random_string
+    ):
+        render_fields_as_hidden(self.form, include="q")
+        mocked_as_hidden.assert_called_once_with(
+            self.form["q"], attrs={"id": "id_q_123"}
+        )
+
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_exclude(self, mocked_as_hidden):
+        exclude_names = ("q", "group", "sort_by")
+
+        # call the function under test
+        render_fields_as_hidden(self.form, exclude=" ".join(exclude_names))
+
+        # assert as_hidden() was called for the correct fields
+        for field in self.form:
+            if field.name in exclude_names:
+                with self.subTest(
+                    f"as_hidden() should NOT have been called for field: '{field.name}'"
+                ):
+                    with self.assertRaises(AssertionError):
+                        mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+            else:
+                with self.subTest(
+                    f"as_hidden() should have been called for field: '{field.name}'"
+                ):
+                    mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+
+    @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
+    def test_include(self, mocked_as_hidden):
+        include_names = ("q", "group")
+
+        # call the function under test
+        render_fields_as_hidden(self.form, include=" ".join(include_names))
+
+        # assert as_hidden() was called for the correct fields
+        for field in self.form:
+            if field.name not in include_names:
+                with self.subTest(
+                    f"as_hidden() should NOT have been called for field: '{field.name}'"
+                ):
+                    with self.assertRaises(AssertionError):
+                        mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+            else:
+                with self.subTest(
+                    f"as_hidden() should have been called for field: '{field.name}'"
+                ):
+                    mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
