@@ -1,7 +1,7 @@
 {% load records_tags %}
 
 {% if item.level_code %}
-    {% level_name item.level_code as hierarchy_level %}
+    {% level_name item.level_code record.is_tna as hierarchy_level %}
 {% endif %}
 
 <div class="hierarchy-full-panel__bar-container-outer">
