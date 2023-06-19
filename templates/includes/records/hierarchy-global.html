@@ -1,6 +1,6 @@
 {% load records_tags %}
 
-<div class="hierarchy" data-container-name="hierarchy-global" id="tna-record">
+<div class="hierarchy" data-container-name="hierarchy-global" {% if record.is_tna %}id="tna-record"{% else %}id="non-tna-record"{% endif %}>
     {% include "includes/icon.html" with name="diagram-hierarchy" classname="hierarchy__icon" %}
     
     <div class="hierarchy__container">
