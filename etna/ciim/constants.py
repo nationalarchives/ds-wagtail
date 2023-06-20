@@ -701,13 +701,12 @@ TYPE_CHOICES = tuple(
     (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
 )
 
-CUSTOM_ERROR_MESSAGES = {
-    "invalid_date_range": "There is a problem. Start date cannot be after end date."
-}
-
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
 }
 
 #  associate readable names with api identifiers

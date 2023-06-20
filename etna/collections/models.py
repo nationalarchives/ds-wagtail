@@ -1,7 +1,8 @@
-from typing import List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -23,7 +24,7 @@ from ..core.models import (
     BasePage,
     BasePageWithIntro,
     ContentWarningMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
 )
 from ..core.utils import skos_id_from_text
 from .blocks import (
@@ -104,7 +105,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     gtm_content_group = "Explorer"
 
 
-class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -114,7 +115,7 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
@@ -152,7 +153,7 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
+class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -183,7 +184,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
@@ -230,6 +231,13 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         obj = super().with_content_json(content)
         obj.skos_id = self.skos_id
         return obj
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4=self.title,
+        )
+        return data
 
     @cached_property
     def related_articles(self):
@@ -282,7 +290,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -292,7 +300,7 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
@@ -330,7 +338,7 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -353,7 +361,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
@@ -376,6 +384,13 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.TimePeriodExplorerPage",
         "collections.HighlightGalleryPage",
     ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension7=self.title,
+        )
+        return data
 
     @cached_property
     def related_articles(self):
@@ -643,6 +658,14 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         for item in self.highlights:
             strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
 
 class Highlight(Orderable):

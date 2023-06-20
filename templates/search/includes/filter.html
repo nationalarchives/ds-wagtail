@@ -16,4 +16,6 @@
             <input type="submit" value="Update" class="search-filters__submit">
         </fieldset>
     </div>
+{% else %}
+    {{ field.as_hidden }}
 {% endif %}

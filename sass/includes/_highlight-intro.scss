@@ -38,11 +38,15 @@
 
     &__title {
         font-family: $font__supria-sans;
-        font-size: 2.25rem;
+        @include font-size(xxxl);
         font-weight: $font-weight-bold;
-        line-height: 1.3;
+        line-height: 1.33;
         padding-bottom: 0.75rem;
         margin: 0;
+
+        @media screen and (min-width: $screen__lg) {
+            line-height: 1.22;
+        }
     }
 
     &__intro {
@@ -51,6 +55,11 @@
         line-height: 1.5;
         padding: 0;
         margin: 0;
+
+        @media screen and (min-width: $screen__lg) {
+            @include font-size(xl);
+            line-height: 1.71;
+        }
 
         p {
             // this removes the global margin-bottom for paragraphs
