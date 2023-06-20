@@ -13,9 +13,6 @@ RUN npx sass sass/etna.scss:css/etna.css
 
 
 FROM python:3.11
-LABEL maintainer="dan@numiko.com"
-
-ARG POETRY_HOME=/opt/poetry
 
 EXPOSE 8000
 
@@ -40,15 +37,11 @@ WORKDIR /app
 # Upgrade pip
 RUN pip install --upgrade pip
 
-# Install poetry as per official guidance:
-# https://github.com/python-poetry/poetry#installation
+# Install poetry
 RUN curl -sSL "https://install.python-poetry.org" | python -
 
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
-
-# Load shortcuts
-COPY ./bash/bashrc.sh /root/.bashrc
 
 # Copy files used by poetry
 COPY pyproject.toml poetry.lock ./
@@ -56,12 +49,22 @@ COPY pyproject.toml poetry.lock ./
 # Install Python dependencies AND the 'etna' app
 RUN poetry install
 
+# Copy the executable
+COPY bash/run.sh bash/run-dev.sh bash/
+RUN chmod +x bash/run.sh bash/run-dev.sh
+
 # Copy application code
+# TODO: We shouldn't copy everything, only what is required
 COPY . .
+# COPY config etna templates manage.py ./
+
+# TODO: Until we copy only what is required, the bash files are getting overwritten
+RUN chmod +x bash/run.sh bash/run-dev.sh
 
 # Copy static assets
 COPY --from=staticassets /home/css/etna.css /home/css/etna.css.map templates/static/css/dist/
 COPY --from=staticassets /home/templates/static/scripts templates/static
 
-# Do nothing forever (use 'exec' to resuse the container)
-CMD tail -f /dev/null
+RUN poetry run python manage.py collectstatic --no-input
+
+CMD ./bash/run.sh

@@ -2,32 +2,36 @@ version: '3'
 
 services:
   db:
+    container_name: db
     image: postgres:12.0
     ports:
      - "5432:5432"
     volumes:
      - ./database_dumps:/app/database_dumps
   web:
+    container_name: web
     platform: linux/amd64
     build: .
     volumes:
       - ./:/app
+      - ./bash/bashrc.sh:/root/.bashrc
     depends_on:
      - db
     ports:
      - 8000:8000 # runserver
      - 8001:8001 # mkdocs serve
-    # Closely match prod server
-    # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
-    # Server for better debugging output
-    command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
+    command: sh bash/run-dev.sh
     restart: on-failure
     init: true
     stdin_open: true
     tty: true
     env_file:
       - .env
+    environment:
+      - DATABASE_URL=postgres://postgres:@db:5432/postgres
+      - DATABASE_HOST=db
   cli:
+    container_name: cli
     platform: linux/amd64
     build: platformsh-cli
     volumes:
