@@ -14,5 +14,5 @@ class PromotedLinkBlock(blocks.StructBlock):
 
 
 class AuthorPromotedLinkBlock(PromotedLinkBlock):
-    publication_date = blocks.DateBlock(required=False)
+    publication_date = blocks.CharBlock(required=False)
     author = blocks.CharBlock(required=False)

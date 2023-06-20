@@ -14,7 +14,10 @@
     <div class="search-results__list-card-content">
 
         <div class="row">
-            <div class="col-md-9 col-sm-12">
+
+            <div class="col-md-10 col-sm-12 title-fix">
+
+
 
                 <h3 class="search-results__list-card-heading">
                     <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
@@ -22,6 +25,7 @@
                         {{ record.summary_title }}
                     </a>
                 </h3>
+
 
                 <p class="search-results__list-card-description">
                     {{ record.listing_description }}
