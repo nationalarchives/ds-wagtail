@@ -52,3 +52,22 @@ def level_name(level_code: int, is_tna: bool) -> str:
         return LevelKeys["LEVEL_" + str(level_code)].value
     else:
         return NonTNALevelKeys["LEVEL_" + str(level_code)].value
+    
+@register.simple_tag
+def breadcrumb_items(hierarchy: list, is_tna: bool, current_item: Record) -> list:
+    """returns breadcrumb items depending on position in hierarchy"""
+    items = []
+    tna_breadcrumb_levels = [1, 2, 3]
+    oa_breadcrumb_levels = [1, 2, 5]
+    for record in hierarchy:
+        if record.level_code != current_item.level_code:
+            if is_tna:
+                if record.level_code in tna_breadcrumb_levels:
+                    items.append(record)
+            else:
+                if record.level_code in oa_breadcrumb_levels:
+                    items.append(record)
+    items.append(current_item)
+    if len(items) > 3:
+        items = items[-3:]
+    return items
