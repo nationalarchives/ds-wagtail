@@ -5,6 +5,7 @@
   background: $color__grey-800;
   color: $color__white;
   padding-bottom: 0.5rem;
+  padding-top: 2.5rem;
 
   .hidden {
     display: none;
@@ -82,7 +83,6 @@
 
   &__image-counter {
     text-align: center;
-    padding-top: 1.5em;
 
     &:focus {
       outline: 0.312rem solid $color__navy;
@@ -227,5 +227,7 @@
   &__gallery-heading {
     @extend .container;
     text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }
