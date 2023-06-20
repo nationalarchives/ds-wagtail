@@ -16,8 +16,8 @@
             data-card-title="{{ link_page.title }}"
             {% if link_page.is_newly_published %}
                 data-label="New"
-            {%endif%}
-            aria-describedby="article-desc{{ page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
+            {% endif %}
+            aria-labelledby="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
             {% if forloop.counter %}
                 data-card-position="{{ forloop.counter0 }}"
             {% endif %}
@@ -41,13 +41,12 @@
                     href="{{ link_page.url }}"
                     class="card-group-secondary-nav__title-link"
                     data-card-type="card-group-secondary-nav"
-                    aria-describedby="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
                     data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
                     data-link-type="Card text"
                     data-card-title="{{ link_page.title }}"
                     {% if link_page.is_newly_published %}
                     data-label="New"
-                    {%endif%}
+                    {% endif %}
                     {% if forloop.counter %}
                         data-card-position="{{ forloop.counter0 }}"
                     {% endif %}
@@ -56,7 +55,9 @@
                 <span>NEW</span>
                 {% endif %}
             </h3>
-            <p id ="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}" class="aria-desc-card">This is a link to a story about {{ link_page.title }}</p>
+            <p id="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}" class="aria-desc-card">
+                Read about {{ link_page.title }}
+            </p>
             <p class="card-group-secondary-nav__paragraph">{{ link_page.teaser_text }}</p>
         </div>
     </div>
