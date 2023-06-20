@@ -36,4 +36,13 @@
       font-size: 1.313rem; // one off font size (21px)
     }
   }
+
+  // Styles for Focused Article templates
+  .template-focused-article & {
+    background-color: $color__grey-700;
+
+    &__title, &__paragraph {
+      color: $color__white;
+    }
+  }
 }
