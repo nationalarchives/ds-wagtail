@@ -14,5 +14,5 @@ class PromotedLinkBlock(blocks.StructBlock):
 
 
 class AuthorPromotedLinkBlock(PromotedLinkBlock):
-    publication_date = blocks.CharBlock(required=False)
+    publication_date = blocks.CharBlock(required=False, help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021")
     author = blocks.CharBlock(required=False)
