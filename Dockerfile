@@ -38,7 +38,8 @@ WORKDIR /app
 # RUN pip install --no-cache-dir --upgrade pip
 
 # Install poetry
-RUN ["/bin/bash", "-c", "curl -sSL 'https://install.python-poetry.org' | python -"]
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN curl -sSL "https://install.python-poetry.org" | python -
 
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
