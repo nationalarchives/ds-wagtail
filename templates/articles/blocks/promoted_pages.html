@@ -1,5 +1,5 @@
 {% load wagtailcore_tags wagtailimages_tags i18n %}
-<section class="promoted-pages body-container body-container--short">
+<section class="promoted-pages body-container body-container--short{% if bg %} promoted-pages--bg{% endif %}">
     <div class="container">
         <h2 class="promoted-pages__heading">{% trans value.heading %}</h2>
         <ul class="card-grid card-grid__trio card-grid--list promoted-pages__cards"
