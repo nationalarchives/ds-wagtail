@@ -1,0 +1,104 @@
+{% load wagtailcore_tags static %}
+
+{% if yes_form and no_form %}
+    <div class="feedback-widget" data-feedback-widget>
+        <div class="feedback-widget__content">
+            <h2 class="feedback-widget__heading" data-feedback-heading>
+                {{ prompt.text }}
+            </h2>
+            <div class="feedback-widget__buttons" data-feedback-buttons>
+                <form
+                    action=""
+                    method="post"
+                    data-yes-form
+                    class="feedback-widget__button-form"
+                >
+                    {{ yes_form }}
+
+                    <button
+                        class="tna-button--dark feedback-widget__button"
+                        aria-label="Feedback - yes this page is useful"
+                        type="submit"
+                        name="form_prefix"
+                        value="{{ yes_form.prefix }}"
+                    >
+                        Yes
+                    </button>
+                </form>
+
+                <form
+                    action=""
+                    method="post"
+                    data-no-form
+                    class="feedback-widget__button-form"
+                >
+                    {{ no_form }}
+                    
+                    <button
+                        class="tna-button--dark feedback-widget__button"
+                        aria-label="Feedback - No this page isn't useful"
+                        type="submit"
+                        name="form_prefix"
+                        value="{{ no_form.prefix }}"
+                    >
+                        No
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="feedback-widget__feedback-block feedback-block" data-extra-feedback-block="yes" hidden>
+            <button
+                aria-label="Close feedback form"
+                aria-controls="extra-feedback-block"
+                data-close-form
+                class="feedback-block__close"
+            >Close</button>
+            <form
+                action=""
+                method="post"
+                data-extra-feedback-form
+                class="feedback-block__form tbxforms"
+            >
+                <label for="yes-{{ comment_form.comment.id_for_label }}" class="feedback-block__heading">Thank you. What did you like about this information?</label>
+                <div class="tbxforms-form-group">
+                    <textarea name="{{ comment_form.comment.name }}" cols="150" rows="5" aria-required="" class="tbxforms-textarea feedback-block__extra-feedback" required="" id="yes-{{ comment_form.comment.id_for_label }}"></textarea>
+                </div>
+                <button
+                    type="submit"
+                    class="tna-button--dark"
+                    aria-label="Send feedback"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+
+        <div class="feedback-widget__feedback-block feedback-block" data-extra-feedback-block="no" hidden>
+            <button
+                aria-label="Close feedback form"
+                aria-controls="extra-feedback-block"
+                data-close-form
+                class="feedback-block__close"
+            >Close</button>
+            <form
+                action=""
+                method="post"
+                data-extra-feedback-form
+                class="feedback-block__form tbxforms"
+            >
+                <label for="no-{{ comment_form.comment.id_for_label }}" class="feedback-block__heading heading heading--2">Please can you tell us what we can improve about this information?</label>
+                <div class="tbxforms-form-group">
+                    <textarea name="{{ comment_form.comment.name }}" cols="150" rows="5" aria-required="" class="tbxforms-textarea feedback-block__extra-feedback" required="" id="no-{{ comment_form.comment.id_for_label }}"></textarea>
+                </div>
+                <button
+                    type="submit"
+                    class="tna-button--dark"
+                    aria-label="Send feedback"
+                >
+                    Send
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}

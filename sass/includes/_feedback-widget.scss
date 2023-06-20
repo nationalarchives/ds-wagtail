@@ -1,0 +1,92 @@
+.feedback-widget {
+    $root: &;
+    border-top: 1px solid $color__grey-500;
+    display: block;
+    position: relative;
+    width: 90%;
+    margin: auto;
+    padding: 1rem;
+
+    @media (min-width: $screen__md) {
+        padding: 1rem 0;
+        margin-top: 3rem;
+    }
+
+    @media (min-width: $screen__lg) {
+        width: 100%;
+    }
+
+    &__content {
+        color: $color__black;
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__heading {
+        @include font-size(s);
+        font-weight: $font-weight-bold;
+        margin-top: 0;
+        margin-bottom: 0;
+        flex: 1 0 100%;
+
+        @include media-query(large) {
+            flex: initial;
+        }
+    }
+
+    &__button-form {
+        display: inline-block;
+    }
+
+    &__buttons {
+        display: flex;
+        column-gap: 1rem;
+
+        &[hidden] {
+            display: none;
+        }
+    }
+
+    &__button {
+        background-color: transparent;
+    }
+
+    &__feedback-block {
+        position: relative;
+    }
+}
+
+.feedback-block {
+    &__heading {
+        @extend .feedback-widget__heading;
+        margin-bottom: 1rem;
+        display: block;
+    }
+
+    &__close {
+        @include font-size(xs);
+        right: 0;
+        // remove the button appearance
+        background: transparent;
+        border: none;
+        font-weight: $weight--semibold;
+        text-decoration: underline;
+        display: block;
+        margin-left: auto;
+        margin-bottom: $grid;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        @include media-query(large) {
+            position: absolute;
+        }
+    }
+}
