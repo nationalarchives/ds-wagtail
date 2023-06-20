@@ -45,8 +45,11 @@
                             {% include "includes/records/hierarchy-short-item.html" %}
 
                         {% elif is_current_item %}
+                            {% if item.level_code %}
+                                {% level_name item.level_code record.is_tna as hierarchy_level %}
+                            {% endif %}
                             <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                                <span class="hierarchy-short-panel__level">This {{ record.level|lower }}</span>({{ item.reference_number }})
+                                <span class="hierarchy-short-panel__level">This {{ hierarchy_level|lower }}</span>({{ item.reference_number }})
                             </li>
                         {% endif %}
                     {% endfor %}
