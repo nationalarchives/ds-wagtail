@@ -13,11 +13,11 @@ env:
   IMAGE_NAME: ds-wagtail-dev
   
 jobs:
-  lint:
-    runs-on: hadolint/hadolint:latest-debian
-    steps:
-      - name: Lint Dockerfile
-        run: hadolint Dockerfile || true
+  # lint:
+  #   runs-on: hadolint/hadolint:latest-debian
+  #   steps:
+  #     - name: Lint Dockerfile
+  #       run: hadolint Dockerfile || true
   
   build:
     runs-on: ubuntu-latest
