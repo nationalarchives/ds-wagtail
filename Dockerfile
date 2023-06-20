@@ -5,8 +5,8 @@ COPY package.json package-lock.json webpack.config.js ./
 RUN npm install
 COPY scripts ./scripts
 COPY sass ./sass
-RUN npx webpack --config webpack.config.js
-RUN npx sass sass/etna.scss:css/etna.css
+RUN npx webpack --config webpack.config.js && \
+  npx sass sass/etna.scss:css/etna.css
 
 
 
@@ -35,10 +35,10 @@ ENV \
 WORKDIR /app
 
 # Upgrade pip
-RUN pip install --upgrade pip
+# RUN pip install --no-cache-dir --upgrade pip
 
 # Install poetry
-RUN curl -sSL "https://install.python-poetry.org" | python -
+RUN ["/bin/bash", "-c", "curl -sSL 'https://install.python-poetry.org' | python -"]
 
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
@@ -67,4 +67,4 @@ COPY --from=staticassets /home/templates/static/scripts templates/static
 
 RUN poetry run python manage.py collectstatic --no-input
 
-CMD ./bash/run.sh
+CMD ["./bash/run.sh"]
