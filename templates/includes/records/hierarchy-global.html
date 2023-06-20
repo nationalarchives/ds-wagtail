@@ -12,36 +12,29 @@
 
             <ul class="hierarchy-short-panel__list">
                 {% if record.hierarchy %}
-                    {% if record.hierarchy|length <= 2 %}
+                    {% breadcrumb_items record.hierarchy record.is_tna record as breadcrumbs %}
+
+                    
+                    {% if breadcrumbs|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
                                 <a href="{% record_url record.repository %}" data-link-type="Link" data-link="Archive" data-catalogue-level="0" data-component-name="Hierarchy links">Archive</a>
                             </span>({{ record.template.heldBy }})
                         </li>
                     {% endif %}
-
-                    {% for item in record.hierarchy %}
+                    
+                    {% for item in breadcrumbs %}
                         {% is_page_current_item_in_hierarchy record item as is_current_item %}
-
                         {% if forloop.counter == 1 and not is_current_item %}
-                            {% if record.hierarchy|length == 3 %}
+                            {% if breadcrumbs|length == 3 %}
                                 {% with trail_off=True %}
                                     {% include "includes/records/hierarchy-short-item.html" %}
                                 {% endwith %}
-                            {% elif record.hierarchy|length == 2 %}
+                            {% elif breadcrumbs|length == 2 %}
                                 {% include "includes/records/hierarchy-short-item.html" %}
                             {% endif %}
 
-                        {% elif forloop.counter == 2 and not is_current_item %}
-                            {% if record.hierarchy|length > 3 %}
-                                {% with trail_off=True %}
-                                    {% include "includes/records/hierarchy-short-item.html" %}
-                                {% endwith %}
-                            {% else %}
-                                {% include "includes/records/hierarchy-short-item.html" %}
-                            {%endif%}
-
-                        {% elif forloop.counter == 3 and not is_current_item %}
+                        {% elif not is_current_item %}
                             {% include "includes/records/hierarchy-short-item.html" %}
 
                         {% elif is_current_item %}
@@ -65,6 +58,7 @@
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
                         <span class="hierarchy-short-panel__level">This {{ hierarchy_level|lower }}</span>({{ record.reference_number }})
                     </li>
+                    
                 {% endif %}
             </ul>
 
