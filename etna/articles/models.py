@@ -84,7 +84,11 @@ class ArticleIndexPage(BasePageWithIntro):
         FieldPanel("featured_pages"),
     ]
 
-    subpage_types = ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"]
+    subpage_types = [
+        "articles.ArticlePage",
+        "articles.FocusedArticlePage",
+        "articles.RecordArticlePage",
+    ]
 
 
 @register_snippet
