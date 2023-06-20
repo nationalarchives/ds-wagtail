@@ -35,7 +35,7 @@
         margin-bottom: 0;
         flex: 1 0 100%;
 
-        @include media-query(large) {
+        @media (min-width: $screen__lg) {
             flex: initial;
         }
     }
@@ -75,17 +75,17 @@
         // remove the button appearance
         background: transparent;
         border: none;
-        font-weight: $weight--semibold;
+        font-weight: $font-weight-bold;
         text-decoration: underline;
         display: block;
         margin-left: auto;
-        margin-bottom: $grid;
+        margin-bottom: 1rem;
 
         &:hover {
             cursor: pointer;
         }
 
-        @include media-query(large) {
+        @media (min-width: $screen__lg) {
             position: absolute;
         }
     }
