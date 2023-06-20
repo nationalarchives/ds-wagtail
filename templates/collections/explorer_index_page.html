@@ -8,11 +8,11 @@
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
     <div id="analytics-explorer-index" data-container-name="explorer-index">
-        <ul class="card-group--no-flex u-margin-m">
+        <div class="card-group--no-flex u-margin-m">
             {% for block in page.body %}
                 {% include_block block %}
             {% endfor %}
-        </ul>
+        </div>
     </div>
     
     <div class="container">
