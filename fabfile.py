@@ -162,6 +162,19 @@ def test(c, lint=False, parallel=False):
 
 
 @task
+def create_superuser(c):
+    """
+    Run bash in a local container (with access to dependencies)
+    """
+    subprocess.run(["docker-compose", "exec", "web", "poetry", "run", "python", "manage.py", "createsuperuser"])
+
+
+# -----------------------------------------------------------------------------
+# Database operations
+# -----------------------------------------------------------------------------
+
+
+@task
 def psql(c, command=None):
     """
     Connect to the local postgres DB using psql
