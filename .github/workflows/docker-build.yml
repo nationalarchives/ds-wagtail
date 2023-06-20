@@ -5,20 +5,16 @@ on:
     - cron: '44 6 * * *'
   push:
     branches:
-      # - main
-      # - develop
+      - main
+      - develop
       - chore/docker-static-assets # TEMP
+    tags:
+      - v*
 
 env:
-  IMAGE_NAME: ds-wagtail-dev
+  IMAGE_NAME: ds-wagtail
   
 jobs:
-  # lint:
-  #   runs-on: hadolint/hadolint:latest-debian
-  #   steps:
-  #     - name: Lint Dockerfile
-  #       run: hadolint Dockerfile || true
-  
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -26,6 +22,9 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
       - name: Build image
         run: docker build . --file Dockerfile --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}"
       - name: Log in to registry
