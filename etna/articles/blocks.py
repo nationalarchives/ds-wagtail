@@ -200,6 +200,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
         "articles.ArticlePage",
+        "articles.RecordArticlePage",
         exclude_drafts=True,
         exclude_private=True,
         select_related=["teaser_image"],
