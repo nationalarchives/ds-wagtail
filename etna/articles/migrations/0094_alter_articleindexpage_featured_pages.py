@@ -8,7 +8,7 @@ import wagtail.fields
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("articles", "0092_alter_articlepage_body_alter_focusedarticlepage_body"),
+        ("articles", "0093_alter_articlepage_body_alter_focusedarticlepage_body"),
     ]
 
     operations = [
