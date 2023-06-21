@@ -7,7 +7,7 @@
 
     <ul class="card-group--list-style-none">
         {% for item in value.items %}
-            {% with link_page=item %}
+            {% with link_page=item.specific %}
                 {% include 'includes/card-group-secondary-nav.html' with heading=value.heading card_type="Featured" %}
             {% endwith %}
         {% endfor %}
