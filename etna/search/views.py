@@ -542,7 +542,7 @@ class BaseFilteredSearchView(BaseSearchView):
             return_value["covering_date_from"] = [
                 (
                     covering_date_from,
-                    "Covering date from: " + covering_date_from.strftime("%d %m %Y"),
+                    "Date from: " + covering_date_from.strftime("%d %m %Y"),
                 )
             ]
 
@@ -550,7 +550,7 @@ class BaseFilteredSearchView(BaseSearchView):
             return_value["covering_date_to"] = [
                 (
                     covering_date_to,
-                    "Covering date to: " + covering_date_to.strftime("%d %m %Y"),
+                    "Date to: " + covering_date_to.strftime("%d %m %Y"),
                 )
             ]
 
