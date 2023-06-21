@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% load datalayer_tags %}
+{% load records_tags %}
+
+{% block extra_gtm_js %}
+    {% render_gtm_datalayer record %}
+{% endblock extra_gtm_js %}
+
+{% block content %}
+
+    <div class="container">
+
+        {% include "includes/records/record-creator-description.html" %}
+
+        {% include "includes/records/record-creator-collections.html" %}
+
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/details.js' %}"></script>
+{% endblock %}
