@@ -19,7 +19,10 @@ class TextInputWithLabel(LabelWidgetMixin, forms.TextInput):
     input to have its own label.
     """
 
-    pass
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context["widget"]["label"] = self.label
+        return context
 
 
 class DateInputWidget(forms.MultiWidget):
