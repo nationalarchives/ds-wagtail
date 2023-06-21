@@ -9,10 +9,29 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
+    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}    
+    {% if page.author or page.first_published_at %}
+        <div class="generic-intro__meta">
+            <ul class="generic-intro__meta-list container">
+                {% if page.first_published_at %}
+                    <li class="generic-intro__meta-item">{{ page.first_published_at|date:"l d F Y" }}</li>                    
+                {% endif %}
+                {% if page.author %}
+                    <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
-    {% if page.author %}
-        <p>{{ page.author }}</p>
+
+    {% if page.intro %}
+        <div class="generic-intro__paragraph container">
+            <div class="row">
+                <div class="col-md-9">
+                    {{ page.intro|richtext }}
+                </div>
+            </div>
+        </div>
     {% endif %}
     <div class="article-container container">
         <div class="article-container__main">

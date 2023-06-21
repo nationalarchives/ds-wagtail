@@ -28,6 +28,25 @@
     }
   }
 
+  &__meta {
+    background-color: $color__grey-700;
+    color: $color__white;
+    padding-bottom: 1.875rem;
+
+    &-list {
+      margin-bottom: 0;
+    }
+
+    &-item{
+      color: $color__grey-200;
+      display: inline-block;
+
+      &:not(:last-of-type) {
+        margin-right: 1.25rem;
+      }
+    }
+  }
+
   &__paragraph {
     font-size: 1.125rem; // one off font size (18px)
     margin-bottom: 0.5rem;
@@ -35,14 +54,29 @@
     @media only screen and (min-width: $screen__lg) {
       font-size: 1.313rem; // one off font size (21px)
     }
+
+
+    .template-focused-article & {
+      margin-top: 2.875rem;
+      font-size: $font-size-base;
+
+      @media (min-width: $screen__md) {
+        margin-top:4.625rem;
+        font-size: 1.313rem;
+      }
+    }
   }
 
   // Styles for Focused Article templates
   .template-focused-article & {
     background-color: $color__grey-700;
 
-    &__title, &__paragraph {
+    &__title {
       color: $color__white;
+      line-height: 122%;
+      margin-bottom: 1rem;
+      @extend .col-md-8;
+      @extend .row;
     }
   }
 }
