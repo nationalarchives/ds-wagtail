@@ -99,6 +99,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
         "articles.RecordArticlePage",
+        "articles.ArticleIndexPage",
     ]
 
     # DataLayerMixin overrides
