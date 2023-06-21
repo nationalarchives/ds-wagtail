@@ -1,6 +1,8 @@
 <div class="date-input" id="{{ widget.attrs.id }}">
   {% for subwidget in widget.subwidgets %}
-        <label class="input__label" for="{{ subwidget.attrs.id }}">{{ subwidget.label }}</label>
-        {% include subwidget.template_name with widget=subwidget %}
+      <div>
+          <label class="input__label" for="{{ subwidget.attrs.id }}">{{ subwidget.label }}</label>
+          {% include subwidget.template_name with widget=subwidget %}
+      </div>
   {% endfor %}
 </div>
