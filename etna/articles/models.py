@@ -83,7 +83,8 @@ class ArticleIndexPage(BasePageWithIntro):
         ),
         FieldPanel("featured_pages"),
     ]
-
+    
+    parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = [
         "articles.ArticlePage",
         "articles.FocusedArticlePage",
@@ -373,7 +374,7 @@ class RecordArticlePage(
     TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
 ):
     template = "articles/record_article_page.html"
-    parent_page_types = ["collections.ExplorerIndexPage", "articles.ArticleIndexPage"]
+    parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
     intro_image = models.ForeignKey(
