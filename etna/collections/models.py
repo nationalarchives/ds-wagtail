@@ -98,7 +98,6 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
-        "articles.RecordArticlePage",
         "articles.ArticleIndexPage",
     ]
 
