@@ -83,7 +83,7 @@ class ArticleIndexPage(BasePageWithIntro):
         ),
         FieldPanel("featured_pages"),
     ]
-    
+
     parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = [
         "articles.ArticlePage",
