@@ -7,6 +7,9 @@ nvm install
 npm install
 npm run dev:css &
 npm run dev:js &
+<<<<<<< HEAD
 poetry run python manage.py collectstatic --no-input
+=======
+>>>>>>> 4cd61249 (Rework npm scripts for Dockerfile, remove npx)
 poetry run python manage.py migrate
 poetry run python manage.py runserver 0.0.0.0:8000
