@@ -9,32 +9,33 @@
                     id="feedback-form"
                     action="{% url 'feedback:submit' prompt.public_id prompt.live_revision_id %}"
                     method="post"
+                    data-feedback-form
                 >
                     {{ form.as_div }}
                 </form>
 
                 <form
-                    class="feedback__form"
+                    class="feedback__form feedback__form--comment"
                     id="feedback-comment-form"
                     action="{% url 'feedback:submit_comment' %}"
                     method="post"
-                    style="display:none"
+                    data-feedback-form-comment
                 >
                     {{ comment_form.as_div }}
 
-                    <button type="submit" class="feedback__form-submit tna-button--dark">Submit</button>
-                    <button type="submit" class="feedback__form-close" aria-label="Submit and close feedback form">
+                    <button type="submit" class="feedback__form-submit tna-button--dark" data-feedback-form-submit>Submit</button>
+                    <button type="submit" class="feedback__form-close" aria-label="Submit and close feedback form" data-feedback-form-submit>
                         {% include "includes/icon.html" with name="x-mark" classname="feedback__form-close-icon" %}
                     </button>
                 </form>
 
-                <div class="feedback__form" id="feedback-success" class="feedback__success" style="display: none;">
-                    <h3 class="feedback__form-success-heading">
+                <div class="feedback__form feedback__success" id="feedback-success">
+                    <h3 class="feedback__success-heading">
                         {{ prompt.thank_you_heading }}
                     </h3>
 
                     {% if prompt.thank_you_message %}
-                        <div class="feedback__form-success-message">
+                        <div class="feedback__success-message">
                             {{ prompt.thank_you_message|richtext }}
                         </div>
                     {% endif %}
