@@ -266,12 +266,8 @@
     line-height: 1.8rem;
     width: auto;
 
-    @media screen and (min-width: $screen__sm) {
-      width: 60%;
-    }
-
     @media screen and (min-width: $screen__lg) {
-      width: 80%;
+      width: 70%;
     }
     @media screen and (min-width: $screen__xl) {
       width: auto;
@@ -322,7 +318,7 @@
 }
 
 #non-tna-record {
-  $initial-width: 26.5%;
+  $initial-width: 25.5%;
 
     @for $i from 1 through 12 {
         $width: calc(#{$initial-width} - 1.5% * (#{$i} - 1));
