@@ -17,7 +17,7 @@ import bleach
 from etna.feedback import constants
 from etna.feedback.models import FeedbackSubmission
 from etna.feedback.utils import get_allowed_hosts, normalize_path, sign_submission_id
-from etna.feedback.widgets import FeedbackResponseSelect
+from etna.feedback.widgets import ResponseSubmitButtonList
 
 
 class FeedbackForm(forms.Form):
@@ -51,7 +51,7 @@ class FeedbackForm(forms.Form):
         """
         self.response_options = response_options
         super().__init__(*args, **kwargs)
-        widget = FeedbackResponseSelect(response_options)
+        widget = ResponseSubmitButtonList(response_options)
         self.fields["response"].label = response_label
         self.fields["response"].widget = widget
         self.fields["response"].choices = widget.choices
