@@ -153,6 +153,11 @@
             &:focus {
               background-color: $color__white;
               color: $color__black;
+
+              .template-focused-article & {
+                background-color: $color__grey-700;
+                color: $color__white;
+              }
             }
           }
 
