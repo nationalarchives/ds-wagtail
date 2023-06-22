@@ -1,5 +1,10 @@
 .search-results__list-card {
 
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+
     @media only screen and (max-width: 57rem) {
         padding-bottom:1rem;
     
@@ -92,20 +97,45 @@
   }
 
   &-metadata-item-held-by-icon {
-      list-style-image: url(/static/images/icons/search-archive-icon.svg);
+      //list-style-image: url(/static/images/icons/search-archive-icon.svg);
+      background-image: url(/static/images/icons/search-archive-icon.svg);
+      background-repeat: no-repeat;
+      padding-left: 2rem;
+      background-position: 0 center;
+      vertical-align: middle;
   }
 
   &-metadata-item-date-icon{
-      list-style-image: url(/static/images/icons/search-calendar-icon.svg);
+      //list-style-image: url(/static/images/icons/search-calendar-icon.svg);
+      background-image: url(/static/images/icons/search-calendar-icon.svg);
+      background-repeat: no-repeat;
+      padding-left: 2rem;
+      background-position: 0 center;
+      vertical-align: middle;
+
   }
 
   &-metadata-item-data-icon{
-      list-style-image: url(/static/images/icons/search-data-icon.svg);
+      //list-style-image: url(/static/images/icons/search-data-icon.svg);
+      background-image: url(/static/images/icons/search-data-icon.svg);
+      background-repeat: no-repeat;
+      padding-left: 2rem;
+      background-position: 0 center;
+      vertical-align: middle;
   }
+
 
   &-metadata-item-subjects-icon{
       //list-style-image: url(/static/images/icons/search-tag-icon.svg);
       list-style-type: none;
+      /*
+      background-image: url(/static/images/icons/search-tag-icon.svg);
+      background-repeat: no-repeat;
+      padding-left: 2rem;
+      background-position: 0 center;
+      vertical-align: middle;
+      
+       */
   }
 
   &-delivery-options {
@@ -206,12 +236,7 @@
 
 /*-------*/
 
-.search-results__list-card {
-    width: 100%;
-    display: flex;
-    justify-content: stretch;
-    align-items: stretch;
-}
+
 
 .search-results__list-card-details {
     flex: 1 1 auto;
