@@ -233,6 +233,7 @@ class FeedbackSubmissionReportView(ReportView):
         "response_label",
         "response_sentiment",
         "sentiment_label",
+        "comment_prompt_text",
         "comment",
         "prompt_id",
         "prompt_revision_id",
