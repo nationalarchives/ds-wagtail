@@ -7,7 +7,7 @@ from wagtail.models import Page, Site
 from etna.feedback.forms import FeedbackForm
 from etna.feedback.models import FeedbackPrompt
 from etna.feedback.tests import constants
-from etna.feedback.widgets import FeedbackResponseSelect
+from etna.feedback.widgets import ResponseSubmitButtonList
 
 
 @override_settings(ALLOWED_HOSTS=[constants.VALID_DOMAIN])
@@ -50,7 +50,7 @@ class TestSubmissionFormValidation(TestCase):
     def test_response_field_widget_set_on_init(self):
         form = self.get_form()
         widget = form.fields["response"].widget
-        self.assertIsInstance(widget, FeedbackResponseSelect)
+        self.assertIsInstance(widget, ResponseSubmitButtonList)
         self.assertEqual(
             widget.choices,
             [
