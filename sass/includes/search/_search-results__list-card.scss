@@ -5,6 +5,10 @@
     justify-content: stretch;
     align-items: stretch;
 
+    min-height: 240px;
+    border-bottom: solid 1px black;
+    margin-bottom: 1em;
+
     @media only screen and (max-width: 57rem) {
         padding-bottom:1rem;
     
@@ -134,7 +138,7 @@
       padding-left: 2rem;
       background-position: 0 center;
       vertical-align: middle;
-      
+
        */
   }
 
@@ -264,4 +268,17 @@
         max-width: 200px;
         margin: 0 auto;
     }
+}
+
+dt{
+    float: left;
+    clear: left;
+    width: 200px;
+
+}
+
+dd {
+    margin: 0 0 0 80px;
+    padding: 0 0 0.5em 0;
+
 }
