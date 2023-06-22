@@ -17,18 +17,12 @@ class TestSubmissionFormValidation(TestCase):
     """
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        """
-        Stores useful data for sharing between tests.
-        """
+    def setUpTestData(cls):
+        super().setUpTestData()
         cls.default_prompt = FeedbackPrompt.objects.get()
         cls.default_response_options = cls.default_prompt.response_options
         cls.valid_response_id = str(cls.default_response_options[0].id)
 
-    @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
         # Pages don't have any revisions by default, so let's create one
         # for a page and mark it as the latest
         page = Page.objects.get(depth=2).specific
@@ -39,11 +33,10 @@ class TestSubmissionFormValidation(TestCase):
         cls.page = page
         cls.page_revision = revision
 
-    def get_form(self, referer=None, url_path_must_match_referer=False, data=None):
+    def get_form(self, data=None):
         return FeedbackForm(
             response_options=self.default_response_options,
-            referer=referer,
-            url_path_must_match_referer=url_path_must_match_referer,
+            response_label=self.default_prompt.text,
             data=data,
         )
 
@@ -82,7 +75,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_invalid_response_format(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": "not-a-uuid",
                 "url": constants.VALID_URL,
@@ -101,7 +93,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_invalid_response_choice(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": "68526cc2-4461-475b-a02c-539181ed1cd3",
                 "url": constants.VALID_URL,
@@ -120,7 +111,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_invalid_url_format(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_URL,
@@ -140,7 +130,6 @@ class TestSubmissionFormValidation(TestCase):
     def test_url_invalid_when_no_matching_wagtail_site(self):
         Site.objects.all().delete()
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -159,7 +148,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_url_hostname_invalid_when_not_in_allowed_hosts(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_DOMAIN_URL,
@@ -179,7 +167,6 @@ class TestSubmissionFormValidation(TestCase):
     @override_settings(ALLOWED_HOSTS=["*"])
     def test_url_hostname_valid_when_allowed_hosts_allows(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_DOMAIN_URL,
@@ -189,7 +176,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_missing_page_revision(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -209,7 +195,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_unexpected_page_revision(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -230,7 +215,6 @@ class TestSubmissionFormValidation(TestCase):
     def test_page_and_page_revision_mismatch(self):
         # Used to test page/revision mismatch
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
