@@ -26,7 +26,7 @@ nav:
       - 'Local development gotchas': 'developer-guide/local-development-gotchas.md'
       - 'Backend development': 'developer-guide/backend.md'
       - 'Frontend development': 'developer-guide/frontend.md'
-      - 'Fetching production data': 'developer-guide/fetching-production-data.md'
+      - 'Fetching data': 'developer-guide/fetching-data.md'
       - 'Working with VS Code': 'developer-guide/vscode.md'
   - 'Infrastructure and environments':
       - 'Hosted environments': 'infra/environments.md'
