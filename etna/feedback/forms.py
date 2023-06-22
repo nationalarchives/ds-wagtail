@@ -21,22 +21,7 @@ from etna.feedback.widgets import FeedbackResponseSelect
 
 
 class FeedbackForm(forms.Form):
-    response = forms.TypedChoiceField(
-        coerce=uuid.UUID, label=_("Your response"), choices=()
-    )
-    comment = forms.CharField(
-        label=_("Comment (optional)"),
-        help_text=f"Length limit: {constants.COMMENT_MAX_LENGTH} characters.",
-        max_length=constants.COMMENT_MAX_LENGTH,
-        required=False,
-        widget=forms.Textarea(
-            {
-                "cols": math.floor(constants.COMMENT_MAX_LENGTH / 5),
-                "rows": 5,
-                "maxlength": constants.COMMENT_MAX_LENGTH,
-            }
-        ),
-    )
+    response = forms.TypedChoiceField(coerce=uuid.UUID, choices=())
     url = forms.URLField(widget=forms.HiddenInput)
     page = forms.ModelChoiceField(
         Page.objects.all(), required=False, widget=forms.HiddenInput
@@ -47,40 +32,31 @@ class FeedbackForm(forms.Form):
 
     def __init__(
         self,
-        response_options: StreamValue,
         *args,
-        referer: Optional[str] = None,
-        url_path_must_match_referer: Optional[bool] = True,
+        response_options: StreamValue,
+        response_label: str,
         **kwargs,
     ) -> None:
         """
         Overrides Form.__init__() to accept additional inputs relevant to this form:
 
+        `response_label`:
+            The `text` field value from the `FeedbackPRompt` instance this form is
+            being used to represent.
+
         `response_options`:
             The `response_options` field value from the `FeedbackPrompt` instance this form
             is being used to represent. The value is used to generate a custom choice widget
             for the `response` field, and is also used for validation.
-
-        `referer`:
-            The `Referer` header value from the current request. When `url_path_must_match_referer`
-            is `True`, validation of `url` will fail if the 'path' differs to this one.
-
-        `url_path_must_match_referer`:
-            Determines whether the `url` value is validated against the `referer` path.
-
         """
         self.response_options = response_options
-        self.referer = referer
-        self.url_path_must_match_referer = url_path_must_match_referer
-
         super().__init__(*args, **kwargs)
         widget = FeedbackResponseSelect(response_options)
+        self.fields["response"].label = response_label
         self.fields["response"].widget = widget
         self.fields["response"].choices = widget.choices
 
     def clean_url(self) -> Union[str, None]:
-        allowed_hosts = get_allowed_hosts()
-
         value = self.cleaned_data.get("url")
         if value is None:
             return None
@@ -90,25 +66,8 @@ class FeedbackForm(forms.Form):
         except ValueError:
             raise ValidationError("value is not a valid URL.", code="invalid")
 
-        if not validate_host(parse_result.hostname, allowed_hosts):
+        if not validate_host(parse_result.hostname, get_allowed_hosts()):
             raise ValidationError("url hostname is invalid.", code="invalid")
-
-        try:
-            referer_parse_result = urlparse(self.referer)
-        except ValueError:
-            raise ValidationError("referer is not at a valid URL.", code="invalid")
-
-        if not validate_host(referer_parse_result.hostname, allowed_hosts):
-            raise ValidationError("referer hostname is invalid.", code="invalid")
-
-        if (
-            self.url_path_must_match_referer
-            and parse_result.path != referer_parse_result.path
-        ):
-            raise ValidationError(
-                f"path '{parse_result.path}' differs from '{referer_parse_result.path}'.",
-                code="invalid",
-            )
 
         # Find the relevant Site
         try:
@@ -144,17 +103,11 @@ class FeedbackForm(forms.Form):
                 self.cleaned_data.update(
                     response_label=option.value["label"],
                     response_sentiment=option.value["sentiment"],
+                    comment_prompt_text=option.value["comment_prompt_text"],
                 )
                 break
 
         return value
-
-    def clean_comment(self) -> str:
-        try:
-            raw = self.cleaned_data["comment"]
-        except KeyError:
-            return ""
-        return bleach.clean(raw, tags=[], strip=True)
 
     def clean_page_revision(self) -> Optional[Revision]:
         revision = self.cleaned_data.get("page_revision")
