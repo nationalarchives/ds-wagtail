@@ -45,8 +45,8 @@ const pushActiveFilterData = (filterList) => {
     let startDate = activeFilters.some(e => e.search_filter_name === 'opening_start_date');
     let endDate = activeFilters.some(e => e.search_filter_name === 'opening_end_date');
 
-    // if start date isn't active, create a custom object with the value 'No'
-    if (!startDate) {
+    // if startDate isn't active but endDate is, create a custom object with the value 'No'
+    if (!startDate && endDate) {
         startDate = {
             'event': 'search-filters',
             'search_bucket': searchBucket || '',
@@ -57,8 +57,8 @@ const pushActiveFilterData = (filterList) => {
         activeFilters.push(startDate);
     }
 
-    // if end date isn't active, create a custom object with the value 'No'
-    if (!endDate) {
+    // if endDate isn't active but startDate, create a custom object with the value 'No'
+    if (!endDate && startDate) {
         endDate = {
             'event': 'search-filters',
             'search_bucket': searchBucket || '',
@@ -67,6 +67,10 @@ const pushActiveFilterData = (filterList) => {
         };
 
         activeFilters.push(endDate);
+    }
+
+    if (!startDate && !endDate) {
+        // if neither startDate nor endDate are present, do nothing;
     }
 
     // loop through the updated filters array and send each item to the dataLayer
