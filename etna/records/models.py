@@ -92,6 +92,13 @@ class Record(DataLayerMixin, APIModel):
         except KeyError:
             candidate = self.get("@admin.id", default="")
 
+        try:
+            # fallback for Record Creators
+            if not candidate:
+                candidate = self.template["primaryIdentifier"]
+        except KeyError:
+            candidate = ""
+
         if candidate and re.match(IAIDConverter.regex, candidate):
             # value is not guaranteed to be a valid 'iaid', so we must
             # check it before returning it as one
