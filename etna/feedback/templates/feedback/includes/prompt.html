@@ -9,14 +9,20 @@
                     action="{% url 'feedback:submit' prompt.public_id prompt.live_revision_id %}"
                     method="post"
                 >
-                    <h3 class="feedback__form__heading">{{ prompt.text }}</h3>
-
                     {{ form.as_div }}
-
-                    <button class="tna-button--dark feedback__form__submit" type="submit" id="feedbackSubmit">
-                        {% trans "Submit feedback" %}
-                    </button>
                 </form>
+
+                <form
+                    class="feedback__form"
+                    id="feedback-comment-form"
+                    action="{% url 'feedback:submit_comment' %}"
+                    method="post"
+                    style="display:none"
+                >
+                    {{ comment_form.as_div }}
+                    <button type="submit">Submit</button>
+                </form>
+
                 <div id="feedback-success" class="feedback__success" style="display: none;">
 
                     <h3 class="feedback__success__heading">
