@@ -9,7 +9,11 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}    
+    {% if not page.hero_image %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro classes="generic-intro--dark" %}
+    {% else %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}
+    {% endif %}    
     {% if page.author or page.first_published_at %}
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
@@ -24,7 +28,7 @@
     {% endif %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
-    {% if page.intro %}
+    {% if page.intro and page.hero_image %}
         <div class="generic-intro__paragraph container">
             <div class="row">
                 <div class="col-md-9">
