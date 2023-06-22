@@ -64,13 +64,14 @@
             <dd>{{ record.reference_number }}</dd>
             {% endif %}
 
+            <!--
             {% if record.record_opening %}
                 <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
                     Record opening date:
                 </dt>
                 <dd>{{ record.record_opening }}</dd>
             {% endif %}
-
+            -->
             {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
                 <dt class="search-results__list-card-metadata-item">
                     Type:
@@ -93,7 +94,7 @@
             {% comment %}End debug attributes.{% endcomment %}
         </dl>
 
-    
+
     {% if record.is_digitised %}
     <div class="search-results__list-card-delivery-options--grid">
 
