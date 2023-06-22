@@ -5,7 +5,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 nvm install
 npm install
-npm run compile:css &
-npm run start &
+npm run dev:css &
+npm run dev:js &
 poetry run python manage.py migrate
 poetry run python manage.py runserver 0.0.0.0:8000

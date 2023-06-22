@@ -5,8 +5,7 @@ COPY package.json package-lock.json webpack.config.js ./
 RUN npm install
 COPY scripts ./scripts
 COPY sass ./sass
-RUN npx webpack --config webpack.config.js && \
-  npx sass sass/etna.scss:css/etna.css
+RUN npm run compile
 
 
 
@@ -63,7 +62,7 @@ COPY . .
 RUN chmod +x bash/run.sh bash/run-dev.sh
 
 # Copy static assets
-COPY --from=staticassets /home/css/etna.css /home/css/etna.css.map templates/static/css/dist/
+COPY --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
 COPY --from=staticassets /home/templates/static/scripts templates/static
 
 RUN poetry run python manage.py collectstatic --no-input
