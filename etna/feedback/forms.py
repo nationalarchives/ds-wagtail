@@ -1,4 +1,4 @@
-import math
+import hmac
 import uuid
 
 from typing import Optional, Union
@@ -7,7 +7,6 @@ from urllib.parse import urlparse
 from django import forms
 from django.core.exceptions import ValidationError
 from django.http.request import QueryDict, validate_host
-from django.utils.translation import gettext_lazy as _
 
 from wagtail.blocks import StreamValue
 from wagtail.models import Page, Revision, Site
@@ -16,7 +15,8 @@ from wagtail.models.sites import get_site_for_hostname
 import bleach
 
 from etna.feedback import constants
-from etna.feedback.utils import get_allowed_hosts, normalize_path
+from etna.feedback.models import FeedbackSubmission
+from etna.feedback.utils import get_allowed_hosts, normalize_path, sign_submission_id
 from etna.feedback.widgets import FeedbackResponseSelect
 
 
@@ -140,3 +140,45 @@ class FeedbackForm(forms.Form):
         self.cleaned_data["page_revision_published"] = page.last_published_at
 
         return revision
+
+
+class FeedbackCommentForm(forms.Form):
+    submission = forms.ModelChoiceField(
+        queryset=FeedbackSubmission.objects.filter(comment=""),
+        widget=forms.HiddenInput(),
+        to_field_name="public_id",
+    )
+    signature = forms.CharField(widget=forms.HiddenInput())
+    comment = forms.CharField(
+        label=constants.DEFAULT_COMMENT_PROMPT_TEXT,
+        required=False,
+        widget=forms.Textarea({"cols": 40, "rows": 5}),
+    )
+
+    def clean_comment(self) -> str:
+        # Strip HTML from comment submissions
+        value = self.cleaned_data.get("comment")
+        if value is None:
+            return ""
+        return bleach.clean(value, strip=True)
+
+    def clean(self) -> str:
+        # Validate the 'signature' value against the 'id' value
+        data = super().clean()
+        submission = data.get("submission")
+        signature = data.get("signature")
+
+        if (
+            submission
+            and signature
+            and not hmac.compare_digest(
+                sign_submission_id(submission.public_id), signature
+            )
+        ):
+            self.add_error(
+                "signature",
+                ValidationError(
+                    "Value does not match the specified submission.", code="invalid"
+                ),
+            )
+        return data
