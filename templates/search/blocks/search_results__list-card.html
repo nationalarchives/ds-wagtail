@@ -10,117 +10,79 @@
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 
-<li class="search-results__list-card">
-    <div class="search-results__list-card-content">
-
-        <div class="row">
-
-            <div class="col-md-10 col-sm-12 title-fix">
-
-
-
-                <h3 class="search-results__list-card-heading">
-                    <a href="{% record_url record %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
-                        {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span> {% endif %}
-                        {{ record.summary_title }}
-                    </a>
-                </h3>
-
-
-                <p class="search-results__list-card-description">
-                    {{ record.listing_description }}
-                </p>
-
-                <ul class="search-results__list-card-metadata">
-
-                    {% if record.held_by %}
-                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
-                        Held by: {{ record.held_by }}
-                    </li>
-                    {% endif %}
-
-                    {% if record.date_created %}
-                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                        Date: {{ record.date_created }}
-                    </li>
-
-                    {% endif %}
-
-                    {% if record.reference_number %}
-                    <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
-                        {% if form.group.value == 'archive' %}
-                        Archon code:
-                        {% else %}
-                        Catalogue reference:
-                        {% endif %}
-
-                        {{ record.reference_number }}
-                    </li>
-
-
-
-                    {% endif %}
-
-                    {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-                    <li class="search-results__list-card-metadata-item">
-                        Type: {{ record.type }}
-                    </li>
-                    {% endif %}
-
-                    {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-                    <li class="search-results__list-card-metadata-item" style="display:none">
-                        IAID: {{ record.iaid }}
-                    </li>
-                    <li class="search-results__list-card-metadata-item" style="display:none">
-                        Score: {{ record.score }}
-                    </li>
-                    {% comment %}End debug attributes.{% endcomment %}
-                </ul>
-
-            </div>
-
-            <div class="col-md-2 col-sm-12 search-list-image">
-                {% if record.is_digitised %}
-                <div class="search-results__list-card-delivery-options">
-
-                    <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
-
-                        <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-                    </a>
-                    <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-                        <p class="search-results__list-card-delivery-options-desc">
-                            <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
-                            Available online
-                        </p>
-                    </a>
-                </div>
+<li class="search-results__list-card" data-iaid="{{ record.iaid }}" data-score="{{ record.score }}">
+    <div class="search-results__list-card-details">
+        <h3 class="search-results__list-card-heading">
+            <a href="{% record_url record %}" class="search-results__list-card-heading-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
+                {% if record.reference_number %}
+                <span class="sr-only">Reference number {{ record.reference_number }}: </span>
                 {% endif %}
+                {{ record.summary_title }}
+            </a>
+        </h3>
 
-            </div>
-        </div>
+        <p class="search-results__list-card-description">
+            {{ record.listing_description }}
+        </p>
 
-        <div class="row">
-            <div class="col-md-3 order-md-2">
-                {% if apply_teaser_image %}
-                    <div class="search-results__list-card-image">
-                        <picture>
-                            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
-                            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
-                            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
-                            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
-                            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-                            <img src="{{ teaser_image_large.url }}" alt="" class="card-group-secondary-nav__image-fallback"/>
-                        </picture>
-                    </div>
+        <dl class="search-results__list-card-metadata">
+            {% if record.held_by %}
+            <dt>Held by</dt>
+            <dd>{{ record.held_by }}</dd>
+            {% endif %}
+
+
+
+            {% if record.date_created %}
+            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+                Date</dt>
+            <dd>
+                <date>{{ record.date_created }}</date></dd>
+            {% endif %}
+
+            {% if record.reference_number %}
+            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
+                {% if form.group.value == 'archive' %}
+                Archon code:
+                {% else %}
+                Catalogue reference:
                 {% endif %}
-            </div>
+            </dt>
+            <dd>{{ record.reference_number }}
+            </dd>
+            {% endif %}
+
+            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
+            <dt class="search-results__list-card-metadata-item">
+                Type</dt>
+            <dd>{{ record.type }}
+            </dd>
+            {% endif %}
 
 
-            <div class="col-md-9 order-md-1">
-                <!--previous structure -- 04 may 2023 -->
-            </div>
+        </dl>
 
-
-        </div>
     </div>
+
+    {% if record.is_digitised or apply_teaser_image %}
+    <div class="search-results__list-card-image">
+        {% if record.is_digitised %}
+        <div class="search-results__list-card-delivery-options">
+            <a href="{% record_url record %}" class="search-results__list-card-image-anchor" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+                <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
+            </a>
+        </div>
+        {% endif %}
+        {% if apply_teaser_image %}
+        <picture>
+            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
+            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
+            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
+            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
+            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
+            <img src="{{ teaser_image_large.url }}" alt="" />
+        </picture>
+        {% endif %}
+    </div>
+    {% endif %}
 </li>
