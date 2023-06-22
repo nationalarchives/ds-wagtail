@@ -79,4 +79,17 @@
       @extend .row;
     }
   }
+
+  &--dark .generic-intro__paragraph {
+    margin-top: 0;
+    background-color: $color__grey-700;
+    color: $color__white;
+    margin-bottom: 0;
+    @extend .col-md-9;
+    @extend .row;
+
+    p:last-of-type {
+      margin-bottom: 1.5rem;
+    }
+  }
 }
