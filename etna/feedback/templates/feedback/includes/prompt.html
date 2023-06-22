@@ -1,5 +1,6 @@
 {% load static i18n wagtailcore_tags %}
-<div class="feedback">
+
+<div class="feedback u-margin-l">
     <div class="container py-3 feedback__container">
         <div class="row justify-content-md-center text-center feedback__content">
             <div class="col-sm-12">
@@ -20,21 +21,23 @@
                     style="display:none"
                 >
                     {{ comment_form.as_div }}
-                    <button type="submit">Submit</button>
+
+                    <button type="submit" class="feedback__form-submit tna-button--dark">Submit</button>
+                    <button type="submit" class="feedback__form-close" aria-label="Submit and close feedback form">
+                        {% include "includes/icon.html" with name="x-mark" classname="feedback__form-close-icon" %}
+                    </button>
                 </form>
 
-                <div id="feedback-success" class="feedback__success" style="display: none;">
-
-                    <h3 class="feedback__success__heading">
+                <div class="feedback__form" id="feedback-success" class="feedback__success" style="display: none;">
+                    <h3 class="feedback__form-success-heading">
                         {{ prompt.thank_you_heading }}
                     </h3>
 
                     {% if prompt.thank_you_message %}
-                        <div class="feedback__success__message">
+                        <div class="feedback__form-success-message">
                             {{ prompt.thank_you_message|richtext }}
                         </div>
                     {% endif %}
-
                 </div>
             </div>
         </div>
