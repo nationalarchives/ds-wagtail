@@ -5,13 +5,13 @@
 !!! warning
 The following steps require the official VSCode distribution, rather than offshoots like [VSCodium](https://vscodium.com/).
 
-## Virutal environment integration
+## Virtual environment integration
 
 The VSCode integration with Docker requires the [Remote - Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension. This extension allows VSCode to install itself inside a container, and thus access its filesystem and virtual environments.
 
 When opening a project with a dev container configuration, VSCode will prompt you whether you want to switch to it. To switch manually, open the command palette and select "Remote Containers - Reopen in Container". This will reload your VSCode window, build and then start the project containers. Once it's finished, you'll be presented with a regular-looking VSCode editor, but with the Python integration correctly installed and configured. Should you make any changes to the dev container configuration or `Dockerfile`, you'll want to use "Remote Containers - Rebuild and Reopen in Container" instead.
 
-To install additional extensions into the container automatically, add its id to `remote.containers.defaultExtensions` in your vscode settings.
+To install additional extensions into the container automatically, add its id to `defaultExtensions` in your VSCode settings.
 
 ## Debugger
 
