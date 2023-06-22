@@ -5,7 +5,7 @@
     justify-content: stretch;
     align-items: stretch;
 
-    min-height: 240px;
+    min-height:300px;
     border-bottom: solid 1px black;
     margin-bottom: 1em;
 
@@ -151,7 +151,7 @@
     &-desc {
       //max-width: 12rem;
       //max-width: 100%;
-      width:183px;
+      //width:183px;
       margin-bottom: 0;
       //margin-top: 0.2rem;
       padding:1em 2em;
@@ -163,6 +163,7 @@
       display: block;
       color: white;
       text-decoration: none;
+        flex: 0 0 200px;
     }
 
     &-link:hover {

@@ -71,6 +71,12 @@
             <a href="{% record_url record %}" class="search-results__list-card-image-anchor" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
                 <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
             </a>
+            <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                <p class="search-results__list-card-delivery-options-desc">
+                    <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                    Available online
+                </p>
+            </a>
         </div>
         {% endif %}
         {% if apply_teaser_image %}
