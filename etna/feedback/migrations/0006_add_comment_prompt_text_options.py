@@ -53,12 +53,9 @@ class Migration(migrations.Migration):
                                 (
                                     "comment_prompt_text",
                                     wagtail.blocks.CharBlock(
+                                        blank=True,
                                         default="Can you tell us more about why you answered this way?",
-                                        help_text=(
-                                            "The text that is displayed to users after responding with this feedback option, "
-                                            "prompting them to leave an optional comment to support their feedback. Leave this "
-                                            "field blank to avoid prompting users for a comment when this response option is used."
-                                        ),
+                                        help_text="The text that is displayed to users after responding with this feedback option, prompting them to leave an optional comment to support their feedback. Leave this field blank to avoid prompting users for a comment when this response option is used.",
                                         label="Comment prompt text",
                                         max_length=200,
                                     ),
