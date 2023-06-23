@@ -225,6 +225,10 @@ class FeedbackSubmission(models.Model):
         db_index=True,
         verbose_name=_("response label"),
     )
+    comment_prompt_text = models.CharField(
+        max_length=constants.COMMENT_PROMPT_TEXT_MAX_LENGTH,
+        verbose_name=_("comment prompt text"),
+    )
     comment = models.TextField(verbose_name=_("comment"))
 
     # Additional metadata
