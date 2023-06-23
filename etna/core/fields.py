@@ -9,7 +9,7 @@ from .validators import PositiveIntegerStringValidator
 from .widgets import DateInputWidget, HiddenDateInputWidget
 
 END_OF_MONTH = "END_OF_MONTH"
-ERR_MSG_REAL_DATE = "Entered date must be a real date, for example 23 9 2017."
+ERR_MSG_REAL_DATE = "Date must be in DD MM YYYY format, for example 31 12 1990."
 
 
 class DateInputField(forms.MultiValueField):

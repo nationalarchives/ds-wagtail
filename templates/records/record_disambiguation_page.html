@@ -25,7 +25,7 @@
                 id="analytics-associated-records">
 
                 {% for record in record_results_page %}
-                    {% include 'includes/card-group-record-summary-no-image.html' %}
+                    {% include 'includes/card-group-record-summary-no-image.html' with url=record.non_reference_number_url %}
                 {% endfor %}
 
             </ul>

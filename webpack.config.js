@@ -18,6 +18,7 @@ module.exports = {
         catalogue_search: './scripts/src/catalogue-search.js',
         hamburger_menu: './scripts/src/hamburger-menu.js',
         record_article_page: './scripts/src/record-article-page.js',
+        feedback_tracking: './scripts/src/feedback-tracking.js',
     },
     output: {
         filename: '[name].js',
