@@ -7,7 +7,7 @@ from wagtail.models import Page, Site
 from etna.feedback.forms import FeedbackForm
 from etna.feedback.models import FeedbackPrompt
 from etna.feedback.tests import constants
-from etna.feedback.widgets import FeedbackResponseSelect
+from etna.feedback.widgets import ResponseSubmitButtonList
 
 
 @override_settings(ALLOWED_HOSTS=[constants.VALID_DOMAIN])
@@ -17,18 +17,12 @@ class TestSubmissionFormValidation(TestCase):
     """
 
     @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        """
-        Stores useful data for sharing between tests.
-        """
+    def setUpTestData(cls):
+        super().setUpTestData()
         cls.default_prompt = FeedbackPrompt.objects.get()
         cls.default_response_options = cls.default_prompt.response_options
         cls.valid_response_id = str(cls.default_response_options[0].id)
 
-    @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
         # Pages don't have any revisions by default, so let's create one
         # for a page and mark it as the latest
         page = Page.objects.get(depth=2).specific
@@ -39,11 +33,10 @@ class TestSubmissionFormValidation(TestCase):
         cls.page = page
         cls.page_revision = revision
 
-    def get_form(self, referer=None, url_path_must_match_referer=False, data=None):
+    def get_form(self, data=None):
         return FeedbackForm(
             response_options=self.default_response_options,
-            referer=referer,
-            url_path_must_match_referer=url_path_must_match_referer,
+            response_label=self.default_prompt.text,
             data=data,
         )
 
@@ -57,7 +50,7 @@ class TestSubmissionFormValidation(TestCase):
     def test_response_field_widget_set_on_init(self):
         form = self.get_form()
         widget = form.fields["response"].widget
-        self.assertIsInstance(widget, FeedbackResponseSelect)
+        self.assertIsInstance(widget, ResponseSubmitButtonList)
         self.assertEqual(
             widget.choices,
             [
@@ -80,35 +73,8 @@ class TestSubmissionFormValidation(TestCase):
             },
         )
 
-    def test_valid_submission_without_referer_path_matching(self):
-        form = self.get_form(
-            referer=constants.VALID_URL,
-            url_path_must_match_referer=False,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-                "page": self.page.id,
-                "page_revision": self.page_revision.id,
-            },
-        )
-        self.assertFalse(form.errors)
-
-    def test_valid_submission_with_referer_path_matching(self):
-        form = self.get_form(
-            referer=constants.VALID_URL,
-            url_path_must_match_referer=True,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-                "page": self.page.id,
-                "page_revision": self.page_revision.id,
-            },
-        )
-        self.assertFalse(form.errors)
-
     def test_invalid_response_format(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": "not-a-uuid",
                 "url": constants.VALID_URL,
@@ -127,7 +93,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_invalid_response_choice(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": "68526cc2-4461-475b-a02c-539181ed1cd3",
                 "url": constants.VALID_URL,
@@ -146,7 +111,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_invalid_url_format(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_URL,
@@ -166,7 +130,6 @@ class TestSubmissionFormValidation(TestCase):
     def test_url_invalid_when_no_matching_wagtail_site(self):
         Site.objects.all().delete()
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -185,7 +148,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_url_hostname_invalid_when_not_in_allowed_hosts(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_DOMAIN_URL,
@@ -205,7 +167,6 @@ class TestSubmissionFormValidation(TestCase):
     @override_settings(ALLOWED_HOSTS=["*"])
     def test_url_hostname_valid_when_allowed_hosts_allows(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.INVALID_DOMAIN_URL,
@@ -213,113 +174,8 @@ class TestSubmissionFormValidation(TestCase):
         )
         self.assertFalse(form.errors)
 
-    def test_invalid_referer_format(self):
-        form = self.get_form(
-            referer=constants.INVALID_URL,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-            },
-        )
-        self.assertFieldErrorsEqual(
-            form,
-            "url",
-            [
-                {
-                    "message": "referer hostname is invalid.",
-                    "code": "invalid",
-                }
-            ],
-        )
-
-    def test_referer_hostname_invalid_when_not_in_allowed_hosts(self):
-        form = self.get_form(
-            referer=constants.INVALID_DOMAIN_URL,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-            },
-        )
-        self.assertFieldErrorsEqual(
-            form,
-            "url",
-            [
-                {
-                    "message": "referer hostname is invalid.",
-                    "code": "invalid",
-                }
-            ],
-        )
-
-    @override_settings(ALLOWED_HOSTS=["*"])
-    def test_referer_hostname_valid_when_allowed_hosts_allows(self):
-        form = self.get_form(
-            referer=constants.INVALID_DOMAIN_URL,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-            },
-        )
-        self.assertFalse(form.errors)
-
-    def test_url_invalid_when_path_differs_from_referer(self):
-        form = self.get_form(
-            referer=constants.VALID_URL,
-            url_path_must_match_referer=True,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL + "/some-extra-bit/",
-            },
-        )
-        self.assertFieldErrorsEqual(
-            form,
-            "url",
-            [
-                {
-                    "message": "path '/some-url/some-extra-bit/' differs from '/some-url'.",
-                    "code": "invalid",
-                }
-            ],
-        )
-
-    def test_comment_max_length_enforced(self):
-        form = self.get_form(
-            referer=constants.VALID_URL,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-                "comment": (
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut purus eu felis condimentum rhoncus. Nam nec libero vestibulum, ultrices nisi non, accumsan nunc. Fusce blandit molestie ante quis auctor. Aliquam in cursus ex. Pellentesque pellentesque pharetra metus vitae sodales. Suspendisse porttitor ex non porttitor lobortis. Fusce rutrum nunc at nulla viverra pulvinar. Nullam et risus sit amet velit pharetra varius et vitae metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce fusce."
-                ),
-            },
-        )
-        self.assertFieldErrorsEqual(
-            form,
-            "comment",
-            [
-                {
-                    "message": "Ensure this value has at most 500 characters (it has 510).",
-                    "code": "max_length",
-                }
-            ],
-        )
-
-    def test_html_stripped_from_comments(self):
-        form = self.get_form(
-            referer=constants.VALID_URL,
-            data={
-                "response": self.valid_response_id,
-                "url": constants.VALID_URL,
-                "comment": '<p><a href="https://somewherefishy.com"><img src="https://somewherefishy.com/fake-image.gif" alt="Great deals on stuff" />Buy stuff!</a></p>',
-            },
-        )
-
-        self.assertFalse(form.errors)
-        self.assertEqual(form.cleaned_data["comment"], "Buy stuff!")
-
     def test_missing_page_revision(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -339,7 +195,6 @@ class TestSubmissionFormValidation(TestCase):
 
     def test_unexpected_page_revision(self):
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
@@ -360,7 +215,6 @@ class TestSubmissionFormValidation(TestCase):
     def test_page_and_page_revision_mismatch(self):
         # Used to test page/revision mismatch
         form = self.get_form(
-            referer=constants.VALID_URL,
             data={
                 "response": self.valid_response_id,
                 "url": constants.VALID_URL,
