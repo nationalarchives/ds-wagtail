@@ -63,8 +63,8 @@ const pushFeedbackData = () => {
                 'data-option-value': value || '',
             };
 
-            console.log(formData);
-            // push_to_data_layer(formData);
+            // console.log(formData);
+             push_to_data_layer(formData);
         } else {
             let formData = {
                 'event': 'feedback-form',
@@ -74,8 +74,8 @@ const pushFeedbackData = () => {
                 'data-option-value': value || '',
             };
 
-            console.log(formData);
-            // push_to_data_layer(formData);
+            // console.log(formData);
+            push_to_data_layer(formData);
         }
     });
 }
