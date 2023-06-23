@@ -13,5 +13,19 @@
         {{ prompt.thank_you_message|richtext }}
     {% endif %}
 
+    {% if comment_form %}
+         <form
+            class="feedback__form"
+            id="feedback-comment-form"
+            action="{% url 'feedback:comment_submit' view.prompt_id view.version %}"
+            method="post"
+            data-feedback-form-comment
+        >
+            {{ comment_form.as_div }}
+
+            <button type="submit" class="feedback__form-submit tna-button--dark" data-feedback-form-submit>Submit</button>
+        </form>
+    {% endif %}
+
     <p><a href="{{ next_url }}" class="tna-button--dark">{{ prompt.continue_link_text }}</a></p>
 {% endblock %}

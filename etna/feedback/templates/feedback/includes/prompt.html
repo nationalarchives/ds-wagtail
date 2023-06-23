@@ -17,7 +17,7 @@
                 <form
                     class="feedback__form feedback__form--comment"
                     id="feedback-comment-form"
-                    action="{% url 'feedback:submit_comment' %}"
+                    action="{% url 'feedback:comment_submit' prompt.public_id prompt.live_revision_id %}"
                     method="post"
                     data-feedback-form-comment
                 >
@@ -116,11 +116,16 @@ commentForm.onsubmit = function (e) {
     // Set a flag to avoid multiple posts
     comment_submitted = true;
 
+    // Gather data for posting
+    const body = new FormData(commentForm);
+    // Ensure the view responds with JSON
+    body.set("is_ajax", "true");
+
     fetch(
         commentForm.getAttribute("action"),
         {
             method: "post",
-            body: new FormData(commentForm),
+            body: body,
         }
     )
     .then((response) => response.json())
