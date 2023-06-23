@@ -6,6 +6,11 @@
   .generic-intro & {
     padding: 0;
   }
+
+  // Styles for Focused Article templates
+  .template-focused-article & {
+    background-color: $color__grey-700;
+  }
 }
 
 ul.breadcrumb {
@@ -26,6 +31,10 @@ ul.breadcrumb li {
 ul.breadcrumb li a {
   color: black;
   text-decoration: underline;
+
+  .template-focused-article & {
+    color: $color__white;
+  }
 }
 ul.breadcrumb li a:hover {
   text-decoration: none;
@@ -35,6 +44,10 @@ ul.breadcrumb li a:hover {
     @include font-size(xs);
     padding: 2px;
     color: black;
+
+    .template-focused-article & {
+      color: $color__grey-600;
+    }
 }
 
 //hide the first child - The National Archives - now handled by python logic

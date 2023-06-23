@@ -89,7 +89,10 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             ("external-link", "External link"),
         ],
     )
-    publication_date = blocks.CharBlock(required=False)
+    publication_date = blocks.CharBlock(
+        required=False,
+        help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021",
+    )
     author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
@@ -197,6 +200,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
         "articles.ArticlePage",
+        "articles.RecordArticlePage",
         exclude_drafts=True,
         exclude_private=True,
         select_related=["teaser_image"],

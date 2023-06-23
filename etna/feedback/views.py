@@ -1,6 +1,7 @@
 import logging
 import uuid
 
+from http import HTTPStatus
 from typing import Any, Dict
 
 from django.contrib.contenttypes.models import ContentType
@@ -29,8 +30,9 @@ from wagtail.models import Revision
 import django_filters
 
 from etna.feedback.constants import SentimentChoices
-from etna.feedback.forms import FeedbackForm
+from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
 from etna.feedback.models import FeedbackPrompt, FeedbackSubmission
+from etna.feedback.utils import sign_submission_id
 
 logger = logging.getLogger(__name__)
 
@@ -64,16 +66,25 @@ class VersionedFeedbackViewMixin:
 
 @method_decorator(csrf_exempt, name="dispatch")
 class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
-    template_name = "feedback/submit.html"
+    """
+    A view for vaidating and storing feedback submitted from a prompt.
+
+    Since the prompt takes care of form rendering, this view only responds
+    to POST requests.
+
+    The URL includes `prompt_id` and `version` parameters, which are used to
+    to determine the exact version of the prompt seen by the user, and the
+    response options that were available to them.
+    """
+
     form_class = FeedbackForm
+    http_method_names = ["post"]
 
     def get_form_kwargs(self) -> Dict[str, Any]:
         kwargs = super().get_form_kwargs()
-        request = self.request
         kwargs.update(
             response_options=self.prompt.response_options,
-            referer=request.META.get("HTTP_REFERER", ""),
-            url_path_must_match_referer=request.resolver_match.namespace != "feedback",
+            response_label=self.prompt.text,
         )
         return kwargs
 
@@ -100,25 +111,27 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
         obj.save()
 
         if self.is_ajax:
-            return JsonResponse({"id": str(obj.public_id)})
-        return self.redirect_on_success(
-            obj.public_id, origin_url=form.cleaned_data["url"]
+            return JsonResponse(
+                {
+                    "id": str(obj.public_id),
+                    "signature": sign_submission_id(obj.public_id),
+                    "comment_prompt_text": form.cleaned_data["comment_prompt_text"],
+                }
+            )
+
+        success_url = self.get_success_url()
+        querystring = urlencode(
+            {"submission": obj.public_id, "next": form.cleaned_data["url"]}
         )
+        return HttpResponseRedirect(success_url + "?" + querystring)
 
     def form_invalid(self, form: Form) -> HttpResponse:
-        # Log the failure
-        logger.error(
-            "Invalid feedback submission received",
-            extra={"errors": form.errors.as_data(), "data": self.request.POST.lists()},
-        )
-
-        # Fake a successful response
-        fake_id = uuid.uuid4()
-        if self.is_ajax:
-            return JsonResponse({"id": str(fake_id)})
-
-        origin_url = form.cleaned_data["url"] if "url" not in form.errors else "/"
-        return self.redirect_on_success(fake_id, origin_url)
+        data = {
+            "success": False,
+            "form_data": dict(form.data),
+            "errors": dict(form.errors),
+        }
+        return JsonResponse(data=data, status=HTTPStatus.BAD_REQUEST)
 
     def get_success_url(self) -> str:
         return reverse(
@@ -126,12 +139,32 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
             kwargs={"prompt_id": self.prompt_id, "version": self.version},
         )
 
-    def redirect_on_success(
-        self, submission_id: uuid.UUID, origin_url: str
-    ) -> HttpResponseRedirect:
-        url = self.get_success_url()
-        querystring = urlencode({"submission": submission_id, "next": origin_url})
-        return HttpResponseRedirect(url + "?" + querystring)
+
+@method_decorator(csrf_exempt, name="dispatch")
+class FeedbackCommentSubmitView(FormView):
+    """A view for validating and storing comments submitted to accompany feedback.
+
+    Because the view only needs to respond to requests posted via JS,
+    it only responds to POST requests, and always returns a `JsonResponse`.
+    """
+
+    form_class = FeedbackCommentForm
+    http_method_names = ["post"]
+
+    def form_valid(self, form: Form) -> HttpResponse:
+        if form.cleaned_data["comment"]:
+            obj = form.cleaned_data["submission"]
+            obj.comment = form.cleaned_data["comment"]
+            obj.save(update_fields=["comment"])
+        return JsonResponse({"success": True})
+
+    def form_invalid(self, form):
+        data = {
+            "success": False,
+            "form_data": dict(form.data),
+            "errors": dict(form.errors),
+        }
+        return JsonResponse(data=data, status=HTTPStatus.BAD_REQUEST)
 
 
 class FeedbackSuccessView(VersionedFeedbackViewMixin, TemplateView):
@@ -200,6 +233,7 @@ class FeedbackSubmissionReportView(ReportView):
         "response_label",
         "response_sentiment",
         "sentiment_label",
+        "comment_prompt_text",
         "comment",
         "prompt_id",
         "prompt_revision_id",

@@ -98,7 +98,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
-        "articles.RecordArticlePage",
+        "articles.ArticleIndexPage",
     ]
 
     # DataLayerMixin overrides
@@ -259,7 +259,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -269,7 +269,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
@@ -412,7 +412,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -422,7 +422,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")

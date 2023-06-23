@@ -15,7 +15,7 @@
     </form>
 </div>
 
-<div class="search-filters">
+<div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
     <h2 class="search-filters__heading">Refine results</h2>
 
@@ -45,18 +45,32 @@
                 <div class="search-filters__accordion-section">
                     <fieldset>
                         <legend>
-                            <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Covering date</h4>
+                            <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
                         <div class="search-filters__creation-date-section">
                             {{ form.covering_date_from.label_tag }}
-                            {{ form.covering_date_from.errors }}
+                            {% if form.covering_date_from.errors %}
+                                <div 
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.covering_date_from.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.covering_date_from }}
                         </div>
 
                         <div class="search-filters__creation-date-section">
                             {{ form.covering_date_to.label_tag }}
-                            {{ form.covering_date_to.errors }}
+                            {% if form.covering_date_to.errors %}
+                                <div 
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
+                                    {{ form.covering_date_to.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.covering_date_to }}
                         </div>
 
@@ -84,13 +98,27 @@
 
                         <div class="search-filters__opening-date-section">
                             {{ form.opening_start_date.label_tag }}
-                            {{ form.opening_start_date.errors }}
+                            {% if form.opening_start_date.errors %}
+                                <div 
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_start_date.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.opening_start_date }}
                         </div>
 
                         <div class="search-filters__opening-date-section">
                             {{ form.opening_end_date.label_tag }}
-                            {{ form.opening_end_date.errors }}
+                            {% if form.opening_end_date.errors %}
+                                <div 
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_end_date.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.opening_end_date }}
                         </div>
 
