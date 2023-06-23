@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 
 from wagtail.models import Page
 
-from etna.feedback.forms import FeedbackForm
+from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
 from etna.feedback.models import FeedbackPrompt
 
 register = template.Library()
@@ -39,6 +39,7 @@ def render_feedback_prompt(context, template_name="feedback/includes/prompt.html
 
     form = FeedbackForm(
         response_options=prompt.response_options,
+        response_label=prompt.text,
         initial=initial_data,
     )
 
@@ -49,6 +50,7 @@ def render_feedback_prompt(context, template_name="feedback/includes/prompt.html
                 "request": request,
                 "prompt": prompt,
                 "form": form,
+                "comment_form": FeedbackCommentForm(),
             }
         )
     )

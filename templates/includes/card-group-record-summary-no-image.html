@@ -1,19 +1,14 @@
 {% load records_tags %}
 {% load wagtailimages_tags %}
 
-{% image teaser_image fill-288x292 as teaser_image_small %}
-{% image teaser_image fill-328x322 as teaser_image_medium %}
-{% image teaser_image fill-348x352 as teaser_image_large %}
-{% image teaser_image fill-543x549 as teaser_image_extra_large %}
-
 <li class="col-sm-12 col-md-6 col-lg-4">
     <div class="card-group-record-summary">
-        <a href="{% record_url record is_editorial=True %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{% firstof description_override|safe record.summary_title %}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
+        <a href="{% if url %}{{ url }}{% else %}{% record_url record is_editorial=True %}{% endif %}" class="card-group-record-summary__link" data-card-type="card-group-record-summary-no-image" data-card-title="{% firstof description_override|safe record.summary_title %}"{% if FEATURE_RECORD_LINKS_GO_TO_DISCOVERY %} target="_blank"{% endif %}>
             <p class="card-group-record-summary__heading">
                 {% if record.reference_number %}
-                <span class="sr-only">
-                    {{ record.reference_number }} -
-                </span>
+                    <span class="sr-only">
+                        {{ record.reference_number }} -
+                    </span>
                 {% endif %}
                 {# default_if_none for those template calls that do not share description_override #}
                 {% firstof description_override|default_if_none:""|safe record.summary_title|striptags %}

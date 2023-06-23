@@ -5,14 +5,37 @@
 {% block meta_tag %}
     {% meta_tags %}
 {% endblock %}
-
+{% block body_class %}template-focused-article{% endblock %}
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
+    {% if not page.hero_image %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro classes="generic-intro--dark" %}
+    {% else %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}
+    {% endif %}    
+    {% if page.author or page.first_published_at %}
+        <div class="generic-intro__meta">
+            <ul class="generic-intro__meta-list container">
+                {% if page.first_published_at %}
+                    <li class="generic-intro__meta-item">{{ page.first_published_at|date:"l d F Y" }}</li>                    
+                {% endif %}
+                {% if page.author %}
+                    <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
-    {% if page.author %}
-        <p>{{ page.author }}</p>
+
+    {% if page.intro and page.hero_image %}
+        <div class="generic-intro__paragraph container">
+            <div class="row">
+                <div class="col-md-9">
+                    {{ page.intro|richtext }}
+                </div>
+            </div>
+        </div>
     {% endif %}
     <div class="article-container container">
         <div class="article-container__main">
@@ -27,10 +50,8 @@
 
     <div class="related-content">
         <div class="container">
-            {% if FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED %}
-                {% if page.primary_topic or page.primary_time_period %}
-                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
-                {% endif %}
+            {% if page.primary_topic or page.primary_time_period %}
+                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
             {% endif %}
         </div>
     </div>
