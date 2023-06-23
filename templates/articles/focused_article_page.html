@@ -50,10 +50,8 @@
 
     <div class="related-content">
         <div class="container">
-            {% if FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED %}
-                {% if page.primary_topic or page.primary_time_period %}
-                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
-                {% endif %}
+            {% if page.primary_topic or page.primary_time_period %}
+                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
             {% endif %}
         </div>
     </div>

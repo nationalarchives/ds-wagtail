@@ -73,7 +73,13 @@ class ArticleIndexPage(BasePageWithIntro):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context["article_pages"] = self.get_children().public().live().specific()
+        context["article_pages"] = (
+            self.get_children()
+            .public()
+            .live()
+            .order_by("-first_published_at")
+            .specific()
+        )
         return context
 
     content_panels = BasePageWithIntro.content_panels + [
@@ -84,6 +90,7 @@ class ArticleIndexPage(BasePageWithIntro):
         FieldPanel("featured_pages"),
     ]
 
+    parent_page_types = ["collections.ExplorerIndexPage"]
     subpage_types = [
         "articles.ArticlePage",
         "articles.FocusedArticlePage",
@@ -373,7 +380,7 @@ class RecordArticlePage(
     TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
 ):
     template = "articles/record_article_page.html"
-    parent_page_types = ["collections.ExplorerIndexPage", "articles.ArticleIndexPage"]
+    parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
     intro_image = models.ForeignKey(
