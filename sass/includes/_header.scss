@@ -236,15 +236,19 @@
 
   &__overlay-button {
     position: absolute;
-    top: 0.15rem;
-    right: 0;
-    padding: 23px 0.9375rem;
+    right: 0em;
+    top: 42px;
+    padding: 23px 11px;
     z-index: 5;
     cursor: pointer;
     user-select: none;
 
-    @media only screen and (min-width: $screen__sm) {
-      top: 0.65rem;
+    @media only screen and (max-width: 481px) {
+      top: 20px;
+    }
+
+    @media only screen and (max-width: 390px) {
+      top: 18px;
     }
 
     @media only screen and (min-width: $screen__md) {
