@@ -90,28 +90,12 @@ class RecordModelTests(SimpleTestCase):
         with self.assertRaises(ValueExtractionError):
             self.record.source_url
 
-    def test_url_prefers_iaid_over_reference_number_and_source_url(self):
+    def test_url_prefers_reference_number_over_iaid_and_source_url(self):
         record = Record(
             {
                 "@template": {
                     "details": {
                         "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
-                        "referenceNumber": "2515/300/1",
-                        "sourceUrl": "https://www.example.com",
-                    }
-                }
-            }
-        )
-        self.assertEqual(
-            record.url,
-            reverse("details-page-machine-readable", kwargs={"iaid": record.iaid}),
-        )
-
-    def test_url_prefers_reference_number_over_source_url(self):
-        record = Record(
-            {
-                "@template": {
-                    "details": {
                         "referenceNumber": "2515/300/1",
                         "sourceUrl": "https://www.example.com",
                     }
@@ -126,7 +110,26 @@ class RecordModelTests(SimpleTestCase):
             ),
         )
 
-    def test_url_uses_source_url_when_no_iaid_or_reference_number_is_available(self):
+    def test_url_prefers_iaid_over_source_url(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"iaid": record.iaid},
+            ),
+        )
+
+    def test_url_uses_source_url_when_reference_number_and_iaid_are_missing(self):
         record = Record(
             {
                 "@template": {
@@ -149,6 +152,26 @@ class RecordModelTests(SimpleTestCase):
             }
         )
         self.assertEqual(record.url, "")
+
+    def test_no_reference_number_url_prefers_iaid_over_reference_number(self):
+        record = Record(
+            {
+                "@template": {
+                    "details": {
+                        "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                        "referenceNumber": "2515/300/1",
+                        "sourceUrl": "https://www.example.com",
+                    }
+                }
+            }
+        )
+        self.assertEqual(
+            record.non_reference_number_url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"iaid": record.iaid},
+            ),
+        )
 
     def test_description(self):
         self.assertEqual(
@@ -384,7 +407,7 @@ class RecordModelTests(SimpleTestCase):
 
     def test_repository_attr(self):
         self.assertEqual(self.record.repository.iaid, "A13530124")
-        self.assertEqual(self.record.repository.url, "/catalogue/id/A13530124/")
+        self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
