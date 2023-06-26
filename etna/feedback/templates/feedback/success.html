@@ -7,25 +7,32 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
-    <h1>{{ prompt.thank_you_heading }}</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>{{ prompt.thank_you_heading }}</h1>
 
-    {% if prompt.thank_you_message %}
-        {{ prompt.thank_you_message|richtext }}
-    {% endif %}
+            {% if prompt.thank_you_message %}
+                {{ prompt.thank_you_message|richtext }}
+            {% endif %}
 
-    {% if comment_form %}
-         <form
-            class="feedback__form"
-            id="feedback-comment-form"
-            action="{% url 'feedback:comment_submit' view.prompt_id view.version %}"
-            method="post"
-            data-feedback-form-comment
-        >
-            {{ comment_form.as_div }}
+            {% if comment_form %}
+                <form
+                    class="feedback__form feedback__form--success"
+                    id="feedback-comment-form"
+                    action="{% url 'feedback:comment_submit' view.prompt_id view.version %}"
+                    method="post"
+                    data-feedback-form-comment
+                >
+                    {{ comment_form.as_div }}
 
-            <button type="submit" class="feedback__form-submit tna-button--dark" data-feedback-form-submit>Submit</button>
-        </form>
-    {% endif %}
-
-    <p><a href="{{ next_url }}" class="tna-button--dark">{{ prompt.continue_link_text }}</a></p>
+                    <button type="submit" class="feedback__form-submit tna-button--dark tna-button--row-item" data-feedback-form-submit>Submit</button>
+                    <a href="{{ next_url }}" class="tna-button--dark tna-button--row-item">{{ prompt.continue_link_text }}</a>
+                </form>
+            {% else %}
+                <p><a href="{{ next_url }}" class="tna-button--dark">{{ prompt.continue_link_text }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
 {% endblock %}
