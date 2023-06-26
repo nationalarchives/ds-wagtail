@@ -154,7 +154,7 @@
 
   &__tablist {
     max-width: 65em;
-    font-family: $font__supria-sans;
+    font-family: $font__body;
   }
 
   &__tab {
@@ -164,7 +164,7 @@
     display: inline-block;
     margin: 0.125rem;
     color: $color__white;
-    font-size: $h2-font-size;
+    font-size: $font-size-base;
     font-weight: $headings-font-weight;
 
     @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
