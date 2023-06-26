@@ -1,7 +1,11 @@
 .breadcrumb-content {
   background-color: white;
   display: inline-block;
-  padding: 0.1rem 1rem 0rem;
+  padding: 0.1rem 1rem 0rem 0;
+
+  @media only screen and (min-width: $screen__md) {
+    padding: 0.1rem 1rem 0rem;
+  }
 
   .generic-intro & {
     padding: 0;
@@ -14,7 +18,7 @@
 }
 
 ul.breadcrumb {
-  padding: 10px 16px 10px 0;
+  padding: 10px 16px;
   list-style: none;
 
   .generic-intro & {
@@ -59,15 +63,17 @@ ul.breadcrumb li a:hover {
 
 //media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media (max-width: 768px) {
+  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
     display: none;
   }
+  
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:first-child,
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:last-child {
     display: inline-block;
-  }
+  } 
 
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
     top: 6px;

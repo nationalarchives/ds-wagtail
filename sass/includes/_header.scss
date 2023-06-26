@@ -21,22 +21,25 @@
       }
       
       @media screen and (max-width: $screen__sm) {
-        padding: 0.5rem;
+        padding: 0.5rem 0;
       }
     }
 
     &-link {
       align-self: center;
       display: inline-block;
+      margin-left: 1rem;
+
       &:hover {
         outline: 0.3125rem solid $color__grey-700;
       }
+
       &:focus {
         outline-color: $color__black;
       }
     }
     &-image {
-      height: 2.49rem;
+      height: 4.6875rem;
 
       @media only screen and (min-width: $screen__md) {
         height: 6.18rem;
@@ -62,6 +65,7 @@
     display: none;
     left: calc(50% - 50vw);
     position: relative;
+    margin-left: auto;
 
     &.active {
       display: block;
@@ -235,8 +239,7 @@
     margin-bottom: 0;
     z-index: 5;
     cursor: pointer;
-    user-select: none;    
-    margin-right: -0.5rem;
+    user-select: none;
 
     @media only screen and (min-width: $screen__md) {
       display: none;
