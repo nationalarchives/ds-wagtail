@@ -75,7 +75,7 @@
     }
 
     @media only screen and (min-width: $screen__md) {
-      display: block;
+      display: block !important;
       width: max-content;
       left: unset;
     }
