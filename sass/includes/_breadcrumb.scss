@@ -1,7 +1,11 @@
 .breadcrumb-content {
   background-color: white;
   display: inline-block;
-  padding: 0.1rem 1rem 0rem;
+  padding: 0.1rem 1rem 0rem 0;
+
+  @media only screen and (min-width: $screen__md) {
+    padding: 0.1rem 1rem 0rem;
+  }
 
   .generic-intro & {
     padding: 0;
@@ -72,10 +76,6 @@ ul.breadcrumb li a:hover {
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:last-child {
     display: inline-block;
-    
-    + span {
-        display: inline-block;
-    }
   } 
 
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
