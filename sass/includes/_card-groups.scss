@@ -46,10 +46,8 @@
       font-family: $font__body;
       font-weight: $font-weight-bold;
       font-size: 1.125rem;
-      display: inline-block;
+      display: inline;
       color: $color__black;
-      margin-top: 0.3rem;
-      margin-bottom: 0.5rem;
       text-decoration-thickness: 1px;
 
       @media only screen and (min-width: $screen__md) {
@@ -71,14 +69,18 @@
     }
 
     &__heading {
-      display: inline;
+      display: block;
+      margin-top: 0.3rem;
+      margin-bottom: 0.5rem;
 
       span {
         background: green;
+        display: inline-block;
         font-size: 0.8rem;
         color: white;
-        padding: 3px 3px 0px 3px;
+        padding: 2px 3px 0px 3px;
         margin-left: 1px;
+        vertical-align: middle;
       }
     }
 

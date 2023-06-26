@@ -17,7 +17,9 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
-BIRDBATH_REQUIRED = False
+# Disable birdbath completely when testing
+INSTALLED_APPS = INSTALLED_APPS.copy()  # noqa: F405
+INSTALLED_APPS.remove("birdbath")
 
 # Allow integration tests to run without needing to collectstatic
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#staticfilesstorage
