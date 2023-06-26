@@ -7,6 +7,14 @@
     font-weight: normal;
   }
 
+  &__table-container {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+  }
+
   &__table {
     margin: 1rem 0 5rem;
     width: 100%;
