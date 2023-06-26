@@ -27,7 +27,7 @@
 
         <dl class="search-results__list-card-metadata">
             {% if record.held_by %}
-            <dt class="search-results__list-card-metadata-item-held-by-icon">Held by</dt>
+            <dt class="search-results__list-card-metadata-item-held-by-icon">Held by:</dt>
             <dd>{{ record.held_by }}</dd>
             {% endif %}
 
@@ -35,7 +35,7 @@
 
             {% if record.date_created %}
             <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                Date</dt>
+                Date:</dt>
             <dd>
                 <date>{{ record.date_created }}</date></dd>
             {% endif %}
