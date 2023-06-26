@@ -1,6 +1,7 @@
 .highlight-intro {
     margin-bottom: 2rem;
     position: relative;
+    background: $color__grey-800;
 
     &__image {
         width: 100%;
@@ -10,6 +11,7 @@
 
     &__standout-container {
         padding: 0;
+        position: relative;
 
         // mimics left & right padding of body-container to match page content
         @media screen  and (min-width: $screen__lg) {
@@ -23,16 +25,17 @@
         background: $color__grey-dark;
         left: 0;
         color: $color__white;
-        padding: 28px 24px 36px 24px;
+        padding: 28px 0 36px;
 
         // tablet and up
         @media screen and (min-width: $screen__lg) {
             width: 46rem;
             position: absolute;
-            left: auto;
             bottom: 3.25rem;
             background: $color__white;
             color: $color__black;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
         }
     }
 
