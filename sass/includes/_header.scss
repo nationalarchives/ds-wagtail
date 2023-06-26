@@ -4,7 +4,6 @@
   position: relative;
 
   &__container {
-    @extend .container;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -14,17 +13,14 @@
   &__logo {
     &-holder {
       display: inline-block;
-      padding: 1rem 0;
+      padding: 1rem 1.5rem;
 
       @media only screen and (max-width: $screen__md) {
         vertical-align: top;
       }
       
       @media screen and (max-width: $screen__sm) {
-        padding-left: 0.1rem;
-        padding-right: 0.1rem;
-        padding-bottom: 0.5rem;
-        padding-top: 0.5rem;
+        padding: 0.5rem;
       }
     }
 

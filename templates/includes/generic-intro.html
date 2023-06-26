@@ -1,11 +1,11 @@
 {% load wagtailcore_tags %}
+{% if breadcrumb %}
+    {% include 'includes/breadcrumb.html' %}
+{% endif %}
 <div class="generic-intro{% if classes %} {{ classes }}{% endif %}">
     <div class="container">
         <div class="row">
             <div class="col-12">
-                {% block breadcrumb %}
-                {% include 'includes/breadcrumb.html' %}
-                {% endblock %}
                 <h1 class="generic-intro__title">
                     {{ title }}
                 </h1>
