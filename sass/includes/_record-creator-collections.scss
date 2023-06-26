@@ -9,6 +9,7 @@
 
   &__table-container {
     display: block;
+    margin: 0 0 4rem;
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -16,7 +17,7 @@
   }
 
   &__table {
-    margin: 1rem 0 5rem;
+    margin: 1rem 0;
     width: 100%;
     border: 2px solid $color__yellow;
 
