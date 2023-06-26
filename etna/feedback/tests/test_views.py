@@ -1,5 +1,3 @@
-import uuid
-
 from http import HTTPStatus
 
 from django.test import TestCase, override_settings
@@ -11,6 +9,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 from etna.core.test_utils import prevent_request_warnings
 from etna.feedback.constants import SentimentChoices
+from etna.feedback.forms import FeedbackCommentForm
 from etna.feedback.models import FeedbackPrompt, FeedbackSubmission
 from etna.feedback.utils import sign_submission_id
 
@@ -198,7 +197,14 @@ class TestFeedbackCommentSubmitView(WagtailTestUtils, TestCase):
     @classmethod
     def setUpTestData(cls) -> None:
         super().setUpTestData()
-        cls.url = reverse("feedback:submit_comment")
+        cls.prompt = FeedbackPrompt.objects.get()
+        cls.url = reverse(
+            "feedback:comment_submit",
+            kwargs={
+                "prompt_id": cls.prompt.public_id,
+                "version": cls.prompt.live_revision_id,
+            },
+        )
         cls.prompt = FeedbackPrompt.objects.get()
 
         # Create a submission to comment on
@@ -217,10 +223,37 @@ class TestFeedbackCommentSubmitView(WagtailTestUtils, TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED)
 
-    def test_post_with_valid_data(self):
+    def test_post_valid_regular(self):
         response = self.client.post(
             self.url,
             data={
+                "comment": "This is a comment",
+                "submission": self.submission.public_id,
+                "signature": sign_submission_id(self.submission.public_id),
+            },
+        )
+
+        # Test view response
+        self.assertRedirects(
+            response,
+            reverse(
+                "feedback:comment_success",
+                kwargs={
+                    "prompt_id": self.prompt.public_id,
+                    "version": self.prompt.live_revision_id,
+                },
+            ),
+        )
+
+        # Test the comment was saved
+        self.submission.refresh_from_db()
+        self.assertEqual(self.submission.comment, "This is a comment")
+
+    def test_post_valid_ajax(self):
+        response = self.client.post(
+            self.url,
+            data={
+                "is_ajax": "true",
                 "comment": "This is a comment",
                 "submission": self.submission.public_id,
                 "signature": sign_submission_id(self.submission.public_id),
@@ -313,19 +346,61 @@ class TestFeedbackSuccessView(TestCase):
             },
         )
         cls.next_url = "/some-path"
-        cls.valid_submission_id = uuid.uuid4()
+        cls.submission = FeedbackSubmission.objects.create(
+            site=Site.objects.first(),
+            full_url="",
+            path="",
+            prompt_text="prompt",
+            response_sentiment=SentimentChoices.POSITIVE,
+            response_label="Easy to use",
+            comment_prompt_text="Thank you! Can you tell us more about why you answered this way?",
+        )
+        cls.submission_with_comment = FeedbackSubmission.objects.create(
+            site=Site.objects.first(),
+            full_url="",
+            path="",
+            prompt_text="prompt",
+            response_sentiment=SentimentChoices.POSITIVE,
+            response_label="Easy to use",
+            comment_prompt_text="Thank you! Can you tell us more about why you answered this way?",
+            comment="I have a comment",
+        )
 
     def test_golden_path(self):
         response = self.client.get(
-            self.url, {"submission": self.valid_submission_id, "next": self.next_url}
+            self.url, {"submission": self.submission.public_id, "next": self.next_url}
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
         self.assertEqual(response.context["next_url"], self.next_url)
-        self.assertEqual(
-            response.context["submission_id"], str(self.valid_submission_id)
-        )
         self.assertContains(response, self.prompt.thank_you_heading)
+        self.assertIsInstance(response.context["comment_form"], FeedbackCommentForm)
+        self.assertContains(
+            response,
+            f'<label for="id_comment">{self.submission.comment_prompt_text}</label>',
+        )
+        self.assertContains(
+            response,
+            f'<a href="{self.next_url}" class="tna-button--dark tna-button--row-item">{self.prompt.continue_link_text}</a>',
+        )
+
+    def test_comment_form_not_rendered_if_comment_already_detected(self):
+        response = self.client.get(
+            self.url,
+            {
+                "submission": self.submission_with_comment.public_id,
+                "next": self.next_url,
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["prompt"], self.prompt)
+        self.assertEqual(response.context["next_url"], self.next_url)
+        self.assertContains(response, self.prompt.thank_you_heading)
+        self.assertIsNone(response.context["comment_form"])
+        self.assertNotContains(
+            response,
+            self.submission.comment_prompt_text,
+        )
         self.assertContains(
             response,
             f'<a href="{self.next_url}" class="tna-button--dark">{self.prompt.continue_link_text}</a>',
@@ -340,21 +415,60 @@ class TestFeedbackSuccessView(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
         self.assertEqual(response.context["next_url"], self.next_url)
-        self.assertIsNone(response.context["submission_id"])
+        self.assertContains(response, self.prompt.thank_you_heading)
+        self.assertIsNone(response.context["comment_form"])
+        self.assertContains(
+            response,
+            f'<a href="{self.next_url}" class="tna-button--dark">{self.prompt.continue_link_text}</a>',
+        )
+
+    def test_missing_next_url_substituted_with_homepage_path(self):
+        response = self.client.get(self.url, {"submission": self.submission.public_id})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["prompt"], self.prompt)
+        self.assertEqual(response.context["next_url"], "/")
+        self.assertContains(response, self.prompt.thank_you_heading)
+        self.assertContains(
+            response,
+            f'<a href="/" class="tna-button--dark tna-button--row-item">{self.prompt.continue_link_text}</a>',
+        )
+
+
+class TestFeedbackCommentSuccessView(TestCase):
+    """
+    Integration tests for `etna.feedback.views.FeedbackCommentSuccessView`,
+    utilising Django's full request/response cycle, including URL resolution.
+    """
+
+    @classmethod
+    def setUpTestData(cls) -> None:
+        super().setUpTestData()
+        cls.prompt = FeedbackPrompt.objects.get()
+        cls.url = reverse(
+            "feedback:comment_success",
+            kwargs={
+                "prompt_id": cls.prompt.public_id,
+                "version": cls.prompt.live_revision_id,
+            },
+        )
+        cls.next_url = "/some-path"
+
+    def test_golden_path(self):
+        response = self.client.get(self.url, {"next": self.next_url})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["prompt"], self.prompt)
+        self.assertEqual(response.context["next_url"], self.next_url)
         self.assertContains(response, self.prompt.thank_you_heading)
         self.assertContains(
             response,
             f'<a href="{self.next_url}" class="tna-button--dark">{self.prompt.continue_link_text}</a>',
         )
 
-    def test_missing_next_url_substituded_with_homepage_path(self):
-        response = self.client.get(self.url, {"submission": self.valid_submission_id})
+    def test_missing_next_url_substituted_with_homepage_path(self):
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
         self.assertEqual(response.context["next_url"], "/")
-        self.assertEqual(
-            response.context["submission_id"], str(self.valid_submission_id)
-        )
         self.assertContains(response, self.prompt.thank_you_heading)
         self.assertContains(
             response,

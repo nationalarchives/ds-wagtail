@@ -155,8 +155,13 @@ class FeedbackCommentForm(forms.Form):
         widget=forms.Textarea({"cols": 40, "rows": 5}),
     )
 
+    def __init__(self, *args, prompt_text: str | None = None, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        if prompt_text:
+            self.fields["comment"].label = prompt_text
+
     def clean_comment(self) -> str:
-        # Strip HTML from comment submissions
+        # Strip HTML from all comment submissions
         value = self.cleaned_data.get("comment")
         if value is None:
             return ""
