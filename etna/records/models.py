@@ -432,6 +432,72 @@ class Record(DataLayerMixin, APIModel):
                 return "CREATORS"
         return ""
 
+    @cached_property
+    def gender(self) -> str:
+        if gender := self.get("gender", ""):
+            if gender == "M":
+                return "Male"
+            elif gender == "F":
+                return "Female"
+        return gender
+
+    @cached_property
+    def first_name(self) -> str:
+        first_name = ""
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if first_name_list := item.get("first_name"):
+                    first_name = " ".join(first_name_list)
+        return first_name
+
+    @cached_property
+    def last_name(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if last_name := item.get("last_name", ""):
+                    return last_name
+        return ""
+
+    @cached_property
+    def name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if name_authority_reference := item.get("name_authority_reference", ""):
+                    return name_authority_reference
+        return ""
+
+    @cached_property
+    def former_name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if former_name_authority_reference := item.get(
+                    "former_name_authority_reference", ""
+                ):
+                    return former_name_authority_reference
+        return ""
+
+    @cached_property
+    def former_name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if former_name_authority_reference := item.get(
+                    "former_name_authority_reference", ""
+                ):
+                    return former_name_authority_reference
+        return ""
+
+    @cached_property
+    def epithet(self) -> str:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "epithet":
+                    return item.get("value", "")
+        return ""
+
+    @cached_property
+    def type(self) -> str:
+        return self.template.get("type", "").lower()
+
     def get_gtm_content_group(self) -> str:
         """
         Overrides DataLayerMixin.get_gtm_content_group() to
