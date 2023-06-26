@@ -3,9 +3,9 @@ from django import forms
 from wagtail.blocks import StreamValue
 
 
-class FeedbackResponseSelect(forms.RadioSelect):
-    template_name = "feedback/widgets/feedback_response_select.html"
-    option_template_name = "feedback/widgets/feedback_response_option.html"
+class ResponseSubmitButtonList(forms.RadioSelect):
+    template_name = "feedback/widgets/response_submit_button_list.html"
+    option_template_name = "feedback/widgets/response_submit_button.html"
 
     def __init__(self, response_options: StreamValue, attrs=None):
         super().__init__(attrs)
