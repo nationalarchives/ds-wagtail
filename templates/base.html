@@ -89,9 +89,11 @@
         {% if show_beta_banner %}
             {% include 'includes/beta-banner.html' %}
         {% endif %}
+
         {% block breadcrumb %}
-        {% include 'includes/breadcrumb.html' %}
+            {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
         {% endblock %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
