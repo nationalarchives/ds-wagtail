@@ -411,6 +411,75 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
 
 
+class RecordModelCreatorsTests(SimpleTestCase):
+    def setUp(self):
+        self.record = Record(
+            {
+                "@admin": {
+                    "id": "F74321",
+                },
+                "description": [
+                    {"type": "epithet", "value": "Engineer"},
+                ],
+                "gender": "M",
+                "identifier": [
+                    {
+                        "faid": "F74321",
+                        "primary": True,
+                        "type": "faid",
+                        "value": "F74321",
+                    },
+                    {
+                        "name_authority_reference": "GB/NNAF/D189463",
+                        "type": "name authority reference",
+                        "value": "GB/NNAF/D189463",
+                    },
+                    {
+                        "former_name_authority_reference": "GB/NNAF/D7157",
+                        "type": "former name authority reference",
+                        "value": "GB/NNAF/D7157",
+                    },
+                ],
+                "name": [
+                    {
+                        "first_name": [
+                            "Alan",
+                        ],
+                        "last_name": "Swinden",
+                    }
+                ],
+                "@template": {
+                    "details": {
+                        "primaryIdentifier": "F74321",
+                        "summaryTitle": "Swinden, Alan, Engineer",
+                        "type": "person",
+                    }
+                },
+            }
+        )
+
+    def test_record_creators_attrs(self):
+        self.assertEqual(self.record.iaid, "F74321")
+        self.assertEqual(self.record.reference_number, "")
+        self.assertEqual(self.record.custom_record_type, "CREATORS")
+        self.assertEqual(
+            self.record.url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"iaid": self.record.iaid},
+            ),
+        )
+        self.assertEqual(self.record.gender, "Male")
+        self.assertEqual(self.record.first_name, "Alan")
+        self.assertEqual(self.record.last_name, "Swinden")
+        self.assertEqual(self.record.date_created, "")
+        self.assertEqual(self.record.name_authority_reference, "GB/NNAF/D189463")
+        self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/D7157")
+        self.assertEqual(self.record.epithet, "Engineer")
+        self.assertEqual(self.record.type, "person")
+        self.assertEqual(self.record.summary_title, "Swinden, Alan, Engineer")
+
+
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
