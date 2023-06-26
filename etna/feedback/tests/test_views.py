@@ -381,7 +381,7 @@ class TestFeedbackSuccessView(TestCase):
         )
         self.assertContains(
             response,
-            f'<a href="{self.next_url}" class="tna-button--dark">{self.prompt.continue_link_text}</a>',
+            f'<a href="{self.next_url}" class="tna-button--dark tna-button--row-item">{self.prompt.continue_link_text}</a>',
         )
 
     def test_comment_form_not_rendered_if_comment_already_detected(self):
@@ -430,7 +430,7 @@ class TestFeedbackSuccessView(TestCase):
         self.assertContains(response, self.prompt.thank_you_heading)
         self.assertContains(
             response,
-            f'<a href="/" class="tna-button--dark">{self.prompt.continue_link_text}</a>',
+            f'<a href="/" class="tna-button--dark tna-button--row-item">{self.prompt.continue_link_text}</a>',
         )
 
 
