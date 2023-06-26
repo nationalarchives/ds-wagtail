@@ -59,15 +59,24 @@ ul.breadcrumb li a:hover {
 
 //media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media (max-width: 768px) {
+  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
     display: none;
+    + span {
+        display: none;
+    }
   }
+  
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:first-child,
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:last-child {
     display: inline-block;
-  }
+    
+    + span {
+        display: inline-block;
+    }
+  } 
 
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
     top: 6px;
