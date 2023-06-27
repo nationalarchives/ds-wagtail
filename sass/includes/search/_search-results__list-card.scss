@@ -276,15 +276,16 @@
 dt{
     float: left;
     clear: left;
-    width: 200px;
+    //width: 200px;
     font-weight:400;
     color: rgba(52, 51, 56);
+    padding-right:0.3em;
 
 }
 
 dd {
     margin: 0 0 0 80px;
-    padding: 0 0 0.5em 0;
+    padding: 0 0 0.5em 1em;
     font-weight:400;
     color: rgba(52, 51, 56);
 
