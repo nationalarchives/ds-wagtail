@@ -66,6 +66,10 @@ ul.breadcrumb li a:hover {
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
     display: none;
+
+    + span {
+        display: none;
+    }
   }
   
   .govuk-breadcrumbs--collapse-on-mobile
@@ -73,15 +77,14 @@ ul.breadcrumb li a:hover {
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:last-child {
     display: inline-block;
+
+    + span {
+      display: inline-block;
+    }
   } 
 
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
     top: 6px;
     margin: 0;
-  }
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list {
-    display: -ms-flexbox;
-    display: -webkit-box;
-    display: flex;
   }
 }
