@@ -412,54 +412,58 @@ class RecordModelTests(SimpleTestCase):
 
 
 class RecordModelCreatorsTests(SimpleTestCase):
-    def setUp(self):
+    def test_record_creators_person(self):
         self.record = Record(
             {
                 "@admin": {
-                    "id": "F74321",
+                    "id": "F69594",
+                },
+                "birth": {
+                    "date": {"value": "1922"},
+                },
+                "death": {
+                    "date": {"value": "1985"},
                 },
                 "description": [
-                    {"type": "epithet", "value": "Engineer"},
+                    {"type": "functions, occupations and activities", "value": "poet"},
                 ],
                 "gender": "M",
                 "identifier": [
                     {
-                        "faid": "F74321",
+                        "faid": "F69594",
                         "primary": True,
                         "type": "faid",
-                        "value": "F74321",
+                        "value": "F69594",
                     },
                     {
-                        "name_authority_reference": "GB/NNAF/D189463",
+                        "name_authority_reference": "GB/NNAF/P163769",
                         "type": "name authority reference",
-                        "value": "GB/NNAF/D189463",
+                        "value": "GB/NNAF/P163769",
                     },
                     {
-                        "former_name_authority_reference": "GB/NNAF/D7157",
+                        "former_name_authority_reference": "GB/NNAF/P16782",
                         "type": "former name authority reference",
-                        "value": "GB/NNAF/D7157",
+                        "value": "GB/NNAF/P16782",
                     },
                 ],
                 "name": [
                     {
-                        "first_name": [
-                            "Alan",
-                        ],
-                        "last_name": "Swinden",
+                        "first_name": ["Philip", "Arthur"],
+                        "last_name": "Larkin",
                     }
                 ],
                 "@template": {
                     "details": {
-                        "primaryIdentifier": "F74321",
-                        "summaryTitle": "Swinden, Alan, Engineer",
+                        "primaryIdentifier": "F69594",
+                        "summaryTitle": "Larkin, Philip Arthur, (1922-1985), poet",
+                        "title": "Larkin, Philip Arthur, (1922-1985), poet",
                         "type": "person",
                     }
                 },
             }
         )
 
-    def test_record_creators_attrs(self):
-        self.assertEqual(self.record.iaid, "F74321")
+        self.assertEqual(self.record.iaid, "F69594")
         self.assertEqual(self.record.reference_number, "")
         self.assertEqual(self.record.custom_record_type, "CREATORS")
         self.assertEqual(
@@ -470,14 +474,16 @@ class RecordModelCreatorsTests(SimpleTestCase):
             ),
         )
         self.assertEqual(self.record.gender, "Male")
-        self.assertEqual(self.record.first_name, "Alan")
-        self.assertEqual(self.record.last_name, "Swinden")
-        self.assertEqual(self.record.date_created, "")
-        self.assertEqual(self.record.name_authority_reference, "GB/NNAF/D189463")
-        self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/D7157")
-        self.assertEqual(self.record.epithet, "Engineer")
+        self.assertEqual(self.record.first_name, "Philip Arthur")
+        self.assertEqual(self.record.last_name, "Larkin")
+        self.assertEqual(self.record.birth_death, "1922-1985")
+        self.assertEqual(self.record.name_authority_reference, "GB/NNAF/P163769")
+        self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/P16782")
+        self.assertEqual(self.record.func_occup_activ, "poet")
         self.assertEqual(self.record.type, "person")
-        self.assertEqual(self.record.summary_title, "Swinden, Alan, Engineer")
+        self.assertEqual(
+            self.record.summary_title, "Larkin, Philip Arthur, (1922-1985), poet"
+        )
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")

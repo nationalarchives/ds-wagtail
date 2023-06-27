@@ -477,12 +477,23 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def epithet(self) -> str:
+    def func_occup_activ(self) -> str:
         if description := self.get("description", ()):
             for item in description:
-                if item.get("type") == "epithet":
+                if item.get("type") == "functions, occupations and activities":
                     return item.get("value", "")
         return ""
+
+    @cached_property
+    def birth_death(self) -> str:
+        birth_value = death_value = ""
+        if birth := self.get("birth", {}):
+            birth_value = extract(birth, "date.value", default="")
+        if death := self.get("death", {}):
+            death_value = extract(death, "date.value", default="")
+        if birth_value and death_value:
+            return f"{birth_value}-{death_value}"
+        return birth_value or death_value
 
     def get_gtm_content_group(self) -> str:
         """
