@@ -5,6 +5,7 @@ from http import HTTPStatus
 from typing import Any, Dict
 
 from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import ValidationError
 from django.forms import Form
 from django.http import (
     Http404,
@@ -69,12 +70,11 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
     """
     A view for vaidating and storing feedback submitted from a prompt.
 
-    Since the prompt takes care of form rendering, this view only responds
-    to POST requests.
-
     The URL includes `prompt_id` and `version` parameters, which are used to
     to determine the exact version of the prompt seen by the user, and the
     response options that were available to them.
+
+    NOTE: This view only responds to POST requests.
     """
 
     form_class = FeedbackForm
@@ -119,11 +119,10 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
                 }
             )
 
-        success_url = self.get_success_url()
         querystring = urlencode(
             {"submission": obj.public_id, "next": form.cleaned_data["url"]}
         )
-        return HttpResponseRedirect(success_url + "?" + querystring)
+        return HttpResponseRedirect(self.get_success_url() + "?" + querystring)
 
     def form_invalid(self, form: Form) -> HttpResponse:
         data = {
@@ -140,23 +139,57 @@ class FeedbackSubmitView(VersionedFeedbackViewMixin, FormView):
         )
 
 
-@method_decorator(csrf_exempt, name="dispatch")
-class FeedbackCommentSubmitView(FormView):
-    """A view for validating and storing comments submitted to accompany feedback.
+class FeedbackSuccessView(VersionedFeedbackViewMixin, TemplateView):
+    template_name = "feedback/success.html"
 
-    Because the view only needs to respond to requests posted via JS,
-    it only responds to POST requests, and always returns a `JsonResponse`.
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        comment_form = None
+        try:
+            submission = FeedbackSubmission.objects.get(
+                public_id=self.request.GET["submission"]
+            )
+        except (KeyError, ValidationError, FeedbackSubmission.DoesNotExist):
+            pass
+        else:
+            if submission.comment_prompt_text and not submission.comment:
+                comment_form = FeedbackCommentForm(
+                    prompt_text=submission.comment_prompt_text,
+                    initial={
+                        "submission": submission.public_id,
+                        "signature": sign_submission_id(submission.public_id),
+                    },
+                )
+
+        return super().get_context_data(
+            prompt=self.prompt,
+            next_url=self.request.GET.get("next", "/"),
+            comment_form=comment_form,
+            **kwargs,
+        )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class FeedbackCommentSubmitView(VersionedFeedbackViewMixin, FormView):
+    """A view for validating and saving comments submitted to accompany feedback.
+
+    The URL includes `prompt_id` and `version` parameters, which are used to
+    to determine the exact version of the prompt seen by the user.
+
+    NOTE: This view only responds to POST requests.
     """
 
     form_class = FeedbackCommentForm
     http_method_names = ["post"]
 
     def form_valid(self, form: Form) -> HttpResponse:
+        obj = form.cleaned_data["submission"]
         if form.cleaned_data["comment"]:
-            obj = form.cleaned_data["submission"]
             obj.comment = form.cleaned_data["comment"]
             obj.save(update_fields=["comment"])
-        return JsonResponse({"success": True})
+        if self.is_ajax:
+            return JsonResponse({"success": True})
+        querystring = urlencode({"next": obj.full_url})
+        return HttpResponseRedirect(self.get_success_url() + "?" + querystring)
 
     def form_invalid(self, form):
         data = {
@@ -166,19 +199,20 @@ class FeedbackCommentSubmitView(FormView):
         }
         return JsonResponse(data=data, status=HTTPStatus.BAD_REQUEST)
 
+    def get_success_url(self) -> str:
+        return reverse(
+            "feedback:comment_success",
+            kwargs={"prompt_id": self.prompt_id, "version": self.version},
+        )
 
-class FeedbackSuccessView(VersionedFeedbackViewMixin, TemplateView):
+
+class FeedbackCommentSuccessView(VersionedFeedbackViewMixin, TemplateView):
     template_name = "feedback/success.html"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        try:
-            submission_id = str(uuid.UUID(self.request.GET["submission"]))
-        except (KeyError, ValueError):
-            submission_id = None
         return super().get_context_data(
             prompt=self.prompt,
             next_url=self.request.GET.get("next", "/"),
-            submission_id=submission_id,
             **kwargs,
         )
 
