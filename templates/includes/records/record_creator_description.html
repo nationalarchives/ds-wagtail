@@ -31,6 +31,13 @@
                             <td>{{ record.birth_death }}</td>
                         </tr>
                     {% endif %}
+                {% elif record.type == "manor" %}
+                    {% if record.place %}
+                        <tr>
+                            <th scope="row">Places:</th>
+                            <td>{{ record.place }}</td>
+                        </tr>
+                    {% endif %}
                 {% endif %}
                 <tr>
                     <th scope="row">Name authority reference:</th>

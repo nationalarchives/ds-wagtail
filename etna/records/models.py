@@ -495,6 +495,16 @@ class Record(DataLayerMixin, APIModel):
             return f"{birth_value}-{death_value}"
         return birth_value or death_value
 
+    @cached_property
+    def place(self) -> str:
+        if place := self.get("place", ()):
+            for item in place:
+                if name := item.get("name", ()):
+                    for item in name:
+                        if value := item.get("value", ""):
+                            return value
+        return ""
+
     def get_gtm_content_group(self) -> str:
         """
         Overrides DataLayerMixin.get_gtm_content_group() to

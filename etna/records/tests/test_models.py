@@ -486,6 +486,53 @@ class RecordModelCreatorsTests(SimpleTestCase):
         )
 
 
+def test_record_creators_manor(self):
+    self.record = Record(
+        {
+            "@admin": {
+                "id": "F250110",
+            },
+            "identifier": [
+                {
+                    "faid": "F250110",
+                    "primary": True,
+                    "type": "faid",
+                    "value": "F250110",
+                },
+                {
+                    "name_authority_reference": "GB/NNAF/M242403",
+                    "type": "name authority reference",
+                    "value": "GB/NNAF/M242403",
+                },
+            ],
+            "place": [
+                {
+                    "name": [{"value": "Herringswell, Suffolk"}],
+                }
+            ],
+            "@template": {
+                "details": {
+                    "primaryIdentifier": "F250110",
+                    "summaryTitle": "HERRINGSWELL MANOR",
+                    "type": "manor",
+                }
+            },
+        }
+    )
+
+    self.assertEqual(self.record.iaid, "F250110")
+    self.assertEqual(self.record.custom_record_type, "CREATORS")
+    self.assertEqual(
+        self.record.url,
+        reverse(
+            "details-page-machine-readable",
+            kwargs={"iaid": self.record.iaid},
+        ),
+    )
+    self.assertEqual(self.record.name_authority_reference, "GB/NNAF/M242403")
+    self.assertEqual(self.record.type, "manor")
+
+
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
