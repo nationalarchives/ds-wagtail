@@ -19,7 +19,7 @@
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">
                                 <a href="{% record_url record.repository %}" data-link-type="Link" data-link="Archive" data-catalogue-level="0" data-component-name="Hierarchy links">Archive</a>
-                            </span>({{ record.template.heldBy }})
+                            </span>({{ record.template.heldBy|truncatechars:27 }})
                         </li>
                     {% endif %}
                     
@@ -50,13 +50,13 @@
                     <li class="hierarchy-short-panel__list-item">
                         <span class="hierarchy-short-panel__level">
                             <a href="{% record_url record.repository %}">Archive</a>
-                        </span>({{ record.template.heldBy }})
+                        </span>({{ record.template.heldBy|truncatechars:27 }})
                     </li>
                     {% if record.level_code %}
                         {% level_name record.level_code record.is_tna as hierarchy_level %}
                     {% endif %}
                     <li class="hierarchy-short-panel__list-item hierarchy--short-panel__list-item--current">
-                        <span class="hierarchy-short-panel__level">This {{ hierarchy_level|lower }}</span>({{ record.reference_number|truncatechars:47 }})
+                        <span class="hierarchy-short-panel__level">This {{ hierarchy_level|lower }}</span>({{ record.reference_number|truncatechars:27 }})
                     </li>
                     
                 {% endif %}
@@ -74,7 +74,7 @@
             <div class="hierarchy-full-panel__bar-container-outer">
                 <div class="hierarchy-full-panel__bar-container-inner"></div>
                 <div class="hierarchy-full-panel__text-container">
-                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="{% record_url record.repository %}" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy}}</a></p>
+                    <p class="hierarchy-full-panel__text-level">This record is held at: <a href="{% record_url record.repository %}" data-link-type="Link" data-link="{{record.template.heldBy}}" data-catalogue-level="0" data-component-name="Hierarchy links">{{record.template.heldBy|truncatechars:47}}</a></p>
                     <p class="hierarchy-full-panel__text-title">Located at DATA TO GO HERE</p> <!--TODO API data needs to contain the location of the archive as well-->
                 </div>
             </div>
