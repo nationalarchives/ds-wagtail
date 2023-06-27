@@ -1,8 +1,6 @@
 .search-landing-buckets {
-  @media only screen and (min-width: $screen__md) {
-    margin-left: 2rem;
-    margin-right: 2rem;
-  }
+  margin-left: auto;
+  margin-right: auto;
 
   &__heading {
     margin-left: 4rem;
@@ -21,6 +19,11 @@
     margin-right: auto;
     padding-left: 2rem;
     padding-right: 2rem;
+
+    @media only screen and (min-width: $screen__md) {
+      padding-left: 0;
+      padding-right: 0;
+    }
 
     &-item {
       font-size: 1.2rem;
