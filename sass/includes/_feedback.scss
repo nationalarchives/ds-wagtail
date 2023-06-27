@@ -16,6 +16,11 @@
         &--comment {
             display: none;
         }
+
+        &--success {
+            border: none;
+            padding: 1rem 0 2rem 0;
+        }
     }
 
     &__response-button {
