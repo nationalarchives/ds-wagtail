@@ -244,9 +244,6 @@ class EndToEndSearchTestCase(TestCase):
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
-    current_bucket_description_html = (
-        '<p class="search-results__explainer search-results__explainer--bucket">'
-    )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
     sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
@@ -274,12 +271,6 @@ class EndToEndSearchTestCase(TestCase):
 
     def assertBucketLinksNotRendered(self, response):
         self.assertNotIn(self.bucket_links_html, response)
-
-    def assertCurrentBucketDescriptionRendered(self, response):
-        self.assertIn(self.current_bucket_description_html, response)
-
-    def assertCurrentBucketDescriptionNotRendered(self, response):
-        self.assertNotIn(self.current_bucket_description_html, response)
 
     def assertSearchWithinOptionRendered(self, response):
         self.assertIn(self.search_within_option_html, response)
@@ -319,7 +310,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD NOT see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -335,7 +325,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -352,7 +341,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message.
 
         They SHOULD NOT see:
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -370,7 +358,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertNoResultsMessagingRendered(content)
 
         # SHOULD NOT see
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
         self.assertSortOrderOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
@@ -385,7 +372,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -404,7 +390,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
@@ -422,7 +407,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -445,7 +429,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
         self.assertSortOrderOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
@@ -462,8 +445,13 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         all selected filters should remain available as filter options,
         even if they were excluded from the API results 'aggregations'
         list due to not having any matches.
+
+        Test covers create session info for Catalogue search with query.
         """
         self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+
+        expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
+
         response = self.client.get(
             self.test_url,
             data={
@@ -474,11 +462,58 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "closure": "Open+Document%2C+Open+Description",
             },
         )
+        session = self.client.session
         content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
         self.assertIn('<input type="checkbox" name="collection" value="RGO"', content)
+
+    @responses.activate
+    def test_render_invalid_date_range_message(self):
+        """
+        When a user does search with an invalid date range:
+
+        They SHOULD see:
+        - A "No results" message in search results
+        - Particular message from "No results"
+        - A "Search within these results" option
+        - Error message next to the 'to' date field
+        """
+        for from_date_field, to_date_field in (
+            ("opening_start_date", "opening_end_date"),
+            ("covering_date_from", "covering_date_to"),
+        ):
+            response = self.client.get(
+                self.test_url,
+                data={
+                    "group": "tna",
+                    f"{from_date_field}_0": "01",
+                    f"{from_date_field}_1": "01",
+                    f"{from_date_field}_2": "2000",
+                    f"{to_date_field}_0": "01",
+                    f"{to_date_field}_1": "01",
+                    f"{to_date_field}_2": "1999",
+                    "q": "london",
+                    "filter_keyword": "kew",
+                },
+            )
+            content = str(response.content)
+
+            # SHOULD see
+            self.assertNoResultsMessagingRendered(content)
+            self.assertIn(
+                "<li>Try removing any filters that you may have applied</li>", content
+            )
+            self.assertSearchWithinOptionRendered(content)
+            self.assertIn(from_date_field, response.context["form"].errors)
+            self.assertIn(
+                "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
+                content,
+            )
 
 
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
@@ -667,7 +702,12 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
 
     @responses.activate
     def test_search_with_query(self):
+        """
+        Test covers create session info for Featured search with query.
+        """
+        expected_url = "/search/featured/?q=query"
         self.client.get(self.test_url, data={"q": "query"})
+        session = self.client.session
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -684,6 +724,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&size=3"
             ),
         )
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
 
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):

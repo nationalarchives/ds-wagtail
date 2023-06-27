@@ -9,6 +9,7 @@
 </div>
 
 <header class="header">
+  <div class="header__container">
     <div class="header__logo-holder">
       <a href="/" class="header__logo-link"
         ><img
@@ -18,7 +19,7 @@
       /></a>
     </div>
     
-    <input type="checkbox" id="overlay-input" class="header__overlay-input" tabindex="-1" />
+    <input type="checkbox" id="overlay-input" class="header__overlay-input" />
     <label for="overlay-input" id="overlay-button" class="header__overlay-button">
         <span class="header__overlay-icon"></span>
         <span class="sr-only">Toggle mobile navigation</span>
@@ -47,6 +48,6 @@
         </ul>
     </nav>
     {% endif %}
-
+  </div>
  </header>
 

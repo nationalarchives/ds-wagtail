@@ -20,6 +20,7 @@ def migrate_forwards(apps, schema_editor):
                     "icon": "images/thumb-up.png",
                     "label": "Easy to use",
                     "sentiment": SentimentChoices.POSITIVE,
+                    "comment_prompt_text": "Thank you! Can you tell us more about why you answered this way?",
                 },
             },
             {
@@ -29,6 +30,7 @@ def migrate_forwards(apps, schema_editor):
                     "icon": "images/thumb-down.png",
                     "label": "Hard to use",
                     "sentiment": SentimentChoices.NEGATIVE,
+                    "comment_prompt_text": "We're sorry to hear this. Can you tell us more about why you answered this way?",
                 },
             },
         ],

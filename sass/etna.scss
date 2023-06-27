@@ -57,9 +57,12 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/content-block';
 @import 'includes/content-warning';
 @import 'includes/quote';
+@import 'includes/featured-link';
 @import 'includes/featured-record';
 @import 'includes/featured-records';
+@import 'includes/record-links';
 @import 'includes/featured-article';
+@import 'includes/featured-articles';
 @import 'includes/media-embed';
 @import 'includes/record-embed';
 @import 'includes/record-embed__no-image';
@@ -74,7 +77,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/xslt-patches';
 @import 'includes/record-related-records';
 @import 'includes/record-related-content';
-@import 'includes/promoted-item';
 @import 'includes/search/search-button';
 @import 'includes/search/search-results';
 @import 'includes/search/search-results-hero';
@@ -89,7 +91,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/search/featured-search';
 @import 'includes/search/long-filters';
 @import 'includes/sub-heading';
-@import 'includes/section-image';
 @import 'includes/cookie-consent';
 @import 'includes/maintenance-503';
 @import 'includes/beta-banner';
@@ -109,6 +110,11 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/archive-description";
 @import "includes/archive-collections";
 @import "includes/archive-additional-resources";
-@import 'includes/related-article-cards';
+@import 'includes/related-highlight-cards';
 @import 'includes/highlight-gallery-teaser';
 @import 'includes/feedback';
+@import 'includes/promoted-pages';
+@import 'includes/featured-record-article';
+@import 'includes/record-crosslink-panel';
+@import 'includes/image-block';
+

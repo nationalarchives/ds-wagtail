@@ -1,5 +1,5 @@
 .related-content {
-  border-top: 2px dotted $color__grey-4;
+  border-top: 2px dotted $color__grey-500;
   padding: 1rem 0;
   margin-top: 2rem;
 
@@ -8,5 +8,9 @@
     font-family: $font__supria-sans;
     font-weight: 400;
     padding: 1rem 0;
+  }
+
+  &--borderless {
+    border-top: none;
   }
 }

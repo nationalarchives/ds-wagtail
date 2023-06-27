@@ -9,7 +9,12 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -24,6 +29,7 @@ from etna.core.models import (
     ContentWarningMixin,
     HeroImageMixin,
     NewLabelMixin,
+    RequiredHeroImageMixin,
 )
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
@@ -42,8 +48,16 @@ class ArticleIndexPage(BasePageWithIntro):
     """
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
     )
+
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
@@ -59,15 +73,29 @@ class ArticleIndexPage(BasePageWithIntro):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context["article_pages"] = self.get_children().public().live().specific()
+        context["article_pages"] = (
+            self.get_children()
+            .public()
+            .live()
+            .order_by("-first_published_at")
+            .specific()
+        )
         return context
 
     content_panels = BasePageWithIntro.content_panels + [
-        FieldPanel("featured_article", heading=_("Featured article")),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.RecordArticlePage"],
+        ),
         FieldPanel("featured_pages"),
     ]
 
-    subpage_types = ["articles.ArticlePage"]
+    parent_page_types = ["collections.ExplorerIndexPage"]
+    subpage_types = [
+        "articles.ArticlePage",
+        "articles.FocusedArticlePage",
+        "articles.RecordArticlePage",
+    ]
 
 
 @register_snippet
@@ -121,7 +149,7 @@ class TaggedArticle(ItemBase):
 
 class ArticlePage(
     TopicalPageMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
     BasePageWithIntro,
@@ -144,6 +172,8 @@ class ArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "stories"
 
+    title_label = "THE STORY OF"
+
     template = "articles/article_page.html"
 
     class Meta:
@@ -152,7 +182,7 @@ class ArticlePage(
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("tags"),
             MultiFieldPanel(
@@ -267,9 +297,90 @@ class ArticlePage(
         return tuple(filterlatestpages[:3])
 
 
-class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class FocusedArticlePage(
+    TopicalPageMixin,
+    HeroImageMixin,
+    ContentWarningMixin,
+    NewLabelMixin,
+    BasePageWithIntro,
+):
+    """FocusedArticlePage
+
+    The FocusedArticlePage model.
+    """
+
+    author = models.CharField(
+        max_length=100, blank=True, null=True, help_text="The author of this article."
+    )
+
+    body = StreamField(
+        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
+    )
+
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("article_tag_names"),
+    ]
+
+    # DataLayerMixin overrides
+    gtm_content_group = "focused articles"
+
+    title_label = "IN FOCUS"
+
+    template = "articles/focused_article_page.html"
+
+    class Meta:
+        verbose_name = _("focused article")
+        verbose_name_plural = _("focused articles")
+
+    content_panels = (
+        BasePageWithIntro.content_panels
+        + HeroImageMixin.content_panels
+        + [
+            FieldPanel("author"),
+            MultiFieldPanel(
+                [
+                    FieldPanel("display_content_warning"),
+                    FieldPanel("custom_warning_text"),
+                ],
+                heading="Content Warning Options",
+                classname="collapsible",
+            ),
+            FieldPanel("body"),
+        ]
+    )
+
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    parent_page_types = ["articles.ArticleIndexPage"]
+    subpage_types = []
+
+    search_fields = BasePageWithIntro.search_fields + [
+        index.SearchField("body"),
+        index.SearchField("topic_names", boost=1),
+        index.SearchField("time_period_names", boost=1),
+    ]
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
+
+
+class RecordArticlePage(
+    TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+):
     template = "articles/record_article_page.html"
-    parent_page_types = ["collections.ExplorerIndexPage"]
+    parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
     intro_image = models.ForeignKey(
@@ -308,6 +419,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         help_text="Link to an external print on demand service",
     )
 
+    gallery_heading = models.CharField(
+        verbose_name=_("gallery heading"),
+        max_length=250,
+        blank=True,
+        null=True,
+        help_text=_("Optional heading for the gallery"),
+    )
+
     featured_highlight_gallery = models.ForeignKey(
         "collections.HighlightGalleryPage",
         blank=True,
@@ -335,6 +454,8 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
     # DataLayerMixin overrides
     gtm_content_group = "Record articles"
 
+    title_label = "RECORD REVEALED"
+
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
@@ -349,12 +470,19 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 FieldPanel("custom_warning_text"),
             ],
         ),
-        InlinePanel(
-            "gallery_images",
+        MultiFieldPanel(
             heading="Image Gallery",
-            label="Item",
-            min_num=1,
-            max_num=6,
+            classname="collapsible",
+            children=[
+                FieldPanel("gallery_heading"),
+                InlinePanel(
+                    "gallery_images",
+                    heading="Image Gallery",
+                    label="Item",
+                    min_num=1,
+                    max_num=6,
+                ),
+            ],
         ),
         MultiFieldPanel(
             heading="Body",
@@ -371,10 +499,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
         FieldPanel("promoted_links"),
     ]
 
-    promote_panels = BasePageWithIntro.promote_panels + [
-        TopicalPageMixin.get_topics_inlinepanel(),
-        TopicalPageMixin.get_time_periods_inlinepanel(),
-    ]
+    promote_panels = (
+        NewLabelMixin.promote_panels
+        + BasePageWithIntro.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("gallery_text"),
@@ -422,6 +554,14 @@ class RecordArticlePage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
                 return True
         return False
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
+
 
 class PageGalleryImage(Orderable):
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
@@ -436,6 +576,7 @@ class PageGalleryImage(Orderable):
         ),
     )
     caption = RichTextField(
+        features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,
     )

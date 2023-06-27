@@ -46,8 +46,11 @@
 
         {# Google Fonts #}
         <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
+
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
+
             rel="stylesheet">
+
 
 
         <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
@@ -86,9 +89,11 @@
         {% if show_beta_banner %}
             {% include 'includes/beta-banner.html' %}
         {% endif %}
+
         {% block breadcrumb %}
-        {% include 'includes/breadcrumb.html' %}
+            {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
         {% endblock %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -104,6 +109,7 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
+        <script src="{% static 'scripts/feedback_tracking.js' %}"></script>
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
         {% endif %}

@@ -10,17 +10,11 @@
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 
+
 <li class="search-results__list-card--grid">
-    {% if record.is_digitised %}
-    <div class="search-results__list-card-delivery-options--grid">
 
-        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
-
-            <img src="{% static 'images/etna-search-view-download-icon.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-        </a>
-    </div>
-    {% endif %}
     <div class="search-results__list-card-content">
+
         <h4 class="search-results__list-card-heading">
             {% if apply_teaser_image %}
                 <div class="search-results__list-card-full-width-image">
@@ -41,21 +35,23 @@
         <p class="search-results__list-card-description">
             {{ record.listing_description }}
         </p>
-        <ul class="search-results__list-card-metadata">
+        <dl class="search-results__list-card-metadata">
             {% if record.held_by %}
-                <li class="search-results__list-card-metadata-item">
-                    Held by: {{ record.held_by }}
-                </li>
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
+                    Held by:
+                </dt>
+                <dd>{{ record.held_by }}</dd>
             {% endif %}
 
             {% if record.date_created %}
-                <li class="search-results__list-card-metadata-item">
-                    Date: {{ record.date_created }}
-                </li>
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+                    Date:
+                </dt>
+                <dd> {{ record.date_created }}</dd>
             {% endif %}
 
             {% if record.reference_number %}
-            <li class="search-results__list-card-metadata-item">
+            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
 
                 {% if form.group.value == 'archive' %}
                 Archon code:
@@ -63,30 +59,55 @@
                 Catalogue reference:
                 {% endif %}
 
-                {{ record.reference_number }}
-            </li>
+
+            </dt>
+            <dd>{{ record.reference_number }}</dd>
             {% endif %}
 
+            <!--
             {% if record.record_opening %}
-                <li class="search-results__list-card-metadata-item">
-                    Record Opening Date: {{ record.record_opening }}
-                </li>
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
+                    Record opening date:
+                </dt>
+                <dd>{{ record.record_opening }}</dd>
             {% endif %}
-
+            -->
             {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-                <li class="search-results__list-card-metadata-item">
-                    Type: {{ record.type }}
-                </li>
+                <dt class="search-results__list-card-metadata-item">
+                    Type:
+                </dt>
+                <dd>{{ record.type }}</dd>
             {% endif %}
 
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-            <li class="search-results__list-card-metadata-item" style="display:none;">
-                IAID: {{ record.iaid }}
-            </li>
-            <li class="search-results__list-card-metadata-item" style="display:none;">
-                Score: {{ record.score }}
-            </li>
+            <!--
+            <dt class="search-results__list-card-metadata-item">
+                IAID:
+            </dt>
+
+            <dd>{{ record.iaid }}</dd>>
+            <dt class="search-results__list-card-metadata-item">
+                Score:
+            </dt>
+            <dd;>{{ record.score }}</dd>
+            -->
             {% comment %}End debug attributes.{% endcomment %}
-        </ul>
+        </dl>
+
+
+    {% if record.is_digitised %}
+    <div class="search-results__list-card-delivery-options--grid">
+
+        <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+
+            <img src="{% static 'images/grid-placeholder.png' %}"  class="search-results__list-card-delivery-options-img search-image-grid" alt="" />
+        </a>
+        <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+            <p class="search-results__list-card-delivery-options-desc search-results-grid">
+                <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                Available online
+            </p>
+        </a>
     </div>
+    {% endif %}
 </li>

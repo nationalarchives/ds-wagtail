@@ -11,7 +11,6 @@
   }
 
   &__reference_and_count {
-
     h1 {
       font-size: 1.3rem;
       margin-left: 1.3rem;
@@ -24,13 +23,15 @@
   }
 
   &__details_navigation {
-    background-color: $color__green;
+    background-color: $color__pastel-green;
     padding: 1.3rem 2rem;
 
     a {
       color: $color__black;
 
-      &:visited, &:hover, &:active {
+      &:visited,
+      &:hover,
+      &:active {
         color: $color__black;
       }
     }
@@ -75,7 +76,7 @@
       span {
         display: inline-block;
         padding: 1rem;
-        background-color: $color__blue_4;
+        background-color: $color__navy;
         text-decoration: underline;
       }
 
@@ -85,8 +86,9 @@
         }
       }
 
-      &:hover, &:focus {
-        outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+      &:hover,
+      &:focus {
+        outline: 0.313rem solid $color__focus-outline-dark-bg;
         outline-offset: 0.125rem;
       }
     }

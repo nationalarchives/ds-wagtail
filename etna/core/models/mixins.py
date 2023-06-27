@@ -10,7 +10,12 @@ from wagtail.images import get_image_model_string
 
 from .forms import RequiredHeroImagePageForm
 
-__all__ = ["ContentWarningMixin", "NewLabelMixin", "HeroImageMixin"]
+__all__ = [
+    "ContentWarningMixin",
+    "NewLabelMixin",
+    "HeroImageMixin",
+    "RequiredHeroImageMixin",
+]
 
 
 class ContentWarningMixin(models.Model):
@@ -113,7 +118,7 @@ class HeroImageMixin(models.Model):
 
     hero_image_caption = RichTextField(
         verbose_name="hero image caption (optional)",
-        features=["link"],
+        features=["bold", "italic", "link"],
         blank=True,
         help_text=(
             "An optional caption for hero images. This could be used for image sources or for other useful metadata."
@@ -132,5 +137,12 @@ class HeroImageMixin(models.Model):
             heading="Hero image",
         )
     ]
+
+
+class RequiredHeroImageMixin(HeroImageMixin):
+    """Mixin to add hero_image attribute to a Page, and make it required."""
+
+    class Meta:
+        abstract = True
 
     base_form_class = RequiredHeroImagePageForm

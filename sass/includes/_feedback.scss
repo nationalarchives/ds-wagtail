@@ -1,0 +1,68 @@
+.feedback {
+    &__form {
+        border: 1px solid $color__black;
+        display: block;
+        max-width: 30rem;
+        margin: 0 auto;
+        padding: 2rem;
+        position: relative;
+
+        legend {
+            @include font-size(l);
+            font-weight: $font-weight-bold;
+            margin-bottom: 1rem;
+        }
+
+        &--comment {
+            display: none;
+        }
+
+        &--success {
+            border: none;
+            padding: 1rem 0 2rem 0;
+        }
+    }
+
+    &__response-button {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__form-submit {
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__form-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        display: block;
+        background-color: transparent;
+        border: 1px solid transparent;
+        width: 2.75rem;
+        height: 2.75rem;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__form-close-icon {
+        color: inherit;
+        height: 1.75rem;
+        width: 1.5rem;
+    }
+
+    &__success-heading {
+        @include font-size(xl);
+        font-weight: $font-weight-bold;
+        margin-top: 0;
+    }
+
+    &__success {
+        display: none;
+    }
+}

@@ -1,46 +1,87 @@
 .related-highlight-cards {
-    $root: &;
-    margin-bottom: 72px;
+  $root: &;
+  margin-bottom: 1rem;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
-        margin-bottom: 96px;
+  // Deprecated
+
+  &__title {
+    color: $color__black;
+    font-family: $font__supria-sans;
+    // TODO: font sizes need updating in line with the new design guide
+    font-size: 1.875rem;
+    margin: 0 0 1.5rem 0;
+  }
+
+  &__card-title {
+    color: $color__white;
+    font-family: $font__body;
+    font-weight: 400;
+    // TODO: font sizes need updating in line with the new design guide
+    font-size: 1.25rem;
+    margin: 0 0 0.5rem 0;
+
+    @media only screen and (min-width: $screen__md) {
+      font-size: 1.3rem;
     }
 
-    &__title {
-        @include font-size("xxl");
-        margin: 0;
-        padding: 3rem 0 1.5rem 0;
+    // Deprecated
 
-        @media (min-width: map-get($grid-breakpoints, "md")) {
-            padding: 4.5rem 0 3rem 0;
-        }
+    // &--small {
+    //     @include font-size("xl");
+    //     font-weight: $font-weight-bold;
+    //     padding: 0.5rem 0;
+    // }
+  }
 
-        &--small {
-            @include font-size("xl");
-            font-weight: $font-weight-bold;
-            padding: 0.5rem 0;
-        }
+  &__card-title-link {
+    color: $color__white;
+    // TODO: Consolidate link styles
+
+    text-decoration-thickness: 1px;
+
+    &:hover {
+      color: $color__white;
     }
 
-    &__card {
-        background-color: $color__grey-6;
-        text-decoration: none !important;
+    &:focus {
+      color: $color__blue;
+      outline-color: $color__blue;
+      text-decoration: none;
     }
 
-    &__content {
-        margin: 1.75rem;
+    &:visited {
+      color: $color__white;
+
+      &:hover {
         color: $color__white;
-    }
+      }
 
-    &__text {
-        @include font-size("s");
-        color: $color__grey-7;
-        margin: 0;
+      &:focus {
+        color: $color__blue;
+        outline-color: $color__blue;
+        text-decoration: none;
+      }
     }
+  }
 
-    &__image {
-        width: 100%;
-        height: auto;
-        object-fit: cover;
-    }
+  &__card {
+    background-color: $color__black;
+  }
+
+  &__content {
+    margin: 1.75rem;
+    color: $color__grey-500;
+  }
+
+  &__text {
+    font-size: 1rem;
+    color: $color__grey-500;
+    margin: 0;
+  }
+
+  &__image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
 }

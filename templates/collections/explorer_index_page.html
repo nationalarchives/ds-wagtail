@@ -1,24 +1,43 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
+{% load static wagtailmetadata_tags wagtailimages_tags wagtailcore_tags i18n %}
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
-    <div class="container mt-4" id="analytics-explorer-index" data-container-name="explorer-index">
-       <div class="row">
-        <h2 class="sr-only">Select a way to explore</h2>
-            <ul class="card-group--no-flex">
-                {% for block in page.body %}
-                    {% include_block block %}
-                {% endfor %}
-            </ul>
-       </div>
+    <div id="analytics-explorer-index" data-container-name="explorer-index">
+        <div class="card-group--no-flex u-margin-m">
+            {% for block in page.body %}
+                {% include_block block %}
+            {% endfor %}
+        </div>
     </div>
+    
+    <div class="container">
+        <h2>{{ page.articles_title }}</h2>
+
+        <p>{{ page.articles_introduction }}</p>
+    </div>
+
+    {% if page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
+    {% endif %}
+
+    <div class="container">
+        {% include_block page.featured_articles with heading=page.articles_title %}
+
+        <div class="featured-articles__cta">
+            {% comment %} TODO: update BEM button styles for consistency across site {% endcomment %}
+            <a href="/stories"
+            class="tna-button--dark"
+            data-link-type="Button"
+            data-component-name="Articles section: {{ page.articles_title }}"
+            data-link="Browse all stories">Browse all stories</a>
+        </div>
+    </div>
+    
 {% endblock %}
 
 {% block extra_js %}

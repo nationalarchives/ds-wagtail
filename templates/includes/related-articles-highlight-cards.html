@@ -3,48 +3,87 @@
     <div class="body-container">
         <h2 class="highlight-cards__title">{{ title }}</h2>
         <div class="card-grid card-grid__quad">
-            {% for article in articles %}
-                {% if forloop.first %}
-                    <a href="{% pageurl article %}"
-                       class="highlight-cards__card--highlight highlight-cards__link">
+            {% if featured_article %}
+                <div class="highlight-cards__card highlight-cards__card--highlight highlight-cards__link">
+                    <a href="{% pageurl featured_article %}"
+                    aria-hidden="true"
+                    tabindex="-1"
+                    data-component-name="Featured card: {{ title }} Featured record article"
+                    data-link-type="Card image"
+                    data-card-position="0"
+                    data-card-title="{{ featured_article.title }}">
                         {# Desktop/ tablet image #}
-                        {% image article.teaser_image fill-534x413-c100 format-webp as image_webp %}
+                        {% image featured_article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
                                 alt=""/>
-                        {% image article.teaser_image fill-534x413-c100 as base_img %}
+                        {% image featured_article.teaser_image fill-534x413-c100 as base_img %}
                         <img src="{{ base_img.url }}"
-                             height="{{ base_img.height }}"
-                             width="{{ base_img.width }}"
-                             class="highlight-cards__image"
-                             alt=""/>
-                        <div class="highlight-cards__content">
-                            <h3 class="highlight-cards__card_title">{{ article.title }}</h3>
-                            {% if article.teaser_image.record and article.teaser_image.record.record_dates %}
-                                <p class="highlight-cards__description">{{ article.teaser_image.record.record_dates }}</p>
-                            {% endif %}
-                            <p class="highlight-cards__description">{{ article.teaser_text }}</p>
-                        </div>
+                            height="{{ base_img.height }}"
+                            width="{{ base_img.width }}"
+                            class="highlight-cards__image"
+                            alt=""/>
                     </a>
-                {% else %}
+                    <div class="highlight-cards__content">
+                        <h3 class="highlight-cards__card_title">
+                            <a href="{% pageurl featured_article %}"
+                            class="highlight-cards__card-title-link"
+                            data-component-name="Featured card: {{ title }} Featured record article"
+                            data-link-type="Card text"
+                            data-card-position="0"
+                            data-card-title="{{ featured_article.title }}">
+                                {{ featured_article.title }}
+                            </a>
+                        </h3>
+                        {% if featured_article.teaser_image.record and featured_article.teaser_image.record.record_dates %}
+                            <p class="highlight-cards__description">{{ featured_article.teaser_image.record.record_dates }}</p>
+                        {% endif %}
+                        <p class="highlight-cards__description">{{ featured_article.teaser_text }}</p>
+                    </div>
+                </div>
+            {% endif %}
+            {% for article in articles %}
+                <div class="highlight-cards__card highlight-cards__card--normal highlight-cards__link">
                     <a href="{% pageurl article %}"
-                       class="highlight-cards__card highlight-cards__link">
+                    aria-hidden="true"
+                    tabindex="-1"
+                    data-component-name="Featured card: {{ title }}"
+                    data-link-type="Card image"
+                    {% if featured_article %}
+                        data-card-position="{{ forloop.counter }}"
+                    {% else %}
+                        data-card-position="{{ forloop.counter0 }}"
+                    {% endif %}
+                    data-card-title="{{ article.title }}">
                         {% image article.teaser_image fill-268x171-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
                                 alt=""/>
                         {% image article.teaser_image fill-268x171-c100 as base_img %}
                         <img src="{{ base_img.url }}"
-                             height="{{ base_img.height }}"
-                             width="{{ base_img.width }}"
-                             class="highlight-cards__image"
-                             alt=""/>
-                        <div class="highlight-cards__card__content">
-                            <h3 class="highlight-cards__card_title">{{ article.title }}</h3>
-                            <p class="highlight-cards__description">{{ article.teaser_text }}</p>
-                        </div>
+                            height="{{ base_img.height }}"
+                            width="{{ base_img.width }}"
+                            class="highlight-cards__image"
+                            alt=""/>
                     </a>
-                {% endif %}
+                    <div class="highlight-cards__card__content">
+                        <h3 class="highlight-cards__card_title">
+                            <a href="{% pageurl article %}"
+                            class="highlight-cards__card-title-link"
+                            data-component-name="Featured card: {{ title }}"
+                            data-link-type="Card text"
+                            {% if featured_article %}
+                                data-card-position="{{ forloop.counter }}"
+                            {% else %}
+                                data-card-position="{{ forloop.counter0 }}"
+                            {% endif %}
+                            data-card-title="{{ article.title }}">
+                                {{ article.title }}
+                            </a>
+                        </h3>
+                        <p class="highlight-cards__description">{{ article.teaser_text }}</p>
+                    </div>
+                </div>
             {% endfor %}
         </div>
     </div>

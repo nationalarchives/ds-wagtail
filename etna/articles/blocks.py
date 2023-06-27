@@ -18,7 +18,7 @@ from etna.core.blocks import (
 )
 
 from ..media.blocks import MediaBlock
-from ..records.blocks import RecordChooserBlock
+from ..records.blocks import RecordChooserBlock, RecordLinksBlock
 
 
 class FeaturedRecordBlock(SectionDepthAwareStructBlock):
@@ -65,7 +65,7 @@ class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
 
 class AuthorPromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
-    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max=3)
+    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max_num=3)
 
     class Meta:
         template = "articles/blocks/promoted_pages.html"
@@ -89,7 +89,10 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             ("external-link", "External link"),
         ],
     )
-    publication_date = blocks.DateBlock(required=False)
+    publication_date = blocks.CharBlock(
+        required=False,
+        help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021",
+    )
     author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
@@ -129,7 +132,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Featured link"
-        template = "articles/blocks/promoted_item.html"
+        template = "articles/blocks/featured_link.html"
         help_text = "Block used promote an external page"
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
@@ -197,6 +200,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
         "articles.ArticlePage",
+        "articles.RecordArticlePage",
         exclude_drafts=True,
         exclude_private=True,
         select_related=["teaser_image"],
@@ -230,6 +234,7 @@ class SectionContentBlock(blocks.StreamBlock):
     featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
+    record_links = RecordLinksBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):

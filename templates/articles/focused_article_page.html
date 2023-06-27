@@ -1,0 +1,62 @@
+{% extends 'base_page.html' %}
+
+{% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
+
+{% block meta_tag %}
+    {% meta_tags %}
+{% endblock %}
+{% block body_class %}template-focused-article{% endblock %}
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
+    {% if not page.hero_image %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro classes="generic-intro--dark" %}
+    {% else %}
+        {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}
+    {% endif %}    
+    {% if page.author or page.first_published_at %}
+        <div class="generic-intro__meta">
+            <ul class="generic-intro__meta-list container">
+                {% if page.first_published_at %}
+                    <li class="generic-intro__meta-item">{{ page.first_published_at|date:"l d F Y" }}</li>                    
+                {% endif %}
+                {% if page.author %}
+                    <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
+    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
+
+    {% if page.intro and page.hero_image %}
+        <div class="generic-intro__paragraph container">
+            <div class="row">
+                <div class="col-md-9">
+                    {{ page.intro|richtext }}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="article-container container">
+        <div class="article-container__main">
+            {% if page.display_content_warning %}
+                {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
+            {% endif %}
+
+            {% include_block page.body %}
+            
+        </div>
+    </div>
+
+    <div class="related-content">
+        <div class="container">
+            {% if page.primary_topic or page.primary_time_period %}
+                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/article.js' %}"></script>
+ {% endblock %}

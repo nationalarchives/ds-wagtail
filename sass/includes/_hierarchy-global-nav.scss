@@ -1,9 +1,9 @@
 .hierarchy {
   position: relative;
   color: $color__black;
-  border: 3px solid $color__yellow_2;
+  border: 3px solid $color__yellow;
   margin: 0 0 3rem 0;
-  background-color: $color__yellow_2;
+  background-color: $color__yellow;
   padding: 0;
 
   @media screen and (min-width: $screen__lg) {
@@ -19,21 +19,21 @@
     left: 10px;
 
     @media screen and (min-width: $screen__lg) {
-        display: block;
+      display: block;
     }
   }
 
   &__container {
-    background: $color__yellow_5;
+    background: $color__cream;
     // adds a visual separating border in high contrast mode
-    border-left: 2px solid transparent;
+    border-left: 2px solid $color__yellow;
     overflow: auto;
     padding: 0 0 1rem;
   }
 }
 
 .hierarchy-short-panel {
-  padding: 1rem;
+  padding: 1rem 1rem 0;
   font-family: $font__supria-sans;
 
   &__heading {
@@ -50,10 +50,9 @@
     text-align: center;
     margin: 0;
 
-
     button {
       font-family: $font-_supria-sans;
-      color: $color__link;
+      color: $color__link-blue;
       display: inline-block;
       background: url($fa_chevron_down) no-repeat left center;
       background-size: 10px;
@@ -63,8 +62,18 @@
       text-decoration: underline;
       font-size: 1.1rem;
 
+      &:hover {
+        cursor: pointer;
+        text-decoration: none;
+        color: $color__link-blue-hover;
+      }
+
       &:focus {
         @include focus-default;
+      }
+
+      &:visited {
+        color: $color__link-blue;
       }
     }
 
@@ -86,6 +95,10 @@
     display: block;
     padding: 0;
     margin: 1rem 0;
+
+    @media screen and (min-width: $screen__lg) {
+      margin: 1rem 0 0.25rem;
+    }
   }
 
   &__list-item {
@@ -96,6 +109,10 @@
     padding-left: 1.8rem;
     display: block;
     font-size: 1.1rem;
+
+    a:visited {
+      color: $color__link-blue;
+    }
 
     &:first-child {
       background: url($fa_chevron_double_right_yellow) no-repeat left center;
@@ -120,7 +137,6 @@
         margin: 0 0.75rem 0 0;
       }
     }
-
   }
 
   &__level {
@@ -129,21 +145,23 @@
   }
 }
 
-
 .hierarchy-full-panel {
-
   &__heading {
     display: inline-block;
     margin: 1rem 0 1rem 1rem;
     font-family: $font__supria-sans;
     font-size: 1.3rem;
+
+    @media screen and (min-width: $screen__lg) {
+      margin: 2.75rem 0 1rem 1rem;
+    }
   }
 
   &__bar-container-outer {
     min-height: 60px;
     padding: 0.25rem 0 1rem;
-    border-top: 2px solid $color__yellow_2;
-    background: $color__yellow_4;
+    border-top: 2px solid $color__yellow;
+    background: $color__yellow-dark;
 
     @media screen and (min-width: $screen__lg) {
       border-top: 0;
@@ -152,16 +170,14 @@
     }
 
     &--active {
-      border-bottom: 2px solid $color__yellow_2;
-      background: $color__yellow_2;
+      border-bottom: 2px solid $color__yellow;
+      background: $color__yellow;
 
       @media screen and (min-width: $screen__lg) {
         border-bottom: 0;
         background: transparent;
       }
-
     }
-
   }
 
   &__bar-container-inner {
@@ -170,13 +186,12 @@
     vertical-align: top;
     color: $color__black;
 
-
     @media screen and (min-width: $screen__lg) {
-      background-color: $color__yellow_4;
+      background-color: $color__yellow-dark;
       padding: 0.5rem 0.75rem;
       display: inline-block;
-      min-height: 60px;
-      border: 2px solid $color__yellow_2;
+      min-height: 75px;
+      border: 2px solid $color__yellow;
       border-left: 0;
       width: 11.5%;
     }
@@ -184,8 +199,8 @@
     p {
       margin: 0 0 0.5rem;
       display: inline-block;
-      color: $color__grey_2;
-      background: $color__yellow_2;
+      color: $color__grey-800;
+      background: $color__yellow;
       padding: 0.4rem 0.35rem 0.4rem;
       margin-top: 0.25rem;
       line-height: 1.2rem;
@@ -240,13 +255,13 @@
     }
     &--active {
       @media screen and (min-width: $screen__lg) {
-        background: $color__yellow_2;
+        background: $color__yellow;
         border-left: 0;
       }
 
       p {
-        border: 1px solid $color__grey-2;
-        border-bottom: 2px solid $color__grey-2;
+        border: 1px solid $color__grey-800;
+        border-bottom: 2px solid $color__grey-800;
         font-weight: bold;
 
         @media screen and (min-width: $screen__lg) {
@@ -260,7 +275,7 @@
     display: inline-block;
     font-size: 0.9rem;
     width: auto;
-    color: $color__grey-6;
+    color: $color__grey-700;
     letter-spacing: -0.4px;
 
     @media screen and (min-width: $screen__lg) {
@@ -302,6 +317,10 @@
       display: block;
       line-height: 2rem;
 
+      &:visited {
+        color: $color__link-blue;
+      }
+
       @media screen and (min-width: $screen__lg) {
         display: inline-block;
         line-height: 1.4rem;
@@ -333,12 +352,15 @@
   font-family: supria-sans-condensed, sans-serif;
   text-align: center;
 
+  a:visited {
+    color: $color__link-blue;
+  }
+
   @media screen and (min-width: $screen__md) {
     margin: 2rem 0 0.5rem;
   }
 
   &__container {
-
     @media screen and (min-width: $screen__md) {
       display: inline-block;
       text-align: center;

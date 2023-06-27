@@ -13,22 +13,28 @@ from etna.images.models import CustomImage
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response
 
+TEST_RECORD_DATA = {
+    "iaid": "C123456",
+    "reference_number": "ZZ/TEST/1",
+    "summary_title": "Test record",
+}
+
+BLOCK_TITLE_OVERRIDE = "This record is sooooo featured!"
+
 
 class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
         self.login()
 
-        response = create_response(
-            records=[
-                create_record(
-                    iaid="C123456",
-                    summary_title="Test record",
-                ),
-            ]
+        record_response = create_response(records=[create_record(**TEST_RECORD_DATA)])
+
+        responses.add(
+            responses.GET, "https://kong.test/data/fetch", json=record_response
         )
-        responses.add(responses.GET, "https://kong.test/data/fetch", json=response)
-        responses.add(responses.GET, "https://kong.test/data/fetchAll", json=response)
+        responses.add(
+            responses.GET, "https://kong.test/data/fetchAll", json=record_response
+        )
 
         root = Site.objects.get().root_page
 
@@ -65,8 +71,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                                         (
                                             "featured_record",
                                             {
-                                                "title": "This record is sooooo featured!",
-                                                "record": "C123456",
+                                                "title": BLOCK_TITLE_OVERRIDE,
+                                                "record": TEST_RECORD_DATA["iaid"],
                                             },
                                         )
                                     ]
@@ -96,11 +102,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         featured_record = self.article_page.body[0].value["content"][0]
         self.assertEqual(featured_record.block_type, "featured_record")
-        self.assertEqual(
-            featured_record.value["title"], "This record is sooooo featured!"
-        )
-        self.assertEqual(featured_record.value["record"].iaid, "C123456")
-        self.assertEqual(featured_record.value["image"]["image"], None)
+        self.assertEqual(featured_record.value["title"], BLOCK_TITLE_OVERRIDE)
+        self.assertEqual(featured_record.value["record"].iaid, TEST_RECORD_DATA["iaid"])
 
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
@@ -128,8 +131,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                             {
                                 "type": "featured_record",
                                 "value": {
-                                    "title": "This record is sooooo featured!",
-                                    "record": "C123456",
+                                    "title": BLOCK_TITLE_OVERRIDE,
+                                    "record": TEST_RECORD_DATA["iaid"],
                                 },
                             }
                         ],
@@ -146,8 +149,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         response = self.client.get(
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
-        self.assertContains(response, "This record is sooooo featured!")
-        self.assertContains(response, "Test record")
+        self.assertContains(response, BLOCK_TITLE_OVERRIDE)
 
         # The record details are requested again to display for the field value
         self.assertEqual(len(responses.calls), 2)
@@ -158,7 +160,11 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         # View the page to check rendering also
         response = self.client.get(self.article_page.get_url())
-        self.assertContains(response, "C123456")
+        self.assertContains(response, BLOCK_TITLE_OVERRIDE)
+        self.assertContains(
+            response,
+            'href="/catalogue/ref/' + TEST_RECORD_DATA["reference_number"] + '/"',
+        )
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
@@ -187,7 +193,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                                     "items": [
                                         {
                                             "title": "",
-                                            "record": "C123456",
+                                            "record": TEST_RECORD_DATA["iaid"],
                                         }
                                     ],
                                 },

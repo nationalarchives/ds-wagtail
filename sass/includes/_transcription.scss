@@ -2,9 +2,10 @@
   $root: &;
   // provides visual boundary in high contrast mode
   border: 1px solid transparent;
-  background: $color__grey-2;
+  background: $color__grey-800;
   color: $color__white;
   padding-bottom: 0.5rem;
+  padding-top: 2.5rem;
 
   .hidden {
     display: none;
@@ -20,7 +21,7 @@
 
     max-width: 80%;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       display: grid;
       row-gap: 1.875rem;
       column-gap: 3rem;
@@ -36,7 +37,7 @@
   &__text {
     margin-top: 0;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       h2 {
         margin-top: 0;
       }
@@ -76,19 +77,17 @@
     }
 
     a {
-      color: $color__yellow_2
+      color: $color__yellow;
     }
   }
 
   &__image-counter {
     text-align: center;
-    padding-top: 1.5em;
 
     &:focus {
-      outline: 0.312rem solid $color__blue_4;
+      outline: 0.312rem solid $color__navy;
       outline-offset: 0.125rem;
     }
-
   }
 
   &__sensitive_image {
@@ -108,7 +107,7 @@
     &:hover {
       background-color: $color__white;
       color: $color__black;
-      outline: 0.1875rem solid $color__dark;
+      outline: 0.1875rem solid $color__grey-700;
     }
   }
 
@@ -126,7 +125,7 @@
       outline: 0.1875rem solid $color__white;
 
       #{$root}__icon {
-        fill: $color__dark;
+        fill: $color__grey-700;
       }
     }
   }
@@ -155,7 +154,7 @@
 
   &__tablist {
     max-width: 65em;
-    font-family: $font__supria-sans;
+    font-family: $font__body;
   }
 
   &__tab {
@@ -165,14 +164,14 @@
     display: inline-block;
     margin: 0.125rem;
     color: $color__white;
-    font-size: $h2-font-size;
+    font-size: $font-size-base;
     font-weight: $headings-font-weight;
 
-    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
       font-size: 1.4rem;
     }
 
-    @media screen and (min-width: map-get($grid-breakpoints, "xl")) {
+    @media screen and (min-width: map-get($grid-breakpoints, 'xl')) {
       font-size: 1.8rem;
     }
 
@@ -180,25 +179,24 @@
       margin-right: 1.875rem;
     }
 
-    &[aria-selected="true"] {
+    &[aria-selected='true'] {
       border-bottom: $color__white solid 3px;
     }
 
     &:visited {
-      outline: 0.1875rem solid $color__yellow_2;
+      outline: 0.1875rem solid $color__yellow;
     }
 
     &:hover {
-      background-color: $color__dark;
+      background-color: $color__grey-700;
       color: $color__white;
-      outline: 0.1875rem solid $color__dark;
+      outline: 0.1875rem solid $color__grey-700;
     }
 
     &:focus {
-      outline: 0.312rem solid $color__blue_4;
+      outline: 0.312rem solid $color__navy;
       outline-offset: 0.125rem;
     }
-
   }
 
   &__tabpanel {
@@ -206,23 +204,30 @@
     color: $color__white;
 
     &:visited {
-      outline: 0.1875rem solid $color__yellow_2;
+      outline: 0.1875rem solid $color__yellow;
     }
 
     &:hover {
-      background-color: $color__dark;
+      background-color: $color__grey-700;
       color: $color__white;
-      outline: 0.1875rem solid $color__dark;
+      outline: 0.1875rem solid $color__grey-700;
     }
 
     &:focus {
-      outline: 0.312rem solid $color__blue_4;
+      outline: 0.312rem solid $color__navy;
       outline-offset: 0.125rem;
     }
 
-    >p {
+    > p {
       // Normalise the rich-text output
       margin: 0;
     }
+  }
+
+  &__gallery-heading {
+    @extend .container;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 }

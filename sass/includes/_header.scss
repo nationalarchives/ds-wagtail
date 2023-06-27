@@ -1,10 +1,13 @@
 .header {
   $root: &;
-  background-color: $color__yellow_2;
+  background-color: $color__yellow;
+  position: relative;
 
-  @media screen and (min-width: 768px) {
+  &__container {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__logo {
@@ -12,33 +15,34 @@
       display: inline-block;
       padding: 1rem;
       padding-bottom: 1.5rem;
+
       @media only screen and (max-width: $screen__md) {
         vertical-align: top;
       }
+      
       @media screen and (max-width: $screen__sm) {
-        padding-left: 0.1rem;
-        padding-right: 0.1rem;
-        padding-bottom: 0.5rem;
-        padding-top: 0.5rem;
+        padding: 0.5rem 0;
       }
     }
 
     &-link {
       align-self: center;
-      margin-left: 1rem;
       display: inline-block;
+      margin-left: 1rem;
+
       &:hover {
-        outline: 0.3125rem solid $color__grey-8;
+        outline: 0.3125rem solid $color__grey-700;
       }
+
       &:focus {
         outline-color: $color__black;
       }
     }
     &-image {
-      height: 6.25rem;
+      height: 4.6875rem;
 
-      @media screen and (max-width: $screen__sm) {
-        height: 4.6875rem;
+      @media only screen and (min-width: $screen__md) {
+        height: 6.18rem;
       }
     }
   }
@@ -46,7 +50,7 @@
   &__mobile-icons {
     display: inline-block;
     float: right;
-    position: relative;
+    position: absolute;
     //top:4rem;
 
     @media screen and (min-width: 768px) {
@@ -55,10 +59,13 @@
   }
 
   &__nav {
-    margin-left: auto;
+    align-self: flex-end;
     align-items: flex-end;
     z-index: 2;
     display: none;
+    left: calc(50% - 50vw);
+    position: relative;
+    margin-left: auto;
 
     &.active {
       display: block;
@@ -69,17 +76,21 @@
     }
 
     @media only screen and (min-width: $screen__md) {
-      display: block;
+      display: block !important;
+      width: max-content;
+      left: unset;
     }
 
     &-list {
       padding-left: 0;
+      width: 100vw;
 
       @media only screen and (min-width: $screen__md) {
         display: flex;
         align-items: flex-end;
         flex-wrap: wrap;
         padding-left: 2.5rem;
+        width: 100%;
       }
 
       height: 100%;
@@ -87,15 +98,14 @@
       justify-content: space-around; // IE11 only supports space-around and space-between.
       &-item {
         list-style: none;
+        text-indent: 0.7em;
         @media only screen and (min-width: $screen__md) {
           height: 3rem;
-        }
-        @media only screen and (min-width: 480px) {
-          text-indent: 0.7em;
+          text-indent: 0;
         }
         display: block;
 
-        &[data-id="menu-show-hide-button"] {
+        &[data-id='menu-show-hide-button'] {
           display: inline-block;
           position: relative;
 
@@ -106,11 +116,11 @@
           }
         }
 
-        &[data-isSearch="false"] {
-          background-color: $color__yellow_2;
+        &[data-isSearch='false'] {
+          background-color: $color__yellow;
           font-size: 1.2rem;
           text-decoration: underline;
-          border-bottom: 0.0625rem solid $color__grey-7;
+          border-bottom: 0.0625rem solid $color__grey-400;
 
           @media only screen and (min-width: $screen__md) {
             text-decoration: none;
@@ -140,19 +150,24 @@
           @media only screen and (max-width: $screen__md) {
             text-align: left;
             &:hover,
-            &[aria-current="true"],
+            &[aria-current='true'],
             &:focus {
-              background-color: $color__grey-1;
+              background-color: $color__grey-100;
               color: $color__black;
             }
           }
 
           @media only screen and (min-width: $screen__md) {
             &:hover,
-            &[aria-current="true"],
+            &[aria-current='true'],
             &:focus {
               background-color: $color__white;
               color: $color__black;
+
+              .template-focused-article & {
+                background-color: $color__grey-700;
+                color: $color__white;
+              }
             }
           }
 
@@ -178,11 +193,11 @@
             }
 
             &:hover,
-            &[aria-current="true"],
+            &[aria-current='true'],
             &:focus {
               color: $color__black;
-              background-color: $color__grey-1;
-              background-image: url("/static/images/icons/search-black.svg");
+              background-color: $color__grey-100;
+              background-image: url('/static/images/icons/search-black.svg');
             }
           }
         }
@@ -193,7 +208,7 @@
   // this is currently unused
   //   &__show-hide-button {
   //     display: inline-block;
-  //     background-color: $color__grey-2;
+  //     background-color: $color__grey-800;
   //     margin-right: 0.3rem;
   //     width: 3rem;
   //     height: 3rem;
@@ -210,7 +225,7 @@
   //     &[aria-expanded="true"],
   //     &:hover,
   //     &:focus {
-  //       background-color: $color__grey-1;
+  //       background-color: $color__grey-100;
   //       background-image: url("/static/images/icons/hamburger-black.svg");
   //       color: #000;
   //     }
@@ -220,21 +235,11 @@
   //   }
 
   &__overlay-button {
-    position: absolute;
-    right: 0em;
-    top: 110px;
     padding: 23px 11px;
+    margin-bottom: 0;
     z-index: 5;
     cursor: pointer;
     user-select: none;
-
-    @media only screen and (max-width: 481px) {
-      top: 85px;
-    }
-
-    @media only screen and (max-width: 390px) {
-      top: 105px;
-    }
 
     @media only screen and (min-width: $screen__md) {
       display: none;
@@ -244,7 +249,15 @@
   &__overlay-input {
     // using opacity instead of display: none allows the input to be toggled by keyboards
     opacity: 0;
-
+    position: absolute;
+    /*
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 1px;
+    */
     // give label focus style when input is focussed
     &:focus ~ #{$root}__overlay-button {
       outline: 0.313rem solid $color__black;
@@ -252,6 +265,10 @@
 
     &:checked ~ #{$root}__nav {
       display: block;
+
+      @media only screen and (min-width: $screen__md) {
+        display: none;
+      }
     }
 
     &:checked ~ #{$root}__overlay-button {
@@ -268,6 +285,10 @@
           transform: rotate(-45deg) translate(7px, -7px);
         }
       }
+    }
+
+    @media only screen and (min-width: $screen__md) {
+      display: none;
     }
   }
 
@@ -296,7 +317,7 @@
       border-radius: 2px;
       background-color: black;
       position: absolute;
-      content: "";
+      content: '';
       transition: all 0.2s ease-in-out;
     }
   }
@@ -308,7 +329,7 @@
       @media only screen and (max-width: $screen__md) {
         background-color: $color__white;
         text-align: center;
-        border-bottom: 0.0625rem solid $color__grey-7;
+        border-bottom: 0.0625rem solid $color__grey-400;
         &-link-search {
           width: 100%;
           background-position-x: 45%;
@@ -319,7 +340,7 @@
           background-color: #ffffff;
           background-image: url(/static/images/icons/search-black.svg);
           &:hover {
-            background-color: $color__grey-1;
+            background-color: $color__grey-100;
           }
           @media only screen and (max-width: 41.25rem) {
             background-position-x: 42.5%;

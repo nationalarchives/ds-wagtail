@@ -8,7 +8,8 @@
   min-width: 24px;
   text-align: center;
 
-  &:visited, &:active {
+  &:visited,
+  &:active {
     background-color: $color__dark !important;
     color: $color__white !important;
   }
@@ -27,7 +28,8 @@
     background-color: $color__white !important;
     color: $color__dark !important;
 
-    &:visited, &:active {
+    &:visited,
+    &:active {
       background-color: $color__white !important;
       color: $color__dark !important;
     }
@@ -44,7 +46,8 @@
     background-color: $color__grey-light !important;
     color: $color__black;
 
-    &:visited, &:active {
+    &:visited,
+    &:active {
       background-color: $color__grey-light !important;
       color: $color__black !important;
     }

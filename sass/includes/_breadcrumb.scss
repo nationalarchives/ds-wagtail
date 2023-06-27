@@ -1,10 +1,19 @@
 .breadcrumb-content {
   background-color: white;
   display: inline-block;
-  padding: 0.1rem 1rem 0rem;
+  padding: 0.1rem 1rem 0rem 0;
+
+  @media only screen and (min-width: $screen__md) {
+    padding: 0.1rem 1rem 0rem;
+  }
 
   .generic-intro & {
     padding: 0;
+  }
+
+  // Styles for Focused Article templates
+  .template-focused-article & {
+    background-color: $color__grey-700;
   }
 }
 
@@ -26,6 +35,10 @@ ul.breadcrumb li {
 ul.breadcrumb li a {
   color: black;
   text-decoration: underline;
+
+  .template-focused-article & {
+    color: $color__white;
+  }
 }
 ul.breadcrumb li a:hover {
   text-decoration: none;
@@ -35,6 +48,10 @@ ul.breadcrumb li a:hover {
     @include font-size(xs);
     padding: 2px;
     color: black;
+
+    .template-focused-article & {
+      color: $color__grey-600;
+    }
 }
 
 //hide the first child - The National Archives - now handled by python logic
@@ -46,15 +63,17 @@ ul.breadcrumb li a:hover {
 
 //media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media (max-width: 768px) {
+  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
     display: none;
   }
+  
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:first-child,
   .govuk-breadcrumbs--collapse-on-mobile
     .govuk-breadcrumbs__list-item:last-child {
     display: inline-block;
-  }
+  } 
 
   .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
     top: 6px;

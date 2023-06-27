@@ -25,6 +25,7 @@ from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
+    find,
     find_all,
     format_description_markup,
     format_link,
@@ -163,16 +164,8 @@ class Record(DataLayerMixin, APIModel):
             pass
         return self.get("summary.title", default="")
 
-    @cached_property
-    def url(self) -> str:
-        if self.iaid:
-            try:
-                return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
-                )
-            except NoReverseMatch:
-                pass
-        if self.reference_number:
+    def get_url(self, use_reference_number: bool = True) -> str:
+        if use_reference_number and self.reference_number:
             try:
                 return reverse(
                     "details-page-human-readable",
@@ -180,9 +173,25 @@ class Record(DataLayerMixin, APIModel):
                 )
             except NoReverseMatch:
                 pass
+        if self.iaid:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                )
+            except NoReverseMatch:
+                pass
+
         if self.has_source_url():
             return self.source_url
         return ""
+
+    @cached_property
+    def url(self) -> str:
+        return self.get_url()
+
+    @cached_property
+    def non_reference_number_url(self) -> str:
+        return self.get_url(use_reference_number=False)
 
     @cached_property
     def is_tna(self):
@@ -315,6 +324,11 @@ class Record(DataLayerMixin, APIModel):
         return self.get("repository.summary.title", default="")
 
     @cached_property
+    def repository(self) -> Union["Record", None]:
+        if repository := self.get("repository", default=None):
+            return Record(repository)
+
+    @cached_property
     def repo_archon_value(self) -> str:
         for item in self.get("repository.identifier", ()):
             if item["type"] == "Archon number":
@@ -400,6 +414,16 @@ class Record(DataLayerMixin, APIModel):
             )
             for item in self.template.get("relatedMaterials", ())
         )
+
+    @cached_property
+    def custom_record_type(self) -> str:
+        if source := self.source:
+            return source
+        else:
+            identifier = self.get("identifier", ())
+            if find(identifier, predicate=lambda i: i["type"] == "faid"):
+                return "CREATORS"
+        return ""
 
     def get_gtm_content_group(self) -> str:
         """

@@ -7,7 +7,9 @@
 
     a {
       color: $color__white;
-      &:hover, &:visited, &:active {
+      &:hover,
+      &:visited,
+      &:active {
         color: $color__white;
       }
     }
@@ -23,18 +25,13 @@
 }
 
 .tna-text {
-  color: $color__text;
+  color: $color__dark;
 
   &--default {
-    color: $color__text;
+    color: $color__dark;
   }
 
   &--white {
     color: $color__white;
   }
-
-  &--grey {
-    color: $color__text-secondary;
-  }
 }
-

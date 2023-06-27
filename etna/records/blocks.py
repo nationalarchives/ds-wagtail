@@ -1,14 +1,16 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
+from django.utils.translation import gettext_lazy as _
 
-from wagtail.blocks import ChooserBlock
+from wagtail import blocks
+from wagtail.images.blocks import ImageChooserBlock
 
 from ..ciim.exceptions import KongAPIError
 from .api import records_client
 
 
-class RecordChooserBlock(ChooserBlock):
+class RecordChooserBlock(blocks.ChooserBlock):
     """Custom chooser block for an externally-held record.
 
     Chooser adapted from the example StreamField block implementation
@@ -103,4 +105,24 @@ class RecordChooserBlock(ChooserBlock):
         return []
 
     class Meta:
+        icon = "archive"
+
+
+class RecordLinkBlock(blocks.StructBlock):
+    record = RecordChooserBlock(label=_("Record"))
+    descriptive_title = blocks.CharBlock(label=_("Descriptive title"), max_length=255)
+    record_dates = blocks.CharBlock(label=_("Date(s)"), max_length=100)
+    thumbnail_image = ImageChooserBlock(
+        label=_("Thumbnail image (optional)"), required=False
+    )
+
+    class Meta:
+        icon = "archive"
+
+
+class RecordLinksBlock(blocks.StructBlock):
+    items = blocks.ListBlock(RecordLinkBlock, label=_("Items"))
+
+    class Meta:
+        template = "records/blocks/record_links_block.html"
         icon = "archive"

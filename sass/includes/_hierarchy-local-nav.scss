@@ -1,8 +1,7 @@
 .hierarchy-local {
   text-align: center;
-  border-top: 3px solid $color__grey-5;
+  border-top: 3px solid $color__grey-800;
   padding: 1.5rem 0;
-
 
   &__nav-item {
     margin: 0;
@@ -34,7 +33,6 @@
       background: url($fa_chevron_right) no-repeat;
     }
   }
-
 
   &__nav-label {
     display: none;

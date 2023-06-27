@@ -48,7 +48,6 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
             "main_menu_items_rel",
             heading="main menu items",
             label="item",
-            min_num=1,
             max_num=6,
         ),
     ]

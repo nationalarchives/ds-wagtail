@@ -1,32 +1,32 @@
 .highlight-gallery {
     $root: &;
-    background-color: $color__grey-6;
-    padding-top: 3%;
+    background-color: $color__grey-700;
+    padding-top: 3rem;
     font-family: $font__open-sans;
-    margin-bottom: 3rem;
-    
-    @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
-        margin-bottom: 4.5rem;
-    }
 
     &__item {
         display: grid;
         grid-template-columns: 1fr;
-        padding-bottom: 5%;
-        
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-            grid-template-columns: 50% 50%;
-            padding-bottom: 3%;
-        }
+        border-bottom: 1px dashed $color__grey-500;
+        padding-bottom: 3rem;
 
-        border-bottom: 1px dashed $color__grey-5;
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+            grid-template-columns: 50% 50%;
+        }
     }
 
     &__content {
         order: 1;
 
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             margin-right: 2.5%;
+        }
+    }
+
+    &__richtext {
+        p {
+            margin-bottom: 1rem;
+            color: $color__grey-300;
         }
     }
 
@@ -40,7 +40,7 @@
 
     &__intro {
         p {
-            color: $color__grey-5;
+            color: $color__grey-300;
             margin-bottom: 0;
 
             &:last-of-type {
@@ -49,48 +49,43 @@
         }
     }
 
-    &__richtext {
-        p {
-            margin-bottom: 1rem;
-            color: $color__grey-5;
-        }
-    }
-
     &__link {
         font-weight: $font-weight-bold;
         font-size: 1rem;
         line-height: 1.25rem;
-        color: $color__white;
+        color: $color__link-dark-bg;
         text-decoration: none;
         position: relative;
         display: unset;
-
+        
         svg {
             position: absolute;
             right: -1.5rem;
             bottom: 4px;
-            fill: $color__white;
+            fill: currentColor;
             width: 8px;
             height: 12px;
+            transition: fill $transition_duration ease-in;
         }
 
         &:hover,
+        &:focus {
+            color: $color__link-hover-dark-bg;
+        }
+        
         &:visited {
-            color: $color__grey-3;
+            color: $color__link-dark-bg;
+        }
+    }
 
-            svg {
-                fill: $color__grey-3;
-            }
+    &__richtext {
+        p {
+            margin-bottom: 1rem;
+            color: $color__grey-300;
         }
     }
 
     &__wrapper {
-        padding: 0 4%;
-
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
-            padding: 3% 11% 0 11%;
-        }
-
         &:last-of-type {
             #{$root}__item {
                 border-bottom: none;
@@ -103,8 +98,8 @@
         display: flex;
         justify-content: center;
         margin: 5% 0;
-        
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             margin: 0 0 0 2.5%;
             order: 2;
         }
@@ -114,7 +109,7 @@
         max-width: 100%;
         height: auto;
 
-        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
+        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
             grid-column-start: 1;
         }
     }
