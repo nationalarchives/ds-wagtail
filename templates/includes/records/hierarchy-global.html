@@ -115,7 +115,7 @@
 
                 <!-- Current item in series -->
                 <div class="hierarchy-local-nav__container hierarchy-local-nav__container--current">
-                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ record.reference_number }}</span></p>
+                    <p class="hierarchy-local-nav__list-label">You are looking at <span class="hierarchy-local-nav__list-link" rel="current" aria-current="page">{{ record.reference_number|truncatechars:22 }}</span></p>
                 </div>
 
                 <!-- Next item in series -->
