@@ -6,7 +6,7 @@
     align-items: stretch;
 
     //max-height:300px;
-    border-bottom: solid 1px black;
+    border-bottom: solid 1px #ccc;
     margin-bottom: 1em;
 
     @media only screen and (max-width: 57rem) {
@@ -98,7 +98,7 @@
 
   &-metadata-item {
     font-weight:100;
-    line-height:2em;
+    //line-height:2em;
   }
 
   &-metadata-item-held-by-icon {
@@ -108,6 +108,7 @@
       padding-left: 2rem;
       background-position: 0 center;
       vertical-align: middle;
+      font-weight: 100;
   }
 
   &-metadata-item-date-icon{
@@ -275,16 +276,18 @@
 dt{
     float: left;
     clear: left;
-    width: 200px;
+    width: 120px;
     font-weight:400;
     color: rgba(52, 51, 56);
+    padding-right:0.3em;
 
 }
 
 dd {
     margin: 0 0 0 80px;
-    padding: 0 0 0.5em 0;
+    padding: 0 0 0.5em 1em;
     font-weight:400;
     color: rgba(52, 51, 56);
+    overflow:hidden;
 
 }
