@@ -156,7 +156,7 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_default(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
+            ("record_instance", "/catalogue/ref/2515/300/1/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -199,7 +199,7 @@ class TestRecordURLTag(SimpleTestCase):
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_no_discovery_links_when_is_editorial_is_false(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
+            ("record_instance", "/catalogue/ref/2515/300/1/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",

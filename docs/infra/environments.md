@@ -5,78 +5,84 @@
 The GitHub branch and Hosted environments have the same name:
 
 - `main`: for Live/Production
-- `develop` : for Development
+- `develop`: for Development
 
-## Deployment guidance
 
-1. Post to the appropriate Slack channel to check that it is okay to continue.
-2. To start a deployment, view further Deploying to `main`, `develop` on this page.
-3. Update the appropriate Slack channel when the deployment is complete.
-4. Update the status on the corresponding Jira ticket (where relevant).
+## Pre-requisites for deployment to develop
 
-## How deployments are triggered
-
-- Deployments are manual
-
-## Pre-requisites for deployment
-
-- Requires user access on the hosted environment for deployments. Check with management if you need one.
-- Follow Branching Model and Naming branches [project-conventions](https://nationalarchives.github.io/ds-wagtail/developer-guide/project-conventions/)
-- Post to the appropriate Slack channel to check that it is okay to continue.
-- Test on local before deploy to environment
-
-## Deploying to main
-
-1. Set environment variables from the UI console for `main` environment
-
-    - env:MAINTENANCE_MODE=True
-    - env:MAINTENENCE_MODE_ALLOW_IPS='< ip >'
-    - any others as required (for `main` environment or at project level)
-
-2. Deploy to the environment
-
-    ```console
-    platform project:set-remote <project_id>
-    ```
-
-    ```console
-    git push platform main
-    ```
-
-3. Run a check from the IP to see if the site works
-
-4. Reset environment variables from the UI console
-
-    - env:MAINTENANCE_MODE=False
-    - env:MAINTENENCE_MODE_ALLOW_IPS (Remove)
-    - any others as required
-
-5. Update the appropriate Slack channel when the deployment is complete.
-
-6. Update the status on the corresponding Jira ticket (where relevant).
+1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
+- The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
 
 ## Deploying to develop
 
-1. Set environment variables from the UI console for `develop` environment
+We now have CD (Continuous Delivery) actions set up on Github.
+This now allows us to run automated deployments when code is merged to `develop`.
 
-    - set as required
+**Please ensure that you are using Squash and Merge when merging pull requests into `develop`.**
+This keeps the commit history clean and easy to track.
 
-2. Deploy to the environment
+When your code has been merged, the action will start. Once completed, a notification will be sent in the Slack channel `ds-platform-sh-notifications`.
+Your code will then be visible on the `develop` environment.
 
-    ```console
-    platform project:set-remote <project_id>
-    ```
+Provided that you have used the correct naming conventions for your branch and PR, the JIRA ticket associated with your branch will be updated and moved into the `READY TO TEST ON DEVELOP` swim lane.
+Otherwise, you will need to manually move the ticket into the `READY TO TEST ON DEVELOP` swim lane.
 
-    ```console
-    git push platform develop
-    ```
 
-3. Update the appropriate Slack channel when the deployment is complete.
+## Pre-requisites for deployment to main
 
-4. Update the status on the corresponding Jira ticket (where relevant).
+1. If your new code requires any Platform.sh environment variables to either be updated or created, please speak to someone who has access to the Platform.sh environment before deploying/merging your code.
+- The new variables should follow the naming convention as the other variables, which is `env:VARIABLE_NAME`
+2. A branch must be created from `develop`, you should call this `release/X.X.X`, with the `X`s being relative to the major, minor, and patch level of the release.
+3. A pull request should be created to merge `release/X.X.X` into `main`, titled `Release X.X.X into main`.
+4. The pull request should contain a summary of all commits since the last release.
+- This can be obtained by running `git log --oneline` for a shortened version of the commit history.
+5. Create a "release" on [Github releases](https://github.com/nationalarchives/ds-wagtail/releases)
+- Create a new tag to match your release number, and title it `Release X.X.X`
 
-## General advice: Trust the pipeline and deploy small changes regularly
+## Deploying to main
 
-## How to access a shell
+We now have CD (Continuous Delivery) actions set up on Github.
+This now allows us to run automated deployments when code is merged to `main`.
 
-## How to pull data (link to developer-guide/fetching-production-data.md)
+!!! Please ensure that you are using Merge Commit when merging releases into `main`.
+This brings all the commits from the release branch into `main` to keep the commit history continuous from `develop`.
+
+When your code has been merged, the action will start. Once completed, a notification will be sent in the Slack channel `#ds-platform-sh-notifications`.
+Your code will then be visible on the `main` environment.
+
+After merging into `main`, make a pull request to merge `main` into `develop`.
+This will ensure that `develop` includes the commit from `main` and will prevent any conflicts when merging future releases into `main` to keep the history in sync.
+
+Provided that you have used the correct naming conventions for your branch and PR, the JIRA ticket associated with your branch will be updated and moved into the `READY TO TEST ON MAIN` swim lane.
+Otherwise, you will need to manually move the deployed tickets into the `READY TO TEST ON MAIN` swim lane.
+
+Please then update the `#ds-etna-dev` Slack channel and let the team know that `develop` is free to be used again.
+
+
+## Manual deployments to environments
+
+If CD fails for any reason and cannot be fixed, you can manually deploy to an environment by following the steps below:
+
+```console
+platform project:set-remote <project_id>
+```
+
+# Develop
+```console
+git push platform develop
+```
+
+# Main
+```console
+git push platform main
+```
+
+## How to access the Platform.sh shell
+
+1. Go to the Platform.sh dashboard
+2. Click on the environment you want to access
+3. Click on the `SSH` tab
+4. Copy the SSH command
+5. Open your `ds-wagtail-cli1` container in Docker Desktop
+6. Paste the command into the CLI
+7. You should now be in the Platform.sh shell
