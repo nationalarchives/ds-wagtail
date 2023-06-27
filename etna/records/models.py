@@ -477,26 +477,12 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def former_name_authority_reference(self) -> str:
-        if identifier := self.get("identifier", ()):
-            for item in identifier:
-                if former_name_authority_reference := item.get(
-                    "former_name_authority_reference", ""
-                ):
-                    return former_name_authority_reference
-        return ""
-
-    @cached_property
     def epithet(self) -> str:
         if description := self.get("description", ()):
             for item in description:
                 if item.get("type") == "epithet":
                     return item.get("value", "")
         return ""
-
-    @cached_property
-    def type(self) -> str:
-        return self.template.get("type", "").lower()
 
     def get_gtm_content_group(self) -> str:
         """
