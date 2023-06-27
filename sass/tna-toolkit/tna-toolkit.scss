@@ -12,6 +12,10 @@ html {
   scroll-behavior: smooth;
 }
 
+body {
+  min-width: 240px;
+}
+
 *,
 *::before,
 *::after {
