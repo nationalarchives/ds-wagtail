@@ -64,6 +64,29 @@
             line-height: 1.71;
         }
 
+        @supports (-webkit-line-clamp: 2) {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: initial;
+            display: inline-block;
+            -webkit-box-orient: vertical;
+
+            @media screen and (min-width: $screen__lg) {
+                -webkit-line-clamp: 2;
+                display: -webkit-box;
+            }
+
+            @media screen and (min-width: $screen__xl) {
+                -webkit-line-clamp: 3;
+            }
+
+            @media screen and (min-width: 85rem) { // 1360px
+                display: inline-block;
+                text-overflow: unset;
+                overflow: visible;
+            }
+        }
+
         p {
             // this removes the global margin-bottom for paragraphs
             margin-bottom: 0;
