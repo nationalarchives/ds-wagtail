@@ -278,6 +278,11 @@ WAGTAILSEARCH_BACKENDS = {
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
+PUBLIC_MODEL_LABEL_OVERRIDES = {
+    "articles.articlepage": "Story",
+    "articles.recordarticlepage": "Record revealed",
+}
+
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
