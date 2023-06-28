@@ -54,12 +54,7 @@ COPY bash/run.sh bash/run-dev.sh bash/
 RUN chmod +x bash/run.sh bash/run-dev.sh
 
 # Copy application code
-# TODO: We shouldn't copy everything, only what is required
 COPY . .
-# COPY config etna templates manage.py ./
-
-# TODO: Until we copy only what is required, the bash files are getting overwritten
-RUN chmod +x bash/run.sh bash/run-dev.sh
 
 # Copy static assets
 COPY --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/

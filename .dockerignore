@@ -1,0 +1,34 @@
+.DS_Store
+.coveragerc
+.devcontainer
+.editorconfig
+.env
+.env.example
+.environment
+.git
+.github
+.gitignore
+.nvmrc
+.platform
+.platform.app.yaml
+.prettierrc.json
+.vscode
+Dockerfile
+README.md
+babel.config.json
+database_dumps
+docker-compose.yml
+docs
+fabfile.py
+gunicorn.conf.py
+lint-requirements.txt
+media
+mkdocs.yml
+node_modules
+# package-lock.json
+# package.json
+platformsh-cli
+# sass
+# scripts
+setup.cfg
+# webpack.config.js
