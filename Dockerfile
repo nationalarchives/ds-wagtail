@@ -58,8 +58,6 @@ COPY . .
 
 # Copy static assets
 COPY --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
-COPY --from=staticassets /home/templates/static/scripts templates/static
-
-RUN poetry run python manage.py collectstatic --no-input
+COPY --from=staticassets /home/templates/static/scripts templates/static/scripts
 
 CMD ["./bash/run.sh"]

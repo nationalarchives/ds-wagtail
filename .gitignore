@@ -13,17 +13,7 @@ __pycache__
 .DS_Store
 
 # Ignore the contents of template/static/ but keep the directory
-templates/static/*
-!templates/static/.gitkeep
-
-templates/static/css/*
-!templates/static/css
-!templates/static/css/.gitkeep
-
-templates/static/css/libraries/*
-!templates/static/css/libraries
-!templates/static/css/libraries/.gitkeep
-
+templates/static
 # Allow images within static
 !templates/static/images
 
