@@ -301,14 +301,14 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
         widget=SearchFilterCheckboxList,
     )
     topic = forms.ModelMultipleChoiceField(
-        queryset=TopicExplorerPage.objects.live().public(),
+        queryset=TopicExplorerPage.objects.none(),  # updated by __init__
         to_field_name="slug",
         label="Topic",
         required=False,
         widget=SearchFilterCheckboxList,
     )
     time_period = forms.ModelMultipleChoiceField(
-        queryset=TimePeriodExplorerPage.objects.live().public(),
+        queryset=TimePeriodExplorerPage.objects.none(),  # updated by __init__
         to_field_name="slug",
         label="Time period",
         required=False,
@@ -336,3 +336,18 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
         ],
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["topic"].queryset = (
+            TopicExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("title")
+        )
+        self.fields["time_period"].queryset = (
+            TimePeriodExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("title")
+        )
