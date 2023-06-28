@@ -76,7 +76,9 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                                                         (
                                                             "record_link",
                                                             {
-                                                                "record": TEST_RECORD_DATA["iaid"],
+                                                                "record": TEST_RECORD_DATA[
+                                                                    "iaid"
+                                                                ],
                                                                 "descriptive_title": BLOCK_TITLE_OVERRIDE,
                                                                 "record_dates": "2020-01-01",
                                                             },
@@ -109,7 +111,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
         self.article_page.refresh_from_db()
-        
+
         record_links = self.article_page.body[0].value["content"][0]
         record_link = record_links.value["items"][0]
 
