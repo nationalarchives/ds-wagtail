@@ -154,7 +154,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
 
 class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
-    """Topic explorer BasePage.
+    """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -162,6 +162,9 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = "topic page"
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -347,6 +350,9 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = "time period page"
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
