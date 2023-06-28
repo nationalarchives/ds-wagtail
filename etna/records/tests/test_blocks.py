@@ -51,7 +51,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.article_index_page.add_child(instance=self.article_page)
 
     @responses.activate
-    def test_add_featured_record(self):
+    def test_add_record_links(self):
         test_image = CustomImage.objects.create(width=0, height=0)
         data = nested_form_data(
             {
@@ -69,10 +69,20 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                                 "content": streamfield(
                                     [
                                         (
-                                            "featured_record",
+                                            "record_links",
                                             {
-                                                "title": BLOCK_TITLE_OVERRIDE,
-                                                "record": TEST_RECORD_DATA["iaid"],
+                                                "items": streamfield(
+                                                    [
+                                                        (
+                                                            "record_link",
+                                                            {
+                                                                "record": TEST_RECORD_DATA["iaid"],
+                                                                "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                                                "record_dates": "2020-01-01",
+                                                            },
+                                                        )
+                                                    ]
+                                                )
                                             },
                                         )
                                     ]
@@ -99,11 +109,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
         self.article_page.refresh_from_db()
+        
+        record_links = self.article_page.body[0].value["content"][0]
+        record_link = record_links.value["items"][0]
 
-        featured_record = self.article_page.body[0].value["content"][0]
-        self.assertEqual(featured_record.block_type, "featured_record")
-        self.assertEqual(featured_record.value["title"], BLOCK_TITLE_OVERRIDE)
-        self.assertEqual(featured_record.value["record"].iaid, TEST_RECORD_DATA["iaid"])
+        self.assertEqual(record_links.block_type, "record_links")
+        self.assertEqual(record_link["descriptive_title"], BLOCK_TITLE_OVERRIDE)
+        self.assertEqual(record_link["record"].iaid, TEST_RECORD_DATA["iaid"])
 
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
@@ -120,7 +132,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
     @responses.activate
-    def test_page_with_featured_record(self):
+    def test_page_with_record_links(self):
         self.article_page.body = json.dumps(
             [
                 {
@@ -129,10 +141,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                         "heading": "Heading",
                         "content": [
                             {
-                                "type": "featured_record",
+                                "type": "record_links",
                                 "value": {
-                                    "title": BLOCK_TITLE_OVERRIDE,
-                                    "record": TEST_RECORD_DATA["iaid"],
+                                    "items": [
+                                        {
+                                            "record": TEST_RECORD_DATA["iaid"],
+                                            "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                            "record_dates": "2020-01-01",
+                                        }
+                                    ],
                                 },
                             }
                         ],
@@ -186,14 +203,13 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
                         "heading": "Heading",
                         "content": [
                             {
-                                "type": "featured_records",
+                                "type": "record_links",
                                 "value": {
-                                    "heading": "This is a heading",
-                                    "introduction": "This is some text",
                                     "items": [
                                         {
-                                            "title": "",
                                             "record": TEST_RECORD_DATA["iaid"],
+                                            "descriptive_title": BLOCK_TITLE_OVERRIDE,
+                                            "record_dates": "2020-01-01",
                                         }
                                     ],
                                 },
