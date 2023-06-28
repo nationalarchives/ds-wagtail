@@ -158,7 +158,18 @@ def create_superuser(c):
     """
     Run bash in a local container (with access to dependencies)
     """
-    subprocess.run(["docker-compose", "exec", "web", "poetry", "run", "python", "manage.py", "createsuperuser"])
+    subprocess.run(
+        [
+            "docker-compose",
+            "exec",
+            "web",
+            "poetry",
+            "run",
+            "python",
+            "manage.py",
+            "createsuperuser",
+        ]
+    )
 
 
 # -----------------------------------------------------------------------------

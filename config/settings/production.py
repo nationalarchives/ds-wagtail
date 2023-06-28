@@ -1,5 +1,6 @@
-from .base import *  # noqa: F401
 import os
+
+from .base import *  # noqa: F401
 
 # TODO: Temporary until the static files can be served via S3 or a CDN
 DEBUG = True
