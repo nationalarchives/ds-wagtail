@@ -33,9 +33,6 @@ ENV \
 
 WORKDIR /app
 
-# Upgrade pip
-# RUN pip install --no-cache-dir --upgrade pip
-
 # Install poetry
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL "https://install.python-poetry.org" | python -
