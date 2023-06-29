@@ -51,64 +51,47 @@
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
                         <style>
-                            .govuk-date-input__item {
+                            .tna-date-input__item {
                                 display: inline-block;
                                 margin-right: 20px;
                                 margin-bottom: 0;
                             }
 
-                            .govuk-form-group .govuk-form-group:last-of-type {
+                            .tna-form-group .tna-form-group:last-of-type {
                                 margin-bottom: 0;
                             }
 
-                            .govuk-date-input__label {
-                                display: block;
+                            .tna-form-group label {
+                                display:block;
                             }
 
-                            .govuk-input--width-2 {
-                                background: red;
+                            .tna-date-input__label, .input__label {
+                                display: block;
+
+                            }
+
+                            .tna-input--width-2{
+
                                 max-width:2.75em;
                             }
-                            .govuk-input--width-4 {
-                                background: blue;
+                            .tna-input--width-4 {
+
                                 max-width:4em;
                             }
 
+
+
                         </style>
 
-                        <div>
-                            <div class="govuk-date-input__item">
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="passport-issued-day">
-                                        Day
-                                    </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="passport-issued-day" name="passport-issued-day" type="text" inputmode="numeric">
-                                </div>
-                            </div>
-                            <div class="govuk-date-input__item">
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="passport-issued-month">
-                                        Month
-                                    </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="passport-issued-month" name="passport-issued-month" type="text" inputmode="numeric">
-                                </div>
-                            </div>
-                            <div class="govuk-date-input__item">
-                                <div class="govuk-form-group">
-                                    <label class="govuk-label govuk-date-input__label" for="passport-issued-year">
-                                        Year
-                                    </label>
-                                    <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="passport-issued-year" name="passport-issued-year" type="text" inputmode="numeric">
-                                </div>
-                            </div>
-                        </div>
-
-                        <br><br>
-
                         <div class="search-filters__creation-date-section">
+
                             {{ form.covering_date_from.errors }}
                             {{ form.covering_date_from }}
+
+
                         </div>
+
+
 
                         <div>{{ form.covering_date_to.label_tag }}</div>
 
