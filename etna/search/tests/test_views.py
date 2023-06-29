@@ -516,6 +516,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -727,6 +728,7 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -758,6 +760,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -1328,248 +1331,8 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
-    @responses.activate
-    def test_datalayer_website_filtered_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog", "topic": "Conservation"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_filtered_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 47,
-                "customMetric2": 1,
-            },
-        )
 
-    @responses.activate
-    def test_datalayer_website_search_blog_query(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"q": "test", "group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog_query.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "test",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 8,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 1653,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_researchguide(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "researchGuide"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_researchguide.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: researchGuide",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 359,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_article(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "insight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: insight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 9,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("Highlights bucket to be re-instated at a later date")
-    @responses.activate
-    def test_datalayer_website_search_highlight(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "highlight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: highlight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 67,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_audio(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "audio"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_audio.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: audio",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 644,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_video(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "video"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_video.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: video",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 348,
-                "customMetric2": 0,
-            },
-        )
-
-
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
