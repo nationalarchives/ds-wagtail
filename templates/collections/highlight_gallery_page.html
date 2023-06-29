@@ -12,11 +12,11 @@
         {% include 'includes/highlights-gallery.html' with highlights=page.highlights %}
     {% endif %}
 
-    {% if page.featured_record_article.live %}
+    {% if page.featured_record_article.public %}
         {% include 'includes/record-revealed.html' with record=page.featured_record_article %}
     {% endif %}
 
-    {% if page.featured_article.live %}
+    {% if page.featured_article.public %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
 

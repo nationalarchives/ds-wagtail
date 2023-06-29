@@ -21,7 +21,7 @@
         <p>{{ page.articles_introduction }}</p>
     </div>
 
-    {% if page.featured_article.live %}
+    {% if page.featured_article.public %}
         {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
     {% endif %}
 
