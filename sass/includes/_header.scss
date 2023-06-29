@@ -1,10 +1,13 @@
 .header {
   $root: &;
   background-color: $color__yellow;
+  position: relative;
 
-  @media screen and (min-width: 768px) {
+  &__container {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
   }
 
   &__logo {
@@ -12,33 +15,34 @@
       display: inline-block;
       padding: 1rem;
       padding-bottom: 1.5rem;
+
       @media only screen and (max-width: $screen__md) {
         vertical-align: top;
       }
+      
       @media screen and (max-width: $screen__sm) {
-        padding-left: 0.1rem;
-        padding-right: 0.1rem;
-        padding-bottom: 0.5rem;
-        padding-top: 0.5rem;
+        padding: 0.5rem 0;
       }
     }
 
     &-link {
       align-self: center;
-      margin-left: 1rem;
       display: inline-block;
+      margin-left: 1rem;
+
       &:hover {
         outline: 0.3125rem solid $color__grey-700;
       }
+
       &:focus {
         outline-color: $color__black;
       }
     }
     &-image {
-      height: 6.25rem;
+      height: 4.6875rem;
 
-      @media screen and (max-width: $screen__sm) {
-        height: 4.6875rem;
+      @media only screen and (min-width: $screen__md) {
+        height: 6.18rem;
       }
     }
   }
@@ -46,7 +50,7 @@
   &__mobile-icons {
     display: inline-block;
     float: right;
-    position: relative;
+    position: absolute;
     //top:4rem;
 
     @media screen and (min-width: 768px) {
@@ -55,10 +59,13 @@
   }
 
   &__nav {
-    margin-left: auto;
+    align-self: flex-end;
     align-items: flex-end;
     z-index: 2;
     display: none;
+    left: calc(50% - 50vw);
+    position: relative;
+    margin-left: auto;
 
     &.active {
       display: block;
@@ -69,17 +76,21 @@
     }
 
     @media only screen and (min-width: $screen__md) {
-      display: block;
+      display: block !important;
+      width: max-content;
+      left: unset;
     }
 
     &-list {
       padding-left: 0;
+      width: 100vw;
 
       @media only screen and (min-width: $screen__md) {
         display: flex;
         align-items: flex-end;
         flex-wrap: wrap;
         padding-left: 2.5rem;
+        width: 100%;
       }
 
       height: 100%;
@@ -224,21 +235,11 @@
   //   }
 
   &__overlay-button {
-    position: absolute;
-    right: 0em;
-    top: 110px;
     padding: 23px 11px;
+    margin-bottom: 0;
     z-index: 5;
     cursor: pointer;
     user-select: none;
-
-    @media only screen and (max-width: 481px) {
-      top: 85px;
-    }
-
-    @media only screen and (max-width: 390px) {
-      top: 105px;
-    }
 
     @media only screen and (min-width: $screen__md) {
       display: none;
@@ -248,12 +249,12 @@
   &__overlay-input {
     // using opacity instead of display: none allows the input to be toggled by keyboards
     opacity: 0;
+    position: absolute;
     /*
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
     overflow: hidden;
-    position: absolute;
     white-space: nowrap;
     width: 1px;
     */
@@ -264,6 +265,10 @@
 
     &:checked ~ #{$root}__nav {
       display: block;
+
+      @media only screen and (min-width: $screen__md) {
+        display: none;
+      }
     }
 
     &:checked ~ #{$root}__overlay-button {
