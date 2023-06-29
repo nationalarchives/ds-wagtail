@@ -22,7 +22,8 @@
         </title>
         <meta name="description" content="" />
      {% endblock %}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+        <meta name="format-detection" content="telephone=no" />
 
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
@@ -89,9 +90,11 @@
         {% if show_beta_banner %}
             {% include 'includes/beta-banner.html' %}
         {% endif %}
+
         {% block breadcrumb %}
-        {% include 'includes/breadcrumb.html' %}
+            {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
         {% endblock %}
+
         {% block main %}
             <main id="maincontent">
                 {% block content %}{% endblock %}
@@ -107,6 +110,7 @@
         {% endblock %}
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
+        <script src="{% static 'scripts/feedback_tracking.js' %}"></script>
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
         {% endif %}

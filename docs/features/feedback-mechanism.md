@@ -18,11 +18,11 @@ Feedback prompts are found and displayed on pages using the `etna.feedback.templ
 2. Use the prompt to generate a Django form (of type `etna.feedback.forms.FeedbackForm`) with the correct labels/options in place, and some initial field values set.
 3. Render the form to a template, so that users can interact with it.
 
-A separate 'comment' form is also included in the template, but cannot be interacted with by default.
+The HTML for separate 'comment' form is also included in the template, but requires updating (via JS) before it can be used.
 
 ## How feedback responses are collected
 
-When a user completes and submits a feedback form, the submission is posted to `FeedbackSubmitView`. The purpose of the view is to:
+When a user submits a feedback form, the submission is posted to `FeedbackSubmitView`. The purpose of the view is to:
 
 1. Using data from the submit URL (`prompt_id` and `prompt_revision`), find the relevant `FeedbackPrompt` instance for the request, and ensure we are using the same revision that was used to generate the form that the user submitted.
 2. Use the prompt to generate a Django form (exactly like the `render_feedback_prompt` tag does).
@@ -33,10 +33,9 @@ Then, if the submission was **valid**:
 4. Save a `FeedbackSubmission` instance to the database to represent it.
 5. Redirect to the `FeedbackSuccessView` or, if the request was submitted via AJAX, render a `JSONResponse` with some useful values in the response.
 
-Or, if the submission was **invalid**:
+Or, if the submission was **invalid** for some reason:
 
-4. Log an error with the form validation error details included in the body (which should by logged in Sentry).
-5. Fake a successful response using a randomly generated `uuid` value in place of `public_id`.
+Render a `JSONResponse` with a 400 (Bad Request) status code, including the validation error details from the form.
 
 ### What validation takes place?
 
@@ -47,21 +46,11 @@ For a thorough understanding of the validation that is applied to submissions, y
 3. That the `response` field value matches the `id` of one of the options defined on the `FeedbackPrompt`
 4. That the `page_id` and `page_revision` values match up to an existing revision for an existing page.
 
-### Do we store any personal data?
-
-If the user is signed in, we store the ID of the current Django user with the submission, which can be used to put a name to it. However, most feedback is submitted by unauthenticated users; In which case, only details about the submission itself are stored (the url they were on, the answers they gave, and when it was received). We do not save IP addresses or any other identifiable information.
-
-### Versioning of prompts
-
-Because feedback prompts are converted to forms and shown on most pages, having a single version of that `FeedbackPrompt` instance is tricky, because it's quite possible for changes to be saved to the database between the time the form is rendered and when it is proccessed.
-
-This is why the `FeedbackPrompt` model is revisible (has drafts and revisions in Wagtail). With the `prompt_id` and `prompt_revision` both included in submission URLs, we can recreate the `FeedbackPrompt` exactly as it was when the form was rendered to the user, and from that, can recreate a `FeedbackForm` instance that can be used for validation.
-
-## How comments are collected
+## How comments are collected (JS-enabled)
 
 After submitting their initial feedback response, most users (those with Javascript enabled) will be presented with a second form to allow them to post a comment.
 
-The comment form is initially hidden from all users, then modified and shown depending on the `JsonResponse` received from  `FeedbackSubmitView`. The response data is used in the following ways:
+The comment form that appears in prompts is hidden from all users initially, then modified and shown depending on the `JsonResponse` received from  `FeedbackSubmitView`. The response data is used in the following ways:
 
     `comment_prompt_text`:
         Used to populate the `label` text for the `comment` field. If the value is blank or missing, it is assumed that comments are not desired for the selected response option, and only the success message is displayed.
@@ -70,19 +59,35 @@ The comment form is initially hidden from all users, then modified and shown dep
     `signature`:
         Used to populate a hidden `signature` input value.
 
-The form is posted via Javascript to a view that validates the following things:
+## How comments are collected (no-JS)
 
-1. That `submission` and `signature` values are present
-2. That `submission` matches the ID of a `FeedbackSubmission` instance that doesn't yet have a comment stored for it
-3. That `signature` matches the supplied `submission` value
+After submitting their initial feedback response, no-JS users will be taken to a thank you page, where a second form allows them to add a supporting comment to their feedback.
 
-### How 'signature' validation works
+Unlike the comment form included in prompt output across the site, this version comes prepopulated with valid `submission` and `signature` values, allowing it to be posted without any further tinkering. While convenient for the user, it should this approach leaves these forms a little more open to abuse (by spammers), and so we are more dependant on infrastructure-level security measures here.
 
-Valid signatures are deterministic hashes, created from the `public_id` value from a `FeedbackSubmission` instance, and the `SECRET_KEY` value (which is unique to each environment).
+If the user chooses to submit the form, they are redirected to a new success page.
 
-The `FeedbackSubmitView` generates a signature value after succesfully saving the `FeedbackSumission` instance, and includes it in the `JsonResponse` to be picked up by JS and added to the comment form.
+## Comment validation and procesing
 
-Because the value is deterministic, the `FeedbackCommentForm` can regenerate the hash from the submitted `submission` value, then compare that to the submitted `signature` value. If the values match, the comment is considered 'safe' and added to the `FeedbackSumission` instance.
+Comment form data is posted to a view that validates the following things:
+
+1. That `submission` and `signature` values are present.
+2. That `submission` matches the ID of a `FeedbackSubmission` instance that doesn't yet have a comment stored for it.
+3. That `signature` matches the supplied `submission` value.
+
+'signatures' are deterministic hashes, created from the `public_id` value of a `FeedbackSubmission` instance, and the `SECRET_KEY` value set for the environment (which will always be kept private).
+
+Because the value is deterministic, the `FeedbackCommentForm` can regenerate the hash from the submitted `submission` value, then compare that to the value that was submitted. If the values match, the comment is considered 'safe' and added to the `FeedbackSumission` instance.
+
+### Versioning of prompts
+
+Because feedback prompts are converted to forms and shown on most pages, having a single version of that `FeedbackPrompt` instance is tricky, because it's quite possible for changes to be saved to the database between the time the form is rendered and when it is proccessed.
+
+This is why the `FeedbackPrompt` model is revisible (has drafts and revisions in Wagtail). With the `prompt_id` and `prompt_revision` both included in submission URLs, we can recreate the `FeedbackPrompt` exactly as it was when the form was rendered to the user, and from that, can recreate a `FeedbackForm` instance that can be used for validation.
+
+### Do we store any personal data?
+
+If the user is signed in, we store the ID of the current Django user with the submission, which can be used to put a name to it. However, most feedback is submitted by unauthenticated users; In which case, only details about the submission itself are stored (the url they were on, the answers they gave, and when it was received). We do not save IP addresses or any other identifiable information.
 
 ## Accessing and exporting submission data
 

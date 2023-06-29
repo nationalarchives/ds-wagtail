@@ -14,10 +14,6 @@
 <li class="search-results__list-card--grid">
 
     <div class="search-results__list-card-content">
-        <!---placeholder for ITEM, SERIES etc -->
-        <!--
-        <p class="search-results__list-card-item">ITEM</p>
-        -->
 
         <h4 class="search-results__list-card-heading">
             {% if apply_teaser_image %}
@@ -39,61 +35,65 @@
         <p class="search-results__list-card-description">
             {{ record.listing_description }}
         </p>
-        <ul class="search-results__list-card-metadata">
+        <dl class="search-results__list-card-metadata">
             {% if record.held_by %}
-                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
-                    Held by: {{ record.held_by }}
-                </li>
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
+                    Held by:
+                </dt>
+                <dd>{{ record.held_by }}</dd>
             {% endif %}
 
             {% if record.date_created %}
-                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                    Date: {{ record.date_created }}
-                </li>
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+                    Date:
+                </dt>
+                <dd> {{ record.date_created }}</dd>
             {% endif %}
 
             {% if record.reference_number %}
-            <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
+            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
 
                 {% if form.group.value == 'archive' %}
                 Archon code:
                 {% else %}
-                Catalogue reference:
+                Reference:
                 {% endif %}
 
-                {{ record.reference_number }}
-            </li>
+
+            </dt>
+            <dd>{{ record.reference_number }}</dd>
             {% endif %}
 
-            {% if record.record_opening %}
-                <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
-                    Record opening date: {{ record.record_opening }}
-                </li>
-            {% endif %}
-
-            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-                <li class="search-results__list-card-metadata-item">
-                    Type: {{ record.type }}
-                </li>
-            {% endif %}
-
-            <!--placeholder for Subjects -->
             <!--
-            <li class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
-                Subjects: <a href="">Armed Forces (General Administration)</a> <a href="">UFOs</a>
-            </li>
+            {% if record.record_opening %}
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
+                    Record opening date:
+                </dt>
+                <dd>{{ record.record_opening }}</dd>
+            {% endif %}
             -->
+            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
+                <dt class="search-results__list-card-metadata-item">
+                    Type:
+                </dt>
+                <dd>{{ record.type }}</dd>
+            {% endif %}
 
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-            <li class="search-results__list-card-metadata-item" style="display:none;">
-                IAID: {{ record.iaid }}
-            </li>
-            <li class="search-results__list-card-metadata-item" style="display:none;">
-                Score: {{ record.score }}
-            </li>
+            <!--
+            <dt class="search-results__list-card-metadata-item">
+                IAID:
+            </dt>
+
+            <dd>{{ record.iaid }}</dd>>
+            <dt class="search-results__list-card-metadata-item">
+                Score:
+            </dt>
+            <dd;>{{ record.score }}</dd>
+            -->
             {% comment %}End debug attributes.{% endcomment %}
-        </ul>
-    </div>
+        </dl>
+
 
     {% if record.is_digitised %}
     <div class="search-results__list-card-delivery-options--grid">
