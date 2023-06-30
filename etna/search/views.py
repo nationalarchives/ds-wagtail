@@ -997,7 +997,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         except (KeyError, AttributeError):
             page_number = 1
 
-        matching_page_ids = [id for id, ct_id in self.facet_source_data]
+        matching_page_ids = [id for id, _ in self.facet_source_data]
 
         # Restrict visibility of 'page_type' choices to those that are relevant, and add facet counts
         page_type_field = self.form.fields["page_type"]
