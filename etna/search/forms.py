@@ -17,7 +17,7 @@ from ..ciim.constants import (
     WEBSITE_BUCKETS,
 )
 from ..collections.models import TimePeriodExplorerPage, TopicExplorerPage
-from .utils import get_public_model_label
+from .utils import get_public_page_type_label
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -293,11 +293,7 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
     page_type = forms.MultipleChoiceField(
         label="Page type",
         required=False,
-        choices=[
-            (model._meta.label_lower, get_public_model_label(model))
-            for model in get_page_models()
-            if model != Page and not model._meta.abstract
-        ],
+        choices=[],  # updated by __init__
         widget=SearchFilterCheckboxList,
     )
     topic = forms.ModelMultipleChoiceField(
@@ -339,6 +335,13 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        self.fields["page_type"].choices = [
+            (model._meta.label_lower, get_public_page_type_label(model))
+            for model in get_page_models()
+            if model != Page and not model._meta.abstract
+        ]
+
         self.fields["topic"].queryset = (
             TopicExplorerPage.objects.live()
             .public()

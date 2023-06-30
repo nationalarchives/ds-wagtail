@@ -282,7 +282,7 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 # relevant 'page type' labels to users (e.g. "Story" instead of "Article")
 # By default, a version of the model's verbose_name is used (with " page"
 # removed from the end).
-PUBLIC_MODEL_LABEL_OVERRIDES = {
+PUBLIC_PAGE_TYPE_LABEL_OVERRIDES = {
     "articles.articlepage": "Story",
     "articles.recordarticlepage": "Record revealed",
 }

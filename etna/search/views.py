@@ -54,7 +54,7 @@ from .forms import (
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
 )
-from .utils import get_public_model_label
+from .utils import get_public_page_type_label
 
 logger = logging.getLogger(__name__)
 
@@ -882,7 +882,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
                 page_type_filters.append(
                     (
                         model._meta.label_lower,
-                        f"Page type: {get_public_model_label(model)}",
+                        f"Page type: {get_public_page_type_label(model)}",
                     )
                 )
             self.selected_filters["page_type"] = sorted(
