@@ -222,11 +222,15 @@ class ArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -371,11 +375,15 @@ class FocusedArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
 
     def save(self, *args, **kwargs):
         """
@@ -535,13 +543,17 @@ class RecordArticlePage(
         ]
     )
 
-    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
-        index.SearchField("gallery_text"),
-        index.SearchField("date_text"),
-        index.SearchField("about"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("gallery_text"),
+            index.SearchField("date_text"),
+            index.SearchField("about"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
 
     @cached_property
     def gallery_items(self):
