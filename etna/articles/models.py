@@ -141,7 +141,7 @@ class TaggedArticle(ItemBase):
         ArticleTag, related_name="tagged_article", on_delete=models.CASCADE
     )
     content_object = ParentalKey(
-        to="articles.ArticlePage",
+        to="wagtailcore.Page",
         on_delete=models.CASCADE,
         related_name="tagged_items",
     )
@@ -317,9 +317,8 @@ class FocusedArticlePage(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
-    ]
+    article_tag_names = models.TextField(editable=False, null=True)
+    tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -352,7 +351,9 @@ class FocusedArticlePage(
     promote_panels = (
         NewLabelMixin.promote_panels
         + BasePageWithIntro.promote_panels
+        + [FieldPanel("tags"),]
         + [
+            
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
@@ -363,9 +364,22 @@ class FocusedArticlePage(
 
     search_fields = BasePageWithIntro.search_fields + [
         index.SearchField("body"),
+        index.SearchField("article_tag_names", boost=2),
         index.SearchField("topic_names", boost=1),
         index.SearchField("time_period_names", boost=1),
     ]
+    
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
+        """
+        if (
+            "update_fields" not in kwargs
+            or "article_tag_names" in kwargs["update_fields"]
+        ):
+            self.article_tag_names = "\n".join(t.name for t in self.tags.all())
+        super().save(*args, **kwargs)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
