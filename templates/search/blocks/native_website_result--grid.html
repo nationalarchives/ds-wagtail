@@ -28,7 +28,10 @@
             {{ result.teaser_text }}
         </p>
         <dl class="search-results__list-card-metadata">
-
+            <dt class="search-results__list-card-metadata-item">
+                Page type:
+            </dt>
+            <dd>{{ result|public_page_type_label }}</dd>
             {% if result.first_published_at %}
                 <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
                     Published:
