@@ -318,9 +318,11 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
     sort_by = forms.ChoiceField(
         label="Sort by",
         choices=[
-            (SortBy.RELEVANCE.value, "Relevance"),
-            (SortBy.DATE_CREATED.value, "Date"),
-            (SortBy.TITLE.value, "Title"),
+            ("", "Relevance"),
+            ("-first_published_at", "Date (newest first)"),
+            ("first_published_at", "Date (oldest first)"),
+            ("title", "Title (A–Z)"),
+            ("-title", "Title (Z–A)"),
         ],
         required=False,
         widget=forms.Select(attrs={"class": "search-sort-view__form-select"}),

@@ -939,10 +939,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             results = queryset
 
         # Finally, apply ordering
-        sort_field = form.cleaned_data.get("sort_by", self.default_sort_by)
-        sort_order = form.cleaned_data.get("sort_order", self.default_sort_order)
+        sort_by = form.cleaned_data.get("sort_by", self.default_sort_by)
 
-        if sort_field == SortBy.RELEVANCE.value:
+        if sort_by == SortBy.RELEVANCE:
             if self.search_query:
                 # stick with relevancy ordering applied by search()
                 return results
@@ -954,18 +953,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         # so we must first convert the search results into one
         if isinstance(results, PostgresSearchResults):
             results = results.get_queryset(for_count=True)
-        if sort_field == SortBy.TITLE.value:
-            return results.order_by(
-                "title" if sort_order == SortOrder.ASC.value else "-title"
-            )
-        if sort_field == SortBy.DATE_CREATED.value:
-            return results.order_by(
-                "first_published_at"
-                if sort_order == SortOrder.ASC.value
-                else "-first_published_at"
-            )
-
-        return results
+        return results.order_by(sort_by)
 
     def get_meta_title(self) -> str:
         """
@@ -979,7 +967,6 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
     def get_initial(self) -> Dict[str, Any]:
         return {
             "sort_by": self.default_sort_by,
-            "sort_order": self.default_sort_order,
             "per_page": self.default_per_page,
             "display": self.default_display,
         }
@@ -992,7 +979,6 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         for field_name in (
             "per_page",
             "sort_by",
-            "sort_order",
             "display",
         ):
             if field_name in form.errors:
@@ -1079,7 +1065,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             searchtabs=SearchTabs,
         )
 
-        # Set custom attribute values for use in template
+        # Set custom attribute for use in get_datalayer_data()
         self.total_count = context["paginator"].count
 
         return context

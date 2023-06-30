@@ -7,7 +7,6 @@ from etna.articles.factories import (
     ArticlePageFactory,
     FocusedArticlePageFactory,
 )
-from etna.ciim.client import SortBy
 from etna.collections.factories import TimePeriodPageFactory, TopicPageFactory
 from etna.collections.models import PageTimePeriod, PageTopic
 from etna.core.test_utils import prevent_request_warnings
@@ -127,6 +126,25 @@ class NativeWebsiteSearchTestCase(TestCase):
             page_time_periods=[PageTimePeriod(time_period=cls.georgians)],
         )
 
+        cls.all_result_pages = [
+            cls.arts,
+            cls.military,
+            cls.health,
+            cls.transport,
+            cls.early_modern,
+            cls.georgians,
+            cls.interwar,
+            cls.postwar,
+            cls.foo_article,
+            cls.foo_focussed_article,
+            cls.foo_article_with_no_tags,
+            cls.bar_article,
+            cls.bar_focussed_article,
+            cls.bar_article_without_tags,
+            cls.foo_article_with_alternative_tags,
+            cls.bar_article_with_alternative_tags,
+        ]
+
         # ---------------------------------------------------------------------
         # Setup values to use in test GET data
         # ---------------------------------------------------------------------
@@ -148,28 +166,45 @@ class NativeWebsiteSearchTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertCountEqual(
             [p.specific for p in response.context["page"].object_list],
-            [
-                self.arts,
-                self.military,
-                self.health,
-                self.transport,
-                self.early_modern,
-                self.georgians,
-                self.interwar,
-                self.postwar,
-                self.foo_article,
-                self.foo_focussed_article,
-                self.foo_article_with_no_tags,
-                self.bar_article,
-                self.bar_focussed_article,
-                self.bar_article_without_tags,
-                self.foo_article_with_alternative_tags,
-                self.bar_article_with_alternative_tags,
-            ],
+            self.all_result_pages,
         )
 
         # No filters are selected, so 'Selected filters' should not be present
         self.assertNotContains(response, '<h2 class="sr-only">Selected filters</h2>')
+
+    def test_sorting(self):
+        for sort_by, expected_results in (
+            (
+                "title",
+                sorted(self.all_result_pages, key=lambda p: p.title),
+            ),
+            (
+                "-title",
+                sorted(self.all_result_pages, key=lambda p: p.title, reverse=True),
+            ),
+            (
+                "first_published_at",
+                sorted(
+                    self.all_result_pages,
+                    key=lambda p: p.first_published_at,
+                ),
+            ),
+            (
+                "-first_published_at",
+                sorted(
+                    self.all_result_pages,
+                    key=lambda p: p.first_published_at,
+                    reverse=True,
+                ),
+            ),
+        ):
+            with self.subTest(f"Sort by: {sort_by}"):
+                response = self.client.get(self.test_url, data={"sort_by": sort_by})
+                self.assertEqual(response.status_code, 200)
+                self.assertEqual(
+                    [p.specific for p in response.context["page"].object_list],
+                    expected_results[:15],
+                )
 
     def test_pagination(self):
         response = self.client.get(self.test_url, data={"per_page": 10})
@@ -302,9 +337,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
     def test_search_for_foo_ordered_by_title(self):
-        response = self.client.get(
-            self.test_url, data={"q": "foo", "sort_by": SortBy.TITLE.value}
-        )
+        response = self.client.get(self.test_url, data={"q": "foo", "sort_by": "title"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
@@ -364,9 +397,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         """
         Tests the view using the 'bar' search term in isolation (without any filters)
         """
-        response = self.client.get(
-            self.test_url, data={"q": "bar", "sort_by": SortBy.TITLE.value}
-        )
+        response = self.client.get(self.test_url, data={"q": "bar", "sort_by": "title"})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
