@@ -392,6 +392,7 @@ class FocusedArticlePage(
         data = super().get_datalayer_data(request)
         data.update(
             customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
@@ -584,6 +585,7 @@ class RecordArticlePage(
         data = super().get_datalayer_data(request)
         data.update(
             customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
