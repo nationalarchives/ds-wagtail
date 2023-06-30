@@ -103,6 +103,10 @@ class ArticleTagMixin(models.Model):
         FieldPanel("tags"),
     ]
 
+    search_fields = [
+        index.SearchField("article_tag_names", boost=2),
+    ]
+
 
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
@@ -218,9 +222,8 @@ class ArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + [
+    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
         index.SearchField("body"),
-        index.SearchField("article_tag_names", boost=2),
         index.SearchField("topic_names", boost=1),
         index.SearchField("time_period_names", boost=1),
     ]
@@ -368,9 +371,8 @@ class FocusedArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + [
+    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
         index.SearchField("body"),
-        index.SearchField("article_tag_names", boost=2),
         index.SearchField("topic_names", boost=1),
         index.SearchField("time_period_names", boost=1),
     ]
@@ -532,11 +534,10 @@ class RecordArticlePage(
         ]
     )
 
-    search_fields = BasePageWithIntro.search_fields + [
+    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
         index.SearchField("gallery_text"),
         index.SearchField("date_text"),
         index.SearchField("about"),
-        index.SearchField("article_tag_names", boost=2),
         index.SearchField("topic_names", boost=1),
         index.SearchField("time_period_names", boost=1),
     ]
