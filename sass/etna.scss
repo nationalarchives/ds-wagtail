@@ -135,28 +135,13 @@ $largest-small-device: 992px;
 @import '../node_modules/@nationalarchives/frontend/nationalarchives/all';
 
 .tna-hero {
-    min-height: min(35vw, 480px);
     margin-bottom: 2rem;
-
-    background-color: #26262a;
 }
 
 .tna-hero__image {
     @include media.on-mobile {
         height: 320px;
     }
-
-    img {
-        width: 100%;
-        height: 100%;
-
-        object-fit: cover;
-    }
-}
-
-.tna-hero__content {
-    padding-top: 1.75rem;
-    padding-bottom: 2.25rem;
 }
 
 .tna-hero__heading {
