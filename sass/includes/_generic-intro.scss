@@ -12,6 +12,7 @@
     margin-bottom: 0;
     font-size: 4rem;
     font-family: $font__supria-sans;
+
     @media (max-width: $screen__md) {
       font-size: 2.5rem;
     }
@@ -75,7 +76,7 @@
       color: $color__white;
       line-height: 122%;
       margin-bottom: 1rem;
-      @extend .col-md-8;
+      @extend .col-md-9;
       @extend .row;
     }
   }
