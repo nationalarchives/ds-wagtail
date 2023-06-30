@@ -401,6 +401,18 @@ class NativeWebsiteSearchTestCase(TestCase):
             [self.bar_article],
         )
 
+    def test_search_with_custom_AND_operator(self):
+        for search_terms, expected_result_count in (
+            ("foo AND article", 4),
+            ("foo AND article AND focussed", 1),
+            ("foo AND bar", 0),
+        ):
+            with self.subTest(f"Searching for: {search_terms}"):
+                response = self.client.get(self.test_url, data={"q": search_terms})
+                self.assertEqual(
+                    response.context_data["paginator"].count, expected_result_count
+                )
+
     def test_no_results_search(self):
         """
         Tests the view using the 'baz' search term, which should match zero pages.
