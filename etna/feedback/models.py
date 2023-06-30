@@ -26,7 +26,9 @@ from etna.feedback.widgets import PageTypeChooser
 
 
 class FeedbackPromptManager(models.Manager):
-    def get_for_path(self, path: str) -> Union["FeedbackPrompt", None]:
+    def get_for_path(
+        self, path: str, page: Page | None
+    ) -> Union["FeedbackPrompt", None]:
         """
         Return the most appropriate `FeedbackPrompt` instance for the
         supplied `path`.
@@ -35,16 +37,17 @@ class FeedbackPromptManager(models.Manager):
         presceeding_paths = [path[:i] for i in range(1, len(path))]
 
         if path.endswith("/"):
-            # Allow prompts have been defined without a trailing slash
-            # to be matched to this request
+            # Allow prompts that have been defined without a trailing
+            # slash to be matched to this request
             exact_path_variations = (path, path.rstrip("/"))
         else:
             # If the prompt has been defined with a trailing slash, but
             # this request does not have one, do not allow a match
             exact_path_variations = (path,)
 
-        obj = (
+        for match in (
             self.filter(live=True)
+            .prefetch_related("for_page_types")
             .annotate(
                 match=Case(
                     When(
@@ -65,12 +68,21 @@ class FeedbackPromptManager(models.Manager):
                 Q(path__in=exact_path_variations)
                 | Q(path__in=presceeding_paths, startswith_path=True)
             )
-            .order_by("match", Length("path").desc())
-            .first()
-        )
-        if obj is None:
-            raise FeedbackPrompt.DoesNotExist
-        return obj
+            .order_by("match", Length("path").desc(), "id")
+        ):
+            if isinstance(page, Page):
+                page_ctype = ContentType.objects.get_for_id(page.content_type_id)
+            else:
+                page_ctype = None
+            valid_ctypes = set(obj.content_type for obj in match.for_page_types.all())
+
+            if valid_ctypes and (page_ctype is None or page_ctype not in valid_ctypes):
+                continue
+
+            # checks passed! return this match
+            return match
+
+        raise FeedbackPrompt.DoesNotExist
 
     def get_by_natural_key(self, public_id: Union[str, uuid.UUID]) -> "FeedbackPrompt":
         return self.get(public_id=public_id)
