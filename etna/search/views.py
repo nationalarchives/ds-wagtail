@@ -890,9 +890,11 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             )
 
         # Filter by topic
-        selected_topics = form.cleaned_data.get(
-            "topic", TopicExplorerPage.objects.none()
-        ).only("id", "slug", "title")
+        selected_topics = (
+            form.cleaned_data.get("topic", TopicExplorerPage.objects.none())
+            .only("id", "slug", "title")
+            .order_by("title")
+        )
         if selected_topics:
             queryset = queryset.filter(
                 id__in=PageTopic.objects.filter(topic__in=selected_topics).values_list(
@@ -905,9 +907,11 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             ]
 
         # Filter by time period
-        selected_time_periods = form.cleaned_data.get(
-            "time_period", TopicExplorerPage.objects.none()
-        ).only("id", "slug", "title")
+        selected_time_periods = (
+            form.cleaned_data.get("time_period", TopicExplorerPage.objects.none())
+            .only("id", "slug", "title")
+            .order_by("start_year")
+        )
         if selected_time_periods:
             queryset = queryset.filter(
                 id__in=PageTimePeriod.objects.filter(
@@ -1056,8 +1060,8 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
                 )
             )
             .distinct()
+            .order_by("start_year")
             .values_list("slug", "title", "doc_count")
-            .order_by("title")
         )
         time_period_field.choices_updated = True
 

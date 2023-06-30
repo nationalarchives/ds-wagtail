@@ -349,5 +349,5 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
             TimePeriodExplorerPage.objects.live()
             .public()
             .defer_streamfields()
-            .order_by("title")
+            .order_by("start_year")
         )
