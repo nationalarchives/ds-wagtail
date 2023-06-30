@@ -102,7 +102,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
@@ -122,7 +122,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -197,7 +197,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -307,7 +307,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -374,7 +374,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
@@ -633,7 +633,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("teaser_text"),
     ]
 
-    gtm_content_group = "Highlight Gallery"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def highlights(self):
