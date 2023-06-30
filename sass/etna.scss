@@ -1,3 +1,5 @@
+@use '../node_modules/@nationalarchives/frontend/nationalarchives/tools/media';
+
 /*
 
 ==============
@@ -118,3 +120,68 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/record-crosslink-panel';
 @import 'includes/image-block';
 
+/*
+
+==============
+New styles
+==============
+
+Modified to match the existing site (for now)
+
+*/
+
+$largest-small-device: 992px;
+
+@import '../node_modules/@nationalarchives/frontend/nationalarchives/all';
+
+.tna-hero {
+    min-height: min(35vw, 480px);
+    margin-bottom: 2rem;
+
+    background-color: #26262a;
+}
+
+.tna-hero__image {
+    @include media.on-mobile {
+        height: 320px;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+
+        object-fit: cover;
+    }
+}
+
+.tna-hero__content {
+    padding-top: 1.75rem;
+    padding-bottom: 2.25rem;
+}
+
+.tna-hero__heading {
+    margin-top: 0;
+    margin-bottom: .75rem;
+
+    font-size: 4rem;
+    line-height: 1.22;
+    font-weight: 700;
+
+    @include media.on-mobile {
+        font-size: 2.25rem;
+        line-height: 1.33;
+    }
+}
+
+.tna-hero__body {
+    font-size: 1.25rem;
+
+    @include media.on-mobile {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    p {
+        margin-bottom: 0;
+    }
+}
