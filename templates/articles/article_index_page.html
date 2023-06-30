@@ -14,7 +14,7 @@
         <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>
 
-    {% if page.featured_article.public %}
+    {% if page.featured_article.live %}
         {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
     {% endif %}
 

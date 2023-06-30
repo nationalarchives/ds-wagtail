@@ -11,12 +11,12 @@
     {% if page.featured_highlight_gallery %}
         {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all|slice:":5" page=page.featured_highlight_gallery %}
     {% endif %}
-    {% if page.featured_article.public %}
+    {% if page.featured_article.live %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
     {% if page.promoted_links %}
         {% comment %} Checks if featured article exists then adds a bg to define the separate sections {% endcomment %}
-        {% if page.featured_article.public %}
+        {% if page.featured_article.live %}
             {% include_block page.promoted_links with bg=True %}
         {% else %}
             {% include_block page.promoted_links with bg=False %}
