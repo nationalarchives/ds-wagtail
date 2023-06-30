@@ -4,6 +4,7 @@ from typing import Union
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Case, IntegerField, Q, When
 from django.db.models.functions import Length
@@ -11,15 +12,17 @@ from django.utils.functional import cached_property
 from django.utils.text import Truncator
 from django.utils.translation import gettext_lazy as _
 
+from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
 from wagtail.fields import RichTextField, StreamField
-from wagtail.models import DraftStateMixin, RevisionMixin
+from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
 from etna.feedback import constants
 from etna.feedback.blocks import ResponseOptionBlock
 from etna.feedback.utils import normalize_path
+from etna.feedback.widgets import PageTypeChooser
 
 
 class FeedbackPromptManager(models.Manager):
@@ -71,6 +74,19 @@ class FeedbackPromptManager(models.Manager):
 
     def get_by_natural_key(self, public_id: Union[str, uuid.UUID]) -> "FeedbackPrompt":
         return self.get(public_id=public_id)
+
+
+class FeedbackPromptPageType(Orderable):
+    prompt = ParentalKey("feedback.FeedbackPrompt", related_name="for_page_types")
+    ctype = models.ForeignKey(
+        ContentType, verbose_name="type", on_delete=models.PROTECT
+    )
+
+    panels = [panels.FieldPanel("ctype", widget=PageTypeChooser)]
+
+    @property
+    def content_type(self):
+        return ContentType.objects.get_for_id(self.ctype_id)
 
 
 @register_snippet
@@ -150,6 +166,9 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
                 panels.FieldPanel("path"),
                 panels.FieldPanel("startswith_path"),
             ],
+        ),
+        panels.InlinePanel(
+            "for_page_types", heading=_("Page type must be one of"), label="Page type"
         ),
     ]
 
