@@ -84,11 +84,11 @@
 
             {% include "search/includes/filter.html" with field=form.collection %}
 
-            {% include "search/includes/filter.html" with field=form.page_type %}
-
             {% include "search/includes/filter.html" with field=form.time_period %}
 
             {% include "search/includes/filter.html" with field=form.topic %}
+
+            {% include "search/includes/filter.html" with field=form.page_type %}
 
             {% if form.group.value != bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.level %}
