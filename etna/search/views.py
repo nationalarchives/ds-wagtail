@@ -1005,7 +1005,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         for value, label in page_type_field.choices:
             content_type = ContentType.objects.get_by_natural_key(*value.split("."))
             doc_count = 0
-            for id, ct_id in self.facet_source_data:
+            for _, ct_id in self.facet_source_data:
                 if ct_id == content_type.id:
                     doc_count += 1
             if doc_count:
