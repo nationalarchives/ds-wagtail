@@ -66,7 +66,7 @@ class ArticleIndexPage(BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "stories"
+    gtm_content_group = "Explore the collection"
 
     class Meta:
         verbose_name = _("article index page")
@@ -170,7 +170,7 @@ class ArticlePage(
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "stories"
+    gtm_content_group = "Explore the collection"
 
     title_label = "THE STORY OF"
 
@@ -322,7 +322,7 @@ class FocusedArticlePage(
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "focused articles"
+    gtm_content_group = "Explore the collection"
 
     title_label = "IN FOCUS"
 
@@ -452,7 +452,7 @@ class RecordArticlePage(
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Record articles"
+    gtm_content_group = "Explore the collection"
 
     title_label = "RECORD REVEALED"
 
