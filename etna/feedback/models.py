@@ -154,7 +154,6 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     ]
 
     class Meta:
-        unique_together = ("path", "startswith_path")
         ordering = ("path", "startswith_path")
 
     def natural_key(self):
