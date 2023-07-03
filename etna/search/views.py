@@ -299,6 +299,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         super().setup(request, *args, **kwargs)
+        self.query = self.form.cleaned_data.get("q", "")
         self.api_result = None
         self.current_bucket_key = self.form.cleaned_data.get("group")
         if self.current_bucket_key and getattr(self, "bucket_list", None):
@@ -317,8 +318,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         Return a string to use the the <title> tag for this view.
         """
         title = self.base_title
-        if query := self.form.cleaned_data.get("q", ""):
-            title += ' for "' + query.replace('"', "'") + '"'
+        if self.query:
+            title += ' for "' + self.query.replace('"', "'") + '"'
         return title
 
     def get_result_count(self) -> int:
@@ -340,7 +341,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         else:
             custom_dimension8 = self.search_tab + ": " + "none"
 
-        custom_dimension9 = self.form.cleaned_data.get("q") or "*"
+        custom_dimension9 = self.query or "*"
 
         result_count = self.get_result_count()
 
@@ -357,7 +358,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         kwargs["searchtabs"] = SearchTabs
         kwargs.update(
             meta_title=self.get_meta_title(),
-            search_query=self.form.cleaned_data.get("q", ""),
+            search_query=self.query,
         )
         return super().get_context_data(**kwargs)
 
@@ -449,7 +450,7 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         return dict(
             stream=self.api_stream,
-            q=form.cleaned_data.get("q"),
+            q=self.query,
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
             filter_keyword=form.cleaned_data.get("filter_keyword"),
@@ -752,7 +753,7 @@ class FeaturedSearchView(BaseSearchView):
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
-            "q": form.cleaned_data.get("q"),
+            "q": self.query,
             "filter_aggregations": [
                 f"group:{bucket.key}" for bucket in FEATURED_BUCKETS
             ],
