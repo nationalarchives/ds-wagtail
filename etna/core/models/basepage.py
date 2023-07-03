@@ -58,6 +58,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
     # DataLayerMixin overrides
     gtm_content_group = "Page"
 
+    show_publish_date_in_search_results = False
+
     # Overriding the default/core help_text set in MetadataPageMixin
     promote_panels = [
         MultiFieldPanel(
