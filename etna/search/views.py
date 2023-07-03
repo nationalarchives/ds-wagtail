@@ -814,8 +814,8 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         self.selected_filters: Dict[str, List[str]] = {}  # populated by get_results()
         self.selected_filters_count: int = 0  # populated by get_results()
 
-
-    def get_base_queryset(self) -> PageQuerySet:
+    @classmethod
+    def get_base_queryset(cls, request: HttpRequest) -> PageQuerySet:
         return (
             Page.objects.live()
             .public()
@@ -852,7 +852,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         """
 
         # Start with all pages
-        queryset = self.get_base_queryset()
+        queryset = self.get_base_queryset(self.request)
 
         # Filter by type
         selected_types = form.cleaned_data.get("page_type", ())
