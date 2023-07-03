@@ -41,6 +41,73 @@ from .blocks import (
 )
 
 
+@register_snippet
+class ArticleTag(TagBase):
+    free_tagging = False
+    skos_id = models.CharField(
+        blank=True,
+        unique=True,
+        db_index=True,
+        max_length=100,
+        verbose_name="SKOS identifier",
+        help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
+    )
+
+    class Meta:
+        verbose_name = "article tag"
+        verbose_name_plural = "article tags"
+
+    panels = (
+        FieldPanel("name"),
+        FieldPanel("slug"),
+        FieldPanel("skos_id"),
+    )
+
+    def clean(self, *args, **kwargs):
+        if not self.skos_id and self.name:
+            # Generate a unique skos_id value for new tags
+            base_value = skos_id_from_text(self.name)
+            self.skos_id = base_value
+            i = 2
+            while (
+                ArticleTag.objects.exclude(id=self.id)
+                .filter(skos_id=self.skos_id)
+                .exists()
+            ):
+                self.skos_id = f"{base_value[:97]}_{i}"
+                i += 1
+        return super().clean(*args, **kwargs)
+
+
+class TaggedArticle(ItemBase):
+    tag = models.ForeignKey(
+        ArticleTag, related_name="tagged_article", on_delete=models.CASCADE
+    )
+    content_object = ParentalKey(
+        to="wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="tagged_items",
+    )
+
+
+class ArticleTagMixin(models.Model):
+    """Mixin to add article tags to a Page."""
+
+    article_tag_names = models.TextField(editable=False, null=True)
+    tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
+
+    class Meta:
+        abstract = True
+
+    promote_panels = [
+        FieldPanel("tags"),
+    ]
+
+    search_fields = [
+        index.SearchField("article_tag_names", boost=2),
+    ]
+
+
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
 
@@ -98,60 +165,12 @@ class ArticleIndexPage(BasePageWithIntro):
     ]
 
 
-@register_snippet
-class ArticleTag(TagBase):
-    free_tagging = False
-    skos_id = models.CharField(
-        blank=True,
-        unique=True,
-        db_index=True,
-        max_length=100,
-        verbose_name="SKOS identifier",
-        help_text="Used as the identifier for this tag when sending page metatdata to the CIIM API.",
-    )
-
-    class Meta:
-        verbose_name = "article tag"
-        verbose_name_plural = "article tags"
-
-    panels = (
-        FieldPanel("name"),
-        FieldPanel("slug"),
-        FieldPanel("skos_id"),
-    )
-
-    def clean(self, *args, **kwargs):
-        if not self.skos_id and self.name:
-            # Generate a unique skos_id value for new tags
-            base_value = skos_id_from_text(self.name)
-            self.skos_id = base_value
-            i = 2
-            while (
-                ArticleTag.objects.exclude(id=self.id)
-                .filter(skos_id=self.skos_id)
-                .exists()
-            ):
-                self.skos_id = f"{base_value[:97]}_{i}"
-                i += 1
-        return super().clean(*args, **kwargs)
-
-
-class TaggedArticle(ItemBase):
-    tag = models.ForeignKey(
-        ArticleTag, related_name="tagged_article", on_delete=models.CASCADE
-    )
-    content_object = ParentalKey(
-        to="articles.ArticlePage",
-        on_delete=models.CASCADE,
-        related_name="tagged_items",
-    )
-
-
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
+    ArticleTagMixin,
     BasePageWithIntro,
 ):
     """ArticlePage
@@ -162,12 +181,6 @@ class ArticlePage(
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
-    article_tag_names = models.TextField(editable=False)
-    tags = ClusterTaggableManager(through=TaggedArticle, blank=True)
-
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
-    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -184,7 +197,6 @@ class ArticlePage(
         BasePageWithIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("tags"),
             MultiFieldPanel(
                 [
                     FieldPanel("display_content_warning"),
@@ -200,6 +212,7 @@ class ArticlePage(
     promote_panels = (
         NewLabelMixin.promote_panels
         + BasePageWithIntro.promote_panels
+        + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
@@ -209,12 +222,15 @@ class ArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("article_tag_names", boost=2),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
@@ -302,6 +318,7 @@ class FocusedArticlePage(
     HeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
+    ArticleTagMixin,
     BasePageWithIntro,
 ):
     """FocusedArticlePage
@@ -316,10 +333,6 @@ class FocusedArticlePage(
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
-
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("article_tag_names"),
-    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -352,6 +365,7 @@ class FocusedArticlePage(
     promote_panels = (
         NewLabelMixin.promote_panels
         + BasePageWithIntro.promote_panels
+        + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
@@ -361,23 +375,43 @@ class FocusedArticlePage(
     parent_page_types = ["articles.ArticleIndexPage"]
     subpage_types = []
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("body"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("body"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
+        """
+        if (
+            "update_fields" not in kwargs
+            or "article_tag_names" in kwargs["update_fields"]
+        ):
+            self.article_tag_names = "\n".join(t.name for t in self.tags.all())
+        super().save(*args, **kwargs)
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         data.update(
             customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
 
 
 class RecordArticlePage(
-    TopicalPageMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro
+    TopicalPageMixin,
+    ContentWarningMixin,
+    NewLabelMixin,
+    ArticleTagMixin,
+    BasePageWithIntro,
 ):
     template = "articles/record_article_page.html"
     parent_page_types = ["articles.ArticleIndexPage"]
@@ -502,19 +536,24 @@ class RecordArticlePage(
     promote_panels = (
         NewLabelMixin.promote_panels
         + BasePageWithIntro.promote_panels
+        + ArticleTagMixin.promote_panels
         + [
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
     )
 
-    search_fields = BasePageWithIntro.search_fields + [
-        index.SearchField("gallery_text"),
-        index.SearchField("date_text"),
-        index.SearchField("about"),
-        index.SearchField("topic_names", boost=1),
-        index.SearchField("time_period_names", boost=1),
-    ]
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("gallery_text"),
+            index.SearchField("date_text"),
+            index.SearchField("about"),
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
 
     @cached_property
     def gallery_items(self):
@@ -558,9 +597,21 @@ class RecordArticlePage(
         data = super().get_datalayer_data(request)
         data.update(
             customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension6="; ".join(self.article_tag_names.split("\n")),
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
+
+    def save(self, *args, **kwargs):
+        """
+        Overrides Page.save() to ensure 'article_tag_names' always reflects the tags() value
+        """
+        if (
+            "update_fields" not in kwargs
+            or "article_tag_names" in kwargs["update_fields"]
+        ):
+            self.article_tag_names = "\n".join(t.name for t in self.tags.all())
+        super().save(*args, **kwargs)
 
 
 class PageGalleryImage(Orderable):
