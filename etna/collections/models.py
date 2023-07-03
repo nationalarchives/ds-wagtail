@@ -102,7 +102,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
@@ -122,7 +122,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -154,7 +154,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
 
 class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
-    """Topic explorer BasePage.
+    """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -162,6 +162,9 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = "topic page"
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -197,7 +200,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -307,7 +310,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -348,6 +351,9 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     which may be a HighlightGallery, Article, or RecordArticle.
     """
 
+    class Meta:
+        verbose_name = "time period page"
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -374,7 +380,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
@@ -633,7 +639,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("teaser_text"),
     ]
 
-    gtm_content_group = "Highlight Gallery"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def highlights(self):
