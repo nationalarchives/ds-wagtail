@@ -47,9 +47,6 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
                     create_response(),
                     create_response(),
                     create_response(),
-                    create_response(),
-                    create_response(),
-                    create_response(),
                 ]
             },
         )
@@ -694,9 +691,6 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "?filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
@@ -719,9 +713,6 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
