@@ -7,31 +7,15 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
-        <a
-            href="{{ link_page.url }}"
-            class="card-group-secondary-nav__image-link"
-            data-card-type="card-group-secondary-nav"
-            data-component-name="{{ card_type }} card: {% if heading %}{{ heading }}{% else %}{{ page.title }}{% endif %}"
-            data-link-type="Card image"
-            data-card-title="{{ link_page.title }}"
-            {% if link_page.is_newly_published %}
-                data-label="New"
-            {% endif %}
-            aria-labelledby="article-desc{{ link_page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
-            {% if forloop.counter %}
-                data-card-position="{{ forloop.counter0 }}"
-            {% endif %}
-        >
-            <div class="card-group-secondary-nav__image">
-                <picture>
-                    <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                    <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                    <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
-                    <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                    <img src="{{ teaser_image_extra_large.url }}" alt="" class="card-group-secondary-nav__image-fallback">
-                </picture>
-            </div>
-        </a>
+        <div class="card-group-secondary-nav__image">
+            <picture>
+                <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+                <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+                <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+                <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+                <img src="{{ teaser_image_extra_large.url }}" alt="" class="card-group-secondary-nav__image-fallback">
+            </picture>
+        </div>
         <div class="card-group-secondary-nav__body">
             {% if link_page.title_label %}
                 <p class="card-group-secondary-nav__title-label">{{ link_page.title_label }}</p>
