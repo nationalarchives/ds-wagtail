@@ -1,0 +1,46 @@
+{% load static records_tags search_tags wagtailcore_tags wagtailimages_tags %}
+<li class="search-results__list-card" data-score="{{ result.score }}">
+    <div class="search-results__list-card-details">
+        <h3 class="search-results__list-card-heading">
+            <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-analytics-link="{{ result.title }}">
+                {{ result.title }}
+            </a>
+        </h3>
+
+        <p class="search-results__list-card-description">
+            {{ result.teaser_text }}
+        </p>
+
+        <dl class="search-results__list-card-metadata">
+            <dt class="search-results__list-card-metadata-item">
+                Page type:
+            </dt>
+            <dd>{{ result|public_page_type_label }}</dd>
+            {% if result.first_published_at %}
+                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+                    Published:
+                </dt>
+                <dd> {{ result.first_published_at|date }}</dd>
+            {% endif %}
+        </dl>
+
+    </div>
+
+    {% if result.teaser_image %}
+        <div class="search-results__list-card-image">
+            {% image result.teaser_image fill-288x172 as teaser_image_small %}
+            {% image result.teaser_image fill-328x196 as teaser_image_medium %}
+            {% image result.teaser_image fill-348x208 as teaser_image_large %}
+            {% image result.teaser_image fill-508x304 as teaser_image_extra_large %}
+            <picture>
+                <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
+                <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
+                <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
+                <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
+                <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
+                <img src="{{ teaser_image_large.url }}" alt="" />
+            </picture>
+
+        </div>
+    {% endif %}
+</li>

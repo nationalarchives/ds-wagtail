@@ -4,6 +4,8 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
+from wagtail.models import Page, get_page_models
+
 from etna.core.fields import END_OF_MONTH, DateInputField
 
 from ..ciim.client import SortBy, SortOrder
@@ -14,6 +16,8 @@ from ..ciim.constants import (
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
 )
+from ..collections.models import TimePeriodExplorerPage, TopicExplorerPage
+from .utils import get_public_page_type_label
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -283,3 +287,72 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
         choices=WEBSITE_BUCKETS.as_choices(),
         required=False,
     )
+
+
+class NativeWebsiteSearchForm(FeaturedSearchForm):
+    page_type = forms.MultipleChoiceField(
+        label="Page type",
+        required=False,
+        choices=[],  # updated by __init__
+        widget=SearchFilterCheckboxList,
+    )
+    topic = forms.ModelMultipleChoiceField(
+        queryset=TopicExplorerPage.objects.none(),  # updated by __init__
+        to_field_name="slug",
+        label="Topic",
+        required=False,
+        widget=SearchFilterCheckboxList,
+    )
+    time_period = forms.ModelMultipleChoiceField(
+        queryset=TimePeriodExplorerPage.objects.none(),  # updated by __init__
+        to_field_name="slug",
+        label="Time period",
+        required=False,
+        widget=SearchFilterCheckboxList,
+    )
+    per_page = forms.IntegerField(
+        min_value=10,
+        max_value=50,
+        required=False,
+    )
+    sort_by = forms.ChoiceField(
+        label="Sort by",
+        choices=[
+            ("", "Relevance"),
+            ("-first_published_at", "Date (newest first)"),
+            ("first_published_at", "Date (oldest first)"),
+            ("title", "Title (A–Z)"),
+            ("-title", "Title (Z–A)"),
+        ],
+        required=False,
+        widget=forms.Select(attrs={"class": "search-sort-view__form-select"}),
+    )
+    display = forms.ChoiceField(
+        choices=[
+            ("grid", "Grid"),
+            ("list", "List"),
+        ],
+        required=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["page_type"].choices = [
+            (model._meta.label_lower, get_public_page_type_label(model))
+            for model in get_page_models()
+            if model != Page and not model._meta.abstract
+        ]
+
+        self.fields["topic"].queryset = (
+            TopicExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("title")
+        )
+        self.fields["time_period"].queryset = (
+            TimePeriodExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("start_year")
+        )
