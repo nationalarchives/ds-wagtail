@@ -8,7 +8,10 @@ from django.forms import Form
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-from ...ciim.constants import SearchTabs
+from wagtail.models import Page, PageBase
+
+from etna.ciim.constants import SearchTabs
+from etna.search.utils import get_public_page_type_label
 
 register = template.Library()
 logger = logging.getLogger(__name__)
@@ -116,3 +119,12 @@ def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
     Returns True when rhs_operand_list contains lhs_operand value, False otherwise
     """
     return (lhs_operand in rhs_operand_list) or False
+
+
+@register.filter
+def public_page_type_label(page_or_page_type: Page | PageBase) -> str:
+    if isinstance(page_or_page_type, Page):
+        page_type = page_or_page_type.specific_class
+    else:
+        page_type = page_or_page_type
+    return get_public_page_type_label(page_type)
