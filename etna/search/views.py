@@ -19,8 +19,6 @@ from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
-from wagtail.search.query import PlainText
-from wagtail.search.utils import AND, normalise_query_string
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticleIndexPage, ArticlePage
@@ -54,7 +52,7 @@ from .forms import (
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
 )
-from .utils import get_public_page_type_label
+from .utils import get_public_page_type_label, normalise_native_search_query
 
 logger = logging.getLogger(__name__)
 
@@ -810,23 +808,11 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
         # Set attributes for reference in other methods
         self.query = self.form.cleaned_data.get("q", "")
+        self.query_normalised = normalise_native_search_query(self.query)
         self.total_count: int = 0  # populated by get_context_data()
         self.selected_filters: Dict[str, List[str]] = {}  # populated by get_results()
         self.selected_filters_count: int = 0  # populated by get_results()
 
-        # Where 'AND' is detected, break the query into logical segments
-        # to use when searching
-        if self.query and "AND" in self.query:
-            logical_query_segments = []
-            for segment in self.query.split("AND"):
-                normalized = normalise_query_string(segment.strip())
-                if isinstance(normalized, str):
-                    logical_query_segments.append(PlainText(normalized, operator="and"))
-                else:
-                    logical_query_segments.append(normalized)
-            self.search_query = AND(logical_query_segments)
-        else:
-            self.search_query = self.query
 
     def get_base_queryset(self) -> PageQuerySet:
         return (
@@ -843,11 +829,11 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         )
 
     def get(self, request: HttpRequest) -> None:
-        facet_source_qs = self.get_base_queryset()
-        if self.search_query:
+        facet_source_qs = self.get_base_queryset(request)
+        if self.query_normalised:
             # if the user searched for something, generate facet data from the result
             facet_source_qs = facet_source_qs.search(
-                self.search_query, order_by_relevance=False
+                self.query_normalised, order_by_relevance=False
             ).get_queryset(for_count=True)
         self.facet_source_data = tuple(
             facet_source_qs.values_list("id", "content_type")
@@ -928,9 +914,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         )
 
         # Conditionally apply keyword search
-        if self.search_query:
+        if self.query_normalised:
             results = queryset.search(
-                self.search_query,
+                self.query_normalised,
                 order_by_relevance=(
                     form.cleaned_data.get("sort_by") == SortBy.RELEVANCE.value
                 ),
@@ -942,7 +928,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         sort_by = form.cleaned_data.get("sort_by", self.default_sort_by)
 
         if sort_by == SortBy.RELEVANCE:
-            if self.search_query:
+            if self.query_normalised:
                 # stick with relevancy ordering applied by search()
                 return results
             else:
