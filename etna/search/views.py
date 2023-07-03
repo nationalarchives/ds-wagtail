@@ -359,6 +359,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         kwargs.update(
             meta_title=self.get_meta_title(),
             search_query=self.query,
+            result_count=self.get_result_count(),
         )
         return super().get_context_data(**kwargs)
 
@@ -751,6 +752,13 @@ class FeaturedSearchView(BaseSearchView):
     search_tab = SearchTabs.ALL.value
     featured_search_total_count = 0
 
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        super().setup(request, *args, **kwargs)
+        # Additional attributes for storing website search result data
+        # If the form is valid, these will be update in process_valid_form()
+        self.website_result_list: List[Page] = []
+        self.website_result_count: int = 0
+
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
             "q": self.query,
@@ -777,20 +785,40 @@ class FeaturedSearchView(BaseSearchView):
             buckets[bucket.key] = bucket
         return buckets
 
+    def process_valid_form(self, form: Form) -> HttpResponse:
+        """
+        Overrides `BaseSearchView.process_valid_form()` to query the website
+        for matches as well as the API (when a query is present).
+        """
+        if self.query:
+            results = self.get_website_results()
+            self.website_result_count = results.get_queryset(for_count=True).count()
+            self.website_result_list = [p.specific for p in results[:3]]
+        return super().process_valid_form(form)
+
+    def get_website_results(self):
+        return NativeWebsiteSearchView.get_base_queryset(self.request).search(
+            normalise_native_search_query(self.query)
+        )
+
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
         return super().get_context_data(
-            buckets=self.get_buckets_for_display(), **kwargs
+            buckets=self.get_buckets_for_display(),
+            website_results=self.website_result_list,
+            website_result_count=self.website_result_count,
+            **kwargs,
         )
 
     def get_result_count(self):
         """
         Overrides BaseSearchView.get_result_count() to return the combined
-        totals from all buckets.
+        totals from all buckets PLUS any website results.
         """
         total = 0
         for bucket in self.get_buckets_for_display().values():
             total += bucket.result_count
+        total += self.website_result_count
         return total
 
 
