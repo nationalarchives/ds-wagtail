@@ -232,12 +232,6 @@ class Migration(migrations.Migration):
                                                                 required=False,
                                                             ),
                                                         ),
-                                                        (
-                                                            "items",
-                                                            wagtail.blocks.ListBlock(
-                                                                etna.articles.blocks.FeaturedRecordsItemBlock
-                                                            ),
-                                                        ),
                                                     ]
                                                 ),
                                             ),
