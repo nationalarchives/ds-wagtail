@@ -476,7 +476,7 @@ class RecordModelCreatorsTests(SimpleTestCase):
         self.assertEqual(self.record.gender, "Male")
         self.assertEqual(self.record.first_name, "Philip Arthur")
         self.assertEqual(self.record.last_name, "Larkin")
-        self.assertEqual(self.record.birth_death, "1922-1985")
+        self.assertEqual(self.record.record_creators_date, "1922-1985")
         self.assertEqual(self.record.name_authority_reference, "GB/NNAF/P163769")
         self.assertEqual(self.record.former_name_authority_reference, "GB/NNAF/P16782")
         self.assertEqual(self.record.func_occup_activ, "poet")

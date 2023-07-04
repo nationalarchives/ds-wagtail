@@ -432,79 +432,6 @@ class Record(DataLayerMixin, APIModel):
                 return "CREATORS"
         return ""
 
-    @cached_property
-    def gender(self) -> str:
-        if gender := self.get("gender", ""):
-            if gender == "M":
-                return "Male"
-            elif gender == "F":
-                return "Female"
-        return gender
-
-    @cached_property
-    def first_name(self) -> str:
-        first_name = ""
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if first_name_list := item.get("first_name"):
-                    first_name = " ".join(first_name_list)
-        return first_name
-
-    @cached_property
-    def last_name(self) -> str:
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if last_name := item.get("last_name", ""):
-                    return last_name
-        return ""
-
-    @cached_property
-    def name_authority_reference(self) -> str:
-        if identifier := self.get("identifier", ()):
-            for item in identifier:
-                if name_authority_reference := item.get("name_authority_reference", ""):
-                    return name_authority_reference
-        return ""
-
-    @cached_property
-    def former_name_authority_reference(self) -> str:
-        if identifier := self.get("identifier", ()):
-            for item in identifier:
-                if former_name_authority_reference := item.get(
-                    "former_name_authority_reference", ""
-                ):
-                    return former_name_authority_reference
-        return ""
-
-    @cached_property
-    def func_occup_activ(self) -> str:
-        if description := self.get("description", ()):
-            for item in description:
-                if item.get("type") == "functions, occupations and activities":
-                    return item.get("value", "")
-        return ""
-
-    @cached_property
-    def birth_death(self) -> str:
-        birth_value = death_value = ""
-        if birth := self.get("birth", {}):
-            birth_value = extract(birth, "date.value", default="")
-        if death := self.get("death", {}):
-            death_value = extract(death, "date.value", default="")
-        if birth_value and death_value:
-            return f"{birth_value}-{death_value}"
-        return birth_value or death_value
-
-    @cached_property
-    def place(self) -> str:
-        if place := self.get("place", ()):
-            for item in place:
-                if name := item.get("name", ()):
-                    for item in name:
-                        if value := item.get("value", ""):
-                            return value
-        return ""
-
     def get_gtm_content_group(self) -> str:
         """
         Overrides DataLayerMixin.get_gtm_content_group() to
@@ -792,6 +719,172 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def archive_repository_url(self) -> str:
         return self.get("repository.url", "")
+
+    @cached_property
+    def alternative_names(self) -> tuple(dict):
+        """ """
+        alternative_names = ()
+        if names := self.get("name", ()):
+            for item in names:
+                if type := item.get("type", ""):
+                    if type in (
+                        "maiden name",
+                        "also known as",
+                        "formerly known as",
+                        "later known as",
+                        "pseudonym",
+                        "relation of",
+                        "real name",
+                        "standardised form of name according to other rules",
+                    ):
+                        alternative_names += (
+                            {
+                                "label": type.capitalize(),
+                                "value": item.get("value", ""),
+                            },
+                        )
+                    elif type == "unknown / other":
+                        alternative_names += (
+                            {"label": type.title(), "value": item.get("value", "")},
+                        )
+
+        return alternative_names
+
+    @cached_property
+    def last_name(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if last_name := item.get("last_name", ""):
+                    return last_name
+        return ""
+
+    @cached_property
+    def title_prefix(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if title_prefix := item.get("title_prefix"):
+                    return title_prefix
+        return ""
+
+    @cached_property
+    def title_for_name(self) -> str:
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if title := item.get("title"):
+                    return title
+        return ""
+
+    @cached_property
+    def first_name(self) -> str:
+        first_name = ""
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if first_name_list := item.get("first_name"):
+                    first_name = " ".join(first_name_list)
+        return first_name
+
+    @cached_property
+    def gender(self) -> str:
+        if gender := self.get("gender", ()):
+            if gender == "M":
+                return "Male"
+            elif gender == "F":
+                return "Female"
+        return gender
+
+    @cached_property
+    def history(self) -> str:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "history":
+                    if value := item.get("value", ""):
+                        return mark_safe(value)
+        return ""
+
+    @cached_property
+    def biography(self) -> dict:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "biography":
+                    return {"value": item.get("value", ""), "url": item.get("url", "")}
+        return {}
+
+    @cached_property
+    def func_occup_activ(self) -> str:
+        if description := self.get("description", ()):
+            for item in description:
+                if item.get("type") == "functions, occupations and activities":
+                    if value := item.get("value", ""):
+                        document = pq(value)
+                        for tag in ("foa", "function"):
+                            if doc_value := document(tag).text():
+                                return doc_value
+                        return value
+        return ""
+
+    @cached_property
+    def places(self) -> tuple(str):
+        places = ()
+        if place := self.get("place", ()):
+            for item in place:
+                if name := item.get("name", ()):
+                    for item in name:
+                        if value := item.get("value", ""):
+                            places += (value,)
+        return places
+
+    @cached_property
+    def birth_date(self) -> str:
+        return extract(self.get("birth", {}), "date.value", default="")
+
+    @cached_property
+    def death_date(self) -> str:
+        return extract(self.get("death", {}), "date.value", default="")
+
+    @cached_property
+    def start_date(self) -> str:
+        if date := extract(self.get("start", {}), "date", default=()):
+            for item in date:
+                if value := item.get("value", ""):
+                    return value
+        return ""
+
+    @cached_property
+    def end_date(self) -> str:
+        if date := extract(self.get("end", {}), "date", default=()):
+            for item in date:
+                if value := item.get("value", ""):
+                    return value
+        return ""
+
+    @cached_property
+    def record_creators_date(self) -> str:
+        """
+        only a given set of dates are
+        """
+        if self.birth_date and self.death_date:
+            return f"{self.birth_date}-{self.death_date}"
+        elif self.start_date and self.end_date:
+            return f"{self.start_date}-{self.end_date}"
+        return self.birth_date or self.death_date or self.start_date or self.end_date
+
+    @cached_property
+    def name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if name_authority_reference := item.get("name_authority_reference", ""):
+                    return name_authority_reference
+        return ""
+
+    @cached_property
+    def former_name_authority_reference(self) -> str:
+        if identifier := self.get("identifier", ()):
+            for item in identifier:
+                if former_name_authority_reference := item.get(
+                    "former_name_authority_reference", ""
+                ):
+                    return former_name_authority_reference
+        return ""
 
 
 @dataclass
