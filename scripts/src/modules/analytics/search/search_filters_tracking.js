@@ -1,5 +1,6 @@
 import push_to_data_layer from "./../push_to_data_layer";
 
+
 const pushActiveFilterDataOnLoad = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener('load', () => {
@@ -46,6 +47,7 @@ const pushActiveFilterData = (filterList) => {
     let endDate = activeFilters.some(e => e.search_filter_name === 'opening_end_date');
 
     // if startDate isn't active but endDate is, create a custom object with the value 'No'
+    /*
     if (!startDate && endDate) {
         startDate = {
             'event': 'search-filters',
@@ -69,7 +71,7 @@ const pushActiveFilterData = (filterList) => {
 
         activeFilters.push(endDate);
     }
-
+    */
     if (!startDate && !endDate) {
         // if neither startDate nor endDate are present, do nothing;
     }
