@@ -1,5 +1,3 @@
-@use '../node_modules/@nationalarchives/frontend/nationalarchives/tools/media';
-
 /*
 
 ==============
@@ -107,7 +105,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/new_cards';
 @import 'includes/highlight-gallery';
 @import 'includes/highlight-cards';
-// @import "includes/highlight-intro";
+@import "includes/highlight-intro";
 @import 'includes/utilities';
 @import "includes/archive-description";
 @import "includes/archive-collections";
@@ -120,7 +118,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/record-crosslink-panel';
 @import 'includes/image-block';
 
-/*
+/* Un-comment when front-end toolkit is fixed
 
 ==============
 New styles
@@ -128,11 +126,8 @@ New styles
 
 Modified to match the existing site (for now)
 
-*/
 
 $largest-small-device: 992px;
-
-@import '../node_modules/@nationalarchives/frontend/nationalarchives/all';
 
 .tna-hero {
     margin-bottom: 2rem;
@@ -170,3 +165,4 @@ $largest-small-device: 992px;
         margin-bottom: 0;
     }
 }
+*/
