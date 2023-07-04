@@ -1,6 +1,5 @@
 import push_to_data_layer from "./../push_to_data_layer";
 
-
 const pushActiveFilterDataOnLoad = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener('load', () => {
