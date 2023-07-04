@@ -24,6 +24,7 @@
     }
 
     &__response-button {
+        width:90%;
         &:hover {
             cursor: pointer;
         }
@@ -65,4 +66,9 @@
     &__success {
         display: none;
     }
+}
+
+
+#id_comment {
+    width:100%;
 }
