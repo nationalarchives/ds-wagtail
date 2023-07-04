@@ -56,6 +56,7 @@ const pushActiveFilterData = (filterList) => {
 
         activeFilters.push(startDate);
     }
+    
 
     // if endDate isn't active but startDate, create a custom object with the value 'No'
     if (!endDate && startDate) {
