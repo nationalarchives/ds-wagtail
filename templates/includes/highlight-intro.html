@@ -35,3 +35,68 @@
         </div>
     </div>
 </div>
+
+{% comment %}
+Removed until front-end toolkit is fixed
+<!-- NEW -->
+
+<!-- <header class="tna-hero">
+    <img src="{{ base_img.url }}" alt="{{ background_image.alt_text }}" class="tna-hero__image">
+    <div class="tna-container tna-hero__inner">
+        <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny tna-hero__content">
+            <div class="tna-hero__content-inner">
+                <h1 class="tna-heading tna-heading--xl tna-hero__heading">
+                    {{ title }}
+                </h1>
+                <div class="tna-hero__body">
+                    {{ intro|richtext }}
+                </div>
+            </div>
+        </div>
+    </div>
+</header> -->
+
+<!-- NEW WITH PITCURE ELEMENT -->
+
+<header class="tna-hero">
+    <picture class="tna-hero__image">
+        {% image background_image fill-1440x500 format-webp as webp_img %}
+        <source srcset="{{ webp_img.url }}"
+                media="(min-width: 577px)"
+                width="390"
+                height="320"
+                type="image/webp"/>
+        {% image background_image fill-390x320 format-webp as mobile_webp_img %}
+        <source srcset="{{ mobile_webp_img.url }}"
+                media="(max-width: 576px)"
+                width="390"
+                height="320"
+                type="image/webp"/>
+        {% image background_image fill-390x320 as mobile_jpeg_img %}
+        <source srcset="{{ mobile_jpeg_img.url }}"
+                media="(max-width: 576px)"
+                width="390"
+                height="320"
+                type="image/jpeg"/>
+        {% image background_image fill-1440x500 as base_img %}
+        <img src="{{ base_img.url }}"
+             height="500"
+             width="1440"
+             {% if background_image.alt_text %}alt="{{ background_image.alt_text }}"{% endif %}/>
+    </picture>
+    <div class="tna-container tna-hero__inner">
+        <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny tna-hero__content">
+            <div class="tna-hero__content-inner">
+                <h1 class="tna-heading tna-heading--xl tna-hero__heading">
+                    {{ title }}
+                </h1>
+                <div class="tna-hero__body">
+                    {{ intro|richtext }}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+{% endcomment %}
