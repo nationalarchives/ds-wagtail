@@ -1,11 +1,16 @@
 import logging
 
+from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 
-from wagtail.admin.auth import permission_denied
 from wagtail.admin.filters import WagtailFilterSet
-from wagtail.admin.views.reports import ReportView
+from wagtail.admin.views.mixins import SpreadsheetExportMixin
 from wagtail.admin.widgets import AdminDateInput
+from wagtail.snippets.views.snippets import (
+    IndexView,
+    SnippetTitleColumn,
+    SnippetViewSet,
+)
 
 import django_filters
 
@@ -15,8 +20,46 @@ from etna.feedback.models import FeedbackSubmission
 logger = logging.getLogger(__name__)
 
 __all__ = [
-    "FeedbackSubmissionReportView",
+    "FeedbackSubmissionViewSet",
 ]
+
+
+class FeedbackSubmissionIndexView(SpreadsheetExportMixin, IndexView):
+    """
+    A customised version of `wagtail.snippets.views.snippets.IndexView`
+    that supports exporting as CSV or XLSX
+    """
+
+    # Columns to include in the export
+    list_export = [
+        "id",
+        "public_id",
+        "received_at",
+        "full_url",
+        "path",
+        "query_params",
+        "prompt_text",
+        "response_label",
+        "response_sentiment",
+        "sentiment_label",
+        "comment_prompt_text",
+        "comment",
+        "prompt_id",
+        "prompt_revision_id",
+        "page_id",
+        "page_revision_id",
+        "page_revision_published",
+        "user_id",
+        "site_id",
+    ]
+
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        self.is_export = request.GET.get("export") in self.FORMATS
+        if self.is_export:
+            self.paginate_by = None
+            self.filters, self.object_list = self.filter_queryset(self.get_queryset())
+            return self.as_spreadsheet(self.object_list, request.GET.get("export"))
+        return super().get(request, *args, **kwargs)
 
 
 class FeedbackSubmissionFilterSet(WagtailFilterSet):
@@ -43,49 +86,19 @@ class FeedbackSubmissionFilterSet(WagtailFilterSet):
         }
 
 
-class FeedbackSubmissionReportView(ReportView):
-    title = "Feedback submissions"
-    header_icon = "form"
+class FeedbackSubmissionViewSet(SnippetViewSet):
     model = FeedbackSubmission
-    is_searchable = False
+    icon = "form"
+    index_view_class = FeedbackSubmissionIndexView
+    index_template_name = "feedback/admin/feedbacksubmission_index.html"
     filterset_class = FeedbackSubmissionFilterSet
-    template_name = "feedback/reports/submission_report.html"
 
     list_display = [
-        "received_at",
+        # url related methods are deliberately omitted here to prevent rendering of an edit link
+        # (which Wagtail does regardless of user permissions)
+        SnippetTitleColumn("received_at"),
         "path",
         "prompt_text",
         "response",
         "comment_truncated",
     ]
-    list_export = [
-        "id",
-        "public_id",
-        "received_at",
-        "full_url",
-        "path",
-        "query_params",
-        "prompt_text",
-        "response_label",
-        "response_sentiment",
-        "sentiment_label",
-        "comment_prompt_text",
-        "comment",
-        "prompt_id",
-        "prompt_revision_id",
-        "page_id",
-        "page_revision_id",
-        "page_revision_published",
-        "user_id",
-        "site_id",
-    ]
-
-    def dispatch(self, request, *args, **kwargs):
-        if not self.request.user.is_superuser:
-            return permission_denied(request)
-        return super().dispatch(request, *args, **kwargs)
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context["table"].base_url = self.request.path
-        return context
