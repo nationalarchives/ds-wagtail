@@ -8,7 +8,7 @@
     {% if page.related_highlight_gallery_pages %}
         {% include "includes/related-highlight-cards.html" with title=page.title cards=page.related_highlight_gallery_pages %}
     {% endif %}
-    {% if page.related_record_articles or page.featured_record_article %}
+    {% if page.related_record_articles or page.featured_record_article.live %}
         {% include "includes/related-articles-highlight-cards.html" with featured_article=page.featured_record_article articles=page.related_record_articles title="Records revealed" %}
     {% endif %}
     {% if page.body %}
@@ -24,9 +24,9 @@
             </div>
         </div>
     {% endif %}
-    {% if page.featured_article or page.related_articles %}
+    {% if page.featured_article.live or page.related_articles %}
         <div class="container">
-            {% if page.featured_article %}
+            {% if page.featured_article.live %}
                 {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
             {% endif %}
             {% if page.related_articles %}
