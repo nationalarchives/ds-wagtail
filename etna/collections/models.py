@@ -260,7 +260,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .specific()
-            .select_related("teaser_image")
         )
 
     @cached_property
@@ -424,7 +423,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .specific()
-            .select_related("teaser_image")
         )
 
     @cached_property
