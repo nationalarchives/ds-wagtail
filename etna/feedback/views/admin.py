@@ -87,6 +87,8 @@ class FeedbackSubmissionFilterSet(WagtailFilterSet):
 
 
 class FeedbackSubmissionViewSet(SnippetViewSet):
+    add_to_admin_menu = True
+    menu_label = _("Feedback")
     model = FeedbackSubmission
     icon = "form"
     index_view_class = FeedbackSubmissionIndexView
