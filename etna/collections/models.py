@@ -254,7 +254,13 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         page_list = []
 
         for page_type in related_page_types:
-            pages = page_type.objects.exclude(pk=self.featured_article_id).filter(pk__in=self.related_page_pks).live().public().prefetch_related("teaser_image__renditions")
+            pages = (
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .prefetch_related("teaser_image__renditions")
+            )
             if pages:
                 page_list.extend(pages)
 
@@ -417,7 +423,13 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         page_list = []
 
         for page_type in related_page_types:
-            pages = page_type.objects.exclude(pk=self.featured_article_id).filter(pk__in=self.related_page_pks).live().public().prefetch_related("teaser_image__renditions")
+            pages = (
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .prefetch_related("teaser_image__renditions")
+            )
             if pages:
                 page_list.extend(pages)
 
