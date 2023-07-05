@@ -788,18 +788,21 @@ class FeaturedSearchView(BaseSearchView):
     def process_valid_form(self, form: Form) -> HttpResponse:
         """
         Overrides `BaseSearchView.process_valid_form()` to query the website
-        for matches as well as the API (when a query is present).
+        for results (as well as the API).
         """
-        if self.query:
-            results = self.get_website_results()
+        results = self.get_website_results()
+        if isinstance(results, PageQuerySet):
+            self.website_result_count = results.count()
+        else:
             self.website_result_count = results.get_queryset(for_count=True).count()
-            self.website_result_list = [p.specific for p in results[:3]]
+        self.website_result_list = [p.specific for p in results[:3]]
         return super().process_valid_form(form)
 
     def get_website_results(self):
-        return NativeWebsiteSearchView.get_base_queryset(self.request).search(
-            normalise_native_search_query(self.query)
-        )
+        base = NativeWebsiteSearchView.get_base_queryset(self.request)
+        if self.query:
+            return base.search(normalise_native_search_query(self.query))
+        return base.order_by("-first_published_at")
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()

@@ -36,7 +36,9 @@
         <section class="featured-search__website-results">
             <header class="featured-search__website-results__head">
                 <h2 class="featured-search__website-results__heading">Results from the website</h2>
-                <a href="/search/website?q={{ search_query|iriencode }}" class="featured-search__website_results-link">See all relevant website results ({{ website_result_count }})</a>
+                <a href="/search/website?q={{ search_query|iriencode }}" class="featured-search__website_results-link">
+                        See all{% if search_query %} relevant{% endif %} website results ({{ website_result_count }})
+                </a>
             </header>
             <ul class="featured-search__website-results-list">
                 {% for result in website_results %}

@@ -708,14 +708,16 @@ class FeaturedSearchTestCase(SearchViewTestCase):
             self.client.session.get("back_to_search_url"), "/search/featured/"
         )
 
-        # Website results are only ever fetched/shown if there is a search query.
-        # So, even though pages exist, none will be shown for this request
-        self.assertEqual(response.context["website_results"], [])
-        self.assertEqual(response.context["website_result_count"], 0)
+        # When no query is present, website_results should contain the few
+        # most recent pages
+        self.assertEqual(
+            response.context["website_results"], [self.article_2, self.article_1]
+        )
+        self.assertEqual(response.context["website_result_count"], 2)
 
-        # Because the mocked API responses include zero results, and
-        # there are zero website results, 'result_count' should reflect that
-        self.assertEqual(response.context["result_count"], 0)
+        # The mocked API response includes zero results, but the website
+        # has 2, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 2)
 
     @responses.activate
     def test_with_search_query(self):
