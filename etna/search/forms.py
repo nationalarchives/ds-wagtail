@@ -108,8 +108,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 class FeaturedSearchForm(forms.Form):
     q = forms.CharField(
         label="Search here",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
@@ -127,8 +125,6 @@ class BaseCollectionSearchForm(forms.Form):
 
     q = forms.CharField(
         label="Search term",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )

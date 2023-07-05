@@ -192,9 +192,6 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="tna", label="Records at The National Archives"),
         Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
-        Bucket(key="blog", label="Blogs"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
