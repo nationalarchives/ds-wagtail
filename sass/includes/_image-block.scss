@@ -1,6 +1,7 @@
 .image-block {
     $root: &;
     background-color: $color__grey-200;
+    position: relative;
 
     // Removes parent margin to ensure it's flush with viewport edge
     margin-left: -30px;
@@ -53,6 +54,59 @@
                 padding: 0 18px 18px 18px;
                 width: 80%;
             }
+        }
+    }
+
+    &__transcript {
+        position: absolute;
+        bottom: 1rem;
+        right: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba($color__black, 0.8);
+        color: $color__white;
+        border: 0;
+        padding: 0.25rem 0.75rem 0.25rem 0.5rem;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+
+    &__transcription {
+        background-color: $color__dark;
+        padding: 2rem 2.5rem;
+        color: $color__white;
+
+        .transcription__text.hidden {
+            display: none;
+        }
+
+        .transcription__tablist {
+
+            .transcription__tab {
+                font-size: 1rem;
+                font-weight: 700;
+
+                &[aria-selected="false"] {
+                    color: $color__grey-500;
+                }
+            }
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        .transcription__tabpanel {
+            margin-top: 1.5rem;
+
+            &.hidden {
+                display: none;
+            }
+        }
+
+        p:last-child {
+            margin-bottom: 0;
         }
     }
 }

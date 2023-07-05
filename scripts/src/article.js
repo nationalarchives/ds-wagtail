@@ -20,6 +20,7 @@ import remove_event from "./modules/articles/remove_event";
 import set_active from "./modules/articles/navigation/set_active";
 import set_heading_positions from "./modules/articles/accordion_functionality/set_heading_positions";
 import throttle from "./modules/throttle";
+import transcript_tabs from "./modules/transcript_tabs";
 
 document.addEventListener('DOMContentLoaded', () => {
     add_analytics_data_card_position('.record-embed-no-image');
@@ -50,6 +51,15 @@ window.addEventListener('load', () => {
 
     // Ids are added to sections for ARIA purposes.
     add_section_ids($sectionHeadings, $sectionContents);
+
+    // Transcription tabs
+    const transcriptTabs = document.querySelectorAll('[ data-js-transcript-tablist]');
+
+    if(transcriptTabs) {
+        transcriptTabs.forEach(item => {
+            new transcript_tabs(item);
+        });
+    }
 
     if($(window).width() / baseFontSize <= remScreenSize && !mobileEnhancementsApplied) {
         $sectionContents.hide();
