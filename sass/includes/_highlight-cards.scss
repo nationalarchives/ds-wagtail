@@ -1,7 +1,8 @@
 .highlight-cards {
-  background-color: $color__cream;
   $root: &;
+  background-color: $color__cream;
   font-family: $font__supria-sans;
+  padding: 2em;
 
   &__link {
     text-decoration: none !important;
