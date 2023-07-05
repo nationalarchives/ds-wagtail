@@ -259,7 +259,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 .filter(pk__in=self.related_page_pks)
                 .live()
                 .public()
-                .prefetch_related("teaser_image__renditions")
+                .select_related("teaser_image")
             )
             if pages:
                 page_list.extend(pages)
@@ -428,7 +428,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 .filter(pk__in=self.related_page_pks)
                 .live()
                 .public()
-                .prefetch_related("teaser_image__renditions")
+                .select_related("teaser_image")
             )
             if pages:
                 page_list.extend(pages)
