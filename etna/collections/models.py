@@ -244,16 +244,25 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
@@ -400,16 +409,25 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
 
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
