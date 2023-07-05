@@ -247,7 +247,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         """Return a list of related pages for rendering in the related articles section
         of the page. To add another page type, add it to the `exact_type` query below.
         """
-        
+
         from wagtail.models import Page
 
         from etna.articles.models import ArticlePage, FocusedArticlePage
