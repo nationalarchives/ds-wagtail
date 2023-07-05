@@ -96,9 +96,9 @@ class FeedbackSubmissionViewSet(SnippetViewSet):
     list_display = [
         # url related methods are deliberately omitted here to prevent rendering of an edit link
         # (which Wagtail does regardless of user permissions)
-        SnippetTitleColumn("received_at"),
+        SnippetTitleColumn("id", label=_("ID")),
+        "received_at",
         "path",
-        "prompt_text",
         "response",
         "comment_truncated",
     ]
