@@ -451,7 +451,7 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         return dict(
             stream=self.api_stream,
-            q=self.query,
+            q=self.query or None,
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
             filter_keyword=form.cleaned_data.get("filter_keyword"),
@@ -761,7 +761,7 @@ class FeaturedSearchView(BaseSearchView):
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
-            "q": self.query,
+            "q": self.query or None,
             "filter_aggregations": [
                 f"group:{bucket.key}" for bucket in FEATURED_BUCKETS
             ],
