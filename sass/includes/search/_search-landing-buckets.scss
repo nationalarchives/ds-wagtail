@@ -3,7 +3,7 @@
   margin-right: auto;
 
   &__heading {
-    margin-left: 4rem;
+    margin-left: 2.5rem;
     font-family: $font__supria-sans;
     font-size: 1.5rem;
 
@@ -23,6 +23,7 @@
     @media only screen and (min-width: $screen__md) {
       padding-left: 0;
       padding-right: 0;
+        margin-left:2.5em;
     }
 
     &-item {

@@ -3,32 +3,46 @@
 
 {% if value.image %}
     {% if value.caption %}
-        <figure class="image-block">
+        <figure class="image-block u-margin-l">
             <picture>
                 {% image value.image max-832x591 format-webp as desktop_img %}
                 <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
                 {% image value.image max-832x591 as desktop_image %}
                 <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
-                {% image value.image max-390x265 format-webp as mobile_img %}
-                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-                {% image value.image max-390x265 as mobile_img %}
-                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{{ mobile_img.alt_text }}" />
+                {% if value.is_portrait %}
+                    {% image value.image max-265x390 format-webp as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                    {% image value.image max-265x390 as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% else %}
+                    {% image value.image max-390x265 format-webp as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                    {% image value.image max-390x265 as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% endif %}
+                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
             </picture>
             <figcaption class="image-block__caption">
                 {{ value.caption|richtext }}
             </figcaption>
         </figure>
     {% else %}
-        <picture class="image-block">
+        <picture class="image-block u-margin-l">
             {% image value.image max-832x591 format-webp as desktop_img %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
             {% image value.image max-832x591 as desktop_image %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
-            {% image value.image max-390x265 format-webp as mobile_img %}
-            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-            {% image value.image max-390x265 as mobile_img %}
-            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% if value.is_portrait %}
+                {% image value.image max-265x390 format-webp as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% image value.image max-265x390 as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% else %}
+                {% image value.image max-390x265 format-webp as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% image value.image max-390x265 as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% endif %}
             <img class="image-block__image" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
         </picture>
     {% endif %}

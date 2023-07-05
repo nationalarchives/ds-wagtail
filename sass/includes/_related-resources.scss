@@ -2,6 +2,13 @@
     margin: 2rem 0;
     padding-bottom: 1rem;
 
+    @media (min-width: $screen__lg) {
+        .template-focused-article & {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    }
+
     &__heading {
         font-size: 2rem;
         font-weight: 400;
@@ -21,7 +28,7 @@
         background-color: $color__grey-100;
         margin-bottom: 1rem;
         padding: 1rem 1.5rem;
-        border-left: 1.25rem solid $color__yellow;
+        border-left: 0.3125rem solid $color__yellow;
         text-align: left;
 
         @media (min-width: map-get($grid-breakpoints, 'md')) {

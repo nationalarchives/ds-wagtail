@@ -17,9 +17,6 @@
     {% if page.author or page.first_published_at %}
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
-                {% if page.first_published_at %}
-                    <li class="generic-intro__meta-item">{{ page.first_published_at|date:"l d F Y" }}</li>                    
-                {% endif %}
                 {% if page.author %}
                     <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
                 {% endif %}
@@ -48,13 +45,13 @@
         </div>
     </div>
 
-    <div class="related-content">
-        <div class="container">
-            {% if page.primary_topic or page.primary_time_period %}
+    {% if page.primary_topic or page.primary_time_period %}
+        <div class="related-content related-content--borderless">
+            <div class="container">
                 {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
-            {% endif %}
+            </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

@@ -24,16 +24,19 @@ def render_feedback_prompt(context, template_name="feedback/includes/prompt.html
         return ""
 
     # Only continue if a valid prompt is available
+    page = context.get("page")
+    if not isinstance(page, Page):
+        page = None
+
     try:
-        prompt = FeedbackPrompt.objects.get_for_path(request.path)
+        prompt = FeedbackPrompt.objects.get_for_path(request.path, page=page)
     except FeedbackPrompt.DoesNotExist:
         return ""
 
     initial_data = {
         "url": request.build_absolute_uri(),
     }
-    page = context.get("page")
-    if isinstance(page, Page):
+    if page:
         initial_data["page"] = page.id
         initial_data["page_revision"] = page.live_revision_id
 
