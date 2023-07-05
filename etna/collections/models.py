@@ -244,16 +244,17 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticleIndexPage, ArticlePage, FocusedArticlePage
+        from etna.articles.models import ArticlePage, FocusedArticlePage
 
-        article_index_page = ArticleIndexPage.objects.live().public().first()
-
-        if not article_index_page:
-            return []
+        article_pages = ArticlePage.objects.exclude(pk=self.featured_article).filter(pk__in=self.related_page_pks).live().public().order_by("-first_published_at").select_related("teaser_image")
+        focused_article_pages = FocusedArticlePage.objects.exclude(pk=self.featured_article).filter(pk__in=self.related_page_pks).live().public().order_by("-first_published_at").select_related("teaser_image")
         
-        return (
-            article_index_page.get_children().exclude(pk=self.featured_article.pk).exact_type(ArticlePage, FocusedArticlePage).filter(pk__in=self.related_page_pks).live().public().order_by("-first_published_at").specific().select_related("teaser_image")
-        )
+        page_list = []
+        page_list.extend(article_pages)
+        page_list.extend(focused_article_pages)
+        page_list.sort(key=lambda x: x.first_published_at, reverse=True)
+
+        return page_list
 
     @cached_property
     def related_record_articles(self):
