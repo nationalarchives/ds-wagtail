@@ -354,14 +354,14 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        kwargs["bucketkeys"] = BucketKeys
-        kwargs["searchtabs"] = SearchTabs
-        kwargs.update(
+        return super().get_context_data(
             meta_title=self.get_meta_title(),
             search_query=self.query,
             result_count=self.get_result_count(),
+            bucketkeys=BucketKeys,
+            searchtabs=SearchTabs,
+            **kwargs,
         )
-        return super().get_context_data(**kwargs)
 
     def set_session_info(self) -> None:
         """
