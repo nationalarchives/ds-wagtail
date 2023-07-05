@@ -2,6 +2,13 @@
     margin: 2rem 0;
     padding-bottom: 1rem;
 
+    @media (min-width: $screen__lg) {
+        .template-focused-article & {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
+    }
+
     &__heading {
         font-size: 2rem;
         font-weight: 400;

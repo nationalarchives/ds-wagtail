@@ -3,17 +3,24 @@
 
 {% if value.image %}
     {% if value.caption %}
-        <figure class="image-block">
+        <figure class="image-block u-margin-l">
             <picture>
                 {% image value.image max-832x591 format-webp as desktop_img %}
                 <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
                 {% image value.image max-832x591 as desktop_image %}
                 <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
-                {% image value.image max-390x265 format-webp as mobile_img %}
-                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-                {% image value.image max-390x265 as mobile_img %}
-                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{{ mobile_img.alt_text }}" />
+                {% if value.is_portrait %}
+                    {% image value.image max-265x390 format-webp as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                    {% image value.image max-265x390 as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% else %}
+                    {% image value.image max-390x265 format-webp as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                    {% image value.image max-390x265 as mobile_img %}
+                    <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% endif %}
+                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
                 <button type="button" aria-label="read transcript" class="image-block__transcript">
                     <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#FC0" d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41Z"/></svg>
                     Transcript
@@ -24,15 +31,22 @@
             </figcaption>
         </figure>
     {% else %}
-        <picture class="image-block">
+        <picture class="image-block u-margin-l">
             {% image value.image max-832x591 format-webp as desktop_img %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
             {% image value.image max-832x591 as desktop_image %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
-            {% image value.image max-390x265 format-webp as mobile_img %}
-            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
-            {% image value.image max-390x265 as mobile_img %}
-            <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% if value.is_portrait %}
+                {% image value.image max-265x390 format-webp as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% image value.image max-265x390 as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% else %}
+                {% image value.image max-390x265 format-webp as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+                {% image value.image max-390x265 as mobile_img %}
+                <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
+            {% endif %}
             <img class="image-block__image" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
             <button type="button" aria-label="read transcript" class="image-block__transcript">
                 <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><path fill="#FC0" d="M16.59 8.59 12 13.17 7.41 8.59 6 10l6 6 6-6-1.41-1.41Z"/></svg>

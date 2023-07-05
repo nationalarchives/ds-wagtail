@@ -236,30 +236,41 @@ class FeedbackSubmission(models.Model):
     )
 
     # Where the feedback was given
-    full_url = models.TextField(verbose_name=_("full URL"))
+    full_url = models.TextField(verbose_name=_("full URL"), editable=False)
     site = models.ForeignKey(
-        "wagtailcore.Site", verbose_name=_("site"), on_delete=models.PROTECT
+        "wagtailcore.Site",
+        verbose_name=_("site"),
+        on_delete=models.PROTECT,
+        editable=False,
     )
-    path = models.CharField(max_length=255, db_index=True, verbose_name=_("path"))
-    query_params = models.JSONField(default=dict, verbose_name=_("query params"))
+    path = models.CharField(
+        max_length=255, db_index=True, verbose_name=_("path"), editable=False
+    )
+    query_params = models.JSONField(
+        default=dict, verbose_name=_("query params"), editable=False
+    )
 
     # Common feedback values
     prompt_text = models.CharField(
-        max_length=constants.PROMPT_TEXT_MAX_LENGTH, verbose_name=_("prompt text")
+        max_length=constants.PROMPT_TEXT_MAX_LENGTH,
+        verbose_name=_("prompt text"),
+        editable=False,
     )
     response_sentiment = models.SmallIntegerField(
-        db_index=True, verbose_name=_("response sentiment")
+        db_index=True, verbose_name=_("response sentiment"), editable=False
     )
     response_label = models.CharField(
         max_length=constants.RESPONSE_LABEL_MAX_LENGTH,
         db_index=True,
         verbose_name=_("response label"),
+        editable=False,
     )
     comment_prompt_text = models.CharField(
         max_length=constants.COMMENT_PROMPT_TEXT_MAX_LENGTH,
         verbose_name=_("comment prompt text"),
+        editable=False,
     )
-    comment = models.TextField(verbose_name=_("comment"))
+    comment = models.TextField(verbose_name=_("comment"), editable=False)
 
     # Additional metadata
     prompt = models.ForeignKey(
@@ -268,6 +279,7 @@ class FeedbackSubmission(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         related_name="submissions",
+        editable=False,
     )
     prompt_revision = models.ForeignKey(
         "wagtailcore.Revision",
@@ -275,12 +287,14 @@ class FeedbackSubmission(models.Model):
         verbose_name=_("prompt revision"),
         on_delete=models.SET_NULL,
         related_name="+",
+        editable=False,
     )
     page = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("wagtail page"),
+        editable=False,
     )
     page_revision = models.ForeignKey(
         "wagtailcore.Revision",
@@ -288,15 +302,19 @@ class FeedbackSubmission(models.Model):
         verbose_name=_("page revision"),
         on_delete=models.SET_NULL,
         related_name="+",
+        editable=False,
     )
     page_revision_published = models.DateTimeField(
-        null=True, verbose_name=_("page revision published at")
+        null=True,
+        verbose_name=_("page revision published at"),
+        editable=False,
     )
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
         on_delete=models.SET_NULL,
         verbose_name=_("user"),
+        editable=False,
     )
 
     class Meta:
