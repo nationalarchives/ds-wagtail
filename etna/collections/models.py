@@ -259,6 +259,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 .live()
                 .public()
                 .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
             )
 
         return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
@@ -423,6 +424,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 .live()
                 .public()
                 .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
             )
 
         return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
