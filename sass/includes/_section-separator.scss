@@ -6,6 +6,13 @@
     color: $color__grey-700;
     background: transparent;
 
+    @media (min-width: $screen__lg) {
+      .template-focused-article & {
+        padding-left: 10%;
+        padding-right: 10%;
+      }
+    }
+
     &-text {
       display: inline-block;
 
