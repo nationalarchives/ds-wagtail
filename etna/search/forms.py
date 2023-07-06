@@ -335,7 +335,7 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
         super().__init__(*args, **kwargs)
 
         self.fields["format"].choices = [
-            (model._meta.label_lower, model.type_label)
+            (model._meta.label_lower, model.type_label())
             for model in get_page_models()
             if issubclass(model, BasePage) and not model._meta.abstract
         ]
