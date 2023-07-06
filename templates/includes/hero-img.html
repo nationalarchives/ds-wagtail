@@ -27,6 +27,7 @@
                  width="1440"
                  height="500"
                  class="hero-image__image"
+                 {% comment %} TODO: Add alt text option in Wagtail - this field doesn't exist for stories/articles {% endcomment %}
                  {% if hero_image.alt_text %}alt="{{ hero_image.alt_text }}"{% endif %}/>
         </picture>
         {% if caption %}

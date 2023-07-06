@@ -24,6 +24,7 @@
              height="500"
              width="1440"
              class="highlight-intro__image"
+             {% comment %} TODO: Add alt text option in Wagtail - this field doesn't exist for topic/time period {% endcomment %}
              {% if background_image.alt_text %}alt="{{ background_image.alt_text }}"{% endif %}/>
     </picture>
     <div class="container">
