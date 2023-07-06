@@ -22,7 +22,9 @@
 
         <div class="featured-article__description">
             <h2 class="featured-article__heading">
-                <small>{{ page.title_label }}</small>
+                {% if page.has_custom_type_label %}
+                    <small>{{ page.type_label }}</small>
+                {% endif %}
                 {{ page.title }}
                 {% if page.is_newly_published %}
                     <span aria-describedby="article-desc">NEW</span>
