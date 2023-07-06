@@ -233,7 +233,7 @@ class NativeWebsiteSearchTestCase(TestCase):
 
     def test_filter_by_format(self):
         """
-        Tests the view with only the 'formt' filter applied.
+        Tests the view with only the 'format' filter applied.
         """
         response = self.client.get(
             self.test_url,
