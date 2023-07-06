@@ -253,7 +253,7 @@ class ArticlePage(
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Tuple["ArticlePage"]:
+    def similar_items(self) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -269,48 +269,63 @@ class ArticlePage(
             return ()
 
         # Identify 'other' live pages with tags in common
-        tag_match_ids = (
-            ArticlePage.objects.public()
-            .live()
-            .not_page(self)
-            .filter(tagged_items__tag_id__in=tag_ids)
-            .values_list("id", flat=True)
-            .distinct()
-        )
-        if not tag_match_ids:
+        matching_page_ids = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            matching_page_ids.extend(
+                page_type.objects.live()
+                .public()
+                .not_page(self)
+                .filter(tagged_items__tag_id__in=tag_ids)
+                .values_list("id", flat=True)
+                .distinct()
+            )
+
+        if not matching_page_ids:
             # Avoid unncecssary lookups
             return ()
 
         # Use search() to prioritise items with the highest number of matches
-        return tuple(
-            ArticlePage.objects.filter(id__in=tag_match_ids).search(
-                self.article_tag_names,
-                fields=["article_tag_names"],
-                operator="or",
-            )[:3]
-        )
+        relevant_pages = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            relevant_pages.extend(
+                page_type.objects.filter(id__in=matching_page_ids).search(
+                    self.article_tag_names,
+                    fields=["article_tag_names"],
+                    operator="or",
+                )
+            )
+
+        return tuple(relevant_pages[:3])
 
     @cached_property
-    def latest_items(self) -> Tuple["ArticlePage"]:
+    def latest_items(self) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
         """
-        similarqueryset = list(self.similar_items)
 
-        latestqueryset = list(
-            ArticlePage.objects.public()
-            .live()
-            .not_page(self)
-            .select_related("hero_image")
-            .prefetch_related("hero_image__renditions")
-            .order_by("-first_published_at")
-        )
-        filterlatestpages = [
-            page for page in latestqueryset if page not in similarqueryset
+        similar_query_set = list(self.similar_items)
+
+        latest_query_set = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            latest_query_set.extend(
+                page_type.objects.live()
+                .public()
+                .not_page(self)
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        filter_latest_pages = [
+            page for page in latest_query_set if page not in similar_query_set
         ]
 
-        return tuple(filterlatestpages[:3])
+        return tuple(sorted(
+            filter_latest_pages, key=lambda x: x.first_published_at, reverse=True
+        )[:3])
 
 
 class FocusedArticlePage(
