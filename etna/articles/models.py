@@ -253,7 +253,9 @@ class ArticlePage(
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
+    def similar_items(
+        self,
+    ) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -300,7 +302,9 @@ class ArticlePage(
         return tuple(relevant_pages[:3])
 
     @cached_property
-    def latest_items(self) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
+    def latest_items(
+        self,
+    ) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
@@ -323,9 +327,11 @@ class ArticlePage(
             page for page in latest_query_set if page not in similar_query_set
         ]
 
-        return tuple(sorted(
-            filter_latest_pages, key=lambda x: x.first_published_at, reverse=True
-        )[:3])
+        return tuple(
+            sorted(
+                filter_latest_pages, key=lambda x: x.first_published_at, reverse=True
+            )[:3]
+        )
 
 
 class FocusedArticlePage(
