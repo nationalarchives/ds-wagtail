@@ -270,28 +270,14 @@ class ArticlePage(
             # Avoid unncecssary lookups
             return ()
 
-        # Identify 'other' live pages with tags in common
-
-        matching_page_ids = (
+        # Identify other live pages with tags in common
+        return tuple(
             Page.objects.live()
             .public()
             .not_page(self)
             .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
             .filter(tagged_items__tag_id__in=tag_ids)
-            .values_list("id", flat=True)
-        )
-
-        if not matching_page_ids:
-            # Avoid unncecssary lookups
-            return ()
-
-        # Use search() to prioritise items with the highest number of matches
-        return tuple(
-            Page.objects.filter(id__in=matching_page_ids).search(
-                self.article_tag_names,
-                fields=["article_tag_names"],
-                operator="or",
-            )[:3]
+            .specific()[:3]
         )
 
     @cached_property
@@ -318,11 +304,9 @@ class ArticlePage(
             page for page in latest_query_set if page not in self.similar_items
         ]
 
-        return tuple(
-            sorted(
+        return sorted(
                 filter_latest_pages, key=lambda x: x.first_published_at, reverse=True
             )[:3]
-        )
 
 
 class FocusedArticlePage(
