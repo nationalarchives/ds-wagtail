@@ -47,8 +47,8 @@
                         <legend>
                             <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
-
-                        <div>{{ form.covering_date_from.label_tag }} (dd/mm/yyyy)</div>
+                        <span>For example, 27 3 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
 
                         <div class="search-filters__creation-date-section">
 
@@ -60,7 +60,7 @@
 
 
 
-                        <br><div>{{ form.covering_date_to.label_tag }} (dd/mm/yyyy)</div>
+                        <br><div>{{ form.covering_date_to.label_tag }}</div>
 
                         <div class="search-filters__creation-date-section">
 
@@ -91,13 +91,14 @@
                         </legend>
 
                         <div class="search-filters__opening-date-section">
-                            {{ form.opening_start_date.label_tag }}  (dd/mm/yyyy)
+                            <span>For example, 27 3 2007</span><br>
+                            {{ form.opening_start_date.label_tag }}
                             {{ form.opening_start_date.errors }}
                             {{ form.opening_start_date }}
                         </div>
 
                         <div class="search-filters__opening-date-section">
-                            {{ form.opening_end_date.label_tag }} (dd/mm/yyyy)
+                            {{ form.opening_end_date.label_tag }}
                             {{ form.opening_end_date.errors }}
                             {{ form.opening_end_date }}
                         </div>
