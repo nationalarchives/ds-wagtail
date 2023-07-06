@@ -6,13 +6,11 @@
             {% for card in cards %}
                 <div class="related-highlight-cards__card">
                     <a href="{{ card.url }}"
-                    {% comment %} remove image link from taborder and hide from screenreaders {% endcomment %}
-                    aria-hidden="true"
-                    tabindex="-1"
                     data-component-name="Featured card: {{ title }} highlights in pictures"
                     data-link-type="Card image"
                     data-card-position="{{ forloop.counter0 }}"
-                    data-card-title="{{ card.title }}">
+                    data-card-title="{{ card.title }}"
+                    aria-labelledby="related-highlight-cards__card-desc{{ card.id }}{% if instance_id %}-{{ instance_id }}{% endif %}">
                         <picture>
                         {% image card.teaser_image fill-374x370-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 370px)"
@@ -34,7 +32,7 @@
                     <div class="related-highlight-cards__content">
                         <h3 class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
                             <a href="{{ card.url }}"
-                                class="related-highlight-cards__card-title-link"
+                                id="related-highlight-cards__card-desc{{ card.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"                                class="related-highlight-cards__card-title-link"
                                 data-component-name="Featured card: {{ title }} highlights in pictures"
                                 data-link-type="Card text"
                                 data-card-position="{{ forloop.counter0 }}"
