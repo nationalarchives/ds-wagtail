@@ -286,18 +286,13 @@ class ArticlePage(
             return ()
 
         # Use search() to prioritise items with the highest number of matches
-        relevant_pages = []
-
-        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
-            relevant_pages.extend(
-                page_type.objects.filter(id__in=matching_page_ids).search(
-                    self.article_tag_names,
-                    fields=["article_tag_names"],
-                    operator="or",
-                )
-            )
-
-        return tuple(relevant_pages[:3])
+        return tuple(
+            Page.objects.filter(id__in=matching_page_ids).search(
+                self.article_tag_names,
+                fields=["article_tag_names"],
+                operator="or",
+            )[:3]
+        )
 
     @cached_property
     def latest_items(
@@ -307,8 +302,6 @@ class ArticlePage(
         Return the three most recently published ArticlePages,
         excluding this object.
         """
-
-        similar_query_set = list(self.similar_items)
 
         latest_query_set = []
 
@@ -322,7 +315,7 @@ class ArticlePage(
             )
 
         filter_latest_pages = [
-            page for page in latest_query_set if page not in similar_query_set
+            page for page in latest_query_set if page not in self.similar_items
         ]
 
         return tuple(
