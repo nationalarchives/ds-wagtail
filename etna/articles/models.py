@@ -302,8 +302,8 @@ class ArticlePage(
             )
 
         return sorted(
-                latest_query_set, key=lambda x: x.first_published_at, reverse=True
-            )[:3]
+            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+        )[:3]
 
 
 class FocusedArticlePage(
