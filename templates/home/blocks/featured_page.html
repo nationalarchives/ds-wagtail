@@ -16,7 +16,11 @@ containging a page with fields to optionally override some fields.
 
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
-        <a href='{{ value.page.url }}' class="card-group-secondary-nav__image-link" data-card-type="card-group-secondary-nav" data-card-title="{{ value.title | default:value.page.title }}" aria-hidden="true" tabindex="-1">
+        <a href='{{ value.page.url }}' 
+        class="card-group-secondary-nav__image-link" 
+        data-card-type="card-group-secondary-nav" 
+        data-card-title="{{ value.title | default:value.page.title }}"
+        aria-labelledby="card-group-secondary-nav__desc{{ value.id | default:value.page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}">
             <div class="card-group-secondary-nav__image">
                 <picture>
                     <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
@@ -28,9 +32,15 @@ containging a page with fields to optionally override some fields.
             </div>
         </a>
         <div class="card-group-secondary-nav__body">
-            <a href='{{ value.page.url }}' class="card-group-secondary-nav__title-link" data-card-type="card-group-secondary-nav" data-card-title="{{ value.title | default:value.page.title }}">
-                <h3 class="card-group-secondary-nav__heading">{{ value.title | default:value.page.title }}</h3>
-            </a>
+            <h3 class="card-group-secondary-nav__heading">
+                <a href='{{ value.page.url }}'
+                id="card-group-secondary-nav__desc{{ value.id | default:value.page.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
+                class="card-group-secondary-nav__title-link"
+                data-card-type="card-group-secondary-nav"
+                data-card-title="{{ value.title | default:value.page.title }}">
+                    {{ value.title | default:value.page.title }}
+                </a>
+            </h3>
             <p class="card-group-secondary-nav__paragraph">{{ value.description }}</p>
         </div>
     </div>

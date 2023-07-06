@@ -24,10 +24,6 @@
       @include explorer-link;
     }
 
-    .aria-desc-card {
-      display: none;
-    }
-
     &__title-label {
       color: $color__grey-700;
       font-family: $font__roboto-mono;
@@ -213,4 +209,8 @@
       margin: 0;
     }
   }
+}
+
+.aria-desc-card {
+    display: none;
 }

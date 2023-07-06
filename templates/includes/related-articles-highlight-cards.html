@@ -6,12 +6,11 @@
             {% if featured_article %}
                 <div class="highlight-cards__card highlight-cards__card--highlight highlight-cards__link">
                     <a href="{% pageurl featured_article %}"
-                    aria-hidden="true"
-                    tabindex="-1"
                     data-component-name="Featured card: {{ title }} Featured record article"
                     data-link-type="Card image"
                     data-card-position="0"
-                    data-card-title="{{ featured_article.title }}">
+                    data-card-title="{{ featured_article.title }}"
+                    aria-labelledby="highlight-cards__card-desc{{ featured_article.id }}">
                         {# Desktop/ tablet image #}
                         {% image featured_article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
@@ -27,6 +26,7 @@
                     <div class="highlight-cards__content">
                         <h3 class="highlight-cards__card_title">
                             <a href="{% pageurl featured_article %}"
+                            id="highlight-cards__card-desc{{ featured_article.id }}"
                             class="highlight-cards__card-title-link"
                             data-component-name="Featured card: {{ title }} Featured record article"
                             data-link-type="Card text"
@@ -45,8 +45,7 @@
             {% for article in articles %}
                 <div class="highlight-cards__card highlight-cards__card--normal highlight-cards__link">
                     <a href="{% pageurl article %}"
-                    aria-hidden="true"
-                    tabindex="-1"
+                    aria-labelledby="highlight-cards__card-desc{{ article.id }}"
                     data-component-name="Featured card: {{ title }}"
                     data-link-type="Card image"
                     {% if featured_article %}
@@ -69,6 +68,7 @@
                     <div class="highlight-cards__card__content">
                         <h3 class="highlight-cards__card_title">
                             <a href="{% pageurl article %}"
+                            id="highlight-cards__card-desc{{ article.id }}"
                             class="highlight-cards__card-title-link"
                             data-component-name="Featured card: {{ title }}"
                             data-link-type="Card text"
