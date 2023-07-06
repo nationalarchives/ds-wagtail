@@ -101,6 +101,7 @@ class FeedbackSubmissionViewSet(SnippetViewSet):
         SnippetTitleColumn("id", label=_("ID")),
         "received_at",
         "path",
+        "prompt_text",
         "response",
         "comment_truncated",
     ]
