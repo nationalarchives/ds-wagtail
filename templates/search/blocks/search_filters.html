@@ -88,7 +88,7 @@
 
             {% include "search/includes/filter.html" with field=form.topic %}
 
-            {% include "search/includes/filter.html" with field=form.page_type %}
+            {% include "search/includes/filter.html" with field=form.format %}
 
             {% if form.group.value != bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.level %}
