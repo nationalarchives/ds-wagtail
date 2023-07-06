@@ -1,7 +1,11 @@
 .image-block {
     $root: &;
     background-color: $color__grey-200;
-    position: relative;
+
+    picture {
+        position: relative;
+        display: block;
+    }
 
     // Removes parent margin to ensure it's flush with viewport edge
     margin-left: -30px;
