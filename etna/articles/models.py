@@ -271,13 +271,17 @@ class ArticlePage(
             return ()
 
         # Identify other live pages with tags in common
-        return tuple(
+        related_tags = (
             Page.objects.live()
             .public()
             .not_page(self)
             .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
             .filter(tagged_items__tag_id__in=tag_ids)
-            .specific()[:3]
+        )
+
+        return Page.objects.filter(id__in=related_tags).search(
+            self.article_tag_names,
+            operator="or",
         )
 
     @cached_property
