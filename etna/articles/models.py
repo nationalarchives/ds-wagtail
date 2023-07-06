@@ -295,17 +295,14 @@ class ArticlePage(
             latest_query_set.extend(
                 page_type.objects.live()
                 .public()
+                .exclude(id__in=[page.id for page in self.similar_items])
                 .not_page(self)
                 .select_related("teaser_image")
                 .prefetch_related("teaser_image__renditions")
             )
 
-        filter_latest_pages = [
-            page for page in latest_query_set if page not in self.similar_items
-        ]
-
         return sorted(
-                filter_latest_pages, key=lambda x: x.first_published_at, reverse=True
+                latest_query_set, key=lambda x: x.first_published_at, reverse=True
             )[:3]
 
 
