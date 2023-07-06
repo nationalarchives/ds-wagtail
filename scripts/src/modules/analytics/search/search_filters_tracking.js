@@ -24,8 +24,10 @@ const pushActiveFilterData = (filterList) => {
         let value = filter.getAttribute('data-filter-value');
         const name = filter.getAttribute('data-filter-name');
 
-        // if filter is a start or end date, set its value to 'Yes'
-        if (name === 'opening_start_date' || name === 'opening_end_date') {
+        // list of filters to ignore the value of (i.e. return 'Yes' instead of the actual value)
+        const ignore_value_filters = ['opening_start_date', 'opening_end_date', 'covering_date_from', 'covering_date_to'];
+
+        if (ignore_value_filters.includes(name)) {
             value = 'Yes';
         }
 
