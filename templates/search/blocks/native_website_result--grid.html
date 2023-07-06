@@ -4,7 +4,8 @@
 
     <div class="search-results__list-card-content">
 
-        <h4 class="search-results__list-card-heading">
+        <{{ heading_tag|default:"h4"}} class="search-results__list-card-heading">
+
             {% if result.teaser_image %}
                 {% image result.teaser_image fill-288x172 as teaser_image_small %}
                 {% image result.teaser_image fill-328x196 as teaser_image_medium %}
@@ -20,10 +21,11 @@
                     </picture>
                 </div>
             {% endif %}
+
             <a href="{% pageurl result %}" class="search-results__list-card-link" data-analytics-link="{{ result.title }}">
                 {{ result.title }}
             </a>
-        </h4>
+        </{{ heading_tag|default:"h4"}}>
 
         <p class="search-results__list-card-description">
             {{ result.teaser_text }}

@@ -10,7 +10,7 @@
 {% block breadcrumb %}
 {% endblock %}
 {% block content %}
-    
+
     {%  with search_tab=searchtabs.ALL.value%}
         {% include './blocks/search_results_hero.html' %}
     {% endwith  %}
@@ -31,23 +31,24 @@
         {% endif %}
     </div>
     {% endif %}
-    {% if buckets.researchGuide.result_count > 0 or buckets.insight.result_count > 0 or buckets.blog.result_count > 0 %}
-    <div class="featured-search__interpretive-results">
-        {% if buckets.researchGuide.result_count > 0 %}
-            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.researchGuide %}
-        {% endif %}
 
-        {% if buckets.insight.result_count > 0 %}
-            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.insight %}
-        {% endif %}
-
-        {% if buckets.blog.result_count > 0 %}
-            {% include './blocks/featured-search__interpretive-card.html' with bucket=buckets.blog %}
-        {% endif %}
-    </div>
+    {% if website_result_count %}
+        <section class="featured-search__website-results">
+            <header class="featured-search__website-results__head">
+                <h2 class="featured-search__website-results__heading">Results from the website</h2>
+                <a href="/search/website?q={{ search_query|iriencode }}" class="featured-search__website_results-link">
+                        See all{% if search_query %} relevant{% endif %} website results ({{ website_result_count }})
+                </a>
+            </header>
+            <ul class="featured-search__website-results-list">
+                {% for result in website_results %}
+                    {% include "search/blocks/native_website_result--grid.html" with heading_tag='h3' %}
+                {% endfor %}
+            </ul>
+        </section>
     {% endif %}
-    
-    {% if not buckets.tna.result_count > 0 and not buckets.nonTna.result_count > 0 and not buckets.creator.result_count > 0%}
+
+    {% if not result_count %}
         {% include './blocks/no_results.html' %}
     {% endif %}
 {% endblock %}

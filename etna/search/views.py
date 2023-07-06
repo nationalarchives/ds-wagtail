@@ -19,8 +19,6 @@ from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet
 from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
-from wagtail.search.query import PlainText
-from wagtail.search.utils import AND, normalise_query_string
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticleIndexPage, ArticlePage
@@ -54,7 +52,7 @@ from .forms import (
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
 )
-from .utils import get_public_page_type_label
+from .utils import get_public_page_type_label, normalise_native_search_query
 
 logger = logging.getLogger(__name__)
 
@@ -301,6 +299,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         super().setup(request, *args, **kwargs)
+        self.query = self.form.cleaned_data.get("q", "")
         self.api_result = None
         self.current_bucket_key = self.form.cleaned_data.get("group")
         if self.current_bucket_key and getattr(self, "bucket_list", None):
@@ -319,8 +318,8 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         Return a string to use the the <title> tag for this view.
         """
         title = self.base_title
-        if query := self.form.cleaned_data.get("q", ""):
-            title += ' for "' + query.replace('"', "'") + '"'
+        if self.query:
+            title += ' for "' + self.query.replace('"', "'") + '"'
         return title
 
     def get_result_count(self) -> int:
@@ -342,7 +341,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         else:
             custom_dimension8 = self.search_tab + ": " + "none"
 
-        custom_dimension9 = self.form.cleaned_data.get("q") or "*"
+        custom_dimension9 = self.query or "*"
 
         result_count = self.get_result_count()
 
@@ -355,13 +354,14 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        kwargs["bucketkeys"] = BucketKeys
-        kwargs["searchtabs"] = SearchTabs
-        kwargs.update(
+        return super().get_context_data(
             meta_title=self.get_meta_title(),
-            search_query=self.form.cleaned_data.get("q", ""),
+            search_query=self.query,
+            result_count=self.get_result_count(),
+            bucketkeys=BucketKeys,
+            searchtabs=SearchTabs,
+            **kwargs,
         )
-        return super().get_context_data(**kwargs)
 
     def set_session_info(self) -> None:
         """
@@ -451,7 +451,7 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         return dict(
             stream=self.api_stream,
-            q=form.cleaned_data.get("q"),
+            q=self.query or None,
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
             filter_keyword=form.cleaned_data.get("filter_keyword"),
@@ -752,9 +752,16 @@ class FeaturedSearchView(BaseSearchView):
     search_tab = SearchTabs.ALL.value
     featured_search_total_count = 0
 
+    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
+        super().setup(request, *args, **kwargs)
+        # Additional attributes for storing website search result data
+        # If the form is valid, these will be update in process_valid_form()
+        self.website_result_list: List[Page] = []
+        self.website_result_count: int = 0
+
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
-            "q": form.cleaned_data.get("q"),
+            "q": self.query or None,
             "filter_aggregations": [
                 f"group:{bucket.key}" for bucket in FEATURED_BUCKETS
             ],
@@ -778,20 +785,43 @@ class FeaturedSearchView(BaseSearchView):
             buckets[bucket.key] = bucket
         return buckets
 
+    def process_valid_form(self, form: Form) -> HttpResponse:
+        """
+        Overrides `BaseSearchView.process_valid_form()` to query the website
+        for results (as well as the API).
+        """
+        results = self.get_website_results()
+        if isinstance(results, PageQuerySet):
+            self.website_result_count = results.count()
+        else:
+            self.website_result_count = results.get_queryset(for_count=True).count()
+        self.website_result_list = [p.specific for p in results[:3]]
+        return super().process_valid_form(form)
+
+    def get_website_results(self):
+        base = NativeWebsiteSearchView.get_base_queryset(self.request)
+        if self.query:
+            return base.search(normalise_native_search_query(self.query))
+        return base.order_by("-first_published_at")
+
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
         return super().get_context_data(
-            buckets=self.get_buckets_for_display(), **kwargs
+            buckets=self.get_buckets_for_display(),
+            website_results=self.website_result_list,
+            website_result_count=self.website_result_count,
+            **kwargs,
         )
 
     def get_result_count(self):
         """
         Overrides BaseSearchView.get_result_count() to return the combined
-        totals from all buckets.
+        totals from all buckets PLUS any website results.
         """
         total = 0
         for bucket in self.get_buckets_for_display().values():
             total += bucket.result_count
+        total += self.website_result_count
         return total
 
 
@@ -810,25 +840,13 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
         # Set attributes for reference in other methods
         self.query = self.form.cleaned_data.get("q", "")
+        self.query_normalised = normalise_native_search_query(self.query)
         self.total_count: int = 0  # populated by get_context_data()
         self.selected_filters: Dict[str, List[str]] = {}  # populated by get_results()
         self.selected_filters_count: int = 0  # populated by get_results()
 
-        # Where 'AND' is detected, break the query into logical segments
-        # to use when searching
-        if self.query and "AND" in self.query:
-            logical_query_segments = []
-            for segment in self.query.split("AND"):
-                normalized = normalise_query_string(segment.strip())
-                if isinstance(normalized, str):
-                    logical_query_segments.append(PlainText(normalized, operator="and"))
-                else:
-                    logical_query_segments.append(normalized)
-            self.search_query = AND(logical_query_segments)
-        else:
-            self.search_query = self.query
-
-    def get_base_queryset(self) -> PageQuerySet:
+    @classmethod
+    def get_base_queryset(cls, request: HttpRequest) -> PageQuerySet:
         return (
             Page.objects.live()
             .public()
@@ -843,11 +861,11 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         )
 
     def get(self, request: HttpRequest) -> None:
-        facet_source_qs = self.get_base_queryset()
-        if self.search_query:
+        facet_source_qs = self.get_base_queryset(request)
+        if self.query_normalised:
             # if the user searched for something, generate facet data from the result
             facet_source_qs = facet_source_qs.search(
-                self.search_query, order_by_relevance=False
+                self.query_normalised, order_by_relevance=False
             ).get_queryset(for_count=True)
         self.facet_source_data = tuple(
             facet_source_qs.values_list("id", "content_type")
@@ -865,7 +883,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         """
 
         # Start with all pages
-        queryset = self.get_base_queryset()
+        queryset = self.get_base_queryset(self.request)
 
         # Filter by type
         selected_types = form.cleaned_data.get("page_type", ())
@@ -928,9 +946,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         )
 
         # Conditionally apply keyword search
-        if self.search_query:
+        if self.query_normalised:
             results = queryset.search(
-                self.search_query,
+                self.query_normalised,
                 order_by_relevance=(
                     form.cleaned_data.get("sort_by") == SortBy.RELEVANCE.value
                 ),
@@ -942,7 +960,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         sort_by = form.cleaned_data.get("sort_by", self.default_sort_by)
 
         if sort_by == SortBy.RELEVANCE:
-            if self.search_query:
+            if self.query_normalised:
                 # stick with relevancy ordering applied by search()
                 return results
             else:
