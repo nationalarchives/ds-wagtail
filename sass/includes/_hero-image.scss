@@ -21,26 +21,29 @@
     @media (min-width: $screen__md) {
         .template-focused-article & {
             &__container {
-                // Added container as an @include due to @extend selectors may not be used across media queries
-                @include make-container(); 
-                @include make-container-max-widths();
-                position: relative;
-
-                &:before {
-                    content: '';
-                    width: 100vw;
-                    height: 100%;
-                    position: absolute;
-                    z-index: -1;
-                    left: 50%;
-                    transform: translateX(-50%);
-                    background: linear-gradient(
+                background: linear-gradient(
                         to top, 
                         $color__white 0%,
                         $color__white 50%,
                         $color__grey-700 50%, 
                         $color__grey-700 100%
                     );
+                position: relative;
+            }
+
+            &__figure,
+            &__picture {
+                // Added container as an @include due to @extend selectors may not be used across media queries
+                @include make-container(); 
+                @include make-container-max-widths();
+                position: relative;
+                margin: 0 auto;
+                display: block;
+            }
+
+            &__figure {
+                .hero-image__picture {
+                    padding: 0;
                 }
             }
         }
