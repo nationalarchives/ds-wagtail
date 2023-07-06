@@ -19,6 +19,9 @@ class TranscriptTabs {
             this.hide(this.transcriptionContentNode[i]);
         }
 
+        //Hide transcription with JS enabled
+        this.hide(this.node);
+
         // tabs
         for (var i = 0; i < this.tabList.length; i++) {
             new TabManager(this.tabList[i]);

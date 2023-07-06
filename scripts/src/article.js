@@ -53,9 +53,22 @@ window.addEventListener('load', () => {
     add_section_ids($sectionHeadings, $sectionContents);
 
     // Transcription tabs
+    const transcriptButton = document.querySelectorAll('[ data-js-transcript]');
     const transcriptTabs = document.querySelectorAll('[ data-js-transcript-tablist]');
 
-    if(transcriptTabs) {
+    if(transcriptButton && transcriptTabs) {
+
+        const $transcriptButton = $('.image-block__transcript');
+        const $transcriptContent = $('.image-block__transcription');
+
+        add_section_ids($transcriptButton, $transcriptContent);
+
+        transcriptButton.forEach(item => {
+            add_event(item, 'click', () => {
+                accordion_functionality(item, $transcriptButton, $transcriptContent, 0);
+            });
+        });
+        
         transcriptTabs.forEach(item => {
             new transcript_tabs(item);
         });
