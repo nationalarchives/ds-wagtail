@@ -751,6 +751,15 @@ class Record(DataLayerMixin, APIModel):
         return alternative_names
 
     @cached_property
+    def first_name(self) -> str:
+        first_name = ""
+        if name_data := self.get("name", ()):
+            for item in name_data:
+                if first_name_list := item.get("first_name"):
+                    first_name = " ".join(first_name_list)
+        return first_name
+
+    @cached_property
     def last_name(self) -> str:
         if name_data := self.get("name", ()):
             for item in name_data:
@@ -775,21 +784,15 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def first_name(self) -> str:
-        first_name = ""
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if first_name_list := item.get("first_name"):
-                    first_name = " ".join(first_name_list)
-        return first_name
-
-    @cached_property
     def gender(self) -> str:
-        if gender := self.get("gender", ()):
+        if gender := self.get("gender", ""):
             if gender == "M":
                 return "Male"
             elif gender == "F":
                 return "Female"
+            logger.debug(
+                f"Gender value={gender} could not be translated for iaid={self.iaid}"
+            )
         return gender
 
     @cached_property
@@ -860,13 +863,26 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def record_creators_date(self) -> str:
         """
-        only a given set of dates are
+        Returns dates for person, person's activity/service,  both, or any if available
         """
+        seperator = "-"
+        joiner = "; "
+        person_date = service_activity_date = ""
         if self.birth_date and self.death_date:
-            return f"{self.birth_date}-{self.death_date}"
-        elif self.start_date and self.end_date:
-            return f"{self.start_date}-{self.end_date}"
-        return self.birth_date or self.death_date or self.start_date or self.end_date
+            person_date = f"{self.birth_date}{seperator}{self.death_date}"
+        else:
+            person_date = self.birth_date or self.death_date
+
+        if self.start_date and self.end_date:
+            service_activity_date = f"{self.start_date}{seperator}{self.end_date}"
+        else:
+            service_activity_date = self.start_date or self.end_date
+
+        # return self.birth_date or self.death_date or self.start_date or self.end_date
+        if person_date and service_activity_date:
+            return joiner.join([person_date, service_activity_date])
+
+        return person_date or service_activity_date
 
     @cached_property
     def name_authority_reference(self) -> str:
