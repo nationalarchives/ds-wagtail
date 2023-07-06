@@ -271,17 +271,15 @@ class ArticlePage(
             return ()
 
         # Identify 'other' live pages with tags in common
-        matching_page_ids = []
 
-        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
-            matching_page_ids.extend(
-                page_type.objects.live()
-                .public()
-                .not_page(self)
-                .filter(tagged_items__tag_id__in=tag_ids)
-                .values_list("id", flat=True)
-                .distinct()
-            )
+        matching_page_ids = (
+            Page.objects.live()
+            .public()
+            .not_page(self)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .filter(tagged_items__tag_id__in=tag_ids)
+            .values_list("id", flat=True)
+        )
 
         if not matching_page_ids:
             # Avoid unncecssary lookups
