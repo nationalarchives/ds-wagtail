@@ -1,4 +1,4 @@
-from typing import Any, Dict, Tuple, Union
+from typing import Any, Dict, Tuple, Union, List
 
 from django.conf import settings
 from django.db import models
@@ -285,7 +285,7 @@ class ArticlePage(
     @cached_property
     def latest_items(
         self,
-    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
+    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
