@@ -71,16 +71,17 @@ class TestArticlePageSimilarItems(TestCase):
         self.different_tags_page.save()
 
     def test_similar_items_ranking(self):
-        # Items should be in 'best match' order
+        # Items should be in 'most recent' order
         # No draft items should be included
         test_page = ArticlePage.objects.get(id=self.original_page.id)
-        with self.assertNumQueries(10):
+        with self.assertNumQueries(3):
+            print(self.three_matches_page.__dir__())
             self.assertEqual(
-                list(test_page.similar_items),
+                list(page.id for page in test_page.similar_items),
                 [
-                    self.three_matches_page,
-                    self.two_matches_page,
-                    self.single_match_page,
+                    self.three_matches_page.id,
+                    self.two_matches_page.id,
+                    self.single_match_page.id,
                 ],
             )
 
