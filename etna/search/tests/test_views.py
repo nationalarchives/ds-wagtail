@@ -14,6 +14,7 @@ import responses
 from etna.ciim.constants import Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
+from ...articles.factories import ArticlePageFactory
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
 from ...home.models import HomePage
@@ -44,9 +45,6 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
             "https://kong.test/data/searchAll",
             json={
                 "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
                     create_response(),
                     create_response(),
                     create_response(),
@@ -516,6 +514,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -678,13 +677,20 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
+class FeaturedSearchTestCase(SearchViewTestCase):
     test_url = reverse_lazy("search-featured")
 
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_search(self):
-        self.client.get(self.test_url)
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.article_1 = ArticlePageFactory(title="Test article 1")
+        cls.article_2 = ArticlePageFactory(title="How to query the archive")
 
+    @responses.activate
+    def test_without_search_query(self):
+        response = self.client.get(self.test_url)
+
+        # The API should be requested without a search query
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -693,22 +699,31 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "?filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
 
-    @responses.activate
-    def test_search_with_query(self):
-        """
-        Test covers create session info for Featured search with query.
-        """
-        expected_url = "/search/featured/?q=query"
-        self.client.get(self.test_url, data={"q": "query"})
-        session = self.client.session
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"), "/search/featured/"
+        )
 
+        # When no query is present, website_results should contain the few
+        # most recent pages
+        self.assertEqual(
+            response.context["website_results"], [self.article_2, self.article_1]
+        )
+        self.assertEqual(response.context["website_result_count"], 2)
+
+        # The mocked API response includes zero results, but the website
+        # has 2, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 2)
+
+    @responses.activate
+    def test_with_search_query(self):
+        response = self.client.get(self.test_url, data={"q": "query"})
+
+        # The query should be passed to the search API
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -718,15 +733,27 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
-        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"),
+            "/search/featured/?q=query",
+        )
+
+        # Because a query is present, a native website search for 'query' will be
+        # performed, and relevant matches included in the response
+        self.assertEqual(response.context["website_results"], [self.article_2])
+        self.assertEqual(response.context["website_result_count"], 1)
+
+        # The mocked API response includes zero results, but the website
+        # has one, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 1)
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -758,6 +785,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -1328,248 +1356,8 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
-    @responses.activate
-    def test_datalayer_website_filtered_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog", "topic": "Conservation"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_filtered_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 47,
-                "customMetric2": 1,
-            },
-        )
 
-    @responses.activate
-    def test_datalayer_website_search_blog_query(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"q": "test", "group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog_query.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "test",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 8,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 1653,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_researchguide(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "researchGuide"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_researchguide.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: researchGuide",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 359,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_article(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "insight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: insight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 9,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("Highlights bucket to be re-instated at a later date")
-    @responses.activate
-    def test_datalayer_website_search_highlight(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "highlight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: highlight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 67,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_audio(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "audio"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_audio.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: audio",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 644,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_video(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "video"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_video.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: video",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 348,
-                "customMetric2": 0,
-            },
-        )
-
-
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-website-long-filter-chooser", kwargs={"field_name": "topic"}

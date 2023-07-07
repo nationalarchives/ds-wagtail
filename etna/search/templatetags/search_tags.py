@@ -8,7 +8,7 @@ from django.forms import Form
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-from ...ciim.constants import SearchTabs
+from etna.ciim.constants import SearchTabs
 
 register = template.Library()
 logger = logging.getLogger(__name__)

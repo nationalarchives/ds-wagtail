@@ -102,7 +102,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
@@ -122,7 +122,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -154,7 +154,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
 
 class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
-    """Topic explorer BasePage.
+    """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -162,6 +162,11 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = _("topic page")
+        verbose_name_plural = _("topic pages")
+        verbose_name_public = _("explore by topic")
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -197,7 +202,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -241,16 +246,25 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
@@ -307,7 +321,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -348,6 +362,11 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     which may be a HighlightGallery, Article, or RecordArticle.
     """
 
+    class Meta:
+        verbose_name = _("time period page")
+        verbose_name_plural = _("time period pages")
+        verbose_name_public = _("explore by time period")
+
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -374,7 +393,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
@@ -394,16 +413,25 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
 
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
@@ -601,6 +629,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     class Meta:
         verbose_name = _("highlight gallery page")
         verbose_name_plural = _("highlight gallery pages")
+        verbose_name_public = _("in pictures")
 
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
@@ -633,7 +662,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("teaser_text"),
     ]
 
-    gtm_content_group = "Highlight Gallery"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def highlights(self):
