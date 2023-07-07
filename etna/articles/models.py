@@ -1,4 +1,4 @@
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, Tuple, Union
 
 from django.conf import settings
 from django.db import models
@@ -254,7 +254,7 @@ class ArticlePage(
     @cached_property
     def similar_items(
         self,
-    ) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -285,7 +285,7 @@ class ArticlePage(
     @cached_property
     def latest_items(
         self,
-    ) -> Tuple["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]:
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
