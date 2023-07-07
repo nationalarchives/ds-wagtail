@@ -185,13 +185,12 @@ class ArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    title_label = "THE STORY OF"
-
     template = "articles/article_page.html"
 
     class Meta:
         verbose_name = _("article")
         verbose_name_plural = _("articles")
+        verbose_name_public = _("the story of")
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -334,13 +333,12 @@ class FocusedArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    title_label = "IN FOCUS"
-
     template = "articles/focused_article_page.html"
 
     class Meta:
         verbose_name = _("focused article")
         verbose_name_plural = _("focused articles")
+        verbose_name_public = _("focus on")
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -485,11 +483,10 @@ class RecordArticlePage(
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
-    title_label = "RECORD REVEALED"
-
     class Meta:
         verbose_name = _("record article")
         verbose_name_plural = _("record articles")
+        verbose_name_public = _("record revealed")
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("intro_image"),

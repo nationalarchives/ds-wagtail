@@ -34,23 +34,23 @@
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True %}
                     {% endfor %}
                 </ul>
             {% endif %}
-            
-            
+
+
             {% if page.primary_topic or page.primary_time_period %}
                 {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
             {% endif %}
-            
+
 
             {% if page.latest_items %}
                 <h2 class="related-content__heading">More stories</h2>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
                     {% endfor %}
                 </ul>
             {% endif %}

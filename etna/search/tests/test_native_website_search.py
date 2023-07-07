@@ -231,14 +231,14 @@ class NativeWebsiteSearchTestCase(TestCase):
             html=True,
         )
 
-    def test_filter_by_page_type(self):
+    def test_filter_by_format(self):
         """
-        Tests the view with only the 'page_type' filter applied.
+        Tests the view with only the 'format' filter applied.
         """
         response = self.client.get(
             self.test_url,
             data=MultiValueDict(
-                {"page_type": self.article_and_record_article_type_strings}
+                {"format": self.article_and_record_article_type_strings}
             ),
         )
         self.assertEqual(response.status_code, 200)
@@ -256,12 +256,10 @@ class NativeWebsiteSearchTestCase(TestCase):
 
         # 'Selected filters' should reflect the values in GET
         self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
-        for page_type in ["Story", "Record revealed"]:
-            self.assertContains(response, f"Remove Page type: {page_type} from search")
-        for page_type in ["Highlight gallery", "Time period", "Topic"]:
-            self.assertNotContains(
-                response, f"Remove Page type: {page_type} from search"
-            )
+        for label in ["The story of", "Record revealed"]:
+            self.assertContains(response, f"Remove Format: {label} from search")
+        for label in ["In pictures", "Explore by time period", "Explore by topic"]:
+            self.assertNotContains(response, f"Remove Format: {label} from search")
 
     def test_filter_by_topic(self):
         """
@@ -360,7 +358,7 @@ class NativeWebsiteSearchTestCase(TestCase):
                 {
                     "q": "foo",
                     # This will rule out 'foo_focussed_article'
-                    "page_type": self.article_and_record_article_type_strings,
+                    "format": self.article_and_record_article_type_strings,
                     # This will rule out 'foo_article_with_no_tags' and 'foo_article_with_alternative_tags'
                     "topic": self.foo_topic_slugs,
                 }
@@ -420,7 +418,7 @@ class NativeWebsiteSearchTestCase(TestCase):
                 {
                     "q": "bar",
                     # This will rule out 'bar_focussed_article'
-                    "page_type": self.article_and_record_article_type_strings,
+                    "format": self.article_and_record_article_type_strings,
                     # This will rule out 'bar_article_without_tags' and 'bar_article_with_alternative_tags'
                     "time_period": self.bar_time_period_slugs,
                 }
