@@ -279,10 +279,7 @@ class ArticlePage(
         )
 
         return tuple(
-            Page.objects.filter(id__in=related_tags).search(
-                self.article_tag_names,
-                operator="or",
-            )[:3]
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
 
     @cached_property
