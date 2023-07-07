@@ -279,10 +279,12 @@ class ArticlePage(
             .filter(tagged_items__tag_id__in=tag_ids)
         )
 
-        return tuple(Page.objects.filter(id__in=related_tags).search(
-            self.article_tag_names,
-            operator="or",
-        )[:3])
+        return tuple(
+            Page.objects.filter(id__in=related_tags).search(
+                self.article_tag_names,
+                operator="or",
+            )[:3]
+        )
 
     @cached_property
     def latest_items(
