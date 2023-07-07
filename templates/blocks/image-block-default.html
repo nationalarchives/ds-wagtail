@@ -20,7 +20,7 @@
                     {% image value.image max-390x265 as mobile_img %}
                     <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
                 {% endif %}
-                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
+                <img class="image-block__image{% if value.is_portrait %} image-block__image--portrait{% endif %}" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if not value.decorative %}{{ value.alt_text }}{% endif %}" />
             </picture>
             <figcaption class="image-block__caption">
                 {{ value.caption|richtext }}
@@ -43,7 +43,7 @@
                 {% image value.image max-390x265 as mobile_img %}
                 <source media="(max-width: 759px)" srcset="{{ mobile_img.url }}"/>
             {% endif %}
-            <img class="image-block__image" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if value.decorative %}{{ value.alt_text }}{% endif %}" />
+            <img class="image-block__image" width={{ mobile_img.width }} height={{ mobile_img.height }} src="{{ mobile_img.url }}" alt="{% if not value.decorative %}{{ value.alt_text }}{% endif %}" />
         </picture>
     {% endif %}
 {% endif %}

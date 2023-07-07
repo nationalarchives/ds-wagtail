@@ -11,10 +11,16 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name="timeperiodexplorerpage",
-            options={"verbose_name": "time period page"},
+            options={
+                "verbose_name": "time period page",
+                "verbose_name_plural": "time period pages",
+            },
         ),
         migrations.AlterModelOptions(
             name="topicexplorerpage",
-            options={"verbose_name": "topic page"},
+            options={
+                "verbose_name": "topic page",
+                "verbose_name_plural": "topic pages",
+            },
         ),
     ]
