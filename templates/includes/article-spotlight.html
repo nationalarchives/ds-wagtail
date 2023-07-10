@@ -6,7 +6,11 @@
     {% endif %}
     <div class="featured-article u-margin-m">
         {% if page.teaser_image %}
-            <a href="{% pageurl page %}" class="featured-article__image-link" tabindex="-1" aria-hidden="true" data-component-name="Featured Article: {{ page.title }}" data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
+            <a href="{% pageurl page %}"
+            class="featured-article__image-link"
+            aria-labelledby="article-desc{{ page.id }}"
+            data-component-name="Featured Article: {{ page.title }}"
+            data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
                 <picture>
                     {% image page.teaser_image fill-500x400-c100 as teaser %}
                     <source media="(max-width: 768px)" srcset="{{ teaser.url }}"/>
@@ -22,14 +26,16 @@
 
         <div class="featured-article__description">
             <h2 class="featured-article__heading">
-                <small>{{ page.title_label }}</small>
+                {% if page.has_custom_type_label %}
+                    <small>{{ page.type_label }}</small>
+                {% endif %}
                 {{ page.title }}
                 {% if page.is_newly_published %}
                     <span aria-describedby="article-desc">NEW</span>
                 {% endif %}
             </h2>
 
-            <p id="article-desc" class="aria-desc">This is a link to a new story about {{ page.title }}</p>
+            <p id="article-desc{{ page.id }}" class="aria-desc">Read about {{ page.title }}</p>
 
             <p>{{ page.teaser_text }}</p>
             <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>

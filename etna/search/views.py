@@ -52,7 +52,7 @@ from .forms import (
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
 )
-from .utils import get_public_page_type_label, normalise_native_search_query
+from .utils import normalise_native_search_query
 
 logger = logging.getLogger(__name__)
 
@@ -885,28 +885,6 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         # Start with all pages
         queryset = self.get_base_queryset(self.request)
 
-        # Filter by type
-        selected_types = form.cleaned_data.get("page_type", ())
-        if selected_types:
-            content_types = [
-                ContentType.objects.get_by_natural_key(*value.split("."))
-                for value in selected_types
-            ]
-            queryset = queryset.filter(content_type__in=content_types)
-            # Update selected_filters
-            page_type_filters = []
-            for ct in content_types:
-                model = ct.model_class()
-                page_type_filters.append(
-                    (
-                        model._meta.label_lower,
-                        f"Page type: {get_public_page_type_label(model)}",
-                    )
-                )
-            self.selected_filters["page_type"] = sorted(
-                page_type_filters, key=lambda x: x[1]
-            )
-
         # Filter by topic
         selected_topics = (
             form.cleaned_data.get("topic", TopicExplorerPage.objects.none())
@@ -940,6 +918,28 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             self.selected_filters["time_period"] = [
                 (obj.slug, f"Time period: {obj.title}") for obj in selected_time_periods
             ]
+
+        # Filter by type
+        selected_types = form.cleaned_data.get("format", ())
+        if selected_types:
+            content_types = [
+                ContentType.objects.get_by_natural_key(*value.split("."))
+                for value in selected_types
+            ]
+            queryset = queryset.filter(content_type__in=content_types)
+            # Update selected_filters
+            page_type_filters = []
+            for ct in content_types:
+                model = ct.model_class()
+                page_type_filters.append(
+                    (
+                        model._meta.label_lower,
+                        f"Format: {model.type_label()}",
+                    )
+                )
+            self.selected_filters["format"] = sorted(
+                page_type_filters, key=lambda x: x[1]
+            )
 
         self.selected_filters_count = sum(
             len(value) for value in self.selected_filters.values()
@@ -1017,20 +1017,6 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
         matching_page_ids = [id for id, _ in self.facet_source_data]
 
-        # Restrict visibility of 'page_type' choices to those that are relevant, and add facet counts
-        page_type_field = self.form.fields["page_type"]
-        replacement_choices = []
-        for value, label in page_type_field.choices:
-            content_type = ContentType.objects.get_by_natural_key(*value.split("."))
-            doc_count = 0
-            for _, ct_id in self.facet_source_data:
-                if ct_id == content_type.id:
-                    doc_count += 1
-            if doc_count:
-                replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
-        page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
-        page_type_field.choices_updated = True
-
         # Restrict visibility of 'topic' choices to those that are relevant, and add facet counts
         topic_field = self.form.fields["topic"]
         topic_field.choices = list(
@@ -1068,6 +1054,20 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             .values_list("slug", "title", "doc_count")
         )
         time_period_field.choices_updated = True
+
+        # Restrict visibility of 'page_type' choices to those that are relevant, and add facet counts
+        page_type_field = self.form.fields["format"]
+        replacement_choices = []
+        for value, label in page_type_field.choices:
+            content_type = ContentType.objects.get_by_natural_key(*value.split("."))
+            doc_count = 0
+            for _, ct_id in self.facet_source_data:
+                if ct_id == content_type.id:
+                    doc_count += 1
+            if doc_count:
+                replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
+        page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
+        page_type_field.choices_updated = True
 
         # Add custom variables to the return value
         context.update(
