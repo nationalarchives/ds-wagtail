@@ -1,3 +1,5 @@
+@use '../node_modules/@nationalarchives/frontend/nationalarchives/tools/media';
+
 /*
 
 ==============
@@ -105,7 +107,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/new_cards';
 @import 'includes/highlight-gallery';
 @import 'includes/highlight-cards';
-@import "includes/highlight-intro";
+// @import "includes/highlight-intro";
 @import 'includes/utilities';
 @import "includes/archive-description";
 @import "includes/archive-collections";
@@ -128,8 +130,32 @@ New styles
 
 Modified to match the existing site (for now)
 
+*/
 
 $largest-small-device: 992px;
+
+@import '@nationalarchives/frontend/nationalarchives/all';
+
+*:focus {
+    outline: none !important;
+}
+
+a,
+button,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="button"],
+input[type="submit"] {
+    &:focus {
+        outline: 0.3125rem solid #004c7e !important;
+        outline-offset: 0.125rem !important;
+    }
+
+    [class*="--dark"] & {
+        outline-color: #00b0ff !important;
+    }
+}
 
 .tna-hero {
     margin-bottom: 2rem;
@@ -167,4 +193,3 @@ $largest-small-device: 992px;
         margin-bottom: 0;
     }
 }
-*/
