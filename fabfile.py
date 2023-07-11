@@ -89,14 +89,6 @@ def start(c, container_name=None):
 
 
 @task
-def run(c):
-    start(c, "web")
-    web_exec("poetry install --remove-untracked --no-root")
-    web_exec("python manage.py migrate")
-    return web_exec("python manage.py runserver 0.0.0.0:8000")
-
-
-@task
 def stop(c, container_name=None):
     """
     Stop the local development environment.
@@ -154,6 +146,30 @@ def test(c, lint=False, parallel=False):
     if parallel:
         cmd += " --parallel"
     web_exec(cmd)
+
+
+# -----------------------------------------------------------------------------
+# Database operations
+# -----------------------------------------------------------------------------
+
+
+@task
+def create_superuser(c):
+    """
+    Run bash in a local container (with access to dependencies)
+    """
+    subprocess.run(
+        [
+            "docker-compose",
+            "exec",
+            "web",
+            "poetry",
+            "run",
+            "python",
+            "manage.py",
+            "createsuperuser",
+        ]
+    )
 
 
 # -----------------------------------------------------------------------------
