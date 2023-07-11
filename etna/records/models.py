@@ -722,7 +722,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def alternative_names(self) -> tuple(dict):
-        """ """
         alternative_names = ()
         if names := self.get("name", ()):
             for item in names:
@@ -865,16 +864,16 @@ class Record(DataLayerMixin, APIModel):
         """
         Returns dates for person, person's activity/service,  both, or any if available
         """
-        seperator = "-"
+        separator = "-"
         joiner = "; "
         person_date = service_activity_date = ""
         if self.birth_date and self.death_date:
-            person_date = f"{self.birth_date}{seperator}{self.death_date}"
+            person_date = f"{self.birth_date}{separator}{self.death_date}"
         else:
             person_date = self.birth_date or self.death_date
 
         if self.start_date and self.end_date:
-            service_activity_date = f"{self.start_date}{seperator}{self.end_date}"
+            service_activity_date = f"{self.start_date}{separator}{self.end_date}"
         else:
             service_activity_date = self.start_date or self.end_date
 
