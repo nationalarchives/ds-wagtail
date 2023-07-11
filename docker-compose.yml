@@ -5,9 +5,10 @@ services:
     container_name: db
     image: postgres:12.0
     ports:
-     - "5432:5432"
+      - 5432:5432
     volumes:
-     - ./database_dumps:/app/database_dumps
+      - ./database_dumps:/app/database_dumps
+
   web:
     container_name: web
     platform: linux/amd64
@@ -16,10 +17,9 @@ services:
       - ./:/app
       - ./bash/bashrc.sh:/root/.bashrc
     depends_on:
-     - db
+      - db
     ports:
-     - 8000:8000 # runserver
-     - 8001:8001 # mkdocs serve
+      - 8000:8000
     command: sh bash/run-dev.sh
     restart: on-failure
     init: true
@@ -28,8 +28,10 @@ services:
     env_file:
       - .env
     environment:
-      - DATABASE_URL=postgres://postgres:@db:5432/postgres
       - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+
   cli:
     container_name: cli
     platform: linux/amd64
