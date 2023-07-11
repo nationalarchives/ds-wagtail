@@ -11,7 +11,7 @@
                         <th scope="row">Alternative name(s):</th>
                         <td>
                             {% for name in record.alternative_names %}
-                                <ul class="details-related-records__list">{{ name.value }} ({{ name.label}})</ul>
+                                <p class="record-creator-description__paragraph--margin-sm">{{ name.value }} ({{ name.label}})</p>
                             {% endfor %}
                         </td>
                     </tr>
