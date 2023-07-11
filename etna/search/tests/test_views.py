@@ -14,6 +14,7 @@ import responses
 from etna.ciim.constants import Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
+from ...articles.factories import ArticlePageFactory
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
 from ...home.models import HomePage
@@ -44,9 +45,6 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
             "https://kong.test/data/searchAll",
             json={
                 "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
                     create_response(),
                     create_response(),
                     create_response(),
@@ -679,13 +677,20 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
+class FeaturedSearchTestCase(SearchViewTestCase):
     test_url = reverse_lazy("search-featured")
 
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_search(self):
-        self.client.get(self.test_url)
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.article_1 = ArticlePageFactory(title="Test article 1")
+        cls.article_2 = ArticlePageFactory(title="How to query the archive")
 
+    @responses.activate
+    def test_without_search_query(self):
+        response = self.client.get(self.test_url)
+
+        # The API should be requested without a search query
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -694,22 +699,31 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "?filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
 
-    @responses.activate
-    def test_search_with_query(self):
-        """
-        Test covers create session info for Featured search with query.
-        """
-        expected_url = "/search/featured/?q=query"
-        self.client.get(self.test_url, data={"q": "query"})
-        session = self.client.session
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"), "/search/featured/"
+        )
 
+        # When no query is present, website_results should contain the few
+        # most recent pages
+        self.assertEqual(
+            response.context["website_results"], [self.article_2, self.article_1]
+        )
+        self.assertEqual(response.context["website_result_count"], 2)
+
+        # The mocked API response includes zero results, but the website
+        # has 2, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 2)
+
+    @responses.activate
+    def test_with_search_query(self):
+        response = self.client.get(self.test_url, data={"q": "query"})
+
+        # The query should be passed to the search API
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -719,13 +733,24 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
-        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"),
+            "/search/featured/?q=query",
+        )
+
+        # Because a query is present, a native website search for 'query' will be
+        # performed, and relevant matches included in the response
+        self.assertEqual(response.context["website_results"], [self.article_2])
+        self.assertEqual(response.context["website_result_count"], 1)
+
+        # The mocked API response includes zero results, but the website
+        # has one, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 1)
 
 
 @unittest.skip("CIIM-powered website search is to be re-instated at a later date")

@@ -4,9 +4,10 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
-from wagtail.models import Page, get_page_models
+from wagtail.models import get_page_models
 
 from etna.core.fields import END_OF_MONTH, DateInputField
+from etna.core.models import BasePage
 
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
@@ -17,7 +18,6 @@ from ..ciim.constants import (
     WEBSITE_BUCKETS,
 )
 from ..collections.models import TimePeriodExplorerPage, TopicExplorerPage
-from .utils import get_public_page_type_label
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -108,8 +108,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 class FeaturedSearchForm(forms.Form):
     q = forms.CharField(
         label="Search here",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
@@ -127,8 +125,6 @@ class BaseCollectionSearchForm(forms.Form):
 
     q = forms.CharField(
         label="Search term",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
@@ -188,28 +184,28 @@ class BaseCollectionSearchForm(forms.Form):
     )
     opening_start_date = DateInputField(
         label="From",
-        label_suffix="",
+        label_suffix=":",
         required=False,
         default_day=1,
         default_month=1,
     )
     opening_end_date = DateInputField(
-        label="to",
-        label_suffix="",
+        label="To",
+        label_suffix=":",
         required=False,
         default_day=END_OF_MONTH,
         default_month=12,
     )
     covering_date_from = DateInputField(
         label="From",
-        label_suffix="",
+        label_suffix=":",
         required=False,
         default_day=1,
         default_month=1,
     )
     covering_date_to = DateInputField(
-        label="to",
-        label_suffix="",
+        label="To",
+        label_suffix=":",
         required=False,
         default_day=END_OF_MONTH,
         default_month=12,
@@ -290,8 +286,8 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
 
 
 class NativeWebsiteSearchForm(FeaturedSearchForm):
-    page_type = forms.MultipleChoiceField(
-        label="Page type",
+    format = forms.MultipleChoiceField(
+        label="Format",
         required=False,
         choices=[],  # updated by __init__
         widget=SearchFilterCheckboxList,
@@ -338,10 +334,10 @@ class NativeWebsiteSearchForm(FeaturedSearchForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields["page_type"].choices = [
-            (model._meta.label_lower, get_public_page_type_label(model))
+        self.fields["format"].choices = [
+            (model._meta.label_lower, model.type_label())
             for model in get_page_models()
-            if model != Page and not model._meta.abstract
+            if issubclass(model, BasePage) and not model._meta.abstract
         ]
 
         self.fields["topic"].queryset = (
