@@ -118,3 +118,51 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/record-crosslink-panel';
 @import 'includes/image-block';
 
+/* Un-comment when front-end toolkit is fixed
+
+==============
+New styles
+==============
+
+Modified to match the existing site (for now)
+
+
+$largest-small-device: 992px;
+
+.tna-hero {
+    margin-bottom: 2rem;
+}
+
+.tna-hero__image {
+    @include media.on-mobile {
+        height: 320px;
+    }
+}
+
+.tna-hero__heading {
+    margin-top: 0;
+    margin-bottom: .75rem;
+
+    font-size: 4rem;
+    line-height: 1.22;
+    font-weight: 700;
+
+    @include media.on-mobile {
+        font-size: 2.25rem;
+        line-height: 1.33;
+    }
+}
+
+.tna-hero__body {
+    font-size: 1.25rem;
+
+    @include media.on-mobile {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    p {
+        margin-bottom: 0;
+    }
+}
+*/

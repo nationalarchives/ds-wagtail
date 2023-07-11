@@ -1,16 +1,16 @@
 {% load i18n wagtailimages_tags wagtailcore_tags records_tags %}
 
-{% if record.live or request.is_preview %}
+{% if link_page.live or request.is_preview %}
     <div class="container">
         <div class="featured-record-article featured-record-article--standalone"
             data-container-name="featured-record-article">
-            {% if record.teaser_image %}
-                <a href="{{ record.url }}" data-component-name="Featured record article" data-link-type="Image" data-link="{{ record.title }}">
-                    <span class="sr-only">{{ record.title }}</span>
+            {% if link_page.teaser_image %}
+                <a href="{% pageurl link_page %}" data-component-name="Featured record article" data-link-type="Image" data-link="{{ link_page.title }}">
+                    <span class="sr-only">{{ link_page.title }}</span>
                     <picture>
-                        {% image record.teaser_image fill-626x486-c100 as mobile_img %}
+                        {% image link_page.teaser_image fill-626x486-c100 as mobile_img %}
                         <source media="(max-width: 1024px)" srcset="{{ mobile_img.url }}"/>
-                        {% image record.teaser_image fill-395x330-c100 as desktop_img %}
+                        {% image link_page.teaser_image fill-395x330-c100 as desktop_img %}
                         <source media="(min-width: 1025px)" srcset="{{ desktop_img.url }}"/>
                         <img class="featured-record-article__image"
                             height="{{ mobile_img.height }}"
@@ -21,15 +21,17 @@
                 </a>
             {% endif %}
             <div class="featured-record-article__container">
-                <p class="featured-record-article__meta u-margin-xxs">{{ record.title_label }}</p>
-                <a href="{{ record.url }}" class="featured-record-article__link" data-component-name="Featured record article" data-link-type="Banner title" data-link="{{ record.title }}">
-                    <h3 class="featured-record-article__title u-margin-xs">{{ record.title }}</h3>
-                </a>
-                {% if record.date_text %}
-                    <p class="featured-record-article__date u-margin-xs">{{ record.date_text }}</p>
+                {% if link_page.has_custom_type_label %}
+                    <p class="featured-record-article__meta u-margin-xxs">{{ link_page.has_custom_type_label }}</p>
                 {% endif %}
-                {% if record.teaser_text %}
-                    <p class="featured-record-article__text">{{ record.teaser_text }}</p>
+                <a href="{% pageurl page %}" class="featured-record-article__link" data-component-name="Featured record article" data-link-type="Banner title" data-link="{{ link_page.title }}">
+                    <h3 class="featured-record-article__title u-margin-xs">{{ link_page.title }}</h3>
+                </a>
+                {% if link_page.date_text %}
+                    <p class="featured-record-article__date u-margin-xs">{{ link_page.date_text }}</p>
+                {% endif %}
+                {% if link_page.teaser_text %}
+                    <p class="featured-record-article__text">{{ link_page.teaser_text }}</p>
                 {% endif %}
             </div>
         </div>
