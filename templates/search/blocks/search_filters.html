@@ -31,12 +31,14 @@
             {% endif %}
         {% endcomment %}
 
-        <div class="search-filters__form-block">
-            <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
-            {{ form.filter_keyword }}
-            {{ form.filter_keyword.errors }}
-            <input type="submit" value="Search" class="search-filters__submit">
-        </div>
+        {% if form.filter_keyword %}
+            <div class="search-filters__form-block">
+                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+                {{ form.filter_keyword }}
+                {{ form.filter_keyword.errors }}
+                <input type="submit" value="Search" class="search-filters__submit">
+            </div>
+        {% endif %}
 
         <div class="search-filters__form-block">
             <h3 class="sr-only">Edit filters</h3>
@@ -47,24 +49,30 @@
                         <legend>
                             <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
-                        <span>For example, 27 3 2007</span>
-                        <div>{{ form.covering_date_from.label_tag }}</div>
 
                         <div class="search-filters__creation-date-section">
-
-                            {{ form.covering_date_from.errors }}
-                            {{ form.covering_date_from }}
-
-
+                            <span>For example, 27 3 2007</span><br>
+                            {{ form.covering_date_from.label_tag }}
+                            {% if form.covering_date_from.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.covering_date_from.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
-
-
-                        <br><div>{{ form.covering_date_to.label_tag }}</div>
-
                         <div class="search-filters__creation-date-section">
-
-                            {{ form.covering_date_to.errors }}
+                            {{ form.covering_date_to.label_tag }}
+                            {% if form.covering_date_to.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
+                                    {{ form.covering_date_to.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.covering_date_to }}
                         </div>
 
@@ -97,14 +105,28 @@
                         <div class="search-filters__opening-date-section">
                             <span>For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
-                            {{ form.opening_start_date.errors }}
+                            {% if form.opening_start_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_start_date.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.opening_start_date }}
                         </div>
                         
 
                         <div class="search-filters__opening-date-section">
                             {{ form.opening_end_date.label_tag }}
-                            {{ form.opening_end_date.errors }}
+                            {% if form.opening_end_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_end_date.errors }}
+                                </div>
+                            {% endif %}
                             {{ form.opening_end_date }}
                         </div>
 
