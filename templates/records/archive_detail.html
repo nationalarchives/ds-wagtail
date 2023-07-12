@@ -7,8 +7,12 @@
 {% block extra_gtm_js %}
     {% render_gtm_datalayer record %}
 {% endblock extra_gtm_js %}
+{% block breadcrumb %}
+{% endblock %}
 
 {% block content %}
+
+    {% include "includes/records/record-cta-panel.html" %}
 
     <div class="container">
 
