@@ -52,6 +52,7 @@ class RecordModelTests(SimpleTestCase):
         # patch raw data
         self.record._raw["@admin"].pop("id")
         self.record._raw["@template"]["details"].pop("iaid")
+        self.record._raw["@template"]["details"].pop("primaryIdentifier")
         self.assertEqual(self.record.iaid, "")
 
     def test_returns_blank_string_when_iaid_value_is_invalid(self):
