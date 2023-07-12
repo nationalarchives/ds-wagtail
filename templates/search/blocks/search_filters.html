@@ -50,6 +50,9 @@
                             <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
+                        <span class="example-text">For example, 27 3 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
+
                         <div class="search-filters__creation-date-section">
                             <span>For example, 27 3 2007</span><br>
                             {{ form.covering_date_from.label_tag }}
@@ -104,7 +107,7 @@
                         </legend>
 
                         <div class="search-filters__opening-date-section">
-                            <span>For example, 27 3 2007</span><br>
+                            <span class="example-text">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
                                 <div
