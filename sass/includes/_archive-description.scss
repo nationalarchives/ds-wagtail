@@ -16,6 +16,7 @@
     background: $color__grey-200;
     border: 0.125rem solid $color__grey-400;
 
+
     h2 {
       margin: 0 0 1rem;
     }
@@ -23,6 +24,10 @@
     p {
       font-weight: normal;
       margin-bottom: 0.25rem;
+    }
+
+    a {
+      word-wrap: break-word;
     }
 
     ul {
