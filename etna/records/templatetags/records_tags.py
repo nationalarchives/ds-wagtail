@@ -19,8 +19,8 @@ def record_url(
     Return the URL for the provided `record`, which should always be a
     fully-transformed `etna.records.models.Record` instance.
 
-    use_non_reference_number_url: set True to override refernce number to disambiguation page
-    (multiple iaid share the same refernce number) when its not required.
+    use_non_reference_number_url: set True to override reference number to disambiguation page
+    (multiple iaid share the same reference number) when its not required.
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
