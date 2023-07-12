@@ -408,6 +408,9 @@ class RecordModelTests(SimpleTestCase):
     def test_repository_attr(self):
         self.assertEqual(self.record.repository.iaid, "A13530124")
         self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
+        self.assertEqual(
+            self.record.repository.non_reference_number_url, "/catalogue/id/A13530124/"
+        )
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
