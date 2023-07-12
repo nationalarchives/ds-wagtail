@@ -1,7 +1,10 @@
 from django.test import SimpleTestCase, override_settings
 
 from etna.records.models import Record
-from etna.records.templatetags.records_tags import record_url
+from etna.records.templatetags.records_tags import (
+    is_page_current_item_in_hierarchy,
+    record_url,
+)
 
 
 class TestRecordURLTag(SimpleTestCase):
@@ -154,6 +157,73 @@ class TestRecordURLTag(SimpleTestCase):
         ),
     ]
 
+    record_hierarchy = [
+        (
+            "ARCHON",
+            Record(
+                raw_data={
+                    "source": {"value": "ARCHON"},
+                    "@template": {
+                        "details": {
+                            "iaid": "A123456789",
+                            "referenceNumber": "154",
+                        }
+                    },
+                }
+            ),
+            "https://discovery.nationalarchives.gov.uk/details/a/A123456789",
+        ),
+        (
+            "PROCAT",
+            Record(
+                raw_data={
+                    "source": {"value": "CAT"},
+                    "@template": {
+                        "details": {
+                            "iaid": "C12345678",
+                            "referenceNumber": "AIR 79/1711/189046",
+                        }
+                    },
+                }
+            ),
+            "https://discovery.nationalarchives.gov.uk/details/r/C12345678",
+        ),
+        (
+            "ePRO",
+            Record(
+                raw_data={
+                    "source": {"value": "CAT"},
+                    "@template": {
+                        "details": {
+                            "iaid": "D1234567",
+                            "referenceNumber": "WO 372/2/47705",
+                        }
+                    },
+                }
+            ),
+            "https://discovery.nationalarchives.gov.uk/details/r/D1234567",
+        ),
+        (
+            "CREATORS",
+            Record(
+                raw_data={
+                    "@admin": {
+                        "id": "F123456789",
+                    },
+                    "identifier": [
+                        {
+                            "faid": "F123456789",
+                            "primary": True,
+                            "type": "faid",
+                            "value": "F123456789",
+                        },
+                    ],
+                }
+            ),
+            "https://discovery.nationalarchives.gov.uk/details/c/F123456789",
+        ),
+    ]
+
     def test_default(self):
         for attribute_name, expected_result in (
             ("record_instance", "/catalogue/ref/2515/300/1/"),
@@ -230,3 +300,20 @@ class TestRecordURLTag(SimpleTestCase):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
                 self.assertEqual(record_url(source.repository), expected_result)
+
+    def test_is_page_current_item_in_hierarchy(self):
+        for current_record, expected_result in (
+            (self.record_hierarchy[0], True),
+            (self.record_hierarchy[1], False),
+            (self.record_hierarchy[2], False),
+        ):
+            with self.subTest(current_record):
+                # We pass in the "current" record and the first record
+                # in the hierarchy to check that the tag is comparing
+                # the correct attributes, and that it is working as expected.
+                self.assertEqual(
+                    is_page_current_item_in_hierarchy(
+                        self.record_hierarchy[0][1], current_record[1]
+                    ),
+                    expected_result,
+                )
