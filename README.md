@@ -36,10 +36,10 @@ fab start
 This command takes care of the following:
 
 1. Building all of the necessary Docker containers
-1. Starting all of the necessary Docker containers
-2. Installing any new python dependencies
-3. Applying any new database migrations
-4. Starting the Django development server
+2. Starting all of the necessary Docker containers
+3. Installing any new python dependencies
+4. Applying any new database migrations
+5. Starting the Django development server
 
 ### 2. Access the site
 
