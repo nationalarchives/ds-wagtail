@@ -1,7 +1,9 @@
-.tna-footer {
-
+.etna-footer {
+    background:white !important;
+    color:black !important;
+    /*AJ to address as part of workflow streamlining piece */
     &__body {
-        .tna-footer__list-item {
+        .etna-footer__list-item {
             margin-bottom: .25rem;
         }
         &-heading {
@@ -13,7 +15,7 @@
 
         font-size: 0.85rem;
 
-        .tna-footer__social-media-icon {
+        .etna-footer__social-media-icon {
             height: 2.187rem;
             padding: .5rem;
             box-sizing: content-box;
@@ -27,6 +29,10 @@
         &-main-title {
             font-size: 1.6rem;
         }
+    }
+
+    img {
+        display: inline-block;
     }
 }
 

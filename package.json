@@ -1,10 +1,10 @@
 {
   "name": "ds-wagtail",
-  "version": "6.3.0",
+  "version": "7.3.0",
   "description": "## Local development",
   "private": true,
   "scripts": {
-    "compile:css": "sass --watch sass/etna.scss:templates/static/css/dist/etna.css",
+    "compile:css": "sass --watch --quiet-deps --load-path=node_modules sass/etna.scss:templates/static/css/dist/etna.css",
     "start": "npx webpack --config webpack.config.js --mode=development --watch",
     "test": "jest --coverage"
   },
@@ -23,13 +23,14 @@
     "@babel/core": "~7.22",
     "@babel/preset-env": "~7.22",
     "babel-loader": "~9.1",
-    "jest-environment-jsdom": "~29.5",
+    "jest-environment-jsdom": "~29.6",
     "sass": "~1.63",
-    "webpack": "~5.86",
+    "webpack": "~5.88",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
-    "jest": "~29.5",
+    "@nationalarchives/frontend": "^0.1.8-prerelease",
+    "jest": "~29.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1"
   },

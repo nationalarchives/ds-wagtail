@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django.contrib.auth.models import Permission
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.http import urlencode
@@ -476,37 +477,72 @@ class TestFeedbackCommentSuccessView(TestCase):
         )
 
 
-class TestSubmissionReportView(WagtailTestUtils, TestCase):
+class TestSubmissionIndexView(WagtailTestUtils, TestCase):
     """
-    Integration tests for `etna.feedback.views.FeedbackSubmissionReportView`,
+    Integration tests for `etna.feedback.views.admin.FeedbackSubmissionIndexView`,
     utilising Django's full request/response cycle, including URL resolution.
     """
 
     @classmethod
     def setUpClass(cls) -> None:
         super().setUpClass()
-        cls.url = reverse("feedback_submission_report")
+        cls.url = "/admin/snippets/feedback/feedbacksubmission/"
         cls.login_url = reverse("wagtailadmin_login")
 
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
+        # Create test users
         cls.super_user = cls.create_superuser("super")
         cls.normal_user = cls.create_user("normal")
+        cls.permissioned_user = cls.create_user("permissioned")
+        cls.permissioned_user.user_permissions.set(
+            Permission.objects.filter(
+                codename__in=("delete_feedbacksubmission", "access_admin")
+            )
+        )
+
+        # Create test submission
+        cls.submission = FeedbackSubmission.objects.create(
+            site=Site.objects.first(),
+            full_url="/",
+            path="/",
+            comment="such a great comment",
+            prompt_text="",
+            response_sentiment=SentimentChoices.POSITIVE,
+            response_label="",
+            comment_prompt_text="",
+        )
 
     def test_access_permitted(self):
-        self.client.force_login(self.super_user)
-        response = self.client.get(self.url)
-        self.assertEqual(response.status_code, 200)
-        export_response = self.client.get(self.url, data={"export": "csv"})
-        self.assertEqual(export_response.status_code, 200)
-        self.assertEqual(export_response.headers["Content-Type"], "text/csv")
+        for user in (
+            self.super_user,
+            self.permissioned_user,
+        ):
+            with self.subTest({"user": user}):
+                self.client.force_login(user)
+                response = self.client.get(self.url)
+                self.assertEqual(response.status_code, 200)
+
+                # Ensure template overrides are still resulting in export
+                # options being displayed
+                self.assertContains(response, "Download CSV")
+
+                # A row should be visible for the test submission
+                self.assertContains(
+                    response, f"<td>{self.submission.comment}</td>", html=True
+                )
+
+                # Check that the 'export' option works for this user
+                export_response = self.client.get(self.url, data={"export": "csv"})
+                self.assertEqual(export_response.status_code, 200)
+                self.assertEqual(export_response.headers["Content-Type"], "text/csv")
 
     @prevent_request_warnings
     def test_access_not_permitted(self):
-        expected_redirect_url = self.login_url + "?" + urlencode({"next": self.url})
         self.client.force_login(self.normal_user)
         response = self.client.get(self.url)
+        expected_redirect_url = self.login_url + "?" + urlencode({"next": self.url})
         self.assertRedirects(response, expected_redirect_url)
         export_response = self.client.get(self.url, export="csv")
         self.assertRedirects(export_response, expected_redirect_url)
