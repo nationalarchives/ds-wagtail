@@ -25,6 +25,7 @@ from ..articles.models import ArticleIndexPage, ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
+    CLOSURE_CLOSED_STATUS,
     FEATURED_BUCKETS,
     WEBSITE_BUCKETS,
     Bucket,
@@ -360,6 +361,7 @@ class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
             result_count=self.get_result_count(),
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )
 
