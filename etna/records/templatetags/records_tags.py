@@ -10,14 +10,17 @@ register = template.Library()
 
 @register.simple_tag
 def record_url(
-    record: Record, is_editorial: bool = False, order_from_discovery: bool = False
+    record: Record,
+    is_editorial: bool = False,
+    order_from_discovery: bool = False,
+    use_non_reference_number_url: bool = False,
 ) -> str:
     """
     Return the URL for the provided `record`, which should always be a
     fully-transformed `etna.records.models.Record` instance.
 
-    Handling of Iaid as priority to allow Iaid in disambiguation pages when
-    returning more than one record
+    use_non_reference_number_url: set True to override reference number to disambiguation page
+    (multiple iaid share the same reference number) when its not required.
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
@@ -30,7 +33,12 @@ def record_url(
         else:
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
-    return record.url if record is not None else ""
+    if record:
+        if use_non_reference_number_url:
+            return record.non_reference_number_url
+        else:
+            return record.url
+    return ""
 
 
 @register.simple_tag
