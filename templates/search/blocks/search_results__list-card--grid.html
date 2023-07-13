@@ -95,22 +95,21 @@
         </dl>
 
 
-        {% if record.is_digitised %}
-            {% if record.closure_status not in closure_closed_status %}
-                <div class="search-results__list-card-delivery-options--grid">
+    {% if record.is_digitised %}
+        {% if record.closure_status not in closure_closed_status %}
+            <div class="search-results__list-card-delivery-options--grid">
 
-                    <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+                <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
 
-                        <img src="{% static 'images/grid-placeholder.png' %}"  class="search-results__list-card-delivery-options-img search-image-grid" alt="" />
-                    </a>
-                    <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-                        <p class="search-results__list-card-delivery-options-desc search-results-grid">
-                            <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
-                            Available online
-                        </p>
-                    </a>
-                </div>
-            {% endif %}
+                    <img src="{% static 'images/grid-placeholder.png' %}"  class="search-results__list-card-delivery-options-img search-image-grid" alt="" />
+                </a>
+                <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                    <p class="search-results__list-card-delivery-options-desc search-results-grid">
+                        <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                        Available online
+                    </p>
+                </a>
+            </div>
         {% endif %}
     {% endif %}
 </li>
