@@ -413,6 +413,11 @@ class RecordModelTests(SimpleTestCase):
             self.record.repository.non_reference_number_url, "/catalogue/id/A13530124/"
         )
 
+    def test_closure_status(self):
+        self.assertEqual(
+            self.record.closure_status, "Fake value:Open Document, Open Description"
+        )
+
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
 class UnexpectedParsingIssueTest(SimpleTestCase):
