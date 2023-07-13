@@ -586,7 +586,7 @@ class TestRecordURLTag(SimpleTestCase):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
                 self.assertEqual(record_url(source.repository), expected_result)
-                
+
     def test_non_reference_number_url(self):
         # tests using raw source
         for attribute_name, expected_result in (
@@ -614,7 +614,7 @@ class TestRecordURLTag(SimpleTestCase):
                     record_url(source.repository, use_non_reference_number_url=True),
                     expected_result,
                 )
-                
+
     def test_is_page_current_item_in_hierarchy(self):
         for current_record, expected_result in ((self.record_instance, True),):
             with self.subTest(current_record):
