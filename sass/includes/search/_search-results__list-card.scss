@@ -297,6 +297,13 @@ dd {
 
 /*---additional styles for All results--*/
 
+.featured-search__website-results__head {
+    @media only screen and (min-width: $screen__md) {
+        padding-left:1em;
+        padding-bottom:2em;
+    }
+}
+
 .featured-search__website-results-list ul{
     list-style-type: none;
     margin: 0;
@@ -308,6 +315,10 @@ dd {
         float: left;
         list-style-type: none;
 
+}
+
+.search-results__list-card-full-width-image {
+    margin-bottom:1em;
 }
 
 
