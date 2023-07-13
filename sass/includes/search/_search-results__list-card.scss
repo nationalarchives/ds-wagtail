@@ -294,3 +294,21 @@ dd {
     overflow:hidden;
 
 }
+
+/*---additional styles for All results--*/
+
+.featured-search__website-results-list ul{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.featured-search__website-results-list li{
+        float: left;
+        list-style-type: none;
+
+}
+
+
+
