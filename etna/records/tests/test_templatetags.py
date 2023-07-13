@@ -4,12 +4,47 @@ from etna.records.models import Record
 from etna.records.templatetags.records_tags import (
     is_page_current_item_in_hierarchy,
     record_url,
+    level_name
 )
 
 
 class TestRecordURLTag(SimpleTestCase):
     record_instance = Record(
         raw_data={
+            "level": {
+                "code": 2,
+            },
+            "repository": {
+                "@admin": {
+                    "id": "A13531109",
+                }
+            },
+            "@template": {
+                "details": {
+                    "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
+                    "referenceNumber": "2515/300/1",
+                    "summaryTitle": "Test",
+                }
+            },
+        }
+    )
+
+    tna_record_instance = Record(
+        raw_data={
+            "@datatype": {
+                "base": "aggregation",
+                "group": [
+                    {
+                        "value": "aggregation"
+                    },
+                    {
+                        "value": "tna"
+                    }
+                ]
+            },
+            "level": {
+                "code": 3,
+            },
             "repository": {
                 "@admin": {
                     "id": "A13531109",
@@ -315,5 +350,19 @@ class TestRecordURLTag(SimpleTestCase):
                     is_page_current_item_in_hierarchy(
                         self.record_hierarchy[0][1], current_record[1]
                     ),
+                    expected_result,
+                )
+
+    def test_level_name(self):
+        for current_record, expected_result in (
+            (self.tna_record_instance, "Series"),
+            (self.record_instance, "Sub-fonds"),
+        ):
+            with self.subTest(self):
+                # We pass in the "current" record and the first record
+                # in the hierarchy to check that the tag is comparing
+                # the correct attributes, and that it is working as expected.
+                self.assertEqual(
+                    level_name(current_record.level_code, current_record.is_tna),
                     expected_result,
                 )
