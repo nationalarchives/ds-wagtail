@@ -2,6 +2,7 @@ from django.test import SimpleTestCase, override_settings
 
 from etna.records.models import Record
 from etna.records.templatetags.records_tags import (
+    breadcrumb_items,
     is_page_current_item_in_hierarchy,
     level_name,
     record_url,
@@ -102,6 +103,267 @@ class TestRecordURLTag(SimpleTestCase):
                     "iaid": "e7e92a0b-3666-4fd6-9dac-9d9530b0888c",
                     "referenceNumber": "2515/300/1",
                     "summaryTitle": "Test",
+                }
+            },
+        }
+    )
+
+    tna_long_hierarchy_record_instance = Record(
+        raw_data={
+            "@datatype": {
+                "base": "aggregation",
+                "group": [{"value": "aggregation"}, {"value": "tna"}],
+            },
+            "level": {
+                "code": 7,
+            },
+            "repository": {
+                "@admin": {
+                    "id": "A13530124",
+                },
+            },
+            "@hierarchy": [
+                [
+                    {
+                        "@admin": {
+                            "id": "C162",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "J",
+                                "type": "reference number",
+                                "value": "J",
+                            }
+                        ],
+                        "level": {"code": 1},
+                    },
+                    {
+                        "@admin": {
+                            "id": "C678",
+                        },
+                        "@entity": "reference",
+                        "level": {"code": 2},
+                    },
+                    {
+                        "@admin": {
+                            "id": "C9685",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "J 77",
+                                "type": "reference number",
+                                "value": "J 77",
+                            }
+                        ],
+                        "level": {"code": 3},
+                    },
+                    {
+                        "@admin": {
+                            "id": "C81319",
+                        },
+                        "@entity": "reference",
+                        "level": {"code": 4},
+                    },
+                    {
+                        "@admin": {
+                            "id": "C5947536",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "J 77/3417",
+                                "type": "reference number",
+                                "value": "J 77/3417",
+                            }
+                        ],
+                        "level": {"code": 6},
+                    },
+                    {
+                        "@admin": {
+                            "id": "C8077549",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "J 77/3417/4284",
+                                "type": "reference number",
+                                "value": "J 77/3417/4284",
+                            }
+                        ],
+                        "level": {"code": 7},
+                    },
+                ]
+            ],
+            "@template": {
+                "details": {
+                    "iaid": "C8077549",
+                    "referenceNumber": "J 77/3417/4284",
+                    "summaryTitle": "Test record",
+                }
+            },
+        }
+    )
+
+    long_hierarchy_record_instance = Record(
+        raw_data={
+            "level": {
+                "code": 11,
+            },
+            "repository": {
+                "@admin": {
+                    "id": "A13532972",
+                },
+            },
+            "@hierarchy": [
+                [
+                    {
+                        "@admin": {
+                            "id": "278e5baf-af95-4b8a-a246-7bbd4faebe92",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
+                                "type": "reference number",
+                                "value": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
+                            }
+                        ],
+                        "level": {"code": 1},
+                    },
+                    {
+                        "@admin": {
+                            "id": "16131aa0-f1d9-42a5-8488-e9a236366b4b",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
+                                "type": "reference number",
+                                "value": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
+                            }
+                        ],
+                        "level": {"code": 2},
+                    },
+                    {
+                        "@admin": {
+                            "id": "2dba8c17-0f69-4a53-b918-e6ddb06c41a7",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-01 to LU-PEP-42; Blue Drawer 2B14 & 2B13; LU-WAR-30; LU-AC-01",
+                                "type": "reference number",
+                                "value": "LU-PEP-01 to LU-PEP-42; Blue Drawer 2B14 & 2B13; LU-WAR-30; LU-AC-01",
+                            }
+                        ],
+                        "level": {"code": 5},
+                    },
+                    {
+                        "@admin": {
+                            "id": "a6f76935-7e8d-451d-ac10-b5e6a0dd0efb",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-02 to LU-PEP-42; Blue Drawer 2B14",
+                                "type": "reference number",
+                                "value": "LU-PEP-02 to LU-PEP-42; Blue Drawer 2B14",
+                            }
+                        ],
+                        "level": {"code": 6},
+                    },
+                    {
+                        "@admin": {
+                            "id": "fd77b34e-db7e-4b8f-93d2-2257e66e3d96",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-27; LU-PEP-30 to LU-PEP-42",
+                                "type": "reference number",
+                                "value": "LU-PEP-27; LU-PEP-30 to LU-PEP-42",
+                            }
+                        ],
+                        "level": {"code": 7},
+                    },
+                    {
+                        "@admin": {
+                            "id": "fa5e6d5f-7838-4d4c-b168-2b983b70c0b3",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-27; LU-PEP-30 to LU-PEP-42; LU-AC-01",
+                                "type": "reference number",
+                                "value": "LU-PEP-27; LU-PEP-30 to LU-PEP-42; LU-AC-01",
+                            }
+                        ],
+                        "level": {"code": 8},
+                    },
+                    {
+                        "@admin": {
+                            "id": "b5da3728-3977-485a-b4bf-c1949abe5c73",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-38",
+                                "type": "reference number",
+                                "value": "LU-PEP-38",
+                            }
+                        ],
+                        "level": {"code": 9},
+                    },
+                    {
+                        "@admin": {
+                            "id": "dc02e42c-043b-4d49-bade-339c851a6019",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-41",
+                                "type": "reference number",
+                                "value": "LU-PEP-41",
+                            }
+                        ],
+                        "level": {"code": 10},
+                    },
+                    {
+                        "@admin": {
+                            "id": "66787951-2237-4f8a-882f-0ac275fe2bff",
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "LU-PEP-41",
+                                "type": "reference number",
+                                "value": "LU-PEP-41",
+                            }
+                        ],
+                        "level": {"code": 11},
+                    },
+                ]
+            ],
+            "@template": {
+                "details": {
+                    "iaid": "66787951-2237-4f8a-882f-0ac275fe2bff",
+                    "referenceNumber": "LU-PEP-41",
+                    "summaryTitle": "Test record",
                 }
             },
         }
@@ -339,3 +601,26 @@ class TestRecordURLTag(SimpleTestCase):
                     level_name(current_record.level_code, current_record.is_tna),
                     expected_result,
                 )
+
+    def test_breadcrumb_items(self):
+        for current_record, expected_result in (
+            (self.tna_long_hierarchy_record_instance, ["C162", "C9685", "C8077549"]),
+            (
+                self.long_hierarchy_record_instance,
+                [
+                    "16131aa0-f1d9-42a5-8488-e9a236366b4b",
+                    "2dba8c17-0f69-4a53-b918-e6ddb06c41a7",
+                    "66787951-2237-4f8a-882f-0ac275fe2bff",
+                ],
+            ),
+        ):
+            with self.subTest(self):
+                # We pass in the record hierarchy, is_tna value and the current record
+                # and this function then retrieves the breadcrumb items associated
+                # with that hierarchy, depending on the state of is_tna
+                for i, item in enumerate(
+                    breadcrumb_items(
+                        current_record.hierarchy, current_record.is_tna, current_record
+                    )
+                ):
+                    self.assertEqual(item.iaid, expected_result[i])
