@@ -42,6 +42,74 @@ class TestRecordURLTag(SimpleTestCase):
                     }
                 ]
             },
+            "@hierarchy": [
+                [
+                    {
+                        "@admin": {
+                            "id": "C4",
+                            "uuid": "9d7b9dbc-0bff-304f-98f1-8bdf2de76950"
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "ADM",
+                                "type": "reference number",
+                                "value": "ADM"
+                            }
+                        ],
+                        "level": {
+                            "code": 1
+                        },
+                        "source": {
+                            "value": "CAT"
+                        },
+                        "summary": {
+                            "title": "Records of the Admiralty, Naval Forces, Royal Marines, Coastguard, and related bodies"
+                        }
+                    },
+                    {
+                        "@admin": {
+                            "id": "C714",
+                            "uuid": "833d380a-1303-3fa1-ab16-a529d080150b"
+                        },
+                        "@entity": "reference",
+                        "level": {
+                            "code": 2
+                        },
+                        "source": {
+                            "value": "CAT"
+                        },
+                        "summary": {
+                            "title": "Records of Naval Staff Departments"
+                        }
+                    },
+                    {
+                        "@admin": {
+                            "id": "C1931",
+                            "uuid": "84e8175b-c6f7-3103-ad92-bfbc38e65668"
+                        },
+                        "@entity": "reference",
+                        "identifier": [
+                            {
+                                "primary": "true",
+                                "reference_number": "ADM 223",
+                                "type": "reference number",
+                                "value": "ADM 223"
+                            }
+                        ],
+                        "level": {
+                            "code": 3
+                        },
+                        "source": {
+                            "value": "CAT"
+                        },
+                        "summary": {
+                            "title": "Admiralty: Naval Intelligence Division and Operational Intelligence Centre: Intelligence..."
+                        }
+                    }
+                ]
+            ],
             "level": {
                 "code": 3,
             },
@@ -192,73 +260,6 @@ class TestRecordURLTag(SimpleTestCase):
         ),
     ]
 
-    record_hierarchy = [
-        (
-            "ARCHON",
-            Record(
-                raw_data={
-                    "source": {"value": "ARCHON"},
-                    "@template": {
-                        "details": {
-                            "iaid": "A123456789",
-                            "referenceNumber": "154",
-                        }
-                    },
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/a/A123456789",
-        ),
-        (
-            "PROCAT",
-            Record(
-                raw_data={
-                    "source": {"value": "CAT"},
-                    "@template": {
-                        "details": {
-                            "iaid": "C12345678",
-                            "referenceNumber": "AIR 79/1711/189046",
-                        }
-                    },
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/r/C12345678",
-        ),
-        (
-            "ePRO",
-            Record(
-                raw_data={
-                    "source": {"value": "CAT"},
-                    "@template": {
-                        "details": {
-                            "iaid": "D1234567",
-                            "referenceNumber": "WO 372/2/47705",
-                        }
-                    },
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/r/D1234567",
-        ),
-        (
-            "CREATORS",
-            Record(
-                raw_data={
-                    "@admin": {
-                        "id": "F123456789",
-                    },
-                    "identifier": [
-                        {
-                            "faid": "F123456789",
-                            "primary": True,
-                            "type": "faid",
-                            "value": "F123456789",
-                        },
-                    ],
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/c/F123456789",
-        ),
-    ]
-
     def test_default(self):
         for attribute_name, expected_result in (
             ("record_instance", "/catalogue/ref/2515/300/1/"),
@@ -338,17 +339,14 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_is_page_current_item_in_hierarchy(self):
         for current_record, expected_result in (
-            (self.record_hierarchy[0], True),
-            (self.record_hierarchy[1], False),
-            (self.record_hierarchy[2], False),
+            (self.record_instance, True),
         ):
             with self.subTest(current_record):
-                # We pass in the "current" record and the first record
-                # in the hierarchy to check that the tag is comparing
-                # the correct attributes, and that it is working as expected.
+                # We pass in the "current" record and this then
+                # checks if the current record is in the hierarchy
                 self.assertEqual(
                     is_page_current_item_in_hierarchy(
-                        self.record_hierarchy[0][1], current_record[1]
+                        current_record, current_record
                     ),
                     expected_result,
                 )
