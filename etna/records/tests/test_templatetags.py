@@ -18,7 +18,16 @@ class TestRecordURLTag(SimpleTestCase):
             "repository": {
                 "@admin": {
                     "id": "A13531109",
-                }
+                },
+                "identifier": [
+                    {
+                        "primary": True,
+                        "reference_number": "66",
+                        "type": "reference number",
+                        "value": "66",
+                    },
+                    {"type": "Archon number", "value": "66"},
+                ],
             },
             "@template": {
                 "details": {
