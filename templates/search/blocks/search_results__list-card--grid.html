@@ -27,7 +27,7 @@
                     </picture>
                 </div>
             {% endif %}
-            <a href="{% if form.group.value == bucketkeys.ARCHIVE.value %}{% record_url record use_non_reference_number_url=True %}{% else %}{% record_url record %}{% endif %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
+            <a href="{% if form.group.value == bucketkeys.ARCHIVE.value %}{% record_url record level_or_archive='Archive' %}{% else %}{% record_url record level_or_archive=record.level %}{% endif %}" class="search-results__list-card-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                 {% if record.reference_number %}<span class="sr-only">{{ record.reference_number }}</span>{% endif %}
                 {{ record.summary_title }}
             </a>
