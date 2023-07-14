@@ -653,14 +653,18 @@ class TestRecordURLTag(SimpleTestCase):
                 )
 
     def test_breadcrumb_items(self):
+        tna_record = self.tna_long_hierarchy_record_instance
+        tna_hierarchy = tna_record.hierarchy
+        other_record = self.long_hierarchy_record_instance
+        other_hierarchy = other_record.hierarchy
         for current_record, expected_result in (
-            (self.tna_long_hierarchy_record_instance, ["C162", "C9685", "C8077549"]),
+            (tna_record, [tna_hierarchy[0], tna_hierarchy[1], tna_record]),
             (
-                self.long_hierarchy_record_instance,
+                other_record,
                 [
-                    "16131aa0-f1d9-42a5-8488-e9a236366b4b",
-                    "2dba8c17-0f69-4a53-b918-e6ddb06c41a7",
-                    "66787951-2237-4f8a-882f-0ac275fe2bff",
+                    other_hierarchy[1],
+                    other_hierarchy[2],
+                    other_record,
                 ],
             ),
         ):
@@ -668,9 +672,9 @@ class TestRecordURLTag(SimpleTestCase):
                 # We pass in the record hierarchy, is_tna value and the current record
                 # and this function then retrieves the breadcrumb items associated
                 # with that hierarchy, depending on the state of is_tna
-                for i, item in enumerate(
+                self.assertEqual(
                     breadcrumb_items(
                         current_record.hierarchy, current_record.is_tna, current_record
-                    )
-                ):
-                    self.assertEqual(item.iaid, expected_result[i])
+                    ),
+                    expected_result,
+                )
