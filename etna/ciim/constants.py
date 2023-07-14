@@ -764,3 +764,8 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
 ]
+
+CLOSURE_CLOSED_STATUS = [
+    "Closed Or Retained Document, Closed Description",
+    "Closed Or Retained Document, Open Description",
+]
