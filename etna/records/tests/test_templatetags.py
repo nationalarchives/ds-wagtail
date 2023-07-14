@@ -228,7 +228,7 @@ class TestRecordURLTag(SimpleTestCase):
         }
     )
 
-    long_hierarchy_record_instance = Record(
+    non_tna_long_hierarchy_record_instance = Record(
         raw_data={
             "level": {
                 "code": 11,
@@ -655,16 +655,16 @@ class TestRecordURLTag(SimpleTestCase):
     def test_breadcrumb_items(self):
         tna_record = self.tna_long_hierarchy_record_instance
         tna_hierarchy = tna_record.hierarchy
-        other_record = self.long_hierarchy_record_instance
-        other_hierarchy = other_record.hierarchy
+        non_tna_record = self.non_tna_long_hierarchy_record_instance
+        non_tna_hierarchy = non_tna_record.hierarchy
         for current_record, expected_result in (
             (tna_record, [tna_hierarchy[0], tna_hierarchy[1], tna_record]),
             (
-                other_record,
+                non_tna_record,
                 [
-                    other_hierarchy[1],
-                    other_hierarchy[2],
-                    other_record,
+                    non_tna_hierarchy[1],
+                    non_tna_hierarchy[2],
+                    non_tna_record,
                 ],
             ),
         ):
