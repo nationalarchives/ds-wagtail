@@ -70,14 +70,14 @@ def breadcrumb_items(hierarchy: list, is_tna: bool, current_record: Record) -> l
     items = []
     tna_breadcrumb_levels = [1, 2, 3]
     oa_breadcrumb_levels = [1, 2, 5]
-    for record in hierarchy:
-        if record.level_code != current_record.level_code:
+    for hierarchy_record in hierarchy:
+        if hierarchy_record.level_code != current_record.level_code:
             if is_tna:
-                if record.level_code in tna_breadcrumb_levels:
-                    items.append(record)
+                if hierarchy_record.level_code in tna_breadcrumb_levels:
+                    items.append(hierarchy_record)
             else:
-                if record.level_code in oa_breadcrumb_levels:
-                    items.append(record)
+                if hierarchy_record.level_code in oa_breadcrumb_levels:
+                    items.append(hierarchy_record)
     items.append(current_record)
     if len(items) > 3:
         items = items[-3:]
