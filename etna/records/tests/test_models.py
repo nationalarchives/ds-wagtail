@@ -52,6 +52,7 @@ class RecordModelTests(SimpleTestCase):
         # patch raw data
         self.record._raw["@admin"].pop("id")
         self.record._raw["@template"]["details"].pop("iaid")
+        self.record._raw["@template"]["details"].pop("primaryIdentifier")
         self.assertEqual(self.record.iaid, "")
 
     def test_returns_blank_string_when_iaid_value_is_invalid(self):
@@ -408,6 +409,25 @@ class RecordModelTests(SimpleTestCase):
     def test_repository_attr(self):
         self.assertEqual(self.record.repository.iaid, "A13530124")
         self.assertEqual(self.record.repository.url, "/catalogue/ref/66/")
+        self.assertEqual(
+            self.record.repository.non_reference_number_url, "/catalogue/id/A13530124/"
+        )
+
+    def test_closure_status_empty_value(self):
+        self.assertEqual(self.record.closure_status, "")
+
+    def test_closure_status_with_value(self):
+        self.record = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C12345",
+                        "closureStatus": "Some status value",
+                    }
+                }
+            }
+        )
+        self.assertEqual(self.record.closure_status, "Some status value")
 
 
 @override_settings(KONG_CLIENT_BASE_URL="https://kong.test")

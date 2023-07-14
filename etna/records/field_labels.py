@@ -16,4 +16,5 @@ FIELD_LABELS = {
     "related_records": "Related records",
     "related_articles": "Related content",
     "related_materials": "Related material",
+    "closure": "Closure Status",
 }

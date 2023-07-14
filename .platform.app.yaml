@@ -60,7 +60,7 @@ hooks:
     
     npm install
     npm install -g sass
-    sass sass/etna.scss:templates/static/css/dist/etna.css
+    sass --quiet-deps --style=compressed --load-path=node_modules sass/etna.scss:templates/static/css/dist/etna.css
 
     npx webpack --config webpack.config.js
 

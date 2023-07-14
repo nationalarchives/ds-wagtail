@@ -1,6 +1,6 @@
 {% load static records_tags search_tags wagtailcore_tags wagtailimages_tags %}
 
-<li class="search-results__list-card--grid">
+<li class="col-md-4">
 
     <div class="search-results__list-card-content">
 
@@ -33,9 +33,9 @@
 
         <dl class="search-results__list-card-metadata">
             <dt class="search-results__list-card-metadata-item">
-                Page type:
+                Format:
             </dt>
-            <dd>{{ result|public_page_type_label }}</dd>
+            <dd>{{ result.type_label }}</dd>
             {% if result.show_publish_date_in_search_results and result.first_published_at %}
                 <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
                     Published:
@@ -45,3 +45,4 @@
 
         </dl>
 </li>
+

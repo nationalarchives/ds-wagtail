@@ -33,7 +33,6 @@
 
         {% if form.filter_keyword %}
             <div class="search-filters__form-block">
-
                 <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
                 {{ form.filter_keyword }}
                 {{ form.filter_keyword.errors }}
@@ -51,8 +50,11 @@
                             <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
+                        <span class="example-text">For example, 27 3 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
+
                         <div class="search-filters__creation-date-section">
-                            {{ form.covering_date_from.label_tag }}
+                            
                             {% if form.covering_date_from.errors %}
                                 <div
                                     data-tracking-errors
@@ -88,7 +90,7 @@
 
             {% include "search/includes/filter.html" with field=form.topic %}
 
-            {% include "search/includes/filter.html" with field=form.page_type %}
+            {% include "search/includes/filter.html" with field=form.format %}
 
             {% if form.group.value != bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.level %}
@@ -104,6 +106,7 @@
                         </legend>
 
                         <div class="search-filters__opening-date-section">
+                            <span class="example-text">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
                                 <div
@@ -115,6 +118,7 @@
                             {% endif %}
                             {{ form.opening_start_date }}
                         </div>
+                        
 
                         <div class="search-filters__opening-date-section">
                             {{ form.opening_end_date.label_tag }}
