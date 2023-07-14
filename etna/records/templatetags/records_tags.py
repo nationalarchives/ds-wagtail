@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 
-from ...ciim.constants import TNA_URLS, LevelKeys
+from ...ciim.constants import TNA_URLS, LevelKeys, NonTNALevelKeys
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -44,7 +44,7 @@ def record_url(
 @register.simple_tag
 def is_page_current_item_in_hierarchy(page: Record, hierarchy_item: Record):
     """Checks whether given page matches item from a record's hierarchy"""
-    return page.reference_number == hierarchy_item.reference_number
+    return page.iaid == hierarchy_item.iaid
 
 
 @register.filter
@@ -54,6 +54,31 @@ def as_label(record_field_name: str) -> str:
 
 
 @register.simple_tag
-def level_name(level_code: int) -> str:
+def level_name(level_code: int, is_tna: bool) -> str:
     """returns level as a human readable string"""
-    return LevelKeys["LEVEL_" + str(level_code)].value
+    if is_tna:
+        return LevelKeys["LEVEL_" + str(level_code)].value
+    else:
+        return NonTNALevelKeys["LEVEL_" + str(level_code)].value
+
+
+@register.simple_tag
+def breadcrumb_items(hierarchy: list, is_tna: bool, current_record: Record) -> list:
+    """Returns breadcrumb items depending on position in hierarchy
+    Update tna_breadcrumb_levels or oa_breadcrumb_levels to change the levels displayed
+    """
+    items = []
+    tna_breadcrumb_levels = [1, 2, 3]
+    oa_breadcrumb_levels = [1, 2, 5]
+    for hierarchy_record in hierarchy:
+        if hierarchy_record.level_code != current_record.level_code:
+            if is_tna:
+                if hierarchy_record.level_code in tna_breadcrumb_levels:
+                    items.append(hierarchy_record)
+            else:
+                if hierarchy_record.level_code in oa_breadcrumb_levels:
+                    items.append(hierarchy_record)
+    items.append(current_record)
+    if len(items) > 3:
+        items = items[-3:]
+    return items
