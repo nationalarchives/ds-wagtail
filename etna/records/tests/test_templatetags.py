@@ -625,23 +625,15 @@ class TestRecordURLTag(SimpleTestCase):
                 )
 
     def test_is_page_current_item_in_hierarchy(self):
-        current_record = self.tna_long_hierarchy_record_instance
-        with self.subTest(current_record):
-            # We pass in the record and the current position in the hierearchy
-            # which we have looped through. This function then checks if the
-            # current record is the same as the record in the hierarchy at the
-            # current position
-            for record in self.tna_long_hierarchy_record_instance.hierarchy:
-                if record.iaid == current_record.iaid:
-                    self.assertEqual(
-                        is_page_current_item_in_hierarchy(current_record, record),
-                        True,
-                    )
-                else:
-                    self.assertEqual(
-                        is_page_current_item_in_hierarchy(current_record, record),
-                        False,
-                    )
+page = self.tna_long_hierarchy_record_instance
+        hierarchy = page.hierarchy
+        for name, level_item, expected_result in (("item_level_1", hierarchy[0], False),
+                                                  ("item_level_3", hierarchy[1], False),
+                                                  ("item_level_6", hierarchy[2], False),
+                                                  ("item_level_7", hierarchy[3], True)
+                                                  ):
+            with self.subTest(name):
+                self.assertEqual(is_page_current_item_in_hierarchy(page, level_item),expected_result)
 
     def test_level_name(self):
         for current_record, expected_result in (
