@@ -42,3 +42,11 @@ services:
       - ./database_dumps:/app/database_dumps
     env_file:
       - .env
+
+  docs:
+    container_name: docs
+    image: squidfunk/mkdocs-material
+    volumes:
+      - .:/docs
+    ports:
+      - 8001:8000
