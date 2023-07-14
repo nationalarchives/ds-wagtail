@@ -228,7 +228,7 @@ class TestRecordURLTag(SimpleTestCase):
         }
     )
 
-    long_hierarchy_record_instance = Record(
+    non_tna_long_hierarchy_record_instance = Record(
         raw_data={
             "level": {
                 "code": 11,
@@ -625,23 +625,18 @@ class TestRecordURLTag(SimpleTestCase):
                 )
 
     def test_is_page_current_item_in_hierarchy(self):
-        current_record = self.tna_long_hierarchy_record_instance
-        with self.subTest(current_record):
-            # We pass in the record and the current position in the hierearchy
-            # which we have looped through. This function then checks if the
-            # current record is the same as the record in the hierarchy at the
-            # current position
-            for record in self.tna_long_hierarchy_record_instance.hierarchy:
-                if record.iaid == current_record.iaid:
-                    self.assertEqual(
-                        is_page_current_item_in_hierarchy(current_record, record),
-                        True,
-                    )
-                else:
-                    self.assertEqual(
-                        is_page_current_item_in_hierarchy(current_record, record),
-                        False,
-                    )
+        page = self.tna_long_hierarchy_record_instance
+        hierarchy = page.hierarchy
+        for name, level_item, expected_result in (
+            ("item_level_1", hierarchy[0], False),
+            ("item_level_3", hierarchy[1], False),
+            ("item_level_6", hierarchy[2], False),
+            ("item_level_7", hierarchy[3], True),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    is_page_current_item_in_hierarchy(page, level_item), expected_result
+                )
 
     def test_level_name(self):
         for current_record, expected_result in (
@@ -658,14 +653,18 @@ class TestRecordURLTag(SimpleTestCase):
                 )
 
     def test_breadcrumb_items(self):
+        tna_record = self.tna_long_hierarchy_record_instance
+        tna_hierarchy = tna_record.hierarchy
+        non_tna_record = self.non_tna_long_hierarchy_record_instance
+        non_tna_hierarchy = non_tna_record.hierarchy
         for current_record, expected_result in (
-            (self.tna_long_hierarchy_record_instance, ["C162", "C9685", "C8077549"]),
+            (tna_record, [tna_hierarchy[0], tna_hierarchy[1], tna_record]),
             (
-                self.long_hierarchy_record_instance,
+                non_tna_record,
                 [
-                    "16131aa0-f1d9-42a5-8488-e9a236366b4b",
-                    "2dba8c17-0f69-4a53-b918-e6ddb06c41a7",
-                    "66787951-2237-4f8a-882f-0ac275fe2bff",
+                    non_tna_hierarchy[1],
+                    non_tna_hierarchy[2],
+                    non_tna_record,
                 ],
             ),
         ):
@@ -673,9 +672,9 @@ class TestRecordURLTag(SimpleTestCase):
                 # We pass in the record hierarchy, is_tna value and the current record
                 # and this function then retrieves the breadcrumb items associated
                 # with that hierarchy, depending on the state of is_tna
-                for i, item in enumerate(
+                self.assertEqual(
                     breadcrumb_items(
                         current_record.hierarchy, current_record.is_tna, current_record
-                    )
-                ):
-                    self.assertEqual(item.iaid, expected_result[i])
+                    ),
+                    expected_result,
+                )
