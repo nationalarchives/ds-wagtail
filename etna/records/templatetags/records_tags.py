@@ -63,7 +63,7 @@ def level_name(level_code: int, is_tna: bool) -> str:
 
 
 @register.simple_tag
-def breadcrumb_items(hierarchy: list, is_tna: bool, current_item: Record) -> list:
+def breadcrumb_items(hierarchy: list, is_tna: bool, current_record: Record) -> list:
     """Returns breadcrumb items depending on position in hierarchy
     Update tna_breadcrumb_levels or oa_breadcrumb_levels to change the levels displayed
     """
@@ -71,14 +71,14 @@ def breadcrumb_items(hierarchy: list, is_tna: bool, current_item: Record) -> lis
     tna_breadcrumb_levels = [1, 2, 3]
     oa_breadcrumb_levels = [1, 2, 5]
     for record in hierarchy:
-        if record.level_code != current_item.level_code:
+        if record.level_code != current_record.level_code:
             if is_tna:
                 if record.level_code in tna_breadcrumb_levels:
                     items.append(record)
             else:
                 if record.level_code in oa_breadcrumb_levels:
                     items.append(record)
-    items.append(current_item)
+    items.append(current_record)
     if len(items) > 3:
         items = items[-3:]
     return items
