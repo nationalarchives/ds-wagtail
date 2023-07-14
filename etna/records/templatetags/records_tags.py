@@ -13,14 +13,15 @@ def record_url(
     record: Record,
     is_editorial: bool = False,
     order_from_discovery: bool = False,
-    use_non_reference_number_url: bool = False,
+    level_or_archive: str = "",
 ) -> str:
     """
     Return the URL for the provided `record`, which should always be a
     fully-transformed `etna.records.models.Record` instance.
 
-    use_non_reference_number_url: set True to override reference number to disambiguation page
-    (multiple iaid share the same reference number) when its not required.
+    level_or_archive: Use api level name or "Archive" name. This value is checked
+    with a set of values in order to override reference number that show
+    disambiguation page (multiple iaid share the same reference number).
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
@@ -33,8 +34,16 @@ def record_url(
         else:
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
+    reference_number_override_list = (
+        level_name(level_code=1, is_tna=True),
+        level_name(level_code=2, is_tna=True),
+        level_name(level_code=4, is_tna=True),
+        level_name(level_code=5, is_tna=True),
+        "Lettercode",  # same as Department, but returned in API response
+        "Archive",  # no level specified for this value
+    )
     if record:
-        if use_non_reference_number_url:
+        if level_or_archive in reference_number_override_list:
             return record.non_reference_number_url
         else:
             return record.url
