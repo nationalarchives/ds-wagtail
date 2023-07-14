@@ -608,7 +608,7 @@ class TestRecordURLTag(SimpleTestCase):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
                 self.assertEqual(
-                    record_url(source, use_non_reference_number_url=True),
+                    record_url(source, level_or_archive="Archive"),
                     expected_result,
                 )
 
@@ -620,8 +620,104 @@ class TestRecordURLTag(SimpleTestCase):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
                 self.assertEqual(
-                    record_url(source.repository, use_non_reference_number_url=True),
+                    record_url(source.repository, level_or_archive="Archive"),
                     expected_result,
+                )
+
+    def test_level_or_archive_tna_levels(self):
+        self.record_lettercode = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C27",
+                        "level": "Lettercode",
+                        "referenceNumber": "BE",
+                    }
+                }
+            }
+        )
+        self.record_division = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C632",
+                        "level": "Division",
+                        "referenceNumber": "Division within FO",
+                    }
+                }
+            }
+        )
+        self.record_series = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C4144",
+                        "level": "Series",
+                        "referenceNumber": "CM 39",
+                    }
+                }
+            }
+        )
+        self.record_sub_series = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C88345",
+                        "level": "Sub-series",
+                        "referenceNumber": "Sub-series within PIN 18",
+                    }
+                }
+            }
+        )
+        self.record_sub_sub_series = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C149305",
+                        "level": "Sub-sub-series",
+                        "referenceNumber": "Sub-sub-series within FCO 63",
+                    }
+                }
+            }
+        )
+        self.record_piece = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C2519196",
+                        "level": "Piece",
+                        "referenceNumber": "FO 78/2294",
+                    }
+                }
+            }
+        )
+        self.record_item = Record(
+            raw_data={
+                "@template": {
+                    "details": {
+                        "iaid": "C7472714",
+                        "level": "Item",
+                        "referenceNumber": "C 1/498/26",
+                    }
+                }
+            }
+        )
+        for name, record, expected in (
+            ("record_lettercode", self.record_lettercode, "/catalogue/id/C27/"),
+            ("record_division", self.record_division, "/catalogue/id/C632/"),
+            ("record_series", self.record_series, "/catalogue/ref/CM/39/"),
+            ("record_sub_series", self.record_sub_series, "/catalogue/id/C88345/"),
+            (
+                "record_sub_sub_series",
+                self.record_sub_sub_series,
+                "/catalogue/id/C149305/",
+            ),
+            ("record_piece", self.record_piece, "/catalogue/ref/FO/78/2294/"),
+            ("record_item", self.record_item, "/catalogue/ref/C/1/498/26/"),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    record_url(record, level_or_archive=record.level), expected
                 )
 
     def test_is_page_current_item_in_hierarchy(self):
