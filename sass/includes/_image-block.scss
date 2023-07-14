@@ -114,6 +114,8 @@
         .transcription__tabpanel {
             margin-top: 1.5rem;
 
+            overflow: hidden;
+
             &.hidden {
                 display: none;
             }
