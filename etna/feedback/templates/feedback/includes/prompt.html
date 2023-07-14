@@ -24,7 +24,7 @@
                     {{ comment_form.as_div }}
 
                     <button type="submit" class="feedback__form-submit tna-button--dark" data-feedback-form-submit>Submit</button>
-                    <button type="submit" class="feedback__form-close" aria-label="Submit and close feedback form" data-feedback-form-submit>
+                    <button class="feedback__form-close" aria-label="Close feedback form" data-feedback-form-close>
                         {% include "includes/icon.html" with name="x-mark" classname="feedback__form-close-icon" %}
                     </button>
                 </form>
@@ -49,8 +49,14 @@
 const form = document.getElementById("feedback-form");
 const commentForm = document.getElementById("feedback-comment-form");
 const successContent = document.getElementById("feedback-success");
+const closeButton = document.querySelector("button[data-feedback-form-close]");
 let submitted = false;
 let comment_submitted = false;
+
+function showSuccessContent() {
+    successContent.style.display = "block";
+    window.location.hash = successContent.id;
+}
 
 // submit via the fetch API instead
 form.onsubmit = function (e) {
@@ -95,8 +101,7 @@ form.onsubmit = function (e) {
             window.location.hash = commentForm.id;
         }
         else {
-            successContent.style.display = "block";
-            window.location.hash = successContent.id;
+            showSuccessContent();
         }
     })
     .catch((error) => {
@@ -131,11 +136,16 @@ commentForm.onsubmit = function (e) {
     .then((response) => response.json())
     .then((data) => {
         commentForm.remove();
-        successContent.style.display = "block";
-        window.location.hash = successContent.id;
+        showSuccessContent();
     })
     .catch((error) => {
         console.error("Error:", error);
     });
 };
+
+closeButton.onclick = function (e) {
+    commentForm.remove();
+    showSuccessContent();
+};
+
 </script>

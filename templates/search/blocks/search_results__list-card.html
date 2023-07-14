@@ -13,7 +13,7 @@
 <li class="search-results__list-card" data-iaid="{{ record.iaid }}" data-score="{{ record.score }}">
     <div class="search-results__list-card-details">
         <h3 class="search-results__list-card-heading">
-            <a href="{% record_url record %}" class="search-results__list-card-heading-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
+            <a href="{% if form.group.value == bucketkeys.ARCHIVE.value %}{% record_url record use_non_reference_number_url=True %}{% else %}{% record_url record %}{% endif %}" class="search-results__list-card-heading-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                 {% if record.reference_number %}
                 <span class="sr-only">Reference number {{ record.reference_number }}: </span>
                 {% endif %}

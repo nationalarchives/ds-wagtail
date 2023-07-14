@@ -10,7 +10,16 @@ class TestRecordURLTag(SimpleTestCase):
             "repository": {
                 "@admin": {
                     "id": "A13531109",
-                }
+                },
+                "identifier": [
+                    {
+                        "primary": True,
+                        "reference_number": "66",
+                        "type": "reference number",
+                        "value": "66",
+                    },
+                    {"type": "Archon number", "value": "66"},
+                ],
             },
             "@template": {
                 "details": {
@@ -224,9 +233,37 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_repository_links(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/id/A13531109/"),
+            ("record_instance", "/catalogue/ref/66/"),
             ("record_instance_no_reference", ""),
         ):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
                 self.assertEqual(record_url(source.repository), expected_result)
+
+    def test_non_reference_number_url(self):
+        # tests using raw source
+        for attribute_name, expected_result in (
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
+            (
+                "record_instance_no_reference",
+                "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
+            ),
+        ):
+            with self.subTest(attribute_name):
+                source = getattr(self, attribute_name)
+                self.assertEqual(
+                    record_url(source, use_non_reference_number_url=True),
+                    expected_result,
+                )
+
+        # tests using repository attribute
+        for attribute_name, expected_result in (
+            ("record_instance", "/catalogue/id/A13531109/"),
+            ("record_instance_no_reference", ""),
+        ):
+            with self.subTest(attribute_name):
+                source = getattr(self, attribute_name)
+                self.assertEqual(
+                    record_url(source.repository, use_non_reference_number_url=True),
+                    expected_result,
+                )

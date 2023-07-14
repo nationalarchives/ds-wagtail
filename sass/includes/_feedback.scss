@@ -2,7 +2,7 @@
     &__form {
         border: 1px solid $color__black;
         display: block;
-        max-width: 30rem;
+        max-width: 40rem;
         margin: 0 auto;
         padding: 2rem;
         position: relative;
@@ -24,6 +24,7 @@
     }
 
     &__response-button {
+        width:90%;
         &:hover {
             cursor: pointer;
         }
@@ -65,4 +66,9 @@
     &__success {
         display: none;
     }
+}
+
+
+#id_comment {
+    width:100%;
 }

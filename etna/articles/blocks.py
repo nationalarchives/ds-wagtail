@@ -9,7 +9,6 @@ from etna.core.blocks import (
     AuthorPromotedLinkBlock,
     ContentImageBlock,
     FeaturedRecordArticleBlock,
-    ImageBlock,
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
@@ -18,49 +17,7 @@ from etna.core.blocks import (
 )
 
 from ..media.blocks import MediaBlock
-from ..records.blocks import RecordChooserBlock, RecordLinksBlock
-
-
-class FeaturedRecordBlock(SectionDepthAwareStructBlock):
-    title = blocks.CharBlock(
-        label="Descriptive title",
-        max_length=200,
-        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
-    )
-    record = RecordChooserBlock()
-    image = ImageBlock(
-        label="Teaser image",
-        required=False,
-        help_text="Add an image to be displayed with the selected record.",
-        template="articles/blocks/images/blog-embed__image-container.html",
-    )
-
-    class Meta:
-        icon = "archive"
-        template = "articles/blocks/featured_record.html"
-        label = "Featured record"
-
-
-class FeaturedRecordsItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(
-        label="Descriptive title",
-        max_length=200,
-        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
-    )
-    record = RecordChooserBlock()
-
-    class Meta:
-        icon = "archive"
-
-
-class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
-    introduction = blocks.CharBlock(max_length=200, required=False)
-    items = blocks.ListBlock(FeaturedRecordsItemBlock)
-
-    class Meta:
-        icon = "archive"
-        template = "articles/blocks/featured_records.html"
-        label = "Featured records"
+from ..records.blocks import RecordLinksBlock
 
 
 class AuthorPromotedPagesBlock(blocks.StructBlock):
@@ -230,8 +187,6 @@ class SectionContentBlock(blocks.StreamBlock):
     image = ContentImageBlock()
     media = MediaBlock()
     featured_record_article = FeaturedRecordArticleBlock()
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     record_links = RecordLinksBlock()

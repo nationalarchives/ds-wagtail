@@ -46,6 +46,9 @@
     &__submit {
         cursor: pointer;
     }
+    &__submit {
+        margin-top:1.2em;
+    }
 
     &__label {
         max-width: 80%;
@@ -118,3 +121,38 @@
         margin-bottom: 2rem;
     }
 }
+
+/*date filters via GDS pattern*/
+
+.tna-date-input__item {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 0;
+}
+
+.tna-form-group .tna-form-group:last-of-type {
+    margin-bottom: 0;
+}
+
+.tna-form-group label {
+    display:block;
+}
+
+.tna-date-input__label, .input__label {
+    display: block;
+
+}
+
+.tna-input--width-2{
+
+    max-width:2.75em;
+}
+.tna-input--width-4 {
+
+    max-width:4em;
+}
+
+.example-text {
+    color:$color__grey-600;
+}
+
