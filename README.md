@@ -38,8 +38,20 @@ This command takes care of the following:
 1. Building all of the necessary Docker containers
 2. Starting all of the necessary Docker containers
 3. Installing any new python dependencies
-4. Applying any new database migrations
-5. Starting the Django development server
+4. Collect static assets
+
+### 2. Start the development server
+
+```sh
+# Enter the shell for the web container
+fab sh
+
+# Run migrations
+poetry run python manage.py migrate
+
+# Run the development server
+poetry run python manage.py runserver 0.0.0.0:8000
+```
 
 ### 2. Access the site
 
@@ -48,7 +60,11 @@ This command takes care of the following:
 ### 3. Create a Django user for yourself
 
 ```sh
+# ...from within the web container
 python manage.py createsuperuser
+
+# ...or on the host machine
+fab create-superuser
 ```
 
 ### 4. Access the Wagtail admin
