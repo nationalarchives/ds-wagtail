@@ -1,5 +1,6 @@
 {% load static records_tags search_tags wagtailcore_tags wagtailimages_tags %}
 <li class="search-results__list-card" data-score="{{ result.score }}">
+
     <div class="search-results__list-card-details">
         <h3 class="search-results__list-card-heading">
             <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-analytics-link="{{ result.title }}">
@@ -12,7 +13,7 @@
         </p>
 
         <dl class="search-results__list-card-metadata">
-            <dt class="search-results__list-card-metadata-item">
+            <dt class="search-results__list-card-metadata-item format">
                 Format:
             </dt>
             <dd>{{ result.type_label }}</dd>
