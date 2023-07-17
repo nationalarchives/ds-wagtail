@@ -34,7 +34,7 @@ def record_url(
         else:
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
-    # actual level names as theirs code are differ between tna and nonTna
+    # actual level names as level codes defined differ between tna and nonTna
     reference_number_override_list = (
         "Lettercode",  # same as Department, but returned in API response
         "Department",
