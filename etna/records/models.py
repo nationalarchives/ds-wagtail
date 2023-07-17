@@ -901,6 +901,10 @@ class Record(DataLayerMixin, APIModel):
                     return former_name_authority_reference
         return ""
 
+    @cached_property
+    def closure_status(self) -> str:
+        return extract(self.get("@template", {}), "details.closureStatus", default="")
+
 
 @dataclass
 class Image:
