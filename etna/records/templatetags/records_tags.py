@@ -15,6 +15,7 @@ def record_url(
     order_from_discovery: bool = False,
     level_or_archive: str = "",
     base_record: Record = None,
+    form_group: str = "",
 ) -> str:
     """
     Return the URL for the provided `record`, which should always be a
@@ -27,6 +28,8 @@ def record_url(
     base_record: is the original record; use when record is not the original record
     and record is a subset of the original record along with level_or_archive
     in order to determine reference number override
+
+    form_group: use with results from search queries, value determinnes tna, nonTna results
     """
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
@@ -40,9 +43,18 @@ def record_url(
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if record:
-        is_tna = record.is_tna
-        if base_record:
-            is_tna = base_record.is_tna
+        if form_group == "archive":
+            return record.non_reference_number_url
+        if form_group == "nonTna":
+            is_tna = False
+        elif form_group in ("tna", "digitised", "creator"):
+            is_tna = True
+        else:
+            is_tna = record.is_tna
+
+            if base_record:
+                is_tna = base_record.is_tna
+
         if is_tna:
             reference_number_override_list = [
                 "Lettercode",  # same as Department, but returned in API response
