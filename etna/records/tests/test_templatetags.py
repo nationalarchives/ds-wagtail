@@ -55,7 +55,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "ADM",
                                 "type": "reference number",
                                 "value": "ADM",
@@ -85,7 +85,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "ADM 223",
                                 "type": "reference number",
                                 "value": "ADM 223",
@@ -149,7 +149,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "J",
                                 "type": "reference number",
                                 "value": "J",
@@ -171,7 +171,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "J 77",
                                 "type": "reference number",
                                 "value": "J 77",
@@ -193,7 +193,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "J 77/3417",
                                 "type": "reference number",
                                 "value": "J 77/3417",
@@ -208,7 +208,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "J 77/3417/4284",
                                 "type": "reference number",
                                 "value": "J 77/3417/4284",
@@ -247,7 +247,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
                                 "type": "reference number",
                                 "value": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
@@ -262,7 +262,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
                                 "type": "reference number",
                                 "value": "LU-ADM-01 to LU-WIR-16; LU-AC-01",
@@ -277,7 +277,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-01 to LU-PEP-42; Blue Drawer 2B14 & 2B13; LU-WAR-30; LU-AC-01",
                                 "type": "reference number",
                                 "value": "LU-PEP-01 to LU-PEP-42; Blue Drawer 2B14 & 2B13; LU-WAR-30; LU-AC-01",
@@ -292,7 +292,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-02 to LU-PEP-42; Blue Drawer 2B14",
                                 "type": "reference number",
                                 "value": "LU-PEP-02 to LU-PEP-42; Blue Drawer 2B14",
@@ -307,7 +307,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-27; LU-PEP-30 to LU-PEP-42",
                                 "type": "reference number",
                                 "value": "LU-PEP-27; LU-PEP-30 to LU-PEP-42",
@@ -322,7 +322,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-27; LU-PEP-30 to LU-PEP-42; LU-AC-01",
                                 "type": "reference number",
                                 "value": "LU-PEP-27; LU-PEP-30 to LU-PEP-42; LU-AC-01",
@@ -337,7 +337,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-38",
                                 "type": "reference number",
                                 "value": "LU-PEP-38",
@@ -352,7 +352,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-41",
                                 "type": "reference number",
                                 "value": "LU-PEP-41",
@@ -367,7 +367,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "identifier": [
                             {
-                                "primary": "true",
+                                "primary": True,
                                 "reference_number": "LU-PEP-41",
                                 "type": "reference number",
                                 "value": "LU-PEP-41",
@@ -542,7 +542,7 @@ class TestRecordURLTag(SimpleTestCase):
                 self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
-    def test_discovery_links_when_is_editorial_is_true(self):
+    def test_discovery_links_when_is_editorial_is_True(self):
         for attribute_name, expected_result in (
             (
                 "record_instance",
@@ -624,82 +624,89 @@ class TestRecordURLTag(SimpleTestCase):
                     expected_result,
                 )
 
-    def test_level_or_archive_tna_levels(self):
+    def test_level_or_archive_tna_levels_without_hierarchy(self):
         self.record_lettercode = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C27",
                         "level": "Lettercode",
                         "referenceNumber": "BE",
                     }
-                }
+                },
             }
         )
         self.record_division = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C632",
                         "level": "Division",
                         "referenceNumber": "Division within FO",
                     }
-                }
+                },
             }
         )
         self.record_series = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C4144",
                         "level": "Series",
                         "referenceNumber": "CM 39",
                     }
-                }
+                },
             }
         )
         self.record_sub_series = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C88345",
                         "level": "Sub-series",
                         "referenceNumber": "Sub-series within PIN 18",
                     }
-                }
+                },
             }
         )
         self.record_sub_sub_series = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C149305",
                         "level": "Sub-sub-series",
                         "referenceNumber": "Sub-sub-series within FCO 63",
                     }
-                }
+                },
             }
         )
         self.record_piece = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C2519196",
                         "level": "Piece",
                         "referenceNumber": "FO 78/2294",
                     }
-                }
+                },
             }
         )
         self.record_item = Record(
             raw_data={
+                "@datatype": {"group": [{"value": "tna"}]},
                 "@template": {
                     "details": {
                         "iaid": "C7472714",
                         "level": "Item",
                         "referenceNumber": "C 1/498/26",
                     }
-                }
+                },
             }
         )
         for name, record, expected in (
@@ -718,6 +725,108 @@ class TestRecordURLTag(SimpleTestCase):
             with self.subTest(name):
                 self.assertEqual(
                     record_url(record, level_or_archive=record.level), expected
+                )
+
+    def test_level_or_archive_tna_levels_with_hierarchy(self):
+        self.record = self.tna_long_hierarchy_record_instance
+
+        self.hierarchy_level_1 = self.record.hierarchy[0]
+        self.hierarchy_level_3 = self.record.hierarchy[1]
+        self.hierarchy_level_6 = self.record.hierarchy[2]
+        self.hierarchy_level_7 = self.record.hierarchy[3]
+
+        for name, hierarchy_record, expected in (
+            ("hierarchy_level_1", self.hierarchy_level_1, "/catalogue/id/C162/"),
+            ("hierarchy_level_3", self.hierarchy_level_3, "/catalogue/ref/J/77/"),
+            ("hierarchy_level_6", self.hierarchy_level_6, "/catalogue/ref/J/77/3417/"),
+            (
+                "hierarchy_level_7",
+                self.hierarchy_level_7,
+                "/catalogue/ref/J/77/3417/4284/",
+            ),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    record_url(
+                        hierarchy_record,
+                        level_or_archive=level_name(
+                            hierarchy_record.level_code, self.record.is_tna
+                        ),
+                        base_record=self.record,
+                    ),
+                    expected,
+                )
+
+    def test_level_or_archive_non_tna_levels_with_hierarchy(self):
+        self.record = self.non_tna_long_hierarchy_record_instance
+
+        self.hierarchy_level_1 = self.record.hierarchy[0]
+        self.hierarchy_level_2 = self.record.hierarchy[1]
+        self.hierarchy_level_5 = self.record.hierarchy[2]
+        self.hierarchy_level_6 = self.record.hierarchy[3]
+        self.hierarchy_level_7 = self.record.hierarchy[4]
+        self.hierarchy_level_8 = self.record.hierarchy[5]
+        self.hierarchy_level_9 = self.record.hierarchy[6]
+        self.hierarchy_level_10 = self.record.hierarchy[7]
+        self.hierarchy_level_11 = self.record.hierarchy[8]
+
+        for name, hierarchy_record, expected in (
+            (
+                "hierarchy_level_1",
+                self.hierarchy_level_1,
+                "/catalogue/id/278e5baf-af95-4b8a-a246-7bbd4faebe92/",
+            ),
+            (
+                "hierarchy_level_2",
+                self.hierarchy_level_2,
+                "/catalogue/id/16131aa0-f1d9-42a5-8488-e9a236366b4b/",
+            ),
+            (
+                "hierarchy_level_5",
+                self.hierarchy_level_5,
+                "/catalogue/id/2dba8c17-0f69-4a53-b918-e6ddb06c41a7/",
+            ),
+            (
+                "hierarchy_level_6",
+                self.hierarchy_level_6,
+                "/catalogue/id/a6f76935-7e8d-451d-ac10-b5e6a0dd0efb/",
+            ),
+            (
+                "hierarchy_level_7",
+                self.hierarchy_level_7,
+                "/catalogue/id/fd77b34e-db7e-4b8f-93d2-2257e66e3d96/",
+            ),
+            (
+                "hierarchy_level_8",
+                self.hierarchy_level_8,
+                "/catalogue/id/fa5e6d5f-7838-4d4c-b168-2b983b70c0b3/",
+            ),
+            (
+                "hierarchy_level_9",
+                self.hierarchy_level_9,
+                "/catalogue/id/b5da3728-3977-485a-b4bf-c1949abe5c73/",
+            ),
+            (
+                "hierarchy_level_10",
+                self.hierarchy_level_10,
+                "/catalogue/id/dc02e42c-043b-4d49-bade-339c851a6019/",
+            ),
+            (
+                "hierarchy_level_11",
+                self.hierarchy_level_11,
+                "/catalogue/id/66787951-2237-4f8a-882f-0ac275fe2bff/",
+            ),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    record_url(
+                        hierarchy_record,
+                        level_or_archive=level_name(
+                            hierarchy_record.level_code, self.record.is_tna
+                        ),
+                        base_record=self.record,
+                    ),
+                    expected,
                 )
 
     def test_is_page_current_item_in_hierarchy(self):
