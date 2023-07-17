@@ -43,11 +43,11 @@ def record_url(
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if record:
-        if form_group == "archive":
+        if form_group in ("archive", "creator"):
             return record.non_reference_number_url
         if form_group == "nonTna":
             is_tna = False
-        elif form_group in ("tna", "digitised", "creator"):
+        elif form_group in ("tna", "digitised"):
             is_tna = True
         else:
             is_tna = record.is_tna
