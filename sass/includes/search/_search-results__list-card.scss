@@ -287,7 +287,7 @@ dt{
 }
 
 dd {
-    margin: 0 0 0 80px;
+    margin: 0 0 0 45px;
     padding: 0 0 0.5em 1em;
     font-weight:400;
     color: rgba(52, 51, 56);
@@ -322,6 +322,10 @@ dd {
 
 .search-results__list-card-full-width-image {
     margin-bottom:1em;
+}
+
+.format {
+   width:0;
 }
 
 
