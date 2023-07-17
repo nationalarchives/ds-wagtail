@@ -1,4 +1,4 @@
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
@@ -252,7 +252,9 @@ class ArticlePage(
         super().save(*args, **kwargs)
 
     @cached_property
-    def similar_items(self) -> Tuple["ArticlePage"]:
+    def similar_items(
+        self,
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -267,49 +269,43 @@ class ArticlePage(
             # Avoid unncecssary lookups
             return ()
 
-        # Identify 'other' live pages with tags in common
-        tag_match_ids = (
-            ArticlePage.objects.public()
-            .live()
+        # Identify other live pages with tags in common
+        related_tags = (
+            Page.objects.live()
+            .public()
             .not_page(self)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
             .filter(tagged_items__tag_id__in=tag_ids)
-            .values_list("id", flat=True)
-            .distinct()
         )
-        if not tag_match_ids:
-            # Avoid unncecssary lookups
-            return ()
 
-        # Use search() to prioritise items with the highest number of matches
         return tuple(
-            ArticlePage.objects.filter(id__in=tag_match_ids).search(
-                self.article_tag_names,
-                fields=["article_tag_names"],
-                operator="or",
-            )[:3]
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
 
     @cached_property
-    def latest_items(self) -> Tuple["ArticlePage"]:
+    def latest_items(
+        self,
+    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
         """
         Return the three most recently published ArticlePages,
         excluding this object.
         """
-        similarqueryset = list(self.similar_items)
 
-        latestqueryset = list(
-            ArticlePage.objects.public()
-            .live()
-            .not_page(self)
-            .select_related("hero_image")
-            .prefetch_related("hero_image__renditions")
-            .order_by("-first_published_at")
-        )
-        filterlatestpages = [
-            page for page in latestqueryset if page not in similarqueryset
-        ]
+        latest_query_set = []
 
-        return tuple(filterlatestpages[:3])
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            latest_query_set.extend(
+                page_type.objects.live()
+                .public()
+                .exclude(id__in=[page.id for page in self.similar_items])
+                .not_page(self)
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(
+            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+        )[:3]
 
 
 class FocusedArticlePage(
