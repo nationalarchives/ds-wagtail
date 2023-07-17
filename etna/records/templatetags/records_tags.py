@@ -34,12 +34,13 @@ def record_url(
         else:
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
+    # actual level names as theirs code are differ between tna and nonTna
     reference_number_override_list = (
-        level_name(level_code=1, is_tna=True),
-        level_name(level_code=2, is_tna=True),
-        level_name(level_code=4, is_tna=True),
-        level_name(level_code=5, is_tna=True),
         "Lettercode",  # same as Department, but returned in API response
+        "Department",
+        "Division",
+        "Sub-series",
+        "Sub-sub-series",
         "Archive",  # no level specified for this value
     )
     if record:
