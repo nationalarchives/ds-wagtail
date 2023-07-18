@@ -243,7 +243,8 @@ class EndToEndSearchTestCase(TestCase):
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
-    sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
+    sort_by_desktop_options_html = '<label for="id_sort_by_desktop">Sort by</label>'
+    sort_by_mobile_options_html = '<label for="id_sort_by_mobile">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
@@ -276,11 +277,13 @@ class EndToEndSearchTestCase(TestCase):
     def assertSearchWithinOptionNotRendered(self, response):
         self.assertNotIn(self.search_within_option_html, response)
 
-    def assertSortOrderOptionsRendered(self, response):
-        self.assertIn(self.sort_order_options_html, response)
+    def assertSortByOptionsRendered(self, response):
+        self.assertIn(self.sort_by_desktop_options_html, response)
+        self.assertIn(self.sort_by_mobile_options_html, response)
 
-    def assertSortOrderOptionsNotRendered(self, response):
-        self.assertNotIn(self.sort_order_options_html, response)
+    def assertSortByOptionsNotRendered(self, response):
+        self.assertNotIn(self.sort_by_desktop_options_html, response)
+        self.assertNotIn(self.sort_by_mobile_options_html, response)
 
     def assertFilterOptionsRendered(self, response):
         self.assertIn(self.filter_options_html, response)
@@ -324,7 +327,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -357,7 +360,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -389,7 +392,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
         self.assertFilterOptionsRendered(content)
 
@@ -428,7 +431,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
 
@@ -543,7 +546,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -573,7 +576,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -605,7 +608,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
 
@@ -643,7 +646,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
 

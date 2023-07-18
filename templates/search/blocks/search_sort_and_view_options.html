@@ -5,11 +5,11 @@
     <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form" id="catalogue-sort-form-desktop" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
 
         <h2 class="search-sort-view__heading">
-           <label for="{{form.sort_by.id_for_label}}">Sort by</label>
+           <label for="id_sort_by_desktop">Sort by</label>
         </h2>
 
         {{ form.sort_by.errors }}
-        {{ form.sort_by }}
+        {% render_sort_by_input form=form id_suffix="desktop" %}
 
         {% render_fields_as_hidden form exclude='sort_by' %}
 
