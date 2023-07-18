@@ -542,7 +542,7 @@ class TestRecordURLTag(SimpleTestCase):
                 self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
-    def test_discovery_links_when_is_editorial_is_True(self):
+    def test_discovery_links_when_is_editorial_is_true(self):
         for attribute_name, expected_result in (
             (
                 "record_instance",
@@ -828,6 +828,250 @@ class TestRecordURLTag(SimpleTestCase):
                     ),
                     expected,
                 )
+
+    def test_tna_levels_for_search(self):
+        tna_search_record_department = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C427",
+                            "level": "Lettercode",
+                            "referenceNumber": "PHSO",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/C427/",
+        )
+
+        tna_search_record_division = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C632",
+                            "level": "Division",
+                            "referenceNumber": "Division within FO",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/C632/",
+        )
+
+        tna_search_record_series = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C14918854",
+                            "level": "Series",
+                            "referenceNumber": "FCO 158",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/ref/FCO/158/",
+        )
+
+        tna_search_record_sub_series = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C89162",
+                            "level": "Sub-series",
+                            "referenceNumber": "Sub-series within WO 400",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/C89162/",
+        )
+
+        tna_search_record_sub_sub_series = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C151221",
+                            "level": "Sub-sub-series",
+                            "referenceNumber": "Sub-sub-series within ADM 1",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/C151221/",
+        )
+
+        tna_search_record_item = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C8077549",
+                            "level": "Item",
+                            "referenceNumber": "J 77/3417/4284",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/ref/J/77/3417/4284/",
+        )
+
+        tna_search_record_piece = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C2519144",
+                            "level": "Piece",
+                            "referenceNumber": "FO 78/2242",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/ref/FO/78/2242/",
+        )
+
+        for name, search_record, expected in (
+            (
+                "tna_search_record_department",
+                *tna_search_record_department,
+            ),
+            (
+                "tna_search_record_division",
+                *tna_search_record_division,
+            ),
+            (
+                "tna_search_record_series",
+                *tna_search_record_series,
+            ),
+            (
+                "tna_search_record_sub_series",
+                *tna_search_record_sub_series,
+            ),
+            (
+                "tna_search_record_sub_sub_series",
+                *tna_search_record_sub_sub_series,
+            ),
+            (
+                "tna_search_record_item",
+                *tna_search_record_item,
+            ),
+            (
+                "tna_search_record_piece",
+                *tna_search_record_piece,
+            ),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    record_url(
+                        search_record,
+                        level_or_archive=search_record.level,
+                        form_group="tna",
+                    ),
+                    expected,
+                )
+
+    def test_non_tna_levels_for_search(self):
+        tna_search_record_item = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C10679336",
+                            "level": "Item",
+                            "referenceNumber": "ADM 359/32C/95",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/C10679336/",
+        )
+
+        tna_search_record_piece = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "C10996932",
+                            "level": "Piece",
+                            "referenceNumber": "DF 5/108",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/ref/DF/5/108/",
+        )
+        for name, search_record, expected in (
+            (
+                "tna_search_record_item",
+                *tna_search_record_item,
+            ),
+            (
+                "tna_search_record_piece",
+                *tna_search_record_piece,
+            ),
+        ):
+            with self.subTest(name):
+                self.assertEqual(
+                    record_url(
+                        search_record,
+                        level_or_archive=search_record.level,
+                        form_group="nonTna",
+                    ),
+                    expected,
+                )
+
+    def test_record_creators_for_search(self):
+        search_record, expected = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "primaryIdentifier": "F288770",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/F288770/",
+        )
+
+        self.assertEqual(
+            record_url(
+                search_record,
+                level_or_archive=search_record.level,
+                form_group="creator",
+            ),
+            expected,
+        )
+
+    def test_record_archive_for_search(self):
+        search_record, expected = (
+            Record(
+                raw_data={
+                    "@template": {
+                        "details": {
+                            "iaid": "A13531747",
+                            "referenceNumber": "262",
+                            "type": "archive",
+                        }
+                    },
+                }
+            ),
+            "/catalogue/id/A13531747/",
+        )
+
+        self.assertEqual(
+            record_url(
+                search_record,
+                level_or_archive=search_record.level,
+                form_group="creator",
+            ),
+            expected,
+        )
 
     def test_is_page_current_item_in_hierarchy(self):
         page = self.tna_long_hierarchy_record_instance
