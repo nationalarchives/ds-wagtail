@@ -1,5 +1,3 @@
-import push_to_data_layer from "./../push_to_data_layer";
-
 const addPositionToSearchResults = () => {
     const resultsList = document.getElementById('analytics-results-list').children;
 
@@ -10,7 +8,6 @@ const addPositionToSearchResults = () => {
 
 const intialiseSearchResultTracking = () => {
     addPositionToSearchResults();
-    addListenersToResultsList();
 };
 
 export default intialiseSearchResultTracking;
