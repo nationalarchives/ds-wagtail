@@ -11,6 +11,7 @@ from ..templatetags.search_tags import (
     query_string_exclude,
     query_string_include,
     render_fields_as_hidden,
+    render_sort_by_input,
 )
 
 
@@ -192,3 +193,20 @@ class RenderFieldsAsHiddenTest(SimpleTestCase):
                     f"as_hidden() should have been called for field: '{field.name}'"
                 ):
                     mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
+
+
+class RenderSortByTest(SimpleTestCase):
+    def setUp(self):
+        self.form = CatalogueSearchForm(
+            {
+                "group": "tna",
+                "sort_by": "relevance",
+                "sort_order": "asc",
+            }
+        )
+
+    def test_render_sort_by_input_input_id(self):
+        expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue">'
+        self.assertIn(
+            expected_html, render_sort_by_input(self.form, id_suffix="somevalue")
+        )
