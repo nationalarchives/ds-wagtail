@@ -3,7 +3,7 @@
 
     <div class="search-results__list-card-details">
         <h3 class="search-results__list-card-heading">
-            <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-analytics-link="{{ result.title }}">
+            <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-link="{{ result.title }}" data-link-type="Search results list" search-bucket="Website results">
                 {{ result.title }}
             </a>
         </h3>
