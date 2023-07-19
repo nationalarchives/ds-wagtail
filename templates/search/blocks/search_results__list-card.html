@@ -13,7 +13,7 @@
 <li class="search-results__list-card" data-iaid="{{ record.iaid }}" data-score="{{ record.score }}">
     <div class="search-results__list-card-details">
         <h3 class="search-results__list-card-heading">
-            <a href="{% record_url record %}" class="search-results__list-card-heading-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
+            <a href="{% if form.group.value == bucketkeys.ARCHIVE.value %}{% record_url record level_or_archive='Archive' form_group=form.group.value %}{% else %}{% record_url record level_or_archive=record.level form_group=form.group.value %}{% endif %}" class="search-results__list-card-heading-link" data-analytics-link="{{ record.reference_prefixed_summary_title }}">
                 {% if record.reference_number %}
                 <span class="sr-only">Reference number {{ record.reference_number }}: </span>
                 {% endif %}
@@ -54,7 +54,7 @@
 
             {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
             <dt class="search-results__list-card-metadata-item">
-                Type</dt>
+                Type:</dt>
             <dd>{{ record.type }}
             </dd>
             {% endif %}
@@ -67,17 +67,19 @@
     {% if record.is_digitised or apply_teaser_image %}
     <div class="search-results__list-card-image">
         {% if record.is_digitised %}
-        <div class="search-results__list-card-delivery-options">
-            <a href="{% record_url record %}" class="search-results__list-card-image-anchor" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
-                <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-            </a>
-            <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-                <p class="search-results__list-card-delivery-options-desc">
-                    <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
-                    Available online
-                </p>
-            </a>
-        </div>
+            {% if record.closure_status not in closure_closed_status %}
+                <div class="search-results__list-card-delivery-options">
+                    <a href="{% record_url record %}" class="search-results__list-card-image-anchor" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
+                    <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
+                    </a>
+                    <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                        <p class="search-results__list-card-delivery-options-desc">
+                            <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
+                            Available online
+                        </p>
+                    </a>
+                </div>
+            {% endif %}
         {% endif %}
         {% if apply_teaser_image %}
         <picture>

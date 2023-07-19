@@ -1,3 +1,5 @@
+@use '../node_modules/@nationalarchives/frontend/nationalarchives/tools/media';
+
 /*
 
 ==============
@@ -105,7 +107,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/new_cards';
 @import 'includes/highlight-gallery';
 @import 'includes/highlight-cards';
-@import "includes/highlight-intro";
+// @import "includes/highlight-intro";
 @import 'includes/utilities';
 @import "includes/archive-description";
 @import "includes/archive-collections";
@@ -118,3 +120,77 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/record-crosslink-panel';
 @import 'includes/image-block';
 @import 'includes/password-page';
+@import "includes/record-creator-description";
+@import "includes/record-creator-collections";
+
+/* Un-comment when front-end toolkit is fixed
+
+==============
+New styles
+==============
+
+Modified to match the existing site (for now)
+
+*/
+
+$largest-small-device: 992px;
+
+@import '@nationalarchives/frontend/nationalarchives/all';
+
+*:focus {
+    outline: none !important;
+}
+
+a,
+button,
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="button"],
+input[type="submit"] {
+    &:focus {
+        outline: 0.3125rem solid #004c7e !important;
+        outline-offset: 0.125rem !important;
+    }
+
+    [class*="--dark"] & {
+        outline-color: #00b0ff !important;
+    }
+}
+
+.tna-hero {
+    margin-bottom: 2rem;
+}
+
+.tna-hero__image {
+    @include media.on-mobile {
+        height: 320px;
+    }
+}
+
+.tna-hero__heading {
+    margin-top: 0;
+    margin-bottom: .75rem;
+
+    font-size: 4rem;
+    line-height: 1.22;
+    font-weight: 700;
+
+    @include media.on-mobile {
+        font-size: 2.25rem;
+        line-height: 1.33;
+    }
+}
+
+.tna-hero__body {
+    font-size: 1.25rem;
+
+    @include media.on-mobile {
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+    
+    p {
+        margin-bottom: 0;
+    }
+}

@@ -105,7 +105,7 @@ public_urls = [
     path(
         r"search/website/",
         setting_controlled_login_required(
-            search_views.WebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.NativeWebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search-website",
     ),

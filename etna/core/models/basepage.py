@@ -3,8 +3,10 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.db import models
+from django.db.models import options
 from django.http import HttpRequest
 from django.utils.decorators import method_decorator
+from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
@@ -25,6 +27,11 @@ __all__ = [
     "BasePage",
     "BasePageWithIntro",
 ]
+
+# Tiny hack to allow us to specify a `verbose_name_public` attribute
+# on `Meta` classes, which is used in place of `verbose_name`
+# for display in the front-end.
+options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 
 @method_decorator(apply_default_vary_headers, name="serve")
@@ -57,6 +64,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
 
     # DataLayerMixin overrides
     gtm_content_group = "Page"
+
+    show_publish_date_in_search_results = False
 
     # Overriding the default/core help_text set in MetadataPageMixin
     promote_panels = [
@@ -91,6 +100,28 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
 
     class Meta:
         abstract = True
+
+    @classmethod
+    def type_label(cls) -> str:
+        """
+        Return the label to use for this page type in the front-end,
+        with the first letter capitalized for display.
+        """
+        if cls.has_custom_type_label():
+            label = cls._meta.verbose_name_public
+        else:
+            label = cls._meta.verbose_name
+            if label.lower().endswith(" page"):
+                label = label[:-5]
+        return capfirst(label)
+
+    @classmethod
+    def has_custom_type_label(cls) -> bool:
+        """
+        Returns a boolean indicating whether a custom 'verbose_name_public' value
+        has been set in `Meta` for this page type.
+        """
+        return bool(getattr(cls._meta, "verbose_name_public", None))
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         """

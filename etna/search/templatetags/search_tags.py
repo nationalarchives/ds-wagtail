@@ -8,7 +8,7 @@ from django.forms import Form
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-from ...ciim.constants import SearchTabs
+from etna.ciim.constants import SearchTabs
 
 register = template.Library()
 logger = logging.getLogger(__name__)
@@ -116,3 +116,20 @@ def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
     Returns True when rhs_operand_list contains lhs_operand value, False otherwise
     """
     return (lhs_operand in rhs_operand_list) or False
+
+
+@register.simple_tag
+def render_sort_by_input(form, id_suffix) -> str:
+    """
+    returns sort_by field with name suffixed id.
+    """
+    bound_field = None
+    for field in form:
+        if field.name == "sort_by":
+            bound_field = field
+    html = ""
+    if bound_field:
+        html += bound_field.as_widget(
+            attrs={"id": f"id_{bound_field.name}_{id_suffix}"}
+        )
+    return mark_safe(html)

@@ -192,9 +192,6 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="tna", label="Records at The National Archives"),
         Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
-        Bucket(key="blog", label="Blogs"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
@@ -669,6 +666,21 @@ class LevelKeys(StrEnum):
     LEVEL_7 = "Item"
 
 
+@forTemplate
+class NonTNALevelKeys(StrEnum):
+    LEVEL_1 = "Fonds"
+    LEVEL_2 = "Sub-fonds"
+    LEVEL_3 = "Sub-sub-fonds"
+    LEVEL_4 = "Sub-sub-sub-fonds"
+    LEVEL_5 = "Series"
+    LEVEL_6 = "Sub-series"
+    LEVEL_7 = "Sub-sub-series"
+    LEVEL_8 = "Sub-sub-sub-series"
+    LEVEL_9 = "File"
+    LEVEL_10 = "Item"
+    LEVEL_11 = "Sub-item"
+
+
 LEVELS = (
     "Division",
     "Lettercode",
@@ -751,4 +763,9 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
         "display_name": "Paper catalogues",
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
+]
+
+CLOSURE_CLOSED_STATUS = [
+    "Closed Or Retained Document, Closed Description",
+    "Closed Or Retained Document, Open Description",
 ]

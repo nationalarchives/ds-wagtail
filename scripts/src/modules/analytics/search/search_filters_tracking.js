@@ -24,8 +24,10 @@ const pushActiveFilterData = (filterList) => {
         let value = filter.getAttribute('data-filter-value');
         const name = filter.getAttribute('data-filter-name');
 
-        // if filter is a start or end date, set its value to 'Yes'
-        if (name === 'opening_start_date' || name === 'opening_end_date') {
+        // list of filters to ignore the value of (i.e. return 'Yes' instead of the actual value)
+        const ignore_value_filters = ['opening_start_date', 'opening_end_date', 'covering_date_from', 'covering_date_to'];
+
+        if (ignore_value_filters.includes(name)) {
             value = 'Yes';
         }
 
@@ -40,38 +42,6 @@ const pushActiveFilterData = (filterList) => {
         // add currently active filters to activeFilters array
         activeFilters.push(filterData);
     });
-
-    // check if start and end date filters are active (do they already exist in array?)
-    let startDate = activeFilters.some(e => e.search_filter_name === 'opening_start_date');
-    let endDate = activeFilters.some(e => e.search_filter_name === 'opening_end_date');
-
-    // if startDate isn't active but endDate is, create a custom object with the value 'No'
-    if (!startDate && endDate) {
-        startDate = {
-            'event': 'search-filters',
-            'search_bucket': searchBucket || '',
-            'search_filter_name': 'opening_start_date',
-            'search_filter_value': 'No',
-        };
-
-        activeFilters.push(startDate);
-    }
-
-    // if endDate isn't active but startDate, create a custom object with the value 'No'
-    if (!endDate && startDate) {
-        endDate = {
-            'event': 'search-filters',
-            'search_bucket': searchBucket || '',
-            'search_filter_name': 'opening_end_date',
-            'search_filter_value': 'No',
-        };
-
-        activeFilters.push(endDate);
-    }
-
-    if (!startDate && !endDate) {
-        // if neither startDate nor endDate are present, do nothing;
-    }
 
     // loop through the updated filters array and send each item to the dataLayer
     activeFilters.forEach((filter) => {

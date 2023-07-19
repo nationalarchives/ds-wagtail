@@ -7,7 +7,12 @@
 
 <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
     <div class="card-group-secondary-nav">
-        <a href="{{ value.url }}" class="card-group-secondary-nav__image-link" data-card-title="{{ value.title }}" data-card-type="card-group-secondary-nav" aria-hidden="true" tabindex="-1">
+        <a href="{{ value.url }}" 
+        class="card-group-secondary-nav__image-link" 
+        data-card-title="{{ value.title }}" 
+        data-card-type="card-group-secondary-nav"
+        aria-labelledby="card-group-secondary-nav__desc{{ value.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
+        >
             <div class="card-group-secondary-nav__image">
                 <picture>
                     <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
@@ -19,9 +24,15 @@
             </div>
         </a>
             <div class="card-group-secondary-nav__body">
-                <a href="{{ value.url }}" class="card-group-secondary-nav__title-link" data-card-title="{{ value.title }}" data-card-type="card-group-secondary-nav">
-                    <{{ heading_level }} class="card-group-secondary-nav__heading">{{ value.title }}</{{ heading_level }}>
-                </a>
+                <{{ heading_level }} class="card-group-secondary-nav__heading">
+                    <a href="{{ value.url }}" 
+                    class="card-group-secondary-nav__title-link" 
+                    data-card-title="{{ value.title }}" 
+                    data-card-type="card-group-secondary-nav"
+                    id="card-group-secondary-nav__desc{{ value.id }}{% if instance_id %}-{{ instance_id }}{% endif %}">
+                        {{ value.title }}
+                    </a>
+                </{{ heading_level }}>
                 <span class="card-group-secondary-nav__span">{{ value.description|linebreaks }}</span>
             </div>
     </div>
