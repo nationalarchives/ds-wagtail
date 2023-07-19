@@ -22,7 +22,7 @@
                 </div>
             {% endif %}
 
-            <a href="{% pageurl result %}" class="search-results__list-card-link" data-analytics-link="{{ result.title }}">
+            <a href="{% pageurl result %}" class="search-results__list-card-link" data-link="{{ result.title }}" data-link-type="Search results list" search-bucket="Website results">
                 {{ result.title }}
             </a>
         </{{ heading_tag|default:"h4"}}>
