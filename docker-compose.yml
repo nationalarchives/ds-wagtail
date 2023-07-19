@@ -15,8 +15,7 @@ services:
     platform: linux/amd64
     build: .
     volumes:
-      - ./:/app
-      - ./bash/bashrc.sh:/root/.bashrc
+      - ./:/home/app/code
     depends_on:
       - db
     ports:

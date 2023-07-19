@@ -61,3 +61,7 @@ config/settings/local.py
 *.css
 *.css.map
 !wagtail-overrides.css
+
+# NVM/NPM
+.npm
+.nvm

@@ -8,7 +8,6 @@
 .git
 .github
 .gitignore
-.nvmrc
 .platform
 .platform.app.yaml
 .prettierrc.json

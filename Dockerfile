@@ -31,8 +31,6 @@ ENV \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_CREATE=false
 
-WORKDIR /app
-
 # Install poetry
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN curl -sSL "https://install.python-poetry.org" | python -
@@ -40,24 +38,30 @@ RUN curl -sSL "https://install.python-poetry.org" | python -
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
+RUN useradd --create-home app
+RUN mkdir -p /home/app/code
+WORKDIR /home/app/code
+
 # Copy files used by poetry
-COPY pyproject.toml poetry.lock ./
+COPY --chown=app pyproject.toml poetry.lock ./
 
 # Install Python dependencies AND the 'etna' app
 RUN poetry install
 
+USER app
+
 # Copy the executable
-COPY bash/run.sh bash/run-dev.sh bash/
-RUN chmod +x bash/run.sh bash/run-dev.sh
+COPY --chown=app bash/run.sh bash/run-dev.sh /home/app/
+RUN chmod +x /home/app/run.sh /home/app/run-dev.sh
 
 # Copy application code
-COPY . .
+COPY --chown=app . .
 
 # Copy static assets
-COPY --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
-COPY --from=staticassets /home/templates/static/scripts templates/static/scripts
+COPY --chown=app --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
+COPY --chown=app --from=staticassets /home/templates/static/scripts templates/static/scripts
 
 # Gather the static assets
 RUN poetry run python manage.py collectstatic --no-input
 
-CMD ["./bash/run.sh"]
+CMD ["/home/app/run.sh"]
