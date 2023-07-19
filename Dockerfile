@@ -38,8 +38,8 @@ RUN curl -sSL "https://install.python-poetry.org" | python -
 # Add poetry's bin directory to PATH
 ENV PATH="$POETRY_HOME/bin:$PATH"
 
-RUN useradd --create-home app
-RUN mkdir -p /home/app/code
+RUN useradd --create-home app && \
+    mkdir -p /home/app/code
 WORKDIR /home/app/code
 
 # Copy files used by poetry
