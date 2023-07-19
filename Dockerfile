@@ -51,8 +51,8 @@ RUN poetry install
 USER app
 
 # Copy the executable
-COPY --chown=app bash/run.sh bash/run-dev.sh /home/app/
-RUN chmod +x /home/app/run.sh /home/app/run-dev.sh
+COPY --chown=app bash/run.sh /home/app
+RUN chmod +x /home/app/run.sh
 
 # Copy application code
 COPY --chown=app . .
