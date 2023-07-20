@@ -11,6 +11,7 @@
 .platform
 .platform.app.yaml
 .prettierrc.json
+.venv
 .vscode
 Dockerfile
 README.md

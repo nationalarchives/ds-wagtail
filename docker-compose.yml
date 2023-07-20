@@ -15,12 +15,13 @@ services:
     platform: linux/amd64
     build: .
     volumes:
-      - ./:/home/app/code
+      - ./:/app
+      - ~/.nvm:/home/app/.nvm
     depends_on:
       - db
     ports:
       - 8000:8000
-    command: sh bash/run-dev.sh
+    command: sh /app/bash/run-dev.sh
     restart: on-failure
     init: true
     stdin_open: true
