@@ -119,6 +119,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import 'includes/featured-record-article';
 @import 'includes/record-crosslink-panel';
 @import 'includes/image-block';
+@import 'includes/password-page';
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
 
@@ -136,35 +137,8 @@ $largest-small-device: 992px;
 
 @import '@nationalarchives/frontend/nationalarchives/all';
 
-*:focus {
-    outline: none !important;
-}
-
-a,
-button,
-select,
-input[type="checkbox"],
-input[type="radio"],
-input[type="button"],
-input[type="submit"] {
-    &:focus {
-        outline: 0.3125rem solid #004c7e !important;
-        outline-offset: 0.125rem !important;
-    }
-
-    [class*="--dark"] & {
-        outline-color: #00b0ff !important;
-    }
-}
-
 .tna-hero {
     margin-bottom: 2rem;
-}
-
-.tna-hero__image {
-    @include media.on-mobile {
-        height: 320px;
-    }
 }
 
 .tna-hero__heading {

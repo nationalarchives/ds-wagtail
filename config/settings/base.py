@@ -278,6 +278,10 @@ WAGTAILSEARCH_BACKENDS = {
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
+# Custom password template for private pages
+
+PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
+
 # Kong client
 
 KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
