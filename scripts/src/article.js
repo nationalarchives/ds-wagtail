@@ -53,8 +53,8 @@ window.addEventListener('load', () => {
     add_section_ids($sectionHeadings, $sectionContents);
 
     // Transcription tabs
-    const transcriptButton = document.querySelectorAll('[ data-js-transcript]');
-    const transcriptTabs = document.querySelectorAll('[ data-js-transcript-tablist]');
+    const transcriptButton = document.querySelectorAll('[data-js-transcript]');
+    const transcriptTabs = document.querySelectorAll('[data-js-transcript-tablist]');
 
     if(transcriptButton && transcriptTabs) {
 
