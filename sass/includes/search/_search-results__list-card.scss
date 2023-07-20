@@ -99,6 +99,7 @@
   &-metadata-item {
     font-weight:100;
     //line-height:2em;
+
   }
 
   &-metadata-item-held-by-icon {
@@ -254,7 +255,7 @@
 
 .search-results__list-card-image {
     margin-left: 20px;
-    flex: 0 0 348px;
+    flex: 0 0 200px;
     margin-bottom:1em;
 }
 
@@ -321,5 +322,16 @@ dd {
     margin-bottom:1em;
 }
 
+.format {
+    width:0;
+}
+
+.inline-fix {
+    margin-left:48px;
+}
+
+.image-web-results {
+   flex: 0 0 348px;
+}
 
 
