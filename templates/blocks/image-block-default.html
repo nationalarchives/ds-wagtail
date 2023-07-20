@@ -2,7 +2,7 @@
 {% image value.image width-600 as block_image %}
 
 {% if value.image %}
-    <figure class="image-block u-margin-l">
+    <figure class="image-block u-margin-l" data-module="data-imageblock">
         <picture>
             {% image value.image max-832x591 format-webp as desktop_img %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
@@ -85,7 +85,7 @@
                                 role="tabpanel"
                                 tabindex="0"
                                 aria-labelledby="{{ heading_id }}-tab-1"
-                                class="transcription__tabpanel hidden">
+                                class="transcription__tabpanel">
                             {{ value.image.transcription|richtext }}
                         </div>
                     {% endif %}
@@ -94,7 +94,7 @@
                                 role="tabpanel"
                                 tabindex="0"
                                 aria-labelledby="{{ heading_id }}-tab-2"
-                                class="transcription__tabpanel hidden">
+                                class="transcription__tabpanel">
                             {{ value.image.translation|richtext }}
                         </div>
                     {% endif %}
