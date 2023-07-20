@@ -52,8 +52,6 @@ COPY --chown=app pyproject.toml poetry.lock ./
 # Install Python dependencies AND the 'etna' app
 RUN poetry install
 
-RUN ls -alh
-
 # Copy application code
 COPY --chown=app . .
 RUN chmod +x /app/bash/run.sh
