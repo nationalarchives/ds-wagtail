@@ -271,6 +271,7 @@
 @media only screen and (max-width: $screen__md) {
     .search-results__list-card {
         display: block;
+        //margin-left:2em;
     }
     .search-results__list-card-image {
         max-width: 200px;
@@ -340,7 +341,15 @@ dd {
 
 .image-web-results {
    flex: 0 0 348px;
-    max-width:348px;
+    max-width:100%;
+    margin-left:1em;
+    @media only screen and (min-width: $screen__sm) {
+        margin-left:0;
+        
+    }
+
+
+
 }
 
 .format {
