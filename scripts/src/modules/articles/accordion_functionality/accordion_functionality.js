@@ -9,7 +9,9 @@ export default function accordion_functionality(currentHeading, sectionHeadings,
     sectionContents.each(function(index) {
         // If it matches, expand the section.
         if($(this).attr("data-controlled-by") === id) {
-            if(!$(this).is(':animated')) {
+            const imageBlock = $(this).closest('[data-module="data-imageblock"]')[0]
+            const imageBlockButton = $(currentHeading.closest('[data-module="data-imageblock"]'))[0]
+            if (imageBlock === imageBlockButton && !$(this).is(':animated')) {
                 slide_toggle($(this));
                 scroll_to_active_heading(headingPositions[index]);
                 toggle_aria_expanded($(sectionHeadings[index]));
