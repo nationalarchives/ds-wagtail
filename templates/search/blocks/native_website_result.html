@@ -2,6 +2,7 @@
 
 
 <li class="search-results__list-card" data-score="{{ result.score }}">
+
     {% if result.teaser_image %}
     <div class="search-results__list-card-image image-web-results order-md-2">
         {% image result.teaser_image fill-288x172 as teaser_image_small %}
@@ -22,8 +23,9 @@
 
 
     <div class="search-results__list-card-details order-md-1">
+
         <h3 class="search-results__list-card-heading">
-            <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-analytics-link="{{ result.title }}">
+            <a href="{% pageurl result %}" class="search-results__list-card-heading-link" data-link="{{ result.title }}" data-link-type="Search results list" search-bucket="Website results">
                 {{ result.title }}
             </a>
         </h3>
