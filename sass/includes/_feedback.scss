@@ -2,7 +2,7 @@
     &__form {
         border: 1px solid $color__black;
         display: block;
-        max-width: 40rem;
+        max-width: 50rem;
         margin: 0 auto;
         padding: 2rem;
         position: relative;
@@ -24,7 +24,7 @@
     }
 
     &__response-button {
-        width:90%;
+        width:60%;
         &:hover {
             cursor: pointer;
         }
