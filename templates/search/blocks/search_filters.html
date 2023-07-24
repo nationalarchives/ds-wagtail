@@ -3,10 +3,10 @@
 <div class="search-sort-view">
     <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
         <h2 class="search-sort-view__heading">
-            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
+            <label for="id_sort_by_mobile">Sort by</label>
         </h2>
         {{ form.sort_by.errors }}
-        {{ form.sort_by }}
+        {% render_sort_by_input form=form id_suffix="mobile" %}
 
         {# render hidden inputs for fields controlled by other forms #}
         {% render_fields_as_hidden form exclude='sort_by' %}
@@ -50,9 +50,11 @@
                             <h4 class="search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
+                        <span class="example-text">For example, 27 3 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
+
                         <div class="search-filters__creation-date-section">
-                            <span>For example, 27 3 2007</span><br>
-                            {{ form.covering_date_from.label_tag }}
+                            
                             {% if form.covering_date_from.errors %}
                                 <div
                                     data-tracking-errors
@@ -104,7 +106,7 @@
                         </legend>
 
                         <div class="search-filters__opening-date-section">
-                            <span>For example, 27 3 2007</span><br>
+                            <span class="example-text">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
                                 <div

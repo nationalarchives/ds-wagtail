@@ -1,6 +1,6 @@
 {% load static records_tags search_tags wagtailcore_tags wagtailimages_tags %}
 
-<li class="search-results__list-card--grid">
+<li class="col-md-4">
 
     <div class="search-results__list-card-content">
 
@@ -22,7 +22,7 @@
                 </div>
             {% endif %}
 
-            <a href="{% pageurl result %}" class="search-results__list-card-link" data-analytics-link="{{ result.title }}">
+            <a href="{% pageurl result %}" class="search-results__list-card-link" data-link="{{ result.title }}" data-link-type="Search results list" search-bucket="Website results">
                 {{ result.title }}
             </a>
         </{{ heading_tag|default:"h4"}}>
@@ -32,7 +32,7 @@
         </p>
 
         <dl class="search-results__list-card-metadata">
-            <dt class="search-results__list-card-metadata-item">
+            <dt class="search-results__list-card-metadata-item format">
                 Format:
             </dt>
             <dd>{{ result.type_label }}</dd>
@@ -45,3 +45,4 @@
 
         </dl>
 </li>
+
