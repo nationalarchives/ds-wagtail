@@ -5,9 +5,9 @@ on:
     branches:
       - main
       - develop
-      - feature/aws-migration # TEMP
-    tags:
-      - v*
+  release:
+    types:
+      - published
 
 env:
   IMAGE_NAME: ds-wagtail
@@ -26,7 +26,6 @@ jobs:
       - name: Build image
         run: docker build --tag $IMAGE_NAME --label "runnumber=${GITHUB_RUN_ID}" --platform=linux/amd64 .
       - name: Log in to registry
-        # This is where you will update the personal access token to GITHUB_TOKEN
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Push image
         run: |
