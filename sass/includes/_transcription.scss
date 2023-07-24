@@ -132,8 +132,10 @@
 
   &__icon {
     width: 2rem;
-    height: 2rem;
+    height: 1.7rem;
     padding-left: 0.3rem;
+      float: left;
+      padding-right: 1em;
   }
 
   &__image {
