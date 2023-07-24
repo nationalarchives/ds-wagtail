@@ -25,7 +25,7 @@ sentry-sdk = "~1.28"
 wagtail-metadata = "~4.0"
 
 [tool.poetry.dev-dependencies]
-black = "~23.3"
+black = "~23.7"
 ipdb = "~0.13"
 django-extensions = "~3.2"
 responses = "~0.23"
