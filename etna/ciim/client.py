@@ -421,7 +421,7 @@ class KongClient:
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> Tuple[ResultList]:
-        """Make request and return response for Kong's /searchAll endpoint.
+        """Make request and return response for Kong's /searchAll .
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
