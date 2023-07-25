@@ -28,6 +28,7 @@ nav:
       - 'Frontend development': 'developer-guide/frontend.md'
       - 'Fetching data': 'developer-guide/fetching-data.md'
       - 'Working with VS Code': 'developer-guide/vscode.md'
+      - 'Working with Docker': 'developer-guide/docker.md'
   - 'Infrastructure and environments':
       - 'Hosted environments': 'infra/environments.md'
       - 'Infrastructure overview': 'infra/infrastructure.md'
