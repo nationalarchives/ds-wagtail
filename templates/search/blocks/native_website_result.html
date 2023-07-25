@@ -10,12 +10,11 @@
         {% image result.teaser_image fill-348x208 as teaser_image_large %}
         {% image result.teaser_image fill-508x304 as teaser_image_extra_large %}
         <picture>
-            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
-            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
-            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
-            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
-            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-            <img src="{{ teaser_image_large.url }}" alt="" />
+            <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
+            <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
+            <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
+            <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
+            <img src="{{ teaser_image_large.url }}" alt="">
         </picture>
 
     </div>
