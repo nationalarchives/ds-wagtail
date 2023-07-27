@@ -26,9 +26,9 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="robots" content="noindex">
 
-
+        <!--hiding from robots/indexing if search pages or detail page.-->
         {% if request.path|is_search_or_catalogue %}
-        HIDE
+        <meta name="robots" content="noindex,nofollow">
         {% endif %}
 
 
