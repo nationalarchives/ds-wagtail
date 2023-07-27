@@ -3,7 +3,7 @@ from django.urls import path
 
 
 def healthcheck(request):
-    return HttpResponse("OKAY")
+    return HttpResponse("ok")
 
 
 app_name = "healthcheck"
