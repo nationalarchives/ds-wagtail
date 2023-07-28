@@ -1,4 +1,4 @@
-site_name: Etna
+site_name: ETNA
 repo_url: https://github.com/nationalarchives/ds-wagtail
 dev_addr: 0.0.0.0:8001
 theme:
