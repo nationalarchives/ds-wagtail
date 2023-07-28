@@ -25,5 +25,5 @@ jobs:
         uses: ./.github/workflows/version-tag.yml
       - name: Update application version on develop
         if: steps.version-tag.outputs.VERSION == 'latest'
-        run: aws ssm put-parameter --name "/aj/test-value-deploy-version-develop" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
+        run: aws ssm put-parameter --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
       # TODO: If feature branch, deploy new environment
