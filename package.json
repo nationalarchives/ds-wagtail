@@ -9,7 +9,9 @@
     "compile": "npm run compile:css && npm run compile:js",
     "dev:css": "sass --load-path=node_modules --watch sass/etna.scss:templates/static/css/dist/etna.css",
     "dev:js": "webpack --config webpack.config.js --mode=development --watch",
-    "test": "jest --coverage"
+    "test": "jest --coverage",
+    "lint": "prettier \"{scripts,sass}/**/*.{scss,js}\" --check",
+    "lint:fix": "prettier \"{scripts,sass}/**/*.{scss,js}\" --write"
   },
   "repository": {
     "type": "git",
@@ -27,6 +29,7 @@
     "@babel/preset-env": "~7.22",
     "babel-loader": "~9.1",
     "jest-environment-jsdom": "~29.6",
+    "prettier": "^3.0.0",
     "sass": "~1.63",
     "webpack": "~5.88",
     "webpack-cli": "~5.1"

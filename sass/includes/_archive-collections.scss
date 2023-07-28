@@ -1,20 +1,20 @@
 .archive-collections {
-  h3 {
-    font-family: $font__supria-sans;
-    margin: 1.5rem 0 1rem;
-    font-size: 1.4rem;
-  }
+    h3 {
+        font-family: $font__supria-sans;
+        margin: 1.5rem 0 1rem;
+        font-size: 1.4rem;
+    }
 
-  &__container {
-    padding: 1rem;
-    max-height: 15rem;
-    border: 0.125rem solid $color__yellow;
-    overflow: auto;
-    margin: 0 0 4rem;
-    background: $color__cream;
-  }
+    &__container {
+        padding: 1rem;
+        max-height: 15rem;
+        border: 0.125rem solid $color__yellow;
+        overflow: auto;
+        margin: 0 0 4rem;
+        background: $color__cream;
+    }
 
-  &__list {
-    margin: 0;
-  }
+    &__list {
+        margin: 0;
+    }
 }

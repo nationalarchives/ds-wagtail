@@ -11,5 +11,5 @@ export default function create_dismiss_button(beta_banner) {
     button.addEventListener("click", () => {
         body.removeChild(beta_banner);
         document.cookie = `beta_banner_dismissed=true; domain=${domain}; path=/; Secure`;
-    })
+    });
 }

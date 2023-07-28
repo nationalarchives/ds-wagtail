@@ -1,62 +1,62 @@
 .jumplinks {
-  max-height: 100vh;
-  position: sticky;
-  top: 0;
-  padding: 2.5rem 0.5rem 0;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
-  scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
+    max-height: 100vh;
+    position: sticky;
+    top: 0;
+    padding: 2.5rem 0.5rem 0;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
+    scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
-  &::-webkit-scrollbar {
-    display: none; /* Hide jumplinks scrollbar on Safari and Chrome */
-  }
-
-  &__heading {
-    @include font-size(xl);
-    font-family: $font__body;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  &__list {
-    padding-left: 0;
-    list-style: none;
-  }
-
-  &__list-item {
-    padding: 0.3rem 0;
-
-    a {
-      color: $color__link;
-      position: relative;
-      bottom: 3px;
+    &::-webkit-scrollbar {
+        display: none; /* Hide jumplinks scrollbar on Safari and Chrome */
     }
 
-    &::marker {
-      font-size: 1.5rem;
+    &__heading {
+        @include font-size(xl);
+        font-family: $font__body;
+        font-weight: 700;
+        margin: 0;
     }
-  }
 
-  &__list-item.active {
-    color: $color__yellow;
-
-    a {
-      outline: 0.1875rem solid $color__yellow;
-      outline-offset: 0.25rem;
-      text-decoration: none;
-
-      &:focus {
-        outline-color: $color__navy;
-      }
+    &__list {
+        padding-left: 0;
+        list-style: none;
     }
-  }
 
-  @media (max-width: $screen__md) {
-    display: none;
-  }
+    &__list-item {
+        padding: 0.3rem 0;
 
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    overflow-y: hidden;
-    height: 100%;
-  }
+        a {
+            color: $color__link;
+            position: relative;
+            bottom: 3px;
+        }
+
+        &::marker {
+            font-size: 1.5rem;
+        }
+    }
+
+    &__list-item.active {
+        color: $color__yellow;
+
+        a {
+            outline: 0.1875rem solid $color__yellow;
+            outline-offset: 0.25rem;
+            text-decoration: none;
+
+            &:focus {
+                outline-color: $color__navy;
+            }
+        }
+    }
+
+    @media (max-width: $screen__md) {
+        display: none;
+    }
+
+    @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+        overflow-y: hidden;
+        height: 100%;
+    }
 }

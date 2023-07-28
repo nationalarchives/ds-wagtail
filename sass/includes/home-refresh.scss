@@ -1,42 +1,40 @@
 .explore-cta {
-  background: #26262a;
-  height:150px;
-  @media only screen and (max-width: 768px) {
-    margin-bottom:20px;
+    background: #26262a;
+    height: 150px;
+    @media only screen and (max-width: 768px) {
+        margin-bottom: 20px;
     }
 
     p {
-      color: white;
-      text-align:center;
-      padding-top:10%;
-      font-size:1.3em;
-      text-decoration: none;
+        color: white;
+        text-align: center;
+        padding-top: 10%;
+        font-size: 1.3em;
+        text-decoration: none;
     }
 
     a {
-      text-decoration: none;
+        text-decoration: none;
     }
-
 }
 
 .survey-outline {
-  //background:red;
-  border:solid 1px #26262a;
-  padding-top:1em;
-  max-width:430px;
-  margin:auto;
+    //background:red;
+    border: solid 1px #26262a;
+    padding-top: 1em;
+    max-width: 430px;
+    margin: auto;
 }
 
-
 .response-btn {
-  margin-right:1em;
+    margin-right: 1em;
 }
 
 .extra-padding {
-  padding-top:2rem;
-  padding-bottom: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 .no-dots {
-  border-top:0;
+    border-top: 0;
 }

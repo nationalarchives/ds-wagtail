@@ -1,75 +1,75 @@
 .record-matters {
-  padding-bottom: 1rem;
-  background-color: $color__white;
-  color: $color__black;
-
-  @media (max-width: $screen__md) {
-    margin: 0 auto;
-    width: 80%;
-  }
-
-  .hidden {
-    display: none;
-  }
-
-  &__plain-button {
-    background: none;
-    border: none;
-    padding: 0.25rem;
-    font: inherit;
-    cursor: pointer;
-    outline: inherit;
-    font-weight: $font-weight-bold;
-
-    &:visited {
-      outline: 0.1875rem solid $color__yellow;
-    }
-
-    &:hover {
-      outline: 0.1875rem solid $color__grey-700;
-    }
-
-    &:focus {
-      outline: 0.312rem solid $color__navy;
-      outline-offset: 0.125rem;
-    }
-  }
-
-  &__svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    margin-left: 0.5rem;
-    display: inline-block;
-  }
-
-  &__content {
-    display: flex;
-    flex-direction: column;
-    padding-bottom: 2rem;
-  }
-
-  &__text {
-    margin-bottom: 0;
-
-    &--link {
-      color: $color__black;
-    }
-
-    &--bold {
-      font-weight: bold;
-    }
-  }
-
-  &__buttons {
-    margin-top: 1rem;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-gap: 1.5rem;
+    padding-bottom: 1rem;
+    background-color: $color__white;
+    color: $color__black;
 
     @media (max-width: $screen__md) {
-      grid-template-columns: 1fr;
-      grid-gap: 0;
+        margin: 0 auto;
+        width: 80%;
     }
-  }
+
+    .hidden {
+        display: none;
+    }
+
+    &__plain-button {
+        background: none;
+        border: none;
+        padding: 0.25rem;
+        font: inherit;
+        cursor: pointer;
+        outline: inherit;
+        font-weight: $font-weight-bold;
+
+        &:visited {
+            outline: 0.1875rem solid $color__yellow;
+        }
+
+        &:hover {
+            outline: 0.1875rem solid $color__grey-700;
+        }
+
+        &:focus {
+            outline: 0.312rem solid $color__navy;
+            outline-offset: 0.125rem;
+        }
+    }
+
+    &__svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        margin-left: 0.5rem;
+        display: inline-block;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 2rem;
+    }
+
+    &__text {
+        margin-bottom: 0;
+
+        &--link {
+            color: $color__black;
+        }
+
+        &--bold {
+            font-weight: bold;
+        }
+    }
+
+    &__buttons {
+        margin-top: 1rem;
+        text-align: center;
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 1.5rem;
+
+        @media (max-width: $screen__md) {
+            grid-template-columns: 1fr;
+            grid-gap: 0;
+        }
+    }
 }

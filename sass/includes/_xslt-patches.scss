@@ -7,13 +7,12 @@
 // relationships that should be present in the HTML.
 
 .xslt_patches {
+    [altrender="doctype"] {
+        display: none;
+    }
 
-  [altrender=doctype] {
-    display: none;
-  }
-
-  span {
-    display: block;
-    margin-bottom: 1rem;
-  }
+    span {
+        display: block;
+        margin-bottom: 1rem;
+    }
 }

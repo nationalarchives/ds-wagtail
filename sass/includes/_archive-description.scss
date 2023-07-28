@@ -1,43 +1,42 @@
 .archive-description {
-  margin: 3.5rem 0 3rem;
+    margin: 3.5rem 0 3rem;
 
-  &__address {
-    margin-bottom: 0;
-  }
-
-  &__url {
-    font-size: 1.6rem;
-    margin: 0;
-  }
-
-  &__contact {
-    padding: 2rem;
-    font-family: $font__open-sans;
-    background: $color__grey-200;
-    border: 0.125rem solid $color__grey-400;
-
-
-    h2 {
-      margin: 0 0 1rem;
+    &__address {
+        margin-bottom: 0;
     }
 
-    p {
-      font-weight: normal;
-      margin-bottom: 0.25rem;
+    &__url {
+        font-size: 1.6rem;
+        margin: 0;
     }
 
-    a {
-      word-wrap: break-word;
-    }
-
-    ul {
-      li {
+    &__contact {
+        padding: 2rem;
         font-family: $font__open-sans;
-      }
-    }
-  }
+        background: $color__grey-200;
+        border: 0.125rem solid $color__grey-400;
 
-  &__container {
-    margin: 2rem 0;
-  }
+        h2 {
+            margin: 0 0 1rem;
+        }
+
+        p {
+            font-weight: normal;
+            margin-bottom: 0.25rem;
+        }
+
+        a {
+            word-wrap: break-word;
+        }
+
+        ul {
+            li {
+                font-family: $font__open-sans;
+            }
+        }
+    }
+
+    &__container {
+        margin: 2rem 0;
+    }
 }

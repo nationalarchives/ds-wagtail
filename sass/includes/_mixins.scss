@@ -1,31 +1,31 @@
-@use 'sass:list';
-@use 'sass:map';
+@use "sass:list";
+@use "sass:map";
 
 /* ============================================
     Output a rem and px fallback value for the given property
 */
 @mixin rem($property, $values) {
-  $px: ();
-  $rem: ();
+    $px: ();
+    $rem: ();
 
-  @each $value in $values {
-    @if $value == 0 or $value == auto or $value == inherit {
-      $px: list.append($px, $value);
-      $rem: list.append($rem, $value);
-    } @else {
-      $px: list.append($px, $value);
-      $rem: list.append($rem, rem(strip-unit($value)));
+    @each $value in $values {
+        @if $value == 0 or $value == auto or $value == inherit {
+            $px: list.append($px, $value);
+            $rem: list.append($rem, $value);
+        } @else {
+            $px: list.append($px, $value);
+            $rem: list.append($rem, rem(strip-unit($value)));
+        }
     }
-  }
-  #{$property}: $px;
-  #{$property}: $rem;
+    #{$property}: $px;
+    #{$property}: $rem;
 }
 
 /* ============================================
     Output a `font-size: [x]rem;` declaration for the given px value
   */
 @mixin rem-font-size($font-size) {
-  @include rem(font-size, $font-size);
+    @include rem(font-size, $font-size);
 }
 
 /* ============================================
@@ -33,21 +33,21 @@
   */
 
 @mixin font-size($keyword) {
-  $small-size: map.get($small-font-sizes, $keyword);
-  $medium-size: map.get($medium-font-sizes, $keyword);
-  $large-size: map.get($large-font-sizes, $keyword);
+    $small-size: map.get($small-font-sizes, $keyword);
+    $medium-size: map.get($medium-font-sizes, $keyword);
+    $large-size: map.get($large-font-sizes, $keyword);
 
-  @if not $small-size or not $medium-size or not $large-size {
-    @warn 'Font size ‘#{$keyword}’ does not exist';
-  } @else {
-    @include rem-font-size($small-size);
+    @if not $small-size or not $medium-size or not $large-size {
+        @warn 'Font size ‘#{$keyword}’ does not exist';
+    } @else {
+        @include rem-font-size($small-size);
 
-    @media (min-width: $screen__md) {
-      @include rem-font-size($medium-size);
+        @media (min-width: $screen__md) {
+            @include rem-font-size($medium-size);
+        }
+
+        @media (min-width: $screen__lg) {
+            @include rem-font-size($large-size);
+        }
     }
-
-    @media (min-width: $screen__lg) {
-      @include rem-font-size($large-size);
-    }
-  }
 }
