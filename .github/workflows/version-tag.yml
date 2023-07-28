@@ -1,4 +1,7 @@
 name: Get version tag
+
+on:
+  workflow_call:
   
 jobs:
   get-tag:
