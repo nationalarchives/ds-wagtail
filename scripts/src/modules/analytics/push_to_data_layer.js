@@ -3,7 +3,7 @@ const push_to_data_layer = (obj) => {
         return;
     }
 
-    if (!!obj || typeof obj === 'object') {
+    if (!!obj || typeof obj === "object") {
         window.dataLayer.push(obj);
     }
 

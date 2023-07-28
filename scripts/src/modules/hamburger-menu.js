@@ -4,7 +4,7 @@ export default function () {
     let $headerMenu = document.querySelector('[data-id="site-menu"]');
     let $headerMenuList = document.querySelector('[data-id="site-menu-list"]');
     let $headerElementsToHide = document.querySelectorAll(
-        '[data-isSearch="false"]'
+        '[data-isSearch="false"]',
     );
     let $searchListItem = document.querySelector("#js-site-menu-search");
     let $globalSearchButton = document.querySelector("#gs-show-hide");
@@ -14,9 +14,8 @@ export default function () {
     }
 
     let isGlobalSearchFocused = function () {
-
         /* Global search doesn't exist on Etna search pages (/search/), so we must check if it exists before we check if it's focused. */
-        if(!$globalSearchButton) {
+        if (!$globalSearchButton) {
             return false;
         }
 
@@ -30,12 +29,10 @@ export default function () {
         }
 
         // Only move the element if it's in the wrong place
-        if (
-            $headerMenuList.childNodes[newIndex].id !== $searchListItem.id
-        ) {
+        if ($headerMenuList.childNodes[newIndex].id !== $searchListItem.id) {
             $headerMenuList.insertBefore(
                 $searchListItem,
-                $headerMenuList.childNodes[newIndex]
+                $headerMenuList.childNodes[newIndex],
             ); //IE11 compatible prepend
 
             isFocused ? $globalSearchButton.focus() : null;
@@ -54,12 +51,12 @@ export default function () {
 
     $showHideListItem.appendChild($showHideButton);
 
-    $searchListItem.style.display = 'inline-block';
-    $searchListItem.style.verticalAlign = 'bottom';
+    $searchListItem.style.display = "inline-block";
+    $searchListItem.style.verticalAlign = "bottom";
 
     $headerMenuList.insertBefore(
         $showHideListItem,
-        $headerMenuList.childNodes[0]
+        $headerMenuList.childNodes[0],
     ); //IE11 compatible prepend
 
     if (window.innerWidth >= 768) {
@@ -91,7 +88,7 @@ export default function () {
         }
 
         // Hide global search component when the navigation menu is expanded
-        if($globalSearch && $globalSearchButton) {
+        if ($globalSearch && $globalSearchButton) {
             $globalSearch.hidden = true;
             $globalSearchButton.setAttribute("aria-expanded", "false");
         }
@@ -124,6 +121,6 @@ export default function () {
                 setMenuItemsHidden(false);
                 placeSearchAtIndex("end", isGlobalSearchFocused());
             }
-        }, 200)
+        }, 200),
     );
 }
