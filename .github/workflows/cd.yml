@@ -93,6 +93,32 @@ jobs:
       - name: Run jest tests
         run: npm test
 
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+      - name: Install npm modules
+        run: npm install
+      - name: Lint SCSS and JS
+        run: npm run lint
+
+  compile-sass:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+      - name: Install npm modules
+        run: npm install
+      - name: Compile SCSS
+        run: npm run compile:css
+
   deploy:
     runs-on: ubuntu-latest
     needs: [notify-slack, test-python, test-javascript]
