@@ -10,7 +10,7 @@ on:
 jobs:
   build:
     name: Build
-    uses: ./.github/workflows/partials/docker-build.yml
+    uses: ./.github/workflows/docker-build.yml
     with:
       image_name: ds-wagtail
   deploy:
@@ -19,10 +19,10 @@ jobs:
     needs: build
     steps:
       - name: Install AWS CLI
-        uses: ./.github/workflows/partials/install-aws.yml
+        uses: ./.github/workflows/install-aws.yml
       - name: Get tag
         id: version-tag
-        uses: ./.github/workflows/partials/version-tag.yml
+        uses: ./.github/workflows/version-tag.yml
       - name: Update application version on develop
         if: steps.version-tag.outputs.VERSION == 'latest'
         run: aws ssm put-parameter --name "/aj/test-value-deploy-version-develop" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite

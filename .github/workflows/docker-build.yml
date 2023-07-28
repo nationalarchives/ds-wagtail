@@ -24,7 +24,7 @@ jobs:
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
       - name: Get tag
         id: version-tag
-        uses: ./.github/workflows/partials/version-tag.yml
+        uses: ./.github/workflows/version-tag.yml
       - name: Push image
         run: |
           IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}
