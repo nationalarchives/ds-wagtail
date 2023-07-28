@@ -10,7 +10,6 @@ class RecordMatters {
     }
 
     setUp() {
-
         // set-up from the non-js version
         this.hide(this.readMoreContent);
         this.show(this.readLessContent);
@@ -22,12 +21,14 @@ class RecordMatters {
             this.hide(this.readLessContent);
 
             push_to_data_layer({
-                "event": "Expand accordion",
-                "data-component-name": e.target.getAttribute("data-component-name"),
+                event: "Expand accordion",
+                "data-component-name": e.target.getAttribute(
+                    "data-component-name",
+                ),
                 "data-link-type": e.target.getAttribute("data-link-type"),
-                "data-link": e.target.getAttribute("data-link")
-            })
-        })
+                "data-link": e.target.getAttribute("data-link"),
+            });
+        });
 
         this.readLessButton.addEventListener("click", (e) => {
             e.preventDefault();
@@ -35,20 +36,22 @@ class RecordMatters {
             this.hide(this.readMoreContent);
 
             push_to_data_layer({
-                "event": "Expand accordion",
-                "data-component-name": e.target.getAttribute("data-component-name"),
+                event: "Expand accordion",
+                "data-component-name": e.target.getAttribute(
+                    "data-component-name",
+                ),
                 "data-link-type": e.target.getAttribute("data-link-type"),
-                "data-link": e.target.getAttribute("data-link")
-            })
-        })
+                "data-link": e.target.getAttribute("data-link"),
+            });
+        });
     }
 
     show(node) {
-        node.classList.remove('hidden');
+        node.classList.remove("hidden");
     }
 
     hide(node) {
-        node.classList.add('hidden');
+        node.classList.add("hidden");
     }
 }
 
