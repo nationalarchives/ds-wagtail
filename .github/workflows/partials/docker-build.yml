@@ -1,0 +1,35 @@
+name: Build Docker image
+
+on:
+  workflow_call:
+    inputs:
+      image_name:
+        required: true
+        type: string
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+      - name: Build image
+        run: docker build --tag ${{ inputs.image_name }} --label "runnumber=${GITHUB_RUN_ID}" --platform=linux/amd64 .
+      - name: Log in to registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
+      - name: Get tag
+        id: version-tag
+        uses: ./.github/workflows/partials/version-tag.yml
+      - name: Push image
+        run: |
+          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/${{ inputs.image_name }}
+          # Change all uppercase to lowercase
+          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+          echo IMAGE_ID=$IMAGE_ID
+          docker tag ${{ inputs.image_name }} $IMAGE_ID:${{ steps.version-tag.outputs.VERSION }}
+          docker push $IMAGE_ID:${{ steps.version-tag.outputs.VERSION }}

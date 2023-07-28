@@ -1,0 +1,29 @@
+name: Docker CI build and deploy
+
+on:
+  push:
+    branches:
+      - main
+      - develop # TODO: Remove once moving to trunk-based
+      - feature/*
+  
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/partials/docker-build.yml
+    with:
+      image_name: ds-wagtail
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Install AWS CLI
+        uses: ./.github/workflows/partials/install-aws.yml
+      - name: Get tag
+        id: version-tag
+        uses: ./.github/workflows/partials/version-tag.yml
+      - name: Update application version on develop
+        if: steps.version-tag.outputs.VERSION == 'latest'
+        run: aws ssm put-parameter --name "/aj/test-value-deploy-version-develop" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
+      # TODO: If feature branch, deploy new environment
