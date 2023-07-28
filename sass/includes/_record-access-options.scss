@@ -1,60 +1,60 @@
 .record-access {
-  padding: 1rem 2rem;
-  margin-bottom: 5rem;
-  background-color: $color__grey-800;
-  color: $color__black;
+    padding: 1rem 2rem;
+    margin-bottom: 5rem;
+    background-color: $color__grey-800;
+    color: $color__black;
 
-  summary {
-    text-decoration: underline;
-    color: $color__link;
-    margin-bottom: 1rem;
+    summary {
+        text-decoration: underline;
+        color: $color__link;
+        margin-bottom: 1rem;
 
-    &:hover {
-      text-decoration: none;
+        &:hover {
+            text-decoration: none;
+        }
+
+        &:focus {
+            outline: 0.312rem solid $color__link;
+            outline-offset: 0.125rem;
+        }
     }
 
-    &:focus {
-      outline: 0.312rem solid $color__link;
-      outline-offset: 0.125rem;
-    }
-  }
+    &__list {
+        list-style-type: none;
+        padding: 0;
+        margin-top: 1rem;
 
-  &__list {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 1rem;
-
-    li {
-      display: inline-block;
-    }
-  }
-
-  &__button {
-    text-decoration: none;
-    background-color: $color__link;
-    color: $color__white;
-    border: 0;
-    padding: 1rem;
-    margin: 0.5rem;
-    display: inline-block;
-
-    &:first-of-type {
-      margin-left: 0;
+        li {
+            display: inline-block;
+        }
     }
 
-    &:visited {
-      color: $color__white;
+    &__button {
+        text-decoration: none;
+        background-color: $color__link;
+        color: $color__white;
+        border: 0;
+        padding: 1rem;
+        margin: 0.5rem;
+        display: inline-block;
+
+        &:first-of-type {
+            margin-left: 0;
+        }
+
+        &:visited {
+            color: $color__white;
+        }
+        &:hover {
+            background: $color__card-hover;
+        }
+        &:focus {
+            background: $color__black;
+            outline-offset: 0.2rem;
+        }
+        &:hover,
+        &:focus {
+            color: $color__white;
+        }
     }
-    &:hover {
-      background: $color__card-hover;
-    }
-    &:focus {
-      background: $color__black;
-      outline-offset: 0.2rem;
-    }
-    &:hover,
-    &:focus {
-      color: $color__white;
-    }
-  }
 }
