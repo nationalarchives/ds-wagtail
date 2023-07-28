@@ -5,9 +5,9 @@ $screen__lg: 62rem;
 $screen__xl: 75rem;
 
 // Fonts
-$font__open-sans: 'Open Sans', sans-serif;
-$font__roboto: 'Roboto', sans-serif;
-$font__roboto-mono: 'Roboto Mono', sans-serif;
+$font__open-sans: "Open Sans", sans-serif;
+$font__roboto: "Roboto", sans-serif;
+$font__roboto-mono: "Roboto Mono", sans-serif;
 $font__supria-sans: supria-sans-condensed, sans-serif;
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
@@ -61,34 +61,34 @@ $default__border: 0.063rem solid $color__grey-400;
 $transition_duration: 0.25s;
 
 // Paths
-$fa_path: '../../images/fontawesome-svgs/';
+$fa_path: "../../images/fontawesome-svgs/";
 
 // Images
-$fa_chevron_up: '#{$fa_path}chevron-up.svg';
-$fa_chevron_up_white: '#{$fa_path}chevron-up-white.svg';
-$fa_chevron_right: '#{$fa_path}chevron-right.svg';
-$fa_chevron_right_white: '#{$fa_path}chevron-right-white.svg';
-$fa_chevron_right_disabled: '#{$fa_path}chevron-right-disabled.svg';
-$fa_chevron_down: '#{$fa_path}chevron-down.svg';
-$fa_chevron_down_white: '#{$fa_path}chevron-down-white.svg';
-$fa_chevron_left: '#{$fa_path}chevron-left.svg';
-$fa_chevron_left_white: '#{$fa_path}chevron-left-white.svg';
-$fa_chevron_left_disabled: '#{$fa_path}chevron-left-disabled.svg';
-$fa_chevron_double_right_yellow: '#{$fa_path}chevron-double-right-yellow.svg';
+$fa_chevron_up: "#{$fa_path}chevron-up.svg";
+$fa_chevron_up_white: "#{$fa_path}chevron-up-white.svg";
+$fa_chevron_right: "#{$fa_path}chevron-right.svg";
+$fa_chevron_right_white: "#{$fa_path}chevron-right-white.svg";
+$fa_chevron_right_disabled: "#{$fa_path}chevron-right-disabled.svg";
+$fa_chevron_down: "#{$fa_path}chevron-down.svg";
+$fa_chevron_down_white: "#{$fa_path}chevron-down-white.svg";
+$fa_chevron_left: "#{$fa_path}chevron-left.svg";
+$fa_chevron_left_white: "#{$fa_path}chevron-left-white.svg";
+$fa_chevron_left_disabled: "#{$fa_path}chevron-left-disabled.svg";
+$fa_chevron_double_right_yellow: "#{$fa_path}chevron-double-right-yellow.svg";
 
-$fa_arrow_down: '#{$fa_path}arrow-down.svg';
-$fa_arrow_right: '#{$fa_path}arrow-right.svg';
+$fa_arrow_down: "#{$fa_path}arrow-down.svg";
+$fa_arrow_right: "#{$fa_path}arrow-right.svg";
 
-$fa_search_plus: '#{$fa_path}search-plus-white.svg';
+$fa_search_plus: "#{$fa_path}search-plus-white.svg";
 
-$fa_download_white: '#{$fa_path}download-white.svg';
+$fa_download_white: "#{$fa_path}download-white.svg";
 
-$fa_diagram: '#{$fa_path}diagram-3.svg';
-$fa_list_blue: '#{$fa_path}list-ul-blue.svg';
+$fa_diagram: "#{$fa_path}diagram-3.svg";
+$fa_list_blue: "#{$fa_path}list-ul-blue.svg";
 
-$fa_folder: '#{$fa_path}folder.svg';
-$fa_x-mark: '#{$fa_path}x-mark.svg';
-$fa_plus: '#{$fa_path}plus.svg';
+$fa_folder: "#{$fa_path}folder.svg";
+$fa_x-mark: "#{$fa_path}x-mark.svg";
+$fa_plus: "#{$fa_path}plus.svg";
 
 // Font sizes
 $base-font-size: 16px;

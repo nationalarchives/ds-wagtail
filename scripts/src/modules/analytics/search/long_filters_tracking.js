@@ -2,24 +2,28 @@ import push_to_data_layer from "../push_to_data_layer";
 
 const longFiltersTracking = () => {
     // get filters after DOM has loaded and they have rendered on page
-    window.addEventListener('load', () => {
-        const longFilters = document.querySelector('[data-long-filters]');
+    window.addEventListener("load", () => {
+        const longFilters = document.querySelector("[data-long-filters]");
 
         if (longFilters) {
-            const longFiltersList = longFilters.querySelector('[data-long-filters-list]');
-            const longFilterItems = longFiltersList.querySelectorAll('[data-long-filters-item] input');
+            const longFiltersList = longFilters.querySelector(
+                "[data-long-filters-list]",
+            );
+            const longFilterItems = longFiltersList.querySelectorAll(
+                "[data-long-filters-item] input",
+            );
             // create array to store checked filters
             const checkedLongFilters = [];
             const activeLongFilters = [];
-            
+
             // listen for checkboxes and store in array
             longFilterItems.forEach((filter) => {
-                filter.addEventListener('change', function () {
+                filter.addEventListener("change", function () {
                     checkedLongFilters.push(filter);
                 });
             });
 
-            longFilters.addEventListener('submit', (e) => {
+            longFilters.addEventListener("submit", (e) => {
                 e.preventDefault();
 
                 checkedLongFilters.forEach((filter) => {
@@ -27,9 +31,9 @@ const longFiltersTracking = () => {
                     let filterValue = filter.value;
 
                     let filterData = {
-                        'event': 'search-long-filter',
-                        'search-filter-name': filterName || '',
-                        'search-filter-value': filterValue || '',
+                        event: "search-long-filter",
+                        "search-filter-name": filterName || "",
+                        "search-filter-value": filterValue || "",
                     };
 
                     // add checked filters to activeFilters array
@@ -44,7 +48,7 @@ const longFiltersTracking = () => {
                 longFilters.submit();
             });
         }
-    });  
-}
+    });
+};
 
 export default longFiltersTracking;

@@ -1,92 +1,92 @@
 .highlight-gallery-teaser {
-  $root: &;
-  padding-bottom: 3rem;
-  background-color: $color__cream;
+    $root: &;
+    padding-bottom: 3rem;
+    background-color: $color__cream;
 
-  @media screen and (min-width: map-get($grid-breakpoints, 'sm')) {
-    margin-bottom: 3rem;
-  }
-
-  @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
-    padding-bottom: 5.125rem;
-  }
-
-  &__title {
-    @include font-size('xxl');
-    margin: 0;
-    padding: 3rem 0 1.5rem 0;
-
-    @media (min-width: map-get($grid-breakpoints, 'md')) {
-      padding: 3rem 0 2.75rem 0;
+    @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
+        margin-bottom: 3rem;
     }
 
-    &::after {
-      content: '';
-      display: block;
-      background-image: url(/static/images/fontawesome-svgs/chevron-right.svg);
-      background-repeat: no-repeat;
-      display: inline-block;
-      top: -50%;
-      width: 0.75rem;
-      height: 1rem;
-      margin-left: 0.5rem;
+    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
+        padding-bottom: 5.125rem;
     }
-  }
 
-  &__title-link {
-    color: $color__grey-700;
-    text-decoration-thickness: 1px;
+    &__title {
+        @include font-size("xxl");
+        margin: 0;
+        padding: 3rem 0 1.5rem 0;
 
-    &:visited {
-      color: $color__grey-700;
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            padding: 3rem 0 2.75rem 0;
+        }
+
+        &::after {
+            content: "";
+            display: block;
+            background-image: url(/static/images/fontawesome-svgs/chevron-right.svg);
+            background-repeat: no-repeat;
+            display: inline-block;
+            top: -50%;
+            width: 0.75rem;
+            height: 1rem;
+            margin-left: 0.5rem;
+        }
     }
-  }
 
-  &__link {
-    color: $color__white;
-    text-decoration-color: $color__white;
+    &__title-link {
+        color: $color__grey-700;
+        text-decoration-thickness: 1px;
 
-    &:visited {
-      color: $color__grey-200;
+        &:visited {
+            color: $color__grey-700;
+        }
+    }
 
-      &:hover {
+    &__link {
         color: $color__white;
-      }
+        text-decoration-color: $color__white;
+
+        &:visited {
+            color: $color__grey-200;
+
+            &:hover {
+                color: $color__white;
+            }
+        }
+
+        &:hover {
+            color: $color__white;
+        }
+
+        &:focus {
+            outline-color: $color__blue;
+            color: $color__blue;
+        }
     }
 
-    &:hover {
+    &__card {
+        background-color: $color__grey-700;
+        text-decoration: none !important;
+        list-style: none;
+    }
+
+    &__content {
+        margin: 1.25rem;
         color: $color__white;
     }
 
-    &:focus {
-        outline-color: $color__blue;
-        color: $color__blue;
+    &__text {
+        @include font-size("s");
+        font-family: $font__body;
+        line-height: 21px;
+        color: $color__grey-400;
+        margin: 0;
     }
-  }
 
-  &__card {
-    background-color: $color__grey-700;
-    text-decoration: none !important;
-    list-style: none;
-  }
-
-  &__content {
-    margin: 1.25rem;
-    color: $color__white;
-  }
-
-  &__text {
-    @include font-size('s');
-    font-family: $font__body;
-    line-height: 21px;
-    color: $color__grey-400;
-    margin: 0;
-  }
-
-  &__image {
-    width: 100%;
-    height: auto;
-    object-fit: cover;
-    outline: none;
-  }
+    &__image {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        outline: none;
+    }
 }

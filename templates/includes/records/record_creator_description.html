@@ -1,7 +1,6 @@
 <div class="record-creator-description">
     <h1>{{ record.summary_title }}</h1>
-    <p class="record-creator-description__address">Name authority reference: {{ record.name_authority_reference }} {% if record.former_name_authority_reference %} (Former ISAAR ref: {{ record.former_name_authority_reference }}) {% endif %}</p>
-
+    
     <div class="record-creator-description__container">
         <h2>Details of this record creator</h2>
         <table class="record-creator-description__table">
@@ -81,7 +80,7 @@
                     </tr>
                 {% endif %}
                 <tr>
-                    <th scope="row">Name authority reference:</th>
+                    <th scope="row">Name authority identifier:</th>
                     <td>{{ record.name_authority_reference }} {% if record.former_name_authority_reference %} (Former ISAAR ref: {{ record.former_name_authority_reference }}) {% endif %}</td>
                 </tr>
             </tbody>
