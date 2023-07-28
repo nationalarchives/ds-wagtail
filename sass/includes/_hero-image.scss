@@ -22,19 +22,19 @@
         .template-focused-article & {
             &__container {
                 background: linear-gradient(
-                        to top, 
-                        $color__white 0%,
-                        $color__white 50%,
-                        $color__grey-700 50%, 
-                        $color__grey-700 100%
-                    );
+                    to top,
+                    $color__white 0%,
+                    $color__white 50%,
+                    $color__grey-700 50%,
+                    $color__grey-700 100%
+                );
                 position: relative;
             }
 
             &__figure,
             &__picture {
                 // Added container as an @include due to @extend selectors may not be used across media queries
-                @include make-container(); 
+                @include make-container();
                 @include make-container-max-widths();
                 position: relative;
                 margin: 0 auto;

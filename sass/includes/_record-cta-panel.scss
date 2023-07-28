@@ -1,71 +1,70 @@
 .cta-primary-panel {
-  display: block;
-  justify-content: space-between;
-  font-family: $font__roboto;
-  font-size: 1rem;
-  padding: 0 0.5rem;
-  margin: 0.75rem 0 0;
+    display: block;
+    justify-content: space-between;
+    font-family: $font__roboto;
+    font-size: 1rem;
+    padding: 0 0.5rem;
+    margin: 0.75rem 0 0;
 
-  @media screen and (min-width: $screen__sm) {
-      margin: 0.5rem 0 1.5rem;
-  }
-
-
-  &__link {
-    display: inline-flex;
-    padding: 0.5rem 0.5rem 0.25rem 1rem;
-    font-family: $font__supria-sans;
-    font-size: 1.1rem;
-    text-align: center;
-    margin: 0;
-    position: relative;
-
-    &:visited {
-      color: $color__link-blue;
+    @media screen and (min-width: $screen__sm) {
+        margin: 0.5rem 0 1.5rem;
     }
 
-    @media screen and (min-width: $screen__lg) {
-      margin: 0 0.5rem 0.5rem 0;
+    &__link {
+        display: inline-flex;
+        padding: 0.5rem 0.5rem 0.25rem 1rem;
+        font-family: $font__supria-sans;
+        font-size: 1.1rem;
+        text-align: center;
+        margin: 0;
+        position: relative;
+
+        &:visited {
+            color: $color__link-blue;
+        }
+
+        @media screen and (min-width: $screen__lg) {
+            margin: 0 0.5rem 0.5rem 0;
+        }
     }
-  }
 
-  &__link-icon {
-    margin: 0.25rem 0.5rem 0 0;
-  }
+    &__link-icon {
+        margin: 0.25rem 0.5rem 0 0;
+    }
 
-  .open {
-    background: #1a67a2 url($fa_chevron_up_white) no-repeat 15px;
-    background-size: 15px;
-  }
+    .open {
+        background: #1a67a2 url($fa_chevron_up_white) no-repeat 15px;
+        background-size: 15px;
+    }
 }
 
 .cta-secondary-panel {
-  text-align: left;
-  background: $color__grey-100;
-  padding: 2rem 0;
-  border-bottom: 2px dotted $color__grey-500;
+    text-align: left;
+    background: $color__grey-100;
+    padding: 2rem 0;
+    border-bottom: 2px dotted $color__grey-500;
 
-  &__heading {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    font-family: $font__supria-sans;
-  }
-
-  &__text {
-  }
-
-  &__link {
-    border-bottom: 5px solid $color__yellow;
-    display: inline-block;
-    font-size: 1.1rem;
-    padding: 0.25rem 0;
-    margin: 1rem 1rem 1rem 0;
-    text-decoration: none;
-    font-family: supria-sans-condensed, sans-serif;
-    color: $color__link;
-
-    &:hover {
-      color: $color__black;
+    &__heading {
+        font-size: 1.25rem;
+        margin-bottom: 1.5rem;
+        font-family: $font__supria-sans;
     }
-  }
+
+    &__text {
+    }
+
+    &__link {
+        border-bottom: 5px solid $color__yellow;
+        display: inline-block;
+        font-size: 1.1rem;
+        padding: 0.25rem 0;
+        margin: 1rem 1rem 1rem 0;
+        text-decoration: none;
+        font-family: supria-sans-condensed, sans-serif;
+        color: $color__link;
+
+        &:hover {
+            color: $color__black;
+        }
+    }
 }

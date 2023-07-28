@@ -1,51 +1,51 @@
 .explore-intro {
-  $root: &;
-  padding-top: 1rem;
-  background-color: $color__white;
-  color: $color__black;
-  overflow: hidden; // cut off image when browser is narrow
+    $root: &;
+    padding-top: 1rem;
+    background-color: $color__white;
+    color: $color__black;
+    overflow: hidden; // cut off image when browser is narrow
 
-  &__image-container {
-    display: flex;
-    align-self: flex-end;
-  }
-
-  &__image {
-    display: block;
-    max-width: 390px; // match wagtail image rendition width
-    max-height: 390px; // match wagtail image rendition height
-    height: auto;
-    width: auto;
-
-    @media (max-width: $screen__lg) {
-      display: none;
-    }
-  }
-
-  &__title {
-    @include font-size(xxxl);
-    line-height: 1.2;
-    margin-top: 0;
-    margin-bottom: 0;
-    font-family: $font__supria-sans;
-    font-weight: $font-weight-bold;
-
-    &--meta {
-        @include font-size(xxl);
-        font-weight: $font-weight-normal;
-    }
-  }
-
-  &__paragraph {
-    @include font-size(m);
-    line-height: 1.5;
-
-    @media (min-width: $screen__md) {
-        @include font-size(xl);
+    &__image-container {
+        display: flex;
+        align-self: flex-end;
     }
 
-    &--short {
+    &__image {
+        display: block;
+        max-width: 390px; // match wagtail image rendition width
+        max-height: 390px; // match wagtail image rendition height
+        height: auto;
+        width: auto;
+
+        @media (max-width: $screen__lg) {
+            display: none;
+        }
+    }
+
+    &__title {
+        @include font-size(xxxl);
+        line-height: 1.2;
+        margin-top: 0;
         margin-bottom: 0;
+        font-family: $font__supria-sans;
+        font-weight: $font-weight-bold;
+
+        &--meta {
+            @include font-size(xxl);
+            font-weight: $font-weight-normal;
+        }
     }
-  }
+
+    &__paragraph {
+        @include font-size(m);
+        line-height: 1.5;
+
+        @media (min-width: $screen__md) {
+            @include font-size(xl);
+        }
+
+        &--short {
+            margin-bottom: 0;
+        }
+    }
 }
