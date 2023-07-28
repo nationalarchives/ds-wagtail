@@ -11,22 +11,18 @@
  * @param {Object} this_argument
  **/
 
- export default function (call_back, wait, this_argument) {
-
+export default function (call_back, wait, this_argument) {
     var timer = null;
 
     return function (...args) {
-
         var context = this_argument || this;
 
         window.clearTimeout(timer);
 
         timer = window.setTimeout(() => {
-
             timer = null;
 
             call_back.apply(context, args);
-
         }, wait);
     };
 }

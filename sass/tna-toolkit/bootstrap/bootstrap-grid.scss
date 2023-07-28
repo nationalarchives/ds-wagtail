@@ -6,18 +6,20 @@
  */
 
 @at-root {
-  @-ms-viewport { width: device-width; } // stylelint-disable-line at-rule-no-vendor-prefix
+    @-ms-viewport {
+        width: device-width;
+    } // stylelint-disable-line at-rule-no-vendor-prefix
 }
 
 html {
-  box-sizing: border-box;
-  -ms-overflow-style: scrollbar;
+    box-sizing: border-box;
+    -ms-overflow-style: scrollbar;
 }
 
 *,
 *::before,
 *::after {
-  box-sizing: inherit;
+    box-sizing: inherit;
 }
 
 @import "functions";
