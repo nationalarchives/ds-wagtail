@@ -1,256 +1,256 @@
 .header {
-  $root: &;
-  background-color: $color__yellow;
-  position: relative;
-
-  &__container {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  &__logo {
-    &-holder {
-      display: inline-block;
-      padding: 1rem;
-      padding-bottom: 1.5rem;
-
-      @media only screen and (max-width: $screen__md) {
-        vertical-align: top;
-      }
-      
-      @media screen and (max-width: $screen__sm) {
-        padding: 0.5rem 0;
-      }
-    }
-
-    &-link {
-      align-self: center;
-      display: inline-block;
-      margin-left: 1rem;
-
-      &:hover {
-        outline: 0.3125rem solid $color__grey-700;
-      }
-
-      &:focus {
-        outline-color: $color__black;
-      }
-    }
-    &-image {
-      height: 4.6875rem;
-
-      @media only screen and (min-width: $screen__md) {
-        height: 6.18rem;
-      }
-    }
-  }
-
-  &__mobile-icons {
-    display: inline-block;
-    float: right;
-    position: absolute;
-    //top:4rem;
-
-    @media screen and (min-width: 768px) {
-      display: none;
-    }
-  }
-
-  &__nav {
-    align-self: flex-end;
-    align-items: flex-end;
-    z-index: 2;
-    display: none;
-    left: calc(50% - 50vw);
+    $root: &;
+    background-color: $color__yellow;
     position: relative;
-    margin-left: auto;
 
-    &.active {
-      display: block;
-    }
-
-    @media only screen and (max-width: $screen__md) {
-      text-align: right;
-    }
-
-    @media only screen and (min-width: $screen__md) {
-      display: block !important;
-      width: max-content;
-      left: unset;
-    }
-
-    &-list {
-      padding-left: 0;
-      width: 100vw;
-
-      @media only screen and (min-width: $screen__md) {
+    &__container {
         display: flex;
-        align-items: flex-end;
         flex-wrap: wrap;
-        padding-left: 2.5rem;
-        width: 100%;
-      }
+        align-items: center;
+        justify-content: space-between;
+    }
 
-      height: 100%;
-      margin-bottom: 0;
-      justify-content: space-around; // IE11 only supports space-around and space-between.
-      &-item {
-        list-style: none;
-        text-indent: 0.7em;
-        @media only screen and (min-width: $screen__md) {
-          height: 3rem;
-          text-indent: 0;
-        }
-        display: block;
+    &__logo {
+        &-holder {
+            display: inline-block;
+            padding: 1rem;
+            padding-bottom: 1.5rem;
 
-        &[data-id='menu-show-hide-button'] {
-          display: inline-block;
-          position: relative;
+            @media only screen and (max-width: $screen__md) {
+                vertical-align: top;
+            }
 
-          // IE11 styles
-          @media all and (-ms-high-contrast: none),
-            (-ms-high-contrast: active) {
-            bottom: -6px;
-          }
-        }
-
-        &[data-isSearch='false'] {
-          background-color: $color__yellow;
-          font-size: 1.2rem;
-          text-decoration: underline;
-          border-bottom: 0.0625rem solid $color__grey-400;
-
-          @media only screen and (min-width: $screen__md) {
-            text-decoration: none;
-            font-size: 1rem;
-            border: 0;
-            margin: 0 0.3125rem;
-          }
-
-          @media only screen and (max-width: $screen__md) {
-            background-color: $color__white;
-          }
+            @media screen and (max-width: $screen__sm) {
+                padding: 0.5rem 0;
+            }
         }
 
         &-link {
-          display: block;
-          color: $color__black;
-          padding: 0.4375rem 1rem;
-          height: 100%;
-          text-decoration: none;
-          font-family: $font__supria-sans;
-          font-weight: normal;
-          transition: all 0.1s;
-          &:visited {
-            color: $color__black;
-          }
-
-          @media only screen and (max-width: $screen__md) {
-            text-align: left;
-            &:hover,
-            &[aria-current='true'],
-            &:focus {
-              background-color: $color__grey-100;
-              color: $color__black;
-            }
-          }
-
-          @media only screen and (min-width: $screen__md) {
-            &:hover,
-            &[aria-current='true'],
-            &:focus {
-              background-color: $color__white;
-              color: $color__black;
-
-              .template-focused-article & {
-                background-color: $color__grey-700;
-                color: $color__white;
-              }
-            }
-          }
-
-          &:focus {
-            outline-color: $color__black;
-          }
-
-          &-search {
-            color: $color__white;
-            height: 3rem;
-            //background-color: #26262a;
-            background-image: url(/static/images/icons/search-black.svg);
-            background-repeat: no-repeat;
-            background-position-x: 0.5rem;
-            background-position-y: 0.6rem;
-            padding-left: 2.25rem;
-            padding-right: 0.75rem;
-            background-size: 1.5rem;
+            align-self: center;
             display: inline-block;
+            margin-left: 1rem;
 
-            &:visited {
-              color: $color__white;
+            &:hover {
+                outline: 0.3125rem solid $color__grey-700;
             }
 
-            &:hover,
-            &[aria-current='true'],
             &:focus {
-              color: $color__black;
-              background-color: $color__grey-100;
-              background-image: url('/static/images/icons/search-black.svg');
+                outline-color: $color__black;
             }
-          }
         }
-      }
+        &-image {
+            height: 4.6875rem;
+
+            @media only screen and (min-width: $screen__md) {
+                height: 6.18rem;
+            }
+        }
     }
-  }
 
-  // this is currently unused
-  //   &__show-hide-button {
-  //     display: inline-block;
-  //     background-color: $color__grey-800;
-  //     margin-right: 0.3rem;
-  //     width: 3rem;
-  //     height: 3rem;
-  //     color: $color__white;
-  //     border: 0;
-  //     margin-left: auto;
-  //     cursor: pointer;
-  //     background-image: url("/static/images/icons/hamburger-white.svg");
-  //     background-repeat: no-repeat;
-  //     background-position-x: center;
-  //     background-position-y: 0.6rem;
-  //     background-size: 1.5rem;
+    &__mobile-icons {
+        display: inline-block;
+        float: right;
+        position: absolute;
+        //top:4rem;
 
-  //     &[aria-expanded="true"],
-  //     &:hover,
-  //     &:focus {
-  //       background-color: $color__grey-100;
-  //       background-image: url("/static/images/icons/hamburger-black.svg");
-  //       color: #000;
-  //     }
-  //     &:focus {
-  //       outline: 5px solid $color__black;
-  //     }
-  //   }
-
-  &__overlay-button {
-    padding: 23px 11px;
-    margin-bottom: 0;
-    z-index: 5;
-    cursor: pointer;
-    user-select: none;
-
-    @media only screen and (min-width: $screen__md) {
-      display: none;
+        @media screen and (min-width: 768px) {
+            display: none;
+        }
     }
-  }
 
-  &__overlay-input {
-    // using opacity instead of display: none allows the input to be toggled by keyboards
-    opacity: 0;
-    position: absolute;
-    /*
+    &__nav {
+        align-self: flex-end;
+        align-items: flex-end;
+        z-index: 2;
+        display: none;
+        left: calc(50% - 50vw);
+        position: relative;
+        margin-left: auto;
+
+        &.active {
+            display: block;
+        }
+
+        @media only screen and (max-width: $screen__md) {
+            text-align: right;
+        }
+
+        @media only screen and (min-width: $screen__md) {
+            display: block !important;
+            width: max-content;
+            left: unset;
+        }
+
+        &-list {
+            padding-left: 0;
+            width: 100vw;
+
+            @media only screen and (min-width: $screen__md) {
+                display: flex;
+                align-items: flex-end;
+                flex-wrap: wrap;
+                padding-left: 2.5rem;
+                width: 100%;
+            }
+
+            height: 100%;
+            margin-bottom: 0;
+            justify-content: space-around; // IE11 only supports space-around and space-between.
+            &-item {
+                list-style: none;
+                text-indent: 0.7em;
+                @media only screen and (min-width: $screen__md) {
+                    height: 3rem;
+                    text-indent: 0;
+                }
+                display: block;
+
+                &[data-id="menu-show-hide-button"] {
+                    display: inline-block;
+                    position: relative;
+
+                    // IE11 styles
+                    @media all and (-ms-high-contrast: none),
+                        (-ms-high-contrast: active) {
+                        bottom: -6px;
+                    }
+                }
+
+                &[data-isSearch="false"] {
+                    background-color: $color__yellow;
+                    font-size: 1.2rem;
+                    text-decoration: underline;
+                    border-bottom: 0.0625rem solid $color__grey-400;
+
+                    @media only screen and (min-width: $screen__md) {
+                        text-decoration: none;
+                        font-size: 1rem;
+                        border: 0;
+                        margin: 0 0.3125rem;
+                    }
+
+                    @media only screen and (max-width: $screen__md) {
+                        background-color: $color__white;
+                    }
+                }
+
+                &-link {
+                    display: block;
+                    color: $color__black;
+                    padding: 0.4375rem 1rem;
+                    height: 100%;
+                    text-decoration: none;
+                    font-family: $font__supria-sans;
+                    font-weight: normal;
+                    transition: all 0.1s;
+                    &:visited {
+                        color: $color__black;
+                    }
+
+                    @media only screen and (max-width: $screen__md) {
+                        text-align: left;
+                        &:hover,
+                        &[aria-current="true"],
+                        &:focus {
+                            background-color: $color__grey-100;
+                            color: $color__black;
+                        }
+                    }
+
+                    @media only screen and (min-width: $screen__md) {
+                        &:hover,
+                        &[aria-current="true"],
+                        &:focus {
+                            background-color: $color__white;
+                            color: $color__black;
+
+                            .template-focused-article & {
+                                background-color: $color__grey-700;
+                                color: $color__white;
+                            }
+                        }
+                    }
+
+                    &:focus {
+                        outline-color: $color__black;
+                    }
+
+                    &-search {
+                        color: $color__white;
+                        height: 3rem;
+                        //background-color: #26262a;
+                        background-image: url(/static/images/icons/search-black.svg);
+                        background-repeat: no-repeat;
+                        background-position-x: 0.5rem;
+                        background-position-y: 0.6rem;
+                        padding-left: 2.25rem;
+                        padding-right: 0.75rem;
+                        background-size: 1.5rem;
+                        display: inline-block;
+
+                        &:visited {
+                            color: $color__white;
+                        }
+
+                        &:hover,
+                        &[aria-current="true"],
+                        &:focus {
+                            color: $color__black;
+                            background-color: $color__grey-100;
+                            background-image: url("/static/images/icons/search-black.svg");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // this is currently unused
+    //   &__show-hide-button {
+    //     display: inline-block;
+    //     background-color: $color__grey-800;
+    //     margin-right: 0.3rem;
+    //     width: 3rem;
+    //     height: 3rem;
+    //     color: $color__white;
+    //     border: 0;
+    //     margin-left: auto;
+    //     cursor: pointer;
+    //     background-image: url("/static/images/icons/hamburger-white.svg");
+    //     background-repeat: no-repeat;
+    //     background-position-x: center;
+    //     background-position-y: 0.6rem;
+    //     background-size: 1.5rem;
+
+    //     &[aria-expanded="true"],
+    //     &:hover,
+    //     &:focus {
+    //       background-color: $color__grey-100;
+    //       background-image: url("/static/images/icons/hamburger-black.svg");
+    //       color: #000;
+    //     }
+    //     &:focus {
+    //       outline: 5px solid $color__black;
+    //     }
+    //   }
+
+    &__overlay-button {
+        padding: 23px 11px;
+        margin-bottom: 0;
+        z-index: 5;
+        cursor: pointer;
+        user-select: none;
+
+        @media only screen and (min-width: $screen__md) {
+            display: none;
+        }
+    }
+
+    &__overlay-input {
+        // using opacity instead of display: none allows the input to be toggled by keyboards
+        opacity: 0;
+        position: absolute;
+        /*
     clip: rect(0 0 0 0);
     clip-path: inset(50%);
     height: 1px;
@@ -258,121 +258,121 @@
     white-space: nowrap;
     width: 1px;
     */
-    // give label focus style when input is focussed
-    &:focus ~ #{$root}__overlay-button {
-      outline: 0.313rem solid $color__black;
+        // give label focus style when input is focussed
+        &:focus ~ #{$root}__overlay-button {
+            outline: 0.313rem solid $color__black;
+        }
+
+        &:checked ~ #{$root}__nav {
+            display: block;
+
+            @media only screen and (min-width: $screen__md) {
+                display: none;
+            }
+        }
+
+        &:checked ~ #{$root}__overlay-button {
+            &:hover #{$root}__overlay-icon,
+            #{$root}__overlay-icon {
+                background: transparent;
+            }
+            #{$root}__overlay-icon {
+                &:before {
+                    transform: rotate(45deg) translate(7px, 7px);
+                    opacity: 1;
+                }
+                &:after {
+                    transform: rotate(-45deg) translate(7px, -7px);
+                }
+            }
+        }
+
+        @media only screen and (min-width: $screen__md) {
+            display: none;
+        }
     }
 
-    &:checked ~ #{$root}__nav {
-      display: block;
+    &__overlay-icon {
+        height: 4px;
+        width: 35px;
+        border-radius: 2px;
+        background-color: black;
+        position: relative;
+        display: block;
+        transition: all 0.2s ease-in-out;
 
-      @media only screen and (min-width: $screen__md) {
-        display: none;
-      }
-    }
-
-    &:checked ~ #{$root}__overlay-button {
-      &:hover #{$root}__overlay-icon,
-      #{$root}__overlay-icon {
-        background: transparent;
-      }
-      #{$root}__overlay-icon {
         &:before {
-          transform: rotate(45deg) translate(7px, 7px);
-          opacity: 1;
+            top: -10px;
+            visibility: visible;
         }
+
         &:after {
-          transform: rotate(-45deg) translate(7px, -7px);
+            top: 10px;
         }
-      }
-    }
 
-    @media only screen and (min-width: $screen__md) {
-      display: none;
+        &:before,
+        &:after {
+            height: 4px;
+            width: 35px;
+            border-radius: 2px;
+            background-color: black;
+            position: absolute;
+            content: "";
+            transition: all 0.2s ease-in-out;
+        }
     }
-  }
-
-  &__overlay-icon {
-    height: 4px;
-    width: 35px;
-    border-radius: 2px;
-    background-color: black;
-    position: relative;
-    display: block;
-    transition: all 0.2s ease-in-out;
-
-    &:before {
-      top: -10px;
-      visibility: visible;
-    }
-
-    &:after {
-      top: 10px;
-    }
-
-    &:before,
-    &:after {
-      height: 4px;
-      width: 35px;
-      border-radius: 2px;
-      background-color: black;
-      position: absolute;
-      content: '';
-      transition: all 0.2s ease-in-out;
-    }
-  }
 }
 
 .no-js {
-  .header {
-    &__nav-list-item {
-      @media only screen and (max-width: $screen__md) {
-        background-color: $color__white;
-        text-align: center;
-        border-bottom: 0.0625rem solid $color__grey-400;
-        &-link-search {
-          width: 100%;
-          background-position-x: 45%;
-          background-position-y: 0.6rem;
-          text-decoration: underline;
-          color: $color__black;
-          font-size: 1.2rem;
-          background-color: #ffffff;
-          background-image: url(/static/images/icons/search-black.svg);
-          &:hover {
-            background-color: $color__grey-100;
-          }
-          @media only screen and (max-width: 41.25rem) {
-            background-position-x: 42.5%;
-          }
-          @media only screen and (max-width: $screen__sm) {
-            background-position-x: 40%;
-          }
+    .header {
+        &__nav-list-item {
+            @media only screen and (max-width: $screen__md) {
+                background-color: $color__white;
+                text-align: center;
+                border-bottom: 0.0625rem solid $color__grey-400;
+                &-link-search {
+                    width: 100%;
+                    background-position-x: 45%;
+                    background-position-y: 0.6rem;
+                    text-decoration: underline;
+                    color: $color__black;
+                    font-size: 1.2rem;
+                    background-color: #ffffff;
+                    background-image: url(/static/images/icons/search-black.svg);
+                    &:hover {
+                        background-color: $color__grey-100;
+                    }
+                    @media only screen and (max-width: 41.25rem) {
+                        background-position-x: 42.5%;
+                    }
+                    @media only screen and (max-width: $screen__sm) {
+                        background-position-x: 40%;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 
 //css navigation menu : reusing : https://codepen.io/danhearn/pen/XprGrJ
 body {
-  animation: bugfix infinite 1s;
-  -webkit-animation: bugfix infinite 1s;
+    animation: bugfix infinite 1s;
+    -webkit-animation: bugfix infinite 1s;
 }
 
 @keyframes bugfix {
-  from {
-    padding: 0;
-  }
-  to {
-    padding: 0;
-  }
+    from {
+        padding: 0;
+    }
+    to {
+        padding: 0;
+    }
 }
 @-webkit-keyframes bugfix {
-  from {
-    padding: 0;
-  }
-  to {
-    padding: 0;
-  }
+    from {
+        padding: 0;
+    }
+    to {
+        padding: 0;
+    }
 }
