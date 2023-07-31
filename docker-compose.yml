@@ -16,6 +16,7 @@ services:
     build: .
     volumes:
       - ./:/app
+      - media:/media
       - ~/.nvm:/home/app/.nvm
     depends_on:
       - db
@@ -38,7 +39,7 @@ services:
     platform: linux/amd64
     build: platformsh-cli
     volumes:
-      - ./media:/app/media
+      - media:/app/media
       - ./database_dumps:/app/database_dumps
     env_file:
       - .env
@@ -50,3 +51,6 @@ services:
       - .:/docs
     ports:
       - 8001:8000
+
+volumes:
+  media:

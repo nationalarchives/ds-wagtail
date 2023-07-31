@@ -279,6 +279,7 @@ def pull_staging_data(c):
 def pull_staging_media(c):
     """Pull all media from the staging platform.sh env"""
     pull_media_from_platform(c, STAGING_APP_INSTANCE)
+    local("chmod -fR 777 media")
 
 
 # -----------------------------------------------------------------------------
