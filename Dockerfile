@@ -1,5 +1,5 @@
 # Generate static assets (CSS and JavaScript)
-FROM node:18.16 AS staticassets
+FROM node:20.5 AS staticassets
 WORKDIR /home
 COPY package.json package-lock.json webpack.config.js ./
 RUN npm install
