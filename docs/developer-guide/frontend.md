@@ -14,7 +14,8 @@ If you have any questions about any aspect of frontend development seek advice f
 ```
     npm install 
 ```
-- To watch and build the public facing site and wagtail editor SASS, run `npm run compile:css`
+- To watch and build the public facing site and wagtail editor SASS, run `npm run dev:css`
+- To build a production package, run `npm run compile:css`
 - To modify styles, navigate to the `sass` folder in your editor.
 
 ### Working with JavaScript
@@ -23,8 +24,8 @@ Webpack is used for JavaScript module bundling with entry points and outputs def
 entry points remember to avoid, where possible, sending JavaScript to a given page where it is not required.
 
 - Install dependencies with `npm install`
-    - _For development_: Kick off a Webpack watch task with `npm start`. This will produce development assets (by overriding the production mode set in `webpack.config.js`).
-    - _For production_: bundle assets with `npx webpack --config webpack.config.js`
+    - _For development_: Kick off a Webpack watch task with `npm run dev:js`. This will produce development assets (by overriding the production mode set in `webpack.config.js`).
+    - _For production_: bundle assets with `npm run compile:js`
 
 ### JavaScript testing
 

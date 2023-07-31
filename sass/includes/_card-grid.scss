@@ -8,7 +8,7 @@
         padding: 0;
         margin: 0;
     }
-    
+
     &__duo {
         grid-gap: 1rem;
         margin: 1rem 0;
@@ -39,14 +39,12 @@
                 grid-gap: 1.875em;
             }
         }
-
-        
     }
 
     &__quad {
         grid-gap: 40px;
         margin: 20px 0;
-        
+
         @media (min-width: map-get($grid-breakpoints, "sm")) {
             grid-template-columns: repeat(2, 1fr);
         }
@@ -63,7 +61,7 @@
         @media (min-width: map-get($grid-breakpoints, "md")) {
             gap: 42px;
         }
-        
+
         @media (min-width: map-get($grid-breakpoints, "lg")) {
             grid-template-columns: repeat(5, 1fr);
         }

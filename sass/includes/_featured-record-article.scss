@@ -11,12 +11,12 @@
     margin-left: calc((3rem + 14px) / -2);
     margin-right: calc((3rem + 14px) / -2);
 
-    @media screen and (min-width: map-get($grid-breakpoints, 'md')) {
+    @media screen and (min-width: map-get($grid-breakpoints, "md")) {
         margin-left: 0;
         margin-right: 0;
     }
 
-    @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+    @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
         margin-right: 15px;
         margin-left: 15px;
         grid-template-columns: 1fr 1fr;
@@ -34,7 +34,7 @@
         object-fit: cover;
         max-height: 330px; // prevent image getting huge on smaller viewports
 
-        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             max-height: 390px;
         }
     }
@@ -43,7 +43,7 @@
         align-self: center;
         margin: 24px;
 
-        @media screen and (min-width: map-get($grid-breakpoints, 'lg')) {
+        @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             margin: 23px 40px;
         }
     }
@@ -57,7 +57,7 @@
     }
 
     &__title {
-        @include font-size('xxl');
+        @include font-size("xxl");
         line-height: 1.2;
         margin-top: 0;
         font-weight: 600;
@@ -74,13 +74,13 @@
     }
 
     &__text {
-        @include font-size('m');
+        @include font-size("m");
         color: $color__grey-700;
         margin-bottom: 0;
     }
 
     &__date {
-        @include font-size('m');
+        @include font-size("m");
         color: $color__black;
     }
 }

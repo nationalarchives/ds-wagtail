@@ -1,24 +1,24 @@
 .record-title {
-  padding: 1.5rem 0 2rem;
+    padding: 1.5rem 0 2rem;
 
-  @media (min-width: $screen__lg) {
-    padding: 2rem 0;
-  }
-
-  &__description {
-    font-family: $font__supria-sans;
-    font-size: 1.25rem;
-    margin: 0;
-    @media (max-width: $screen__md) {
-      font-size: 1.1rem;
+    @media (min-width: $screen__lg) {
+        padding: 2rem 0;
     }
-  }
 
-  &__heading {
-    font-family: $font__supria-sans;
-    font-size: 2.4rem;
-    @media (max-width: $screen__md) {
-      font-size: 2rem;
+    &__description {
+        font-family: $font__supria-sans;
+        font-size: 1.25rem;
+        margin: 0;
+        @media (max-width: $screen__md) {
+            font-size: 1.1rem;
+        }
     }
-  }
+
+    &__heading {
+        font-family: $font__supria-sans;
+        font-size: 2.4rem;
+        @media (max-width: $screen__md) {
+            font-size: 2rem;
+        }
+    }
 }
