@@ -8,7 +8,7 @@ From the host machine, run:
 fab update-deps
 ```
 
-This will start two Docker machines, one to update NPM and the other to update Poetry.
+This will start two Docker machines, one to update npm and the other to update Poetry.
 
 The `package.json`, `package-lock.json`, `pyproject.toml` and `poetry.lock` files should then be updated and ready to commit.
 
