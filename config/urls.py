@@ -40,6 +40,7 @@ private_urls = [
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
     path("feedback/", include("etna.feedback.urls")),
+    path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
