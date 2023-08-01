@@ -220,9 +220,16 @@
             outline-offset: 0.125rem;
         }
 
-        > p {
+        > p,
+        > ul,
+        > ol {
             // Normalise the rich-text output
-            margin: 0;
+            margin-top: 0;
+            margin-bottom: 1rem;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 

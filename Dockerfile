@@ -14,6 +14,7 @@ RUN npm run compile
 FROM python:3.11
 
 EXPOSE 8000
+HEALTHCHECK CMD curl --fail http://localhost:8000/healthcheck/ || exit 1
 
 ENV \
   # python:
@@ -27,7 +28,7 @@ ENV \
   PIP_DEFAULT_TIMEOUT=100 \
   # poetry:
   POETRY_HOME=/home/app/poetry \
-  POETRY_VERSION=1.4.2 \
+  POETRY_VERSION=1.5.1 \
   POETRY_NO_INTERACTION=1 \
   POETRY_VIRTUALENVS_CREATE=true
 
