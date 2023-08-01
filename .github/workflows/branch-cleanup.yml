@@ -2,6 +2,9 @@ name: Feature branch deleted
 
 on:
   delete:
+  push: # TEMP
+    branches:
+      - chore/no-untagged-docker-images
 
 env:
   IMAGE_NAME: ds-wagtail
