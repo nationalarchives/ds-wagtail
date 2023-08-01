@@ -1,5 +1,17 @@
 # Dependency management
 
+## Updating all dependencies
+
+From the host machine, run:
+
+```sh
+fab update-deps
+```
+
+This will start two Docker machines, one to update NPM and the other to update Poetry.
+
+The `package.json`, `package-lock.json`, `pyproject.toml` and `poetry.lock` files should then be updated and ready to commit.
+
 ## For the backend
 
 The Etna project uses [Poetry](https://python-poetry.org/docs/) to manage Python dependencies, which uses lock-file to help ensure environment consistency.
@@ -12,12 +24,10 @@ $ fab sh
 
 You can then run Poetry commands exactly [as they are documented here](https://python-poetry.org/docs/cli/).
 
-Here are the ones you'll use regularly:
-
 ### Updating local dependencies to reflect changes
 
 ```console
-poetry install --remove-untracked --no-root"
+poetry install --remove-untracked --no-root
 ```
 
 ### Adding a dependency
