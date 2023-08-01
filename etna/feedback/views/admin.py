@@ -4,10 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.filters import WagtailFilterSet
 from wagtail.admin.widgets import AdminDateInput
-from wagtail.snippets.views.snippets import (
-    SnippetTitleColumn,
-    SnippetViewSet,
-)
+from wagtail.snippets.views.snippets import SnippetTitleColumn, SnippetViewSet
 
 import django_filters
 
