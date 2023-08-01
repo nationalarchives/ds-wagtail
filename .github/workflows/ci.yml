@@ -1,7 +1,7 @@
 name: CI
 
 on:
-  pull_request:
+  push:
 
 env:
   PYTHON_VERSION: "3.11"
