@@ -1,4 +1,4 @@
-name: Feature branch deleted
+name: Clean up feature branch
 
 on:
   delete:
@@ -29,5 +29,13 @@ jobs:
           [ "$VERSION" == "main" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Clean up Docker image $IMAGE_ID:$VERSION"
-          docker rmi $IMAGE_ID:$VERSION
+      - name: Delete image
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
+        with:
+          owner: nationalarchives
+          name: $IMAGE_ID
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: $VERSION
