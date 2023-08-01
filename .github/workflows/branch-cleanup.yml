@@ -1,14 +1,14 @@
 name: Feature branch deleted
 
 on:
-  # delete:
-  push: # TEMP
-    branches:
-      - chore/no-untagged-docker-images
+  delete:
 
+env:
+  IMAGE_NAME: ds-wagtail
+  
 jobs:
   delete:
-    # if: github.event.ref_type == 'branch'
+    if: github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
     steps:
       - name: Clean up
@@ -24,6 +24,5 @@ jobs:
           [ "$VERSION" == "main" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          echo "Clean up for branch ${{ github.event.ref }}"
           echo "Clean up Docker image $IMAGE_ID:$VERSION"
-          # docker rmi $IMAGE_ID:$VERSION
+          docker rmi $IMAGE_ID:$VERSION
