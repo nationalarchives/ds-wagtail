@@ -1,12 +1,10 @@
 import logging
 
-from django.http import HttpRequest, HttpResponse
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.filters import WagtailFilterSet
 from wagtail.admin.widgets import AdminDateInput
 from wagtail.snippets.views.snippets import (
-    IndexView,
     SnippetTitleColumn,
     SnippetViewSet,
 )
@@ -21,6 +19,7 @@ logger = logging.getLogger(__name__)
 __all__ = [
     "FeedbackSubmissionViewSet",
 ]
+
 
 class FeedbackSubmissionFilterSet(WagtailFilterSet):
     received_from = django_filters.DateFilter(
