@@ -36,6 +36,6 @@ jobs:
         uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
           owner: nationalarchives
-          name: $IMAGE_ID
+          name: ${{ env.IMAGE_ID }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: $VERSION
+          tag: ${{ env.VERSION }}
