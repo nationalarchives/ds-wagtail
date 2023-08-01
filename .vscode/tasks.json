@@ -1,0 +1,18 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "fab start",
+            "type": "shell",
+            "command": "fab start",
+            "dependsOn": [
+                "fab build"
+            ]
+        },
+        {
+            "label": "fab build",
+            "type": "shell",
+            "command": "fab build"
+        }
+    ]
+}
