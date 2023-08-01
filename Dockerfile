@@ -14,6 +14,7 @@ RUN npm run compile
 FROM python:3.11
 
 EXPOSE 8000
+HEALTHCHECK CMD curl --fail http://localhost:8000/healthcheck/ || exit 1
 
 ENV \
   # python:

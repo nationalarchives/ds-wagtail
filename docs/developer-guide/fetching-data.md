@@ -35,14 +35,16 @@ $ fab pull-production-data
 
 Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.
 
+**N.B. These commands must be run with `sudo` so the permissions can be correctly updated once pulled. This is to fix an issue which will be resolved once we move platforms.**
+
 ### Staging
 
 ```console
-$ fab pull-staging-media
+$ sudo fab pull-staging-media
 ```
 
 ### Production
 
 ```console
-$ fab pull-production-media
+$ sudo fab pull-production-media
 ```
