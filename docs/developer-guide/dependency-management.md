@@ -2,7 +2,7 @@
 
 ## Updating all dependencies
 
-From the host machine, run:
+To update dependencies, change the version in either `package.json` or `pyproject.toml` and from the host machine, run:
 
 ```sh
 fab update-deps
@@ -10,7 +10,7 @@ fab update-deps
 
 This will start two Docker machines, one to update npm and the other to update Poetry.
 
-The `package.json`, `package-lock.json`, `pyproject.toml` and `poetry.lock` files should then be updated and ready to commit.
+The `package.json`, `package-lock.json`, `pyproject.toml` and/or `poetry.lock` files should then be updated and ready to commit.
 
 ## For the backend
 
