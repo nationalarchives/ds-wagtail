@@ -2,6 +2,8 @@ name: Feature branch deleted
 
 on:
   delete:
+    branches:
+      - feature/*
   push: # TEMP
     branches:
       - chore/no-untagged-docker-images
