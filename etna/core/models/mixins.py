@@ -49,7 +49,7 @@ class NewLabelMixin(models.Model):
     )
 
     newly_published_at = models.DateField(
-        editable=False,
+        verbose_name="Page marked as new on",
         default=None,
         null=True,
     )
@@ -98,7 +98,13 @@ class NewLabelMixin(models.Model):
         return False
 
     promote_panels = [
-        FieldPanel("mark_new_on_next_publish"),
+        MultiFieldPanel(
+            [
+                FieldPanel("mark_new_on_next_publish"),
+                FieldPanel("newly_published_at", read_only=True),
+            ],
+            heading="New label",
+        )
     ]
 
     class Meta:
