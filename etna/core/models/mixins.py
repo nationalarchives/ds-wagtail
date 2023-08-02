@@ -49,6 +49,7 @@ class NewLabelMixin(models.Model):
     )
 
     newly_published_at = models.DateField(
+        editable=False,
         verbose_name="Page marked as new on",
         default=None,
         null=True,
