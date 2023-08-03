@@ -398,7 +398,7 @@ class FocusedArticlePage(
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
-    
+
     @cached_property
     def similar_items(
         self,
@@ -429,7 +429,7 @@ class FocusedArticlePage(
         return tuple(
             Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
-    
+
     @cached_property
     def latest_items(
         self,
