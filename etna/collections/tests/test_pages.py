@@ -130,7 +130,9 @@ class TestPages(WagtailPageTestCase):
 
     def test_check_topic_featured_pages(self):
         featured_pages = self.topic_explorer_index_page.featured_pages
-        children = self.topic_explorer_index_page.get_children().order_by("?").specific()
+        children = (
+            self.topic_explorer_index_page.get_children().order_by("?").specific()
+        )
         for page in featured_pages:
             self.assertIn(page, children)
 
@@ -140,6 +142,8 @@ class TestPages(WagtailPageTestCase):
 
     def test_check_time_featured_pages(self):
         featured_pages = self.time_period_explorer_index_page.featured_pages
-        children = self.time_period_explorer_index_page.get_children().order_by("?").specific()
+        children = (
+            self.time_period_explorer_index_page.get_children().order_by("?").specific()
+        )
         for page in featured_pages:
             self.assertIn(page, children)

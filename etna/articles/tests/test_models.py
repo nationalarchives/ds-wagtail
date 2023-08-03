@@ -1,8 +1,8 @@
 from django.test import TestCase
+
 from wagtail.models import Site
 
-
-from ..models import ArticleTag, ArticleIndexPage, ArticlePage
+from ..models import ArticleIndexPage, ArticlePage, ArticleTag
 
 
 class TestArticleTagClean(TestCase):
@@ -28,6 +28,7 @@ class TestArticleTagClean(TestCase):
         tag = ArticleTag(name="Test", slug="test-3")
         tag.clean()
         self.assertEqual(tag.skos_id, "Test_3")
+
 
 class TestArticleIndexPage(TestCase):
     def setUp(self):
@@ -64,7 +65,7 @@ class TestArticleIndexPage(TestCase):
     def test_get_article_pages(self):
         context = self.article_index_page.get_context(request=None)
         self.assertEqual(len(context["article_pages"]), 3)
-    
+
     def test_check_article_pages(self):
         context = self.article_index_page.get_context(request=None)
         children = self.article_index_page.get_children()
