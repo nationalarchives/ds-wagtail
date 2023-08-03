@@ -75,7 +75,6 @@ class TestArticlePageSimilarItems(TestCase):
         # No draft items should be included
         test_page = ArticlePage.objects.get(id=self.original_page.id)
         with self.assertNumQueries(3):
-            print(self.three_matches_page.__dir__())
             self.assertEqual(
                 list(page.id for page in test_page.similar_items),
                 [

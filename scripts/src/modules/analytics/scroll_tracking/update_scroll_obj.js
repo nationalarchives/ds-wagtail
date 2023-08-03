@@ -6,7 +6,7 @@ const update_scroll_obj = (currentScrollPercentageIncrement, scrollObj) => {
     if (currentScrollPercentageIncrement > highestPercentageReached) {
         highestPercentageReached = currentScrollPercentageIncrement;
         scrollObj.highestScrollPercentage = highestPercentageReached;
-        sessionStorage.setItem(window.location.href, highestPercentageReached)
+        sessionStorage.setItem(window.location.href, highestPercentageReached);
     } else {
         scrollObj.highestScrollPercentage = highestPercentageReached;
     }

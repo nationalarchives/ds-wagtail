@@ -31,7 +31,7 @@
         border-left: 0.3125rem solid $color__yellow;
         text-align: left;
 
-        @media (min-width: map-get($grid-breakpoints, 'md')) {
+        @media (min-width: map-get($grid-breakpoints, "md")) {
             border-left-width: 0.3125rem;
         }
     }
@@ -57,7 +57,7 @@
         font-weight: $font-weight-bold;
         font-size: 1.125rem;
 
-        @media (min-width: map-get($grid-breakpoints, 'md')) {
+        @media (min-width: map-get($grid-breakpoints, "md")) {
             font-size: 1.25rem;
         }
     }

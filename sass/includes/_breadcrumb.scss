@@ -1,48 +1,48 @@
 .breadcrumb-content {
-  background-color: white;
-  display: inline-block;
-  padding: 0.1rem 1rem 0rem 0;
+    background-color: white;
+    display: inline-block;
+    padding: 0.1rem 1rem 0rem 0;
 
-  @media only screen and (min-width: $screen__md) {
-    padding: 0.1rem 1rem 0rem;
-  }
+    @media only screen and (min-width: $screen__md) {
+        padding: 0.1rem 1rem 0rem;
+    }
 
-  .generic-intro & {
-    padding: 0;
-  }
+    .generic-intro & {
+        padding: 0;
+    }
 
-  // Styles for Focused Article templates
-  .template-focused-article & {
-    background-color: $color__grey-700;
-    width: 100%;
-  }
+    // Styles for Focused Article templates
+    .template-focused-article & {
+        background-color: $color__grey-700;
+        width: 100%;
+    }
 }
 
 ul.breadcrumb {
-  padding: 10px 16px;
-  list-style: none;
+    padding: 10px 16px;
+    list-style: none;
 
-  .generic-intro & {
-    padding: 0;
-    padding-top: 2rem;
-  }
+    .generic-intro & {
+        padding: 0;
+        padding-top: 2rem;
+    }
 }
 ul.breadcrumb li {
-  @include font-size(xs);
-  display: inline;
-  font-family: 'Open Sans', sans-serif;
+    @include font-size(xs);
+    display: inline;
+    font-family: "Open Sans", sans-serif;
 }
 
 ul.breadcrumb li a {
-  color: black;
-  text-decoration: underline;
+    color: black;
+    text-decoration: underline;
 
-  .template-focused-article & {
-    color: $color__white;
-  }
+    .template-focused-article & {
+        color: $color__white;
+    }
 }
 ul.breadcrumb li a:hover {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .breadcrumb__separator {
@@ -51,7 +51,7 @@ ul.breadcrumb li a:hover {
     color: black;
 
     .template-focused-article & {
-      color: $color__grey-600;
+        color: $color__grey-600;
     }
 }
 
@@ -64,28 +64,29 @@ ul.breadcrumb li a:hover {
 
 //media query to truncate list on mobile : example : https://design-system.service.gov.uk/components/breadcrumbs/collapse-mobile/index.html
 @media (max-width: 768px) {
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
-    display: none;
-
-    + span {
+    .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item,
+    .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item {
         display: none;
-    }
-  }
-  
-  .govuk-breadcrumbs--collapse-on-mobile
-    .govuk-breadcrumbs__list-item:first-child,
-  .govuk-breadcrumbs--collapse-on-mobile
-    .govuk-breadcrumbs__list-item:last-child {
-    display: inline-block;
 
-    + span {
-      display: inline-block;
+        + span {
+            display: none;
+        }
     }
-  } 
 
-  .govuk-breadcrumbs--collapse-on-mobile .govuk-breadcrumbs__list-item:before {
-    top: 6px;
-    margin: 0;
-  }
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:first-child,
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:last-child {
+        display: inline-block;
+
+        + span {
+            display: inline-block;
+        }
+    }
+
+    .govuk-breadcrumbs--collapse-on-mobile
+        .govuk-breadcrumbs__list-item:before {
+        top: 6px;
+        margin: 0;
+    }
 }

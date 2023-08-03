@@ -1,12 +1,18 @@
 {
   "name": "ds-wagtail",
-  "version": "7.3.0",
+  "version": "7.5.0",
   "description": "## Local development",
   "private": true,
   "scripts": {
-    "compile:css": "sass --watch --quiet-deps --load-path=node_modules sass/etna.scss:templates/static/css/dist/etna.css",
-    "start": "npx webpack --config webpack.config.js --mode=development --watch",
-    "test": "jest --coverage"
+    "compile:css": "sass --quiet-deps --load-path=node_modules sass/etna.scss:templates/static/css/dist/etna.css",
+    "compile:js": "webpack --config webpack.config.js --mode=production",
+    "compile": "npm run compile:css && npm run compile:js",
+    "dev:css": "sass --load-path=node_modules --watch sass/etna.scss:templates/static/css/dist/etna.css",
+    "dev:js": "webpack --config webpack.config.js --mode=development --watch",
+    "dev": "npm run dev:css && npm run dev:js",
+    "test": "jest --coverage",
+    "lint": "prettier \"{scripts,sass}/**/*.{scss,js}\" --check",
+    "lint:fix": "prettier \"{scripts,sass}/**/*.{scss,js}\" --write"
   },
   "repository": {
     "type": "git",
@@ -24,12 +30,13 @@
     "@babel/preset-env": "~7.22",
     "babel-loader": "~9.1",
     "jest-environment-jsdom": "~29.6",
-    "sass": "~1.63",
+    "prettier": "^3.0.0",
+    "sass": "~1.64",
     "webpack": "~5.88",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
-    "@nationalarchives/frontend": "^0.1.8-prerelease",
+    "@nationalarchives/frontend": "^0.1.10-prerelease",
     "jest": "~29.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1"

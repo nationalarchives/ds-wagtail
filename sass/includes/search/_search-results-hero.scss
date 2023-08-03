@@ -138,7 +138,7 @@
                 color: $color__black;
             }
 
-            &[aria-current='true'],
+            &[aria-current="true"],
             &:hover,
             &:focus {
                 background-color: $color__white;

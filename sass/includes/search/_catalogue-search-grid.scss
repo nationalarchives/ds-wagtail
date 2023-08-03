@@ -1,53 +1,53 @@
 .catalogue-search-grid {
-  display: grid;
-  display: -ms-grid;
-  grid-template-columns: 2.5fr 8fr;
-  -ms-grid-columns: 2.5fr 8fr;
-
-  @media only screen and (max-width: $screen__xl) {
-    -ms-grid-columns: 1fr;
-  }
-
-  margin-left: 2rem;
-  margin-right: 2rem;
-  margin-top: 2rem;
-
-  @media only screen and (max-width: $screen__md) {
-    margin-left: 0;
-    margin-right: 0;
-    margin-top: 1rem;
-  }
-
-  &__sidebar {
-    -ms-grid-column: 1;
-    @media only screen and (max-width: $screen__xl) {
-      grid-column: 1 / -1;
-      -ms-grid-column: 1;
-      width: 100%;
-      margin-bottom: 1rem;
-    }
-  }
-
-  &__results {
-    border-top: 4px dotted $color__grey-500;
-    margin-left: 1rem;
-    padding: 1rem;
-
-    @media only screen and (max-width: $screen__sm) {
-      padding-left: 0;
-      padding-right: 0;
-      margin-left: 0;
-      padding-top: 0;
-    }
-
-    -ms-grid-column: 2;
+    display: grid;
+    display: -ms-grid;
+    grid-template-columns: 2.5fr 8fr;
+    -ms-grid-columns: 2.5fr 8fr;
 
     @media only screen and (max-width: $screen__xl) {
-      grid-column: 1 / -1;
-      -ms-grid-column: 1;
-      -ms-grid-row: 2;
-
-      border-top: 0;
+        -ms-grid-columns: 1fr;
     }
-  }
+
+    margin-left: 2rem;
+    margin-right: 2rem;
+    margin-top: 2rem;
+
+    @media only screen and (max-width: $screen__md) {
+        margin-left: 0;
+        margin-right: 0;
+        margin-top: 1rem;
+    }
+
+    &__sidebar {
+        -ms-grid-column: 1;
+        @media only screen and (max-width: $screen__xl) {
+            grid-column: 1 / -1;
+            -ms-grid-column: 1;
+            width: 100%;
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__results {
+        border-top: 4px dotted $color__grey-500;
+        margin-left: 1rem;
+        padding: 1rem;
+
+        @media only screen and (max-width: $screen__sm) {
+            padding-left: 0;
+            padding-right: 0;
+            margin-left: 0;
+            padding-top: 0;
+        }
+
+        -ms-grid-column: 2;
+
+        @media only screen and (max-width: $screen__xl) {
+            grid-column: 1 / -1;
+            -ms-grid-column: 1;
+            -ms-grid-row: 2;
+
+            border-top: 0;
+        }
+    }
 }

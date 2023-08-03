@@ -80,8 +80,9 @@ class Migration(migrations.Migration):
         # Copy data from existing tables
         migrations.RunPython(migrate_forwards, migrations.RunPython.noop),
         # When running forwards, increment autoid to reflect additions
-        migrations.RunSQL(
-            'SELECT setval(pg_get_serial_sequence(\'"images_customimage"\',\'id\'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "images_customimage";',
-            migrations.RunSQL.noop,
-        ),
+        # TODO: Figure out why this breaks...
+        # migrations.RunSQL(
+        #     'SELECT setval(pg_get_serial_sequence(\'"images_customimage"\',\'id\'), coalesce(max("id"), 1), max("id") IS NOT null) FROM "images_customimage";',
+        #     migrations.RunSQL.noop,
+        # ),
     ]
