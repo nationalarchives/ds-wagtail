@@ -1,7 +1,8 @@
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
+from django.test import TestCase
 
-from ..models import ArticleIndexPage, ArticlePage
+from ..models import ArticleIndexPage, ArticlePage, FocusedArticlePage
 
 
 class TestPages(WagtailPageTestCase):
@@ -23,8 +24,18 @@ class TestPages(WagtailPageTestCase):
         )
         self.article_index_page.add_child(instance=self.article_page)
 
+        self.focused_article_page = FocusedArticlePage(
+            title="Focused Article page",
+            intro="test",
+            teaser_text="test",
+        )
+        self.article_index_page.add_child(instance=self.focused_article_page)
+
     def test_article_index_page(self):
         self.assertPageIsRenderable(self.article_index_page)
 
     def test_article_page(self):
         self.assertPageIsRenderable(self.article_page)
+
+    def test_focused_article_page(self):
+        self.assertPageIsRenderable(self.focused_article_page)
