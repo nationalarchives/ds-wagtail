@@ -271,11 +271,11 @@ class ArticlePage(
 
         # Identify other live pages with tags in common
         related_tags = (
-            Page.objects.live()
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .live()
             .public()
             .not_page(self)
-            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
-            .filter(tagged_items__tag_id__in=tag_ids)
         )
 
         return tuple(
@@ -419,11 +419,11 @@ class FocusedArticlePage(
 
         # Identify other live pages with tags in common
         related_tags = (
-            Page.objects.live()
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .live()
             .public()
             .not_page(self)
-            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
-            .filter(tagged_items__tag_id__in=tag_ids)
         )
 
         return tuple(
