@@ -1,6 +1,5 @@
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-from django.test import TestCase
 
 from ..models import ArticleIndexPage, ArticlePage, FocusedArticlePage
 
