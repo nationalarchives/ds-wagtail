@@ -56,19 +56,10 @@ class AuthorPage(BasePage):
         related_name="+",
     )
 
-    bio_link = models.URLField(
-        blank=False, null=False, help_text="Link to external bio page"
-    )
-    bio_link_label = models.CharField(
-        blank=False, null=False, help_text="Button text for bio link", max_length=50
-    )
-
     content_panels = BasePage.content_panels + [
         FieldPanel("role"),
         FieldPanel("summary"),
         FieldPanel("image"),
-        FieldPanel("bio_link"),
-        FieldPanel("bio_link_label"),
     ]
 
     class Meta:
@@ -151,13 +142,20 @@ class AuthorPageMixin:
             )
         )
     
+    @cached_property
+    def author_item(self):
+        try:
+            return self.authors[0]
+        except IndexError:
+            return None
+    
     @property
     def author_name(self):
         """
         Returns the titles of all related topics, joined together into one big
         comma-separated string. Ideal for indexing!
         """
-        return "".join(item.title for item in self.authors)
+        return self.author_item.title
 
     @cached_property
     def authors_alphabetical(self):
