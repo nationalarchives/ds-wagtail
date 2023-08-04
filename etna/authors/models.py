@@ -25,7 +25,7 @@ class AuthorIndexPage(BasePage):
         return (
             self.get_children()
             .type(AuthorPage)
-            .order_by("?")
+            .order_by("title")
             .live()
             .specific()[:3]
         )
@@ -39,7 +39,6 @@ class AuthorPage(BasePage):
     an external biography page.
     """
 
-    name = models.CharField(blank=False, null=False, max_length=100)
     role = models.CharField(blank=True, null=True, max_length=100)
     summary = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
@@ -60,7 +59,6 @@ class AuthorPage(BasePage):
     )
 
     content_panels = BasePage.content_panels + [
-        FieldPanel("name"),
         FieldPanel("role"),
         FieldPanel("summary"),
         FieldPanel("image"),
