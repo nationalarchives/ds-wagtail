@@ -1,10 +1,35 @@
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from etna.core.models import BasePage
+
+
+class AuthorIndexPage(BasePage):
+    """Author index page
+
+    This is the parent page for all authors. It is used to
+    generate the author index page.
+    """
+
+    subpage_types = ["authors.AuthorPage"]
+
+    parent_page_types = ["home.HomePage"]
+
+    @cached_property
+    def author_pages(self):
+        """Return a sample of child pages for rendering in teaser."""
+        return (
+            self.get_children()
+            .type(AuthorPage)
+            .order_by("?")
+            .live()
+            .specific()[:3]
+        )
+        
 
 
 class AuthorPage(BasePage):
@@ -46,4 +71,4 @@ class AuthorPage(BasePage):
     class Meta:
         verbose_name_plural = "Authors"
 
-    parent_page_types = ["home.HomePage"]
+    parent_page_types = ["authors.AuthorIndexPage"]
