@@ -1,4 +1,4 @@
-.generic-intro {
+.author-intro {
     padding-top: 1rem;
     background-color: $color__white;
     color: $color__black;
@@ -83,6 +83,14 @@
 
     &__meta-item a {
         color: $color__white;
+    }
+
+    .info {
+        padding-top: 5%;
+    }
+
+    &__image {
+        border-radius: 50%;
     }
 
     &--dark .generic-intro__paragraph {

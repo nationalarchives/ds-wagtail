@@ -5,11 +5,33 @@
 {% load wagtailimages_tags %}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.role %}
-    {% image page.image fill-1440x500-c100 as author_img %}
-    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="hero-img" />
+    {% include 'includes/breadcrumb.html' %}
+    <div class="author-intro">
+        <div class="container">
+            <div class="row">
+                <div class="col-9 info">
+                    <h1 class="author-intro__title">
+                        {{ page.title }}
+                    </h1>
+                    {% if page.role %}
+                        <div class="author-intro__paragraph">
+                            {{ page.role|richtext }}
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-3">
+                    {% image page.image fill-500x500 as author_img %}
+                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-intro__image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
     <div class="article-container container">
         <div class="article-container__main">
+            <h2 class="related-content__heading">About the author</h2>
             {{ page.summary | richtext }}
         </div>
     </div>
