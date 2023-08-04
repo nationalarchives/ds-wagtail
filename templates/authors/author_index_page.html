@@ -24,14 +24,12 @@
                             {% if forloop.counter %}
                                 data-card-position="{{ forloop.counter0 }}"
                             {% endif %}
-                        >
+                        >   
+                            {% image author_page.image fill-320x320 as author_img %}
                             <div class="card-group-secondary-nav__image">
                                 <picture>
-                                    <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
-                                    <source media="(max-width: 991px)" srcset="{{ teaser_image_medium.url }}">
-                                    <source media="(max-width: 1199px)" srcset="{{ teaser_image_small.url }}">
-                                    <source media="(min-width: 1200px)" srcset="{{ teaser_image_large.url }}">
-                                    <img src="{{ teaser_image_extra_large.url }}" alt="" class="card-group-secondary-nav__image-fallback">
+                                    <source media="(min-width: 1200px)" srcset="{{ author_img.url }}">
+                                    <img src="{{ author_img.url }}" alt="" class="card-group-secondary-nav__image-fallback">
                                 </picture>
                             </div>
                         </a>
