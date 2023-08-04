@@ -13,8 +13,12 @@ RUN npm run compile
 
 FROM ghcr.io/nationalarchives/tna-python:main
 
-# Copy files used by poetry
+ENV NPM_BUILD_COMMAND=compile
+
+# Copy in the project Python dependency files
 COPY --chown=app pyproject.toml poetry.lock ./
+# Copy in the project Node dependency files
+COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./
 
 # Install Python dependencies AND the 'etna' app
 RUN tna-build

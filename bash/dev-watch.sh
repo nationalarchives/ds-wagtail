@@ -1,10 +1,8 @@
 #!/bin/bash
 
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+. $HOME/.nvm/nvm.sh
 nvm install
+nvm use
 npm install
 npm run dev:css &
 npm run dev:js &
