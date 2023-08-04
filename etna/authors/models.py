@@ -27,7 +27,7 @@ class AuthorIndexPage(BasePage):
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return (
-            self.get_children().type(AuthorPage).order_by("title").live().specific()[:3]
+            self.get_children().type(AuthorPage).order_by("title").live().specific()
         )
 
 
