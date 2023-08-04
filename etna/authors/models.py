@@ -2,22 +2,21 @@ from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
 
-from wagtail.admin.panels import (
-    FieldPanel,
-    InlinePanel,
-)
+from modelcluster.fields import ParentalKey
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from etna.core.models import BasePage
 from wagtail.models import Page
-from modelcluster.fields import ParentalKey
+
+from etna.core.models import BasePage
 
 
 class AuthorIndexPage(BasePage):
     """Author index page
 
     This is the parent page for all authors. It is used to
-    generate the author index page.
+    display a list of authors, and to link to individual
+    author pages from the list.
     """
 
     subpage_types = ["authors.AuthorPage"]
@@ -28,20 +27,16 @@ class AuthorIndexPage(BasePage):
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return (
-            self.get_children()
-            .type(AuthorPage)
-            .order_by("title")
-            .live()
-            .specific()[:3]
+            self.get_children().type(AuthorPage).order_by("title").live().specific()[:3]
         )
-        
 
 
 class AuthorPage(BasePage):
     """Author page
 
-    Model to store author details. Including image and a link to
-    an external biography page.
+    This page is to be used for an author profile page, where
+    we can put info about the author, an image, and then use it
+    to link pages to an author.
     """
 
     role = models.CharField(blank=True, null=True, max_length=100)
@@ -77,16 +72,15 @@ class AuthorPage(BasePage):
             .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
-            .select_related("teaser_image")[:4]
+            .select_related("teaser_image")
         )
-    
+
     @cached_property
     def related_page_pks(self):
         """
-        Returns a list of ids of pages that have used the `PageTimePeriod` inline
-        to indicate a relationship with this time period. The values are ordered by:
-        - The order in which this time period was specified (more important time periods are specified first)
-        - When the page was first published ('more recently added' pages take presendence)
+        Returns a list of ids of pages that have used the `AuthorTag` inline
+        to indicate a relationship with this author. The values are ordered by
+        when the page was first published ('more recently added' pages take presendence)
         """
         return tuple(
             self.author_pages.values_list("page_id", flat=True).order_by(
@@ -97,14 +91,9 @@ class AuthorPage(BasePage):
 
 class AuthorTag(models.Model):
     """
-    This model allows any page type to be associated with one or more topics
-    in a way that retains the order of topics selected.
+    This model allows any page type to be associated with an author page.
 
-    The ``sort_order`` field value from ``Orderable`` can be used to pull out
-    the 'first' topic to treat as the 'primary topic' for a page, and can also
-    used to prioritise items for a list of 'pages related to a topic'.
-
-    Just add `InlinePanel("page_topics")` to a page type's panel
+    Just add `AuthorPageMixin.get_authors_inlinepanel()` to a page type's panel
     configuration to use it!
     """
 
@@ -119,18 +108,16 @@ class AuthorTag(models.Model):
 
 class AuthorPageMixin:
     """
-    A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
-    in order to be associated with one or many topics/time periods. It simply
-    adds a few properies to support robust, efficient access the related topic
-    and time period pages.
+    A mixin for pages that uses the ``AuthorTag`` model
+    in order to be associated with an author.
     """
 
     @classmethod
-    def get_authors_inlinepanel(cls, max_num = 1):
+    def get_authors_inlinepanel(cls, max_num=1):
         return InlinePanel(
             "author_tags",
             heading="Page author",
-            help_text="If the page relates to more than one topic, please add these in order of relevance from most to least.",
+            help_text="Select the author for this page.",
             max_num=max_num,
         )
 
@@ -142,25 +129,20 @@ class AuthorPageMixin:
                 author__live=True
             )
         )
-    
+
     @cached_property
     def author_item(self):
         try:
             return self.authors[0]
         except IndexError:
             return None
-    
+
     @property
     def author_name(self):
         """
-        Returns the titles of all related topics, joined together into one big
-        comma-separated string. Ideal for indexing!
+        Returns the title of the author to be used for indexing
         """
         if self.author_item:
             return self.author_item.title
         else:
             return None
-
-    @cached_property
-    def authors_alphabetical(self):
-        return sorted(self.author, key=lambda item: item.title.lower())

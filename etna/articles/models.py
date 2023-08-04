@@ -23,8 +23,8 @@ from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
 
-from etna.collections.models import TopicalPageMixin
 from etna.authors.models import AuthorPageMixin
+from etna.collections.models import TopicalPageMixin
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
