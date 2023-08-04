@@ -24,6 +24,7 @@ from wagtail.snippets.models import register_snippet
 from taggit.models import ItemBase, TagBase
 
 from etna.collections.models import TopicalPageMixin
+from etna.authors.models import AuthorPageMixin
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
@@ -310,6 +311,7 @@ class ArticlePage(
 
 class FocusedArticlePage(
     TopicalPageMixin,
+    AuthorPageMixin,
     HeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
@@ -320,10 +322,6 @@ class FocusedArticlePage(
 
     The FocusedArticlePage model.
     """
-
-    author = models.CharField(
-        max_length=100, blank=True, null=True, help_text="The author of this article."
-    )
 
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
@@ -343,7 +341,6 @@ class FocusedArticlePage(
         BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
-            FieldPanel("author"),
             MultiFieldPanel(
                 [
                     FieldPanel("display_content_warning"),
@@ -361,6 +358,7 @@ class FocusedArticlePage(
         + BasePageWithIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
+            AuthorPageMixin.get_authors_inlinepanel(),
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
@@ -376,6 +374,7 @@ class FocusedArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+            index.SearchField("author_name", boost=1),
         ]
     )
 
