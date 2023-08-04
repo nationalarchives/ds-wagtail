@@ -17,8 +17,8 @@
     {% if page.author or page.first_published_at %}
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
-                {% if page.author %}
-                    <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
+                {% if page.author_name %}
+                    <li class="generic-intro__meta-item">By {{ page.author_name }}</li>                    
                 {% endif %}
             </ul>
         </div>
