@@ -155,7 +155,10 @@ class AuthorPageMixin:
         Returns the titles of all related topics, joined together into one big
         comma-separated string. Ideal for indexing!
         """
-        return self.author_item.title
+        if self.author_item:
+            return self.author_item.title
+        else:
+            return None
 
     @cached_property
     def authors_alphabetical(self):
