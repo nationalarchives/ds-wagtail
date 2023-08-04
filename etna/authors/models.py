@@ -4,12 +4,11 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.snippets.models import register_snippet
+from etna.core.models import BasePage
 
 
-@register_snippet
-class Author(models.Model):
-    """Author snippet
+class AuthorPage(BasePage):
+    """Author page
 
     Model to store author details. Including image and a link to
     an external biography page.
@@ -35,7 +34,7 @@ class Author(models.Model):
         blank=False, null=False, help_text="Button text for bio link", max_length=50
     )
 
-    panels = [
+    content_panels = BasePage.content_panels + [
         FieldPanel("name"),
         FieldPanel("role"),
         FieldPanel("summary"),
@@ -44,8 +43,7 @@ class Author(models.Model):
         FieldPanel("bio_link_label"),
     ]
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name_plural = "Authors"
+
+    parent_page_types = ["home.HomePage"]
