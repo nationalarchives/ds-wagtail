@@ -18,7 +18,7 @@
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
                 {% if page.author_name %}
-                    <li class="generic-intro__meta-item">By {{ page.author_name }}</li>                    
+                    <li class="generic-intro__meta-item">By <a href="{% pageurl page.author_item %}">{{ page.author_item }}</a></li>                    
                 {% endif %}
             </ul>
         </div>
