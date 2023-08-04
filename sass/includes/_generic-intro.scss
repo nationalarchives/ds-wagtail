@@ -81,6 +81,10 @@
         }
     }
 
+    &__meta-item a {
+        color: $color__white;
+     }
+
     &--dark .generic-intro__paragraph {
         margin-top: 0;
         background-color: $color__grey-700;
