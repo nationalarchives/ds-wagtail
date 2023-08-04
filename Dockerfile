@@ -11,47 +11,13 @@ RUN npm run compile
 
 
 
-FROM python:3.11
-
-EXPOSE 8000
-HEALTHCHECK CMD curl --fail http://localhost:8000/healthcheck/ || exit 1
-
-ENV \
-  # python:
-  PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PYTHONDONTWRITEBYTECODE=1 \
-  # pip:
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  # poetry:
-  POETRY_HOME=/home/app/poetry \
-  POETRY_VERSION=1.5.1 \
-  POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=true
-
-# Create the non-root user and the application directory
-RUN useradd --system --create-home app && \
-    mkdir -p /app && \
-    chown app:app -R /app && \
-    chmod 700 /app
-WORKDIR /app
-USER app
-
-# Install poetry
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl -sSL "https://install.python-poetry.org" | python -
-
-# Add poetry's bin directory to PATH
-ENV PATH="$POETRY_HOME/bin:$PATH"
+FROM ghcr.io/nationalarchives/tna-python:main
 
 # Copy files used by poetry
 COPY --chown=app pyproject.toml poetry.lock ./
 
 # Install Python dependencies AND the 'etna' app
-RUN poetry install
+RUN tna-build
 
 # Copy application code
 COPY --chown=app . .
