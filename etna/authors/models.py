@@ -66,6 +66,7 @@ class AuthorPage(BasePage):
         verbose_name_plural = "Authors"
 
     parent_page_types = ["authors.AuthorIndexPage"]
+    subpage_types = []
 
     @cached_property
     def authored_focused_articles(self):
