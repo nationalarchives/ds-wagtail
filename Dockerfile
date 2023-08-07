@@ -11,7 +11,7 @@ RUN npm run compile
 
 
 
-FROM ghcr.io/nationalarchives/tna-python:0.1.1
+FROM ghcr.io/nationalarchives/tna-python:0.1.2
 
 ENV NPM_BUILD_COMMAND=compile
 
