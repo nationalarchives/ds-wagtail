@@ -24,11 +24,6 @@ def global_admin_js():
     return "<script>window.chooserUrls = {'pageChooser': '/admin/choose-page/','externalLinkChooser': '/admin/choose-external-link/','emailLinkChooser': '/admin/choose-email-link/','phoneLinkChooser': '/admin/choose-phone-link/','anchorLinkChooser': '/admin/choose-anchor-link/',}; </script> <script src='/static/wagtailadmin/js/modal-workflow.js?v=4a9c2a53'></script>"
 
 
-@hooks.register("insert_global_admin_js")
-def new_label_date_formatting():
-    return format_html('<script src="{}"></script>', static("admin/js/newLabelDate.js"))
-
-
 @hooks.register("insert_global_admin_css")
 def global_admin_css():
     if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "production":
