@@ -2214,13 +2214,13 @@ files = [
 
 [[package]]
 name = "wagtail-generic-chooser"
-version = "0.5.1"
+version = "0.6"
 description = "A toolkit for custom chooser popups in Wagtail"
 optional = false
 python-versions = "*"
 files = [
-    {file = "wagtail-generic-chooser-0.5.1.tar.gz", hash = "sha256:280ae7293641d1b121450e17a6d424305e31c832f1af5bd991bc3e49703bf79e"},
-    {file = "wagtail_generic_chooser-0.5.1-py3-none-any.whl", hash = "sha256:135f8cc413d83b82bb8956f625f4b9572aa7139ab3835e2ba2d7e19f2171b354"},
+    {file = "wagtail-generic-chooser-0.6.tar.gz", hash = "sha256:cc071fbef3c6ec62cd0f25eace3015e060badb00a33bd8fcf8ac9053a1bbcea2"},
+    {file = "wagtail_generic_chooser-0.6-py3-none-any.whl", hash = "sha256:a11691ff06d2905e4d84ce1b3478dd667eb37581034dd73b4c415006b46f7822"},
 ]
 
 [package.dependencies]
@@ -2340,4 +2340,4 @@ testing = ["Pillow (>=9.1.0,<11.0.0)", "Wand (>=0.6,<1.0)", "black (==22.3.0)", 
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "e167dbe0c7923b3d362ef9689e1d8315740e04015d3660d2e496ef7ffbe65156"
+content-hash = "b5c8e95ce00e2a2d00c98de14d765839f9046354d2aaca12e227db7a35e9301a"
