@@ -21,12 +21,15 @@ services:
       - ./scripts:/app/scripts
       - ./static:/app/static
       - ./templates:/app/templates
+      - ./poetry.lock:/app/poetry.lock
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
       - media:/media
     depends_on:
       - db
     ports:
-      - 8000:8000
-    command: sh /app/bash/run-dev.sh
+      - 8000:8080
     restart: on-failure
     init: true
     stdin_open: true
@@ -38,7 +41,7 @@ services:
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
-      # - NPM_DEVELOP_COMMAND=dev # TODO: This won't work until we can use tna-run
+      # - NPM_DEVELOP_COMMAND=dev
 
   cli:
     container_name: cli

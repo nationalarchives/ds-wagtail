@@ -1,37 +1,21 @@
-# Generate static assets (CSS and JavaScript)
-FROM node:18.16 AS staticassets
-WORKDIR /home
-COPY package.json package-lock.json webpack.config.js ./
-RUN npm install
-COPY scripts ./scripts
-COPY sass ./sass
-RUN npm run compile
-
-
-
-
-
-FROM ghcr.io/nationalarchives/tna-python:0.1.2
+FROM ghcr.io/nationalarchives/tna-python-django:django-base-image
 
 ENV NPM_BUILD_COMMAND=compile
 
-# Copy in the project Python dependency files
+# Copy in the project dependency files and config
 COPY --chown=app pyproject.toml poetry.lock ./
-# Copy in the project Node dependency files
 COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./
+COPY --chown=app sass sass
+COPY --chown=app scripts scripts
+COPY --chown=app config config
+COPY --chown=app templates templates
 
 # Install Python dependencies AND the 'etna' app
 RUN tna-build
 
 # Copy application code
 COPY --chown=app . .
-RUN chmod +x /app/bash/run.sh
 
-# Copy static assets
-COPY --chown=app --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
-COPY --chown=app --from=staticassets /home/templates/static/scripts templates/static/scripts
-
-# Gather the static assets
-RUN poetry run python manage.py collectstatic --no-input
-
-CMD ["/app/bash/run.sh"]
+CMD ["tna-run", "config.wsgi:application"]
+# CMD ["poetry", "run", "python", "/app/manage.py", "runserver", "0.0.0.0:8000"]
+# CMD [ "tail", "-f", "/dev/null" ]
