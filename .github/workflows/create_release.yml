@@ -1,0 +1,20 @@
+name: Create a release
+
+on: workflow_dispatch
+  
+jobs:
+  build:
+    name: Build and deploy to AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate tag
+        id: version-tag
+        uses: ./.github/workflows/_generate-calver-tag.yml
+      - name: Tag version
+        run: |
+          TAG=v${{ steps.version-tag.outputs.CALVER }}
+          git tag $TAG
+          git push origin --tags
+          gh release create --target main --latest --title "Release $TAG" $TAG
+          echo "Create a https://github.com/${{ github.repository }}/releases/new?tag=$TAG"
