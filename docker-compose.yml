@@ -33,6 +33,9 @@ services:
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
+      - DJANGO_SUPERUSER_PASSWORD=app
+      - DJANGO_SUPERUSER_USERNAME=app
+      - DJANGO_SUPERUSER_EMAIL=app@app.com
 
   cli:
     container_name: cli
