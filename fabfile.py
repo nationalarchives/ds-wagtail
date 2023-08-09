@@ -100,6 +100,14 @@ def stop(c, container_name=None):
 
 
 @task
+def update_deps(c):
+    """
+    Update npm and poetry dependencies through Docker containers
+    """
+    local("docker-compose --profile update up -d")
+
+
+@task
 def restart(c):
     """
     Restart the local development environment.
