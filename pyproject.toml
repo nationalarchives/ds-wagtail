@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "Etna"
 description = ""
-version = ""
+version = "latest"
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
 [tool.poetry.dependencies]
