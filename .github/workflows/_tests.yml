@@ -87,7 +87,7 @@ jobs:
           move_coverage_to_trash: true
   
   prettier:
-    name: Test Prettier format
+    name: Prettier format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -100,10 +100,25 @@ jobs:
       - name: Lint SCSS and JS
         run: npm run lint
 
+  compile-javascript:
+    name: Compile JavaScript
+    runs-on: ubuntu-latest
+    needs: prettier
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+      - name: Install npm modules
+        run: npm install
+      - name: Run jest tests
+        run: npm run compile:js
+
   test-javascript:
     name: Test JavaScript
     runs-on: ubuntu-latest
-    needs: prettier
+    needs: compile-javascript
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node
