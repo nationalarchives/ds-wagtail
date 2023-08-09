@@ -1,4 +1,4 @@
-FROM ghcr.io/nationalarchives/tna-python-django:django-base-image
+FROM ghcr.io/nationalarchives/tna-python-django:latest
 
 ENV NPM_BUILD_COMMAND=compile
 
