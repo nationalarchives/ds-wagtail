@@ -271,11 +271,11 @@ class ArticlePage(
 
         # Identify other live pages with tags in common
         related_tags = (
-            Page.objects.live()
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .live()
             .public()
             .not_page(self)
-            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
-            .filter(tagged_items__tag_id__in=tag_ids)
         )
 
         return tuple(
@@ -398,6 +398,62 @@ class FocusedArticlePage(
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
+
+    @cached_property
+    def similar_items(
+        self,
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
+        """
+        Returns a maximum of three ArticlePages that are tagged with at least
+        one of the same ArticleTags. Items should be ordered by the number
+        of tags they have in common.
+        """
+        if not self.article_tag_names:
+            # Avoid unncecssary lookups
+            return ()
+
+        tag_ids = self.tagged_items.values_list("tag_id", flat=True)
+        if not tag_ids:
+            # Avoid unncecssary lookups
+            return ()
+
+        # Identify other live pages with tags in common
+        related_tags = (
+            Page.objects.filter(tagged_items__tag_id__in=tag_ids)
+            .exact_type(ArticlePage, FocusedArticlePage, RecordArticlePage)
+            .live()
+            .public()
+            .not_page(self)
+        )
+
+        return tuple(
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
+        )
+
+    @cached_property
+    def latest_items(
+        self,
+    ) -> List[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]]:
+        """
+        Return the three most recently published ArticlePages,
+        excluding this object.
+        """
+
+        latest_query_set = []
+
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
+            latest_query_set.extend(
+                page_type.objects.live()
+                .public()
+                .exclude(id__in=[page.id for page in self.similar_items])
+                .not_page(self)
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(
+            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+        )[:3]
 
 
 class RecordArticlePage(
