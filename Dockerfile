@@ -17,5 +17,3 @@ RUN tna-build
 COPY --chown=app . .
 
 CMD ["tna-run", "config.wsgi:application"]
-# CMD ["poetry", "run", "python", "/app/manage.py", "runserver", "0.0.0.0:8000"]
-# CMD [ "tail", "-f", "/dev/null" ]
