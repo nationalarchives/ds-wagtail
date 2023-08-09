@@ -114,8 +114,10 @@ jobs:
       - name: Run jest tests
         run: npm test
 
-  compile-sass:
+  compile-scss:
+    name: Compile SCSS
     runs-on: ubuntu-latest
+    needs: prettier
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node
@@ -128,6 +130,7 @@ jobs:
         run: npm run compile:css
 
   lint-dockerfile:
+    name: Lint Dockerfile
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
