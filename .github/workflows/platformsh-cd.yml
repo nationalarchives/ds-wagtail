@@ -29,8 +29,8 @@ jobs:
     name: CI
     uses: ./.github/workflows/_tests.yml
     with:
-      python-version: "3.11"
-      poetry-version: "1.5.1"
+      python-version: ${{ vars.CI_PYTHON_VERSION }}
+      poetry-version: ${{ vars.CI_POETRY_VERSION }}
 
   deploy:
     runs-on: ubuntu-latest
