@@ -1,7 +1,13 @@
 name: Create a release
 
-on: workflow_dispatch
-  
+on:
+  workflow_dispatch:
+    inputs:
+      base-tag:
+        description: "Base tag"
+        required: false
+        type: string
+
 jobs:
   build:
     name: Create a release tag
@@ -11,8 +17,18 @@ jobs:
       - name: Generate tag
         id: version-tag
         uses: ./.github/workflows/_generate-calver-tag.yml
-      - name: Tag version
+      - name: Create tag
         run: |
           TAG=v${{ steps.version-tag.outputs.CALVER }}
+          echo "TAG=$TAG" >> $GITHUB_ENV
+      - name: Check out a new branch from a tag
+        if: inputs.base-tag
+        run: git checkout tags/${{ inputs.base-tag }} -b release/$TAG
+      - name: Check out a new branch from the main branch
+        if: !inputs.base-tag
+        run: git checkout -b release/$TAG
+      - name: Push tag and branch
+        run: |
+          git push --set-upstream origin release/$TAG
           git tag $TAG
           git push origin --tags
