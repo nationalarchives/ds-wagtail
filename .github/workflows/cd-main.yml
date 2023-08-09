@@ -1,0 +1,24 @@
+name: Docker build and deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get tag
+        id: version-tag
+        uses: ./.github/workflows/_get-version-tag.yml
+      - name: Build
+        uses: ./.github/workflows/_docker-build.yml
+        with:
+          version: ${{ steps.version-tag.outputs.VERSION }} # (latest)
+      - name: Install AWS CLI
+        uses: ./.github/workflows/_install-aws.yml
+      - name: Deploy to AWS
+        run: aws ssm put-parameter --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite

@@ -3,8 +3,6 @@ name: Docker build and deploy
 on:
   push:
     branches:
-      - main
-      - develop # TODO: Remove once moving to trunk-based
       - feature/*
 
 jobs:
@@ -22,6 +20,4 @@ jobs:
           version: ${{ steps.version-tag.outputs.VERSION }}
       - name: Install AWS CLI
         uses: ./.github/workflows/_install-aws.yml
-      - name: Deploy to AWS
-        run: aws ssm put-parameter --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
-      # TODO: If feature branch, deploy new environment
+      # TODO: Deploy new feature environment
