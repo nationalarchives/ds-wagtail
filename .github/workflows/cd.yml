@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Generate tag
+      - name: Get tag
         id: version-tag
         uses: ./.github/workflows/_get-version-tag.yml
       - name: Build

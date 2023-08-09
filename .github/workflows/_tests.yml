@@ -112,7 +112,7 @@ jobs:
           node-version-file: .nvmrc
       - name: Install npm modules
         run: npm install
-      - name: Run jest tests
+      - name: Compile JavaScript
         run: npm run compile:js
 
   test-javascript:
