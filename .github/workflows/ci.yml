@@ -12,5 +12,5 @@ jobs:
     name: Tests
     uses: ./.github/workflows/_tests.yml
     with:
-      python-version: ${{ env.PYTHON_VERSION }}
-      poetry-version: ${{ env.POETRY_VERSION }}
+      python-version: ${{ PYTHON_VERSION }}
+      poetry-version: ${{ POETRY_VERSION }}
