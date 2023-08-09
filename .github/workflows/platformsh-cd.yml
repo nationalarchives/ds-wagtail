@@ -1,6 +1,9 @@
 name: CD (platform.sh)
 
 on:
+  # release:
+  #   types:
+  #     - published # This would be preferred
   push:
     branches:
       - main

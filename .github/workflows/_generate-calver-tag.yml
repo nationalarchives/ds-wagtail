@@ -9,4 +9,4 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Generate calver
-        run: echo "CALVER=$(date +%Y-%m-%d)-$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"
+        run: echo "CALVER=$(date +%y.%m.%d).$GITHUB_RUN_NUMBER" >> "$GITHUB_OUTPUT"

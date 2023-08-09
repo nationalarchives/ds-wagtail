@@ -21,4 +21,4 @@ jobs:
       - name: Install AWS CLI
         uses: ./.github/workflows/_install-aws.yml
       - name: Deploy to AWS
-        run: aws ssm put-parameter --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
+        run: aws ssm put-parameter --profile preview --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
