@@ -33,8 +33,8 @@ jobs:
     name: CI
     uses: ./.github/workflows/_tests.yml
     with:
-      python_version: ${{ env.PYTHON_VERSION }}
-      poetry_version: ${{ env.POETRY_VERSION }}
+      python-version: ${{ env.PYTHON_VERSION }}
+      poetry-version: ${{ env.POETRY_VERSION }}
 
   deploy:
     runs-on: ubuntu-latest
