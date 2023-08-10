@@ -46,10 +46,12 @@ class NewLabelMixin(models.Model):
     mark_new_on_next_publish = models.BooleanField(
         verbose_name="mark this page as 'new' when published",
         default=True,
+        help_text="This will set the 'new' label for 21 days",
     )
 
     newly_published_at = models.DateField(
         editable=False,
+        verbose_name="Page marked as new on",
         default=None,
         null=True,
     )
@@ -98,7 +100,13 @@ class NewLabelMixin(models.Model):
         return False
 
     promote_panels = [
-        FieldPanel("mark_new_on_next_publish"),
+        MultiFieldPanel(
+            [
+                FieldPanel("mark_new_on_next_publish"),
+                FieldPanel("newly_published_at", read_only=True),
+            ],
+            heading="New label",
+        )
     ]
 
     class Meta:
