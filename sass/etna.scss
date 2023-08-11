@@ -1,5 +1,6 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
+
 /*
 
 ==============
@@ -32,7 +33,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/global";
 @import "includes/buttons";
 @import "includes/generic-intro";
-@import "includes/header";
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
@@ -96,7 +96,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/cookie-consent";
 @import "includes/maintenance-503";
 @import "includes/beta-banner";
-@import "includes/breadcrumb";
 @import "includes/record-cta-panel";
 @import "includes/record-series-panel";
 @import "includes/home-refresh";
@@ -137,6 +136,10 @@ $largest-small-device: 992px;
 
 @import "@nationalarchives/frontend/nationalarchives/all";
 
+.tna-breadcrumbs {
+    margin-bottom: 2rem;
+}
+
 .tna-hero {
     margin-bottom: 2rem;
 }
@@ -166,4 +169,9 @@ $largest-small-device: 992px;
     p {
         margin-bottom: 0;
     }
+}
+
+.tna-message {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
 }

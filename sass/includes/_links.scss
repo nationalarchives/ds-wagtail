@@ -2,18 +2,18 @@ a {
     transition:
         background-color $transition_duration,
         color $transition_duration;
-    &:focus {
-        outline: 0.313rem solid $color__focus-outline-light-bg;
-    }
+    // &:focus {
+    //     outline: 0.313rem solid $color__focus-outline-light-bg;
+    // }
 }
 
-[class*="--dark"] {
-    a {
-        &:focus {
-            outline: 0.313rem solid $color__focus-outline-dark-bg;
-        }
-    }
-}
+// [class*="--dark"] {
+//     a {
+//         &:focus {
+//             outline: 0.313rem solid $color__focus-outline-dark-bg;
+//         }
+//     }
+// }
 
 @mixin explorer-link {
     color: $color__black;
