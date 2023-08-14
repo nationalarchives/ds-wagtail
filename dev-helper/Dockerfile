@@ -12,4 +12,6 @@ RUN setup-npm
 
 COPY --chown=app . .
 
+USER root
+
 CMD ["tail", "-f", "/dev/null"]
