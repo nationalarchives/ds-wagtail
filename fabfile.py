@@ -125,6 +125,14 @@ def sh(c):
 
 
 @task
+def dev(c):
+    """
+    Run bash in the local development helper container (with access to dependencies)
+    """
+    subprocess.run(["docker", "exec", "-it", "dev-helper", "/bin/sh"])
+
+
+@task
 def format(c):
     """
     Apply formatters to code python code

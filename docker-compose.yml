@@ -63,25 +63,14 @@ services:
     ports:
       - 8001:8000
 
-  poetry_update:
-    container_name: update-poetry
+  dev_helper:
+    container_name: dev-helper
+    platform: linux/amd64
     build:
       context: .
-      dockerfile: .docker/update-poetry/Dockerfile
+      dockerfile: dev-helper/Dockerfile
     volumes:
       - .:/app
-    profiles:
-      - update
-
-  npm_update:
-    container_name: update-npm
-    build:
-      context: .
-      dockerfile: .docker/update-npm/Dockerfile
-    volumes:
-      - .:/home
-    profiles:
-      - update
 
 volumes:
   media:
