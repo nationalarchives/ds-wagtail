@@ -17,7 +17,6 @@ Dockerfile
 README.md
 babel.config.json
 database_dumps
-dev-helper
 docker-compose.yml
 docs
 fabfile.py
