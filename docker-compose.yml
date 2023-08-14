@@ -71,6 +71,8 @@ services:
       dockerfile: dev-helper/Dockerfile
     volumes:
       - .:/app
+    depends_on:
+      - web
 
 volumes:
   media:
