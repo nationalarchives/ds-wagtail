@@ -34,7 +34,7 @@ flake8 = "~6.1"
 isort = "~5.12"
 pymdown-extensions = "~10.1"
 mkdocs-material = "~9.1"
-django-debug-toolbar = "~4.1"
+django-debug-toolbar = "~4.2"
 wagtail-factories = "~4.1"
 
 [build-system]
