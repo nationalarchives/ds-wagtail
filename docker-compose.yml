@@ -38,6 +38,7 @@ services:
       - .env
     environment:
       - ENVIRONMENT=develop
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
@@ -67,10 +68,19 @@ services:
     build:
       context: .
       dockerfile: dev/Dockerfile
+    restart: always
     volumes:
       - .:/app
     depends_on:
       - web
+      - db
+    env_file:
+      - .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
 
 volumes:
   media:
