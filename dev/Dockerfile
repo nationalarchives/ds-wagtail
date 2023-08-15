@@ -1,6 +1,6 @@
 FROM ghcr.io/nationalarchives/tna-python-django:latest
 
-COPY --chown=app dev-helper/bin /home/app/.local/bin/dev
+COPY --chown=app dev/bin /home/app/.local/bin/dev
 RUN chmod +x -fR /home/app/.local/bin/dev
 ENV PATH="/home/app/.local/bin/dev:$PATH"
 

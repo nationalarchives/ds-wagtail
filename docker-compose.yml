@@ -12,7 +12,6 @@ services:
 
   web:
     container_name: web
-    platform: linux/amd64
     build: .
     volumes:
       - ./etna:/app/etna
@@ -63,12 +62,11 @@ services:
     ports:
       - 8001:8000
 
-  dev_helper:
-    container_name: dev-helper
-    platform: linux/amd64
+  dev:
+    container_name: dev
     build:
       context: .
-      dockerfile: dev-helper/Dockerfile
+      dockerfile: dev/Dockerfile
     volumes:
       - .:/app
     depends_on:
