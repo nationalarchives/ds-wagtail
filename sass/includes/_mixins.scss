@@ -1,5 +1,6 @@
 @use "sass:list";
 @use "sass:map";
+@import "functions";
 
 /* ============================================
     Output a rem and px fallback value for the given property
