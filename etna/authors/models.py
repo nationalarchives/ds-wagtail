@@ -115,32 +115,21 @@ class AuthorPageMixin:
         return InlinePanel(
             "author_tags",
             heading="Page author",
-            help_text="Select the author for this page.",
+            help_text="Select the author of this page.",
             max_num=max_num,
         )
 
     @cached_property
-    def authors(self):
-        return tuple(
-            item.author
-            for item in self.author_tags.select_related("author").filter(
-                author__live=True
-            )
-        )
-
-    @cached_property
-    def author_item(self):
-        try:
-            return self.authors[0]
-        except IndexError:
-            return None
+    def author(self):
+        if author_item := self.author_tags.select_related("author").filter(author__live=True):
+            return author_item[0].author
+        return None
 
     @property
     def author_name(self):
         """
         Returns the title of the author to be used for indexing
         """
-        if self.author_item:
-            return self.author_item.title
-        else:
-            return None
+        if self.author:
+            return self.author.title
+        return None

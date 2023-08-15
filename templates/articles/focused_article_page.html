@@ -19,7 +19,7 @@
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
                 {% if page.author_name %}
-                    <li class="generic-intro__meta-item">By <a href="{% pageurl page.author_item %}">{{ page.author_name }}</a></li>                    
+                    <li class="generic-intro__meta-item">By <a href="{% pageurl page.author %}">{{ page.author_name }}</a></li>                    
                 {% endif %}
             </ul>
         </div>
@@ -47,14 +47,14 @@
             <div class="author-info">
                 <div class="author-info__label row">About the author</div>
                 <div class="author-info__image row">
-                    {% image page.author_item.image fill-500x500 as author_img %}
+                    {% image page.author.image fill-500x500 as author_img %}
                     <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-info__image">
                 </div>
                 <div class="author-info__text row">
-                    <h2 class="author-info__title"><a href="{% pageurl page.author_item %}">{{ page.author_name }}</a></h2>
-                    {% if page.author_item.role %}
+                    <h2 class="author-info__title"><a href="{% pageurl page.author %}">{{ page.author_name }}</a></h2>
+                    {% if page.author.role %}
                         <div class="author-info__paragraph">
-                            {{ page.author_item.role|richtext }}
+                            {{ page.author.role|richtext }}
                         </div>
                     {% endif %}
                 </div>
