@@ -121,7 +121,9 @@ class AuthorPageMixin:
 
     @cached_property
     def author(self):
-        if author_item := self.author_tags.select_related("author").filter(author__live=True):
+        if author_item := self.author_tags.select_related("author").filter(
+            author__live=True
+        ):
             return author_item[0].author
         return None
 
