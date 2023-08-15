@@ -1,4 +1,5 @@
 #!/bin/bash
 
-setup-npm
+. "$HOME/.nvm/nvm.sh"
+nvm install
 npm update
