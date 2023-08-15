@@ -86,6 +86,12 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
                         "The descriptive text displayed underneath a headline in search engine results and when shared on social media."
                     ),
                 ),
+                FieldPanel(
+                    "search_image",
+                    help_text=_(
+                        "Image that will appear as a promo when this page is shared on social media."
+                    ),
+                ),
             ],
             _("For search engines"),
         ),
