@@ -129,7 +129,7 @@ def dev(c):
     """
     Run bash in the local development helper container (with access to dependencies)
     """
-    subprocess.run(["docker", "exec", "-it", "dev-helper", "/bin/sh"])
+    subprocess.run(["docker", "exec", "-it", "dev", "/bin/sh"])
 
 
 @task
