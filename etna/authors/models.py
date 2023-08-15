@@ -50,9 +50,9 @@ class AuthorPage(BasePage):
     )
 
     content_panels = BasePage.content_panels + [
+        FieldPanel("image"),
         FieldPanel("role"),
         FieldPanel("summary"),
-        FieldPanel("image"),
     ]
 
     class Meta:
