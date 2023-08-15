@@ -1,6 +1,7 @@
 FROM ghcr.io/nationalarchives/tna-python-django:latest
 
 ENV NPM_BUILD_COMMAND=compile
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 
 # Copy in the project dependency files and config
 COPY --chown=app pyproject.toml poetry.lock ./
