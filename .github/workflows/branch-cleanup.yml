@@ -2,26 +2,21 @@ name: Clean up feature branch
 
 on:
   delete:
-    branches:
-      - feature/*
 
 jobs:
   delete:
-    if: github.event.ref_type == 'branch'
+    if: github.event.ref_type == 'branch' && startsWith(github.event.ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
       - name: Get tag
         id: version-tag
         uses: ./.github/workflows/_get-version-tag.yml
-      - name: Clean up
-        run: |
-          IMAGE_ID=$(echo "ghcr.io/${{ github.repository_owner }}/${{ vars.DOCKER_IMAGE_NAME }}" | tr '[A-Z]' '[a-z]')
-          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
-          echo "Clean up Docker image $IMAGE_ID:$VERSION"
+      - name: Debug
+        run: echo "Clean up Docker image ${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.version-tag.outputs.VERSION }}"
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
-          owner: nationalarchives
-          name: ${{ env.IMAGE_ID }}
+          owner: ${{ github.repository_owner }}
+          name: ${{ vars.DOCKER_IMAGE_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ steps.version-tag.outputs.VERSION }}
