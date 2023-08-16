@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "Etna"
-version = "7.5.1"
+version = "7.6.0"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
@@ -29,12 +29,12 @@ black = "~23.7"
 ipdb = "~0.13"
 django-extensions = "~3.2"
 responses = "~0.23"
-coverage = "~7.2"
+coverage = "~7.3"
 flake8 = "~6.1"
 isort = "~5.12"
 pymdown-extensions = "~10.1"
 mkdocs-material = "~9.1"
-django-debug-toolbar = "~4.1"
+django-debug-toolbar = "~4.2"
 wagtail-factories = "~4.1"
 
 [build-system]
