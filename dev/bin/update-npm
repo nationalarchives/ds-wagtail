@@ -3,3 +3,5 @@
 . "$HOME/.nvm/nvm.sh"
 nvm install
 npm update
+
+docker exec -it web source /home/app/.nvm/nvm.sh && nvm install && npm install && npm run build
