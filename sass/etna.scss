@@ -174,3 +174,20 @@ $largest-small-device: 992px;
     margin-top: 2rem;
     margin-bottom: 3rem;
 }
+
+.card-group-secondary-nav,
+.generic-intro__paragraph {
+    margin-bottom: 2rem;
+}
+
+.container + .container {
+    margin-top: 2rem;
+}
+
+.featured-article__description,
+.article-container__main,
+.container,
+[class^="col-"],
+[class*=" col-"] {
+    box-sizing: border-box;
+}
