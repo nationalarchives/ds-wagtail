@@ -406,7 +406,7 @@ class KongClient:
         # and full hit/aggregation data from the second.
         return self.resultlist_from_response(
             results_data,
-            bucket_counts=bucket_counts_data["aggregations"]
+            bucket_counts=bucket_counts_data.get("aggregations", {})
             .get("group", {})
             .get("buckets", ()),
         )
