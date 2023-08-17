@@ -84,7 +84,10 @@
                 </div>
             {% endif %}
 
-            {% include "search/includes/filter.html" with field=form.collection %}
+
+            {% include "search/includes/filter.html" with field=form.collection %} <!--collections filter-->
+
+
 
             {% include "search/includes/filter.html" with field=form.time_period %}
 
@@ -97,6 +100,8 @@
             {% endif %}
 
             {% include "search/includes/filter.html" with field=form.closure %}
+
+
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                 <div class="search-filters__accordion-section">
@@ -136,6 +141,7 @@
                         <input type="submit" value="Update" class="search-filters__submit">
                     </fieldset>
                 </div>
+
             {% endif %}
 
             {% if form.group.value == bucketkeys.NONTNA.value %}
@@ -157,5 +163,6 @@
         {% render_fields_as_hidden form include='q group sort_by sort_order' %}
 
     </form>
+
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
