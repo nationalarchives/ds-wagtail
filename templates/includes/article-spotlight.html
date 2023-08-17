@@ -10,7 +10,8 @@
             class="featured-article__image-link"
             aria-labelledby="article-desc{{ page.id }}"
             data-component-name="Featured Article: {{ page.title }}"
-            data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}>
+            data-link-type="Image" {% if page.is_newly_published %}data-label="New"{% endif %}
+            tabindex="-1">
                 <picture>
                     {% image page.teaser_image fill-500x400-c100 as teaser %}
                     <source media="(max-width: 768px)" srcset="{{ teaser.url }}"/>

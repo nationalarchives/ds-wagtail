@@ -13,7 +13,7 @@
         <div class="card-grid card-grid__duo" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
             {% for link_page in link_pages %}
                 <div class="related-highlight-cards__card">
-                    <a href="{% pageurl link_page %}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+                    <a href="{% pageurl link_page %}" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}" tabindex="-1">
                         {% image link_page.teaser_image fill-540x350 as teaser_image %}
                         <img height="350"
                             width="540"
