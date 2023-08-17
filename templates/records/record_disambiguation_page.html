@@ -82,14 +82,11 @@
 
     <script>        
         window.dataLayer = window.dataLayer || [];
-        {% for record in record_results_page %}
-            window.dataLayer.push({
-                "event": "disambiguation-page",
-                "data-link": "{{ record.summary_title }}",
-                "search-bucket": "{% if record.held_by %}{{ record.held_by }}{% else %}None{% endif %}", // can get archive that holds it but not bucket
-                "data-position": "{{ forloop.counter }}"
-            });
-        {% endfor %}
+        window.dataLayer.push({
+            "event": "disambiguation-page",
+            "data-link-type": "Disambiguation link",
+            "record-links": "{{ record_results_page|length }}"
+        });
     </script>
 
 {% endblock content %}
