@@ -4,4 +4,4 @@
 nvm install
 npm update
 
-docker exec -it web source /home/app/.nvm/nvm.sh && nvm install && npm install && npm run build
+docker exec web /bin/bash -c 'source /home/app/.nvm/nvm.sh && nvm install && npm install && npm run compile'
