@@ -20,4 +20,11 @@ FIELD_LABELS = {
     "record_opening": "Record opening date",
     "title": "Title",
     "former_department_reference": "Former reference in its original department",
+    "language": "Language",
+    "creator": "Creator",
+    "physical_description": "Physical description",
+    "immediate_source_of_acquisition": "Immediate source of acquisition",
+    "accruals": "Accruals",
+    "administrative_background": "Administrative/ biographical background",
+    "separated_materials": "Separated material",
 }

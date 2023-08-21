@@ -904,10 +904,44 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def closure_status(self) -> str:
         return extract(self.get("@template", {}), "details.closureStatus", default="")
-    
+
     @cached_property
     def former_department_reference(self) -> str:
         return self.template.get("formerDepartmentReference", "")
+
+    @cached_property
+    def language(self) -> list(str):
+        return self.template.get("language", [])
+
+    @cached_property
+    def creator(self) -> list(str):
+        return self.template.get("creator", [])
+
+    @cached_property
+    def physical_description(self) -> str:
+        return self.template.get("physicalDescription", "")
+
+    @cached_property
+    def immediate_source_of_acquisition(self) -> list(str):
+        return self.template.get("immediateSourceOfAcquisition", [])
+
+    @cached_property
+    def accruals(self) -> str:
+        return self.template.get("accruals", "")
+
+    @cached_property
+    def administrative_background(self) -> str:
+        return self.template.get("administrativeBackground", "")
+
+    @cached_property
+    def separated_materials(self) -> Tuple[Dict[str, Any]]:
+        return tuple(
+            dict(
+                description=item.get("description", ""),
+                links=list(format_link(val) for val in item.get("links", ())),
+            )
+            for item in self.template.get("separatedMaterials", ())
+        )
 
 
 @dataclass

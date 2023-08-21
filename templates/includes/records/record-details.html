@@ -45,6 +45,23 @@
                         {% endfor %}
                     </td>
                 </tr>
+            {% endif %}            
+            {% if record.separated_materials %}
+                <tr>
+                    <th scope="row">{{ 'separated_materials'|as_label }}</th>
+                    <td>
+                        {% for separated_material in record.separated_materials %}
+                            {% if separated_material.description %}
+                                <p>{{ separated_material.description }}</p>
+                            {% endif %}
+                            {% if separated_material.links %}
+                                {% for link in separated_material.links %}
+                                    <p><a href="{{ link.href }}">{{ link.text }}</a></p>
+                                {% endfor %}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endif %}
             {% if record.held_by %}
                 <tr>
@@ -64,6 +81,42 @@
                     <td>{{ record.legal_status }}</td>
                 </tr>
             {% endif %}
+            {% if record.language %}
+                <tr>
+                    <th scope="row">{{ 'language'|as_label }}</th>
+                    <td>
+                    {% for item in record.language %}
+                        <p>{{ item }}</p>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if record.creator %}
+                <tr>
+                    <th scope="row">{{ 'creator'|as_label }}</th>
+                    <td>
+                    {% for item in record.creator %}
+                        <p>{{ item }}</p>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
+            {% if record.physical_description %}
+                <tr>
+                    <th scope="row">{{ 'physical_description'|as_label }}</th>
+                    <td>{{ record.physical_description }}</td>
+                </tr>
+            {% endif %}
+            {% if record.immediate_source_of_acquisition %}
+                <tr>
+                    <th scope="row">{{ 'immediate_source_of_acquisition'|as_label }}</th>
+                    <td>
+                    {% for item in record.immediate_source_of_acquisition %}
+                        <p>{{ item }}</p>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
             {% if record.closure_status %}
                 <tr>
                     <th scope="row">{{ 'closure'|as_label }}</th>
@@ -74,6 +127,18 @@
                 <tr>
                     <th scope="row">{{ 'access_condition'|as_label }}</th>
                     <td>{{ record.access_condition }}</td>
+                </tr>
+            {% endif %}
+            {% if record.accruals %}
+                <tr>
+                    <th scope="row">{{ 'accruals'|as_label }}</th>
+                    <td>{{ record.accruals }}</td>
+                </tr>
+            {% endif %}
+            {% if record.administrative_background %}
+                <tr>
+                    <th scope="row">{{ 'administrative_background'|as_label }}</th>
+                    <td>{{ record.administrative_background }}</td>
                 </tr>
             {% endif %}
             {% if record.record_opening %}
