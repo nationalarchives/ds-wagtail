@@ -904,6 +904,10 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def closure_status(self) -> str:
         return extract(self.get("@template", {}), "details.closureStatus", default="")
+    
+    @cached_property
+    def former_department_reference(self) -> str:
+        return self.template.get("formerDepartmentReference", "")
 
 
 @dataclass

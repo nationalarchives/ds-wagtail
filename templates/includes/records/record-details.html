@@ -9,6 +9,12 @@
                     <td id="analytics-record-reference">{{ record.reference_number }}</td>
                 </tr>
             {% endif %}
+            {% if record.title %}
+            <tr>
+                <th scope="row">{{ 'title'|as_label }}</th>
+                <td id="analytics-record-reference">{{ record.title }}</td>
+            </tr>
+            {% endif %}
             {% if record.date_created %}
                 <tr>
                     <th scope="row">{{ 'date_created'|as_label }}</th>
@@ -46,6 +52,12 @@
                     <td>{{ record.held_by }}</td>
                 </tr>
             {% endif %}
+            {% if record.former_department_reference %}
+                <tr>
+                    <th scope="row">{{ 'former_department_reference'|as_label }}</th>
+                    <td>{{ record.former_department_reference }}</td>
+                </tr>
+            {% endif %}
             {% if record.legal_status %}
                 <tr>
                     <th scope="row">{{ 'legal_status'|as_label }}</th>
@@ -62,6 +74,12 @@
                 <tr>
                     <th scope="row">{{ 'access_condition'|as_label }}</th>
                     <td>{{ record.access_condition }}</td>
+                </tr>
+            {% endif %}
+            {% if record.record_opening %}
+                <tr>
+                    <th scope="row">{{ 'record_opening'|as_label }}</th>
+                    <td>{{ record.record_opening }}</td>
                 </tr>
             {% endif %}
         </tbody>

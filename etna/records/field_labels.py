@@ -17,4 +17,7 @@ FIELD_LABELS = {
     "related_articles": "Related content",
     "related_materials": "Related material",
     "closure": "Closure Status",
+    "record_opening": "Record opening date",
+    "title": "Title",
+    "former_department_reference": "Former reference in its original department",
 }
