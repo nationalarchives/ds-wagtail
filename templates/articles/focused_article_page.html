@@ -52,12 +52,13 @@
                 </div>
                 <div class="author-info__text row">
                     <h2 class="author-info__title"><a href="{% pageurl page.author %}">{{ page.author_name }}</a></h2>
-                    {% if page.author.role %}
-                        <div class="author-info__paragraph">
-                            {{ page.author.role|richtext }}
-                        </div>
-                    {% endif %}
+
                 </div>
+                {% if page.author.role %}
+                <div class="author-info__paragraph">
+                    {{ page.author.role|richtext }}
+                </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>
