@@ -6,6 +6,7 @@ from copy import deepcopy
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.utils.safestring import SafeString
 
 import responses
 
@@ -1115,3 +1116,188 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(record.archive_repository_url, "http://nro.adlibhosting.com/")
+
+
+class RecordModelCatalogueTests(SimpleTestCase):
+
+    maxDiff = None
+
+    def setUp(self):
+        self.source = {
+            "@admin": {
+                "id": "C123456",
+            },
+            "source": {"value": "CAT"},
+            "@template": {
+                "details": {
+                    "iaid": "C123456",
+                }
+            },
+        }
+
+    def test_record_catalogue(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.iaid, "C123456")
+        self.assertEqual(self.record.custom_record_type, "CAT")
+
+    def test_empty_for_optional_attributes(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.record_opening, "")
+        self.assertEqual(self.record.title, "")
+        self.assertEqual(self.record.creator, [])
+        self.assertEqual(self.record.dimensions, "")
+        self.assertEqual(self.record.former_department_reference, "")
+        self.assertEqual(self.record.former_pro_reference, "")
+        self.assertEqual(self.record.language, [])
+        self.assertEqual(self.record.map_designation, "")
+        self.assertEqual(self.record.map_scale, "")
+        self.assertEqual(self.record.note, [])
+        self.assertEqual(self.record.physical_condition, "")
+        self.assertEqual(self.record.physical_description, "")
+        self.assertEqual(self.record.accruals, "")
+        self.assertEqual(self.record.immediate_source_of_acquisition, [])
+        self.assertEqual(self.record.administrative_background, "")
+        self.assertEqual(self.record.separated_materials, ())
+
+    def test_creator(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "creator": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.creator, ["some value 1", "some value 2"])
+
+    def test_dimensions(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "dimensions": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.dimensions, "some value")
+
+    def test_former_department_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerDepartmentReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_department_reference, "some value")
+
+    def test_former_pro_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerProReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_pro_reference, "some value")
+
+    def test_language(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "language": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.language, ["some value 1", "some value 2"])
+
+    def test_map_designation(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapDesignation": '<unittitle type="Map Designation">some value</unittitle>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.map_designation,
+            '<unittitle type="Map Designation">some value</unittitle>',
+        )
+        self.assertTrue(isinstance(self.record.map_designation, SafeString))
+
+    def test_map_scale(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapScale": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.map_scale, "some value")
+
+    def test_note(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "note": [
+                            "Details have been added from C 32/18, which also gives information about further process. </p><p>",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.note,
+            [
+                "Details have been added from C 32/18, which also gives information about further process. </p><p>"
+            ],
+        )
+        self.assertTrue(isinstance(self.record.note[0], SafeString))
+
+    def test_physical_description(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalDescription": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_description, "some value")
