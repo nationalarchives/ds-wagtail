@@ -7,5 +7,5 @@
 
 // Return an em unit based on the pixel value and context
 @function rem($px, $context: $base-font-size) {
-    @return #{strip-unit(math.div($px, strip-unit($context)))}rem;
+    @return #{math.div($px, $context)}rem;
 }

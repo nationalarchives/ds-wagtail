@@ -10,7 +10,7 @@
                     data-link-type="Card image"
                     data-card-position="0"
                     data-card-title="{{ featured_article.title }}"
-                    aria-labelledby="highlight-cards__card-desc{{ featured_article.id }}">
+                    aria-labelledby="highlight-cards__card-desc{{ featured_article.id }}" tabindex="-1">
                         {# Desktop/ tablet image #}
                         {% image featured_article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
@@ -53,7 +53,8 @@
                     {% else %}
                         data-card-position="{{ forloop.counter0 }}"
                     {% endif %}
-                    data-card-title="{{ article.title }}">
+                    data-card-title="{{ article.title }}"
+                    tabindex="-1">
                         {% image article.teaser_image fill-268x171-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"

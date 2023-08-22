@@ -5,7 +5,7 @@
         <div class="card-grid card-grid__duo">
             {% if topic %}
                 <div class="related-highlight-cards__card">
-                    <a href="{% pageurl topic %}" aria-labelledby="topic-card-title" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}">
+                    <a href="{% pageurl topic %}" aria-labelledby="topic-card-title" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}" tabindex="-1">
                         {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
                         <img height="350"
                             width="540"
@@ -30,7 +30,7 @@
                     data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
                     data-link-type="Card image"
                     data-card-position="1"
-                    data-card-title="{{ time_period.title }}">
+                    data-card-title="{{ time_period.title }}" tabindex="-1">
                         {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
                         <img height="350" 
                             width="540"

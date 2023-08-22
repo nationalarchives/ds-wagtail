@@ -17,11 +17,11 @@
 //    we force a non-overlapping, non-auto-hiding scrollbar to counteract.
 // 6. Change the default tap highlight to be completely transparent in iOS.
 
-*,
-*::before,
-*::after {
-    box-sizing: border-box; // 1
-}
+// *,
+// *::before,
+// *::after {
+//     box-sizing: border-box; // 1
+// }
 
 html {
     font-family: sans-serif; // 2
@@ -210,17 +210,17 @@ sup {
 // Links
 //
 
-a {
-    color: $link-color;
-    text-decoration: $link-decoration;
-    background-color: transparent; // Remove the gray background on active links in IE 10.
-    -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
+// a {
+//     color: $link-color;
+//     text-decoration: $link-decoration;
+//     background-color: transparent; // Remove the gray background on active links in IE 10.
+//     -webkit-text-decoration-skip: objects; // Remove gaps in links underline in iOS 8+ and Safari 8+.
 
-    @include hover {
-        color: $link-hover-color;
-        text-decoration: $link-hover-decoration;
-    }
-}
+//     @include hover {
+//         color: $link-hover-color;
+//         text-decoration: $link-hover-decoration;
+//     }
+// }
 
 // And undo these styles for placeholder links/named anchors (without href)
 // which have not been made explicitly keyboard-focusable (without tabindex).
@@ -334,10 +334,10 @@ button {
 // results in a loss of the default `button` focus styles.
 //
 // Credit: https://github.com/suitcss/base/
-button:focus {
-    outline: 1px dotted;
-    outline: 5px auto -webkit-focus-ring-color;
-}
+// button:focus {
+//     outline: 1px dotted;
+//     outline: 5px auto -webkit-focus-ring-color;
+// }
 
 input,
 button,

@@ -8,15 +8,7 @@ This project contains technical documentation written in Markdown in the /docs f
 https://nationalarchives.github.io/ds-wagtail/
 
 
-You can also view it locally via [mkdocs](https://www.mkdocs.org/) by running the following from a `web` container shell:
-
-```console
-$ mkdocs serve
-```
-
-The documentation will be available at:
-
-http://localhost:8001/
+You can also view it locally on http://localhost:8001/ which is booted as the `docs` container.
 
 ## Setting up a local build
 
