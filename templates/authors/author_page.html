@@ -10,28 +10,40 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-12 col-md-3 order-md-2">
-                    Image
+                    {% image page.image fill-500x500 as author_img %}
+                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-intro__image">
                 </div>
 
-                <div class="col-sm-12 col-md-9 order-md-1">details</div>
-            </div>
-
-            <div class="row">
-                <div class="col-9 info">
+                <div class="col-sm-12 col-md-9 order-md-1 info  ">
                     <h1 class="author-intro__title">
                         {{ page.title }}
                     </h1>
                     {% if page.role %}
-                        <div class="author-intro__paragraph">
-                            {{ page.role|richtext }}
-                        </div>
+                    <div class="author-intro__paragraph">
+                        {{ page.role|richtext }}
+                    </div>
                     {% endif %}
                 </div>
-                <div class="col-3">
-                    {% image page.image fill-500x500 as author_img %}
-                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-intro__image">
-                </div>
             </div>
+
+
+<!--            <div class="row">-->
+<!--                <div class="col-9 info">-->
+<!--                    <h1 class="author-intro__title">-->
+<!--                        {{ page.title }}-->
+<!--                    </h1>-->
+<!--                    {% if page.role %}-->
+<!--                        <div class="author-intro__paragraph">-->
+<!--                            {{ page.role|richtext }}-->
+<!--                        </div>-->
+<!--                    {% endif %}-->
+<!--                </div>-->
+<!--                <div class="col-3">-->
+<!--                    {% image page.image fill-500x500 as author_img %}-->
+<!--                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-intro__image">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            -->
         </div>
     </div>
 

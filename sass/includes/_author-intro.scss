@@ -13,9 +13,11 @@
         font-size: 4rem;
         font-family: $font__supria-sans;
         //background: green;
+        text-align:left;
 
         @media (max-width: $screen__md) {
             font-size: 2.5rem;
+            text-align: center;
         }
 
         &-prefix {
@@ -52,9 +54,12 @@
     &__paragraph {
         font-size: 1.125rem; // one off font size (18px)
         margin-bottom: 0.5rem;
+        text-align:center;
 
         @media only screen and (min-width: $screen__lg) {
             font-size: 1.313rem; // one off font size (21px)
+            text-align: left;
+
         }
 
         .template-focused-article & {
@@ -86,12 +91,21 @@
     }
 
     .info {
-        padding-top: 5%;
+        @media (min-width: $screen__md) {
+            padding-top: 5%;
+        }
     }
 
     &__image {
         border-radius: 50%;
         border:solid 1px black;
+        //height:70%;
+        margin:auto;
+
+        @media (min-width: $screen__md) {
+            //border:solid 5px black;
+            //height:100%;
+        }
     }
 
     &--dark .generic-intro__paragraph {
