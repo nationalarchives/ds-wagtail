@@ -27,6 +27,16 @@
                     <td class="xslt_patches">{{ record.description }}</td>
                 </tr>
             {% endif %}
+            {% if record.note %}
+                <tr>
+                    <th scope="row">{{ 'note'|as_label }}</th>
+                    <td>
+                    {% for item in record.note %}
+                        <p>{{ item }}</p>
+                    {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}
             {% if record.related_materials %}
                 <tr>
                     <th scope="row">{{ 'related_materials'|as_label }}</th>
@@ -62,6 +72,12 @@
                         {% endfor %}
                     </td>
                 </tr>
+            {% endif %}            
+            {% if record.arrangement %}
+                <tr>
+                    <th scope="row">{{ 'arrangement'|as_label }}</th>
+                    <td>{{ record.arrangement }}</td>
+                </tr>
             {% endif %}
             {% if record.held_by %}
                 <tr>
@@ -73,6 +89,12 @@
                 <tr>
                     <th scope="row">{{ 'former_department_reference'|as_label }}</th>
                     <td>{{ record.former_department_reference }}</td>
+                </tr>
+            {% endif %}
+            {% if record.former_pro_reference %}
+                <tr>
+                    <th scope="row">{{ 'former_pro_reference'|as_label }}</th>
+                    <td>{{ record.former_pro_reference }}</td>
                 </tr>
             {% endif %}
             {% if record.legal_status %}
@@ -89,6 +111,12 @@
                         <p>{{ item }}</p>
                     {% endfor %}
                     </td>
+                </tr>
+            {% endif %}
+            {% if record.map_designation %}
+                <tr>
+                    <th scope="row">{{ 'map_designation'|as_label }}</th>
+                    <<td>{{ record.map_designation }}</td>
                 </tr>
             {% endif %}
             {% if record.creator %}
@@ -115,6 +143,24 @@
                         <p>{{ item }}</p>
                     {% endfor %}
                     </td>
+                </tr>
+            {% endif %}
+            {% if record.dimensions %}
+                <tr>
+                    <th scope="row">{{ 'dimensions'|as_label }}</th>
+                    <td>{{ record.dimensions }}</td>
+                </tr>
+            {% endif %}
+            {% if record.map_scale %}
+                <tr>
+                    <th scope="row">{{ 'map_scale'|as_label }}</th>
+                    <td>{{ record.map_scale }}</td>
+                </tr>
+            {% endif %}
+            {% if record.physical_condition %}
+                <tr>
+                    <th scope="row">{{ 'physical_condition'|as_label }}</th>
+                    <td>{{ record.physical_condition }}</td>
                 </tr>
             {% endif %}
             {% if record.closure_status %}
