@@ -2,4 +2,4 @@
 
 poetry update
 
-docker exec -it web poetry install --sync --remove-untracked --no-root 
+docker exec -it web poetry install --sync --no-root 
