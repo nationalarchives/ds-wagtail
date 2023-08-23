@@ -10,7 +10,7 @@
                     data-link-type="Card image"
                     data-card-position="{{ forloop.counter0 }}"
                     data-card-title="{{ card.title }}"
-                    aria-labelledby="related-highlight-cards__card-desc{{ card.id }}{% if instance_id %}-{{ instance_id }}{% endif %}">
+                    aria-labelledby="related-highlight-cards__card-desc{{ card.id }}{% if instance_id %}-{{ instance_id }}{% endif %}" tabindex="-1">
                         <picture>
                         {% image card.teaser_image fill-374x370-c100 format-webp as mobile_webp_image %}
                         <source media="(max-width: 370px)"
@@ -26,7 +26,7 @@
                             height="{{ base_img.height }}"
                             width="{{ base_img.width }}"
                             class="related-highlight-cards__image"
-                            alt=""/>
+                            alt="" tabindex="-1"/>
                         </picture>
                     </a>
                     <div class="related-highlight-cards__content">

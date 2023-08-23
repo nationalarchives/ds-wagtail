@@ -1,5 +1,6 @@
 @use "sass:list";
 @use "sass:map";
+@use "functions";
 
 /* ============================================
     Output a rem and px fallback value for the given property
@@ -14,10 +15,13 @@
             $rem: list.append($rem, $value);
         } @else {
             $px: list.append($px, $value);
-            $rem: list.append($rem, rem(strip-unit($value)));
+            $rem: list.append(
+                $rem,
+                functions.rem(strip-unit($value), strip-unit($base-font-size))
+            );
         }
     }
-    #{$property}: $px;
+    // #{$property}: $px;
     #{$property}: $rem;
 }
 

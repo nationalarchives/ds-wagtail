@@ -52,17 +52,12 @@ hooks:
     # Install NVM
     unset NPM_CONFIG_PREFIX
     export NVM_DIR="$PLATFORM_APP_DIR/.nvm"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     
-    nvm install v18.16.0
-    nvm use v18.16.0
-    
+    nvm install
     npm install
-    npm install -g sass
-    sass --quiet-deps --style=compressed --load-path=node_modules sass/etna.scss:templates/static/css/dist/etna.css
-
-    npx webpack --config webpack.config.js
+    npm run compile
 
     poetry run python manage.py collectstatic --no-input
   deploy: |

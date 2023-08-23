@@ -1,33 +1,21 @@
-name: Docker
+name: Clean up feature branch
 
 on:
-  push:
+  delete:
     branches:
-      - main
-      - develop
-  release:
-    types:
-      - published
+      - feature/*
 
 env:
   IMAGE_NAME: ds-wagtail
   
 jobs:
-  build:
+  delete:
+    if: github.event.ref_type == 'branch'
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
-      contents: read
     steps:
-      - uses: actions/checkout@v3
-      - uses: hadolint/hadolint-action@v3.1.0
-        with:
-          dockerfile: Dockerfile
-      - name: Log in to registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u $ --password-stdin
-      - name: Build and push image
+      - name: Clean up
         run: |
-          IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+          IMAGE_ID=$IMAGE_NAME
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
           # Strip git ref prefix from version
@@ -38,5 +26,13 @@ jobs:
           [ "$VERSION" == "main" ] && VERSION=latest
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
-          docker build --tag $IMAGE_ID:$VERSION --platform=linux/amd64 .
-          docker push $IMAGE_ID:$VERSION
+          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Clean up Docker image $IMAGE_ID:$VERSION"
+      - name: Delete image
+        uses: bots-house/ghcr-delete-image-action@v1.1.0
+        with:
+          owner: nationalarchives
+          name: ${{ env.IMAGE_ID }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ env.VERSION }}

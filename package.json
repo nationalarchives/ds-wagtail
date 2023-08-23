@@ -1,6 +1,6 @@
 {
   "name": "ds-wagtail",
-  "version": "7.5.0",
+  "version": "7.6.0",
   "description": "## Local development",
   "private": true,
   "scripts": {
@@ -31,12 +31,12 @@
     "babel-loader": "~9.1",
     "jest-environment-jsdom": "~29.6",
     "prettier": "^3.0.0",
-    "sass": "~1.64",
+    "sass": "~1.65",
     "webpack": "~5.88",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
-    "@nationalarchives/frontend": "^0.1.10-prerelease",
+    "@nationalarchives/frontend": "^0.1.14-prerelease",
     "jest": "~29.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1"
