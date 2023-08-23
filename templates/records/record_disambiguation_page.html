@@ -80,4 +80,13 @@
         {% endif %}
     </nav>
 
+    <script>        
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            "event": "disambiguation-page",
+            "data-link-type": "Disambiguation link",
+            "record-links": "{{ record_results_page|length }}"
+        });
+    </script>
+
 {% endblock content %}
