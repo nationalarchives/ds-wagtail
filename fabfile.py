@@ -48,6 +48,11 @@ def web_exec(cmd, check_returncode=False):
     return container_exec(cmd, "web", check_returncode)
 
 
+def dev_exec(cmd, check_returncode=False):
+    "Execute something in the 'dev' Docker container."
+    return container_exec(cmd, "dev", check_returncode)
+
+
 def cli_exec(cmd, check_returncode=False):
     return container_exec(cmd, "cli", check_returncode)
 
@@ -138,10 +143,7 @@ def format(c):
     Apply formatters to code python code
     """
     start(c, "dev")
-    print("Formatting with isort...")
-    web_exec("isort etna config")
-    print("Formatting with Black...")
-    web_exec("black etna config")
+    dev_exec("format")
 
 
 @task
@@ -152,16 +154,16 @@ def test(c, lint=False, parallel=False):
     start(c, "dev")
     if lint:
         print("Checking isort compliance...")
-        web_exec("isort etna config --check --diff")
+        dev_exec("isort . --check --diff")
         print("Checking Black compliance...")
-        web_exec("black etna config --check --diff --color --fast")
+        dev_exec("black . --check --diff --color --fast")
         print("Checking flake8 compliance...")
-        web_exec("flake8 etna config")
+        dev_exec("flake8 .")
         print("Running Django tests...")
-    cmd = "python manage.py test"
+    cmd = "manage test"
     if parallel:
         cmd += " --parallel"
-    web_exec(cmd)
+    dev_exec(cmd)
 
 
 # -----------------------------------------------------------------------------

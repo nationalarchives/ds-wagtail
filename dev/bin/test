@@ -1,0 +1,7 @@
+#!/bin/bash
+
+poetry run isort etna config --check --diff
+poetry run black etna config --check --diff --color --fast
+poetry run flake8 etna config
+
+manage test
