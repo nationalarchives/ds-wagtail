@@ -137,7 +137,7 @@ def format(c):
     """
     Apply formatters to code python code
     """
-    start(c, "web")
+    start(c, "dev")
     print("Formatting with isort...")
     web_exec("isort etna config")
     print("Formatting with Black...")
@@ -149,7 +149,7 @@ def test(c, lint=False, parallel=False):
     """
     Run python tests in the web container
     """
-    start(c, "web")
+    start(c, "dev")
     if lint:
         print("Checking isort compliance...")
         web_exec("isort etna config --check --diff")
