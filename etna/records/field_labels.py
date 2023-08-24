@@ -31,7 +31,10 @@ FIELD_LABELS = {
     "physical_condition": "Physical condition",
     "physical_description": "Physical description",
     "accruals": "Accruals",
+    "accumulation_dates": "Accumulation dates",
+    "appraisal_information": "Selection and destruction information",
     "immediate_source_of_acquisition": "Immediate source of acquisition",
     "administrative_background": "Administrative/ biographical background",
     "separated_materials": "Separated material",
+    "unpublished_finding_aids": "Unpublished finding aids",
 }

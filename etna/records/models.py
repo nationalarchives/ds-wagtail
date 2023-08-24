@@ -302,6 +302,21 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("heldBy", "")
 
     @cached_property
+    def held_by_id(self) -> str:
+        return self.template.get("heldById", "")
+
+    @cached_property
+    def held_by_url(self) -> str:
+        if self.held_by_id:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
+                )
+            except NoReverseMatch:
+                pass
+        return ""
+
+    @cached_property
     def date_created(self) -> str:
         return self.template.get("dateCreated", "")
 
@@ -500,7 +515,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def title(self) -> str:
-        return self.template.get("title", "")
+        return mark_safe(self.template.get("title", ""))
 
     @cached_property
     def archive_contact_info(self) -> Optional[ContactInfo]:
@@ -950,6 +965,14 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("accruals", "")
 
     @cached_property
+    def accumulation_dates(self) -> str:
+        return self.template.get("accumulationDates", "")
+
+    @cached_property
+    def appraisal_information(self) -> str:
+        return self.template.get("appraisalInformation", "")
+
+    @cached_property
     def immediate_source_of_acquisition(self) -> list(str):
         return self.template.get("immediateSourceOfAcquisition", [])
 
@@ -966,6 +989,10 @@ class Record(DataLayerMixin, APIModel):
             )
             for item in self.template.get("separatedMaterials", ())
         )
+
+    @cached_property
+    def unpublished_finding_aids(self) -> list(str):
+        return self.template.get("unpublishedFindingAids", [])
 
 
 @dataclass

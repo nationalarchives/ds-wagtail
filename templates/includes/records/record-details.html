@@ -82,7 +82,13 @@
             {% if record.held_by %}
                 <tr>
                     <th scope="row">{{ 'held_by'|as_label }}</th>
-                    <td>{{ record.held_by }}</td>
+                    <td>
+                    {% if record.held_by_url %}
+                        <a href="{{ record.held_by_url }}">{{ record.held_by }}</a>
+                    {% else %}
+                        {{ record.held_by }}
+                    {% endif %}
+                    </td>
                 </tr>
             {% endif %}
             {% if record.former_department_reference %}
@@ -175,10 +181,32 @@
                     <td>{{ record.access_condition }}</td>
                 </tr>
             {% endif %}
+            {% if record.accumulation_dates %}
+                <tr>
+                    <th scope="row">{{ 'accumulation_dates'|as_label }}</th>
+                    <td>{{ record.accumulation_dates }}</td>
+                </tr>
+            {% endif %}
             {% if record.accruals %}
                 <tr>
                     <th scope="row">{{ 'accruals'|as_label }}</th>
                     <td>{{ record.accruals }}</td>
+                </tr>
+            {% endif %}
+            {% if record.unpublished_finding_aids %}
+                <tr>
+                    <th scope="row">{{ 'unpublished_finding_aids'|as_label }}</th>
+                    <td>
+                        {% for item in record.unpublished_finding_aids %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}            
+            {% if record.appraisal_information %}
+                <tr>
+                    <th scope="row">{{ 'appraisal_information'|as_label }}</th>
+                    <td>{{ record.appraisal_information }}</td>
                 </tr>
             {% endif %}
             {% if record.administrative_background %}

@@ -1144,6 +1144,8 @@ class RecordModelCatalogueTests(SimpleTestCase):
     def test_empty_for_optional_attributes(self):
         self.record = Record(self.source)
 
+        self.assertEqual(self.record.held_by_id, "")
+        self.assertEqual(self.record.held_by_url, "")
         self.assertEqual(self.record.record_opening, "")
         self.assertEqual(self.record.title, "")
         self.assertEqual(self.record.creator, [])
@@ -1160,6 +1162,53 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.immediate_source_of_acquisition, [])
         self.assertEqual(self.record.administrative_background, "")
         self.assertEqual(self.record.separated_materials, ())
+
+    def test_held_by_url_attrs(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "heldById": "A13530124",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.held_by_id, "A13530124")
+        self.assertEqual(self.record.held_by_url, "/catalogue/id/A13530124/")
+
+    def test_record_opening(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "recordOpening": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.record_opening, "some value")
+
+    def test_title(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "title": '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.title, SafeString))
+        self.assertEqual(
+            self.record.title,
+            '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+        )
 
     def test_creator(self):
         self.source.update(
@@ -1287,6 +1336,21 @@ class RecordModelCatalogueTests(SimpleTestCase):
         )
         self.assertTrue(isinstance(self.record.note[0], SafeString))
 
+    def test_physical_condition(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalCondition": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_condition, "some value")
+
     def test_physical_description(self):
 
         self.source.update(
@@ -1301,3 +1365,49 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.record = Record(self.source)
 
         self.assertEqual(self.record.physical_description, "some value")
+
+    def test_accruals(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accruals": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accruals, "some value")
+
+    def test_accumulation_dates(self):
+
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accumulationDates": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accumulation_dates, "some value")
+
+    def test_unpublished_finding_aids(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "unpublishedFindingAids": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.unpublished_finding_aids, ["some value 1", "some value 2"]
+        )
