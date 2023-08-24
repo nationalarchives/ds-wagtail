@@ -7,7 +7,7 @@
  */
 
 html {
-    box-sizing: border-box;
+    // box-sizing: border-box;
     -ms-overflow-style: scrollbar;
     scroll-behavior: smooth;
 }
@@ -16,11 +16,11 @@ body {
     min-width: 320px;
 }
 
-*,
-*::before,
-*::after {
-    box-sizing: inherit;
-}
+// *,
+// *::before,
+// *::after {
+//     box-sizing: inherit;
+// }
 
 @import "bootstrap/functions";
 @import "bootstrap/variables";
@@ -42,6 +42,5 @@ body {
 @import "icon";
 @import "lists";
 @import "buttons";
-@import "header";
 @import "card";
 @import "hero-banner";

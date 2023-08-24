@@ -7,7 +7,8 @@
             id="analytics-promoted-pages">
             {% for promoted_item in value.promoted_items %}
                 <li class="promoted-pages__card">
-                    <a data-component-name="Featured card: {% trans value.heading %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" href="{{ promoted_item.url }}">
+                    <a data-component-name="Featured card: {% trans value.heading %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" href="{{ promoted_item.url }}"
+                    tabindex="-1">
                         <picture>
                             {% image promoted_item.teaser_image fill-350x229-c100 format-webp as mobile_webp_image %}
                             <source media="(max-width: 390px)"

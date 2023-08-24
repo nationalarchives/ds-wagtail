@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
+        all: './scripts/src/all.js',
         beta_banner: './scripts/src/beta-banner.js',
         cookie_consent: './scripts/src/ds-cookie-consent.js',
         gtm_script: './scripts/src/gtm-script.js',

@@ -20,10 +20,10 @@
         outline-offset: 0.125rem;
     }
 
-    &:focus {
-        outline: 0.312rem solid $color__navy;
-        outline-offset: 0.125rem;
-    }
+    // &:focus {
+    //     outline: 0.312rem solid $color__navy;
+    //     outline-offset: 0.125rem;
+    // }
 
     &--full-width {
         width: 100%;
@@ -48,10 +48,10 @@
         outline: 0.1875rem solid $color__grey-700;
     }
 
-    &:focus {
-        outline: 0.312rem solid $color__navy;
-        outline-offset: 0.125rem;
-    }
+    // &:focus {
+    //     outline: 0.312rem solid $color__navy;
+    //     outline-offset: 0.125rem;
+    // }
 }
 
 .tna-button--yellow,

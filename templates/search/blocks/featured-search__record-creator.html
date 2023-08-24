@@ -3,7 +3,7 @@
 <div class="featured-search__results-block">
     <h2 class="featured-search__heading">{{ bucket.label }}</h2>
 
-    {% for record in bucket.results|slice:":1" %}
+    {% for record in bucket.results|slice:":3" %}
         <div class="featured-search__record-creator">
             <div>
                 <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" class="featured-search__card-link">
