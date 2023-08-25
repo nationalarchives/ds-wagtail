@@ -49,14 +49,13 @@
                     <td>
                         {% for related_material in record.related_materials %}
                             {% if related_material.description %}
-                                <p>{{related_material.description}}</p>
-                            {% endif %}
-                            {% if related_material.links %}
-                                <ul>
+                                <p>{{related_material.description}}
+                                {% if related_material.links %}
                                     {% for link in related_material.links %}
-                                        <li><a href="{{ link.href }}">{{ link.text }}</a></li>
+                                        <a href="{{ link.href }}">{{ link.text }}</a>
                                     {% endfor %}
-                                </ul>
+                                {% endif %}
+                                </p>
                             {% endif %}
                         {% endfor %}
                     </td>
