@@ -1119,7 +1119,6 @@ class ArchiveRecordModelTests(SimpleTestCase):
 
 
 class RecordModelCatalogueTests(SimpleTestCase):
-
     maxDiff = None
 
     def setUp(self):
@@ -1309,7 +1308,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.language, ["some value 1", "some value 2"])
 
     def test_map_designation(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1328,7 +1326,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertTrue(isinstance(self.record.map_designation, SafeString))
 
     def test_map_scale(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1365,7 +1362,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertTrue(isinstance(self.record.note[0], SafeString))
 
     def test_physical_condition(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1380,7 +1376,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.physical_condition, "some value")
 
     def test_physical_description(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1395,7 +1390,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.physical_description, "some value")
 
     def test_accruals(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1410,7 +1404,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.accruals, "some value")
 
     def test_accumulation_dates(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1425,7 +1418,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.accumulation_dates, "some value")
 
     def test_appraisal_information(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1460,7 +1452,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         )
 
     def test_administrative_background(self):
-
         self.source.update(
             {
                 "@template": {
@@ -1564,7 +1555,6 @@ class RecordModelCatalogueTests(SimpleTestCase):
         )
 
     def test_custodial_history(self):
-
         self.source.update(
             {
                 "@template": {
