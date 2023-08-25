@@ -1014,10 +1014,6 @@ class Record(DataLayerMixin, APIModel):
     def publication_note(self) -> list(str):
         return self.template.get("publicationNote", [])
 
-    @cached_property
-    def delivery_option(self) -> str:
-        return self.template.get("deliveryOption", "")
-
 
 @dataclass
 class Image:
