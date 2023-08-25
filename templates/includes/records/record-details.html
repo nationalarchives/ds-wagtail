@@ -36,6 +36,12 @@
                     {% endfor %}
                     </td>
                 </tr>
+            {% endif %}                        
+            {% if record.arrangement %}
+                <tr>
+                    <th scope="row">{{ 'arrangement'|as_label }}</th>
+                    <td>{{ record.arrangement }}</td>
+                </tr>
             {% endif %}
             {% if record.related_materials %}
                 <tr>
@@ -72,12 +78,6 @@
                         {% endfor %}
                     </td>
                 </tr>
-            {% endif %}            
-            {% if record.arrangement %}
-                <tr>
-                    <th scope="row">{{ 'arrangement'|as_label }}</th>
-                    <td>{{ record.arrangement }}</td>
-                </tr>
             {% endif %}
             {% if record.held_by %}
                 <tr>
@@ -101,6 +101,16 @@
                 <tr>
                     <th scope="row">{{ 'former_pro_reference'|as_label }}</th>
                     <td>{{ record.former_pro_reference }}</td>
+                </tr>
+            {% endif %}
+            {% if record.location_of_originals %}
+                <tr>
+                    <th scope="row">{{ 'location_of_originals'|as_label }}</th>
+                    <td>
+                    {% for item in record.location_of_originals %}
+                        <p>{{ item }}</p>
+                    {% endfor %}
+                    </td>
                 </tr>
             {% endif %}
             {% if record.legal_status %}
@@ -141,6 +151,12 @@
                     <td>{{ record.physical_description }}</td>
                 </tr>
             {% endif %}
+            {% if record.access_condition %}
+                <tr>
+                    <th scope="row">{{ 'access_condition'|as_label }}</th>
+                    <td>{{ record.access_condition }}</td>
+                </tr>
+            {% endif %}
             {% if record.immediate_source_of_acquisition %}
                 <tr>
                     <th scope="row">{{ 'immediate_source_of_acquisition'|as_label }}</th>
@@ -174,11 +190,17 @@
                     <th scope="row">{{ 'closure'|as_label }}</th>
                     <td>{{ record.closure_status }}</td>
                 </tr>
-            {% endif %}
-            {% if record.access_condition %}
+            {% endif %}            
+            {% if record.restrictions_on_use %}
                 <tr>
-                    <th scope="row">{{ 'access_condition'|as_label }}</th>
-                    <td>{{ record.access_condition }}</td>
+                    <th scope="row">{{ 'restrictions_on_use'|as_label }}</th>
+                    <td>{{ record.restrictions_on_use }}</td>
+                </tr>
+            {% endif %}
+            {% if record.custodial_history %}
+                <tr>
+                    <th scope="row">{{ 'custodial_history'|as_label }}</th>
+                    <td>{{ record.custodial_history }}</td>
                 </tr>
             {% endif %}
             {% if record.accumulation_dates %}
@@ -215,6 +237,26 @@
                     <td>{{ record.administrative_background }}</td>
                 </tr>
             {% endif %}
+            {% if record.copies_information %}
+                <tr>
+                    <th scope="row">{{ 'copies_information'|as_label }}</th>
+                    <td>
+                        {% for item in record.copies_information %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}            
+            {% if record.publication_note %}
+                <tr>
+                    <th scope="row">{{ 'publication_note'|as_label }}</th>
+                    <td>
+                        {% for item in record.publication_note %}
+                            <p>{{ item }}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
+            {% endif %}            
             {% if record.record_opening %}
                 <tr>
                     <th scope="row">{{ 'record_opening'|as_label }}</th>

@@ -37,4 +37,9 @@ FIELD_LABELS = {
     "administrative_background": "Administrative/ biographical background",
     "separated_materials": "Separated material",
     "unpublished_finding_aids": "Unpublished finding aids",
+    "copies_information": "Copies information",
+    "custodial_history": "Custodial history",
+    "location_of_originals": "Originals held at",
+    "restrictions_on_use": "Restrictions on use",
+    "publication_note": "Publication note",
 }

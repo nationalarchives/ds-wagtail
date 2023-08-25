@@ -978,7 +978,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def administrative_background(self) -> str:
-        return self.template.get("administrativeBackground", "")
+        return mark_safe(self.template.get("administrativeBackground", ""))
 
     @cached_property
     def separated_materials(self) -> Tuple[Dict[str, Any]]:
@@ -993,6 +993,26 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def unpublished_finding_aids(self) -> list(str):
         return self.template.get("unpublishedFindingAids", [])
+
+    @cached_property
+    def copies_information(self) -> list(str):
+        return self.template.get("copiesInformation", [])
+
+    @cached_property
+    def custodial_history(self) -> str:
+        return self.template.get("custodialHistory", "")
+
+    @cached_property
+    def location_of_originals(self) -> list(str):
+        return self.template.get("locationOfOriginals", [])
+
+    @cached_property
+    def restrictions_on_use(self) -> str:
+        return self.template.get("restrictionsOnUse", "")
+
+    @cached_property
+    def publication_note(self) -> list(str):
+        return self.template.get("publicationNote", [])
 
 
 @dataclass
