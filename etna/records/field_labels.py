@@ -42,5 +42,4 @@ FIELD_LABELS = {
     "location_of_originals": "Originals held at",
     "restrictions_on_use": "Restrictions on use",
     "publication_note": "Publication note",
-    "delivery_option": "Delivery option",
 }
