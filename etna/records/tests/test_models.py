@@ -1171,6 +1171,7 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.assertEqual(self.record.location_of_originals, [])
         self.assertEqual(self.record.restrictions_on_use, "")
         self.assertEqual(self.record.publication_note, [])
+        self.assertEqual(self.record.delivery_option, "")
 
     def test_held_by_url_attrs(self):
         self.source.update(
@@ -1607,7 +1608,7 @@ class RecordModelCatalogueTests(SimpleTestCase):
 
         self.assertEqual(self.record.restrictions_on_use, "some value")
 
-    def test_lpublication_note(self):
+    def test_publication_note(self):
         self.source.update(
             {
                 "@template": {
@@ -1620,3 +1621,20 @@ class RecordModelCatalogueTests(SimpleTestCase):
         self.record = Record(self.source)
 
         self.assertEqual(self.record.publication_note, ["some value 1", "some value 2"])
+
+    def test_delivery_option(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "deliveryOption": "No availability condition provisioned for this record",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.delivery_option,
+            "No availability condition provisioned for this record",
+        )

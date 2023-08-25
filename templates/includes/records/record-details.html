@@ -262,6 +262,12 @@
                     <th scope="row">{{ 'record_opening'|as_label }}</th>
                     <td>{{ record.record_opening }}</td>
                 </tr>
+            {% endif %}          
+            {% if record.delivery_option %}
+                <tr>
+                    <th scope="row">{{ 'delivery_option'|as_label }}</th>
+                    <td>{{ record.delivery_option }}</td>
+                </tr>
             {% endif %}
         </tbody>
     </table>
