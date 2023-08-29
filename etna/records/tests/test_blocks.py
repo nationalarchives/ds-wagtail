@@ -182,7 +182,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertContains(response, BLOCK_TITLE_OVERRIDE)
         self.assertContains(
             response,
-            'href="/catalogue/ref/' + TEST_RECORD_DATA["reference_number"] + '/"',
+            'href="/catalogue/id/' + TEST_RECORD_DATA["iaid"] + '/"',
         )
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(

@@ -521,7 +521,7 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_default(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/ref/2515/300/1/"),
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -564,7 +564,7 @@ class TestRecordURLTag(SimpleTestCase):
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_no_discovery_links_when_is_editorial_is_false(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/ref/2515/300/1/"),
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -589,7 +589,7 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_repository_links(self):
         for attribute_name, expected_result in (
-            ("record_instance", "/catalogue/ref/66/"),
+            ("record_instance", "/catalogue/id/A13531109/"),
             ("record_instance_no_reference", ""),
         ):
             with self.subTest(attribute_name):
@@ -712,15 +712,15 @@ class TestRecordURLTag(SimpleTestCase):
         for name, record, expected in (
             ("record_lettercode", self.record_lettercode, "/catalogue/id/C27/"),
             ("record_division", self.record_division, "/catalogue/id/C632/"),
-            ("record_series", self.record_series, "/catalogue/ref/CM/39/"),
+            ("record_series", self.record_series, "/catalogue/id/C4144/"),
             ("record_sub_series", self.record_sub_series, "/catalogue/id/C88345/"),
             (
                 "record_sub_sub_series",
                 self.record_sub_sub_series,
                 "/catalogue/id/C149305/",
             ),
-            ("record_piece", self.record_piece, "/catalogue/ref/FO/78/2294/"),
-            ("record_item", self.record_item, "/catalogue/ref/C/1/498/26/"),
+            ("record_piece", self.record_piece, "/catalogue/id/C2519196/"),
+            ("record_item", self.record_item, "/catalogue/id/C7472714/"),
         ):
             with self.subTest(name):
                 self.assertEqual(
@@ -737,12 +737,12 @@ class TestRecordURLTag(SimpleTestCase):
 
         for name, hierarchy_record, expected in (
             ("hierarchy_level_1", self.hierarchy_level_1, "/catalogue/id/C162/"),
-            ("hierarchy_level_3", self.hierarchy_level_3, "/catalogue/ref/J/77/"),
-            ("hierarchy_level_6", self.hierarchy_level_6, "/catalogue/ref/J/77/3417/"),
+            ("hierarchy_level_3", self.hierarchy_level_3, "/catalogue/id/C9685/"),
+            ("hierarchy_level_6", self.hierarchy_level_6, "/catalogue/id/C5947536/"),
             (
                 "hierarchy_level_7",
                 self.hierarchy_level_7,
-                "/catalogue/ref/J/77/3417/4284/",
+                "/catalogue/id/C8077549/",
             ),
         ):
             with self.subTest(name):
@@ -872,7 +872,7 @@ class TestRecordURLTag(SimpleTestCase):
                     },
                 }
             ),
-            "/catalogue/ref/FCO/158/",
+            "/catalogue/id/C14918854/",
         )
 
         tna_search_record_sub_series = (
@@ -917,7 +917,7 @@ class TestRecordURLTag(SimpleTestCase):
                     },
                 }
             ),
-            "/catalogue/ref/J/77/3417/4284/",
+            "/catalogue/id/C8077549/",
         )
 
         tna_search_record_piece = (
@@ -932,7 +932,7 @@ class TestRecordURLTag(SimpleTestCase):
                     },
                 }
             ),
-            "/catalogue/ref/FO/78/2242/",
+            "/catalogue/id/C2519144/",
         )
 
         for name, search_record, expected in (
@@ -1003,7 +1003,7 @@ class TestRecordURLTag(SimpleTestCase):
                     },
                 }
             ),
-            "/catalogue/ref/DF/5/108/",
+            "/catalogue/id/C10996932/",
         )
         for name, search_record, expected in (
             (
