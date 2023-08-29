@@ -1,0 +1,3 @@
+#!/bin/bash
+
+tna-node compile:js
