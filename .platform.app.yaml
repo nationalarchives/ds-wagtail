@@ -67,7 +67,7 @@ web:
   upstream:
     socket_family: unix
   commands:
-    start: poetry run gunicorn config.wsgi:application --bind unix:$SOCKET --config .platform/gunicorn.conf.py --capture-output
+    start: poetry run gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
   locations:
     "/":
       root: ""
