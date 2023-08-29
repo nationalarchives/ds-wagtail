@@ -136,10 +136,11 @@ $largest-small-device: 992px;
 @import "@nationalarchives/frontend/nationalarchives/all";
 
 .tna-breadcrumbs {
-    margin-bottom: 2rem;
+    padding-bottom: 0;
 }
 
 .tna-hero {
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -214,9 +215,20 @@ $largest-small-device: 992px;
     }
 }
 
+.highlight-gallery {
+    color: #fff;
+    .tna-heading {
+        color: inherit;
+    }
+}
+
 .card-group-secondary-nav,
 .generic-intro__paragraph {
-    margin-bottom: 2rem;
+    margin-bottom: 4rem;
+}
+
+.section-separator__heading {
+    padding-top: 2rem;
 }
 
 .container + .container {
