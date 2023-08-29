@@ -176,6 +176,10 @@ $largest-small-device: 992px;
     margin-bottom: 3rem;
 }
 
+.tna-skip-link {
+    transition: none !important;
+}
+
 .template-focused-article {
     .tna-breadcrumbs__wrapper {
         // ELEMENT SPECIFIC TO THIS SITE
