@@ -61,3 +61,5 @@ config/settings/local.py
 # NVM/NPM
 .npm
 .nvm
+
+media
