@@ -33,15 +33,11 @@
       <ul class="tna-header__navigation-items">
         {% if request.path|is_search_or_catalogue %}
           <!-- FOR PRIVATE BETA: STATIC SEARCH LINK ONLY -->
-          {% for item in settings.core.SiteSettings.main_menu_items %}
-            {% if item.url == '/search/' %}
-            <li class="tna-header__navigation-item">
-              <a href="{{ item.url }}" class="tna-header__navigation-item-link tna-header__navigation-item-link--selected">
-                {{ item.label }}
-              </a>
-            </li>
-            {% endif %}
-          {% endfor %}
+          <li class="tna-header__navigation-item">
+            <a href="/search/" class="tna-header__navigation-item-link tna-header__navigation-item-link--selected">
+              Search
+            </a>
+          </li>
         {% else %}
           {% for item in settings.core.SiteSettings.main_menu_items %}
           <li class="tna-header__navigation-item">
