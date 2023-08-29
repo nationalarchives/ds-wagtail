@@ -1,6 +1,6 @@
 {
   "name": "ds-wagtail",
-  "version": "7.5.1",
+  "version": "7.7.1",
   "description": "## Local development",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
     "compile": "npm run compile:css && npm run compile:js",
     "dev:css": "sass --load-path=node_modules --watch sass/etna.scss:templates/static/css/dist/etna.css",
     "dev:js": "webpack --config webpack.config.js --mode=development --watch",
-    "dev": "npm run dev:css && npm run dev:js",
     "test": "jest --coverage",
     "lint": "prettier \"{scripts,sass}/**/*.{scss,js}\" --check",
     "lint:fix": "prettier \"{scripts,sass}/**/*.{scss,js}\" --write"
@@ -31,12 +30,12 @@
     "babel-loader": "~9.1",
     "jest-environment-jsdom": "~29.6",
     "prettier": "^3.0.0",
-    "sass": "~1.64",
+    "sass": "~1.66",
     "webpack": "~5.88",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
-    "@nationalarchives/frontend": "^0.1.12-prerelease",
+    "@nationalarchives/frontend": "^0.1.14-prerelease",
     "jest": "~29.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1"

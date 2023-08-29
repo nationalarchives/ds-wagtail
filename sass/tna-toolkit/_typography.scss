@@ -51,24 +51,24 @@ p {
     margin-bottom: 1.6em;
 }
 
-a {
-    color: $color__link-blue;
-    text-decoration: underline;
+// a {
+//     color: $color__link-blue;
+//     text-decoration: underline;
 
-    &:hover {
-        color: $color__link-blue-hover;
-        text-decoration: none;
-    }
+//     &:hover {
+//         color: $color__link-blue-hover;
+//         // text-decoration: none;
+//     }
 
-    &:visited {
-        color: $color__link-blue-visited;
-    }
+//     &:visited {
+//         color: $color__link-blue-visited;
+//     }
 
-    &:active {
-        color: $color__link-blue-active;
-    }
+//     &:active {
+//         color: $color__link-blue-active;
+//     }
 
-    &:focus {
-        @include focus-default;
-    }
-}
+//     &:focus {
+//         @include focus-default;
+//     }
+// }

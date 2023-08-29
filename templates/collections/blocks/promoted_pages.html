@@ -27,7 +27,8 @@
                 class="card-group-secondary-nav__image-link" 
                 data-card-type="card-group-secondary-nav" 
                 data-card-title="{{ promoted_item.title }}" 
-                aria-labelledby="card-group-secondary-nav__desc{{ promoted_item.id }}{% if instance_id %}-{{ instance_id }}{% endif %}">
+                aria-labelledby="card-group-secondary-nav__desc{{ promoted_item.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"
+                tabindex="-1">
                     <div class="card-group-secondary-nav__image">
                         <picture>
                             <source media="(max-width: 768px)" srcset="{{ teaser_image_extra_large.url }}">
