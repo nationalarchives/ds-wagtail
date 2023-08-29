@@ -11,7 +11,7 @@
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     <div class="container">
-        <h2 class="sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
+        <h2 class="tna-heading sr-only">{% trans "Each collection insight takes an in-depth look into a group of the records we hold." %}</h2>
     </div>
 
     {% if page.featured_article.live %}
@@ -23,7 +23,7 @@
     </div>
 
     <div class="container mt-4" data-container-name="{{ page.title }}">
-        <h2>Discover all stories</h2>
+        <h2 class="tna-heading">Discover all stories</h2>
         <p>Browse and explore the human stories behind The National Archives’ collection.</p>
         <ul class="card-group--list-style-none">
 

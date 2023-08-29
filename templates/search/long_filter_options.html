@@ -9,7 +9,7 @@
 {% block content %}
 
     <div class="long-filters">
-        <h1 class="long-filters__heading">Select filters to apply to your results</h1>
+        <h1 class="tna-heading long-filters__heading">Select filters to apply to your results</h1>
         <div class="long-filters__options">
             <input type="submit" value="Apply filters" class="search-filters__submit">
             <a href="{% url url_name %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
