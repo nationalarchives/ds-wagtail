@@ -27,7 +27,6 @@ from ..ciim.utils import (
     extract,
     find,
     find_all,
-    format_description_markup,
     format_link,
     strip_html,
 )
@@ -228,7 +227,7 @@ class Record(DataLayerMixin, APIModel):
             raw = self.template["arrangement"]
         except KeyError:
             raw = self.get("arrangement.value", default="")
-        return format_description_markup(raw)
+        return mark_safe(raw)
 
     @cached_property
     def legal_status(self) -> str:
@@ -301,6 +300,21 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def held_by(self) -> str:
         return self.template.get("heldBy", "")
+
+    @cached_property
+    def held_by_id(self) -> str:
+        return self.template.get("heldById", "")
+
+    @cached_property
+    def held_by_url(self) -> str:
+        if self.held_by_id:
+            try:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
+                )
+            except NoReverseMatch:
+                pass
+        return ""
 
     @cached_property
     def date_created(self) -> str:
@@ -501,7 +515,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def title(self) -> str:
-        return self.template.get("title", "")
+        return mark_safe(self.template.get("title", ""))
 
     @cached_property
     def archive_contact_info(self) -> Optional[ContactInfo]:
@@ -904,6 +918,101 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def closure_status(self) -> str:
         return extract(self.get("@template", {}), "details.closureStatus", default="")
+
+    @cached_property
+    def creator(self) -> list(str):
+        return self.template.get("creator", [])
+
+    @cached_property
+    def dimensions(self) -> str:
+        return self.template.get("dimensions", "")
+
+    @cached_property
+    def former_department_reference(self) -> str:
+        return self.template.get("formerDepartmentReference", "")
+
+    @cached_property
+    def former_pro_reference(self) -> str:
+        return self.template.get("formerProReference", "")
+
+    @cached_property
+    def language(self) -> list(str):
+        return self.template.get("language", [])
+
+    @cached_property
+    def map_designation(self) -> str:
+        return mark_safe(self.template.get("mapDesignation", ""))
+
+    @cached_property
+    def map_scale(self) -> str:
+        return self.template.get("mapScale", "")
+
+    @cached_property
+    def note(self) -> list(str):
+        notes = [mark_safe(note) for note in self.template.get("note", [])]
+        return notes
+
+    @cached_property
+    def physical_condition(self) -> str:
+        return self.template.get("physicalCondition", "")
+
+    @cached_property
+    def physical_description(self) -> str:
+        return self.template.get("physicalDescription", "")
+
+    @cached_property
+    def accruals(self) -> str:
+        return self.template.get("accruals", "")
+
+    @cached_property
+    def accumulation_dates(self) -> str:
+        return self.template.get("accumulationDates", "")
+
+    @cached_property
+    def appraisal_information(self) -> str:
+        return self.template.get("appraisalInformation", "")
+
+    @cached_property
+    def immediate_source_of_acquisition(self) -> list(str):
+        return self.template.get("immediateSourceOfAcquisition", [])
+
+    @cached_property
+    def administrative_background(self) -> str:
+        return mark_safe(self.template.get("administrativeBackground", ""))
+
+    @cached_property
+    def separated_materials(self) -> Tuple[Dict[str, Any]]:
+        return tuple(
+            dict(
+                description=item.get("description", ""),
+                links=list(format_link(val) for val in item.get("links", ())),
+            )
+            for item in self.template.get("separatedMaterials", ())
+        )
+
+    @cached_property
+    def unpublished_finding_aids(self) -> list(str):
+        return self.template.get("unpublishedFindingAids", [])
+
+    @cached_property
+    def copies_information(self) -> list(str):
+        return self.template.get("copiesInformation", [])
+
+    @cached_property
+    def custodial_history(self) -> str:
+        return self.template.get("custodialHistory", "")
+
+    @cached_property
+    def location_of_originals(self) -> list(str):
+        return self.template.get("locationOfOriginals", [])
+
+    @cached_property
+    def restrictions_on_use(self) -> str:
+        return self.template.get("restrictionsOnUse", "")
+
+    @cached_property
+    def publication_note(self) -> list(str):
+        return self.template.get("publicationNote", [])
 
 
 @dataclass

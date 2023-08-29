@@ -1,58 +1,48 @@
 # Dependency management
 
-## Updating all dependencies
 
-To update dependencies, change the version in either `package.json` or `pyproject.toml` and from the host machine, run:
+Using the dev container (`fab dev`) should give you access to commands such as `update-poetry` and `update-npm` which should update the `package.json`, `package-lock.json`, `pyproject.toml` and/or `poetry.lock` files ready to commit to version control.
+
+## Updating build numbers
+
+e.g. `x.y.1` -> `x.y.2`
+
+1. Run `fab dev`
+1. Run `update-poetry` (Python) or `update-npm` (npm)
+
+## Major or minor numbers
+
+e.g. `x.1.z` -> `x.2.z` or `1.y.z` -> `2.y.z`
+
+1. Update version numbers in `pyproject.toml` (Python) or `package.json` (npm)
+1. Run `fab dev`
+1. Run `update-poetry` (Python) or `update-npm` (npm)
+
+## Adding a dependency
+
+Use the following to automatically use the latest version (e.g. [pendulum](https://pypi.org/project/pendulum/)):
 
 ```sh
-fab update-deps
-```
-
-This will start two Docker machines, one to update npm and the other to update Poetry.
-
-The `package.json`, `package-lock.json`, `pyproject.toml` and/or `poetry.lock` files should then be updated and ready to commit.
-
-## For the backend
-
-The Etna project uses [Poetry](https://python-poetry.org/docs/) to manage Python dependencies, which uses lock-file to help ensure environment consistency.
-
-Locally, Poetry runs in the `web` container, and it's commands are invoked via the shell. To start a shell session with your local `web` container, run:
-
-```console
-$ fab sh
-```
-
-You can then run Poetry commands exactly [as they are documented here](https://python-poetry.org/docs/cli/).
-
-### Updating local dependencies to reflect changes
-
-```console
-poetry install --remove-untracked --no-root
-```
-
-### Adding a dependency
-
-Use the following to automatically use the latest version:
-
-```console
-poetry add name-of-dependency
+fab dev
+poetry add pendulum
+update-poetry
 ```
 
 Or, specify a version:
 
-```console
-poetry add name-of-dependency@^2.0.5
-poetry add "name-of-dependency@>=2.0.5"
+```sh
+fab dev
+poetry add pendulum@^2.1.2
+poetry add "pendulum@>=2.1.2"
+update-poetry
 ```
 
-See [the Poetry docs](https://python-poetry.org/docs/cli/#add) for more options.
+See the [Poetry docs](https://python-poetry.org/docs/cli/#add) for more options.
 
 ### Removing a dependency
 
-```console
-poetry remove name-of-dependency
+```sh
+fab dev
+poetry remove pendulum
+update-poetry
 ```
-
-## For the frontend
-
-TBC
