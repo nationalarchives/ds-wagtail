@@ -19,10 +19,13 @@ class TestAuthorPages(TestCase):
         self.author_page = AuthorPage(title="John Doe", role="Author on Test Site", summary="Test summary", image=self.image, teaser_text="Test teaser text")
         self.author_index_page.add_child(instance=self.author_page)
 
-        self.author_tag = AuthorTag.objects.create(author=self.author_page)
-
-        self.focused_article_page = FocusedArticlePage(title="Test Article", intro="Test intro", teaser_text="Test teaser text", author_tags=[self.author_tag])
+        self.focused_article_page = FocusedArticlePage(title="Test Article", intro="Test intro", teaser_text="Test teaser text")
         root.add_child(instance=self.focused_article_page)
+
+        self.author_tag = AuthorTag(page=self.focused_article_page, author=self.author_page)
+        root.add_child(instance=self.author_tag)
+
+        self.focused_article_page.author_tags.add(self.author_tag)
 
     def test_author_index_page(self):
         print(self.focused_article_page.author_tags)
