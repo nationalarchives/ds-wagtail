@@ -5,19 +5,19 @@ class ClientAPIError(requests.HTTPError):
     """Raised if Client API returns an error instead of results"""
 
 
-class ApiClientBadRequestError(ClientAPIError):
+class ClientAPIBadRequestError(ClientAPIError):
     """Raised if Client API responds with 400"""
 
 
-class ApiClientInternalServerError(ClientAPIError):
+class ClientAPIInternalServerError(ClientAPIError):
     """Raised if Client API responds with 500"""
 
 
-class ApiClientServiceUnavailableError(ClientAPIError):
+class ClientAPIServiceUnavailableError(ClientAPIError):
     """Raised if Client API responds with 503"""
 
 
-class ApiClientCommunicationError(ClientAPIError):
+class ClientAPICommunicationError(ClientAPIError):
     """Raised if Client API responds with a non-200 status code"""
 
 

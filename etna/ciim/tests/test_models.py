@@ -5,12 +5,12 @@ import responses
 
 from ...records.api import get_records_client
 from ...records.models import Record
-from ..exceptions import DoesNotExist, ClientAPIError, MultipleObjectsReturned
+from ..exceptions import ClientAPIError, DoesNotExist, MultipleObjectsReturned
 from .factories import create_record, create_search_response
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
-class ApiClientExceptionTest(SimpleTestCase):
+class ClientAPIExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -38,7 +38,7 @@ class ApiClientExceptionTest(SimpleTestCase):
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
-class ApiClientFilterTest(SimpleTestCase):
+class ClientAPIFilterTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 

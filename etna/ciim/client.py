@@ -26,11 +26,11 @@ from etna.ciim.constants import Aggregation
 from etna.records.models import Record
 
 from .exceptions import (
+    ClientAPIBadRequestError,
+    ClientAPICommunicationError,
+    ClientAPIInternalServerError,
+    ClientAPIServiceUnavailableError,
     DoesNotExist,
-    ApiClientBadRequestError,
-    ApiClientCommunicationError,
-    ApiClientInternalServerError,
-    ApiClientServiceUnavailableError,
     MultipleObjectsReturned,
 )
 
@@ -193,15 +193,15 @@ class ResultList:
         return f"<{self.__class__.__name} {self.hits}>"
 
 
-class ApiClient:
+class ClientAPI:
     """Client used to Fetch and validate data from Client API."""
 
     http_error_classes = {
-        400: ApiClientBadRequestError,
-        500: ApiClientInternalServerError,
-        503: ApiClientServiceUnavailableError,
+        400: ClientAPIBadRequestError,
+        500: ClientAPIInternalServerError,
+        503: ClientAPIServiceUnavailableError,
     }
-    default_http_error_class = ApiClientCommunicationError
+    default_http_error_class = ClientAPICommunicationError
 
     def __init__(
         self,
