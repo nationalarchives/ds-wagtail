@@ -783,7 +783,8 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            ClientAPIServiceUnavailableError, "failure to get a peer from the ring-balancer"
+            ClientAPIServiceUnavailableError,
+            "failure to get a peer from the ring-balancer",
         ):
             self.records_client.fetch()
 
@@ -806,7 +807,9 @@ class TestClientFetchReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(ClientAPIServiceUnavailableError, "all shards failed"):
+        with self.assertRaisesMessage(
+            ClientAPIServiceUnavailableError, "all shards failed"
+        ):
             self.records_client.fetch()
 
     @responses.activate
@@ -845,7 +848,9 @@ class TestClientFetchReponse(SimpleTestCase):
             status=500,
         )
 
-        with self.assertRaisesMessage(ClientAPIInternalServerError, "Internal Server Error"):
+        with self.assertRaisesMessage(
+            ClientAPIInternalServerError, "Internal Server Error"
+        ):
             self.records_client.fetch()
 
     @responses.activate
@@ -912,7 +917,8 @@ class TestClientSearchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            ClientAPIServiceUnavailableError, "failure to get a peer from the ring-balancer"
+            ClientAPIServiceUnavailableError,
+            "failure to get a peer from the ring-balancer",
         ):
             self.records_client.search()
 
@@ -935,7 +941,9 @@ class TestClientSearchReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(ClientAPIServiceUnavailableError, "all shards failed"):
+        with self.assertRaisesMessage(
+            ClientAPIServiceUnavailableError, "all shards failed"
+        ):
             self.records_client.search()
 
     @responses.activate
@@ -974,7 +982,9 @@ class TestClientSearchReponse(SimpleTestCase):
             status=500,
         )
 
-        with self.assertRaisesMessage(ClientAPIInternalServerError, "Internal Server Error"):
+        with self.assertRaisesMessage(
+            ClientAPIInternalServerError, "Internal Server Error"
+        ):
             self.records_client.search()
 
     @responses.activate
@@ -1049,7 +1059,8 @@ class TestClientFetchAllReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(
-            ClientAPIServiceUnavailableError, "failure to get a peer from the ring-balancer"
+            ClientAPIServiceUnavailableError,
+            "failure to get a peer from the ring-balancer",
         ):
             self.records_client.fetch_all()
 
@@ -1072,7 +1083,9 @@ class TestClientFetchAllReponse(SimpleTestCase):
             status=503,
         )
 
-        with self.assertRaisesMessage(ClientAPIServiceUnavailableError, "all shards failed"):
+        with self.assertRaisesMessage(
+            ClientAPIServiceUnavailableError, "all shards failed"
+        ):
             self.records_client.fetch_all()
 
     @responses.activate
@@ -1111,7 +1124,9 @@ class TestClientFetchAllReponse(SimpleTestCase):
             status=500,
         )
 
-        with self.assertRaisesMessage(ClientAPIInternalServerError, "Internal Server Error"):
+        with self.assertRaisesMessage(
+            ClientAPIInternalServerError, "Internal Server Error"
+        ):
             self.records_client.fetch_all()
 
     @responses.activate

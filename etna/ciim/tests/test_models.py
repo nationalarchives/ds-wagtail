@@ -79,7 +79,7 @@ class ClientAPIFilterTest(SimpleTestCase):
             result.hits[1]
 
 
-class ClientAPIExceptionTest(SimpleTestCase):
+class ClientExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
