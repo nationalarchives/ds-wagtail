@@ -136,8 +136,10 @@ class FeedbackForm(forms.Form):
                 code="mismatch",
             )
 
-        # When valid, add 'page_revision_published' to cleaned_data
+        # When valid, add the following values to cleaned_data
         self.cleaned_data["page_revision_published"] = page.last_published_at
+        self.cleaned_data["page_type"] = page.page_type_display_name
+        self.cleaned_data["page_title"] = page
 
         return revision
 
