@@ -178,6 +178,18 @@ $largest-small-device: 992px;
 .tna-message {
     margin-top: 2rem;
     margin-bottom: 3rem;
+
+    &__icon {
+        flex: 1 0 2.5rem;
+
+        @include media.on-mobile {
+            flex: 1 0 1.5rem;
+        }
+    }
+
+    &__message {
+        flex: 1;
+    }
 }
 
 .tna-skip-link {
@@ -232,7 +244,7 @@ $largest-small-device: 992px;
 
 .card-group-secondary-nav,
 .generic-intro__paragraph {
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 
 .section-separator__heading {
