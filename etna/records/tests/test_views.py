@@ -27,7 +27,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_no_matches_respond_with_404(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified",
+            f"{settings.CLIENT_BASE_URL}/searchUnified",
             json=create_response(records=[]),
         )
 
@@ -42,7 +42,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_disambiguation_page_rendered_for_multiple_results(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified",
+            f"{settings.CLIENT_BASE_URL}/searchUnified",
             json=create_response(
                 records=[
                     create_record(reference_number="ADM 223/3"),
@@ -62,7 +62,7 @@ class TestRecordDisambiguationView(TestCase):
     def test_rendering_deferred_to_details_page_view(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified",
+            f"{settings.CLIENT_BASE_URL}/searchUnified",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", reference_number="ADM 223/3"),
@@ -72,7 +72,7 @@ class TestRecordDisambiguationView(TestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", reference_number="ADM 223/3"),
@@ -95,7 +95,7 @@ class TestRecordView(TestCase):
     def test_no_matches_respond_with_404(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[]),
         )
 
@@ -110,7 +110,7 @@ class TestRecordView(TestCase):
     def test_record_rendered_for_single_result(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456"),
@@ -133,7 +133,7 @@ class TestRecordView(TestCase):
     def test_record_renders_for_record_with_no_image(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -143,7 +143,7 @@ class TestRecordView(TestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(records=[]),
         )
 
@@ -163,7 +163,7 @@ class TestRecordView(TestCase):
     def test_record_renders_for_record_with_image(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -173,7 +173,7 @@ class TestRecordView(TestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(),
@@ -198,7 +198,7 @@ class TestRecordView(TestCase):
     def test_record_rendered_for_archive_record(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -223,7 +223,7 @@ class TestRecordView(TestCase):
     def test_record_rendered_for_record_creators(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={
                 "hits": {
                     "hits": [
@@ -271,7 +271,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -291,7 +291,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -311,7 +311,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -331,7 +331,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -351,7 +351,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -371,7 +371,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -391,7 +391,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -411,7 +411,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -431,7 +431,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+                f"{settings.CLIENT_BASE_URL}/fetch",
                 json=json.loads(f.read()),
             )
 
@@ -491,7 +491,7 @@ class TestImageBrowseView(TestCase):
     def test_image_browse_non_digitised_record(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=False),
@@ -507,7 +507,7 @@ class TestImageBrowseView(TestCase):
     def test_image_browse_record_with_no_media(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -525,7 +525,7 @@ class TestImageBrowseView(TestCase):
     def test_success(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -534,7 +534,7 @@ class TestImageBrowseView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(),
@@ -572,7 +572,7 @@ class TestImageViewerView(TestCase):
     def test_image_browse_non_digitised_record(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=False),
@@ -588,7 +588,7 @@ class TestImageViewerView(TestCase):
     def test_image_browse_record_with_no_media(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -606,7 +606,7 @@ class TestImageViewerView(TestCase):
     def test_success(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -615,7 +615,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg", sort="01"),
@@ -647,7 +647,7 @@ class TestImageViewerView(TestCase):
     def test_no_next_image(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -656,7 +656,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg", sort="01"),
@@ -679,7 +679,7 @@ class TestImageViewerView(TestCase):
     def test_no_previous_image(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -688,7 +688,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/image.jpeg", sort="01"),
@@ -713,7 +713,7 @@ class TestImageViewerView(TestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -722,7 +722,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(location="path/to/previous-image.jpeg", sort="01"),
@@ -741,7 +741,7 @@ class TestImageViewerView(TestCase):
         In such an event, ensure that we gracefully handle the error."""
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C123456", is_digitised=True),
@@ -750,7 +750,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "timestamp": "2021-08-26T09:07:31.688+00:00",
                 "status": 400,
@@ -773,7 +773,7 @@ class RecordDetailBackToSearchTest(TestCase):
     def setUp(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(iaid="C13359805"),

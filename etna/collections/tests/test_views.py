@@ -18,7 +18,7 @@ class TestRecordChooseView(WagtailPageTestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified",
+            f"{settings.CLIENT_BASE_URL}/searchUnified",
             json=create_response(
                 records=[
                     create_record(
@@ -31,7 +31,7 @@ class TestRecordChooseView(WagtailPageTestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -72,7 +72,7 @@ class TestRecordChooseView(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertURLEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?stream=evidential&q=law&from=0&size=10",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?stream=evidential&q=law&from=0&size=10",
         )
 
     @responses.activate
@@ -98,7 +98,7 @@ class TestRecordChooseView(WagtailPageTestCase):
         responses.reset()
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(),
         )
 

@@ -1031,6 +1031,6 @@ class Image:
     def thumbnail_url(self):
         """Use thumbnail URL is available, otherwise fallback to image-serve."""
         if self.thumbnail_location:
-            return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
+            return f"{settings.IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
         elif self.location:
             return reverse("image-serve", kwargs={"location": self.location})

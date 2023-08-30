@@ -32,12 +32,12 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
 
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=record_response,
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json=record_response,
         )
 
@@ -127,15 +127,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[2].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
@@ -179,7 +179,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
         # View the page to check rendering also
@@ -192,7 +192,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
@@ -201,7 +201,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         exist, we're still able to render its edit page."""
 
         responses.replace(
-            responses.GET, f"{settings.KONG_CLIENT_BASE_URL}/fetch", status=500
+            responses.GET, f"{settings.CLIENT_BASE_URL}/fetch", status=500
         )
 
         self.article_page.body = json.dumps(

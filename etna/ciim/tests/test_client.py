@@ -32,9 +32,7 @@ class ClientSearchAllTest(SimpleTestCase):
         cls.records_client = get_records_client()
 
     def setUp(self):
-        responses.add(
-            responses.GET, f"{settings.KONG_CLIENT_BASE_URL}/searchAll", json={}
-        )
+        responses.add(responses.GET, f"{settings.CLIENT_BASE_URL}/searchAll", json={})
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
@@ -42,7 +40,7 @@ class ClientSearchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.KONG_CLIENT_BASE_URL}/searchAll"
+            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/searchAll"
         )
 
     @responses.activate
@@ -52,7 +50,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?q=Egypt",
+            f"{settings.CLIENT_BASE_URL}/searchAll?q=Egypt",
         )
 
     @responses.activate
@@ -62,7 +60,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?template=details",
+            f"{settings.CLIENT_BASE_URL}/searchAll?template=details",
         )
 
     @responses.activate
@@ -72,7 +70,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?template=results",
+            f"{settings.CLIENT_BASE_URL}/searchAll?template=results",
         )
 
     @responses.activate
@@ -84,7 +82,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?"
+            f"{settings.CLIENT_BASE_URL}/searchAll?"
             "aggregations=level"
             "&aggregations=collection",
         )
@@ -103,7 +101,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                f"{settings.KONG_CLIENT_BASE_URL}/searchAll"
+                f"{settings.CLIENT_BASE_URL}/searchAll"
                 "?filterAggregations=level%3AItem"
                 "&filterAggregations=topic%3Asecond+world+war"
                 "&filterAggregations=closure%3AClosed+Or+Retained+Document%2C+Closed+Description"
@@ -117,7 +115,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?from=20",
+            f"{settings.CLIENT_BASE_URL}/searchAll?from=20",
         )
 
     @responses.activate
@@ -127,7 +125,7 @@ class ClientSearchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchAll?size=20",
+            f"{settings.CLIENT_BASE_URL}/searchAll?size=20",
         )
 
 
@@ -136,7 +134,7 @@ class ClientSearchTest(SimpleTestCase):
         self.records_client = get_records_client()
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_search_response(),
         )
 
@@ -146,7 +144,7 @@ class ClientSearchTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.KONG_CLIENT_BASE_URL}/search"
+            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/search"
         )
 
     @responses.activate
@@ -156,7 +154,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?q=Egypt",
+            f"{settings.CLIENT_BASE_URL}/search?q=Egypt",
         )
 
     @responses.activate
@@ -166,7 +164,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?webReference=ADM%2F223%2F3",
+            f"{settings.CLIENT_BASE_URL}/search?webReference=ADM%2F223%2F3",
         )
 
     @responses.activate
@@ -178,7 +176,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?openingStartDate=1901-02-03T00%3A00%3A00",
+            f"{settings.CLIENT_BASE_URL}/search?openingStartDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
@@ -188,7 +186,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?openingEndDate=1901-02-03T00%3A00%3A00",
+            f"{settings.CLIENT_BASE_URL}/search?openingEndDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
@@ -200,7 +198,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?createdStartDate=1901-02-03T00%3A00%3A00",
+            f"{settings.CLIENT_BASE_URL}/search?createdStartDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
@@ -210,7 +208,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?createdEndDate=1901-02-03T00%3A00%3A00",
+            f"{settings.CLIENT_BASE_URL}/search?createdEndDate=1901-02-03T00%3A00%3A00",
         )
 
     @responses.activate
@@ -220,7 +218,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?stream=evidential",
+            f"{settings.CLIENT_BASE_URL}/search?stream=evidential",
         )
 
     @responses.activate
@@ -230,7 +228,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?stream=interpretive",
+            f"{settings.CLIENT_BASE_URL}/search?stream=interpretive",
         )
 
     @responses.activate
@@ -240,7 +238,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sort=title",
+            f"{settings.CLIENT_BASE_URL}/search?sort=title",
         )
 
     @responses.activate
@@ -250,7 +248,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sort=dateCreated",
+            f"{settings.CLIENT_BASE_URL}/search?sort=dateCreated",
         )
 
     @responses.activate
@@ -260,7 +258,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sort=dateOpening",
+            f"{settings.CLIENT_BASE_URL}/search?sort=dateOpening",
         )
 
     @responses.activate
@@ -270,7 +268,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sort=",
+            f"{settings.CLIENT_BASE_URL}/search?sort=",
         )
 
     @responses.activate
@@ -280,7 +278,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sortOrder=asc",
+            f"{settings.CLIENT_BASE_URL}/search?sortOrder=asc",
         )
 
     @responses.activate
@@ -290,7 +288,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?sortOrder=desc",
+            f"{settings.CLIENT_BASE_URL}/search?sortOrder=desc",
         )
 
     @responses.activate
@@ -300,7 +298,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?template=details",
+            f"{settings.CLIENT_BASE_URL}/search?template=details",
         )
 
     @responses.activate
@@ -310,7 +308,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?template=results",
+            f"{settings.CLIENT_BASE_URL}/search?template=results",
         )
 
     @responses.activate
@@ -322,7 +320,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "aggregations=level"
             "&aggregations=collection"
             "&aggregations=type",
@@ -341,7 +339,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "filterAggregations=level%3AItem"
             "&filterAggregations=topic%3Asecond+world+war"
             "&filterAggregations=closure%3AClosed+Or+Retained+Document%2C+Closed+Description",
@@ -356,7 +354,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "filterAggregations=collection%3AIR%3Aor&"
             "filterAggregations=collection%3APROB%3Aor",
         )
@@ -368,7 +366,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
+            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
         )
 
     @responses.activate
@@ -380,7 +378,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?filterAggregations=heldBy%3A1+2+3+4+5+6+7+8+9+10+11+12+",
+            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3A1+2+3+4+5+6+7+8+9+10+11+12+",
         )
 
     @responses.activate
@@ -401,7 +399,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "filterAggregations=heldBy%3ARolls+Royce+plc%3Aor&"
             "filterAggregations=heldBy%3AIRIE+dance+theatre%3Aor&"
             "filterAggregations=heldBy%3ARoyal+Yorkshire+Lodge+No+265%3Aor&"
@@ -419,7 +417,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?filterAggregations=heldBy%3APeople%27s",
+            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3APeople%27s",
         )
 
     @responses.activate
@@ -429,7 +427,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "filterAggregations=level%3AItem%3Aor&"
             "filterAggregations=level%3APiece%3Aor",
         )
@@ -443,7 +441,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?"
+            f"{settings.CLIENT_BASE_URL}/search?"
             "filterAggregations=type%3Aperson&"
             "filterAggregations=type%3Aorganisation",
         )
@@ -455,7 +453,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?filter=filter+keyword",
+            f"{settings.CLIENT_BASE_URL}/search?filter=filter+keyword",
         )
 
     @responses.activate
@@ -465,7 +463,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?from=20",
+            f"{settings.CLIENT_BASE_URL}/search?from=20",
         )
 
     @responses.activate
@@ -475,7 +473,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/search?size=20",
+            f"{settings.CLIENT_BASE_URL}/search?size=20",
         )
 
 
@@ -483,7 +481,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
         responses.add(
-            responses.GET, f"{settings.KONG_CLIENT_BASE_URL}/searchUnified", json={}
+            responses.GET, f"{settings.CLIENT_BASE_URL}/searchUnified", json={}
         )
 
     @responses.activate
@@ -493,7 +491,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified",
+            f"{settings.CLIENT_BASE_URL}/searchUnified",
         )
 
     @responses.activate
@@ -503,7 +501,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?q=Egypt",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?q=Egypt",
         )
 
     @responses.activate
@@ -513,7 +511,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?webReference=ADM%2F223%2F3",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?webReference=ADM%2F223%2F3",
         )
 
     @responses.activate
@@ -523,7 +521,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?stream=evidential",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?stream=evidential",
         )
 
     @responses.activate
@@ -533,7 +531,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?stream=interpretive",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?stream=interpretive",
         )
 
     @responses.activate
@@ -543,7 +541,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?template=details",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?template=details",
         )
 
     @responses.activate
@@ -553,7 +551,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?template=results",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?template=results",
         )
 
     @responses.activate
@@ -563,7 +561,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sort=title",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sort=title",
         )
 
     @responses.activate
@@ -573,7 +571,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sort=dateCreated",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sort=dateCreated",
         )
 
     @responses.activate
@@ -583,7 +581,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sort=dateOpening",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sort=dateOpening",
         )
 
     @responses.activate
@@ -593,7 +591,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sort=",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sort=",
         )
 
     @responses.activate
@@ -603,7 +601,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sortOrder=asc",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sortOrder=asc",
         )
 
     @responses.activate
@@ -613,7 +611,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?sortOrder=desc",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?sortOrder=desc",
         )
 
     @responses.activate
@@ -623,7 +621,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?from=20",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?from=20",
         )
 
     @responses.activate
@@ -633,7 +631,7 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/searchUnified?size=20",
+            f"{settings.CLIENT_BASE_URL}/searchUnified?size=20",
         )
 
 
@@ -642,7 +640,7 @@ class ClientFetchTest(SimpleTestCase):
         self.records_client = get_records_client()
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[create_record()]),
         )
 
@@ -652,7 +650,7 @@ class ClientFetchTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.KONG_CLIENT_BASE_URL}/fetch"
+            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/fetch"
         )
 
     @responses.activate
@@ -662,7 +660,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?metadataId=C198022",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C198022",
         )
 
     @responses.activate
@@ -672,7 +670,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?id=ADM+223%2F3",
+            f"{settings.CLIENT_BASE_URL}/fetch?id=ADM+223%2F3",
         )
 
     @responses.activate
@@ -682,7 +680,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?template=details",
+            f"{settings.CLIENT_BASE_URL}/fetch?template=details",
         )
 
     @responses.activate
@@ -692,7 +690,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?template=results",
+            f"{settings.CLIENT_BASE_URL}/fetch?template=results",
         )
 
     @responses.activate
@@ -702,7 +700,7 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?expand=True",
+            f"{settings.CLIENT_BASE_URL}/fetch?expand=True",
         )
 
     @responses.activate
@@ -712,16 +710,14 @@ class ClientFetchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch?expand=False",
+            f"{settings.CLIENT_BASE_URL}/fetch?expand=False",
         )
 
 
 class ClientFetchAllTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
-        responses.add(
-            responses.GET, f"{settings.KONG_CLIENT_BASE_URL}/fetchAll", json={}
-        )
+        responses.add(responses.GET, f"{settings.CLIENT_BASE_URL}/fetchAll", json={})
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
@@ -729,7 +725,7 @@ class ClientFetchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.KONG_CLIENT_BASE_URL}/fetchAll"
+            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/fetchAll"
         )
 
     @responses.activate
@@ -739,7 +735,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?ids=id-one&ids=id-two&ids=id-three",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?ids=id-one&ids=id-two&ids=id-three",
         )
 
     @responses.activate
@@ -749,7 +745,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?metadataIds=iaid-one&metadataIds=iaid-two&metadataIds=iaid-three",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=iaid-one&metadataIds=iaid-two&metadataIds=iaid-three",
         )
 
     @responses.activate
@@ -759,7 +755,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?rid=rid-123",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?rid=rid-123",
         )
 
     @responses.activate
@@ -769,7 +765,7 @@ class ClientFetchAllTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll?size=20",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?size=20",
         )
 
 
@@ -781,7 +777,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_raises_kong_error_with_message(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={"message": "failure to get a peer from the ring-balancer"},
             status=503,
         )
@@ -795,7 +791,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_raises_kong_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={
                 "error": {
                     "root_cause": [],
@@ -817,7 +813,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_raises_kong_error_on_java_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={
                 "timestamp": "2021-08-26T09:07:31.688+00:00",
                 "status": 400,
@@ -842,7 +838,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_internal_server_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={
                 "message": ("Internal Server Error"),
             },
@@ -856,7 +852,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_default_exception(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={
                 "message": ("I'm a teapot"),
             },
@@ -871,7 +867,7 @@ class TestClientFetchReponse(SimpleTestCase):
         record_data = create_record()
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record_data]),
         )
         result = self.records_client.fetch()
@@ -885,7 +881,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_raises_doesnotexist_when_no_results_received(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[]),
         )
         with self.assertRaises(DoesNotExist):
@@ -895,7 +891,7 @@ class TestClientFetchReponse(SimpleTestCase):
     def test_raises_multipleobjectsreturned_when_multiple_results_received(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[create_record(), create_record()]),
         )
         with self.assertRaises(MultipleObjectsReturned):
@@ -910,7 +906,7 @@ class TestClientSearchReponse(SimpleTestCase):
     def test_raises_kong_error_with_message(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={"message": "failure to get a peer from the ring-balancer"},
             status=503,
         )
@@ -924,7 +920,7 @@ class TestClientSearchReponse(SimpleTestCase):
     def test_raises_kong_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "error": {
                     "root_cause": [],
@@ -946,7 +942,7 @@ class TestClientSearchReponse(SimpleTestCase):
     def test_raises_kong_error_on_java_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "timestamp": "2021-08-26T09:07:31.688+00:00",
                 "status": 400,
@@ -971,7 +967,7 @@ class TestClientSearchReponse(SimpleTestCase):
     def test_internal_server_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "message": ("Internal Server Error"),
             },
@@ -985,7 +981,7 @@ class TestClientSearchReponse(SimpleTestCase):
     def test_default_exception(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "message": ("I'm a teapot"),
             },
@@ -1010,7 +1006,7 @@ class TestClientSearchReponse(SimpleTestCase):
         }
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "responses": [
                     bucket_counts_response,
@@ -1047,7 +1043,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_raises_kong_error_with_message(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={"message": "failure to get a peer from the ring-balancer"},
             status=503,
         )
@@ -1061,7 +1057,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_raises_kong_error_on_elastic_fetchAll_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={
                 "error": {
                     "root_cause": [],
@@ -1083,7 +1079,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_raises_kong_error_on_java_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={
                 "timestamp": "2021-08-26T09:07:31.688+00:00",
                 "status": 400,
@@ -1108,7 +1104,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_internal_server_error(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={
                 "message": ("Internal Server Error"),
             },
@@ -1122,7 +1118,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_default_exception(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={
                 "message": ("I'm a teapot"),
             },
@@ -1136,7 +1132,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
     def test_valid_response(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetchAll",
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
             json={
                 "took": 85,
                 "timed_out": False,

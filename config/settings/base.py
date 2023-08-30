@@ -282,14 +282,14 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
-# Kong client
+# API Client
 
-KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
+CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
 )
-KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field

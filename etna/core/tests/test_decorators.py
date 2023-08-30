@@ -15,14 +15,14 @@ CONDITIONALLY_PROTECTED_URLS = (
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL=f"{settings.KONG_CLIENT_BASE_URL}",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
+    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
     def setUp(self):
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "responses": [
                     create_response(),
@@ -32,7 +32,7 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         )
         responses.add(
             responses.GET,
-            f"{settings.KONG_CLIENT_BASE_URL}/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
