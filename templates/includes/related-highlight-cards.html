@@ -1,7 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <section class="related-highlight-cards">
     <div class="container">
-        <h2 class="related-highlight-cards__title">{{ title }} highlights in pictures</h2>
+        <h2 class="tna-heading related-highlight-cards__title">{{ title }} highlights in pictures</h2>
         <div class="card-grid card-grid__trio">
             {% for card in cards %}
                 <div class="related-highlight-cards__card">
@@ -30,7 +30,7 @@
                         </picture>
                     </a>
                     <div class="related-highlight-cards__content">
-                        <h3 class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
+                        <h3 class="tna-heading related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
                             <a href="{{ card.url }}"
                                 id="related-highlight-cards__card-desc{{ card.id }}{% if instance_id %}-{{ instance_id }}{% endif %}"                                class="related-highlight-cards__card-title-link"
                                 data-component-name="Featured card: {{ title }} highlights in pictures"
