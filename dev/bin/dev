@@ -1,0 +1,4 @@
+#!/bin/bash
+
+tna-node dev:js &
+tna-node dev:css &
