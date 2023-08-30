@@ -135,6 +135,10 @@ $largest-small-device: 992px;
 
 @import "@nationalarchives/frontend/nationalarchives/all";
 
+.tna-template {
+    overflow: initial !important;
+}
+
 .tna-breadcrumbs {
     padding-bottom: 0;
 }
