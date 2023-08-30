@@ -23,7 +23,7 @@ from ..views import CatalogueSearchView
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_BASE_URL=f"{settings.KONG_CLIENT_BASE_URL}",
     KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class SearchViewTestCase(WagtailTestUtils, TestCase):
@@ -32,7 +32,7 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
     def setUp(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json={
                 "responses": [
                     create_response(),
@@ -42,7 +42,7 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/data/searchAll",
+            f"{settings.KONG_CLIENT_BASE_URL}/searchAll",
             json={
                 "responses": [
                     create_response(),
@@ -214,7 +214,7 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
@@ -234,7 +234,7 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+@override_settings(KONG_CLIENT_BASE_URL=f"{settings.KONG_CLIENT_BASE_URL}")
 class EndToEndSearchTestCase(TestCase):
     # The following HTML snippets must be updated to reflect any future HTML changes
     results_html = '<ul class="search-results__list" id="analytics-results-list">'
@@ -257,7 +257,7 @@ class EndToEndSearchTestCase(TestCase):
         responses.add(responses.GET, url, json=fixture_content, status=200)
 
     def patch_search_endpoint(self, fixture_path: str):
-        self.patch_api_endpoint("https://kong.test/data/search", fixture_path)
+        self.patch_api_endpoint(f"{settings.KONG_CLIENT_BASE_URL}/search", fixture_path)
 
     def assertNoResultsMessagingRendered(self, response):
         self.assertIn(self.no_results_messaging_html, response)
@@ -667,7 +667,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
@@ -698,7 +698,7 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/searchAll"
+                f"{settings.KONG_CLIENT_BASE_URL}/searchAll"
                 "?filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
@@ -731,7 +731,7 @@ class FeaturedSearchTestCase(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/searchAll"
+                f"{settings.KONG_CLIENT_BASE_URL}/searchAll"
                 "?q=query"
                 "&filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
@@ -768,7 +768,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=interpretive"
                 "&sort="
                 "&sortOrder=asc"
@@ -790,7 +790,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
 
 @unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_BASE_URL=f"{settings.KONG_CLIENT_BASE_URL}",
 )
 class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
     maxDiff = None
@@ -819,7 +819,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                "https://kong.test/data/search",
+                f"{settings.KONG_CLIENT_BASE_URL}/search",
                 json=json_module.loads(f.read()),
             )
 
@@ -831,7 +831,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=interpretive"
                 "&sort="
                 "&sortOrder=asc"
@@ -919,7 +919,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
 
 @unittest.skip("Highlights bucket to be re-instated at a later date")
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
+    KONG_CLIENT_BASE_URL=f"{settings.KONG_CLIENT_BASE_URL}",
 )
 class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
     maxDiff = None
@@ -933,7 +933,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         with open(path, "r") as f:
             responses.add(
                 responses.GET,
-                "https://kong.test/data/search",
+                f"{settings.KONG_CLIENT_BASE_URL}/search",
                 json=json_module.loads(f.read()),
             )
 
@@ -945,7 +945,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=interpretive"
                 "&sort="
                 "&sortOrder=asc"
@@ -1039,12 +1039,12 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         # Ensure API search requests return pre-defined responses
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json=json,
         )
         responses.add(
             responses.GET,
-            "https://kong.test/data/searchAll",
+            f"{settings.KONG_CLIENT_BASE_URL}/searchAll",
             json=json,
         )
 
@@ -1374,7 +1374,7 @@ class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=interpretive"
                 "&sort="
                 "&sortOrder=asc"
@@ -1398,7 +1398,7 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json=create_search_response(),
         )
 
@@ -1408,7 +1408,7 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
@@ -1430,7 +1430,7 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json=create_search_response(),
         )
 
@@ -1440,7 +1440,7 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
@@ -1464,7 +1464,7 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json=create_search_response(),
         )
 
@@ -1474,7 +1474,7 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"
@@ -1495,7 +1495,7 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.KONG_CLIENT_BASE_URL}/search",
             json=create_search_response(),
         )
 
@@ -1505,7 +1505,7 @@ class ArchiveTestCase(WagtailTestUtils, TestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             (
-                "https://kong.test/data/search"
+                f"{settings.KONG_CLIENT_BASE_URL}/search"
                 "?stream=evidential"
                 "&sort="
                 "&sortOrder=asc"

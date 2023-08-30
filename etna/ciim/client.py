@@ -293,7 +293,7 @@ class KongClient:
         }
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/data/fetch", params=params)
+        response = self.make_request(f"{self.base_url}/fetch", params=params)
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
@@ -394,7 +394,7 @@ class KongClient:
             )
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/data/search", params=params)
+        response = self.make_request(f"{self.base_url}/search", params=params)
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
@@ -452,7 +452,7 @@ class KongClient:
         }
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/data/searchAll", params=params)
+        response = self.make_request(f"{self.base_url}/searchAll", params=params)
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
@@ -516,9 +516,7 @@ class KongClient:
         }
 
         # Get HTTP response from the API
-        response = self.make_request(
-            f"{self.base_url}/data/searchUnified", params=params
-        )
+        response = self.make_request(f"{self.base_url}/searchUnified", params=params)
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
@@ -567,7 +565,7 @@ class KongClient:
         }
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/data/fetchAll", params=params)
+        response = self.make_request(f"{self.base_url}/fetchAll", params=params)
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
