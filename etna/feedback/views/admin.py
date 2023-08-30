@@ -66,6 +66,8 @@ class FeedbackSubmissionViewSet(SnippetViewSet):
         "prompt_id",
         "prompt_revision_id",
         "page_id",
+        "page_type",
+        "page_title",
         "page_revision_id",
         "page_revision_published",
         "user_id",
