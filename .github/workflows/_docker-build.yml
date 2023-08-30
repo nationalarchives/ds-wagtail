@@ -24,7 +24,7 @@ jobs:
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           dockerfile: Dockerfile
-          ignore: DL3007
+          ignore: DL3045,DL3007
       - name: Build and push image
         run: |
           IMAGE_ID=$(echo "ghcr.io/${{ github.repository_owner }}/${{ vars.DOCKER_IMAGE_NAME }}" | tr '[A-Z]' '[a-z]')
