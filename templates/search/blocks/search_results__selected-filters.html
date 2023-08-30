@@ -1,7 +1,7 @@
 {% load search_tags %}
 
 {% if selected_filters %}
-    <h2 class="tna-heading sr-only">Selected filters</h2>
+    <h2 class="sr-only">Selected filters</h2>
 
     <ul class="search-results__selected-filters" data-search-bucket="{{ buckets.current.label }}">
         {% for field_name, selected_options in selected_filters.items %}
