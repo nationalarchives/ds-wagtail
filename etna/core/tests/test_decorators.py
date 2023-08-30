@@ -37,7 +37,7 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
                 records=[
                     create_record(
                         iaid="C123456",
-                        description=[{"value": "This is the description from Kong"}],
+                        description=[{"value": "This is the description from the Client API"}],
                     )
                 ]
             ),

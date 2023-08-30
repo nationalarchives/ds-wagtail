@@ -434,7 +434,7 @@ class RecordModelTests(SimpleTestCase):
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
-    issues with data returned by Kong"""
+    issues with data returned by Client API"""
 
     @classmethod
     def setUpClass(cls):
@@ -563,7 +563,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
@@ -609,7 +609,7 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        # Fallback serves image through Wagtail instead of from kong
+        # Fallback serves image through Wagtail instead of from Client API
         self.assertEquals(image.thumbnail_url, "/records/image/path/to/image.jpeg")
 
 

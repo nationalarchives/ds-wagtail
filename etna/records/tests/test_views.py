@@ -127,7 +127,7 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
     @unittest.skip(
-        "Kong open beta API does not support media. Re-enable/update once media is available."
+        "Client API open beta API does not support media. Re-enable/update once media is available."
     )
     @responses.activate
     def test_record_renders_for_record_with_no_image(self):
@@ -157,7 +157,7 @@ class TestRecordView(TestCase):
         self.assertTemplateNotUsed(response, "records/image-viewer-panel.html")
 
     @unittest.skip(
-        "Kong open beta API does not support media. Re-enable/update once media is available."
+        "Client API open beta API does not support media. Re-enable/update once media is available."
     )
     @responses.activate
     def test_record_renders_for_record_with_image(self):
@@ -445,7 +445,7 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 class TestImageServeView(TestCase):
     def test_no_location_404s(self):
@@ -484,7 +484,7 @@ class TestImageServeView(TestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 class TestImageBrowseView(TestCase):
     @responses.activate
@@ -555,7 +555,7 @@ class TestImageBrowseView(TestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 class TestImageViewerView(TestCase):
     def setUp(self):
@@ -736,7 +736,7 @@ class TestImageViewerView(TestCase):
 
     @responses.activate
     def test_invalid_response_from_kong_raises_404(self):
-        """It's possible for us to pass a very long offset to Kong that returns a 400.
+        """It's possible for us to pass a very long offset to Client API that returns a 400.
 
         In such an event, ensure that we gracefully handle the error."""
         responses.add(

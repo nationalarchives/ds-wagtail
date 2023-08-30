@@ -5,12 +5,12 @@ import responses
 
 from ...records.api import get_records_client
 from ...records.models import Record
-from ..exceptions import DoesNotExist, KongAPIError, MultipleObjectsReturned
+from ..exceptions import DoesNotExist, ClientAPIError, MultipleObjectsReturned
 from .factories import create_record, create_search_response
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
-class APIClientExceptionTest(SimpleTestCase):
+class ApiClientExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -38,7 +38,7 @@ class APIClientExceptionTest(SimpleTestCase):
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
-class APIClientFilterTest(SimpleTestCase):
+class ApiClientFilterTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -79,7 +79,7 @@ class APIClientFilterTest(SimpleTestCase):
             result.hits[1]
 
 
-class KongExceptionTest(SimpleTestCase):
+class ClientAPIExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -91,5 +91,5 @@ class KongExceptionTest(SimpleTestCase):
             status=500,
         )
 
-        with self.assertRaises(KongAPIError):
+        with self.assertRaises(ClientAPIError):
             self.records_client.fetch(iaid="C140")

@@ -132,9 +132,9 @@ class BucketsMixin:
         )
 
 
-class KongAPIMixin:
+class ClientAPIMixin:
     """
-    A mixin for views that call the Kong API to retrieve and display
+    A mixin for views that call the Client API to retrieve and display
     records.
     """
 
@@ -192,7 +192,7 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
     to dig deeper. Any interaction should take them to one of the other,
     more sophisticated, views below.
 
-    Although this view called the Kong API, it does not use KongAPIMixin,
+    Although this view called the Client API, it does not use ClientAPIMixin,
     as the unique functionality is simple enough to keep in a single method.
     """
 
@@ -288,7 +288,7 @@ class GETFormView(FormView):
         return kwargs
 
 
-class BaseSearchView(SearchDataLayerMixin, KongAPIMixin, GETFormView):
+class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
     """
     A base view that extends GETFormView to call the API when the form
     data is valid, and render results to a template.

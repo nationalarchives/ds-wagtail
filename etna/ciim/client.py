@@ -27,10 +27,10 @@ from etna.records.models import Record
 
 from .exceptions import (
     DoesNotExist,
-    KongBadRequestError,
-    KongCommunicationError,
-    KongInternalServerError,
-    KongServiceUnavailableError,
+    ApiClientBadRequestError,
+    ApiClientCommunicationError,
+    ApiClientInternalServerError,
+    ApiClientServiceUnavailableError,
     MultipleObjectsReturned,
 )
 
@@ -193,15 +193,15 @@ class ResultList:
         return f"<{self.__class__.__name} {self.hits}>"
 
 
-class KongClient:
-    """Client used to Fetch and validate data from Kong."""
+class ApiClient:
+    """Client used to Fetch and validate data from Client API."""
 
     http_error_classes = {
-        400: KongBadRequestError,
-        500: KongInternalServerError,
-        503: KongServiceUnavailableError,
+        400: ApiClientBadRequestError,
+        500: ApiClientInternalServerError,
+        503: ApiClientServiceUnavailableError,
     }
-    default_http_error_class = KongCommunicationError
+    default_http_error_class = ApiClientCommunicationError
 
     def __init__(
         self,
@@ -267,7 +267,7 @@ class KongClient:
         template: Optional[Template] = None,
         expand: Optional[bool] = None,
     ) -> Record:
-        """Make request and return response for Kong's /fetch endpoint.
+        """Make request and return response for Client API's /fetch endpoint.
 
         Used to fetch a single item by its identifier.
 
@@ -280,7 +280,7 @@ class KongClient:
         template:
             @template data to include with response
         expand:
-            include @next and @previous record with response. Kong defaults to false
+            include @next and @previous record with response. Client API defaults to false
         """
         params = {
             # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
@@ -326,7 +326,7 @@ class KongClient:
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> ResultList:
-        """Make request and return response for Kong's /search endpoint.
+        """Make request and return response for Client API's /search endpoint.
 
         Search all metadata by keyword or web_reference. Results can be
         bucketed, and the search restricted by bucket, reference, topic and
@@ -421,7 +421,7 @@ class KongClient:
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> Tuple[ResultList]:
-        """Make request and return response for Kong's /searchAll endpoint.
+        """Make request and return response for Client API's /searchAll endpoint.
 
         Search metadata across multiple buckets in parallel. Returns results
         and an aggregation for each provided bucket
@@ -476,7 +476,7 @@ class KongClient:
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> ResultList:
-        """Make request and return response for Kong's /searchUnified endpoint.
+        """Make request and return response for Client API's /searchUnified endpoint.
 
         /searchUnified reproduces the private beta’s /search endpoint, turning
         a single response for a q, webReference-based query.
@@ -534,7 +534,7 @@ class KongClient:
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> ResultList:
-        """Make request and return response for Kong's /fetchAll endpoint.
+        """Make request and return response for Client API's /fetchAll endpoint.
 
         Used to fetch a all items by for the given identifier(s).
 
@@ -577,7 +577,7 @@ class KongClient:
     def prepare_request_params(
         self, data: Optional[dict[str, Any]] = None
     ) -> dict[str, Any]:
-        """Process parameters before passing to Kong.
+        """Process parameters before passing to Client API.
 
         Remove empty values to make logged requests cleaner.
         """
@@ -589,7 +589,7 @@ class KongClient:
     def make_request(
         self, url: str, params: Optional[dict[str, Any]] = None
     ) -> requests.Response:
-        """Make request to Kong API."""
+        """Make request to Client API."""
         params = self.prepare_request_params(params)
         response = self.session.get(url, params=params, timeout=self.timeout)
         self._raise_for_status(response)
@@ -598,7 +598,7 @@ class KongClient:
     def _raise_for_status(self, response: requests.Response) -> None:
         """Raise custom error for any requests.HTTPError raised for a request.
 
-        KongAPIErrors include response body in message to aide debugging.
+        ClientAPIErrors include response body in message to aide debugging.
         """
         try:
             response.raise_for_status()
