@@ -163,6 +163,7 @@ $largest-small-device: 992px;
 }
 
 .tna-hero__body {
+    color: #fff;
     font-size: 1.25rem;
 
     @include media.on-mobile {
