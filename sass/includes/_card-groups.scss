@@ -81,7 +81,7 @@
         }
 
         &__image {
-            @extend .tna-card__image;
+            // @extend .tna-card__image;
 
             &-fallback {
                 width: 100%;
@@ -110,7 +110,7 @@
         width: 100%;
         margin-bottom: 2rem;
         &__image {
-            @extend .tna-card__image;
+            // @extend .tna-card__image;
             border: 0.0625rem solid $color__black;
             margin-top: 0.7rem;
             &-fallback {
