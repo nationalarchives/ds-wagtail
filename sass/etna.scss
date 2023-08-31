@@ -180,10 +180,10 @@ $largest-small-device: 992px;
     margin-bottom: 3rem;
 
     &__icon {
-        flex: 1 0 2.5rem;
+        flex: 0 0 2.5rem;
 
         @include media.on-mobile {
-            flex: 1 0 1.5rem;
+            flex: 0 0 1.5rem;
         }
     }
 
