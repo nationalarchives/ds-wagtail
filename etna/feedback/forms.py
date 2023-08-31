@@ -84,12 +84,34 @@ class FeedbackForm(forms.Form):
         }
 
         # Add derived values to 'cleaned_data'
+        path = normalize_path(parse_result.path)
+        path_list = path[1:].split("/")
+        page_title = "None"
+        page_type = "None"
+
+        if path_list[0] == "search":
+            page_type = "Search landing page"
+            if path_list[1]:
+                page_type = f"{path_list[1].title()} search"
+        elif path_list[0] == "catalogue":
+            if iaid := path_list[2]:
+                if iaid[0] == "a" and not "-" in iaid:
+                    page_type = "Archive details page"
+                elif iaid[0] == "f" and not "-" in iaid:
+                    page_type = "Record creator page"
+                else:
+                    page_type = "Record details page"
+                page_title = f"Catalogue IAID: {iaid.upper()}"
+
         self.cleaned_data.update(
             full_url=value,
             site=site,
-            path=normalize_path(parse_result.path),
+            path=path,
             query_params=query_params,
+            page_title=page_title,
+            page_type=page_type,
         )
+
         return value
 
     def clean_response(self) -> Union[uuid.UUID, None]:
