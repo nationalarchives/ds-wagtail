@@ -2,7 +2,7 @@
     margin-left: 1rem;
     margin-right: 1rem;
 
-    @media only screen and (min-width: $screen__md) {
+    @media only screen and (min-width: #{$screen__md + 1px}) {
         margin-left: 2rem;
         margin-right: 2rem;
     }
@@ -13,12 +13,12 @@
 
     &__options {
         padding-bottom: 2rem;
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-bottom: 2rem;
         }
         border-bottom: 0.1875rem dotted $color__grey-500;
 
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
@@ -26,7 +26,7 @@
     }
 
     &__filters {
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: flex;
         }
 
@@ -38,7 +38,7 @@
             padding-left: 0;
             margin-bottom: 0;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 column-count: 3;
                 column-gap: 1rem;
             }
@@ -74,7 +74,7 @@
         margin-right: 1rem;
         margin-bottom: 1rem;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             max-width: 20rem;
         }
 
@@ -90,7 +90,7 @@
         }
         &-box {
             width: 100%;
-            @media only screen and (min-width: $screen__lg) {
+            @media only screen and (min-width: #{$screen__lg + 1px}) {
                 max-width: 17.5rem;
             }
             margin-bottom: 0.5rem;

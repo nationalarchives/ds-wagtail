@@ -13,7 +13,7 @@
         border-top: 1px solid $color__grey-400;
         padding-bottom: 1rem;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -23,7 +23,7 @@
     }
 
     &__image-text {
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: flex;
             flex-direction: row;
         }
@@ -33,7 +33,7 @@
         display: block;
         margin-bottom: 0.5rem;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             flex-basis: 40%;
             max-width: 40%;
             margin-right: 1.5rem;
@@ -57,7 +57,7 @@
             margin-right: 15px;
         }
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
             padding: 2rem 1rem 2rem 0;
         }
@@ -72,7 +72,7 @@
 
     &__metadata {
         margin-bottom: 1rem;
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: flex;
             justify-content: space-evenly;
             margin-bottom: 0;
@@ -90,7 +90,7 @@
         display: block;
         text-align: center;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: inline-block;
         }
     }

@@ -186,7 +186,7 @@
     &-link-current {
         margin-top: 0;
 
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             width: 2.5rem;
             height: 1.875rem;
             margin-top: 0.5rem;
