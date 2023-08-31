@@ -18,13 +18,15 @@
         {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
     {% endif %}
 
-    <div class="container">
+    <div class="tna-container">
         {% include_block page.featured_pages %}
     </div>
 
-    <div class="container mt-4" data-container-name="{{ page.title }}">
+    <div class="tna-container mt-4" data-container-name="{{ page.title }}">
+        <div class="tna-column tna-column--full">
         <h2 class="tna-heading">Discover all stories</h2>
-        <p>Browse and explore the human stories behind The National Archives’ collection.</p>
+        <p class="mb-4">Browse and explore the human stories behind The National Archives’ collection.</p>
+    </div>
         <ul class="card-group--list-style-none">
 
             {% for article_page in article_pages %}

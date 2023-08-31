@@ -15,26 +15,28 @@
         </div>
     </div>
     
-    <div class="container">
-        <h2 class="tna-heading">{{ page.articles_title }}</h2>
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            <h2 class="tna-heading">{{ page.articles_title }}</h2>
+            <p>{{ page.articles_introduction }}</p>
 
-        <p>{{ page.articles_introduction }}</p>
-    </div>
+            {% if page.featured_article.live %}
+                {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
+            {% endif %}
+        </div>
 
-    {% if page.featured_article.live %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
-    {% endif %}
-
-    <div class="container">
         {% include_block page.featured_articles with heading=page.articles_title %}
 
-        <div class="featured-articles__cta">
-            {% comment %} TODO: update BEM button styles for consistency across site {% endcomment %}
-            <a href="/stories"
-            class="tna-button--dark"
-            data-link-type="Button"
-            data-component-name="Articles section: {{ page.articles_title }}"
-            data-link="Browse all stories">Browse all stories</a>
+        <div class="tna-column tna-column--full">
+            <div class="featured-articles__cta">
+                {% comment %} TODO: update BEM button styles for consistency across site {% endcomment %}
+                <a href="/stories"
+                class="tna-button--dark"
+                data-link-type="Button"
+                data-component-name="Articles section: {{ page.articles_title }}"
+                data-link="Browse all stories">Browse all stories</a>
+            </div>
+
         </div>
     </div>
     
