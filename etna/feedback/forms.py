@@ -95,9 +95,9 @@ class FeedbackForm(forms.Form):
                 page_type = f"{path_list[1].title()} search"
         elif path_list[0] == "catalogue":
             if iaid := path_list[2]:
-                if iaid[0] == "a" and not "-" in iaid:
+                if iaid[0] == "a" and "-" not in iaid:
                     page_type = "Archive details page"
-                elif iaid[0] == "f" and not "-" in iaid:
+                elif iaid[0] == "f" and "-" not in iaid:
                     page_type = "Record creator page"
                 else:
                     page_type = "Record details page"
