@@ -46,17 +46,17 @@
         grid-column-gap: 1vw;
         grid-row-gap: 1vw;
 
-        @media screen and (min-width: $screen__sm) {
+        @media screen and (min-width: #{$screen__sm + 1px}) {
             grid-template-columns: repeat(3, 1fr);
             grid-auto-rows: 33vw;
         }
 
-        @media screen and (min-width: $screen__md) {
+        @media screen and (min-width: #{$screen__md + 1px}) {
             grid-template-columns: repeat(4, 1fr);
             grid-auto-rows: 25vw;
         }
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             grid-template-columns: repeat(5, 1fr);
             grid-auto-rows: 20vw;
         }
