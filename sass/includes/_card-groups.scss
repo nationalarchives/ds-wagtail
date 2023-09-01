@@ -33,7 +33,7 @@
             text-transform: uppercase;
             font-size: 0.875rem;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 0.9rem;
             }
         }
@@ -46,7 +46,7 @@
             color: $color__black;
             text-decoration-thickness: 1px;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 1.25rem;
             }
 
@@ -99,7 +99,7 @@
             display: block;
         }
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
         }
     }

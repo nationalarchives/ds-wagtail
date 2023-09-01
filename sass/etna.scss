@@ -166,6 +166,7 @@ $largest-small-device: 992px;
     font-size: 1.25rem;
 
     @include media.on-mobile {
+        color: #fff;
         font-size: 1rem;
         line-height: 1.5;
     }
@@ -242,9 +243,18 @@ $largest-small-device: 992px;
     }
 }
 
-.card-group-secondary-nav,
+.card-group-secondary-nav {
+    margin-bottom: 2rem;
+}
+
 .generic-intro__paragraph {
     margin-bottom: 3rem;
+}
+
+.related-highlight-cards {
+    .related-highlight-cards__card {
+        margin-top: 2rem;
+    }
 }
 
 .section-separator__heading {

@@ -8,14 +8,14 @@
         li {
             margin-bottom: 1rem;
 
-            @media only screen and (min-width: $screen__lg) {
+            @media only screen and (min-width: #{$screen__lg + 1px}) {
                 margin-bottom: 0.3rem;
             }
 
             span {
                 display: block;
 
-                @media only screen and (min-width: $screen__lg) {
+                @media only screen and (min-width: #{$screen__lg + 1px}) {
                     display: inline-block;
                     width: 10rem;
                 }
