@@ -3,6 +3,7 @@ const path = require('path');
 module.exports = {
     mode: 'production',
     entry: {
+        all: './scripts/src/all.js',
         beta_banner: './scripts/src/beta-banner.js',
         cookie_consent: './scripts/src/ds-cookie-consent.js',
         gtm_script: './scripts/src/gtm-script.js',
@@ -18,6 +19,7 @@ module.exports = {
         catalogue_search: './scripts/src/catalogue-search.js',
         hamburger_menu: './scripts/src/hamburger-menu.js',
         record_article_page: './scripts/src/record-article-page.js',
+        feedback_tracking: './scripts/src/feedback-tracking.js',
     },
     output: {
         filename: '[name].js',

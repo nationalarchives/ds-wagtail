@@ -1,57 +1,56 @@
 .content-warning {
+    background-color: $color__cream;
+    border-left: 4px solid #ffcc00;
+    padding: 1.5rem 1.75rem;
 
-  background-color: $color__yellow_6;
-  border-left: 4px solid #FFCC00;
-  padding: 1.5rem 1.75rem;
-
-  @media screen and (min-width: $screen__sm) {
-    display: flex;
-    padding: 1.25rem 2rem;
-    margin-top: 2rem;
-  }
-
-  @media screen and (min-width: $screen__md) {
-    margin-bottom: 3rem;
-  }
-
-  &--normalise-margin {
-    // normalise full-wdith mobile display
-    margin-left: -15px;
-    margin-right: -15px;
-  }
-
-  &--normalise-article-margin {
-    @media screen and (max-width: $screen__sm) {
-      margin-left: -32px;
-      margin-right: -32px;
+    @media screen and (min-width: #{$screen__sm + 1px}) {
+        display: flex;
+        padding: 1.25rem 2rem;
+        margin-top: 2rem;
     }
-  }
 
-  &--short {
-    @media screen and (min-width: $screen__md) {
-      margin-bottom: 1.25rem;
+    @media screen and (min-width: #{$screen__md + 1px}) {
+        margin-bottom: 3rem;
     }
-  }
 
-  &__content {
-    p {
-      @include font-size(xs);
-      color: $color__black;
-      margin-bottom: 0;
+    &--normalise-margin {
+        // normalise full-wdith mobile display
+        margin-left: -15px;
+        margin-right: -15px;
     }
-  }
 
-  &__icon {
-    display: none;
-    color: $color__grey-2;
-    width: 34px;
-    height: 34px;
-    flex-basis: 34px;
-    min-width: 34px;
-    margin-right: 18px;
-
-    @media (min-width: $screen__sm) {
-      display: block;
+    &--normalise-article-margin {
+        @media screen and (max-width: $screen__sm) {
+            margin-left: -32px;
+            margin-right: -32px;
+        }
     }
-  }
+
+    &--short {
+        @media screen and (min-width: #{$screen__md + 1px}) {
+            margin-bottom: 1.25rem;
+        }
+    }
+
+    &__content {
+        p {
+            @include font-size(xs);
+            color: $color__black;
+            margin-bottom: 0;
+        }
+    }
+
+    &__icon {
+        display: none;
+        color: $color__grey-800;
+        width: 34px;
+        height: 34px;
+        flex-basis: 34px;
+        min-width: 34px;
+        margin-right: 18px;
+
+        @media (min-width: #{$screen__sm + 1px}) {
+            display: block;
+        }
+    }
 }

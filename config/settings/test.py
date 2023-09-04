@@ -8,8 +8,7 @@ except ImportError:
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "@6gce61jt^(pyj5+l**&*_#zyxfj5v1*71cs5yoetg-!fsz826"
 
-# SECURITY WARNING: define the correct hosts in production!
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["localhost", "127.0.0.1"]
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
@@ -17,7 +16,9 @@ PASSWORD_HASHERS = [
     "django.contrib.auth.hashers.MD5PasswordHasher",
 ]
 
-BIRDBATH_REQUIRED = False
+# Disable birdbath completely when testing
+INSTALLED_APPS = INSTALLED_APPS.copy()  # noqa: F405
+INSTALLED_APPS.remove("birdbath")
 
 # Allow integration tests to run without needing to collectstatic
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#staticfilesstorage

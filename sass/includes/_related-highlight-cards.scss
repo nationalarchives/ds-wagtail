@@ -20,7 +20,7 @@
         font-size: 1.25rem;
         margin: 0 0 0.5rem 0;
 
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             font-size: 1.3rem;
         }
 
@@ -44,11 +44,11 @@
         }
 
         &:focus {
-            color: $color__blue_6;
-            outline-color: $color__blue_6;
+            color: $color__blue;
+            outline-color: $color__blue;
             text-decoration: none;
         }
-        
+
         &:visited {
             color: $color__white;
 
@@ -57,8 +57,8 @@
             }
 
             &:focus {
-                color: $color__blue_6;
-                outline-color: $color__blue_6;
+                color: $color__blue;
+                outline-color: $color__blue;
                 text-decoration: none;
             }
         }
@@ -69,13 +69,13 @@
     }
 
     &__content {
-        margin: 1.75rem;
-        color: $color__grey-9;
+        padding: 1.75rem;
+        color: $color__grey-500;
     }
 
     &__text {
         font-size: 1rem;
-        color: $color__grey-9;
+        color: $color__grey-500;
         margin: 0;
     }
 

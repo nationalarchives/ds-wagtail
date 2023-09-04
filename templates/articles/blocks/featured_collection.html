@@ -2,14 +2,14 @@
 {% load wagtailcore_tags %}
 
 <div class="featured-collection">
-    <h2>{{ value.heading }}</h2>
-    <p>{{ value.description }}</p>
+    <div class="tna-column tna-column--full">
+        <h2 class="tna-heading">{{ value.heading }}</h2>
+        <p class="mb-4">{{ value.description }}</p>
+    </div>
+    </div>
 
     <ul class="card-group--list-style-none">
         {% for item in value.items %}
-            {% with page=item %}
-                {% include 'includes/card-group-secondary-nav.html' with heading=value.heading %}
-            {% endwith %}
+            {% include 'includes/card-group-secondary-nav.html' with heading=value.heading link_page=item.specific card_type="Featured" show_type_label=True %}
         {% endfor %}
     </ul>
-</div>

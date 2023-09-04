@@ -1,54 +1,54 @@
 .image-viewer-panel {
-  margin-top: 1rem;
-  text-align: center;
-  width: 100%;
-  background-color: $color__dark;
-  padding: 2.5rem 0 0;
-
-  figure {
-    margin: 0;
-
-    img {
-      height: 25rem;
-      display: block;
-      margin: 0 auto;
-
-      @media only screen and (max-width: $screen__md) {
-        height: auto;
-        width: 100%;
-      }
-    }
-  }
-
-  &__text-link {
-    padding: 2rem 1rem 2rem 2.5rem;
-    display: inline-block;
-    color: $color__white;
-    background: url($fa_search_plus) no-repeat center left;
-    background-size: 1.75rem;
+    margin-top: 1rem;
     text-align: center;
-    font-weight: bold;
-    vertical-align: top;
-    font-size: 1.1rem;
+    width: 100%;
+    background-color: $color__grey-700;
+    padding: 2.5rem 0 0;
 
-    &:visited {
-      color: $color__white;
+    figure {
+        margin: 0;
+
+        img {
+            height: 25rem;
+            display: block;
+            margin: 0 auto;
+
+            @media only screen and (max-width: $screen__md) {
+                height: auto;
+                width: 100%;
+            }
+        }
     }
 
-    &:focus {
-      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+    &__text-link {
+        padding: 2rem 1rem 2rem 2.5rem;
+        display: inline-block;
+        color: $color__white;
+        background: url($fa_search_plus) no-repeat center left;
+        background-size: 1.75rem;
+        text-align: center;
+        font-weight: bold;
+        vertical-align: top;
+        font-size: 1.1rem;
+
+        &:visited {
+            color: $color__white;
+        }
+
+        &:focus {
+            outline: 0.313rem solid $color__focus-outline-dark-bg;
+        }
+
+        &:hover {
+            color: $color__white;
+            text-decoration: none;
+        }
     }
 
-    &:hover {
-      color: $color__white;
-      text-decoration: none;
+    &__image-link:hover,
+    &__image-link:focus {
+        img {
+            outline: 0.313rem solid $color__focus-outline-dark-bg;
+        }
     }
-  }
-
-  &__image-link:hover, &__image-link:focus {
-    img {
-      outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
-    }
-  }
 }
-

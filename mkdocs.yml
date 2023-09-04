@@ -1,4 +1,4 @@
-site_name: Etna
+site_name: ETNA
 repo_url: https://github.com/nationalarchives/ds-wagtail
 dev_addr: 0.0.0.0:8001
 theme:
@@ -26,8 +26,9 @@ nav:
       - 'Local development gotchas': 'developer-guide/local-development-gotchas.md'
       - 'Backend development': 'developer-guide/backend.md'
       - 'Frontend development': 'developer-guide/frontend.md'
-      - 'Fetching production data': 'developer-guide/fetching-production-data.md'
+      - 'Fetching data': 'developer-guide/fetching-data.md'
       - 'Working with VS Code': 'developer-guide/vscode.md'
+      - 'Working with Docker': 'developer-guide/docker.md'
   - 'Infrastructure and environments':
       - 'Hosted environments': 'infra/environments.md'
       - 'Infrastructure overview': 'infra/infrastructure.md'
@@ -38,3 +39,4 @@ nav:
   - 'Unique features':
       - 'Search and record data': 'features/search-and-record-data.md'
       - 'Categories': 'features/categories.md'
+      - 'Feedback mechanism': 'features/feedback-mechanism.md'

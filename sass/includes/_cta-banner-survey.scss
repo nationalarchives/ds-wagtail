@@ -1,48 +1,48 @@
 .cta-banner-survey {
-  border-top: 2px dotted $color__grey-4;
-  padding: 1rem 0;
-  display: none;
-
-  &--js {
+    border-top: 2px dotted $color__grey-500;
+    padding: 1rem 0;
     display: none;
-  }
 
-  &--no-js {
-    margin: auto;
-    width: 50%;
-    text-align: center;
-    margin-bottom: 1em;
-  }
-
-  &--border {
-    margin: auto;
-    margin-bottom: 1em;
-
-    p {
-      margin-bottom: 1rem;
+    &--js {
+        display: none;
     }
-  }
 
-  &__heading {
-    font-size: 1.55rem;
-    margin-top: 0;
-    font-weight: 400;
-
-    @media only screen and (max-width: $screen__md) {
-      font-size: 1.4rem;
+    &--no-js {
+        margin: auto;
+        width: 50%;
+        text-align: center;
+        margin-bottom: 1em;
     }
-  }
 
-  &__heading,
-  &__description {
-    margin-bottom: 0.5rem;
-  }
+    &--border {
+        margin: auto;
+        margin-bottom: 1em;
 
-  &__icon {
-    height: 3.75rem;
-
-    @media only screen and (max-width: $screen__lg) {
-      display: none;
+        p {
+            margin-bottom: 1rem;
+        }
     }
-  }
+
+    &__heading {
+        font-size: 1.55rem;
+        margin-top: 0;
+        font-weight: 400;
+
+        @media only screen and (max-width: $screen__md) {
+            font-size: 1.4rem;
+        }
+    }
+
+    &__heading,
+    &__description {
+        margin-bottom: 0.5rem;
+    }
+
+    &__icon {
+        height: 3.75rem;
+
+        @media only screen and (max-width: $screen__lg) {
+            display: none;
+        }
+    }
 }

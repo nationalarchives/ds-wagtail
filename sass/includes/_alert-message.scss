@@ -1,20 +1,19 @@
 .alert-message {
-
     padding: 0.5rem;
 
     &--high {
         @extend .alert-message;
-        background-color: $color__pink;
+        background-color: $color__pastel-pink;
     }
 
     &--medium {
         @extend .alert-message;
-        background-color: $color__yellow;
+        background-color: $color__cream;
     }
 
     &--low {
         @extend .alert-message;
-        background-color: $color__grey-4;
+        background-color: $color__grey-500;
     }
 
     &__label {
@@ -39,5 +38,4 @@
             margin-bottom: 0;
         }
     }
-
 }

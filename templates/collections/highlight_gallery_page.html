@@ -6,16 +6,17 @@
   {% meta_tags %}
 {% endblock %}
 {% block content %}
-    {% include "includes/generic-intro.html" with title=page.title intro=page.intro display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text classes="content-warning--normalise-margin" %}
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
 
     {% if page.highlights %}
         {% include 'includes/highlights-gallery.html' with highlights=page.highlights %}
     {% endif %}
-    {% if page.featured_record_article %}
-        <p>TBC</p>
+
+    {% if page.featured_record_article.live %}
+        {% include 'includes/record-revealed.html' with link_page=page.featured_record_article %}
     {% endif %}
 
-    {% if page.featured_article %}
+    {% if page.featured_article.live %}
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
     {% endif %}
 

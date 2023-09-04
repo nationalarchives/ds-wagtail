@@ -1,25 +1,21 @@
 {% load wagtailcore_tags %}
-<div class="generic-intro">
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                {% if breadcrumb %}
-                    <div class="generic-intro__breadcrumb">
-                        {% include 'includes/breadcrumb.html' %}
-                    </div>
-                {% endif %}
-                <h1 class="generic-intro__title">
-                    {{ title }}
-                </h1>
-                {% if intro %}
-                    <div class="generic-intro__paragraph">
-                        {{ intro|richtext }}
-                    </div>
-                {% endif %}
-                {% if display_content_warning %}    
-                    {% include "includes/content-warning.html" with custom_warning_text=custom_warning_text classes=classes %} 
-                {% endif %}
-            </div>
+{% if breadcrumb %}
+    {% include 'includes/breadcrumb.html' %}
+{% endif %}
+<div class="generic-intro{% if classes %} {{ classes }}{% endif %}">
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            <h1 class="tna-heading tna-heading--xl tna-!--margin-top-l">
+                {{ title }}
+            </h1>
+            {% if intro %}
+                <div class="generic-intro__paragraph">
+                    {{ intro|richtext }}
+                </div>
+            {% endif %}
+            {% if display_content_warning %}    
+                {% include "includes/content-warning.html" with custom_warning_text=custom_warning_text classes=classes %} 
+            {% endif %}
         </div>
     </div>
 </div>

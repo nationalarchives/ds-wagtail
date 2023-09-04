@@ -1,4 +1,3 @@
-
 .pagination {
     margin-top: 1rem;
     margin-left: 2rem;
@@ -8,7 +7,7 @@
         margin: 0;
     }
 
-    //background-color: $color__dark;
+    //background-color: $color__grey-700;
 
     &__list {
         text-align: center;
@@ -18,9 +17,9 @@
 
         display: flex;
         justify-content: start;
-        margin:auto;
+        margin: auto;
         margin-bottom: 2em;
-        width:65%;
+        width: 65%;
 
         &-pages {
             padding: 0;
@@ -39,7 +38,6 @@
                     }
                     */
                 }
-
             }
         }
 
@@ -60,7 +58,8 @@
     }
 
     &__page {
-        &-link, &-link-current {
+        &-link,
+        &-link-current {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -68,17 +67,17 @@
             width: 3.125rem;
             height: 3.125rem;
             background: #26262a;
-            margin:0.3em;
-
+            margin: 0.3em;
 
             color: white;
 
             @media only screen and (max-width: $screen__md) {
-                margin:0.3em;
+                margin: 0.3em;
             }
         }
-        &-link:visited,&-link:hover{
-            color:white;
+        &-link:visited,
+        &-link:hover {
+            color: white;
         }
 
         &-link-current {
@@ -86,18 +85,23 @@
             color: black;
         }
 
-        &-chevron-next, &-chevron-previous {
+        &-chevron-next,
+        &-chevron-previous {
             height: 100%;
+            display: block;
+            margin-top: 1.16em;
             @media only screen and (max-width: $screen__md) {
                 display: none;
             }
         }
 
-        &-chevron-next, &-chevron-previous {
-            //background-color: $color__yellow_2;
+        &-chevron-next,
+        &-chevron-previous {
+            //background-color: $color__yellow;
 
-            &:hover, &:focus {
-                //background-color: $color__dark;
+            &:hover,
+            &:focus {
+                //background-color: $color__grey-700;
             }
 
             background-repeat: no-repeat;
@@ -107,18 +111,19 @@
 
         &-chevron-next {
             // background-image: url($fa_chevron_right);
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 //background-image: url($fa_chevron_right_white);
-                outline-color: $color__focus-blue-outline-light-bg;
+                outline-color: $color__focus-outline-light-bg;
                 outline-offset: 0.125rem;
             }
 
             &:focus {
-                box-shadow: -.6rem 0 $color__white;
+                box-shadow: -0.6rem 0 $color__white;
             }
 
             &--disabled {
-                //background-color: $color__yellow_2;
+                //background-color: $color__yellow;
                 //background-image: url($fa_chevron_right_disabled);
                 background-repeat: no-repeat;
                 background-position: center;
@@ -132,7 +137,8 @@
                     display: none;
                 }
 
-                &:hover, &:focus {
+                &:hover,
+                &:focus {
                     // background-image: url($fa_chevron_right_disabled);
                     outline-color: transparent;
                     outline-offset: 0;
@@ -141,21 +147,19 @@
         }
 
         &-chevron-previous {
-
             //background-image: url($fa_chevron_left);
             //&:hover, &:focus {
             //background-image: url($fa_chevron_left_white);
-            //outline-color: $color__focus-blue-outline-light-bg;
+            //outline-color: $color__focus-outline-light-bg;
             //outline-offset: 0.125rem;
-
         }
 
         &:focus {
-            box-shadow: .6rem 0 $color__white;
+            box-shadow: 0.6rem 0 $color__white;
         }
 
         &--disabled {
-            //background-color: $color__yellow_2;
+            //background-color: $color__yellow;
             //background-image: url($fa_chevron_left_disabled);
             //background-repeat: no-repeat;
             background-position: center;
@@ -165,9 +169,8 @@
             display: flex;
             justify-content: center;
 
-
-
-            &:hover, &:focus {
+            &:hover,
+            &:focus {
                 //background-image: url($fa_chevron_left_disabled);
                 outline-color: transparent;
                 outline-offset: 0;
@@ -179,32 +182,39 @@
         font-weight: bold;
     }
 
-    &-link, &-link-current {
+    &-link,
+    &-link-current {
         margin-top: 0;
 
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             width: 2.5rem;
             height: 1.875rem;
-            margin-top: .5rem;
+            margin-top: 0.5rem;
         }
     }
 
-    &-link, &-link:visited {
+    &-link,
+    &-link:visited {
         color: $color__white;
     }
 
-    &-link-current, &-link-current:focus, &-link-current:visited, &-link:hover, &-link:focus {
+    &-link-current,
+    &-link-current:focus,
+    &-link-current:visited,
+    &-link:hover,
+    &-link:focus {
         background-color: $color__white;
         color: $color__black;
         font-weight: bold;
-        outline-color: $color__focus-blue-outline-dark-bg;
+        outline-color: $color__focus-outline-dark-bg;
     }
 }
 
-
 .pagination__page-chevron-previous--disabled {
+    display: block;
+    margin-top: 1.16em;
     @media only screen and (max-width: $screen__md) {
-        display:none;
+        display: none;
     }
 }
 //}

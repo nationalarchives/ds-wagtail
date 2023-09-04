@@ -10,7 +10,7 @@
 {% block breadcrumb %}{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
-    {% include 'includes/hero-img.html' %}
+    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
     <div class="article-container container">
         <div class="article-container__sidebar">
@@ -27,30 +27,30 @@
         </div>
     </div>
 
-    <div class="related-content">
+    <div class="related-content related-content--borderless">
         <div class="container">
             {% if page.similar_items %}
-                <h2 class="related-content__heading">You may also be interested in</h2>
+                <h2 class="tna-heading related-content__heading">You may also be interested in</h2>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="You may also be interested in" %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True %}
                     {% endfor %}
                 </ul>
             {% endif %}
-            
-            {% if FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED %}
-                {% if page.primary_topic or page.primary_time_period %}
-                    {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
-                {% endif %}
+
+
+            {% if page.primary_topic or page.primary_time_period %}
+                {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
             {% endif %}
 
+
             {% if page.latest_items %}
-                <h2 class="related-content__heading">More stories</h2>
+                <h2 class="tna-heading related-content__heading">More stories</h2>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with page=item heading="More stories" %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
                     {% endfor %}
                 </ul>
             {% endif %}

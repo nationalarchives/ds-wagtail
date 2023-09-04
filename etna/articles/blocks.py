@@ -9,7 +9,6 @@ from etna.core.blocks import (
     AuthorPromotedLinkBlock,
     ContentImageBlock,
     FeaturedRecordArticleBlock,
-    ImageBlock,
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
@@ -18,54 +17,12 @@ from etna.core.blocks import (
 )
 
 from ..media.blocks import MediaBlock
-from ..records.blocks import RecordChooserBlock, RecordLinksBlock
-
-
-class FeaturedRecordBlock(SectionDepthAwareStructBlock):
-    title = blocks.CharBlock(
-        label="Descriptive title",
-        max_length=200,
-        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
-    )
-    record = RecordChooserBlock()
-    image = ImageBlock(
-        label="Teaser image",
-        required=False,
-        help_text="Add an image to be displayed with the selected record.",
-        template="articles/blocks/images/blog-embed__image-container.html",
-    )
-
-    class Meta:
-        icon = "archive"
-        template = "articles/blocks/featured_record.html"
-        label = "Featured record"
-
-
-class FeaturedRecordsItemBlock(blocks.StructBlock):
-    title = blocks.CharBlock(
-        label="Descriptive title",
-        max_length=200,
-        help_text="A short description (max 200 characters) to add 'relevancy' to the record details. For example: 'Entry for Alice Hawkins in the index to suffragettes arrested'.",
-    )
-    record = RecordChooserBlock()
-
-    class Meta:
-        icon = "archive"
-
-
-class FeaturedRecordsBlock(SectionDepthAwareStructBlock):
-    introduction = blocks.CharBlock(max_length=200, required=False)
-    items = blocks.ListBlock(FeaturedRecordsItemBlock)
-
-    class Meta:
-        icon = "archive"
-        template = "articles/blocks/featured_records.html"
-        label = "Featured records"
+from ..records.blocks import RecordLinksBlock
 
 
 class AuthorPromotedPagesBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100)
-    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max=3)
+    promoted_items = blocks.ListBlock(AuthorPromotedLinkBlock, max_num=3)
 
     class Meta:
         template = "articles/blocks/promoted_pages.html"
@@ -89,7 +46,10 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
             ("external-link", "External link"),
         ],
     )
-    publication_date = blocks.DateBlock(required=False)
+    publication_date = blocks.CharBlock(
+        required=False,
+        help_text="This is a free text field. Please enter date as per agreed format: 14 April 2021",
+    )
     author = blocks.CharBlock(required=False)
     duration = blocks.CharBlock(
         required=False,
@@ -129,7 +89,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
 
     class Meta:
         label = "Featured link"
-        template = "articles/blocks/promoted_item.html"
+        template = "articles/blocks/featured_link.html"
         help_text = "Block used promote an external page"
         icon = "star"
         form_template = "form_templates/default-form-with-safe-label.html"
@@ -197,6 +157,7 @@ class FeaturedCollectionBlock(SectionDepthAwareStructBlock):
     description = blocks.TextBlock(max_length=200)
     items = PageListBlock(
         "articles.ArticlePage",
+        "articles.RecordArticlePage",
         exclude_drafts=True,
         exclude_private=True,
         select_related=["teaser_image"],
@@ -226,8 +187,6 @@ class SectionContentBlock(blocks.StreamBlock):
     image = ContentImageBlock()
     media = MediaBlock()
     featured_record_article = FeaturedRecordArticleBlock()
-    featured_record = FeaturedRecordBlock()
-    featured_records = FeaturedRecordsBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     record_links = RecordLinksBlock()

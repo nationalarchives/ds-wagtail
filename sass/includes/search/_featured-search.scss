@@ -1,9 +1,8 @@
 .featured-search {
-
     &__results {
         margin-left: 1rem;
         margin-right: 1rem;
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 2rem;
             display: -ms-grid;
             display: grid;
@@ -12,8 +11,7 @@
         }
 
         &-block {
-
-            border: 3px solid $color__yellow_2;
+            border: 3px solid $color__yellow;
             border-radius: 0.3rem;
             padding: 1rem;
             margin-right: 1rem;
@@ -33,7 +31,6 @@
         &-list {
             list-style: none;
             padding-left: 0.5rem;
-
         }
 
         &-heading {
@@ -45,14 +42,13 @@
         &-link {
             display: inline-block;
             &:visited {
-                color: $color__blue-4;
+                color: $color__navy;
             }
         }
     }
 
     &__see-all-link {
-
-        border-top: 4px dotted $color__grey-1;
+        border-top: 4px dotted $color__grey-500;
         margin-top: 2rem;
         padding-top: 1rem;
     }
@@ -63,30 +59,32 @@
     }
 
     &__record-creator {
-
         &-link {
             margin-top: 2rem;
         }
         &-image {
             width: 100%;
+            //display: none;
         }
     }
 
     &__interpretive-results {
+        display: none;
         margin-left: 1rem;
         margin-right: 1rem;
         margin-top: 2rem;
         margin-bottom: 3rem;
         padding-top: 2rem;
-        border-top: 3px dotted $color__grey-4;
+        border-top: 3px dotted $color__grey-500;
 
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             display: grid;
             display: -ms-grid;
             -ms-grid-columns: 1fr 1fr 1fr;
             grid-template-columns: 1fr 1fr 1fr;
             margin-left: 2rem;
             &-section {
+                //display:none;
                 margin-right: 2rem;
                 &:nth-of-type(1) {
                     -ms-grid-column: 1;
@@ -101,17 +99,16 @@
         }
 
         &-section {
-
         }
     }
 
     &__interpretive-card {
         &-image {
-            border: 1px solid $color__grey-3;
+            border: 1px solid $color__grey-500;
             display: block;
             &-fallback {
                 width: 100%;
-              }
+            }
         }
         &-description {
             margin-bottom: 0.5rem;
@@ -123,20 +120,17 @@
 }
 
 .no-results {
-
     .featured-search__heading {
-        padding:1rem 1rem;
+        padding: 1rem 1rem;
 
-        @media only screen and (min-width: $screen__md) {
-            padding:1rem 2rem;
-
+        @media only screen and (min-width: #{$screen__md + 1px}) {
+            padding: 1rem 2rem;
         }
     }
 
     ul {
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 1rem;
         }
-    }    
-    
+    }
 }

@@ -34,6 +34,8 @@ FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
 DJANGO_SERVE_STATIC = strtobool(os.getenv("DJANGO_SERVE_STATIC", "True"))
 COOKIE_DOMAIN = "localhost"
 
+MEDIA_ROOT = "/media"
+
 # Silence noisy localization messages/warnings when initializing faker
 logging.getLogger("faker").setLevel(logging.ERROR)
 
@@ -62,7 +64,7 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
     ]
 
     def show_toolbar(request):
-        return True
+        return strtobool(os.getenv("DEBUG_TOOLBAR", "False"))
 
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": show_toolbar,

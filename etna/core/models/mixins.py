@@ -10,7 +10,12 @@ from wagtail.images import get_image_model_string
 
 from .forms import RequiredHeroImagePageForm
 
-__all__ = ["ContentWarningMixin", "NewLabelMixin", "HeroImageMixin"]
+__all__ = [
+    "ContentWarningMixin",
+    "NewLabelMixin",
+    "HeroImageMixin",
+    "RequiredHeroImageMixin",
+]
 
 
 class ContentWarningMixin(models.Model):
@@ -41,10 +46,12 @@ class NewLabelMixin(models.Model):
     mark_new_on_next_publish = models.BooleanField(
         verbose_name="mark this page as 'new' when published",
         default=True,
+        help_text="This will set the 'new' label for 21 days",
     )
 
     newly_published_at = models.DateField(
         editable=False,
+        verbose_name="Page marked as new on",
         default=None,
         null=True,
     )
@@ -93,7 +100,13 @@ class NewLabelMixin(models.Model):
         return False
 
     promote_panels = [
-        FieldPanel("mark_new_on_next_publish"),
+        MultiFieldPanel(
+            [
+                FieldPanel("mark_new_on_next_publish"),
+                FieldPanel("newly_published_at", read_only=True),
+            ],
+            heading="New label",
+        )
     ]
 
     class Meta:
@@ -113,7 +126,7 @@ class HeroImageMixin(models.Model):
 
     hero_image_caption = RichTextField(
         verbose_name="hero image caption (optional)",
-        features=["link"],
+        features=["bold", "italic", "link"],
         blank=True,
         help_text=(
             "An optional caption for hero images. This could be used for image sources or for other useful metadata."
@@ -132,5 +145,12 @@ class HeroImageMixin(models.Model):
             heading="Hero image",
         )
     ]
+
+
+class RequiredHeroImageMixin(HeroImageMixin):
+    """Mixin to add hero_image attribute to a Page, and make it required."""
+
+    class Meta:
+        abstract = True
 
     base_form_class = RequiredHeroImagePageForm

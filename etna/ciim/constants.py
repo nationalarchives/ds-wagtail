@@ -195,9 +195,6 @@ FEATURED_BUCKETS = BucketList(
         Bucket(key="tna", label="Records at The National Archives"),
         Bucket(key="nonTna", label="Records at other UK archives"),
         Bucket(key="creator", label="Record creators"),
-        Bucket(key="blog", label="Blogs"),
-        Bucket(key="researchGuide", label="Research Guides"),
-        Bucket(key=BucketKeys.INSIGHT.value, label="Stories from the collection"),
     ]
 )
 
@@ -672,6 +669,21 @@ class LevelKeys(StrEnum):
     LEVEL_7 = "Item"
 
 
+@forTemplate
+class NonTNALevelKeys(StrEnum):
+    LEVEL_1 = "Fonds"
+    LEVEL_2 = "Sub-fonds"
+    LEVEL_3 = "Sub-sub-fonds"
+    LEVEL_4 = "Sub-sub-sub-fonds"
+    LEVEL_5 = "Series"
+    LEVEL_6 = "Sub-series"
+    LEVEL_7 = "Sub-sub-series"
+    LEVEL_8 = "Sub-sub-sub-series"
+    LEVEL_9 = "File"
+    LEVEL_10 = "Item"
+    LEVEL_11 = "Sub-item"
+
+
 LEVELS = (
     "Division",
     "Lettercode",
@@ -704,13 +716,12 @@ TYPE_CHOICES = tuple(
     (k, f"{v}") for k, v in sorted(TYPE_NAMES.items(), key=lambda x: x[1])
 )
 
-CUSTOM_ERROR_MESSAGES = {
-    "invalid_date_range": "There is a problem. Start date cannot be after end date."
-}
-
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
 }
 
 #  associate readable names with api identifiers
@@ -755,4 +766,9 @@ ARCHIVE_NRA_RECORDS_COLLECTION = [
         "display_name": "Paper catalogues",
         "long_display_name": "Paper catalogues available to view at The National Archives",
     },
+]
+
+CLOSURE_CLOSED_STATUS = [
+    "Closed Or Retained Document, Closed Description",
+    "Closed Or Retained Document, Open Description",
 ]

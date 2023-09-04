@@ -247,7 +247,7 @@ STATICFILES_DIRS = [
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
-STATIC_URL = "/static/"
+STATIC_URL = "static/"
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
@@ -277,6 +277,10 @@ WAGTAILSEARCH_BACKENDS = {
 }
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
+
+# Custom password template for private pages
+
+PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
 # Kong client
 
@@ -392,9 +396,6 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 )
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
-)
-FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED = strtobool(
-    os.getenv("FEATURE_STORIES_TOPIC_AND_TIME_PROMOS_ENABLED", "True")
 )
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(

@@ -2,73 +2,83 @@
     margin: 2rem 0;
     padding-bottom: 1rem;
 
-  &__heading {
-    font-size: 2rem;
-    font-weight: 400;
-    font-family: $font__supria-sans;
-  }
-
-  &__description {
-    font-size: 1rem;
-  }
-
-  &__list {
-    list-style: none;
-    padding-left: 0;
-  }
-
-  &__list-item {
-    background-color: $color__grey-100;
-    margin-bottom: 1rem;
-    padding: 1rem 1.5rem;
-    border-left: 0.25rem solid $color__yellow_2;
-    text-align: left;
-
-    @media (min-width: map-get($grid-breakpoints, "md")) {
-        border-left-width: 0.3125rem;
-    }
-  }
-
-  &__link {
-    transition: none;
-    text-decoration-thickness: 1px;
-
-    &:hover {
-      text-decoration: none;
-      color: $color__white;
+    @media (min-width: #{$screen__lg + 1px}) {
+        .template-focused-article & {
+            padding-left: 10%;
+            padding-right: 10%;
+        }
     }
 
-    // &:focus {
-    //   outline: 0.313rem solid $color__white;
-    //   outline-offset: .25rem;
-    // }
-  }
-
-  &__link-heading {
-    margin-top: 0;
-    font-family: $font__body;
-    font-weight: $font-weight-bold;
-    font-size: 1.125rem;
-
-    @media (min-width: map-get($grid-breakpoints, "md")) {
-        font-size: 1.25rem;
+    &__heading {
+        font-size: 2rem;
+        font-weight: 400;
+        font-family: $font__supria-sans;
     }
-  }
 
-  &__link-text {
-    font-family: $font__body;
-    font-size: 1rem;
-
-    p {
-        margin-bottom: 0;
+    &__description {
+        font-size: 1rem;
     }
-  }
 
-  &__link, &__link-text {
-    color: $color__black;
+    &__list {
+        list-style: none;
+        padding-left: 0;
+    }
 
-    &:hover, &:visited, &:focus {
+    &__list-item {
+        background-color: $color__grey-100;
+        margin-bottom: 1rem;
+        padding: 1rem 1.5rem;
+        border-left: 0.3125rem solid $color__yellow;
+        text-align: left;
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            border-left-width: 0.3125rem;
+        }
+    }
+
+    &__link {
+        transition: none;
+        text-decoration-thickness: 1px;
+
+        &:hover {
+            text-decoration: none;
+            color: $color__white;
+        }
+
+        // &:focus {
+        //   outline: 0.313rem solid $color__white;
+        //   outline-offset: .25rem;
+        // }
+    }
+
+    &__link-heading {
+        margin-top: 0;
+        font-family: $font__body;
+        font-weight: $font-weight-bold;
+        font-size: 1.125rem;
+
+        @media (min-width: map-get($grid-breakpoints, "md")) {
+            font-size: 1.25rem;
+        }
+    }
+
+    &__link-text {
+        font-family: $font__body;
+        font-size: 1rem;
+
+        p {
+            margin-bottom: 0;
+        }
+    }
+
+    &__link,
+    &__link-text {
         color: $color__black;
+
+        &:hover,
+        &:visited,
+        &:focus {
+            color: $color__black;
+        }
     }
-  }
 }

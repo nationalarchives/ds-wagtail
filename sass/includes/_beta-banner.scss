@@ -1,6 +1,6 @@
 .beta-banner {
-    background-color: $color__yellow_3;
-    padding: 1rem 3rem;
+    background-color: $color__cream;
+    padding: 1rem 0;
 
     &__standfirst {
         margin-bottom: 1rem;
@@ -31,7 +31,7 @@
         }
 
         &:focus {
-            outline: 0.3125rem solid $color__blue_4;
+            outline: 0.3125rem solid $color__navy;
             outline-offset: 0.125rem;
         }
     }

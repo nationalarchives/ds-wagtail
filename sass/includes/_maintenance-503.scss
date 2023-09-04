@@ -1,5 +1,5 @@
 .maintenance {
-    background-color: $color__yellow_2;
+    background-color: $color__yellow;
     padding: 2rem;
     margin: 3rem 20rem;
     text-align: center;
@@ -31,7 +31,7 @@
         @media only screen and (max-width: $screen__md) {
             padding: 1rem;
         }
-    
+
         @media only screen and (max-width: $screen__sm) {
             font-size: 2rem;
         }
@@ -45,7 +45,7 @@
         }
 
         a {
-            color: $color__dark;
+            color: $color__grey-700;
         }
     }
 

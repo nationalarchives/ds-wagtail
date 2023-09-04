@@ -14,8 +14,8 @@
         <ul class="related-resources__list">
             {% for item in value.promoted_items %}
             <li class="related-resources__list-item">
-                <h3 class="related-resources__link-heading">
-                    <a class="related-resources__link" href="{{ item.url }}" data-component-name="{{ value.block.meta.label }}: {{ value.heading }}" data-link-type="Links" data-link="{{ item.title }}">
+                <h3 class="tna-heading related-resources__link-heading">
+                    <a class="related-resources__link" href="{{ item.url }}" data-component-name="{{value.block.meta.label}}: {{ value.heading }}" data-link-type="{{value.block.meta.label}}" data-link="{{ item.title }}" data-position="{{ forloop.counter0 }}">
                         {{ item.title }}
                     </a>
                 </h3>

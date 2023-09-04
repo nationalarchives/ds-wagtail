@@ -2,22 +2,23 @@
 
 <div class="search-sort-view">
     <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
-        <h2 class="search-sort-view__heading">
-            <label for="{{form.sort_by.id_for_label}}">Sort by</label>
+        <h2 class="tna-heading search-sort-view__heading">
+            <label for="id_sort_by_mobile">Sort by</label>
         </h2>
         {{ form.sort_by.errors }}
-        {{ form.sort_by }}
+        {% render_sort_by_input form=form id_suffix="mobile" %}
 
-        {{ 'sort_by'|include_hidden_fields:form }}
+        {# render hidden inputs for fields controlled by other forms #}
+        {% render_fields_as_hidden form exclude='sort_by' %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
 </div>
 
-<div class="search-filters">
+<div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-    <h2 class="search-filters__heading">Refine results</h2>
-            
+    <h2 class="tna-heading search-filters__heading">Refine results</h2>
+
     <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
         {% comment %}
          {% if form.group.value == 'tna' %}
@@ -30,35 +31,69 @@
             {% endif %}
         {% endcomment %}
 
-        <div class="search-filters__form-block">
-            <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
-            {{ form.filter_keyword }}
-            {{ form.filter_keyword.errors }}
-            <input type="submit" value="Search" class="search-filters__submit">
-        </div>
+        {% if form.filter_keyword %}
+            <div class="search-filters__form-block">
+                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+                {{ form.filter_keyword }}
+                {{ form.filter_keyword.errors }}
+                <input type="submit" value="Search" class="search-filters__submit">
+            </div>
+        {% endif %}
 
         <div class="search-filters__form-block">
-            <h3 class="sr-only">Edit filters</h3>
+            <h3 class="tna-heading sr-only">Edit filters</h3>
 
-            {% comment %} <div class="search-filters__accordion-section">
-                <fieldset>
-                    <legend>
-                        <h4 class="search-filters__accordion-section-heading">Date</h4>
-                    </legend>
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend>
+                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
+                        </legend>
 
-                    <div>
-                        <input type="checkbox" name="date-example" id="date-example">
-                        <label for="date-example" class='search-filters__label'>Example century goes here</label>
-                    </div>
+                        <span class="example-text">For example, 27 3 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
 
-                    <input type="submit" value="Update" class="search-filters__submit">
-                </fieldset>
+                        <div class="search-filters__creation-date-section">
+                            
+                            {% if form.covering_date_from.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.covering_date_from.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.covering_date_from }}
+                        </div>
 
-            </div> {% endcomment %}
+                        <div class="search-filters__creation-date-section">
+                            {{ form.covering_date_to.label_tag }}
+                            {% if form.covering_date_to.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
+                                    {{ form.covering_date_to.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.covering_date_to }}
+                        </div>
 
-            {% include "search/includes/filter.html" with field=form.collection %}
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+            {% endif %}
+
+
+            {% include "search/includes/filter.html" with field=form.collection %} <!--collections filter-->
+
+
+
+            {% include "search/includes/filter.html" with field=form.time_period %}
 
             {% include "search/includes/filter.html" with field=form.topic %}
+
+            {% include "search/includes/filter.html" with field=form.format %}
 
             {% if form.group.value != bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.level %}
@@ -66,34 +101,47 @@
 
             {% include "search/includes/filter.html" with field=form.closure %}
 
+
+
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                {# show date filter on filtered results count or date validation error #}
-                {% if page.paginator.count > 0 or form.opening_start_date.errors or form.opening_end_date.errors %}
-                    <div class="search-filters__accordion-section">
-                        <fieldset>
-                            <legend>
-                                <h4 class="search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
-                            </legend>
-                            <p id="search_filters__opening-date-help-text">Helper text here (needed for when YYYY MM DD are eventually made separate fields)</p>
+                <div class="search-filters__accordion-section">
+                    <fieldset>
+                        <legend>
+                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                        </legend>
 
-                            <div class="search-filters__opening-date-section">
-                                {{ form.opening_start_date.errors }}
-                                {{ form.opening_start_date.label_tag }}
-                                {{ form.opening_start_date }}
-                            </div>
-                            <div class="search-filters__opening-date-section">
-                                {{ form.opening_end_date.errors }}
-                                {{ form.opening_end_date.label_tag }}
-                                {{ form.opening_end_date }}
-                            </div>
+                        <div class="search-filters__opening-date-section">
+                            <span class="example-text">For example, 27 3 2007</span><br>
+                            {{ form.opening_start_date.label_tag }}
+                            {% if form.opening_start_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_start_date.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.opening_start_date }}
+                        </div>
+                        
 
-                            <input type="submit" value="Update" class="search-filters__submit">
+                        <div class="search-filters__opening-date-section">
+                            {{ form.opening_end_date.label_tag }}
+                            {% if form.opening_end_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_end_date.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.opening_end_date }}
+                        </div>
 
-                            {# include hidden fields when date is errored or updated #}
-                            {{ selected_filters.items|hidden_fields_for_date_filter:form }}
-                        </fieldset>
-                    </div>
-                {% endif %}
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+
             {% endif %}
 
             {% if form.group.value == bucketkeys.NONTNA.value %}
@@ -111,8 +159,10 @@
             {% endif %}
         </div>
 
-        {{ 'filter_keyword collection topic level closure opening_start_date opening_end_date catalogue_source held_by type country location'|include_hidden_fields:form }}
-      
+        {# render hidden inputs for fields controlled by other forms #}
+        {% render_fields_as_hidden form include='q group sort_by sort_order' %}
+
     </form>
+
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>

@@ -1,12 +1,12 @@
 {% load records_tags %}
 {% load search_tags %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ bucket.label }}</h2>
+    <h2 class="tna-heading featured-search__heading">{{ bucket.label }}</h2>
     <ul class="featured-search__results-list">
         {% for record in bucket.results %}
             <li class="featured-search__results-list-item">
                 <a href="{% record_url record %}" class="featured-search__results-link">
-                    <h3 class="featured-search__results-heading">
+                    <h3 class="tna-heading featured-search__results-heading">
                         {{ record.summary_title }}
                     </h3>
                 </a>

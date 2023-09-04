@@ -1,10 +1,11 @@
 .search-landing-hero {
-    background-color: $color__grey-1;
-    padding: 2rem;
+    background-color: $color__grey-100;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
     padding-bottom: 5rem;
+    margin-bottom: 2rem;
 
     &__container {
-        max-width: 80rem;
         margin-left: auto;
         margin-right: auto;
     }
@@ -33,15 +34,15 @@
             width: 100%;
             max-width: 60rem;
             height: 3.1rem;
-            border: 1px solid $color__grey-2;
+            border: 1px solid $color__grey-800;
             border-radius: 0.25rem;
             padding: 1rem;
             vertical-align: top;
             font-size: 1.1rem;
-            margin-right: .2rem;
-            margin-bottom: .2rem;
+            margin-right: 0.2rem;
+            margin-bottom: 0.2rem;
             &:focus {
-                outline: 5px solid $color__focus-blue-outline-light-bg;
+                outline: 5px solid $color__focus-outline-light-bg;
             }
         }
     }

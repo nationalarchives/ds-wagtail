@@ -6,9 +6,9 @@
 
     &:hover,
     &:focus {
-        background-color: $color__dark;
+        background-color: $color__grey-700;
         color: $color__white;
-        outline: 0.3125rem solid $color__dark;
+        outline: 0.3125rem solid $color__grey-700;
     }
 
     &__container {
@@ -20,7 +20,7 @@
         width: 100%;
 
         &--dark {
-            background: $color__grey-2;
+            background: $color__grey-800;
         }
     }
 

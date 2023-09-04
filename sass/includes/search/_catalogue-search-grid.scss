@@ -29,7 +29,7 @@
     }
 
     &__results {
-        border-top: 4px dotted $color__grey-4;
+        border-top: 4px dotted $color__grey-500;
         margin-left: 1rem;
         padding: 1rem;
 
@@ -46,7 +46,7 @@
             grid-column: 1 / -1;
             -ms-grid-column: 1;
             -ms-grid-row: 2;
-            
+
             border-top: 0;
         }
     }

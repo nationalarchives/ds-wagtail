@@ -5,7 +5,7 @@ from django.utils.html import format_html
 from wagtail import hooks
 
 
-@hooks.register("insert_editor_css")
+@hooks.register("insert_global_admin_css")
 def editor_css():
     return format_html(
         '<link rel="stylesheet" href="{}">', static("css/wagtail-overrides.css")
@@ -17,6 +17,11 @@ def editor_js():
     return format_html(
         '<script src="{}"></script>', static("admin/js/inputLengthIndicators.js")
     )
+
+
+@hooks.register("insert_global_admin_js")
+def global_admin_js():
+    return "<script>window.chooserUrls = {'pageChooser': '/admin/choose-page/','externalLinkChooser': '/admin/choose-external-link/','emailLinkChooser': '/admin/choose-email-link/','phoneLinkChooser': '/admin/choose-phone-link/','anchorLinkChooser': '/admin/choose-anchor-link/',}; </script> <script src='/static/wagtailadmin/js/modal-workflow.js?v=4a9c2a53'></script>"
 
 
 @hooks.register("insert_global_admin_css")

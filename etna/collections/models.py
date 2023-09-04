@@ -1,13 +1,19 @@
-from typing import List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
+from wagtail.admin.panels import (
+    FieldPanel,
+    InlinePanel,
+    MultiFieldPanel,
+    PageChooserPanel,
+)
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -18,11 +24,12 @@ from ..core.models import (
     BasePage,
     BasePageWithIntro,
     ContentWarningMixin,
-    HeroImageMixin,
+    RequiredHeroImageMixin,
 )
 from ..core.utils import skos_id_from_text
 from .blocks import (
     ExplorerIndexPageStreamBlock,
+    FeaturedArticlesBlock,
     TimePeriodExplorerPageStreamBlock,
     TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
@@ -38,23 +45,67 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
 
     body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
 
+    articles_title = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Stories from the collection",
+        help_text=_("The title to display for the articles section."),
+    )
+
+    articles_introduction = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text=_("The introduction to display for the articles section."),
+    )
+
+    featured_article = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article, or Record Article."
+        ),
+    )
+
+    featured_articles = StreamField(
+        [("featuredarticles", FeaturedArticlesBlock())],
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
+
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
+        MultiFieldPanel(
+            [
+                FieldPanel("articles_title"),
+                FieldPanel("articles_introduction"),
+                PageChooserPanel(
+                    "featured_article",
+                    ["articles.ArticlePage", "articles.RecordArticlePage"],
+                ),
+                FieldPanel("featured_articles"),
+            ],
+            heading=_("Articles section"),
+        ),
     ]
+
     settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
         "collections.TopicExplorerIndexPage",
         "collections.TimePeriodExplorerIndexPage",
-        "articles.RecordArticlePage",
+        "articles.ArticleIndexPage",
     ]
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
 
-class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
 
     This page lists all child TopicExplorerPages
@@ -64,14 +115,14 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -102,8 +153,8 @@ class TopicExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
-    """Topic explorer BasePage.
+class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
+    """Topic explorer page.
 
     This page represents one of the many categories a user may select in the
     collection explorer.
@@ -111,6 +162,11 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = _("topic page")
+        verbose_name_plural = _("topic pages")
+        verbose_name_public = _("explore by topic")
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -133,7 +189,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
@@ -146,7 +202,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TopicExplorerIndexPage",
@@ -181,18 +237,34 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         obj.skos_id = self.skos_id
         return obj
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4=self.title,
+        )
+        return data
+
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
@@ -201,7 +273,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -211,7 +283,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
@@ -232,7 +304,7 @@ class TopicExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         )
 
 
-class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
+class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Time period explorer BasePage.
 
     This page lists all child TimePeriodExplorerPage
@@ -242,14 +314,14 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
 
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("body"),
         ]
     )
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     @cached_property
     def featured_pages(self):
@@ -280,7 +352,7 @@ class TimePeriodExplorerIndexPage(HeroImageMixin, BasePageWithIntro):
     ]
 
 
-class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -289,6 +361,11 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     An explorer page is responsible for listing pages related to its topic/time period,
     which may be a HighlightGallery, Article, or RecordArticle.
     """
+
+    class Meta:
+        verbose_name = _("time period page")
+        verbose_name_plural = _("time period pages")
+        verbose_name_public = _("explore by time period")
 
     featured_article = models.ForeignKey(
         "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
@@ -303,7 +380,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     end_year = models.IntegerField(blank=False)
     content_panels = (
         BasePageWithIntro.content_panels
-        + HeroImageMixin.content_panels
+        + RequiredHeroImageMixin.content_panels
         + [
             FieldPanel("featured_article", heading=_("Featured article")),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
@@ -316,7 +393,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     settings_panels = BasePage.settings_panels + AlertMixin.settings_panels
 
     # DataLayerMixin overrides
-    gtm_content_group = "Explorer"
+    gtm_content_group = "Explore the collection"
 
     parent_page_types = [
         "collections.TimePeriodExplorerIndexPage",
@@ -327,18 +404,34 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.HighlightGalleryPage",
     ]
 
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension7=self.title,
+        )
+        return data
+
     @cached_property
     def related_articles(self):
-        from etna.articles.models import ArticlePage
+        """Return a list of related pages for rendering in the related articles section
+        of the page. To add another page type, import it and add it to the list.
+        """
 
-        return (
-            ArticlePage.objects.exclude(pk=self.featured_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")
-        )
+        from etna.articles.models import ArticlePage, FocusedArticlePage
+
+        page_list = []
+
+        for page_type in [ArticlePage, FocusedArticlePage]:
+            page_list.extend(
+                page_type.objects.exclude(pk=self.featured_article_id)
+                .filter(pk__in=self.related_page_pks)
+                .live()
+                .public()
+                .select_related("teaser_image")
+                .prefetch_related("teaser_image__renditions")
+            )
+
+        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
 
     @cached_property
     def related_record_articles(self):
@@ -347,7 +440,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
         return (
             RecordArticlePage.objects.exclude(pk=self.featured_record_article)
             .live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")[:4]
@@ -357,7 +450,7 @@ class TimePeriodExplorerPage(HeroImageMixin, AlertMixin, BasePageWithIntro):
     def related_highlight_gallery_pages(self):
         return (
             HighlightGalleryPage.objects.live()
-            # .public() TODO: Un-comment this when Collection Explorer goes live - pages are currently private
+            .public()
             .filter(pk__in=self.related_page_pks)
             .order_by("title")
             .select_related("teaser_image")
@@ -536,6 +629,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     class Meta:
         verbose_name = _("highlight gallery page")
         verbose_name_plural = _("highlight gallery pages")
+        verbose_name_public = _("in pictures")
 
     content_panels = BasePageWithIntro.content_panels + [
         MultiFieldPanel(
@@ -568,6 +662,8 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         index.SearchField("teaser_text"),
     ]
 
+    gtm_content_group = "Explore the collection"
+
     @cached_property
     def highlights(self):
         """
@@ -591,6 +687,14 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         for item in self.highlights:
             strings.extend([item.image.title, item.image.description])
         return " | ".join(strings)
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(
+            customDimension4="; ".join(obj.title for obj in self.topics),
+            customDimension7="; ".join(obj.title for obj in self.time_periods),
+        )
+        return data
 
 
 class Highlight(Orderable):

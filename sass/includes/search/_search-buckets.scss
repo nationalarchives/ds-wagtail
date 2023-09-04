@@ -1,6 +1,6 @@
 .search-buckets {
     @media only screen and (max-width: $screen__md) {
-        display:none;
+        display: none;
     }
     display: flex;
     flex-wrap: wrap;
@@ -11,14 +11,15 @@
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 0;
-        padding-left: 2rem;
-        padding-right: 2rem;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
         order: -1;
         &-item {
             display: inline-block;
             list-style: none;
             width: 18%;
-            margin-right: 1rem;
+            margin-right: 0.5rem;
+            margin-left: 0.5rem;
             min-height: 100px;
             margin-bottom: 1rem;
             font-family: $font__supria-sans;
@@ -26,7 +27,7 @@
 
             &--website {
                 @extend .search-buckets__list-item;
-                width:15%;
+                width: 15%;
             }
 
             @media only screen and (max-width: $screen__md) {
@@ -46,25 +47,26 @@
         text-align: center;
         padding: 14px;
         display: block;
-        border: 1px solid $color__grey-4;
+        border: 1px solid $color__grey-500;
         width: 100%;
         margin-top: auto;
         margin-bottom: auto;
         text-decoration: none;
         height: 100%;
-        color: $color__blue_4;
+        color: $color__navy;
         display: flex;
         align-items: center;
         justify-content: center;
 
         &:visited {
-            color: $color__blue_4;
+            color: $color__navy;
         }
 
-        &[aria-current=true], &:hover, &:focus {
-            background-color: $color__yellow_2;
+        &[aria-current="true"],
+        &:hover,
+        &:focus {
+            background-color: $color__yellow;
             color: #000;
-
         }
     }
     &__toggle-button {

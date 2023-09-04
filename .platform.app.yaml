@@ -15,7 +15,7 @@ variables:
     # pip
     POETRY_VIRTUALENVS_IN_PROJECT: true
     POETRY_VIRTUALENVS_CREATE: true
-    POETRY_VERSION: 1.4.2
+    POETRY_VERSION: 1.5.1
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
@@ -52,16 +52,12 @@ hooks:
     # Install NVM
     unset NPM_CONFIG_PREFIX
     export NVM_DIR="$PLATFORM_APP_DIR/.nvm"
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     
-    nvm install v14.19.1
-    nvm use v14.19.1
-    npm install -g sass
-    sass sass/etna.scss:templates/static/css/dist/etna.css
-
+    nvm install
     npm install
-    npx webpack --config webpack.config.js
+    npm run compile
 
     poetry run python manage.py collectstatic --no-input
   deploy: |

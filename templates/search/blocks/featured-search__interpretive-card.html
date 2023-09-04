@@ -1,7 +1,8 @@
 {% load records_tags %}
 {% load search_tags %}
+<!--
 <div class="featured-search__interpretive-results-section">
-    <h2 class="featured-search__heading">{{ bucket.label }}</h2>
+    <h2 class="tna-heading featured-search__heading">{{ bucket.label }}</h2>
     {% for record in bucket.results|slice:":1" %}
         <div>
             <a href={% record_url record %} aria-hidden="true" tabindex="-1" class="featured-search__interpretive-card-link">
@@ -17,7 +18,7 @@
             </a>
                 <div>
                     <a href={% record_url record %} class="featured-search__results-link">
-                        <h3 class="featured-search__heading">
+                        <h3 class="tna-heading featured-search__heading">
                             {{ record.summary_title }}
                         </h3>
                     </a>
@@ -27,3 +28,4 @@
     {% endfor %}
     <a href="/search/website?q={{ search_query|iriencode }}&group={{ bucket.key }}" class="featured-search__results-link">See all relevant {{ bucket.label_with_count }}</a>
 </div>
+-->

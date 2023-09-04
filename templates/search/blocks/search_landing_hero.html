@@ -1,14 +1,18 @@
 <form action="/search/featured" method="GET" id="analytics-search-landing-hero">
     <div class="search-landing-hero">
-        <div class="search-landing-hero__container">
-            <h1 class="search-landing-hero__heading">Search</h1>
-            <div class="search-landing-hero__form">
-                <label for="id_q" class="search-landing-hero__label">
-                    <span class="sr-only">Enter search term.</span> For example, naturalisation or medal cards
-                </label>
-                {{ form.q.errors }}
-                {{ form.q }}
-                <input type="submit" value="Search" class="search-landing-hero__form-submit">
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
+                <div class="search-landing-hero__container">
+                    <h1 class="tna-heading search-landing-hero__heading">Search</h1>
+                    <div class="search-landing-hero__form">
+                        <label for="id_q" class="search-landing-hero__label">
+                            <span class="sr-only">Enter search term.</span> For example, naturalisation or medal cards
+                        </label>
+                        {{ form.q.errors }}
+                        {{ form.q }}
+                        <input type="submit" value="Search" class="search-landing-hero__form-submit">
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -1,49 +1,20 @@
-FROM python:3.11
-LABEL maintainer="dan@numiko.com"
+FROM ghcr.io/nationalarchives/tna-python-django:latest
 
-ARG POETRY_HOME=/opt/poetry
+ENV NPM_BUILD_COMMAND=compile
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 
-EXPOSE 8000
-
-ENV \
-  # python:
-  PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PYTHONDONTWRITEBYTECODE=1 \
-  # pip:
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  # poetry:
-  POETRY_HOME=/opt/poetry \
-  POETRY_VERSION=1.4.2 \
-  POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=false
-
-WORKDIR /app
-
-# Upgrade pip
-RUN pip install --upgrade pip
-
-# Install poetry as per official guidance:
-# https://github.com/python-poetry/poetry#installation
-RUN curl -sSL "https://install.python-poetry.org" | python -
-
-# Add poetry's bin directory to PATH
-ENV PATH="$POETRY_HOME/bin:$PATH"
-
-# Copy files used by poetry
-COPY pyproject.toml poetry.lock ./
-
-# Copy application code
-COPY . .
-
-# Load shortcuts
-RUN cp ./bash/bashrc.sh /root/.bashrc
+# Copy in the project dependency files and config
+COPY --chown=app pyproject.toml poetry.lock ./
+COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./
+COPY --chown=app sass sass
+COPY --chown=app scripts scripts
+COPY --chown=app config config
+COPY --chown=app templates templates
 
 # Install Python dependencies AND the 'etna' app
-RUN poetry install
+RUN tna-build
 
-# Do nothing forever (use 'exec' to resuse the container)
-CMD tail -f /dev/null
+# Copy application code
+COPY --chown=app . .
+
+CMD ["tna-run", "config.wsgi:application"]

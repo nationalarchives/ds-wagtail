@@ -48,6 +48,11 @@ def web_exec(cmd, check_returncode=False):
     return container_exec(cmd, "web", check_returncode)
 
 
+def dev_exec(cmd, check_returncode=False):
+    "Execute something in the 'dev' Docker container."
+    return container_exec(cmd, "dev", check_returncode)
+
+
 def cli_exec(cmd, check_returncode=False):
     return container_exec(cmd, "cli", check_returncode)
 
@@ -89,14 +94,6 @@ def start(c, container_name=None):
 
 
 @task
-def run(c):
-    start(c, "web")
-    web_exec("poetry install --remove-untracked --no-root")
-    web_exec("python manage.py migrate")
-    return web_exec("python manage.py runserver 0.0.0.0:8000")
-
-
-@task
 def stop(c, container_name=None):
     """
     Stop the local development environment.
@@ -105,6 +102,14 @@ def stop(c, container_name=None):
     if container_name:
         cmd += f" {container_name}"
     local(cmd)
+
+
+@task
+def update_deps(c):
+    """
+    Update npm and poetry dependencies through Docker containers
+    """
+    local("docker-compose --profile update up -d")
 
 
 @task
@@ -125,15 +130,20 @@ def sh(c):
 
 
 @task
+def dev(c):
+    """
+    Run bash in the local development helper container (with access to dependencies)
+    """
+    subprocess.run(["docker", "exec", "-it", "dev", "/bin/bash"])
+
+
+@task
 def format(c):
     """
     Apply formatters to code python code
     """
-    start(c, "web")
-    print("Formatting with isort...")
-    web_exec("isort etna config")
-    print("Formatting with Black...")
-    web_exec("black etna config")
+    start(c, "dev")
+    dev_exec("format")
 
 
 @task
@@ -141,19 +151,43 @@ def test(c, lint=False, parallel=False):
     """
     Run python tests in the web container
     """
-    start(c, "web")
+    start(c, "dev")
     if lint:
         print("Checking isort compliance...")
-        web_exec("isort etna config --check --diff")
+        dev_exec("isort . --check --diff")
         print("Checking Black compliance...")
-        web_exec("black etna config --check --diff --color --fast")
+        dev_exec("black . --check --diff --color --fast")
         print("Checking flake8 compliance...")
-        web_exec("flake8 etna config")
+        dev_exec("flake8 .")
         print("Running Django tests...")
-    cmd = "python manage.py test"
+    cmd = "manage test"
     if parallel:
         cmd += " --parallel"
-    web_exec(cmd)
+    dev_exec(cmd)
+
+
+# -----------------------------------------------------------------------------
+# Database operations
+# -----------------------------------------------------------------------------
+
+
+@task
+def create_superuser(c):
+    """
+    Run bash in a local container (with access to dependencies)
+    """
+    subprocess.run(
+        [
+            "docker-compose",
+            "exec",
+            "web",
+            "poetry",
+            "run",
+            "python",
+            "manage.py",
+            "createsuperuser",
+        ]
+    )
 
 
 # -----------------------------------------------------------------------------
@@ -263,6 +297,7 @@ def pull_staging_data(c):
 def pull_staging_media(c):
     """Pull all media from the staging platform.sh env"""
     pull_media_from_platform(c, STAGING_APP_INSTANCE)
+    subprocess.run(["docker-compose", "exec", "cli", "chmod", "-fR", "777", "media"])
 
 
 # -----------------------------------------------------------------------------

@@ -1,19 +1,23 @@
 from typing import Dict, List, Optional, Union
 
 from django import forms
+from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 
+from wagtail.models import get_page_models
+
 from etna.core.fields import END_OF_MONTH, DateInputField
+from etna.core.models import BasePage
 
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
-    CUSTOM_ERROR_MESSAGES,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
 )
+from ..collections.models import TimePeriodExplorerPage, TopicExplorerPage
 
 
 class SearchFilterCheckboxList(forms.widgets.CheckboxSelectMultiple):
@@ -104,8 +108,6 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
 class FeaturedSearchForm(forms.Form):
     q = forms.CharField(
         label="Search here",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
@@ -123,8 +125,6 @@ class BaseCollectionSearchForm(forms.Form):
 
     q = forms.CharField(
         label="Search term",
-        # If no query is provided, pass None to client to fetch all results.
-        empty_value=None,
         required=False,
         widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
@@ -175,7 +175,7 @@ class BaseCollectionSearchForm(forms.Form):
         validate_input=False,
     )
     country = DynamicMultipleChoiceField(
-        label="Country",
+        label="Location",  # TODO: This label is a temporary update until we have the api adjusted.
         required=False,
     )
     location = DynamicMultipleChoiceField(
@@ -184,12 +184,28 @@ class BaseCollectionSearchForm(forms.Form):
     )
     opening_start_date = DateInputField(
         label="From",
+        label_suffix=":",
         required=False,
         default_day=1,
         default_month=1,
     )
     opening_end_date = DateInputField(
         label="To",
+        label_suffix=":",
+        required=False,
+        default_day=END_OF_MONTH,
+        default_month=12,
+    )
+    covering_date_from = DateInputField(
+        label="From",
+        label_suffix=":",
+        required=False,
+        default_day=1,
+        default_month=1,
+    )
+    covering_date_to = DateInputField(
+        label="To",
+        label_suffix=":",
         required=False,
         default_day=END_OF_MONTH,
         default_month=12,
@@ -226,20 +242,29 @@ class BaseCollectionSearchForm(forms.Form):
     )
 
     def clean(self):
-        """Collect selected filters to pass to the client in view."""
+        """
+        Overrides Form.clean() to perform additional validation on date ranges within the form.
+        """
         cleaned_data = super().clean()
 
-        try:
-            if cleaned_data.get("opening_start_date") > cleaned_data.get(
-                "opening_end_date"
-            ):
+        for from_field_name, to_field_name in (
+            ("opening_start_date", "opening_end_date"),
+            ("covering_date_from", "covering_date_to"),
+        ):
+            from_val = cleaned_data.get(from_field_name)
+            to_val = cleaned_data.get(to_field_name)
+
+            if from_val and to_val and from_val > to_val:
+                # if both dates have valid values but invalid when together
                 self.add_error(
-                    "opening_start_date",
-                    CUSTOM_ERROR_MESSAGES.get("invalid_date_range"),
+                    from_field_name,
+                    ValidationError(
+                        "This date must be earlier than or equal to the 'to' date.",
+                        code="date_range_invalid",
+                    ),
                 )
-        except TypeError:
-            # Either one or both date fields are empty. No further validation necessary.
-            pass
+                # remove from cleaned data
+                cleaned_data.pop(from_field_name, None)
 
         return cleaned_data
 
@@ -258,3 +283,72 @@ class WebsiteSearchForm(BaseCollectionSearchForm):
         choices=WEBSITE_BUCKETS.as_choices(),
         required=False,
     )
+
+
+class NativeWebsiteSearchForm(FeaturedSearchForm):
+    format = forms.MultipleChoiceField(
+        label="Format",
+        required=False,
+        choices=[],  # updated by __init__
+        widget=SearchFilterCheckboxList,
+    )
+    topic = forms.ModelMultipleChoiceField(
+        queryset=TopicExplorerPage.objects.none(),  # updated by __init__
+        to_field_name="slug",
+        label="Topic",
+        required=False,
+        widget=SearchFilterCheckboxList,
+    )
+    time_period = forms.ModelMultipleChoiceField(
+        queryset=TimePeriodExplorerPage.objects.none(),  # updated by __init__
+        to_field_name="slug",
+        label="Time period",
+        required=False,
+        widget=SearchFilterCheckboxList,
+    )
+    per_page = forms.IntegerField(
+        min_value=10,
+        max_value=50,
+        required=False,
+    )
+    sort_by = forms.ChoiceField(
+        label="Sort by",
+        choices=[
+            ("", "Relevance"),
+            ("-first_published_at", "Date (newest first)"),
+            ("first_published_at", "Date (oldest first)"),
+            ("title", "Title (A–Z)"),
+            ("-title", "Title (Z–A)"),
+        ],
+        required=False,
+        widget=forms.Select(attrs={"class": "search-sort-view__form-select"}),
+    )
+    display = forms.ChoiceField(
+        choices=[
+            ("grid", "Grid"),
+            ("list", "List"),
+        ],
+        required=False,
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        self.fields["format"].choices = [
+            (model._meta.label_lower, model.type_label())
+            for model in get_page_models()
+            if issubclass(model, BasePage) and not model._meta.abstract
+        ]
+
+        self.fields["topic"].queryset = (
+            TopicExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("title")
+        )
+        self.fields["time_period"].queryset = (
+            TimePeriodExplorerPage.objects.live()
+            .public()
+            .defer_streamfields()
+            .order_by("start_year")
+        )

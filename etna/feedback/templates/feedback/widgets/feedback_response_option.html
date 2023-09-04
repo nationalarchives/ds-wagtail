@@ -1,8 +1,0 @@
-{% load static %}
-<label class="feedback-response-option__label" data-option-label="{{ widget.label }}" data-option-sentiment="{{ widget.sentiment }}">
-    {% include "django/forms/widgets/input.html" %}
-    {% if widget.icon %}
-        <img class="thumb-image" src="{% static widget.icon %}" alt="">
-    {% endif %}
-    <span class="label-text">{{ widget.label }}</span>
-</label>

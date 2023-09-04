@@ -1,5 +1,7 @@
 .promoted-pages {
-    background-color: $color__yellow_5;
+    &--bg {
+        background-color: $color__cream;
+    }
 
     &__image {
         width: 100%;
@@ -19,7 +21,7 @@
         margin-bottom: 1.5rem;
         margin-top: 3rem;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin-bottom: 3rem;
             margin-top: 3.75rem;
         }
@@ -34,10 +36,10 @@
         margin-bottom: 0;
         text-decoration: none;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin-bottom: 4.5rem;
-            }
         }
+    }
 
     &__title {
         @include font-size(l);
@@ -48,14 +50,17 @@
     }
 
     &__title-link {
-        &:hover, &:visited, &:focus {
+        &,
+        &:hover,
+        &:visited,
+        &:focus {
             color: $color__black;
         }
     }
 
     &__text {
         @include font-size(s);
-        color: $color__grey-6;
+        color: $color__grey-700;
         font-family: $font__body;
         line-height: 1.5;
 
@@ -63,5 +68,4 @@
             margin-bottom: 0.75rem;
         }
     }
-
 }

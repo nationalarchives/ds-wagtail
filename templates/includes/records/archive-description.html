@@ -1,9 +1,9 @@
 <div class="archive-description">
-    <h1>{{ record.title }}</h1>
+    <h1 class="tna-heading">{{ record.title }}</h1>
     <div class="archive-description__contact">
-        <h2>Contact information</h2>
+        <h2 class="tna-heading">Contact information</h2>
         
-        <p><b>Address:</b> {{ record.archive_contact_info.address_line1 }}, {{ record.archive_contact_info.address_town }}, {{ record.archive_contact_info.address_country }}. {{ record.archive_contact_info.postcode }}<a href="{{ record.archive_contact_info.map_url }}<">(view on a map)</a></p>
+        <p><b>Address:</b> {{ record.archive_contact_info.address_line1 }}, {{ record.archive_contact_info.address_town }}, {{ record.archive_contact_info.address_country }}. {{ record.archive_contact_info.postcode }}</p>
         
         {% if record.archive_contact_info.telephone %}
             <p><b>Telephone:</b> <a href="tel:{{ record.archive_contact_info.telephone }}">{{ record.archive_contact_info.telephone }}</a></p>
@@ -49,13 +49,13 @@
     <div class="archive-description__container">
         <div class="row">
             <div class="col-lg-8">
-                <h2>Key information</h2>
+                <h2 class="tna-heading">Key information</h2>
                 ARCHON code: {{ record.reference_number }}</br>
                 {{ record.archive_further_info.comments }}
             </div>
             {% if record.archive_collections.collection_info_list %}
                 <div class="col-lg-4">
-                    <h2>Summary of collections</h2>                    
+                    <h2 class="tna-heading">Summary of collections</h2>                    
                     <ul>
                         {% for collection in record.archive_collections.collection_info_list %}
                             {% if collection.count > 0 %}

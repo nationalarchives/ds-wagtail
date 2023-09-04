@@ -1,6 +1,5 @@
 .search-results {
     &__metadata {
-
         &-count {
             margin-bottom: 0.5rem;
             &-highlight {
@@ -18,7 +17,7 @@
         flex-wrap: wrap;
 
         @media only screen and (max-width: $screen__sm) {
-            display:none; //hiding on mobile
+            display: none; //hiding on mobile
         }
 
         &-item {
@@ -34,12 +33,11 @@
             margin-right: 0.5rem;
             margin-top: 0.5rem;
 
-
             &-link {
                 display: inline-block;
                 width: 1rem;
                 height: 1rem;
-                background-image: url('/static/images/icons/close.svg');
+                background-image: url("/static/images/icons/close.svg");
                 background-repeat: no-repeat;
                 background-size: 1rem;
                 background-position: center;
@@ -54,10 +52,10 @@
                 padding-right: 0;
 
                 &-link {
-                    color: $color__blue_4;
+                    color: $color__navy;
 
                     &:visited {
-                        color: $color__blue_4;
+                        color: $color__navy;
                     }
                 }
             }
@@ -80,11 +78,11 @@
         }
     }
 
-    &__export, &__share {
-
+    &__export,
+    &__share {
         &-container {
-            background-color: $color__grey-4;
-            border: 1px solid $color__grey-7;
+            background-color: $color__grey-500;
+            border: 1px solid $color__grey-400;
             display: block;
             padding: 1rem;
             margin-bottom: 1rem;
@@ -93,14 +91,14 @@
         }
 
         &-link {
-            color: $color__blue_3;
+            color: $color__navy;
 
-            &:visited, &:hover {
-                color: $color__blue_3;
+            &:visited,
+            &:hover {
+                color: $color__navy;
             }
         }
         &-icon {
-
             margin-left: auto;
             margin-right: 1rem;
             height: 35px;
@@ -120,16 +118,15 @@
         font-weight: bold;
 
         &:focus {
-            outline: 5px solid $color__focus-blue-outline-light-bg;
-
+            outline: 5px solid $color__focus-outline-light-bg;
         }
 
         @media only screen and (max-width: $screen__xl) {
-            background:$color__black;
+            background: $color__black;
             color: $color__white;
             margin-left: 1.5rem;
-            width:90%;
-            padding:0.8rem;
+            width: 90%;
+            padding: 0.8rem;
         }
 
         &:before {
@@ -148,8 +145,7 @@
             }
         }
 
-        &[aria-expanded=true] {
-
+        &[aria-expanded="true"] {
             &:before {
                 //background-image: url('/static/images/icons/triangle-down.svg');
                 @media only screen and (max-width: $screen__md) {
@@ -159,27 +155,25 @@
         }
     }
 
-
     &__explainer {
         margin-left: 1rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
-        display:none; //hiding on mobile
-        @media only screen and (min-width: $screen__md) {
+        display: none; //hiding on mobile
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 2rem;
             margin-right: 2rem;
             display: block;
-
         }
     }
 }
 
 .filter-indicator {
-    background: #FFCC00;
+    background: #ffcc00;
     color: #1d2124;
     padding: 0.4rem 1rem;
     text-decoration: none;
     margin-left: 0.8rem;
     border-radius: 5px;
-    display:inline-block;
+    display: inline-block;
 }

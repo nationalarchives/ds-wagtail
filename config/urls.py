@@ -40,6 +40,7 @@ private_urls = [
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
     path("feedback/", include("etna.feedback.urls")),
+    path("healthcheck/", include("etna.healthcheck.urls")),
 ]
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
@@ -105,7 +106,7 @@ public_urls = [
     path(
         r"search/website/",
         setting_controlled_login_required(
-            search_views.WebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.NativeWebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search-website",
     ),

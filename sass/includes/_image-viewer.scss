@@ -1,225 +1,223 @@
 .no-js {
-  .image-viewer {
-    &__toolbar {
-      display: none;
-    }
+    .image-viewer {
+        &__toolbar {
+            display: none;
+        }
 
-    &__viewer {
-      display: none;
-    }
+        &__viewer {
+            display: none;
+        }
 
-    img {
-      display: block;
-      max-width: 100%;
-      margin: auto;
+        img {
+            display: block;
+            max-width: 100%;
+            margin: auto;
+        }
     }
-  }
 }
 
 .js {
-  .image-viewer {
-    height: 100vh;
+    .image-viewer {
+        height: 100vh;
 
-    &__header {
-      position: absolute;
-      top: 0;
-    }
+        &__header {
+            position: absolute;
+            top: 0;
+        }
 
-    &__footer {
-      position: absolute;
-      bottom: 0;
+        &__footer {
+            position: absolute;
+            bottom: 0;
+        }
     }
-  }
 }
 
 .image-viewer {
-  background-color: $color__black;
-  color: $color__white;
-
-  &__header {
-    width: 100vw;
-    display: flex;
-    justify-content: space-between;
-    z-index: 1;
     background-color: $color__black;
-  }
+    color: $color__white;
 
-  &__reference {
-
-    h1 {
-      font-size: 1.3rem;
-      margin-left: 1.3rem;
-      margin-bottom: 1.3rem;
-
-      span {
-        display: inline-block;
-      }
-
-      @media (max-width: $screen__sm) {
-        font-size: 1rem;
-        margin: 0.2rem;
-      }
-    }
-  }
-
-  &__toolbar {
-    margin: 1.3rem;
-    text-align: left;
-    line-height: 1rem;
-
-    &.fullpage {
-      background-color: $color__black;
-      position: absolute !important;
-      margin: 0;
-      bottom: 0;
-      text-align: left;
-      z-index: 999;
+    &__header {
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+        z-index: 1;
+        background-color: $color__black;
     }
 
-    @media (max-width: $screen__sm) {
-      margin: 0.2rem;
+    &__reference {
+        h1 {
+            font-size: 1.3rem;
+            margin-left: 1.3rem;
+            margin-bottom: 1.3rem;
+
+            span {
+                display: inline-block;
+            }
+
+            @media (max-width: $screen__sm) {
+                font-size: 1rem;
+                margin: 0.2rem;
+            }
+        }
     }
 
-    > div {
-      // This is necessary to address an issue relating to a div which is inserted
-      // by OpenSeadragon. At high zoom levels (300% +) this obscures the image_number and
-      // prevents pointer events from being picked up.
-      pointer-events: none;
-      display: none;
+    &__toolbar {
+        margin: 1.3rem;
+        text-align: left;
+        line-height: 1rem;
+
+        &.fullpage {
+            background-color: $color__black;
+            position: absolute !important;
+            margin: 0;
+            bottom: 0;
+            text-align: left;
+            z-index: 999;
+        }
+
+        @media (max-width: $screen__sm) {
+            margin: 0.2rem;
+        }
+
+        > div {
+            // This is necessary to address an issue relating to a div which is inserted
+            // by OpenSeadragon. At high zoom levels (300% +) this obscures the image_number and
+            // prevents pointer events from being picked up.
+            pointer-events: none;
+            display: none;
+        }
+
+        button {
+            border: none;
+            background-color: transparent;
+            text-decoration: underline;
+            border-radius: 0;
+            cursor: pointer;
+            color: $color__white;
+            margin: 0.5rem;
+
+            &:focus {
+                outline: 5px solid $color__focus-outline-dark-bg;
+                text-decoration: none;
+            }
+        }
     }
 
-    button {
-      border: none;
-      background-color: transparent;
-      text-decoration: underline;
-      border-radius: 0;
-      cursor: pointer;
-      color: $color__white;
-      margin: 0.5rem;
-
-      &:focus {
-        outline: 5px solid $color__focus-blue-outline-dark-bg;
-        text-decoration: none;
-      }
-    }
-  }
-
-  &__viewer {
-    width: 100vw;
-    height: 100vh;
-    background-color: $color__black;
-  }
-
-  &__footer {
-    width: 100vw;
-    display: flex;
-    justify-content: space-between;
-    background-color: $color__black;
-
-
-    ul {
-      margin: 0;
-      padding: 0;
+    &__viewer {
+        width: 100vw;
+        height: 100vh;
+        background-color: $color__black;
     }
 
-    li {
-      display: inline-block;
+    &__footer {
+        width: 100vw;
+        display: flex;
+        justify-content: space-between;
+        background-color: $color__black;
+
+        ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+        }
+
+        a {
+            color: $color__white;
+        }
     }
 
-    a {
-      color: $color__white;
-    }
-  }
+    &__navigation {
+        background-color: $color__pastel-green;
+        padding: 1.3rem 2rem;
 
-  &__navigation {
-    background-color: $color__green;
-    padding: 1.3rem 2rem;
+        ul {
+            margin: 0;
+            padding: 0;
+        }
 
-    ul {
-      margin: 0;
-      padding: 0;
-    }
+        li {
+            display: inline-block;
+            padding: 0 0.5rem;
 
-    li {
-      display: inline-block;
-      padding: 0 0.5rem;
+            @media (max-width: $screen__md) {
+                text-align: center;
+                width: 48%;
+            }
+        }
 
-      @media (max-width: $screen__md) {        
-        text-align: center;
-        width: 48%;
-      }
-    }
+        @media (max-width: $screen__sm) {
+            padding: 0.2rem;
+        }
 
-    @media (max-width: $screen__sm) {
-      padding: 0.2rem;
-    }
+        li:first-child a {
+            margin-right: 1rem;
 
-    li:first-child a {
-      margin-right: 1rem;
+            @media (max-width: $screen__md) {
+                margin-right: 0;
+            }
+        }
 
-      @media (max-width: $screen__md) {
-        margin-right: 0;
-      }
-    }
+        a {
+            color: $color__black;
+            padding: 0 0.2rem;
 
-    a {
-      color: $color__black;
-      padding: 0 0.2rem;
+            @media (max-width: $screen__md) {
+                padding: 0;
+            }
 
-      @media (max-width: $screen__md) {
-        padding: 0;
-      }
-
-      &:focus {
-        text-decoration: none;
-        outline-color: $color__focus-blue-outline-light-bg;
-      }
-    }
-  }
-
-  &__pagination {
-    padding: 1.3rem;
-    text-align: right;
-    line-height: 1rem;
-
-    @media (max-width: $screen__sm) {
-      padding: 0.2rem;
+            &:focus {
+                text-decoration: none;
+                outline-color: $color__focus-outline-light-bg;
+            }
+        }
     }
 
-    li {
-      margin: 0.5rem;
+    &__pagination {
+        padding: 1.3rem;
+        text-align: right;
+        line-height: 1rem;
+
+        @media (max-width: $screen__sm) {
+            padding: 0.2rem;
+        }
+
+        li {
+            margin: 0.5rem;
+        }
+
+        a {
+            margin-right: 1rem;
+
+            &:focus {
+                text-decoration: none;
+                color: $color__white;
+                outline-color: $color__focus-outline-dark-bg;
+            }
+        }
     }
 
-    a {
-      margin-right: 1rem;
-
-      &:focus {
-        text-decoration: none;
-        color: $color__white;
-        outline-color: $color__focus-blue-outline-dark-bg;
-      }
-    }
-  }
-
-  .openseadragon-canvas {
-    &:focus {
-      border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
-    }
-    &:focus-visible {
-      outline: none;
-    }
-  }
-
-  &__viewer.fullpage {
     .openseadragon-canvas {
-      height: 95% !important;
-
-      &:focus {
-        border: 0.3125rem solid $color__focus-blue-outline-dark-bg !important;
-      }
-      &:focus-visible {
-        outline: none;
-      }
+        &:focus {
+            border: 0.3125rem solid $color__focus-outline-dark-bg !important;
+        }
+        &:focus-visible {
+            outline: none;
+        }
     }
-  }
+
+    &__viewer.fullpage {
+        .openseadragon-canvas {
+            height: 95% !important;
+
+            &:focus {
+                border: 0.3125rem solid $color__focus-outline-dark-bg !important;
+            }
+            &:focus-visible {
+                outline: none;
+            }
+        }
+    }
 }

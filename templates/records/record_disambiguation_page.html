@@ -8,7 +8,7 @@
 
     <div class="disambiguation-explanation">
         <div class="container">
-            <h2 class="disambiguation-explanation__subheading">Several records share the
+            <h2 class="tna-heading disambiguation-explanation__subheading">Several records share the
                 reference {{ queried_reference_number }}. </h2>
             <p>Very occasionally (less than 1% of the time) a record shares its catalogue reference with other records
                 in the catalogue, usually with its own sub-records. This is the case with
@@ -25,7 +25,7 @@
                 id="analytics-associated-records">
 
                 {% for record in record_results_page %}
-                    {% include 'includes/card-group-record-summary-no-image.html' %}
+                    {% include 'includes/card-group-record-summary-no-image.html' with url=record.non_reference_number_url %}
                 {% endfor %}
 
             </ul>
@@ -79,5 +79,14 @@
             </ul>
         {% endif %}
     </nav>
+
+    <script>        
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            "event": "disambiguation-page",
+            "data-link-type": "Disambiguation link",
+            "record-links": "{{ record_results_page|length }}"
+        });
+    </script>
 
 {% endblock content %}

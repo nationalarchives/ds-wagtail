@@ -1,4 +1,4 @@
-{% load wagtailimages_tags %}
+{% load wagtailimages_tags records_tags %}
 <div class="record-links__wrapper">
     <ul class="record-links__list">
         {% for item in value.items %}
@@ -10,8 +10,10 @@
                         </div>
                     {% endif %}
                     <div class="record-links__item__text">
-                        <p class="record-links__item__reference"><span class="sr-only">Link to record </span>FROM OUR COLLECTION: {{ item.record.reference_number }}</p>
-                        <p class="record-links__item__title"><a href="{{ item.record.url }}">{{ item.descriptive_title }}</a></p>
+                        <p class="record-links__item__reference"><span class="sr-only">Link to record </span>IN THE CATALOGUE: {{ item.record.reference_number }}</p>
+                        <h2 class="tna-heading record-links__item__title">
+                            <a data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}" href="{% record_url item.record is_editorial=True %}">{{ item.descriptive_title }}</a>
+                        </h2>
                         <p class="record-links__item__dates">{{ item.record_dates }}</p>
                     </div>
                 </div>

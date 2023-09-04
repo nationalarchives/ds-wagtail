@@ -1,9 +1,8 @@
 .highlight-gallery-teaser {
     $root: &;
     padding-bottom: 3rem;
-    
-    background-color: $color__yellow_6;
-    
+    background-color: $color__cream;
+
     @media screen and (min-width: map-get($grid-breakpoints, "sm")) {
         margin-bottom: 3rem;
     }
@@ -16,9 +15,9 @@
         @include font-size("xxl");
         margin: 0;
         padding: 3rem 0 1.5rem 0;
-        
+
         @media (min-width: map-get($grid-breakpoints, "md")) {
-            padding: 5.18rem 0 2.75rem 0;
+            padding: 3rem 0 2.75rem 0;
         }
 
         &::after {
@@ -29,37 +28,46 @@
             display: inline-block;
             top: -50%;
             width: 0.75rem;
-            height: 1.25rem;
+            height: 1rem;
             margin-left: 0.5rem;
         }
     }
-    
-    &__title-link {
-        color: $color__grey-6;
 
-        &:visited{
-            color: $color__grey-8;
+    &__title-link {
+        color: $color__grey-700;
+        text-decoration-thickness: 1px;
+
+        &:visited {
+            color: $color__grey-700;
         }
     }
 
     &__link {
+        color: $color__white;
         text-decoration-color: $color__white;
 
-        &:visited{
-            color: $color__grey-8;
+        &:visited {
+            color: $color__grey-200;
+
+            &:hover {
+                color: $color__white;
+            }
+        }
+
+        &:hover {
+            color: $color__white;
+        }
+
+        &:focus {
+            outline-color: $color__blue;
+            color: $color__blue;
         }
     }
 
     &__card {
-        background-color: $color__grey-6;
+        background-color: $color__grey-700;
         text-decoration: none !important;
-        font-family: $font__supria-sans;
         list-style: none;
-
-        &:hover,
-        &:focus {            
-            outline: 0.313rem solid #1a67a2 !important;
-        }
     }
 
     &__content {
@@ -69,8 +77,9 @@
 
     &__text {
         @include font-size("s");
+        font-family: $font__body;
         line-height: 21px;
-        color: $color__grey-7;
+        color: $color__grey-400;
         margin: 0;
     }
 

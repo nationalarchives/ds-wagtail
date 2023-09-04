@@ -1,28 +1,58 @@
 {% load static wagtailimages_tags wagtailcore_tags %}
-<div class="container">
-    <h2 class="card-grid__title">{{ title|default:"You may be interested in" }}</h2>
-    <div class="card-grid card-grid__duo">
-        {% if topic %}
-            <a class="card" href="{% pageurl topic %}">
-                <div class="card__container card__container--dark">
-                    {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
-                    <img height="350"
-                         width="540"
-                         src="{{ teaser_image.url }}"
-                         class="card__image"
-                         alt=""/>
-                    <p class="card__text">{{ topic.title }}</p>
+<div class="related-highlight-cards">
+    <div class="container">
+        <h2 class="tna-heading card-grid__title">{{ title|default:"You may be interested in" }}</h2>
+        <div class="card-grid card-grid__duo">
+            {% if topic %}
+                <div class="related-highlight-cards__card">
+                    <a href="{% pageurl topic %}" aria-labelledby="topic-card-title" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}" tabindex="-1">
+                        {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
+                        <img height="350"
+                            width="540"
+                            src="{{ teaser_image.url }}"
+                            class="related-highlight-cards__image"
+                            alt=""/>
+                    </a>
+                    <div class="related-highlight-cards__content">
+                        <p class="related-highlight-cards__card-title" id="topic-card-title">
+                            <a href="{% pageurl topic %}" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card text" data-card-position="0" data-card-title="{{ topic.title }}">
+                                {{ topic.title }}
+                            </a>
+                        </p>
+                    </div>
                 </div>
-            </a>
-        {% endif %}
-        {% if time_period %}
-            <a class="card" href="{% pageurl time_period %}">
-                <div class="card__container card__container--dark">
-                    {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
-                    <img height="350" width="540" class="card__image" src="{{ teaser_image.url }}" alt=""/>
-                    <p class="card__text">{{ time_period.title }}</p>
+            {% endif %}
+            {% if time_period %}
+                <div class="related-highlight-cards__card">
+                    <a 
+                    href="{% pageurl time_period %}"
+                    aria-labelledby="time-period-card-title" 
+                    data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
+                    data-link-type="Card image"
+                    data-card-position="1"
+                    data-card-title="{{ time_period.title }}" tabindex="-1">
+                        {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
+                        <img height="350" 
+                            width="540"
+                            class="related-highlight-cards__image"
+                            src="{{ teaser_image.url }}"
+                            alt=""/>
+                    </a>
+                    <div class="related-highlight-cards__content">      
+                        <p class="related-highlight-cards__card-title" id="time-period-card-title">
+                            <a href="{% pageurl time_period %}" class="related-highlight-cards__card-title-link" 
+                            data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
+                            data-link-type="Card text"
+                            data-card-position="1"
+                            data-card-title="{{ time_period.title }}">
+                                {{ time_period.title }}
+                            </a>
+                        </p>
+                    </div>
                 </div>
-            </a>
-        {% endif %}
+            {% endif %}
+        </div>
     </div>
 </div>
+
+

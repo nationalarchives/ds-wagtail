@@ -1,104 +1,94 @@
 // Screen sizes
-$screen__sm: 30rem;
-$screen__md: 48rem;
-$screen__lg: 62rem;
-$screen__xl: 75rem;
+$screen__sm: 480px;
+$screen__md: 768px;
+$screen__lg: 992px;
+$screen__xl: 1200px;
 
 // Fonts
-$font__open-sans: 'Open Sans', sans-serif;
-$font__roboto: 'Roboto', sans-serif;
-$font__roboto-mono: 'Roboto Mono', sans-serif;
+$font__open-sans: "Open Sans", sans-serif;
+$font__roboto: "Roboto", sans-serif;
+$font__roboto-mono: "Roboto Mono", sans-serif;
 $font__supria-sans: supria-sans-condensed, sans-serif;
-
-// Mapping fonts
 $font__body: $font__open-sans;
 $font__heading: $font__roboto;
 $font__mono: $font__roboto-mono;
 
 // Colours
-$color__text: #26262a;
-$color__text-secondary: #6f777b;
-
+// Defined in the design system here
+// https://www.figma.com/file/uo8YY98lLws8E1HEfpdn5X/TNA-Etna---Design-system?type=design&node-id=8%3A38&t=lYJParR28eBFxCEk-1
 $color__black: #000000;
-$color__dark: #26262a;
 $color__white: #ffffff;
-$color__yellow: #fbe2bc;
-$color__yellow_2: #ffcc00;
-$color__yellow_3: #f9f7e2;
-$color__yellow_4: #ffcc002b;
-$color__yellow_5: #faf6e0;
-$color__yellow_6: #fbf8ea;
-$color__green: #dde5d5;
-$color__pink: #fad3d4;
-$color__blue_2: #1e1e2a;
-$color__blue_3: #134571;
-$color__blue_4: #1a67a2;
-$color__blue_6: #00b0ff; // new colour
+$color__yellow: #ffcc00;
+$color__yellow-dark: #ffcc002b; // isn't part of design system
+$color__pastel-green: #dde5d5;
+$color__pastel-pink: #fad3d4;
+$color__blue: #00b0ff;
+$color__purple: #4c2c92; // isn't part of design system
+$color__red: #d4351c;
+$color__cream: #f9f7e2;
+$color__navy: #004c7e;
 
-$color__purple: #4c2c92;
-$color__red: #a72916;
-
-$color__grey-9: #d9d9d6; // new colour
-$color__grey-8: #4e5a5a;
-$color__grey-7: #cccccc;
-$color__grey-6: #343338;
-$color__grey-5: #efefef;
-$color__grey-4: #dddddd;
-$color__grey-3: #6f777b;
-$color__grey-2: #26262a;
-$color__grey-1: #f1f1f1;
 $color__grey-100: #fafafa;
+$color__grey-200: #f4f4f4;
+$color__grey-300: #d9d9d6; // Light grey in brand guidelines, previously $color__grey-9
+$color__grey-400: #cccccc; // previously $color__grey-7
+$color__grey-500: #8c9694; // Mid grey in brand guidelines
+$color__grey-600: #747474;
+$color__grey-700: #343338; // Previously $color__grey-6
+$color__grey-800: #26262a; // Previously $color__grey-2
+$color__grey-900: #0f1517;
 
 $color__black-80pc: rgba($color__black, 0.8);
 
-$color__alert: $color__yellow;
-$color__success: $color__green;
+$color__alert: $color__cream;
+$color__success: $color__pastel-green;
 $color__error: $color__red;
 
-$color__link: $color__blue_4;
-$color__link-hover: $color__blue_3;
+$color__link: $color__black;
+$color__link-dark-bg: $color__white;
+$color__link-hover: $color__navy;
+$color__link-hover-dark-bg: $color__blue;
 $color__link-visited: $color__purple;
-$color__link-active: $color__blue_2;
-$color__card-hover: $color__dark;
+$color__card-hover: $color__grey-700;
 
-$color__focus-blue-outline-light-bg: $color__link;
-$color__focus-blue-outline-dark-bg: $color__blue_6;
+$color__focus-outline-light-bg: $color__navy;
+$color__focus-outline-dark-bg: $color__blue;
 
 // Borders
-$default__border: 0.125rem solid $color__black;
+$default__border: 0.063rem solid $color__grey-400;
 
 // Transitions
 $transition_duration: 0.25s;
 
 // Paths
-$fa_path: '../../images/fontawesome-svgs/';
+$fa_path: "../../images/fontawesome-svgs/";
 
 // Images
-$fa_chevron_up: '#{$fa_path}chevron-up.svg';
-$fa_chevron_up_white: '#{$fa_path}chevron-up-white.svg';
-$fa_chevron_right: '#{$fa_path}chevron-right.svg';
-$fa_chevron_right_white: '#{$fa_path}chevron-right-white.svg';
-$fa_chevron_right_disabled: '#{$fa_path}chevron-right-disabled.svg';
-$fa_chevron_down: '#{$fa_path}chevron-down.svg';
-$fa_chevron_down_white: '#{$fa_path}chevron-down-white.svg';
-$fa_chevron_left: '#{$fa_path}chevron-left.svg';
-$fa_chevron_left_white: '#{$fa_path}chevron-left-white.svg';
-$fa_chevron_left_disabled: '#{$fa_path}chevron-left-disabled.svg';
-$fa_chevron_double_right_yellow: '#{$fa_path}chevron-double-right-yellow.svg';
+$fa_chevron_up: "#{$fa_path}chevron-up.svg";
+$fa_chevron_up_white: "#{$fa_path}chevron-up-white.svg";
+$fa_chevron_right: "#{$fa_path}chevron-right.svg";
+$fa_chevron_right_white: "#{$fa_path}chevron-right-white.svg";
+$fa_chevron_right_disabled: "#{$fa_path}chevron-right-disabled.svg";
+$fa_chevron_down: "#{$fa_path}chevron-down.svg";
+$fa_chevron_down_white: "#{$fa_path}chevron-down-white.svg";
+$fa_chevron_left: "#{$fa_path}chevron-left.svg";
+$fa_chevron_left_white: "#{$fa_path}chevron-left-white.svg";
+$fa_chevron_left_disabled: "#{$fa_path}chevron-left-disabled.svg";
+$fa_chevron_double_right_yellow: "#{$fa_path}chevron-double-right-yellow.svg";
 
-$fa_arrow_down: '#{$fa_path}arrow-down.svg';
-$fa_arrow_right: '#{$fa_path}arrow-right.svg';
+$fa_arrow_down: "#{$fa_path}arrow-down.svg";
+$fa_arrow_right: "#{$fa_path}arrow-right.svg";
 
-$fa_search_plus: '#{$fa_path}search-plus-white.svg';
+$fa_search_plus: "#{$fa_path}search-plus-white.svg";
 
-$fa_download_white: '#{$fa_path}download-white.svg';
+$fa_download_white: "#{$fa_path}download-white.svg";
 
-$fa_diagram: '#{$fa_path}diagram-3.svg';
-$fa_list_blue: '#{$fa_path}list-ul-blue.svg';
+$fa_diagram: "#{$fa_path}diagram-3.svg";
+$fa_list_blue: "#{$fa_path}list-ul-blue.svg";
 
-$fa_folder: '#{$fa_path}folder.svg';
-$fa_x-mark: '#{$fa_path}x-mark.svg';
-$fa_plus: '#{$fa_path}plus.svg';
+$fa_folder: "#{$fa_path}folder.svg";
+$fa_x-mark: "#{$fa_path}x-mark.svg";
+$fa_plus: "#{$fa_path}plus.svg";
 
 // Font sizes
 $base-font-size: 16px;

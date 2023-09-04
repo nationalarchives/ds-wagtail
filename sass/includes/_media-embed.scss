@@ -37,7 +37,7 @@
     }
 
     &__icon {
-        background-color: $color__blue_3;
+        background-color: $color__grey-800;
         border-radius: 50%;
         margin: 0 auto 1rem;
         padding: 1rem;
@@ -121,7 +121,7 @@
         }
 
         &:focus {
-            outline: 0.313rem solid $color__focus-blue-outline-dark-bg;
+            outline: 0.313rem solid $color__focus-outline-dark-bg;
         }
 
         &:focus:not(:focus-visible) {
@@ -134,7 +134,7 @@
 
         &:before {
             display: inline-block;
-            content: '';
+            content: "";
             height: 24px;
             width: 24px;
             margin-right: 5px;
@@ -154,7 +154,7 @@
     &__transcript-text {
         display: block;
         width: 100%;
-        background-color: $color__dark;
+        background-color: $color__grey-700;
         color: $color__white;
         padding: 2rem 2rem 0;
         overflow: hidden;

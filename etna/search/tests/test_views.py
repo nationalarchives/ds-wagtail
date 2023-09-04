@@ -14,6 +14,7 @@ import responses
 from etna.ciim.constants import DEFAULT_AGGREGATIONS, Aggregation, Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
+from ...articles.factories import ArticlePageFactory
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
 from ...home.models import HomePage
@@ -44,9 +45,6 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
             "https://kong.test/data/searchAll",
             json={
                 "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
                     create_response(),
                     create_response(),
                     create_response(),
@@ -240,11 +238,9 @@ class EndToEndSearchTestCase(TestCase):
     bucket_links_html = (
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
-    current_bucket_description_html = (
-        '<p class="search-results__explainer search-results__explainer--bucket">'
-    )
     search_within_option_html = '<label for="id_filter_keyword" class="search-filters__label--block">Search within results:</label>'
-    sort_order_options_html = '<label for="id_sort_by">Sort by</label>'
+    sort_by_desktop_options_html = '<label for="id_sort_by_desktop">Sort by</label>'
+    sort_by_mobile_options_html = '<label for="id_sort_by_mobile">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
@@ -271,23 +267,19 @@ class EndToEndSearchTestCase(TestCase):
     def assertBucketLinksNotRendered(self, response):
         self.assertNotIn(self.bucket_links_html, response)
 
-    def assertCurrentBucketDescriptionRendered(self, response):
-        self.assertIn(self.current_bucket_description_html, response)
-
-    def assertCurrentBucketDescriptionNotRendered(self, response):
-        self.assertNotIn(self.current_bucket_description_html, response)
-
     def assertSearchWithinOptionRendered(self, response):
         self.assertIn(self.search_within_option_html, response)
 
     def assertSearchWithinOptionNotRendered(self, response):
         self.assertNotIn(self.search_within_option_html, response)
 
-    def assertSortOrderOptionsRendered(self, response):
-        self.assertIn(self.sort_order_options_html, response)
+    def assertSortByOptionsRendered(self, response):
+        self.assertIn(self.sort_by_desktop_options_html, response)
+        self.assertIn(self.sort_by_mobile_options_html, response)
 
-    def assertSortOrderOptionsNotRendered(self, response):
-        self.assertNotIn(self.sort_order_options_html, response)
+    def assertSortByOptionsNotRendered(self, response):
+        self.assertNotIn(self.sort_by_desktop_options_html, response)
+        self.assertNotIn(self.sort_by_mobile_options_html, response)
 
     def assertFilterOptionsRendered(self, response):
         self.assertIn(self.filter_options_html, response)
@@ -315,7 +307,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD NOT see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -331,9 +322,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -348,7 +338,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message.
 
         They SHOULD NOT see:
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -366,9 +355,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertNoResultsMessagingRendered(content)
 
         # SHOULD NOT see
-        self.assertCurrentBucketDescriptionNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -381,7 +369,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -400,9 +387,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
         self.assertFilterOptionsRendered(content)
 
@@ -418,7 +404,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         They SHOULD see:
         - Names, result counts and links for all buckets
-        - A description of the current bucket
         - A "Search within these results" option
         - Options to change sort order and display style of results
         - Filter options to refine the search
@@ -441,9 +426,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        self.assertCurrentBucketDescriptionRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
 
@@ -458,8 +442,13 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         all selected filters should remain available as filter options,
         even if they were excluded from the API results 'aggregations'
         list due to not having any matches.
+
+        Test covers create session info for Catalogue search with query.
         """
         self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+
+        expected_url = "/search/catalogue/?q=test%2Bsearch%2Bterm&group=tna&collection=DEFE&collection=HW&collection=RGO&level=Piece&closure=Open%2BDocument%252C%2BOpen%2BDescription"
+
         response = self.client.get(
             self.test_url,
             data={
@@ -470,7 +459,11 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "closure": "Open+Document%2C+Open+Description",
             },
         )
+        session = self.client.session
         content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="DEFE"', content)
         self.assertIn('<input type="checkbox" name="collection" value="HW"', content)
@@ -485,31 +478,42 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - A "No results" message in search results
         - Particular message from "No results"
         - A "Search within these results" option
-        - Error message in area of Record opening date
+        - Error message next to the 'to' date field
         """
-        response = self.client.get(
-            self.test_url,
-            data={
-                "group": "tna",
-                "opening_start_date_2": "2000",
-                "opening_end_date_2": "1900",
-                "q": "london",
-                "filter_keyword": "kew",
-            },
-        )
-        content = str(response.content)
+        for from_date_field, to_date_field in (
+            ("opening_start_date", "opening_end_date"),
+            ("covering_date_from", "covering_date_to"),
+        ):
+            response = self.client.get(
+                self.test_url,
+                data={
+                    "group": "tna",
+                    f"{from_date_field}_0": "01",
+                    f"{from_date_field}_1": "01",
+                    f"{from_date_field}_2": "2000",
+                    f"{to_date_field}_0": "01",
+                    f"{to_date_field}_1": "01",
+                    f"{to_date_field}_2": "1999",
+                    "q": "london",
+                    "filter_keyword": "kew",
+                },
+            )
+            content = str(response.content)
 
-        # SHOULD see
-        self.assertNoResultsMessagingRendered(content)
-        self.assertIn(
-            "<li>Try removing any filters that you may have applied</li>", content
-        )
-        self.assertSearchWithinOptionRendered(content)
-        self.assertIn(
-            "<li>There is a problem. Start date cannot be after end date.</li>", content
-        )
+            # SHOULD see
+            self.assertNoResultsMessagingRendered(content)
+            self.assertIn(
+                "<li>Try removing any filters that you may have applied</li>", content
+            )
+            self.assertSearchWithinOptionRendered(content)
+            self.assertIn(from_date_field, response.context["form"].errors)
+            self.assertIn(
+                "<li>This date must be earlier than or equal to the &#x27;to&#x27; date.</li>",
+                content,
+            )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -538,7 +542,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -568,7 +572,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD NOT see
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortOrderOptionsNotRendered(content)
+        self.assertSortByOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -600,7 +604,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
 
@@ -638,7 +642,7 @@ class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortOrderOptionsRendered(content)
+        self.assertSortByOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
 
@@ -672,13 +676,20 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
+class FeaturedSearchTestCase(SearchViewTestCase):
     test_url = reverse_lazy("search-featured")
 
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_search(self):
-        self.client.get(self.test_url)
+    @classmethod
+    def setUpTestData(cls):
+        super().setUpTestData()
+        cls.article_1 = ArticlePageFactory(title="Test article 1")
+        cls.article_2 = ArticlePageFactory(title="How to query the archive")
 
+    @responses.activate
+    def test_without_search_query(self):
+        response = self.client.get(self.test_url)
+
+        # The API should be requested without a search query
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -687,17 +698,31 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "?filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
 
-    @responses.activate
-    def test_search_with_query(self):
-        self.client.get(self.test_url, data={"q": "query"})
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"), "/search/featured/"
+        )
 
+        # When no query is present, website_results should contain the few
+        # most recent pages
+        self.assertEqual(
+            response.context["website_results"], [self.article_2, self.article_1]
+        )
+        self.assertEqual(response.context["website_result_count"], 2)
+
+        # The mocked API response includes zero results, but the website
+        # has 2, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 2)
+
+    @responses.activate
+    def test_with_search_query(self):
+        response = self.client.get(self.test_url, data={"q": "query"})
+
+        # The query should be passed to the search API
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
@@ -707,14 +732,27 @@ class FeaturedSearchAPIIntegrationTest(SearchViewTestCase):
                 "&filterAggregations=group%3Atna"
                 "&filterAggregations=group%3AnonTna"
                 "&filterAggregations=group%3Acreator"
-                "&filterAggregations=group%3Ablog"
-                "&filterAggregations=group%3AresearchGuide"
-                "&filterAggregations=group%3Ainsight"
                 "&size=3"
             ),
         )
 
+        # The 'back_to_search_url' value should have been set for the session
+        self.assertEqual(
+            self.client.session.get("back_to_search_url"),
+            "/search/featured/?q=query",
+        )
 
+        # Because a query is present, a native website search for 'query' will be
+        # performed, and relevant matches included in the response
+        self.assertEqual(response.context["website_results"], [self.article_2])
+        self.assertEqual(response.context["website_result_count"], 1)
+
+        # The mocked API response includes zero results, but the website
+        # has one, so 'result_count' should reflect that
+        self.assertEqual(response.context["result_count"], 1)
+
+
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-website")
 
@@ -740,6 +778,7 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 @override_settings(
     KONG_CLIENT_BASE_URL="https://kong.test",
 )
@@ -1308,248 +1347,8 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
-    @responses.activate
-    def test_datalayer_website_filtered_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog", "topic": "Conservation"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_filtered_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 47,
-                "customMetric2": 1,
-            },
-        )
 
-    @responses.activate
-    def test_datalayer_website_search_blog_query(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"q": "test", "group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog_query.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "test",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 8,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_blog(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "blog"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_blog.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: blog",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 1653,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_researchguide(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "researchGuide"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_researchguide.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: researchGuide",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 359,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_article(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "insight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: insight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 9,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("Highlights bucket to be re-instated at a later date")
-    @responses.activate
-    def test_datalayer_website_search_highlight(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "highlight"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight2.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: highlight",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 67,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_audio(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "audio"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_audio.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: audio",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 644,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_website_search_video(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-website"),
-            query_data={"group": "video"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_video.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "WebsiteSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Website results: video",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 348,
-                "customMetric2": 0,
-            },
-        )
-
-
+@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
 class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-website-long-filter-chooser", kwargs={"field_name": "topic"}

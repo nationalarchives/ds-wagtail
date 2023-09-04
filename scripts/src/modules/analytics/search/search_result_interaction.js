@@ -1,37 +1,17 @@
-import push_to_data_layer from "./../push_to_data_layer";
-
 const addPositionToSearchResults = () => {
-    const results = document.querySelectorAll('[data-analytics-link]');
+    const resultsList = document.getElementById(
+        "analytics-results-list",
+    ).children;
 
-    Array.prototype.forEach.call(results, (element, index) => {
-        element.dataset.analyticsPosition = index;
-    })
-};
-
-const addListenersToResultsList = () => {
-    const resultsList = document.getElementById('analytics-results-list');
-
-    const bucket = document.getElementById('analytics-current-bucket')?.dataset?.currentBucket;
-
-    resultsList.addEventListener('click', (event) => {
-        if (event.target.classList.contains("search-results__list-card-link")) {
-
-            const eventData = {
-                'event': 'search-result' || '',
-                'search-bucket': bucket || '',
-                'data-link-type': 'Search results list' || '',
-                'data-link': event.target.dataset.analyticsLink || '',
-                'data-position': event.target.dataset.analyticsPosition || '',
-            };
-
-            push_to_data_layer(eventData);
-        }
+    Array.prototype.forEach.call(resultsList, (element, index) => {
+        element.querySelector(
+            ".search-results__list-card-heading-link",
+        ).dataset.position = index;
     });
 };
 
 const intialiseSearchResultTracking = () => {
     addPositionToSearchResults();
-    addListenersToResultsList();
 };
 
 export default intialiseSearchResultTracking;

@@ -2,6 +2,7 @@ from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
 
 from wagtail import blocks
+from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
@@ -38,7 +39,7 @@ class ImageBlock(blocks.StructBlock):
     )
 
     caption = blocks.RichTextBlock(
-        features=["link"],
+        features=["bold", "italic", "link"],
         help_text=(
             "An optional caption for non-decorative images, which will be displayed directly below the image. "
             "This could be used for image sources or for other useful metadata."
@@ -85,6 +86,13 @@ class NoCaptionImageBlock(ImageBlock):
     caption = None
 
 
+class ImageOrientationValue(StructValue):
+    def is_portrait(self):
+        image = self.get("image")
+        if image:
+            return image.width < image.height
+
+
 class ContentImageBlock(blocks.StructBlock):
     image = ImageChooserBlock(required=False)
     alt_text = blocks.CharBlock(
@@ -98,7 +106,7 @@ class ContentImageBlock(blocks.StructBlock):
         ),
     )
     caption = blocks.RichTextBlock(
-        features=["link"],
+        features=["bold", "italic", "link"],
         help_text=(
             "If provided, displays directly below the image. Can be used to specify sources, transcripts or "
             "other useful metadata."
@@ -112,3 +120,4 @@ class ContentImageBlock(blocks.StructBlock):
         template = "blocks/content_image.html"
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
+        value_class = ImageOrientationValue

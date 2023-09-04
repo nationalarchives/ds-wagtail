@@ -7,23 +7,17 @@
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
-    <div class="container mt-4">
-        <div class="row">
+    <div class="tna-container mt-4">
             <h2 class="sr-only">Select a time period</h2>
             <ul class="card-group--list-style-none" data-container-name="select-a-time-period" id="analytics-select-a-time-period">
                 {% for child in page.time_period_explorer_pages %}
-                    {% include 'includes/card-group-secondary-nav.html' with page=child.specific %}
+                    {% include 'includes/card-group-secondary-nav.html' with link_page=child.specific card_type="Navigation" %}
                 {% endfor %}
             </ul>
         </div>
         {% if page.body %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% include_block page.body %}
-                </div>
-            </div>
+            {% include_block page.body %}
         {% endif %}
-    </div>
 {% endblock %}
 
 {% block extra_js %}

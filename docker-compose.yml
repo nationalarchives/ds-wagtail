@@ -1,37 +1,86 @@
 version: '3'
 
 services:
+
   db:
+    container_name: db
     image: postgres:12.0
     ports:
-     - "5432:5432"
+      - 5432:5432
     volumes:
-     - ./database_dumps:/app/database_dumps
+      - ./database_dumps:/app/database_dumps
+
   web:
-    platform: linux/amd64
+    container_name: web
     build: .
     volumes:
-      - ./:/app
+      - ./etna:/app/etna
+      - ./config:/app/config
+      - ./sass:/app/sass
+      - ./scripts:/app/scripts
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - ./poetry.lock:/app/poetry.lock
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - media:/media
     depends_on:
-     - db
+      - db
     ports:
-     - 8000:8000 # runserver
-     - 8001:8001 # mkdocs serve
-    # Closely match prod server
-    # command: pipenv run gunicorn config.wsgi:application --bind 0.0.0.0:8000 --timeout 3600 --workers 3 --reload --capture-output
-    # Server for better debugging output
-    command: tail -f /dev/null  # do nothing forever. Use fab sh to run the django server
+      - 8000:8080
+    command: sh /app/bash/run-dev.sh
     restart: on-failure
     init: true
     stdin_open: true
     tty: true
     env_file:
       - .env
+    environment:
+      - ENVIRONMENT=develop
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+      - KEEP_ALIVE=30
+
   cli:
+    container_name: cli
     platform: linux/amd64
     build: platformsh-cli
     volumes:
-      - ./media:/app/media
+      - media:/app/media
       - ./database_dumps:/app/database_dumps
     env_file:
       - .env
+
+  docs:
+    container_name: docs
+    image: squidfunk/mkdocs-material
+    volumes:
+      - .:/docs
+    ports:
+      - 8001:8000
+
+  dev:
+    container_name: dev
+    build:
+      context: .
+      dockerfile: dev/Dockerfile
+    restart: always
+    volumes:
+      - .:/app
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - web
+      - db
+    env_file:
+      - .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
+
+volumes:
+  media:
