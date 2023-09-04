@@ -58,7 +58,7 @@ class TestRenderFeedbackPromptTag(TestCase):
             '<input type="hidden" name="page_revision" id="id_page_revision">', result
         )
         self.assertInHTML(
-            f'<h3 class="feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',
+            f'<h3 class="tna-heading feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',
             result,
         )
 
@@ -83,7 +83,7 @@ class TestRenderFeedbackPromptTag(TestCase):
             result,
         )
         self.assertInHTML(
-            f'<h3 class="feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',
+            f'<h3 class="tna-heading feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',
             result,
         )
 

@@ -1,7 +1,7 @@
 .content-block {
     padding: 0.5rem 0;
 
-    @media (min-width: $screen__lg) {
+    @media (min-width: #{$screen__lg + 1px}) {
         .template-focused-article & {
             padding-left: 10%;
             padding-right: 10%;
