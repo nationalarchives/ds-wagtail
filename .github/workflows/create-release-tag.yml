@@ -1,0 +1,42 @@
+name: Create a release
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to release from'
+        required: false
+        type: string
+        default: main
+
+jobs:
+  build:
+    name: Create a release tag
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.branch }}
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ vars.CI_PYTHON_VERSION }}
+      - uses: snok/install-poetry@v1
+        with:
+          version: ${{ vars.CI_POETRY_VERSION }}
+      - name: Generate tag
+        id: version-tag
+        uses: ./.github/workflows/_generate-calver-tag.yml
+      - name: Update version and push
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "webmaster@nationalarchives.gov.uk"
+          poetry version "${{ steps.version-tag.outputs.CALVER }}"
+          git add pyproject.toml
+          git commit -m "Release ${{ steps.version-tag.outputs.CALVER }}"
+          git push
+      - name: Create tag and push new release branch
+        run: |
+          git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
+          git push --set-upstream origin "release/v${{ steps.version-tag.outputs.CALVER }}"
+          git tag v${{ steps.version-tag.outputs.CALVER }} -m "Version ${{ steps.version-tag.outputs.CALVER }}"
+          git push origin --tags

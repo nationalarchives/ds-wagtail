@@ -1,0 +1,12 @@
+name: Generate calver
+
+on:
+  workflow_call:
+  
+jobs:
+  get-tag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Generate calver
+        run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
