@@ -37,3 +37,12 @@ jobs:
           git push --set-upstream origin "release/v${{ steps.version-tag.outputs.CALVER }}"
           git tag v${{ steps.version-tag.outputs.CALVER }} -m "Version ${{ steps.version-tag.outputs.CALVER }}"
           git push origin --tags
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: v${{ steps.version-tag.outputs.CALVER }}
+          release_name: Release ${{ github.ref }}
+          draft: true
+          prerelease: false
