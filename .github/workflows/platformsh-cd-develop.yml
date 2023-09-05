@@ -1,9 +1,28 @@
-name: CD (platform.sh)
+name: CD - develop (platform.sh)
 
 on:
-  release:
-    types:
-      - published
+  push:
+    branches:
+      # - main
+      - develop
+    paths:
+      # Host config
+      - '.plaform/**'
+      - '.platform.app.yaml'
+      - 'gunicorn.conf.py'
+      # Python config
+      - 'poetry.lock'
+      - 'pyproject.toml'
+      # NPM config
+      - 'package.json'
+      - 'package-lock.json'
+      - 'webpack.config.js'
+      # App changes
+      - 'config/**'
+      - 'sass/**'
+      - 'scripts/**'
+      - 'templates/**'
+      - 'etna/**'
 
 jobs:
   ci:
@@ -24,7 +43,7 @@ jobs:
           cli-token: ${{ secrets.PLATFORM_CLI_TOKEN }}
           ssh-private-key: ${{ secrets.PLATFORM_SSH_KEY }}
           force-push: true
-          environment-name: main
+          environment-name: develop
 
   notify-slack:
     runs-on: ubuntu-latest
@@ -34,4 +53,4 @@ jobs:
     - uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_TITLE: "A deployment to main is complete"
+        SLACK_TITLE: "A deployment to develop is complete"
