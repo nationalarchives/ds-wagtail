@@ -26,6 +26,9 @@ jobs:
       - name: Generate tag
         id: version-tag
         uses: ./.github/workflows/_generate-calver-tag.yml
+      - name: Create new release branch
+        run: |
+          git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
       - name: Update version and push
         run: |
           git config --global user.name "GitHub Action"
@@ -36,7 +39,6 @@ jobs:
           git push
       - name: Create tag and push new release branch
         run: |
-          git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
           git push --set-upstream origin "release/v${{ steps.version-tag.outputs.CALVER }}"
           git tag v${{ steps.version-tag.outputs.CALVER }} -m "Version ${{ steps.version-tag.outputs.CALVER }}"
           git push origin --tags
