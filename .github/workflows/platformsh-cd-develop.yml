@@ -3,7 +3,8 @@ name: CD - develop (platform.sh)
 on:
   push:
     branches:
-      - main
+      # - main
+      - develop
     paths:
       # Host config
       - '.plaform/**'
