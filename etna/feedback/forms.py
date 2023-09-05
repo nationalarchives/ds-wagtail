@@ -130,11 +130,23 @@ class FeedbackForm(forms.Form):
                 break
 
         return value
+    
+    def clean_page(self) -> Optional[Page]:
+        page = self.cleaned_data.get("page")
+        print(dir(self))
+
+        if not page:
+            return None # Nothing to validate
+        
+        self.cleaned_data["page_type"] = page.page_type_display_name
+        self.cleaned_data["page_title"] = page.title
+
+        return page
 
     def clean_page_revision(self) -> Optional[Revision]:
         revision = self.cleaned_data.get("page_revision")
         page = self.cleaned_data.get("page")
-
+        
         if not page and not revision:
             return None  # Nothing to validate
 
@@ -160,9 +172,7 @@ class FeedbackForm(forms.Form):
 
         # When valid, add the following values to cleaned_data
         self.cleaned_data["page_revision_published"] = page.last_published_at
-        self.cleaned_data["page_type"] = page.page_type_display_name
-        self.cleaned_data["page_title"] = page.title
-        
+
         return revision
 
 
