@@ -451,7 +451,7 @@ class NativeWebsiteSearchTestCase(TestCase):
         self.assertEqual(response.context_data["paginator"].count, 0)
         self.assertContains(
             response,
-            '<h2 class="featured-search__heading">We did not find any results for your search</h2>',
+            '<h2 class="tna-heading featured-search__heading">We did not find any results for your search</h2>',
             html=True,
         )
 

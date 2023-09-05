@@ -6,7 +6,7 @@
     padding: 0 0.5rem;
     margin: 0.75rem 0 0;
 
-    @media screen and (min-width: $screen__sm) {
+    @media screen and (min-width: #{$screen__sm + 1px}) {
         margin: 0.5rem 0 1.5rem;
     }
 
@@ -23,7 +23,7 @@
             color: $color__link-blue;
         }
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin: 0 0.5rem 0.5rem 0;
         }
     }

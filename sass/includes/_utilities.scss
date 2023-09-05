@@ -22,7 +22,7 @@
         &-l {
             margin-bottom: 3rem; // 48px
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 margin-bottom: 4.563rem; // 72px
             }
         }
@@ -30,7 +30,7 @@
         &-xl {
             margin-bottom: 3rem; // 48px
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 margin-bottom: 4.563rem; // 96px
             }
         }

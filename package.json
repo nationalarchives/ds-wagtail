@@ -34,7 +34,7 @@
     "webpack-cli": "~5.1"
   },
   "dependencies": {
-    "@nationalarchives/frontend": "^0.1.14-prerelease",
+    "@nationalarchives/frontend": "^0.1.16-prerelease",
     "jest": "~29.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1"

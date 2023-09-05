@@ -1,6 +1,7 @@
 .search-sort-view {
     $root: &;
     display: flex;
+    align-items: flex-start;
 
     @media only screen and (max-width: $screen__md) {
         margin-left: 1rem;
@@ -45,7 +46,7 @@
 
     &__mobile {
         padding-bottom: 1em;
-        @media only screen and (min-width: $screen__md) {
+        @media only screen and (min-width: #{$screen__md + 1px}) {
             display: none;
         }
     }
@@ -133,7 +134,7 @@
 
 .search-others {
     margin-bottom: 1rem;
-    @media only screen and (min-width: $screen__md) {
+    @media only screen and (min-width: #{$screen__md + 1px}) {
         display: none;
     }
 

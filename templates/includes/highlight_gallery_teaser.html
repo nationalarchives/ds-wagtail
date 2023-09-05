@@ -1,7 +1,7 @@
 {% load wagtailimages_tags wagtailcore_tags i18n %}
 <section class="highlight-gallery-teaser">
     <div class="container">
-        <h2 class="highlight-gallery-teaser__title">
+        <h2 class="tna-heading highlight-gallery-teaser__title">
             {% trans "Explore records about" %} <a class="highlight-gallery-teaser__title-link"
         href="{% pageurl page %}" 
         data-component-name="Featured card: {% trans "Explore records about" %} {% trans title %}"
@@ -33,7 +33,7 @@
                             alt="{{ card.alt_text }}"/>
                     </a>
                     <div class="highlight-gallery-teaser__content">
-                        <h3 class="highlight-gallery-teaser__text">
+                        <h3 class="tna-heading highlight-gallery-teaser__text">
                             <a class="highlight-gallery-teaser__link"
                             href="{% pageurl card.page %}#highlight{{ forloop.counter0 }}"
                             data-card-position="{{ forloop.counter0 }}"
