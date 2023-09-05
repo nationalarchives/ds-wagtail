@@ -6,7 +6,7 @@
         color: $color__grey-700;
         background: transparent;
 
-        @media (min-width: $screen__lg) {
+        @media (min-width: #{$screen__lg + 1px}) {
             .template-focused-article & {
                 padding-left: 10%;
                 padding-right: 10%;

@@ -1,7 +1,7 @@
 {% load records_tags %}
 {% load search_tags %}
 <div class="featured-search__results-block">
-    <h2 class="featured-search__heading">{{ bucket.label }}</h2>
+    <h2 class="tna-heading featured-search__heading">{{ bucket.label }}</h2>
 
     {% for record in bucket.results|slice:":3" %}
         <div class="featured-search__record-creator">
@@ -14,7 +14,7 @@
                     -->
                 </a>
             </div>
-            <h3 class="featured-search__results-heading"><a href="{% record_url record %}" class="featured-search__results-link">{{ record.summary_title }}</a></h3>
+            <h3 class="tna-heading featured-search__results-heading"><a href="{% record_url record %}" class="featured-search__results-link">{{ record.summary_title }}</a></h3>
         </div>
     {% endfor %}
 

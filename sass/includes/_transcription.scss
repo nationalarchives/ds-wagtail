@@ -59,7 +59,7 @@
         max-height: 100%;
         display: block;
 
-        @media screen and (min-width: $screen__sm) {
+        @media screen and (min-width: #{$screen__sm + 1px}) {
             max-width: 80%;
             margin: 0 auto;
         }

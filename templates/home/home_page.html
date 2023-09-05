@@ -15,8 +15,8 @@
 
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
-    <div class="container pt-2">
-        <div class="row">
+    <div class="tna-container pt-2">
+        <div class="tna-column tna-column--full">
             {% for item in page.body %}
                 {% if item.value.paragraph or item.value.text %}
                     {{item}}
