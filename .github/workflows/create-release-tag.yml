@@ -25,9 +25,7 @@ jobs:
           version: ${{ vars.CI_POETRY_VERSION }}
       - name: Generate tag
         id: version-tag
-        uses: ./.github/workflows/_generate-calver-tag.yml
-        with:
-          branch: ${{ inputs.branch }}
+        run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
       - name: Create new release branch
         run: |
           git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
