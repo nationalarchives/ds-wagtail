@@ -161,8 +161,8 @@ class FeedbackForm(forms.Form):
         # When valid, add the following values to cleaned_data
         self.cleaned_data["page_revision_published"] = page.last_published_at
         self.cleaned_data["page_type"] = page.page_type_display_name
-        self.cleaned_data["page_title"] = page
-
+        self.cleaned_data["page_title"] = page.title
+        
         return revision
 
 
