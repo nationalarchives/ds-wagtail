@@ -28,8 +28,8 @@ jobs:
         run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
       - name: Update version and push
         run: |
-          git config --global user.name "GitHub Action"
-          git config --global user.email "webmaster@nationalarchives.gov.uk"
+          git config --global user.name "Andrew Hosgood"
+          git config --global user.email "andrew.hosgood@nationalarchives.gov.uk"
           poetry version "${{ steps.version-tag.outputs.CALVER }}"
           git add pyproject.toml
           git commit -m "Release ${{ steps.version-tag.outputs.CALVER }}"
