@@ -1,4 +1,4 @@
-name: Continuous deployment
+name: Continuous deployment to preview
 
 on:
   workflow_call:
