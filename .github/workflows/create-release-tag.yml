@@ -26,6 +26,8 @@ jobs:
       - name: Generate tag
         id: version-tag
         uses: ./.github/workflows/_generate-calver-tag.yml
+        with:
+          branch: ${{ inputs.branch }}
       - name: Create new release branch
         run: |
           git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
