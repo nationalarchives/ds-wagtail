@@ -46,11 +46,11 @@
     } @else {
         @include rem-font-size($small-size);
 
-        @media (min-width: $screen__md) {
+        @media (min-width: #{$screen__md + 1px}) {
             @include rem-font-size($medium-size);
         }
 
-        @media (min-width: $screen__lg) {
+        @media (min-width: #{$screen__lg + 1px}) {
             @include rem-font-size($large-size);
         }
     }

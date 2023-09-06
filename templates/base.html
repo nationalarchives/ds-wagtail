@@ -80,11 +80,11 @@
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
-        <a href="#maincontent" class="skip-to-content-link sr-only sr-only-focusable" data-link="Skip to main content">Skip to main content</a>
+        <a href="#maincontent" class="tna-skip-link" data-link="Skip to main content">Skip to main content</a>
         {% wagtailuserbar %}
 
 
-            <a href="#search-results-title" class="skip-to-content-link sr-only sr-only-focusable">Skip to search results</a>
+            <a href="#search-results-title" class="tna-skip-link">Skip to search results</a>
 
 
         {% if cookies_permitted %}
@@ -117,9 +117,6 @@
             {# Override this in templates to add extra javascript #}
         {% endblock %}
         <script src="{% static 'scripts/all.js' %}"></script>
-        <script>
-            window.TNAFrontend.initAll()
-        </script>
         <script src="{% static 'scripts/global_search.js' %}"></script>
         <script src="{% static 'scripts/hamburger_menu.js' %}"></script>
         <script src="{% static 'scripts/feedback_tracking.js' %}"></script>

@@ -2,37 +2,21 @@ name: Clean up feature branch
 
 on:
   delete:
-    branches:
-      - feature/*
 
-env:
-  IMAGE_NAME: ds-wagtail
-  
 jobs:
   delete:
-    if: github.event.ref_type == 'branch'
+    if: github.event.ref_type == 'branch' && startsWith(github.event.ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
-      - name: Clean up
-        run: |
-          IMAGE_ID=$IMAGE_NAME
-          # Change all uppercase to lowercase
-          IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          # Strip git ref prefix from version
-          VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
-          # Strip "v" prefix from tag name
-          [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
-          # Use Docker `latest` tag convention
-          [ "$VERSION" == "main" ] && VERSION=latest
-          echo IMAGE_ID=$IMAGE_ID
-          echo VERSION=$VERSION
-          echo "IMAGE_ID=$IMAGE_ID" >> $GITHUB_ENV
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Clean up Docker image $IMAGE_ID:$VERSION"
+      - name: Get tag
+        id: version-tag
+        uses: ./.github/workflows/_get-version-tag.yml
+      - name: Debug
+        run: echo "Clean up Docker image ${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.version-tag.outputs.VERSION }}"
       - name: Delete image
         uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
-          owner: nationalarchives
-          name: ${{ env.IMAGE_ID }}
+          owner: ${{ github.repository_owner }}
+          name: ${{ vars.DOCKER_IMAGE_NAME }}
           token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ env.VERSION }}
+          tag: ${{ steps.version-tag.outputs.VERSION }}

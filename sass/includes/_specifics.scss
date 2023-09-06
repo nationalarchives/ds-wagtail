@@ -17,7 +17,7 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
     Used on: Details page - */
 
     &-border-left-lg {
-        @media only screen and (min-width: $screen__xl) {
+        @media only screen and (min-width: #{$screen__xl + 1px}) {
             border-left: 2px solid $color__grey-500;
         }
     }
@@ -28,7 +28,7 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
     Used on: Details page - */
 
     &-border-top-lg {
-        @media only screen and (min-width: $screen__xl) {
+        @media only screen and (min-width: #{$screen__xl + 1px}) {
             border-top: 2px solid $color__grey-500;
         }
     }
@@ -39,7 +39,7 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
     Used on: Details page - */
 
     &-border-bottom-lg {
-        @media only screen and (min-width: $screen__xl) {
+        @media only screen and (min-width: #{$screen__xl + 1px}) {
             border-bottom: 2px solid $color__grey-500;
         }
     }
@@ -62,7 +62,7 @@ When adding a style, ensure it is within the pre-pended with 'specific' class to
     &-margin-top-sm-to-lg {
         margin: 2rem 0 0;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             margin: 0;
         }
     }

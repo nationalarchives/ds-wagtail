@@ -1,7 +1,7 @@
 {% load static wagtailimages_tags wagtailcore_tags records_tags %}
 <div class="transcription u-margin-xs" data-image-gallery>
     {% if page.gallery_heading %}
-        <h2 class="transcription__gallery-heading">{{ page.gallery_heading }}</h2>
+        <h2 class="tna-heading transcription__gallery-heading">{{ page.gallery_heading }}</h2>
     {% endif %}
     <div class="transcription__preview hidden">
         <div class="transcription__container">
@@ -70,11 +70,11 @@
                 {% if item.image.transcription or item.image.translation %}
                     <div class="transcription__text">
                         {% if item.image.transcription %}
-                            <h2>{{ item.image.get_transcription_heading_display }}</h2>
+                            <h2 class="tna-heading">{{ item.image.get_transcription_heading_display }}</h2>
                             {{ item.image.transcription|richtext }}
                         {% endif %}
                         {% if item.image.translation %}
-                            <h2>{{ item.image.get_translation_heading_display }}</h2>
+                            <h2 class="tna-heading">{{ item.image.get_translation_heading_display }}</h2>
                             {{ item.image.translation|richtext }}
                         {% endif %}
                     </div>

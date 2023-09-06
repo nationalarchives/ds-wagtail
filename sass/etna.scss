@@ -138,11 +138,16 @@ $largest-small-device: 992px;
 
 @import "@nationalarchives/frontend/nationalarchives/all";
 
+.tna-template {
+    overflow: initial !important;
+}
+
 .tna-breadcrumbs {
-    margin-bottom: 2rem;
+    padding-bottom: 0;
 }
 
 .tna-hero {
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -164,6 +169,7 @@ $largest-small-device: 992px;
     font-size: 1.25rem;
 
     @include media.on-mobile {
+        color: #fff;
         font-size: 1rem;
         line-height: 1.5;
     }
@@ -176,6 +182,22 @@ $largest-small-device: 992px;
 .tna-message {
     margin-top: 2rem;
     margin-bottom: 3rem;
+
+    &__icon {
+        flex: 0 0 2.5rem;
+
+        @include media.on-mobile {
+            flex: 0 0 1.5rem;
+        }
+    }
+
+    &__message {
+        flex: 1;
+    }
+}
+
+.tna-skip-link {
+    transition: none !important;
 }
 
 .template-focused-article {
@@ -217,9 +239,29 @@ $largest-small-device: 992px;
     }
 }
 
-.card-group-secondary-nav,
-.generic-intro__paragraph {
+.highlight-gallery {
+    color: #fff;
+    .tna-heading {
+        color: inherit;
+    }
+}
+
+.card-group-secondary-nav {
     margin-bottom: 2rem;
+}
+
+.generic-intro__paragraph {
+    margin-bottom: 3rem;
+}
+
+.related-highlight-cards {
+    .related-highlight-cards__card {
+        margin-top: 2rem;
+    }
+}
+
+.section-separator__heading {
+    padding-top: 2rem;
 }
 
 .container + .container {
