@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import StrEnum
 from typing import Any, List
 
@@ -47,17 +47,10 @@ class Aggregation(StrEnum):
     LOCATION = "location"
 
 
-DEFAULT_AGGREGATIONS = (
-    Aggregation.COLLECTION,
-    Aggregation.LEVEL,
-    Aggregation.TOPIC,
-    Aggregation.CLOSURE,
-    Aggregation.HELD_BY,
-    Aggregation.CATALOGUE_SOURCE,
+DEFAULT_AGGREGATIONS = [
     Aggregation.GROUP
     + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
-    Aggregation.TYPE,
-)
+]
 
 
 @dataclass
@@ -70,7 +63,7 @@ class Bucket:
     results: List[Any] = None
 
     # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
-    aggregations: List[str] = DEFAULT_AGGREGATIONS
+    aggregations: List[str] = field(default_factory=lambda: DEFAULT_AGGREGATIONS)
 
     @cached_property
     def aggregations_normalised(self) -> List[str]:
@@ -127,62 +120,72 @@ CATALOGUE_BUCKETS = BucketList(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
             key="digitised",
             label="Online records at The National Archives",
             description="Results for records available to download and held at The National Archives that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [
+                Aggregation.COLLECTION,
+                Aggregation.CLOSURE,
+                Aggregation.HELD_BY,
+                Aggregation.CATALOGUE_SOURCE,
+            ],
         ),
         Bucket(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
-            aggregations=(
-                Aggregation.GROUP + ":30",
-                Aggregation.TYPE,
-                Aggregation.COUNTRY,
-            ),
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TYPE, Aggregation.COUNTRY],
         ),
         Bucket(
             key="archive",
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
-            aggregations=(
-                Aggregation.GROUP + ":30",
-                Aggregation.LOCATION,
-            ),
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.LOCATION],
         ),
     ]
 )
+
 
 WEBSITE_BUCKETS = BucketList(
     [
         Bucket(
             key="blog",
             label="Blog posts",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key="researchGuide",
             label="Research Guides",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key=BucketKeys.INSIGHT.value,
             label="Insights",
+            aggregations=DEFAULT_AGGREGATIONS,
         ),
         # TODO: Restore when we are succesfully indexing new highlight pages
         # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
         Bucket(
             key="audio",
             label="Audio",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
         Bucket(
             key="video",
             label="Video",
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
     ]
 )
