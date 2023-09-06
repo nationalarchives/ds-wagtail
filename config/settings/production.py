@@ -5,7 +5,7 @@ from .base import *  # noqa: F401
 # TODO: Temporary until the static files can be served via S3 or a CDN
 DEBUG = True
 
-# Ensure that certificates are always checked by client in production
+# Ensure that certificates are always checked by the Client API in production
 CLIENT_VERIFY_CERTIFICATES = True
 
 # TODO: Generate SECRET_KEY
