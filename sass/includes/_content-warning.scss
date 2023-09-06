@@ -3,13 +3,13 @@
     border-left: 4px solid #ffcc00;
     padding: 1.5rem 1.75rem;
 
-    @media screen and (min-width: $screen__sm) {
+    @media screen and (min-width: #{$screen__sm + 1px}) {
         display: flex;
         padding: 1.25rem 2rem;
         margin-top: 2rem;
     }
 
-    @media screen and (min-width: $screen__md) {
+    @media screen and (min-width: #{$screen__md + 1px}) {
         margin-bottom: 3rem;
     }
 
@@ -27,7 +27,7 @@
     }
 
     &--short {
-        @media screen and (min-width: $screen__md) {
+        @media screen and (min-width: #{$screen__md + 1px}) {
             margin-bottom: 1.25rem;
         }
     }
@@ -49,7 +49,7 @@
         min-width: 34px;
         margin-right: 18px;
 
-        @media (min-width: $screen__sm) {
+        @media (min-width: #{$screen__sm + 1px}) {
             display: block;
         }
     }

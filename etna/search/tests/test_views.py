@@ -11,7 +11,7 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from etna.ciim.constants import Bucket, BucketList
+from etna.ciim.constants import DEFAULT_AGGREGATIONS, Aggregation, Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
 from ...articles.factories import ArticlePageFactory
@@ -219,14 +219,10 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
+                "&aggregations=group%3A30"
                 "&aggregations=collection%3A10"
                 "&aggregations=level%3A10"
-                "&aggregations=topic%3A10"
                 "&aggregations=closure%3A10"
-                "&aggregations=heldBy%3A10"
-                "&aggregations=catalogueSource%3A10"
-                "&aggregations=group%3A30"
-                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Atna"
                 "&from=0"
                 "&size=20"
@@ -773,14 +769,8 @@ class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=collection%3A10"
-                "&aggregations=level%3A10"
-                "&aggregations=topic%3A10"
-                "&aggregations=closure%3A10"
-                "&aggregations=heldBy%3A10"
-                "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
-                "&aggregations=type%3A10"
+                "&aggregations=topic%3A10"
                 "&filterAggregations=group%3Ablog"
                 "&from=0"
                 "&size=20"
@@ -836,14 +826,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                 "&sort="
                 "&sortOrder=asc"
                 "&template=details"
-                "&aggregations=collection%3A10"
-                "&aggregations=level%3A10"
-                "&aggregations=topic%3A10"
-                "&aggregations=closure%3A10"
-                "&aggregations=heldBy%3A10"
-                "&aggregations=catalogueSource%3A10"
                 "&aggregations=group%3A30"
-                "&aggregations=type%3A10"
                 "&filterAggregations=group%3Ainsight"
                 "&from=0"
                 "&size=20"
@@ -868,6 +851,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=8,
                     is_current=False,
                     results=None,
+                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
                 ),
                 Bucket(
                     key="researchGuide",
@@ -875,6 +859,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=False,
                     results=None,
+                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
                 ),
                 Bucket(
                     key="insight",
@@ -882,6 +867,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=1,
                     is_current=True,
                     results=None,
+                    aggregations=DEFAULT_AGGREGATIONS,
                 ),
                 # TODO: Restore when we are succesfully indexing new highlight pages
                 # Bucket(
@@ -897,6 +883,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
+                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
                 ),
                 Bucket(
                     key="video",
@@ -904,6 +891,7 @@ class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
                     result_count=0,
                     is_current=False,
                     results=None,
+                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
                 ),
             ]
         )

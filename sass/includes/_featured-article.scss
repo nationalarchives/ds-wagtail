@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
 
-    @media only screen and (min-width: $screen__md) {
+    @media only screen and (min-width: #{$screen__md + 1px}) {
         flex-direction: row;
     }
 
@@ -55,7 +55,7 @@
             margin-bottom: 0.5rem;
             text-transform: uppercase;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 0.9rem;
             }
         }

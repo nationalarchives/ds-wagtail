@@ -3,7 +3,7 @@
     margin-right: calc((2rem + 15px) * -1);
     width: calc((4rem + 30px) + 100%);
 
-    @media only screen and (min-width: $screen__md) {
+    @media only screen and (min-width: #{$screen__md + 1px}) {
         margin-left: 0;
         margin-right: 0;
         width: 100%;
@@ -17,7 +17,7 @@
         border-bottom: $default__border;
         text-align: center;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             padding: 3rem;
             margin-top: 2rem; // ideally this would be managed on the element preceeding, but not for now
         }

@@ -21,7 +21,7 @@
         margin-bottom: 1.5rem;
         margin-top: 3rem;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin-bottom: 3rem;
             margin-top: 3.75rem;
         }
@@ -36,7 +36,7 @@
         margin-bottom: 0;
         text-decoration: none;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin-bottom: 4.5rem;
         }
     }

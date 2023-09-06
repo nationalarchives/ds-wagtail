@@ -37,7 +37,7 @@
     &__nav-label {
         display: none;
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: inline;
         }
     }

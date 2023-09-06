@@ -6,7 +6,7 @@
     background-color: $color__yellow;
     padding: 0;
 
-    @media screen and (min-width: $screen__lg) {
+    @media screen and (min-width: #{$screen__lg + 1px}) {
         padding: 0 0 0 3.5rem;
     }
 
@@ -18,7 +18,7 @@
         top: 10px;
         left: 10px;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
         }
     }
@@ -83,7 +83,7 @@
             min-width: 5rem;
         }
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             position: absolute;
             top: 0;
             right: 25px;
@@ -96,7 +96,7 @@
         padding: 0;
         margin: 1rem 0;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin: 1rem 0 0.25rem;
         }
     }
@@ -119,13 +119,13 @@
                 center;
             padding-left: 1.8rem;
 
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 background: transparent;
                 padding-left: 0;
             }
         }
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             display: inline-block;
             margin: 0 0.75rem 0 0;
         }
@@ -133,7 +133,7 @@
             content: "...";
             display: none;
 
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 display: inline-block;
                 margin: 0 0.75rem 0 0;
             }
@@ -153,7 +153,7 @@
         font-family: $font__supria-sans;
         font-size: 1.3rem;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin: 2.75rem 0 1rem 1rem;
         }
     }
@@ -164,7 +164,7 @@
         border-top: 2px solid $color__yellow;
         background: $color__yellow-dark;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             border-top: 0;
             padding: 0.25rem 0;
             background: transparent;
@@ -174,7 +174,7 @@
             border-bottom: 2px solid $color__yellow;
             background: $color__yellow;
 
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 border-bottom: 0;
                 background: transparent;
             }
@@ -187,7 +187,7 @@
         vertical-align: top;
         color: $color__black;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             background-color: $color__yellow-dark;
             padding: 0.5rem 0.75rem;
             display: inline-block;
@@ -206,12 +206,12 @@
             margin-top: 0.25rem;
             line-height: 1.2rem;
 
-            @media screen and (min-width: $screen__sm) {
+            @media screen and (min-width: #{$screen__sm + 1px}) {
                 display: block;
                 float: right;
             }
 
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 display: block;
                 text-align: left;
                 background: transparent;
@@ -219,7 +219,7 @@
             }
         }
         &--active {
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 background: $color__yellow;
                 border-left: 0;
             }
@@ -229,7 +229,7 @@
                 border-bottom: 2px solid $color__grey-800;
                 font-weight: bold;
 
-                @media screen and (min-width: $screen__lg) {
+                @media screen and (min-width: #{$screen__lg + 1px}) {
                     border: 0;
                 }
             }
@@ -243,7 +243,7 @@
         color: $color__grey-700;
         letter-spacing: -0.4px;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             display: inline-block;
             font-size: 1.1rem;
             width: 100%;
@@ -255,7 +255,7 @@
         display: inline-block;
         text-align: right;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             display: inline-block;
             font-size: 0.8rem;
         }
@@ -267,10 +267,10 @@
         line-height: 1.8rem;
         width: auto;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             width: 70%;
         }
-        @media screen and (min-width: $screen__xl) {
+        @media screen and (min-width: #{$screen__xl + 1px}) {
             width: auto;
         }
 
@@ -282,7 +282,7 @@
                 color: $color__link-blue;
             }
 
-            @media screen and (min-width: $screen__lg) {
+            @media screen and (min-width: #{$screen__lg + 1px}) {
                 display: inline-block;
                 line-height: 1.4rem;
             }
@@ -295,7 +295,7 @@
         font-size: 1.15rem;
         display: inline-block;
 
-        @media screen and (min-width: $screen__lg) {
+        @media screen and (min-width: #{$screen__lg + 1px}) {
             margin: 0.7rem 0 0;
         }
     }
@@ -341,19 +341,19 @@
         color: $color__link-blue;
     }
 
-    @media screen and (min-width: $screen__md) {
+    @media screen and (min-width: #{$screen__md + 1px}) {
         margin: 2rem 0 0.5rem;
     }
 
     &__container {
-        @media screen and (min-width: $screen__md) {
+        @media screen and (min-width: #{$screen__md + 1px}) {
             display: inline-block;
             text-align: center;
             min-width: 19%;
         }
 
         &--previous {
-            @media screen and (min-width: $screen__md) {
+            @media screen and (min-width: #{$screen__md + 1px}) {
                 margin: 0 2rem;
                 padding-right: 2rem;
                 text-align: right;
@@ -361,7 +361,7 @@
         }
 
         &--next {
-            @media screen and (min-width: $screen__md) {
+            @media screen and (min-width: #{$screen__md + 1px}) {
                 margin: 0 2rem;
                 padding-left: 2rem;
                 text-align: left;
@@ -375,7 +375,7 @@
         margin-bottom: 0.75rem;
 
         &--left {
-            @media screen and (min-width: $screen__xl) {
+            @media screen and (min-width: #{$screen__xl + 1px}) {
                 background: url($fa_chevron_left) no-repeat left 7px;
                 background-size: 8px;
                 padding: 0 1.5rem 0 0;
@@ -383,7 +383,7 @@
         }
 
         &--right {
-            @media screen and (min-width: $screen__xl) {
+            @media screen and (min-width: #{$screen__xl + 1px}) {
                 background: url($fa_chevron_right) no-repeat 75% 7px;
                 background-size: 8px;
                 padding: 0 1.5rem 0 0;
