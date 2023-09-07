@@ -1,8 +1,11 @@
 # Etna project conventions
 
+At TNA we follow a set of conventions for our projects to ensure consistency and quality across our codebases. These can be found in our [developer handbook](https://nationalarchives.github.io/developer-handbook/) and should be followed when contributing to the Etna project, as well as the guidance below.
+
 ## Docker for local development
 
 Etna uses Docker to create a consistent environment for local development.
+For more information on Docker inside our project see the [Docker guide](docker.md).
 
 On macOS and Windows, Docker requires [Docker
 Desktop](https://www.docker.com/products/docker-desktop) to be installed. Linux
@@ -30,6 +33,12 @@ Build steps for the `web` container are defined in the project's `Dockerfile`.
 
 Our `web` container has a [dependency](https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on) on the `db` container, as Django/Wagtail will not run without a database to connect to.
 
+### `dev`
+
+This container is used to run development commands on the `web` container, such as `manage.py` commands and `poetry` commands.
+
+Build steps for the `dev` container are defined in the project's `dev/Dockerfile`.
+
 ### `cli`
 
 A service with the Platform.sh CLI, PHP and few other packages to help with copying of data and media from the environments running in Platform.sh.
@@ -52,19 +61,29 @@ Another option is to run the `format` Fabric command from your console to apply 
 $ fab format
 ```
 
+`flake8` will just flag things in the terminal, it will not update any code for you like `isort` or `Black`.
+
 Compliance checks are also built in to the `test` Fabric command - you just need to use the ``--lint`` option to activate them. For example:
 
 ```console
 $ fab test --lint
 ```
 
-### SASS/CSS
+This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
-TBC
+### SASS/CSS and Javascript
 
-### Javascript
+The Etna project uses a few tools to improve the consistency and quality of SASS/CSS and JavaScript code:
 
-TBC
+- [``Prettier``](https://prettier.io/): An opinionated front-end code formatter that takes care of code formatting (so we don't have to think about it).
+
+To run `Prettier` against your code, simply run the `format` Fabric command from your console:
+
+```console
+$ fab format
+```
+
+This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
 ## Git/Github conventions
 
