@@ -1,5 +1,7 @@
 # Etna project conventions
 
+At TNA we follow a set of conventions for our projects to ensure consistency and quality across our codebases. These can be found in our [developer handbook](https://nationalarchives.github.io/developer-handbook/) and should be followed when contributing to the Etna project, as well as the below.
+
 ## Docker for local development
 
 Etna uses Docker to create a consistent environment for local development.
@@ -52,19 +54,29 @@ Another option is to run the `format` Fabric command from your console to apply 
 $ fab format
 ```
 
+`flake8` will just flag things in the terminal, it will not update any code for you like `isort` or `Black`.
+
 Compliance checks are also built in to the `test` Fabric command - you just need to use the ``--lint`` option to activate them. For example:
 
 ```console
 $ fab test --lint
 ```
 
-### SASS/CSS
+This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
-TBC
+### SASS/CSS and Javascript
 
-### Javascript
+The Etna project uses a few tools to improve the consistency and quality of SASS/CSS and JavaScript code:
 
-TBC
+- [``Prettier``](https://prettier.io/): An opinionated front-end code formatter that takes care of code formatting (so we don't have to think about it).
+
+To run `Prettier` against your code, simply run the `format` Fabric command from your console:
+
+```console
+$ fab format
+```
+
+This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
 ## Git/Github conventions
 
