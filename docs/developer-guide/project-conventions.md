@@ -5,6 +5,7 @@ At TNA we follow a set of conventions for our projects to ensure consistency and
 ## Docker for local development
 
 Etna uses Docker to create a consistent environment for local development.
+For more information on Docker inside our project see the [Docker guide](docker.md).
 
 On macOS and Windows, Docker requires [Docker
 Desktop](https://www.docker.com/products/docker-desktop) to be installed. Linux
@@ -31,6 +32,12 @@ using [Poetry](https://python-poetry.org) as defined in `pypproject.toml` using 
 Build steps for the `web` container are defined in the project's `Dockerfile`.
 
 Our `web` container has a [dependency](https://docs.docker.com/compose/compose-file/compose-file-v3/#depends_on) on the `db` container, as Django/Wagtail will not run without a database to connect to.
+
+### `dev`
+
+This container is used to run development commands on the `web` container, such as `manage.py` commands and `poetry` commands.
+
+Build steps for the `dev` container are defined in the project's `dev/Dockerfile`.
 
 ### `cli`
 
