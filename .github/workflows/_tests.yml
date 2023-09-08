@@ -78,13 +78,6 @@ jobs:
         run: poetry run coverage xml
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
-      - name: Upload coverage report to Codecov
-        uses: codecov/codecov-action@v3
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          env_vars: OS,PYTHON_VERSION
-          fail_ci_if_error: true
-          move_coverage_to_trash: true
   
   prettier:
     name: Prettier format
