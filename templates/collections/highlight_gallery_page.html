@@ -17,7 +17,11 @@
     {% endif %}
 
     {% if page.featured_article.live %}
+    <div class="tna-container">
+    <div class="tna-column tna-column--full">
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    </div>
+    </div>
     {% endif %}
 
     {% if page.primary_topic or page.time_period %}

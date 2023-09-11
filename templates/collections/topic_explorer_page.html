@@ -26,7 +26,11 @@
     {% endif %}
     {% if page.featured_article.live or page.related_articles %}
         {% if page.featured_article.live %}
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
             {% include "includes/article-spotlight.html" with page=page.featured_article title="Stories from the collection" %}
+            </div>
+        </div>
         {% endif %}
         {% if page.related_articles %}
             <div class="container">

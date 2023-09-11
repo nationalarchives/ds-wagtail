@@ -17,4 +17,8 @@ RUN tna-build
 # Copy application code
 COPY --chown=app . .
 
+# Copy the assets from the @nationalarchives/frontend repository
+RUN mkdir -p /app/templates/static/assets; \
+  cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets
+
 CMD ["tna-run", "config.wsgi:application"]

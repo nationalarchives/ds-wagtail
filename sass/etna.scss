@@ -1,4 +1,5 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 /*
 
@@ -132,11 +133,26 @@ Modified to match the existing site (for now)
 */
 
 $largest-small-device: 992px;
+$tna-font-path: "/static/assets/fonts";
 
 @import "@nationalarchives/frontend/nationalarchives/all";
 
 .tna-template {
     overflow: initial !important;
+}
+
+.tna-header__navigation-item-link {
+    &:hover,
+    &--selected,
+    &--selected:visited {
+        background: #fff !important;
+    }
+}
+
+@include media.on-mobile {
+.tna-header__navigation-items {
+    background: #fff !important;
+}
 }
 
 .tna-breadcrumbs {
@@ -148,33 +164,33 @@ $largest-small-device: 992px;
     margin-bottom: 2rem;
 }
 
-.tna-hero__heading {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
+// .tna-hero__heading {
+//     margin-top: 0;
+//     margin-bottom: 0.75rem;
 
-    font-size: 4rem;
-    line-height: 1.22;
-    font-weight: 700;
+//     font-size: 4rem;
+//     line-height: 1.22;
+//     font-weight: 700;
 
-    @include media.on-mobile {
-        font-size: 2.25rem;
-        line-height: 1.33;
-    }
-}
+//     @include media.on-mobile {
+//         font-size: 2.25rem;
+//         line-height: 1.33;
+//     }
+// }
 
-.tna-hero__body {
-    font-size: 1.25rem;
+// .tna-hero__body {
+//     font-size: 1.25rem;
 
-    @include media.on-mobile {
-        color: #fff;
-        font-size: 1rem;
-        line-height: 1.5;
-    }
+//     @include media.on-mobile {
+//         color: #fff;
+//         font-size: 1rem;
+//         line-height: 1.5;
+//     }
 
-    p {
-        margin-bottom: 0;
-    }
-}
+//     p {
+//         margin-bottom: 0;
+//     }
+// }
 
 .tna-message {
     margin-top: 2rem;
@@ -197,6 +213,46 @@ $largest-small-device: 992px;
     transition: none !important;
 }
 
+.tna-footer {
+    &__social {
+        &-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        &-item {
+            margin: 0;
+
+            &-link {
+                min-width: calc(2rem + 4px);
+                padding: 4px;
+
+                display: block;
+
+                text-align: center;
+                line-height: 1;
+
+                border: 0 transparent solid;
+                border-width: 4px 0;
+
+                .fa-solid,
+                .fa-brands {
+                    font-size: 2rem;
+                }
+
+                &:has(.fa-solid),
+                &:has(.fa-brands) {
+                    &:hover {
+                        @include colour.colour-border("link", 4px, solid, bottom);
+                    }
+                }
+            }
+        }
+    }
+}
+
 .template-focused-article {
     .tna-breadcrumbs__wrapper {
         // ELEMENT SPECIFIC TO THIS SITE
@@ -205,8 +261,10 @@ $largest-small-device: 992px;
     .tna-breadcrumbs {
         margin-bottom: 0;
         color: #fff !important;
+        background-color: #343338 !important;
 
-        a {
+        a,
+        &__item--expandable .tna-breadcrumbs__link {
             color: inherit !important;
         }
     }
@@ -245,7 +303,24 @@ $largest-small-device: 992px;
 
 .card-group-secondary-nav {
     margin-bottom: 2rem;
+
+    &__heading {
+        margin-top: 0;
+    }
 }
+
+.media-embed {
+&__heading,
+&__description,
+&__transcript-heading {
+    color: #fff !important;
+
+    a {
+        color: inherit;
+    }
+}
+}
+
 
 .generic-intro__paragraph {
     margin-bottom: 3rem;
@@ -275,4 +350,15 @@ $largest-small-device: 992px;
 [class^="col-"],
 [class*=" col-"] {
     box-sizing: border-box;
+}
+
+#ds-cookie-consent-banner {
+    padding: 1rem 0 !important;
+    position: static !important;
+    background: #134571 !important;
+    border-radius: 0 !important;
+
+    .container {
+        padding: 0 0 10px !important;
+    }
 }
