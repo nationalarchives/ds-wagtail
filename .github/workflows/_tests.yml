@@ -74,8 +74,6 @@ jobs:
         run: poetry run python manage.py check
       - name: Run test suite
         run: poetry run coverage run manage.py test etna
-      - name: Prepare coverage report
-        run: poetry run coverage xml
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
   
