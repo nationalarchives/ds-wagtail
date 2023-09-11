@@ -150,9 +150,9 @@ $tna-font-path: "/static/assets/fonts";
 }
 
 @include media.on-mobile {
-.tna-header__navigation-items {
-    background: #fff !important;
-}
+    .tna-header__navigation-items {
+        background: #fff !important;
+    }
 }
 
 .tna-breadcrumbs {
@@ -217,7 +217,12 @@ $tna-font-path: "/static/assets/fonts";
                 &:has(.fa-solid),
                 &:has(.fa-brands) {
                     &:hover {
-                        @include colour.colour-border("link", 4px, solid, bottom);
+                        @include colour.colour-border(
+                            "link",
+                            4px,
+                            solid,
+                            bottom
+                        );
                     }
                 }
             }
@@ -282,17 +287,16 @@ $tna-font-path: "/static/assets/fonts";
 }
 
 .media-embed {
-&__heading,
-&__description,
-&__transcript-heading {
-    color: #fff !important;
+    &__heading,
+    &__description,
+    &__transcript-heading {
+        color: #fff !important;
 
-    a {
-        color: inherit;
+        a {
+            color: inherit;
+        }
     }
 }
-}
-
 
 .generic-intro__paragraph {
     margin-bottom: 3rem;
