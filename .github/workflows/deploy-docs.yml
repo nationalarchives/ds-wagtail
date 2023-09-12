@@ -3,37 +3,31 @@ name: Deploy docs
 on:
   push:
     branches:
-      - develop
+      - main
     paths:
-      - "mkdocs.yml"
-      - "docs/**"
+      - mkdocs.yml
+      - docs/**
 
-env:
-  PYTHON_VERSION: "3.11"
-  POETRY_VERSION: "1.5.1"
-
-# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# However, do NOT cancel in-progress runs as we want to allow these production deployments to complete.
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
   make_docs:
+    name: Deploy docs
     runs-on: ubuntu-latest
     env:
       DJANGO_SETTINGS_MODULE: config.settings.test
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v2
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version: ${{ vars.CI_PYTHON_VERSION }}
       - uses: snok/install-poetry@v1
         with:
           virtualenvs-create: true

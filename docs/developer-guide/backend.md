@@ -4,13 +4,19 @@ Specific guidance for working on on backend tasks.
 
 ## Running Django management commands
 
-Locally, Django runs in the `web` container, and it's commands are invoked via the shell. To start a shell session with your local `web` container, run:
+Locally, Django runs in the `web` container, and its commands are invoked via the shell.
 
-```console
-$ fab sh
+The `web` container runs as a non-root user so performing actions such as making migrations must be done in the `dev` container that does run as a root user.
+
+To start a shell session with your local `dev` container, run:
+
+```sh
+fab dev
 ```
 
 From there, you can interact with Django exactly as you can see outlined in [the official documentation](https://docs.djangoproject.com/en/stable/topics/migrations/#module-django.db.migrations) and the many tutorials you'll find on the web.
+
+There is a command `manage ...` that aliases `poetry run python /app/manage.py ...` to make running commands easier.
 
 ## Common Django management commands
 
@@ -20,28 +26,28 @@ Below are some commands you'll use regularly:
 
 To make migrations for a new app:
 
-```console
-$ python manage.py makemigrations [appname]
+```sh
+manage makemigrations [appname]
 ```
 
 To make migrations for an existing app, use the `-n` argument to provide a meaninful name to help your peers understand what the migration does:
 
-```console
-$ python manage.py makemigrations [appname] -n meaningful_name_here
+```sh
+manage makemigrations [appname] -n meaningful_name_here
 ```
 
 ### Applying database migrations
 
 To apply migrations for all apps:
 
-```console
-$ python manage.py migrate
+```sh
+manage migrate
 ```
 
 To apply migrations for a specific app:
 
-```console
-$ python manage.py migrate appname
+```sh
+manage migrate appname
 ```
 
 ### Reversing database migrations
@@ -54,12 +60,12 @@ To reverse migrations for an app, specify the number of the migration you want t
 
 You would run:
 
-```console
-$ python manage.py migrate appname 002
+```sh
+manage migrate appname 002
 ```
 
 If you need to reverse ALL migrations for an app, use the 'zero' keyword, like so:
 
-```console
-$ python manage.py migrate appname zero
+```sh
+manage migrate appname zero
 ```

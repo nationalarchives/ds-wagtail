@@ -150,7 +150,7 @@
             //width:183px;
             margin-bottom: 0;
             //margin-top: 0.2rem;
-            padding: 1em 2em;
+            padding: 1em 0em;
             background: black;
             text-align: center;
         }
@@ -286,7 +286,7 @@ dd {
 /*---additional styles for All results--*/
 
 .featured-search__website-results__head {
-    @media only screen and (min-width: $screen__md) {
+    @media only screen and (min-width: #{$screen__md + 1px}) {
         padding-left: 1em;
         padding-bottom: 2em;
     }
@@ -326,7 +326,7 @@ dd {
     max-width: 100%;
     margin-left: 1em;
     margin-right: 1em;
-    @media only screen and (min-width: $screen__sm) {
+    @media only screen and (min-width: #{$screen__sm + 1px}) {
         margin-left: 0;
     }
 }

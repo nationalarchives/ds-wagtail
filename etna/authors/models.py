@@ -56,7 +56,8 @@ class AuthorPage(BasePage):
     ]
 
     class Meta:
-        verbose_name_plural = "Authors"
+        verbose_name = "Author page"
+        verbose_name_plural = "Author pages"
 
     parent_page_types = ["authors.AuthorIndexPage"]
     subpage_types = []

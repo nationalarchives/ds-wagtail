@@ -1,7 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <div class="highlight-cards">
     <div class="container">
-        <h2 class="highlight-cards__title">{{ title }}</h2>
+        <h2 class="tna-heading highlight-cards__title">{{ title }}</h2>
         <div class="card-grid card-grid__quad">
             {% if featured_article %}
                 <div class="highlight-cards__card highlight-cards__card--highlight highlight-cards__link">
@@ -10,7 +10,7 @@
                     data-link-type="Card image"
                     data-card-position="0"
                     data-card-title="{{ featured_article.title }}"
-                    aria-labelledby="highlight-cards__card-desc{{ featured_article.id }}">
+                    aria-labelledby="highlight-cards__card-desc{{ featured_article.id }}" tabindex="-1">
                         {# Desktop/ tablet image #}
                         {% image featured_article.teaser_image fill-534x413-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
@@ -24,7 +24,7 @@
                             alt=""/>
                     </a>
                     <div class="highlight-cards__content">
-                        <h3 class="highlight-cards__card_title">
+                        <h3 class="tna-heading highlight-cards__card_title">
                             <a href="{% pageurl featured_article %}"
                             id="highlight-cards__card-desc{{ featured_article.id }}"
                             class="highlight-cards__card-title-link"
@@ -53,7 +53,8 @@
                     {% else %}
                         data-card-position="{{ forloop.counter0 }}"
                     {% endif %}
-                    data-card-title="{{ article.title }}">
+                    data-card-title="{{ article.title }}"
+                    tabindex="-1">
                         {% image article.teaser_image fill-268x171-c100 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
@@ -66,7 +67,7 @@
                             alt=""/>
                     </a>
                     <div class="highlight-cards__card__content">
-                        <h3 class="highlight-cards__card_title">
+                        <h3 class="tna-heading highlight-cards__card_title">
                             <a href="{% pageurl article %}"
                             id="highlight-cards__card-desc{{ article.id }}"
                             class="highlight-cards__card-title-link"

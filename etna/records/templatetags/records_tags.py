@@ -16,10 +16,13 @@ def record_url(
     level_or_archive: str = "",
     base_record: Record = None,
     form_group: str = "",
+    use_non_reference_number_url: bool = True,
 ) -> str:
     """
     Return the URL for the provided `record`, which should always be a
     fully-transformed `etna.records.models.Record` instance.
+
+    use_non_reference_number_url: this serves one stop switch
 
     level_or_archive: Use api level name or "Archive" name. This value is checked
     with a set of values in order to override reference number that show
@@ -43,6 +46,9 @@ def record_url(
             return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if record:
+        if use_non_reference_number_url:
+            return record.non_reference_number_url
+
         if form_group in ("archive", "creator"):
             return record.non_reference_number_url
         if form_group == "nonTna":

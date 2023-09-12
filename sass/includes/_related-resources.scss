@@ -2,7 +2,7 @@
     margin: 2rem 0;
     padding-bottom: 1rem;
 
-    @media (min-width: $screen__lg) {
+    @media (min-width: #{$screen__lg + 1px}) {
         .template-focused-article & {
             padding-left: 10%;
             padding-right: 10%;

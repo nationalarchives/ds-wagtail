@@ -33,7 +33,7 @@
             text-transform: uppercase;
             font-size: 0.875rem;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 0.9rem;
             }
         }
@@ -46,7 +46,7 @@
             color: $color__black;
             text-decoration-thickness: 1px;
 
-            @media only screen and (min-width: $screen__md) {
+            @media only screen and (min-width: #{$screen__md + 1px}) {
                 font-size: 1.25rem;
             }
 
@@ -81,7 +81,7 @@
         }
 
         &__image {
-            @extend .tna-card__image;
+            // @extend .tna-card__image;
 
             &-fallback {
                 width: 100%;
@@ -99,7 +99,7 @@
             display: block;
         }
 
-        @media only screen and (min-width: $screen__lg) {
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
         }
     }
@@ -110,7 +110,7 @@
         width: 100%;
         margin-bottom: 2rem;
         &__image {
-            @extend .tna-card__image;
+            // @extend .tna-card__image;
             border: 0.0625rem solid $color__black;
             margin-top: 0.7rem;
             &-fallback {

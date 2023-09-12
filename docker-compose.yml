@@ -12,16 +12,23 @@ services:
 
   web:
     container_name: web
-    platform: linux/amd64
     build: .
     volumes:
-      - ./:/app
+      - ./etna:/app/etna
+      - ./config:/app/config
+      - ./sass:/app/sass
+      - ./scripts:/app/scripts
+      - ./static:/app/static
+      - ./templates:/app/templates
+      - ./poetry.lock:/app/poetry.lock
+      - ./pyproject.toml:/app/pyproject.toml
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
       - media:/media
-      - ~/.nvm:/home/app/.nvm
     depends_on:
       - db
     ports:
-      - 8000:8000
+      - 8000:8080
     command: sh /app/bash/run-dev.sh
     restart: on-failure
     init: true
@@ -30,9 +37,15 @@ services:
     env_file:
       - .env
     environment:
+      - ENVIRONMENT=develop
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
+      - DJANGO_SUPERUSER_PASSWORD=admin
+      - DJANGO_SUPERUSER_USERNAME=admin
+      - DJANGO_SUPERUSER_EMAIL=admin@tna-development
+      - KEEP_ALIVE=30
 
   cli:
     container_name: cli
@@ -52,25 +65,25 @@ services:
     ports:
       - 8001:8000
 
-  poetry_update:
-    container_name: update-poetry
+  dev:
+    container_name: dev
     build:
       context: .
-      dockerfile: .docker/update-poetry/Dockerfile
+      dockerfile: dev/Dockerfile
+    restart: always
     volumes:
       - .:/app
-    profiles:
-      - update
-
-  npm_update:
-    container_name: update-npm
-    build:
-      context: .
-      dockerfile: .docker/update-npm/Dockerfile
-    volumes:
-      - .:/home
-    profiles:
-      - update
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - web
+      - db
+    env_file:
+      - .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.dev
+      - DATABASE_HOST=db
+      - DATABASE_NAME=postgres
+      - DATABASE_USER=postgres
 
 volumes:
   media:

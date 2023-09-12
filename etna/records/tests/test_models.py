@@ -6,6 +6,7 @@ from copy import deepcopy
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
+from django.utils.safestring import SafeString
 
 import responses
 
@@ -1115,3 +1116,515 @@ class ArchiveRecordModelTests(SimpleTestCase):
         record = self.records_client.fetch(iaid="A13532479")
 
         self.assertEqual(record.archive_repository_url, "http://nro.adlibhosting.com/")
+
+
+class RecordModelCatalogueTests(SimpleTestCase):
+    maxDiff = None
+
+    def setUp(self):
+        self.source = {
+            "@admin": {
+                "id": "C123456",
+            },
+            "source": {"value": "CAT"},
+            "@template": {
+                "details": {
+                    "iaid": "C123456",
+                }
+            },
+        }
+
+    def test_record_catalogue(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.iaid, "C123456")
+        self.assertEqual(self.record.custom_record_type, "CAT")
+
+    def test_empty_for_optional_attributes(self):
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.arrangement, "")
+        self.assertEqual(self.record.held_by_id, "")
+        self.assertEqual(self.record.held_by_url, "")
+        self.assertEqual(self.record.record_opening, "")
+        self.assertEqual(self.record.title, "")
+        self.assertEqual(self.record.creator, [])
+        self.assertEqual(self.record.dimensions, "")
+        self.assertEqual(self.record.former_department_reference, "")
+        self.assertEqual(self.record.former_pro_reference, "")
+        self.assertEqual(self.record.language, [])
+        self.assertEqual(self.record.map_designation, "")
+        self.assertEqual(self.record.map_scale, "")
+        self.assertEqual(self.record.note, [])
+        self.assertEqual(self.record.physical_condition, "")
+        self.assertEqual(self.record.physical_description, "")
+        self.assertEqual(self.record.accruals, "")
+        self.assertEqual(self.record.accumulation_dates, "")
+        self.assertEqual(self.record.appraisal_information, "")
+        self.assertEqual(self.record.immediate_source_of_acquisition, [])
+        self.assertEqual(self.record.administrative_background, "")
+        self.assertEqual(self.record.separated_materials, ())
+        self.assertEqual(self.record.unpublished_finding_aids, [])
+        self.assertEqual(self.record.copies_information, [])
+        self.assertEqual(self.record.custodial_history, "")
+        self.assertEqual(self.record.location_of_originals, [])
+        self.assertEqual(self.record.restrictions_on_use, "")
+        self.assertEqual(self.record.publication_note, [])
+        self.assertEqual(self.record.delivery_option, "")
+
+    def test_held_by_url_attrs(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "heldById": "A13530124",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.held_by_id, "A13530124")
+        self.assertEqual(self.record.held_by_url, "/catalogue/id/A13530124/")
+
+    def test_arrangement(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "arrangement": "<arrangement><p>Former reference order within two accessions (AN 171/1-648 and AN 171/649-970). </p></arrangement>",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.arrangement, SafeString))
+        self.assertEqual(
+            self.record.arrangement,
+            "<arrangement><p>Former reference order within two accessions (AN 171/1-648 and AN 171/649-970). </p></arrangement>",
+        )
+
+    def test_record_opening(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "recordOpening": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.record_opening, "some value")
+
+    def test_title(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "title": '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.title, SafeString))
+        self.assertEqual(
+            self.record.title,
+            '<span class="unittitle" type="Title">Records of the General Register Office, Government Social Survey Department, and Office of Population Censuses and Surveys</span>',
+        )
+
+    def test_creator(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "creator": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.creator, ["some value 1", "some value 2"])
+
+    def test_dimensions(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "dimensions": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.dimensions, "some value")
+
+    def test_former_department_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerDepartmentReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_department_reference, "some value")
+
+    def test_former_pro_reference(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "formerProReference": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.former_pro_reference, "some value")
+
+    def test_language(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "language": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.language, ["some value 1", "some value 2"])
+
+    def test_map_designation(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapDesignation": '<unittitle type="Map Designation">some value</unittitle>',
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.map_designation,
+            '<unittitle type="Map Designation">some value</unittitle>',
+        )
+        self.assertTrue(isinstance(self.record.map_designation, SafeString))
+
+    def test_map_scale(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "mapScale": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.map_scale, "some value")
+
+    def test_note(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "note": [
+                            "Details have been added from C 32/18, which also gives information about further process. </p><p>",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.note,
+            [
+                "Details have been added from C 32/18, which also gives information about further process. </p><p>"
+            ],
+        )
+        self.assertTrue(isinstance(self.record.note[0], SafeString))
+
+    def test_physical_condition(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalCondition": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_condition, "some value")
+
+    def test_physical_description(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "physicalDescription": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.physical_description, "some value")
+
+    def test_accruals(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accruals": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accruals, "some value")
+
+    def test_accumulation_dates(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "accumulationDates": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.accumulation_dates, "some value")
+
+    def test_appraisal_information(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "appraisalInformation": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.appraisal_information, "some value")
+
+    def test_immediate_source_of_acquisition(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "immediateSourceOfAcquisition": [
+                            "some value 1",
+                            "some value 2",
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.immediate_source_of_acquisition,
+            ["some value 1", "some value 2"],
+        )
+
+    def test_administrative_background(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "administrativeBackground": "<bioghist><bioghist><p>The Industrial Relations Department was set up as soon as the British Transport Commission began functioning and continued in existence until the end of the British Railway Board. In 1983 it was renamed Employee Relations Department.</p></bioghist></bioghist>",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertTrue(isinstance(self.record.administrative_background, SafeString))
+        self.assertEqual(
+            self.record.administrative_background,
+            "<bioghist><bioghist><p>The Industrial Relations Department was set up as soon as the British Transport Commission began functioning and continued in existence until the end of the British Railway Board. In 1983 it was renamed Employee Relations Department.</p></bioghist></bioghist>",
+        )
+
+    def test_separated_materials(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "separatedMaterials": [
+                            {
+                                "description": "for 4 maps extracted from this item see",
+                                "links": [
+                                    '<a href="C8956177">MFQ 1/761/7</a>',
+                                    '<a href="C8956176">MFQ 1/761/6</a>',
+                                    '<a href="C8956175">MFQ 1/761/5</a>',
+                                    '<a href="C8956174">MFQ 1/761/4</a>',
+                                ],
+                            }
+                        ],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.separated_materials,
+            (
+                {
+                    "description": "for 4 maps extracted from this item see",
+                    "links": [
+                        {
+                            "href": "/catalogue/id/C8956177/",
+                            "id": "C8956177",
+                            "text": "MFQ 1/761/7",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956176/",
+                            "id": "C8956176",
+                            "text": "MFQ 1/761/6",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956175/",
+                            "id": "C8956175",
+                            "text": "MFQ 1/761/5",
+                        },
+                        {
+                            "href": "/catalogue/id/C8956174/",
+                            "id": "C8956174",
+                            "text": "MFQ 1/761/4",
+                        },
+                    ],
+                },
+            ),
+        )
+
+    def test_unpublished_finding_aids(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "unpublishedFindingAids": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.unpublished_finding_aids, ["some value 1", "some value 2"]
+        )
+
+    def test_copies_information(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "copiesInformation": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.copies_information, ["some value 1", "some value 2"]
+        )
+
+    def test_custodial_history(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "custodialHistory": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.custodial_history, "some value")
+
+    def test_location_of_originals(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "locationOfOriginals": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.location_of_originals, ["some value 1", "some value 2"]
+        )
+
+    def test_restrictions_on_use(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "restrictionsOnUse": "some value",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.restrictions_on_use, "some value")
+
+    def test_publication_note(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "publicationNote": ["some value 1", "some value 2"],
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(self.record.publication_note, ["some value 1", "some value 2"])
+
+    def test_delivery_option(self):
+        self.source.update(
+            {
+                "@template": {
+                    "details": {
+                        "deliveryOption": "No availability condition provisioned for this record",
+                    }
+                },
+            }
+        )
+        self.record = Record(self.source)
+
+        self.assertEqual(
+            self.record.delivery_option,
+            "No availability condition provisioned for this record",
+        )

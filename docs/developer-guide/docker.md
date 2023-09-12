@@ -10,7 +10,7 @@ The `Dockerfile` is used to create containers for both local development and dep
 1. Sets the active user to `app`
 1. Sets a [pipefail](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#using-pipes) to ensure one failed command in a piped statment breaks the pipe
 1. Installs Poetry in the `app` user's home directory (`/home/app`)
-1. Copies in the dependency requirment files (`pyproject.toml` and `poetry.lock`)
+1. Copies in the dependency requirement files (`pyproject.toml` and `poetry.lock`)
 1. Installs the project dependencies with Poetry
 1. Copies in all the application code
 1. Ensures the run script can be executed by the current user

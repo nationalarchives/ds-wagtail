@@ -26,14 +26,12 @@ These are Etna specific components, created using BEM and following our guidelin
 
 */
 
-
 @import "includes/functions";
 @import "includes/variables";
 @import "includes/mixins";
 @import "includes/global";
 @import "includes/buttons";
 @import "includes/generic-intro";
-@import "includes/header";
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
@@ -97,7 +95,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/cookie-consent";
 @import "includes/maintenance-503";
 @import "includes/beta-banner";
-@import "includes/breadcrumb";
 @import "includes/record-cta-panel";
 @import "includes/record-series-panel";
 @import "includes/home-refresh";
@@ -140,7 +137,16 @@ $largest-small-device: 992px;
 
 @import "@nationalarchives/frontend/nationalarchives/all";
 
+.tna-template {
+    overflow: initial !important;
+}
+
+.tna-breadcrumbs {
+    padding-bottom: 0;
+}
+
 .tna-hero {
+    margin-top: 1rem;
     margin-bottom: 2rem;
 }
 
@@ -162,6 +168,7 @@ $largest-small-device: 992px;
     font-size: 1.25rem;
 
     @include media.on-mobile {
+        color: #fff;
         font-size: 1rem;
         line-height: 1.5;
     }
@@ -169,4 +176,105 @@ $largest-small-device: 992px;
     p {
         margin-bottom: 0;
     }
+}
+
+.tna-message {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+
+    &__icon {
+        flex: 0 0 2.5rem;
+
+        @include media.on-mobile {
+            flex: 0 0 1.5rem;
+        }
+    }
+
+    &__message {
+        flex: 1;
+    }
+}
+
+.tna-skip-link {
+    transition: none !important;
+}
+
+.template-focused-article {
+    .tna-breadcrumbs__wrapper {
+        // ELEMENT SPECIFIC TO THIS SITE
+        background-color: #343338 !important;
+    }
+    .tna-breadcrumbs {
+        margin-bottom: 0;
+        color: #fff !important;
+
+        a {
+            color: inherit !important;
+        }
+    }
+
+    .generic-intro {
+        .tna-heading {
+            padding-top: 1rem;
+            color: #fff !important;
+        }
+    }
+
+    .generic-intro__meta {
+        padding-top: 1rem;
+        padding-bottom: 4rem;
+    }
+
+    @include media.on-larger-than-mobile {
+        .tna-header__navigation-item-link:hover,
+        .tna-header__navigation-item-link:hover:link,
+        .tna-header__navigation-item-link:hover:visited,
+        .tna-header__navigation-item-link--selected,
+        .tna-header__navigation-item-link--selected:link,
+        .tna-header__navigation-item-link--selected:visited {
+            color: #fff !important;
+            background-color: #343338 !important;
+        }
+    }
+}
+
+.highlight-gallery {
+    color: #fff;
+    .tna-heading {
+        color: inherit;
+    }
+}
+
+.card-group-secondary-nav {
+    margin-bottom: 2rem;
+}
+
+.generic-intro__paragraph {
+    margin-bottom: 3rem;
+}
+
+.related-highlight-cards {
+    .related-highlight-cards__card {
+        margin-top: 2rem;
+    }
+}
+
+.section-separator__heading {
+    padding-top: 2rem;
+}
+
+.container + .container {
+    margin-top: 2rem;
+}
+
+.featured-article__description,
+.article-container__main,
+.container,
+.search-landing-buckets__link,
+.search-buckets__link,
+.search-results-hero__form-search-box,
+.search-filters__search,
+[class^="col-"],
+[class*=" col-"] {
+    box-sizing: border-box;
 }

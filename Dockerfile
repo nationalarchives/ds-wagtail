@@ -1,67 +1,20 @@
-# Generate static assets (CSS and JavaScript)
-FROM node:18.16 AS staticassets
-WORKDIR /home
-COPY package.json package-lock.json webpack.config.js ./
-RUN npm install
-COPY scripts ./scripts
-COPY sass ./sass
-RUN npm run compile
+FROM ghcr.io/nationalarchives/tna-python-django:latest
 
+ENV NPM_BUILD_COMMAND=compile
+ENV DJANGO_SETTINGS_MODULE=config.settings.production
 
-
-
-
-FROM python:3.11
-
-EXPOSE 8000
-HEALTHCHECK CMD curl --fail http://localhost:8000/healthcheck/ || exit 1
-
-ENV \
-  # python:
-  PYTHONFAULTHANDLER=1 \
-  PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
-  PYTHONDONTWRITEBYTECODE=1 \
-  # pip:
-  PIP_NO_CACHE_DIR=off \
-  PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
-  # poetry:
-  POETRY_HOME=/home/app/poetry \
-  POETRY_VERSION=1.5.1 \
-  POETRY_NO_INTERACTION=1 \
-  POETRY_VIRTUALENVS_CREATE=true
-
-# Create the non-root user and the application directory
-RUN useradd --system --create-home app && \
-    mkdir -p /app && \
-    chown app:app -R /app && \
-    chmod 700 /app
-WORKDIR /app
-USER app
-
-# Install poetry
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
-RUN curl -sSL "https://install.python-poetry.org" | python -
-
-# Add poetry's bin directory to PATH
-ENV PATH="$POETRY_HOME/bin:$PATH"
-
-# Copy files used by poetry
+# Copy in the project dependency files and config
 COPY --chown=app pyproject.toml poetry.lock ./
+COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./
+COPY --chown=app sass sass
+COPY --chown=app scripts scripts
+COPY --chown=app config config
+COPY --chown=app templates templates
 
 # Install Python dependencies AND the 'etna' app
-RUN poetry install
+RUN tna-build
 
 # Copy application code
 COPY --chown=app . .
-RUN chmod +x /app/bash/run.sh
 
-# Copy static assets
-COPY --chown=app --from=staticassets /home/templates/static/css/dist/etna.css /home/templates/static/css/dist/etna.css.map templates/static/css/dist/
-COPY --chown=app --from=staticassets /home/templates/static/scripts templates/static/scripts
-
-# Gather the static assets
-RUN poetry run python manage.py collectstatic --no-input
-
-CMD ["/app/bash/run.sh"]
+CMD ["tna-run", "config.wsgi:application"]
