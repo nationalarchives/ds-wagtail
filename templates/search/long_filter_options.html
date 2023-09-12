@@ -10,11 +10,15 @@
 
     <div class="long-filters">
         <h1 class="tna-heading long-filters__heading">Select filters to apply to your results</h1>
+        <form method="get" action="{% url url_name %}" data-id="long-filter-form" id="analytics-long-filter-form" data-long-filters>
+            
         <div class="long-filters__options">
             <input type="submit" value="Apply filters" class="search-filters__submit">
             <a href="{% url url_name %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
         </div>
-        <form method="get" action="{% url url_name %}" data-id="long-filter-form" id="analytics-long-filter-form" data-long-filters>
+
+
+
 
 
 
