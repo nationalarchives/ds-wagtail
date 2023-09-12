@@ -29,6 +29,8 @@ class FeedbackForm(forms.Form):
     page_revision = forms.ModelChoiceField(
         Revision.objects.all(), required=False, widget=forms.HiddenInput
     )
+    page_type = forms.CharField(required=False, widget=forms.HiddenInput)
+    page_title = forms.CharField(required=False, widget=forms.HiddenInput)
 
     def __init__(
         self,
@@ -85,31 +87,12 @@ class FeedbackForm(forms.Form):
 
         # Add derived values to 'cleaned_data'
         path = normalize_path(parse_result.path)
-        path_list = path[1:].split("/")
-        page_title = "None"
-        page_type = "None"
-
-        if path_list[0] == "search":
-            page_type = "Search landing page"
-            if path_list[1]:
-                page_type = f"{path_list[1].title()} search"
-        elif path_list[0] == "catalogue":
-            if iaid := path_list[2]:
-                if iaid[0] == "a" and "-" not in iaid:
-                    page_type = "Archive details page"
-                elif iaid[0] == "f" and "-" not in iaid:
-                    page_type = "Record creator page"
-                else:
-                    page_type = "Record details page"
-                page_title = f"Catalogue IAID: {iaid.upper()}"
 
         self.cleaned_data.update(
             full_url=value,
             site=site,
             path=path,
             query_params=query_params,
-            page_title=page_title,
-            page_type=page_type,
         )
 
         return value
@@ -131,17 +114,6 @@ class FeedbackForm(forms.Form):
 
         return value
     
-    def clean_page(self) -> Optional[Page]:
-        page = self.cleaned_data.get("page")
-        print(dir(self))
-
-        if not page:
-            return None # Nothing to validate
-        
-        self.cleaned_data["page_type"] = page.page_type_display_name
-        self.cleaned_data["page_title"] = page.title
-
-        return page
 
     def clean_page_revision(self) -> Optional[Revision]:
         revision = self.cleaned_data.get("page_revision")
