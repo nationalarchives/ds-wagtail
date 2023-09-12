@@ -40,3 +40,4 @@ nav:
       - 'Search and record data': 'features/search-and-record-data.md'
       - 'Categories': 'features/categories.md'
       - 'Feedback mechanism': 'features/feedback-mechanism.md'
+      - 'Analytics/tracking': 'features/analytics-tracking.md'

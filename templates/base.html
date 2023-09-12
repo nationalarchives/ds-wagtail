@@ -1,6 +1,6 @@
 {% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
-<html class="tna-template tna-template--light-theme no-js" lang="en-GB">
+<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js" lang="en-GB">
     <head>
     {% if request.in_preview_panel %}
     <base target="_blank">
@@ -81,11 +81,11 @@
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
         <a href="#maincontent" class="tna-skip-link" data-link="Skip to main content">Skip to main content</a>
-        {% wagtailuserbar %}
-
-
+        {% if search_query %}
             <a href="#search-results-title" class="tna-skip-link">Skip to search results</a>
+        {% endif %}
 
+        {% wagtailuserbar %}
 
         {% if cookies_permitted %}
             {% include 'includes/gtm-no-script.html' %}
