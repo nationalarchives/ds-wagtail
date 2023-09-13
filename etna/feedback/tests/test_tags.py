@@ -83,6 +83,14 @@ class TestRenderFeedbackPromptTag(TestCase):
             result,
         )
         self.assertInHTML(
+            f'<input type="hidden" name="page_type" id="id_page_type" value="{self.page.page_type}">',
+            result,
+        )
+        self.assertInHTML(
+            f'<input type="hidden" name="page_title" id="id_page_title" value="{self.page.page_title}">',
+            result,
+        )
+        self.assertInHTML(
             f'<h3 class="tna-heading feedback__success-heading">{self.default_prompt.thank_you_heading}</h3>',
             result,
         )
@@ -101,7 +109,7 @@ class TestRenderFeedbackPromptTag(TestCase):
                     self.assertFalse(result)
 
     @override_settings(FEATURE_FEEDBACK_MECHANISM_ENABLED=False)
-    def test_promp_not_rendered_when_disabled(self):
+    def test_prompt_not_rendered_when_disabled(self):
         with self.assertNumQueries(0):
             result = render_feedback_prompt(
                 fake_request_context(self.home_path, page=self.page)
