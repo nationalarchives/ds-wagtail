@@ -86,12 +86,10 @@ class FeedbackForm(forms.Form):
         }
 
         # Add derived values to 'cleaned_data'
-        path = normalize_path(parse_result.path)
-
         self.cleaned_data.update(
             full_url=value,
             site=site,
-            path=path,
+            path=normalize_path(parse_result.path),
             query_params=query_params,
         )
 
