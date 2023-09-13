@@ -131,10 +131,9 @@
 }
 
 .cancel-return {
-    float:none;
+    float: none;
 
     @media only screen and (min-width: #{$screen__md + 1px}) {
-        
-        float:right;
+        float: right;
     }
 }
