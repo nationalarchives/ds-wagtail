@@ -1026,6 +1026,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
     def get_context_data(self, **kwargs):
         self.object_list = self.get_results(self.form)
+        kwargs["page_type"] = self.page_type
+        kwargs["page_title"] = self.page_title
+
         context = super().get_context_data(**kwargs)
 
         try:
@@ -1086,9 +1089,6 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
                 replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
         page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
         page_type_field.choices_updated = True
-
-        kwargs["page_type"] = self.page_type
-        kwargs["page_title"] = self.page_title
 
         # Add custom variables to the return value
         context.update(
