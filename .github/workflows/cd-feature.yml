@@ -1,0 +1,24 @@
+name: Deploy feature branch
+
+on:
+  workflow_call:
+  # push:
+  #   branches:
+  #     - feature/*
+
+jobs:
+  deploy:
+    name: Deploy to AWS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Get tag
+        id: version-tag
+        uses: ./.github/workflows/_get-version-tag.yml
+      - name: Build
+        uses: ./.github/workflows/_docker-build.yml
+        with:
+          version: ${{ steps.version-tag.outputs.VERSION }}
+      - name: Install AWS CLI
+        uses: ./.github/workflows/_install-aws.yml
+      # TODO: Deploy new feature environment

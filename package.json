@@ -1,6 +1,5 @@
 {
   "name": "ds-wagtail",
-  "version": "7.7.1",
   "description": "## Local development",
   "private": true,
   "scripts": {

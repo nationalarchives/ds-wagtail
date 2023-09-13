@@ -186,6 +186,7 @@ def create_superuser(c):
             "python",
             "manage.py",
             "createsuperuser",
+            "--noinput"
         ]
     )
 
