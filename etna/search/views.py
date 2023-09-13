@@ -845,6 +845,8 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
     form_class = NativeWebsiteSearchForm
     template_name = "search/native_website_search.html"
     search_tab = SearchTabs.WEBSITE.value
+    page_type = "Website search page"
+    page_title = "Website search"
 
     default_per_page: int = 15
     default_sort_by: str = SortBy.RELEVANCE.value
@@ -1084,6 +1086,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
                 replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
         page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
         page_type_field.choices_updated = True
+
+        kwargs["page_type"] = self.page_type
+        kwargs["page_title"] = self.page_title
 
         # Add custom variables to the return value
         context.update(
