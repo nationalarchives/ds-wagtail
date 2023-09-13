@@ -83,11 +83,11 @@ class TestRenderFeedbackPromptTag(TestCase):
             result,
         )
         self.assertInHTML(
-            f'<input type="hidden" name="page_type" id="id_page_type" value="{self.page.page_type}">',
+            f'<input type="hidden" name="page_type" id="id_page_type" value="{self.page.page_type_display_name}">',
             result,
         )
         self.assertInHTML(
-            f'<input type="hidden" name="page_title" id="id_page_title" value="{self.page.page_title}">',
+            f'<input type="hidden" name="page_title" id="id_page_title" value="{self.page.title}">',
             result,
         )
         self.assertInHTML(
