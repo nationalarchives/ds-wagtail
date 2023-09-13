@@ -29,6 +29,8 @@ class FeedbackForm(forms.Form):
     page_revision = forms.ModelChoiceField(
         Revision.objects.all(), required=False, widget=forms.HiddenInput
     )
+    page_type = forms.CharField(required=False, widget=forms.HiddenInput)
+    page_title = forms.CharField(required=False, widget=forms.HiddenInput)
 
     def __init__(
         self,
@@ -90,6 +92,7 @@ class FeedbackForm(forms.Form):
             path=normalize_path(parse_result.path),
             query_params=query_params,
         )
+
         return value
 
     def clean_response(self) -> Union[uuid.UUID, None]:
