@@ -37,7 +37,7 @@ def render_feedback_prompt(context, template_name="feedback/includes/prompt.html
         prompt = FeedbackPrompt.objects.get_for_path(request.path, page=page)
     except FeedbackPrompt.DoesNotExist:
         return ""
-    
+
     initial_data = {
         "url": request.build_absolute_uri(),
         "page_type": page_type,

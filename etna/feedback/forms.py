@@ -113,12 +113,11 @@ class FeedbackForm(forms.Form):
                 break
 
         return value
-    
 
     def clean_page_revision(self) -> Optional[Revision]:
         revision = self.cleaned_data.get("page_revision")
         page = self.cleaned_data.get("page")
-        
+
         if not page and not revision:
             return None  # Nothing to validate
 

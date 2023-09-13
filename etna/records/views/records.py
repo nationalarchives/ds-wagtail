@@ -83,10 +83,10 @@ def record_detail_view(request, iaid):
             template_name = "records/record_creators.html"
     except DoesNotExist:
         raise Http404
-    
+
     page_title = f"Catalogue ID: {record.iaid}"
     image = None
-    
+
     # TODO: Kong open beta API does not support media. Re-enable/update once media is available.
     # if page.is_digitised:
     #     image = Image.search.filter(rid=page.media_reference_id).first()
