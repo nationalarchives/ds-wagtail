@@ -6,13 +6,12 @@
         text-transform: uppercase;
         font-family: $font__roboto;
         margin-bottom: 1rem;
-        padding-left:1rem;
+        padding-left: 1rem;
     }
 
     &__image {
         width: 80%;
         border-radius: 50%;
-
     }
 
     &__text {
@@ -23,7 +22,7 @@
         margin-top: 0;
         margin-bottom: 0;
         font-family: $font__supria-sans;
-        padding-left:1rem;
+        padding-left: 1rem;
         @media (max-width: $screen__md) {
             font-size: 2.5rem;
         }
