@@ -243,6 +243,10 @@ class FeedbackSubmission(models.Model):
         on_delete=models.PROTECT,
         editable=False,
     )
+    page_type = models.TextField(verbose_name=_("page type"), null=True, editable=False)
+    page_title = models.TextField(
+        verbose_name=_("page title"), null=True, editable=False
+    )
     path = models.CharField(
         max_length=255, db_index=True, verbose_name=_("path"), editable=False
     )
