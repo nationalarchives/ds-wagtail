@@ -1,56 +1,64 @@
-<{{ htmlElement|default:"div" }} class="tna-card {{ classes }}{{ horizontal|yesno:' tna-card--horizontal,' }}{{ boxed|yesno:' tna-card--contrast,' }}{{ accent|yesno:' tna-card--accent,' }}" data-module="tna-card" {% for attribute, value in attributes %} {{ attribute }}="{{ value }}"{% endfor %}>
+<{{ htmlElement|default:"div" }} class="tna-card {{ classes }}{% if horizontal %} tna-card--horizontal{% endif %}{% if style == 'boxed' %} tna-card--contrast{% endif %}{% if style == 'accent' %} tna-card--accent{% endif %}" data-module="tna-card"{% for attribute, value in attributes.items %} {{ attribute }}="{{ value }}"{% endfor %}>
   <div class="tna-card__inner">
-  {% if supertitle %}
-    {% if singleSentence %}
-      <hgroup class="tna-card__heading tna-hgroup tna-hgroup--{{ headingSize|default:'l' }}">
-        <h{{ headingLevel }} class="tna-card__title tna-hgroup__title">
-          <span class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</span>
-        {% if href %}
-          <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
-        {% else %}
-          {{ title }}
+    {% if supertitle %}
+      {% if not singleSentence %}
+        <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
+          <p class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</p>
+          <h{{ headingLevel }} class="tna-card__heading tna-hgroup__title">
+          {% if href %}
+            <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+          {% else %}
+            {{ title }}
+          {% endif %}
+          </h{{ headingLevel }}>
+        </hgroup>
+      {% else %}
+        <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
+          <h{{ headingLevel }} class="tna-card__heading tna-hgroup__title">
+            <span class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</span>
+          {% if href %}
+            <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+          {% else %}
+            {{ title }}
+          {% endif %}
+          </h{{ headingLevel }}>
+        </hgroup>
+      {% endif %}
+    {% else %}
+      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
+      {% if href %}
+        <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+      {% else %}
+        {{ title }}
+      {% endif %}
+      </h{{ headingLevel }}>
+    {% endif %}
+    {% if imageSrc %}
+      {% if href %}
+      <a href="{{ href }}" class="tna-card__image-container" tabindex="-1">
+      {% else %}
+      <div class="tna-card__image-container">
+      {% endif %}
+        <picture class="tna-card__image">
+          {% if imageSources %}
+          {% for source in imageSources %}
+          <source srcset="{{ source.src }}" type="{{ source.type }}" width="{% if source.width %}{{ source.width }}{% else %}{{ imageWidth }}{% endif %}" height="{% if source.height %}{{ source.height }}{% else %}{{ imageHeight }}{% endif %}">
+          {% endfor %}
+          <source srcset="{{ imageSrc }}" type="image/jpeg" width="{{ imageWidth }}" height="{{ imageHeight }}">
+          {% endif %}
+          <img src="{{ imageSrc }}" alt="{{ imageAlt }}" width="{{ imageWidth }}" height="{{ imageHeight }}">
+        </picture>
+        {% if label %}
+        <div class="tna-chip tna-card__image-label">
+          {{ label }}
+        </div>
         {% endif %}
-        </h{{ headingLevel }}>
-      </hgroup>
-    {% else %}
-      <hgroup class="tna-card__heading tna-hgroup tna-hgroup--{{ headingSize|default:'l' }}">
-        <p class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</p>
-        <h{{ headingLevel }} class="tna-card__title tna-hgroup__title">
-        {% if href %}
-          <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
-        {% else %}
-          {{ title }}
-        {% endif %}
-        </h{{ headingLevel }}>
-      </hgroup>
-    {% endif %}
-  {% else %}
-    <h{{ headingLevel }} class="tna-card__title tna-heading tna-heading--{{ headingSize|default:'l' }}">
-    {% if href %}
-      <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
-    {% else %}
-      {{ title }}
-    {% endif %}
-    </h{{ headingLevel }}>
-  {% endif %}
-  {% if imageSrc %}
-    {% if href %}
-    <a href="{{ href }}" class="tna-card__image-container" tabindex="-1">
-    {% else %}
-    <div class="tna-card__image-container">
-    {% endif %}
-      <img src="{{ imageSrc }}" alt="{{ imageAlt }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="tna-card__image" />
-      {% if label %}
-      <div class="tna-chip tna-card__image-label">
-        {{ label }}
+      {% if href %}
+      </a>
+      {% else %}
       </div>
       {% endif %}
-    {% if href %}
-    </a>
-    {% else %}
-    </div>
     {% endif %}
-  {% endif %}
     <div class="tna-card__body">
     {% if text %}
       <p>{{ text }}</p>
