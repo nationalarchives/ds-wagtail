@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@nationalarchives/frontend": "^0.1.16-prerelease",
-    "jest": "~29.6",
+    "jest": "~29.7",
     "jquery": "~3.7",
     "openseadragon": "~4.1"
   },
