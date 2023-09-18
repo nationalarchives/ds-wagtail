@@ -27,7 +27,7 @@
     "@babel/core": "~7.22",
     "@babel/preset-env": "~7.22",
     "babel-loader": "~9.1",
-    "jest-environment-jsdom": "~29.6",
+    "jest-environment-jsdom": "~29.7",
     "prettier": "^3.0.0",
     "sass": "~1.66",
     "webpack": "~5.88",
