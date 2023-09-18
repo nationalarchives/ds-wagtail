@@ -3,8 +3,8 @@
     {% if supertitle %}
       {% if not singleSentence %}
         <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
-          <p class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</p>
-          <h{{ headingLevel }} class="tna-card__heading tna-hgroup__title">
+          <p class="tna-hgroup__supertitle">{{ supertitle }}</p>
+          <h{{ headingLevel }} class="tna-hgroup__title">
           {% if href %}
             <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
           {% else %}
@@ -14,8 +14,8 @@
         </hgroup>
       {% else %}
         <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
-          <h{{ headingLevel }} class="tna-card__heading tna-hgroup__title">
-            <span class="tna-card__supertitle tna-hgroup__supertitle">{{ supertitle }}</span>
+          <h{{ headingLevel }} class="tna-hgroup__title">
+            <span class="tna-hgroup__supertitle">{{ supertitle }}</span>
           {% if href %}
             <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
           {% else %}
@@ -78,6 +78,7 @@
         {{ item.text }}
       </a>
     {% endfor %}
+    </div>
     </div>
   {% endif %}
   </div>

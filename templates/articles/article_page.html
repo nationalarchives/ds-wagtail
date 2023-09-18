@@ -28,9 +28,11 @@
     </div>
 
     <aside class="related-content related-content--borderless">
-        <div class="container">
+        <div class="tna-container">
             {% if page.similar_items %}
+                <div class="tna-column tna-column--full">
                 <h2 class="tna-heading related-content__heading">You may also be interested in</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
@@ -46,7 +48,9 @@
 
 
             {% if page.latest_items %}
+            <div class="tna-column tna-column--full">
                 <h2 class="tna-heading related-content__heading">More stories</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
