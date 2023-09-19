@@ -1,9 +1,12 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .jumplinks {
     max-height: 100vh;
     position: sticky;
     top: 0;
-    padding: 2.5rem 0.5rem 0;
+    padding: 2.5rem 0 0;
     overflow-y: auto;
+    overflow-x: visible;
     -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
     scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
@@ -19,7 +22,8 @@
     }
 
     &__list {
-        padding-left: 0;
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
         list-style: none;
     }
 
@@ -51,7 +55,7 @@
         }
     }
 
-    @media (max-width: $screen__md) {
+    @include media.on-mobile {
         display: none;
     }
 

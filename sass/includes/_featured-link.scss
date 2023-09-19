@@ -39,6 +39,14 @@
     }
 
     &__image {
+        align-self: stretch;
+
+        picture {
+            height: 100%;
+
+            object-fit: cover;
+        }
+
         @media screen and (min-width: #{$screen__lg + 1px}) {
             flex: 0 0 33.33%;
         }
@@ -58,7 +66,7 @@
 
     &__content {
         color: $color__grey-700;
-        padding: 0 1.5rem;
+        padding: 1.5rem;
     }
 
     &__metadata-item {
