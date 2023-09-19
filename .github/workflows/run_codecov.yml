@@ -2,8 +2,8 @@ name: Code coverage
 
 on:
   push:
-    branches: 
-      - develop   
+    branches:
+      - develop
       
 env:
   python-version: ${{ vars.CI_PYTHON_VERSION }}
@@ -33,6 +33,8 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
+      - name: Run test suite
+        run: poetry run coverage run manage.py test etna
       - name: Prepare coverage report
         run: poetry run coverage xml
       - name: Upload coverage report to Codecov
