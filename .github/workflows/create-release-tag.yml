@@ -30,11 +30,11 @@ jobs:
           git tag v${{ steps.version-tag.outputs.CALVER }} -m "Version ${{ steps.version-tag.outputs.CALVER }}"
           git push origin --tags
       - name: Create pull request
-        run: gh pr create -B main -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}"
+        run: gh pr create -B main -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}" --no-maintainer-edit
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge the pull request
-        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}"
+        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --auto --admin
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
