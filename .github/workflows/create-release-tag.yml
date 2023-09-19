@@ -33,8 +33,12 @@ jobs:
         run: gh pr create -B main -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}" --no-maintainer-edit
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Review the pull request
+        run: gh pr review "release/v${{ steps.version-tag.outputs.CALVER }}" --approve --body "Auto approved by GitHub action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}"
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge the pull request
-        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --admin
+        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --auto
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
