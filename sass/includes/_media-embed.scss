@@ -1,3 +1,5 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .media-embed {
     $root: &;
     position: relative;
@@ -161,8 +163,12 @@
     }
 }
 
+.media-embed {
+    @include colour.invert;
+}
+
 .media-embed__heading,
 .media-embed__description,
 .media-embed__date {
-    color: $color__white;
+    // color: $color__white;
 }

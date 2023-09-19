@@ -291,18 +291,6 @@ Modified to match the existing site (for now)
     }
 }
 
-.media-embed {
-    &__heading,
-    &__description,
-    &__transcript-heading {
-        color: #fff !important;
-
-        a {
-            color: inherit;
-        }
-    }
-}
-
 .generic-intro__paragraph {
     margin-bottom: 3rem;
 }
