@@ -34,7 +34,7 @@ jobs:
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Merge the pull request
-        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --auto --admin
+        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --admin
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
