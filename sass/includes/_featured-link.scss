@@ -32,10 +32,16 @@
         &:visited {
             color: $color__black;
         }
+
+        &::after {
+            display: none !important;
+        }
     }
 
     &__heading-link-icon {
         margin-left: 0.5rem;
+
+        display: inline-block;
     }
 
     &__image {
