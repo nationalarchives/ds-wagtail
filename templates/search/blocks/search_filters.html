@@ -53,8 +53,8 @@
                         <span class="example-text">For example, 27 3 2007</span>
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
-                        <div class="search-filters__creation-date-section">
-                            <fieldset role="group">
+                        <div class="search-filters__creation-date-section" id="from-date">
+                            <fieldset role="group" aria-describedby="from-date">
                             {% if form.covering_date_from.errors %}
                                 <div
                                     data-tracking-errors
@@ -67,8 +67,8 @@
                             </fieldset>
                         </div>
 
-                        <div class="search-filters__creation-date-section">
-                            <fieldset role="group">
+                        <div class="search-filters__creation-date-section" id="to-date">
+                            <fieldset role="group" aria-describedby="to-date">
                             {{ form.covering_date_to.label_tag }}
                             {% if form.covering_date_to.errors %}
                                 <div
@@ -113,8 +113,8 @@
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
 
-                        <div class="search-filters__opening-date-section">
-                            <fieldset role="group">
+                        <div class="search-filters__opening-date-section" id="opening-start-date">
+                            <fieldset role="group" aria-describedby="opening-start-date">
                             <span class="example-text">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
@@ -130,8 +130,8 @@
                         </div>
                         
 
-                        <div class="search-filters__opening-date-section">
-                            <fieldset role="group">
+                        <div class="search-filters__opening-date-section" id="opening-end-date">
+                            <fieldset role="group" aria-describedby="opening-end-date">
                             {{ form.opening_end_date.label_tag }}
                             {% if form.opening_end_date.errors %}
                                 <div
@@ -173,4 +173,3 @@
 
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
-
