@@ -45,7 +45,7 @@
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
                 <div class="search-filters__accordion-section">
-                    <fieldset>
+                    <fieldset role="group">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
@@ -54,7 +54,7 @@
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
                         <div class="search-filters__creation-date-section">
-                            <fieldset>
+                            <fieldset role="group">
                             {% if form.covering_date_from.errors %}
                                 <div
                                     data-tracking-errors
@@ -68,7 +68,7 @@
                         </div>
 
                         <div class="search-filters__creation-date-section">
-                            <fieldset>
+                            <fieldset role="group">
                             {{ form.covering_date_to.label_tag }}
                             {% if form.covering_date_to.errors %}
                                 <div
@@ -108,13 +108,13 @@
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                 <div class="search-filters__accordion-section">
-                    <fieldset>
+                    <fieldset role="group">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
 
                         <div class="search-filters__opening-date-section">
-                            <fieldset>
+                            <fieldset role="group">
                             <span class="example-text">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
@@ -131,7 +131,7 @@
                         
 
                         <div class="search-filters__opening-date-section">
-                            <fieldset>
+                            <fieldset role="group">
                             {{ form.opening_end_date.label_tag }}
                             {% if form.opening_end_date.errors %}
                                 <div
