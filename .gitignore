@@ -63,3 +63,4 @@ config/settings/local.py
 .nvm
 
 media
+coverage.xml
