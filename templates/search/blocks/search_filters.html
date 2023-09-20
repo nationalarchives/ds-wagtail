@@ -44,8 +44,8 @@
             <h3 class="tna-heading sr-only">Edit filters</h3>
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
-                <div class="search-filters__accordion-section">
-                    <fieldset role="group">
+                <div class="search-filters__accordion-section" id="from-and-to-dates">
+                    <fieldset role="group" aria-describedby="from-and-to-dates">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
@@ -67,7 +67,7 @@
 
                         </div>
 
-                        <div id="to-date">
+                        <div>
 
                             {{ form.covering_date_to.label_tag }}
                             {% if form.covering_date_to.errors %}
@@ -107,8 +107,8 @@
 
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="search-filters__accordion-section">
-                    <fieldset role="group">
+                <div class="search-filters__accordion-section" id="opening-and-closing-dates">
+                    <fieldset role="group" aria-describedby="opening-and-closing-dates">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
@@ -130,7 +130,7 @@
                         </div>
                         
 
-                        <div class="search-filters__opening-date-section" id="opening-end-date">
+                        <div class="search-filters__opening-date-section">
 
                             {{ form.opening_end_date.label_tag }}
                             {% if form.opening_end_date.errors %}
@@ -142,7 +142,7 @@
                                 </div>
                             {% endif %}
                             {{ form.opening_end_date }}
-                            
+
                         </div>
 
                         <input type="submit" value="Update" class="search-filters__submit">
