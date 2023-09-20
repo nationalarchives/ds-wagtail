@@ -53,7 +53,7 @@
                         <span class="example-text">For example, 27 3 2007</span>
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
-                        <div class="search-filters__creation-date-section" id="from-date">
+                        <div id="from-date">
                             <fieldset role="group" aria-describedby="from-date">
                             {% if form.covering_date_from.errors %}
                                 <div
@@ -67,7 +67,7 @@
                             </fieldset>
                         </div>
 
-                        <div class="search-filters__creation-date-section" id="to-date">
+                        <div id="to-date">
                             <fieldset role="group" aria-describedby="to-date">
                             {{ form.covering_date_to.label_tag }}
                             {% if form.covering_date_to.errors %}
