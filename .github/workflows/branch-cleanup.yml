@@ -11,7 +11,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Get tag
         id: version-tag
-        uses: ./.github/actions/get-version-tag
+        uses: ./.github/workflows/_get-version-tag.yml
       - name: Debug
         run: echo "Clean up Docker image ${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.version-tag.outputs.VERSION }}"
       - name: Delete image
