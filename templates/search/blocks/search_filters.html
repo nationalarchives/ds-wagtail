@@ -44,16 +44,16 @@
             <h3 class="tna-heading sr-only">Edit filters</h3>
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
-                <div class="search-filters__accordion-section" id="from-and-to-dates">
-                    <fieldset role="group" aria-describedby="from-and-to-dates">
+                <div class="search-filters__accordion-section">
+                    <fieldset role="group" aria-describedby="from-date">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
-                        <span class="example-text">For example, 27 3 2007</span>
+                        <span class="example-text" id="from-date">For example, 27 3 2007</span>
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
-                        <div id="from-date">
+                        <div>
 
                             {% if form.covering_date_from.errors %}
                                 <div
