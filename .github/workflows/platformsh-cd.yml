@@ -8,7 +8,7 @@ on:
 jobs:
   ci:
     name: CI
-    uses: ./.github/workflows/_tests.yml
+    uses: ./.github/actions/tests
     with:
       python-version: ${{ vars.CI_PYTHON_VERSION }}
       poetry-version: ${{ vars.CI_POETRY_VERSION }}
