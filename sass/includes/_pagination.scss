@@ -75,13 +75,14 @@
                 margin: 0.3em;
             }
         }
+
         &-link:visited,
         &-link:hover {
             color: white;
         }
 
         &-link-current {
-            background: #ffcc00;
+            background: #fc0;
             color: black;
         }
 

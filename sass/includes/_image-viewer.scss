@@ -203,6 +203,7 @@
         &:focus {
             border: 0.3125rem solid $color__focus-outline-dark-bg !important;
         }
+
         &:focus-visible {
             outline: none;
         }
@@ -215,6 +216,7 @@
             &:focus {
                 border: 0.3125rem solid $color__focus-outline-dark-bg !important;
             }
+
             &:focus-visible {
                 outline: none;
             }

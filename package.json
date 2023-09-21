@@ -10,6 +10,8 @@
     "dev:js": "webpack --config webpack.config.js --mode=development --watch",
     "dev": "npm run dev:css & npm run dev:js",
     "test": "jest --coverage",
+    "lint:js": "eslint 'scripts/**/*.js'",
+    "lint:js:fix": "eslint --fix 'scripts/**/*.js'",
     "lint": "prettier --check '{scripts,sass}/**/*.{scss,js}' & stylelint 'sass/**/*.scss' & eslint 'scripts/**/*.js'",
     "lint:fix": "prettier --write '{scripts,sass}/**/*.{scss,js}' & stylelint --fix 'sass/**/*.scss' & eslint --fix 'scripts/**/*.js'"
   },

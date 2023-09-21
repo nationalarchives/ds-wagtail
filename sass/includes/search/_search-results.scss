@@ -2,6 +2,7 @@
     &__metadata {
         &-count {
             margin-bottom: 0.5rem;
+
             &-highlight {
                 font-weight: bold;
             }
@@ -24,10 +25,7 @@
             list-style: none;
             display: inline-block;
             color: #000;
-            padding-left: 0.5rem;
-            padding-right: 0.7rem;
-            padding-top: 0.3rem;
-            padding-bottom: 0.3rem;
+            padding: 0.3rem 0.7rem 0.3rem 0.5rem;
             border: 1px solid black;
             border-radius: 0.3rem;
             margin-right: 0.5rem;
@@ -70,7 +68,7 @@
         &--grid {
             @extend .search-results__list;
 
-            @media only screen and (min-width: 57rem) {
+            @media only screen and (width >= 57rem) {
                 // Using flex here, as grid doesn't work for dynamic elements in IE11. Grid on IE11 requires a specific column and row set for every child element as 'auto' for columns and rows does not work.
                 display: flex;
                 flex-wrap: wrap;
@@ -98,6 +96,7 @@
                 color: $color__navy;
             }
         }
+
         &-icon {
             margin-left: auto;
             margin-right: 1rem;
@@ -129,7 +128,7 @@
             padding: 0.8rem;
         }
 
-        &:before {
+        &::before {
             position: absolute;
             left: -14px;
             bottom: 7px;
@@ -146,7 +145,7 @@
         }
 
         &[aria-expanded="true"] {
-            &:before {
+            &::before {
                 //background-image: url('/static/images/icons/triangle-down.svg');
                 @media only screen and (max-width: $screen__md) {
                     background-image: none;
@@ -169,7 +168,7 @@
 }
 
 .filter-indicator {
-    background: #ffcc00;
+    background: #fc0;
     color: #1d2124;
     padding: 0.4rem 1rem;
     text-decoration: none;
