@@ -107,15 +107,15 @@
 
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="search-filters__accordion-section" id="opening-and-closing-dates">
-                    <fieldset role="group" aria-describedby="opening-and-closing-dates">
+                <div class="search-filters__accordion-section">
+                    <fieldset role="group" aria-describedby="opening-start-date">
                         <legend>
                             <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
 
-                        <div class="search-filters__opening-date-section" id="opening-start-date">
+                        <div class="search-filters__opening-date-section">
 
-                            <span class="example-text">For example, 27 3 2007</span><br>
+                            <span class="example-text" id="opening-start-date">For example, 27 3 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
                                 <div
