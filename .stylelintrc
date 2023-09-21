@@ -5,6 +5,7 @@
     "plugins": [
         "stylelint-selector-bem-pattern"
     ],
+    "ignoreFiles": ["sass/tna-toolkit/**/*.scss"],
     "rules": {
         "at-rule-empty-line-before": null,
         "block-no-empty": null,
@@ -17,6 +18,9 @@
         "selector-class-pattern": null,
         "plugin/selector-bem-pattern": {
             "preset": "bem"
+        },
+        "declaration-block-no-duplicate-properties": {
+            "ignore": ["consecutive-duplicates-with-different-values"]
         }
     }
 }
