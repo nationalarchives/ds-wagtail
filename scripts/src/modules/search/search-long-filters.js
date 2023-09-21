@@ -96,7 +96,7 @@ export default function () {
         $filterCount.appendChild($introCopyheldby);
     }
 
-    const handleSearch = function (e) {
+    const handleSearch = function () {
         const keyword = $searchBox.value.toLowerCase();
 
         const narrowedDownFilters = longFiltersArray.filter((filter) => {
