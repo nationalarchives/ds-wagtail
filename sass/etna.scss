@@ -237,6 +237,7 @@ $largest-small-device: 992px;
     }
 }
 
+/* stylelint-disable no-descending-specificity */
 .highlight-gallery {
     color: #fff;
 
@@ -244,6 +245,7 @@ $largest-small-device: 992px;
         color: inherit;
     }
 }
+/* stylelint-enable no-descending-specificity */
 
 .card-group-secondary-nav {
     margin-bottom: 2rem;
@@ -267,6 +269,7 @@ $largest-small-device: 992px;
     margin-top: 2rem;
 }
 
+/* stylelint-disable no-descending-specificity */
 .featured-article__description,
 .article-container__main,
 .container,
@@ -278,3 +281,4 @@ $largest-small-device: 992px;
 [class*=" col-"] {
     box-sizing: border-box;
 }
+/* stylelint-enable no-descending-specificity */

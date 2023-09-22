@@ -264,6 +264,7 @@
         }
     }
 
+    // stylelint-disable no-descending-specificity
     &__text-container {
         display: inline-block;
         vertical-align: top;
@@ -292,6 +293,7 @@
             }
         }
     }
+    // stylelint-enable no-descending-specificity
 
     &__text-level {
         font-family: $font__supria-sans;

@@ -82,10 +82,6 @@
         width: calc(100% + 4rem);
     }
 
-    &__transcript-heading {
-        margin: 0;
-    }
-
     &__details {
         display: inline-block;
         text-align: left;
@@ -144,6 +140,7 @@
     }
 
     &__transcript-heading {
+        margin: 0;
         @include font-size(xs);
         font-weight: normal;
         font-family: $font__open-sans;

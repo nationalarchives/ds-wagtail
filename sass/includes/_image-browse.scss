@@ -65,6 +65,7 @@
             background-repeat: no-repeat;
         }
 
+        // stylelint-disable no-descending-specificity
         a {
             display: block;
             width: 100%;
@@ -91,5 +92,6 @@
                 outline-offset: 0.125rem;
             }
         }
+        // stylelint-enable no-descending-specificity
     }
 }

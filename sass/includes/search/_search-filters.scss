@@ -38,17 +38,13 @@
     &__submit {
         @extend .search-button;
         display: block;
-        margin-top: 0.5rem;
+        margin-top: 1.2em;
     }
 
     &__label,
     &__checkbox,
     &__submit {
         cursor: pointer;
-    }
-
-    &__submit {
-        margin-top: 1.2em;
     }
 
     &__label {
@@ -114,7 +110,6 @@
 
     .errorlist {
         list-style-type: none;
-        padding-left: 0;
         font-weight: 700;
         padding: 1rem 2rem;
         background-color: #a72916;

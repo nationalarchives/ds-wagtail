@@ -36,6 +36,7 @@
         }
     }
 
+    // stylelint-disable no-descending-specificity
     &__link {
         transition: none;
         text-decoration-thickness: 1px;
@@ -81,4 +82,5 @@
             color: $color__black;
         }
     }
+    // stylelint-enable no-descending-specificity
 }

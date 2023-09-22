@@ -1,3 +1,4 @@
+// stylelint-disable no-descending-specificity
 .no-js {
     .image-viewer {
         &__toolbar {
@@ -223,3 +224,4 @@
         }
     }
 }
+// stylelint-enable no-descending-specificity

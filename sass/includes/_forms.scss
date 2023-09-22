@@ -1,3 +1,4 @@
+// stylelint-disable no-descending-specificity
 .tna-form {
     &--error {
         .tna-form__error-summary {
@@ -217,3 +218,4 @@
         color: $color__grey-mid-dark;
     }
 }
+// stylelint-enable no-descending-specificity
