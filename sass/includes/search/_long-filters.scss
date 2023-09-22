@@ -129,3 +129,11 @@
         font-size: 1rem;
     }
 }
+
+.cancel-return {
+    float: none;
+
+    @media only screen and (min-width: #{$screen__md + 1px}) {
+        float: right;
+    }
+}
