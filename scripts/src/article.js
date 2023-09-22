@@ -40,8 +40,8 @@ window.addEventListener("load", () => {
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
-    const baseFontSize = 16;
-    const remScreenSize = 48;
+    const mobileMediaQuery = window.matchMedia("(max-width: 48rem)");
+    const isMobile = () => mobileMediaQuery.matches;
     let headingPositions;
 
     // These booleans are used to detect if certain enhancements (e.g. click event listeners) have been applied in order to
@@ -80,10 +80,7 @@ window.addEventListener("load", () => {
         });
     }
 
-    if (
-        $(window).width() / baseFontSize <= remScreenSize &&
-        !mobileEnhancementsApplied
-    ) {
+    if (isMobile() && !mobileEnhancementsApplied) {
         $sectionContents.hide();
         apply_aria_roles($sectionHeadings, $sectionContents);
 
@@ -139,10 +136,7 @@ window.addEventListener("load", () => {
     $(window).on(
         "resize",
         debounce(() => {
-            if (
-                $(window).width() / baseFontSize <= remScreenSize &&
-                !mobileEnhancementsApplied
-            ) {
+            if (isMobile() && !mobileEnhancementsApplied) {
                 $sectionContents.hide();
                 apply_aria_roles($sectionHeadings, $sectionContents);
 
@@ -177,16 +171,10 @@ window.addEventListener("load", () => {
 
                 desktopEnhancementsApplied = false;
                 mobileEnhancementsApplied = true;
-            } else if (
-                $(window).width() / baseFontSize <= remScreenSize &&
-                mobileEnhancementsApplied
-            ) {
+            } else if (isMobile() && mobileEnhancementsApplied) {
                 // Recalculate heading positions on resize.
                 headingPositions = set_heading_positions($sectionHeadings);
-            } else if (
-                $(window).width() / baseFontSize > remScreenSize &&
-                !desktopEnhancementsApplied
-            ) {
+            } else if (!desktopEnhancementsApplied) {
                 remove_aria_roles($sectionHeadings);
 
                 // Remove click and enter listeners because sections are fully expanded on desktop

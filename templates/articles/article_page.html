@@ -12,12 +12,12 @@
     {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
-    <div class="article-container container">
-        <div class="article-container__sidebar">
+    <article class="article-container--- tna-container">
+        <div class="article-container__sidebar--- tna-column tna-column--width-1-4">
             {% jumplinks page %}
         </div>
 
-        <div class="article-container__main">
+        <div class="article-container__main tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
             {% if page.display_content_warning %}
                 {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
             {% endif %}
@@ -25,12 +25,14 @@
                 {% include_block block %}
             {% endfor %}
         </div>
-    </div>
+    </article>
 
-    <div class="related-content related-content--borderless">
-        <div class="container">
+    <aside class="related-content related-content--borderless">
+        <div class="tna-container">
             {% if page.similar_items %}
+                <div class="tna-column tna-column--full">
                 <h2 class="tna-heading related-content__heading">You may also be interested in</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
@@ -46,7 +48,9 @@
 
 
             {% if page.latest_items %}
+            <div class="tna-column tna-column--full">
                 <h2 class="tna-heading related-content__heading">More stories</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
@@ -55,7 +59,7 @@
                 </ul>
             {% endif %}
         </div>
-    </div>
+    </aside>
 
 {% endblock %}
 

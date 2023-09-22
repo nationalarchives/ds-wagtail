@@ -1,3 +1,5 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .explore-intro {
     $root: &;
     padding-top: 1rem;
@@ -17,7 +19,7 @@
         height: auto;
         width: auto;
 
-        @media (max-width: $screen__lg) {
+        @include media.on-mobile {
             display: none;
         }
     }
