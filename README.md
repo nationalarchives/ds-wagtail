@@ -18,11 +18,15 @@ Convenience commands have been added to `fabfile.py` to help you interact with t
 
 Once installed, you can type `fab -l` to see a list of available commands.
 
+### Before starting a build for the first time
+
+```sh
+cp .env.example .env
+```
 
 ### 1. Build and start Docker containers
 
 ```sh
-cp .env.example .env
 fab start
 ```
 
