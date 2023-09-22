@@ -160,6 +160,7 @@
     }
 }
 
+// stylelint-disable-next-line no-duplicate-selectors
 .media-embed {
     @include colour.invert;
 }
