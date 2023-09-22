@@ -16,6 +16,11 @@
         width: 50%;
         z-index: 998;
 
+        picture {
+            height: 100%;
+            width: 100%;
+        }
+
         img {
             height: 100%;
             width: 100%;
@@ -27,7 +32,7 @@
         }
 
         &:hover {
-            outline: 0.3125rem solid $color__grey-700;
+            // outline: 0.3125rem solid $color__grey-700;
         }
     }
 

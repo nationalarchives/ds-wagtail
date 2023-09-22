@@ -1,3 +1,5 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .media-embed {
     $root: &;
     position: relative;
@@ -150,7 +152,7 @@
 
     &__transcript-text {
         display: block;
-        width: 100%;
+        // width: 100%;
         background-color: $color__grey-700;
         color: $color__white;
         padding: 2rem 2rem 0;
@@ -158,8 +160,12 @@
     }
 }
 
+.media-embed {
+    @include colour.invert;
+}
+
 .media-embed__heading,
 .media-embed__description,
 .media-embed__date {
-    color: $color__white;
+    // color: $color__white;
 }

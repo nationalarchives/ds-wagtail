@@ -12,7 +12,11 @@
         {% include "includes/highlight_gallery_teaser.html" with title=page.featured_highlight_gallery.title cards=page.featured_highlight_gallery.page_highlights.all|slice:":5" page=page.featured_highlight_gallery %}
     {% endif %}
     {% if page.featured_article.live %}
+    <div class="tna-container">
+    <div class="tna-column tna-column--full">
         {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    </div>
+    </div>
     {% endif %}
     {% if page.promoted_links %}
         {% comment %} Checks if featured article exists then adds a bg to define the separate sections {% endcomment %}
@@ -23,7 +27,9 @@
         {% endif %}
     {% endif %}
     {% if page.primary_topic or page.time_period %}
+    <div class="tna-container">
         {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period %}
+    </div>
     {% endif %}
 {% endblock content %}
 {% block extra_js %}
