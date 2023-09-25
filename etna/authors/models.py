@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
@@ -64,27 +64,11 @@ class AuthorPage(BasePage):
 
     @cached_property
     def authored_focused_articles(self):
-        from etna.articles.models import FocusedArticlePage
-
         return (
-            FocusedArticlePage.objects.live()
+            self.focused_articles.live()
             .public()
-            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")
-        )
-
-    @cached_property
-    def related_page_pks(self):
-        """
-        Returns a list of ids of pages that have used the `AuthorTag` inline
-        to indicate a relationship with this author. The values are ordered by
-        when the page was first published ('more recently added' pages take presendence)
-        """
-        return tuple(
-            self.author_pages.values_list("page_id", flat=True).order_by(
-                "-page__first_published_at"
-            )
         )
 
 
@@ -92,8 +76,8 @@ class AuthorTag(models.Model):
     """
     This model allows any page type to be associated with an author page.
 
-    Just add `AuthorPageMixin.get_authors_inlinepanel()` to a page type's panel
-    configuration to use it!
+    Add a ForeignKey with a fitting related_name (e.g. `focused_articles`
+    for `FocusedArticlePage`) to the page's model to use this.
     """
 
     page = ParentalKey(Page, on_delete=models.CASCADE, related_name="author_tags")
@@ -110,15 +94,6 @@ class AuthorPageMixin:
     A mixin for pages that uses the ``AuthorTag`` model
     in order to be associated with an author.
     """
-
-    @classmethod
-    def get_authors_inlinepanel(cls, max_num=1):
-        return InlinePanel(
-            "author_tags",
-            heading="Page author",
-            help_text="Select the author of this page.",
-            max_num=max_num,
-        )
 
     @cached_property
     def author(self):

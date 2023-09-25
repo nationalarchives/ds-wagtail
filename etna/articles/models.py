@@ -323,6 +323,14 @@ class FocusedArticlePage(
     The FocusedArticlePage model.
     """
 
+    author = models.ForeignKey(
+        "authors.AuthorPage",
+        blank=True,
+        null=True,
+        related_name="focused_articles",
+        on_delete=models.SET_NULL,
+    )
+
     body = StreamField(
         ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
     )
@@ -358,7 +366,9 @@ class FocusedArticlePage(
         + BasePageWithIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
-            AuthorPageMixin.get_authors_inlinepanel(),
+            FieldPanel(
+                "author", heading="Author", help_text="Add the author of this page"
+            ),
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
