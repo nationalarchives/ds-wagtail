@@ -15,15 +15,14 @@
     {% else %}
         {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}
     {% endif %}    
-    {% if page.author_name or page.first_published_at %}
+    {% if page.author_name %}
         <div class="generic-intro__meta">
             <ul class="generic-intro__meta-list container">
-                {% if page.author_name %}
-                    <li class="generic-intro__meta-item">By <a href="{% pageurl page.author %}">{{ page.author_name }}</a></li>                    
-                {% endif %}
+                <li class="generic-intro__meta-item">By <a href="{% pageurl page.author %}">{{ page.author_name }}</a></li>                    
             </ul>
         </div>
     {% endif %}
+
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
     {% if page.intro and page.hero_image %}
