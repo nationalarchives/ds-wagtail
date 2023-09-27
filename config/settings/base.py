@@ -84,6 +84,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -281,6 +282,13 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 # Custom password template for private pages
 
 PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
+
+# Eventbrite client
+
+EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
+EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
+EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
+EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
 # Kong client
 
