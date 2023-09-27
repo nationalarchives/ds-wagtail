@@ -198,6 +198,8 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
 
     template_name = "search/search.html"
     bucket_list = CATALOGUE_BUCKETS
+    page_type = "Search landing page"
+    page_title = "Search landing"
 
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
@@ -217,6 +219,8 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
             ],
             size=0,
         )
+        kwargs["page_type"] = self.page_type
+        kwargs["page_title"] = self.page_title
         return super().get_context_data(
             meta_title="Search the collection",
             form=CatalogueSearchForm(),
@@ -355,6 +359,8 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
         return data
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        kwargs["page_type"] = self.page_type
+        kwargs["page_title"] = self.page_title
         return super().get_context_data(
             meta_title=self.get_meta_title(),
             search_query=self.query,
@@ -671,6 +677,8 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
     search_tab = SearchTabs.CATALOGUE.value
+    page_type = "Catalogue search page"
+    page_title = "Catalogue search"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
@@ -683,6 +691,8 @@ class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     default_group = "tna"
     form_class = CatalogueSearchForm
     template_name = "search/long_filter_options.html"
+    page_type = "Catalogue search long filter page"
+    page_title = "Catalogue search long filter"
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(url_name="search-catalogue", **kwargs)
@@ -696,6 +706,8 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
     form_class = WebsiteSearchForm
     template_name = "search/website_search.html"
     search_tab = SearchTabs.WEBSITE.value
+    page_type = "Website search page"
+    page_title = "Website search"
 
     def add_article_page_for_url(self, page: PaginatorPage) -> None:
         """
@@ -753,6 +765,8 @@ class FeaturedSearchView(BaseSearchView):
     template_name = "search/featured_search.html"
     search_tab = SearchTabs.ALL.value
     featured_search_total_count = 0
+    page_type = "Featured search page"
+    page_title = "Featured search"
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         super().setup(request, *args, **kwargs)
@@ -831,6 +845,8 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
     form_class = NativeWebsiteSearchForm
     template_name = "search/native_website_search.html"
     search_tab = SearchTabs.WEBSITE.value
+    page_type = "Website search page"
+    page_title = "Website search"
 
     default_per_page: int = 15
     default_sort_by: str = SortBy.RELEVANCE.value
@@ -1010,6 +1026,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
     def get_context_data(self, **kwargs):
         self.object_list = self.get_results(self.form)
+        kwargs["page_type"] = self.page_type
+        kwargs["page_title"] = self.page_title
+
         context = super().get_context_data(**kwargs)
 
         try:

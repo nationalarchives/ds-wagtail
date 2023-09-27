@@ -4,4 +4,4 @@ poetry run isort . --check --diff
 poetry run black . --check --diff
 poetry run flake8 .
 
-manage test
+manage test etna

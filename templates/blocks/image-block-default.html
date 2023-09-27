@@ -2,7 +2,7 @@
 {% image value.image width-600 as block_image %}
 
 {% if value.image %}
-    <figure class="image-block u-margin-l" data-module="data-imageblock">
+    <figure class="image-block u-margin-l---" data-module="data-imageblock">
         <picture>
             {% image value.image max-832x591 format-webp as desktop_img %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>

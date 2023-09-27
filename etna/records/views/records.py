@@ -67,19 +67,24 @@ def record_detail_view(request, iaid):
     """
     template_name = "records/record_detail.html"
     context = {}
+    page_type = "Record details page"
+
     try:
         # for any record
         record = records_client.fetch(iaid=iaid, expand=True)
 
         # check archive record
         if record.custom_record_type == "ARCHON":
+            page_type = "Archive details page"
             template_name = "records/archive_detail.html"
             context.update(discovery_browse=TNA_URLS.get("discovery_browse"))
         elif record.custom_record_type == "CREATORS":
+            page_type = "Record creators page"
             template_name = "records/record_creators.html"
     except DoesNotExist:
         raise Http404
 
+    page_title = f"Catalogue ID: {record.iaid}"
     image = None
 
     # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
@@ -106,6 +111,8 @@ def record_detail_view(request, iaid):
         image=image,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
+        page_type=page_type,
+        page_title=page_title,
     )
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
