@@ -774,7 +774,7 @@ class TestClientFetchReponse(SimpleTestCase):
         self.records_client = get_records_client()
 
     @responses.activate
-    def test_raises_kong_error_with_message(self):
+    def test_raises_client_api_error_with_message(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
@@ -789,7 +789,7 @@ class TestClientFetchReponse(SimpleTestCase):
             self.records_client.fetch()
 
     @responses.activate
-    def test_raises_kong_error_on_elastic_search_error(self):
+    def test_raises_client_api_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
@@ -813,7 +813,7 @@ class TestClientFetchReponse(SimpleTestCase):
             self.records_client.fetch()
 
     @responses.activate
-    def test_raises_kong_error_on_java_error(self):
+    def test_raises_client_api_error_on_java_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
@@ -908,7 +908,7 @@ class TestClientSearchReponse(SimpleTestCase):
         self.records_client = get_records_client()
 
     @responses.activate
-    def test_raises_kong_error_with_message(self):
+    def test_raises_client_api_error_with_message(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
@@ -923,7 +923,7 @@ class TestClientSearchReponse(SimpleTestCase):
             self.records_client.search()
 
     @responses.activate
-    def test_raises_kong_error_on_elastic_search_error(self):
+    def test_raises_client_api_error_on_elastic_search_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
@@ -947,7 +947,7 @@ class TestClientSearchReponse(SimpleTestCase):
             self.records_client.search()
 
     @responses.activate
-    def test_raises_kong_error_on_java_error(self):
+    def test_raises_client_api_error_on_java_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
@@ -1050,7 +1050,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         self.records_client = get_records_client()
 
     @responses.activate
-    def test_raises_kong_error_with_message(self):
+    def test_raises_client_api_error_with_message(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetchAll",
@@ -1065,7 +1065,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
             self.records_client.fetch_all()
 
     @responses.activate
-    def test_raises_kong_error_on_elastic_fetchAll_error(self):
+    def test_raises_client_api_error_on_elastic_fetchAll_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetchAll",
@@ -1089,7 +1089,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
             self.records_client.fetch_all()
 
     @responses.activate
-    def test_raises_kong_error_on_java_error(self):
+    def test_raises_client_api_error_on_java_error(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetchAll",

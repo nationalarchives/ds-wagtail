@@ -183,7 +183,7 @@ class TestRecordView(TestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/media",
+            f"{settings.CLIENT_MEDIA_URL}",
             body="",
             stream=True,
         )
@@ -454,10 +454,10 @@ class TestImageServeView(TestCase):
         self.assertEquals(response.status_code, 404)
 
     @responses.activate
-    def test_404_response_from_kong_is_forwarded(self):
+    def test_404_response_from_client_api_is_forwarded(self):
         responses.add(
             responses.GET,
-            re.compile("^https://kong.test/media"),
+            re.compile(f"^{settings.CLIENT_MEDIA_URL}"),
             status=404,
         )
 
@@ -470,7 +470,7 @@ class TestImageServeView(TestCase):
     def test_success(self):
         responses.add(
             responses.GET,
-            re.compile("^https://kong.test/media"),
+            re.compile(f"^{settings.CLIENT_MEDIA_URL}"),
             body=io.BufferedReader(io.BytesIO(b"test byte stream")),
             content_type="application/octet-stream",
             stream=True,
@@ -543,7 +543,7 @@ class TestImageBrowseView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/media",
+            f"{settings.CLIENT_MEDIA_URL}",
             body="",
             stream=True,
         )
@@ -626,7 +626,7 @@ class TestImageViewerView(TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/media",
+            f"{settings.CLIENT_MEDIA_URL}",
             body="",
             stream=True,
         )
@@ -735,7 +735,7 @@ class TestImageViewerView(TestCase):
         self.assertEquals(response.status_code, 404)
 
     @responses.activate
-    def test_invalid_response_from_kong_raises_404(self):
+    def test_invalid_response_from_client_api_raises_404(self):
         """It's possible for us to pass a very long offset to Client API that returns a 400.
 
         In such an event, ensure that we gracefully handle the error."""

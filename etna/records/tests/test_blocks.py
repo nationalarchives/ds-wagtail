@@ -196,7 +196,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
     @responses.activate
-    def test_view_edit_page_with_kong_exception(self):
+    def test_view_edit_page_with_client_api_exception(self):
         """Ensure that even if a record associated with this page doesn't
         exist, we're still able to render its edit page."""
 
