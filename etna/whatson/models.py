@@ -267,22 +267,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     A page for an event.
     """
 
+    # Content
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
         blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
-    )
-
-    short_title = models.CharField(
-        max_length=75,
-        verbose_name=_("short title"),
-        help_text=_(
-            "A short title for the event. This will be used in the event listings."
-        ),
-        blank=True,
-        null=True,
     )
 
     body = StreamField(
@@ -369,6 +360,17 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         null=True,
         blank=True,
         help_text=_("Information about the video conference."),
+    )
+
+    # Promote tab
+    short_title = models.CharField(
+        max_length=75,
+        verbose_name=_("short title"),
+        help_text=_(
+            "A short title for the event. This will be used in the event listings."
+        ),
+        blank=True,
+        null=True,
     )
 
     # DataLayerMixin overrides
