@@ -9,7 +9,7 @@ class APIModel(ABC):
     @classmethod
     @abstractmethod
     def from_api_response(cls, response: dict) -> APIModel:
-        """Transform a response From Kong into an APIModel instance.
+        """Transform a response From Client API into an APIModel instance.
 
         To be implemented the concrete class.
         """

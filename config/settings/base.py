@@ -291,14 +291,14 @@ EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
 EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
 EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
-# Kong client
+# API Client
 
-KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
+CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
 )
-KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field

@@ -1,13 +1,13 @@
 from django.conf import settings
 
-from etna.ciim.client import KongClient
+from etna.ciim.client import ClientAPI
 
 
 def get_records_client():
-    return KongClient(
-        base_url=settings.KONG_CLIENT_BASE_URL,
-        api_key=settings.KONG_CLIENT_KEY,
-        verify_certificates=settings.KONG_CLIENT_VERIFY_CERTIFICATES,
+    return ClientAPI(
+        base_url=settings.CLIENT_BASE_URL,
+        api_key=settings.CLIENT_KEY,
+        verify_certificates=settings.CLIENT_VERIFY_CERTIFICATES,
     )
 
 
