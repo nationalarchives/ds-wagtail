@@ -257,13 +257,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         related_name="+",
     )
 
-    # body = StreamField(
-    #     EventPageBlock,
-    #     blank=True,
-    #     null=True,
-    #     help_text="Add content for this page",
-    #     use_json_field=True
-    # )
+    body = StreamField(
+        EventPageBlock,
+        blank=True,
+        null=True,
+        help_text="Add content for this page",
+        use_json_field=True
+    )
 
     event_type = models.ForeignKey(
         EventType,
@@ -332,7 +332,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("lead_image"),
-        # FieldPanel("body"),
+        FieldPanel("body"),
         FieldPanel("event_type"),
         InlinePanel(
             "event_access_types",
