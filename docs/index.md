@@ -12,7 +12,7 @@ For help setting up a development environment, [view the README](https://github.
 
 List here any key external services this project depends. Preferably link to a separate documentation page for each.
 
-- [Search and record data (Kong API)](features/search-and-record-data.md)
+- [Search and record data (Client API)](features/search-and-record-data.md)
 
 ## Updating this documentation
 

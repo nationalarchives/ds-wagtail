@@ -431,10 +431,10 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.closure_status, "Some status value")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class UnexpectedParsingIssueTest(SimpleTestCase):
     """A collection of tests verifying fixes for real-world (but unexpected)
-    issues with data returned by Kong"""
+    issues with data returned by Client API"""
 
     @classmethod
     def setUpClass(cls):
@@ -445,7 +445,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
     def test_hierarchy_with_no_identifier_is_skipped(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -478,7 +478,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -512,7 +512,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -553,7 +553,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(records=[record]),
         )
 
@@ -563,18 +563,18 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
 
 
 @unittest.skip(
-    "Kong open beta API does not support media. Re-enable/update once media is available."
+    "Client API open beta API does not support media. Re-enable/update once media is available."
 )
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
+    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class ImageTestCase(TestCase):
     @responses.activate
     def test_thumbnail_url(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(
@@ -596,7 +596,7 @@ class ImageTestCase(TestCase):
     def test_thumbnail_url_fallback(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_response(
                 records=[
                     create_media(
@@ -609,11 +609,11 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        # Fallback serves image through Wagtail instead of from kong
+        # Fallback serves image through Wagtail instead of from Client API
         self.assertEquals(image.thumbnail_url, "/records/image/path/to/image.jpeg")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
 class ArchiveRecordModelTests(SimpleTestCase):
     """Record model tests for an Archive record"""
 
@@ -626,7 +626,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_source(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -647,7 +647,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_no_data_for_archive_attributes(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -670,7 +670,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_title(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -698,7 +698,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_contact_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -749,7 +749,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_further_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -797,7 +797,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_collection_record_creators(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -1008,7 +1008,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_nra_records_info(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -1064,7 +1064,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_accessions(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
@@ -1099,7 +1099,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
     def test_archive_repository_url(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(

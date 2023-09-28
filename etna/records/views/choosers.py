@@ -5,14 +5,14 @@ from django.urls import re_path
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.client import Stream
-from ...ciim.exceptions import KongAPIError
+from ...ciim.exceptions import ClientAPIError
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
 from ..models import Record
 
 
-class KongModelChooserMixinIn(ChooserMixin):
-    """Chooser source to allow filtering and selection of Kong model data.
+class ClientAPIModelChooserMixinIn(ChooserMixin):
+    """Chooser source to allow filtering and selection of Client API model data.
 
     Similar to the DFRDRFChooserMixin:
 
@@ -62,25 +62,25 @@ class KongModelChooserMixinIn(ChooserMixin):
         return False
 
 
-class KongChosenView(BaseChosenView):
+class ClientAPIChosenView(BaseChosenView):
     """View to handle fetching a selected item."""
 
     def get(self, request, pk):
         """Fetch selected item by its pk (in our case IAID)
 
-        Override parent to handle any errors from the Kong API.
+        Override parent to handle any errors from the Client API.
         """
         try:
             return super().get(request, pk)
-        except KongAPIError:
+        except ClientAPIError:
             raise Http404
 
 
 class RecordChooserViewSet(ChooserViewSet):
     """Custom chooser to allow users to filter and select records."""
 
-    base_chosen_view_class = KongChosenView
-    chooser_mixin_class = KongModelChooserMixinIn
+    base_chosen_view_class = ClientAPIChosenView
+    chooser_mixin_class = ClientAPIModelChooserMixinIn
     icon = "form"
     model = Record
     page_title = "Choose a record"
