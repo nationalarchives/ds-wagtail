@@ -1,8 +1,6 @@
-from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -18,6 +16,7 @@ from etna.core.models import BasePageWithIntro
 
 from .blocks import EventPageBlock
 
+
 class VenueType(models.TextChoices):
     """
     This model is used to add venue types to event pages.
@@ -26,6 +25,7 @@ class VenueType(models.TextChoices):
     ONLINE = "online", _("Online")
     IN_PERSON = "in_person", _("In person")
     HYBRID = "hybrid", _("Hybrid")
+
 
 @register_snippet
 class EventType(models.Model):
@@ -132,6 +132,7 @@ class AccessTypeOrderable(Orderable):
         related_name="access_types",
     )
 
+
 class Host(Orderable):
     """
     This model is used to add host information to event pages.
@@ -177,6 +178,7 @@ class Host(Orderable):
         FieldPanel("host_image"),
     ]
 
+
 class Speaker(Orderable):
     """
     This model is used to add speaker information to event pages.
@@ -187,7 +189,7 @@ class Speaker(Orderable):
         on_delete=models.CASCADE,
         related_name="speaker_information",
     )
-    
+
     # When we have an author page, we will add a ForeignKey to that here.
     # The below fields will remain when we have an author page, but will be
     # optional, if there is no page for the speaker/author.
@@ -288,7 +290,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         blank=True,
         null=True,
         help_text="Add content for this page",
-        use_json_field=True
+        use_json_field=True,
     )
 
     # Event information
