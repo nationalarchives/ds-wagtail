@@ -3,7 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
@@ -16,6 +16,14 @@ from etna.core.models import BasePageWithIntro
 
 from .blocks import EventPageBlock
 
+class VenueType(models.TextChoices):
+    """
+    This model is used to add venue types to event pages.
+    """
+
+    ONLINE = "online", _("Online")
+    IN_PERSON = "in_person", _("In person")
+    HYBRID = "hybrid", _("Hybrid")
 
 @register_snippet
 class EventType(models.Model):
@@ -275,6 +283,47 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         null=True,
     )
 
+    # Venue information
+    venue_type = models.CharField(
+        max_length=15,
+        verbose_name=_("venue type"),
+        null=False,
+        blank=False,
+        choices=VenueType.choices,
+        default=VenueType.IN_PERSON,
+        help_text=_("The type of venue for the event."),
+    )
+
+    venue_website = models.URLField(
+        max_length=255,
+        verbose_name=_("venue website"),
+        null=True,
+        blank=True,
+        help_text=_("The website for the venue."),
+    )
+
+    venue_address = RichTextField(
+        verbose_name=_("venue address"),
+        null=True,
+        blank=True,
+        help_text=_("The address of the venue."),
+    )
+
+    venue_space_name = models.CharField(
+        max_length=255,
+        verbose_name=_("venue space name"),
+        null=True,
+        blank=True,
+        help_text=_("The name of the venue space."),
+    )
+
+    video_conference_info = RichTextField(
+        verbose_name=_("video conference info"),
+        null=True,
+        blank=True,
+        help_text=_("Information about the video conference."),
+    )
+
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
@@ -312,6 +361,16 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             help_text=_(
                 "If the event has more than one speaker, please add these in order of relevance from most to least."
             ),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("venue_type"),
+                FieldPanel("venue_website"),
+                FieldPanel("venue_address"),
+                FieldPanel("venue_space_name"),
+                FieldPanel("video_conference_info"),
+            ],
+            heading=_("Venue information"),
         ),
     ]
 
