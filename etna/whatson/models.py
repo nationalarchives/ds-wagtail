@@ -314,6 +314,20 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("The date and time the event ends."),
     )
 
+    event_registration_info = RichTextField(
+        verbose_name=_("event registration info"),
+        null=True,
+        blank=True,
+        help_text=_("Information about how to register for the event."),
+    )
+
+    event_contact_info = RichTextField(
+        verbose_name=_("event contact info"),
+        null=True,
+        blank=True,
+        help_text=_("Information about who to contact for the event."),
+    )
+
     # Venue information
     venue_type = models.CharField(
         max_length=15,
@@ -369,6 +383,8 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("event_type"),
                 FieldPanel("event_start_date"),
                 FieldPanel("event_end_date"),
+                FieldPanel("event_registration_info"),
+                FieldPanel("event_contact_info"),
             ],
             heading=_("Event information"),
         ),
