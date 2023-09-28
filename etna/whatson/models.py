@@ -122,6 +122,96 @@ class AccessTypeOrderable(Orderable):
         related_name="access_types",
     )
 
+class Host(Orderable):
+    """
+    This model is used to add host information to event pages.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="host_information",
+    )
+
+    # When we have an author page, we will add a ForeignKey to that here.
+    # The below fields will remain when we have an author page, but will be
+    # optional, if there is no page for the host/author.
+
+    host_name = models.CharField(
+        max_length=100,
+        verbose_name=_("host name"),
+        help_text=_("The name of the host."),
+        blank=True,
+        null=True,
+    )
+
+    host_description = models.CharField(
+        max_length=200,
+        verbose_name=_("host description"),
+        help_text=_("The description of the host."),
+        blank=True,
+        null=True,
+    )
+
+    host_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("host_name"),
+        FieldPanel("host_description"),
+        FieldPanel("host_image"),
+    ]
+
+class Speaker(Orderable):
+    """
+    This model is used to add speaker information to event pages.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="speaker_information",
+    )
+    
+    # When we have an author page, we will add a ForeignKey to that here.
+    # The below fields will remain when we have an author page, but will be
+    # optional, if there is no page for the speaker/author.
+
+    speaker_name = models.CharField(
+        max_length=100,
+        verbose_name=_("speaker name"),
+        help_text=_("The name of the speaker."),
+        blank=True,
+        null=True,
+    )
+
+    speaker_description = models.CharField(
+        max_length=200,
+        verbose_name=_("speaker description"),
+        help_text=_("The description of the speaker."),
+        blank=True,
+        null=True,
+    )
+
+    speaker_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=False,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("speaker_name"),
+        FieldPanel("speaker_description"),
+        FieldPanel("speaker_image"),
+    ]
+
 
 class WhatsOnPage(BasePageWithIntro):
     """WhatsOnPage
@@ -207,6 +297,20 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             heading=_("Audience types"),
             help_text=_(
                 "If the event has more than one audience type, please add these in order of relevance from most to least."
+            ),
+        ),
+        InlinePanel(
+            "host_information",
+            heading=_("Host information"),
+            help_text=_(
+                "If the event has more than one host, please add these in order of relevance from most to least."
+            ),
+        ),
+        InlinePanel(
+            "speaker_information",
+            heading=_("Speaker information"),
+            help_text=_(
+                "If the event has more than one speaker, please add these in order of relevance from most to least."
             ),
         ),
     ]
