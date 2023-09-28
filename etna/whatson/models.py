@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -227,6 +229,20 @@ class WhatsOnPage(BasePageWithIntro):
     A page for listing events.
     """
 
+    @cached_property
+    def events(self):
+        """
+        Returns a queryset of events that are children of this page.
+        """
+        return (
+            self.get_children()
+            .type(EventPage)
+            .specific()
+            .live()
+            .public()
+            .order_by("event_start_date")
+        )
+
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
 
@@ -257,22 +273,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         related_name="+",
     )
 
-    body = StreamField(
-        EventPageBlock,
-        blank=True,
-        null=True,
-        help_text="Add content for this page",
-        use_json_field=True
-    )
-
-    event_type = models.ForeignKey(
-        EventType,
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
     short_title = models.CharField(
         max_length=75,
         verbose_name=_("short title"),
@@ -281,6 +281,37 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         ),
         blank=True,
         null=True,
+    )
+
+    body = StreamField(
+        EventPageBlock,
+        blank=True,
+        null=True,
+        help_text="Add content for this page",
+        use_json_field=True
+    )
+
+    # Event information
+    event_type = models.ForeignKey(
+        EventType,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    event_start_date = models.DateTimeField(
+        verbose_name=_("event start date"),
+        null=True,
+        blank=False,
+        help_text=_("The date and time the event starts."),
+    )
+
+    event_end_date = models.DateTimeField(
+        verbose_name=_("event end date"),
+        null=True,
+        blank=False,
+        help_text=_("The date and time the event ends."),
     )
 
     # Venue information
@@ -333,7 +364,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("lead_image"),
         FieldPanel("body"),
-        FieldPanel("event_type"),
+        MultiFieldPanel(
+            [
+                FieldPanel("event_type"),
+                FieldPanel("event_start_date"),
+                FieldPanel("event_end_date"),
+            ],
+            heading=_("Event information"),
+        ),
         InlinePanel(
             "event_access_types",
             heading=_("Access types"),
