@@ -4,3 +4,13 @@
 {% block meta_tag %}
   {% meta_tags %}
 {% endblock %}
+
+{% block content %}
+
+
+{% for event in page.events %}
+  {{ event }}
+{% endfor %}
+
+
+{% endblock %}

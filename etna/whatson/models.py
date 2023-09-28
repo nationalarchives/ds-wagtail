@@ -240,7 +240,7 @@ class WhatsOnPage(BasePageWithIntro):
             .specific()
             .live()
             .public()
-            .order_by("event_start_date")
+            .order_by("eventpage__event_start_date")
         )
 
     # DataLayerMixin overrides
