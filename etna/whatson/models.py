@@ -3,29 +3,25 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
-
-from wagtail.admin.panels import (
-    FieldPanel,
-    PageChooserPanel,
-    InlinePanel,
-)
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
+from wagtail.models import Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from wagtail.models import Orderable
-
-from etna.core.models import BasePageWithIntro
-from etna.collections.models import TopicalPageMixin
-from .blocks import EventPageBlock
 from etna.articles.models import ArticleTagMixin
+from etna.collections.models import TopicalPageMixin
+from etna.core.models import BasePageWithIntro
+
+from .blocks import EventPageBlock
+
 
 @register_snippet
 class EventType(models.Model):
     """
     This snippet model is used so that editors can add event types,
-    which we use via the event_type ForeignKey to add event types 
+    which we use via the event_type ForeignKey to add event types
     to event pages.
     """
 
@@ -41,12 +37,13 @@ class EventType(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 @register_snippet
 class AudienceType(models.Model):
     """
     This snippet model is used so that editors can add audience types,
-    which we use via the audience_type ForeignKey to add audience types 
+    which we use via the audience_type ForeignKey to add audience types
     to event pages.
     """
 
@@ -62,7 +59,8 @@ class AudienceType(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class AudienceTypeOrderable(Orderable):
     """
     This model is used to add multiple audience types to event pages.
@@ -79,12 +77,13 @@ class AudienceTypeOrderable(Orderable):
         on_delete=models.CASCADE,
         related_name="audience_types",
     )
-    
+
+
 @register_snippet
 class AccessType(models.Model):
     """
     This snippet model is used so that editors can add access types,
-    which we use via the AccessTypeOrderable to add multiple access 
+    which we use via the AccessTypeOrderable to add multiple access
     types to event pages.
     """
 
@@ -104,7 +103,8 @@ class AccessType(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
 class AccessTypeOrderable(Orderable):
     """
     This model is used to add multiple access types to event pages.
@@ -122,9 +122,10 @@ class AccessTypeOrderable(Orderable):
         related_name="access_types",
     )
 
+
 class WhatsOnPage(BasePageWithIntro):
     """WhatsOnPage
-    
+
     A page for listing events.
     """
 
@@ -134,8 +135,12 @@ class WhatsOnPage(BasePageWithIntro):
     class Meta:
         verbose_name = _("What's On page")
 
-    parent_page_types = ["home.HomePage",]
-    subpage_types = ["whatson.EventPage",]
+    parent_page_types = [
+        "home.HomePage",
+    ]
+    subpage_types = [
+        "whatson.EventPage",
+    ]
 
     content_panels = BasePageWithIntro.content_panels
 
@@ -145,7 +150,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     A page for an event.
     """
-        
+
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
@@ -190,16 +195,20 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         FieldPanel("lead_image"),
         # FieldPanel("body"),
         FieldPanel("event_type"),
-        InlinePanel("event_access_types",
-                    heading=_("Access types"),
+        InlinePanel(
+            "event_access_types",
+            heading=_("Access types"),
             help_text=_(
                 "If the event has more than one access type, please add these in order of relevance from most to least."
-            )),
-        InlinePanel("event_audience_types",
-                    heading=_("Audience types"),
+            ),
+        ),
+        InlinePanel(
+            "event_audience_types",
+            heading=_("Audience types"),
             help_text=_(
                 "If the event has more than one audience type, please add these in order of relevance from most to least."
-            )),
+            ),
+        ),
     ]
 
     promote_panels = (
@@ -223,5 +232,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         ]
     )
 
-    parent_page_types = ["whatson.WhatsOnPage",]
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
     subpage_types = []
