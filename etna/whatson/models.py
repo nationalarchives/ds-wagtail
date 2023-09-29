@@ -83,7 +83,7 @@ class AudienceTypeOrderable(Orderable):
         related_name="event_audience_types",
     )
 
-    access_type = models.ForeignKey(
+    audience_type = models.ForeignKey(
         "whatson.AudienceType",
         on_delete=models.CASCADE,
         related_name="audience_types",
@@ -243,7 +243,7 @@ class WhatsOnPage(BasePageWithIntro):
             .specific()
             .live()
             .public()
-            .order_by("eventpage__event_start_date")
+            .order_by("eventpage__start_date")
         )
 
     # DataLayerMixin overrides
@@ -294,32 +294,19 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         related_name="+",
     )
 
-    event_start_date = models.DateTimeField(
-        verbose_name=_("event start date"),
+    # Start and end date will be brought in from the API when we have it.
+    start_date = models.DateTimeField(
+        verbose_name=_("start date"),
         null=True,
         blank=False,
         help_text=_("The date and time the event starts."),
     )
 
-    event_end_date = models.DateTimeField(
-        verbose_name=_("event end date"),
+    end_date = models.DateTimeField(
+        verbose_name=_("end date"),
         null=True,
         blank=False,
         help_text=_("The date and time the event ends."),
-    )
-
-    event_registration_info = RichTextField(
-        verbose_name=_("event registration info"),
-        null=True,
-        blank=True,
-        help_text=_("Information about how to register for the event."),
-    )
-
-    event_contact_info = RichTextField(
-        verbose_name=_("event contact info"),
-        null=True,
-        blank=True,
-        help_text=_("Information about who to contact for the event."),
     )
 
     # Venue information
@@ -363,6 +350,46 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("Information about the video conference."),
     )
 
+    # Booking information
+    booking_type = models.CharField(
+        max_length=20,
+        verbose_name=_("booking type"),
+        null=False,
+        blank=False,
+        default="Drop in",
+        help_text=_("The type of booking for the event."),
+    )
+
+    registration_url = models.URLField(
+        max_length=255,
+        verbose_name=_("registration url"),
+        null=True,
+        blank=True,
+        help_text=_("The URL for the event registration."),
+    )
+
+    registration_cost = models.IntegerField(
+        verbose_name=_("registration cost"),
+        null=True,
+        blank=True,
+        help_text=_("The cost of registration for the event."),
+    )
+    # The three fields above will be brought in from the API when we have it.
+
+    registration_info = RichTextField(
+        verbose_name=_("registration info"),
+        null=True,
+        blank=True,
+        help_text=_("Information about how to register for the event."),
+    )
+
+    contact_info = RichTextField(
+        verbose_name=_("contact info"),
+        null=True,
+        blank=True,
+        help_text=_("Information about who to contact for the event."),
+    )
+
     # Promote tab
     short_title = models.CharField(
         max_length=50,
@@ -386,40 +413,38 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("event_type"),
-                FieldPanel("event_start_date"),
-                FieldPanel("event_end_date"),
-                FieldPanel("event_registration_info"),
-                FieldPanel("event_contact_info"),
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+                InlinePanel(
+                    "event_access_types",
+                    heading=_("Access types"),
+                    help_text=_(
+                        "If the event has more than one access type, please add these in order of relevance from most to least."
+                    ),
+                ),
+                InlinePanel(
+                    "event_audience_types",
+                    heading=_("Audience types"),
+                    help_text=_(
+                        "If the event has more than one audience type, please add these in order of relevance from most to least."
+                    ),
+                ),
+                InlinePanel(
+                    "host_information",
+                    heading=_("Host information"),
+                    help_text=_(
+                        "If the event has more than one host, please add these in order of relevance from most to least."
+                    ),
+                ),
+                InlinePanel(
+                    "speaker_information",
+                    heading=_("Speaker information"),
+                    help_text=_(
+                        "If the event has more than one speaker, please add these in order of relevance from most to least."
+                    ),
+                ),
             ],
             heading=_("Event information"),
-        ),
-        InlinePanel(
-            "event_access_types",
-            heading=_("Access types"),
-            help_text=_(
-                "If the event has more than one access type, please add these in order of relevance from most to least."
-            ),
-        ),
-        InlinePanel(
-            "event_audience_types",
-            heading=_("Audience types"),
-            help_text=_(
-                "If the event has more than one audience type, please add these in order of relevance from most to least."
-            ),
-        ),
-        InlinePanel(
-            "host_information",
-            heading=_("Host information"),
-            help_text=_(
-                "If the event has more than one host, please add these in order of relevance from most to least."
-            ),
-        ),
-        InlinePanel(
-            "speaker_information",
-            heading=_("Speaker information"),
-            help_text=_(
-                "If the event has more than one speaker, please add these in order of relevance from most to least."
-            ),
         ),
         MultiFieldPanel(
             [
@@ -431,17 +456,27 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             ],
             heading=_("Venue information"),
         ),
+        MultiFieldPanel(
+            [
+                FieldPanel("booking_type", read_only=True),
+                FieldPanel("registration_url", read_only=True),
+                FieldPanel("registration_cost", read_only=True),
+                FieldPanel("registration_info"),
+                FieldPanel("contact_info"),
+            ],
+            heading=_("Booking information"),
+        ),
     ]
 
     def clean(self):
         """
         Validate that the event end date is after the event start date.
         """
-        if self.event_start_date and self.event_end_date:
-            if self.event_start_date > self.event_end_date:
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
                 raise ValidationError(
                     {
-                        "event_end_date": _(
+                        "end_date": _(
                             "The event end date must be after the event start date."
                         )
                     }
