@@ -252,8 +252,8 @@ class EventSession(Orderable):
     )
 
     panels = [
-        FieldPanel("session_start_date", read_only=True),
-        FieldPanel("session_end_date", read_only=True),
+        FieldPanel("session_start_date"),
+        FieldPanel("session_end_date"),
     ]
 
 
@@ -321,14 +321,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     start_date = models.DateTimeField(
         verbose_name=_("start date"),
         null=True,
-        blank=False,
+        blank=True,
         help_text=_("The date and time the event starts."),
     )
 
     end_date = models.DateTimeField(
         verbose_name=_("end date"),
         null=True,
-        blank=False,
+        blank=True,
         help_text=_("The date and time the event ends."),
     )
 
@@ -456,8 +456,8 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("event_type"),
-                FieldPanel("start_date"),
-                FieldPanel("end_date"),
+                FieldPanel("start_date", read_only=True),
+                FieldPanel("end_date", read_only=True),
                 InlinePanel(
                     "event_sessions",
                     heading=_("Event sessions"),
@@ -521,17 +521,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     def clean(self):
         """
-        Validate that the event end date is after the event start date.
+        Check that the venue address and video conference information are
+        provided for the correct venue type.
         """
-        if self.start_date and self.end_date:
-            if self.start_date > self.end_date:
-                raise ValidationError(
-                    {
-                        "end_date": _(
-                            "The event end date must be after the event start date."
-                        )
-                    }
-                )
 
         if self.venue_type:
             if self.venue_type == VenueType.HYBRID and (
@@ -570,6 +562,36 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                     }
                 )
         return super().clean()
+    
+    def with_content_json(self, content):
+        """
+        Overrides Page.with_content_json() to ensure page's `start_date` and `end_date`
+        value is always preserved between revisions.
+        """
+        obj = super().with_content_json(content)
+        obj.start_date = self.start_date
+        obj.end_date = self.end_date
+        return obj
+    
+    def save(self, *args, **kwargs):
+        """
+        Set the event start date to the earliest session start date.
+        Set the event end date to the latest session end date.
+        """
+        if self.event_sessions.all():
+            self.start_date = self.event_sessions.all().order_by("session_start_date").first().session_start_date
+            self.end_date = self.event_sessions.all().order_by("session_end_date").last().session_end_date
+
+        super().save(*args, **kwargs)
+
+        if self.latest_revision and (self.latest_revision.content["start_date"] != self.start_date or self.latest_revision.content["end_date"] != self.end_date):
+            # If `start_date` and `end_date` are unchanged in the latest revision,
+            # the fields will remain blank when the page is next edited in Wagtail.
+            # This allows us to update the values in the latest revision conetnt
+            # to avoid unexpected resetting.
+            self.latest_revision.content["start_date"] = self.start_date
+            self.latest_revision.content["end_date"] = self.end_date
+            self.latest_revision.save()
 
     promote_panels = (
         BasePageWithIntro.promote_panels
