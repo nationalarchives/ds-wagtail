@@ -225,6 +225,38 @@ class Speaker(Orderable):
         FieldPanel("speaker_image"),
     ]
 
+class EventSession(Orderable):
+    """
+    This model is used to add sessions to an event
+    e.g. 28th September @ 9:00, 29th September @ 10:30, 30th September @ 12:00.
+    These will link to the Eventbrite page.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="event_sessions",
+    )
+
+    session_start_date = models.DateTimeField(
+        verbose_name=_("session start date"),
+        null=True,
+        blank=False,
+        help_text=_("The date and time the session starts."),
+    )
+
+    session_end_date = models.DateTimeField(
+        verbose_name=_("session end date"),
+        null=True,
+        blank=False,
+        help_text=_("The date and time the session ends."),
+    )
+
+    panels = [
+        FieldPanel("session_start_date", read_only=True),
+        FieldPanel("session_end_date", read_only=True),
+    ]
+
 
 class WhatsOnPage(BasePageWithIntro):
     """WhatsOnPage
@@ -436,6 +468,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("event_type"),
                 FieldPanel("start_date"),
                 FieldPanel("end_date"),
+                InlinePanel(
+                    "event_sessions",
+                    heading=_("Event sessions"),
+                    help_text=_(
+                        "List of event sessions, ordered from first to last."
+                    ),
+                ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
                 FieldPanel("target_audience"),
