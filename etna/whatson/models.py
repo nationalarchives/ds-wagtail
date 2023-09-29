@@ -225,6 +225,7 @@ class Speaker(Orderable):
         FieldPanel("speaker_image"),
     ]
 
+
 class EventSession(Orderable):
     """
     This model is used to add sessions to an event
@@ -471,9 +472,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 InlinePanel(
                     "event_sessions",
                     heading=_("Event sessions"),
-                    help_text=_(
-                        "List of event sessions, ordered from first to last."
-                    ),
+                    help_text=_("List of event sessions, ordered from first to last."),
                 ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
