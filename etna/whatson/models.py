@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -288,7 +289,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     event_type = models.ForeignKey(
         EventType,
         null=True,
-        blank=True,
+        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -364,12 +365,12 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     # Promote tab
     short_title = models.CharField(
-        max_length=75,
+        max_length=50,
         verbose_name=_("short title"),
         help_text=_(
             "A short title for the event. This will be used in the event listings."
         ),
-        blank=True,
+        blank=False,
         null=True,
     )
 
@@ -431,6 +432,56 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             heading=_("Venue information"),
         ),
     ]
+
+    def clean(self):
+        """
+        Validate that the event end date is after the event start date.
+        """
+        if self.event_start_date and self.event_end_date:
+            if self.event_start_date > self.event_end_date:
+                raise ValidationError(
+                    {
+                        "event_end_date": _(
+                            "The event end date must be after the event start date."
+                        )
+                    }
+                )
+            
+        if self.venue_type:
+            if self.venue_type == VenueType.HYBRID and (not self.venue_address or not self.video_conference_info):
+                raise ValidationError(
+                    {
+                        "venue_address": _(
+                            "The venue address is required for hybrid events."
+                        ),
+                        "venue_space_name": _(
+                            "The venue space name is required for hybrid events."
+                        ),
+                        "video_conference_info": _(
+                            "The video conference information is required for hybrid events."
+                        ),
+                    }
+                )
+            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
+                raise ValidationError(
+                    {
+                        "venue_address": _(
+                            "The venue address is required for in person events."
+                        ),
+                        "venue_space_name": _(
+                            "The venue space name is required for hybrid events."
+                        ),
+                    }
+                )
+            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
+                raise ValidationError(
+                    {
+                        "video_conference_info": _(
+                            "The video conference information is required for online events."
+                        ),
+                    }
+                )
+        return super().clean()
 
     promote_panels = (
         BasePageWithIntro.promote_panels
