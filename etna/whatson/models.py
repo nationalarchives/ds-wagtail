@@ -1,7 +1,7 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django.core.exceptions import ValidationError
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -446,9 +446,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                         )
                     }
                 )
-            
+
         if self.venue_type:
-            if self.venue_type == VenueType.HYBRID and (not self.venue_address or not self.video_conference_info):
+            if self.venue_type == VenueType.HYBRID and (
+                not self.venue_address or not self.video_conference_info
+            ):
                 raise ValidationError(
                     {
                         "venue_address": _(
