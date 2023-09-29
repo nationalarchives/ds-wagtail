@@ -15,6 +15,7 @@ from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
 
+
 class VenueType(models.TextChoices):
     """
     This model is used to add venue types to event pages.
