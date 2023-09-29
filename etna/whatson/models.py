@@ -562,7 +562,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                     }
                 )
         return super().clean()
-    
+
     def with_content_json(self, content):
         """
         Overrides Page.with_content_json() to ensure page's `start_date` and `end_date`
@@ -572,19 +572,32 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         obj.start_date = self.start_date
         obj.end_date = self.end_date
         return obj
-    
+
     def save(self, *args, **kwargs):
         """
         Set the event start date to the earliest session start date.
         Set the event end date to the latest session end date.
         """
         if self.event_sessions.all():
-            self.start_date = self.event_sessions.all().order_by("session_start_date").first().session_start_date
-            self.end_date = self.event_sessions.all().order_by("session_end_date").last().session_end_date
+            self.start_date = (
+                self.event_sessions.all()
+                .order_by("session_start_date")
+                .first()
+                .session_start_date
+            )
+            self.end_date = (
+                self.event_sessions.all()
+                .order_by("session_end_date")
+                .last()
+                .session_end_date
+            )
 
         super().save(*args, **kwargs)
 
-        if self.latest_revision and (self.latest_revision.content["start_date"] != self.start_date or self.latest_revision.content["end_date"] != self.end_date):
+        if self.latest_revision and (
+            self.latest_revision.content["start_date"] != self.start_date
+            or self.latest_revision.content["end_date"] != self.end_date
+        ):
             # If `start_date` and `end_date` are unchanged in the latest revision,
             # the fields will remain blank when the page is next edited in Wagtail.
             # This allows us to update the values in the latest revision conetnt
