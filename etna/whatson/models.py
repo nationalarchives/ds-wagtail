@@ -309,6 +309,27 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("The date and time the event ends."),
     )
 
+    description = RichTextField(
+        verbose_name=_("description"),
+        null=True,
+        blank=True,
+        help_text=_("A description of the event."),
+    )
+
+    useful_info = RichTextField(
+        verbose_name=_("need to know"),
+        null=True,
+        blank=True,
+        help_text=_("Useful information about the event."),
+    )
+
+    target_audience = RichTextField(
+        verbose_name=_("who it's for"),
+        null=True,
+        blank=True,
+        help_text=_("Info about the target audience for the event."),
+    )
+
     # Venue information
     venue_type = models.CharField(
         max_length=15,
@@ -415,6 +436,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("event_type"),
                 FieldPanel("start_date"),
                 FieldPanel("end_date"),
+                FieldPanel("description"),
+                FieldPanel("useful_info"),
+                FieldPanel("target_audience"),
                 InlinePanel(
                     "event_access_types",
                     heading=_("Access types"),
