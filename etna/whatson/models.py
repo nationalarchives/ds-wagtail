@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -14,9 +14,6 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
-
-from .blocks import EventPageBlock
-
 
 class VenueType(models.TextChoices):
     """
@@ -310,14 +307,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         related_name="+",
     )
 
-    body = StreamField(
-        EventPageBlock,
-        blank=True,
-        null=True,
-        help_text="Add content for this page",
-        use_json_field=True,
-    )
-
     # Event information
     event_type = models.ForeignKey(
         EventType,
@@ -463,7 +452,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("lead_image"),
-        FieldPanel("body"),
         MultiFieldPanel(
             [
                 FieldPanel("event_type"),
