@@ -94,7 +94,7 @@ class EventAudienceType(Orderable):
     audience_type = models.ForeignKey(
         "whatson.AudienceType",
         on_delete=models.CASCADE,
-        related_name="audience_types",
+        related_name="event_audience_types",
     )
 
 
@@ -416,7 +416,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("end_date", read_only=True),
                 InlinePanel(
                     "sessions",
-                    heading=_("event sessions"),
+                    heading=_("Event sessions"),
                     help_text=_("List of event sessions"),
                     min_num=1,
                 ),
@@ -425,34 +425,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("target_audience"),
                 InlinePanel(
                     "event_access_types",
-                    heading=_("access types"),
+                    heading=_("Access types"),
                     help_text=_(
                         "If the event has more than one access type, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "event_audience_types",
-                    heading=_("audience types"),
+                    heading=_("Audience types"),
                     help_text=_(
                         "If the event has more than one audience type, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "hosts",
-                    heading=_("host information"),
+                    heading=_("Host information"),
                     help_text=_(
                         "If the event has more than one host, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "speakers",
-                    heading=_("speaker information"),
+                    heading=_("Speaker information"),
                     help_text=_(
                         "If the event has more than one speaker, please add these in order of relevance from most to least."
                     ),
                 ),
             ],
-            heading=_("event information"),
+            heading=_("Event information"),
         ),
         MultiFieldPanel(
             [
@@ -462,17 +462,16 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("venue_space_name"),
                 FieldPanel("video_conference_info"),
             ],
-            heading=_("venue information"),
+            heading=_("Venue information"),
         ),
         MultiFieldPanel(
             [
-                FieldPanel("booking_type", read_only=True),
                 FieldPanel("registration_url", read_only=True),
                 FieldPanel("registration_cost", read_only=True),
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
-            heading=_("booking information"),
+            heading=_("Booking information"),
         ),
     ]
 
@@ -545,9 +544,17 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         Set the event start date to the earliest session start date.
         Set the event end date to the latest session end date.
         """
-        if sessions := [session for session in self.sessions.all()]:
-            self.start_date = sessions[0].start
-            self.end_date = sessions[-1].end
+        min_start = None
+        max_end = None
+        for session in self.sessions.all():
+            if min_start is None or session.start < min_start:
+                min_start = session.start
+            if max_end is None or session.end > max_end:
+                max_end = session.end
+
+        sessions = tuple(self.sessions.all())
+        self.start_date = min_start
+        self.end_date = max_end
 
         super().save(*args, **kwargs)
 
