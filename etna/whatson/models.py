@@ -16,16 +16,6 @@ from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
 
 
-class BookingType(models.TextChoices):
-    """
-    This model is used for the Eventbrite booking type.
-    TODO: Find out what the other booking types are from Eventbrite.
-    """
-
-    DROP_IN = "drop_in", _("Drop in")
-    BOOKING = "booking", _("Booking")
-
-
 class VenueType(models.TextChoices):
     """
     This model is used to add venue types to event pages.
@@ -135,7 +125,7 @@ class AccessType(models.Model):
         return self.name
 
 
-class AccessTypeOrderable(Orderable):
+class EventAccessType(Orderable):
     """
     This model is used to add multiple access types to event pages.
     """
@@ -149,11 +139,11 @@ class AccessTypeOrderable(Orderable):
     access_type = models.ForeignKey(
         "whatson.AccessType",
         on_delete=models.CASCADE,
-        related_name="access_types",
+        related_name="event_access_types",
     )
 
 
-class Host(Orderable):
+class EventHost(Orderable):
     """
     This model is used to add host information to event pages.
     """
@@ -191,7 +181,7 @@ class Host(Orderable):
     ]
 
 
-class Speaker(Orderable):
+class EventSpeaker(Orderable):
     """
     This model is used to add speaker information to event pages.
     """
@@ -321,14 +311,12 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     start_date = models.DateTimeField(
         verbose_name=_("start date"),
         null=True,
-        blank=True,
         editable=False,
     )
 
     end_date = models.DateTimeField(
         verbose_name=_("end date"),
         null=True,
-        blank=True,
         editable=False,
     )
 
@@ -354,7 +342,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_type = models.CharField(
         max_length=15,
         verbose_name=_("venue type"),
-        null=False,
         blank=False,
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
@@ -363,7 +350,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_website = models.URLField(
         max_length=255,
         verbose_name=_("venue website"),
-        null=True,
         blank=True,
         help_text=_("The website for the venue."),
     )
@@ -388,27 +374,15 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     )
 
     # Booking information
-    booking_type = models.CharField(
-        max_length=20,
-        verbose_name=_("booking type"),
-        blank=False,
-        choices=BookingType.choices,
-        default=BookingType.DROP_IN,
-        editable=False,
-    )
-
     registration_url = models.URLField(
         max_length=255,
         verbose_name=_("registration url"),
-        null=True,
-        blank=True,
         editable=False,
     )
 
     registration_cost = models.IntegerField(
         verbose_name=_("registration cost"),
         null=True,
-        blank=True,
         editable=False,
     )
     # The three fields above will be brought in from the API when we have it.
