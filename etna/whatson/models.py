@@ -16,6 +16,16 @@ from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
 
 
+class BookingType(models.TextChoices):
+    """
+    This model is used for the Eventbrite booking type.
+    TODO: Find out what the other booking types are from Eventbrite.
+    """
+
+    DROP_IN = "drop_in", _("Drop in")
+    BOOKING = "booking", _("Booking")
+
+
 class VenueType(models.TextChoices):
     """
     This model is used to add venue types to event pages.
@@ -37,7 +47,11 @@ class EventType(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
-        help_text=_("The name of the event type."),
+    )
+
+    slug = models.SlugField(
+        max_length=255,
+        verbose_name=_("slug"),
     )
 
     class Meta:
@@ -59,7 +73,11 @@ class AudienceType(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
-        help_text=_("The name of the audience type."),
+    )
+
+    slug = models.SlugField(
+        max_length=255,
+        verbose_name=_("slug"),
     )
 
     class Meta:
@@ -99,7 +117,11 @@ class AccessType(models.Model):
     name = models.CharField(
         max_length=255,
         verbose_name=_("name"),
-        help_text=_("The type of access descriptor"),
+    )
+
+    slug = models.SlugField(
+        max_length=255,
+        verbose_name=_("slug"),
     )
 
     class Meta:
@@ -273,6 +295,8 @@ class WhatsOnPage(BasePageWithIntro):
         "whatson.EventPage",
     ]
 
+    max_count = 1
+
     content_panels = BasePageWithIntro.content_panels
 
 
@@ -300,38 +324,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         related_name="+",
     )
 
-    # Start and end date will be brought in from the API when we have it.
     start_date = models.DateTimeField(
         verbose_name=_("start date"),
         null=True,
         blank=True,
-        help_text=_("The date and time the event starts."),
+        editable=False,
     )
 
     end_date = models.DateTimeField(
         verbose_name=_("end date"),
         null=True,
         blank=True,
-        help_text=_("The date and time the event ends."),
+        editable=False,
     )
 
     description = RichTextField(
         verbose_name=_("description"),
-        null=True,
         blank=True,
         help_text=_("A description of the event."),
     )
 
     useful_info = RichTextField(
         verbose_name=_("need to know"),
-        null=True,
         blank=True,
         help_text=_("Useful information about the event."),
     )
 
     target_audience = RichTextField(
         verbose_name=_("who it's for"),
-        null=True,
         blank=True,
         help_text=_("Info about the target audience for the event."),
     )
@@ -344,7 +364,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         blank=False,
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
-        help_text=_("The type of venue for the event."),
     )
 
     venue_website = models.URLField(
@@ -357,7 +376,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     venue_address = RichTextField(
         verbose_name=_("venue address"),
-        null=True,
         blank=True,
         help_text=_("The address of the venue."),
     )
@@ -365,26 +383,24 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_space_name = models.CharField(
         max_length=255,
         verbose_name=_("venue space name"),
-        null=True,
         blank=True,
         help_text=_("The name of the venue space."),
     )
 
     video_conference_info = RichTextField(
         verbose_name=_("video conference info"),
-        null=True,
         blank=True,
-        help_text=_("Information about the video conference."),
+        help_text=_("Useful information about the video conference."),
     )
 
     # Booking information
     booking_type = models.CharField(
         max_length=20,
         verbose_name=_("booking type"),
-        null=False,
         blank=False,
-        default="Drop in",
-        help_text=_("The type of booking for the event."),
+        choices=BookingType.choices,
+        default=BookingType.DROP_IN,
+        editable=False,
     )
 
     registration_url = models.URLField(
@@ -392,29 +408,27 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("registration url"),
         null=True,
         blank=True,
-        help_text=_("The URL for the event registration."),
+        editable=False,
     )
 
     registration_cost = models.IntegerField(
         verbose_name=_("registration cost"),
         null=True,
         blank=True,
-        help_text=_("The cost of registration for the event."),
+        editable=False,
     )
     # The three fields above will be brought in from the API when we have it.
 
     registration_info = RichTextField(
         verbose_name=_("registration info"),
-        null=True,
         blank=True,
-        help_text=_("Information about how to register for the event."),
+        help_text=_("Additional information about how to register for the event."),
     )
 
     contact_info = RichTextField(
         verbose_name=_("contact info"),
-        null=True,
         blank=True,
-        help_text=_("Information about who to contact for the event."),
+        help_text=_("Information about who to contact regarding the event."),
     )
 
     # Promote tab
@@ -425,7 +439,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             "A short title for the event. This will be used in the event listings."
         ),
         blank=False,
-        null=True,
     )
 
     # DataLayerMixin overrides
@@ -546,6 +559,16 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 )
         return super().clean()
 
+    def serializable_data(self):
+        # Keep aggregated field values out of revision content
+
+        data = super().serializable_data()
+
+        for field_name in ("start_date", "end_date"):
+            data.pop(field_name, None)
+
+        return data
+
     def with_content_json(self, content):
         """
         Overrides Page.with_content_json() to ensure page's `start_date` and `end_date`
@@ -561,33 +584,12 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         Set the event start date to the earliest session start date.
         Set the event end date to the latest session end date.
         """
-        if self.sessions.all():
-            self.start_date = (
-                self.sessions.all()
-                .order_by("start")
-                .first()
-                .session_start_date
-            )
-            self.end_date = (
-                self.sessions.all()
-                .order_by("end")
-                .last()
-                .session_end_date
-            )
+        sessions = [session for session in self.sessions.all()]
+
+        self.start_date = sessions[0].start
+        self.end_date = sessions[-1].end
 
         super().save(*args, **kwargs)
-
-        if self.latest_revision and (
-            self.latest_revision.content["start_date"] != self.start_date
-            or self.latest_revision.content["end_date"] != self.end_date
-        ):
-            # If `start_date` and `end_date` are unchanged in the latest revision,
-            # the fields will remain blank when the page is next edited in Wagtail.
-            # This allows us to update the values in the latest revision conetnt
-            # to avoid unexpected resetting.
-            self.latest_revision.content["start_date"] = self.start_date
-            self.latest_revision.content["end_date"] = self.end_date
-            self.latest_revision.save()
 
     promote_panels = (
         BasePageWithIntro.promote_panels
