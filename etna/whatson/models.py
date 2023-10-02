@@ -282,7 +282,7 @@ class WhatsOnPage(BasePageWithIntro):
             EventPage.objects.child_of(self)
             .live()
             .public()
-            .order_by("eventpage__start_date")
+            .order_by("start_date")
         )
 
     # DataLayerMixin overrides
