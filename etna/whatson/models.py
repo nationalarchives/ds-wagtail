@@ -143,10 +143,6 @@ class Host(Orderable):
         related_name="host_information",
     )
 
-    # When we have an author page, we will add a ForeignKey to that here.
-    # The below fields will remain when we have an author page, but will be
-    # optional, if there is no page for the host/author.
-
     host_name = models.CharField(
         max_length=100,
         verbose_name=_("host name"),
@@ -188,10 +184,6 @@ class Speaker(Orderable):
         on_delete=models.CASCADE,
         related_name="speaker_information",
     )
-
-    # When we have an author page, we will add a ForeignKey to that here.
-    # The below fields will remain when we have an author page, but will be
-    # optional, if there is no page for the speaker/author.
 
     speaker_name = models.CharField(
         max_length=100,
@@ -461,7 +453,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 InlinePanel(
                     "event_sessions",
                     heading=_("Event sessions"),
-                    help_text=_("List of event sessions, ordered from first to last."),
+                    help_text=_("List of event sessions"),
                 ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
