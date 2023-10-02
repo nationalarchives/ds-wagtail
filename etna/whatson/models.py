@@ -52,6 +52,7 @@ class EventType(models.Model):
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
+        unique=True,
     )
 
     class Meta:
@@ -78,6 +79,7 @@ class AudienceType(models.Model):
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
+        unique=True,
     )
 
     class Meta:
@@ -122,6 +124,7 @@ class AccessType(models.Model):
     slug = models.SlugField(
         max_length=255,
         verbose_name=_("slug"),
+        unique=True,
     )
 
     class Meta:
