@@ -278,12 +278,7 @@ class WhatsOnPage(BasePageWithIntro):
         """
         Returns a queryset of events that are children of this page.
         """
-        return (
-            EventPage.objects.child_of(self)
-            .live()
-            .public()
-            .order_by("start_date")
-        )
+        return EventPage.objects.child_of(self).live().public().order_by("start_date")
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -461,6 +456,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                     "sessions",
                     heading=_("event sessions"),
                     help_text=_("List of event sessions"),
+                    min_num=1,
                 ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
@@ -587,10 +583,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         Set the event start date to the earliest session start date.
         Set the event end date to the latest session end date.
         """
-        sessions = [session for session in self.sessions.all()]
-
-        self.start_date = sessions[0].start
-        self.end_date = sessions[-1].end
+        if sessions := [session for session in self.sessions.all()]:
+            self.start_date = sessions[0].start
+            self.end_date = sessions[-1].end
 
         super().save(*args, **kwargs)
 
