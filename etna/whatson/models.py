@@ -552,7 +552,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if max_end is None or session.end > max_end:
                 max_end = session.end
 
-        sessions = tuple(self.sessions.all())
         self.start_date = min_start
         self.end_date = max_end
 
