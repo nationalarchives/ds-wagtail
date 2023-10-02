@@ -131,10 +131,6 @@ class AccessType(models.Model):
         verbose_name = _("Access type")
         verbose_name_plural = _("Access types")
 
-    panels = [
-        FieldPanel("name"),
-    ]
-
     def __str__(self):
         return self.name
 
