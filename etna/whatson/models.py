@@ -378,7 +378,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         null=True,
         editable=False,
     )
-    # The three fields above will be brought in from the API when we have it.
+    # The booking info fields above will be brought in from the API when we have it.
 
     registration_info = RichTextField(
         verbose_name=_("registration info"),
