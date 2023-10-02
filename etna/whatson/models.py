@@ -140,26 +140,25 @@ class Host(Orderable):
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
-        related_name="host_information",
+        related_name="hosts",
     )
 
-    host_name = models.CharField(
+    name = models.CharField(
         max_length=100,
-        verbose_name=_("host name"),
-        help_text=_("The name of the host."),
+        verbose_name=_("name"),
         blank=True,
         null=True,
     )
 
-    host_description = models.CharField(
+    description = models.CharField(
         max_length=200,
-        verbose_name=_("host description"),
+        verbose_name=_("description"),
         help_text=_("The description of the host."),
         blank=True,
         null=True,
     )
 
-    host_image = models.ForeignKey(
+    image = models.ForeignKey(
         get_image_model_string(),
         null=True,
         blank=False,
@@ -168,9 +167,9 @@ class Host(Orderable):
     )
 
     panels = [
-        FieldPanel("host_name"),
-        FieldPanel("host_description"),
-        FieldPanel("host_image"),
+        FieldPanel("name"),
+        FieldPanel("description"),
+        FieldPanel("image"),
     ]
 
 
@@ -182,26 +181,25 @@ class Speaker(Orderable):
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
-        related_name="speaker_information",
+        related_name="speakers",
     )
 
-    speaker_name = models.CharField(
+    name = models.CharField(
         max_length=100,
-        verbose_name=_("speaker name"),
-        help_text=_("The name of the speaker."),
+        verbose_name=_("name"),
         blank=True,
         null=True,
     )
 
-    speaker_description = models.CharField(
+    description = models.CharField(
         max_length=200,
-        verbose_name=_("speaker description"),
+        verbose_name=_("description"),
         help_text=_("The description of the speaker."),
         blank=True,
         null=True,
     )
 
-    speaker_image = models.ForeignKey(
+    image = models.ForeignKey(
         get_image_model_string(),
         null=True,
         blank=False,
@@ -210,9 +208,9 @@ class Speaker(Orderable):
     )
 
     panels = [
-        FieldPanel("speaker_name"),
-        FieldPanel("speaker_description"),
-        FieldPanel("speaker_image"),
+        FieldPanel("name"),
+        FieldPanel("description"),
+        FieldPanel("image"),
     ]
 
 
@@ -226,17 +224,17 @@ class EventSession(Orderable):
     page = ParentalKey(
         "wagtailcore.Page",
         on_delete=models.CASCADE,
-        related_name="event_sessions",
+        related_name="sessions",
     )
 
-    session_start_date = models.DateTimeField(
+    start = models.DateTimeField(
         verbose_name=_("session start date"),
         null=True,
         blank=False,
         help_text=_("The date and time the session starts."),
     )
 
-    session_end_date = models.DateTimeField(
+    end = models.DateTimeField(
         verbose_name=_("session end date"),
         null=True,
         blank=False,
