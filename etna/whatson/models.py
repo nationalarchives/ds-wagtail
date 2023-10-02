@@ -416,8 +416,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("end_date", read_only=True),
                 InlinePanel(
                     "sessions",
-                    heading=_("Event sessions"),
-                    help_text=_("List of event sessions"),
+                    heading=_("Sessions"),
                     min_num=1,
                 ),
                 FieldPanel("description"),
