@@ -146,22 +146,19 @@ class Host(Orderable):
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
-        blank=True,
-        null=True,
+        blank=False,
     )
 
     description = models.CharField(
         max_length=200,
         verbose_name=_("description"),
-        help_text=_("The description of the host."),
         blank=True,
-        null=True,
     )
 
     image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -187,22 +184,19 @@ class Speaker(Orderable):
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
-        blank=True,
-        null=True,
+        blank=False,
     )
 
     description = models.CharField(
         max_length=200,
         verbose_name=_("description"),
-        help_text=_("The description of the speaker."),
         blank=True,
-        null=True,
     )
 
     image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -214,7 +208,7 @@ class Speaker(Orderable):
     ]
 
 
-class EventSession(Orderable):
+class EventSession(models.Model):
     """
     This model is used to add sessions to an event
     e.g. 28th September @ 9:00, 29th September @ 10:30, 30th September @ 12:00.
@@ -228,23 +222,24 @@ class EventSession(Orderable):
     )
 
     start = models.DateTimeField(
-        verbose_name=_("session start date"),
-        null=True,
+        verbose_name=_("starts at"),
         blank=False,
-        help_text=_("The date and time the session starts."),
     )
 
     end = models.DateTimeField(
-        verbose_name=_("session end date"),
-        null=True,
+        verbose_name=_("ends at"),
         blank=False,
-        help_text=_("The date and time the session ends."),
     )
 
     panels = [
-        FieldPanel("session_start_date"),
-        FieldPanel("session_end_date"),
+        FieldPanel("start"),
+        FieldPanel("end"),
     ]
+
+    class Meta:
+        verbose_name = _("session")
+        verbose_name_plural = _("sessions")
+        ordering = ["start"]
 
 
 class WhatsOnPage(BasePageWithIntro):
@@ -259,9 +254,7 @@ class WhatsOnPage(BasePageWithIntro):
         Returns a queryset of events that are children of this page.
         """
         return (
-            self.get_children()
-            .type(EventPage)
-            .specific()
+            EventPage.objects.child_of(self)
             .live()
             .public()
             .order_by("eventpage__start_date")
@@ -449,7 +442,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("start_date", read_only=True),
                 FieldPanel("end_date", read_only=True),
                 InlinePanel(
-                    "event_sessions",
+                    "sessions",
                     heading=_("Event sessions"),
                     help_text=_("List of event sessions"),
                 ),
@@ -471,14 +464,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                     ),
                 ),
                 InlinePanel(
-                    "host_information",
+                    "hosts",
                     heading=_("Host information"),
                     help_text=_(
                         "If the event has more than one host, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
-                    "speaker_information",
+                    "speakers",
                     heading=_("Speaker information"),
                     help_text=_(
                         "If the event has more than one speaker, please add these in order of relevance from most to least."
@@ -568,16 +561,16 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         Set the event start date to the earliest session start date.
         Set the event end date to the latest session end date.
         """
-        if self.event_sessions.all():
+        if self.sessions.all():
             self.start_date = (
-                self.event_sessions.all()
-                .order_by("session_start_date")
+                self.sessions.all()
+                .order_by("start")
                 .first()
                 .session_start_date
             )
             self.end_date = (
-                self.event_sessions.all()
-                .order_by("session_end_date")
+                self.sessions.all()
+                .order_by("end")
                 .last()
                 .session_end_date
             )
