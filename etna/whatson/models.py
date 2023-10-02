@@ -80,7 +80,7 @@ class AudienceType(models.Model):
         return self.name
 
 
-class AudienceTypeOrderable(Orderable):
+class EventAudienceType(Orderable):
     """
     This model is used to add multiple audience types to event pages.
     """
