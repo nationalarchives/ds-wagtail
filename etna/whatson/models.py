@@ -157,7 +157,6 @@ class EventHost(Orderable):
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
-        blank=False,
     )
 
     description = models.CharField(
@@ -195,7 +194,6 @@ class EventSpeaker(Orderable):
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
-        blank=False,
     )
 
     description = models.CharField(
@@ -234,12 +232,10 @@ class EventSession(models.Model):
 
     start = models.DateTimeField(
         verbose_name=_("starts at"),
-        blank=False,
     )
 
     end = models.DateTimeField(
         verbose_name=_("ends at"),
-        blank=False,
     )
 
     panels = [
@@ -294,7 +290,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -303,7 +298,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     event_type = models.ForeignKey(
         EventType,
         null=True,
-        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -342,7 +336,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_type = models.CharField(
         max_length=15,
         verbose_name=_("venue type"),
-        blank=False,
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
     )
@@ -406,7 +399,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_(
             "A short title for the event. This will be used in the event listings."
         ),
-        blank=False,
     )
 
     # DataLayerMixin overrides
