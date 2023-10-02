@@ -55,8 +55,8 @@ class EventType(models.Model):
     )
 
     class Meta:
-        verbose_name = _("Event type")
-        verbose_name_plural = _("Event types")
+        verbose_name = _("event type")
+        verbose_name_plural = _("event types")
 
     def __str__(self):
         return self.name
@@ -445,7 +445,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     gtm_content_group = "What's On"
 
     class Meta:
-        verbose_name = _("Event page")
+        verbose_name = _("event page")
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("lead_image"),
@@ -456,7 +456,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("end_date", read_only=True),
                 InlinePanel(
                     "sessions",
-                    heading=_("Event sessions"),
+                    heading=_("event sessions"),
                     help_text=_("List of event sessions"),
                 ),
                 FieldPanel("description"),
@@ -464,34 +464,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("target_audience"),
                 InlinePanel(
                     "event_access_types",
-                    heading=_("Access types"),
+                    heading=_("access types"),
                     help_text=_(
                         "If the event has more than one access type, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "event_audience_types",
-                    heading=_("Audience types"),
+                    heading=_("audience types"),
                     help_text=_(
                         "If the event has more than one audience type, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "hosts",
-                    heading=_("Host information"),
+                    heading=_("host information"),
                     help_text=_(
                         "If the event has more than one host, please add these in order of relevance from most to least."
                     ),
                 ),
                 InlinePanel(
                     "speakers",
-                    heading=_("Speaker information"),
+                    heading=_("speaker information"),
                     help_text=_(
                         "If the event has more than one speaker, please add these in order of relevance from most to least."
                     ),
                 ),
             ],
-            heading=_("Event information"),
+            heading=_("event information"),
         ),
         MultiFieldPanel(
             [
@@ -501,7 +501,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("venue_space_name"),
                 FieldPanel("video_conference_info"),
             ],
-            heading=_("Venue information"),
+            heading=_("venue information"),
         ),
         MultiFieldPanel(
             [
@@ -511,7 +511,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
-            heading=_("Booking information"),
+            heading=_("booking information"),
         ),
     ]
 
