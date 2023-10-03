@@ -23,6 +23,8 @@ jobs:
         with:
           version: ${{ steps.version-tag.outputs.VERSION }}
           latest: true
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
       - name: Install AWS CLI
         uses: ./.github/actions/install-aws
       - name: Deploy to AWS
