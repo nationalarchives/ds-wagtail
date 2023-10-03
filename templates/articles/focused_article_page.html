@@ -18,9 +18,9 @@
         <div class="generic-intro__meta">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                    <ul class="generic-intro__meta-list">
+                    <ul class="tna-ul tna-ul--plain">
                         {% if page.author %}
-                            <li class="generic-intro__meta-item">By {{ page.author }}</li>                    
+                            <li>By {{ page.author }}</li>                    
                         {% endif %}
                     </ul>
                 </div>
@@ -32,7 +32,7 @@
     {% if page.intro and page.hero_image %}
         <div class="generic-intro__paragraph">
             <div class="tna-container">
-                <div class="tna-column tna-column--width-3-4">
+                <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
                     {{ page.intro|richtext }}
                 </div>
             </div>
