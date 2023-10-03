@@ -254,10 +254,14 @@ Modified to match the existing site (for now)
         }
     }
 
-    .generic-intro {
+    .generic-intro,
+    .generic-intro__meta {
+        background-color: #343338 !important;
+        color: #fff !important;
+
         .tna-heading {
             padding-top: 1rem;
-            color: #fff !important;
+            color: inherit !important;
         }
     }
 
@@ -275,6 +279,19 @@ Modified to match the existing site (for now)
         .tna-header__navigation-item-link--selected:visited {
             color: #fff !important;
             background-color: #343338 !important;
+        }
+    }
+}
+
+.article-container {
+    .tna-container {
+        justify-content: center;
+    }
+
+    @include media.on-larger-than-mobile {
+        .section-separator__heading {
+            padding-right: 0;
+            padding-left: 0;
         }
     }
 }
