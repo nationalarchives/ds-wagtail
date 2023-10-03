@@ -21,7 +21,7 @@ runs:
     #   shell: bash
     - name: Configure AWS CLI
       run: |
-        export AWS_ACCESS_KEY_ID={{ inputs.aws-access-key-id }}
-        export AWS_SECRET_ACCESS_KEY={{ inputs.aws-secret-access-key }}
+        export AWS_ACCESS_KEY_ID=${{ inputs.aws-access-key-id }}
+        export AWS_SECRET_ACCESS_KEY=${{ inputs.aws-secret-access-key }}
         aws configure --region eu-west-2 --output json
       shell: bash
