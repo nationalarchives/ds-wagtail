@@ -26,4 +26,7 @@ jobs:
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
       - name: Install AWS CLI
         uses: ./.github/actions/install-aws
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # TODO: Deploy new feature environment
