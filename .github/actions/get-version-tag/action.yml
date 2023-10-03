@@ -12,5 +12,8 @@ runs:
         VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
         # Strip "v" prefix from tag name
         [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+        [ "$VERSION" == "main" ] && VERSION=latest
+        [ "$VERSION" == "develop" ] && VERSION=latest
+        echo "Version: $VERSION"
         echo "VERSION=$VERSION" >> "$GITHUB_OUTPUT"
       shell: bash
