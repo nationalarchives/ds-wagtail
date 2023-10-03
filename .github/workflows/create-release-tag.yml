@@ -1,14 +1,17 @@
-name: Create a release
+name: Create release
 
 on:
   workflow_dispatch:
 
 jobs:
   build:
-    name: Create a release tag
+    name: Create release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - name: Extract branch name
+        run: echo "BRANCH=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+        id: extract_branch
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ vars.CI_PYTHON_VERSION }}
@@ -17,7 +20,8 @@ jobs:
           version: ${{ vars.CI_POETRY_VERSION }}
       - name: Generate tag
         id: version-tag
-        run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        # run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+        run: echo "CALVER=$(date +%y.%m.%d).$(git rev-list HEAD --count)" >> "$GITHUB_OUTPUT"
       - name: Update version and push
         run: |
           git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
@@ -30,13 +34,13 @@ jobs:
           git tag v${{ steps.version-tag.outputs.CALVER }} -m "Version ${{ steps.version-tag.outputs.CALVER }}"
           git push origin --tags
       - name: Create pull request
-        run: gh pr create -B main -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}"
+        run: gh pr create -B ${{ steps.extract_branch.outputs.BRANCH }} -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}" --no-maintainer-edit
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Merge the pull request
-        run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}"
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Merge the pull request
+      #   run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --admin --merge
+      #   env:
+      #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create Release
         run: gh release create "v${{ steps.version-tag.outputs.CALVER }}" --title "${{ steps.version-tag.outputs.CALVER }}" --draft --generate-notes --latest
         env:

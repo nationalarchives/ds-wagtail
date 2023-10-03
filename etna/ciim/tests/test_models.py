@@ -1,15 +1,16 @@
+from django.conf import settings
 from django.test import SimpleTestCase, override_settings
 
 import responses
 
 from ...records.api import get_records_client
 from ...records.models import Record
-from ..exceptions import DoesNotExist, KongAPIError, MultipleObjectsReturned
+from ..exceptions import ClientAPIError, DoesNotExist, MultipleObjectsReturned
 from .factories import create_record, create_search_response
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-class APIClientExceptionTest(SimpleTestCase):
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
+class ClientAPIExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -17,7 +18,7 @@ class APIClientExceptionTest(SimpleTestCase):
     def test_raises_does_not_exist(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={"hits": {"total": {"value": 0, "relation": "eq"}, "hits": []}},
         )
 
@@ -28,7 +29,7 @@ class APIClientExceptionTest(SimpleTestCase):
     def test_raises_multiple_objects_returned(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json={"hits": {"total": {"value": 2, "relation": "eq"}, "hits": [{}, {}]}},
         )
 
@@ -36,8 +37,8 @@ class APIClientExceptionTest(SimpleTestCase):
             self.records_client.fetch(iaid="C140")
 
 
-@override_settings(KONG_CLIENT_BASE_URL="https://kong.test")
-class APIClientFilterTest(SimpleTestCase):
+@override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")
+class ClientAPIFilterTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -45,7 +46,7 @@ class APIClientFilterTest(SimpleTestCase):
     def test_hits_returns_list(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_search_response(
                 total_count=2,
                 records=[
@@ -68,7 +69,7 @@ class APIClientFilterTest(SimpleTestCase):
     def test_fetch_for_record_out_of_bounds_raises_index_error(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json=create_search_response(records=[create_record()]),
         )
 
@@ -78,7 +79,7 @@ class APIClientFilterTest(SimpleTestCase):
             result.hits[1]
 
 
-class KongExceptionTest(SimpleTestCase):
+class ClientExceptionTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
 
@@ -86,9 +87,9 @@ class KongExceptionTest(SimpleTestCase):
     def test_raises_invalid_iaid_match(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             status=500,
         )
 
-        with self.assertRaises(KongAPIError):
+        with self.assertRaises(ClientAPIError):
             self.records_client.fetch(iaid="C140")
