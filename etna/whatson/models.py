@@ -474,6 +474,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         ),
     ]
 
+    @cached_property
+    def primary_access_type(self):
+        """
+        Returns the primary access type for the event.
+        """
+        return self.event_access_types.first().access_type
+
     def clean(self):
         """
         Check that the venue address and video conference information are
