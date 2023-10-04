@@ -373,9 +373,22 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         editable=False,
     )
 
-    registration_cost = models.IntegerField(
-        verbose_name=_("registration cost"),
-        null=True,
+    min_price = models.IntegerField(
+        verbose_name=_("minimum price"),
+        default=0,
+        editable=False,
+    )
+
+    max_price = models.IntegerField(
+        verbose_name=_("maximum price"),
+        default=0,
+        editable=False,
+    )
+
+    eventbrite_id = models.CharField(
+        max_length=255,
+        verbose_name=_("eventbrite ID"),
+        blank=True,
         editable=False,
     )
     # The booking info fields above will be brought in from the API when we have it.
@@ -466,13 +479,28 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("registration_url", read_only=True),
-                FieldPanel("registration_cost", read_only=True),
+                FieldPanel("min_price", read_only=True),
+                FieldPanel("max_price", read_only=True),
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
             heading=_("Booking information"),
         ),
     ]
+    
+    @cached_property
+    def price_range(self):
+        """
+        Returns the price range for the event.
+        """
+        if self.max_price == 0:
+            return "Free"
+        elif self.min_price == self.max_price:
+            return f"{self.min_price}"
+        else:
+            if self.min_price == 0:
+                return f"Free - {self.max_price}"
+            return f"{self.min_price} - {self.max_price}"
 
     def clean(self):
         """
