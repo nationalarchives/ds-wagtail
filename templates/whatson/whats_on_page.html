@@ -71,11 +71,10 @@
 
   <div class="tna-container">
       <div class="tna-column tna-column--full">
-        {% include "../components/card.html" with title="This Thread of Gold: A Celebration of Black Womanhood" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://www.nationalarchives.gov.uk/wp-content/uploads/sites/24/2023/07/tna-building-compress.jpg" imageAlt="The National Archives office" imageWidth=400 imageHeight=243 date="24th September 2023" cost="From £16" online=True body="<p>Throughout history, acts of defiance have taken place in secret: through hushed conversations, in kitchens, churches, trusted networks. Other acts of defiance are made global, through art, politics, and open activism.</p>" horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type="Exhibition" access_descriptor="Autism-friendly" classes="tna-card--event tna-card--horizontal-thirds" %}
+        {% for event in page.events %}
+          {% image event.teaser_image fill-800x800-c100 as event_img %}
+          {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt="The National Archives office" imageWidth=400 imageHeight=243 date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.venue_type body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
+        {% endfor %}
       </div>
 </div>
-
-  {% for event in page.events %}
-    {{ event }}
-  {% endfor %}
 {% endblock %}
