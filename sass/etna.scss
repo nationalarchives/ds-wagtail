@@ -77,6 +77,8 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/record-links";
 @import "includes/featured-article";
 @import "includes/featured-articles";
+@import "includes/filters";
+@import "includes/full-width-header";
 @import "includes/media-embed";
 @import "includes/record-embed";
 @import "includes/record-embed__no-image";
@@ -359,13 +361,10 @@ Modified to match the existing site (for now)
 .tna-card__meta {
     margin-bottom: 1rem;
     padding: 0;
-
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem 1.5rem;
-
     line-height: 1.3;
-
     list-style: none;
 
     &-item {
