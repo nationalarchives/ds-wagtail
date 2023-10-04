@@ -79,7 +79,7 @@
     {% endif %}
     <div class="tna-card__body">
     {# for now I am splitting these out as this depends on how the data is recieved from the back-end #}
-    {% if date or cost or online %}
+    {% if date or cost or venue_type %}
       <ul class="tna-card__meta">
         {% if date %}
           <li class="tna-card__meta-item">
@@ -93,10 +93,10 @@
             {{ cost }}
           </li>
         {% endif %}
-        {% if online %}
+        {% if venue_type %}
           <li class="tna-card__meta-item">
             <i class="fa-solid fa-location-dot"></i>
-            Online
+            {{ venue_type }}
           </li>
         {% endif %}
         {% comment %}
