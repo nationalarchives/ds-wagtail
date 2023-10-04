@@ -7,6 +7,11 @@
 
 {% block content %}
 
+<div class="tna-container">
+      <div class="tna-column tna-column--full">
+        {% include "../components/card.html" with title="This Thread of Gold: A Celebration of Black Womanhood" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://www.nationalarchives.gov.uk/wp-content/uploads/sites/24/2023/07/tna-building-compress.jpg" imageAlt="The National Archives office" imageWidth=400 imageHeight=243 date="24th September 2023" cost="From £16" online=True body="<p>Throughout history, acts of defiance have taken place in secret: through hushed conversations, in kitchens, churches, trusted networks. Other acts of defiance are made global, through art, politics, and open activism.</p>" horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type="Exhibition" access_descriptor="Autism-friendly" classes="tna-card--event tna-card--horizontal-thirds" %}
+      </div>
+</div>
 
 {% for event in page.events %}
   {{ event }}

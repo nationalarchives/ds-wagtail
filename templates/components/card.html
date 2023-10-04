@@ -1,5 +1,17 @@
 <{{ htmlElement|default:"div" }} class="tna-card {{ classes }}{% if horizontal %} tna-card--horizontal{% endif %}{% if style == 'boxed' %} tna-card--contrast{% endif %}{% if style == 'accent' %} tna-card--accent{% endif %}" data-module="tna-card"{% for attribute, value in attributes.items %} {{ attribute }}="{{ value }}"{% endfor %}>
   <div class="tna-card__inner">
+    {% if event %}
+      {% if event_type or access_descriptor %}
+        <ul class="tna-card__tags">
+          {% if event_type %}
+            <li class="tna-card__tag tna-card__tag--event-type">{{ event_type }}</li>
+          {% endif %}
+          {% if access_descriptor %}
+            <li class="tna-card__tag tna-card__tag--access">{{ access_descriptor }}</li>
+          {% endif %}
+        </ul>
+      {% endif %}
+    {% endif %}
     {% if supertitle %}
       {% if not singleSentence %}
         <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
@@ -26,12 +38,18 @@
       {% endif %}
     {% else %}
       <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
+      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}" >
       {% if href %}
         <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
       {% else %}
         {{ title }}
       {% endif %}
       </h{{ headingLevel }}>
+    {% endif %}
+    {% if highlight and highlight_color %}
+      <div class="tna-card__highlight tna-card__highlight--{{ highlight_color }}">
+        {{ highlight }}
+      </div>
     {% endif %}
     {% if imageSrc %}
       {% if href %}
@@ -60,6 +78,40 @@
       {% endif %}
     {% endif %}
     <div class="tna-card__body">
+    {# for now I am splitting these out as this depends on how the data is recieved from the back-end #}
+    {% if date or cost or online %}
+      <ul class="tna-card__meta">
+        {% if date %}
+          <li class="tna-card__meta-item">
+            <i class="fa-solid fa-calendar"></i>
+            {{ date }}
+          </li>
+        {% endif %}
+        {% if cost %}
+          <li class="tna-card__meta-item">
+            <i class="fa-solid fa-ticket"></i>
+            {{ cost }}
+          </li>
+        {% endif %}
+        {% if online %}
+          <li class="tna-card__meta-item">
+            <i class="fa-solid fa-location-dot"></i>
+            Online
+          </li>
+        {% endif %}
+        {% comment %}
+          {# we may want a more re-usable solution where meta data is supplied as a list in the future #}
+          {% for item in meta %}
+            <li class="tna-card__meta-item">
+              {% if item.icon %}
+                <i class="fa-solid fa-{{ item.icon }}"></i>
+              {% endif %}
+              {{ item.text }}
+            </li>
+          {% endfor %}
+        {% endcomment %}
+      </ul>
+    {% endif %}
     {% if text %}
       <p>{{ text }}</p>
     {% else %}
