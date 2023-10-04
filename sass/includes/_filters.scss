@@ -91,7 +91,7 @@
             margin-left: 1rem;
             width: 54px;
             height: 30px;
-            //background-image: url(/static/images/icons/toggle.svg);
+            background-image: url(/static/images/icons/toggle.svg);
         }
     }
 
@@ -99,9 +99,9 @@
         @include sr-only;
 
         &:checked + #{$root}__toggle-label {
-            // &::after {
-            //     background-image: url(/static/images/icons/toggle-on.svg);
-            // }
+            &::after {
+                background-image: url(/static/images/icons/toggle-on.svg);
+            }
         }
 
         &:focus + #{$root}__toggle-label {
