@@ -481,7 +481,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         """
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
-        
+
     def clean(self):
         """
         Check that the venue address and video conference information are
