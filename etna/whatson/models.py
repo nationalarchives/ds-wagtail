@@ -1,7 +1,10 @@
+from datetime import timedelta
+
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -388,6 +391,19 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     eventbrite_id = models.CharField(
         max_length=255,
         verbose_name=_("eventbrite ID"),
+        null=True,
+        editable=False,
+    )
+
+    capacity = models.IntegerField(
+        verbose_name=_("capacity"),
+        default=0,
+        editable=False,
+    )
+
+    tickets_sold = models.IntegerField(
+        verbose_name=_("tickets sold"),
+        default=0,
         editable=False,
     )
     # The booking info fields above will be brought in from the API when we have it.
@@ -486,7 +502,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             heading=_("Booking information"),
         ),
     ]
-    
+
     @cached_property
     def price_range(self):
         """
@@ -500,6 +516,25 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
+        
+    @property
+    def tickets_remaining(self):
+        """
+        Returns the number of remaining tickets for the event.
+        """
+        return self.capacity - self.tickets_sold
+
+    @property
+    def event_status(self):
+        """
+        Returns the event status based on different conditions.
+        """
+        if self.tickets_remaining == 0:
+            return "Sold out"
+        if self.tickets_sold >= (self.capacity * 0.20):
+            return "Low availability"
+        if self.start_date.date() <= (timezone.now().date() + timedelta(days=5)):
+            return "Last chance"        
 
     def clean(self):
         """
