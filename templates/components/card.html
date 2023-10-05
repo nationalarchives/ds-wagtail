@@ -18,7 +18,7 @@
           <p class="tna-hgroup__supertitle">{{ supertitle }}</p>
           <h{{ headingLevel }} class="tna-hgroup__title">
           {% if href %}
-            <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+            <a href="{{ href }}" class="tna-card__heading-link">{{ title }}</a>
           {% else %}
             {{ title }}
           {% endif %}
@@ -29,7 +29,7 @@
           <h{{ headingLevel }} class="tna-hgroup__title">
             <span class="tna-hgroup__supertitle">{{ supertitle }}</span>
           {% if href %}
-            <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+            <a href="{{ href }}" class="tna-card__heading-link">{{ title }}</a>
           {% else %}
             {{ title }}
           {% endif %}
@@ -37,10 +37,9 @@
         </hgroup>
       {% endif %}
     {% else %}
-      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
-      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}" >
+      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}">
       {% if href %}
-        <a href="{{ href }}" class="tna-card__title-link">{{ title }}</a>
+        <a href="{{ href }}" class="tna-card__heading-link">{{ title }}</a>
       {% else %}
         {{ title }}
       {% endif %}
