@@ -149,6 +149,18 @@
                     <th scope="row">{{ 'physical_description'|as_label }}</th>
                     <td>{{ record.physical_description }}</td>
                 </tr>
+            {% endif %}           
+            {% if record.restrictions_on_use %}
+                <tr>
+                    <th scope="row">{{ 'restrictions_on_use'|as_label }}</th>
+                    <td>{{ record.restrictions_on_use }}</td>
+                </tr>
+            {% endif %}
+            {% if record.dimensions %}
+                <tr>
+                    <th scope="row">{{ 'dimensions'|as_label }}</th>
+                    <td>{{ record.dimensions }}</td>
+                </tr>
             {% endif %}
             {% if record.access_condition %}
                 <tr>
@@ -166,12 +178,6 @@
                     </td>
                 </tr>
             {% endif %}
-            {% if record.dimensions %}
-                <tr>
-                    <th scope="row">{{ 'dimensions'|as_label }}</th>
-                    <td>{{ record.dimensions }}</td>
-                </tr>
-            {% endif %}
             {% if record.map_scale %}
                 <tr>
                     <th scope="row">{{ 'map_scale'|as_label }}</th>
@@ -183,19 +189,13 @@
                     <th scope="row">{{ 'physical_condition'|as_label }}</th>
                     <td>{{ record.physical_condition }}</td>
                 </tr>
-            {% endif %}
+            {% endif %}            
             {% if record.closure_status %}
                 <tr>
                     <th scope="row">{{ 'closure'|as_label }}</th>
                     <td>{{ record.closure_status }}</td>
                 </tr>
-            {% endif %}            
-            {% if record.restrictions_on_use %}
-                <tr>
-                    <th scope="row">{{ 'restrictions_on_use'|as_label }}</th>
-                    <td>{{ record.restrictions_on_use }}</td>
-                </tr>
-            {% endif %}
+            {% endif %} 
             {% if record.custodial_history %}
                 <tr>
                     <th scope="row">{{ 'custodial_history'|as_label }}</th>

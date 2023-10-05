@@ -1,10 +1,22 @@
 {% load static %}
 {% load wagtailcore_tags %}
 
-<h3 class="tna-heading media-embed__heading u-margin-xs">
+<!-- <h3 class="tna-heading media-embed__heading u-margin-xs">
     <span class="sr-only">{% if media.type == "video" %}Video.{% elif media.type == "audio" %}Listen.{% endif %}</span>
     {{ value.title }}
-</h3>
+</h3> -->
+
+
+<hgroup class="tna-hgroup tna-hgroup--l">
+    <p class="tna-hgroup__supertitle">
+        {% if media.type == "video" %}Video{% elif media.type == "audio" %}Listen{% endif %}
+    </p>
+    <h3 class="tna-hgroup__title">
+        {{ value.title }}
+    </h3>
+</hgroup>
+
+
 
 {% if media.date %}
     <p class="media-embed__date">

@@ -43,12 +43,12 @@ logger = logging.getLogger(__name__)
 
 
 class Record(DataLayerMixin, APIModel):
-    """A 'lazy' data-interaction layer for record data retrieved from the Kong API"""
+    """A 'lazy' data-interaction layer for record data retrieved from the Client API"""
 
     def __init__(self, raw_data: Dict[str, Any]):
         """
         This method recieves the raw JSON data dict recieved from
-        Kong and makes it available to the instance as `self._raw`.
+        Client API and makes it available to the instance as `self._raw`.
         """
         self._raw = raw_data.get("_source") or raw_data
         self.score = raw_data.get("_score")
@@ -1017,7 +1017,7 @@ class Record(DataLayerMixin, APIModel):
 
 @dataclass
 class Image:
-    """Represents an image item returned by Kong."""
+    """Represents an image item returned by Client API."""
 
     location: str
     # Sort position of this image. Used to create the image-viewer URL
@@ -1031,6 +1031,6 @@ class Image:
     def thumbnail_url(self):
         """Use thumbnail URL is available, otherwise fallback to image-serve."""
         if self.thumbnail_location:
-            return f"{settings.KONG_IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
+            return f"{settings.IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
         elif self.location:
             return reverse("image-serve", kwargs={"location": self.location})

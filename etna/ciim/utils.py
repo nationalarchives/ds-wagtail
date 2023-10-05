@@ -240,7 +240,7 @@ def convert_sort_key_to_index(sort):
         # Default to 0 if sort key isn't subscriptable or can't be converted to int
         index = 0
 
-    # Ensure index is always > -1 to prevent invalid offsets being sent to Kong
+    # Ensure index is always > -1 to prevent invalid offsets being sent to Client API
     return max(index, 0)
 
 
