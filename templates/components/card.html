@@ -37,8 +37,7 @@
         </hgroup>
       {% endif %}
     {% else %}
-      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
-      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}" >
+      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}">
       {% if href %}
         <a href="{{ href }}" class="tna-card__heading-link">{{ title }}</a>
       {% else %}
