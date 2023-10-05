@@ -2,9 +2,9 @@ from datetime import timedelta
 
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from django.utils import timezone
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
@@ -17,6 +17,8 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+
+from .forms import EventPageForm
 
 
 class VenueType(models.TextChoices):
@@ -293,6 +295,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -301,6 +304,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     event_type = models.ForeignKey(
         EventType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -341,6 +345,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("venue type"),
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
+        blank=True,
     )
 
     venue_website = models.URLField(
@@ -424,6 +429,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     short_title = models.CharField(
         max_length=50,
         verbose_name=_("short title"),
+        blank=True,
         help_text=_(
             "A short title for the event. This will be used in the event listings."
         ),
@@ -516,7 +522,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
-        
+
     @property
     def tickets_remaining(self):
         """
@@ -534,7 +540,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         if self.tickets_sold >= (self.capacity * 0.20):
             return "Low availability"
         if self.start_date.date() <= (timezone.now().date() + timedelta(days=5)):
-            return "Last chance"        
+            return "Last chance"
 
     def clean(self):
         """
@@ -643,3 +649,5 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
+
+    base_form_class = EventPageForm
