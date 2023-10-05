@@ -14,6 +14,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+from .forms import EventFilterForm
 
 
 class VenueType(models.TextChoices):
@@ -261,6 +262,26 @@ class WhatsOnPage(BasePageWithIntro):
         Returns a queryset of events that are children of this page.
         """
         return EventPage.objects.child_of(self).live().public().order_by("start_date")
+    
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        filter_form = EventFilterForm(request.GET)
+
+        # Implement your filtering logic based on the form's data
+        # Example: Filter based on field1 and field2
+        if filter_form.is_valid():
+            date_value = filter_form.cleaned_data.get('date')
+            category_value = filter_form.cleaned_data.get('category')
+            online_value = filter_form.cleaned_data.get('online')
+            family_friendly_value = filter_form.cleaned_data.get('family_friendly')
+            print("date_value: ", date_value)
+            # Apply your filtering logic here and update the context accordingly
+
+        context['filter_form'] = filter_form
+        # Add other context variables as needed for displaying filtered results
+
+        return context
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"

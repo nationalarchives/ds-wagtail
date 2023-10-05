@@ -18,6 +18,10 @@
 
     <div class="tna-container">
       <div class="tna-column tna-column--full">
+        <form method="get" action="{% pageurl page %}">
+          {{ filter_form.as_p }}
+          <button type="submit">Filter</button>
+      </form>
         <form class="filters" method="GET" action="#">
 
           <fieldset class="filters__fieldset">
