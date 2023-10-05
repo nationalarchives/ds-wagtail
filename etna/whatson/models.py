@@ -388,7 +388,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     eventbrite_id = models.CharField(
         max_length=255,
         verbose_name=_("eventbrite ID"),
-        blank=True,
         editable=False,
     )
     # The booking info fields above will be brought in from the API when we have it.
