@@ -77,8 +77,8 @@ jobs:
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
   
-  prettier:
-    name: Prettier format
+  lint-css-and-js:
+    name: Prettier and linting
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -88,7 +88,7 @@ jobs:
           node-version-file: .nvmrc
       - name: Install npm modules
         run: npm install
-      - name: Lint SCSS and JS
+      - name: Lint SCSS and JS and run prettier
         run: npm run lint
 
   compile-javascript:
