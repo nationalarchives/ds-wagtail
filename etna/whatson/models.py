@@ -14,8 +14,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
-from .forms import EventFilterForm
-
+from django import forms
 
 class VenueType(models.TextChoices):
     """
@@ -610,3 +609,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
+
+class EventFilterForm(forms.Form):
+    date = forms.DateField(label="Choose a date", required=False, widget=forms.DateInput(attrs={'type': 'date'}))
+    category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=EventType.objects.all())
+    online = forms.BooleanField(label="Online", required=False)
+    family_friendly = forms.BooleanField(label="Family friendly", required=False)
