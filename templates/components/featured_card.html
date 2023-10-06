@@ -1,0 +1,31 @@
+<div
+  class="featured-card {{ classes }}"
+  {% for attribute, value in attributes.items %}
+    {{ attribute }}="{{ value }}"
+  {% endfor %}
+>
+  <a href="{{ href }}">
+    <img src="{{ imageSrc }}" alt="{{ imageAlt }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="featured-card__image">
+  </a>
+  <p class="featured-card__tag featured-card__tag--pick">Our pick</p>
+  <div class="featured-card__info">
+    {% if event_type %}
+      <div class="featured-card__tag-wrapper">
+        <div class="featured-card__tag featured-card__tag--type">
+          {{ event_type }}
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="featured-card__text-wrapper">
+      <h{{ headingLevel }} class="featured-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
+        <a href="{{ href }}" class="featured-card__heading-link">
+          {{ title }}
+        </a>
+      </h{{ headingLevel }}>
+      {% if date or cost or venue_type %}
+        {% include "includes/meta.html" %}
+      {% endif %}
+    </div>
+  </div>
+</div>
