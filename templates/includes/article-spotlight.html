@@ -48,6 +48,6 @@
             <p id="article-desc{{ page.id }}" class="aria-desc">Read about {{ page.title }}</p>
 
             <p>{{ page.teaser_text }}</p>
-            <a class="tna-button--dark" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
+            <a class="tna-button tna-button--solid-hover" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
         </div>
     </div>
