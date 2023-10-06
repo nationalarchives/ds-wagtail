@@ -612,6 +612,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
 class EventFilterForm(forms.Form):
     date = forms.DateField(label="Choose a date", required=False, widget=forms.DateInput(attrs={'type': 'date'}))
-    category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=EventType.objects.all())
+    category = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple, queryset=EventType.objects.all(), required=False)
     online = forms.BooleanField(label="Online", required=False)
     family_friendly = forms.BooleanField(label="Family friendly", required=False)
