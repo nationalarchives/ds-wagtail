@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
 
-from ..ciim.exceptions import KongAPIError
+from ..ciim.exceptions import ClientAPIError
 from .api import records_client
 
 
@@ -27,7 +27,7 @@ class RecordChooserBlock(blocks.ChooserBlock):
         """Return the associated field to pick a Record.
 
         ChooserBlock.field returns a ModelChoiceField. Record data is held
-        externally and populated via an API call to Kong and not the database.
+        externally and populated via an API call to Client API and not the database.
         """
         return forms.ChoiceField(
             choices=[],
@@ -91,8 +91,8 @@ class RecordChooserBlock(blocks.ChooserBlock):
 
         try:
             return records_client.fetch(iaid=value)
-        except KongAPIError:
-            # If there's a connection issue with Kong, return a stub Record
+        except ClientAPIError:
+            # If there's a connection issue with Client API, return a stub Record
             # so we have something to render on the ResultsPage edit form.
             return self.target_model(raw_data={"iaid": value})
 

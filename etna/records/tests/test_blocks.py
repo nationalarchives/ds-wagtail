@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.urls import reverse
 
 from wagtail.models import Site
@@ -30,10 +31,14 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         record_response = create_response(records=[create_record(**TEST_RECORD_DATA)])
 
         responses.add(
-            responses.GET, "https://kong.test/data/fetch", json=record_response
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetch",
+            json=record_response,
         )
         responses.add(
-            responses.GET, "https://kong.test/data/fetchAll", json=record_response
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
+            json=record_response,
         )
 
         root = Site.objects.get().root_page
@@ -122,15 +127,15 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 4)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetch?metadataId=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C123456",
         )
         self.assertEqual(
             responses.calls[2].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
@@ -174,7 +179,7 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 2)
         self.assertEqual(
             responses.calls[0].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
         # View the page to check rendering also
@@ -187,15 +192,17 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         self.assertEqual(len(responses.calls), 3)
         self.assertEqual(
             responses.calls[1].request.url,
-            "https://kong.test/data/fetchAll?metadataIds=C123456",
+            f"{settings.CLIENT_BASE_URL}/fetchAll?metadataIds=C123456",
         )
 
     @responses.activate
-    def test_view_edit_page_with_kong_exception(self):
+    def test_view_edit_page_with_client_api_exception(self):
         """Ensure that even if a record associated with this page doesn't
         exist, we're still able to render its edit page."""
 
-        responses.replace(responses.GET, "https://kong.test/data/fetch", status=500)
+        responses.replace(
+            responses.GET, f"{settings.CLIENT_BASE_URL}/fetch", status=500
+        )
 
         self.article_page.body = json.dumps(
             [
