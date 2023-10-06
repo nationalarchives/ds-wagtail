@@ -121,8 +121,7 @@
             height: 100%;
             padding: 0.5rem;
             text-decoration: none;
-            color: #000; // IE11
-            color: #000000ba;
+            color: rgba(0, 0, 0, 73%);
             border-top: 0.3rem solid $color__grey-500;
             background-color: #ffffff85;
 
