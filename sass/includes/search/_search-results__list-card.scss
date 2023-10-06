@@ -217,7 +217,7 @@
 
 .search-results__list-card-details {
     flex: 1 1 auto;
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: 480px) {
         padding-left: 1rem;
     }
 }
