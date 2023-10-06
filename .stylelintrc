@@ -16,6 +16,7 @@
         "scss/dollar-variable-empty-line-before": null,
         "scss/double-slash-comment-empty-line-before": null,
         "selector-class-pattern": null,
+        "media-feature-range-notation": null,
         "plugin/selector-bem-pattern": {
             "preset": "bem"
         },
