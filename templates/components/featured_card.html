@@ -4,7 +4,7 @@
     {{ attribute }}="{{ value }}"
   {% endfor %}
 >
-  <a href="{{ href }}">
+  <a href="{{ href }}" tabindex="-1" title="{{ title }}">
     <img src="{{ imageSrc }}" alt="{{ imageAlt }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="featured-card__image">
   </a>
   <p class="featured-card__tag featured-card__tag--pick">Our pick</p>
