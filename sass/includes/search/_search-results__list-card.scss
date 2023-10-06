@@ -8,13 +8,13 @@
     border-bottom: solid 1px #ccc;
     margin-bottom: 1em;
 
-    @media only screen and (width <= 57rem) {
+    @media only screen and (max-width: 57rem) {
         padding-bottom: 1rem;
     }
 
     &--grid {
         @extend .search-results__list-card;
-        @media only screen and (width >= 57rem) {
+        @media only screen and (min-width: 57rem) {
             width: 48%;
             max-height: 100%;
         }
@@ -30,7 +30,7 @@
         font-size: 1.7rem;
         letter-spacing: 0.05rem;
 
-        @media only screen and (width >= 57rem) {
+        @media only screen and (min-width: 57rem) {
             margin-top: 0;
         }
     }
@@ -47,7 +47,7 @@
         margin-bottom: 2rem;
         padding-right: 1rem;
         // max-width: 46rem;
-        @media only screen and (width >= 57rem) {
+        @media only screen and (min-width: 57rem) {
         }
 
         .title-fix {
@@ -192,13 +192,13 @@
 .search-list-image {
     position: absolute;
     right: 50px;
-    @media only screen and (width <= 1320px) {
+    @media only screen and (max-width: 1320px) {
         right: 80px;
     }
-    @media only screen and (width <= 1080px) {
+    @media only screen and (max-width: 1080px) {
         right: 120px;
     }
-    @media only screen and (width <= 768px) {
+    @media only screen and (max-width: 768px) {
         position: unset;
     }
 }
@@ -217,7 +217,7 @@
 
 .search-results__list-card-details {
     flex: 1 1 auto;
-    @media only screen and (width <= 480px) {
+    @media only screen and (max-width: 768px) {
         padding-left: 1rem;
     }
 }

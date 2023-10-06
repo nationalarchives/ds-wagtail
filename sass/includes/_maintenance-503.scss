@@ -17,7 +17,7 @@
         margin: 3rem 5rem;
     }
 
-    @media only screen and (width <= 37.5rem) {
+    @media only screen and (max-width: 37.5rem) {
         margin: 3rem 2rem;
     }
 
@@ -59,7 +59,7 @@
             height: 15rem;
         }
 
-        @media only screen and (width <= 21.875rem) {
+        @media only screen and (max-width: 21.875rem) {
             width: 13rem;
             height: 13rem;
         }

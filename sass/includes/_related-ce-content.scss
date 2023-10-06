@@ -43,7 +43,7 @@
         width: 100%;
     }
 
-    @media only screen and (width <= 56.25rem) {
+    @media only screen and (max-width: 56.25rem) {
         &__list {
             flex-direction: column;
         }
@@ -92,7 +92,7 @@
         }
     }
 
-    @media only screen and (width <= 36rem) {
+    @media only screen and (max-width: 36rem) {
         &__item {
             picture {
                 width: 100%;

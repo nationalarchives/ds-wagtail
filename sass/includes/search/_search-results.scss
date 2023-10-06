@@ -68,7 +68,7 @@
         &--grid {
             @extend .search-results__list;
 
-            @media only screen and (width >= 57rem) {
+            @media only screen and (min-width: 57rem) {
                 // Using flex here, as grid doesn't work for dynamic elements in IE11. Grid on IE11 requires a specific column and row set for every child element as 'auto' for columns and rows does not work.
                 display: flex;
                 flex-wrap: wrap;

@@ -1,7 +1,7 @@
 .explore-cta {
     background: #26262a;
     height: 150px;
-    @media only screen and (width <= 768px) {
+    @media only screen and (max-width: 768px) {
         margin-bottom: 20px;
     }
 
