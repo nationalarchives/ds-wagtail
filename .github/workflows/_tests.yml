@@ -77,7 +77,7 @@ jobs:
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
   
-  lint-css-and-js:
+  prettier:
     name: Prettier and linting
     runs-on: ubuntu-latest
     steps:
