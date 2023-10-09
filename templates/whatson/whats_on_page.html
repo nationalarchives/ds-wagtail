@@ -69,12 +69,74 @@
     </div>
   </div>
 
-  <div class="tna-container">
-      <div class="tna-column tna-column--full">
-        {% for event in page.events %}
-          {% image event.teaser_image fill-720x448 as event_img %}
-          {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
-        {% endfor %}
-      </div>
-</div>
+  {% for event in page.events %}
+    {{ event }}
+  {% endfor %}
+
+  <div class="section section--pink">
+    <div class="tna-container u-margin-l">
+        <div class="tna-column tna-column--full">
+            <h2 class="tna-heading related-content__heading">For professionals</h2>
+        </div>
+
+        {% comment %} this could potentially use card-group-secondary-nav.html once we have real data {% endcomment %}
+        <ul class="card-group--list-style-none">
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Events for teachers" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 %}
+          </li>
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Sector professional events" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 %}
+          </li>
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Information management" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 %}
+          </li>
+        </ul>
+    </div>
+  </div>
+
+  <div class="tna-container u-margin-l">
+    <div class="tna-column tna-column--full">
+      <div class="related-highlight-cards u-margin-l">
+
+          <h2 class="tna-heading related-content__heading">Explore more of the National Archives</h2>
+
+          <div class="card-grid card-grid__duo">
+            <div class="related-highlight-cards__card">
+              <a href="/" aria-labelledby="topic-card-title">
+                  {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
+                  <img height="350"
+                      width="540"
+                      src="{{ teaser_image.url }}"
+                      class="related-highlight-cards__image"
+                      alt=""/>
+              </a>
+              <div class="related-highlight-cards__content">
+                  <p class="related-highlight-cards__card-title">
+                      <a href="/" class="related-highlight-cards__card-title-link">
+                          Visit
+                      </a>
+                  </p>
+              </div>
+            </div>
+            <div class="related-highlight-cards__card">
+              <a href="/" aria-labelledby="topic-card-title">
+                {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
+                <img height="350"
+                    width="540"
+                    src="{{ teaser_image.url }}"
+                    class="related-highlight-cards__image"
+                    alt=""/>
+              </a>
+              <div class="related-highlight-cards__content">
+                <p class="related-highlight-cards__card-title">
+                    <a href="/" class="related-highlight-cards__card-title-link">
+                        Stories
+                    </a>
+                </p>
+              </div>
+            </div>
+          </div>
+      </div>     
+    </div> 
+  </div>
 {% endblock %}
