@@ -16,7 +16,7 @@
 
                 {% image promoted_item.teaser_image fill-800x450 as card_image %}
 
-                {% include "../../components/card.html" with title=promoted_item.title href=promoted_item.url imageSrc=card_image.url imageWidth=800 imageHeight=450 text=promoted_item.description headingSize="m" headingLevel=3 index=forloop.counter0 %}
+                {% include "../../components/card.html" with title=promoted_item.title href=promoted_item.url imageSrc=card_image.url imageWidth=800 imageHeight=450 text=promoted_item.description headingSize="m" headingLevel=3 index=forloop.counter0 heading=heading %}
 
             </div>
             
