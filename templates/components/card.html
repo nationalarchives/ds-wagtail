@@ -25,7 +25,7 @@
               data-component-name="{{ card_type }} card: {{ title }}"
               data-link-type="Card text"
               data-card-title="{{ title }}"
-              {% if index %}data-card-position="{{ index }}"{% endif %}
+              data-card-position="{{ index|default:0 }}"
             >{{ title }}</a>
           {% else %}
             {{ title }}
@@ -44,7 +44,7 @@
               data-component-name="{{ card_type }} card: {{ title }}"
               data-link-type="Card text"
               data-card-title="{{ title }}"
-              {% if index %}data-card-position="{{ index }}"{% endif %}
+              data-card-position="{{ index|default:0 }}"
             >{{ title }}</a>
           {% else %}
             {{ title }}
@@ -62,7 +62,7 @@
           data-component-name="{{ card_type }} card: {{ title }}"
           data-link-type="Card text"
           data-card-title="{{ title }}"
-          {% if index %}data-card-position="{{ index }}"{% endif %}
+          data-card-position="{{ index|default:0 }}"
         >{{ title }}</a>
       {% else %}
         {{ title }}
@@ -84,7 +84,7 @@
         data-component-name="{{ card_type }} card: {{ title }}"
         data-link-type="Card image"
         data-card-title="{{ title }}"
-        {% if index %}data-card-position="{{ index }}"{% endif %}
+        data-card-position="{{ index|default:0 }}"
       >
       {% else %}
       <div class="tna-card__image-container">
