@@ -3,7 +3,10 @@ import push_to_data_layer from "./../push_to_data_layer";
 const getSortBy = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener("load", () => {
-        const selectElement = document.querySelector("#id_sort_by");
+        var selectElement = document.querySelector("#id_sort_by_desktop");
+        if (selectElement.checkVisibility() == false) {
+            selectElement = document.querySelector("#id_sort_by_mobile");
+        }
 
         // check if selectElement exists to avoid errors on other search pages
         if (selectElement) {
