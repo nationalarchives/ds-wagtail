@@ -3,8 +3,10 @@ import push_to_data_layer from "./../push_to_data_layer";
 const getSortBy = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener("load", () => {
+        var desktop = true;
         var selectElement = document.querySelector("#id_sort_by_desktop");
         if (selectElement.checkVisibility() == false) {
+            desktop = false;
             selectElement = document.querySelector("#id_sort_by_mobile");
         }
 
@@ -12,14 +14,18 @@ const getSortBy = () => {
         if (selectElement) {
             const selectOutput =
                 selectElement.options[selectElement.selectedIndex].value.trim();
-
-            const sortBy = document.querySelector('[data-id="sort-form"]');
+            if (desktop) {
+                var sortBy = document.querySelector('[data-id="sort-form-desktop"]');
+            } else {
+                var sortBy = document.querySelector('[data-id="sort-form-mobile"]');
+            }
             sortBy.setAttribute("data-search-filter-value", selectOutput);
-
             selectElement.onchange = function () {
                 let selectOutput =
                     this.options[this.selectedIndex].value.trim();
-
+                if (selectOutput == "") {
+                    selectOutput = "relevance";
+                }
                 sortBy.setAttribute("data-search-filter-value", selectOutput);
             };
 
