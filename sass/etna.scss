@@ -199,9 +199,9 @@ Modified to match the existing site (for now)
 }
 
 .tna-container {
-  &--centred {
-    justify-content: center;
-  }
+    &--centred {
+        justify-content: center;
+    }
 }
 
 .tna-footer {
@@ -273,6 +273,14 @@ Modified to match the existing site (for now)
         .tna-heading {
             padding-top: 1rem;
             color: inherit !important;
+        }
+
+        a {
+            &,
+            &:link,
+            &:visited {
+                color: inherit;
+            }
         }
     }
 
