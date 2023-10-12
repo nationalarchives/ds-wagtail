@@ -1,3 +1,26 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+.tna-author {
+    align-items: center;
+    
+    &__image {
+        margin: 0 auto;
+
+        overflow: hidden;
+        border-radius: 100%;
+
+        img {
+            width: 100%;
+            height: 100%;
+        }
+
+        @include media.on-tiny {
+            max-width: 15rem;
+            margin-bottom: 3rem;
+        }
+    }
+}
+
 .author-intro {
     padding-top: 1rem;
     background-color: $color__white;
