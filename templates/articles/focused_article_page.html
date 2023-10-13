@@ -1,11 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
+{% load static wagtailcore_tags sections_tags wagtailmetadata_tags wagtailimages_tags %}
 
-{% load wagtailimages_tags %}
-{% block meta_tag %}
-    {% meta_tags %}
-{% endblock %}
 {% block body_class %}template-focused-article{% endblock %}
 {% block breadcrumb %}{% endblock %}
 
