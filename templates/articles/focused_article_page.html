@@ -2,6 +2,7 @@
 
 {% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
 
+{% load wagtailimages_tags %}
 {% block meta_tag %}
     {% meta_tags %}
 {% endblock %}
@@ -14,19 +15,20 @@
     {% else %}
         {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title %}
     {% endif %}    
-    {% if page.author or page.first_published_at %}
+    {% if page.author_name %}
         <div class="generic-intro__meta">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
                     <ul class="tna-ul tna-ul--plain">
                         {% if page.author %}
-                            <li>By {{ page.author }}</li>                    
+                            <li>By <a href="{% pageurl page.author %}">{{ page.author_name }}</a></li>                    
                         {% endif %}
                     </ul>
                 </div>
             </div>
         </div>
     {% endif %}
+
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
     {% if page.intro and page.hero_image %}
@@ -50,6 +52,23 @@
                 </div>
             </div>
         </div>
+        {% if page.author_name %}
+            <div class="author-info">
+                <div class="author-info__label row">About the author</div>
+                <div class="author-info__image row">
+                    {% image page.author.image fill-500x500 as author_img %}
+                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-info__image">
+                </div>
+                <div class="author-info__text row">
+                    <h2 class="author-info__title"><a href="{% pageurl page.author %}">{{ page.author_name }}</a></h2>
+                    {% if page.author.role %}
+                        <div class="author-info__paragraph">
+                            {{ page.author.role|richtext }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 
     <aside class="related-content related-content--borderless">
