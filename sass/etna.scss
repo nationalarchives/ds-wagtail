@@ -132,8 +132,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-record-article";
 @import "includes/record-crosslink-panel";
 @import "includes/image-block";
-@import "includes/author-intro";
-@import "includes/author-info";
+@import "includes/author";
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
@@ -201,6 +200,14 @@ Modified to match the existing site (for now)
 .tna-container {
     &--centred {
         justify-content: center;
+    }
+}
+
+.tna-chip {
+    &--plain {
+        padding: 0;
+        @include colour.fixed;
+        background-color: transparent;
     }
 }
 
