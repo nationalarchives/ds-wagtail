@@ -30,6 +30,7 @@ services:
       - ./package-lock.json:/app/package-lock.json
       - ./dev/bin:/home/app/.local/bin/dev
       - ./dev/run.sh:/app/run.sh
+      - ./.flake8:/app/.flake8
       - media:/media
     depends_on:
       - db
