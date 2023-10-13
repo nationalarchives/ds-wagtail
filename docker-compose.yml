@@ -12,7 +12,11 @@ services:
 
   web:
     container_name: web
-    build: .
+    build:
+      context: .
+      args:
+        BASE_IMAGE: ghcr.io/nationalarchives/tna-python-django-root
+        BASE_IMAGE_TAG: rooted-images
     volumes:
       - ./etna:/app/etna
       - ./config:/app/config
@@ -24,12 +28,14 @@ services:
       - ./pyproject.toml:/app/pyproject.toml
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
+      - ./dev/bin:/home/app/.local/bin/dev
+      - ./dev/run.sh:/app/run.sh
       - media:/media
     depends_on:
       - db
     ports:
       - 8000:8080
-    command: sh /app/bash/run-dev.sh
+    command: sh /app/run.sh
     restart: on-failure
     init: true
     stdin_open: true
@@ -44,7 +50,7 @@ services:
       - DATABASE_USER=postgres
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
-      - DJANGO_SUPERUSER_EMAIL=admin@tna-development
+      - DJANGO_SUPERUSER_EMAIL=admin@tna-development.example
       - KEEP_ALIVE=30
 
   cli:
@@ -64,26 +70,6 @@ services:
       - .:/docs
     ports:
       - 8001:8000
-
-  dev:
-    container_name: dev
-    build:
-      context: .
-      dockerfile: dev/Dockerfile
-    restart: always
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    depends_on:
-      - web
-      - db
-    env_file:
-      - .env
-    environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.dev
-      - DATABASE_HOST=db
-      - DATABASE_NAME=postgres
-      - DATABASE_USER=postgres
 
 volumes:
   media:
