@@ -1,8 +1,7 @@
 {% extends "base_page.html" %}
+
 {% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+
 {% block content %}
     {% include "includes/record-revealed-intro.html" with display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
     {% if page.gallery_items %}

@@ -17,10 +17,12 @@
             {% endblock %}
             {% block title_suffix %}
                 {% wagtail_site as current_site %}
-                 - {{ current_site.site_name }}
+                 – {{ current_site.site_name }}
             {% endblock %}
         </title>
-        <meta name="description" content="" />
+        {% if meta_tags %}
+            {% meta_tags %}
+        {% endif %}
      {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
         <meta name="format-detection" content="telephone=no" />
