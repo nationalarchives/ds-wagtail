@@ -1,0 +1,80 @@
+{% extends 'base_page.html' %}
+
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+{% block meta_tag %}
+  {% meta_tags %}
+{% endblock %}
+
+{# Breadcrumb is included inside the header area #}
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+
+  <div class="full-width-header full-width-header--pink">
+    {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
+
+    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
+
+    <div class="tna-container">
+      <div class="tna-column tna-column--full">
+        <form class="filters" method="GET" action="#">
+
+          <fieldset class="filters__fieldset">
+            <legend class="filters__super-title">When</legend>
+            <div class="filters__panel">
+              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
+              <p class="filters__help">Format: dd/mm/yyyy</p>
+              {# we need a default value for the date in iOS or it is displayed tiny #}
+              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
+            </div>
+          </fieldset>
+
+          <fieldset class="filters__fieldset">
+            <legend class="filters__super-title">What</legend>
+            <div class="filters__radio-list filters__panel">
+              <div>
+                <input type="radio" name="event-type" value="exhibitions" id="exhibitions" class="filters__radio">
+                <label for="exhibitions" class="filters__label">Exhibitions &amp; displays</label>
+              </div>
+              <div>
+                <input type="radio" name="event-type" value="event" id="event" class="filters__radio">
+                <label for="event" class="filters__label">Event</label>
+              </div>
+              <div>
+                <input type="radio" name="event-type" value="talk" id="talk" class="filters__radio">
+                <label for="talk" class="filters__label">Talk</label>
+              </div>
+              <div>
+                <input type="radio" name="event-type" value="tour" id="tour" class="filters__radio">
+                <label for="tour" class="filters__label">Tour</label>
+              </div>
+            </div>
+          </fieldset>
+
+          <div class="filters__toggle">
+            <input type="checkbox" name="online" id="online" class="filters__toggle-input">
+            <label for="online" class="filters__toggle-label">Online</label>
+          </div>
+
+          <div class="filters__toggle">
+            <input type="checkbox" name="family" id="family" class="filters__toggle-input">
+            <label for="family" class="filters__toggle-label">Family friendly</label>
+          </div>
+
+          <input type="submit" value="Apply filters" class="filters__submit">
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="tna-container">
+      <div class="tna-column tna-column--full">
+        {% for event in page.events %}
+          {% image event.teaser_image fill-720x448 as event_img %}
+          {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
+        {% endfor %}
+      </div>
+</div>
+{% endblock %}
