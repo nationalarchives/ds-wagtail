@@ -30,7 +30,7 @@ runs:
       run: |
         IMAGE_ID=$(echo "ghcr.io/${{ github.repository_owner }}/${{ inputs.docker-image-name }}" | tr '[A-Z]' '[a-z]')
         echo "IMAGE_ID=$IMAGE_ID" >> "$GITHUB_OUTPUT"
-        docker build --tag $IMAGE_ID:${{ inputs.version }} --platform=linux/amd64 .
+        docker build --tag $IMAGE_ID:${{ inputs.version }} --platform=linux/amd64 --no-cache .
         docker push $IMAGE_ID:${{ inputs.version }}
       shell: bash
     - name: Tag latest
