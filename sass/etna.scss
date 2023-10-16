@@ -1,9 +1,7 @@
 $largest-small-device: 992px;
 
 @use "@nationalarchives/frontend/nationalarchives/variables/assets" with (
-    $tna-font-path: "/static/assets/fonts"
-);
-@use "@nationalarchives/frontend/nationalarchives/lib/font-awesome" with (
+    $tna-font-path: "/static/assets/fonts",
     $fa-font-path: "/static/assets/fonts"
 );
 
@@ -48,7 +46,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
-@import "includes/typography";
 @import "includes/card-groups";
 @import "includes/footer";
 @import "includes/cta-banner-newsletter";
@@ -177,6 +174,15 @@ Modified to match the existing site (for now)
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
+
+    &__figure {
+        min-height: 480px;
+        min-height: min(35vw, 480px, 25vh);
+
+        @include media.on-mobile {
+            min-height: 0;
+        }
+    }
 }
 
 .tna-message {
@@ -198,12 +204,6 @@ Modified to match the existing site (for now)
 
 .tna-skip-link {
     transition: none !important;
-}
-
-.tna-container {
-    &--centred {
-        justify-content: center;
-    }
 }
 
 .tna-chip {

@@ -31,7 +31,7 @@
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -49,7 +49,7 @@
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                     {% endfor %}
                 </ul>
             {% endif %}
