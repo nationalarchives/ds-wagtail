@@ -519,14 +519,6 @@ class RecordArticlePage(
         verbose_name=_("featured highlight gallery"),
     )
 
-    #featured_article = models.ForeignKey(
-    #    "articles.ArticlePage",
-    #    blank=True,
-    #    null=True,
-    #    on_delete=models.SET_NULL,
-    #    verbose_name=_("featured article"),
-    #)
-
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
         null=True,

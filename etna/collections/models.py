@@ -168,10 +168,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         verbose_name_plural = _("topic pages")
         verbose_name_public = _("explore by topic")
 
-    #featured_article = models.ForeignKey(
-    #    "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    #)
-
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -380,11 +376,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         verbose_name = _("time period page")
         verbose_name_plural = _("time period pages")
         verbose_name_public = _("explore by time period")
-
-    #featured_article = models.ForeignKey(
-    #    "articles.ArticlePage",
-    #     blank=True, null=True, on_delete=models.SET_NULL
-    #)
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
@@ -647,14 +638,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         null=True,
         on_delete=models.SET_NULL,
     )
-
-    #featured_article = models.ForeignKey(
-    #    "articles.ArticlePage",
-    #    verbose_name=_("featured article"),
-    #    blank=True,
-    #    null=True,
-    #    on_delete=models.SET_NULL,
-    #)
 
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
