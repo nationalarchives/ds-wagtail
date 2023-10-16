@@ -87,4 +87,77 @@
       </ul>
     </div>
   </div>
+
+  <div class="section section--pink">
+    <div class="tna-container">
+        <div class="tna-column tna-column--full tna-!--margin-top-l">
+            <h2 class="tna-heading related-content__heading">For professionals</h2>
+        </div>
+
+        {% comment %} TODO: replace with real data and only use one card - there are duplicates for now while testing front-end {% endcomment %}
+        <ul class="card-group--list-style-none">
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Events for teachers" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes=" tna-card--related" %}
+          </li>
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Sector professional events" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes="tna-card--demo tna-card--related" %}
+          </li>
+          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+            {% include "../components/card.html" with title="Information management" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes="tna-card--demo tna-card--related" %}
+          </li>
+        </ul>
+    </div>
+  </div>
+
+
+  {% comment %} TODO: use large_links_block.html with real data to replace hard-coded cards below {% endcomment %}
+  {% comment %} {% include "../blocks/large_links_block.html" %} {% endcomment %}
+
+  <div class="related-highlight-cards tna-!--margin-top-l tna-!--margin-bottom-l">
+    <div class="tna-container">
+      <div class="tna-column tna-column--full">
+        <h2 class="tna-heading card-grid__title">
+            Explore more of the National Archives
+        </h2>
+      </div>
+      <div class="tna-column tna-column--flex-1 tna-column--full-tiny" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
+        <div class="related-highlight-cards__card">
+          <a href="/" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}" tabindex="-1">
+            {% image link_page.teaser_image fill-540x350 as teaser_image %}
+            <img height="350"
+                width="540"
+                src="{{ teaser_image.url }}"
+                class="related-highlight-cards__image"
+                alt="" />
+          </a>
+          <div class="related-highlight-cards__content">
+            <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
+              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+                  Visit
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="tna-column tna-column--flex-1 tna-column--full-tiny" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
+        <div class="related-highlight-cards__card">
+          <a href="/" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}" tabindex="-1">
+            {% image link_page.teaser_image fill-540x350 as teaser_image %}
+            <img height="350"
+                width="540"
+                src="{{ teaser_image.url }}"
+                class="related-highlight-cards__image"
+                alt="" />
+          </a>
+          <div class="related-highlight-cards__content">
+            <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
+              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+                  Stories
+              </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}

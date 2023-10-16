@@ -496,6 +496,12 @@ Modified to match the existing site (for now)
             line-height: 1.5;
         }
     }
+
+    &--related {
+      .tna-card__heading-link {
+        @include colour.colour-font("font-dark");
+      }
+    }
 }
 
 // tna-container variant with an offset top - used on what's on landing page
