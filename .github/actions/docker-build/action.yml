@@ -39,19 +39,19 @@ runs:
         docker tag $IMAGE_ID:${{ inputs.version }} $IMAGE_ID:latest --platform=linux/amd64 .
         docker push $IMAGE_ID:latest
       shell: bash
-    # - name: Delete untagged images
-    #   uses: actions/github-script@v6.3.3
-    #   with:
-    #     github-token: ${{ secrets.GITHUB_TOKEN }}
-    #     script: |
-    #       const response = await github.request("GET /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions",
-    #         { per_page: 100
-    #       });
-    #       for(version of response.data) {
-    #           if (version.metadata.container.tags.length == 0 && version.name !== "latest" && version.name !== "preview") {
-    #               console.log("Delete " + version.id)
+    - name: Delete untagged images
+      uses: actions/github-script@v6.3.3
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const response = await github.request("GET /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions",
+            { per_page: 100
+          });
+          for(version of response.data) {
+              if (version.metadata.container.tags.length == 0 && version.name !== "latest" && version.name !== "preview") {
+                  console.log("Delete " + version.id)
 
-    #               const deleteResponse = await github.request("DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions/" + version.id, { });
-    #               console.log("status " + deleteResponse.status)
-    #           }
-    #       }
+                  const deleteResponse = await github.request("DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions/" + version.id, { });
+                  console.log("status " + deleteResponse.status)
+              }
+          }
