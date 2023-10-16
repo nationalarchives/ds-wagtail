@@ -44,14 +44,14 @@ runs:
       with:
         github-token: ${{ inputs.github-token }}
         script: |
-          const response = await github.request("GET /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions",
+          const response = await github.request("GET /orgs/${{ github.repository_owner }}/packages/container/$IMAGE_ID/versions",
             { per_page: 100
           });
           for(version of response.data) {
               if (version.metadata.container.tags.length == 0 && version.name !== "latest" && version.name !== "preview") {
                   console.log("Delete " + version.id)
 
-                  const deleteResponse = await github.request("DELETE /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions/" + version.id, { });
+                  const deleteResponse = await github.request("DELETE /orgs/${{ github.repository_owner }}/packages/container/$IMAGE_ID/versions/" + version.id, { });
                   console.log("status " + deleteResponse.status)
               }
           }
