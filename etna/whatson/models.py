@@ -501,6 +501,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
 
+    @cached_property
+    def primary_access_type(self):
+        """
+        Returns the primary access type for the event.
+        """
+        if primary_access := self.event_access_types.first():
+            return primary_access.access_type
+
     def clean(self):
         """
         Check that the venue address and video conference information are
