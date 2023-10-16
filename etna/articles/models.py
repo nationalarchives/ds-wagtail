@@ -122,7 +122,7 @@ class ArticleIndexPage(BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article, or Record Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
     )
 
@@ -153,7 +153,7 @@ class ArticleIndexPage(BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.RecordArticlePage"],
+            ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
         ),
         FieldPanel("featured_pages"),
     ]
@@ -529,11 +529,14 @@ class RecordArticlePage(
     )
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage",
-        blank=True,
+        "wagtailcore.Page",
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
-        verbose_name=_("featured article"),
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article or Focused Article."
+        ),
     )
 
     promoted_links = StreamField(
@@ -587,7 +590,10 @@ class RecordArticlePage(
             ],
         ),
         FieldPanel("featured_highlight_gallery"),
-        FieldPanel("featured_article"),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+        ),
         FieldPanel("promoted_links"),
     ]
 
