@@ -153,7 +153,11 @@ class ArticleIndexPage(BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
         FieldPanel("featured_pages"),
     ]

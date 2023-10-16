@@ -84,7 +84,11 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
                 FieldPanel("articles_introduction"),
                 PageChooserPanel(
                     "featured_article",
-                    ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
+                    [
+                        "articles.ArticlePage",
+                        "articles.FocusedArticlePage",
+                        "articles.RecordArticlePage",
+                    ],
                 ),
                 FieldPanel("featured_articles"),
             ],
