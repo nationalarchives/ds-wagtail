@@ -1,10 +1,9 @@
 name: Continuous deployment to preview
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - develop # TODO: Change to "main" if our working branch changes
 
 jobs:
   deploy:
