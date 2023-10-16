@@ -1,5 +1,10 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .full-width-header {
-    padding-bottom: 12rem;
+    // allows room for offset content below
+    @include media.on-larger-than-mobile {
+        padding-bottom: 12rem;
+    }
 
     &--pink {
         background-color: $color__pastel-pink;
