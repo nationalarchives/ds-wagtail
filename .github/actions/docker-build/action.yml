@@ -42,7 +42,7 @@ runs:
     - name: Delete untagged images
       uses: actions/github-script@v6.3.3
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ inputs.github-token }}
         script: |
           const response = await github.request("GET /orgs/${{ github.repository_owner }}/packages/container/${{ vars.DOCKER_IMAGE_NAME }}/versions",
             { per_page: 100
