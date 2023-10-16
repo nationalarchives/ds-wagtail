@@ -1,0 +1,10 @@
+{% load wagtailimages_tags %}
+<div class="event-hero">
+    <div class="event-hero__info-wrapper">
+        <h1>{{ title }}</h1>
+    </div>
+
+    <div class="event-hero__image-wrapper">
+        {% image image fill-720x448 class="event-hero__image" %}
+    </div>
+</div>

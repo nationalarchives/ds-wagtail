@@ -1,3 +1,11 @@
 {% extends 'base_page.html' %}
 
 {% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+
+{# Breadcrumb is included inside the event_hero component #}
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+    {% include "../components/event_hero.html" with title=page.title intro=page.intro image=page.lead_image %}
+{% endblock %}

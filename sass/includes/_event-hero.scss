@@ -1,0 +1,36 @@
+@use "@nationalarchives/frontend/nationalarchives/variables/grid";
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+.event-hero {
+    background-color: $color__maroon;
+    color: $color__white;
+    display: flex;
+    flex-direction: column;
+
+    @include media.on-larger-than-mobile {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    &__info-wrapper {
+        @include media.on-larger-than-mobile {
+            // allows the text to fill half the width that a tna-container and tna-column wrapper would create
+            // aligns it on the left with the rest of the page
+            max-width: calc((grid.$largest-container-width - 4rem) / 2);
+        }
+    }
+
+    &__image-wrapper {
+        @include media.on-larger-than-mobile {
+            // position: absolute;
+            // right: 0;
+            flex-basis: 50%;
+            //width: 50%;
+        }
+    }
+
+    &__image {
+        width: 100%;
+        height: auto;
+    }
+}
