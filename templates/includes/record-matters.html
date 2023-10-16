@@ -1,80 +1,65 @@
 {% load records_tags wagtailcore_tags i18n %}
-<div class="generic-intro record-matters">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-10 col-sm-12">
-                <h2 class="tna-heading story-title">{% trans title %}</h2>
-                {% if page.date_text or record.reference_number %}
-                    <div class="record-matters__content">
-                        {% if page.date_text %}
-                            <p class="record-matters__text">
-                                Date: <strong>{{ page.date_text }}</strong>
-                            </p>
-                        {% endif %}
-                        {% if record.reference_number %}
-                            <p class="record-matters__text">
-                                Catalogue reference: <a class="record-matters__text record-matters__text--bold"
-    href="{% record_url record is_editorial=True %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
-                            </p>
-                        {% endif %}
-                    </div>
-                {% endif %}
-                {% if page.about %}
-                    <div id="readLessContent" class="hidden">
-                        {% with about=page.about|richtext|truncatechars_html:300 %}
-                            {{ about }}
-                            <button id="readMoreButton"
-                                    class="record-matters__plain-button {% if about|length <= 300 %}hidden{% endif %}"
-                                    aria-label="Expand to read more about this record"
-                                    data-component-name="Record article body"
-                                    data-link-type="Expand accordion"
-                                    data-link="Expand to read more">
-                                Expand to read more
-                                {% include "static/images/fontawesome-svgs/circle-plus.svg" with classes="record-matters__svg" %}
-                            </button>
-                        {% endwith %}
-                    </div>
-                    <div id="readMoreContent">
-                        {{ page.about|richtext }}
-                        <button id="readLessButton"
-                                class="record-matters__plain-button hidden"
-                                type="button"
-                                aria-label="Close to read less about this record"
-                                data-component-name="Record article body"
-                                data-link-type="Collapse accordion"
-                                data-link="Collapse content">
-                            Collapse content
-                            {% include "static/images/fontawesome-svgs/circle-x-mark.svg" with classes="record-matters__svg" %}
-                        </button>
-                    </div>
-                {% endif %}
+
+<div class="tna-section">
+    <div class="tna-container tna-container--centred">
+        <div class="tna-column tna-column--width-2-3 tna-column--width-2-3-medium tna-column--width-3-4-small tna-column--full-tiny">
+            <h2 class="tna-heading tna-heading--l">{% trans title %}</h2>
+            <!-- TODO: Better semantics once the next tna-frontend is released -->
+            <!--
+            <dl class="tna-dl tna-dl--plain">
+                <dt>Date</dt>
+                <dd>{{ page.date_text }}</dd>
+                <dt>Catalogue reference</dt>
+                <dd>
+                    <a class="record-matters__text record-matters__text--bold"
+href="{% record_url record is_editorial=True %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
+                </dd>
+            </dl>
+            -->
+            {% if page.date_text %}
+                <p class="tna-!--no-margin-bottom">
+                    Date: <strong>{{ page.date_text }}</strong>
+                </p>
+            {% endif %}
+            {% if record.reference_number %}
+                <p class="tna-!--no-margin-bottom">
+                    Catalogue reference: <a class="record-matters__text record-matters__text--bold"
+href="{% record_url record is_editorial=True %}" data-component-name="Record article body" data-link-type="Link" data-link="{{ record.reference_number }}">{{ record.reference_number }}</a>
+                </p>
+            {% endif %}
+
+            {% if page.about %}
+            <div class="tna-!--margin-top-m">
+                {{ page.about|richtext }}
             </div>
+            {% endif %}
+
             {% if record or page.image_library_link or page.print_on_demand_link %}
-                <div class="col-md-10 col-sm-12 record-matters__buttons u-margin-xl">
-                    {% if record %}
-                        <a class="tna-button--yellow tna-button--full-width"
-                           href="{% record_url record is_editorial=True %}"
-                           rel="noopener noreferrer"
-                           data-component-name="Record article body"
-                           data-link-type="Button"
-                           data-link="View record details">View record details</a>
-                    {% endif %}
-                    {% if page.image_library_link %}
-                        <a class="tna-button--yellow tna-button--full-width"
-                           href="{{ page.image_library_link }}"
-                           rel="noopener noreferrer"
-                           data-component-name="Record article body"
-                           data-link-type="Button"
-                           data-link="Use this image">Use this image</a>
-                    {% endif %}
-                    {% if page.print_on_demand_link %}
-                        <a class="tna-button--yellow tna-button--full-width"
-                           href="{{ page.print_on_demand_link }}"
-                           rel="noopener noreferrer"
-                           data-component-name="Record article body"
-                           data-link-type="Button"
-                           data-link="Buy an art print">Buy an art print</a>
-                    {% endif %}
+                <div class="tna-button-group tna-button-group--full tna-!--margin-top-l">
+                {% if record %}
+                    <a class="tna-button tna-button--accent"
+                        href="{% record_url record is_editorial=True %}"
+                        rel="noopener noreferrer"
+                        data-component-name="Record article body"
+                        data-link-type="Button"
+                        data-link="View record details">View record details</a>
+                {% endif %}
+                {% if page.image_library_link %}
+                    <a class="tna-button tna-button--accent"
+                        href="{{ page.image_library_link }}"
+                        rel="noopener noreferrer"
+                        data-component-name="Record article body"
+                        data-link-type="Button"
+                        data-link="Use this image">Use this image</a>
+                {% endif %}
+                {% if page.print_on_demand_link %}
+                    <a class="tna-button tna-button--accent"
+                        href="{{ page.print_on_demand_link }}"
+                        rel="noopener noreferrer"
+                        data-component-name="Record article body"
+                        data-link-type="Button"
+                        data-link="Buy an art print">Buy an art print</a>
+                {% endif %}
                 </div>
             {% endif %}
         </div>

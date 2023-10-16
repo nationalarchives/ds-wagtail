@@ -174,9 +174,35 @@ Modified to match the existing site (for now)
     padding-bottom: 0;
 }
 
+.tna-button-group {
+    &--full {
+        justify-content: stretch;
+
+        @include media.on-mobile {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .tna-button {
+            margin: 0;
+
+            flex: 1;
+        }
+    }
+}
+
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
+}
+
+.tna-heading {
+    &--no-link-arrow {
+        &::after {
+            display: none !important;
+        }
+    }
 }
 
 .tna-message {
@@ -324,6 +350,10 @@ Modified to match the existing site (for now)
             padding-left: 0;
         }
     }
+}
+
+.tna-container--centred {
+    justify-content: center;
 }
 
 .highlight-gallery {
