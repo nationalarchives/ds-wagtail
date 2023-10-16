@@ -52,7 +52,7 @@
     {% endif %}
     {% if imageSrc %}
       {% if href %}
-      <a href="{{ href }}" class="tna-card__image-container" tabindex="-1">
+      <a href="{{ href }}" class="tna-card__image-container" tabindex="-1" title="{{ title }}">
       {% else %}
       <div class="tna-card__image-container">
       {% endif %}
@@ -79,37 +79,7 @@
     <div class="tna-card__body">
     {# for now I am splitting these out as this depends on how the data is recieved from the back-end #}
     {% if date or cost or venue_type %}
-      <ul class="tna-card__meta">
-        {% if date %}
-          <li class="tna-card__meta-item">
-            <i class="fa-solid fa-calendar"></i>
-            {{ date }}
-          </li>
-        {% endif %}
-        {% if cost %}
-          <li class="tna-card__meta-item">
-            <i class="fa-solid fa-ticket"></i>
-            {{ cost }}
-          </li>
-        {% endif %}
-        {% if venue_type %}
-          <li class="tna-card__meta-item">
-            <i class="fa-solid fa-location-dot"></i>
-            {{ venue_type }}
-          </li>
-        {% endif %}
-        {% comment %}
-          {# we may want a more re-usable solution where meta data is supplied as a list in the future #}
-          {% for item in meta %}
-            <li class="tna-card__meta-item">
-              {% if item.icon %}
-                <i class="fa-solid fa-{{ item.icon }}"></i>
-              {% endif %}
-              {{ item.text }}
-            </li>
-          {% endfor %}
-        {% endcomment %}
-      </ul>
+      {% include "includes/meta.html" %}
     {% endif %}
     {% if text %}
       <p>{{ text }}</p>
