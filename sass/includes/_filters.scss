@@ -1,7 +1,7 @@
 .filters {
     $root: &;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     padding: 1.5rem 0;
     flex-direction: column;
 
@@ -113,15 +113,6 @@
     }
 
     &__submit {
-        display: flex;
-        padding: 1rem 1.5rem;
-        justify-content: center;
-        align-items: center;
-        background-color: $color__black;
-        font-size: 1rem;
-        color: $color__white;
-        font-weight: 700;
-        border: 0;
-        line-height: 1;
+        cursor: pointer;
     }
 }
