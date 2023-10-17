@@ -2,9 +2,7 @@ from django.test import TestCase
 
 from wagtail.models import Site
 
-from ..models import WhatsOnPage, EventPage
-
-from datetime import datetime, timedelta
+from ..models import EventPage, WhatsOnPage
 
 
 class TestArticleIndexPage(TestCase):
@@ -22,12 +20,12 @@ class TestArticleIndexPage(TestCase):
             title="Event page 1",
             intro="test",
             teaser_text="test",
-            venue_type = "online",
-            video_conference_info = "test",
-            capacity = 2000,
-            tickets_sold = 2000,
-            min_price = 0,
-            max_price = 0,
+            venue_type="online",
+            video_conference_info="test",
+            capacity=2000,
+            tickets_sold=2000,
+            min_price=0,
+            max_price=0,
         )
         self.whats_on_page.add_child(instance=self.event_page1)
 
@@ -35,12 +33,12 @@ class TestArticleIndexPage(TestCase):
             title="Event page 2",
             intro="test",
             teaser_text="test",
-            venue_type = "online",
-            video_conference_info = "test",
-            capacity = 2000,
-            tickets_sold = 1900,
-            min_price = 0,
-            max_price = 15,
+            venue_type="online",
+            video_conference_info="test",
+            capacity=2000,
+            tickets_sold=1900,
+            min_price=0,
+            max_price=15,
         )
         self.whats_on_page.add_child(instance=self.event_page2)
 
@@ -48,19 +46,19 @@ class TestArticleIndexPage(TestCase):
             title="Event page 3",
             intro="test",
             teaser_text="test",
-            venue_type = "online",
-            video_conference_info = "test",
-            capacity = 2000,
-            tickets_sold = 1000,
-            min_price = 15,
-            max_price = 30,
+            venue_type="online",
+            video_conference_info="test",
+            capacity=2000,
+            tickets_sold=1000,
+            min_price=15,
+            max_price=30,
         )
         self.whats_on_page.add_child(instance=self.event_page3)
 
     def test_get_event_pages(self):
         self.assertEqual(
             list(self.whats_on_page.events),
-            [self.event_page1, self.event_page2, self.event_page3]
+            [self.event_page1, self.event_page2, self.event_page3],
         )
 
     def test_tickets_remaining(self):
