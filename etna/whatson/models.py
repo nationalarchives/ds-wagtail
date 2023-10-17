@@ -271,14 +271,6 @@ class WhatsOnPage(BasePageWithIntro):
 
         # Implement your filtering logic based on the form's data
         # Example: Filter based on field1 and field2
-        if filter_form.is_valid():
-            date_value = filter_form.cleaned_data.get("date")
-            category_value = filter_form.cleaned_data.get("category")
-            online_value = filter_form.cleaned_data.get("online")
-            family_friendly_value = filter_form.cleaned_data.get("family_friendly")
-            print("date_value: ", date_value)
-            # Apply your filtering logic here and update the context accordingly
-
         context["filter_form"] = filter_form
         # Add other context variables as needed for displaying filtered results
 
@@ -618,13 +610,15 @@ class EventFilterForm(forms.Form):
         label="Choose a date",
         required=False,
         widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
-        initial=timezone.now().date(),
     )
+
     category = forms.ModelMultipleChoiceField(
         widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
         queryset=EventType.objects.all(),
         required=False,
         label="What",
     )
-    online = forms.BooleanField(label="Online", required=False)
-    family_friendly = forms.BooleanField(label="Family friendly", required=False)
+
+    online = forms.BooleanField(label="Online", required=False, widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}))
+
+    family_friendly = forms.BooleanField(label="Family friendly", required=False, widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}))
