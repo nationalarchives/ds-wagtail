@@ -7,13 +7,11 @@
   <a href="{{ href }}" tabindex="-1" title="{{ title }}">
     <img src="{{ imageSrc }}" alt="{{ imageAlt }}" width="{{ imageWidth }}" height="{{ imageHeight }}" class="featured-card__image">
   </a>
-  <p class="featured-card__tag featured-card__tag--pick">Our pick</p>
+  <p class="featured-card__tag featured-card__pick">Our pick</p>
   <div class="featured-card__info">
     {% if event_type %}
       <div class="featured-card__tag-wrapper">
-        <div class="featured-card__tag featured-card__tag--type">
-          {{ event_type }}
-        </div>
+        {% include "components/event_tags.html" with hide_access_descriptor=True %}
       </div>
     {% endif %}
 

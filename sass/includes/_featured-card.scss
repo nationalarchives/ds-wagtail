@@ -10,26 +10,18 @@
         margin-bottom: 4.375rem;
     }
 
-    &__tag {
+    &__pick {
         display: inline-block;
         font-size: 0.875rem;
         font-family: $font__roboto-mono;
         text-transform: uppercase;
         padding: 0 0.4rem;
-        margin: 0 0 1rem;
-
-        &--pick {
-            color: $color__white;
-            background-color: $color__maroon;
-            position: absolute;
-            top: 1.44rem;
-            left: 1.563rem;
-        }
-
-        &--type {
-            color: $color__black;
-            background-color: $color__pastel-pink;
-        }
+        margin: 0;
+        color: $color__white;
+        background-color: $color__maroon;
+        position: absolute;
+        top: 1.44rem;
+        left: 1.563rem;
     }
 
     &__tag-wrapper {

@@ -1,10 +1,28 @@
 {% load wagtailimages_tags %}
 <div class="event-hero">
+    <div class="event-hero__breadcrumb-mobile">
+        {% include 'includes/breadcrumb.html' %}
+    </div>
     <div class="event-hero__info-wrapper">
-        <h1>{{ title }}</h1>
+        <div class="event-hero__breadcrumb-desktop">
+            {% include 'includes/breadcrumb.html' %}
+        </div>
+
+        <div class="tna-container">
+            <div class="tna-column">
+                {% include "components/event_tags.html" %}
+                <h1 class="tna-heading tna-heading--xl">{{ title }}</h1>
+            </div>
+        </div>
     </div>
 
     <div class="event-hero__image-wrapper">
-        {% image image fill-720x448 class="event-hero__image" %}
+        {% image image fill-960x758 as hero_image %}
+        {% image image fill-455x359 as hero_image_small %}
+        <picture  class="event-hero__picture">
+            <source media="(max-width: 768px)" srcset="{{ hero_image_small.url }}" />
+            <source media="(min-width: 769px)" srcset="{{ hero_image.url }}" />
+            <img src="{{ hero_image.url }}" alt="{{ hero_image.alt }}" width="{{ hero_image.width }}" height="{{ hero_image.height }}" class="event-hero__image">
+        </picture>
     </div>
 </div>
