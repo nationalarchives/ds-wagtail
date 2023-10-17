@@ -32,3 +32,7 @@ If you still need Django's debugging tools, but don't want to use Django Debug T
 
 1. Add `DEBUG_TOOLBAR_ENABLED = False` to `config/settings/local.py` 
 2. Add `DEBUG_TOOLBAR_ENABLED=False` to your `.env` file
+
+## I see an error when viewing the 'Explore the Collection' page on my local build
+
+Ensure you have the relevant entries for the `KONG_*` settings in your `.env` file - ask another developer to supply the correct keys if necessary.
