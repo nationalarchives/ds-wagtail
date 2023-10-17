@@ -541,14 +541,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             return "Low availability"
         if self.start_date.date() <= (timezone.now().date() + timedelta(days=5)):
             return "Last chance"
-          
+
     @cached_property
     def primary_access_type(self):
         """
         Returns the primary access type for the event.
         """
         if primary_access := self.event_access_types.first():
-            return primary_access.access_type 
+            return primary_access.access_type
 
     def clean(self):
         """
