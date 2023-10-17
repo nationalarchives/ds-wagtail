@@ -13,6 +13,8 @@ The following steps must be completed before you can pull data from an evironmen
 2. On the `#ds-etna` or `#ds-etna-dev` Slack channels, request for someone to add you to the Etna project.
 3. Once you have access, [generate an API token](https://docs.platform.sh/development/cli/api-tokens.html#get-a-token) for your account (The name **Local CLI** will do nicely), and add it your local `.env` file as `PLATFORMSH_CLI_TOKEN`.
 
+Developers from external agencies may not be able to register for a platform.sh account. In this scenario, ask a developer from The National Archives to share their API key.
+
 ## Download environment data
 
 Run the following command from the console. NOTE: This will not work from within an existing shell session, so you may have to exit that first.

@@ -71,6 +71,8 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/content-block";
 @import "includes/content-warning";
 @import "includes/quote";
+@import "includes/event-card-listing";
+@import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
 @import "includes/featured-records";
@@ -79,6 +81,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-articles";
 @import "includes/filters";
 @import "includes/full-width-header";
+@import "includes/meta";
 @import "includes/media-embed";
 @import "includes/record-embed";
 @import "includes/record-embed__no-image";
@@ -132,6 +135,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-record-article";
 @import "includes/record-crosslink-panel";
 @import "includes/image-block";
+@import "includes/author";
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
@@ -170,9 +174,35 @@ Modified to match the existing site (for now)
     padding-bottom: 0;
 }
 
+.tna-button-group {
+    &--full {
+        justify-content: stretch;
+
+        @include media.on-mobile {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .tna-button {
+            margin: 0;
+
+            flex: 1;
+        }
+    }
+}
+
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
+}
+
+.tna-heading {
+    &--no-link-arrow {
+        &::after {
+            display: none !important;
+        }
+    }
 }
 
 .tna-message {
@@ -194,6 +224,20 @@ Modified to match the existing site (for now)
 
 .tna-skip-link {
     transition: none !important;
+}
+
+.tna-container {
+    &--centred {
+        justify-content: center;
+    }
+}
+
+.tna-chip {
+    &--plain {
+        padding: 0;
+        @include colour.fixed;
+        background-color: transparent;
+    }
 }
 
 .tna-footer {
@@ -266,6 +310,14 @@ Modified to match the existing site (for now)
             padding-top: 1rem;
             color: inherit !important;
         }
+
+        a {
+            &,
+            &:link,
+            &:visited {
+                color: inherit;
+            }
+        }
     }
 
     .generic-intro__meta {
@@ -298,6 +350,10 @@ Modified to match the existing site (for now)
             padding-left: 0;
         }
     }
+}
+
+.tna-container--centred {
+    justify-content: center;
 }
 
 .highlight-gallery {
@@ -357,30 +413,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// Card meta styles, not yet published
-.tna-card__meta {
-    margin-bottom: 1rem;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1.5rem;
-    line-height: 1.3;
-    list-style: none;
-
-    &-item {
-        display: flex;
-        align-items: center;
-
-        @include typography.detail-font-small;
-
-        .fa-solid {
-            margin-right: 0.75rem;
-
-            @include colour.colour-font("icon-light");
-        }
-    }
-}
-
 // Event card overrides
 
 .tna-card {
@@ -396,6 +428,7 @@ Modified to match the existing site (for now)
         border: 2px solid colour.brand-colour("pastel-pink");
         padding: 0;
         order: 2;
+        margin-bottom: 1rem;
     }
 
     &__tag {
@@ -403,6 +436,8 @@ Modified to match the existing site (for now)
         @include typography.detail-font;
         text-transform: uppercase;
         padding: 0 0.4rem;
+        display: flex;
+        align-items: center;
 
         &--event-type {
             @include colour.fixed;
@@ -464,16 +499,17 @@ Modified to match the existing site (for now)
         .tna-card__image-container {
             margin-left: -1.5rem;
             margin-right: -1.5rem;
+            margin-bottom: 1.375rem;
 
             @include media.on-larger-than-mobile {
                 margin-left: 0;
                 margin-right: 0;
+                margin-bottom: 0;
             }
         }
 
         .tna-card__heading {
             margin-top: 0;
-            margin-bottom: 0.75rem;
 
             @include media.on-larger-than-mobile {
                 @include typography.relative-font-size(30);
@@ -488,12 +524,25 @@ Modified to match the existing site (for now)
             @include typography.relative-font-size(16);
             line-height: 1.5;
         }
+    }
+}
 
-        .tna-card__meta {
-            .fa-solid {
-                @include colour.fixed;
-                @include colour.colour-font("keyline");
-                @include typography.relative-font-size(24);
+// tna-container variant with an offset top - used on what's on landing page
+.tna-container {
+    &--offset-top {
+        @include media.on-larger-than-mobile {
+            margin-top: -9rem;
+        }
+    }
+
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
             }
         }
     }
