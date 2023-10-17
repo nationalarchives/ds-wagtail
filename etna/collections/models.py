@@ -67,6 +67,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         help_text=_(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_articles = StreamField(
@@ -181,6 +182,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         help_text=_(
             "Select a page to display in the featured area. This can be an Article or Focused Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_record_article = models.ForeignKey(
@@ -390,6 +392,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         help_text=_(
             "Select a page to display in the featured area. This can be an Article or Focused Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_record_article = models.ForeignKey(
@@ -652,6 +655,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         help_text=_(
             "Select a page to display in the featured area. This can be an Article or Focused Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     class Meta:

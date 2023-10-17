@@ -124,6 +124,7 @@ class ArticleIndexPage(BasePageWithIntro):
         help_text=_(
             "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_pages = StreamField(
@@ -541,6 +542,7 @@ class RecordArticlePage(
         help_text=_(
             "Select a page to display in the featured area. This can be an Article or Focused Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     promoted_links = StreamField(
