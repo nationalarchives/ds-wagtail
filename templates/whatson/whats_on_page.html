@@ -18,12 +18,10 @@
     <div class="tna-container">
       <div class="tna-column tna-column--full">
         <form class="filters" method="get" action="{% pageurl page %}">
-          {% csrf_token %}
-
           <fieldset class="filters__fieldset">
             <legend class="filters__super-title">When</legend>
             <div class="filters__panel">
-              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
+              <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
               <p class="filters__help">Format: dd/mm/yyyy</p>
               {# we need a default value for the date in iOS or it is displayed tiny #}
               {{ filter_form.date }}
@@ -31,7 +29,7 @@
           </fieldset>
           
           <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">What</legend>
+            <legend class="filters__super-title">{{ filter_form.category.label }}</legend>
             <div class="filters__radio-list filters__panel">
               {% for radio in filter_form.category %}
                 <div>
@@ -42,56 +40,17 @@
             </div>
           </fieldset>
           
+          <div class="filters__toggle">
+            {{ filter_form.online }}
+            <label for="{{ filter_form.online.id_for_label }}" class="filters__toggle-label">{{ filter_form.online.label }}</label>
+          </div>
 
+          <div class="filters__toggle">
+            {{ filter_form.family_friendly }}
+            <label for="{{ filter_form.family_friendly.id_for_label }}" class="filters__toggle-label">{{ filter_form.family_friendly.label }}</label>
+          </div>
           
           <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
-      </form>
-        <form class="filters" method="GET" action="#">
-
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {# we need a default value for the date in iOS or it is displayed tiny #}
-              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
-            </div>
-          </fieldset>
-
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">What</legend>
-            <div class="filters__radio-list filters__panel">
-              <div>
-                <input type="radio" name="event-type" value="exhibitions" id="exhibitions" class="filters__radio">
-                <label for="exhibitions" class="filters__label">Exhibitions &amp; displays</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="event" id="event" class="filters__radio">
-                <label for="event" class="filters__label">Event</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="talk" id="talk" class="filters__radio">
-                <label for="talk" class="filters__label">Talk</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="tour" id="tour" class="filters__radio">
-                <label for="tour" class="filters__label">Tour</label>
-              </div>
-            </div>
-          </fieldset>
-
-          <div class="filters__toggle">
-            <input type="checkbox" name="online" id="online" class="filters__toggle-input">
-            <label for="online" class="filters__toggle-label">Online</label>
-          </div>
-
-          <div class="filters__toggle">
-            <input type="checkbox" name="family" id="family" class="filters__toggle-input">
-            <label for="family" class="filters__toggle-label">Family friendly</label>
-          </div>
-
-          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
-
         </form>
       </div>
     </div>
