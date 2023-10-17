@@ -17,9 +17,34 @@
 
     <div class="tna-container">
       <div class="tna-column tna-column--full">
-        <form method="get" action="{% pageurl page %}">
-          {{ filter_form.as_p }}
-          <button type="submit">Filter</button>
+        <form class="filters" method="get" action="{% pageurl page %}">
+          {% csrf_token %}
+
+          <fieldset class="filters__fieldset">
+            <legend class="filters__super-title">When</legend>
+            <div class="filters__panel">
+              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
+              <p class="filters__help">Format: dd/mm/yyyy</p>
+              {# we need a default value for the date in iOS or it is displayed tiny #}
+              {{ filter_form.date }}
+            </div>
+          </fieldset>
+          
+          <fieldset class="filters__fieldset">
+            <legend class="filters__super-title">What</legend>
+            <div class="filters__radio-list filters__panel">
+              {% for radio in filter_form.category %}
+                <div>
+                  {{ radio.tag }}
+                  <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </fieldset>
+          
+
+          
+          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
       </form>
         <form class="filters" method="GET" action="#">
 
