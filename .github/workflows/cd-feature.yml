@@ -1,9 +1,10 @@
 name: Deploy feature branch
 
 on:
-  push:
-    branches:
-      - feature/*
+  workflow_call:
+  # push:
+  #   branches:
+  #     - feature/*
 
 jobs:
   deploy:
