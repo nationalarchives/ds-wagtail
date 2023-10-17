@@ -65,8 +65,9 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article, or Record Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_articles = StreamField(
@@ -84,7 +85,11 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
                 FieldPanel("articles_introduction"),
                 PageChooserPanel(
                     "featured_article",
-                    ["articles.ArticlePage", "articles.RecordArticlePage"],
+                    [
+                        "articles.ArticlePage",
+                        "articles.FocusedArticlePage",
+                        "articles.RecordArticlePage",
+                    ],
                 ),
                 FieldPanel("featured_articles"),
             ],
@@ -169,7 +174,15 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         verbose_name_public = _("explore by topic")
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article or Focused Article."
+        ),
+        verbose_name=_("featured article"),
     )
 
     featured_record_article = models.ForeignKey(
@@ -191,7 +204,10 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         BasePageWithIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("featured_article", heading=_("Featured article")),
+            PageChooserPanel(
+                "featured_article",
+                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            ),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
         ]
@@ -368,8 +384,17 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         verbose_name_public = _("explore by time period")
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "wagtailcore.Page",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article or Focused Article."
+        ),
+        verbose_name=_("featured article"),
     )
+
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
@@ -382,7 +407,10 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         BasePageWithIntro.content_panels
         + RequiredHeroImageMixin.content_panels
         + [
-            FieldPanel("featured_article", heading=_("Featured article")),
+            PageChooserPanel(
+                "featured_article",
+                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            ),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
             FieldPanel("start_year"),
@@ -619,11 +647,15 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     )
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage",
-        verbose_name=_("featured article"),
-        blank=True,
+        "wagtailcore.Page",
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article or Focused Article."
+        ),
+        verbose_name=_("featured article"),
     )
 
     class Meta:
@@ -647,7 +679,10 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             max_num=15,
         ),
         FieldPanel("featured_record_article"),
-        FieldPanel("featured_article"),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+        ),
     ]
 
     promote_panels = BasePageWithIntro.promote_panels + [
