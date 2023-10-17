@@ -9,11 +9,9 @@
   </a>
   <p class="featured-card__tag featured-card__pick">Our pick</p>
   <div class="featured-card__info">
-    {% if event_type %}
-      <div class="featured-card__tag-wrapper">
-        {% include "components/event_tags.html" with hide_access_descriptor=True %}
-      </div>
-    {% endif %}
+    <div class="featured-card__tag-wrapper">
+      {% include "components/event_tags.html" %}
+    </div>
 
     <div class="featured-card__text-wrapper">
       <h{{ headingLevel }} class="featured-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }}">
