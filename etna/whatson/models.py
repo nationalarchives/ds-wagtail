@@ -619,7 +619,7 @@ class EventFilterForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date"}),
     )
     category = forms.ModelMultipleChoiceField(
-        widget=forms.CheckboxSelectMultiple,
+        widget=forms.RadioSelect,
         queryset=EventType.objects.all(),
         required=False,
     )
