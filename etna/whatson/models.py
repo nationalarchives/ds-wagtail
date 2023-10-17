@@ -537,7 +537,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         """
         if self.tickets_remaining == 0:
             return "Sold out"
-        if self.tickets_sold >= (self.capacity * 0.20):
+        if self.tickets_remaining <= (self.capacity * 0.1):
             return "Low availability"
         if self.start_date.date() <= (timezone.now().date() + timedelta(days=5)):
             return "Last chance"
