@@ -39,7 +39,7 @@ class AuthorPage(BasePage):
 
     role = models.CharField(blank=True, null=True, max_length=100)
     summary = RichTextField(
-        blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
+        blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
     image = models.ForeignKey(
         get_image_model_string(),

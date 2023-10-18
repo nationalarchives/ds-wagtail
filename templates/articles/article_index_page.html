@@ -1,13 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load i18n %}
-{% load wagtailcore_tags %}
-{% load wagtailimages_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     <div class="container">

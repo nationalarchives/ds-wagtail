@@ -1,10 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load i18n static wagtailcore_tags wagtailimages_tags records_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load i18n static wagtailcore_tags wagtailimages_tags records_tags wagtailmetadata_tags %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
 

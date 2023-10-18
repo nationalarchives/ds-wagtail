@@ -1,10 +1,10 @@
 name: Continuous deployment to preview
 
 on:
-  workflow_dispatch:
+  workflow_call:
   # push:
   #   branches:
-  #     - main
+  #     - develop # TODO: Change to "main" if our working branch changes
 
 jobs:
   deploy:
@@ -24,10 +24,10 @@ jobs:
           version: ${{ steps.version-tag.outputs.version-tag }} # (develop)
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
-      - name: Install AWS CLI
-        uses: ./.github/actions/install-aws
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      - name: Deploy to AWS
-        run: aws ssm put-parameter --profile preview --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
+      # - name: Install AWS CLI
+      #   uses: ./.github/actions/install-aws
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: Deploy to AWS
+      #   run: aws ssm put-parameter --profile preview --name "/devops/private-beta/version" --type "String" --value "${{ steps.version-tag.outputs.VERSION }}" --overwrite
