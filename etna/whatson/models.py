@@ -257,6 +257,15 @@ class WhatsOnPage(BasePageWithIntro):
     A page for listing events.
     """
 
+    featured_event = models.ForeignKey(
+        "whatson.EventPage",
+        null=True,
+        blank=True,
+        verbose_name=_("featured event"),
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     @cached_property
     def events(self):
         """
@@ -304,7 +313,9 @@ class WhatsOnPage(BasePageWithIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithIntro.content_panels
+    content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("featured_event"),
+    ]
 
 
 class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
