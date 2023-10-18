@@ -282,13 +282,17 @@ class WhatsOnPage(BasePageWithIntro):
 
         if filter_form.is_valid():
             if filter_form.cleaned_data["date"]:
-                events = events.filter(start_date__date=filter_form.cleaned_data["date"])
+                events = events.filter(
+                    start_date__date=filter_form.cleaned_data["date"]
+                )
             if filter_form.cleaned_data["category"]:
                 events = events.filter(event_type=filter_form.cleaned_data["category"])
             if filter_form.cleaned_data["online"]:
                 events = events.filter(venue_type=VenueType.ONLINE)
             if filter_form.cleaned_data["family_friendly"]:
-                events = events.filter(event_audience_types__audience_type__slug="families")
+                events = events.filter(
+                    event_audience_types__audience_type__slug="families"
+                )
             self.events = events
 
         if events is None:
@@ -643,6 +647,14 @@ class EventFilterForm(forms.Form):
         label="What",
     )
 
-    online = forms.BooleanField(label="Online", required=False, widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}))
+    online = forms.BooleanField(
+        label="Online",
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+    )
 
-    family_friendly = forms.BooleanField(label="Family friendly", required=False, widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}))
+    family_friendly = forms.BooleanField(
+        label="Family friendly",
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+    )
