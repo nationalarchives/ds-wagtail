@@ -16,7 +16,7 @@ services:
       context: .
       args:
         BASE_IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        BASE_IMAGE_TAG: preview
+        BASE_IMAGE_TAG: latest
     volumes:
       - ./etna:/app/etna
       - ./config:/app/config
