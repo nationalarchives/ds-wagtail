@@ -269,10 +269,23 @@ class WhatsOnPage(BasePageWithIntro):
 
         filter_form = EventFilterForm(request.GET)
 
-        # Implement your filtering logic based on the form's data
-        # Example: Filter based on field1 and field2
+        events = self.events
+
+        if filter_form.is_valid():
+            if filter_form.cleaned_data["date"]:
+                events = events.filter(start_date__date=filter_form.cleaned_data["date"])
+            if filter_form.cleaned_data["category"]:
+                events = events.filter(event_type=filter_form.cleaned_data["category"])
+            if filter_form.cleaned_data["online"]:
+                events = events.filter(venue_type=VenueType.ONLINE)
+            if filter_form.cleaned_data["family_friendly"]:
+                events = events.filter(event_audience_types__audience_type__slug="families")
+            self.events = events
+
+        if events is None:
+            context["no_events"] = True
+
         context["filter_form"] = filter_form
-        # Add other context variables as needed for displaying filtered results
 
         return context
 
@@ -612,7 +625,7 @@ class EventFilterForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
     )
 
-    category = forms.ModelMultipleChoiceField(
+    category = forms.ModelChoiceField(
         widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
         queryset=EventType.objects.all(),
         required=False,
