@@ -8,39 +8,13 @@
     display: flex;
     flex-direction: column;
 
-    @include media.on-larger-than-mobile {
-        flex-direction: row;
-        justify-content: flex-end;
-    }
-
     &__info-wrapper {
         padding-bottom: 1.5rem;
-
-        @include media.on-larger-than-mobile {
-            // allows the text to fill half the width that a tna-container wrapper would create
-            max-width: math.div(grid.$largest-container-width, 2);
-            width: 50%;
-            padding-bottom: 7.812rem;
-        }
     }
 
     &__image-wrapper {
         position: relative;
         margin-bottom: 1.5rem;
-
-        @include media.on-larger-than-mobile {
-            min-height: 560px;
-            flex-basis: 50%;
-            width: 50%;
-            margin-bottom: 0;
-        }
-    }
-
-    &__picture {
-        @include media.on-larger-than-mobile {
-            position: absolute;
-            inset: 0;
-        }
     }
 
     &__image {
@@ -48,6 +22,36 @@
         height: auto;
 
         @include media.on-larger-than-mobile {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    @include media.on-larger-than-mobile {
+        flex-direction: row;
+        justify-content: flex-end;
+
+        &__info-wrapper {
+            // allows the text to fill half the width that a tna-container wrapper would create
+            max-width: math.div(grid.$largest-container-width, 2);
+            width: 50%;
+            padding-bottom: 7.812rem;
+        }
+
+        &__image-wrapper {
+            min-height: 560px;
+            flex-basis: 50%;
+            width: 50%;
+            margin-bottom: 0;
+        }
+
+        &__picture {
+            position: absolute;
+            inset: 0;
+        }
+
+        &__image {
             width: 100%;
             height: 100%;
             object-fit: cover;
