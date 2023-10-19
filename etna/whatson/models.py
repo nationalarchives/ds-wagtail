@@ -271,12 +271,8 @@ class WhatsOnPage(BasePageWithIntro):
         Returns a queryset of events that are children of this page.
         """
         return EventPage.objects.child_of(self).live().public().order_by("start_date")
-
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-
-        filter_form = EventFilterForm(request.GET)
-
+    
+    def filter_form_data(self, filter_form):
         events = self.events
 
         if filter_form.is_valid():
@@ -295,6 +291,15 @@ class WhatsOnPage(BasePageWithIntro):
                     event_audience_types__audience_type__slug="families"
                 )
             self.events = events
+
+        return events
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        filter_form = EventFilterForm(request.GET)
+
+        events = self.filter_form_data(filter_form)
 
         if events is None:
             context["no_events"] = True
