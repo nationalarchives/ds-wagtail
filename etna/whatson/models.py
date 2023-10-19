@@ -271,26 +271,18 @@ class WhatsOnPage(BasePageWithIntro):
         Returns a queryset of events that are children of this page.
         """
         return EventPage.objects.child_of(self).live().public().order_by("start_date")
-    
+
     def filter_form_data(self, filter_form):
         events = self.events
 
-        if filter_form.is_valid():
-            if filter_form.cleaned_data["date"]:
-                events = events.filter(
-                    start_date__date=filter_form.cleaned_data["date"]
-                )
-            if filter_form.cleaned_data["event_type"]:
-                events = events.filter(
-                    event_type=filter_form.cleaned_data["event_type"]
-                )
-            if filter_form.cleaned_data["is_online_event"]:
-                events = events.filter(venue_type=VenueType.ONLINE)
-            if filter_form.cleaned_data["family_friendly"]:
-                events = events.filter(
-                    event_audience_types__audience_type__slug="families"
-                )
-            self.events = events
+        if filter_form["date"]:
+            events = events.filter(start_date__date=filter_form["date"])
+        if filter_form["event_type"]:
+            events = events.filter(event_type=filter_form["event_type"])
+        if filter_form["is_online_event"]:
+            events = events.filter(venue_type=VenueType.ONLINE)
+        if filter_form["family_friendly"]:
+            events = events.filter(event_audience_types__audience_type__slug="families")
 
         return events
 
@@ -299,10 +291,8 @@ class WhatsOnPage(BasePageWithIntro):
 
         filter_form = EventFilterForm(request.GET)
 
-        events = self.filter_form_data(filter_form)
-
-        if events is None:
-            context["no_events"] = True
+        if filter_form.is_valid():
+            self.events = self.filter_form_data(filter_form.cleaned_data)
 
         context["filter_form"] = filter_form
 
