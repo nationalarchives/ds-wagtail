@@ -1,56 +1,48 @@
 {% extends 'base_page.html' %}
 
 {% load static wagtailcore_tags wagtailimages_tags %}
-
 {% block breadcrumb %}{% endblock %}
 {% block content %}
     {% include 'components/breadcrumb.html' %}
-    <div class="author-intro">
-        <div class="container">
-            <div class="row">
-                <div class="col-9 info">
-                    <h1 class="author-intro__title">
-                        {{ page.title }}
-                    </h1>
-                    {% if page.role %}
-                        <div class="author-intro__paragraph">
-                            {{ page.role|richtext }}
-                        </div>
-                    {% endif %}
-                </div>
-                <div class="col-3">
-                    {% image page.image fill-500x500 as author_img %}
-                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" class="author-intro__image">
+    <article>
+        <header class="tna-container tna-container--centred tna-section tna-author">
+            {% if page.image %}
+            <div class="tna-column tna-column--width-1-4 tna-column--width-1-3-medium tna-column--full-tiny tna-column--order-3 tna-column--order-1-tiny">
+                {% image page.image fill-500x500 as author_img %}
+                <div class="tna-author__image">
+                    <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" width="500" height="500">
                 </div>
             </div>
-        </div>
-    </div>
-
-
-    
-    <div class="article-container container">
-        <div class="article-container__main">
-            <h2 class="related-content__heading">About the author</h2>
-            {{ page.summary | richtext }}
-        </div>
-    </div>
-
-    <div class="related-content related-content--borderless">
-        <div class="container">
-            {% if page.authored_focused_articles %}
-                <h2 class="related-content__heading">{{page.title}}'s articles and blogs</h2>
-
+            {% endif %}
+            <div class="tna-column tna-column--flex-1 tna-column--full-tiny tna-column--order-2">
+                <h1 class="tna-heading tna-heading--xl">
+                    {{ page.title }}
+                </h1>
+                {% if page.role %}
+                {{ page.role }}
+                {% endif %}
+            </div>
+        </header>
+        <hr>
+        <section class="tna-container tna-container--centred tna-section tna-!--margin-bottom-m">
+            <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
+                <h2 class="tna-heading tna-heading--l">About the author</h2>
+                {{ page.summary | richtext }}
+            </div>
+        </section>
+        {% if page.authored_focused_articles %}
+        <aside class="tna-background--accent-light tna-!--margin-bottom-l">
+            <div class="tna-container">
+                <div class="tna-column tna-column--full">
+                    <h2 class="related-content__heading">{{page.title}}'s articles and blogs</h2>
+                </div>
                 <ul class="card-group--list-style-none">
                     {% for item in page.authored_focused_articles %}
                         {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
                     {% endfor %}
                 </ul>
-            {% endif %}
-        </div>
-    </div>
-
+            </div>
+        </aside>
+        {% endif %}
+    </article>
 {% endblock %}
-
-{% block extra_js %}
-    <script src="{% static 'scripts/article.js' %}"></script>
- {% endblock %}

@@ -137,8 +137,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-record-article";
 @import "includes/record-crosslink-panel";
 @import "includes/image-block";
-@import "includes/author-intro";
-@import "includes/author-info";
+@import "includes/author";
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
@@ -177,9 +176,35 @@ Modified to match the existing site (for now)
     padding-bottom: 0;
 }
 
+.tna-button-group {
+    &--full {
+        justify-content: stretch;
+
+        @include media.on-mobile {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .tna-button {
+            margin: 0;
+
+            flex: 1;
+        }
+    }
+}
+
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
+}
+
+.tna-heading {
+    &--no-link-arrow {
+        &::after {
+            display: none !important;
+        }
+    }
 }
 
 .tna-message {
@@ -201,6 +226,20 @@ Modified to match the existing site (for now)
 
 .tna-skip-link {
     transition: none !important;
+}
+
+.tna-container {
+    &--centred {
+        justify-content: center;
+    }
+}
+
+.tna-chip {
+    &--plain {
+        padding: 0;
+        @include colour.fixed;
+        background-color: transparent;
+    }
 }
 
 .tna-footer {
@@ -273,6 +312,14 @@ Modified to match the existing site (for now)
             padding-top: 1rem;
             color: inherit !important;
         }
+
+        a {
+            &,
+            &:link,
+            &:visited {
+                color: inherit;
+            }
+        }
     }
 
     .generic-intro__meta {
@@ -305,6 +352,10 @@ Modified to match the existing site (for now)
             padding-left: 0;
         }
     }
+}
+
+.tna-container--centred {
+    justify-content: center;
 }
 
 .highlight-gallery {
