@@ -1,0 +1,11 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+.event-details-banner {
+  display: none;
+  background-color: $color__pastel-pink;
+  padding: 1rem 0;
+
+  @include media.on-larger-than-mobile {
+    display: block;
+  }
+}

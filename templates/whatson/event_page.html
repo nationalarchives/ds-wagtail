@@ -1,3 +1,163 @@
 {% extends 'base_page.html' %}
 
 {% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+
+{% block html_class %}tna-template--pink-accent{% endblock %}
+
+{# Breadcrumb is included inside the header area #}
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+  {% comment %} Area for hero component {% endcomment %}
+
+  <div class="event-details-banner">
+    <div class="tna-container">
+      <div class="tna-column tna-column--width-3-4 tna-column--container">
+        <div class="event-meta event-meta--inline">
+          <ul class="event-meta__list event-meta__list">
+            {% if page.start_date %}
+              <li class="event-meta__item">
+                {% include "includes/icon.html" with name="calendar" classname="event-meta__icon" %}
+
+                <div class="event-meta__details">
+                  <p>{{ page.start_date|date:"d F, H:i" }}</p>
+                </div>
+              </li>
+            {% endif %}
+            {% if page.venue_type %}
+              <li class="event-meta__item">
+                {% include "includes/icon.html" with name="location" classname="event-meta__icon" %}
+
+                <div class="event-meta__details">
+                  <p>{{ page.venue_type }}</p>
+
+                  {% if page.venue_address %}
+                    <address>
+                      {{ page.venue_address }}
+                    </address>
+                  {% endif %}
+                </div>
+              </li>
+            {% endif %}
+            {% if page.registration_info %}
+              <li class="event-meta__item">
+                {% include "includes/icon.html" with name="ticket" classname="event-meta__icon" %}
+
+                <div class="event-meta__details">
+                  {{ page.registration_info|richtext }}
+                </div>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+
+      <div class="tna-column tna-column--width-1-4">
+        <a href="/" class="tna-button tna-button--dark">Book now</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="tna-container">
+    <div class="tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
+        <div class="tna-section">
+          <div class="tna-scene-setter tna-scene-setter--small">
+            {{ page.intro|richtext }}
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="tna-container">
+    <div class="tna-column tna-column--width-1-3 tna-column--full-small tna-column--full-tiny">
+      <div class="event-meta">
+        <h3>Key details</h3>
+
+        <ul class="event-meta__list">
+          {% if page.start_date %}
+            <li class="event-meta__item">
+              <h3 class="event-meta__title">
+                {% include "includes/icon.html" with name="calendar" classname="event-meta__icon" %}
+                Dates
+              </h3>
+
+              <ul class="event-meta__details">
+                {% for session in page.sessions.all %}
+                  <li>{{ session.start|date:"d F, H:i" }}</li>
+                {% endfor %}
+              </ul>
+            </li>
+          {% endif %}
+          {% if page.venue_type %}
+            <li class="event-meta__item">
+              <h3 class="event-meta__title">
+                {% include "includes/icon.html" with name="location" classname="event-meta__icon" %}
+                Location
+              </h3>
+
+              <div class="event-meta__details">
+                <p>{{ page.venue_type }}</p>
+
+                {% if page.venue_address %}
+                  <address>
+                    {{ page.venue_address}}
+                  </address>
+                {% endif %}
+              </div>
+            </li>
+          {% endif %}
+          {% if page.registration_info %}
+            <li class="event-meta__item">
+              <h3 class="event-meta__title">
+                {% include "includes/icon.html" with name="ticket" classname="event-meta__icon" %}
+                How to book
+              </h3>
+
+              <div class="event-meta__details">
+                {{ page.registration_info|richtext }}
+              </div>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+    <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
+      {% if page.description %}
+        <h2>What you'll see and do</h2>
+        {{ page.description|richtext }}
+      {% endif %}
+
+      {% if page.target_audience %}
+        <h2>Who can come</h2>
+        {{ page.target_audience|richtext }}
+      {% endif %}
+
+      {% if page.useful_info %}
+        <div class="tna-useful-info">
+          <h2>Need to know</h2>
+          {{ page.useful_info|richtext }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="event-card-listing tna-!--margin-top-xl">
+    <div class="tna-container tna-container--full-width-mobile">
+      <div class="tna-column tna-column--full">
+        <hgroup class="event-card-listing__heading-area">
+          <h2 class="tna-heading tna-heading--l event-card-listing__heading">Before you go</h2>
+        </hgroup>
+
+        <ul class="event-card-listing__list">
+          {% for event in page.related_events %}
+            <li class="event-card-listing__item">
+              {% image event.teaser_image fill-720x448 as event_img %}
+              {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="3" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+{% endblock %}

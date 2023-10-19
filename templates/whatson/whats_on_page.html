@@ -11,70 +11,37 @@
 {% block content %}
 
   <div class="full-width-header full-width-header--pink">
-    {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
 
-    {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
+    {% comment %} Area for hero component {% endcomment %}
 
+  </div>
+
+  <div class="tna-container">
+      <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny tna-introduction">
+          <div class="tna-introduction__content">
+              Looking at some of the most famous witch trials in history, Marion Gibson discusses her new book, Witchcraft: A History in Thirteen Trials.
+          </div>
+      </div>
+  </div>
+
+  <div class="generic-intro{% if classes %} {{ classes }}{% endif %}">
     <div class="tna-container">
       <div class="tna-column tna-column--full">
-        <form class="filters" method="GET" action="#">
-
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {# we need a default value for the date in iOS or it is displayed tiny #}
-              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
-            </div>
-          </fieldset>
-
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">What</legend>
-            <div class="filters__radio-list filters__panel">
-              <div>
-                <input type="radio" name="event-type" value="exhibitions" id="exhibitions" class="filters__radio">
-                <label for="exhibitions" class="filters__label">Exhibitions &amp; displays</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="event" id="event" class="filters__radio">
-                <label for="event" class="filters__label">Event</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="talk" id="talk" class="filters__radio">
-                <label for="talk" class="filters__label">Talk</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="tour" id="tour" class="filters__radio">
-                <label for="tour" class="filters__label">Tour</label>
-              </div>
-            </div>
-          </fieldset>
-
-          <div class="filters__toggle">
-            <input type="checkbox" name="online" id="online" class="filters__toggle-input">
-            <label for="online" class="filters__toggle-label">Online</label>
-          </div>
-
-          <div class="filters__toggle">
-            <input type="checkbox" name="family" id="family" class="filters__toggle-input">
-            <label for="family" class="filters__toggle-label">Family friendly</label>
-          </div>
-
-          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
-
-        </form>
+        <h1 class="tna-heading tna-heading--xl tna-!--margin-top-l">
+          This is a test title
+        </h1>
+        <div class="generic-intro__paragraph">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum
+        </div>
       </div>
     </div>
   </div>
 
   <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
     <div class="tna-column tna-column--full">
-      {% include "../components/featured_card.html" with title="Featured card title" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://source.unsplash.com/1190x600?abstract" imageAlt="featured card image alt" imageWidth="1190" imageHeight="600" date="27 May" cost="From £16" venue_type="Online" event_type="Exhibition" %}
 
       <hgroup class="event-card-listing__heading-area">
-        <h2 class="tna-heading tna-heading--l event-card-listing__heading">All events</h2>
-        <p class="event-card-listing__summary">Showing 1 to 12 of 150 articles</p>
+        <h2 class="tna-heading tna-heading--l event-card-listing__heading">Before you go</h2>
       </hgroup>
 
       <ul class="event-card-listing__list">
