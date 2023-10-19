@@ -7,5 +7,5 @@
 {% endblock %}
 
 {% block content %}
-    {% include "../components/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
+    {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
 {% endblock %}
