@@ -1,3 +1,1 @@
-<!-- <div class="container"> -->
-    <{{ heading_level }} id="{{ heading_id }}" class="tna-heading">{{ value.heading }}</{{ heading_level }}>
-<!-- </div> -->
+<{{ heading_level }} id="{{ heading_id }}" class="tna-heading{% if heading_level == 1 %} tna-heading--xl{% elif heading_level == 2 %} tna-heading--l{% elif heading_level == 3 %} tna-heading--m{% elif heading_level == 4 %} tna-heading--s{% endif %}">{{ value.heading }}</{{ heading_level }}>
