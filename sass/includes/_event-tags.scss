@@ -1,3 +1,6 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .event-tags {
     display: inline-flex;
     align-self: flex-start;
