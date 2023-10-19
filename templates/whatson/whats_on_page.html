@@ -29,9 +29,9 @@
           </fieldset>
           
           <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">{{ filter_form.category.label }}</legend>
+            <legend class="filters__super-title">{{ filter_form.event_type.label }}</legend>
             <div class="filters__radio-list filters__panel">
-              {% for radio in filter_form.category %}
+              {% for radio in filter_form.event_type %}
                 <div>
                   {{ radio.tag }}
                   <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
@@ -41,8 +41,8 @@
           </fieldset>
           
           <div class="filters__toggle">
-            {{ filter_form.online }}
-            <label for="{{ filter_form.online.id_for_label }}" class="filters__toggle-label">{{ filter_form.online.label }}</label>
+            {{ filter_form.is_online_event }}
+            <label for="{{ filter_form.is_online_event.id_for_label }}" class="filters__toggle-label">{{ filter_form.is_online_event.label }}</label>
           </div>
 
           <div class="filters__toggle">

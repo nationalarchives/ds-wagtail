@@ -639,14 +639,14 @@ class EventFilterForm(forms.Form):
         widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
     )
 
-    category = forms.ModelChoiceField(
+    event_type = forms.ModelChoiceField(
         widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
         queryset=EventType.objects.all(),
         required=False,
         label="What",
     )
 
-    online = forms.BooleanField(
+    is_online_event = forms.BooleanField(
         label="Online",
         required=False,
         widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
