@@ -254,6 +254,14 @@ Modified to match the existing site (for now)
         }
     }
 
+    .generic-intro {
+        h1 {
+            &:last-child {
+                padding-bottom: 2rem;
+            }
+        }
+    }
+
     .generic-intro,
     .generic-intro__meta {
         background-color: #343338 !important;
