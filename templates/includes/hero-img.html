@@ -31,12 +31,12 @@
                  alt="{% if hero_image.alt_text %}{{ hero_image.alt_text }}{% endif %}"/>
         </picture>
         {% if caption %}
-            <figcaption class="hero-image__figcaption">
-                {{ caption|richtext }}
-            </figcaption>
-        </figure>
+        <figcaption class="hero-image__figcaption">
+            {{ caption|richtext }}
+        </figcaption>
+    </figure>
     {% endif %}
-</div> -->
+    </div> -->
 
 <div class="tna-hero">
     <figure class="tna-hero__figure">
@@ -51,7 +51,7 @@
                 </div>
             </details>
         </figcaption>{% endif %}
-        {% image hero_image min-1440x810 as full_img %}
+        {% image hero_image fill-1440x500-c100 as full_img %}
         <img src="{{ full_img.url }}" alt="{{ hero_image.alt_text }}" class="tna-hero__image" width="1440" height="810">
     </figure>
 </div>
