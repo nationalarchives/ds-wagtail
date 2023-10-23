@@ -13,6 +13,11 @@
         font-size: 0.7rem;
     }
 
+    &__icon {
+      height: 13px;
+      width: 13px;
+    }
+
     &:hover {
         background-color: $color__white;
         color: $color__grey-700;
@@ -28,6 +33,13 @@
     &--full-width {
         width: 100%;
     }
+
+    &--icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
 }
 
 .tna-button--dark,
@@ -41,6 +53,12 @@
     padding: 0.5rem 1rem;
     margin: 0.5rem 0;
     border: none;
+
+    &.tna-button--icon {
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
 
     &:hover {
         background-color: $color__white;

@@ -205,6 +205,20 @@ Modified to match the existing site (for now)
     &--centred {
         justify-content: center;
     }
+
+    &--align-center {
+      align-items: center;
+    }
+
+    &--space-between {
+      justify-content: space-between;
+    }
+
+    @include media.on-larger-than-mobile {
+      &--reverse-desktop {
+        flex-direction: row-reverse;
+      }
+    }
 }
 
 .tna-chip {
@@ -544,9 +558,9 @@ Modified to match the existing site (for now)
 
 .event-meta {
   $root: &;
-  padding-left: 3rem;
-
+  
   @include media.on-larger-than-mobile {
+    padding-left: 3rem;
     border-left: 1px solid colour.brand-colour("light-grey");
   }
 
@@ -554,6 +568,13 @@ Modified to match the existing site (for now)
     padding-left: 0;
     border-left: 0;
     align-self: center;
+    line-height: 1;
+    padding: 1rem 0;
+    display: none;
+
+    @include media.on-larger-than-mobile {
+      display: block;
+    }
   }
 
   &__list {
@@ -563,8 +584,9 @@ Modified to match the existing site (for now)
 
     #{$root}--inline & {
       display: inline-flex;
-      align-items: center;
-      gap: 1.5rem;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
   }
 
@@ -574,9 +596,19 @@ Modified to match the existing site (for now)
 
     #{$root}--inline & {
       display: inline-flex;
-      align-items: center;
+      align-items: flex-start;
       margin: 0;
       padding: 0;
+
+      @include media.on-medium {
+        align-items: center;
+        flex: 1 0 100%;
+      }
+
+      @include media.on-large {
+        align-items: center;
+        flex: 1 0 auto;
+      }
     }
   }
 
@@ -585,12 +617,13 @@ Modified to match the existing site (for now)
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
-    gap: 0.5rem;
+    gap: 0.25rem;
     margin-bottom: 1rem;
   }
 
   &__icon {
     color: colour.brand-colour("black");
+    flex: 0 0 auto;
     margin-right: 0.5rem;
 
     .tna-template--pink-accent & {
@@ -606,15 +639,13 @@ Modified to match the existing site (for now)
 
     .event-details-banner & {
       @include typography.detail-font-small();
+      text-transform: none;
       color: $color__black;
     }
   }
 }
 
 .event-details-banner {
-  display: none;
-  padding: 0.5rem 0;
-
   .tna-template--pink-accent & {
     background-color: colour.brand-colour("pastel-pink");
   }
