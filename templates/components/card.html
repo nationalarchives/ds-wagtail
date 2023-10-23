@@ -1,16 +1,7 @@
 <{{ htmlElement|default:"div" }} class="tna-card {{ classes }}{% if horizontal %} tna-card--horizontal{% endif %}{% if style == 'boxed' %} tna-card--contrast{% endif %}{% if style == 'accent' %} tna-card--accent{% endif %}" data-module="tna-card"{% for attribute, value in attributes.items %} {{ attribute }}="{{ value }}"{% endfor %}>
   <div class="tna-card__inner">
     {% if event %}
-      {% if event_type or access_descriptor %}
-        <ul class="tna-card__tags">
-          {% if event_type %}
-            <li class="tna-card__tag tna-card__tag--event-type">{{ event_type }}</li>
-          {% endif %}
-          {% if access_descriptor %}
-            <li class="tna-card__tag tna-card__tag--access">{{ access_descriptor }}</li>
-          {% endif %}
-        </ul>
-      {% endif %}
+      {% include "components/event_tags.html" %}
     {% endif %}
     {% if supertitle %}
       {% if not singleSentence %}
