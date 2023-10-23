@@ -8,4 +8,14 @@
 
 {% block content %}
     {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
+
+
+    {# Hosts #}
+    <div class="tna-container">
+        <div class="tna-column">
+            {% if page.hosts %}
+                {% include "components/hosts.html" with hosts=page.hosts %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

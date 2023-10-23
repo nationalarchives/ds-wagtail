@@ -1,0 +1,61 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+.hosts {
+    margin-bottom: 3rem;
+
+    &__title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+
+        @include media.on-larger-than-mobile {
+            font-size: 1.875rem;
+        }
+    }
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    &__host {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    &__image {
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        flex-grow: 0;
+        flex-shrink: 0;
+
+        // user icon fallback (font-awesome)
+        &--default {
+            background-color: $color__pastel-pink;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            // actual icon
+            &::before {
+                color: $color__maroon;
+                opacity: 0.3;
+            }
+        }
+    }
+
+    &__name {
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    &__description {
+        font-size: 0.875rem;
+        color: $color__grey-600;
+    }
+}

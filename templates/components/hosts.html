@@ -1,0 +1,25 @@
+{% load wagtailimages_tags %}
+
+<div class="hosts">
+    <h2 class="hosts__title">Your host and speakers</h2>
+
+    <ul class="hosts__list">
+        {% for host in page.hosts.all %}
+            <li class="hosts__host">
+                {% if host.image %}
+                    {% image host.image fill-80x80 class="hosts__image" %}
+                {% else %}
+                    <i class="fa-solid fa-user fa-2xl hosts__image hosts__image--default"></i>
+                {% endif %}
+
+                <div class="hosts__text">
+                    <p class="hosts__name">{{ host.name }}</p>
+
+                    {% if host.description %}
+                        <p class="hosts__description">{{ host.description }}</p>
+                    {% endif %}
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
