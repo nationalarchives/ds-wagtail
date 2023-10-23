@@ -134,8 +134,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
                 "is_online_event": is_online_event,
                 "family_friendly": family_friendly,
             }
-            self.assertEqual(
-                list(self.whats_on_page.filter_form_data(filter_data)), expected_result
+            self.assertQuerySetEqual(
+                self.whats_on_page.filter_form_data(filter_data), expected_result
             )
 
     def test_filtered_event_pages(self):
