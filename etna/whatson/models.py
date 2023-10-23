@@ -276,10 +276,10 @@ class WhatsOnPage(BasePageWithIntro):
     def filter_form_data(self, filter_form_cleaned_data):
         events = self.events
 
-        if filter_form_cleaned_data.get("date"):
-            events = events.filter(start_date__date=filter_form_cleaned_data["date"])
-        if filter_form_cleaned_data.get("event_type"):
-            events = events.filter(event_type=filter_form_cleaned_data["event_type"])
+        if date_filter := filter_form_cleaned_data.get("date"):
+            events = events.filter(start_date__date=date_filter)
+        if event_type_filter := filter_form_cleaned_data.get("event_type"):
+            events = events.filter(event_type=event_type_filter)
         if filter_form_cleaned_data.get("is_online_event"):
             events = events.filter(venue_type=VenueType.ONLINE)
         if filter_form_cleaned_data.get("family_friendly"):
