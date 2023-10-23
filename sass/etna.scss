@@ -73,6 +73,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/quote";
 @import "includes/event-card-listing";
 @import "includes/event-details-banner";
+@import "includes/event-meta";
 @import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
@@ -551,106 +552,5 @@ Modified to match the existing site (for now)
 
   .tna-template--pink-accent & {
     background-color: colour.brand-colour("pastel-pink");
-  }
-}
-
-// event page - new components
-
-.event-meta {
-  $root: &;
-  
-  @include media.on-larger-than-mobile {
-    padding-left: 3rem;
-    border-left: 1px solid colour.brand-colour("light-grey");
-  }
-
-  &--inline {
-    padding-left: 0;
-    border-left: 0;
-    align-self: center;
-    line-height: 1;
-    padding: 1rem 0;
-    display: none;
-
-    @include media.on-larger-than-mobile {
-      display: block;
-    }
-  }
-
-  &__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    #{$root}--inline & {
-      display: inline-flex;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-  }
-
-  &__item {
-    margin-bottom: 0.5rem;
-    padding-bottom: 0.5rem;
-
-    #{$root}--inline & {
-      display: inline-flex;
-      align-items: flex-start;
-      margin: 0;
-      padding: 0;
-
-      @include media.on-medium {
-        align-items: center;
-        flex: 1 0 100%;
-      }
-
-      @include media.on-large {
-        align-items: center;
-        flex: 1 0 auto;
-      }
-    }
-  }
-
-  &__title {
-    @include typography.detail-font-small();
-    display: inline-flex;
-    align-items: center;
-    justify-content: flex-start;
-    gap: 0.25rem;
-    margin-bottom: 1rem;
-  }
-
-  &__icon {
-    color: colour.brand-colour("black");
-    flex: 0 0 auto;
-    margin-right: 0.5rem;
-
-    .tna-template--pink-accent & {
-      color: colour.brand-colour("chestnut");
-    }
-  }
-
-  &__details {
-    color: $color__grey-600;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    .event-details-banner & {
-      @include typography.detail-font-small();
-      text-transform: none;
-      color: $color__black;
-    }
-  }
-}
-
-.event-details-banner {
-  .tna-template--pink-accent & {
-    background-color: colour.brand-colour("pastel-pink");
-  }
-
-  @include media.on-larger-than-mobile {
-    display: block;
   }
 }

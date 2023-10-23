@@ -1,7 +1,8 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
 .event-details-banner {
-  background-color: $color__pastel-pink;
+  background-color: colour.brand-colour("pastel-pink");
 
   &__cta {
     margin: 0; 
