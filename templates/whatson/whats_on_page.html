@@ -24,8 +24,7 @@
             <div class="filters__panel">
               <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
               <p class="filters__help">Format: dd/mm/yyyy</p>
-              {# we need a default value for the date in iOS or it is displayed tiny #}
-              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
+              <input type="date" name="event-date" id="event-date" class="filters__date" >
             </div>
           </fieldset>
 
