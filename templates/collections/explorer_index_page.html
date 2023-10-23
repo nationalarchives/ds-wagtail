@@ -1,9 +1,7 @@
 {% extends 'base_page.html' %}
 
 {% load static wagtailmetadata_tags wagtailimages_tags wagtailcore_tags i18n %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
@@ -31,7 +29,7 @@
             <div class="featured-articles__cta">
                 {% comment %} TODO: update BEM button styles for consistency across site {% endcomment %}
                 <a href="/stories"
-                class="tna-button--dark"
+                class="tna-button"
                 data-link-type="Button"
                 data-component-name="Articles section: {{ page.articles_title }}"
                 data-link="Browse all stories">Browse all stories</a>

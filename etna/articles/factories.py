@@ -33,7 +33,6 @@ class RecordArticlePageFactory(BasePageFactory):
 class FocusedArticlePageFactory(BasePageFactory):
     hero_image = factory.SubFactory(ImageFactory)
     hero_image_caption = "<p>Hero image caption</p>"
-    author = "John Doe"
 
     class Meta:
         model = app_models.FocusedArticlePage

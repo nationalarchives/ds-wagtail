@@ -1,0 +1,118 @@
+.filters {
+    $root: &;
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    flex-direction: column;
+
+    @media only screen and (min-width: #{$screen__md + 1px}) {
+        align-items: flex-start;
+    }
+
+    @media only screen and (min-width: #{$screen__lg + 1px}) {
+        flex-direction: row;
+        gap: 1rem;
+    }
+
+    @media only screen and (min-width: #{$screen__xl + 1px}) {
+        gap: 2rem;
+    }
+
+    &__fieldset {
+        flex-shrink: 0;
+        border: 1px solid $color__black;
+    }
+
+    &__super-title {
+        font-family: $font__open-sans;
+        font-weight: 700;
+        font-size: 1rem;
+        background-color: transparent;
+        padding: 1rem 1rem 0.5rem;
+        margin: 0;
+        box-sizing: border-box;
+        float: left;
+        width: 100%;
+    }
+
+    &__label {
+        font-family: $font__open-sans;
+        font-weight: 700;
+        font-size: 1rem;
+        margin-bottom: 0;
+
+        &--top {
+            display: block;
+        }
+    }
+
+    &__help {
+        margin: 0 0 0.5rem;
+        color: $color__grey-800;
+        font-size: 0.875rem;
+    }
+
+    &__radio-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    &__panel {
+        padding: 1rem;
+        box-sizing: border-box;
+    }
+
+    &__date {
+        min-height: 1.5rem;
+        width: auto;
+        accent-color: $color__black; // otherwise the text is yellow in iOS
+        color: $color__black;
+    }
+
+    &__toggle {
+        flex-shrink: 0;
+    }
+
+    &__toggle-label {
+        display: flex;
+        align-items: center;
+        color: $color--grey-700;
+        font-size: 1rem;
+        justify-content: space-between;
+
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
+            justify-content: flex-start;
+        }
+
+        &::after {
+            content: "";
+            display: inline-block;
+            margin-left: 1rem;
+            width: 54px;
+            height: 30px;
+            background-image: url(/static/images/icons/toggle.svg);
+        }
+    }
+
+    &__toggle-input {
+        @include sr-only;
+
+        &:checked + #{$root}__toggle-label {
+            &::after {
+                background-image: url(/static/images/icons/toggle-on.svg);
+            }
+        }
+
+        &:focus + #{$root}__toggle-label {
+            &::after {
+                outline: 0.313rem solid $color__focus-outline-dark-bg;
+                outline-offset: 0.125rem;
+            }
+        }
+    }
+
+    &__submit {
+        cursor: pointer;
+    }
+}

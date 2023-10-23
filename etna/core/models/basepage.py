@@ -10,6 +10,7 @@ from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.admin.widgets.slug import SlugInput
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
@@ -76,9 +77,9 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
                     help_text=_(
                         "The name of the page as it will appear at the end of the URL e.g. http://nationalarchives.org.uk/[slug]"
                     ),
+                    widget=SlugInput,
                 ),
                 FieldPanel("seo_title"),
-                FieldPanel("show_in_menus"),
                 FieldPanel(
                     "search_description",
                     help_text=_(
@@ -92,7 +93,13 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
                     ),
                 ),
             ],
-            _("Common page configuration"),
+            _("For search engines"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("show_in_menus"),
+            ],
+            _("For site menus"),
         ),
         FieldPanel("teaser_image"),
         FieldPanel("teaser_text"),
