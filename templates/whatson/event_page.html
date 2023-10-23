@@ -13,8 +13,19 @@
     {# Hosts #}
     <div class="tna-container">
         <div class="tna-column">
+
+            <h2>Your host{{ page.hosts.all|pluralize }} and speaker{{ page.speakers.all|pluralize }}</h2>
+
             {% if page.hosts %}
-                {% include "components/hosts.html" with hosts=page.hosts %}
+                {% with plural=page.hosts.all|pluralize %}
+                    {% include "components/people.html" with people=page.hosts title="Host"|add:plural %}
+                {% endwith %}
+            {% endif %}
+
+            {% if page.speakers %}
+                {% with plural=page.speakers.all|pluralize %}
+                    {% include "components/people.html" with people=page.speakers title="Speaker"|add:plural %}
+                {% endwith %}
             {% endif %}
         </div>
     </div>

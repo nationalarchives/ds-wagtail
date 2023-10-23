@@ -1,15 +1,16 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
-.hosts {
+.people {
     margin-bottom: 3rem;
 
     &__title {
-        font-size: 1.5rem;
-        font-weight: 500;
+        font-size: 1.125rem;
+        font-weight: 700;
         margin-bottom: 1.5rem;
+        margin-top: 0;
 
         @include media.on-larger-than-mobile {
-            font-size: 1.875rem;
+            font-size: 1.25rem;
         }
     }
 
@@ -21,7 +22,7 @@
         gap: 1.5rem;
     }
 
-    &__host {
+    &__person {
         display: flex;
         gap: 1.5rem;
     }
