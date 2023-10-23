@@ -290,9 +290,7 @@ class WhatsOnPage(BasePageWithIntro):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        filter_form = EventFilterForm(
-            {**request.GET, "date": request.GET.get("date", timezone.now().date())}
-        )
+        filter_form = EventFilterForm(request.GET)
 
         if filter_form.is_valid():
             self.events = self.filter_form_data(filter_form.cleaned_data)
