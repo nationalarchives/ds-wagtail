@@ -120,8 +120,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
         self.whats_on_page.add_child(instance=self.event_page3)
 
     def test_get_event_pages(self):
-        self.assertEqual(
-            list(self.whats_on_page.events),
+        self.assertQuerySetEqual(
+            self.whats_on_page.events,
             [self.event_page1, self.event_page2, self.event_page3],
         )
 
