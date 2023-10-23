@@ -239,6 +239,7 @@ Modified to match the existing site (for now)
         padding: 0;
         @include colour.fixed;
         background-color: transparent;
+        border: none;
     }
 }
 
