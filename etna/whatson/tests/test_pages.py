@@ -142,5 +142,6 @@ class TestWhatsOnPageEventFiltering(TestCase):
             ({"date": date(2023, 10, 20)}, [self.event_page3]),
         )
 
-        for test in test_cases:
-            self.assert_filtered_event_pages_equal(test[0], test[1])
+        for filter_params, expected in test_cases:
+            with self.subTest(filter_params=filter_params, expected=expected):
+                self.assert_filtered_event_pages_equal(filter_params, expected)
