@@ -5,10 +5,12 @@
 
 .event-meta {
   $root: &;
+  margin-bottom: 2rem;
   
   @include media.on-larger-than-mobile {
     padding-left: 3rem;
     border-left: 1px solid colour.brand-colour("light-grey");
+    margin-bottom: 0;
   }
 
   &--inline {
