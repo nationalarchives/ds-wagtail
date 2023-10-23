@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
@@ -289,7 +290,9 @@ class WhatsOnPage(BasePageWithIntro):
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
 
-        filter_form = EventFilterForm(request.GET)
+        filter_form = EventFilterForm(
+            {**request.GET, "date": request.GET.get("date", timezone.now().date())}
+        )
 
         if filter_form.is_valid():
             self.events = self.filter_form_data(filter_form.cleaned_data)
