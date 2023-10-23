@@ -126,41 +126,21 @@ class TestWhatsOnPageEventFiltering(TestCase):
         )
 
     def assert_filtered_event_pages_equal(
-            self, date, event_type, is_online_event, family_friendly, expected_result
+            self, filter_params, expected_result
         ):
-            filter_data = {
-                "date": date,
-                "event_type": event_type,
-                "is_online_event": is_online_event,
-                "family_friendly": family_friendly,
-            }
             self.assertQuerySetEqual(
-                self.whats_on_page.filter_form_data(filter_data), expected_result
+                self.whats_on_page.filter_form_data(filter_params), expected_result
             )
 
     def test_filtered_event_pages(self):
-        
-
-        test_cases = [
-            [
-                None,
-                None,
-                None,
-                None,
-                [self.event_page1, self.event_page2, self.event_page3],
-            ],
-            [None, None, True, None, [self.event_page1, self.event_page2]],
-            [
-                None,
-                self.talk_event_type,
-                None,
-                None,
-                [self.event_page1, self.event_page2],
-            ],
-            [None, self.tour_event_type, None, None, [self.event_page3]],
-            [None, None, None, True, [self.event_page2]],
-            [date(2023, 10, 20), None, None, None, [self.event_page3]],
-        ]
+        test_cases = (
+            ({}, [self.event_page1, self.event_page2, self.event_page3]),
+            ({"is_online_event": True}, [self.event_page1, self.event_page2]),
+            ({"event_type": self.talk_event_type}, [self.event_page1, self.event_page2]),
+            ({"event_type": self.tour_event_type}, [self.event_page3]),
+            ({"family_friendly": True}, [self.event_page2]),
+            ({"date": date(2023, 10, 20)}, [self.event_page3]),
+        )
 
         for test in test_cases:
-            self.assert_filtered_event_pages_equal(test[0], test[1], test[2], test[3], test[4])
+            self.assert_filtered_event_pages_equal(test[0], test[1])
