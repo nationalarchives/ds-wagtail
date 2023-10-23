@@ -2,29 +2,13 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
 .event-details-banner {
-  background-color: colour.brand-colour("pastel-pink");
-
   &__cta {
-    margin: 0; 
-
-    &--mobile {
-      display: flex;
-    }
-
-    &--desktop {
-      display: none;
-    }
+    margin: 0;
+    display: block;
 
     @include media.on-larger-than-mobile {
+      background-color: colour.brand-colour("pastel-pink");
       margin: 1rem 0;
-
-      &--mobile {
-        display: none;
-      }
-
-      &--desktop {
-        display: flex;
-      }
     }
   }
 }
