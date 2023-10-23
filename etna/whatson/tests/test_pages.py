@@ -17,8 +17,9 @@ from ..models import (
 )
 
 
-class TestEvents(TestCase):
-    def setUp(self):
+class TestWhatsOnPageEventFiltering(TestCase):
+    @classmethod
+    def setUpTestData(self):
         self.root_page = Site.objects.get().root_page
 
         self.whats_on_page = WhatsOnPage(
@@ -124,9 +125,8 @@ class TestEvents(TestCase):
             [self.event_page1, self.event_page2, self.event_page3],
         )
 
-    def test_filtered_event_pages(self):
-        def filter_check(
-            date, event_type, is_online_event, family_friendly, expected_result
+    def assert_filtered_event_pages_equal(
+            self, date, event_type, is_online_event, family_friendly, expected_result
         ):
             filter_data = {
                 "date": date,
@@ -137,6 +137,9 @@ class TestEvents(TestCase):
             self.assertEqual(
                 list(self.whats_on_page.filter_form_data(filter_data)), expected_result
             )
+
+    def test_filtered_event_pages(self):
+        
 
         test_cases = [
             [
@@ -160,4 +163,4 @@ class TestEvents(TestCase):
         ]
 
         for test in test_cases:
-            filter_check(test[0], test[1], test[2], test[3], test[4])
+            self.assert_filtered_event_pages_equal(test[0], test[1], test[2], test[3], test[4])
