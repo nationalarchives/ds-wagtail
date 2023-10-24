@@ -2,14 +2,14 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .event-details-banner {
-  @include colour.light-accent-background;
+    @include colour.light-accent-background;
 
-  &__cta {
-    margin: 2rem 0 0 0;
-    display: block;
+    &__cta {
+        margin: 2rem 0 0 0;
+        display: block;
 
-    @include media.on-larger-than-mobile {
-      margin: 1rem 0;
+        @include media.on-larger-than-mobile {
+            margin: 1rem 0;
+        }
     }
-  }
 }

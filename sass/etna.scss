@@ -236,17 +236,17 @@ Modified to match the existing site (for now)
     }
 
     &--align-center {
-      align-items: center;
+        align-items: center;
     }
 
     &--space-between {
-      justify-content: space-between;
+        justify-content: space-between;
     }
 
     @include media.on-larger-than-mobile {
-      &--reverse-desktop {
-        flex-direction: row-reverse;
-      }
+        &--reverse-desktop {
+            flex-direction: row-reverse;
+        }
     }
 }
 
@@ -544,39 +544,39 @@ Modified to match the existing site (for now)
 // tna-scene-setter modifiers
 
 .tna-scene-setter {
-  &--small {
-    @include typography.relative-font-size(21);
-    font-weight: $font-weight-light;
-  }
+    &--small {
+        @include typography.relative-font-size(21);
+        font-weight: $font-weight-light;
+    }
 }
 
 // tna-useful-info component - 'Good to know' information from event page
 
 .tna-useful-info {
-  @include colour.light-accent-background;
-  color: colour.brand-colour("black");
-  padding: 1.5rem 2rem 2rem 2rem;
+    @include colour.light-accent-background;
+    color: colour.brand-colour("black");
+    padding: 1.5rem 2rem 2rem 2rem;
 }
 
 //
 
 .event-hero {
-  .tna-breadcrumbs {
-      margin-bottom: 1.5rem;
+    .tna-breadcrumbs {
+        margin-bottom: 1.5rem;
 
-      @include media.on-larger-than-mobile {
-          margin-bottom: 3rem;
-          padding-top: 3rem;
-      }
-  }
+        @include media.on-larger-than-mobile {
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+    }
 
-  .tna-breadcrumbs__link {
-      color: $color--white;
-  }
+    .tna-breadcrumbs__link {
+        color: $color--white;
+    }
 
-  .tna-heading {
-      color: $color--white;
-      font-weight: 700;
-      margin-top: 0.5rem;
-  }
+    .tna-heading {
+        color: $color--white;
+        font-weight: 700;
+        margin-top: 0.5rem;
+    }
 }
