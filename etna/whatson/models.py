@@ -291,10 +291,12 @@ class WhatsOnPage(BasePageWithIntro):
         # Check if the request comes from JavaScript
         # 'JS-Request' is a custom header added by the frontend
         # If so, return just the event listing, not the full page
-        if request.headers.get('JS-Request'):
+        if request.headers.get("JS-Request"):
             print(self.get_context(request))
 
-            return render(request, "includes/whats-on-listing.html", self.get_context(request))
+            return render(
+                request, "includes/whats-on-listing.html", self.get_context(request)
+            )
         else:
             # Display whats on page as usual
             return super(WhatsOnPage, self).serve(request)
@@ -646,11 +648,15 @@ class EventFilterForm(forms.Form):
     date = forms.DateField(
         label="Choose a date",
         required=False,
-        widget=forms.DateInput(attrs={"type": "date", "class": "filters__date", "data-js-date": ""}),
+        widget=forms.DateInput(
+            attrs={"type": "date", "class": "filters__date", "data-js-date": ""}
+        ),
     )
 
     event_type = forms.ModelChoiceField(
-        widget=forms.RadioSelect(attrs={"class": "filters__radio", "data-js-event-type": ""}),
+        widget=forms.RadioSelect(
+            attrs={"class": "filters__radio", "data-js-event-type": ""}
+        ),
         queryset=EventType.objects.all(),
         required=False,
         label="What",
@@ -659,11 +665,15 @@ class EventFilterForm(forms.Form):
     is_online_event = forms.BooleanField(
         label="Online",
         required=False,
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-online": ""}),
+        widget=forms.CheckboxInput(
+            attrs={"class": "filters__toggle-input", "data-js-online": ""}
+        ),
     )
 
     family_friendly = forms.BooleanField(
         label="Family friendly",
         required=False,
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-family": ""}),
+        widget=forms.CheckboxInput(
+            attrs={"class": "filters__toggle-input", "data-js-family": ""}
+        ),
     )
