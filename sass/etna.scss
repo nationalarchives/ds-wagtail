@@ -553,13 +553,9 @@ Modified to match the existing site (for now)
 // tna-useful-info component - 'Good to know' information from event page
 
 .tna-useful-info {
-  background-color: colour.brand-colour("cream");
+  @include colour.light-accent-background;
   color: colour.brand-colour("black");
   padding: 1.5rem 2rem 2rem 2rem;
-
-  .tna-template--pink-accent & {
-    background-color: colour.brand-colour("pastel-pink");
-  }
 }
 
 //

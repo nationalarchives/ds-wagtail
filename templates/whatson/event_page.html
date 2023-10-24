@@ -18,7 +18,7 @@
           <ul class="event-meta__list event-meta__list">
             {% if page.start_date %}
               <li class="event-meta__item">
-                {% include "includes/icon.html" with name="calendar" classname="event-meta__icon" %}
+                <i class="fa-regular fa-calendar event-meta__icon"></i>
 
                 <div class="event-meta__details">
                   <p>{{ page.start_date|date:"l j F, H:i" }}</p>
@@ -27,7 +27,7 @@
             {% endif %}
             {% if page.venue_type %}
               <li class="event-meta__item">
-                {% include "includes/icon.html" with name="location" classname="event-meta__icon" %}
+                <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
                 <div class="event-meta__details">
                   <p>{{ page.venue_type }}</p>
@@ -42,7 +42,7 @@
             {% endif %}
             {% if page.registration_info %}
               <li class="event-meta__item">
-                {% include "includes/icon.html" with name="ticket" classname="event-meta__icon" %}
+                <i class="fa-solid fa-ticket event-meta__icon"></i>
 
                 <div class="event-meta__details">
                   {{ page.registration_info|richtext }}
@@ -83,7 +83,8 @@
           {% if page.start_date %}
             <li class="event-meta__item">
               <h3 class="event-meta__title">
-                {% include "includes/icon.html" with name="calendar" classname="event-meta__icon" %}
+                <i class="fa-regular fa-calendar event-meta__icon"></i>
+
                 Dates
               </h3>
 
@@ -97,7 +98,8 @@
           {% if page.venue_type %}
             <li class="event-meta__item">
               <h3 class="event-meta__title">
-                {% include "includes/icon.html" with name="location" classname="event-meta__icon" %}
+                <i class="fa-solid fa-location-dot event-meta__icon"></i>
+
                 Location
               </h3>
 
@@ -106,7 +108,7 @@
 
                 {% if page.venue_address %}
                   <address>
-                    {{ page.venue_address}}
+                    {{ page.venue_address|richtext }}
                   </address>
                 {% endif %}
               </div>
@@ -115,7 +117,8 @@
           {% if page.registration_info %}
             <li class="event-meta__item">
               <h3 class="event-meta__title">
-                {% include "includes/icon.html" with name="ticket" classname="event-meta__icon" %}
+                <i class="fa-solid fa-ticket event-meta__icon"></i>
+
                 Ticketing
               </h3>
 
