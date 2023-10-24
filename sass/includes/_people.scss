@@ -25,7 +25,8 @@
 
         // user icon fallback (font-awesome)
         &--default {
-            background-color: $color__pastel-pink;
+            @include colour.light-accent-background;
+            // background-color: $color__pastel-pink;
             display: flex;
             justify-content: center;
             align-items: center;
