@@ -112,6 +112,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/search/search-landing-buckets";
 @import "includes/search/featured-search";
 @import "includes/search/long-filters";
+@import "includes/section";
 @import "includes/sub-heading";
 @import "includes/cookie-consent";
 @import "includes/maintenance-503";
@@ -501,6 +502,12 @@ Modified to match the existing site (for now)
         .tna-card__body {
             @include typography.relative-font-size(16);
             line-height: 1.5;
+        }
+    }
+
+    &--related {
+        .tna-card__heading-link {
+            @include colour.colour-font("font-dark");
         }
     }
 }
