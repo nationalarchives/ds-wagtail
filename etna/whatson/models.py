@@ -552,7 +552,9 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         """
         Returns the event status based on different conditions.
         """
-        if self.start_date.date() <= (timezone.now().date() + timezone.timedelta(days=5)):
+        if self.start_date.date() <= (
+            timezone.now().date() + timezone.timedelta(days=5)
+        ):
             return "Last chance"
 
     @cached_property
@@ -672,6 +674,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     subpage_types = []
 
     base_form_class = EventPageForm
+
 
 class EventFilterForm(forms.Form):
     date = forms.DateField(

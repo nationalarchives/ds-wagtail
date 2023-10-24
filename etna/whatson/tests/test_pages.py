@@ -121,10 +121,12 @@ class TestWhatsOnPageEventFiltering(TestCase):
                 self.assert_filtered_event_pages_equal(filter_params, expected)
 
     def test_price_range(self):
-        test_cases = ((self.event_page1.price_range, "Free"),
-                      (self.event_page2.price_range, "Free - 15"),
-                      (self.event_page3.price_range, "15 - 30"))
-        
+        test_cases = (
+            (self.event_page1.price_range, "Free"),
+            (self.event_page2.price_range, "Free - 15"),
+            (self.event_page3.price_range, "15 - 30"),
+        )
+
         for test_value, expected in test_cases:
             with self.subTest(test_value=test_value, expected=expected):
                 self.assertEqual(test_value, expected)
