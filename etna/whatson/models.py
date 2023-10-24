@@ -1,5 +1,3 @@
-from datetime import timedelta
-
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -437,18 +435,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         null=True,
         editable=False,
     )
-
-    capacity = models.IntegerField(
-        verbose_name=_("capacity"),
-        default=0,
-        editable=False,
-    )
-
-    tickets_sold = models.IntegerField(
-        verbose_name=_("tickets sold"),
-        default=0,
-        editable=False,
-    )
     # The booking info fields above will be brought in from the API when we have it.
 
     registration_info = RichTextField(
@@ -562,22 +548,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             return f"{self.min_price} - {self.max_price}"
 
     @property
-    def tickets_remaining(self):
-        """
-        Returns the number of remaining tickets for the event.
-        """
-        return self.capacity - self.tickets_sold
-
-    @property
     def event_status(self):
         """
         Returns the event status based on different conditions.
         """
-        if self.tickets_remaining == 0:
-            return "Sold out"
-        if self.tickets_remaining <= (self.capacity * 0.1):
-            return "Low availability"
-        if self.start_date.date() <= (timezone.now().date() + timedelta(days=5)):
+        if self.start_date.date() <= (timezone.now().date() + timezone.timedelta(days=5)):
             return "Last chance"
 
     @cached_property
@@ -618,7 +593,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                             "The venue address is required for in person events."
                         ),
                         "venue_space_name": _(
-                            "The venue space name is required for hybrid events."
+                            "The venue space name is required for in person events."
                         ),
                     }
                 )
