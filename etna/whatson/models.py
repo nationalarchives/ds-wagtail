@@ -1,3 +1,4 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
@@ -255,12 +256,47 @@ class WhatsOnPage(BasePageWithIntro):
     A page for listing events.
     """
 
+    featured_event = models.ForeignKey(
+        "whatson.EventPage",
+        null=True,
+        blank=True,
+        verbose_name=_("featured event"),
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     @cached_property
     def events(self):
         """
         Returns a queryset of events that are children of this page.
         """
         return EventPage.objects.child_of(self).live().public().order_by("start_date")
+
+    def filter_form_data(self, filter_form_cleaned_data):
+        events = self.events
+
+        if date_filter := filter_form_cleaned_data.get("date"):
+            events = events.filter(start_date__date=date_filter)
+        if event_type_filter := filter_form_cleaned_data.get("event_type"):
+            events = events.filter(event_type=event_type_filter)
+        if filter_form_cleaned_data.get("is_online_event"):
+            events = events.filter(venue_type=VenueType.ONLINE)
+        if filter_form_cleaned_data.get("family_friendly"):
+            events = events.filter(event_audience_types__audience_type__slug="families")
+
+        return events
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        filter_form = EventFilterForm(request.GET)
+
+        if filter_form.is_valid():
+            self.events = self.filter_form_data(filter_form.cleaned_data)
+
+        context["filter_form"] = filter_form
+
+        return context
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -277,7 +313,9 @@ class WhatsOnPage(BasePageWithIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithIntro.content_panels
+    content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("featured_event"),
+    ]
 
 
 class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
@@ -589,3 +627,30 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
+
+
+class EventFilterForm(forms.Form):
+    date = forms.DateField(
+        label="Choose a date",
+        required=False,
+        widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
+    )
+
+    event_type = forms.ModelChoiceField(
+        widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
+        queryset=EventType.objects.all(),
+        required=False,
+        label="What",
+    )
+
+    is_online_event = forms.BooleanField(
+        label="Online",
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+    )
+
+    family_friendly = forms.BooleanField(
+        label="Family friendly",
+        required=False,
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+    )
