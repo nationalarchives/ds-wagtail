@@ -45,6 +45,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
             parent=cls.whats_on_page,
             event_type=cls.talk_event_type,
             venue_type="online",
+            min_price=0,
+            max_price=0,
             start_date=timezone.datetime(2023, 10, 17),
             sessions=[
                 EventSession(
@@ -61,6 +63,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
             event_type=cls.talk_event_type,
             event_audience_types=[cls.event_audience_type],
             venue_type="online",
+            min_price=0,
+            max_price=15,
             start_date=timezone.datetime(2023, 10, 17),
             sessions=[
                 EventSession(
@@ -76,6 +80,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
             parent=cls.whats_on_page,
             event_type=cls.tour_event_type,
             venue_type="in_person",
+            min_price=15,
+            max_price=30,
             start_date=timezone.datetime(2023, 10, 20),
             sessions=[
                 EventSession(
@@ -113,3 +119,12 @@ class TestWhatsOnPageEventFiltering(TestCase):
         for filter_params, expected in test_cases:
             with self.subTest(filter_params=filter_params, expected=expected):
                 self.assert_filtered_event_pages_equal(filter_params, expected)
+
+    def test_price_range(self):
+        test_cases = ((self.event_page1.price_range, "Free"),
+                      (self.event_page2.price_range, "Free - 15"),
+                      (self.event_page3.price_range, "15 - 30"))
+        
+        for test_value, expected in test_cases:
+            with self.subTest(test_value=test_value, expected=expected):
+                self.assertEqual(test_value, expected)
