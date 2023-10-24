@@ -26,77 +26,85 @@
             <div class="govuk-accordion__section-header">
                 <h2 class="govuk-accordion__section-heading">
         <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
-          Search within
+          Search within Results:
         </span>
                 </h2>
             </div>
             <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
-                <p class="govuk-body">This is the content for Search within.</p>
-            </div>
-        </div>
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-2">
-          Dates
-        </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-2" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-2">
-                <p class="govuk-body">This is the content for Dates.</p>
-            </div>
-        </div>
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
-          Collections
-        </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
-                <p class="govuk-body">This is the content for Collections.</p>
-            </div>
-        </div>
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
-          Level
-        </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
-                <p class="govuk-body">This is the content for Level.</p>
-            </div>
-        </div>
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
-          Closure status
-        </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-5">
-                <p class="govuk-body">This is the content for Closure status.</p>
-            </div>
-        </div>
-        <div class="govuk-accordion__section">
-            <div class="govuk-accordion__section-header">
-                <h2 class="govuk-accordion__section-heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-6">
-          Record opening date
-        </span>
-                </h2>
-            </div>
-            <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-6">
-                <p class="govuk-body">This is the content for Record opening date.</p>
-            </div>
-        </div>
-    </div>
+                <p class="govuk-body">
+                <div class="search-filters__form-block">
+                    <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label__block">Search within results:</label>
+                    {{ form.filter_keyword }}
+                    {{ form.filter_keyword.errors }}
+                    <input type="submit" value="Search" class="search-filters__submit">
+                </div>
+                </p>
 
-    <!--GDS SCRIPTS-->
+                                </div>
+                            </div>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-2">
+                              Dates
+                            </span>
+                                    </h2>
+                                </div>
+                                <div id="accordion-default-content-2" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-2">
+                                    <p class="govuk-body">This is the content for Dates.</p>
+                                </div>
+                            </div>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
+                              Collections
+                            </span>
+                                    </h2>
+                                </div>
+                                <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
+                                    <p class="govuk-body">This is the content for Collections.</p>
+                                </div>
+                            </div>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+                              Level
+                            </span>
+                                    </h2>
+                                </div>
+                                <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
+                                    <p class="govuk-body">This is the content for Level.</p>
+                                </div>
+                            </div>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
+                              Closure status
+                            </span>
+                                    </h2>
+                                </div>
+                                <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-5">
+                                    <p class="govuk-body">This is the content for Closure status.</p>
+                                </div>
+                            </div>
+                            <div class="govuk-accordion__section">
+                                <div class="govuk-accordion__section-header">
+                                    <h2 class="govuk-accordion__section-heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-6">
+                              Record opening date
+                            </span>
+                                    </h2>
+                                </div>
+                                <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-6">
+                                    <p class="govuk-body">This is the content for Record opening date.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--GDS SCRIPTS-->
     <script src="https://design-system.service.gov.uk/javascripts/govuk-frontend-069e73dfb31aacad687703e346188e8c.js"></script>
     <script src="https://design-system.service.gov.uk/javascripts/example-f43e7879015e9e1d96239b483328e819.js"></script>
     <script src="https://design-system.service.gov.uk/javascripts/vendor/iframeResizer-64449c4486ad602edae18f8c9ef89fed.contentWindow.min.js"></script>
