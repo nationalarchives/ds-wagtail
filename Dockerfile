@@ -3,6 +3,8 @@ FROM ghcr.io/nationalarchives/tna-python-django:latest
 ENV NPM_BUILD_COMMAND=compile
 ENV DJANGO_SETTINGS_MODULE=config.settings.production
 
+HEALTHCHECK CMD curl --fail http://localhost:8080/healthcheck/ || exit 1
+
 # Copy in the project dependency files and config
 COPY --chown=app pyproject.toml poetry.lock ./
 COPY --chown=app package.json package-lock.json .nvmrc webpack.config.js ./

@@ -1,6 +1,6 @@
 {% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
-<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js" lang="en-GB">
+<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js {% block html_class%}{% endblock %}" lang="en-GB">
     <head>
     {% if request.in_preview_panel %}
     <base target="_blank">
@@ -17,10 +17,12 @@
             {% endblock %}
             {% block title_suffix %}
                 {% wagtail_site as current_site %}
-                 - {{ current_site.site_name }}
+                 – {{ current_site.site_name }}
             {% endblock %}
         </title>
-        <meta name="description" content="" />
+        {% if meta_tags %}
+            {% meta_tags %}
+        {% endif %}
      {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
         <meta name="format-detection" content="telephone=no" />
@@ -100,7 +102,7 @@
         {% endif %}
 
         {% block breadcrumb %}
-            {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
+            {% include 'components/breadcrumb.html' %}
         {% endblock %}
 
         {% block main %}
