@@ -16,7 +16,7 @@
     {% if page.featured_article.live %}
     <div class="tna-container">
     <div class="tna-column tna-column--full">
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+        {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
     </div>
     </div>
     {% endif %}
