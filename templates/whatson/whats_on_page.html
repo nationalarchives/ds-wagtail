@@ -11,7 +11,7 @@
 {% block content %}
 
   <div class="full-width-header full-width-header--pink">
-    {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
+    {% include 'components/breadcrumb.html' %}
 
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
@@ -24,8 +24,7 @@
             <div class="filters__panel">
               <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
               <p class="filters__help">Format: dd/mm/yyyy</p>
-              {# we need a default value for the date in iOS or it is displayed tiny #}
-              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
+              <input type="date" name="event-date" id="event-date" class="filters__date" >
             </div>
           </fieldset>
 
@@ -70,7 +69,7 @@
 
   <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
     <div class="tna-column tna-column--full">
-      {% include "../components/featured_card.html" with title="Featured card title" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://source.unsplash.com/1190x600?abstract" imageAlt="featured card image alt" imageWidth="1190" imageHeight="600" date="27 May" cost="From £16" venue_type="Online" event_type="Exhibition" %}
+      {% include "../components/featured_card.html" with title="Featured card title" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://source.unsplash.com/1190x600?abstract" imageAlt="featured card image alt" imageWidth="1190" imageHeight="600" date="27 May" cost="From £16" venue_type="Online" event_type="Exhibition" access_descriptor="British sign language" %}
 
       <hgroup class="event-card-listing__heading-area">
         <h2 class="tna-heading tna-heading--l event-card-listing__heading">All events</h2>
@@ -79,9 +78,9 @@
 
       <ul class="event-card-listing__list">
         {% for event in page.events %}
-          <li class="event-card-listing__item">
+        <li class="event-card-listing__item">
             {% image event.teaser_image fill-720x448 as event_img %}
-            {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="3" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
+            {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" index=forloop.counter0 heading=heading %}
           </li>
         {% endfor %}
       </ul>
