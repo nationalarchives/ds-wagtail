@@ -2,10 +2,33 @@
 
 {% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
 
+{% block html_class %}tna-template--pink-accent{% endblock %} 
+
 {# Breadcrumb is included inside the event_hero component #}
 {% block breadcrumb %}
 {% endblock %}
 
 {% block content %}
     {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
+
+
+    {# Hosts and speakers #}
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+
+            <h2 class="tna-heading tna-heading--l">Your host{{ page.hosts.all|pluralize }} and speaker{{ page.speakers.all|pluralize }}</h2>
+
+            {% if page.hosts %}
+                {% with plural=page.hosts.all|pluralize %}
+                    {% include "components/people.html" with people=page.hosts title="Host"|add:plural %}
+                {% endwith %}
+            {% endif %}
+
+            {% if page.speakers %}
+                {% with plural=page.speakers.all|pluralize %}
+                    {% include "components/people.html" with people=page.speakers title="Speaker"|add:plural %}
+                {% endwith %}
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
