@@ -3,7 +3,7 @@
 
 .event-details-banner {
   &__cta {
-    margin: 0;
+    margin: 2rem 0 0 0;
     display: block;
 
     @include media.on-larger-than-mobile {
