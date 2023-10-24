@@ -646,19 +646,11 @@ class EventFilterForm(forms.Form):
     date = forms.DateField(
         label="Choose a date",
         required=False,
-<<<<<<< HEAD
         widget=forms.DateInput(attrs={"type": "date", "class": "filters__date", "data-js-date": ""}),
     )
 
     event_type = forms.ModelChoiceField(
         widget=forms.RadioSelect(attrs={"class": "filters__radio", "data-js-event-type": ""}),
-=======
-        widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
-    )
-
-    event_type = forms.ModelChoiceField(
-        widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
->>>>>>> origin/develop
         queryset=EventType.objects.all(),
         required=False,
         label="What",
@@ -667,19 +659,11 @@ class EventFilterForm(forms.Form):
     is_online_event = forms.BooleanField(
         label="Online",
         required=False,
-<<<<<<< HEAD
         widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-online": ""}),
-=======
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
->>>>>>> origin/develop
     )
 
     family_friendly = forms.BooleanField(
         label="Family friendly",
         required=False,
-<<<<<<< HEAD
         widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-family": ""}),
-=======
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
->>>>>>> origin/develop
     )
