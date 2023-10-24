@@ -15,161 +15,217 @@
     </form>
 </div>
 
+
+
+
 <div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
     <h2 class="tna-heading search-filters__heading">Refine results</h2>
-
-    <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
-        {% comment %}
-         {% if form.group.value == 'tna' %}
-            <div class="search-filters__form-block">
-                TODO make this a django form element
-                <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
-                <label for="online-only" class='search-filters__label'>Show online records only</label>
-                <input type="submit" value="Update" class="search-filters__submit">
+    <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
+        <div class="govuk-accordion__section">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading">
+        <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+          Writing well for the web
+        </span>
+                </h2>
             </div>
-            {% endif %}
-        {% endcomment %}
-
-        {% if form.filter_keyword %}
-            <div class="search-filters__form-block">
-                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
-                {{ form.filter_keyword }}
-                {{ form.filter_keyword.errors }}
-                <input type="submit" value="Search" class="search-filters__submit">
+            <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
+                <p class="govuk-body">This is the content for Writing well for the web.</p>
             </div>
-        {% endif %}
-
-        <div class="search-filters__form-block">
-            <h3 class="tna-heading sr-only">Edit filters</h3>
-
-            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
-                <div class="search-filters__accordion-section">
-                    <fieldset role="group" aria-describedby="from-date">
-                        <legend>
-                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
-                        </legend>
-
-                        <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
-                        <div>{{ form.covering_date_from.label_tag }}</div>
-
-                        <div>
-
-                            {% if form.covering_date_from.errors %}
-                                <div
-                                    data-tracking-errors
-                                    data-filter="Dates"
-                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                    {{ form.covering_date_from.errors }}
-                                </div>
-                            {% endif %}
-                            {{ form.covering_date_from }}
-
-                        </div>
-
-                        <div>
-
-                            {{ form.covering_date_to.label_tag }}
-                            {% if form.covering_date_to.errors %}
-                                <div
-                                    data-tracking-errors
-                                    data-filter="Dates"
-                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
-                                    {{ form.covering_date_to.errors }}
-                                </div>
-                            {% endif %}
-                            {{ form.covering_date_to }}
-
-                        </div>
-
-                        <input type="submit" value="Update" class="search-filters__submit">
-                    </fieldset>
-                </div>
-            {% endif %}
-
-
-            {% include "search/includes/filter.html" with field=form.collection %} <!--collections filter-->
-
-
-
-            {% include "search/includes/filter.html" with field=form.time_period %}
-
-            {% include "search/includes/filter.html" with field=form.topic %}
-
-            {% include "search/includes/filter.html" with field=form.format %}
-
-            {% if form.group.value != bucketkeys.NONTNA.value %}
-                {% include "search/includes/filter.html" with field=form.level %}
-            {% endif %}
-
-            {% include "search/includes/filter.html" with field=form.closure %}
-
-
-
-            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="search-filters__accordion-section">
-                    <fieldset role="group" aria-describedby="opening-start-date">
-                        <legend>
-                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
-                        </legend>
-
-                        <div class="search-filters__opening-date-section">
-
-                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
-                            {{ form.opening_start_date.label_tag }}
-                            {% if form.opening_start_date.errors %}
-                                <div
-                                    data-tracking-errors
-                                    data-filter="Record opening date"
-                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                    {{ form.opening_start_date.errors }}
-                                </div>
-                            {% endif %}
-                            {{ form.opening_start_date }}
-
-                        </div>
-                        
-
-                        <div class="search-filters__opening-date-section">
-
-                            {{ form.opening_end_date.label_tag }}
-                            {% if form.opening_end_date.errors %}
-                                <div
-                                    data-tracking-errors
-                                    data-filter="Record opening date"
-                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                    {{ form.opening_end_date.errors }}
-                                </div>
-                            {% endif %}
-                            {{ form.opening_end_date }}
-
-                        </div>
-
-                        <input type="submit" value="Update" class="search-filters__submit">
-                    </fieldset>
-                </div>
-
-            {% endif %}
-
-            {% if form.group.value == bucketkeys.NONTNA.value %}
-                {% include "search/includes/filter.html" with field=form.held_by %}
-                {% include "search/includes/filter.html" with field=form.catalogue_source %}
-            {% endif %}
-
-            {% if form.group.value == bucketkeys.CREATOR.value %}
-                {% include "search/includes/filter.html" with field=form.type %}
-                {% include "search/includes/filter.html" with field=form.country %}
-            {% endif %}
-
-            {% if form.group.value == bucketkeys.ARCHIVE.value %}
-                {% include "search/includes/filter.html" with field=form.location %}
-            {% endif %}
         </div>
+        <div class="govuk-accordion__section">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading">
+        <span class="govuk-accordion__section-button" id="accordion-default-heading-2">
+          Writing well for specialists
+        </span>
+                </h2>
+            </div>
+            <div id="accordion-default-content-2" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-2">
+                <p class="govuk-body">This is the content for Writing well for specialists.</p>
+            </div>
+        </div>
+        <div class="govuk-accordion__section">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading">
+        <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
+          Know your audience
+        </span>
+                </h2>
+            </div>
+            <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
+                <p class="govuk-body">This is the content for Know your audience.</p>
+            </div>
+        </div>
+        <div class="govuk-accordion__section">
+            <div class="govuk-accordion__section-header">
+                <h2 class="govuk-accordion__section-heading">
+        <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+          How people read
+        </span>
+                </h2>
+            </div>
+            <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
+                <p class="govuk-body">This is the content for How people read.</p>
+            </div>
+        </div>
+    </div>
 
-        {# render hidden inputs for fields controlled by other forms #}
-        {% render_fields_as_hidden form include='q group sort_by sort_order' %}
+    <script src="https://design-system.service.gov.uk/javascripts/govuk-frontend-069e73dfb31aacad687703e346188e8c.js"></script>
+    <script src="https://design-system.service.gov.uk/javascripts/example-f43e7879015e9e1d96239b483328e819.js"></script>
+    <script src="https://design-system.service.gov.uk/javascripts/vendor/iframeResizer-64449c4486ad602edae18f8c9ef89fed.contentWindow.min.js"></script>
+<!--    <form method="GET" data-id="filters-form"  id="catalogue-filters-form">-->
+<!--        {% comment %}-->
+<!--         {% if form.group.value == 'tna' %}-->
+<!--            <div class="search-filters__form-block">-->
+<!--                TODO make this a django form element-->
+<!--                <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">-->
+<!--                <label for="online-only" class='search-filters__label'>Show online records only</label>-->
+<!--                <input type="submit" value="Update" class="search-filters__submit">-->
+<!--            </div>-->
+<!--            {% endif %}-->
+<!--        {% endcomment %}-->
 
-    </form>
+<!--        {% if form.filter_keyword %}-->
+<!--            <div class="search-filters__form-block">-->
+<!--                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label&#45;&#45;block">Search within results:</label>-->
+<!--                {{ form.filter_keyword }}-->
+<!--                {{ form.filter_keyword.errors }}-->
+<!--                <input type="submit" value="Search" class="search-filters__submit">-->
+<!--            </div>-->
+<!--        {% endif %}-->
+
+<!--        <div class="search-filters__form-block">-->
+<!--            <h3 class="tna-heading sr-only">Edit filters</h3>-->
+
+<!--            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}-->
+<!--                <div class="search-filters__accordion-section">-->
+<!--                    <fieldset role="group" aria-describedby="from-date">-->
+<!--                        <legend>-->
+<!--                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>-->
+<!--                        </legend>-->
+
+<!--                        <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>-->
+<!--                        <div>{{ form.covering_date_from.label_tag }}</div>-->
+
+<!--                        <div>-->
+
+<!--                            {% if form.covering_date_from.errors %}-->
+<!--                                <div-->
+<!--                                    data-tracking-errors-->
+<!--                                    data-filter="Dates"-->
+<!--                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
+<!--                                    {{ form.covering_date_from.errors }}-->
+<!--                                </div>-->
+<!--                            {% endif %}-->
+<!--                            {{ form.covering_date_from }}-->
+
+<!--                        </div>-->
+
+<!--                        <div>-->
+
+<!--                            {{ form.covering_date_to.label_tag }}-->
+<!--                            {% if form.covering_date_to.errors %}-->
+<!--                                <div-->
+<!--                                    data-tracking-errors-->
+<!--                                    data-filter="Dates"-->
+<!--                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">-->
+<!--                                    {{ form.covering_date_to.errors }}-->
+<!--                                </div>-->
+<!--                            {% endif %}-->
+<!--                            {{ form.covering_date_to }}-->
+
+<!--                        </div>-->
+
+<!--                        <input type="submit" value="Update" class="search-filters__submit">-->
+<!--                    </fieldset>-->
+<!--                </div>-->
+<!--            {% endif %}-->
+
+
+<!--            {% include "search/includes/filter.html" with field=form.collection %} &lt;!&ndash;collections filter&ndash;&gt;-->
+
+
+
+<!--            {% include "search/includes/filter.html" with field=form.time_period %}-->
+
+<!--            {% include "search/includes/filter.html" with field=form.topic %}-->
+
+<!--            {% include "search/includes/filter.html" with field=form.format %}-->
+
+<!--            {% if form.group.value != bucketkeys.NONTNA.value %}-->
+<!--                {% include "search/includes/filter.html" with field=form.level %}-->
+<!--            {% endif %}-->
+
+<!--            {% include "search/includes/filter.html" with field=form.closure %}-->
+
+
+
+<!--            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}-->
+<!--                <div class="search-filters__accordion-section">-->
+<!--                    <fieldset role="group" aria-describedby="opening-start-date">-->
+<!--                        <legend>-->
+<!--                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>-->
+<!--                        </legend>-->
+
+<!--                        <div class="search-filters__opening-date-section">-->
+
+<!--                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>-->
+<!--                            {{ form.opening_start_date.label_tag }}-->
+<!--                            {% if form.opening_start_date.errors %}-->
+<!--                                <div-->
+<!--                                    data-tracking-errors-->
+<!--                                    data-filter="Record opening date"-->
+<!--                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
+<!--                                    {{ form.opening_start_date.errors }}-->
+<!--                                </div>-->
+<!--                            {% endif %}-->
+<!--                            {{ form.opening_start_date }}-->
+
+<!--                        </div>-->
+<!--                        -->
+
+<!--                        <div class="search-filters__opening-date-section">-->
+
+<!--                            {{ form.opening_end_date.label_tag }}-->
+<!--                            {% if form.opening_end_date.errors %}-->
+<!--                                <div-->
+<!--                                    data-tracking-errors-->
+<!--                                    data-filter="Record opening date"-->
+<!--                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
+<!--                                    {{ form.opening_end_date.errors }}-->
+<!--                                </div>-->
+<!--                            {% endif %}-->
+<!--                            {{ form.opening_end_date }}-->
+
+<!--                        </div>-->
+
+<!--                        <input type="submit" value="Update" class="search-filters__submit">-->
+<!--                    </fieldset>-->
+<!--                </div>-->
+
+<!--            {% endif %}-->
+
+<!--            {% if form.group.value == bucketkeys.NONTNA.value %}-->
+<!--                {% include "search/includes/filter.html" with field=form.held_by %}-->
+<!--                {% include "search/includes/filter.html" with field=form.catalogue_source %}-->
+<!--            {% endif %}-->
+
+<!--            {% if form.group.value == bucketkeys.CREATOR.value %}-->
+<!--                {% include "search/includes/filter.html" with field=form.type %}-->
+<!--                {% include "search/includes/filter.html" with field=form.country %}-->
+<!--            {% endif %}-->
+
+<!--            {% if form.group.value == bucketkeys.ARCHIVE.value %}-->
+<!--                {% include "search/includes/filter.html" with field=form.location %}-->
+<!--            {% endif %}-->
+<!--        </div>-->
+
+<!--        {# render hidden inputs for fields controlled by other forms #}-->
+<!--        {% render_fields_as_hidden form include='q group sort_by sort_order' %}-->
+
+<!--    </form>-->
 
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
