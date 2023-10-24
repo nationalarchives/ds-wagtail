@@ -65,6 +65,7 @@
 
     &__date {
         min-height: 1.5rem;
+        min-width: 95%;
         width: auto;
         accent-color: $color__black; // otherwise the text is yellow in iOS
         color: $color__black;
