@@ -1,0 +1,27 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.event-tags {
+    display: inline-flex;
+    align-self: flex-start;
+    list-style-type: none;
+    flex-basis: 50%;
+    border: 2px solid colour.brand-colour("pastel-pink");
+    padding: 0;
+    order: 2;
+    margin-bottom: 1rem;
+
+    &__tag {
+        @include typography.relative-font-size(14);
+        @include typography.detail-font;
+        text-transform: uppercase;
+        padding: 0 0.4rem;
+        display: flex;
+        align-items: center;
+
+        &--event-type {
+            @include colour.fixed;
+            background-color: colour.brand-colour("pastel-pink");
+        }
+    }
+}

@@ -4,12 +4,12 @@
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
-{# Breadcrumb is included inside the header area #}
+{# Breadcrumb is included inside the event_hero component #}
 {% block breadcrumb %}
 {% endblock %}
 
 {% block content %}
-  {% comment %} Area for hero component {% endcomment %}
+  {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
 
   <div class="event-details-banner">
     <div class="tna-container tna-container--align-center tna-container--space-between">

@@ -73,7 +73,9 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/quote";
 @import "includes/event-card-listing";
 @import "includes/event-details-banner";
+@import "includes/event-hero";
 @import "includes/event-meta";
+@import "includes/event-tags";
 @import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
@@ -176,9 +178,35 @@ Modified to match the existing site (for now)
     padding-bottom: 0;
 }
 
+.tna-button-group {
+    &--full {
+        justify-content: stretch;
+
+        @include media.on-mobile {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .tna-button {
+            margin: 0;
+
+            flex: 1;
+        }
+    }
+}
+
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
+}
+
+.tna-heading {
+    &--no-link-arrow {
+        &::after {
+            display: none !important;
+        }
+    }
 }
 
 .tna-message {
@@ -342,6 +370,10 @@ Modified to match the existing site (for now)
     }
 }
 
+.tna-container--centred {
+    justify-content: center;
+}
+
 .highlight-gallery {
     color: #fff;
     .tna-heading {
@@ -404,31 +436,6 @@ Modified to match the existing site (for now)
 .tna-card {
     &__heading--has-highlight {
         max-width: calc(100% - 5.125rem);
-    }
-
-    &__tags {
-        display: flex;
-        align-self: flex-start;
-        list-style-type: none;
-        flex-basis: 50%;
-        border: 2px solid colour.brand-colour("pastel-pink");
-        padding: 0;
-        order: 2;
-        margin-bottom: 1rem;
-    }
-
-    &__tag {
-        @include typography.relative-font-size(14);
-        @include typography.detail-font;
-        text-transform: uppercase;
-        padding: 0 0.4rem;
-        display: flex;
-        align-items: center;
-
-        &--event-type {
-            @include colour.fixed;
-            background-color: colour.brand-colour("pastel-pink");
-        }
     }
 
     &__highlight {
@@ -552,5 +559,28 @@ Modified to match the existing site (for now)
 
   .tna-template--pink-accent & {
     background-color: colour.brand-colour("pastel-pink");
+  }
+}
+
+//
+
+.event-hero {
+  .tna-breadcrumbs {
+      margin-bottom: 1.5rem;
+
+      @include media.on-larger-than-mobile {
+          margin-bottom: 3rem;
+          padding-top: 3rem;
+      }
+  }
+
+  .tna-breadcrumbs__link {
+      color: $color--white;
+  }
+
+  .tna-heading {
+      color: $color--white;
+      font-weight: 700;
+      margin-top: 0.5rem;
   }
 }
