@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.shortcuts import render
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
@@ -285,6 +286,18 @@ class WhatsOnPage(BasePageWithIntro):
             events = events.filter(event_audience_types__audience_type__slug="families")
 
         return events
+
+    def serve(self, request):
+        # Check if the request comes from JavaScript
+        # 'JS-Request' is a custom header added by the frontend
+        # If so, return just the event listing, not the full page
+        if request.headers.get('JS-Request'):
+            print(self.get_context(request))
+
+            return render(request, "includes/whats-on-listing.html", self.get_context(request))
+        else:
+            # Display whats on page as usual
+            return super(WhatsOnPage, self).serve(request)
 
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
@@ -633,11 +646,11 @@ class EventFilterForm(forms.Form):
     date = forms.DateField(
         label="Choose a date",
         required=False,
-        widget=forms.DateInput(attrs={"type": "date", "class": "filters__date"}),
+        widget=forms.DateInput(attrs={"type": "date", "class": "filters__date", "data-js-date": ""}),
     )
 
     event_type = forms.ModelChoiceField(
-        widget=forms.RadioSelect(attrs={"class": "filters__radio"}),
+        widget=forms.RadioSelect(attrs={"class": "filters__radio", "data-js-event-type": ""}),
         queryset=EventType.objects.all(),
         required=False,
         label="What",
@@ -646,11 +659,11 @@ class EventFilterForm(forms.Form):
     is_online_event = forms.BooleanField(
         label="Online",
         required=False,
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-online": ""}),
     )
 
     family_friendly = forms.BooleanField(
         label="Family friendly",
         required=False,
-        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input"}),
+        widget=forms.CheckboxInput(attrs={"class": "filters__toggle-input", "data-js-family": ""}),
     )

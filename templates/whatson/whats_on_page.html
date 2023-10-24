@@ -17,7 +17,7 @@
 
     <div class="tna-container">
       <div class="tna-column tna-column--full">
-        <form class="filters" method="get" action="{% pageurl page %}">
+        <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
           <fieldset class="filters__fieldset">
             <legend class="filters__super-title">When</legend>
             <div class="filters__panel">
@@ -49,7 +49,9 @@
             <label for="{{ filter_form.family_friendly.id_for_label }}" class="filters__toggle-label">{{ filter_form.family_friendly.label }}</label>
           </div>
           
-          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
+          <noscript>
+            <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
+          </noscript>
         </form>
       </div>
     </div>
@@ -67,20 +69,14 @@
         <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
       </hgroup>
 
-      <ul class="event-card-listing__list">
-        {% if page.events %}
-          {% for event in page.events %}
-            <li class="event-card-listing__item">
-              {% image event.teaser_image fill-720x448 as event_img %}
-              {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" index=forloop.counter0 heading=heading %}
-            </li>
-          {% endfor %}
-        {% else %}
-          <li class="event-card-listing__item">
-            <p>There are no events to display.</p>
-          </li>
-        {% endif %}
-      </ul>
+      <div data-js-whatson-listing>
+        {% include "includes/whats-on-listing.html" %}
+      </div>
     </div>
   </div>
 {% endblock %}
+
+
+{% block extra_js %}
+    <script src="{% static 'scripts/whats_on.js' %}"></script>
+ {% endblock %}
