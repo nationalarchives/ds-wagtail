@@ -7,7 +7,7 @@
         <!-- TODO: Can't concatinate author and date with description in Django templating -->
         <!--
         <div class="tna-column tna-column--full">
-            <h2 class="tna-heading tna-heading--l">{% trans value.heading %}</h2>
+            <h2 class="tna-heading-l">{% trans value.heading %}</h2>
         </div>
         {% for promoted_item in value.promoted_items %}
             {% with description=promoted_item.description %}
@@ -27,7 +27,7 @@
 
 
         <div class="tna-column tna-column--full">
-            <h2 class="tna-heading tna-heading--l">{% trans value.heading %}</h2>
+            <h2 class="tna-heading-l">{% trans value.heading %}</h2>
             <ul class="card-grid card-grid__trio card-grid--list promoted-pages__cards"
                 data-container-name="promoted-pages"
                 id="analytics-promoted-pages">
@@ -52,7 +52,7 @@
                                     alt="{% if promoted_item.teaser_image.alt_text %}{{ promoted_item.teaser_image.alt_text }}{% endif %}"/>
                             </picture>
                         </a>
-                        <h3 class="tna-heading promoted-pages__title">
+                        <h3 class="tna-heading-m promoted-pages__title">
                             <a data-component-name="Featured card: {% trans value.heading %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" class="promoted-pages__title-link" href="{{ promoted_item.url }}">
                                 {{ promoted_item.title }}
                             </a>

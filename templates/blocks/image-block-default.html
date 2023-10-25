@@ -38,11 +38,11 @@
             {% if value.image.transcription or value.image.translation %}
                 <div class="transcription__text">
                     {% if value.image.transcription %}
-                        <h2 class="tna-heading tna-heading--l">{{ value.image.get_transcription_heading_display }}</h2>
+                        <h2 class="tna-heading-l">{{ value.image.get_transcription_heading_display }}</h2>
                         {{ value.image.transcription|richtext }}
                     {% endif %}
                     {% if value.image.translation %}
-                        <h2 class="tna-heading tna-heading--l">{{ value.image.get_translation_heading_display }}</h2>
+                        <h2 class="tna-heading-l">{{ value.image.get_translation_heading_display }}</h2>
                         {{ value.image.translation|richtext }}
                     {% endif %}
                 </div>

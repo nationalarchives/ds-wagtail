@@ -92,7 +92,13 @@
         {% endif %}
 
         {% block breadcrumb %}
-            {% include 'components/breadcrumb.html' %}
+        <div class="tna-breadcrumb-wrapper">
+            <div class="tna-container">
+                <div class="tna-column">
+                    {% include 'components/breadcrumb.html' %}
+                </div>
+            </div>
+        </div>
         {% endblock %}
 
         {% block main %}

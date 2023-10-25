@@ -3,7 +3,13 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
-    {% include 'components/breadcrumb.html' %}
+    <div class="tna-breadcrumb-wrapper">
+        <div class="tna-container">
+            <div class="tna-column">
+                {% include 'components/breadcrumb.html' %}
+            </div>
+        </div>
+    </div>
     <article>
         <header class="tna-container tna-container--centred tna-section tna-author">
             {% if page.image %}
@@ -15,7 +21,7 @@
             </div>
             {% endif %}
             <div class="tna-column tna-column--flex-1 tna-column--full-tiny tna-column--order-2">
-                <h1 class="tna-heading tna-heading--xl">
+                <h1 class="tna-heading-xl">
                     {{ page.title }}
                 </h1>
                 {% if page.role %}
@@ -26,7 +32,7 @@
         <hr>
         <section class="tna-container tna-container--centred tna-section tna-!--margin-bottom-m">
             <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
-                <h2 class="tna-heading tna-heading--l">About the author</h2>
+                <h2 class="tna-heading-l">About the author</h2>
                 {{ page.summary | richtext }}
             </div>
         </section>

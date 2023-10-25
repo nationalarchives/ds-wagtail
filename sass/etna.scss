@@ -10,6 +10,7 @@ $largest-small-device: 992px;
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
 /*
 
@@ -194,42 +195,27 @@ Modified to match the existing site (for now)
 }
 
 .tna-hero {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
 
-    &__figure {
-        min-height: 480px;
-        min-height: min(35vw, 480px, 25vh);
-
-        @include media.on-mobile {
-            min-height: 0;
+    &__figure{
+        &--no-min-height {
+            min-height: 10vw;
         }
     }
-}
 
-.tna-heading {
-    &--no-link-arrow {
-        &::after {
-            display: none !important;
+    &__information {
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
     }
 }
 
 .tna-message {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
     margin-bottom: 3rem;
-
-    &__icon {
-        flex: 0 0 2.5rem;
-
-        @include media.on-mobile {
-            flex: 0 0 1.5rem;
-        }
-    }
-
-    &__message {
-        flex: 1;
-    }
 }
 
 .tna-skip-link {
@@ -238,60 +224,12 @@ Modified to match the existing site (for now)
 
 .tna-chip {
     &--plain {
-        padding: 0;
-        @include colour.fixed;
-        background-color: transparent;
         border: none;
     }
 }
 
-.tna-footer {
-    &__social {
-        &-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        &-item {
-            margin: 0;
-
-            &-link {
-                min-width: calc(2rem + 4px);
-                padding: 4px;
-
-                display: block;
-
-                text-align: center;
-                line-height: 1;
-
-                border: 0 transparent solid;
-                border-width: 4px 0;
-
-                .fa-solid,
-                .fa-brands {
-                    font-size: 2rem;
-                }
-
-                &:has(.fa-solid),
-                &:has(.fa-brands) {
-                    &:hover {
-                        @include colour.colour-border(
-                            "link",
-                            4px,
-                            solid,
-                            bottom
-                        );
-                    }
-                }
-            }
-        }
-    }
-}
-
 .template-focused-article {
-    .tna-breadcrumbs__wrapper {
+    .tna-breadcrumb-wrapper {
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
@@ -307,6 +245,7 @@ Modified to match the existing site (for now)
     }
 
     .generic-intro {
+        padding-bottom: 4rem;
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -316,6 +255,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
+        @include colour.invert;
         background-color: #343338 !important;
         color: #fff !important;
 
@@ -338,6 +278,22 @@ Modified to match the existing site (for now)
         padding-bottom: 4rem;
     }
 
+    .hero-image__container {
+        margin-top: -2rem;
+
+        .tna-hero {
+            max-width: grid.$largest-container-width;
+            margin: 0 auto;
+            padding: 0 grid.$gutter-width;
+            box-sizing: border-box;
+
+            @include media.on-mobile {
+                padding-right: 0;
+                padding-left: 0;
+            }
+        }
+    }
+
     @include media.on-larger-than-mobile {
         .tna-header__navigation-item-link:hover,
         .tna-header__navigation-item-link:hover:link,
@@ -348,6 +304,13 @@ Modified to match the existing site (for now)
             color: #fff !important;
             background-color: #343338 !important;
         }
+    }
+}
+
+.block-content_section,
+.section-wrapper {
+    .section-separator__heading {
+        padding-top: 2rem;
     }
 }
 
@@ -435,7 +398,7 @@ Modified to match the existing site (for now)
 
     &__highlight {
         @include typography.relative-font-size(14);
-        @include colour.fixed;
+        @include colour.plain;
         z-index: 1;
         border-radius: 50%;
         aspect-ratio: 1 / 1;
@@ -542,7 +505,6 @@ Modified to match the existing site (for now)
     }
 }
 
-//
 .event-hero {
     .tna-breadcrumbs {
         margin-bottom: 1.5rem;
@@ -559,7 +521,11 @@ Modified to match the existing site (for now)
 
     .tna-heading {
         color: $color--white;
-        font-weight: 700;
+        font-weight: 500;
         margin-top: 0.5rem;
     }
+}
+
+.beta-banner {
+    display: none !important;
 }

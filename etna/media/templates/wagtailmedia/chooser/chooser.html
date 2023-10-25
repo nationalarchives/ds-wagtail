@@ -17,7 +17,7 @@
                 {% endif %}
                 {% if popular_tags %}
                     <li class="taglist">
-                        <h3 class="tna-heading tna-heading--l">{% trans 'Popular tags' %}</h3>
+                        <h3 class="tna-heading-l">{% trans 'Popular tags' %}</h3>
                         {% for tag in popular_tags %}
                             <a class="suggested-tag tag" href="{% url 'wagtailmedia:index' %}?tag={{ tag.name|urlencode }}">{{ tag.name }}</a>
                         {% endfor %}
