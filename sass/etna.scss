@@ -257,6 +257,7 @@ Modified to match the existing site (for now)
         padding: 0;
         @include colour.fixed;
         background-color: transparent;
+        border: none;
     }
 }
 
@@ -318,6 +319,14 @@ Modified to match the existing site (for now)
         a,
         &__item--expandable .tna-breadcrumbs__link {
             color: inherit !important;
+        }
+    }
+
+    .generic-intro {
+        h1 {
+            &:last-child {
+                padding-bottom: 2rem;
+            }
         }
     }
 
