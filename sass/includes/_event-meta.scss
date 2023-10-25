@@ -71,17 +71,13 @@
 
     &__icon {
         @include typography.relative-font-size(18);
-        color: colour.brand-colour("black");
+        @include colour.accent-background;
         flex: 0 0 auto;
         margin-right: 0.5rem;
-
-        .tna-template--pink-accent & {
-            color: colour.brand-colour("chestnut");
-        }
     }
 
     &__details {
-        color: $color__grey-600;
+        @include colour.colour-font("font-light");
         list-style: none;
         margin: 0;
         padding: 0;
