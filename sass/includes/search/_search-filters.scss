@@ -120,6 +120,12 @@
         color: #ffffff;
         margin-bottom: 2rem;
     }
+
+    button {
+        border:0;
+        border-bottom:1px solid grey;
+        margin-bottom:10px;
+    }
 }
 
 /*date filters via GDS pattern*/
@@ -153,3 +159,4 @@
 .example-text {
     color: $color__grey-600;
 }
+
