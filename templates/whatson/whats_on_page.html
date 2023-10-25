@@ -56,51 +56,38 @@
   </div>
 
   <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
-        <div class="tna-column tna-column--full">
-            {% if page.featured_event %}
-                {% image page.featured_event.teaser_image fill-1190x600 as featured_img %}
-                {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost="From £16" venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
-            {% endif %}
+    <div class="tna-column tna-column--full">
+        {% if page.featured_event %}
+            {% image page.featured_event.teaser_image fill-1190x600 as featured_img %}
+            {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
+        {% endif %}
 
-            <hgroup class="event-card-listing__heading-area">
-                <h2 class="tna-heading tna-heading--l event-card-listing__heading">All events</h2>
-                <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
-            </hgroup>
+        <hgroup class="event-card-listing__heading-area">
+            <h2 class="tna-heading tna-heading--l event-card-listing__heading">All events</h2>
+            <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
+        </hgroup>
 
-            <h2 class="sr-only">Selected filters</h2>
+        <h2 class="sr-only">Selected filters</h2>
+        <ul class="tna-filters tna-ul tna-ul--plain">
+            <li class="tna-filters__item tna-filters__item--active">
+                <a href="/" class="tna-filters__link" aria-label="Remove {{ label }} from search">
+                    Medieval (974—1485)
 
-            <ul class="tna-filters tna-ul tna-ul--plain">
-                <li class="tna-filters__item tna-filters__item--active">
-                    <a href="/" class="tna-filters__link" aria-label="Remove {{ label }} from search">
-                        Medieval (974—1485)
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </li>
+            <li class="tna-filters__item tna-filters__item--clear-all">
+                <a href="/" class="tna-filters__link tna-filters__link--clear-all">
+                    Clear filters
 
-                        <i class="fa-solid fa-xmark"></i>
-                    </a>
-                </li>
-                <li class="tna-filters__item tna-filters__item--clear-all">
-                    <a href="/" class="tna-filters__link tna-filters__link--clear-all">
-                        Clear filters
+                    <i class="fa-solid fa-rotate-right"></i>
+                </a>
+            </li>
+        </ul>
 
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </a>
-                </li>
-            </ul>
-
-            <ul class="event-card-listing__list">
-                {% if page.events %}
-                    {% for event in page.events %}
-                        <li class="event-card-listing__item">
-                            {% image event.teaser_image fill-720x448 as event_img %}
-                            {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" index=forloop.counter0 heading=heading %}
-                        </li>
-                    {% endfor %}
-                {% else %}
-                    <li class="event-card-listing__item">
-                        <p>There are no events to display.</p>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
+      <div>
+        {% include "includes/whats-on-listing.html" %}
+      </div>
     </div>
 
     <div class="section section--pink">
