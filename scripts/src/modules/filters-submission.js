@@ -1,6 +1,8 @@
 class FiltersSubmission {
     constructor(node) {
         this.node = node;
+        this.submitButton = node.querySelector("[data-js-submit]");
+        this.submitButton.remove();
         this.dateField = this.node.querySelector("[data-js-date]");
 
         this.eventTypeFields = this.node.querySelectorAll(

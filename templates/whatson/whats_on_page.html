@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-
   <div class="full-width-header full-width-header--pink">
     {% include 'components/breadcrumb.html' %}
 
@@ -49,9 +48,7 @@
             <label for="{{ filter_form.family_friendly.id_for_label }}" class="filters__toggle-label">{{ filter_form.family_friendly.label }}</label>
           </div>
           
-          <noscript>
-            <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
-          </noscript>
+          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark" data-js-submit>
         </form>
       </div>
     </div>
@@ -150,6 +147,10 @@
 {% endblock %}
 
 
+
 {% block extra_js %}
+  {% if not FEATURE_DISABLE_JS_WHATS_ON_LISTING %}
     <script src="{% static 'scripts/whats_on.js' %}"></script>
- {% endblock %}
+  {% endif %}
+{% endblock %}
+
