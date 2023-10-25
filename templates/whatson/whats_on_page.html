@@ -58,7 +58,7 @@
     <div class="tna-column tna-column--full">
       {% if page.featured_event %}
         {% image page.featured_event.teaser_image fill-1190x600 as featured_img %}
-        {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost="From £16" venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
+        {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
       {% endif %}
 
       <hgroup class="event-card-listing__heading-area">
