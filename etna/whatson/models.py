@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.shortcuts import render
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
@@ -16,6 +17,8 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+
+from .forms import EventPageForm
 
 
 class VenueType(models.TextChoices):
@@ -343,6 +346,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -351,6 +355,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     event_type = models.ForeignKey(
         EventType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -391,6 +396,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("venue type"),
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
+        blank=True,
     )
 
     venue_website = models.URLField(
@@ -426,8 +432,21 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         editable=False,
     )
 
-    registration_cost = models.IntegerField(
-        verbose_name=_("registration cost"),
+    min_price = models.IntegerField(
+        verbose_name=_("minimum price"),
+        default=0,
+        editable=False,
+    )
+
+    max_price = models.IntegerField(
+        verbose_name=_("maximum price"),
+        default=0,
+        editable=False,
+    )
+
+    eventbrite_id = models.CharField(
+        max_length=255,
+        verbose_name=_("eventbrite ID"),
         null=True,
         editable=False,
     )
@@ -449,6 +468,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     short_title = models.CharField(
         max_length=50,
         verbose_name=_("short title"),
+        blank=True,
         help_text=_(
             "A short title for the event. This will be used in the event listings."
         ),
@@ -519,13 +539,38 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("registration_url", read_only=True),
-                FieldPanel("registration_cost", read_only=True),
+                FieldPanel("min_price", read_only=True),
+                FieldPanel("max_price", read_only=True),
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
             heading=_("Booking information"),
         ),
     ]
+
+    @cached_property
+    def price_range(self):
+        """
+        Returns the price range for the event.
+        """
+        if self.max_price == 0:
+            return "Free"
+        elif self.min_price == self.max_price:
+            return f"{self.min_price}"
+        else:
+            if self.min_price == 0:
+                return f"Free - {self.max_price}"
+            return f"{self.min_price} - {self.max_price}"
+
+    @property
+    def event_status(self):
+        """
+        Returns the event status based on different conditions.
+        """
+        if self.start_date.date() <= (
+            timezone.now().date() + timezone.timedelta(days=5)
+        ):
+            return "Last chance"
 
     @cached_property
     def primary_access_type(self):
@@ -565,7 +610,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                             "The venue address is required for in person events."
                         ),
                         "venue_space_name": _(
-                            "The venue space name is required for hybrid events."
+                            "The venue space name is required for in person events."
                         ),
                     }
                 )
@@ -642,6 +687,8 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
+
+    base_form_class = EventPageForm
 
 
 class EventFilterForm(forms.Form):
