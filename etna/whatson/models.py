@@ -288,8 +288,11 @@ class WhatsOnPage(BasePageWithIntro):
         """
         Returns a queryset of events that are children of this page.
         """
-        # .exclude and check page id matches featured_event.id
-        return EventPage.objects.child_of(self).live().public().order_by("start_date").exclude(id=self.featured_event.id)
+
+        if self.featured_event:
+            return EventPage.objects.child_of(self).live().public().order_by("start_date").exclude(id=self.featured_event.id)
+        else:
+            return EventPage.objects.child_of(self).live().public().order_by("start_date")
 
     def filter_form_data(self, filter_form_cleaned_data):
         events = self.events
@@ -351,7 +354,8 @@ class WhatsOnPage(BasePageWithIntro):
             self.events = self.filter_form_data(filter_form.cleaned_data)
 
         context["filter_form"] = filter_form
-        context["show_fetured_event"] = self.show_featured_event(filter_form.cleaned_data, self.featured_event)
+        if self.featured_event:
+            context["show_fetured_event"] = self.show_featured_event(filter_form.cleaned_data, self.featured_event)
 
         return context
 
