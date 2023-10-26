@@ -1,0 +1,15 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.event-details-banner {
+    @include colour.light-accent-background;
+
+    &__cta {
+        margin: 2rem 0 0 0;
+        display: block;
+
+        @include media.on-larger-than-mobile {
+            margin: 1rem 0;
+        }
+    }
+}
