@@ -100,7 +100,7 @@ class TestWhatsOnPageEventFiltering(TestCase):
 
     def assert_filtered_event_pages_equal(self, filter_params, expected_result):
         self.assertQuerySetEqual(
-            self.whats_on_page.filter_form_data(filter_params), expected_result
+            self.whats_on_page.filter_events(filter_params), expected_result
         )
 
     def test_filtered_event_pages(self):
