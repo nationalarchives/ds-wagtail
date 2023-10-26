@@ -443,6 +443,12 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         editable=False,
     )
 
+    """
+    We will use this field to hold the event ID from Eventbrite,
+    or if it is the parent page of an Event Series, it will hold
+    the "series_id" from Eventbrite. For editor created events,
+    it will be blank.
+    """
     eventbrite_id = models.CharField(
         max_length=255,
         verbose_name=_("eventbrite ID"),
