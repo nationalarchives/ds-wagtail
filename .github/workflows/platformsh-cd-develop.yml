@@ -5,6 +5,7 @@ on:
     branches:
       # - main
       - develop
+      - feature/frontend-0-1-22 # TEMP
     paths:
       # Host config
       - '.plaform/**'
