@@ -288,19 +288,7 @@ class WhatsOnPage(BasePageWithIntro):
         """
         Returns a queryset of events that are children of this page.
         """
-
-        if self.featured_event:
-            return (
-                EventPage.objects.child_of(self)
-                .live()
-                .public()
-                .order_by("start_date")
-                .exclude(id=self.featured_event.id)
-            )
-        else:
-            return (
-                EventPage.objects.child_of(self).live().public().order_by("start_date")
-            )
+        return EventPage.objects.child_of(self).live().public().order_by("start_date")
 
     def filter_form_data(self, filter_form_cleaned_data):
         events = self.events
@@ -317,29 +305,13 @@ class WhatsOnPage(BasePageWithIntro):
         return events
 
     # we need a separate query to check if the featured event is filtered out or not
-    def show_featured_event(self, filter_form_cleaned_data, featured_event):
-        show_featured_event = True
-
-        if date_filter := filter_form_cleaned_data.get("date"):
-            if featured_event.start_date.date() != date_filter:
-                show_featured_event = False
-                return show_featured_event
-        if event_type_filter := filter_form_cleaned_data.get("event_type"):
-            if featured_event.event_type != event_type_filter:
-                show_featured_event = False
-                return show_featured_event
-        if filter_form_cleaned_data.get("is_online_event"):
-            if featured_event.venue_type != VenueType.ONLINE:
-                show_featured_event = False
-                return show_featured_event
-        if filter_form_cleaned_data.get("family_friendly"):
-            for audience in featured_event.event_audience_types.all():
-                if audience.audience_type.slug == "families":
-                    show_featured_event = True
-                    break
-                else:
-                    show_featured_event = False
-        return show_featured_event
+    def should_show_featured_event(self, filtered_events, featured_event):
+        try:
+            # checks if the featured event is part of the filtered events queryset
+            filtered_events.filter(id=self.featured_event_id).get()
+            return True
+        except EventPage.DoesNotExist:
+            return False
 
     def serve(self, request):
         # Check if the request comes from JavaScript
@@ -359,12 +331,17 @@ class WhatsOnPage(BasePageWithIntro):
         filter_form = EventFilterForm(request.GET)
 
         if filter_form.is_valid():
-            self.events = self.filter_form_data(filter_form.cleaned_data)
-
+            filtered_events = self.filter_form_data(filter_form.cleaned_data)
+            if self.featured_event:
+                context["events"] = filtered_events.exclude(id=self.featured_event_id)
+            else:
+                context["events"] = filtered_events
+        else:
+            context["events"] = self.events
         context["filter_form"] = filter_form
         if self.featured_event:
-            context["show_fetured_event"] = self.show_featured_event(
-                filter_form.cleaned_data, self.featured_event
+            context["show_fetured_event"] = self.should_show_featured_event(
+                filtered_events, self.featured_event
             )
 
         return context
