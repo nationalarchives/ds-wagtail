@@ -288,7 +288,8 @@ class WhatsOnPage(BasePageWithIntro):
         """
         Returns a queryset of events that are children of this page.
         """
-        return EventPage.objects.child_of(self).live().public().order_by("start_date")
+        # .exclude and check page id matches featured_event.id
+        return EventPage.objects.child_of(self).live().public().order_by("start_date").exclude(id=self.featured_event.id)
 
     def filter_form_data(self, filter_form_cleaned_data):
         events = self.events
@@ -303,6 +304,31 @@ class WhatsOnPage(BasePageWithIntro):
             events = events.filter(event_audience_types__audience_type__slug="families")
 
         return events
+
+    # we need a separate query to check if the featured event is filtered out or not
+    def show_featured_event(self, filter_form_cleaned_data, featured_event):
+        show_featured_event = True
+
+        if date_filter := filter_form_cleaned_data.get("date"):
+            if featured_event.start_date.date() != date_filter:
+                show_featured_event = False
+                return show_featured_event
+        if event_type_filter := filter_form_cleaned_data.get("event_type"):
+            if featured_event.event_type != event_type_filter:
+                show_featured_event = False
+                return show_featured_event
+        if filter_form_cleaned_data.get("is_online_event"):
+            if featured_event.venue_type != VenueType.ONLINE:
+                show_featured_event = False
+                return show_featured_event
+        if filter_form_cleaned_data.get("family_friendly"):
+            for audience in featured_event.event_audience_types.all():
+                if audience.audience_type.slug == "families":
+                    show_featured_event = True
+                    break
+                else:
+                    show_featured_event = False
+        return show_featured_event
 
     def serve(self, request):
         # Check if the request comes from JavaScript
@@ -325,6 +351,7 @@ class WhatsOnPage(BasePageWithIntro):
             self.events = self.filter_form_data(filter_form.cleaned_data)
 
         context["filter_form"] = filter_form
+        context["show_fetured_event"] = self.show_featured_event(filter_form.cleaned_data, self.featured_event)
 
         return context
 
