@@ -1,12 +1,19 @@
+import urllib
+
 from datetime import date
 
-from django.test import TestCase
+from django.test import RequestFactory, TestCase
 from django.utils import timezone
 
 from etna.home.factories import HomePageFactory
 
 from ..factories import EventPageFactory, WhatsOnPageFactory
-from ..models import AudienceType, EventAudienceType, EventSession, EventType
+from ..models import (
+    AudienceType,
+    EventAudienceType,
+    EventSession,
+    EventType,
+)
 
 
 class TestWhatsOnPageEventFiltering(TestCase):
@@ -130,3 +137,25 @@ class TestWhatsOnPageEventFiltering(TestCase):
         for test_value, expected in test_cases:
             with self.subTest(test_value=test_value, expected=expected):
                 self.assertEqual(test_value, expected)
+
+    def test_remove_filter_urls(self):
+        """
+        The URL we generate to remove a filter from the listing should not include that field
+        """
+        query_dict = {
+            "date": "2023-10-03",
+            "event_type": self.talk_event_type.id,
+            "is_online_event": "on",
+            "family_friendly": "on",
+        }
+        query_string = urllib.parse.urlencode(query_dict)
+        request_url = f"/?{query_string}"
+        request = RequestFactory().get(request_url)
+
+        for field_name in query_dict.keys():
+            with self.subTest(field_name=field_name):
+                url_parts = urllib.parse.urlparse(
+                    self.whats_on_page.build_unset_filter_url(request, field_name)
+                )
+                updated_query_dict = urllib.parse.parse_qs(url_parts.query)
+                self.assertNotIn(field_name, updated_query_dict)
