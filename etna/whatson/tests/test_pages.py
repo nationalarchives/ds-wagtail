@@ -8,12 +8,7 @@ from django.utils import timezone
 from etna.home.factories import HomePageFactory
 
 from ..factories import EventPageFactory, WhatsOnPageFactory
-from ..models import (
-    AudienceType,
-    EventAudienceType,
-    EventSession,
-    EventType,
-)
+from ..models import AudienceType, EventAudienceType, EventSession, EventType
 
 
 class TestWhatsOnPageEventFiltering(TestCase):
