@@ -9,7 +9,6 @@
 {% endblock %}
 
 {% block content %}
-
   <div class="full-width-header full-width-header--pink">
     {% include 'components/breadcrumb.html' %}
 
@@ -17,7 +16,7 @@
 
     <div class="tna-container">
       <div class="tna-column tna-column--full">
-        <form class="filters" method="get" action="{% pageurl page %}">
+        <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
           <fieldset class="filters__fieldset">
             <legend class="filters__super-title">When</legend>
             <div class="filters__panel">
@@ -49,7 +48,7 @@
             <label for="{{ filter_form.family_friendly.id_for_label }}" class="filters__toggle-label">{{ filter_form.family_friendly.label }}</label>
           </div>
           
-          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
+          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark" data-js-submit>
         </form>
       </div>
     </div>
@@ -67,7 +66,7 @@
         <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
       </hgroup>
 
-      <div>
+      <div data-js-whatson-listing>
         {% include "includes/whats-on-listing.html" %}
       </div>
     </div>
@@ -146,3 +145,12 @@
     </div>
   </div>
 {% endblock %}
+
+
+
+{% block extra_js %}
+  {% if not FEATURE_DISABLE_JS_WHATS_ON_LISTING %}
+    <script src="{% static 'scripts/whats_on.js' %}"></script>
+  {% endif %}
+{% endblock %}
+
