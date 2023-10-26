@@ -305,7 +305,7 @@ class WhatsOnPage(BasePageWithIntro):
         return events
 
     # we need a separate query to check if the featured event is filtered out or not
-    def should_show_featured_event(self, filtered_events, featured_event):
+    def should_show_featured_event(self, filtered_events):
         try:
             # checks if the featured event is part of the filtered events queryset
             filtered_events.filter(id=self.featured_event_id).get()
@@ -337,11 +337,12 @@ class WhatsOnPage(BasePageWithIntro):
             else:
                 context["events"] = filtered_events
         else:
+            filtered_events = self.events
             context["events"] = self.events
         context["filter_form"] = filter_form
         if self.featured_event:
             context["show_fetured_event"] = self.should_show_featured_event(
-                filtered_events, self.featured_event
+                filtered_events
             )
 
         return context
