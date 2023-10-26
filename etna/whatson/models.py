@@ -295,8 +295,6 @@ class WhatsOnPage(BasePageWithIntro):
         # 'JS-Request' is a custom header added by the frontend
         # If so, return just the event listing, not the full page
         if request.headers.get("JS-Request"):
-            print(self.get_context(request))
-
             return render(
                 request, "includes/whats-on-listing.html", self.get_context(request)
             )
