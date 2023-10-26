@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+  {# Header area and filters #}
   <div class="full-width-header full-width-header--pink">
     {% include 'components/breadcrumb.html' %}
 
@@ -54,6 +55,7 @@
     </div>
   </div>
 
+  {# Featured event #}
   <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
     <div class="tna-column tna-column--full">
       {% if page.featured_event %}
@@ -66,12 +68,30 @@
         <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
       </hgroup>
 
+      <h2 class="sr-only">Selected filters</h2>
+      <ul class="tna-filters tna-ul tna-ul--plain">
+        <li class="tna-filters__item tna-filters__item--active">
+          <a href="/" class="tna-filters__link" aria-label="Remove {{ label }} from search">
+            Medieval (974—1485)
+            <i class="fa-solid fa-xmark"></i>
+          </a>
+        </li>
+        <li class="tna-filters__item tna-filters__item--clear-all">
+          <a href="/" class="tna-filters__link tna-filters__link--clear-all">
+            Clear filters
+            <i class="fa-solid fa-rotate-right"></i>
+          </a>
+        </li>
+      </ul>
+
+      {# Listing #}
       <div data-js-whatson-listing>
         {% include "includes/whats-on-listing.html" %}
       </div>
     </div>
   </div>
 
+  {# Related content #}
   <div class="section section--pink">
     <div class="tna-container">
         <div class="tna-column tna-column--full tna-!--margin-top-l">
