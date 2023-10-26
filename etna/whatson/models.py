@@ -234,6 +234,20 @@ class EventSession(models.Model):
         related_name="sessions",
     )
 
+    """
+    Session ID will be used to hold the Eventbrite "event ID"
+    in Event Series pages, for each occurrence of the event.
+    For single events, it will be blank. We will also leave
+    it blank for editor created events, as we won't have an
+    Eventbrite event ID for these.
+    """
+    session_id = models.CharField(
+        verbose_name=_("session ID"),
+        null=True,
+        blank=True,
+        editable=False,
+    )
+
     start = models.DateTimeField(
         verbose_name=_("starts at"),
     )
