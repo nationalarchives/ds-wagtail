@@ -199,8 +199,8 @@ Modified to match the existing site (for now)
     margin-bottom: 2rem;
 
     &__figure {
-        &--no-min-height {
-            min-height: 10vw;
+        &--smaller {
+            min-height: 20vw;
         }
     }
 
