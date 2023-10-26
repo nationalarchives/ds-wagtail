@@ -290,9 +290,17 @@ class WhatsOnPage(BasePageWithIntro):
         """
 
         if self.featured_event:
-            return EventPage.objects.child_of(self).live().public().order_by("start_date").exclude(id=self.featured_event.id)
+            return (
+                EventPage.objects.child_of(self)
+                .live()
+                .public()
+                .order_by("start_date")
+                .exclude(id=self.featured_event.id)
+            )
         else:
-            return EventPage.objects.child_of(self).live().public().order_by("start_date")
+            return (
+                EventPage.objects.child_of(self).live().public().order_by("start_date")
+            )
 
     def filter_form_data(self, filter_form_cleaned_data):
         events = self.events
@@ -355,7 +363,9 @@ class WhatsOnPage(BasePageWithIntro):
 
         context["filter_form"] = filter_form
         if self.featured_event:
-            context["show_fetured_event"] = self.show_featured_event(filter_form.cleaned_data, self.featured_event)
+            context["show_fetured_event"] = self.show_featured_event(
+                filter_form.cleaned_data, self.featured_event
+            )
 
         return context
 
