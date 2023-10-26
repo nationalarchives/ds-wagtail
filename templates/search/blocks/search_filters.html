@@ -111,6 +111,7 @@
                                     </h2>
                                 </div>
                                 <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
+                                    {% include "search/includes/filter.html" with field=form.collection %}
                                     <p class="govuk-body">This is the content for Collections.</p>
                                 </div>
                             </div>
@@ -123,7 +124,9 @@
                                     </h2>
                                 </div>
                                 <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
-                                    <p class="govuk-body">This is the content for Level.</p>
+                                    {% if form.group.value != bucketkeys.NONTNA.value %}
+                                    {% include "search/includes/filter.html" with field=form.level %}
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="govuk-accordion__section">
@@ -135,7 +138,8 @@
                                     </h2>
                                 </div>
                                 <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-5">
-                                    <p class="govuk-body">This is the content for Closure status.</p>
+                                    {% include "search/includes/filter.html" with field=form.closure %}
+
                                 </div>
                             </div>
                             <div class="govuk-accordion__section">
@@ -147,7 +151,23 @@
                                     </h2>
                                 </div>
                                 <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-6">
-                                    <p class="govuk-body">This is the content for Record opening date.</p>
+                                    <div class="search-filters__opening-date-section">
+
+                                        <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
+                                        {{ form.opening_start_date.label_tag }}
+                                        {% if form.opening_start_date.errors %}
+                                        <div
+                                                data-tracking-errors
+                                                data-filter="Record opening date"
+                                                data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                            {{ form.opening_start_date.errors }}
+                                        </div>
+                                        {% endif %}
+                                        {{ form.opening_start_date }}
+
+                                    </div>
+
+                                    
                                 </div>
                             </div>
                         </div>
