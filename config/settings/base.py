@@ -17,6 +17,8 @@ import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
 
+from distutils.sysconfig import get_python_lib
+
 from ..versioning import get_git_sha
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -108,6 +110,7 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
+            os.path.join(get_python_lib(), "nationalarchives-frontend-django/templates"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
