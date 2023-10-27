@@ -1,7 +1,7 @@
 {% load wagtailimages_tags wagtailcore_tags i18n %}
 
     {% if title %}
-        <h2 class="tna-heading extra-padding">{% translate title %}</h2>
+        <h2 class="tna-heading-l">{% translate title %}</h2>
     {% endif %}
 
 
@@ -13,7 +13,7 @@
 
 
 
-    <div class="featured-article u-margin-m">
+    <div class="featured-article tna-!--margin-vertical-l">
         {% if page.teaser_image %}
             <a href="{% pageurl page %}"
             class="featured-article__image-link"
@@ -35,7 +35,7 @@
         {% endif %}
 
         <div class="featured-article__description">
-            <h2 class="tna-heading featured-article__heading">
+            <h2 class="tna-heading-l featured-article__heading">
                 {% if page.has_custom_type_label %}
                     <small>{{ page.type_label }}</small>
                 {% endif %}
@@ -48,6 +48,8 @@
             <p id="article-desc{{ page.id }}" class="aria-desc">Read about {{ page.title }}</p>
 
             <p>{{ page.teaser_text }}</p>
-            <a class="tna-button tna-button--solid-hover" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
+            <div class="tna-button-group">
+                <a class="tna-button tna-button--solid-hover" href="{% pageurl page %}" data-component-name="Featured Article: {{ page.title }}" data-link-type="Button" data-link="Read" {% if page.is_newly_published %}data-label="New"{% endif %}>Read about {{ page.title }}</a>
+            </div>
         </div>
     </div>

@@ -2,15 +2,13 @@
 <div class="explore-intro">
     <div class="tna-container">
         <div class="tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
-            <!-- <p class="explore-intro__title explore-intro__title--meta u-margin-s">Record revealed</p>
-            <h1 class="tna-heading explore-intro__title u-margin-s">{{ page.title }}</h1> -->
-            <hgroup class="tna-hgroup tna-hgroup--xl tna-!--margin-top-l">
+            <hgroup class="tna-hgroup-xl tna-!--margin-top-l">
                 <p class="tna-hgroup__supertitle">Record revealed</p>
                 <h1 class="tna-hgroup__title">
                     {{ page.title }}
                 </h1>
             </hgroup>
-            <div class="explore-intro__paragraph{% if display_content_warning %} explore-intro__paragraph--short{% endif %} u-margin-l">{{ page.intro|richtext }}</div>
+            <div class="explore-intro__paragraph{% if display_content_warning %} explore-intro__paragraph--short{% endif %} tna-!--margin-vertical-m">{{ page.intro|richtext }}</div>
             {% if display_content_warning %}    
                 {% include "includes/content-warning.html" with custom_warning_text=custom_warning_text %} 
             {% endif %}
