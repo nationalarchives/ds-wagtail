@@ -31,7 +31,7 @@
     "jest-environment-jsdom": "~29.7",
     "prettier": "~3.0",
     "sass": "~1.69",
-    "webpack": "~5.88",
+    "webpack": "~5.89",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
