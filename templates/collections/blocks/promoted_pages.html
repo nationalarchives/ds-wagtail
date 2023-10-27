@@ -1,8 +1,9 @@
 {% load wagtailimages_tags %}
 
-<h2 class="tna-heading-l">{{ value.heading }}</h2>
-<p>{{ value.sub_heading }}</p>
-<div class="row">
+<div class="tna-column tna-column--full">
+    <h2 class="tna-heading-l">{{ value.heading }}</h2>
+    <p>{{ value.sub_heading }}</p>
+</div>
     <ul class="card-group--list-style-none" data-container-name="promoted-pages" id="analytics-promoted-pages">
         {% for promoted_item in value.promoted_items %}
 
@@ -21,7 +22,7 @@
         To discuss an approach to allow for reusability going forward.
         {% endcomment %}
 
-        <li class="col-sm-12 col-md-6 col-lg-4 mb-3">
+        <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--full-small tna-column--full-tiny tna-!--margin-top-m">
             <div class="card-group-secondary-nav">
                 <a href="{{ promoted_item.url }}" 
                 class="card-group-secondary-nav__image-link" 
@@ -55,4 +56,3 @@
         </li>
         {% endfor %}
     </ul>
-</div>
