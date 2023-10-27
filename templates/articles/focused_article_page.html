@@ -32,14 +32,14 @@
             {% if page.intro and page.hero_image %}
                 <div class="generic-intro__paragraph">
                     <div class="tna-container">
-                        <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
+                        <div class="tna-column tna-column--width-3-4 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny tna-large-paragraph">
                             {{ page.intro|richtext }}
                         </div>
                     </div>
                 </div>
             {% endif %}
         </header>
-        <div class="article-container">
+        <div class="article-container tna-section">
             <div class="tna-container">
                 <div class="tna-column tna-column--width-3-4 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny">
                     <div class="article-container__main">
@@ -77,12 +77,12 @@
             <div class="tna-container">
                 {% if page.similar_items %}
                     <div class="tna-column tna-column--full">
-                    <h2 class="tna-heading related-content__heading">You may also be interested in</h2>
+                    <h2 class="tna-heading-l related-content__heading">You may also be interested in</h2>
 
                 </div>
                     <ul class="card-group--list-style-none">
                         {% for item in page.similar_items %}
-                            {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True %}
+                            {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                         {% endfor %}
                     </ul>
                 {% endif %}
@@ -95,12 +95,12 @@
 
                 {% if page.latest_items %}
                 <div class="tna-column tna-column--full">
-                    <h2 class="tna-heading related-content__heading">More stories</h2>
+                    <h2 class="tna-heading-l related-content__heading">More stories</h2>
 
                 </div>
                     <ul class="card-group--list-style-none">
                         {% for item in page.latest_items %}
-                            {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
+                            {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                         {% endfor %}
                     </ul>
                 {% endif %}
