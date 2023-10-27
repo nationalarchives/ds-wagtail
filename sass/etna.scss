@@ -211,6 +211,10 @@ Modified to match the existing site (for now)
             }
         }
     }
+
+    img#{&}__image {
+        object-fit: cover;
+    }
 }
 
 .tna-message {

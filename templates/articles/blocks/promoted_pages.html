@@ -1,5 +1,5 @@
 {% load wagtailcore_tags wagtailimages_tags i18n %}
-<section class="promoted-pages body-container body-container--short{% if bg %} promoted-pages--bg{% endif %}">
+<section class="promoted-pages body-container body-container--short{% if bg %} promoted-pages--bg{% endif %} tna-!--margin-vertical-l tna-!--padding-vertical-m">
     <div class="tna-container">
 
 
@@ -32,7 +32,7 @@
                 data-container-name="promoted-pages"
                 id="analytics-promoted-pages">
                 {% for promoted_item in value.promoted_items %}
-                    <li class="promoted-pages__card">
+                    <li class="promoted-pages__card tna-!--margin-top-m">
                         <a data-component-name="Featured card: {% trans value.heading %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ promoted_item.title }}" href="{{ promoted_item.url }}"
                         tabindex="-1">
                             <picture>
