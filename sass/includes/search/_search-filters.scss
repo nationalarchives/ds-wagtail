@@ -167,6 +167,9 @@
 
 //gov uk overrides
 
-.govuk-accordion__section-toggle-text {
+.govuk-accordion__section-toggle-text,
+.govuk-accordion__section-heading-divider{
    display:none;
 }
+
+ 
