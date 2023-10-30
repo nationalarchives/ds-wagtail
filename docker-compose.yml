@@ -48,16 +48,6 @@ services:
       - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
 
-  cli:
-    container_name: cli
-    platform: linux/amd64
-    build: platformsh-cli
-    volumes:
-      - media:/app/media
-      - ./database_dumps:/app/database_dumps
-    env_file:
-      - .env
-
   docs:
     container_name: docs
     image: squidfunk/mkdocs-material
