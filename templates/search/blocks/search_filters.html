@@ -21,20 +21,20 @@
 
 <div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-    <h2 class="tna-heading search-filters__heading">Refine results</h2>
+    <h2 class="tna-heading search-filters__heading">Refine results:</h2>
     <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
         <div class="govuk-accordion__section">
             <div class="govuk-accordion__section-header">
                 <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
         <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
-          Search within Results
+          Search within results
         </span>
                 </h2>
             </div>
             <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
                 <p class="govuk-body">
                 <div class="search-filters__form-block">
-                    <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label__block">Search within results:</label>
+                    <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label__block example-text">Search within results:</label>
                     {{ form.filter_keyword }}
                     {{ form.filter_keyword.errors }}
                     <input type="submit" value="Search" class="search-filters__submit">
