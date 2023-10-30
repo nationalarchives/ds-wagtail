@@ -165,3 +165,8 @@
     color: $color__grey-600;
 }
 
+//gov uk overrides
+
+.govuk-accordion__section-toggle-text {
+   display:none;
+}
