@@ -11,16 +11,12 @@
         {% include "includes/related-articles-highlight-cards.html" with featured_article=page.featured_record_article articles=page.related_record_articles title="Records revealed" %}
     {% endif %}
     {% if page.body %}
-        <div class="container"
+        <div class="tna-container"
              data-container-name="topic-explorer"
              id="analytics-topic-explorer">
-            <div class="row">
-                <div class="col-md-12">
-                    {% for block in page.body %}
-                        {% include_block block %}
-                    {% endfor %}
-                </div>
-            </div>
+                {% for block in page.body %}
+                    {% include_block block %}
+                {% endfor %}
         </div>
     {% endif %}
     {% if page.featured_article.live or page.related_articles %}
