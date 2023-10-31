@@ -1635,6 +1635,8 @@ files = [
     {file = "psycopg2_binary-2.9.9-cp312-cp312-musllinux_1_1_i686.whl", hash = "sha256:cb16c65dcb648d0a43a2521f2f0a2300f40639f6f8c1ecbc662141e4e3e1ee07"},
     {file = "psycopg2_binary-2.9.9-cp312-cp312-musllinux_1_1_ppc64le.whl", hash = "sha256:911dda9c487075abd54e644ccdf5e5c16773470a6a5d3826fda76699410066fb"},
     {file = "psycopg2_binary-2.9.9-cp312-cp312-musllinux_1_1_x86_64.whl", hash = "sha256:57fede879f08d23c85140a360c6a77709113efd1c993923c59fde17aa27599fe"},
+    {file = "psycopg2_binary-2.9.9-cp312-cp312-win32.whl", hash = "sha256:64cf30263844fa208851ebb13b0732ce674d8ec6a0c86a4e160495d299ba3c93"},
+    {file = "psycopg2_binary-2.9.9-cp312-cp312-win_amd64.whl", hash = "sha256:81ff62668af011f9a48787564ab7eded4e9fb17a4a6a74af5ffa6a457400d2ab"},
     {file = "psycopg2_binary-2.9.9-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:2293b001e319ab0d869d660a704942c9e2cce19745262a8aba2115ef41a0a42a"},
     {file = "psycopg2_binary-2.9.9-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:03ef7df18daf2c4c07e2695e8cfd5ee7f748a1d54d802330985a78d2a5a6dca9"},
     {file = "psycopg2_binary-2.9.9-cp37-cp37m-manylinux_2_17_i686.manylinux2014_i686.whl", hash = "sha256:0a602ea5aff39bb9fac6308e9c9d82b9a35c2bf288e184a816002c9fae930b77"},
@@ -2326,13 +2328,13 @@ test = ["coverage (==6.0)", "flake8 (==4.0.0)", "flake8-blind-except (==0.1.1)",
 
 [[package]]
 name = "wagtail-font-awesome-svg"
-version = "0.0.4"
+version = "1.0.1"
 description = "Font Awesome icons as SVG for Wagtail"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "wagtail-font-awesome-svg-0.0.4.tar.gz", hash = "sha256:71ce34575f789c49c517ae70f031508bf97381025acee1a821395ae212d58e9e"},
-    {file = "wagtail_font_awesome_svg-0.0.4-py3-none-any.whl", hash = "sha256:e2867f0b8af0109e8cab3347c83e6fed68451d9fa0e707c70cebfb49d653dc0d"},
+    {file = "wagtail-font-awesome-svg-1.0.1.tar.gz", hash = "sha256:108f831dd4529e6214b5aed04bf6deb4b8344460783fbdbef5dc7a4d7fa8374c"},
+    {file = "wagtail_font_awesome_svg-1.0.1-py3-none-any.whl", hash = "sha256:b6945eaa422a54be5ceb365fd28925d09be77b93b4764e9a08c35a170f687903"},
 ]
 
 [[package]]
@@ -2463,4 +2465,4 @@ testing = ["Pillow (>=9.1.0,<11.0.0)", "Wand (>=0.6,<1.0)", "black (==22.3.0)", 
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "a6d2fa054fd949859609cb47811b24ab08ae9090a0046d815f0dfe81d83cdfc3"
+content-hash = "be35c4b397532d9b28e43025aa7cebe97b31aff15b367de7bce353cdd416cd36"
