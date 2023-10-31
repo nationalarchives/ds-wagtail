@@ -34,7 +34,7 @@ runs:
         docker push $IMAGE_ID:${{ inputs.version }}
       shell: bash
     - name: Tag latest
-      if: ${{ github.event.inputs.latest == 'true' }}
+      if: inputs.latest
       run: |
         docker tag $IMAGE_ID:${{ inputs.version }} $IMAGE_ID:latest --platform=linux/amd64 .
         docker push $IMAGE_ID:latest
