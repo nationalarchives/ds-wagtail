@@ -52,6 +52,7 @@ services:
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
       - DJANGO_SUPERUSER_EMAIL=admin@tna-development.example
+      - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
 
   cli:

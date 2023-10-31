@@ -1,3 +1,5 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .search-buckets {
     @media only screen and (max-width: $screen__md) {
         display: none;
@@ -48,6 +50,7 @@
         padding: 14px;
         display: block;
         border: 1px solid $color__grey-500;
+        // @include colour.colour-border("keyline", 1px);
         width: 100%;
         margin-top: auto;
         margin-bottom: auto;
@@ -58,8 +61,10 @@
         align-items: center;
         justify-content: center;
 
+        &,
+        &:link,
         &:visited {
-            color: $color__navy;
+            @include colour.colour-font("font-base");
         }
 
         &[aria-current="true"],

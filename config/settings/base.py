@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
+from distutils.sysconfig import get_python_lib
 from distutils.util import strtobool
 
 import sentry_sdk
@@ -108,6 +109,9 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
+            os.path.join(
+                get_python_lib(), "nationalarchives-frontend-django/templates"
+            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
