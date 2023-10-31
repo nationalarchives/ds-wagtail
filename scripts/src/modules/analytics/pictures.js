@@ -30,7 +30,7 @@ export const trackPictureTranscriptTabs = () => {
                 $imageBlockTranscriptTab.getAttribute("aria-selected") ===
                 "false"
             ) {
-                console.log({
+                push_to_data_layer({
                     event: "Expand accordion",
                     "data-component-name": "Image transcript",
                     "data-link-type": "Tab",
