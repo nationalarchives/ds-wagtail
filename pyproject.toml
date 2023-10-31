@@ -24,6 +24,7 @@ wagtail-font-awesome-svg = "~1.0"
 wagtail-generic-chooser = "~0.6"
 wagtailmedia = "~0.14"
 wagtail-metadata = "~5.0"
+nationalarchives-frontend-django = "^0.1.2a0"
 
 [tool.poetry.dev-dependencies]
 black = "~23.10"

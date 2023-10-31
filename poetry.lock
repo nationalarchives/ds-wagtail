@@ -1306,6 +1306,20 @@ files = [
 ]
 
 [[package]]
+name = "nationalarchives-frontend-django"
+version = "0.1.2a0"
+description = "The National Archives frontend Django templates"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "nationalarchives-frontend-django-0.1.2a0.tar.gz", hash = "sha256:36c6668d8c73eb86e4a5f575cb2a858c0b294212557ee403dfb28e572f9c2668"},
+    {file = "nationalarchives_frontend_django-0.1.2a0-py3-none-any.whl", hash = "sha256:2a93ad51c80a096ab82eef3b596e33f24a6c5cd95a510e5e4682c1df028beb1e"},
+]
+
+[package.dependencies]
+Django = ">=4"
+
+[[package]]
 name = "oauthlib"
 version = "3.2.2"
 description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
@@ -2083,13 +2097,13 @@ tests = ["coverage (>=6.0.0)", "flake8", "mypy", "pytest (>=7.0.0)", "pytest-asy
 
 [[package]]
 name = "sentry-sdk"
-version = "1.33.0"
+version = "1.33.1"
 description = "Python client for Sentry (https://sentry.io)"
 optional = false
 python-versions = "*"
 files = [
-    {file = "sentry-sdk-1.33.0.tar.gz", hash = "sha256:e7b26a6c8010476e1f925a6dd85b4be2e3596892620451374595cf3b02de81c9"},
-    {file = "sentry_sdk-1.33.0-py2.py3-none-any.whl", hash = "sha256:b715218c0a08759ccc6f6c53bb68880a500fab37a2bab6e045801d9dadda049d"},
+    {file = "sentry-sdk-1.33.1.tar.gz", hash = "sha256:816aeb900a54bba2d9346bad8ffac2d258c4fa09271b95a6533a714e9000f074"},
+    {file = "sentry_sdk-1.33.1-py2.py3-none-any.whl", hash = "sha256:1cce906dc86afda1ecd22c4716b0c846639151a3c3b59e23826711c6525c5642"},
 ]
 
 [package.dependencies]
@@ -2443,4 +2457,4 @@ testing = ["Pillow (>=9.1.0,<11.0.0)", "Wand (>=0.6,<1.0)", "black (==22.3.0)", 
 [metadata]
 lock-version = "2.0"
 python-versions = "~3.11"
-content-hash = "884354db215dae60a3edcb9cf3f393a8312e96686796743c17f9042cb3605880"
+content-hash = "78102f11d8ba7083cf1dd0d8e31e6ae5325e3d375be6744bacddbff0f93e7b43"
