@@ -10,14 +10,19 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-      
   - package-ecosystem: "pip"
     versioning-strategy: "increase-if-necessary"
     directory: "/"
     schedule:
         interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]
   - package-ecosystem: "npm"
     versioning-strategy: "widen"
     directory: "/"
     schedule:
         interval: "weekly"
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-patch"]

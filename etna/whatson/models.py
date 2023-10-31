@@ -1,5 +1,8 @@
+from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.shortcuts import render
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
 
@@ -14,6 +17,8 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+
+from .forms import EventPageForm
 
 
 class VenueType(models.TextChoices):
@@ -230,6 +235,20 @@ class EventSession(models.Model):
         related_name="sessions",
     )
 
+    """
+    Session ID will be used to hold the Eventbrite "event ID"
+    in Event Series pages, for each occurrence of the event.
+    For single events, it will be blank. We will also leave
+    it blank for editor created events, as we won't have an
+    Eventbrite event ID for these.
+    """
+    session_id = models.CharField(
+        verbose_name=_("session ID"),
+        null=True,
+        blank=True,
+        editable=False,
+    )
+
     start = models.DateTimeField(
         verbose_name=_("starts at"),
     )
@@ -255,12 +274,59 @@ class WhatsOnPage(BasePageWithIntro):
     A page for listing events.
     """
 
+    featured_event = models.ForeignKey(
+        "whatson.EventPage",
+        null=True,
+        blank=True,
+        verbose_name=_("featured event"),
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     @cached_property
     def events(self):
         """
         Returns a queryset of events that are children of this page.
         """
         return EventPage.objects.child_of(self).live().public().order_by("start_date")
+
+    def filter_form_data(self, filter_form_cleaned_data):
+        events = self.events
+
+        if date_filter := filter_form_cleaned_data.get("date"):
+            events = events.filter(start_date__date=date_filter)
+        if event_type_filter := filter_form_cleaned_data.get("event_type"):
+            events = events.filter(event_type=event_type_filter)
+        if filter_form_cleaned_data.get("is_online_event"):
+            events = events.filter(venue_type=VenueType.ONLINE)
+        if filter_form_cleaned_data.get("family_friendly"):
+            events = events.filter(event_audience_types__audience_type__slug="families")
+
+        return events
+
+    def serve(self, request):
+        # Check if the request comes from JavaScript
+        # 'JS-Request' is a custom header added by the frontend
+        # If so, return just the event listing, not the full page
+        if request.headers.get("JS-Request"):
+            return render(
+                request, "includes/whats-on-listing.html", self.get_context(request)
+            )
+        else:
+            # Display whats on page as usual
+            return super().serve(request)
+
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+
+        filter_form = EventFilterForm(request.GET)
+
+        if filter_form.is_valid():
+            self.events = self.filter_form_data(filter_form.cleaned_data)
+
+        context["filter_form"] = filter_form
+
+        return context
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -277,7 +343,9 @@ class WhatsOnPage(BasePageWithIntro):
 
     max_count = 1
 
-    content_panels = BasePageWithIntro.content_panels
+    content_panels = BasePageWithIntro.content_panels + [
+        FieldPanel("featured_event"),
+    ]
 
 
 class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
@@ -290,6 +358,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     lead_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -298,6 +367,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     event_type = models.ForeignKey(
         EventType,
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -338,6 +408,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("venue type"),
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
+        blank=True,
     )
 
     venue_website = models.URLField(
@@ -373,8 +444,27 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         editable=False,
     )
 
-    registration_cost = models.IntegerField(
-        verbose_name=_("registration cost"),
+    min_price = models.IntegerField(
+        verbose_name=_("minimum price"),
+        default=0,
+        editable=False,
+    )
+
+    max_price = models.IntegerField(
+        verbose_name=_("maximum price"),
+        default=0,
+        editable=False,
+    )
+
+    """
+    We will use this field to hold the event ID from Eventbrite,
+    or if it is the parent page of an Event Series, it will hold
+    the "series_id" from Eventbrite. For editor created events,
+    it will be blank.
+    """
+    eventbrite_id = models.CharField(
+        max_length=255,
+        verbose_name=_("eventbrite ID"),
         null=True,
         editable=False,
     )
@@ -396,6 +486,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     short_title = models.CharField(
         max_length=50,
         verbose_name=_("short title"),
+        blank=True,
         help_text=_(
             "A short title for the event. This will be used in the event listings."
         ),
@@ -466,13 +557,46 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("registration_url", read_only=True),
-                FieldPanel("registration_cost", read_only=True),
+                FieldPanel("min_price", read_only=True),
+                FieldPanel("max_price", read_only=True),
                 FieldPanel("registration_info"),
                 FieldPanel("contact_info"),
             ],
             heading=_("Booking information"),
         ),
     ]
+
+    @cached_property
+    def price_range(self):
+        """
+        Returns the price range for the event.
+        """
+        if self.max_price == 0:
+            return "Free"
+        elif self.min_price == self.max_price:
+            return f"{self.min_price}"
+        else:
+            if self.min_price == 0:
+                return f"Free - {self.max_price}"
+            return f"{self.min_price} - {self.max_price}"
+
+    @property
+    def event_status(self):
+        """
+        Returns the event status based on different conditions.
+        """
+        if self.start_date.date() <= (
+            timezone.now().date() + timezone.timedelta(days=5)
+        ):
+            return "Last chance"
+
+    @cached_property
+    def primary_access_type(self):
+        """
+        Returns the primary access type for the event.
+        """
+        if primary_access := self.event_access_types.first():
+            return primary_access.access_type
 
     def clean(self):
         """
@@ -504,7 +628,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                             "The venue address is required for in person events."
                         ),
                         "venue_space_name": _(
-                            "The venue space name is required for hybrid events."
+                            "The venue space name is required for in person events."
                         ),
                     }
                 )
@@ -581,3 +705,40 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         "whatson.WhatsOnPage",
     ]
     subpage_types = []
+
+    base_form_class = EventPageForm
+
+
+class EventFilterForm(forms.Form):
+    date = forms.DateField(
+        label="Choose a date",
+        required=False,
+        widget=forms.DateInput(
+            attrs={"type": "date", "class": "filters__date", "data-js-date": ""}
+        ),
+    )
+
+    event_type = forms.ModelChoiceField(
+        widget=forms.RadioSelect(
+            attrs={"class": "filters__radio", "data-js-event-type": ""}
+        ),
+        queryset=EventType.objects.all(),
+        required=False,
+        label="What",
+    )
+
+    is_online_event = forms.BooleanField(
+        label="Online",
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={"class": "filters__toggle-input", "data-js-online": ""}
+        ),
+    )
+
+    family_friendly = forms.BooleanField(
+        label="Family friendly",
+        required=False,
+        widget=forms.CheckboxInput(
+            attrs={"class": "filters__toggle-input", "data-js-family": ""}
+        ),
+    )

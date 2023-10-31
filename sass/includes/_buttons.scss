@@ -1,12 +1,12 @@
 .tna-button {
-    text-decoration: none;
-    background-color: $color__navy !important;
-    color: $color__white;
-    border: 0;
-    padding: 1rem 1.3rem;
-    font-weight: bold;
-    margin: 0.5rem 0;
-    border: none;
+    // text-decoration: none;
+    // background-color: $color__navy !important;
+    // color: $color__white;
+    // border: 0;
+    // padding: 1rem 1.3rem;
+    // font-weight: bold;
+    // margin: 0.5rem 0;
+    // border: none;
 
     &__target-blank-label {
         display: block;
@@ -14,10 +14,10 @@
     }
 
     &:hover {
-        background-color: $color__white;
-        color: $color__grey-700;
-        outline: 0.1875rem solid $color__grey-700;
-        outline-offset: 0.125rem;
+        // background-color: $color__white;
+        // color: $color__grey-700;
+        // outline: 0.1875rem solid $color__grey-700;
+        // outline-offset: 0.125rem;
     }
 
     // &:focus {
@@ -25,9 +25,9 @@
     //     outline-offset: 0.125rem;
     // }
 
-    &--full-width {
-        width: 100%;
-    }
+    // &--full-width {
+    //     width: 100%;
+    // }
 }
 
 .tna-button--dark,

@@ -1,6 +1,6 @@
 {% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
-<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js" lang="en-GB">
+<html class="tna-template tna-template--light-theme tna-template--yellow-accent no-js {% block html_class%}{% endblock %}" lang="en-GB">
     <head>
     {% if request.in_preview_panel %}
     <base target="_blank">
@@ -17,10 +17,12 @@
             {% endblock %}
             {% block title_suffix %}
                 {% wagtail_site as current_site %}
-                 - {{ current_site.site_name }}
+                 – {{ current_site.site_name }}
             {% endblock %}
         </title>
-        <meta name="description" content="" />
+        {% if meta_tags %}
+            {% meta_tags %}
+        {% endif %}
      {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
         <meta name="format-detection" content="telephone=no" />
@@ -51,16 +53,6 @@
         {% if cookies_permitted %}
             {% include 'includes/gtm-script.html' %}
         {% endif %}
-
-
-        {# Google Fonts #}
-        <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
-
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap"
-
-            rel="stylesheet"> -->
-
-
 
         <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
@@ -100,7 +92,13 @@
         {% endif %}
 
         {% block breadcrumb %}
-            {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
+        <div class="tna-breadcrumb-wrapper">
+            <div class="tna-container">
+                <div class="tna-column">
+                    {% include 'components/breadcrumb.html' %}
+                </div>
+            </div>
+        </div>
         {% endblock %}
 
         {% block main %}

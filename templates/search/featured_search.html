@@ -1,12 +1,10 @@
 {% extends "base.html" %}
 
-{% load datalayer_tags %}
-{% load search_tags %}
+{% load datalayer_tags search_tags humanize %}
 
 {% block extra_gtm_js %}
     {% render_gtm_datalayer view %}
 {% endblock extra_gtm_js %}
-{% load humanize %}
 {% block breadcrumb %}
 {% endblock %}
 {% block content %}
@@ -33,10 +31,10 @@
     {% endif %}
 
     {% if website_result_count %}
-        <div class="container-fluid">
+        <div class="container-fluid tna-!--margin-top-l">
         <section class="featured-search__website-results">
             <header class="featured-search__website-results__head">
-                <h2 class="tna-heading featured-search__website-results__heading">Results from the website</h2>
+                <h2 class="tna-heading-l featured-search__website-results__heading">Results from the website</h2>
                 <a href="/search/website?q={{ search_query|iriencode }}" class="featured-search__website_results-link">
                         See all{% if search_query %} relevant{% endif %} website results ({{ website_result_count }})
                 </a>

@@ -18,6 +18,11 @@ Convenience commands have been added to `fabfile.py` to help you interact with t
 
 Once installed, you can type `fab -l` to see a list of available commands.
 
+### Before starting a build for the first time
+
+```sh
+cp .env.example .env
+```
 
 ### 1. Build and start Docker containers
 
@@ -65,6 +70,9 @@ Navigate to the admin URL in your browser, and sign in using the username/passwo
 
 <http://127.0.0.1:8000/admin/>
 
+### 5. Compile the front-end assets
+See https://nationalarchives.github.io/ds-wagtail/developer-guide/frontend/#setting-up-the-front-end-development-environment
+
 ## Linux / OSX
 If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
@@ -73,11 +81,13 @@ Running the development server:
 ``` sh
 djrun
 ```
+
 Run migrations:
 
 ```sh
 dj migrate
 ```
+
 Create a super user:
 
 ```sh

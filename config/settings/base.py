@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
+    "etna.authors",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -409,4 +410,7 @@ FEATURE_COOKIE_BANNER_ENABLED = strtobool(
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
+)
+FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
+    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

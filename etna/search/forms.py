@@ -219,7 +219,7 @@ class BaseCollectionSearchForm(forms.Form):
         label="Sort by",
         choices=[
             (SortBy.RELEVANCE.value, "Relevance"),
-            (SortBy.DATE_OPENING.value, "Date"),
+            (SortBy.DATE_CREATED.value, "Date"),
             (SortBy.TITLE.value, "Title"),
         ],
         required=False,

@@ -1,0 +1,91 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.event-meta {
+    $root: &;
+    margin-bottom: 2rem;
+
+    @include media.on-larger-than-mobile {
+        padding-left: 3rem;
+        border-left: 1px solid colour.brand-colour("light-grey");
+        margin-bottom: 0;
+    }
+
+    &--inline {
+        padding-left: 0;
+        border-left: 0;
+        align-self: center;
+        line-height: 1;
+        padding: 1rem 0;
+        display: none;
+
+        @include media.on-larger-than-mobile {
+            display: block;
+        }
+    }
+
+    &__list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        #{$root}--inline & {
+            display: inline-flex;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+    }
+
+    &__item {
+        margin-bottom: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        #{$root}--inline & {
+            display: inline-flex;
+            align-items: flex-start;
+            margin: 0;
+            padding: 0;
+
+            @include media.on-medium {
+                align-items: center;
+                flex: 1 0 100%;
+            }
+
+            @include media.on-large {
+                align-items: center;
+                flex: 1 0 auto;
+            }
+        }
+    }
+
+    &__title {
+        @include typography.detail-font-small();
+        display: inline-flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0.25rem;
+        margin-bottom: 1rem;
+    }
+
+    &__icon {
+        @include typography.relative-font-size(18);
+        @include colour.colour-font("accent-background");
+        flex: 0 0 auto;
+        margin-right: 0.5rem;
+    }
+
+    &__details {
+        @include colour.colour-font("font-light");
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        .event-details-banner & {
+            @include typography.detail-font-small();
+            text-transform: none;
+            color: $color__black;
+        }
+    }
+}

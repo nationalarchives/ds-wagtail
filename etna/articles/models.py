@@ -23,6 +23,7 @@ from wagtail.snippets.models import register_snippet
 
 from taggit.models import ItemBase, TagBase
 
+from etna.authors.models import AuthorPageMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import (
     BasePageWithIntro,
@@ -121,8 +122,9 @@ class ArticleIndexPage(BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article, or Record Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
+        verbose_name=_("featured article"),
     )
 
     featured_pages = StreamField(
@@ -152,7 +154,11 @@ class ArticleIndexPage(BasePageWithIntro):
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.RecordArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
         FieldPanel("featured_pages"),
     ]
@@ -310,6 +316,7 @@ class ArticlePage(
 
 class FocusedArticlePage(
     TopicalPageMixin,
+    AuthorPageMixin,
     HeroImageMixin,
     ContentWarningMixin,
     NewLabelMixin,
@@ -321,8 +328,12 @@ class FocusedArticlePage(
     The FocusedArticlePage model.
     """
 
-    author = models.CharField(
-        max_length=100, blank=True, null=True, help_text="The author of this article."
+    author = models.ForeignKey(
+        "authors.AuthorPage",
+        blank=True,
+        null=True,
+        related_name="focused_articles",
+        on_delete=models.SET_NULL,
     )
 
     body = StreamField(
@@ -343,7 +354,6 @@ class FocusedArticlePage(
         BasePageWithIntro.content_panels
         + HeroImageMixin.content_panels
         + [
-            FieldPanel("author"),
             MultiFieldPanel(
                 [
                     FieldPanel("display_content_warning"),
@@ -361,6 +371,9 @@ class FocusedArticlePage(
         + BasePageWithIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
+            FieldPanel(
+                "author", heading="Author", help_text="Add the author of this page"
+            ),
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
@@ -376,6 +389,7 @@ class FocusedArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+            index.SearchField("author_name", boost=1),
         ]
     )
 
@@ -520,10 +534,14 @@ class RecordArticlePage(
     )
 
     featured_article = models.ForeignKey(
-        "articles.ArticlePage",
-        blank=True,
+        "wagtailcore.Page",
         null=True,
+        blank=True,
         on_delete=models.SET_NULL,
+        related_name="+",
+        help_text=_(
+            "Select a page to display in the featured area. This can be an Article or Focused Article."
+        ),
         verbose_name=_("featured article"),
     )
 
@@ -578,7 +596,10 @@ class RecordArticlePage(
             ],
         ),
         FieldPanel("featured_highlight_gallery"),
-        FieldPanel("featured_article"),
+        PageChooserPanel(
+            "featured_article",
+            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+        ),
         FieldPanel("promoted_links"),
     ]
 
