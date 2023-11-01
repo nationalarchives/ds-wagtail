@@ -12,14 +12,14 @@ def register_record_chooser_viewset():
 def register_icons(icons):
     return icons + [
         "wagtailfontawesomesvg/solid/star.svg",
-        "wagtailfontawesomesvg/solid/archive.svg",
+        "wagtailfontawesomesvg/solid/box-archive.svg",
         "wagtailfontawesomesvg/solid/list.svg",
-        "wagtailfontawesomesvg/solid/external-link-alt.svg",
+        "wagtailfontawesomesvg/solid/up-right-from-square.svg",
         "wagtailfontawesomesvg/solid/play.svg",
         "wagtailfontawesomesvg/solid/paragraph.svg",
         "wagtailfontawesomesvg/solid/heading.svg",
-        "wagtailfontawesomesvg/solid/user-circle.svg",
-        "wagtailfontawesomesvg/solid/th.svg",
+        "wagtailfontawesomesvg/solid/circle-user.svg",
+        "wagtailfontawesomesvg/solid/table-cells.svg",
         "wagtailfontawesomesvg/solid/arrow-up.svg",
-        "wagtailfontawesomesvg/solid/th-large.svg",
+        "wagtailfontawesomesvg/solid/table-cells-large.svg",
     ]

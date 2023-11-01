@@ -18,16 +18,21 @@
         }
     }
 
+    .template-focused-article & {
+        &__container {
+            background: linear-gradient(
+                to top,
+                $color__white 0%,
+                $color__white 50%,
+                $color__grey-700 50%,
+                $color__grey-700 100%
+            );
+        }
+    }
+
     @media (min-width: #{$screen__md + 1px}) {
         .template-focused-article & {
             &__container {
-                background: linear-gradient(
-                    to top,
-                    $color__white 0%,
-                    $color__white 50%,
-                    $color__grey-700 50%,
-                    $color__grey-700 100%
-                );
                 position: relative;
             }
 

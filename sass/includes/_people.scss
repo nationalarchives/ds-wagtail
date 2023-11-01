@@ -1,0 +1,51 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.people {
+    margin-bottom: 3rem;
+
+    &__list {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    &__person {
+        display: flex;
+        gap: 1.5rem;
+    }
+
+    &__image {
+        border-radius: 50%;
+        width: 5rem;
+        height: 5rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+
+        // user icon fallback (font-awesome)
+        &--default {
+            @include colour.light-accent-background;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            // actual icon
+            &::before {
+                color: $color__maroon;
+                opacity: 0.3;
+            }
+        }
+    }
+
+    &__name {
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+    }
+
+    &__description {
+        font-size: 0.875rem;
+        @include colour.colour-font("font-light");
+    }
+}
