@@ -19,7 +19,7 @@
                         <div class="tna-column tna-column--full">
                             <ul class="tna-ul tna-ul--plain">
                                 {% if page.author %}
-                                    <li>By <a href="{% pageurl page.author %}">{{ page.author_name }}</a></li>                    
+                                    <li>By <a href="{% pageurl page.author %}" rel="author" data-component-name="Page header" data-link-type="Link" data-link="{{ page.author_name }}">{{ page.author_name }}</a></li>                    
                                 {% endif %}
                             </ul>
                         </div>
@@ -32,7 +32,7 @@
             {% if page.intro and page.hero_image %}
                 <div class="generic-intro__paragraph">
                     <div class="tna-container">
-                        <div class="tna-column tna-column--width-3-4 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny tna-large-paragraph">
+                        <div class="tna-column tna-column--width-5-6 tna-column--width-5-6-medium tna-column--full-small tna-column--full-tiny tna-large-paragraph">
                             {{ page.intro|richtext }}
                         </div>
                     </div>
@@ -60,7 +60,7 @@
                             </div>
                             <p>
                                 <strong>
-                                    <a href="{% pageurl page.author %}">{{ page.author_name }}</a>
+                                    <a href="{% pageurl page.author %}" rel="author" data-component-name="About the author" data-link-type="Link" data-link="{{ page.author_name }}">{{ page.author_name }}</a>
                                 </strong>
                             </p>
                             {% if page.author.role %}
