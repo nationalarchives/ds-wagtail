@@ -1,12 +1,18 @@
 {% load wagtailimages_tags %}
 <div class="event-hero">
     <div class="event-hero__info-wrapper">
-        {% include 'components/breadcrumb.html' %}
+        <div class="tna-breadcrumb-wrapper">
+            <div class="tna-container">
+                <div class="tna-column">
+                    {% include 'components/breadcrumb.html' %}
+                </div>
+            </div>
+        </div>
 
         <div class="tna-container">
             <div class="tna-column">
                 {% include "components/event_tags.html" %}
-                <h1 class="tna-heading tna-heading--xl">{{ title }}</h1>
+                <h1 class="tna-heading-xl">{{ title }}</h1>
             </div>
         </div>
     </div>
