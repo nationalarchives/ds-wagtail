@@ -20,7 +20,7 @@
         align-items: center;
 
         &--event-type {
-            @include colour.fixed;
+            @include colour.plain;
             background-color: colour.brand-colour("pastel-pink");
         }
     }

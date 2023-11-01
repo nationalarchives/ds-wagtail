@@ -7,6 +7,11 @@ import add_unique_ids from "./modules/analytics/add_unique_ids";
 import mobile_tracking from "./modules/analytics/article_tracking/mobile_tracking";
 import remove_mobile_tracking from "./modules/analytics/article_tracking/remove_mobile_tracking";
 import link_list_tracking from "./modules/analytics/article_tracking/link_list_tracking";
+import trackHeroCaptions from "./modules/analytics/hero-captions";
+import {
+    trackPictureTranscripts,
+    trackPictureTranscriptTabs,
+} from "./modules/analytics/pictures";
 
 import accordion_functionality from "./modules/articles/accordion_functionality/accordion_functionality";
 import add_event from "./modules/articles/add_event";
@@ -31,6 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     video_tracking();
     add_unique_ids();
     link_list_tracking();
+    trackHeroCaptions();
+    trackPictureTranscripts();
+    trackPictureTranscriptTabs();
 });
 
 window.addEventListener("load", () => {

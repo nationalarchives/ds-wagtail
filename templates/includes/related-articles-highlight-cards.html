@@ -1,7 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <div class="highlight-cards">
     <div class="container">
-        <h2 class="tna-heading highlight-cards__title">{{ title }}</h2>
+        <h2 class="tna-heading-l highlight-cards__title">{{ title }}</h2>
         <div class="card-grid card-grid__quad">
             {% if featured_article %}
                 <div class="highlight-cards__card highlight-cards__card--highlight highlight-cards__link">
@@ -24,7 +24,7 @@
                             alt=""/>
                     </a>
                     <div class="highlight-cards__content">
-                        <h3 class="tna-heading highlight-cards__card_title">
+                        <h3 class="tna-heading-m highlight-cards__card_title">
                             <a href="{% pageurl featured_article %}"
                             id="highlight-cards__card-desc{{ featured_article.id }}"
                             class="highlight-cards__card-title-link"
@@ -67,7 +67,7 @@
                             alt=""/>
                     </a>
                     <div class="highlight-cards__card__content">
-                        <h3 class="tna-heading highlight-cards__card_title">
+                        <h3 class="tna-heading-m highlight-cards__card_title">
                             <a href="{% pageurl article %}"
                             id="highlight-cards__card-desc{{ article.id }}"
                             class="highlight-cards__card-title-link"
