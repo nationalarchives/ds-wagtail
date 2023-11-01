@@ -47,12 +47,18 @@ class TestWhatsOnPageEventFiltering(TestCase):
             venue_type="online",
             min_price=0,
             max_price=0,
-            start_date=timezone.datetime(2023, 10, 17),
+            start_date=timezone.datetime(
+                2023, 10, 17, tzinfo=timezone.get_current_timezone()
+            ),
             sessions=[
                 EventSession(
                     page=cls.whats_on_page,
-                    start=timezone.datetime(2023, 10, 15),
-                    end=timezone.datetime(2023, 10, 16),
+                    start=timezone.datetime(
+                        2023, 10, 15, tzinfo=timezone.get_current_timezone()
+                    ),
+                    end=timezone.datetime(
+                        2023, 10, 16, tzinfo=timezone.get_current_timezone()
+                    ),
                 )
             ],
         )
@@ -69,8 +75,12 @@ class TestWhatsOnPageEventFiltering(TestCase):
             sessions=[
                 EventSession(
                     page=cls.whats_on_page,
-                    start=timezone.datetime(2023, 10, 17),
-                    end=timezone.datetime(2023, 10, 18),
+                    start=timezone.datetime(
+                        2023, 10, 17, tzinfo=timezone.get_current_timezone()
+                    ),
+                    end=timezone.datetime(
+                        2023, 10, 18, tzinfo=timezone.get_current_timezone()
+                    ),
                 )
             ],
         )
@@ -82,12 +92,18 @@ class TestWhatsOnPageEventFiltering(TestCase):
             venue_type="in_person",
             min_price=15,
             max_price=30,
-            start_date=timezone.datetime(2023, 10, 20),
+            start_date=timezone.datetime(
+                2023, 10, 20, tzinfo=timezone.get_current_timezone()
+            ),
             sessions=[
                 EventSession(
                     page=cls.whats_on_page,
-                    start=timezone.datetime(2023, 10, 20),
-                    end=timezone.datetime(2023, 10, 21),
+                    start=timezone.datetime(
+                        2023, 10, 20, tzinfo=timezone.get_current_timezone()
+                    ),
+                    end=timezone.datetime(
+                        2023, 10, 21, tzinfo=timezone.get_current_timezone()
+                    ),
                 )
             ],
         )
