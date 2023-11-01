@@ -180,157 +180,157 @@
     <script src="https://design-system.service.gov.uk/javascripts/vendor/iframeResizer-64449c4486ad602edae18f8c9ef89fed.contentWindow.min.js"></script>
     <!--GDS SCRIPTS-->
 
-<!--    <form method="GET" data-id="filters-form"  id="catalogue-filters-form">-->
-<!--        {% comment %}-->
-<!--         {% if form.group.value == 'tna' %}-->
-<!--            <div class="search-filters__form-block">-->
-<!--                TODO make this a django form element-->
-<!--                <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">-->
-<!--                <label for="online-only" class='search-filters__label'>Show online records only</label>-->
-<!--                <input type="submit" value="Update" class="search-filters__submit">-->
-<!--            </div>-->
-<!--            {% endif %}-->
-<!--        {% endcomment %}-->
+    <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
+        {% comment %}
+         {% if form.group.value == 'tna' %}
+            <div class="search-filters__form-block">
+                TODO make this a django form element
+                <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
+                <label for="online-only" class='search-filters__label'>Show online records only</label>
+                <input type="submit" value="Update" class="search-filters__submit">
+            </div>
+            {% endif %}
+        {% endcomment %}
 
-<!--        {% if form.filter_keyword %}-->
-<!--            <div class="search-filters__form-block">-->
-<!--                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label&#45;&#45;block">Search within results:</label>-->
-<!--                {{ form.filter_keyword }}-->
-<!--                {{ form.filter_keyword.errors }}-->
-<!--                <input type="submit" value="Search" class="search-filters__submit">-->
-<!--            </div>-->
-<!--        {% endif %}-->
+        {% if form.filter_keyword %}
+            <div class="search-filters__form-block">
+                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+                {{ form.filter_keyword }}
+                {{ form.filter_keyword.errors }}
+                <input type="submit" value="Search" class="search-filters__submit">
+            </div>
+        {% endif %}
 
-<!--        <div class="search-filters__form-block">-->
-<!--            <h3 class="tna-heading sr-only">Edit filters</h3>-->
+        <div class="search-filters__form-block">
+            <h3 class="tna-heading sr-only">Edit filters</h3>
 
-<!--            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}-->
-<!--                <div class="search-filters__accordion-section">-->
-<!--                    <fieldset role="group" aria-describedby="from-date">-->
-<!--                        <legend>-->
-<!--                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>-->
-<!--                        </legend>-->
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+                <div class="search-filters__accordion-section">
+                    <fieldset role="group" aria-describedby="from-date">
+                        <legend>
+                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
+                        </legend>
 
-<!--                        <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>-->
-<!--                        <div>{{ form.covering_date_from.label_tag }}</div>-->
+                        <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
+                        <div>{{ form.covering_date_from.label_tag }}</div>
 
-<!--                        <div>-->
+                        <div>
 
-<!--                            {% if form.covering_date_from.errors %}-->
-<!--                                <div-->
-<!--                                    data-tracking-errors-->
-<!--                                    data-filter="Dates"-->
-<!--                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
-<!--                                    {{ form.covering_date_from.errors }}-->
-<!--                                </div>-->
-<!--                            {% endif %}-->
-<!--                            {{ form.covering_date_from }}-->
+                            {% if form.covering_date_from.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.covering_date_from.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.covering_date_from }}
 
-<!--                        </div>-->
+                        </div>
 
-<!--                        <div>-->
+                        <div>
 
-<!--                            {{ form.covering_date_to.label_tag }}-->
-<!--                            {% if form.covering_date_to.errors %}-->
-<!--                                <div-->
-<!--                                    data-tracking-errors-->
-<!--                                    data-filter="Dates"-->
-<!--                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">-->
-<!--                                    {{ form.covering_date_to.errors }}-->
-<!--                                </div>-->
-<!--                            {% endif %}-->
-<!--                            {{ form.covering_date_to }}-->
+                            {{ form.covering_date_to.label_tag }}
+                            {% if form.covering_date_to.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Dates"
+                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
+                                    {{ form.covering_date_to.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.covering_date_to }}
 
-<!--                        </div>-->
+                        </div>
 
-<!--                        <input type="submit" value="Update" class="search-filters__submit">-->
-<!--                    </fieldset>-->
-<!--                </div>-->
-<!--            {% endif %}-->
-
-
-<!--            {% include "search/includes/filter.html" with field=form.collection %} &lt;!&ndash;collections filter&ndash;&gt;-->
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+            {% endif %}
 
 
-
-<!--            {% include "search/includes/filter.html" with field=form.time_period %}-->
-
-<!--            {% include "search/includes/filter.html" with field=form.topic %}-->
-
-<!--            {% include "search/includes/filter.html" with field=form.format %}-->
-
-<!--            {% if form.group.value != bucketkeys.NONTNA.value %}-->
-<!--                {% include "search/includes/filter.html" with field=form.level %}-->
-<!--            {% endif %}-->
-
-<!--            {% include "search/includes/filter.html" with field=form.closure %}-->
+            {% include "search/includes/filter.html" with field=form.collection %} <!--collections filter-->
 
 
 
-<!--            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}-->
-<!--                <div class="search-filters__accordion-section">-->
-<!--                    <fieldset role="group" aria-describedby="opening-start-date">-->
-<!--                        <legend>-->
-<!--                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>-->
-<!--                        </legend>-->
+            {% include "search/includes/filter.html" with field=form.time_period %}
 
-<!--                        <div class="search-filters__opening-date-section">-->
+            {% include "search/includes/filter.html" with field=form.topic %}
 
-<!--                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>-->
-<!--                            {{ form.opening_start_date.label_tag }}-->
-<!--                            {% if form.opening_start_date.errors %}-->
-<!--                                <div-->
-<!--                                    data-tracking-errors-->
-<!--                                    data-filter="Record opening date"-->
-<!--                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
-<!--                                    {{ form.opening_start_date.errors }}-->
-<!--                                </div>-->
-<!--                            {% endif %}-->
-<!--                            {{ form.opening_start_date }}-->
+            {% include "search/includes/filter.html" with field=form.format %}
 
-<!--                        </div>-->
-<!--                        -->
+            {% if form.group.value != bucketkeys.NONTNA.value %}
+                {% include "search/includes/filter.html" with field=form.level %}
+            {% endif %}
 
-<!--                        <div class="search-filters__opening-date-section">-->
+            {% include "search/includes/filter.html" with field=form.closure %}
 
-<!--                            {{ form.opening_end_date.label_tag }}-->
-<!--                            {% if form.opening_end_date.errors %}-->
-<!--                                <div-->
-<!--                                    data-tracking-errors-->
-<!--                                    data-filter="Record opening date"-->
-<!--                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">-->
-<!--                                    {{ form.opening_end_date.errors }}-->
-<!--                                </div>-->
-<!--                            {% endif %}-->
-<!--                            {{ form.opening_end_date }}-->
 
-<!--                        </div>-->
 
-<!--                        <input type="submit" value="Update" class="search-filters__submit">-->
-<!--                    </fieldset>-->
-<!--                </div>-->
+            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+                <div class="search-filters__accordion-section">
+                    <fieldset role="group" aria-describedby="opening-start-date">
+                        <legend>
+                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                        </legend>
 
-<!--            {% endif %}-->
+                        <div class="search-filters__opening-date-section">
 
-<!--            {% if form.group.value == bucketkeys.NONTNA.value %}-->
-<!--                {% include "search/includes/filter.html" with field=form.held_by %}-->
-<!--                {% include "search/includes/filter.html" with field=form.catalogue_source %}-->
-<!--            {% endif %}-->
+                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
+                            {{ form.opening_start_date.label_tag }}
+                            {% if form.opening_start_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_start_date.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.opening_start_date }}
 
-<!--            {% if form.group.value == bucketkeys.CREATOR.value %}-->
-<!--                {% include "search/includes/filter.html" with field=form.type %}-->
-<!--                {% include "search/includes/filter.html" with field=form.country %}-->
-<!--            {% endif %}-->
+                        </div>
 
-<!--            {% if form.group.value == bucketkeys.ARCHIVE.value %}-->
-<!--                {% include "search/includes/filter.html" with field=form.location %}-->
-<!--            {% endif %}-->
-<!--        </div>-->
 
-<!--        {# render hidden inputs for fields controlled by other forms #}-->
-<!--        {% render_fields_as_hidden form include='q group sort_by sort_order' %}-->
+                        <div class="search-filters__opening-date-section">
 
-<!--    </form>-->
+                            {{ form.opening_end_date.label_tag }}
+                            {% if form.opening_end_date.errors %}
+                                <div
+                                    data-tracking-errors
+                                    data-filter="Record opening date"
+                                    data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                    {{ form.opening_end_date.errors }}
+                                </div>
+                            {% endif %}
+                            {{ form.opening_end_date }}
+
+                        </div>
+
+                        <input type="submit" value="Update" class="search-filters__submit">
+                    </fieldset>
+                </div>
+
+            {% endif %}
+
+            {% if form.group.value == bucketkeys.NONTNA.value %}
+                {% include "search/includes/filter.html" with field=form.held_by %}
+                {% include "search/includes/filter.html" with field=form.catalogue_source %}
+            {% endif %}
+
+            {% if form.group.value == bucketkeys.CREATOR.value %}
+                {% include "search/includes/filter.html" with field=form.type %}
+                {% include "search/includes/filter.html" with field=form.country %}
+            {% endif %}
+
+            {% if form.group.value == bucketkeys.ARCHIVE.value %}
+                {% include "search/includes/filter.html" with field=form.location %}
+            {% endif %}
+        </div>
+
+        {# render hidden inputs for fields controlled by other forms #}
+        {% render_fields_as_hidden form include='q group sort_by sort_order' %}
+
+    </form>
 
     {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
 </div>
