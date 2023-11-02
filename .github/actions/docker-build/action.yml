@@ -39,12 +39,15 @@ runs:
         docker tag $IMAGE_ID:${{ inputs.version }} $IMAGE_ID:latest --platform=linux/amd64 .
         docker push $IMAGE_ID:latest
       shell: bash
-    - name: List images
+    - name: List all images
       run: docker image ls
       shell: bash
-    - name: Remove untagged images
-      run: docker rmi $(docker images -f "dangling=true" -q)
+    - name: List dangling images
+      run: docker images -f "dangling=true"
       shell: bash
+    # - name: Remove untagged images
+    #   run: docker rmi $(docker images -f "dangling=true" -q)
+    #   shell: bash
     # - name: Delete untagged images
     #   uses: actions/github-script@v6.3.3
     #   with:
