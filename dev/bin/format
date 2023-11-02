@@ -7,4 +7,4 @@ poetry run flake8 .
 tna-node lint:fix
 
 # Change the owner of all files to one of a known, mounted file that has not been altered by the scripts above
-find /app -type d \( -path ./node_modules \) -prune -o -exec chown -R `stat -c "%u:%g" /app/run.sh` {} \;
+find /app -not -path "*/node_modules/*" -type f -prune -exec chown -R `stat -c "%u:%g" /app/run.sh` {} \;
