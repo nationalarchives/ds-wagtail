@@ -5,3 +5,6 @@ poetry run black .
 poetry run flake8 .
 
 tna-node lint:fix
+
+# Change the owner of all files to one of a known, mounted file that has not been altered by the scripts above
+chown -R `stat -c "%u:%g" /app/run.sh` /app
