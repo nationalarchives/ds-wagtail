@@ -1,5 +1,8 @@
+from typing import Any, Dict
+
 from django.conf import settings
 from django.db import models
+from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
@@ -59,6 +62,9 @@ class AuthorPage(BasePage):
         verbose_name = "Author page"
         verbose_name_plural = "Author pages"
 
+    # DataLayerMixin overrides
+    gtm_content_group = "Author page"
+
     parent_page_types = ["authors.AuthorIndexPage"]
     subpage_types = []
 
@@ -70,6 +76,11 @@ class AuthorPage(BasePage):
             .order_by("-first_published_at")
             .select_related("teaser_image")
         )
+
+    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
+        data = super().get_datalayer_data(request)
+        data.update(customDimension3="Author page")
+        return data
 
 
 class AuthorTag(models.Model):
