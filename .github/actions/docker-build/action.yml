@@ -33,15 +33,15 @@ runs:
         docker build --tag $IMAGE_ID:${{ inputs.version }} --platform=linux/amd64 --no-cache .
         docker push $IMAGE_ID:${{ inputs.version }}
       shell: bash
-    - name: Remove untagged images
-      run: |
-        docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
-      shell: bash
     - name: Tag latest
       if: ${{ inputs.latest == true }}
       run: |
         docker tag $IMAGE_ID:${{ inputs.version }} $IMAGE_ID:latest --platform=linux/amd64 .
         docker push $IMAGE_ID:latest
+      shell: bash
+    - name: List images
+      run: |
+        docker images list
       shell: bash
     # - name: Delete untagged images
     #   uses: actions/github-script@v6.3.3
