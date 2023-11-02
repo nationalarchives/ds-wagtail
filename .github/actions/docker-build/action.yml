@@ -33,6 +33,10 @@ runs:
         docker build --tag $IMAGE_ID:${{ inputs.version }} --platform=linux/amd64 --no-cache .
         docker push $IMAGE_ID:${{ inputs.version }}
       shell: bash
+    - name: Remove untagged images
+      run: |
+        docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
+      shell: bash
     - name: Tag latest
       if: ${{ inputs.latest == true }}
       run: |
