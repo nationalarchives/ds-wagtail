@@ -40,8 +40,10 @@ runs:
         docker push $IMAGE_ID:latest
       shell: bash
     - name: List images
-      run: |
-        docker images list
+      run: docker image ls
+      shell: bash
+    - name: Remove untagged images
+      run: docker rmi $(docker images -f "dangling=true" -q)
       shell: bash
     # - name: Delete untagged images
     #   uses: actions/github-script@v6.3.3
