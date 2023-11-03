@@ -8,3 +8,4 @@
 1. Publish the drafted release that was created on the [releases page](https://github.com/nationalarchives/ds-wagtail/releases)
 1. A Docker image will be created
 1. The site will be pushed to platform.sh
+1. Pull the changes from `main` down to `develop`
