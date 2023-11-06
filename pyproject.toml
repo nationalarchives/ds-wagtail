@@ -7,7 +7,7 @@ authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 [tool.poetry.dependencies]
 bleach = "~6.1"
 Django = "~4.2"
-django-allauth = "~0.57"
+django-allauth = "~0.58"
 django-birdbath = "~1.1"
 django-redis = "~5.4"
 django-taggit = "~4.0"
