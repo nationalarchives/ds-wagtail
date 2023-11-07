@@ -36,6 +36,7 @@ runs:
     - name: Tag latest
       if: inputs.latest
       run: |
+        echo $IMAGE_ID
         docker tag $IMAGE_ID:${{ inputs.version }} $IMAGE_ID:latest --platform=linux/amd64 .
         docker push $IMAGE_ID:latest
       shell: bash
