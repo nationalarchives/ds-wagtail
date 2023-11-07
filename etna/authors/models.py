@@ -144,4 +144,4 @@ class AuthorPageMixin:
         Returns the title of the authors to be used for indexing
         """
         if self.authors:
-            return ', '.join([author.author.title for author in self.authors])
+            return ", ".join([author.author.title for author in self.authors])
