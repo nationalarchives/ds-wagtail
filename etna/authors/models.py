@@ -70,9 +70,12 @@ class AuthorPage(BasePage):
 
     @cached_property
     def authored_focused_articles(self):
+        from etna.articles.models import FocusedArticlePage
+
         return (
-            self.focused_articles.live()
+            FocusedArticlePage.objects.live()
             .public()
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")
         )
