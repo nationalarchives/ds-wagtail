@@ -132,18 +132,16 @@ class AuthorPageMixin:
         )
 
     @cached_property
-    def author(self):
+    def authors(self):
         if author_item := self.author_tags.select_related("author").filter(
             author__live=True
         ):
-            return author_item[0].author
-        return None
+            return author_item
 
     @property
-    def author_name(self):
+    def author_names(self):
         """
-        Returns the title of the author to be used for indexing
+        Returns the title of the authors to be used for indexing
         """
-        if self.author:
-            return self.author.title
-        return None
+        if self.authors:
+            return ', '.join([author.author.title for author in self.authors])
