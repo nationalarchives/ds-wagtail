@@ -76,7 +76,7 @@ class AuthorPage(BasePage):
             .order_by("-first_published_at")
             .select_related("teaser_image")
         )
-    
+
     @cached_property
     def related_page_pks(self):
         """
