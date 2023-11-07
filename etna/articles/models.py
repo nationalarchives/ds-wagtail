@@ -379,7 +379,7 @@ class FocusedArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
-            index.SearchField("author_name", boost=1),
+            index.SearchField("author_names", boost=1),
         ]
     )
 
