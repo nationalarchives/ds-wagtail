@@ -159,9 +159,18 @@ class EventHost(Orderable):
         related_name="hosts",
     )
 
+    host_page = models.ForeignKey(
+        "authors.AuthorPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
+        blank=True,
     )
 
     description = models.CharField(
@@ -179,10 +188,16 @@ class EventHost(Orderable):
     )
 
     panels = [
-        FieldPanel("name"),
-        FieldPanel("description"),
-        FieldPanel("image"),
-    ]
+        FieldPanel("host_page"),
+        MultiFieldPanel(
+            [
+                FieldPanel("name"),
+                FieldPanel("description"),
+                FieldPanel("image")
+            ],
+            heading=_("Speaker info"),
+        ),
+        ]
 
 
 class EventSpeaker(Orderable):
@@ -196,9 +211,18 @@ class EventSpeaker(Orderable):
         related_name="speakers",
     )
 
+    speaker_page = models.ForeignKey(
+        "authors.AuthorPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
     name = models.CharField(
         max_length=100,
         verbose_name=_("name"),
+        blank=True,
     )
 
     description = models.CharField(
@@ -216,10 +240,16 @@ class EventSpeaker(Orderable):
     )
 
     panels = [
-        FieldPanel("name"),
-        FieldPanel("description"),
-        FieldPanel("image"),
-    ]
+        FieldPanel("speaker_page"),
+        MultiFieldPanel(
+            [
+                FieldPanel("name"),
+                FieldPanel("description"),
+                FieldPanel("image")
+            ],
+            heading=_("Speaker info")
+        ),
+        ]
 
 
 class EventSession(models.Model):
