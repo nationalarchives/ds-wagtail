@@ -190,14 +190,10 @@ class EventHost(Orderable):
     panels = [
         FieldPanel("host_page"),
         MultiFieldPanel(
-            [
-                FieldPanel("name"),
-                FieldPanel("description"),
-                FieldPanel("image")
-            ],
+            [FieldPanel("name"), FieldPanel("description"), FieldPanel("image")],
             heading=_("Speaker info"),
         ),
-        ]
+    ]
 
 
 class EventSpeaker(Orderable):
@@ -242,14 +238,10 @@ class EventSpeaker(Orderable):
     panels = [
         FieldPanel("speaker_page"),
         MultiFieldPanel(
-            [
-                FieldPanel("name"),
-                FieldPanel("description"),
-                FieldPanel("image")
-            ],
-            heading=_("Speaker info")
+            [FieldPanel("name"), FieldPanel("description"), FieldPanel("image")],
+            heading=_("Speaker info"),
         ),
-        ]
+    ]
 
 
 class EventSession(models.Model):
