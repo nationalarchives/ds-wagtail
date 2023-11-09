@@ -20,8 +20,7 @@ jobs:
       - name: Build
         uses: ./.github/actions/docker-build
         with:
-          version: ${{ steps.version-tag.outputs.version-tag }} # (23.09.24.1)
-          latest: true
+          version: ${{ steps.version-tag.outputs.version-tag }} # (e.g. 23.09.24.1)
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
       # - name: Install AWS CLI
