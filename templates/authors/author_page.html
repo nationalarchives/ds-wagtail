@@ -37,10 +37,10 @@
             </div>
         </section>
         {% if page.authored_focused_articles %}
-        <aside class="tna-background--accent-light tna-!--margin-bottom-l">
+        <aside class="tna-background--accent-light tna-!--margin-bottom-l tna-section">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                    <h2 class="related-content__heading">{{page.title}}'s articles</h2>
+                    <h2 class="tna-heading-l">{{page.title}}'s articles</h2>
                 </div>
                 <ul class="card-group--list-style-none">
                     {% for item in page.authored_focused_articles %}
