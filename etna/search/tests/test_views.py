@@ -1,5 +1,4 @@
 import json as json_module
-import unittest
 
 from typing import Any, Dict
 
@@ -11,13 +10,9 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from etna.ciim.constants import DEFAULT_AGGREGATIONS, Aggregation, Bucket, BucketList
 from etna.core.test_utils import prevent_request_warnings
 
-from ...articles.factories import ArticlePageFactory
-from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_response, create_search_response
-from ...home.models import HomePage
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -513,143 +508,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
-class WebsiteSearchEndToEndTest(EndToEndSearchTestCase):
-    test_url = reverse_lazy("search-website")
-
-    @responses.activate
-    def test_no_matches_for_q_param_only_search(self):
-        """
-        When a user does an initial search for something with no matches:
-
-        They SHOULD see:
-        - A "No results" message
-
-        They SHOULD NOT see:
-        - Names, result counts and links for all buckets
-        - A "Search within these results" option
-        - Options to change sort order and display style of results
-        - Filter options to refine the search
-        - Search results
-        """
-        self.patch_search_endpoint("website_search_no_results.json")
-        response = self.client.get(self.test_url, data={"q": "qwerty"})
-        content = str(response.content)
-
-        # SHOULD see
-        self.assertNoResultsMessagingRendered(content)
-
-        # SHOULD NOT see
-        self.assertBucketLinksNotRendered(content)
-        self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortByOptionsNotRendered(content)
-        self.assertFilterOptionsNotRendered(content)
-        self.assertResultsNotRendered(content)
-
-    @responses.activate
-    def test_no_matches_for_the_current_bucket(self):
-        """
-        When a user searches for something that has results for SOME buckets,
-        but they are currently viewing a bucket with no results:
-
-        They SHOULD see:
-        - Names, result counts and links for all buckets
-        - A "No results" message.
-
-        They SHOULD NOT see:
-        - A "Search within these results" option
-        - Options to change sort order and display style of results
-        - Filter options to refine the search
-        - Search results
-        """
-        self.patch_search_endpoint("website_search_with_some_empty_buckets.json")
-        response = self.client.get(self.test_url, data={"q": "japan", "group": "audio"})
-        content = str(response.content)
-
-        # SHOULD see
-        self.assertBucketLinksRendered(content)
-        self.assertNoResultsMessagingRendered(content)
-
-        # SHOULD NOT see
-        self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortByOptionsNotRendered(content)
-        self.assertFilterOptionsNotRendered(content)
-        self.assertResultsNotRendered(content)
-
-    @responses.activate
-    def test_no_matches_for_the_refined_search(self):
-        """
-        When a user is viewing a bucket with results for the original search,
-        then uses the "Search within these results" option to refine it, and
-        that 'refined' search has no results:
-
-        They SHOULD see:
-        - Names, result counts and links for all buckets
-        - A "Search within these results" option
-        - Options to change sort order and display style of results
-        - Filter options to refine the search
-        - A "No results" message.
-
-        They SHOULD NOT see:
-        - Search results
-        """
-
-        self.patch_search_endpoint("website_search_empty_after_refining.json")
-        response = self.client.get(
-            self.test_url,
-            data={"q": "japan", "group": "blog", "filter_keyword": "qwerty"},
-        )
-        content = str(response.content)
-
-        # SHOULD see
-        self.assertBucketLinksRendered(content)
-        self.assertSearchWithinOptionRendered(content)
-        self.assertSortByOptionsRendered(content)
-        self.assertFilterOptionsRendered(content)
-        self.assertNoResultsMessagingRendered(content)
-
-        # SHOULD NOT see
-        self.assertResultsNotRendered(content)
-
-    @responses.activate
-    def test_refined_search_with_matches(self):
-        """
-        When a user is viewing a bucket with results for the original search,
-        then uses the "Search within these results" option to refine it, and
-        that 'refined' search has results:
-
-        They SHOULD see:
-        - Names, result counts and links for all buckets
-        - A "Search within these results" option
-        - Options to change sort order and display style of results
-        - Filter options to refine the search
-        - Search results
-
-        They SHOULD NOT see:
-        -  A "No results" message.
-        """
-        self.patch_search_endpoint("website_search_refined_with_matches.json")
-        response = self.client.get(
-            self.test_url,
-            data={
-                "q": "japan",
-                "group": "blog",
-                "topic": "East India Company",
-            },
-        )
-        content = str(response.content)
-
-        # SHOULD see
-        self.assertBucketLinksRendered(content)
-        self.assertSearchWithinOptionRendered(content)
-        self.assertSortByOptionsRendered(content)
-        self.assertFilterOptionsRendered(content)
-        self.assertResultsRendered(content)
-
-        # SHOULD NOT see
-        self.assertNoResultsMessagingNotRendered(content)
-
-
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
@@ -682,12 +540,10 @@ class FeaturedSearchTestCase(SearchViewTestCase):
     @classmethod
     def setUpTestData(cls):
         super().setUpTestData()
-        cls.article_1 = ArticlePageFactory(title="Test article 1")
-        cls.article_2 = ArticlePageFactory(title="How to query the archive")
 
     @responses.activate
     def test_without_search_query(self):
-        response = self.client.get(self.test_url)
+        _ = self.client.get(self.test_url)
 
         # The API should be requested without a search query
         self.assertEqual(len(responses.calls), 1)
@@ -707,20 +563,9 @@ class FeaturedSearchTestCase(SearchViewTestCase):
             self.client.session.get("back_to_search_url"), "/search/featured/"
         )
 
-        # When no query is present, website_results should contain the few
-        # most recent pages
-        self.assertEqual(
-            response.context["website_results"], [self.article_2, self.article_1]
-        )
-        self.assertEqual(response.context["website_result_count"], 2)
-
-        # The mocked API response includes zero results, but the website
-        # has 2, so 'result_count' should reflect that
-        self.assertEqual(response.context["result_count"], 2)
-
     @responses.activate
     def test_with_search_query(self):
-        response = self.client.get(self.test_url, data={"q": "query"})
+        _ = self.client.get(self.test_url, data={"q": "query"})
 
         # The query should be passed to the search API
         self.assertEqual(len(responses.calls), 1)
@@ -741,275 +586,6 @@ class FeaturedSearchTestCase(SearchViewTestCase):
             self.client.session.get("back_to_search_url"),
             "/search/featured/?q=query",
         )
-
-        # Because a query is present, a native website search for 'query' will be
-        # performed, and relevant matches included in the response
-        self.assertEqual(response.context["website_results"], [self.article_2])
-        self.assertEqual(response.context["website_result_count"], 1)
-
-        # The mocked API response includes zero results, but the website
-        # has one, so 'result_count' should reflect that
-        self.assertEqual(response.context["result_count"], 1)
-
-
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
-class WebsiteSearchAPIIntegrationTest(SearchViewTestCase):
-    test_url = reverse_lazy("search-website")
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get(self.test_url)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=interpretive"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=group%3A30"
-                "&aggregations=topic%3A10"
-                "&filterAggregations=group%3Ablog"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
-@override_settings(
-    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
-)
-class WebsiteSearchArticleTest(WagtailTestUtils, TestCase):
-    maxDiff = None
-    test_url = reverse_lazy("search-website")
-
-    def setUp(self):
-        super().setUp()
-
-        # create article page object
-        home = HomePage.objects.get()
-        # explict slug so that title does not default to slug
-        article_index_page = ArticleIndexPage(
-            title="Insight Pages",
-            intro="test",
-            teaser_text="test",
-            slug="insight-pages",
-        )
-        home.add_child(instance=article_index_page)
-        article_page = ArticlePage(
-            title="William Shakespeare", intro="test", teaser_text="test"
-        )
-        article_index_page.add_child(instance=article_page)
-
-        # create article page response in sourceUrl
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_insight.json"
-        with open(path, "r") as f:
-            responses.add(
-                responses.GET,
-                f"{settings.CLIENT_BASE_URL}/search",
-                json=json_module.loads(f.read()),
-            )
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get(self.test_url, data={"group": "insight"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=interpretive"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=group%3A30"
-                "&filterAggregations=group%3Ainsight"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-    @responses.activate
-    def test_template_used(self):
-        response = self.client.get(self.test_url, data={"group": "insight"})
-        self.assertTemplateUsed(response, "search/website_search.html")
-
-    @responses.activate
-    def test_current_bucket(self):
-        response = self.client.get(self.test_url, data={"group": "insight"})
-
-        # insight is current, others are not
-        expected_bucket_list = BucketList(
-            [
-                Bucket(
-                    key="blog",
-                    label="Blog posts",
-                    result_count=8,
-                    is_current=False,
-                    results=None,
-                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-                ),
-                Bucket(
-                    key="researchGuide",
-                    label="Research Guides",
-                    result_count=1,
-                    is_current=False,
-                    results=None,
-                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-                ),
-                Bucket(
-                    key="insight",
-                    label="Insights",
-                    result_count=1,
-                    is_current=True,
-                    results=None,
-                    aggregations=DEFAULT_AGGREGATIONS,
-                ),
-                # TODO: Restore when we are succesfully indexing new highlight pages
-                # Bucket(
-                #   key="highlight",
-                #   label="Highlights",
-                #   result_count=1,
-                #   is_current=True,
-                #   results=None,
-                # ),
-                Bucket(
-                    key="audio",
-                    label="Audio",
-                    result_count=0,
-                    is_current=False,
-                    results=None,
-                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-                ),
-                Bucket(
-                    key="video",
-                    label="Video",
-                    result_count=0,
-                    is_current=False,
-                    results=None,
-                    aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-                ),
-            ]
-        )
-        self.assertEqual(response.context_data["buckets"], expected_bucket_list)
-
-    @responses.activate
-    def test_page_instance_added_for_source_url(self):
-        response = self.client.get(self.test_url, data={"group": "insight"})
-        self.assertIsInstance(
-            response.context_data["page"].object_list[0].source_page, ArticlePage
-        )
-
-
-@unittest.skip("Highlights bucket to be re-instated at a later date")
-@override_settings(
-    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
-)
-class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
-    maxDiff = None
-    test_url = reverse_lazy("search-website")
-
-    def setUp(self):
-        super().setUp()
-
-        # create article page response in sourceUrl
-        path = f"{settings.BASE_DIR}/etna/search/tests/fixtures/website_search_highlight.json"
-        with open(path, "r") as f:
-            responses.add(
-                responses.GET,
-                f"{settings.CLIENT_BASE_URL}/search",
-                json=json_module.loads(f.read()),
-            )
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get(self.test_url, data={"group": "highlight"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=interpretive"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=collection%3A10"
-                "&aggregations=level%3A10"
-                "&aggregations=topic%3A10"
-                "&aggregations=closure%3A10"
-                "&aggregations=heldBy%3A10"
-                "&aggregations=catalogueSource%3A10"
-                "&aggregations=group%3A30"
-                "&aggregations=type%3A10"
-                "&filterAggregations=group%3Ahighlight"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-    @responses.activate
-    def test_template_used(self):
-        response = self.client.get(self.test_url, data={"group": "highlight"})
-        self.assertTemplateUsed(response, "search/website_search.html")
-
-    @responses.activate
-    def test_current_bucket(self):
-        response = self.client.get(self.test_url, data={"group": "highlight"})
-
-        # highlight is current, others are not
-        expected_bucket_list = BucketList(
-            [
-                Bucket(
-                    key="blog",
-                    label="Blog posts",
-                    result_count=16,
-                    is_current=False,
-                    results=None,
-                ),
-                Bucket(
-                    key="researchGuide",
-                    label="Research Guides",
-                    result_count=1,
-                    is_current=False,
-                    results=None,
-                ),
-                Bucket(
-                    key="insight",
-                    label="Insights",
-                    result_count=1,
-                    is_current=False,
-                    results=None,
-                ),
-                # TODO: Restore when we are succesfully indexing new highlight pages
-                # Bucket(
-                #   key="highlight",
-                #   label="Highlights",
-                #   result_count=2,
-                #   is_current=True,
-                #   results=None,
-                # ),
-                Bucket(
-                    key="audio",
-                    label="Audio",
-                    result_count=3,
-                    is_current=False,
-                    results=None,
-                ),
-                Bucket(
-                    key="video",
-                    label="Video",
-                    result_count=0,
-                    is_current=False,
-                    results=None,
-                ),
-            ]
-        )
-        self.assertEqual(response.context_data["buckets"], expected_bucket_list)
 
 
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
@@ -1345,33 +921,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric1": 3477,
                 "customMetric2": 0,
             },
-        )
-
-
-@unittest.skip("CIIM-powered website search is to be re-instated at a later date")
-class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
-    test_url = reverse_lazy(
-        "search-website-long-filter-chooser", kwargs={"field_name": "topic"}
-    )
-
-    @responses.activate
-    def test_accessing_page_with_no_params_performs_empty_search(self):
-        self.client.get(self.test_url)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=interpretive"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=topic%3A100"
-                "&filterAggregations=group%3Ablog"
-                "&from=0"
-                "&size=20"
-            ),
         )
 
 

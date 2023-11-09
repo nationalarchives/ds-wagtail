@@ -31,13 +31,6 @@
                     {% endif %}
                 </li>
                 <li class="search-results-hero__nav-list-item">
-                    {% if url_name == 'search-website' %}
-                        <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.WEBSITE.value}}</span>
-                    {% else %}
-                    <a class="search-results-hero__nav-link" href="{% url 'search-website' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.WEBSITE.value}}</a>
-                    {% endif %}
-                </li>
-                <li class="search-results-hero__nav-list-item">
                     <div>
                         <a href="/search/featured/" data-link-type="Link" data-link="Start a new search">Start new search</a>
                     </div>

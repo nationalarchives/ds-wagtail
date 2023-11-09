@@ -50,6 +50,7 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
         # and mark it as the latest
         page = Page.objects.get(depth=2).specific
         page.teaser_text = "New teaser text"
+        page.intro = "New intro text"
         revision = page.save_revision(clean=False, changed=True)
         revision.publish()
         cls.page = page

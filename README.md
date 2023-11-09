@@ -1,4 +1,4 @@
-# Etna
+# OHOS (follows Etna)
 
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
@@ -7,8 +7,6 @@
 This project contains technical documentation written in Markdown in the /docs folder. The latest build (from the `develop` branch) can be viewed online at:
 https://nationalarchives.github.io/ds-wagtail/
 
-
-You can also view it locally on http://localhost:8001/ which is booted as the `docs` container.
 
 ## Setting up a local build
 
@@ -36,19 +34,7 @@ This command takes care of the following:
 2. Starting all of the necessary Docker containers
 3. Installing any new python dependencies
 4. Collect static assets
-
-### 2. Start the development server
-
-```sh
-# Enter the shell for the web container
-fab sh
-
-# Run migrations
-poetry run python manage.py migrate
-
-# Run the development server
-poetry run python manage.py runserver 0.0.0.0:8000
-```
+5. Starts development server
 
 ### 2. Access the site
 
@@ -57,8 +43,9 @@ poetry run python manage.py runserver 0.0.0.0:8000
 ### 3. Create a Django user for yourself
 
 ```sh
-# ...from within the web container
-python manage.py createsuperuser
+# ...from within the dev container
+fab dev
+manage createsuperuser
 
 # ...or on the host machine
 fab create-superuser
@@ -76,23 +63,6 @@ See https://nationalarchives.github.io/ds-wagtail/developer-guide/frontend/#sett
 ## Linux / OSX
 If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
-Running the development server:
-
-``` sh
-djrun
-```
-
-Run migrations:
-
-```sh
-dj migrate
-```
-
-Create a super user:
-
-```sh
-dj createsuperuser
-```
 
 ## Issues with your local environment?
 

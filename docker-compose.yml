@@ -44,17 +44,19 @@ services:
       - DATABASE_USER=postgres
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
-      - DJANGO_SUPERUSER_EMAIL=admin@tna-development
+      - DJANGO_SUPERUSER_EMAIL=admin@tna-development.fake
       - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
 
-  docs:
-    container_name: docs
-    image: squidfunk/mkdocs-material
+  cli:
+    container_name: cli
+    platform: linux/amd64
+    build: cli
     volumes:
-      - .:/docs
-    ports:
-      - 8001:8000
+      - media:/app/media
+      - ./database_dumps:/app/database_dumps
+    env_file:
+      - .env
 
   dev:
     container_name: dev

@@ -36,22 +36,14 @@ INSTALLED_APPS = [
     "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
-    "etna.articles",
-    "etna.authors",
-    "etna.categories",
     "etna.ciim",
-    "etna.collections",
     "etna.core",
     "etna.feedback",
-    "etna.highlights",
     "etna.home",
-    "etna.images",
-    "etna.media",
     "etna.navigation",
     "etna.records",
     "etna.search",
     "etna.users",
-    "etna.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -263,11 +255,6 @@ MEDIA_URL = "/media/"
 # to serve static files even when DEBUG is False
 DJANGO_SERVE_STATIC = False
 
-WAGTAILMEDIA = {
-    "MEDIA_MODEL": "media.EtnaMedia",
-    "MEDIA_FORM_BASE": "etna.media.forms.BaseMediaForm",
-}
-
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "etna"
@@ -283,18 +270,9 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
-
 # Custom password template for private pages
 
 PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
-
-# Eventbrite client
-
-EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
-EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
-EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
-EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
 # API Client
 
@@ -409,7 +387,7 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_BETA_BANNER_ENABLED", "True")
 )
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
-    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
+    os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "False")
 )
 
 # TODO: This feature to update and test the env var for the deployment environment
@@ -417,7 +395,4 @@ FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "prod
 
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
-)
-FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
-    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

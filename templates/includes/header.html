@@ -31,22 +31,13 @@
     {% if settings.core.SiteSettings.main_menu_items %}
     <nav class="tna-column tna-column--flex-1 tna-column--full-small tna-column--full-tiny tna-header__navigation" aria-label="Main site navigation">
       <ul class="tna-header__navigation-items">
-        {% if request.path|is_search_or_catalogue %}
-          <!-- FOR PRIVATE BETA: STATIC SEARCH LINK ONLY -->
-          <li class="tna-header__navigation-item">
-            <a href="/search/" class="tna-header__navigation-item-link tna-header__navigation-item-link--selected">
-              Search
-            </a>
-          </li>
-        {% else %}
-          {% for item in settings.core.SiteSettings.main_menu_items %}
+        {% for item in settings.core.SiteSettings.main_menu_items %}
           <li class="tna-header__navigation-item">
             <a href="{{ item.url }}" class="tna-header__navigation-item-link{% if item.is_active %} tna-header__navigation-item-link--selected{% endif %}">
               {{ item.label }}
             </a>
           </li>
-          {% endfor %}
-        {% endif %}
+        {% endfor %}
       </ul>
     </nav>
     {% endif %}

@@ -26,7 +26,6 @@ class BucketKeys(StrEnum):
 class SearchTabs(StrEnum):
     ALL = "All results"
     CATALOGUE = "Catalogue results"
-    WEBSITE = "Website results"
 
 
 class Aggregation(StrEnum):
@@ -153,39 +152,6 @@ CATALOGUE_BUCKETS = BucketList(
             label="Find an archive",
             description="Results for archives in the UK and from across the world that match your search term.",
             aggregations=DEFAULT_AGGREGATIONS + [Aggregation.LOCATION],
-        ),
-    ]
-)
-
-
-WEBSITE_BUCKETS = BucketList(
-    [
-        Bucket(
-            key="blog",
-            label="Blog posts",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-        ),
-        Bucket(
-            key="researchGuide",
-            label="Research Guides",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-        ),
-        Bucket(
-            key=BucketKeys.INSIGHT.value,
-            label="Insights",
-            aggregations=DEFAULT_AGGREGATIONS,
-        ),
-        # TODO: Restore when we are succesfully indexing new highlight pages
-        # Bucket(key=BucketKeys.HIGHLIGHT.value, label="Highlights"),
-        Bucket(
-            key="audio",
-            label="Audio",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
-        ),
-        Bucket(
-            key="video",
-            label="Video",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TOPIC],
         ),
     ]
 )

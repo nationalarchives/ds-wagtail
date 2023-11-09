@@ -30,27 +30,6 @@
     </div>
     {% endif %}
 
-    {% if website_result_count %}
-        <div class="container-fluid tna-!--margin-top-l">
-        <section class="featured-search__website-results">
-            <header class="featured-search__website-results__head">
-                <h2 class="tna-heading-l featured-search__website-results__heading">Results from the website</h2>
-                <a href="/search/website?q={{ search_query|iriencode }}" class="featured-search__website_results-link">
-                        See all{% if search_query %} relevant{% endif %} website results ({{ website_result_count }})
-                </a>
-            </header>
-
-            <div class="row">
-            <ul class="featured-search__website-results-list">
-                {% for result in website_results %}
-                    {% include "search/blocks/native_website_result--grid.html" with heading_tag='h3' %}
-                {% endfor %}
-            </ul>
-            </div>
-        </section>
-        </div>
-    {% endif %}
-
     {% if not result_count %}
         {% include './blocks/no_results.html' %}
     {% endif %}
