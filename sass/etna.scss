@@ -56,6 +56,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour" as colourTools;
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
 .tna-heading--l,
 .tna-heading--m {
@@ -177,7 +178,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
-@import "includes/typography";
 @import "includes/card-groups";
 @import "includes/footer";
 @import "includes/cta-banner-newsletter";
@@ -330,31 +330,29 @@ Modified to match the existing site (for now)
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
-}
 
-.tna-heading {
-    &--no-link-arrow {
-        &::after {
-            display: none !important;
+    &__figure {
+        &--smaller {
+            min-height: 20vw;
         }
+    }
+
+    &__information {
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    img#{&}__image {
+        object-fit: cover;
     }
 }
 
 .tna-message {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
     margin-bottom: 3rem;
-
-    &__icon {
-        flex: 0 0 2.5rem;
-
-        @include media.on-mobile {
-            flex: 0 0 1.5rem;
-        }
-    }
-
-    &__message {
-        flex: 1;
-    }
 }
 
 .tna-skip-link {
@@ -433,10 +431,13 @@ Modified to match the existing site (for now)
             }
         }
     }
+.tna-large-paragraph {
+    @include colour.colour-font("font-dark");
+    @include typography.relative-font-size(22);
 }
 
 .template-focused-article {
-    .tna-breadcrumbs__wrapper {
+    .tna-breadcrumb-wrapper {
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
@@ -452,6 +453,7 @@ Modified to match the existing site (for now)
     }
 
     .generic-intro {
+        padding-bottom: 4rem;
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -461,6 +463,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
+        @include colour.invert;
         background-color: #343338 !important;
         color: #fff !important;
 
@@ -483,6 +486,22 @@ Modified to match the existing site (for now)
         padding-bottom: 4rem;
     }
 
+    .hero-image__container {
+        margin-top: -2rem;
+
+        .tna-hero {
+            max-width: grid.$largest-container-width;
+            margin: 0 auto;
+            padding: 0 grid.$gutter-width;
+            box-sizing: border-box;
+
+            @include media.on-mobile {
+                padding-right: 0;
+                padding-left: 0;
+            }
+        }
+    }
+
     @include media.on-larger-than-mobile {
         .tna-header__navigation-item-link:hover,
         .tna-header__navigation-item-link:hover:link,
@@ -493,6 +512,13 @@ Modified to match the existing site (for now)
             color: #fff !important;
             background-color: #343338 !important;
         }
+    }
+}
+
+.block-content_section,
+.section-wrapper {
+    .section-separator__heading {
+        padding-top: 2rem;
     }
 }
 
@@ -722,7 +748,7 @@ Modified to match the existing site (for now)
 
     .tna-heading {
         color: $color--white;
-        font-weight: 700;
+        font-weight: 500;
         margin-top: 0.5rem;
     }
 }

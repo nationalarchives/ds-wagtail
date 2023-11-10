@@ -52,6 +52,7 @@ class TestMaintenanceMode(TestCase):
         self.assertEquals(response.status_code, 503)
 
 
+@override_settings(FEATURE_COOKIE_BANNER_ENABLED=True)
 class TestInterpretCookiesMiddleware(SimpleTestCase):
     def setUp(self):
         self.request = HttpRequest()

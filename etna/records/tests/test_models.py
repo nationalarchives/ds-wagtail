@@ -1,19 +1,18 @@
 import json
-import unittest
 
 from copy import deepcopy
 
 from django.conf import settings
-from django.test import SimpleTestCase, TestCase, override_settings
+from django.test import SimpleTestCase, override_settings
 from django.urls import reverse
 from django.utils.safestring import SafeString
 
 import responses
 
-from ...ciim.tests.factories import create_media, create_record, create_response
+from ...ciim.tests.factories import create_record, create_response
 from ...ciim.utils import ValueExtractionError
 from ..api import get_records_client
-from ..models import Image, Record
+from ..models import Record
 
 
 class RecordModelTests(SimpleTestCase):
@@ -257,34 +256,6 @@ class RecordModelTests(SimpleTestCase):
         self.record._raw["digitised"] = False
         self.assertEqual(self.record.is_digitised, False)
 
-    @unittest.skip("Data not supported for the json record")
-    def test_delivery_option(self):
-        self.assertEqual(self.record.delivery_option, "DigitizedDiscovery")
-
-    @unittest.skip("Data not supported for the json record")
-    def test_availability_delivery_surrogates(self):
-        self.assertEqual(
-            self.record.availability_delivery_surrogates,
-            [
-                {
-                    "type": "surrogate",
-                    "value": (
-                        '<a target="_blank" href="http://www.thegenealogist.co.uk/non-conformist-records">'
-                        "The Genealogist"
-                        "</a>"
-                    ),
-                },
-                {
-                    "type": "surrogate",
-                    "value": (
-                        '<a target="_blank" href="http://search.ancestry.co.uk/search/db.aspx?dbid=5111">'
-                        "Ancestry"
-                        "</a>"
-                    ),
-                },
-            ],
-        )
-
     def test_is_tna_default(self):
         # The test fixture includes the following, so this should
         # return True by default
@@ -302,23 +273,6 @@ class RecordModelTests(SimpleTestCase):
         self.record._raw.pop("@datatype")
         self.assertIs(self.record.is_tna, False)
 
-    @unittest.skip("Data not supported for the json record")
-    def test_topics(self):
-        self.assertEqual(
-            self.record.topics,
-            [
-                {
-                    "title": "Taxonomy One",
-                },
-                {
-                    "title": "Taxonomy Two",
-                },
-                {
-                    "title": "Taxonomy Three",
-                },
-            ],
-        )
-
     def test_next_record(self):
         r = self.record.next_record
         self.assertEqual(
@@ -331,34 +285,6 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(
             (r.iaid, r.reference_number, r.summary_title),
             ("C10296", "LO 3", "Law Officers' Department: Patents for Inventions"),
-        )
-
-    @unittest.skip("Data not supported for the json record")
-    def test_related_records(self):
-        self.assertEqual(
-            [(r.iaid, r.summary_title) for r in self.record.related_records],
-            [
-                (
-                    "C8981250",
-                    "[1580-1688]. Notes (cards) from State Papers Foreign, Royal "
-                    "Letters, SP 102/61. Manuscript.",
-                )
-            ],
-        )
-
-    @unittest.skip("Data not supported for the json record")
-    def test_related_articles(self):
-        self.assertEqual(
-            [(r.summary_title, r.url) for r in self.record.related_articles],
-            [
-                (
-                    "Irish maps c.1558-c.1610",
-                    (
-                        "http://www.nationalarchives.gov.uk/help-with-your-research/research-guides/"
-                        "irish-maps-c1558-c1610/"
-                    ),
-                )
-            ],
         )
 
     def test_source_catalogue(self):
@@ -560,57 +486,6 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
         record = self.records_client.fetch(iaid="C123456")
 
         self.assertEqual(record.related_articles, ())
-
-
-@unittest.skip(
-    "Client API open beta API does not support media. Re-enable/update once media is available."
-)
-@override_settings(
-    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
-    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
-)
-class ImageTestCase(TestCase):
-    @responses.activate
-    def test_thumbnail_url(self):
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_response(
-                records=[
-                    create_media(
-                        thumbnail_location="path/to/thumbnail.jpeg",
-                        location="path/to/image.jpeg",
-                    ),
-                ]
-            ),
-        )
-
-        images = Image.search.filter(rid="")
-        image = images[0]
-
-        self.assertEquals(
-            image.thumbnail_url, "https://media.preview/path/to/thumbnail.jpeg"
-        )
-
-    @responses.activate
-    def test_thumbnail_url_fallback(self):
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_response(
-                records=[
-                    create_media(
-                        thumbnail_location=None, location="path/to/image.jpeg"
-                    ),
-                ]
-            ),
-        )
-
-        images = Image.search.filter(rid="")
-        image = images[0]
-
-        # Fallback serves image through Wagtail instead of from Client API
-        self.assertEquals(image.thumbnail_url, "/records/image/path/to/image.jpeg")
 
 
 @override_settings(CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}")

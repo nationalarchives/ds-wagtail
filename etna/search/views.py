@@ -3,31 +3,21 @@ import logging
 import re
 
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
-from urllib.parse import urlparse
 
-from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Page as PaginatorPage
-from django.db.models import Count, Q
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
-from django.utils.text import capfirst
 from django.views.generic import FormView, TemplateView
-from django.views.generic.list import MultipleObjectMixin
 
 from wagtail.coreutils import camelcase_to_underscore
-from wagtail.models import Page
-from wagtail.query import PageQuerySet
-from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
 
 from ..analytics.mixins import SearchDataLayerMixin
-from ..articles.models import ArticleIndexPage, ArticlePage
 from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
     FEATURED_BUCKETS,
-    WEBSITE_BUCKETS,
     Bucket,
     BucketKeys,
     BucketList,
@@ -36,24 +26,8 @@ from ..ciim.constants import (
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
-from ..collections.models import (
-    ExplorerIndexPage,
-    PageTimePeriod,
-    PageTopic,
-    TimePeriodExplorerIndexPage,
-    TimePeriodExplorerPage,
-    TopicExplorerIndexPage,
-    TopicExplorerPage,
-)
-from ..home.models import HomePage
 from ..records.api import records_client
-from .forms import (
-    CatalogueSearchForm,
-    FeaturedSearchForm,
-    NativeWebsiteSearchForm,
-    WebsiteSearchForm,
-)
-from .utils import normalise_native_search_query
+from .forms import CatalogueSearchForm, FeaturedSearchForm
 
 logger = logging.getLogger(__name__)
 
@@ -698,67 +672,6 @@ class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
         return super().get_context_data(url_name="search-catalogue", **kwargs)
 
 
-class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
-    api_stream = Stream.INTERPRETIVE
-    api_method_name = "search"
-    bucket_list = WEBSITE_BUCKETS
-    default_group = "blog"
-    form_class = WebsiteSearchForm
-    template_name = "search/website_search.html"
-    search_tab = SearchTabs.WEBSITE.value
-    page_type = "Website search page"
-    page_title = "Website search"
-
-    def add_article_page_for_url(self, page: PaginatorPage) -> None:
-        """
-        Finds the Article page corresponding to the sourceUrl of a record, then adds that page to result of the same record.
-        Unmatched url is bypassed but logged.
-        """
-        slugs = [
-            result.url.rstrip("/").split("/").pop()
-            for result in page.object_list
-            if result.has_source_url()
-        ]
-        # filter by slug for performance boost
-        wagtail_pages = {
-            page.get_url(self.request): page
-            for page in ArticlePage.objects.live()
-            .filter(slug__in=slugs)
-            .defer("body")
-            .select_related("teaser_image")
-        }
-
-        # Set 'source_page' on results with matching pages
-        for result in page.object_list:
-            if result.has_source_url():
-                absolute_url = urlparse(result.url).path
-                if source_page := wagtail_pages.get(absolute_url):
-                    result.source_page = source_page
-                else:
-                    logger.debug(
-                        f"WebsiteSearchView:scraped/ingested url={absolute_url} not found in wagtail_pages={wagtail_pages}"
-                    )
-
-    def get_context_data(self, **kwargs):
-        kwargs["bucketkeys"] = BucketKeys
-        context = super().get_context_data(**kwargs)
-        if filter_aggregation := self.request.GET.get("group", ""):
-            if filter_aggregation == "insight" and "page" in context:
-                self.add_article_page_for_url(context["page"])
-        return context
-
-
-class WebsiteSearchLongFilterView(BaseLongFilterOptionsView):
-    api_method_name = "search"
-    api_stream = Stream.INTERPRETIVE
-    default_group = "blog"
-    form_class = WebsiteSearchForm
-    template_name = "search/long_filter_options.html"
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        return super().get_context_data(url_name="search-website", **kwargs)
-
-
 class FeaturedSearchView(BaseSearchView):
     api_method_name = "search_all"
     form_class = FeaturedSearchForm
@@ -770,10 +683,6 @@ class FeaturedSearchView(BaseSearchView):
 
     def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
         super().setup(request, *args, **kwargs)
-        # Additional attributes for storing website search result data
-        # If the form is valid, these will be update in process_valid_form()
-        self.website_result_list: List[Page] = []
-        self.website_result_count: int = 0
 
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         return {
@@ -801,320 +710,19 @@ class FeaturedSearchView(BaseSearchView):
             buckets[bucket.key] = bucket
         return buckets
 
-    def process_valid_form(self, form: Form) -> HttpResponse:
-        """
-        Overrides `BaseSearchView.process_valid_form()` to query the website
-        for results (as well as the API).
-        """
-        results = self.get_website_results()
-        if isinstance(results, PageQuerySet):
-            self.website_result_count = results.count()
-        else:
-            self.website_result_count = results.get_queryset(for_count=True).count()
-        self.website_result_list = [p.specific for p in results[:3]]
-        return super().process_valid_form(form)
-
-    def get_website_results(self):
-        base = NativeWebsiteSearchView.get_base_queryset(self.request)
-        if self.query:
-            return base.search(normalise_native_search_query(self.query))
-        return base.order_by("-first_published_at")
-
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
         return super().get_context_data(
             buckets=self.get_buckets_for_display(),
-            website_results=self.website_result_list,
-            website_result_count=self.website_result_count,
             **kwargs,
         )
 
     def get_result_count(self):
         """
         Overrides BaseSearchView.get_result_count() to return the combined
-        totals from all buckets PLUS any website results.
+        totals from all buckets.
         """
         total = 0
         for bucket in self.get_buckets_for_display().values():
             total += bucket.result_count
-        total += self.website_result_count
         return total
-
-
-class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETFormView):
-    form_class = NativeWebsiteSearchForm
-    template_name = "search/native_website_search.html"
-    search_tab = SearchTabs.WEBSITE.value
-    page_type = "Website search page"
-    page_title = "Website search"
-
-    default_per_page: int = 15
-    default_sort_by: str = SortBy.RELEVANCE.value
-    default_sort_order: str = SortOrder.ASC.value
-    default_display: str = Display.LIST.value
-
-    def setup(self, request: HttpRequest) -> None:
-        super().setup(request)
-
-        # Set attributes for reference in other methods
-        self.query = self.form.cleaned_data.get("q", "")
-        self.query_normalised = normalise_native_search_query(self.query)
-        self.total_count: int = 0  # populated by get_context_data()
-        self.selected_filters: Dict[str, List[str]] = {}  # populated by get_results()
-        self.selected_filters_count: int = 0  # populated by get_results()
-
-    @classmethod
-    def get_base_queryset(cls, request: HttpRequest) -> PageQuerySet:
-        return (
-            Page.objects.live()
-            .public()
-            .not_exact_type(
-                Page,
-                ArticleIndexPage,
-                HomePage,
-                ExplorerIndexPage,
-                TimePeriodExplorerIndexPage,
-                TopicExplorerIndexPage,
-            )
-        )
-
-    def get(self, request: HttpRequest) -> None:
-        facet_source_qs = self.get_base_queryset(request)
-        if self.query_normalised:
-            # if the user searched for something, generate facet data from the result
-            facet_source_qs = facet_source_qs.search(
-                self.query_normalised, order_by_relevance=False
-            ).get_queryset(for_count=True)
-        self.facet_source_data = tuple(
-            facet_source_qs.values_list("id", "content_type")
-        )
-
-        # Continue with inherited form/list handling
-        return super().get(request)
-
-    def get_results(
-        self, form: NativeWebsiteSearchForm
-    ) -> PageQuerySet | PostgresSearchResults:
-        """
-        Used instead of MultipleObjectsMixin.get_queryset() to return
-        matches based on querystring parameters.
-        """
-
-        # Start with all pages
-        queryset = self.get_base_queryset(self.request)
-
-        # Filter by topic
-        selected_topics = (
-            form.cleaned_data.get("topic", TopicExplorerPage.objects.none())
-            .only("id", "slug", "title")
-            .order_by("title")
-        )
-        if selected_topics:
-            queryset = queryset.filter(
-                id__in=PageTopic.objects.filter(topic__in=selected_topics).values_list(
-                    "page_id", flat=True
-                )
-            )
-            # Update selected_filters
-            self.selected_filters["topic"] = [
-                (obj.slug, f"Topic: {obj.title}") for obj in selected_topics
-            ]
-
-        # Filter by time period
-        selected_time_periods = (
-            form.cleaned_data.get("time_period", TopicExplorerPage.objects.none())
-            .only("id", "slug", "title")
-            .order_by("start_year")
-        )
-        if selected_time_periods:
-            queryset = queryset.filter(
-                id__in=PageTimePeriod.objects.filter(
-                    time_period__in=selected_time_periods
-                ).values_list("page_id", flat=True)
-            )
-            # Update selected_filters
-            self.selected_filters["time_period"] = [
-                (obj.slug, f"Time period: {obj.title}") for obj in selected_time_periods
-            ]
-
-        # Filter by type
-        selected_types = form.cleaned_data.get("format", ())
-        if selected_types:
-            content_types = [
-                ContentType.objects.get_by_natural_key(*value.split("."))
-                for value in selected_types
-            ]
-            queryset = queryset.filter(content_type__in=content_types)
-            # Update selected_filters
-            page_type_filters = []
-            for ct in content_types:
-                model = ct.model_class()
-                page_type_filters.append(
-                    (
-                        model._meta.label_lower,
-                        f"Format: {model.type_label()}",
-                    )
-                )
-            self.selected_filters["format"] = sorted(
-                page_type_filters, key=lambda x: x[1]
-            )
-
-        self.selected_filters_count = sum(
-            len(value) for value in self.selected_filters.values()
-        )
-
-        # Conditionally apply keyword search
-        if self.query_normalised:
-            results = queryset.search(
-                self.query_normalised,
-                order_by_relevance=(
-                    form.cleaned_data.get("sort_by") == SortBy.RELEVANCE.value
-                ),
-            )
-        else:
-            results = queryset
-
-        # Finally, apply ordering
-        sort_by = form.cleaned_data.get("sort_by", self.default_sort_by)
-
-        if sort_by == SortBy.RELEVANCE:
-            if self.query_normalised:
-                # stick with relevancy ordering applied by search()
-                return results
-            else:
-                # consider the 'most recent' pages as 'most relevant'
-                return results.order_by("-first_published_at")
-
-        # All other ordering options need to be applied to a queryset,
-        # so we must first convert the search results into one
-        if isinstance(results, PostgresSearchResults):
-            results = results.get_queryset(for_count=True)
-        return results.order_by(sort_by)
-
-    def get_meta_title(self) -> str:
-        """
-        Return a string to use the the <title> tag for this view.
-        """
-        title = "Website search results"
-        if self.query:
-            title += ' for "' + self.query.replace('"', "'") + '"'
-        return title
-
-    def get_initial(self) -> Dict[str, Any]:
-        return {
-            "sort_by": self.default_sort_by,
-            "per_page": self.default_per_page,
-            "display": self.default_display,
-        }
-
-    def form_invalid(self, form: NativeWebsiteSearchForm):
-        """
-        Interpret some form field errors as critical errors, returning a
-        400 (Bad Request) response.
-        """
-        for field_name in (
-            "per_page",
-            "sort_by",
-            "display",
-        ):
-            if field_name in form.errors:
-                return HttpResponseBadRequest(str(form.errors[field_name]))
-        return super().form_invalid(form)
-
-    def get_paginate_by(self, queryset: PageQuerySet) -> int:
-        return self.form.cleaned_data.get("per_page", self.default_per_page)
-
-    def get_context_data(self, **kwargs):
-        self.object_list = self.get_results(self.form)
-        kwargs["page_type"] = self.page_type
-        kwargs["page_title"] = self.page_title
-
-        context = super().get_context_data(**kwargs)
-
-        try:
-            page_number = context["page_obj"].number
-        except (KeyError, AttributeError):
-            page_number = 1
-
-        matching_page_ids = [id for id, _ in self.facet_source_data]
-
-        # Restrict visibility of 'topic' choices to those that are relevant, and add facet counts
-        topic_field = self.form.fields["topic"]
-        topic_field.choices = list(
-            (slug, f"{title} ({doc_count})")
-            for slug, title, doc_count in TopicExplorerPage.objects.live()
-            .public()
-            .filter(topic_pages__page_id__in=matching_page_ids)
-            .annotate(
-                doc_count=Count(
-                    "topic_pages",
-                    filter=Q(topic_pages__page_id__in=matching_page_ids),
-                )
-            )
-            .distinct()
-            .values_list("slug", "title", "doc_count")
-            .order_by("title")
-        )
-        topic_field.choices_updated = True
-
-        # Restrict visibility of 'time_period' choices to those that are relevant, and add facet counts
-        time_period_field = self.form.fields["time_period"]
-        time_period_field.choices = list(
-            (slug, f"{title} ({doc_count})")
-            for slug, title, doc_count in TimePeriodExplorerPage.objects.live()
-            .public()
-            .filter(time_period_pages__page_id__in=matching_page_ids)
-            .annotate(
-                doc_count=Count(
-                    "time_period_pages",
-                    filter=Q(time_period_pages__page_id__in=matching_page_ids),
-                )
-            )
-            .distinct()
-            .order_by("start_year")
-            .values_list("slug", "title", "doc_count")
-        )
-        time_period_field.choices_updated = True
-
-        # Restrict visibility of 'page_type' choices to those that are relevant, and add facet counts
-        page_type_field = self.form.fields["format"]
-        replacement_choices = []
-        for value, label in page_type_field.choices:
-            content_type = ContentType.objects.get_by_natural_key(*value.split("."))
-            doc_count = 0
-            for _, ct_id in self.facet_source_data:
-                if ct_id == content_type.id:
-                    doc_count += 1
-            if doc_count:
-                replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
-        page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
-        page_type_field.choices_updated = True
-
-        # Add custom variables to the return value
-        context.update(
-            meta_title=self.get_meta_title(),
-            page=context["page_obj"],
-            page_range=context["paginator"].get_elided_page_range(
-                number=page_number, on_ends=0
-            ),
-            search_query=self.query,
-            selected_filters=self.selected_filters,
-            selected_filters_count=self.selected_filters_count,
-            bucketkeys=BucketKeys,
-            searchtabs=SearchTabs,
-        )
-
-        # Set custom attribute for use in get_datalayer_data()
-        self.total_count = context["paginator"].count
-
-        return context
-
-    def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
-        data = super().get_datalayer_data(request)
-        data.update(
-            customDimension8=self.search_tab,
-            customDimension9=self.query or "*",
-            customMetric1=self.total_count,
-            customMetric2=self.selected_filters_count,
-        )
-        return data

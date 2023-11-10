@@ -4,7 +4,6 @@ from wagtail.models import Site
 
 from ..alerts.models import Alert
 from ..alerts.templatetags import alert_tags
-from ..collections.models import ExplorerIndexPage, TopicExplorerPage
 from ..home.models import HomePage
 
 
@@ -40,24 +39,6 @@ class AlertTestCase(TestCase):
         )
         self.root.add_child(instance=self.home_page)
 
-        self.explorer_index_page = ExplorerIndexPage(
-            title="Explorer page",
-            intro="test",
-            teaser_text="test",
-            live=True,
-            alert=self.alert_medium,
-        )
-        self.home_page.add_child(instance=self.explorer_index_page)
-
-        self.topic_explorer_page = TopicExplorerPage(
-            title="Category page",
-            intro="test",
-            teaser_text="test",
-            live=True,
-            alert=self.alert_low,
-        )
-        self.explorer_index_page.add_child(instance=self.topic_explorer_page)
-
     def test_current_page_alerts(self):
         # Ensure cascade is off
         self.alert_high.cascade = False
@@ -74,26 +55,6 @@ class AlertTestCase(TestCase):
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
-        # Test explorer page - currently asigned medium alert
-        # .. inactive
-        self.alert_medium.active = False
-        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
-        self.assertEqual(len(alerts), 0)
-        # .. active
-        self.alert_medium.active = True
-        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
-        self.assertEqual(len(alerts), 1)
-
-        # Test category page - currently asigned low alert
-        # .. inactive
-        self.alert_low.active = False
-        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
-        self.assertEqual(len(alerts), 0)
-        # .. active
-        self.alert_low.active = True
-        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
-        self.assertEqual(len(alerts), 1)
-
     def test_cascading_page_alerts(self):
         # Ensure cascade is off to begin
         self.alert_high.cascade = False
@@ -108,12 +69,6 @@ class AlertTestCase(TestCase):
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 0)
 
-        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
-        self.assertEqual(len(alerts), 0)
-
-        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
-        self.assertEqual(len(alerts), 0)
-
         # Activate all alerts
         self.alert_high.active = True
         self.alert_medium.active = True
@@ -121,12 +76,6 @@ class AlertTestCase(TestCase):
 
         # All pages should have 1 alert (none inherited)
         alerts = alert_tags.alerts(self.home_page)["alerts"]
-        self.assertEqual(len(alerts), 1)
-
-        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
-        self.assertEqual(len(alerts), 1)
-
-        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
         self.assertEqual(len(alerts), 1)
 
         # Enable cascade
@@ -142,9 +91,3 @@ class AlertTestCase(TestCase):
         # Each page should inherit an extra alert from its parent
         alerts = alert_tags.alerts(self.home_page)["alerts"]
         self.assertEqual(len(alerts), 1)
-
-        alerts = alert_tags.alerts(self.explorer_index_page)["alerts"]
-        self.assertEqual(len(alerts), 2)
-
-        alerts = alert_tags.alerts(self.topic_explorer_page)["alerts"]
-        self.assertEqual(len(alerts), 3)

@@ -104,8 +104,6 @@ def search_title(search_tab) -> str:
         label = "All search results"
     elif search_tab == SearchTabs.CATALOGUE.value:
         label = "Catalogue search results"
-    elif search_tab == SearchTabs.WEBSITE.value:
-        label = "Website search results"
     return label
 
 
