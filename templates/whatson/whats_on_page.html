@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+  {# Header area and filters #}
   <div class="full-width-header full-width-header--pink">
     <div class="tna-breadcrumb-wrapper">
       <div class="tna-container">
@@ -60,15 +61,20 @@
     </div>
   </div>
 
+  {# Featured event #}
   <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
     <div class="tna-column tna-column--full">
 
+      {% include "includes/whats-on-active-filters.html" %}
+
+      {# Listing #}
       <div data-js-whatson-listing>
         {% include "includes/whats-on-listing.html" %}
       </div>
     </div>
   </div>
 
+  {# Related content #}
   <div class="section section--pink">
     <div class="tna-container">
         <div class="tna-column tna-column--full tna-!--margin-top-l">
