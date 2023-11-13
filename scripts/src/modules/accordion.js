@@ -26,7 +26,7 @@ class Accordion {
                 this.button.setAttribute("aria-expanded", "true");
                 this.content.setAttribute("aria-hidden", "false");
                 this.accordion.classList.add("is-open");
-                this.accordion.classList.removed("is-closed");
+                this.accordion.classList.remove("is-closed");
                 open = true;
             }
         });

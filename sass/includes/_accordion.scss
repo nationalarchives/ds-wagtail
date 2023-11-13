@@ -33,12 +33,6 @@
         &:hover {
             cursor: pointer;
         }
-
-        /* stylelint-disable */
-        &:focus {
-            outline: 0; // focus style implemented directly on text instead
-        }
-        /* stylelint-enable */
     }
 
     &__icon {
