@@ -878,13 +878,11 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     start_date = models.DateTimeField(
         verbose_name=_("start date"),
         null=True,
-        editable=False,
     )
 
     end_date = models.DateTimeField(
         verbose_name=_("end date"),
         null=True,
-        editable=False,
     )
 
     min_price = models.IntegerField(
