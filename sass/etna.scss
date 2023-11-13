@@ -754,3 +754,21 @@ Modified to match the existing site (for now)
         margin-top: 0.5rem;
     }
 }
+
+// filter refinements
+
+.tna-filters {
+    &__item--active #{&}__link {
+        @include colour.colour-background("contrast-background");
+        color: $color__white;
+    }
+
+    &__item--clear-all #{&}__link {
+        @include typography.main-font-weight-bold();
+        background: transparent;
+
+        &:hover {
+            @include colour.colour-font("font-dark");
+        }
+    }
+}
