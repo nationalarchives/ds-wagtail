@@ -81,6 +81,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-articles";
 @import "includes/filters";
 @import "includes/full-width-header";
+@import "includes/listing-info";
 @import "includes/meta";
 @import "includes/media-embed";
 @import "includes/people";
@@ -513,14 +514,8 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant with an offset top - used on what's on landing page
+// tna-container variant which is full-width at mobile - used on what's on landing page
 .tna-container {
-    &--offset-top {
-        @include media.on-larger-than-mobile {
-            margin-top: -9rem;
-        }
-    }
-
     &--full-width-mobile {
         @include media.on-mobile {
             padding-left: 0;
