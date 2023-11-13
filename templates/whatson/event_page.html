@@ -21,31 +21,25 @@
                                 <i class="fa-regular fa-calendar event-meta__icon"></i>
 
                                 <div class="event-meta__details">
-                                <p>{{ page.start_date|date:"l j F, H:i" }}</p>
+                                    <p>{{ page.start_date|date:"l j F, H:i" }}</p>
                                 </div>
                             </li>
                         {% endif %}
-                        {% if page.venue_type %}
-                            <li class="event-meta__item">
-                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
-
-                                <div class="event-meta__details">
-                                <p>{{ page.venue_type }}</p>
-
-                                {% if page.venue_address %}
-                                    <address>
-                                    {{ page.venue_address }}
-                                    </address>
-                                {% endif %}
-                                </div>
-                            </li>
-                        {% endif %}
-                        {% if page.registration_info %}
+                        {% if page.price_range %}
                             <li class="event-meta__item">
                                 <i class="fa-solid fa-ticket event-meta__icon"></i>
 
                                 <div class="event-meta__details">
-                                {{ page.registration_info|richtext }}
+                                    {{ page.price_range }}
+                                </div>
+                            </li>
+                        {% endif %}
+                        {% if page.get_venue_type_display %}
+                            <li class="event-meta__item">
+                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
+
+                                <div class="event-meta__details">
+                                    <p>{{ page.get_venue_type_display }}</p>
                                 </div>
                             </li>
                         {% endif %}
