@@ -1012,8 +1012,8 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         ),
         MultiFieldPanel(
             [
-                FieldPanel("start_date", read_only=True),
-                FieldPanel("end_date", read_only=True),
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
                 FieldPanel("min_price"),
                 FieldPanel("max_price"),
                 FieldPanel("dwell_time"),
@@ -1063,6 +1063,20 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
     )
+
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = []
 
     @cached_property
     def price_range(self):
