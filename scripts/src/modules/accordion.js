@@ -7,6 +7,7 @@ class Accordion {
         this.accordion = node;
         this.button = this.accordion.querySelector("[data-accordion-button]");
         this.content = this.accordion.querySelector("[data-accordion-content]");
+        this.accordion.classList.add("is-closed");
         this.bindEvents();
     }
 

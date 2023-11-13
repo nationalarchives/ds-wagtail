@@ -17,7 +17,7 @@
     <div class="tna-container">
       <div class="tna-column tna-column--full">
         <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
-            <fieldset class="filters__fieldset accordion is-closed" data-accordion>
+            <fieldset class="filters__fieldset accordion" data-accordion>
                 <legend class="filters__super-title">
                     <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
                         When
@@ -32,7 +32,7 @@
                 </div>
             </fieldset>
           
-            <fieldset class="filters__fieldset accordion is-closed" data-accordion>
+            <fieldset class="filters__fieldset accordion" data-accordion>
                 <legend class="filters__super-title">
                     <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
                         {{ filter_form.event_type.label }}
