@@ -7,6 +7,69 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
+    <div class="tna-background--tint">
+        <div class="tna-section">
+            <div class="tna-container">
+                <div class="tna-column tna-column--full">
+                <h1 class="tna-heading tna-heading--xl">
+                    Search
+                </h1>
+                <p>Community-generated digital content and records from UK archives.</p>
+                <form action="/search" class="ohos-search">
+                    <input type="search" name="q" class="ohos-search__input">
+                    <button class="tna-button" type="submit">Search</button>
+                </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tna-section">
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
+                <h2 class="tna-heading tna-heading--l">
+                    What can you find in the Observatory?
+                </h2>
+                <ul class="tna-columns tna-columns--3 tna-columns--2-small tna-columns--1-tiny ohos-stats tna-!--margin-top-m">
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">250</span> Archives
+                        </span>
+                    </li>
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-user"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">58,679</span> People &amp; Groups
+                        </span>
+                    </li>
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">64,789</span> Collections
+                        </span>
+                    </li>
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">75,000</span> Locations
+                        </span>
+                    </li>
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-file"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">343,567</span> Documents
+                        </span>
+                    </li>
+                    <li class="ohos-stats__item tna-columns__block">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span class="ohos-stats__stat">
+                        <span class="ohos-stats__number">1,577</span> Events
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     <div class="tna-container tna-section">
         <div class="tna-column tna-column--full">
@@ -15,8 +78,8 @@
                     {{item}}
                 {% else %}
                     {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
-                    <div class="col-sm-12 col-md-6">
-                        <div class="topic-explore">
+                      <div class="col-sm-12 col-md-6">
+                          <div class="topic-explore">
                             <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
                             <div class="explore-cta">
                                 <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>

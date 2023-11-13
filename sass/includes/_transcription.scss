@@ -99,7 +99,7 @@
     }
 
     &__open {
-        @extend .tna-button--yellow;
+        // @extend .tna-button--yellow;
         position: absolute;
         left: 50%;
         -webkit-transform: translateX(-50%);
@@ -115,7 +115,7 @@
     }
 
     &__close {
-        @extend .tna-button--yellow;
+        // @extend .tna-button--yellow;
         display: block;
         margin-left: auto;
         margin-right: auto;

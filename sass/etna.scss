@@ -55,6 +55,7 @@
 
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour" as colourTools;
+@use "@nationalarchives/frontend/nationalarchives/tools/spacing";
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 @use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
@@ -77,6 +78,8 @@
 }
 
 .ohos-search {
+    @include spacing.space-above;
+
     display: flex;
     align-items: stretch;
 
@@ -173,8 +176,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/variables";
 @import "includes/mixins";
 @import "includes/global";
-@import "includes/buttons";
-// @import "includes/generic-intro";
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
