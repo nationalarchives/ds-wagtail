@@ -34,15 +34,13 @@
                                 </div>
                             </li>
                         {% endif %}
-                        {% if page.get_venue_type_display %}
-                            <li class="event-meta__item">
-                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
+                        <li class="event-meta__item">
+                            <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
-                                <div class="event-meta__details">
-                                    <p>{{ page.get_venue_type_display }}</p>
-                                </div>
-                            </li>
-                        {% endif %}
+                            <div class="event-meta__details">
+                                <p>{{ page.get_venue_type_display }}</p>
+                            </div>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -90,23 +88,21 @@
                             </ul>
                         </li>
                     {% endif %}
-                    {% if page.venue_type %}
-                        <li class="event-meta__item">
-                            <h3 class="event-meta__title">
-                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
+                    <li class="event-meta__item">
+                        <h3 class="event-meta__title">
+                            <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
-                                Location
-                            </h3>
+                            Location
+                        </h3>
 
-                            <div class="event-meta__details">
-                                <p>{{ page.get_venue_type_display }}</p>
+                        <div class="event-meta__details">
+                            <p>{{ page.get_venue_type_display }}</p>
 
-                                {% if page.venue_address %}
-                                    {{ page.venue_address|richtext }}
-                                {% endif %}
-                            </div>
-                        </li>
-                    {% endif %}
+                            {% if page.venue_address %}
+                                {{ page.venue_address|richtext }}
+                            {% endif %}
+                        </div>
+                    </li>
                     {% if page.registration_info %}
                         <li class="event-meta__item">
                             <h3 class="event-meta__title">
