@@ -546,9 +546,44 @@ Modified to match the existing site (for now)
 // tna-useful-info component - 'Good to know' information from event page
 
 .tna-useful-info {
-    @include colour.light-accent-background;
-    color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem 2rem;
+    $useful-info-root: &;
+    display: flex;
+    flex-direction: column-reverse;
+    margin-top: 3rem;
+
+    @include media.on-larger-than-mobile {
+        align-items: flex-start;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    &__content {
+        @include colour.light-accent-background;
+        color: colour.brand-colour("black");
+        padding: 2rem;
+
+        @include media.on-larger-than-mobile {
+            padding: 3rem;
+
+            #{$useful-info-root}--with-image & {
+                flex: 0 0 calc(50% - 3rem);
+                padding: 3rem 8rem 3rem 3rem;
+            }
+        }
+    }
+
+    &__image {
+        @include media.on-larger-than-mobile {
+            flex: 0 0 calc(50% - 3rem);
+            margin-top: -3rem;
+            margin-left: -5rem;
+        }
+    }
+
+    &__cta {
+        margin-top: 2rem;
+    }
 }
 
 //
