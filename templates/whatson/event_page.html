@@ -99,7 +99,7 @@
                             </h3>
 
                             <div class="event-meta__details">
-                                <p>{{ page.venue_type }}</p>
+                                <p>{{ page.get_venue_type_display }}</p>
 
                                 {% if page.venue_address %}
                                     {{ page.venue_address|richtext }}
@@ -142,21 +142,23 @@
             {% endif %}
 
             {# Hosts and speakers #}
-            {% if page.hosts.all or page.speakers.all %}
-                <h2 class="tna-heading-l">Your host{{ page.hosts.all|pluralize }} and speaker{{ page.speakers.all|pluralize }}</h2>
+            {% with page.hosts.all as hosts and page.speakers.all as speakers %}
+                {% if hosts or speakers %}
+                    <h2 class="tna-heading-l">Your host{{ hosts|pluralize }} and speaker{{ speakers|pluralize }}</h2>
 
-                {% if page.hosts.all %}
-                    {% with plural=page.hosts.all|pluralize %}
-                        {% include "components/people.html" with people=page.hosts title="Host"|add:plural %}
-                    {% endwith %}
-                {% endif %}
+                    {% if hosts %}
+                        {% with plural=hosts|pluralize %}
+                            {% include "components/people.html" with people=page.hosts title="Host"|add:plural %}
+                        {% endwith %}
+                    {% endif %}
 
-                {% if page.speakers.all %}
-                    {% with plural=page.speakers.all|pluralize %}
-                        {% include "components/people.html" with people=page.speakers title="Speaker"|add:plural %}
-                    {% endwith %}
+                    {% if speakers %}
+                        {% with plural=speakers|pluralize %}
+                            {% include "components/people.html" with people=page.speakers title="Speaker"|add:plural %}
+                        {% endwith %}
+                    {% endif %}
                 {% endif %}
-            {% endif %}
+            {% endwith %}
         </div>
     </div>
 
