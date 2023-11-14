@@ -1028,13 +1028,6 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name = _("exhibition page")
 
     content_panels = BasePageWithIntro.content_panels + [
-        InlinePanel(
-            "event_audience_types",
-            heading=_("Audience types"),
-            help_text=_(
-                "If the event has more than one audience type, please add these in order of relevance from most to least."
-            ),
-        ),
         MultiFieldPanel(
             [
                 FieldPanel("subtitle"),
@@ -1093,6 +1086,13 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         BasePageWithIntro.promote_panels
         + [
             FieldPanel("short_title"),
+            InlinePanel(
+                "event_audience_types",
+                heading=_("Audience types"),
+                help_text=_(
+                    "If the event has more than one audience type, please add these in order of relevance from most to least."
+                ),
+            ),
         ]
         + ArticleTagMixin.promote_panels
         + [
