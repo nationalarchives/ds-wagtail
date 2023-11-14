@@ -427,6 +427,7 @@ class WhatsOnPage(BasePageWithIntro):
     ]
     subpage_types = [
         "whatson.EventPage",
+        "whatson.ExhibitionPage",
     ]
 
     max_count = 1
@@ -862,7 +863,6 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     hero_image = models.ForeignKey(
         get_image_model_string(),
         null=True,
-        blank=False,
         on_delete=models.SET_NULL,
         related_name="+",
     )
@@ -870,7 +870,6 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     hero_text_colour = models.CharField(
         max_length=255,
         verbose_name=_("hero text colour"),
-        blank=True,
         help_text=_("The colour of the text in the hero image."),
         choices=HeroColourChoices.choices,
     )
@@ -991,7 +990,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     gtm_content_group = "What's On"
 
     class Meta:
-        verbose_name = _("event page")
+        verbose_name = _("exhibition page")
 
     content_panels = BasePageWithIntro.content_panels + [
         InlinePanel(
