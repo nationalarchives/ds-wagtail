@@ -835,6 +835,43 @@ class EventFilterForm(forms.Form):
     )
 
 
+class ExhibitionHighlights(Orderable):
+    """
+    This model is used to add highlights to exhibition pages.
+    """
+
+    page = ParentalKey(
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="highlights",
+    )
+
+    title = models.CharField(
+        max_length=255,
+        verbose_name=_("title"),
+    )
+
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    link = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("image"),
+        FieldPanel("link"),
+    ]
+
+
 class HeroColourChoices(models.TextChoices):
     """
     This model is used to allow for colour choice on the hero intro
@@ -924,8 +961,6 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     # Content
     # TODO: video = . . .
-
-    # TODO: highlights = . . .
 
     description = RichTextField(
         verbose_name=_("description"),
@@ -1029,6 +1064,10 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("description"),
+                InlinePanel(
+                    "highlights",
+                    heading=_("Highlights"),
+                ),
             ],
             heading=_("Content"),
         ),
