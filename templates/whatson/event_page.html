@@ -160,22 +160,24 @@
         </div>
     </div>
 
-    <div class="event-card-listing tna-!--margin-top-xl">
-        <div class="tna-container tna-container--full-width-mobile">
-            <div class="tna-column tna-column--full">
-                <hgroup class="event-card-listing__heading-area">
-                    <h2 class="tna-heading-l event-card-listing__heading">Before you go</h2>
-                </hgroup>
+    {% if page.related_events %}
+        <div class="event-card-listing tna-!--margin-top-xl">
+            <div class="tna-container tna-container--full-width-mobile">
+                <div class="tna-column tna-column--full">
+                    <hgroup class="event-card-listing__heading-area">
+                        <h2 class="tna-heading-l event-card-listing__heading">Before you go</h2>
+                    </hgroup>
 
-                <ul class="event-card-listing__list">
-                    {% for event in page.related_events %}
-                        <li class="event-card-listing__item">
-                        {% image event.teaser_image fill-720x448 as event_img %}
-                        {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="3" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
-                        </li>
-                    {% endfor %}
-                </ul>
+                    <ul class="event-card-listing__list">
+                        {% for event in page.related_events %}
+                            <li class="event-card-listing__item">
+                            {% image event.teaser_image fill-720x448 as event_img %}
+                            {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="3" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
 {% endblock %}
