@@ -1,3 +1,5 @@
+import urllib
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -17,6 +19,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+from etna.core.utils import urlunparse
 
 from .forms import EventPageForm
 
@@ -283,27 +286,6 @@ class WhatsOnPage(BasePageWithIntro):
         related_name="+",
     )
 
-    @cached_property
-    def events(self):
-        """
-        Returns a queryset of events that are children of this page.
-        """
-        return EventPage.objects.child_of(self).live().public().order_by("start_date")
-
-    def filter_form_data(self, filter_form_cleaned_data):
-        events = self.events
-
-        if date_filter := filter_form_cleaned_data.get("date"):
-            events = events.filter(start_date__date=date_filter)
-        if event_type_filter := filter_form_cleaned_data.get("event_type"):
-            events = events.filter(event_type=event_type_filter)
-        if filter_form_cleaned_data.get("is_online_event"):
-            events = events.filter(venue_type=VenueType.ONLINE)
-        if filter_form_cleaned_data.get("family_friendly"):
-            events = events.filter(event_audience_types__audience_type__slug="families")
-
-        return events
-
     def serve(self, request):
         # Check if the request comes from JavaScript
         # 'JS-Request' is a custom header added by the frontend
@@ -316,17 +298,121 @@ class WhatsOnPage(BasePageWithIntro):
             # Display whats on page as usual
             return super().serve(request)
 
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+    def get_events_queryset(self):
+        """
+        Returns a queryset of events that are children of this page.
+        """
+        return EventPage.objects.child_of(self).live().public().order_by("start_date")
 
+    def filter_events(self, events, filter_dict):
+        """
+        Filter the events queryset by any active filters.
+        """
+        if date_filter := filter_dict.get("date"):
+            events = events.filter(start_date__date=date_filter)
+        if event_type_filter := filter_dict.get("event_type"):
+            events = events.filter(event_type=event_type_filter)
+        if filter_dict.get("is_online_event"):
+            events = events.filter(venue_type=VenueType.ONLINE)
+        if filter_dict.get("family_friendly"):
+            events = events.filter(event_audience_types__audience_type__slug="families")
+
+        return events
+
+    def exclude_featured_event_from_listing(self, filtered_events):
+        """
+        Returns a tuple (events, should show featured event card).
+
+        If the featured event is excluded by the active filters, we shouldn't
+        render the featured event card.
+        """
+        if not self.featured_event:
+            return filtered_events, False
+
+        try:
+            # Is the featured event in the queryset?
+            filtered_events.get(id=self.featured_event_id)
+            # Didn't cause DoesNotExist, so it's not excluded by the filters - take
+            # it out of the main listing, and indicate that we should render the
+            # featured card.
+            return filtered_events.exclude(id=self.featured_event_id), True
+        except EventPage.DoesNotExist:
+            # The featured event is already excluded by the active filters, so don't
+            # render the featured event card.
+            return filtered_events, False
+
+    def get_context(self, request, *args, **kwargs):
+        """
+        Populate the context with the events to list on the page.
+
+        This should include a featured event, if one is selected, and if it
+        is not excluded by the active filters.
+
+        The list of non-featured events should not include the featured event
+        (if one is selected).
+
+        The list of non-featured events should have any active filters applied.
+        """
+        context = super().get_context(request, *args, **kwargs)
         filter_form = EventFilterForm(request.GET)
+        events = self.get_events_queryset()
 
         if filter_form.is_valid():
-            self.events = self.filter_form_data(filter_form.cleaned_data)
+            events = self.filter_events(events, filter_form.cleaned_data)
 
+        (
+            context["events"],
+            context["show_featured_event"],
+        ) = self.exclude_featured_event_from_listing(events)
         context["filter_form"] = filter_form
-
+        context["active_filters"] = self.get_active_filters(request, filter_form)
         return context
+
+    def get_active_filters(self, request, filter_form: "EventFilterForm"):
+        active_filters = []
+        if date := filter_form.cleaned_data.get("date"):
+            active_filters.append(
+                {
+                    "label": date,
+                    "remove_filter_url": self.build_unset_filter_url(request, "date"),
+                },
+            )
+        if event_type := filter_form.cleaned_data.get("event_type"):
+            active_filters.append(
+                {
+                    "label": event_type.name,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "event_type"
+                    ),
+                },
+            )
+        if filter_form.cleaned_data.get("is_online_event"):
+            active_filters.append(
+                {
+                    "label": filter_form.fields["is_online_event"].label,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "is_online_event"
+                    ),
+                },
+            )
+        if filter_form.cleaned_data.get("family_friendly"):
+            active_filters.append(
+                {
+                    "label": filter_form.fields["family_friendly"].label,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "family_friendly"
+                    ),
+                },
+            )
+        return active_filters
+
+    def build_unset_filter_url(self, request, field_name):
+        """
+        Build a URL that will remove the filter indicated by `field_name' from the
+        request.
+        """
+        params_dict = {k: v for k, v in request.GET.dict().items() if k != field_name}
+        return urlunparse(path=request.path, query=urllib.parse.urlencode(params_dict))
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
