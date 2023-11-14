@@ -872,6 +872,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("hero text colour"),
         blank=True,
         help_text=_("The colour of the text in the hero image."),
+        choices=HeroColourChoices.choices,
     )
 
     # Key details
