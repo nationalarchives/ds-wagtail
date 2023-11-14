@@ -102,9 +102,7 @@
                                 <p>{{ page.venue_type }}</p>
 
                                 {% if page.venue_address %}
-                                <address>
                                     {{ page.venue_address|richtext }}
-                                </address>
                                 {% endif %}
                             </div>
                         </li>
@@ -147,13 +145,13 @@
             {% if page.hosts.all or page.speakers.all %}
                 <h2 class="tna-heading-l">Your host{{ page.hosts.all|pluralize }} and speaker{{ page.speakers.all|pluralize }}</h2>
 
-                {% if page.hosts %}
+                {% if page.hosts.all %}
                     {% with plural=page.hosts.all|pluralize %}
                         {% include "components/people.html" with people=page.hosts title="Host"|add:plural %}
                     {% endwith %}
                 {% endif %}
 
-                {% if page.speakers %}
+                {% if page.speakers.all %}
                     {% with plural=page.speakers.all|pluralize %}
                         {% include "components/people.html" with people=page.speakers title="Speaker"|add:plural %}
                     {% endwith %}
