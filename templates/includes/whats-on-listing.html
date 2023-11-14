@@ -19,10 +19,10 @@
 {% endif %}
 
 {% comment %}
-If there is a featured event then this should appear to overlap the pink background of the filters above.
+If there is a featured event (and no filters applied) then this should appear to overlap the pink background of the filters above.
 This extra space has to be a separate div here rather than bottom padding on the filters because the filters are not live-reloaded by the js, so we can't rely on the page context vars to be updated.
 {% endcomment %}
-{% if page.featured_event and show_featured_event %}
+{% if page.featured_event and show_featured_event and not active_filters %}
     <div class="featured-card-background"></div>
 {% endif %}
 
@@ -32,7 +32,13 @@ This extra space has to be a separate div here rather than bottom padding on the
         {# Featured event #}
         {% if page.featured_event and show_featured_event %}
             {% image page.featured_event.teaser_image fill-1190x600 as featured_img %}
-            {% include "../components/featured_card.html" with classes="featured-card--offset-top" title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
+
+            {# If there are active filters then the card is not offset - the classes argument is the only difference between these two includes #}
+            {% if active_filters %}
+                {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
+            {% else %}
+                {% include "../components/featured_card.html" with classes="featured-card--offset-top" title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
+            {% endif %}
         {% endif %}
 
         {# If there are no active filters the heading and results count sit below the featured event card #}
