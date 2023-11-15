@@ -1,7 +1,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
-.event-details-banner {
+.meta-details-banner {
     @include colour.light-accent-background;
 
     &__cta {
