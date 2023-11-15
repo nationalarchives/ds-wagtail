@@ -22,20 +22,29 @@
                         <i class="fa-solid fa-ticket event-meta__icon"></i>
 
                         <div class="event-meta__details">
-                            <p>{{ page.price_range }}</p>
+                            {% if page.price_range %}
+                                <p>{{ page.price_range }}</p>
+                            {% elif page.min_price %}
+                                <p>
+                                    {{ page.min_price }}
+                                    
+                                    {% if page.max_price %}
+                                        - {{ page.max_price }}
+                                    {% endif %}
+                                </p>
+                            {% endif %}
                         </div>
                     </li>
                     <li class="event-meta__item">
                         <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
                         <div class="event-meta__details">
-                            <p>{{ page.venue_type }}</p>
-
-                            {% comment %} TODO: we don't have a short version of the address/location field yet so this is a placeholder {% endcomment %}
-                            {% if page.short_location %}
-                                <address>
-                                    {{ page.short_location }}
-                                </address>
+                            {% if page.venue_type %}
+                                <p>{{ page.venue_type }}</p>
+                            {% endif %}
+                            
+                            {% if page.location %}
+                                <p>{{ page.location }}</p>
                             {% endif %}
                         </div>
                     </li>
@@ -54,6 +63,15 @@
 
                             <div class="event-meta__details">
                             {{ page.dwell_time }}
+                            </div>
+                        </li>
+                    {% endif %}
+                    {% if page.registration_info %}
+                        <li class="event-meta__item">
+                            <i class="fa-solid fa-ticket event-meta__icon"></i>
+
+                            <div class="event-meta__details">
+                                {{ page.registration_info|richtext }}
                             </div>
                         </li>
                     {% endif %}
