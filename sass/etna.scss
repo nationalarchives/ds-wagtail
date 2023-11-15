@@ -276,6 +276,8 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
 
+@import "ohos/header";
+
 /* Un-comment when front-end toolkit is fixed
 
 ==============
@@ -290,20 +292,6 @@ Modified to match the existing site (for now)
 
 .tna-template {
     overflow: initial !important;
-}
-
-.tna-header__navigation-item-link {
-    &:hover,
-    &--selected,
-    &--selected:visited {
-        background: #fff !important;
-    }
-}
-
-@include media.on-mobile {
-    .tna-header__navigation-items {
-        background: #fff !important;
-    }
 }
 
 .tna-breadcrumbs {

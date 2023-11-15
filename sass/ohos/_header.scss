@@ -1,0 +1,57 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+/**
+ * Specific theme and style overrides for OHOS project
+ */
+
+.tna-header {
+    // The styles in tna-frontend use this rule to set the background colour to "colour.brand-colour("black")"
+    // so it needs to be reset here
+    &:not(&--accent) {
+        background-color: var(--contrast-background);
+    }
+}
+
+.tna-header__navigation-item-link {
+    &,
+    &:visited {
+        @include media.on-larger-than-mobile {
+            @include colour.colour-font("accent");
+        }
+    }
+
+    &:hover,
+    &--selected,
+    &--selected:visited {
+        .tna-template--light-theme & {
+            @include media.on-larger-than-mobile {
+                @include colour.colour-font("contrast-background");
+                background: var(--background-tint);
+            }
+        }
+    }
+}
+
+.tna-header__logo-link {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.tna-header__logo-label {
+    display: none;
+
+    @include media.on-larger-than-mobile {
+        @include typography.heading-font;
+        @include typography.relative-font-size(30);
+        display: inline;
+    }
+}
+
+@include media.on-mobile {
+    .tna-header__navigation-items {
+        background: #fff !important;
+    }
+}
