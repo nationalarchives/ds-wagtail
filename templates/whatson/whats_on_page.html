@@ -24,26 +24,38 @@
     <div class="tna-container">
       <div class="tna-column tna-column--full">
         <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {{ filter_form.date }}
-            </div>
-          </fieldset>
-          
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">{{ filter_form.event_type.label }}</legend>
-            <div class="filters__radio-list filters__panel">
-              {% for radio in filter_form.event_type %}
-                <div>
-                  {{ radio.tag }}
-                  <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
+                        When
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__panel accordion__content" data-accordion-content>
+                    <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
+                    <p class="filters__help">Format: dd/mm/yyyy</p>
+                    {{ filter_form.date }}
                 </div>
-              {% endfor %}
-            </div>
-          </fieldset>
+            </fieldset>
+          
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
+                        {{ filter_form.event_type.label }}
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__radio-list filters__panel accordion__content" data-accordion-content>
+                    {% for radio in filter_form.event_type %}
+                        <div>
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
           
           <div class="filters__toggle">
             {{ filter_form.is_online_event }}
@@ -111,7 +123,7 @@
           </a>
           <div class="related-highlight-cards__content">
             <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+              <a href="/" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
                   Visit
               </a>
             </p>
@@ -130,7 +142,7 @@
           </a>
           <div class="related-highlight-cards__content">
             <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+              <a href="/" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
                   Stories
               </a>
             </p>
@@ -140,7 +152,6 @@
     </div>
   </div>
 {% endblock %}
-
 
 
 {% block extra_js %}
