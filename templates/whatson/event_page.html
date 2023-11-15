@@ -144,8 +144,10 @@
 
             {% if page.useful_info %}
                 <div class="tna-useful-info">
-                    <h2 class="tna-heading-l">Need to know</h2>
-                    {{ page.useful_info|richtext }}
+                    <div class="tna-useful-info__content">
+                        <h2 class="tna-heading-l">Need to know</h2>
+                        {{ page.useful_info|richtext }}
+                    </div>
                 </div>
             {% endif %}
 
