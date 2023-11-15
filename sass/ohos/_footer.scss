@@ -1,0 +1,69 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.tna-footer {
+    @include typography.relative-font-size(14);
+    padding-bottom: 1rem;
+
+    &__social {
+        &-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        &-item {
+            margin: 0;
+
+            &-link {
+                min-width: calc(2rem + 4px);
+                padding: 4px;
+
+                display: block;
+
+                text-align: center;
+                line-height: 1;
+
+                border: 0 transparent solid;
+                border-width: 4px 0;
+
+                .fa-solid,
+                .fa-brands {
+                    font-size: 2rem;
+                }
+
+                &:has(.fa-solid),
+                &:has(.fa-brands) {
+                    &:hover {
+                        @include colour.colour-border(
+                            "link",
+                            4px,
+                            solid,
+                            bottom
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    &__legal {
+        font-size: inherit;
+        padding-top: 1rem;
+    }
+
+    &__licence {
+        font-size: inherit;
+        text-align: center;
+
+        &-logo {
+            display: inline-block;
+        }
+    }
+
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 0;
+    }
+}

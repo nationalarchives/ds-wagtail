@@ -277,6 +277,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/record-creator-collections";
 
 @import "ohos/header";
+@import "ohos/footer";
 
 /* Un-comment when front-end toolkit is fixed
 
@@ -374,51 +375,6 @@ Modified to match the existing site (for now)
         @include colourTools.plain;
         background-color: transparent;
         border: none;
-    }
-}
-
-.tna-footer {
-    &__social {
-        &-items {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        &-item {
-            margin: 0;
-
-            &-link {
-                min-width: calc(2rem + 4px);
-                padding: 4px;
-
-                display: block;
-
-                text-align: center;
-                line-height: 1;
-
-                border: 0 transparent solid;
-                border-width: 4px 0;
-
-                .fa-solid,
-                .fa-brands {
-                    font-size: 2rem;
-                }
-
-                &:has(.fa-solid),
-                &:has(.fa-brands) {
-                    &:hover {
-                        @include colourTools.colour-border(
-                            "link",
-                            4px,
-                            solid,
-                            bottom
-                        );
-                    }
-                }
-            }
-        }
     }
 }
 
