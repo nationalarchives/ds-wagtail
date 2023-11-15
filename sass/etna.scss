@@ -72,6 +72,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/event-hero";
 @import "includes/event-meta";
 @import "includes/event-tags";
+@import "includes/exhibition-hero";
 @import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
@@ -571,6 +572,20 @@ Modified to match the existing site (for now)
         color: $color--white;
         font-weight: 500;
         margin-top: 0.5rem;
+    }
+}
+
+// exhibition hero refinements
+
+.exhibition-hero--light {
+    .tna-breadcrumbs__link {
+        color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &:before {
+            color: $color--white;
+        }
     }
 }
 

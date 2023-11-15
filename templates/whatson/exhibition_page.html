@@ -2,12 +2,11 @@
 
 {% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
 
-{% block html_class %}tna-template--pink-accent{% endblock %}
-
 {# Breadcrumb is included inside the header area #}
 {% block breadcrumb %}
 {% endblock %}
 
+
 {% block content %}
-  
+    {% include "includes/exhibition_hero.html" with title=page.title subtitle=page.subtitle image=page.hero_image colour_theme=page.hero_text_colour %}
 {% endblock %}

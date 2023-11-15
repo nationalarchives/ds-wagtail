@@ -1,0 +1,26 @@
+{% load wagtailimages_tags %}
+<div class="exhibition-hero {% if colour_theme == 'light' %}exhibition-hero--light{% endif %}">
+    <div class="tna-container">
+        <div class="tna-column exhibition-hero__info-wrapper">
+            <div class="tna-breadcrumb-wrapper">
+                {% include 'components/breadcrumb.html' %}
+            </div>
+
+            <div class="exhibition-hero__heading-wrapper">
+                {% include "components/event_tags.html" with event_type="Exhibition" %}
+                <h1 class="tna-heading-xl exhibition-hero__heading">
+                    {{ title }}
+                </h1>
+                <p class="exhibition-hero__subtitle">{{ subtitle }}</p>
+            </div>
+        </div>
+    </div>
+
+    {% image image fill-960x758 as hero_image %}
+    {% image image fill-455x359 as hero_image_small %}
+    <picture  class="exhibition-hero__picture">
+        <source media="(max-width: 768px)" srcset="{{ hero_image_small.url }}" />
+        <source media="(min-width: 769px)" srcset="{{ hero_image.url }}" />
+        <img src="{{ hero_image.url }}" alt="{{ hero_image.alt }}" width="{{ hero_image.width }}" height="{{ hero_image.height }}" class="exhibition-hero__image">
+    </picture>
+</div>

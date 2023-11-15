@@ -1,0 +1,42 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
+.exhibition-hero {
+    $root: &;
+    position: relative;
+    width: 100%;
+    min-height: 560px;
+    display: flex;
+
+    &__info-wrapper {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    &__heading {
+        #{$root}--light & {
+            color: $color__white;
+        }
+    }
+
+    &__subtitle {
+        color: $color__black;
+
+        #{$root}--light & {
+            color: $color__white;
+        }
+    }
+
+    &__picture {
+        position: absolute;
+        inset: 0;
+    }
+
+    &__image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
