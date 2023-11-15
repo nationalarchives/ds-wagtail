@@ -7,20 +7,24 @@
             </div>
 
             <div class="exhibition-hero__heading-wrapper">
-                {% include "components/event_tags.html" with event_type="Exhibition" %}
+                {% if colour_theme == 'light' %}
+                    {% include "components/event_tags.html" with event_type="Exhibition" classes="event-tags--black-on-white event-tags--bottom-flush" %}
+                {% else %}
+                    {% include "components/event_tags.html" with event_type="Exhibition" classes="event-tags--white-on-black event-tags--bottom-flush" %}
+                {% endif %}
                 <h1 class="tna-heading-xl exhibition-hero__heading">
                     {{ title }}
                 </h1>
-                <p class="exhibition-hero__subtitle">{{ subtitle }}</p>
+                <h2 class="tna-heading-xl exhibition-hero__subtitle">{{ subtitle }}</h2>
             </div>
         </div>
     </div>
 
-    {% image image fill-960x758 as hero_image %}
+    {% image image fill-1650x560 as hero_image %}
     {% image image fill-455x359 as hero_image_small %}
     <picture  class="exhibition-hero__picture">
         <source media="(max-width: 768px)" srcset="{{ hero_image_small.url }}" />
         <source media="(min-width: 769px)" srcset="{{ hero_image.url }}" />
-        <img src="{{ hero_image.url }}" alt="{{ hero_image.alt }}" width="{{ hero_image.width }}" height="{{ hero_image.height }}" class="exhibition-hero__image">
+        <img src="{{ hero_image.url }}" alt="{{ hero_image.alt }}" width="{{ hero_image.width }}" height="{{ hero_image.height }}" class="exhibition-hero__image" style="object-position{{ hero_image.background_position_style|cut:'background-position' }}">
     </picture>
 </div>

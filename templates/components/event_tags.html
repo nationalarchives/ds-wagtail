@@ -1,5 +1,5 @@
 {% if event_type or access_descriptor %}
-    <ul class="event-tags">
+    <ul class="event-tags {{ classes }}">
         {% if event_type %}
         <li class="event-tags__tag event-tags__tag--event-type">{{ event_type }}</li>
         {% endif %}

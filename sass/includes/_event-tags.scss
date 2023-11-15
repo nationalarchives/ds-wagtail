@@ -2,6 +2,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .event-tags {
+    $root: &;
     display: inline-flex;
     align-self: flex-start;
     list-style-type: none;
@@ -23,5 +24,26 @@
             @include colour.plain;
             background-color: colour.brand-colour("pastel-pink");
         }
+    }
+
+    &--white-on-black {
+        border: 2px solid colour.brand-colour("black");
+
+        #{$root}__tag {
+            color: colour.brand-colour("white");
+            background-color: colour.brand-colour("black");
+        }
+    }
+
+    &--black-on-white {
+        border: 2px solid colour.brand-colour("white");
+
+        #{$root}__tag {
+            background-color: colour.brand-colour("white");
+        }
+    }
+
+    &--bottom-flush {
+        margin-bottom: 0;
     }
 }

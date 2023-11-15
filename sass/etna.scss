@@ -572,6 +572,16 @@ Modified to match the existing site (for now)
 }
 
 // exhibition hero refinements
+.exhibition-hero {
+    .tna-breadcrumbs {
+        margin-bottom: 1.5rem;
+
+        @include media.on-larger-than-mobile {
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+    }
+}
 
 .exhibition-hero--light {
     .tna-breadcrumbs__link {
