@@ -1,6 +1,8 @@
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+
 <div class="meta-details-banner">
-    <div class="tna-container tna-container--align-center tna-container--space-between">
-        <div class="tna-column">
+    <div class="tna-container tna-container--align-center tna-!--padding-vertical-s">
+        <div class="tna-column tna-column--flex-1 tna-column--container">
             <div class="event-meta event-meta--inline">
                 <ul class="event-meta__list event-meta__list">
                     {% if page.start_date %}
@@ -39,8 +41,9 @@
                         <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
                         <div class="event-meta__details">
-                            {% if page.venue_type %}
-                                <p>{{ page.venue_type }}</p>
+                            {% comment %} Check for venue type or location depending on event or exhibition page {% endcomment %}
+                            {% if page.get_venue_type_display %}
+                                <p>{{ page.get_venue_type_display }}</p>
                             {% endif %}
                             
                             {% if page.location %}
@@ -78,5 +81,15 @@
                 </ul>
             </div>
         </div>
+
+        {% if cta %}
+            <div class="tna-column tna-column--full-small tna-column--full-tiny">
+                <a href="/" class="tna-button tna-button--dark">
+                    Book now
+
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </div>
+        {% endif %}
     </div>
 </div>
