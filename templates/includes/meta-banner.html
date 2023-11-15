@@ -1,6 +1,6 @@
 <div class="meta-details-banner">
     <div class="tna-container tna-container--align-center tna-container--space-between">
-        <div class="tna-column tna-column--width-3-4 tna-column--container">
+        <div class="tna-column">
             <div class="event-meta event-meta--inline">
                 <ul class="event-meta__list event-meta__list">
                     {% if page.start_date %}
@@ -8,44 +8,57 @@
                             <i class="fa-regular fa-calendar event-meta__icon"></i>
 
                             <div class="event-meta__details">
-                            <p>{{ page.start_date|date:"l j F, H:i" }}</p>
+                                <p>
+                                    {{ page.start_date|date:"l j" }}
+
+                                    {% if page.end_date %}
+                                        - {{ page.end_date|date:"l j" }}
+                                    {% endif %}
+                                </p>
                             </div>
                         </li>
                     {% endif %}
-                    {% if page.venue_type %}
-                        <li class="event-meta__item">
-                            <i class="fa-solid fa-location-dot event-meta__icon"></i>
+                    <li class="event-meta__item">
+                        <i class="fa-solid fa-ticket event-meta__icon"></i>
 
-                            <div class="event-meta__details">
+                        <div class="event-meta__details">
+                            <p>{{ page.price_range }}</p>
+                        </div>
+                    </li>
+                    <li class="event-meta__item">
+                        <i class="fa-solid fa-location-dot event-meta__icon"></i>
+
+                        <div class="event-meta__details">
                             <p>{{ page.venue_type }}</p>
 
-                            {% if page.venue_address %}
+                            {% comment %} TODO: we don't have a short version of the address/location field yet so this is a placeholder {% endcomment %}
+                            {% if page.short_location %}
                                 <address>
-                                {{ page.venue_address }}
+                                    {{ page.short_location }}
                                 </address>
                             {% endif %}
+                        </div>
+                    </li>
+                    {% if page.audience %}
+                        <li class="event-meta__item">
+                            <i class="fa-solid fa-user-group event-meta__icon"></i>
+
+                            <div class="event-meta__details">
+                                <p>{{ page.audience }}</p>
                             </div>
                         </li>
                     {% endif %}
-                    {% if page.registration_info %}
+                    {% if page.dwell_time %}
                         <li class="event-meta__item">
-                            <i class="fa-solid fa-ticket event-meta__icon"></i>
+                            <i class="fa-solid fa-clock event-meta__icon"></i>
 
                             <div class="event-meta__details">
-                                {{ page.registration_info|richtext }}
+                            {{ page.dwell_time }}
                             </div>
                         </li>
                     {% endif %}
                 </ul>
             </div>
-        </div>
-
-        <div class="tna-column tna-column--width-1-4 tna-column--full-small tna-column--full-tiny">
-            <a href="/" class="tna-button tna-button--dark meta-details-banner__cta">
-                Book now
-
-                <i class="fa-solid fa-chevron-right"></i>
-            </a>
         </div>
     </div>
 </div>
