@@ -366,6 +366,7 @@ class WhatsOnPage(BasePageWithIntro):
         ) = self.exclude_featured_event_from_listing(events)
         context["filter_form"] = filter_form
         context["active_filters"] = self.get_active_filters(request, filter_form)
+        context["total_results_with_featured"] = events.count()
         return context
 
     def get_active_filters(self, request, filter_form: "EventFilterForm"):

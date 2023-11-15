@@ -73,17 +73,9 @@
     </div>
   </div>
 
-  {# Featured event #}
-  <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
-    <div class="tna-column tna-column--full">
-
-      {% include "includes/whats-on-active-filters.html" %}
-
-      {# Listing #}
-      <div data-js-whatson-listing>
-        {% include "includes/whats-on-listing.html" %}
-      </div>
-    </div>
+  {# Listing and featured event #}
+  <div data-js-whatson-listing aria-live="polite">
+    {% include "includes/whats-on-listing.html" %}
   </div>
 
   {# Related content #}
