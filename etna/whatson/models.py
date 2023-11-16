@@ -483,6 +483,21 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("Useful information about the event."),
     )
 
+    # Text for need to know button
+    need_to_know_button_text = models.CharField(
+        verbose_name=_("need to know button text"),
+        max_length=30,
+        blank=True,
+        help_text=_("The text of the need to know button."),
+    )
+
+    need_to_know_button_link = models.URLField(
+        max_length=255,
+        verbose_name=_("need to know link"),
+        blank=True,
+        help_text=_("The website for need to know info."),
+    )
+
     target_audience = RichTextField(
         verbose_name=_("who it's for"),
         blank=True,
@@ -514,8 +529,17 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_space_name = models.CharField(
         max_length=255,
         verbose_name=_("venue space name"),
+        null=True,
         blank=True,
         help_text=_("The name of the venue space."),
+    )
+
+    venue_directions = models.URLField(
+        max_length=255,
+        verbose_name=_("venue directions"),
+        null=True,
+        blank=True,
+        help_text=_("A link to the venue’s ‘How to find us’ page."),
     )
 
     video_conference_info = RichTextField(
@@ -599,6 +623,8 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 ),
                 FieldPanel("description"),
                 FieldPanel("useful_info"),
+                FieldPanel("need_to_know_button_text"),
+                FieldPanel("need_to_know_button_link"),
                 FieldPanel("target_audience"),
                 InlinePanel(
                     "event_access_types",
@@ -637,6 +663,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                 FieldPanel("venue_website"),
                 FieldPanel("venue_address"),
                 FieldPanel("venue_space_name"),
+                FieldPanel("venue_directions"),
                 FieldPanel("video_conference_info"),
             ],
             heading=_("Venue information"),
