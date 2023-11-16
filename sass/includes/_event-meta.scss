@@ -3,7 +3,6 @@
 @use "@nationalarchives/frontend/nationalarchives/variables/grid" as gridVars;
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 
-
 .event-meta {
     $root: &;
     margin-bottom: gridVars.$gutter-width;
