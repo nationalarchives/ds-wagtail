@@ -1,4 +1,5 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .exhibition-hero {
     $root: &;
@@ -23,7 +24,7 @@
         font-weight: 700;
 
         #{$root}--light & {
-            color: $color__white;
+            color: colour.brand-colour("white");
         }
     }
 
@@ -33,7 +34,7 @@
         padding-top: 0;
 
         #{$root}--light & {
-            color: $color__white;
+            color: colour.brand-colour("white");
         }
     }
 
