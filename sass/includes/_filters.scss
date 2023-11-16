@@ -103,6 +103,7 @@
         color: $color--grey-700;
         font-size: 1rem;
         justify-content: space-between;
+        cursor: pointer;
 
         @media only screen and (min-width: #{$screen__lg + 1px}) {
             justify-content: flex-start;
