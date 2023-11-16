@@ -215,6 +215,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-articles";
 @import "includes/filters";
 @import "includes/full-width-header";
+@import "includes/listing-info";
 @import "includes/meta";
 @import "includes/media-embed";
 @import "includes/people";
@@ -261,6 +262,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/highlight-cards";
 // @import "includes/highlight-intro";
 @import "includes/utilities";
+@import "includes/accordion";
 @import "includes/archive-description";
 @import "includes/archive-collections";
 @import "includes/archive-additional-resources";
@@ -639,14 +641,8 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant with an offset top - used on what's on landing page
+// tna-container variant which is full-width at mobile - used on what's on landing page
 .tna-container {
-    &--offset-top {
-        @include media.on-larger-than-mobile {
-            margin-top: -9rem;
-        }
-    }
-
     &--full-width-mobile {
         @include media.on-mobile {
             padding-left: 0;
@@ -675,6 +671,7 @@ Modified to match the existing site (for now)
     @include colourTools.light-accent-background;
     color: colourTools.brand-colour("black");
     padding: 1.5rem 2rem 2rem 2rem;
+    margin-top: 2rem;
 }
 
 //
@@ -691,6 +688,12 @@ Modified to match the existing site (for now)
 
     .tna-breadcrumbs__link {
         color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &:before {
+            color: $color--white;
+        }
     }
 
     .tna-heading {

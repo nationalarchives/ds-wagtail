@@ -23,5 +23,11 @@
             @include colour.plain;
             background-color: colour.brand-colour("pastel-pink");
         }
+
+        &--access {
+            .event-hero & {
+                color: $color--white;
+            }
+        }
     }
 }

@@ -10,6 +10,12 @@
         margin-bottom: 4.375rem;
     }
 
+    &--offset-top {
+        @include media.on-larger-than-mobile {
+            margin-top: -9rem;
+        }
+    }
+
     &__pick {
         display: inline-block;
         font-size: 0.875rem;
@@ -82,5 +88,15 @@
         &::after {
             display: none !important;
         }
+    }
+}
+
+// This styles an empty div that sits above the featured card, and creates the illusion
+// that it overlaps the filters (full-width-header) above.
+.featured-card-background {
+    @include media.on-larger-than-mobile {
+        background-color: $color__pastel-pink;
+        width: 100%;
+        height: 12rem;
     }
 }
