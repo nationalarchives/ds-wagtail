@@ -11,14 +11,17 @@
         <div class="tna-section">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                <h1 class="tna-heading tna-heading--xl">
-                    Search
-                </h1>
-                <p>Community-generated digital content and records from UK archives.</p>
-                <form action="/search" class="ohos-search">
-                    <input type="search" name="q" class="ohos-search__input">
-                    <button class="tna-button" type="submit">Search</button>
-                </form>
+                    <h1 class="tna-heading tna-heading--xl">
+                        Find community-generated history
+                    </h1>
+                    <form action="/search/catalogue" method="GET" id="analytics-search-landing-hero">
+                        <label for="id_q" class="search-landing-hero__label">
+                            <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
+                        </label>
+                        {{ form.q.errors }}
+                        {{ form.q }}
+                        <input type="submit" value="Search" class="search-landing-hero__form-submit">
+                    </form>
                 </div>
             </div>
         </div>
@@ -76,16 +79,6 @@
             {% for item in page.body %}
                 {% if item.value.paragraph or item.value.text %}
                     {{item}}
-                {% else %}
-                    {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
-                      <div class="col-sm-12 col-md-6">
-                          <div class="topic-explore">
-                            <a href="{{ item.value.page.url }}"><img src="{{ teaser_image.url }}" alt="{{ item.value.heading }} image" width="100%"/></a>
-                            <div class="explore-cta">
-                                <a href="{{ item.value.page.url }}"><p>{{ item.value.heading }}</p></a>
-                            </div>
-                        </div>
-                    </div>
                 {% endif %}
             {% endfor %}
         </div>

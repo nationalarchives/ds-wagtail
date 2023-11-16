@@ -4,6 +4,7 @@ from wagtail.fields import StreamField
 from etna.alerts.models import AlertMixin
 from etna.core.models import BasePageWithIntro
 
+from ..search.forms import FeaturedSearchForm
 from .blocks import HomePageStreamBlock
 
 
@@ -21,5 +22,6 @@ class HomePage(AlertMixin, BasePageWithIntro):
 
     def get_context(self, request):
         context = super().get_context(request)
+        context["form"] = FeaturedSearchForm()
 
         return context
