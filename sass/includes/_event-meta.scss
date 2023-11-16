@@ -1,13 +1,14 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/variables/grid" as gridVars;
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 
 .event-meta {
     $root: &;
-    margin-bottom: 2rem;
+    margin-bottom: gridVars.$gutter-width;
 
     @include media.on-larger-than-mobile {
-        padding-left: 3rem;
+        padding-left: gridVars.$gutter-width;
         border-left: 1px solid colour.brand-colour("light-grey");
         margin-bottom: 0;
     }
