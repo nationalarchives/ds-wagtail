@@ -559,7 +559,7 @@ Modified to match the existing site (for now)
     }
 
     &__content {
-        @include colour.light-accent-background;
+        background-color: colour.brand-colour("light-grey");
         color: colour.brand-colour("black");
         padding: 2rem;
 
