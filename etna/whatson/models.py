@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -18,9 +18,11 @@ from wagtail.snippets.models import register_snippet
 
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import LargeCardLinksBlock
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 
+from .blocks import WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
@@ -285,6 +287,18 @@ class WhatsOnPage(BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    promoted_links = StreamField(
+        [("promoted_links", WhatsOnPromotedLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
+    large_card_links = StreamField(
+        [("large_card_links", LargeCardLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
 
     def serve(self, request):
         # Check if the request comes from JavaScript
@@ -432,6 +446,8 @@ class WhatsOnPage(BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_event"),
+        FieldPanel("promoted_links"),
+        FieldPanel("large_card_links"),
     ]
 
 
