@@ -104,7 +104,6 @@ class FiltersSubmission {
 
     async reloadEvents(updateURL = true) {
         let newURL = this.buildURL();
-
         fetch(newURL, {
             method: "GET",
             headers: {
