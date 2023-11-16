@@ -1,6 +1,6 @@
 from wagtail import blocks
 
-from etna.core.blocks import ParagraphBlock, PageListBlock
+from etna.core.blocks import PageListBlock, ParagraphBlock
 
 
 class EventPageBlock(blocks.StreamBlock):
