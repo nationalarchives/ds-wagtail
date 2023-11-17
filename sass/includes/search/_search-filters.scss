@@ -120,6 +120,18 @@
         color: #ffffff;
         margin-bottom: 2rem;
     }
+
+    button {
+        border: 0;
+        background: #f4f4f4;
+        border-bottom: 1px solid grey;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align: left;
+        font-weight: 400;
+        font-size: 1em;
+        cursor: pointer;
+    }
 }
 
 /*date filters via GDS pattern*/
@@ -152,4 +164,11 @@
 
 .example-text {
     color: $color__grey-600;
+}
+
+//gov uk overrides
+
+.govuk-accordion__section-toggle-text,
+.govuk-accordion__section-heading-divider {
+    display: none;
 }
