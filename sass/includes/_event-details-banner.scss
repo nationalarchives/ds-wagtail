@@ -2,7 +2,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .event-details-banner {
-    @include colour.light-accent-background;
+    @include colour.accent-light;
 
     &__cta {
         margin: 2rem 0 0 0;

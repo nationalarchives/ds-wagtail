@@ -35,61 +35,52 @@
         <p class="search-results__list-card-description">
             {{ record.listing_description }}
         </p>
-        <dl class="search-results__list-card-metadata">
+
+
+        <dl class="tna-dl tna-dl--plain tna-dl--icon-padding tna-!--margin-bottom-s">
             {% if record.held_by %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
-                    Held by:
-                </dt>
-                <dd>{{ record.held_by }}</dd>
+            <dt>
+              <i class="fa-solid fa-landmark"></i>
+              Held by
+            </dt>
+            <dd>{{ record.held_by }}</dd>
             {% endif %}
-
             {% if record.date_created %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                    Date:
-                </dt>
-                <dd> {{ record.date_created }}</dd>
+            <dt>
+              <i class="fa-solid fa-calendar"></i>
+              Date
+            </dt>
+            <dd>{{ record.date_created }}</dd>
             {% endif %}
-
             {% if record.reference_number %}
-            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
-
+            <dt>
+              <i class="fa-solid fa-database"></i>
                 {% if form.group.value == 'archive' %}
-                Archon code:
+                    Archon code
                 {% else %}
-                Reference:
+                    Reference
                 {% endif %}
-
-
             </dt>
             <dd>{{ record.reference_number }}</dd>
             {% endif %}
-
             <!--
             {% if record.record_opening %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
+                <dt>
                     Record opening date:
                 </dt>
                 <dd>{{ record.record_opening }}</dd>
             {% endif %}
             -->
             {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-                <dt class="search-results__list-card-metadata-item">
-                    Type:
-                </dt>
-                <dd>{{ record.type }}</dd>
+            <dt>Type</dt>
+            <dd>{{ record.type }}</dd>
             {% endif %}
-
             {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
             <!--
-            <dt class="search-results__list-card-metadata-item">
-                IAID:
-            </dt>
-
+            <dt>IAID</dt>
             <dd>{{ record.iaid }}</dd>>
-            <dt class="search-results__list-card-metadata-item">
-                Score:
-            </dt>
-            <dd;>{{ record.score }}</dd>
+            <dt>Score</dt>
+            <dd>{{ record.score }}</dd>
             -->
             {% comment %}End debug attributes.{% endcomment %}
         </dl>
@@ -101,7 +92,7 @@
                 <a href="{% record_url record %}" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
                 <img src="{% static 'images/grid-placeholder.png' %}"  class="search-results__list-card-delivery-options-img search-image-grid" alt="" />
                 </a>
-                <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                <a href="{% record_url record %}" class="tna-background-contrast search-results__list-card-delivery-options-link">
                     <p class="search-results__list-card-delivery-options-desc search-results-grid">
                         <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
                         Available online

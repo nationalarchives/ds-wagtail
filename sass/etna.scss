@@ -46,7 +46,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/jumplinks";
 @import "includes/links";
 @import "includes/card-groups";
-@import "includes/footer";
 @import "includes/cta-banner-newsletter";
 @import "includes/cta-banner-survey";
 @import "includes/pagination";
@@ -197,7 +196,7 @@ Modified to match the existing site (for now)
 }
 
 .tna-hero {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
 
     &__figure {
@@ -216,6 +215,12 @@ Modified to match the existing site (for now)
 
     img#{&}__image {
         object-fit: cover;
+    }
+}
+
+.tna-footer {
+    .tna-ul {
+        margin-top: 0;
     }
 }
 
@@ -254,6 +259,10 @@ Modified to match the existing site (for now)
     }
 }
 
+.tna-dl dt {
+    word-wrap: normal;
+}
+
 .tna-large-paragraph {
     @include colour.colour-font("font-dark");
     @include typography.relative-font-size(22);
@@ -286,7 +295,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        @include colour.invert;
+        @include colour.contrast;
         background-color: #343338 !important;
         color: #fff !important;
 
@@ -542,7 +551,7 @@ Modified to match the existing site (for now)
 // tna-useful-info component - 'Good to know' information from event page
 
 .tna-useful-info {
-    @include colour.light-accent-background;
+    @include colour.accent-light;
     color: colour.brand-colour("black");
     padding: 1.5rem 2rem 2rem 2rem;
     margin-top: 2rem;
