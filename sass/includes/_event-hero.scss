@@ -4,7 +4,6 @@
 
 .event-hero {
     background-color: $color__maroon;
-    color: $color__white;
     display: flex;
     flex-direction: column;
 
@@ -14,6 +13,10 @@
 
     &__image-wrapper {
         position: relative;
+    }
+
+    &__title {
+        color: $color--white;
     }
 
     &__image {

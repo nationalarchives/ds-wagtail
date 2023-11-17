@@ -6,7 +6,8 @@
 
     &__cta {
         margin: 2rem 0 0 0;
-        display: block;
+        display: inline-block;
+        width: auto;
 
         @include media.on-larger-than-mobile {
             margin: 1rem 0;

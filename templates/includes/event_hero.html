@@ -1,5 +1,5 @@
 {% load wagtailimages_tags %}
-<div class="event-hero">
+<header class="event-hero">
     <div class="event-hero__info-wrapper">
         <div class="tna-breadcrumb-wrapper">
             <div class="tna-container">
@@ -12,7 +12,7 @@
         <div class="tna-container">
             <div class="tna-column">
                 {% include "components/event_tags.html" %}
-                <h1 class="tna-heading-xl">{{ title }}</h1>
+                <h1 class="event-hero__title tna-heading-xl">{{ title }}</h1>
             </div>
         </div>
     </div>
@@ -26,4 +26,4 @@
             <img src="{{ hero_image.url }}" alt="{{ hero_image.alt }}" width="{{ hero_image.width }}" height="{{ hero_image.height }}" class="event-hero__image">
         </picture>
     </div>
-</div>
+</header>
