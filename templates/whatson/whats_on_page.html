@@ -9,6 +9,7 @@
 {% endblock %}
 
 {% block content %}
+  {# Header area and filters #}
   <div class="full-width-header full-width-header--pink">
     <div class="tna-breadcrumb-wrapper">
       <div class="tna-container">
@@ -23,26 +24,37 @@
     <div class="tna-container">
       <div class="tna-column tna-column--full">
         <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {{ filter_form.date }}
-            </div>
-          </fieldset>
-          
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">{{ filter_form.event_type.label }}</legend>
-            <div class="filters__radio-list filters__panel">
-              {% for radio in filter_form.event_type %}
-                <div>
-                  {{ radio.tag }}
-                  <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        When
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__panel accordion__content" data-accordion-content>
+                    <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
+                    {{ filter_form.date }}
                 </div>
-              {% endfor %}
-            </div>
-          </fieldset>
+            </fieldset>
+          
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        {{ filter_form.event_type.label }}
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__radio-list filters__panel accordion__content" data-accordion-content>
+                    {% for radio in filter_form.event_type %}
+                        <div>
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
           
           <div class="filters__toggle">
             {{ filter_form.is_online_event }}
@@ -60,24 +72,12 @@
     </div>
   </div>
 
-  <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
-    <div class="tna-column tna-column--full">
-      {% if page.featured_event %}
-        {% image page.featured_event.teaser_image fill-1190x600 as featured_img %}
-        {% include "../components/featured_card.html" with title=page.featured_event.title href=page.featured_event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=featured_img.url imageAlt="featured card image alt" imageWidth=featured_img.width imageHeight=featured_img.height date=page.featured_event.start_date|date:"jS F Y" cost=page.featured_event.price_range venue_type=page.featured_event.get_venue_type_display event_type=page.featured_event.event_type access_descriptor=page.featured_event.primary_access_type %}
-      {% endif %}
-
-      <hgroup class="event-card-listing__heading-area">
-        <h2 class="tna-heading-l event-card-listing__heading">All events</h2>
-        <p class="event-card-listing__summary">Showing 1 to 12 of {{ page.events|length }} events</p>
-      </hgroup>
-
-      <div data-js-whatson-listing>
-        {% include "includes/whats-on-listing.html" %}
-      </div>
-    </div>
+  {# Listing and featured event #}
+  <div data-js-whatson-listing aria-live="polite">
+    {% include "includes/whats-on-listing.html" %}
   </div>
 
+  {# Related content #}
   <div class="section section--pink">
     <div class="tna-container">
         <div class="tna-column tna-column--full tna-!--margin-top-l">
@@ -122,7 +122,7 @@
           </a>
           <div class="related-highlight-cards__content">
             <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+              <a href="/" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
                   Visit
               </a>
             </p>
@@ -141,7 +141,7 @@
           </a>
           <div class="related-highlight-cards__content">
             <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
+              <a href="/" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
                   Stories
               </a>
             </p>
@@ -151,7 +151,6 @@
     </div>
   </div>
 {% endblock %}
-
 
 
 {% block extra_js %}

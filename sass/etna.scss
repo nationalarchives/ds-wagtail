@@ -81,6 +81,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-articles";
 @import "includes/filters";
 @import "includes/full-width-header";
+@import "includes/listing-info";
 @import "includes/meta";
 @import "includes/media-embed";
 @import "includes/people";
@@ -127,6 +128,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/highlight-cards";
 // @import "includes/highlight-intro";
 @import "includes/utilities";
+@import "includes/accordion";
 @import "includes/archive-description";
 @import "includes/archive-collections";
 @import "includes/archive-additional-resources";
@@ -513,14 +515,8 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant with an offset top - used on what's on landing page
+// tna-container variant which is full-width at mobile - used on what's on landing page
 .tna-container {
-    &--offset-top {
-        @include media.on-larger-than-mobile {
-            margin-top: -9rem;
-        }
-    }
-
     &--full-width-mobile {
         @include media.on-mobile {
             padding-left: 0;
@@ -549,6 +545,7 @@ Modified to match the existing site (for now)
     @include colour.light-accent-background;
     color: colour.brand-colour("black");
     padding: 1.5rem 2rem 2rem 2rem;
+    margin-top: 2rem;
 }
 
 //
@@ -567,9 +564,33 @@ Modified to match the existing site (for now)
         color: $color--white;
     }
 
+    .tna-breadcrumbs__item {
+        &:before {
+            color: $color--white;
+        }
+    }
+
     .tna-heading {
         color: $color--white;
         font-weight: 500;
         margin-top: 0.5rem;
+    }
+}
+
+// filter refinements
+
+.tna-filters {
+    &__item--active #{&}__link {
+        @include colour.colour-background("contrast-background");
+        color: $color__white;
+    }
+
+    &__item--clear-all #{&}__link {
+        @include typography.main-font-weight-bold();
+        background: transparent;
+
+        &:hover {
+            @include colour.colour-font("font-dark");
+        }
     }
 }

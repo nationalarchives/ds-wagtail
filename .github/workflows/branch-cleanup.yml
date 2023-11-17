@@ -15,6 +15,7 @@ jobs:
       - name: Debug
         run: echo "Clean up Docker image ${{ vars.DOCKER_IMAGE_NAME }}:${{ steps.version-tag.outputs.VERSION }}"
       - name: Delete image
+        if: ${{ steps.version-tag.outputs.VERSION }}
         uses: bots-house/ghcr-delete-image-action@v1.1.0
         with:
           owner: ${{ github.repository_owner }}
