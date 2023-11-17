@@ -1,3 +1,5 @@
+import urllib
+
 from django import forms
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -17,6 +19,7 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
+from etna.core.utils import urlunparse
 
 from .forms import EventPageForm
 
@@ -362,7 +365,55 @@ class WhatsOnPage(BasePageWithIntro):
             context["show_featured_event"],
         ) = self.exclude_featured_event_from_listing(events)
         context["filter_form"] = filter_form
+        context["active_filters"] = self.get_active_filters(request, filter_form)
+        context["total_results_with_featured"] = events.count()
         return context
+
+    def get_active_filters(self, request, filter_form: "EventFilterForm"):
+        active_filters = []
+        if date := filter_form.cleaned_data.get("date"):
+            active_filters.append(
+                {
+                    "label": date,
+                    "remove_filter_url": self.build_unset_filter_url(request, "date"),
+                },
+            )
+        if event_type := filter_form.cleaned_data.get("event_type"):
+            active_filters.append(
+                {
+                    "label": event_type.name,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "event_type"
+                    ),
+                },
+            )
+        if filter_form.cleaned_data.get("is_online_event"):
+            active_filters.append(
+                {
+                    "label": filter_form.fields["is_online_event"].label,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "is_online_event"
+                    ),
+                },
+            )
+        if filter_form.cleaned_data.get("family_friendly"):
+            active_filters.append(
+                {
+                    "label": filter_form.fields["family_friendly"].label,
+                    "remove_filter_url": self.build_unset_filter_url(
+                        request, "family_friendly"
+                    ),
+                },
+            )
+        return active_filters
+
+    def build_unset_filter_url(self, request, field_name):
+        """
+        Build a URL that will remove the filter indicated by `field_name' from the
+        request.
+        """
+        params_dict = {k: v for k, v in request.GET.dict().items() if k != field_name}
+        return urlunparse(path=request.path, query=urllib.parse.urlencode(params_dict))
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
