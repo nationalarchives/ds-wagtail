@@ -51,7 +51,7 @@ services:
   cli:
     container_name: cli
     platform: linux/amd64
-    build: cli
+    build: platformsh-cli
     volumes:
       - media:/app/media
       - ./database_dumps:/app/database_dumps

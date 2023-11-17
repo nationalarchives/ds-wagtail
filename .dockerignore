@@ -8,6 +8,8 @@
 .git
 .github
 .gitignore
+.platform
+.platform.app.yaml
 .prettierrc.json
 .venv
 .vscode
@@ -23,4 +25,5 @@ lint-requirements.txt
 media
 mkdocs.yml
 node_modules
+platformsh-cli
 setup.cfg

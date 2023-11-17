@@ -1,0 +1,132 @@
+# The name of this app. Must be unique within a project.
+name: app
+
+# The runtime the application uses. The 'type' key defines the base container
+# image that will be used to run the application. There is a separate base
+# container image for each primary language for the application,
+# in multiple versions. Check the Python documentation
+# (https://docs.platform.sh/languages/python.html#supported-versions)
+# to find the supported versions for the 'python' type.
+type: 'python:3.11'
+
+variables:
+  env:
+    DJANGO_SETTINGS_MODULE: 'config.settings.platform'
+    # pip
+    POETRY_VIRTUALENVS_IN_PROJECT: true
+    POETRY_VIRTUALENVS_CREATE: true
+    POETRY_VERSION: 1.5.1
+
+# The size of the persistent disk of the application (in MB).
+disk: 2048
+
+# The relationships of the application with services or other applications.
+#
+# The left-hand side is the name of the relationship as it will be exposed
+# to the application in the PLATFORM_RELATIONSHIPS variable. The right-hand
+# side is in the form <service name>:<endpoint name>.
+relationships:
+    db: 'db:postgresql'
+    redis: "redis:redis"
+
+hooks:
+  build: |
+    # Add platform CLI
+    curl -sS https://platform.sh/cli/installer | php
+    
+    # Download the latest version of pip
+    python3.11 -m pip install --upgrade pip
+
+    # Install and configure Poetry
+    # Set user to false to install Poetry globally
+    export PIP_USER=false
+    curl -sSL https://install.python-poetry.org | python3 - --version $POETRY_VERSION
+    # Update PATH to make Poetry available in this hook
+    export PATH="/app/.local/bin:$PATH"
+    # Set user to true to install dependencies only in the virtual environment
+    export PIP_USER=true
+
+    # Install dependencies
+    poetry install --only main
+
+    # Install NVM
+    unset NPM_CONFIG_PREFIX
+    export NVM_DIR="$PLATFORM_APP_DIR/.nvm"
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+    
+    nvm install
+    npm install
+    mkdir -p templates/static/assets
+    cp -R node_modules/@nationalarchives/frontend/nationalarchives/assets/* templates/static/assets
+    npm run compile
+
+    poetry run python manage.py collectstatic --no-input
+  deploy: |
+    poetry run python manage.py migrate
+
+web:
+  upstream:
+    socket_family: unix
+  commands:
+    start: poetry run gunicorn config.wsgi:application --bind unix:$SOCKET --config gunicorn.conf.py --capture-output
+  locations:
+    "/":
+      root: ""
+      passthru: true
+      allow: false
+      rules:
+        '^/favicon\.ico$':
+            allow: false
+    "/static":
+      # Allow liberal controls to allow CORS for admin font assets
+      headers:
+        Access-Control-Allow-Origin: '*'
+      root: static
+      expires: 1y
+      allow: true
+    "/media":
+      root: media
+      expires: 1y
+      allow: true
+
+# The following block defines a single writable directory, 'web/uploads'
+# The 'source' specifies where the writable mount is. The 'local' source
+# indicates that the mount point will point to a local directory on the
+# application container. The 'source_path' specifies the subdirectory
+# from within the source that the mount should point at.
+mounts:
+  media:
+    source: local
+    source_path: media
+  tmp:
+    source: local
+    source_path: tmp
+  logs:
+    source: local
+    source_path: logs
+
+crons:
+  # Publish scheduled pages once an hour
+  # https://docs.wagtail.io/en/stable/reference/management_commands.html#publish-scheduled-pages
+  publish_scheduled_pages:
+    spec: 0 * * * *
+    cmd: python manage.py publish_scheduled_pages
+
+  # Take snapshot at 5am every morning
+  # https://docs.platform.sh/administration/snapshot-and-restore.html#automated-snapshots
+  snapshot:
+    spec: '0 5 * * *'
+    cmd: |
+      if [ "$PLATFORM_BRANCH" = main ]; then
+        platform backup:create --yes --no-wait
+      fi
+
+  # Renew cert by forcing a redeploy at 4 am (UTC) on the 1st and 15th of every month.
+  # https://docs.platform.sh/configuration/routes/https.html#automatic-ssl-certificate-renewal
+  renewcert:
+    spec: '0 4 1,15 * *'
+    cmd: |
+      if [ "$PLATFORM_BRANCH" = main ]; then
+        platform redeploy --yes --no-wait
+      fi
