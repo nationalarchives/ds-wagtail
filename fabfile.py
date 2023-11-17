@@ -19,7 +19,7 @@ LOCAL_DATABASE_NAME = os.getenv("DATABASE_NAME")
 LOCAL_DATABASE_USERNAME = os.getenv("DATABASE_USER")
 
 PLATFORM_PROJECT_ID = "rasrzs7pi6sd4"
-STAGING_APP_INSTANCE = "test-deploy-ohos"
+STAGING_APP_INSTANCE = "ohos"
 
 LOCAL_DB_DUMP_DIR = "database_dumps"
 
