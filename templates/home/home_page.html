@@ -7,25 +7,27 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-    <div class="tna-background--tint">
-        <div class="tna-section">
+
+    <form action="/search/catalogue" method="GET" id="analytics-search-landing-hero">
+        <div class="search-landing-hero">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                    <h1 class="tna-heading tna-heading--xl">
-                        Find community-generated history
-                    </h1>
-                    <form action="/search/catalogue" method="GET" id="analytics-search-landing-hero">
-                        <label for="id_q" class="search-landing-hero__label">
-                            <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
-                        </label>
-                        {{ form.q.errors }}
-                        {{ form.q }}
-                        <input type="submit" value="Search" class="search-landing-hero__form-submit">
-                    </form>
+                    <div class="search-landing-hero__container">
+                        <h1 class="tna-heading-xl search-landing-hero__heading">Find community-generated history</h1>
+                        <div class="search-landing-hero__form">
+                            <label for="id_q" class="search-landing-hero__label">
+                                <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
+                            </label>
+                            {{ form.q.errors }}
+                            {{ form.q }}
+                            <input type="submit" value="Search" class="search-landing-hero__form-submit">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </form>
+
     <div class="tna-section">
         <div class="tna-container">
             <div class="tna-column tna-column--full">
