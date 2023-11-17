@@ -1,8 +1,16 @@
+/**
+ * @TODO: For the OHOS project, it may be possible to consolidate the styles for the
+ * search-results-hero and search-landing-hero as their style is the same. There's a lot
+ * of duplicate styling here
+ */
+
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+
 .search-landing-hero {
-    background-color: $color__grey-100;
+    background-color: $color__grey-300;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    padding-bottom: 5rem;
     margin-bottom: 2rem;
 
     &__container {
@@ -18,8 +26,7 @@
 
     &__label {
         display: block;
-        font-family: $font__supria-sans;
-        font-size: 1.4rem;
+        @include typography.relative-font-size(20);
     }
 
     &__form {
@@ -28,19 +35,27 @@
             cursor: pointer;
             width: 8rem;
             font-size: 1.1rem;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
         }
 
         &-search-box {
             width: 100%;
             max-width: 60rem;
-            height: 3.1rem;
-            border: 1px solid $color__grey-800;
-            border-radius: 0.25rem;
+            height: 3.25rem;
+            border: 1px solid $color__off-black;
             padding: 1rem;
             vertical-align: top;
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 0.2rem;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
+
             &:focus {
                 outline: 5px solid $color__focus-outline-light-bg;
             }

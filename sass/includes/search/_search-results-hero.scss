@@ -1,5 +1,11 @@
+/**
+ * @TODO: For the OHOS project, it may be possible to consolidate the styles for the
+ * search-results-hero and search-landing-hero as their style is the same. There's a lot
+ * of duplicate styling here
+ */
+
 .search-results-hero {
-    background-color: $color__grey-200;
+    background-color: $color__grey-300;
     padding: 2rem;
     padding-bottom: 0;
 
@@ -20,22 +26,30 @@
             @extend .search-button;
             cursor: pointer;
             width: 8rem;
-            height: 3.1rem;
+            height: 3.25rem;
             font-size: 1.1rem;
             margin: 0;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
         }
 
         &-search-box {
             width: 100%;
             max-width: 60rem;
-            height: 3.1rem;
-            border: 1px solid $color__grey-800;
-            border-radius: 0.25rem;
+            height: 3.25rem;
+            border: 1px solid $color__off-black;
             padding: 1rem;
             vertical-align: top;
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 1rem;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
+
             &:focus {
                 // outline: 5px solid $color__focus-outline-light-bg;
             }
