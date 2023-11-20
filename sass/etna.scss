@@ -234,14 +234,13 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/record-related-content";
 @import "includes/search/search-button";
 @import "includes/search/search-results";
-@import "includes/search/search-results-hero";
 @import "includes/search/search-buckets";
 @import "includes/search/search-sort-view";
 @import "includes/search/search-filters";
 @import "includes/search/catalogue-search-grid";
 @import "includes/search/search-results__list-card";
 @import "includes/search/global-search";
-@import "includes/search/search-landing-hero";
+@import "includes/search/search-hero";
 @import "includes/search/search-landing-buckets";
 @import "includes/search/featured-search";
 @import "includes/search/long-filters";
@@ -528,7 +527,6 @@ Modified to match the existing site (for now)
 .container,
 .search-landing-buckets__link,
 .search-buckets__link,
-.search-results-hero__form-search-box,
 .search-filters__search,
 [class^="col-"],
 [class*=" col-"] {
