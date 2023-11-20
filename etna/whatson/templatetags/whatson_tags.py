@@ -9,9 +9,9 @@ register = template.Library()
 @register.filter()
 def process_address(value):
     """Replaces line breaks and paragraph tags from the given string with a space. Strips out link tags."""
-    value = value.replace("<br/>", ' ')
-    value = re.sub('<p.*?>', ' ', value)
-    value = value.replace("</p>", '')
-    value = re.sub('<a.*?>', '', value)
-    value = value.replace("</a>", '')
+    value = value.replace("<br/>", " ")
+    value = re.sub("<p.*?>", " ", value)
+    value = value.replace("</p>", "")
+    value = re.sub("<a.*?>", "", value)
+    value = value.replace("</a>", "")
     return value
