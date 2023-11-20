@@ -104,7 +104,7 @@ class FeaturedSearchForm(forms.Form):
     q = forms.CharField(
         label="Search here",
         required=False,
-        widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
+        widget=forms.TextInput(attrs={"class": "search-hero__form-search-box"}),
     )
 
 
@@ -121,7 +121,7 @@ class BaseCollectionSearchForm(forms.Form):
     q = forms.CharField(
         label="Search term",
         required=False,
-        widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
+        widget=forms.TextInput(attrs={"class": "search-hero__form-search-box"}),
     )
     filter_keyword = forms.CharField(
         label="Search within",

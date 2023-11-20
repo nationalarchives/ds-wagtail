@@ -1,11 +1,24 @@
-.search-results-hero {
-    background-color: $color__grey-200;
-    padding: 2rem;
-    padding-bottom: 0;
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
 
-    @media only screen and (max-width: $screen__md) {
-        padding: 1rem;
+.search-hero {
+    background-color: $color__grey-300;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+
+    &--has-nav {
+        padding: 2rem;
         padding-bottom: 0;
+
+        @media only screen and (max-width: $screen__md) {
+            padding: 1rem;
+        }
+    }
+
+    &__container {
+        margin-left: auto;
+        margin-right: auto;
     }
 
     &__heading {
@@ -14,30 +27,41 @@
         font-family: $font__supria-sans;
     }
 
+    &__label {
+        display: block;
+        @include typography.relative-font-size(20);
+    }
+
     &__form {
-        display: flex;
         &-submit {
             @extend .search-button;
             cursor: pointer;
             width: 8rem;
-            height: 3.1rem;
             font-size: 1.1rem;
-            margin: 0;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
         }
 
         &-search-box {
             width: 100%;
             max-width: 60rem;
-            height: 3.1rem;
-            border: 1px solid $color__grey-800;
-            border-radius: 0.25rem;
+            height: 3.25rem;
+            border: 1px solid $color__off-black;
             padding: 1rem;
             vertical-align: top;
             font-size: 1.1rem;
             margin-right: 0.2rem;
-            margin-bottom: 1rem;
+            margin-bottom: 0.2rem;
+            box-sizing: border-box;
+
+            @include media.on-larger-than-mobile {
+                height: 4.375rem;
+            }
+
             &:focus {
-                // outline: 5px solid $color__focus-outline-light-bg;
+                outline: 5px solid $color__focus-outline-light-bg;
             }
         }
     }
