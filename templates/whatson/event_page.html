@@ -4,6 +4,10 @@
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
+{% block header %}
+    {% include 'includes/header.html' with classes="tna-header--off-black" %}
+{% endblock %}
+
 {# Breadcrumb is included inside the event_hero component #}
 {% block breadcrumb %}
 {% endblock %}
