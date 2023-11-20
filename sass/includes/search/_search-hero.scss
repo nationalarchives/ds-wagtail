@@ -54,6 +54,7 @@
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 0.2rem;
+            box-sizing: border-box;
 
             @include media.on-larger-than-mobile {
                 height: 4.375rem;
