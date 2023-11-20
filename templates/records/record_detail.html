@@ -13,13 +13,28 @@
     {% include "includes/records/record-cta-panel.html" %}
 
     <div class="container">
-
         {% include "includes/records/record-title.html" %}
         {% include "includes/records/hierarchy-global.html" %}
 
         <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
 
+        {# If there are no related tags to display #}
         {% include "includes/records/record-details.html" %}
+    </div>
+
+    {# If there are related tags to display #}
+    <div class="tna-container">
+        <div class="tna-column tna-column--width-2-3 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny">
+            {% include "includes/records/record-details.html" %}
+        </div>
+
+        <div class="tna-column tna-column--width-1-3 tna-column--width-1-3-medium tna-column--full-small tna-column--full-tiny">
+            {% include "includes/related-tags.html" %}
+        </div>
+    </div>
+
+    <div class="container">
+
         {% include "includes/records/record-crosslink-panel.html" %}
 
         {% if record.hierarchy %}
