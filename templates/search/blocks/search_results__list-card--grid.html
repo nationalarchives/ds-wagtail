@@ -94,6 +94,8 @@
             {% comment %}End debug attributes.{% endcomment %}
         </dl>
 
+        {% include 'includes/tags.html' %}
+
 
     {% if record.is_digitised %}
         {% if record.closure_status not in closure_closed_status %}
