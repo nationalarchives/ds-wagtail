@@ -1,0 +1,49 @@
+.ohos-tag {
+    display: flex;
+    border: 1px solid;
+    border-radius: 5px;
+    overflow: hidden;
+    font-size: 16px;
+    max-width: 260px;
+
+    &--location {
+        background-color: #fd3f03;
+    }
+
+    &--person {
+        background-color: #84a59d;
+    }
+
+    &--organisation {
+        background-color: #b5e2fa;
+    }
+
+    &--misc {
+        background-color: #fe1d57;
+    }
+
+    &--other {
+        background-color: #faf0ca;
+    }
+
+    &__inner {
+        display: block;
+        padding: 0.25rem 0.5rem;
+    }
+
+    &__link {
+        display: flex;
+        gap: 0.25rem;
+        color: inherit;
+        align-items: center;
+        padding: 0.25rem 0.5rem;
+        background-color: $color__grey-200;
+        border-left: 1px solid;
+
+        &:hover {
+            text-decoration-thickness: inherit;
+            background-color: $color__off-black;
+            color: $color__grey-200;
+        }
+    }
+}
