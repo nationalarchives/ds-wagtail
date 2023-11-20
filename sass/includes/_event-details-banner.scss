@@ -13,4 +13,9 @@
             margin: 1rem 0;
         }
     }
+
+    &__link,
+    &__link:visited {
+        @include colour.colour-font("font-dark");
+    }
 }

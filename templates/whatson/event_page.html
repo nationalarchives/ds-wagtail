@@ -1,6 +1,6 @@
 {% extends 'base_page.html' %}
 
-{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags whatson_tags %}
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
@@ -39,7 +39,17 @@
                                 <i class="fa-solid fa-location-dot event-meta__icon"></i>
 
                                 <div class="event-meta__details">
-                                    <p>{{ page.get_venue_type_display }}</p>
+                                    {% if page.venue_type == "in_person" and page.venue_address %}
+                                        {% if page.venue_website %}
+                                            <a class="event-details-banner__link" href="{{ page.venue_website }}">
+                                        {% endif %}
+                                                {{ page.venue_address|process_address|richtext }}
+                                        {% if page.venue_website %}
+                                            </a>
+                                        {% endif %}
+                                    {% else %}
+                                        <p>{{ page.get_venue_type_display }}</p>
+                                    {% endif %}
                                 </div>
                             </li>
                         </ul>
@@ -97,10 +107,25 @@
                             </h3>
 
                             <div class="event-meta__details">
-                                <p>{{ page.get_venue_type_display }}</p>
+                                {% if page.venue_type != "in_person" %} 
+                                    <p>{{ page.get_venue_type_display }}</p>
+                                {% endif %}
+
+                                {% if page.venue_space_name %}
+                                    <p>{{ page.venue_space_name }}</p>
+                                {% endif %}
 
                                 {% if page.venue_address %}
                                     {{ page.venue_address|richtext }}
+                                {% endif %}
+
+                                {% if page.venue_website %}
+                                    <p>
+                                        <a class="event-meta__link" href="{{ page.venue_website }}">
+                                            <span class="event-meta__link-text">Get directions</span>
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
+                                    </p>
                                 {% endif %}
                             </div>
                         </li>
@@ -122,12 +147,12 @@
             </div>
             <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
                 {% if page.description %}
-                    <h2 class="tna-heading-l">What you'll see and do</h2>
+                    <h2 class="tna-heading-l">About this {{ page.event_type|lower }}</h2>
                     {{ page.description|richtext }}
                 {% endif %}
 
                 {% if page.target_audience %}
-                    <h2 class="tna-heading-l">Who can come</h2>
+                    <h2 class="tna-heading-l">Who it's for</h2>
                     {{ page.target_audience|richtext }}
                 {% endif %}
 
