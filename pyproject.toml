@@ -27,7 +27,7 @@ wagtail-metadata = "~5.0"
 nationalarchives-frontend-django = "^0.1.2a0"
 
 [tool.poetry.dev-dependencies]
-black = "~23.10"
+black = "~23.11"
 coverage = "~7.3"
 django-debug-toolbar = "~4.2"
 django-extensions = "~3.2"
