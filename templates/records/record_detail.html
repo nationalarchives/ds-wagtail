@@ -14,7 +14,6 @@
 
     <div class="container">
         {% include "includes/records/record-title.html" %}
-        {% include "includes/records/hierarchy-global.html" %}
 
         <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
 
@@ -34,9 +33,6 @@
     </div>
 
     <div class="container">
-
-        {% include "includes/records/record-crosslink-panel.html" %}
-
         {% if record.hierarchy %}
             {% if record.hierarchy|length > 2 %}
                 <h2 class="tna-heading-l">This record is in the series</h2>
@@ -44,7 +40,6 @@
                 {% include "includes/records/record-series-panel.html" %}
             {% endif %}
         {% endif %}
-
     </div>
 
 {% endblock %}
