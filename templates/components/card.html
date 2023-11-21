@@ -36,6 +36,9 @@
               data-link-type="Card text"
               data-card-title="{{ title }}"
               data-card-position="{{ index|default:0 }}"
+              {% if label %}
+                data-label="{{ label }}"
+              {% endif %}
             >{{ title }}</a>
           {% else %}
             {{ title }}
@@ -54,6 +57,9 @@
           data-link-type="Card text"
           data-card-title="{{ title }}"
           data-card-position="{{ index|default:0 }}"
+          {% if label %}
+            data-label="{{ label }}"
+          {% endif %}
         >{{ title }}</a>
       {% else %}
         {{ title }}
@@ -77,6 +83,9 @@
         data-link-type="Card image"
         data-card-title="{{ title }}"
         data-card-position="{{ index|default:0 }}"
+        {% if label %}
+          data-label="{{ label }}"
+        {% endif %}
       >
       {% else %}
       <div class="tna-card__image-container">
