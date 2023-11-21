@@ -1,10 +1,9 @@
 .ohos-tag {
-    display: flex;
+    display: inline-flex;
     border: 1px solid;
     border-radius: 5px;
     overflow: hidden;
     font-size: 16px;
-    max-width: 260px;
 
     &--location {
         background-color: #fd3f03;
@@ -34,11 +33,16 @@
     &__link {
         display: flex;
         gap: 0.25rem;
-        color: inherit;
         align-items: center;
         padding: 0.25rem 0.5rem;
         background-color: $color__grey-200;
-        border-left: 1px solid;
+        border-left: 1px solid $color__off-black;
+
+        &,
+        &:link,
+        &:visited {
+            color: inherit;
+        }
 
         &:hover {
             text-decoration-thickness: inherit;

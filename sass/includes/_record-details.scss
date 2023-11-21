@@ -17,4 +17,30 @@
             font-weight: bold;
         }
     }
+
+    &__related-tags {
+        margin: 1rem 0 5rem;
+        border: 1px solid $color__grey-500;
+        padding: 1.5rem;
+
+        &-list {
+            dt {
+                margin-top: 1.5rem;
+                margin-bottom: 1rem;
+
+                &:first-child {
+                    margin-top: 0;
+                }
+            }
+
+            dd {
+                margin-bottom: 1rem;
+                margin-left: 0;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
 }
