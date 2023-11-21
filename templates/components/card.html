@@ -17,6 +17,9 @@
               data-link-type="Card text"
               data-card-title="{{ title }}"
               data-card-position="{{ index|default:0 }}"
+              {% if label %}
+                data-label="{{ label }}"
+              {% endif %}
             >{{ title }}</a>
           {% else %}
             {{ title }}
