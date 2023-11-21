@@ -1,7 +1,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .transcription {
-    @include colour.invert;
+    @include colour.contrast;
     $root: &;
     // provides visual boundary in high contrast mode
     border: 1px solid transparent;

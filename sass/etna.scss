@@ -59,6 +59,9 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 @use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
+// Redeclare $orange to match OHOS orange
+$orange: #fa8334;
+
 .tna-heading--l,
 .tna-heading--m {
     @include colourTools.colour-font("font-base");
@@ -412,7 +415,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        @include colourTools.invert;
+        @include colourTools.contrast;
         background-color: #343338 !important;
         color: #fff !important;
 
@@ -667,7 +670,7 @@ Modified to match the existing site (for now)
 // tna-useful-info component - 'Good to know' information from event page
 
 .tna-useful-info {
-    @include colourTools.light-accent-background;
+    @include colourTools.accent-light;
     color: colourTools.brand-colour("black");
     padding: 1.5rem 2rem 2rem 2rem;
     margin-top: 2rem;

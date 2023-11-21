@@ -17,9 +17,15 @@
 
 <div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-    <h2 class="tna-heading-l search-filters__heading">Refine results</h2>
+
 
     <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
+
+        <div class="search-filters__header">
+            <h2 class="tna-heading-l search-filters__heading">Filters</h2>
+            <input type="submit" value="Update" class="search-filters__submit">
+        </div>
+
         {% comment %}
          {% if form.group.value == 'tna' %}
             <div class="search-filters__form-block">
@@ -33,10 +39,10 @@
 
         {% if form.filter_keyword %}
             <div class="search-filters__form-block">
-                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block">Search within results:</label>
+                <label for="{{form.filter_keyword.id_for_label}}" class="tna-heading-s search-filters__label--block">Search within results</label>
                 {{ form.filter_keyword }}
                 {{ form.filter_keyword.errors }}
-                <input type="submit" value="Search" class="search-filters__submit">
+                <input type="submit" value="Search" class="search-button search-button--secondary">
             </div>
         {% endif %}
 
@@ -44,10 +50,10 @@
             <h3 class="tna-heading-m sr-only">Edit filters</h3>
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
-                <div class="search-filters__accordion-section">
+                <div class="search-filters__section">
                     <fieldset role="group" aria-describedby="from-date">
                         <legend>
-                            <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
+                            <h4 class="tna-heading-s search-filters__section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
                         <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
@@ -82,7 +88,6 @@
 
                         </div>
 
-                        <input type="submit" value="Update" class="search-filters__submit">
                     </fieldset>
                 </div>
             {% endif %}
@@ -107,10 +112,10 @@
 
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="search-filters__accordion-section">
+                <div class="search-filters__section">
                     <fieldset role="group" aria-describedby="opening-start-date">
                         <legend>
-                            <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                            <h4 class="tna-heading-s search-filters__section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
 
                         <div class="search-filters__opening-date-section">
@@ -128,7 +133,6 @@
                             {{ form.opening_start_date }}
 
                         </div>
-                        
 
                         <div class="search-filters__opening-date-section">
 
@@ -145,7 +149,6 @@
 
                         </div>
 
-                        <input type="submit" value="Update" class="search-filters__submit">
                     </fieldset>
                 </div>
 
@@ -168,6 +171,8 @@
 
         {# render hidden inputs for fields controlled by other forms #}
         {% render_fields_as_hidden form include='q group sort_by sort_order' %}
+
+        <input type="submit" value="Update" class="search-filters__submit">
 
     </form>
 

@@ -87,10 +87,8 @@
     }
 
     &__transcription {
-        @include colour.invert;
-        // background-color: $color__dark;
+        @include colour.contrast;
         padding: 2rem 2.5rem;
-        // color: $color__white;
 
         &.hidden {
             display: none;

@@ -1,15 +1,23 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
 .search-filters {
-    background-color: $color__grey-200;
-    border: 1px solid $color__grey-500;
+    background-color: $color__grey-300;
     padding: 1rem;
 
+    &__header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+
     &__heading {
-        font-size: 1.3em;
+        color: inherit;
     }
 
     &__widget-list {
         list-style: none;
-        padding-left: 0.5rem;
+        padding-left: 0;
 
         &:focus {
             outline: 5px solid $color__focus-outline-light-bg;
@@ -18,6 +26,41 @@
 
     &__widget-list-item {
         input {
+            // These styles only apply to the search page items for the moment
+            // If it's identified that this style needs to be used elsewhere
+            // in future, consider moving the code in to a more reusable state
+            &[type="checkbox"] {
+                flex: none;
+                margin-right: 0.5rem;
+                appearance: none;
+                width: 1.875rem;
+                height: 1.875rem;
+                border: 2px solid $color__off-black;
+                background-color: $color__grey-200;
+                display: grid;
+                place-content: center;
+
+                &:checked {
+                    background-color: $orange;
+
+                    &::before {
+                        content: "";
+                        clip-path: polygon(
+                            85.41% 0,
+                            39.58985% 69.04%,
+                            12.5% 38.1026666667%,
+                            0 52.3883888889%,
+                            41.66015% 100%,
+                            100% 14.2857222222%
+                        );
+                        width: 20px;
+                        height: 18px;
+                        display: block;
+                        background-color: $color__off-black;
+                    }
+                }
+            }
+
             &:focus {
                 outline: 5px solid $color__focus-outline-light-bg;
             }
@@ -25,7 +68,7 @@
 
         label {
             cursor: pointer;
-            display: inline-block;
+            display: flex;
             margin-bottom: 0.5rem;
             max-width: 100%;
         }
@@ -38,7 +81,11 @@
     &__submit {
         @extend .search-button;
         display: block;
-        margin-top: 0.5rem;
+        margin-left: auto;
+
+        &:not(&__heading) {
+            margin-top: 0.5rem;
+        }
     }
 
     &__label,
@@ -57,27 +104,27 @@
         &--block {
             display: block;
             max-width: 100%;
+            color: inherit;
+            @include typography.detail-font-weight-bold;
         }
     }
 
     &__search {
         margin-bottom: 0.5rem;
-        border: 1px solid $color__grey-500;
-        border-radius: 0.5rem;
+        border: 2px solid currentColor;
         width: 100%;
         height: 3rem;
         padding: 1rem;
     }
 
-    &__accordion-section {
-        background-color: $color__grey-100;
-        padding: 0.5rem;
+    &__section {
+        padding-bottom: 1rem;
         margin-bottom: 1rem;
-        border: 1px solid $color__grey-400;
+        border-bottom: 1px solid $color__off-black;
 
         &-heading {
-            font-size: 1rem;
-            font-weight: normal;
+            @include typography.detail-font-weight-bold;
+            color: inherit;
         }
 
         &-link {
@@ -128,6 +175,10 @@
     display: inline-block;
     margin-right: 20px;
     margin-bottom: 0;
+
+    input {
+        border: 2px solid currentColor;
+    }
 }
 
 .tna-form-group .tna-form-group:last-of-type {
@@ -146,10 +197,11 @@
 .tna-input--width-2 {
     max-width: 2.75em;
 }
+
 .tna-input--width-4 {
     max-width: 4em;
 }
 
 .example-text {
-    color: $color__grey-600;
+    font-size: 1rem;
 }

@@ -1,27 +1,25 @@
 .search-button {
-    background-color: $color__grey-700 !important;
+    cursor: pointer;
     text-decoration: none;
-    color: $color__white !important;
-    border: $default__border;
+    border: 2px solid;
     padding: 0.5em 0.9em;
     display: inline-block;
     min-width: 24px;
     text-align: center;
+    font-weight: bold;
+    border-color: $color__off-black;
 
+    &,
     &:visited,
     &:active {
-        background-color: $color__grey-700 !important;
-        color: $color__white !important;
+        background-color: $orange !important;
+        color: $color__off-black !important;
     }
 
     &:hover {
-        background-color: $color__white !important;
-        color: $color__grey-700 !important;
+        background-color: $color__off-black !important;
+        color: $color__white !important;
         text-decoration: none;
-    }
-
-    &:focus {
-        // @include focus-default;
     }
 
     &--primary {
@@ -42,20 +40,17 @@
     }
 
     &--secondary {
-        border-color: $color__grey-light !important;
-        background-color: $color__grey-light !important;
-        color: $color__black;
-
+        &,
         &:visited,
         &:active {
-            background-color: $color__grey-light !important;
-            color: $color__black !important;
+            background-color: $color__off-black !important;
+            color: $color__white !important;
         }
 
         &:hover {
-            border-color: $color__black !important;
-            background-color: $color__black !important;
-            color: $color__white;
+            border-color: currentColor !important;
+            background-color: $color__grey-200 !important;
+            color: $color__off-black;
             text-decoration: none;
         }
     }
