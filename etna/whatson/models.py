@@ -690,6 +690,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         format_day_date_and_time = "%A %-d %B %Y, %H:%M"
         format_date_only = "%-d %B %Y"
         format_time_only = "%H:%M"
+        format_day_and_date = "%A %-d %B %Y"
         # One session on one date where start and end times are the same
         # return eg. Monday 1 January 2024, 19:00
         if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
@@ -706,7 +707,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         # Multiple sessions on one date
         # Eg. Monday 1 January 2024
         if dates_same and len(self.sessions.all()) > 1:
-            return self.start_date.strftime("%A %-d %B %Y")
+            return self.start_date.strftime(format_day_and_date)
         # Event has multiple dates
         # Eg. 1 January 2024 to 5 January 2024
         if not dates_same:
