@@ -9,12 +9,12 @@ export const trackPictureTranscripts = () => {
             push_to_data_layer({
                 event: "Expand accordion",
                 "data-component-name": "Image transcript",
-                "data-link-type": $imageBlockTranscript.innerText,
-                "data-link":
+                "data-link-type":
                     $imageBlockTranscript.getAttribute("aria-expanded") ===
                     "true"
                         ? "Collapse accordion"
                         : "Expand accordion",
+                "data-link": $imageBlockTranscript.innerText,
             }),
         );
     });
