@@ -18,4 +18,8 @@
     &__link:visited {
         @include colour.colour-font("font-dark");
     }
+
+    &__address {
+        display: inline;
+    }
 }
