@@ -687,31 +687,26 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     @cached_property
     def date_time_range(self):
-        delta = self.end_date - self.start_date
+        format_day_date_and_time = "%A %-d %B %Y, %H:%M"
+        format_date_only = "%-d %B %Y"
+        format_time_only = "%H:%M"
         # One session on one date where start and end times are the same
         # return eg. Monday 1 January 2024, 19:00
         if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
-            return self.start_date.strftime("%A %-d %B %Y, %H:%M")
+            return self.start_date.strftime(format_day_date_and_time)
         # One session on one date where there are values for both start time and end time
         # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
-        if (delta.days == 0 and delta.seconds > 0) and (len(self.sessions.all()) == 1):
-            return (
-                self.start_date.strftime("%A %-d %B %Y, %H:%M")
-                + "–"
-                + self.end_date.strftime("%H:%M")
-            )
+        dates_same = self.start_date.date() == self.end_date.date()
+        if dates_same and (self.start_date.time() != self.end_date.time()) and (len(self.sessions.all()) == 1):
+            return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
         # Multiple sessions on one date
         # Eg. Monday 1 January 2024
-        if (delta.days == 0) and (len(self.sessions.all()) > 1):
+        if dates_same and len(self.sessions.all()) > 1:
             return self.start_date.strftime("%A %-d %B %Y")
         # Event has multiple dates
         # Eg. 1 January 2024 to 5 January 2024
-        if delta.days > 0:
-            return (
-                self.start_date.strftime("%-d %B %Y")
-                + " to "
-                + self.end_date.strftime("%-d %B %Y")
-            )
+        if self.start_date.date() != self.end_date.date():
+            return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
 
     def clean(self):
         """
