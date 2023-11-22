@@ -709,7 +709,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             return self.start_date.strftime("%A %-d %B %Y")
         # Event has multiple dates
         # Eg. 1 January 2024 to 5 January 2024
-        if self.start_date.date() != self.end_date.date():
+        if not dates_same:
             return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
 
     def clean(self):
