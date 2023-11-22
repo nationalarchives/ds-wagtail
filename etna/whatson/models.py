@@ -685,6 +685,26 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
 
+    @cached_property
+    def date_time_range(self):
+        delta = self.end_date - self.start_date
+        # One session on one date where start and end times are the same
+        # return eg. Monday 1 January 2024, 19:00
+        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
+            return self.start_date.strftime("%A %-d %B %Y, %H:%M")
+        # One session on one date where there are values for both start time and end time
+        # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
+        if (delta.days == 0 and delta.seconds > 0) and (len(self.sessions.all()) == 1):
+            return self.start_date.strftime("%A %-d %B %Y, %H:%M") + "–" + self.end_date.strftime("%H:%M")
+        # Multiple sessions on one date
+        # Eg. Monday 1 January 2024
+        if (delta.days == 0) and (len(self.sessions.all()) > 1):
+            return self.start_date.strftime("%A %-d %B %Y")
+        # Event has multiple dates
+        # Eg. 1 January 2024 to 5 January 2024
+        if (delta.days > 0):
+            return self.start_date.strftime("%-d %B %Y") + " to " + self.end_date.strftime("%-d %B %Y")
+
     def clean(self):
         """
         Check that the venue address and video conference information are
