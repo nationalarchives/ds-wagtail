@@ -151,14 +151,21 @@ class TestWhatsOnPageEventFiltering(TestCase):
                     page=cls.whats_on_page,
                     start=timezone.make_aware(datetime(2023, 10, 22, 11, 30)),
                     end=timezone.make_aware(datetime(2023, 10, 22, 12, 30)),
-                )
+                ),
             ],
         )
 
     def test_get_event_pages(self):
         self.assertQuerySetEqual(
             self.whats_on_page.get_events_queryset(),
-            [self.featured_event, self.event_page_2, self.event_page_3, self.event_page_4, self.event_page_5, self.event_page_6],
+            [
+                self.featured_event,
+                self.event_page_2,
+                self.event_page_3,
+                self.event_page_4,
+                self.event_page_5,
+                self.event_page_6,
+            ],
         )
 
     def assert_filtered_event_pages_equal(self, filter_params, expected_result):
@@ -169,13 +176,31 @@ class TestWhatsOnPageEventFiltering(TestCase):
 
     def test_filtered_event_pages(self):
         test_cases = (
-            ({}, [self.featured_event, self.event_page_2, self.event_page_3, self.event_page_4, self.event_page_5, self.event_page_6]),
+            (
+                {},
+                [
+                    self.featured_event,
+                    self.event_page_2,
+                    self.event_page_3,
+                    self.event_page_4,
+                    self.event_page_5,
+                    self.event_page_6,
+                ],
+            ),
             ({"is_online_event": True}, [self.featured_event, self.event_page_2]),
             (
                 {"event_type": self.talk_event_type},
                 [self.featured_event, self.event_page_2],
             ),
-            ({"event_type": self.tour_event_type}, [self.event_page_3, self.event_page_4, self.event_page_5, self.event_page_6]),
+            (
+                {"event_type": self.tour_event_type},
+                [
+                    self.event_page_3,
+                    self.event_page_4,
+                    self.event_page_5,
+                    self.event_page_6,
+                ],
+            ),
             ({"family_friendly": True}, [self.event_page_2]),
             ({"date": date(2023, 10, 20)}, [self.event_page_3, self.event_page_4]),
         )
@@ -201,7 +226,7 @@ class TestWhatsOnPageEventFiltering(TestCase):
             # note this expects an en dash
             (self.event_page_4.date_time_range, "Friday 20 October 2023, 10:30–20:30"),
             (self.event_page_5.date_time_range, "Sunday 22 October 2023, 10:30"),
-            (self.event_page_6.date_time_range, "Sunday 22 October 2023")
+            (self.event_page_6.date_time_range, "Sunday 22 October 2023"),
         )
 
         for test_value, expected in test_cases:

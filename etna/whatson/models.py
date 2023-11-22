@@ -695,15 +695,23 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         # One session on one date where there are values for both start time and end time
         # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
         if (delta.days == 0 and delta.seconds > 0) and (len(self.sessions.all()) == 1):
-            return self.start_date.strftime("%A %-d %B %Y, %H:%M") + "–" + self.end_date.strftime("%H:%M")
+            return (
+                self.start_date.strftime("%A %-d %B %Y, %H:%M")
+                + "–"
+                + self.end_date.strftime("%H:%M")
+            )
         # Multiple sessions on one date
         # Eg. Monday 1 January 2024
         if (delta.days == 0) and (len(self.sessions.all()) > 1):
             return self.start_date.strftime("%A %-d %B %Y")
         # Event has multiple dates
         # Eg. 1 January 2024 to 5 January 2024
-        if (delta.days > 0):
-            return self.start_date.strftime("%-d %B %Y") + " to " + self.end_date.strftime("%-d %B %Y")
+        if delta.days > 0:
+            return (
+                self.start_date.strftime("%-d %B %Y")
+                + " to "
+                + self.end_date.strftime("%-d %B %Y")
+            )
 
     def clean(self):
         """
