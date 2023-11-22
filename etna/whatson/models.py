@@ -697,7 +697,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         # One session on one date where there are values for both start time and end time
         # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
         dates_same = self.start_date.date() == self.end_date.date()
-        if dates_same and (self.start_date.time() != self.end_date.time()) and (len(self.sessions.all()) == 1):
+        if (
+            dates_same
+            and (self.start_date.time() != self.end_date.time())
+            and (len(self.sessions.all()) == 1)
+        ):
             return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
         # Multiple sessions on one date
         # Eg. Monday 1 January 2024
