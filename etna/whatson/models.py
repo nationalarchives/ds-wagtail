@@ -1129,3 +1129,19 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
+
+    def clean(self):
+        """
+        Check that the venue address and video conference information are
+        provided for the correct venue type.
+        """
+
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
+                raise ValidationError(
+                    {
+                        "start_date": _("The start date must be before the end date."),
+                        "end_date": _("The end date must be after the start date."),
+                    }
+                )
+        return super().clean()
