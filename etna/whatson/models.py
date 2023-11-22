@@ -148,98 +148,108 @@ class EventAccessType(Orderable):
     )
 
 
-class EventHost(Orderable):
+class AbstractEventRole(models.Model):
+    """
+    Abstract base class for creating relationships between Page and AuthorPage,
+    to describe a person's role at an event.
+    """
+
+    person_page = models.ForeignKey(
+        "authors.AuthorPage",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    name = models.CharField(
+        max_length=100,
+        verbose_name=_("name"),
+        blank=True,
+    )
+
+    description = models.CharField(
+        max_length=200,
+        verbose_name=_("description"),
+        blank=True,
+    )
+
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    def clean(self):
+        super().clean()
+        if self.person_page:
+            for field_name in ("name", "description", "image"):
+                if getattr(self, field_name):
+                    raise ValidationError(
+                        {
+                            "person_page": _(
+                                "Either select a page or provide person's info, not both."
+                            ),
+                            field_name: _(
+                                "Either select a page or provide person's info, not both."
+                            ),
+                        }
+                    )
+        elif not any((self.name, self.description, self.image)):
+            raise ValidationError("Please select a page or provide person's info")
+
+    class Meta:
+        abstract = True
+
+
+class EventHost(AbstractEventRole):
     """
     This model is used to add host information to event pages.
     """
 
     page = ParentalKey(
-        "wagtailcore.Page",
+        "whatson.EventPage",
         on_delete=models.CASCADE,
         related_name="hosts",
     )
 
-    host_page = models.ForeignKey(
-        "authors.AuthorPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_("name"),
-        blank=True,
-    )
-
-    description = models.CharField(
-        max_length=200,
-        verbose_name=_("description"),
-        blank=True,
-    )
-
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
     panels = [
-        FieldPanel("host_page"),
+        FieldPanel(
+            "person_page",
+            heading=_("Host page"),
+            help_text=_("Select Host page or provide Host info below."),
+        ),
         MultiFieldPanel(
             [FieldPanel("name"), FieldPanel("description"), FieldPanel("image")],
-            heading=_("Speaker info"),
+            heading=_("Host info"),
+            help_text=_("Provide Host info or select Host page above."),
         ),
     ]
 
 
-class EventSpeaker(Orderable):
+class EventSpeaker(AbstractEventRole):
     """
     This model is used to add speaker information to event pages.
     """
 
     page = ParentalKey(
-        "wagtailcore.Page",
+        "whatson.EventPage",
         on_delete=models.CASCADE,
         related_name="speakers",
     )
 
-    speaker_page = models.ForeignKey(
-        "authors.AuthorPage",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_("name"),
-        blank=True,
-    )
-
-    description = models.CharField(
-        max_length=200,
-        verbose_name=_("description"),
-        blank=True,
-    )
-
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="+",
-    )
-
     panels = [
-        FieldPanel("speaker_page"),
+        FieldPanel(
+            "person_page",
+            heading=_("Speaker page"),
+            help_text=_("Select Speaker page or provide Speaker info below."),
+        ),
         MultiFieldPanel(
             [FieldPanel("name"), FieldPanel("description"), FieldPanel("image")],
             heading=_("Speaker info"),
+            help_text=_("Provide Speaker info or select Speaker page above."),
         ),
     ]
 
