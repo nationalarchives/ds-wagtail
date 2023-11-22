@@ -3,7 +3,7 @@ from django.conf import settings
 
 def feature_flags(request):
     """
-    Passes any settings with the "FEATURE_" prefix through to template contexts,
+    Passes settings with the "FEATURE_" prefix through to template contexts,
     allowing conditional logic to be added to both Python and template code.
     Explicitly sets the values for each setting rather than using settings.__dict__ which gets cached
     """
