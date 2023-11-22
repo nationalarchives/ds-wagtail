@@ -842,7 +842,7 @@ class ExhibitionHighlights(Orderable):
     """
 
     page = ParentalKey(
-        "wagtailcore.Page",
+        "whatson.ExhibitionPage",
         on_delete=models.CASCADE,
         related_name="highlights",
     )
