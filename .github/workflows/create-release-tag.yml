@@ -20,8 +20,7 @@ jobs:
           version: ${{ vars.CI_POETRY_VERSION }}
       - name: Generate tag
         id: version-tag
-        # run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
-        run: echo "CALVER=$(date +%y.%m.%d).$(git rev-list main --count)" >> "$GITHUB_OUTPUT"
+        run: echo "CALVER=$(date +%y.%m.%d).${{ github.run_number }}" >> "$GITHUB_OUTPUT"
       - name: Update version and push
         run: |
           git checkout -b "release/v${{ steps.version-tag.outputs.CALVER }}"
