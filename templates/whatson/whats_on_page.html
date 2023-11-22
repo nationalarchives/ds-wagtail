@@ -4,6 +4,10 @@
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
+{% block header %}
+    {% include 'includes/header.html' with classes="tna-header--off-black" %}
+{% endblock %}
+
 {# Breadcrumb is included inside the header area #}
 {% block breadcrumb %}
 {% endblock %}
@@ -26,7 +30,7 @@
         <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
             <fieldset class="filters__fieldset accordion" data-accordion>
                 <legend class="filters__super-title">
-                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
                         When
 
                         <i class="fa-solid fa-chevron-down accordion__icon"></i>
@@ -34,14 +38,13 @@
                 </legend>
                 <div class="filters__panel accordion__content" data-accordion-content>
                     <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
-                    <p class="filters__help">Format: dd/mm/yyyy</p>
                     {{ filter_form.date }}
                 </div>
             </fieldset>
           
             <fieldset class="filters__fieldset accordion" data-accordion>
                 <legend class="filters__super-title">
-                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button>
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
                         {{ filter_form.event_type.label }}
 
                         <i class="fa-solid fa-chevron-down accordion__icon"></i>

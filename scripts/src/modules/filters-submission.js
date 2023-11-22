@@ -1,3 +1,5 @@
+import debounce from "./debounce";
+
 class FiltersSubmission {
     constructor(node) {
         this.node = node;
@@ -23,32 +25,47 @@ class FiltersSubmission {
     }
 
     addEventListeners() {
-        this.dateField.addEventListener("change", (e) => {
-            this.dateValue = e.target.value;
-            this.reloadEvents();
-        });
+        this.dateField.addEventListener(
+            "change",
+            debounce((e) => {
+                this.dateValue = e.target.value;
+                this.reloadEvents();
+            }, 200),
+        );
 
         this.eventTypeFields.forEach((field) => {
-            field.addEventListener("change", (e) => {
-                this.eventTypeValue = e.target.value;
+            field.addEventListener(
+                "change",
+                debounce((e) => {
+                    this.eventTypeValue = e.target.value;
+                    this.reloadEvents();
+                }, 200),
+            );
+        });
+
+        this.onlineField.addEventListener(
+            "change",
+            debounce((e) => {
+                this.onlineValue = e.target.checked;
                 this.reloadEvents();
-            });
-        });
+            }, 200),
+        );
 
-        this.onlineField.addEventListener("change", (e) => {
-            this.onlineValue = e.target.checked;
-            this.reloadEvents();
-        });
+        this.familyField.addEventListener(
+            "change",
+            debounce((e) => {
+                this.familyValue = e.target.checked;
+                this.reloadEvents();
+            }, 200),
+        );
 
-        this.familyField.addEventListener("change", (e) => {
-            this.familyValue = e.target.checked;
-            this.reloadEvents();
-        });
-
-        window.addEventListener("popstate", () => {
-            this.updateFields(document.location);
-            this.reloadEvents(false);
-        });
+        window.addEventListener(
+            "popstate",
+            debounce((e) => {
+                this.updateFields(document.location);
+                this.reloadEvents(false);
+            }, 200),
+        );
     }
 
     buildURL() {

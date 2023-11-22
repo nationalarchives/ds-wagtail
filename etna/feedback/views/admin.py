@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.filters import WagtailFilterSet
 from wagtail.admin.widgets import AdminDateInput
-from wagtail.snippets.views.snippets import SnippetTitleColumn, SnippetViewSet
+from wagtail.snippets.views.snippets import SnippetViewSet, TitleColumn
 
 import django_filters
 
@@ -77,7 +77,7 @@ class FeedbackSubmissionViewSet(SnippetViewSet):
     list_display = [
         # url related methods are deliberately omitted here to prevent rendering of an edit link
         # (which Wagtail does regardless of user permissions)
-        SnippetTitleColumn("id", label=_("ID")),
+        TitleColumn("id", label=_("ID")),
         "received_at",
         "path",
         "prompt_text",
