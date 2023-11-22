@@ -1051,7 +1051,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("location"),
-                FieldPanel("location_url"),
+                FieldPanel("location_url", heading=_("Location URL")),
             ],
             heading=_("Location details"),
         ),
