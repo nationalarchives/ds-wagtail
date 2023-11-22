@@ -1,6 +1,7 @@
 import urllib
 
 from django import forms
+from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.shortcuts import render
@@ -10,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -21,6 +22,7 @@ from etna.collections.models import TopicalPageMixin
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 
+from .blocks import RelatedArticlesBlock
 from .forms import EventPageForm
 
 
@@ -426,6 +428,7 @@ class WhatsOnPage(BasePageWithIntro):
     ]
     subpage_types = [
         "whatson.EventPage",
+        "whatson.ExhibitionPage",
     ]
 
     max_count = 1
@@ -561,12 +564,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("registration info"),
         blank=True,
         help_text=_("Additional information about how to register for the event."),
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     contact_info = RichTextField(
         verbose_name=_("contact info"),
         blank=True,
         help_text=_("Information about who to contact regarding the event."),
+        features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
     # Promote tab
@@ -857,3 +862,314 @@ class EventFilterForm(forms.Form):
             attrs={"class": "filters__toggle-input", "data-js-family": ""}
         ),
     )
+
+
+class ExhibitionHighlight(Orderable):
+    """
+    This model is used to add highlights to exhibition pages.
+    """
+
+    page = ParentalKey(
+        "whatson.ExhibitionPage",
+        on_delete=models.CASCADE,
+        related_name="highlights",
+    )
+
+    title = models.CharField(
+        max_length=255,
+        verbose_name=_("title"),
+    )
+
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    link = models.ForeignKey(
+        "wagtailcore.Page",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    panels = [
+        FieldPanel("title"),
+        FieldPanel("image"),
+        FieldPanel("link"),
+    ]
+
+
+class HeroColourChoices(models.TextChoices):
+    """
+    This model is used to allow for colour choice on the hero intro
+    for Exhibition pages.
+    """
+
+    LIGHT = "light", _("Light")
+    DARK = "dark", _("Dark")
+
+
+class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
+    """ExhibitionPage
+
+    An event where editors can create exhibitions. Exhibitions do not come
+    from Eventbrite - they are internal TNA exhibitions.
+    """
+
+    # Hero image section
+    subtitle = models.CharField(
+        max_length=255,
+        verbose_name=_("subtitle"),
+        blank=True,
+        help_text=_("A subtitle for the event."),
+    )
+
+    hero_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    hero_text_colour = models.CharField(
+        max_length=255,
+        verbose_name=_("hero text colour"),
+        help_text=_("The colour of the text in the hero image."),
+        choices=HeroColourChoices.choices,
+    )
+
+    # Key details
+    start_date = models.DateTimeField(
+        verbose_name=_("start date"),
+        null=True,
+    )
+
+    end_date = models.DateTimeField(
+        verbose_name=_("end date"),
+        null=True,
+    )
+
+    min_price = models.IntegerField(
+        verbose_name=_("minimum price"),
+        default=0,
+    )
+
+    max_price = models.IntegerField(
+        verbose_name=_("maximum price"),
+        default=0,
+    )
+
+    dwell_time = models.CharField(
+        max_length=255,
+        verbose_name=_("dwell time"),
+        blank=True,
+        help_text=_("The average dwell time for the exhibition."),
+    )
+
+    target_audience = models.CharField(
+        max_length=255,
+        verbose_name=_("target audience"),
+        blank=True,
+        help_text=_("The target audience for the exhibition."),
+    )
+
+    # Location details
+    location = models.CharField(
+        max_length=255,
+        verbose_name=_("location"),
+        help_text=_("The location of the exhibition venue."),
+    )
+
+    location_url = models.URLField(
+        verbose_name=_("location url"),
+        blank=True,
+        help_text=_("The URL of the exhibition venue."),
+    )
+
+    # Content
+    # TODO: video = . . .
+
+    description = RichTextField(
+        verbose_name=_("description"),
+        help_text=_("A description of the exhibition."),
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
+    )
+
+    # Need to know
+    need_to_know = RichTextField(
+        verbose_name=_("need to know"),
+        blank=True,
+        help_text=_("Useful information about the exhibition."),
+        features=settings.EXPANDED_RICH_TEXT_FEATURES,
+    )
+
+    need_to_know_cta = models.CharField(
+        max_length=255,
+        verbose_name=_("need to know CTA"),
+        blank=True,
+        help_text=_("The call to action text for the need to know section."),
+    )
+
+    need_to_know_url = models.URLField(
+        verbose_name=_("need to know URL"),
+        blank=True,
+        help_text=_("The URL for the need to know section."),
+    )
+
+    need_to_know_image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+    )
+
+    # Related content
+    articles_title = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text=_("The title to display for the articles section."),
+    )
+
+    related_articles = StreamField(
+        [("relatedarticles", RelatedArticlesBlock())],
+        blank=True,
+        null=True,
+        use_json_field=True,
+    )
+
+    # Promote tab
+    short_title = models.CharField(
+        max_length=50,
+        verbose_name=_("short title"),
+        blank=True,
+        help_text=_(
+            "A short title for the event. This will be used in the event listings."
+        ),
+    )
+
+    # DataLayerMixin overrides
+    gtm_content_group = "What's On"
+
+    class Meta:
+        verbose_name = _("exhibition page")
+
+    content_panels = BasePageWithIntro.content_panels + [
+        MultiFieldPanel(
+            [
+                FieldPanel("subtitle"),
+                FieldPanel("hero_image"),
+                FieldPanel("hero_text_colour"),
+            ],
+            heading=_("Hero image"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("start_date"),
+                FieldPanel("end_date"),
+                FieldPanel("min_price"),
+                FieldPanel("max_price"),
+                FieldPanel("dwell_time"),
+                FieldPanel("target_audience"),
+            ],
+            heading=_("Key details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("location"),
+                FieldPanel("location_url", heading=_("Location URL")),
+            ],
+            heading=_("Location details"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("description"),
+                InlinePanel(
+                    "highlights",
+                    heading=_("Highlights"),
+                ),
+            ],
+            heading=_("Content"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("need_to_know"),
+                FieldPanel("need_to_know_cta"),
+                FieldPanel("need_to_know_url"),
+                FieldPanel("need_to_know_image"),
+            ],
+            heading=_("Need to know"),
+        ),
+        MultiFieldPanel(
+            [
+                FieldPanel("articles_title"),
+                FieldPanel("related_articles"),
+            ],
+            heading=_("Related content"),
+        ),
+    ]
+
+    promote_panels = (
+        BasePageWithIntro.promote_panels
+        + [
+            FieldPanel("short_title"),
+            InlinePanel(
+                "event_audience_types",
+                heading=_("Audience types"),
+                help_text=_(
+                    "If the event has more than one audience type, please add these in order of relevance from most to least."
+                ),
+            ),
+        ]
+        + ArticleTagMixin.promote_panels
+        + [
+            TopicalPageMixin.get_topics_inlinepanel(),
+            TopicalPageMixin.get_time_periods_inlinepanel(),
+        ]
+    )
+
+    search_fields = (
+        BasePageWithIntro.search_fields
+        + ArticleTagMixin.search_fields
+        + [
+            index.SearchField("topic_names", boost=1),
+            index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    parent_page_types = [
+        "whatson.WhatsOnPage",
+    ]
+    subpage_types = []
+
+    @cached_property
+    def price_range(self):
+        """
+        Returns the price range for the event.
+        """
+        if self.max_price == 0:
+            return "Free"
+        elif self.min_price == self.max_price:
+            return f"{self.min_price}"
+        else:
+            if self.min_price == 0:
+                return f"Free - {self.max_price}"
+            return f"{self.min_price} - {self.max_price}"
+
+    def clean(self):
+        """
+        Check that the venue address and video conference information are
+        provided for the correct venue type.
+        """
+
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
+                raise ValidationError(
+                    {
+                        "start_date": _("The start date must be before the end date."),
+                        "end_date": _("The end date must be after the start date."),
+                    }
+                )
+        return super().clean()
