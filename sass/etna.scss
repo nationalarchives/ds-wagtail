@@ -560,7 +560,7 @@ Modified to match the existing site (for now)
 
     &__content {
         background-color: colour.brand-colour("light-grey");
-        color: colour.brand-colour("black");
+        color: $color__text;
         padding: 2rem;
 
         @include media.on-larger-than-mobile {
