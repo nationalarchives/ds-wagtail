@@ -19,10 +19,11 @@ from wagtail.snippets.models import register_snippet
 
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import LargeCardLinksBlock
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 
-from .blocks import RelatedArticlesBlock
+from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
@@ -287,6 +288,18 @@ class WhatsOnPage(BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    promoted_links = StreamField(
+        [("promoted_links", WhatsOnPromotedLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
+    large_card_links = StreamField(
+        [("large_card_links", LargeCardLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
 
     def serve(self, request):
         # Check if the request comes from JavaScript
@@ -435,6 +448,8 @@ class WhatsOnPage(BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_event"),
+        FieldPanel("promoted_links"),
+        FieldPanel("large_card_links"),
     ]
 
 
