@@ -11,7 +11,7 @@ def register_unpublished_changes_report_menu_item():
     return AdminOnlyMenuItem(
         "Beta testers",
         reverse("beta_testers_report"),
-        classnames="icon icon-user",
+        classname="icon icon-user",
     )
 
 

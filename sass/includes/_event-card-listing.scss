@@ -25,6 +25,7 @@
     &__summary {
         color: $color__grey-600;
         font-size: 1rem;
+        margin-top: 0;
 
         @include media.on-larger-than-mobile {
             font-size: 1.25rem;
