@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('whatson', '0005_alter_eventpage_venue_type'),
-        ('whatson', '0005_exhibitionpage_exhibitionhighlight'),
+        ("whatson", "0005_alter_eventpage_venue_type"),
+        ("whatson", "0005_exhibitionpage_exhibitionhighlight"),
     ]
 
-    operations = [
-    ]
+    operations = []
