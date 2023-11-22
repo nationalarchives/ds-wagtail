@@ -836,7 +836,7 @@ class EventFilterForm(forms.Form):
     )
 
 
-class ExhibitionHighlights(Orderable):
+class ExhibitionHighlight(Orderable):
     """
     This model is used to add highlights to exhibition pages.
     """
@@ -1000,7 +1000,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     # Related content
     articles_title = models.CharField(
-        max_length=100,
+        max_length=255,
         blank=True,
         help_text=_("The title to display for the articles section."),
     )
