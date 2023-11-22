@@ -685,6 +685,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
 
+    @cached_property
+    def date_time_range(self):
+        format_day_date_and_time = "%A %-d %B %Y, %H:%M"
+        format_date_only = "%-d %B %Y"
+        format_time_only = "%H:%M"
+        format_day_and_date = "%A %-d %B %Y"
+        # One session on one date where start and end times are the same
+        # return eg. Monday 1 January 2024, 19:00
+        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
+            return self.start_date.strftime(format_day_date_and_time)
+        # One session on one date where there are values for both start time and end time
+        # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
+        dates_same = self.start_date.date() == self.end_date.date()
+        if (
+            dates_same
+            and (self.start_date.time() != self.end_date.time())
+            and (len(self.sessions.all()) == 1)
+        ):
+            return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
+        # Multiple sessions on one date
+        # Eg. Monday 1 January 2024
+        if dates_same and len(self.sessions.all()) > 1:
+            return self.start_date.strftime(format_day_and_date)
+        # Event has multiple dates
+        # Eg. 1 January 2024 to 5 January 2024
+        if not dates_same:
+            return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
+
     def clean(self):
         """
         Check that the venue address and video conference information are
