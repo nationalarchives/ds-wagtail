@@ -2,7 +2,7 @@
 {% load i18n wagtailadmin_tags  %}
 
 {% block content %}
-    {% fragment as breadcrumb %}{% include 'wagtailsnippets/snippets/headers/list_header.html' %}{% endfragment %}
+    {% fragment as breadcrumb %}{% include 'wagtailadmin/shared/headers/slim_header.html' %}{% endfragment %}
     {% fragment as report_actions %}
         <div class="report__actions">
             {% if view.list_export %}

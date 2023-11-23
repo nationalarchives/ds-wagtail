@@ -546,6 +546,7 @@ Modified to match the existing site (for now)
     @include colour.light-accent-background;
     color: colour.brand-colour("black");
     padding: 1.5rem 2rem 2rem 2rem;
+    margin-top: 2rem;
 }
 
 //
@@ -562,6 +563,12 @@ Modified to match the existing site (for now)
 
     .tna-breadcrumbs__link {
         color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &:before {
+            color: $color--white;
+        }
     }
 
     .tna-heading {
@@ -611,4 +618,9 @@ Modified to match the existing site (for now)
             @include colour.colour-font("font-dark");
         }
     }
+}
+
+// off-black header
+.tna-header--off-black {
+    background-color: $color--off-black;
 }
