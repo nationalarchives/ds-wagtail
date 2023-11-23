@@ -78,7 +78,7 @@ jobs:
         run: poetry run python manage.py makemigrations --check --noinput
   
   prettier:
-    name: Prettier and linting
+    name: Prettier format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
