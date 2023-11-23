@@ -39,7 +39,7 @@
     }
 
     &__dropdown-toggle {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background-color: transparent;
         border: 0;
         display: flex;

@@ -246,6 +246,19 @@ Modified to match the existing site (for now)
             flex-direction: row-reverse;
         }
     }
+
+    // tna-container variant which is full-width at mobile - used on what's on landing page
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
 }
 
 .tna-chip {
@@ -278,6 +291,7 @@ Modified to match the existing site (for now)
 
     .generic-intro {
         padding-bottom: 4rem;
+
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -361,10 +375,6 @@ Modified to match the existing site (for now)
 }
 
 /* stylelint-disable no-descending-specificity */
-.tna-container--centred {
-    justify-content: center;
-}
-
 .highlight-gallery {
     color: #fff;
 
@@ -411,7 +421,6 @@ Modified to match the existing site (for now)
 [class*=" col-"] {
     box-sizing: border-box;
 }
-/* stylelint-enable no-descending-specificity */
 
 #ds-cookie-consent-banner {
     padding: 1rem 0 !important;
@@ -519,21 +528,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant which is full-width at mobile - used on what's on landing page
-.tna-container {
-    &--full-width-mobile {
-        @include media.on-mobile {
-            padding-left: 0;
-            padding-right: 0;
-
-            .tna-column {
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
-    }
-}
-
 // tna-scene-setter modifiers
 
 .tna-scene-setter {
@@ -548,11 +542,9 @@ Modified to match the existing site (for now)
 .tna-useful-info {
     @include colour.light-accent-background;
     color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem 2rem;
+    padding: 1.5rem 2rem 2rem;
     margin-top: 2rem;
 }
-
-//
 
 .event-hero {
     .tna-breadcrumbs {
@@ -569,7 +561,7 @@ Modified to match the existing site (for now)
     }
 
     .tna-breadcrumbs__item {
-        &:before {
+        &::before {
             color: $color--white;
         }
     }
@@ -590,7 +582,7 @@ Modified to match the existing site (for now)
     }
 
     &__item--clear-all #{&}__link {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background: transparent;
 
         &:hover {
@@ -603,3 +595,5 @@ Modified to match the existing site (for now)
 .tna-header--off-black {
     background-color: $color--off-black;
 }
+
+/* stylelint-enable no-descending-specificity */

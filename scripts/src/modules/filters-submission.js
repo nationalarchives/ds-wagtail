@@ -61,7 +61,7 @@ class FiltersSubmission {
 
         window.addEventListener(
             "popstate",
-            debounce((e) => {
+            debounce(() => {
                 this.updateFields(document.location);
                 this.reloadEvents(false);
             }, 200),
