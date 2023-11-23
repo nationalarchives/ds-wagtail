@@ -290,12 +290,13 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = [
-    "bold",
-    "italic",
-    "link",
+RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
+]
+EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
+    "h2",
+    "h3",
 ]
 
 # Analytics

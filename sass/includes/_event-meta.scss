@@ -83,11 +83,22 @@
         list-style: none;
         margin: 0;
         padding: 0;
+        font-size: 1rem;
 
         .event-details-banner & {
             @include typography.detail-font-small();
             text-transform: none;
             color: $color__black;
         }
+    }
+
+    &__link,
+    &__link:visited {
+        @include colour.colour-font("font-dark");
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        font-size: 1rem;
     }
 }

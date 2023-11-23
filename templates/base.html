@@ -1,4 +1,4 @@
-{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags  wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
+{% load static wagtailuserbar wagtailcore_tags wagtailsettings_tags wagtailmetadata_tags robots_meta %}<!DOCTYPE html>
 {% get_settings %}
 <html class="tna-template tna-template--light-theme no-js {% block html_class%}{% endblock %}" lang="en-GB">
     <head>
@@ -20,9 +20,6 @@
                  – {{ current_site.site_name }}
             {% endblock %}
         </title>
-        {% if meta_tags %}
-            {% meta_tags %}
-        {% endif %}
      {% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
         <meta name="format-detection" content="telephone=no" />
