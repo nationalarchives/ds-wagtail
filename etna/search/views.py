@@ -155,7 +155,9 @@ class ClientAPIMixin:
         """
         paginator = APIPaginator(total_count, per_page=per_page)
         page = PaginatorPage(result_list, number=self.page_number, paginator=paginator)
-        page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
+        page_range = paginator.get_elided_page_range(
+            number=self.page_number, on_each_side=1, on_ends=1
+        )
         return paginator, page, page_range
 
 

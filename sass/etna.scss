@@ -71,30 +71,9 @@ $orange: #fa8334;
     padding: 1rem !important;
 }
 
-.tna-pagination {
-    justify-content: space-between !important;
-}
-
 .tna-background--accent {
     --font-base: #000;
     --font-dark: #000;
-}
-
-.ohos-search {
-    @include spacing.space-above;
-
-    display: flex;
-    align-items: stretch;
-
-    &__input {
-        display: block;
-        flex: 1;
-
-        @include typography.relative-font-size(20);
-
-        @include colourTools.colour-border("keyline-dark", 1px, solid);
-        border-right: none;
-    }
 }
 
 .ohos-stats {
@@ -282,6 +261,7 @@ These are Etna specific components, created using BEM and following our guidelin
 
 @import "ohos/header";
 @import "ohos/footer";
+@import "ohos/pagination";
 @import "ohos/tags";
 
 /* Un-comment when front-end toolkit is fixed

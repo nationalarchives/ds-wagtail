@@ -1,0 +1,14 @@
+// Extra styles specifically for OHOS pagination
+
+.tna-pagination {
+    &__item--ellipses {
+        background-color: $color__grey-200;
+    }
+
+    &__link {
+        // If the pagination button is the current page
+        &[aria-current="page"] {
+            color: inherit;
+        }
+    }
+}
