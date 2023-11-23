@@ -39,7 +39,7 @@
     }
 
     &__dropdown-toggle {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background-color: transparent;
         border: 0;
         display: flex;
@@ -115,7 +115,7 @@
             margin-left: 1rem;
             width: 54px;
             height: 30px;
-            background-image: url(/static/images/icons/toggle.svg);
+            background-image: url("/static/images/icons/toggle.svg");
         }
     }
 
@@ -124,7 +124,7 @@
 
         &:checked + #{$root}__toggle-label {
             &::after {
-                background-image: url(/static/images/icons/toggle-on.svg);
+                background-image: url("/static/images/icons/toggle-on.svg");
             }
         }
 

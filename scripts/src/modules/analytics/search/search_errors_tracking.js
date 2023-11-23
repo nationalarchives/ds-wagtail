@@ -16,6 +16,7 @@ const pushActiveErrorsOnLoad = () => {
     });
 };
 
+/* eslint-disable no-unused-vars */
 const pushActiveErrors = (errors) => {
     const searchFilters = document.querySelector("[data-search-filters]");
     const errorList = searchFilters.querySelectorAll("[data-tracking-errors]");
@@ -44,5 +45,6 @@ const pushActiveErrors = (errors) => {
         push_to_data_layer(error);
     });
 };
+/* eslint-enable no-unused-vars */
 
 export default pushActiveErrorsOnLoad;

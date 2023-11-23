@@ -4,7 +4,7 @@ const manage_details_element = () => {
             "#js-hierarchy-global summary",
         );
 
-    if (!!details_element) {
+    if (details_element) {
         if (window.innerWidth < 1200) {
             details_element.removeAttribute("open");
             summary_element.setAttribute("tabindex", "0");

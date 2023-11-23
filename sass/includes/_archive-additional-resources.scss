@@ -3,6 +3,8 @@
 
     &__label {
         display: block;
+        font-size: 1.1rem;
+        font-weight: bold;
     }
 
     &__submit {
@@ -31,10 +33,6 @@
         }
     }
 
-    &__label {
-        font-size: 1.1rem;
-        font-weight: bold;
-    }
     &__select {
         line-height: 1.25;
         -webkit-box-sizing: border-box;
