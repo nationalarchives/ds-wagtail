@@ -18,6 +18,7 @@ from etna.errors import views as errors_view
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
+from etna.whatson import views as whatson_views
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")
@@ -39,6 +40,11 @@ private_urls = [
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
     path("documents/", include(wagtaildocs_urls)),
+    path(
+        "webhook/eventbrite/",
+        whatson_views.eventbrite_webhook_view,
+        name="eventbrite_webhook",
+    ),
     path("feedback/", include("etna.feedback.urls")),
     path("healthcheck/", include("etna.healthcheck.urls")),
 ]

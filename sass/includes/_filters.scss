@@ -1,7 +1,9 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
 .filters {
     $root: &;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     padding: 1.5rem 0;
     flex-direction: column;
 
@@ -20,7 +22,8 @@
 
     &__fieldset {
         flex-shrink: 0;
-        border: 1px solid $color__black;
+        background-color: $color__white;
+        min-width: 200px;
     }
 
     &__super-title {
@@ -28,11 +31,26 @@
         font-weight: 700;
         font-size: 1rem;
         background-color: transparent;
-        padding: 1rem 1rem 0.5rem;
+        padding: 1rem;
         margin: 0;
         box-sizing: border-box;
         float: left;
         width: 100%;
+    }
+
+    &__dropdown-toggle {
+        @include typography.main-font-weight-bold();
+        background-color: transparent;
+        border: 0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0;
+        width: 100%;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     &__label {
@@ -65,6 +83,7 @@
 
     &__date {
         min-height: 1.5rem;
+        min-width: 95%;
         width: auto;
         accent-color: $color__black; // otherwise the text is yellow in iOS
         color: $color__black;
@@ -72,6 +91,10 @@
 
     &__toggle {
         flex-shrink: 0;
+
+        @media only screen and (min-width: #{$screen__lg + 1px}) {
+            margin-top: 1rem;
+        }
     }
 
     &__toggle-label {
@@ -80,6 +103,7 @@
         color: $color--grey-700;
         font-size: 1rem;
         justify-content: space-between;
+        cursor: pointer;
 
         @media only screen and (min-width: #{$screen__lg + 1px}) {
             justify-content: flex-start;
@@ -113,15 +137,6 @@
     }
 
     &__submit {
-        display: flex;
-        padding: 1rem 1.5rem;
-        justify-content: center;
-        align-items: center;
-        background-color: $color__black;
-        font-size: 1rem;
-        color: $color__white;
-        font-weight: 700;
-        border: 0;
-        line-height: 1;
+        cursor: pointer;
     }
 }

@@ -1,21 +1,14 @@
 {% extends "base_page.html" %}
 
+{% load static i18n wagtailcore_tags wagtailmetadata_tags wagtailimages_tags %}
 
-{% load static %}
-{% load i18n %}
 {% block breadcrumb %}
 {% endblock %}
 {% block body_class %}template-homepage{% endblock %}
-{% load wagtailcore_tags %}
-{% load wagtailmetadata_tags %}
-{% load wagtailimages_tags %}
-{% block meta_tag %}
-    {% meta_tags %}
-{% endblock %}
 
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
-    <div class="tna-container pt-2">
+    <div class="tna-container tna-section">
         <div class="tna-column tna-column--full">
             {% for item in page.body %}
                 {% if item.value.paragraph or item.value.text %}

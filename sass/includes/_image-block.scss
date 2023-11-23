@@ -1,5 +1,9 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/tools/spacing";
+
 .image-block {
     $root: &;
+    @include spacing.space-above;
     background-color: $color__grey-200;
 
     picture {
@@ -83,9 +87,10 @@
     }
 
     &__transcription {
-        background-color: $color__dark;
+        @include colour.invert;
+        // background-color: $color__dark;
         padding: 2rem 2.5rem;
-        color: $color__white;
+        // color: $color__white;
 
         &.hidden {
             display: none;

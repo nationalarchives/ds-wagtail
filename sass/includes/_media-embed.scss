@@ -3,6 +3,7 @@
 .media-embed {
     $root: &;
     position: relative;
+    @include colour.invert;
 
     &--transcript {
         background-position: top center;
@@ -19,6 +20,8 @@
     }
 
     &__audio-container {
+        padding-top: 2rem;
+
         audio {
             width: 100%;
         }
@@ -85,7 +88,7 @@
     }
 
     &__details {
-        display: inline-block;
+        display: block;
         text-align: left;
         width: 100%;
 
@@ -155,18 +158,7 @@
         // width: 100%;
         background-color: $color__grey-700;
         color: $color__white;
-        padding: 2rem 2rem 0;
+        padding: 2rem;
         overflow: hidden;
     }
-}
-
-// stylelint-disable-next-line no-duplicate-selectors
-.media-embed {
-    @include colour.invert;
-}
-
-.media-embed__heading,
-.media-embed__description,
-.media-embed__date {
-    // color: $color__white;
 }

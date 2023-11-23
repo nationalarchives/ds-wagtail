@@ -1,13 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load i18n %}
-{% load wagtailcore_tags %}
-{% load wagtailimages_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
     <div class="container">
@@ -28,7 +22,7 @@
 
     <div class="tna-container mt-4" data-container-name="{{ page.title }}">
         <div class="tna-column tna-column--full">
-        <h2 class="tna-heading">Discover all stories</h2>
+        <h2 class="tna-heading-l">Discover all stories</h2>
         <p class="mb-4">Browse and explore the human stories behind The National Archives’ collection.</p>
     </div>
         <ul class="card-group--list-style-none">
@@ -37,7 +31,7 @@
 
                 {% with link_page=article_page.specific %}
                     {% comment %} instance id adds a unique id to stories if they're included twice on the page {% endcomment %}
-                    {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" instance_id=forloop.counter card_type="Featured" show_type_label=True %}
+                    {% include 'includes/card-group-secondary-nav.html' with heading="Discover all stories" instance_id=forloop.counter card_type="Featured" supertitle=link_page.type_label show_type_label=True %}
                 {% endwith %}
 
             {% endfor %}

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
+from distutils.sysconfig import get_python_lib
 from distutils.util import strtobool
 
 import sentry_sdk
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
+    "etna.authors",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -107,6 +109,9 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
+            os.path.join(
+                get_python_lib(), "nationalarchives-frontend-django/templates"
+            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -307,12 +312,13 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = [
-    "bold",
-    "italic",
-    "link",
+RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
+]
+EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
+    "h2",
+    "h3",
 ]
 
 # Analytics
@@ -409,4 +415,7 @@ FEATURE_COOKIE_BANNER_ENABLED = strtobool(
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
+)
+FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
+    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

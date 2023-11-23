@@ -18,15 +18,15 @@ jobs:
       - name: Get tag
         id: version-tag
         uses: ./.github/actions/get-version-tag
-      - name: Build
+      - name: Build Docker image
         uses: ./.github/actions/docker-build
         with:
           version: ${{ steps.version-tag.outputs.version-tag }} # (feature/abc)
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
-      - name: Install AWS CLI
-        uses: ./.github/actions/install-aws
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      # - name: Install AWS CLI
+      #   uses: ./.github/actions/install-aws
+      #   with:
+      #     aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      #     aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       # TODO: Deploy new feature environment
