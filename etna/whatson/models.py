@@ -19,10 +19,11 @@ from wagtail.snippets.models import register_snippet
 
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import LargeCardLinksBlock
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 
-from .blocks import RelatedArticlesBlock
+from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm
 
 
@@ -33,7 +34,7 @@ class VenueType(models.TextChoices):
 
     ONLINE = "online", _("Online")
     IN_PERSON = "in_person", _("In person")
-    HYBRID = "hybrid", _("Hybrid")
+    HYBRID = "hybrid", _("In person and online")
 
 
 @register_snippet
@@ -287,6 +288,18 @@ class WhatsOnPage(BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
     )
+    promoted_links = StreamField(
+        [("promoted_links", WhatsOnPromotedLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
+    large_card_links = StreamField(
+        [("large_card_links", LargeCardLinksBlock())],
+        blank=True,
+        max_num=1,
+        use_json_field=True,
+    )
 
     def serve(self, request):
         # Check if the request comes from JavaScript
@@ -368,6 +381,7 @@ class WhatsOnPage(BasePageWithIntro):
         ) = self.exclude_featured_event_from_listing(events)
         context["filter_form"] = filter_form
         context["active_filters"] = self.get_active_filters(request, filter_form)
+        context["total_results_with_featured"] = events.count()
         return context
 
     def get_active_filters(self, request, filter_form: "EventFilterForm"):
@@ -434,6 +448,8 @@ class WhatsOnPage(BasePageWithIntro):
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("featured_event"),
+        FieldPanel("promoted_links"),
+        FieldPanel("large_card_links"),
     ]
 
 
@@ -689,6 +705,34 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         if primary_access := self.event_access_types.first():
             return primary_access.access_type
 
+    @cached_property
+    def date_time_range(self):
+        format_day_date_and_time = "%A %-d %B %Y, %H:%M"
+        format_date_only = "%-d %B %Y"
+        format_time_only = "%H:%M"
+        format_day_and_date = "%A %-d %B %Y"
+        # One session on one date where start and end times are the same
+        # return eg. Monday 1 January 2024, 19:00
+        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
+            return self.start_date.strftime(format_day_date_and_time)
+        # One session on one date where there are values for both start time and end time
+        # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
+        dates_same = self.start_date.date() == self.end_date.date()
+        if (
+            dates_same
+            and (self.start_date.time() != self.end_date.time())
+            and (len(self.sessions.all()) == 1)
+        ):
+            return f"{self.start_date.strftime(format_day_date_and_time)}–{self.end_date.strftime(format_time_only)}"
+        # Multiple sessions on one date
+        # Eg. Monday 1 January 2024
+        if dates_same and len(self.sessions.all()) > 1:
+            return self.start_date.strftime(format_day_and_date)
+        # Event has multiple dates
+        # Eg. 1 January 2024 to 5 January 2024
+        if not dates_same:
+            return f"{self.start_date.strftime(format_date_only)} to {self.end_date.strftime(format_date_only)}"
+
     def clean(self):
         """
         Check that the venue address and video conference information are
@@ -835,13 +879,13 @@ class EventFilterForm(forms.Form):
     )
 
 
-class ExhibitionHighlights(Orderable):
+class ExhibitionHighlight(Orderable):
     """
     This model is used to add highlights to exhibition pages.
     """
 
     page = ParentalKey(
-        "wagtailcore.Page",
+        "whatson.ExhibitionPage",
         on_delete=models.CASCADE,
         related_name="highlights",
     )
@@ -999,7 +1043,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     # Related content
     articles_title = models.CharField(
-        max_length=100,
+        max_length=255,
         blank=True,
         help_text=_("The title to display for the articles section."),
     )
@@ -1050,7 +1094,7 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         MultiFieldPanel(
             [
                 FieldPanel("location"),
-                FieldPanel("location_url"),
+                FieldPanel("location_url", heading=_("Location URL")),
             ],
             heading=_("Location details"),
         ),
@@ -1128,3 +1172,19 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if self.min_price == 0:
                 return f"Free - {self.max_price}"
             return f"{self.min_price} - {self.max_price}"
+
+    def clean(self):
+        """
+        Check that the venue address and video conference information are
+        provided for the correct venue type.
+        """
+
+        if self.start_date and self.end_date:
+            if self.start_date > self.end_date:
+                raise ValidationError(
+                    {
+                        "start_date": _("The start date must be before the end date."),
+                        "end_date": _("The end date must be after the start date."),
+                    }
+                )
+        return super().clean()
