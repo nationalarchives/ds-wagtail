@@ -4,7 +4,7 @@
     justify-content: stretch;
     align-items: stretch;
 
-    //max-height:300px;
+    // max-height:300px;
     border-bottom: solid 1px #ccc;
     margin-bottom: 1em;
 
@@ -37,24 +37,26 @@
 
     &-full-width-image img {
         width: 100%;
-        //display:block;
-        //overflow:hidden;
-        //max-width:70%;
+        // display:block;
+        // overflow:hidden;
+        // max-width:70%;
     }
 
     &-content {
         margin-right: auto;
         margin-bottom: 2rem;
         padding-right: 1rem;
-        //max-width: 46rem;
+        // max-width: 46rem;
         @media only screen and (min-width: 57rem) {
         }
+
         .title-fix {
             max-width: fit-content;
         }
     }
 
     &-link {
+        display: block;
         color: $color__navy;
 
         &:visited {
@@ -65,15 +67,7 @@
     &-description {
         margin-bottom: 0.5rem;
         max-width: 90%;
-    }
-
-    &-delivery-options {
-        margin-right: 1rem;
-        margin-bottom: 1rem;
-
-        &-img {
-            //border: 1px solid $color__grey-500;
-        }
+        font-weight: 100;
     }
 
     &-desc {
@@ -82,24 +76,14 @@
         margin-top: 0.2rem;
     }
 
-    &-link {
-        display: block;
-    }
-
-    &-description {
-        margin-bottom: 0.5rem;
-        //max-width:70%;
-        font-weight: 100;
-    }
-
     &-metadata-item {
         font-weight: 100;
-        //line-height:2em;
+        // line-height:2em;
     }
 
     &-metadata-item-held-by-icon {
-        //list-style-image: url(/static/images/icons/search-archive-icon.svg);
-        background-image: url(/static/images/icons/search-archive-icon.svg);
+        // list-style-image: url(/static/images/icons/search-archive-icon.svg);
+        background-image: url("/static/images/icons/search-archive-icon.svg");
         background-repeat: no-repeat;
         padding-left: 2rem;
         background-position: 0 center;
@@ -108,8 +92,8 @@
     }
 
     &-metadata-item-date-icon {
-        //list-style-image: url(/static/images/icons/search-calendar-icon.svg);
-        background-image: url(/static/images/icons/search-calendar-icon.svg);
+        // list-style-image: url(/static/images/icons/search-calendar-icon.svg);
+        background-image: url("/static/images/icons/search-calendar-icon.svg");
         background-repeat: no-repeat;
         padding-left: 2rem;
         background-position: 0 center;
@@ -117,8 +101,8 @@
     }
 
     &-metadata-item-data-icon {
-        //list-style-image: url(/static/images/icons/search-data-icon.svg);
-        background-image: url(/static/images/icons/search-data-icon.svg);
+        // list-style-image: url(/static/images/icons/search-data-icon.svg);
+        background-image: url("/static/images/icons/search-data-icon.svg");
         background-repeat: no-repeat;
         padding-left: 2rem;
         background-position: 0 center;
@@ -126,8 +110,9 @@
     }
 
     &-metadata-item-subjects-icon {
-        //list-style-image: url(/static/images/icons/search-tag-icon.svg);
+        // list-style-image: url(/static/images/icons/search-tag-icon.svg);
         list-style-type: none;
+
         /*
       background-image: url(/static/images/icons/search-tag-icon.svg);
       background-repeat: no-repeat;
@@ -139,18 +124,21 @@
     }
 
     &-delivery-options {
-        //margin-right: 1rem;
-        //&-img {
-        //border: 1px solid $color__grey-3;
-        //width:100%;
-        //}
+        // margin-right: 1rem;
+        // &-img {
+        // border: 1px solid $color__grey-3;
+        // width:100%;
+        // }
+        margin-right: 1rem;
+        margin-bottom: 1rem;
+
         &-desc {
-            //max-width: 12rem;
-            //max-width: 100%;
-            //width:183px;
+            // max-width: 12rem;
+            // max-width: 100%;
+            // width:183px;
             margin-bottom: 0;
-            //margin-top: 0.2rem;
-            padding: 1em 0em;
+            // margin-top: 0.2rem;
+            padding: 1em 0;
             background: black;
             text-align: center;
         }
@@ -174,7 +162,7 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
-            //margin-top:1em;
+            // margin-top:1em;
             &-desc {
                 max-width: 100%;
                 margin: auto;
@@ -193,13 +181,7 @@
             margin-left: auto;
             margin-right: auto;
             text-align: center;
-            &-desc {
-                max-width: 100%;
-            }
-        }
 
-        &--grid {
-            @extend .search-results__list-card-delivery-options;
             &-desc {
                 max-width: 100%;
             }
@@ -227,11 +209,11 @@
 }
 
 .search-results__list-card-metadata {
-    //padding-left:1.5rem;
-    //white-space: nowrap;
+    // padding-left:1.5rem;
+    // white-space: nowrap;
 }
 
-/*-------*/
+/* ------- */
 
 .search-results__list-card-details {
     flex: 1 1 auto;
@@ -258,37 +240,33 @@
 @media only screen and (max-width: $screen__md) {
     .search-results__list-card {
         display: block;
-        //margin-left:2em;
+        // margin-left:2em;
     }
+
     .search-results__list-card-image {
         max-width: 200px;
         margin: 0 auto;
     }
 }
 
-// Temp fix to stop global styles leaking into record details related tags
-// This code will be removed when updating to the latest tna-frontend from ETNA
-// @link https://github.com/nationalarchives/ds-wagtail/pull/1466/files
-.search-results {
-    dt {
-        float: left;
-        clear: left;
-        width: 140px;
-        font-weight: 400;
-        color: rgba(52, 51, 56);
-        padding-right: 0.3em;
-    }
-
-    dd {
-        margin: 0 0 0 45px;
-        padding: 0 0 0.5em 1em;
-        font-weight: 400;
-        color: rgba(52, 51, 56);
-        overflow: hidden;
-    }
+dt {
+    float: left;
+    clear: left;
+    width: 140px;
+    font-weight: 400;
+    color: rgb(52 51 56);
+    padding-right: 0.3em;
 }
 
-/*---additional styles for All results--*/
+dd {
+    margin: 0 0 0 45px;
+    padding: 0 0 0.5em 1em;
+    font-weight: 400;
+    color: rgb(52 51 56);
+    overflow: hidden;
+}
+
+/* ---additional styles for All results-- */
 
 .featured-search__website-results__head {
     @media only screen and (min-width: #{$screen__md + 1px}) {
@@ -334,8 +312,4 @@
     @media only screen and (min-width: #{$screen__sm + 1px}) {
         margin-left: 0;
     }
-}
-
-.format {
-    width: 0;
 }

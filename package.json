@@ -8,9 +8,10 @@
     "compile": "npm run compile:css && npm run compile:js",
     "dev:css": "sass --load-path=node_modules --watch sass/etna.scss:templates/static/css/dist/etna.css",
     "dev:js": "webpack --config webpack.config.js --mode=development --watch",
+    "dev": "npm run dev:css & npm run dev:js",
     "test": "jest --coverage",
-    "lint": "prettier \"{scripts,sass}/**/*.{scss,js}\" --check",
-    "lint:fix": "prettier \"{scripts,sass}/**/*.{scss,js}\" --write"
+    "lint": "prettier --check '{scripts,sass}/**/*.{scss,js}' && stylelint 'sass/**/*.scss' && eslint 'scripts/**/*.js'",
+    "lint:fix": "prettier --write '{scripts,sass}/**/*.{scss,js}' && stylelint --fix 'sass/**/*.scss' && eslint --fix 'scripts/**/*.js'"
   },
   "repository": {
     "type": "git",
@@ -31,6 +32,9 @@
     "jest-environment-jsdom": "~29.7",
     "prettier": "~3.1",
     "sass": "~1.69",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard-scss": "^11.0.0",
+    "stylelint-selector-bem-pattern": "^3.0.1", 
     "webpack": "~5.89",
     "webpack-cli": "~5.1"
   },

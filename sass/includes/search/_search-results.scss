@@ -2,6 +2,7 @@
     &__metadata {
         &-count {
             margin-bottom: 0.5rem;
+
             &-highlight {
                 font-weight: bold;
             }
@@ -17,17 +18,14 @@
         flex-wrap: wrap;
 
         @media only screen and (max-width: $screen__sm) {
-            display: none; //hiding on mobile
+            display: none; // hiding on mobile
         }
 
         &-item {
             list-style: none;
             display: inline-block;
             color: #000;
-            padding-left: 0.5rem;
-            padding-right: 0.7rem;
-            padding-top: 0.3rem;
-            padding-bottom: 0.3rem;
+            padding: 0.3rem 0.7rem 0.3rem 0.5rem;
             border: 1px solid black;
             border-radius: 0.3rem;
             margin-right: 0.5rem;
@@ -83,7 +81,6 @@
         &-container {
             background-color: $color__grey-500;
             border: 1px solid $color__grey-400;
-            display: block;
             padding: 1rem;
             margin-bottom: 1rem;
             display: flex;
@@ -98,6 +95,7 @@
                 color: $color__navy;
             }
         }
+
         &-icon {
             margin-left: auto;
             margin-right: 1rem;
@@ -129,14 +127,14 @@
             padding: 0.8rem;
         }
 
-        &:before {
+        &::before {
             position: absolute;
             left: -14px;
             bottom: 7px;
             content: " ";
             height: 10px;
             width: 10px;
-            //background-image: url('/static/images/icons/triangle-right.svg');
+            // background-image: url('/static/images/icons/triangle-right.svg');
             background-repeat: no-repeat;
             background-size: 100%;
 
@@ -146,8 +144,8 @@
         }
 
         &[aria-expanded="true"] {
-            &:before {
-                //background-image: url('/static/images/icons/triangle-down.svg');
+            &::before {
+                // background-image: url('/static/images/icons/triangle-down.svg');
                 @media only screen and (max-width: $screen__md) {
                     background-image: none;
                 }
@@ -159,7 +157,7 @@
         margin-left: 1rem;
         margin-right: 1rem;
         margin-bottom: 1rem;
-        display: none; //hiding on mobile
+        display: none; // hiding on mobile
         @media only screen and (min-width: #{$screen__md + 1px}) {
             margin-left: 2rem;
             margin-right: 2rem;
@@ -179,7 +177,7 @@
 }
 
 .filter-indicator {
-    background: #ffcc00;
+    background: #fc0;
     color: #1d2124;
     padding: 0.4rem 1rem;
     text-decoration: none;

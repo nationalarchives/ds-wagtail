@@ -6,6 +6,7 @@
         margin-left: 2rem;
         margin-right: 2rem;
     }
+
     &__heading {
         font-family: $font__supria-sans;
         padding-top: 1.2rem;
@@ -81,6 +82,7 @@
         &-label {
             display: block;
         }
+
         &-button {
             // @extend .tna-button--dark;
             display: block;
@@ -88,6 +90,7 @@
             font-weight: normal;
             cursor: pointer;
         }
+
         &-box {
             width: 100%;
             @media only screen and (min-width: #{$screen__lg + 1px}) {

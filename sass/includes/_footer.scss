@@ -1,11 +1,13 @@
 .etna-footer {
     background: white !important;
     color: black !important;
-    /*AJ to address as part of workflow streamlining piece */
+
+    /* AJ to address as part of workflow streamlining piece */
     &__body {
         .etna-footer__list-item {
             margin-bottom: 0.25rem;
         }
+
         &-heading {
             font-size: 1.16rem;
         }
