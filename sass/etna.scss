@@ -645,15 +645,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-useful-info component - 'Good to know' information from event page
-
-.tna-useful-info {
-    @include colour.light-accent-background;
-    color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem;
-    margin-top: 2rem;
-}
-
 .event-hero {
     .tna-breadcrumbs {
         margin-bottom: 1.5rem;
