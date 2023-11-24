@@ -59,75 +59,6 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 @use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
-// Redeclare $orange to match OHOS orange
-$orange: #fa8334;
-
-.tna-heading--l,
-.tna-heading--m {
-    @include colourTools.colour-font("font-base");
-}
-
-.tna-aside {
-    padding: 1rem !important;
-}
-
-.tna-background--accent {
-    --font-base: #000;
-    --font-dark: #000;
-}
-
-.ohos-stats {
-    padding: 0;
-
-    list-style: none;
-
-    &__item {
-        margin-bottom: 2rem;
-
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        gap: 1rem;
-
-        @include colourTools.colour-font("font-dark");
-        @include typography.main-font-weight-bold;
-
-        .fa-solid {
-            width: 5rem;
-            height: 5rem;
-
-            flex: 0 0 5rem;
-
-            @include colourTools.colour-font("contrast-font-dark");
-            font-size: 1.75em;
-            text-align: center;
-            line-height: 5rem;
-
-            @include colourTools.colour-background("font-dark");
-
-            border-radius: 100%;
-        }
-    }
-
-    &__stat {
-        line-height: 1.25;
-    }
-
-    &__number {
-        display: block;
-
-        @include colourTools.colour-font("font-base");
-        font-size: 1.25em;
-    }
-}
-
-.ohos-section-info {
-    padding: 1rem 1.5rem;
-
-    border: #fa8334 0.25rem solid;
-    border-left-width: 3rem;
-}
-
 /*
 
 ==============
@@ -275,6 +206,75 @@ Modified to match the existing site (for now)
 */
 
 @import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
+
+// Redeclare $orange to match OHOS orange
+$orange: #fa8334;
+
+.tna-heading--l,
+.tna-heading--m {
+    @include colourTools.colour-font("font-base");
+}
+
+.tna-aside {
+    padding: 1rem !important;
+}
+
+.tna-background--accent {
+    --font-base: #000;
+    --font-dark: #000;
+}
+
+.ohos-stats {
+    padding: 0;
+
+    list-style: none;
+
+    &__item {
+        margin-bottom: 2rem;
+
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 1rem;
+
+        @include colourTools.colour-font("font-dark");
+        @include typography.main-font-weight-bold;
+
+        .fa-solid {
+            width: 5rem;
+            height: 5rem;
+
+            flex: 0 0 5rem;
+
+            @include colourTools.colour-font("contrast-font-dark");
+            font-size: 1.75em;
+            text-align: center;
+            line-height: 5rem;
+
+            @include colourTools.colour-background("font-dark");
+
+            border-radius: 100%;
+        }
+    }
+
+    &__stat {
+        line-height: 1.25;
+    }
+
+    &__number {
+        display: block;
+
+        @include colourTools.colour-font("font-base");
+        font-size: 1.25em;
+    }
+}
+
+.ohos-section-info {
+    padding: 1rem 1.5rem;
+
+    border: #fa8334 0.25rem solid;
+    border-left-width: 3rem;
+}
 
 .tna-template {
     overflow: initial !important;

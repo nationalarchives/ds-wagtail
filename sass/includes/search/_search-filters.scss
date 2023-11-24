@@ -1,5 +1,17 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 
+/* date filters via GDS pattern */
+
+.tna-date-input__item {
+    display: inline-block;
+    margin-right: 20px;
+    margin-bottom: 0;
+
+    input {
+        border: 2px solid currentColor;
+    }
+}
+
 .search-filters {
     background-color: $color__grey-300;
     padding: 1rem;
@@ -47,11 +59,11 @@
                         content: "";
                         clip-path: polygon(
                             85.41% 0,
-                            39.58985% 69.04%,
-                            12.5% 38.1026666667%,
-                            0 52.3883888889%,
-                            41.66015% 100%,
-                            100% 14.2857222222%
+                            39.5898% 69.04%,
+                            12.5% 38.1027%,
+                            0 52.3884%,
+                            41.6602% 100%,
+                            100% 14.2857%
                         );
                         width: 20px;
                         height: 18px;
@@ -158,18 +170,6 @@
         background-color: #a72916;
         color: #fff;
         margin-bottom: 2rem;
-    }
-}
-
-/* date filters via GDS pattern */
-
-.tna-date-input__item {
-    display: inline-block;
-    margin-right: 20px;
-    margin-bottom: 0;
-
-    input {
-        border: 2px solid currentColor;
     }
 }
 
