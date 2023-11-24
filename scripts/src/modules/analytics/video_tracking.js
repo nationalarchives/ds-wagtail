@@ -1,6 +1,7 @@
 import push_to_data_layer from "./push_to_data_layer";
 
 let stored_percentage_video;
+let percentage = 0;
 
 const video_tracking = () => {
     const event_handler = (e) => {
@@ -17,7 +18,7 @@ const video_tracking = () => {
 
         switch (e.type) {
             case "timeupdate":
-                const percentage = Math.floor(
+                percentage = Math.floor(
                     (Math.floor(e.target.currentTime) /
                         Math.floor(e.target.duration)) *
                         100,

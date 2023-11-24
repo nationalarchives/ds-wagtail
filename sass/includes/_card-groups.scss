@@ -28,7 +28,7 @@
             color: $color__grey-700;
             font-family: $font__roboto-mono;
             // TODO: update global font sizes to match new style guide
-            margin-bottom: 0rem;
+            margin-bottom: 0;
             margin-top: 1.05rem;
             text-transform: uppercase;
             font-size: 0.875rem;
@@ -74,7 +74,7 @@
                 display: inline-block;
                 font-size: 0.8rem;
                 color: white;
-                padding: 2px 3px 0px 3px;
+                padding: 2px 3px 0;
                 margin-left: 1px;
                 vertical-align: middle;
             }
@@ -109,13 +109,16 @@
         display: inline-block;
         width: 100%;
         margin-bottom: 2rem;
+
         &__image {
             // @extend .tna-card__image;
             border: 0.0625rem solid $color__black;
             margin-top: 0.7rem;
+
             &-fallback {
                 width: 100%;
             }
+
             &:hover {
                 outline: 0.313rem solid $color__black;
             }
@@ -127,13 +130,16 @@
             color: $color__navy;
             text-decoration: underline;
             margin-left: 0.5rem;
+
             &:active {
                 color: $color__navy;
             }
+
             &:hover {
                 color: $color__navy;
                 text-decoration: none;
             }
+
             &:focus {
                 outline-offset: 0.2rem;
             }
@@ -151,6 +157,7 @@
         padding: 1rem;
         margin-bottom: 1rem;
         width: 100%;
+
         &--green {
             @extend .card-group-promo;
             background-color: $color__pastel-green;
@@ -195,6 +202,7 @@
             &-list {
                 padding-left: 1rem;
                 margin-bottom: 1rem;
+
                 &-item {
                     list-style-type: "- ";
                 }

@@ -81,6 +81,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-articles";
 @import "includes/filters";
 @import "includes/full-width-header";
+@import "includes/listing-info";
 @import "includes/meta";
 @import "includes/media-embed";
 @import "includes/people";
@@ -127,6 +128,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/highlight-cards";
 // @import "includes/highlight-intro";
 @import "includes/utilities";
+@import "includes/accordion";
 @import "includes/archive-description";
 @import "includes/archive-collections";
 @import "includes/archive-additional-resources";
@@ -152,7 +154,7 @@ Modified to match the existing site (for now)
 
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap");
+@import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
 
 .tna-template {
     overflow: initial !important;
@@ -244,6 +246,19 @@ Modified to match the existing site (for now)
             flex-direction: row-reverse;
         }
     }
+
+    // tna-container variant which is full-width at mobile - used on what's on landing page
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
 }
 
 .tna-chip {
@@ -262,6 +277,7 @@ Modified to match the existing site (for now)
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
+
     .tna-breadcrumbs {
         margin-bottom: 0;
         color: #fff !important;
@@ -275,6 +291,7 @@ Modified to match the existing site (for now)
 
     .generic-intro {
         padding-bottom: 4rem;
+
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -357,12 +374,10 @@ Modified to match the existing site (for now)
     }
 }
 
-.tna-container--centred {
-    justify-content: center;
-}
-
+/* stylelint-disable no-descending-specificity */
 .highlight-gallery {
     color: #fff;
+
     .tna-heading {
         color: inherit;
     }
@@ -513,27 +528,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant with an offset top - used on what's on landing page
-.tna-container {
-    &--offset-top {
-        @include media.on-larger-than-mobile {
-            margin-top: -9rem;
-        }
-    }
-
-    &--full-width-mobile {
-        @include media.on-mobile {
-            padding-left: 0;
-            padding-right: 0;
-
-            .tna-column {
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
-    }
-}
-
 // tna-scene-setter modifiers
 
 .tna-scene-setter {
@@ -586,8 +580,6 @@ Modified to match the existing site (for now)
     }
 }
 
-//
-
 .event-hero {
     .tna-breadcrumbs {
         margin-bottom: 1.5rem;
@@ -600,6 +592,12 @@ Modified to match the existing site (for now)
 
     .tna-breadcrumbs__link {
         color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &::before {
+            color: $color--white;
+        }
     }
 
     .tna-heading {
@@ -618,7 +616,7 @@ Modified to match the existing site (for now)
     }
 
     &__item--clear-all #{&}__link {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background: transparent;
 
         &:hover {
@@ -626,3 +624,10 @@ Modified to match the existing site (for now)
         }
     }
 }
+
+// off-black header
+.tna-header--off-black {
+    background-color: $color--off-black;
+}
+
+/* stylelint-enable no-descending-specificity */

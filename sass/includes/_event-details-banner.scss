@@ -5,11 +5,21 @@
     @include colour.light-accent-background;
 
     &__cta {
-        margin: 2rem 0 0 0;
-        display: block;
+        margin: 2rem 0 0;
+        display: inline-block;
+        width: auto;
 
         @include media.on-larger-than-mobile {
             margin: 1rem 0;
         }
+    }
+
+    &__link,
+    &__link:visited {
+        @include colour.colour-font("font-dark");
+    }
+
+    &__address {
+        display: inline;
     }
 }
