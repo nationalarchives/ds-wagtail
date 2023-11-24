@@ -568,10 +568,13 @@ Modified to match the existing site (for now)
     }
 
     &__image {
+        object-fit: cover;
+
         @include media.on-larger-than-mobile {
             flex: 0 0 calc(50% - 3rem);
             margin-top: -3rem;
             margin-left: -5rem;
+            overflow: hidden;
         }
     }
 

@@ -4,18 +4,16 @@
     <div class="tna-useful-info {% if image %}tna-useful-info--with-image{% endif %}">
         <div class="tna-useful-info__content">
             <h2 class="tna-heading-l">Need to know</h2>
-    
-            <h3 class="tna-heading-s">Location</h3>
-            <p>There is parking available on-site, but spaces are limited, so visitors are encouraged to use public transport where possible.</p>
-    
-            <h3 class="tna-heading-s">Accessibility</h3>
-            <p>We are committed to making our tours accessible to all visitors, with provisions in place for people with disabilities or mobility issues. If you have any specific accessibility requirements, please get in touch with The National Archives in advance to discuss your needs.</p>
-    
-            <a href="/" class="tna-useful-info__cta tna-button tna-button--dark">Planning your visit</a>
+
+            {{ content|richtext }}
+
+            {% if cta and url %}
+                <a href="{{ url }}" class="tna-useful-info__cta tna-button tna-button--dark">{{cta }}</a>
+            {% endif %}
         </div>
         {% if image %}
             <div class="tna-useful-info__image">
-                <img src="https://via.placeholder.com/768x550" alt="" class="tna-useful-info__img" />
+                {% image image fill-768x550 class="tna-useful-info__image" %}
             </div>
         {% endif %}
     </div>
