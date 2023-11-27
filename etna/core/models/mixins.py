@@ -5,10 +5,10 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
-from wagtail.api import APIField
 
 from .forms import RequiredHeroImagePageForm
 

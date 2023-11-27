@@ -11,6 +11,8 @@ DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
     os.getenv("DEBUG_TOOLBAR_ENABLED", "True")  # noqa: F405
 )
 
+WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "@6gce61jt^(pyj5+l**&*_#zyxfj5v1*71cs5yoetg-!fsz826"
 
