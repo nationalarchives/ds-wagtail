@@ -3,7 +3,13 @@
 {% load static wagtailcore_tags wagtailimages_tags %}
 {% block breadcrumb %}{% endblock %}
 {% block content %}
-    {% include 'includes/breadcrumb.html' %}
+    <div class="tna-breadcrumb-wrapper">
+        <div class="tna-container">
+            <div class="tna-column">
+                {% include 'components/breadcrumb.html' %}
+            </div>
+        </div>
+    </div>
     <article>
         <header class="tna-container tna-container--centred tna-section tna-author">
             {% if page.image %}
@@ -15,7 +21,7 @@
             </div>
             {% endif %}
             <div class="tna-column tna-column--flex-1 tna-column--full-tiny tna-column--order-2">
-                <h1 class="tna-heading tna-heading--xl">
+                <h1 class="tna-heading-xl">
                     {{ page.title }}
                 </h1>
                 {% if page.role %}
@@ -26,19 +32,19 @@
         <hr>
         <section class="tna-container tna-container--centred tna-section tna-!--margin-bottom-m">
             <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
-                <h2 class="tna-heading tna-heading--l">About the author</h2>
+                <h2 class="tna-heading-l">About the author</h2>
                 {{ page.summary | richtext }}
             </div>
         </section>
         {% if page.authored_focused_articles %}
-        <aside class="tna-background--accent-light tna-!--margin-bottom-l">
+        <aside class="tna-background--accent-light tna-!--margin-bottom-l tna-section">
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                    <h2 class="related-content__heading">{{page.title}}'s articles and blogs</h2>
+                    <h2 class="tna-heading-l">{{page.title}}'s articles</h2>
                 </div>
                 <ul class="card-group--list-style-none">
                     {% for item in page.authored_focused_articles %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading=page.title|add:"'s articles" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                     {% endfor %}
                 </ul>
             </div>

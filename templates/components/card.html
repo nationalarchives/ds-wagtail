@@ -1,20 +1,11 @@
 <{{ htmlElement|default:"div" }} class="tna-card {{ classes }}{% if horizontal %} tna-card--horizontal{% endif %}{% if style == 'boxed' %} tna-card--contrast{% endif %}{% if style == 'accent' %} tna-card--accent{% endif %}" data-module="tna-card"{% for attribute, value in attributes.items %} {{ attribute }}="{{ value }}"{% endfor %}>
   <div class="tna-card__inner">
     {% if event %}
-      {% if event_type or access_descriptor %}
-        <ul class="tna-card__tags">
-          {% if event_type %}
-            <li class="tna-card__tag tna-card__tag--event-type">{{ event_type }}</li>
-          {% endif %}
-          {% if access_descriptor %}
-            <li class="tna-card__tag tna-card__tag--access">{{ access_descriptor }}</li>
-          {% endif %}
-        </ul>
-      {% endif %}
+      {% include "components/event_tags.html" %}
     {% endif %}
     {% if supertitle %}
       {% if not singleSentence %}
-        <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
+        <hgroup class="tna-hgroup-{{ headingSize|default:'s' }} tna-card__heading">
           <p class="tna-hgroup__supertitle">{{ supertitle }}</p>
           <h{{ headingLevel }} class="tna-hgroup__title">
           {% if href %}
@@ -26,6 +17,9 @@
               data-link-type="Card text"
               data-card-title="{{ title }}"
               data-card-position="{{ index|default:0 }}"
+              {% if label %}
+                data-label="{{ label }}"
+              {% endif %}
             >{{ title }}</a>
           {% else %}
             {{ title }}
@@ -33,7 +27,7 @@
           </h{{ headingLevel }}>
         </hgroup>
       {% else %}
-        <hgroup class="tna-hgroup tna-hgroup--{{ headingSize|default:'m' }} tna-card__heading">
+        <hgroup class="tna-hgroup-{{ headingSize|default:'s' }} tna-card__heading">
           <h{{ headingLevel }} class="tna-hgroup__title">
             <span class="tna-hgroup__supertitle">{{ supertitle }}</span>
           {% if href %}
@@ -45,6 +39,9 @@
               data-link-type="Card text"
               data-card-title="{{ title }}"
               data-card-position="{{ index|default:0 }}"
+              {% if label %}
+                data-label="{{ label }}"
+              {% endif %}
             >{{ title }}</a>
           {% else %}
             {{ title }}
@@ -53,7 +50,7 @@
         </hgroup>
       {% endif %}
     {% else %}
-      <h{{ headingLevel }} class="tna-card__heading tna-heading tna-heading--{{ headingSize|default:'m' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}">
+      <h{{ headingLevel }} class="tna-card__heading tna-heading-{{ headingSize|default:'s' }} {% if highlight %}tna-card__heading--has-highlight{% endif %}">
       {% if href %}
         <a
           href="{{ href }}"
@@ -63,6 +60,9 @@
           data-link-type="Card text"
           data-card-title="{{ title }}"
           data-card-position="{{ index|default:0 }}"
+          {% if label %}
+            data-label="{{ label }}"
+          {% endif %}
         >{{ title }}</a>
       {% else %}
         {{ title }}
@@ -86,6 +86,9 @@
         data-link-type="Card image"
         data-card-title="{{ title }}"
         data-card-position="{{ index|default:0 }}"
+        {% if label %}
+          data-label="{{ label }}"
+        {% endif %}
       >
       {% else %}
       <div class="tna-card__image-container">

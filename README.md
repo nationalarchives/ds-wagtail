@@ -81,11 +81,13 @@ Running the development server:
 ``` sh
 djrun
 ```
+
 Run migrations:
 
 ```sh
 dj migrate
 ```
+
 Create a super user:
 
 ```sh

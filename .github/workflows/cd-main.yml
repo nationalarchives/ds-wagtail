@@ -1,10 +1,10 @@
 name: Continuous deployment to preview
 
 on:
-  workflow_dispatch:
-  # push:
-  #   branches:
-  #     - develop # TODO: Change to "main" if our working branch changes
+  # workflow_dispatch:
+  push:
+    branches:
+      - develop # TODO: Change to "main" if our working branch changes
 
 jobs:
   deploy:
@@ -18,10 +18,11 @@ jobs:
       - name: Get tag
         id: version-tag
         uses: ./.github/actions/get-version-tag
-      - name: Build
+      - name: Build Docker image
         uses: ./.github/actions/docker-build
         with:
           version: ${{ steps.version-tag.outputs.version-tag }} # (develop)
+          latest: true
           github-token: ${{ secrets.GITHUB_TOKEN }}
           docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
       # - name: Install AWS CLI

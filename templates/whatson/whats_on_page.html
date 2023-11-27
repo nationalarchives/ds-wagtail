@@ -4,87 +4,98 @@
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
+{% block header %}
+    {% include 'includes/header.html' with classes="tna-header--off-black" %}
+{% endblock %}
+
 {# Breadcrumb is included inside the header area #}
 {% block breadcrumb %}
 {% endblock %}
 
 {% block content %}
-
+  {# Header area and filters #}
   <div class="full-width-header full-width-header--pink">
-    {% include 'includes/breadcrumb.html' with classes='breadcrumb-content--reduce-space' %}
+    <div class="tna-breadcrumb-wrapper">
+      <div class="tna-container">
+        <div class="tna-column">
+          {% include 'components/breadcrumb.html' %}
+        </div>
+      </div>
+    </div>
 
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro %}
 
     <div class="tna-container">
       <div class="tna-column tna-column--full">
-        <form class="filters" method="GET" action="#">
+        <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        When
 
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="event-date" class="filters__label filters__label--top">Choose a date</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {# we need a default value for the date in iOS or it is displayed tiny #}
-              <input type="date" name="event-date" id="event-date" class="filters__date" value="{% now 'Y-m-d' %}">
-            </div>
-          </fieldset>
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__panel accordion__content" data-accordion-content>
+                    <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
+                    {{ filter_form.date }}
+                </div>
+            </fieldset>
+          
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        {{ filter_form.event_type.label }}
 
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">What</legend>
-            <div class="filters__radio-list filters__panel">
-              <div>
-                <input type="radio" name="event-type" value="exhibitions" id="exhibitions" class="filters__radio">
-                <label for="exhibitions" class="filters__label">Exhibitions &amp; displays</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="event" id="event" class="filters__radio">
-                <label for="event" class="filters__label">Event</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="talk" id="talk" class="filters__radio">
-                <label for="talk" class="filters__label">Talk</label>
-              </div>
-              <div>
-                <input type="radio" name="event-type" value="tour" id="tour" class="filters__radio">
-                <label for="tour" class="filters__label">Tour</label>
-              </div>
-            </div>
-          </fieldset>
-
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__radio-list filters__panel accordion__content" data-accordion-content>
+                    {% for radio in filter_form.event_type %}
+                        <div>
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
+          
           <div class="filters__toggle">
-            <input type="checkbox" name="online" id="online" class="filters__toggle-input">
-            <label for="online" class="filters__toggle-label">Online</label>
+            {{ filter_form.is_online_event }}
+            <label for="{{ filter_form.is_online_event.id_for_label }}" class="filters__toggle-label">{{ filter_form.is_online_event.label }}</label>
           </div>
 
           <div class="filters__toggle">
-            <input type="checkbox" name="family" id="family" class="filters__toggle-input">
-            <label for="family" class="filters__toggle-label">Family friendly</label>
+            {{ filter_form.family_friendly }}
+            <label for="{{ filter_form.family_friendly.id_for_label }}" class="filters__toggle-label">{{ filter_form.family_friendly.label }}</label>
           </div>
-
-          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark">
-
+          
+          <input type="submit" value="Apply filters" class="filters__submit tna-button--dark" data-js-submit>
         </form>
       </div>
     </div>
   </div>
 
-  <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
-    <div class="tna-column tna-column--full">
-      {% include "../components/featured_card.html" with title="Featured card title" href="#" headingLevel="2" headingSize="l" htmlElement="article" imageSrc="https://source.unsplash.com/1190x600?abstract" imageAlt="featured card image alt" imageWidth="1190" imageHeight="600" date="27 May" cost="From £16" venue_type="Online" event_type="Exhibition" %}
-
-      <hgroup class="event-card-listing__heading-area">
-        <h2 class="tna-heading tna-heading--l event-card-listing__heading">All events</h2>
-        <p class="event-card-listing__summary">Showing 1 to 12 of 150 articles</p>
-      </hgroup>
-
-      <ul class="event-card-listing__list">
-        {% for event in page.events %}
-        <li class="event-card-listing__item">
-            {% image event.teaser_image fill-720x448 as event_img %}
-            {% include "../components/card.html" with title=event.short_title href=event.url headingLevel="2" headingSize="l" htmlElement="article" imageSrc=event_img.url imageAlt=event_image.width imageWidth=event_img.width imageHeight=event_img.height date=event.start_date|date:"jS F Y" cost="From £16" venue_type=event.get_venue_type_display body=event.teaser_text horizontal=True event=True highlight="Sold out" highlight_color="yellow" event_type=event.event_type access_descriptor=event.primary_access_type classes="tna-card--event tna-card--horizontal-thirds" index=forloop.counter0 heading=heading %}
-          </li>
-        {% endfor %}
-      </ul>
-    </div>
+  {# Listing and featured event #}
+  <div data-js-whatson-listing aria-live="polite">
+    {% include "includes/whats-on-listing.html" %}
   </div>
+
+  {% if page.promoted_links %}
+    {% include_block page.promoted_links.0 %}
+  {% endif %}
+
+  {% if page.large_card_links %}
+    <div class="tna-!--margin-top-l tna-!--margin-bottom-l">
+      {% include_block page.large_card_links.0 %}
+    </div>
+  {% endif %}
 {% endblock %}
+
+
+{% block extra_js %}
+  {% if not FEATURE_DISABLE_JS_WHATS_ON_LISTING %}
+    <script src="{% static 'scripts/whats_on.js' %}"></script>
+  {% endif %}
+{% endblock %}
+

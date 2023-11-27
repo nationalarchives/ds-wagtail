@@ -11,7 +11,9 @@ export default function remove_mobile_tracking() {
         item.removeAttribute("data-link");
     });
 
+    /* eslint-disable no-undef */
     article_body.removeEventListener("click", (e) => {
         mobile_section_tracking(e);
     });
+    /* eslint-enable no-undef */
 }

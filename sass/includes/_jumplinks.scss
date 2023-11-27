@@ -4,9 +4,8 @@
     max-height: 100vh;
     position: sticky;
     top: 0;
-    padding: 2.5rem 0 0;
-    overflow-y: auto;
-    overflow-x: visible;
+    padding: 2rem 0 0;
+    overflow: auto visible;
     -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
     scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
@@ -28,14 +27,16 @@
     }
 
     &__list-item {
-        padding: 0.3rem 0;
+        padding: 0.375rem 0;
 
-        a,
-        a:link,
-        a:visited {
-            color: $color__link;
-            position: relative;
-            bottom: 3px;
+        a {
+            display: block;
+
+            &,
+            &:link,
+            &:visited {
+                color: $color__link;
+            }
         }
 
         &::marker {

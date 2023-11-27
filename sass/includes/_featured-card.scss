@@ -10,26 +10,24 @@
         margin-bottom: 4.375rem;
     }
 
-    &__tag {
+    &--offset-top {
+        @include media.on-larger-than-mobile {
+            margin-top: -9rem;
+        }
+    }
+
+    &__pick {
         display: inline-block;
         font-size: 0.875rem;
         font-family: $font__roboto-mono;
         text-transform: uppercase;
         padding: 0 0.4rem;
-        margin: 0 0 1rem;
-
-        &--pick {
-            color: $color__white;
-            background-color: $color__maroon;
-            position: absolute;
-            top: 1.44rem;
-            left: 1.563rem;
-        }
-
-        &--type {
-            color: $color__black;
-            background-color: $color__pastel-pink;
-        }
+        margin: 0;
+        color: $color__white;
+        background-color: $color__maroon;
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
     }
 
     &__tag-wrapper {
@@ -90,5 +88,15 @@
         &::after {
             display: none !important;
         }
+    }
+}
+
+// This styles an empty div that sits above the featured card, and creates the illusion
+// that it overlaps the filters (full-width-header) above.
+.featured-card-background {
+    @include media.on-larger-than-mobile {
+        background-color: $color__pastel-pink;
+        width: 100%;
+        height: 12rem;
     }
 }

@@ -2,7 +2,7 @@
 {% image value.image width-600 as block_image %}
 
 {% if value.image %}
-    <figure class="image-block u-margin-l---" data-module="data-imageblock">
+    <figure class="image-block" data-module="data-imageblock">
         <picture>
             {% image value.image max-832x591 format-webp as desktop_img %}
             <source media="(min-width: 760px)" srcset="{{ desktop_img.url }}"/>
@@ -38,11 +38,11 @@
             {% if value.image.transcription or value.image.translation %}
                 <div class="transcription__text">
                     {% if value.image.transcription %}
-                        <h2 class="tna-heading">{{ value.image.get_transcription_heading_display }}</h2>
+                        <h2 class="tna-heading-l">{{ value.image.get_transcription_heading_display }}</h2>
                         {{ value.image.transcription|richtext }}
                     {% endif %}
                     {% if value.image.translation %}
-                        <h2 class="tna-heading">{{ value.image.get_translation_heading_display }}</h2>
+                        <h2 class="tna-heading-l">{{ value.image.get_translation_heading_display }}</h2>
                         {{ value.image.translation|richtext }}
                     {% endif %}
                 </div>
