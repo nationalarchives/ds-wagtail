@@ -154,7 +154,7 @@ Modified to match the existing site (for now)
 
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap");
+@import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
 
 .tna-template {
     overflow: initial !important;
@@ -246,6 +246,19 @@ Modified to match the existing site (for now)
             flex-direction: row-reverse;
         }
     }
+
+    // tna-container variant which is full-width at mobile - used on what's on landing page
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
 }
 
 .tna-chip {
@@ -264,6 +277,7 @@ Modified to match the existing site (for now)
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
+
     .tna-breadcrumbs {
         margin-bottom: 0;
         color: #fff !important;
@@ -277,6 +291,7 @@ Modified to match the existing site (for now)
 
     .generic-intro {
         padding-bottom: 4rem;
+
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -359,12 +374,10 @@ Modified to match the existing site (for now)
     }
 }
 
-.tna-container--centred {
-    justify-content: center;
-}
-
+/* stylelint-disable no-descending-specificity */
 .highlight-gallery {
     color: #fff;
+
     .tna-heading {
         color: inherit;
     }
@@ -515,21 +528,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant which is full-width at mobile - used on what's on landing page
-.tna-container {
-    &--full-width-mobile {
-        @include media.on-mobile {
-            padding-left: 0;
-            padding-right: 0;
-
-            .tna-column {
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
-    }
-}
-
 // tna-scene-setter modifiers
 
 .tna-scene-setter {
@@ -544,11 +542,9 @@ Modified to match the existing site (for now)
 .tna-useful-info {
     @include colour.light-accent-background;
     color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem 2rem;
+    padding: 1.5rem 2rem 2rem;
     margin-top: 2rem;
 }
-
-//
 
 .event-hero {
     .tna-breadcrumbs {
@@ -565,7 +561,7 @@ Modified to match the existing site (for now)
     }
 
     .tna-breadcrumbs__item {
-        &:before {
+        &::before {
             color: $color--white;
         }
     }
@@ -586,7 +582,7 @@ Modified to match the existing site (for now)
     }
 
     &__item--clear-all #{&}__link {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background: transparent;
 
         &:hover {
@@ -599,3 +595,5 @@ Modified to match the existing site (for now)
 .tna-header--off-black {
     background-color: $color--off-black;
 }
+
+/* stylelint-enable no-descending-specificity */

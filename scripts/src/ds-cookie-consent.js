@@ -21,7 +21,7 @@ let doNotRememberSettingsRadioInput = document.querySelector(
 // from:https://github.com/jserz/js_piece/blob/master/DOM/ChildNode/remove()/remove().md
 (function (arr) {
     arr.forEach(function (item) {
-        if (item.hasOwnProperty("remove")) {
+        if (Object.prototype.hasOwnProperty.call(item, "remove")) {
             return;
         }
         Object.defineProperty(item, "remove", {
@@ -87,7 +87,10 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             });
         } else {
             if (
-                getCookieObject.hasOwnProperty("usage") &&
+                Object.prototype.hasOwnProperty.call(
+                    getCookieObject,
+                    "usage",
+                ) &&
                 getCookieObject.usage === false
             ) {
                 Data.cookies.gaCookies.forEach((cookie) => {
@@ -96,7 +99,10 @@ let doNotRememberSettingsRadioInput = document.querySelector(
             }
 
             if (
-                getCookieObject.hasOwnProperty("settings") &&
+                Object.prototype.hasOwnProperty.call(
+                    getCookieObject,
+                    "settings",
+                ) &&
                 getCookieObject.settings === false
             ) {
                 Data.cookies.settings.forEach((cookie) => {
@@ -110,7 +116,10 @@ let doNotRememberSettingsRadioInput = document.querySelector(
                 // Update the state on the form radio elements
                 // based on the cookie_policy value
                 if (
-                    getCookieObject.hasOwnProperty("usage") &&
+                    Object.prototype.hasOwnProperty.call(
+                        getCookieObject,
+                        "usage",
+                    ) &&
                     getCookieObject.usage === true &&
                     !measureRadioInput.checked
                 ) {
@@ -121,7 +130,10 @@ let doNotRememberSettingsRadioInput = document.querySelector(
 
                 // Remove the functional cookies if the user hasn't consent
                 if (
-                    getCookieObject.hasOwnProperty("settings") &&
+                    Object.prototype.hasOwnProperty.call(
+                        getCookieObject,
+                        "settings",
+                    ) &&
                     getCookieObject.settings === true &&
                     !settingsRadioInput.checked
                 ) {

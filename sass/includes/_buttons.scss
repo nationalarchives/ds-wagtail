@@ -54,6 +54,7 @@
     // }
 }
 
+// stylelint-disable no-descending-specificity
 .tna-button--yellow,
 .tna-button--yellow:visited {
     @extend .tna-button--dark;
@@ -72,6 +73,7 @@
         outline-offset: 0.125rem;
     }
 }
+// stylelint-able no-descending-specificity
 
 .tna-button--row-item {
     margin-left: 0.5rem;
@@ -81,10 +83,11 @@
 .response-btn {
     margin-right: 1em;
 }
+
 .thumb-image {
     width: 25px;
     height: 25px;
-    //margin-left:1em;
+    // margin-left:1em;
     margin-right: 0.5em;
     display: inline-block;
 }

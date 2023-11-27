@@ -1,3 +1,4 @@
+// stylelint-disable no-descending-specificity
 .highlight-gallery-teaser {
     $root: &;
     padding-bottom: 3rem;
@@ -14,16 +15,15 @@
     &__title {
         @include font-size("xxl");
         margin: 0;
-        padding: 3rem 0 1.5rem 0;
+        padding: 3rem 0 1.5rem;
 
         @media (min-width: map-get($grid-breakpoints, "md")) {
-            padding: 3rem 0 2.75rem 0;
+            padding: 3rem 0 2.75rem;
         }
 
         &::after {
             content: "";
-            display: block;
-            background-image: url(/static/images/fontawesome-svgs/chevron-right.svg);
+            background-image: url("/static/images/fontawesome-svgs/chevron-right.svg");
             background-repeat: no-repeat;
             display: inline-block;
             top: -50%;
@@ -91,3 +91,4 @@
         outline: none;
     }
 }
+// stylelint-enable no-descending-specificity

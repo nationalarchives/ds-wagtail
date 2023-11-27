@@ -14,7 +14,6 @@
     }
 
     &--inline {
-        padding-left: 0;
         border-left: 0;
         align-self: center;
         line-height: 1;
@@ -63,7 +62,7 @@
     }
 
     &__title {
-        @include typography.detail-font-small();
+        @include typography.detail-font-small;
         display: inline-flex;
         align-items: center;
         justify-content: flex-start;
@@ -86,7 +85,7 @@
         font-size: 1rem;
 
         .event-details-banner & {
-            @include typography.detail-font-small();
+            @include typography.detail-font-small;
             text-transform: none;
             color: $color__black;
         }
