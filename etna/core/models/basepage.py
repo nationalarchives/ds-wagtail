@@ -64,13 +64,16 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
     )
 
     api_fields = [
-        # Adds information about the source image (eg, title) into the API
         APIField("teaser_image"),
-        # Adds a URL to a rendered thumbnail of the image to the API
+        APIField("teaser_text"),
         APIField(
-            "teaser_image_thumbnail",
+            "teaser_image_jpg",
             serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
         ),
+        # APIField(
+        #     "teaser_image_webp",
+        #     serializer=ImageRenditionField("fill-600x400 format-webp", source="teaser_image"),
+        # ),
     ]
 
     uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)

@@ -256,8 +256,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
             APIField("featured_record_article"),
             APIField("skos_id"),
             APIField("related_page_pks"),
-            # APIField('content_panels'),
-            # APIField('related_highlight_gallery_pages'),
         ]
     )
 

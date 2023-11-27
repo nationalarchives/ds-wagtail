@@ -7,6 +7,8 @@ from django.utils.functional import cached_property
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
+from wagtail.api import APIField
 
 from .forms import RequiredHeroImagePageForm
 
@@ -146,7 +148,26 @@ class HeroImageMixin(models.Model):
         )
     ]
 
-    api_fields = []
+    api_fields = [
+        APIField("hero_image"),
+        APIField("hero_image_caption"),
+        APIField(
+            "hero_image_jpg",
+            serializer=ImageRenditionField("fill-1440x500", source="hero_image"),
+        ),
+        # APIField(
+        #     "hero_image_webp",
+        #     serializer=ImageRenditionField("fill-1440x500 format-webp", source="hero_image"),
+        # ),
+        APIField(
+            "hero_image_jpg_small",
+            serializer=ImageRenditionField("fill-390x320", source="hero_image"),
+        ),
+        # APIField(
+        #     "hero_image_webp_small",
+        #     serializer=ImageRenditionField("fill-390x320 format-webp", source="hero_image"),
+        # ),
+    ]
 
 
 class RequiredHeroImageMixin(HeroImageMixin):
@@ -157,4 +178,4 @@ class RequiredHeroImageMixin(HeroImageMixin):
 
     base_form_class = RequiredHeroImagePageForm
 
-    api_fields = []
+    api_fields = HeroImageMixin.api_fields + []
