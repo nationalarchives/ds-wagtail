@@ -23,6 +23,7 @@ from ..versioning import get_git_sha
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
+WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
 
@@ -82,6 +83,8 @@ INSTALLED_APPS = [
     "allauth",
     "allauth.account",
     "birdbath",
+    "wagtail.api.v2",
+    "rest_framework",
 ]
 
 SITE_ID = 1

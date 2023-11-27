@@ -75,5 +75,7 @@ class AlertMixin(models.Model):
         FieldPanel("alert"),
     ]
 
+    api_fields = []
+
     class Meta:
         abstract = True

@@ -14,6 +14,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -109,6 +110,14 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
+    api_fields = (
+        AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
+
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
@@ -128,6 +137,14 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
 
     @cached_property
     def featured_pages(self):
@@ -228,6 +245,21 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
     ]
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+            APIField("featured_article"),
+            APIField("featured_record_article"),
+            APIField("skos_id"),
+            APIField("related_page_pks"),
+            # APIField('content_panels'),
+            # APIField('related_highlight_gallery_pages'),
+        ]
+    )
 
     def clean(self, *args, **kwargs):
         if not self.skos_id and self.title:
@@ -366,6 +398,13 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TimePeriodExplorerPage",
     ]
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
 
 
 class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
@@ -415,6 +454,15 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
             FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
+        ]
+    )
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
         ]
     )
 

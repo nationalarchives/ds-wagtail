@@ -11,8 +11,10 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 from wagtail.search import index
 
@@ -60,6 +62,16 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         related_name="+",
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
+
+    api_fields = [
+        # Adds information about the source image (eg, title) into the API
+        APIField("teaser_image"),
+        # Adds a URL to a rendered thumbnail of the image to the API
+        APIField(
+            "teaser_image_thumbnail",
+            serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
+        ),
+    ]
 
     uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
 
@@ -166,3 +178,5 @@ class BasePageWithIntro(BasePage):
     search_fields = BasePage.search_fields + [
         index.SearchField("intro", boost=3),
     ]
+
+    api_fields = BasePage.api_fields + [APIField("intro")]

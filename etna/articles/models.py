@@ -15,6 +15,7 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
@@ -133,6 +134,8 @@ class ArticleIndexPage(BasePageWithIntro):
         null=True,
         use_json_field=True,
     )
+
+    api_fields = BasePageWithIntro.api_fields + []
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
