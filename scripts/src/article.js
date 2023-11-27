@@ -7,6 +7,11 @@ import add_unique_ids from "./modules/analytics/add_unique_ids";
 import mobile_tracking from "./modules/analytics/article_tracking/mobile_tracking";
 import remove_mobile_tracking from "./modules/analytics/article_tracking/remove_mobile_tracking";
 import link_list_tracking from "./modules/analytics/article_tracking/link_list_tracking";
+import trackHeroCaptions from "./modules/analytics/hero-captions";
+import {
+    trackPictureTranscripts,
+    trackPictureTranscriptTabs,
+} from "./modules/analytics/pictures";
 
 import accordion_functionality from "./modules/articles/accordion_functionality/accordion_functionality";
 import add_event from "./modules/articles/add_event";
@@ -31,6 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     video_tracking();
     add_unique_ids();
     link_list_tracking();
+    trackHeroCaptions();
+    trackPictureTranscripts();
+    trackPictureTranscriptTabs();
 });
 
 window.addEventListener("load", () => {
@@ -40,8 +48,8 @@ window.addEventListener("load", () => {
     const $sectionHeadings = $(".section-separator__heading");
     const $sectionContents = $(".section-content");
     const $jumplinks = $(".jumplink");
-    const baseFontSize = 16;
-    const remScreenSize = 48;
+    const mobileMediaQuery = window.matchMedia("(max-width: 48rem)");
+    const isMobile = () => mobileMediaQuery.matches;
     let headingPositions;
 
     // These booleans are used to detect if certain enhancements (e.g. click event listeners) have been applied in order to
@@ -80,10 +88,7 @@ window.addEventListener("load", () => {
         });
     }
 
-    if (
-        $(window).width() / baseFontSize <= remScreenSize &&
-        !mobileEnhancementsApplied
-    ) {
+    if (isMobile() && !mobileEnhancementsApplied) {
         $sectionContents.hide();
         apply_aria_roles($sectionHeadings, $sectionContents);
 
@@ -139,10 +144,7 @@ window.addEventListener("load", () => {
     $(window).on(
         "resize",
         debounce(() => {
-            if (
-                $(window).width() / baseFontSize <= remScreenSize &&
-                !mobileEnhancementsApplied
-            ) {
+            if (isMobile() && !mobileEnhancementsApplied) {
                 $sectionContents.hide();
                 apply_aria_roles($sectionHeadings, $sectionContents);
 
@@ -177,16 +179,10 @@ window.addEventListener("load", () => {
 
                 desktopEnhancementsApplied = false;
                 mobileEnhancementsApplied = true;
-            } else if (
-                $(window).width() / baseFontSize <= remScreenSize &&
-                mobileEnhancementsApplied
-            ) {
+            } else if (isMobile() && mobileEnhancementsApplied) {
                 // Recalculate heading positions on resize.
                 headingPositions = set_heading_positions($sectionHeadings);
-            } else if (
-                $(window).width() / baseFontSize > remScreenSize &&
-                !desktopEnhancementsApplied
-            ) {
+            } else if (!desktopEnhancementsApplied) {
                 remove_aria_roles($sectionHeadings);
 
                 // Remove click and enter listeners because sections are fully expanded on desktop

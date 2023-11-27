@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse_lazy
 
@@ -14,14 +15,14 @@ CONDITIONALLY_PROTECTED_URLS = (
 
 
 @override_settings(
-    KONG_CLIENT_BASE_URL="https://kong.test",
-    KONG_IMAGE_PREVIEW_BASE_URL="https://media.preview/",
+    CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
+    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
     def setUp(self):
         responses.add(
             responses.GET,
-            "https://kong.test/data/search",
+            f"{settings.CLIENT_BASE_URL}/search",
             json={
                 "responses": [
                     create_response(),
@@ -31,12 +32,14 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         )
         responses.add(
             responses.GET,
-            "https://kong.test/data/fetch",
+            f"{settings.CLIENT_BASE_URL}/fetch",
             json=create_response(
                 records=[
                     create_record(
                         iaid="C123456",
-                        description=[{"value": "This is the description from Kong"}],
+                        description=[
+                            {"value": "This is the description from the Client API"}
+                        ],
                     )
                 ]
             ),

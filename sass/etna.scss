@@ -1,4 +1,14 @@
+@use "@nationalarchives/frontend/nationalarchives/variables/assets" with (
+    $tna-font-path: "/static/assets/fonts",
+    $fa-font-path: "/static/assets/fonts"
+);
+
+@use "@nationalarchives/frontend/nationalarchives/all";
+
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+@use "@nationalarchives/frontend/nationalarchives/variables/grid";
 
 /*
 
@@ -31,11 +41,10 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/mixins";
 @import "includes/global";
 @import "includes/buttons";
-@import "includes/generic-intro";
+// @import "includes/generic-intro";
 @import "includes/hero-image";
 @import "includes/jumplinks";
 @import "includes/links";
-@import "includes/typography";
 @import "includes/card-groups";
 @import "includes/footer";
 @import "includes/cta-banner-newsletter";
@@ -58,13 +67,24 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/content-block";
 @import "includes/content-warning";
 @import "includes/quote";
+@import "includes/event-card-listing";
+@import "includes/event-details-banner";
+@import "includes/event-hero";
+@import "includes/event-meta";
+@import "includes/event-tags";
+@import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
 @import "includes/featured-records";
 @import "includes/record-links";
 @import "includes/featured-article";
 @import "includes/featured-articles";
+@import "includes/filters";
+@import "includes/full-width-header";
+@import "includes/listing-info";
+@import "includes/meta";
 @import "includes/media-embed";
+@import "includes/people";
 @import "includes/record-embed";
 @import "includes/record-embed__no-image";
 @import "includes/related-resources";
@@ -91,6 +111,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/search/search-landing-buckets";
 @import "includes/search/featured-search";
 @import "includes/search/long-filters";
+@import "includes/section";
 @import "includes/sub-heading";
 @import "includes/cookie-consent";
 @import "includes/maintenance-503";
@@ -107,6 +128,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/highlight-cards";
 // @import "includes/highlight-intro";
 @import "includes/utilities";
+@import "includes/accordion";
 @import "includes/archive-description";
 @import "includes/archive-collections";
 @import "includes/archive-additional-resources";
@@ -117,6 +139,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/featured-record-article";
 @import "includes/record-crosslink-panel";
 @import "includes/image-block";
+@import "includes/author";
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
@@ -131,96 +154,190 @@ Modified to match the existing site (for now)
 
 */
 
-$largest-small-device: 992px;
-
-@import "@nationalarchives/frontend/nationalarchives/all";
+@import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
 
 .tna-template {
     overflow: initial !important;
+}
+
+.tna-header__navigation-item-link {
+    &:hover,
+    &--selected,
+    &--selected:visited {
+        background: #fff !important;
+    }
+}
+
+@include media.on-mobile {
+    .tna-header__navigation-items {
+        background: #fff !important;
+    }
 }
 
 .tna-breadcrumbs {
     padding-bottom: 0;
 }
 
+.tna-button-group {
+    &--full {
+        justify-content: stretch;
+
+        @include media.on-mobile {
+            flex-direction: column;
+
+            align-items: stretch;
+        }
+
+        .tna-button {
+            margin: 0;
+
+            flex: 1;
+        }
+    }
+}
+
 .tna-hero {
     margin-top: 1rem;
     margin-bottom: 2rem;
-}
 
-.tna-hero__heading {
-    margin-top: 0;
-    margin-bottom: 0.75rem;
-
-    font-size: 4rem;
-    line-height: 1.22;
-    font-weight: 700;
-
-    @include media.on-mobile {
-        font-size: 2.25rem;
-        line-height: 1.33;
-    }
-}
-
-.tna-hero__body {
-    font-size: 1.25rem;
-
-    @include media.on-mobile {
-        color: #fff;
-        font-size: 1rem;
-        line-height: 1.5;
+    &__figure {
+        &--smaller {
+            min-height: 20vw;
+        }
     }
 
-    p {
-        margin-bottom: 0;
+    &__information {
+        p {
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+    }
+
+    img#{&}__image {
+        object-fit: cover;
     }
 }
 
 .tna-message {
-    margin-top: 2rem;
+    margin-top: 2rem !important;
     margin-bottom: 3rem;
-
-    &__icon {
-        flex: 0 0 2.5rem;
-
-        @include media.on-mobile {
-            flex: 0 0 1.5rem;
-        }
-    }
-
-    &__message {
-        flex: 1;
-    }
 }
 
 .tna-skip-link {
     transition: none !important;
 }
 
+.tna-container {
+    &--centred {
+        justify-content: center;
+    }
+
+    &--align-center {
+        align-items: center;
+    }
+
+    &--space-between {
+        justify-content: space-between;
+    }
+
+    @include media.on-larger-than-mobile {
+        &--reverse-desktop {
+            flex-direction: row-reverse;
+        }
+    }
+
+    // tna-container variant which is full-width at mobile - used on what's on landing page
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
+}
+
+.tna-chip {
+    &--plain {
+        border: none;
+    }
+}
+
+.tna-large-paragraph {
+    @include colour.colour-font("font-dark");
+    @include typography.relative-font-size(22);
+}
+
 .template-focused-article {
-    .tna-breadcrumbs__wrapper {
+    .tna-breadcrumb-wrapper {
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
+
     .tna-breadcrumbs {
         margin-bottom: 0;
         color: #fff !important;
+        background-color: #343338 !important;
 
-        a {
+        a,
+        &__item--expandable .tna-breadcrumbs__link {
             color: inherit !important;
         }
     }
 
     .generic-intro {
+        padding-bottom: 4rem;
+
+        h1 {
+            &:last-child {
+                padding-bottom: 2rem;
+            }
+        }
+    }
+
+    .generic-intro,
+    .generic-intro__meta {
+        @include colour.invert;
+        background-color: #343338 !important;
+        color: #fff !important;
+
         .tna-heading {
             padding-top: 1rem;
-            color: #fff !important;
+            color: inherit !important;
+        }
+
+        a {
+            &,
+            &:link,
+            &:visited {
+                color: inherit;
+            }
         }
     }
 
     .generic-intro__meta {
         padding-top: 1rem;
         padding-bottom: 4rem;
+    }
+
+    .hero-image__container {
+        margin-top: -2rem;
+
+        .tna-hero {
+            max-width: grid.$largest-container-width;
+            margin: 0 auto;
+            padding: 0 grid.$gutter-width;
+            box-sizing: border-box;
+
+            @include media.on-mobile {
+                padding-right: 0;
+                padding-left: 0;
+            }
+        }
     }
 
     @include media.on-larger-than-mobile {
@@ -236,8 +353,31 @@ $largest-small-device: 992px;
     }
 }
 
+.block-content_section,
+.section-wrapper {
+    .section-separator__heading {
+        padding-top: 2rem;
+    }
+}
+
+.article-container,
+.generic-intro__paragraph {
+    .tna-container {
+        justify-content: center;
+    }
+
+    @include media.on-larger-than-mobile {
+        .section-separator__heading {
+            padding-right: 0;
+            padding-left: 0;
+        }
+    }
+}
+
+/* stylelint-disable no-descending-specificity */
 .highlight-gallery {
     color: #fff;
+
     .tna-heading {
         color: inherit;
     }
@@ -245,9 +385,14 @@ $largest-small-device: 992px;
 
 .card-group-secondary-nav {
     margin-bottom: 2rem;
+
+    &__heading {
+        margin-top: 0;
+    }
 }
 
 .generic-intro__paragraph {
+    margin-top: 3rem;
     margin-bottom: 3rem;
 }
 
@@ -276,3 +421,179 @@ $largest-small-device: 992px;
 [class*=" col-"] {
     box-sizing: border-box;
 }
+
+#ds-cookie-consent-banner {
+    padding: 1rem 0 !important;
+    position: static !important;
+    background: #134571 !important;
+    border-radius: 0 !important;
+
+    .container {
+        padding: 0 0 10px !important;
+    }
+}
+
+// Event card overrides
+
+.tna-card {
+    &__heading--has-highlight {
+        max-width: calc(100% - 5.125rem);
+    }
+
+    &__highlight {
+        @include typography.relative-font-size(14);
+        @include colour.plain;
+        z-index: 1;
+        border-radius: 50%;
+        aspect-ratio: 1 / 1;
+        align-self: flex-end;
+        position: absolute;
+        right: 1.14rem;
+        top: 1.14rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+
+        @include media.on-larger-than-mobile {
+            right: 0;
+            top: auto;
+        }
+
+        &--yellow {
+            background-color: colour.brand-colour("pastel-orange");
+        }
+
+        &--blue {
+            background-color: colour.brand-colour("pastel-blue");
+        }
+    }
+
+    &--horizontal-thirds {
+        @include media.on-larger-than-mobile {
+            .tna-card__inner {
+                margin-left: 33.33%;
+            }
+
+            .tna-card__image-container {
+                inset: 0 66.66% 0 0;
+            }
+        }
+    }
+
+    &--event {
+        .tna-card__inner {
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+
+            @include media.on-larger-than-mobile {
+                padding: 1rem 2rem 1rem 2.5rem;
+            }
+        }
+
+        .tna-card__image-container {
+            margin-left: -1.5rem;
+            margin-right: -1.5rem;
+            margin-bottom: 1.375rem;
+
+            @include media.on-larger-than-mobile {
+                margin-left: 0;
+                margin-right: 0;
+                margin-bottom: 0;
+            }
+        }
+
+        .tna-card__heading {
+            margin-top: 0;
+
+            @include media.on-larger-than-mobile {
+                @include typography.relative-font-size(30);
+            }
+        }
+
+        .tna-card__heading-link {
+            @include colour.colour-font("font-dark");
+        }
+
+        .tna-card__body {
+            @include typography.relative-font-size(16);
+            line-height: 1.5;
+        }
+    }
+
+    &--related {
+        .tna-card__heading-link {
+            @include colour.colour-font("font-dark");
+        }
+    }
+}
+
+// tna-scene-setter modifiers
+
+.tna-scene-setter {
+    &--small {
+        @include typography.relative-font-size(21);
+        font-weight: $font-weight-light;
+    }
+}
+
+// tna-useful-info component - 'Good to know' information from event page
+
+.tna-useful-info {
+    @include colour.light-accent-background;
+    color: colour.brand-colour("black");
+    padding: 1.5rem 2rem 2rem;
+    margin-top: 2rem;
+}
+
+.event-hero {
+    .tna-breadcrumbs {
+        margin-bottom: 1.5rem;
+
+        @include media.on-larger-than-mobile {
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+    }
+
+    .tna-breadcrumbs__link {
+        color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &::before {
+            color: $color--white;
+        }
+    }
+
+    .tna-heading {
+        color: $color--white;
+        font-weight: 500;
+        margin-top: 0.5rem;
+    }
+}
+
+// filter refinements
+
+.tna-filters {
+    &__item--active #{&}__link {
+        @include colour.colour-background("contrast-background");
+        color: $color__white;
+    }
+
+    &__item--clear-all #{&}__link {
+        @include typography.main-font-weight-bold;
+        background: transparent;
+
+        &:hover {
+            @include colour.colour-font("font-dark");
+        }
+    }
+}
+
+// off-black header
+.tna-header--off-black {
+    background-color: $color--off-black;
+}
+
+/* stylelint-enable no-descending-specificity */

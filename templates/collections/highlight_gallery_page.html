@@ -1,10 +1,7 @@
 {% extends 'base_page.html' %}
 
-{% load i18n static wagtailcore_tags wagtailimages_tags records_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load i18n static wagtailcore_tags wagtailimages_tags records_tags wagtailmetadata_tags %}
+
 {% block content %}
     {% include "includes/generic-intro.html" with title=page.title intro=page.intro display_content_warning=page.display_content_warning custom_warning_text=page.custom_warning_text %}
 
@@ -17,10 +14,16 @@
     {% endif %}
 
     {% if page.featured_article.live %}
-        {% include "includes/article-spotlight.html" with page=page.featured_article %}
+    <div class="tna-container">
+    <div class="tna-column tna-column--full">
+        {% include "includes/article-spotlight.html" with page=page.featured_article.specific %}
+    </div>
+    </div>
     {% endif %}
 
     {% if page.primary_topic or page.time_period %}
+    <div class="tna-container">
         {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="More to explore" %}
+    </div>
     {% endif %}
 {% endblock %}

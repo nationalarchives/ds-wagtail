@@ -16,9 +16,9 @@ $font__mono: $font__roboto-mono;
 // Colours
 // Defined in the design system here
 // https://www.figma.com/file/uo8YY98lLws8E1HEfpdn5X/TNA-Etna---Design-system?type=design&node-id=8%3A38&t=lYJParR28eBFxCEk-1
-$color__black: #000000;
-$color__white: #ffffff;
-$color__yellow: #ffcc00;
+$color__black: #000;
+$color__white: #fff;
+$color__yellow: #fc0;
 $color__yellow-dark: #ffcc002b; // isn't part of design system
 $color__pastel-green: #dde5d5;
 $color__pastel-pink: #fad3d4;
@@ -27,11 +27,12 @@ $color__purple: #4c2c92; // isn't part of design system
 $color__red: #d4351c;
 $color__cream: #f9f7e2;
 $color__navy: #004c7e;
+$color__maroon: #9c193a;
 
 $color__grey-100: #fafafa;
 $color__grey-200: #f4f4f4;
 $color__grey-300: #d9d9d6; // Light grey in brand guidelines, previously $color__grey-9
-$color__grey-400: #cccccc; // previously $color__grey-7
+$color__grey-400: #ccc; // previously $color__grey-7
 $color__grey-500: #8c9694; // Mid grey in brand guidelines
 $color__grey-600: #747474;
 $color__grey-700: #343338; // Previously $color__grey-6
@@ -39,6 +40,7 @@ $color__grey-800: #26262a; // Previously $color__grey-2
 $color__grey-900: #0f1517;
 
 $color__black-80pc: rgba($color__black, 0.8);
+$color__off-black: #1e1e1e;
 
 $color__alert: $color__cream;
 $color__success: $color__pastel-green;

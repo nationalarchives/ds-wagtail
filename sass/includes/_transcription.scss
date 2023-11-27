@@ -1,4 +1,7 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .transcription {
+    @include colour.invert;
     $root: &;
     // provides visual boundary in high contrast mode
     border: 1px solid transparent;
@@ -23,8 +26,7 @@
 
         @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
             display: grid;
-            row-gap: 1.875rem;
-            column-gap: 3rem;
+            gap: 1.875rem 3rem;
             grid-template-columns: 55% 45%;
         }
 
@@ -51,7 +53,6 @@
     }
 
     &__container {
-        display: flex;
         margin-left: auto;
         margin-right: auto;
 

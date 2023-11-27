@@ -1,9 +1,12 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .search-buckets {
     @media only screen and (max-width: $screen__md) {
         display: none;
     }
     display: flex;
     flex-wrap: wrap;
+
     &__list {
         display: flex;
         flex-wrap: wrap;
@@ -14,6 +17,7 @@
         padding-left: 1.5rem;
         padding-right: 1.5rem;
         order: -1;
+
         &-item {
             display: inline-block;
             list-style: none;
@@ -46,8 +50,8 @@
     &__link {
         text-align: center;
         padding: 14px;
-        display: block;
         border: 1px solid $color__grey-500;
+        // @include colour.colour-border("keyline", 1px);
         width: 100%;
         margin-top: auto;
         margin-bottom: auto;
@@ -58,8 +62,10 @@
         align-items: center;
         justify-content: center;
 
+        &,
+        &:link,
         &:visited {
-            color: $color__navy;
+            @include colour.colour-font("font-base");
         }
 
         &[aria-current="true"],
@@ -69,14 +75,13 @@
             color: #000;
         }
     }
+
     &__toggle-button {
         @extend .search-results__filter-button;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0rem;
-        margin-bottom: 0.5rem;
+        margin: 0 auto 0.5rem;
         display: block;
-        &:before {
+
+        &::before {
             position: relative;
         }
     }

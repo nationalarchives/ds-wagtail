@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% load humanize %}
-{% load datalayer_tags %}
-{% load search_tags %}
+{% load humanize datalayer_tags search_tags static %}
 
 {% comment %} prepend number of search results to page title {% endcomment %}
 {% block prepend_title %}
@@ -12,8 +10,6 @@
 {% block extra_gtm_js %}
     {% render_gtm_datalayer view %}
 {% endblock extra_gtm_js %}
-{% load humanize %}
-{% load static %}
 {% block breadcrumb %}
 {% endblock %}
 {% block content %}

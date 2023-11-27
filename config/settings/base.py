@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
+from distutils.sysconfig import get_python_lib
 from distutils.util import strtobool
 
 import sentry_sdk
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
     "etna.alerts",
     "etna.analytics",
     "etna.articles",
+    "etna.authors",
     "etna.categories",
     "etna.ciim",
     "etna.collections",
@@ -49,6 +51,7 @@ INSTALLED_APPS = [
     "etna.records",
     "etna.search",
     "etna.users",
+    "etna.whatson",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
     "wagtail.embeds",
@@ -84,6 +87,7 @@ INSTALLED_APPS = [
 SITE_ID = 1
 
 MIDDLEWARE = [
+    "allauth.account.middleware.AccountMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -105,6 +109,9 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
+            os.path.join(
+                get_python_lib(), "nationalarchives-frontend-django/templates"
+            ),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -282,14 +289,21 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
-# Kong client
+# Eventbrite client
 
-KONG_CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-KONG_CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
-KONG_CLIENT_VERIFY_CERTIFICATES = strtobool(
+EVENTBRITE_KEY = os.getenv("EVENTBRITE_KEY")
+EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
+EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
+EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
+
+# API Client
+
+CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
+CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
 )
-KONG_IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -298,12 +312,13 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = [
-    "bold",
-    "italic",
-    "link",
+RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
     "ol",
     "ul",
+]
+EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
+    "h2",
+    "h3",
 ]
 
 # Analytics
@@ -400,4 +415,7 @@ FEATURE_COOKIE_BANNER_ENABLED = strtobool(
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
+)
+FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
+    os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )

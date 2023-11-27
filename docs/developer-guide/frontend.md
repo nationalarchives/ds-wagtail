@@ -4,7 +4,9 @@
 
 To ensure we are working in a way that is compatible with the front end technology aspects of the [GOV.UK Service Manual](https://www.gov.uk/service-manual/technology).
 
-**All front end development should follow The National Archives [front end development guide](https://github.com/nationalarchives/front-end-development-guide)** on GitHub. This will ensure user interfaces are robust, inclusive and meet relevant regulations. 
+There are currently two guides for front-end development, as the content is in the process of being moved across. The original **[front end development guide](https://github.com/nationalarchives/front-end-development-guide)** on GitHub has lots of useful advice, but is in the process of moving to **The National Archives [developer handbook](https://nationalarchives.github.io/developer-handbook/technology/)**. Following these guides will ensure user interfaces are robust, inclusive and meet relevant regulations.
+
+If there are any contradictions between the two, the [developer handbook](https://nationalarchives.github.io/developer-handbook/technology/) is the one that should be followed.
 
 If you have any questions about any aspect of frontend development seek advice from the Lead Frontend Developer or another Frontend Developer.
 
@@ -30,7 +32,7 @@ From here you have a few commands you can use:
 #### Setup
 
 1. Install [nvm](https://github.com/nvm-sh/nvm) (Node version manager)
-1. Run `nvm install` in the project which will install the version of NodeJS defined in `.nvmrc`
+1. Run `nvm use` to pick up the version of NodeJS defined in `.nvmrc`. If prompted, run  `nvm install` to install it first.
 1. Run `npm install` to install the project dependencies
 
 #### Use
@@ -42,6 +44,9 @@ You can now run one of the following commands:
 - `npm run compile:css` - Compile the application CSS
 - `npm run dev:js` - Compile the application JavaScript and watch for changes
 - `npm run dev:css` - Compile the application CSS and watch for changes
+- `npm run dev` - Compile the application CSS and JavaScript concurrently and watch for changes
+- `npm run lint` - Check for errors from Prettier, Stylelint and Eslint
+- `npm run lint:fix` - Automatically fix some linting errors - some may need manual fixes
 
 ## Working with SASS/CSS
 
@@ -60,3 +65,15 @@ Jest is used for JavaScript testing. Tests should be added as siblings of the ta
 Let's aim for 100% coverage. Where necessary Jest can be set to run in a browser-like environment by setting the Jest environment to `jsdom` via a docblock at the top of the file.
 
 Run Jest unit tests with `npm run test`
+
+## Linting
+
+Various linting checks are run in the CI pipeline.
+
+All SASS is checked with `stylelint` - you can see more details of the rules used in `.stylelintrc`.
+
+All JavaScript is checked with `eslint` you can see more details of the rules used in `.esltintrc.js`.
+
+Both SASS and JavaScript are checked with `prettier`.
+
+You can check your changes for all the linting tests locally by running `npm run lint`. Some issues can be fixed by running `npm run lint:fix`, but some may require manual fixes.

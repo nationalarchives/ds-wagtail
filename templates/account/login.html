@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
-{% load i18n %}
-{% load account %}
-{% load static %}
+{% load i18n account static %}
 
 {% block title %}{% trans "Login" %}{% endblock %}
 
@@ -12,7 +10,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-12">
-                    <h1 class="tna-heading generic-intro__title">
+                    <h1 class="tna-heading-xl generic-intro__title">
                         {% trans "Sign in" %}
                     </h1>
                 </div>
@@ -29,7 +27,7 @@
 
                     {% if form.non_field_errors or form.errors %}
                         <div class="tna-form__error-summary" role="alert" id="analytics-error-message">
-                            <h2 class="tna-heading">There is a problem</h2>
+                            <h2 class="tna-heading-l">There is a problem</h2>
                             <ul>
                                 {% if form.non_field_errors %}
                                     {% for error in form.non_field_errors %}

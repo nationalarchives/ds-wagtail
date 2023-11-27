@@ -1,23 +1,18 @@
 {% extends 'base_page.html' %}
 
-{% load static %}
-{% load wagtailcore_tags %}
-{% load sections_tags %}
-{% load wagtailmetadata_tags %}
-{% block meta_tag %}
-  {% meta_tags %}
-{% endblock %}
+{% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
+
 {% block breadcrumb %}{% endblock %}
 {% block content %}
     {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
     {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
 
-    <div class="article-container container">
-        <div class="article-container__sidebar">
+    <article class="tna-container">
+        <div class="tna-column tna-column--width-1-4">
             {% jumplinks page %}
         </div>
 
-        <div class="article-container__main">
+        <div class="article-container__main tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
             {% if page.display_content_warning %}
                 {% include "includes/content-warning.html" with custom_warning_text=page.custom_warning_text classes="content-warning--short content-warning--normalise-article-margin" %}
             {% endif %}
@@ -25,16 +20,18 @@
                 {% include_block block %}
             {% endfor %}
         </div>
-    </div>
+    </article>
 
-    <div class="related-content related-content--borderless">
-        <div class="container">
+    <aside class="related-content related-content--borderless">
+        <div class="tna-container">
             {% if page.similar_items %}
-                <h2 class="tna-heading related-content__heading">You may also be interested in</h2>
+                <div class="tna-column tna-column--full">
+                <h2 class="tna-heading-l related-content__heading">You may also be interested in</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item.specific heading="You may also be interested in" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -46,16 +43,18 @@
 
 
             {% if page.latest_items %}
-                <h2 class="tna-heading related-content__heading">More stories</h2>
+            <div class="tna-column tna-column--full">
+                <h2 class="tna-heading-l related-content__heading">More stories</h2>
+            </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.latest_items %}
-                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True %}
+                        {% include 'includes/card-group-secondary-nav.html' with link_page=item heading="More stories" card_type="Featured" show_type_label=True supertitle=item.specific.type_label %}
                     {% endfor %}
                 </ul>
             {% endif %}
         </div>
-    </div>
+    </aside>
 
 {% endblock %}
 

@@ -20,7 +20,7 @@
 
     &__form {
         margin-left: auto;
-        //width: 100%;
+        // width: 100%;
 
         @media only screen and (max-width: $screen__md) {
             margin-left: 0;
@@ -37,6 +37,7 @@
                 outline: 5px solid $color__focus-outline-light-bg;
             }
         }
+
         &-submit {
             @extend .search-button;
             padding: 0.2rem;

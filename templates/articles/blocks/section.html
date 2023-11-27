@@ -1,17 +1,13 @@
 {% load wagtailcore_tags %}
 
 <div class="section-wrapper" data-section-level="{{ content_level }}">
-    <div{% if content_level == 1 %} class="section-separator"{% endif %}>
-        <div class="container">
-            <{{ heading_level }} id="{{ heading_id }}" class="tna-heading section-separator__heading">
+            <{{ heading_level }} id="{{ heading_id }}" class="tna-heading-l section-separator__heading">
                 <span class="section-separator__heading-text">
                     {{ value.heading }}
                 </span>
                 <span class="section-separator__heading-chevron"></span>
             </{{ heading_level }}>
-        </div>
-    </div>
-    <div class="section-content" data-controlled-by="{{ heading_id }}">
+    <div class="section-content tna-!--margin-top-m" data-controlled-by="{{ heading_id }}">
         {% for block in value.content %}
             {% include_block block %}
         {% endfor %}

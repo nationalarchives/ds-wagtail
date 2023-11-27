@@ -1,8 +1,8 @@
 {% load search_tags %}
 
 <div class="search-sort-view">
-    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
-        <h2 class="tna-heading search-sort-view__heading">
+    <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form-mobile" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
+        <h2 class="tna-heading-l search-sort-view__heading">
             <label for="id_sort_by_mobile">Sort by</label>
         </h2>
         {{ form.sort_by.errors }}
@@ -17,7 +17,7 @@
 
 <div class="search-filters" data-search-filters>
     {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
-    <h2 class="tna-heading search-filters__heading">Refine results</h2>
+    <h2 class="tna-heading-l search-filters__heading">Refine results</h2>
 
     <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
         {% comment %}
@@ -41,20 +41,20 @@
         {% endif %}
 
         <div class="search-filters__form-block">
-            <h3 class="tna-heading sr-only">Edit filters</h3>
+            <h3 class="tna-heading-m sr-only">Edit filters</h3>
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
                 <div class="search-filters__accordion-section">
-                    <fieldset>
+                    <fieldset role="group" aria-describedby="from-date">
                         <legend>
-                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
+                            <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                         </legend>
 
-                        <span class="example-text">For example, 27 3 2007</span>
+                        <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
                         <div>{{ form.covering_date_from.label_tag }}</div>
 
-                        <div class="search-filters__creation-date-section">
-                            
+                        <div>
+
                             {% if form.covering_date_from.errors %}
                                 <div
                                     data-tracking-errors
@@ -64,9 +64,11 @@
                                 </div>
                             {% endif %}
                             {{ form.covering_date_from }}
+
                         </div>
 
-                        <div class="search-filters__creation-date-section">
+                        <div>
+
                             {{ form.covering_date_to.label_tag }}
                             {% if form.covering_date_to.errors %}
                                 <div
@@ -77,6 +79,7 @@
                                 </div>
                             {% endif %}
                             {{ form.covering_date_to }}
+
                         </div>
 
                         <input type="submit" value="Update" class="search-filters__submit">
@@ -105,13 +108,14 @@
 
             {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                 <div class="search-filters__accordion-section">
-                    <fieldset>
+                    <fieldset role="group" aria-describedby="opening-start-date">
                         <legend>
-                            <h4 class="tna-heading search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                            <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                         </legend>
 
                         <div class="search-filters__opening-date-section">
-                            <span class="example-text">For example, 27 3 2007</span><br>
+
+                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
                             {{ form.opening_start_date.label_tag }}
                             {% if form.opening_start_date.errors %}
                                 <div
@@ -122,10 +126,12 @@
                                 </div>
                             {% endif %}
                             {{ form.opening_start_date }}
+
                         </div>
                         
 
                         <div class="search-filters__opening-date-section">
+
                             {{ form.opening_end_date.label_tag }}
                             {% if form.opening_end_date.errors %}
                                 <div
@@ -136,6 +142,7 @@
                                 </div>
                             {% endif %}
                             {{ form.opening_end_date }}
+
                         </div>
 
                         <input type="submit" value="Update" class="search-filters__submit">
