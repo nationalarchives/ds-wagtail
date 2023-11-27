@@ -35,7 +35,7 @@ flake8 = "~6.1"
 ipdb = "~0.13"
 isort = "~5.12"
 mkdocs-material = "~9.4"
-pymdown-extensions = "~10.3"
+pymdown-extensions = "~10.5"
 responses = "~0.23"
 wagtail-factories = "~4.1"
 
