@@ -36,6 +36,8 @@ INSTALLED_APPS = [
     "etna.generic_pages",
     "etna.alerts",
     "etna.analytics",
+    "etna.articles",
+    "etna.categories",
     "etna.ciim",
     "etna.core",
     "etna.feedback",
@@ -270,9 +272,11 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+
 # Custom password template for private pages
 
 PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
+
 
 # API Client
 
@@ -290,13 +294,12 @@ INLINE_RICH_TEXT_FEATURES = [
     "italic",
     "link",
 ]
-RESTRICTED_RICH_TEXT_FEATURES = INLINE_RICH_TEXT_FEATURES + [
+RESTRICTED_RICH_TEXT_FEATURES = [
+    "bold",
+    "italic",
+    "link",
     "ol",
     "ul",
-]
-EXPANDED_RICH_TEXT_FEATURES = RESTRICTED_RICH_TEXT_FEATURES + [
-    "h2",
-    "h3",
 ]
 
 # Analytics
@@ -390,10 +393,7 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "False")
 )
-
-# TODO: This feature to update and test the env var for the deployment environment
 FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
-
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )

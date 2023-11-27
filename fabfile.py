@@ -215,7 +215,7 @@ def psql(c, command=None):
 
 
 def delete_local_renditions(c):
-    psql(c, "TRUNCATE images_customimagerendition;")
+    psql(c, "TRUNCATE wagtailimages_rendition;")
 
 
 def delete_db(c):
@@ -344,4 +344,4 @@ def pull_media_from_platform(
         f"platform mount:download -e {environment_name} -p {PLATFORM_PROJECT_ID} -m media "
         "--target=media --exclude='/images/*' --yes"
     )
-    # delete_local_renditions(c)
+    delete_local_renditions(c)
