@@ -52,7 +52,7 @@ export default function () {
             $showHideButton.innerHTML =
                 'Show filters<span class="filter-indicator">' +
                 $noOfFilters +
-                '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20px" height="20px" style=\'display: inline-block;margin-left: 10px;\'>';
+                '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style=\'display: inline-block;margin-left: 10px;\'>';
         }
     });
 
