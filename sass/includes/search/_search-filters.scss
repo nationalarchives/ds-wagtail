@@ -90,16 +90,20 @@
         margin-bottom: 1rem;
     }
 
-    &__submit {
-        @extend .search-button;
-        display: block;
-        margin-top: 1.2em;
-    }
-
     &__label,
     &__checkbox,
     &__submit {
         cursor: pointer;
+    }
+
+    &__submit {
+        @extend .search-button;
+        display: block;
+        margin-left: auto;
+
+        &:not(&__heading) {
+            margin-top: 0.5rem;
+        }
     }
 
     &__label {

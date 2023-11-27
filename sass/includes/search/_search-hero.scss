@@ -33,8 +33,6 @@
     }
 
     &__form {
-        display: flex;
-
         &-submit {
             @extend .search-button;
             cursor: pointer;
