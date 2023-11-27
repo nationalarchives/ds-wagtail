@@ -109,6 +109,8 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
+    api_fields = []
+
 
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
@@ -135,7 +137,10 @@ class ArticleIndexPage(BasePageWithIntro):
         use_json_field=True,
     )
 
-    api_fields = BasePageWithIntro.api_fields + []
+    api_fields = BasePageWithIntro.api_fields + [
+        APIField("featured_article"),
+        APIField("featured_pages"),
+    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -237,6 +242,16 @@ class ArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    verbose_name_public = Meta.verbose_name_public
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            APIField("verbose_name_public"),
+            APIField("body"),
         ]
     )
 
