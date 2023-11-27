@@ -47,7 +47,7 @@ services:
       - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
-      - WAGTAILAPI_BASE_URL=http://localhost:8000/
+      - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
 
   cli:
     container_name: cli
