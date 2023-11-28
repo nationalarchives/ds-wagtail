@@ -411,6 +411,14 @@ class FocusedArticlePage(
             index.SearchField("author_name", boost=1),
         ]
     )
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            APIField("body"),
+            APIField("author"),
+        ]
+    )
 
     def save(self, *args, **kwargs):
         """
@@ -641,6 +649,21 @@ class RecordArticlePage(
             index.SearchField("about"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("about"),
+            APIField("date_text"),
+            APIField("intro_image"),
+            APIField("featured_article"),
+            # APIField("gallery_items"),
+            # APIField("gallery_text"),
         ]
     )
 

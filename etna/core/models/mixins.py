@@ -38,6 +38,10 @@ class ContentWarningMixin(models.Model):
         ),
     )
 
+    api_fields = [
+        APIField("custom_warning_text"),
+    ]
+
     class Meta:
         abstract = True
 
@@ -57,6 +61,10 @@ class NewLabelMixin(models.Model):
         default=None,
         null=True,
     )
+
+    api_fields = [
+        APIField("is_newly_published"),
+    ]
 
     new_label_display_for_days = 21
 
