@@ -67,6 +67,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/content-block";
 @import "includes/content-warning";
 @import "includes/quote";
+@import "includes/useful-info";
 @import "includes/event-card-listing";
 @import "includes/meta-details-banner";
 @import "includes/event-hero";
@@ -535,52 +536,6 @@ Modified to match the existing site (for now)
     &--small {
         @include typography.relative-font-size(21);
         font-weight: $font-weight-light;
-    }
-}
-
-// tna-useful-info component - 'Good to know' information from event page
-
-.tna-useful-info {
-    $useful-info-root: &;
-    display: flex;
-    flex-direction: column-reverse;
-    margin-top: 3rem;
-
-    @include media.on-larger-than-mobile {
-        align-items: flex-start;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-    }
-
-    &__content {
-        background-color: colour.brand-colour("light-grey");
-        color: $color__text;
-        padding: 2rem;
-
-        @include media.on-larger-than-mobile {
-            padding: 3rem;
-
-            #{$useful-info-root}--with-image & {
-                flex: 0 0 calc(50% - 3rem);
-                padding: 3rem 8rem 3rem 3rem;
-            }
-        }
-    }
-
-    &__image {
-        object-fit: cover;
-
-        @include media.on-larger-than-mobile {
-            flex: 0 0 calc(50% - 3rem);
-            margin-top: -3rem;
-            margin-left: -5rem;
-            overflow: hidden;
-        }
-    }
-
-    &__cta {
-        margin-top: 2rem;
     }
 }
 
