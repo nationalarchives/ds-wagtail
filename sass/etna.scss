@@ -592,7 +592,7 @@ Modified to match the existing site (for now)
     }
 
     .tna-breadcrumbs__item {
-        &:before {
+        &::before {
             color: $color--white;
         }
     }
