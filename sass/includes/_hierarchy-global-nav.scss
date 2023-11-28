@@ -2,7 +2,7 @@
     position: relative;
     color: $color__black;
     border: 3px solid $color__yellow;
-    margin: 0 0 3rem 0;
+    margin: 0 0 3rem;
     background-color: $color__yellow;
     padding: 0;
 
@@ -129,7 +129,8 @@
             display: inline-block;
             margin: 0 0.75rem 0 0;
         }
-        &--more:before {
+
+        &--more::before {
             content: "...";
             display: none;
 
@@ -202,7 +203,7 @@
             display: inline-block;
             color: $color__grey-800;
             background: $color__yellow;
-            padding: 0.4rem 0.35rem 0.4rem;
+            padding: 0.4rem 0.35rem;
             margin-top: 0.25rem;
             line-height: 1.2rem;
 
@@ -218,6 +219,7 @@
                 float: none;
             }
         }
+
         &--active {
             @media screen and (min-width: #{$screen__lg + 1px}) {
                 background: $color__yellow;
@@ -250,6 +252,7 @@
             font-family: $font__roboto;
         }
     }
+
     &__bar-label {
         font-size: 0.85rem;
         display: inline-block;
@@ -260,6 +263,8 @@
             font-size: 0.8rem;
         }
     }
+
+    // stylelint-disable no-descending-specificity
     &__text-container {
         display: inline-block;
         vertical-align: top;
@@ -288,6 +293,8 @@
             }
         }
     }
+    // stylelint-enable no-descending-specificity
+
     &__text-level {
         font-family: $font__supria-sans;
         margin: 0;
@@ -299,6 +306,7 @@
             margin: 0.7rem 0 0;
         }
     }
+
     &__text-title {
         margin: 0;
         padding: 0;
@@ -390,6 +398,7 @@
             }
         }
     }
+
     &__list-link {
         display: block;
     }

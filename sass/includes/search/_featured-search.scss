@@ -20,9 +20,11 @@
             &:nth-of-type(1) {
                 -ms-grid-column: 1;
             }
+
             &:nth-of-type(2) {
                 -ms-grid-column: 2;
             }
+
             &:nth-of-type(3) {
                 -ms-grid-column: 3;
             }
@@ -41,6 +43,7 @@
 
         &-link {
             display: inline-block;
+
             &:visited {
                 color: $color__navy;
             }
@@ -62,18 +65,16 @@
         &-link {
             margin-top: 2rem;
         }
+
         &-image {
             width: 100%;
-            //display: none;
+            // display: none;
         }
     }
 
     &__interpretive-results {
         display: none;
-        margin-left: 1rem;
-        margin-right: 1rem;
-        margin-top: 2rem;
-        margin-bottom: 3rem;
+        margin: 2rem 1rem 3rem;
         padding-top: 2rem;
         border-top: 3px dotted $color__grey-500;
 
@@ -83,15 +84,19 @@
             -ms-grid-columns: 1fr 1fr 1fr;
             grid-template-columns: 1fr 1fr 1fr;
             margin-left: 2rem;
+
             &-section {
-                //display:none;
+                // display:none;
                 margin-right: 2rem;
+
                 &:nth-of-type(1) {
                     -ms-grid-column: 1;
                 }
+
                 &:nth-of-type(2) {
                     -ms-grid-column: 2;
                 }
+
                 &:nth-of-type(3) {
                     -ms-grid-column: 3;
                 }
@@ -106,13 +111,16 @@
         &-image {
             border: 1px solid $color__grey-500;
             display: block;
+
             &-fallback {
                 width: 100%;
             }
         }
+
         &-description {
             margin-bottom: 0.5rem;
         }
+
         &-link {
             display: inline-block;
         }
@@ -121,7 +129,7 @@
 
 .no-results {
     .featured-search__heading {
-        padding: 1rem 1rem;
+        padding: 1rem;
 
         @media only screen and (min-width: #{$screen__md + 1px}) {
             padding: 1rem 2rem;

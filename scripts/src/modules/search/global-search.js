@@ -40,7 +40,7 @@ export default function () {
 
     $main.insertBefore($globalSearchComponent, $main.childNodes[0]); //IE11 compatible prepend
 
-    $gsToggleButton.addEventListener("click", function (e) {
+    $gsToggleButton.addEventListener("click", function () {
         const $showHideButton = document.querySelector(
             ".header__show-hide-button",
         );

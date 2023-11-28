@@ -38,16 +38,13 @@
     &__submit {
         @extend .search-button;
         display: block;
-        margin-top: 0.5rem;
+        margin-top: 1.2em;
     }
 
     &__label,
     &__checkbox,
     &__submit {
         cursor: pointer;
-    }
-    &__submit {
-        margin-top: 1.2em;
     }
 
     &__label {
@@ -113,16 +110,15 @@
 
     .errorlist {
         list-style-type: none;
-        padding-left: 0;
         font-weight: 700;
         padding: 1rem 2rem;
         background-color: #a72916;
-        color: #ffffff;
+        color: #fff;
         margin-bottom: 2rem;
     }
 }
 
-/*date filters via GDS pattern*/
+/* date filters via GDS pattern */
 
 .tna-date-input__item {
     display: inline-block;
@@ -146,6 +142,7 @@
 .tna-input--width-2 {
     max-width: 2.75em;
 }
+
 .tna-input--width-4 {
     max-width: 4em;
 }
