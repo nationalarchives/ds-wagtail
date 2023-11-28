@@ -84,7 +84,7 @@
         padding: 0;
         font-size: 1rem;
 
-        .event-details-banner & {
+        .meta-details-banner & {
             @include typography.detail-font-small;
             text-transform: none;
             color: $color__black;
