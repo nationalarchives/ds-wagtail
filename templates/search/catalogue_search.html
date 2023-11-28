@@ -23,21 +23,19 @@
     {{ form.non_field_errors }}
 
     {% with search_tab=searchtabs.CATALOGUE.value %}
-        {% include './blocks/search_results_hero.html' %}
 
-        {% if buckets.current.result_count %}
-            <p class="search-results__explainer">Results for records held at The National Archives and other archives that match your search term.</p>
-        {% endif %}
+        {% include './blocks/search_results_hero.html' %}
 
         {% if buckets_contain_results %}
             {% include './blocks/catalogue_search_buckets.html' %}
         {% endif %}
 
-        {% if buckets.current.result_count > 0 %}
-                
 
+        {% if buckets.current.result_count > 0 %}
             {% include './blocks/search_sort_and_view_options.html' %}
         {% endif %}
+
+
 
         {% if buckets.current.result_count > 0 or form.errors %}
             <div class="catalogue-search-grid" data-id="catalogue-search-grid">

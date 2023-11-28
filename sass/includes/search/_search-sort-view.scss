@@ -134,7 +134,10 @@
 }
 
 .search-others {
-    margin-bottom: 1rem;
+    margin: 0;
+    padding-bottom: 1rem;
+    background-color: $color__grey-300;
+
     @media only screen and (min-width: #{$screen__md + 1px}) {
         display: none;
     }

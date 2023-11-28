@@ -8,25 +8,23 @@
 
 {% block content %}
 
-    <form action="/search/catalogue" method="GET" id="analytics-search-landing-hero">
-        <div class="search-hero">
-            <div class="tna-container">
-                <div class="tna-column tna-column--full">
-                    <div class="search-hero__container">
-                        <h1 class="tna-heading-xl search-hero__heading">Find community-generated history</h1>
-                        <div class="search-hero__form">
-                            <label for="id_q" class="search-hero__label">
-                                <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
-                            </label>
-                            {{ form.q.errors }}
-                            {{ form.q }}
-                            <input type="submit" value="Search" class="search-hero__form-submit">
-                        </div>
-                    </div>
+    <div class="search-hero">
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
+                <div class="search-hero__container">
+                    <h1 class="tna-heading-xl search-hero__heading">Find community-generated history</h1>
+                    <form action="/search/catalogue" method="GET" class="search-hero__form" id="analytics-search-landing-hero">
+                        <label for="id_q" class="search-hero__label">
+                            <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
+                        </label>
+                        {{ form.q.errors }}
+                        {{ form.q }}
+                        <input type="submit" value="Search" class="search-hero__form-submit">
+                    </form>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 
     <div class="tna-section">
         <div class="tna-container">

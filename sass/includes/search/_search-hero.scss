@@ -5,16 +5,6 @@
     background-color: $color__grey-300;
     padding-top: 2rem;
     padding-bottom: 2rem;
-    margin-bottom: 2rem;
-
-    &--has-nav {
-        padding: 2rem;
-        padding-bottom: 0;
-
-        @media only screen and (max-width: $screen__md) {
-            padding: 1rem;
-        }
-    }
 
     &__container {
         margin-left: auto;

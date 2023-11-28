@@ -1,41 +1,20 @@
 {% load search_tags %}
 
-<div class="search-hero search-hero--has-nav">
-    <h1 class="tna-heading-l search-hero__heading">{{search_tab|search_title}}</h1>
-    <form method="GET" class="search-hero__form tna-!--margin-top-s" data-id="search-form" id="catalogue-search-form">
+<div class="search-hero">
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            <div class="search-hero__container">
+                <h1 class="tna-heading-xl search-hero__heading">{{search_tab|search_title}}</h1>
+                <form method="GET" class="search-hero__form tna-!--margin-top-s" data-id="search-form" id="catalogue-search-form">
+                    <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
+                    {{ form.q.errors }}
+                    {{ form.q }}
 
-        <label for="{{form.q.id_for_label}}" class="sr-only">Search term</label>
-        {{ form.q.errors }}
-        {{ form.q }}
+                    {% render_fields_as_hidden form exclude='q' %}
 
-        {% render_fields_as_hidden form exclude='q' %}
-
-        <input type="submit" value="Search" class="search-hero__form-submit">
-    </form>
-
-    {% with request.resolver_match.url_name as url_name  %}
-        <nav class="search-hero__nav" aria-label="Search result types">
-            <ul class="search-hero__nav-list">
-                <li class="search-hero__nav-list-item">
-                    {% if url_name == 'search-featured' %}
-                        <span aria-current="true" class="search-hero__nav-link">{{searchtabs.ALL.value}}</span>
-                    {% else %}
-                    <a class="search-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.ALL.value}}</a>
-                    {% endif %}
-                </li>
-                <li class="search-hero__nav-list-item">
-                    {% if url_name == 'search-catalogue' %}
-                        <span aria-current="true" class="search-hero__nav-link">{{searchtabs.CATALOGUE.value}}</span>
-                    {% else %}
-                    <a class="search-hero__nav-link" href="{% url 'search-catalogue' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.CATALOGUE.value}}</a>
-                    {% endif %}
-                </li>
-                <li class="search-hero__nav-list-item">
-                    <div>
-                        <a href="/search/featured/" data-link-type="Link" data-link="Start a new search">Start new search</a>
-                    </div>
-                </li>
-            </ul>
-        </nav>
-    {% endwith %}
+                    <input type="submit" value="Search" class="search-hero__form-submit">
+                </form>
+            </div>
+        </div>
+    </div>
 </div>

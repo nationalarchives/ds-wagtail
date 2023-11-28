@@ -4,8 +4,11 @@
     @media only screen and (max-width: $screen__md) {
         display: none;
     }
+
     display: flex;
     flex-wrap: wrap;
+    background-color: $color__grey-300;
+    margin-bottom: 2rem;
 
     &__list {
         display: flex;
@@ -14,24 +17,24 @@
         margin-left: auto;
         margin-right: auto;
         margin-bottom: 0;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
         order: -1;
 
         &-item {
             display: inline-block;
             list-style: none;
-            width: 18%;
+            flex: 1;
             margin-right: 0.5rem;
             margin-left: 0.5rem;
             min-height: 100px;
-            margin-bottom: 1rem;
             font-family: $font__supria-sans;
             font-size: 1.2rem;
 
-            &--website {
-                @extend .search-buckets__list-item;
-                width: 15%;
+            &:first-child {
+                margin-left: 0;
+            }
+
+            &:last-child {
+                margin-right: 0;
             }
 
             @media only screen and (max-width: $screen__md) {
@@ -50,7 +53,7 @@
     &__link {
         text-align: center;
         padding: 14px;
-        border: 1px solid $color__grey-500;
+        padding-top: 9px;
         // @include colour.colour-border("keyline", 1px);
         width: 100%;
         margin-top: auto;
@@ -61,6 +64,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        border-top: 5px solid transparent;
 
         &,
         &:link,
@@ -71,8 +75,8 @@
         &[aria-current="true"],
         &:hover,
         &:focus {
-            background-color: $color__yellow;
-            color: #000;
+            background: $body-bg;
+            border-top-color: var(--font-dark);
         }
     }
 

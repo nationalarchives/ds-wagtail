@@ -10,7 +10,7 @@
         "page-background": #f4f4f4,
         "background-tint": #d9d9d6,
         "font-base": #222,
-        "font-dark": #047584,
+        "font-dark": #067584,
         "font-light": rgb(0 0 0 / 0.7),
         "icon-light": rgb(0 0 0 / 0.45),
         "link": #1d70ab,
@@ -58,6 +58,10 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/spacing";
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 @use "@nationalarchives/frontend/nationalarchives/variables/grid";
+
+// Redeclare $orange to match OHOS orange
+$orange: #fa8334;
+$body-bg: var(--page-background);
 
 /*
 
@@ -206,9 +210,6 @@ Modified to match the existing site (for now)
 */
 
 @import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
-
-// Redeclare $orange to match OHOS orange
-$orange: #fa8334;
 
 .tna-heading--l,
 .tna-heading--m {
