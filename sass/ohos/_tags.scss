@@ -6,7 +6,7 @@
     font-size: 16px;
 
     &--location {
-        background-color: #fd3f03;
+        background-color: #edae49;
     }
 
     &--person {
@@ -18,7 +18,7 @@
     }
 
     &--misc {
-        background-color: #fe1d57;
+        background-color: #f28482;
     }
 
     &--other {
@@ -37,6 +37,7 @@
         padding: 0.25rem 0.5rem;
         background-color: $color__grey-200;
         border-left: 1px solid $color__off-black;
+        font-size: 0.9em;
 
         &,
         &:link,
