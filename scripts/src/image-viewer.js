@@ -1,3 +1,5 @@
+/* global image_source */
+
 import Openseadragon from "openseadragon";
 
 if (image_source) {

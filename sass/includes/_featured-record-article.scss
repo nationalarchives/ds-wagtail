@@ -4,7 +4,7 @@
     display: grid;
     margin-bottom: 40px;
     grid-template-columns: 1fr;
-    border-width: 1px 0px;
+    border-width: 1px 0;
     border-style: solid;
     border-color: $color__grey-300;
     // Removes parent margin to ensure it's flush with viewport edge
