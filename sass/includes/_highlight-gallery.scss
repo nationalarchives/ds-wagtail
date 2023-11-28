@@ -77,13 +77,6 @@
         }
     }
 
-    &__richtext {
-        p {
-            margin-bottom: 1rem;
-            color: $color__grey-300;
-        }
-    }
-
     &__wrapper {
         &:last-of-type {
             #{$root}__item {

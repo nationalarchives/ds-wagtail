@@ -9,5 +9,6 @@
 {% endblock %}
 
 {% block content %}
+    {% include "includes/exhibition_hero.html" with title=page.title subtitle=page.subtitle image=page.hero_image colour_theme=page.hero_text_colour %}
     {% include "includes/meta-banner.html" %}
 {% endblock %}

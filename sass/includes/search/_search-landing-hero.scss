@@ -1,7 +1,6 @@
 .search-landing-hero {
     background-color: $color__grey-100;
     padding-top: 2rem;
-    padding-bottom: 2rem;
     padding-bottom: 5rem;
     margin-bottom: 2rem;
 
@@ -41,6 +40,7 @@
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 0.2rem;
+
             &:focus {
                 outline: 5px solid $color__focus-outline-light-bg;
             }
