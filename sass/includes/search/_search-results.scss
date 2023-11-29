@@ -1,4 +1,10 @@
 .search-results {
+    &__icon {
+        font-size: 2rem;
+        margin-right: 1.25rem;
+        color: $color__grey-500;
+    }
+
     &__metadata {
         &-count {
             margin-bottom: 0.5rem;

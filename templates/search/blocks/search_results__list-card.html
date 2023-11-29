@@ -11,6 +11,9 @@
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 
 <li class="search-results__list-card" data-iaid="{{ record.iaid }}" data-score="{{ record.score }}">
+
+    <i class="search-results__icon fa-solid fa-file"></i>
+
     <div class="search-results__list-card-details">
         <h3 class="tna-heading-m">
             <a href="{% if form.group.value == bucketkeys.ARCHIVE.value %}{% record_url record level_or_archive='Archive' form_group=form.group.value %}{% else %}{% record_url record level_or_archive=record.level form_group=form.group.value %}{% endif %}" class="search-results__list-card-heading-link" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search results list" search-bucket="{{ buckets.current.label }}">
@@ -18,6 +21,8 @@
                 <span class="sr-only">Reference number {{ record.reference_number }}: </span>
                 {% endif %}
                 {{ record.summary_title }}
+                {# API data required before this can be properly connected to it #}
+                (Type)
             </a>
         </h3>
 
@@ -25,78 +30,52 @@
             {{ record.listing_description }}
         </p>
 
-        <dl class="tna-dl tna-dl--plain tna-dl--icon-padding tna-!--margin-bottom-s">
-            {% if record.held_by %}
-            <dt>
-                <i class="fa-solid fa-landmark"></i>
-                Held by
-            </dt>
-            <dd>{{ record.held_by }}</dd>
-            {% endif %}
+        <dl class="tna-dl tna-dl--plain tna-!--margin-bottom-s">
 
-
+            {% comment %}
+                Commented out as discussed on https://github.com/nationalarchives/ds-ohos-wagtail/pull/26
+                This will require some additional logic once we are working with OHOS data
+                {% if record.held_by %}
+                    <dt>Held by</dt>
+                    <dd>{{ record.held_by }}</dd>
+                {% endif %}
+            {% endcomment %}
 
             {% if record.date_created %}
-            <dt>
-                <i class="fa-solid fa-calendar"></i>
-                Date
-            </dt>
-            <dd>
-                <date>{{ record.date_created }}</date></dd>
+                <dt>Date</dt>
+                <dd>
+                    <date>{{ record.date_created }}</date>
+                </dd>
             {% endif %}
 
-            {% if record.reference_number %}
-            <dt>
-                <i class="fa-solid fa-database"></i>
-                {% if form.group.value == 'archive' %}
-                Archon code
-                {% else %}
-                Reference
+            {% comment %}
+                Commented out as discussed on https://github.com/nationalarchives/ds-ohos-wagtail/pull/26
+                This will require some additional logic once we are working with OHOS data
+                {% if record.reference_number %}
+                    <dt>
+                        {% if form.group.value == 'archive' %}
+                        Archon code
+                        {% else %}
+                        Reference
+                        {% endif %}
+                    </dt>
+                    <dd>{{ record.reference_number }}</dd>
                 {% endif %}
-            </dt>
-            <dd>
-                {{ record.reference_number }}
-            </dd>
-            {% endif %}
 
-            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-            <dt>Type</dt>
-            <dd>{{ record.type }}</dd>
-            {% endif %}
+                {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
+                    <dt>
+                        Type
+                    </dt>
+                    <dd>{{ record.type }}</dd>
+                {% endif %}
+            {% endcomment %}
 
+            {# API data required before this can be properly connected to it #}
+            <dt>Collection</dt>
+            <dd>Hardcoded until API response is available</dd>
 
         </dl>
 
         {% include 'includes/tags.html' %}
     </div>
-
-    {% if record.is_digitised or apply_teaser_image %}
-    <div class="search-results__list-card-image">
-        {% if record.is_digitised %}
-            {% if record.closure_status not in closure_closed_status %}
-                <div class="search-results__list-card-delivery-options">
-                    <a href="{% record_url record %}" class="search-results__list-card-image-anchor" aria-hidden="true" tabindex="-1" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search result thumbnail link" data-position="{{forloop.counter0}}" search-bucket="{{ buckets.current.label }}">
-                    <img src="{% static 'images/list-placeholder.png' %}" class="search-results__list-card-delivery-options-img" alt="" />
-                    </a>
-                    <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
-                        <p class="search-results__list-card-delivery-options-desc">
-                            <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
-                            Available online
-                        </p>
-                    </a>
-                </div>
-            {% endif %}
-        {% endif %}
-        {% if apply_teaser_image %}
-        <picture>
-            <source media="(max-width: 480px)" srcset="{{ teaser_image_small }}">
-            <source media="(max-width: 640px)" srcset="{{ teaser_image_medium }}">
-            <source media="(max-width: 768px)" srcset="{{ teaser_image_medium }}">
-            <source media="(max-width: 991px)" srcset="{{ teaser_image_large }}">
-            <source media="(max-width: 1200px)" srcset="{{ teaser_image_large }}">
-            <img src="{{ teaser_image_large.url }}" alt="" />
-        </picture>
-        {% endif %}
-    </div>
-    {% endif %}
 </li>
