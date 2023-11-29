@@ -20,6 +20,7 @@
         font-family: $font__supria-sans;
         font-size: 1.2rem;
         border: 1px solid $color__grey-800;
+
         @extend .search-button;
     }
 }
