@@ -31,18 +31,10 @@
     {% if page.object_list %}
         <h2 class="sr-only">Results</h2>
 
-        {% if form.cleaned_data.display == "grid" %}
-            <ul class="search-results__list--grid" id="analytics-results-list">
-                {% for record in page %}
-                    {% include './search_results__list-card--grid.html' %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <ul class="search-results__list" id="analytics-results-list">
-                {% for record in page %}
-                    {% include './search_results__list-card.html' %}
-                {% endfor %}
-            </ul>
-        {% endif %}
+        <ul class="search-results__list" id="analytics-results-list">
+            {% for record in page %}
+                {% include './search_results__list-card.html' %}
+            {% endfor %}
+        </ul>
     {% endif %}
 </div>
