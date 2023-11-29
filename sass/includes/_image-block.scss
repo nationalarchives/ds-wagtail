@@ -34,7 +34,7 @@
             width: auto;
 
             @media screen and (min-width: map-get($grid-breakpoints, "md")) {
-                padding: 21px 0 21px 0;
+                padding: 21px 0;
             }
         }
     }
@@ -53,13 +53,13 @@
         // Overides global typography styles
         p {
             @include font-size(xs);
-            padding: 18px 36px 18px 36px;
+            padding: 18px 36px;
             margin-bottom: 0;
 
             @media screen and (min-width: map-get($grid-breakpoints, "lg")) {
                 border-bottom: 1px solid $color__grey-300;
-                margin: 18px auto 18px auto;
-                padding: 0 18px 18px 18px;
+                margin: 18px auto;
+                padding: 0 18px 18px;
                 width: 80%;
             }
         }

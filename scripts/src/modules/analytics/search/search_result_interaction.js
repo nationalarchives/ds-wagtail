@@ -1,7 +1,6 @@
 const addPositionToSearchResults = () => {
-    const resultsList = document.getElementById(
-        "analytics-results-list",
-    ).children;
+    const resultsList =
+        document.getElementById("analytics-results-list")?.children || [];
 
     Array.prototype.forEach.call(resultsList, (element, index) => {
         element.querySelector(

@@ -6,7 +6,7 @@ from etna.feedback.views import FeedbackSubmissionViewSet
 
 
 @hooks.register("construct_snippet_listing_buttons")
-def remove_edit_button_for_submissions(buttons, snippet, user, context=None):
+def remove_edit_button_for_submissions(buttons, snippet, user):
     if isinstance(snippet, FeedbackSubmission):
         buttons[:] = [item for item in buttons if item.label != "Edit"]
 

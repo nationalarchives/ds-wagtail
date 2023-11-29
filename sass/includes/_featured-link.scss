@@ -84,7 +84,7 @@
             margin: 0;
 
             &:not(:last-child) {
-                &:after {
+                &::after {
                     content: "–";
                     color: $color__grey-700;
                     display: inline-block;

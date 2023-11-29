@@ -1,19 +1,19 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/variables/grid" as gridVars;
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 
 .event-meta {
     $root: &;
-    margin-bottom: 2rem;
+    margin-bottom: gridVars.$gutter-width;
 
     @include media.on-larger-than-mobile {
-        padding-left: 3rem;
+        padding-left: gridVars.$gutter-width;
         border-left: 1px solid colour.brand-colour("light-grey");
         margin-bottom: 0;
     }
 
     &--inline {
-        padding-left: 0;
         border-left: 0;
         align-self: center;
         line-height: 1;
@@ -27,14 +27,15 @@
 
     &__list {
         list-style: none;
-        margin: 0;
+        margin: 1rem 0;
         padding: 0;
 
         #{$root}--inline & {
             display: inline-flex;
             align-items: flex-start;
             flex-wrap: wrap;
-            gap: 1rem;
+            margin: 0;
+            gap: 1.5rem;
         }
     }
 
@@ -61,7 +62,7 @@
     }
 
     &__title {
-        @include typography.detail-font-small();
+        @include typography.detail-font-small;
         display: inline-flex;
         align-items: center;
         justify-content: flex-start;
@@ -70,7 +71,7 @@
     }
 
     &__icon {
-        @include typography.relative-font-size(18);
+        @include typography.relative-font-size(16);
         @include colour.colour-font("accent-background");
         flex: 0 0 auto;
         margin-right: 0.5rem;
@@ -81,11 +82,22 @@
         list-style: none;
         margin: 0;
         padding: 0;
+        font-size: 1rem;
 
-        .event-details-banner & {
-            @include typography.detail-font-small();
+        .meta-details-banner & {
+            @include typography.detail-font-small;
             text-transform: none;
             color: $color__black;
         }
+    }
+
+    &__link,
+    &__link:visited {
+        @include colour.colour-font("font-dark");
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        text-decoration: none;
+        font-size: 1rem;
     }
 }

@@ -44,6 +44,7 @@
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 0.2rem;
+
             &:focus {
                 outline: 5px solid $color__focus-outline-light-bg;
             }
@@ -65,6 +66,7 @@
         cursor: pointer;
         border: 0;
         margin-right: 0.25rem;
+
         &[aria-expanded="true"],
         &:hover,
         &:focus {
@@ -72,6 +74,7 @@
             background-color: $color__grey-100;
             background-image: url("/static/images/icons/search-black.svg");
         }
+
         &:focus {
             outline: 0.3125rem solid $color__black;
         }
