@@ -1,3 +1,5 @@
+import unittest
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.test import TestCase
@@ -120,73 +122,6 @@ class TestRecordView(TestCase):
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
-
-    @responses.activate
-    def test_record_rendered_for_archive_record(self):
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_response(
-                records=[
-                    create_record(
-                        iaid="A13532479",
-                        source_values=[
-                            {"source": {"value": "ARCHON"}},
-                        ],
-                    ),
-                ]
-            ),
-        )
-
-        response = self.client.get("/catalogue/id/A13532479/")
-
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
-            response.resolver_match.view_name, "details-page-machine-readable"
-        )
-        self.assertTemplateUsed(response, "records/archive_detail.html")
-
-    @responses.activate
-    def test_record_rendered_for_record_creators(self):
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/fetch",
-            json={
-                "hits": {
-                    "hits": [
-                        {
-                            "_source": {
-                                "@admin": {
-                                    "id": "F74321",
-                                },
-                                "identifier": [
-                                    {
-                                        "faid": "F74321",
-                                        "primary": True,
-                                        "type": "faid",
-                                        "value": "F74321",
-                                    },
-                                ],
-                                "@template": {
-                                    "details": {
-                                        "primaryIdentifier": "F74321",
-                                        "type": "person",
-                                    }
-                                },
-                            },
-                        }
-                    ],
-                },
-            },
-        )
-
-        response = self.client.get("/catalogue/id/F74321/")
-
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
-            response.resolver_match.view_name, "details-page-machine-readable"
-        )
-        self.assertTemplateUsed(response, "records/record_creators.html")
 
 
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
@@ -410,6 +345,7 @@ class RecordDetailBackToSearchTest(TestCase):
         )
         self.assertContains(response, expected_button_link_gen_value)
 
+    @unittest.skip("TODO:OHOS-Remove or update")
     @responses.activate
     def test_back_to_search_render_with_catalogue_search_beyond_expiry(self):
         """navigation to record details from previous search (session is set since its coming from search catalogue)"""
@@ -431,6 +367,7 @@ class RecordDetailBackToSearchTest(TestCase):
         )
         self.assertContains(response, expected_button_link_gen_value)
 
+    @unittest.skip("TODO:OHOS-Remove or update")
     @responses.activate
     def test_new_search_render_without_session(self):
         """Test covers navigation to record details without a previous search (session is not set since its not coming from search)"""

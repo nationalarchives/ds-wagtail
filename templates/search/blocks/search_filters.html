@@ -49,7 +49,7 @@
         <div class="search-filters__form-block">
             <h3 class="tna-heading-m sr-only">Edit filters</h3>
 
-            {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+            {% if form.group.value == 'tna' or form.group.value == 'nonTna' %}
                 <div class="search-filters__section">
                     <fieldset role="group" aria-describedby="from-date">
                         <legend>
@@ -111,7 +111,7 @@
 
 
 
-            {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+            {% if form.group.value == 'tna' %}
                 <div class="search-filters__section">
                     <fieldset role="group" aria-describedby="opening-start-date">
                         <legend>

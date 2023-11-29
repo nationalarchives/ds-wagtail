@@ -89,13 +89,14 @@ public_urls = [
         ),
         name="search",
     ),
-    path(
-        r"search/featured/",
-        setting_controlled_login_required(
-            search_views.FeaturedSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
-        ),
-        name="search-featured",
-    ),
+    # TODO:OHOS-Remove or update
+    # path(
+    #     r"search/featured/",
+    #     setting_controlled_login_required(
+    #         search_views.FeaturedSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+    #     ),
+    #     name="search-featured",
+    # ),
     path(
         r"search/catalogue/",
         setting_controlled_login_required(

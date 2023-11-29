@@ -1,4 +1,5 @@
 import json as json_module
+import unittest
 
 from typing import Any, Dict
 
@@ -12,7 +13,7 @@ import responses
 
 from etna.core.test_utils import prevent_request_warnings
 
-from ...ciim.tests.factories import create_response, create_search_response
+from ...ciim.tests.factories import create_response
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -323,39 +324,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertResultsNotRendered(content)
 
     @responses.activate
-    def test_no_matches_for_the_current_bucket(self):
-        """
-        When a user searches for something that has results for SOME buckets,
-        but they are currently viewing a bucket with no results:
-
-        They SHOULD see:
-        - Names, result counts and links for all buckets
-        - A "No results" message.
-
-        They SHOULD NOT see:
-        - A "Search within these results" option
-        - Options to change sort order and display style of results
-        - Filter options to refine the search
-        - Search results
-        """
-
-        self.patch_search_endpoint("catalogue_search_with_some_empty_buckets.json")
-        response = self.client.get(
-            self.test_url, data={"q": "snub", "group": "creator"}
-        )
-        content = str(response.content)
-
-        # SHOULD see
-        self.assertBucketLinksRendered(content)
-        self.assertNoResultsMessagingRendered(content)
-
-        # SHOULD NOT see
-        self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortByOptionsNotRendered(content)
-        self.assertFilterOptionsNotRendered(content)
-        self.assertResultsNotRendered(content)
-
-    @responses.activate
     def test_no_matches_for_the_refined_search(self):
         """
         When a user is viewing a bucket with results for the original search,
@@ -534,6 +502,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@unittest.skip("TODO:OHOS-Remove or update")
 class FeaturedSearchTestCase(SearchViewTestCase):
     test_url = reverse_lazy("search-featured")
 
@@ -653,6 +622,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
+    @unittest.skip("TODO:OHOS-Remove or update")
     @responses.activate
     def test_datalayer_featured_search(self):
         self.assertDataLayerEquals(
@@ -683,6 +653,7 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
             },
         )
 
+    @unittest.skip("TODO:OHOS-Remove or update")
     @responses.activate
     def test_datalayer_featured_search_query(self):
         self.assertDataLayerEquals(
@@ -804,36 +775,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         )
 
     @responses.activate
-    def test_datalayer_catalogue_search_digitised(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-catalogue"),
-            query_data={"group": "digitised"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_digitised.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "CatalogueSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Catalogue results: digitised",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 10000,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
     def test_datalayer_catalogue_search_nontna(self):
         self.assertDataLayerEquals(
             path=reverse("search-catalogue"),
@@ -861,195 +802,4 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customMetric1": 10000,
                 "customMetric2": 0,
             },
-        )
-
-    @responses.activate
-    def test_datalayer_catalogue_search_creator(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-catalogue"),
-            query_data={"group": "creator"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_creator.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "CatalogueSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Catalogue results: creator",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 10000,
-                "customMetric2": 0,
-            },
-        )
-
-    @responses.activate
-    def test_datalayer_catalogue_search_archive(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-catalogue"),
-            query_data={"group": "archive"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/catalogue_search_archive.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "CatalogueSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "Catalogue results: archive",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 3477,
-                "customMetric2": 0,
-            },
-        )
-
-
-class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
-    maxDiff = None
-
-    @responses.activate
-    def test_record_creators_default_params(self):
-        test_url = reverse_lazy(
-            "search-catalogue",
-        )
-
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_search_response(),
-        )
-
-        self.client.get(test_url, data={"group": "creator"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=group%3A30"
-                "&aggregations=type%3A10"
-                "&aggregations=country%3A10"
-                "&filterAggregations=group%3Acreator"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-    @responses.activate
-    def test_record_creators_country_long_filter(self):
-        test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "country"}
-        )
-
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_search_response(),
-        )
-
-        self.client.get(test_url, data={"group": "creator"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=country%3A100"
-                "&filterAggregations=group%3Acreator"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-
-class ArchiveTestCase(WagtailTestUtils, TestCase):
-    maxDiff = None
-
-    @responses.activate
-    def test_archive_default_params(self):
-        test_url = reverse_lazy(
-            "search-catalogue",
-        )
-
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_search_response(),
-        )
-
-        self.client.get(test_url, data={"group": "archive"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=group%3A30"
-                "&aggregations=location%3A10"
-                "&filterAggregations=group%3Aarchive"
-                "&from=0"
-                "&size=20"
-            ),
-        )
-
-    @responses.activate
-    def test_record_creators_country_long_filter(self):
-        test_url = reverse_lazy(
-            "search-catalogue-long-filter-chooser", kwargs={"field_name": "location"}
-        )
-
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/search",
-            json=create_search_response(),
-        )
-
-        self.client.get(test_url, data={"group": "archive"})
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/search"
-                "?stream=evidential"
-                "&sort="
-                "&sortOrder=asc"
-                "&template=details"
-                "&aggregations=location%3A100"
-                "&filterAggregations=group%3Aarchive"
-                "&from=0"
-                "&size=20"
-            ),
         )

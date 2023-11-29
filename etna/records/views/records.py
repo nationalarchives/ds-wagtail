@@ -6,7 +6,6 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
@@ -72,15 +71,6 @@ def record_detail_view(request, iaid):
     try:
         # for any record
         record = records_client.fetch(iaid=iaid, expand=True)
-
-        # check archive record
-        if record.custom_record_type == "ARCHON":
-            page_type = "Archive details page"
-            template_name = "records/archive_detail.html"
-            context.update(discovery_browse=TNA_URLS.get("discovery_browse"))
-        elif record.custom_record_type == "CREATORS":
-            page_type = "Record creators page"
-            template_name = "records/record_creators.html"
     except DoesNotExist:
         raise Http404
 
@@ -92,7 +82,7 @@ def record_detail_view(request, iaid):
     #     image = Image.search.filter(rid=page.media_reference_id).first()
 
     # Back to search - default url
-    back_to_search_url = reverse("search-featured")
+    back_to_search_url = reverse("search-catalogue")
 
     # Back to search button - update url when timestamp is not expired
 

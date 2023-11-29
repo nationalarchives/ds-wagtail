@@ -15,28 +15,15 @@ from django.utils.safestring import mark_safe
 from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import (
-    ARCHIVE_NRA_RECORDS_COLLECTION,
-    ARCHIVE_RECORD_CREATORS_COLLECTION,
-    TNA_URLS,
-)
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
     ValueExtractionError,
     extract,
-    find,
-    find_all,
     format_link,
     strip_html,
 )
-from ..records.classes import (
-    AccessionsInfo,
-    ArchiveCollections,
-    CollectionInfo,
-    ContactInfo,
-    FurtherInfo,
-)
+from ..records.classes import FurtherInfo
 from .converters import IAIDConverter
 
 logger = logging.getLogger(__name__)
@@ -235,10 +222,6 @@ class Record(DataLayerMixin, APIModel):
             return self.template["legalStatus"]
         except KeyError:
             return self.get("legal.status", default="")
-
-    @cached_property
-    def is_digitised(self) -> bool:
-        return self.get("digitised", default=self.template.get("digitised", False))
 
     @cached_property
     def availability_delivery_surrogates(self) -> str:
@@ -440,10 +423,6 @@ class Record(DataLayerMixin, APIModel):
     def custom_record_type(self) -> str:
         if source := self.source:
             return source
-        else:
-            identifier = self.get("identifier", ())
-            if find(identifier, predicate=lambda i: i["type"] == "faid"):
-                return "CREATORS"
         return ""
 
     def get_gtm_content_group(self) -> str:
@@ -518,43 +497,6 @@ class Record(DataLayerMixin, APIModel):
         return mark_safe(self.template.get("title", ""))
 
     @cached_property
-    def archive_contact_info(self) -> Optional[ContactInfo]:
-        """
-        Extracts data from the api "_source.description" attribute if available.
-        Then transforms that data to be represented by ContactInfo.
-        The data is extracted from html tags that are stored in the 'value' attribute.
-        These tags are fixed and only for this method.
-
-        Returns ContactInfo or None if data is not available.
-        """
-        contact_info = None
-        for description in self.get("description", ()):
-            if value := description.get("ephemera", {}).get("value", ""):
-                # convert to lower case for extraction
-                value = value.replace("mapURL", "mapurl")
-                value = value.replace("jobTitle", "jobtitle")
-                value = value.replace("firstName", "firstname")
-                value = value.replace("lastName", "lastname")
-                document = pq(value)
-                contact_info = ContactInfo(
-                    address_line1=document("addressline1").text(),
-                    address_town=document("addresstown").text(),
-                    postcode=document("postcode").text(),
-                    address_country=document("addresscountry").text(),
-                    map_url=document("mapurl").text(),
-                    url=document("url").text(),
-                    telephone=document("telephone").text(),
-                    fax=document("fax").text(),
-                    email=document("email").text(),
-                    corresp_addr=document("correspaddr").text(),
-                    contact_job_title=document("jobtitle").text(),
-                    contact_title=document("title").text(),
-                    contact_first_name=document("firstname").text(),
-                    contact_last_name=document("lastname").text(),
-                )
-        return contact_info
-
-    @cached_property
     def archive_further_info(self) -> Optional[FurtherInfo]:
         """
         Extracts data from the api "_source.place" attribute if available.
@@ -589,331 +531,6 @@ class Record(DataLayerMixin, APIModel):
                     comments=mark_safe(document("comments").text()),
                 )
         return further_info
-
-    def _get_trasformed_archive_record_creators_info(
-        self, collection_name
-    ) -> Optional[CollectionInfo]:
-        """
-        Extracts data from the api "_source.links" attribute if available. It holds record creators info.
-        Then transforms that data to be represented by CollectionInfo.
-
-        Returns CollectionInfo or None if data is not available.
-        """
-        collection_info = None
-        if archive_links := self.get("links", ()):
-            filtered_values = find_all(
-                archive_links,
-                predicate=lambda i: i["identifier"][0]["value"]
-                == collection_name.get("api_links_indentifier_value"),
-            )
-            info_list = []
-            for item in filtered_values:
-                info_dict = {
-                    "summary_title": item.get("summary", {}).get("title", ""),
-                    "place": item.get("place", {})
-                    .get("name", [{}])[0]
-                    .get("value", ""),
-                }
-
-                if admin_id := item.get("@admin", {}).get("id", ""):
-                    # update url only when id is available
-                    try:
-                        info_dict.update(
-                            {
-                                "url": reverse(
-                                    "details-page-machine-readable",
-                                    kwargs={"iaid": admin_id},
-                                )
-                            }
-                        )
-                    except NoReverseMatch:
-                        logger.debug(
-                            f"_get_trasformed_archive_record_creators_info:No reverse match for details-page-machine-readable with admin_id = {admin_id}"
-                        )
-
-                info_list.append(info_dict)
-
-            if info_list:
-                collection_info = CollectionInfo(
-                    name=collection_name.get("name"),
-                    display_name=collection_name.get("display_name"),
-                    long_display_name=collection_name.get("long_display_name"),
-                    count=len(info_list),
-                    info_list=info_list,
-                )
-
-        return collection_info
-
-    def _get_transformed_archive_nra_records_info(
-        self, collection_name
-    ) -> Optional[CollectionInfo]:
-        """
-        Extracts data from the api "_source.manifestations" attribute if available. It holds nra records info.
-        Then transforms that data to be represented by CollectionInfo.
-
-        Returns CollectionInfo or None if data is not available.
-        """
-        collection_info = None
-        if manifestations := self.get("manifestations", ()):
-            info_list = []
-            for item in manifestations:
-                info_list.append(
-                    {
-                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
-                        "url": item.get("url", ""),
-                    }
-                )
-            if info_list:
-                collection_info = CollectionInfo(
-                    name=collection_name.get("name"),
-                    display_name=collection_name.get("display_name"),
-                    long_display_name=collection_name.get("long_display_name"),
-                    count=len(info_list),
-                    info_list=info_list,
-                )
-
-        return collection_info
-
-    @cached_property
-    def archive_collections(self) -> ArchiveCollections:
-        """
-        Combines record creators info and nra records info as both have similar structure representations.
-        The combined data is is then represented by ArchiveCollections.
-
-        Returns archive collection info for record creators and nra records
-        """
-        # NOTE: this is the specicfic order of these list record creators and nra records
-        collection_info_list = [
-            self._get_trasformed_archive_record_creators_info(collection)
-            for collection in ARCHIVE_RECORD_CREATORS_COLLECTION
-        ]
-        collection_info_list.extend(
-            [
-                self._get_transformed_archive_nra_records_info(collection)
-                for collection in ARCHIVE_NRA_RECORDS_COLLECTION
-            ]
-        )
-
-        archive_collections = ArchiveCollections(
-            # remove empty values
-            collection_info_list=[
-                item for item in collection_info_list if item is not None
-            ]
-        )
-        return archive_collections
-
-    @cached_property
-    def archive_accessions(self) -> Optional[AccessionsInfo]:
-        """
-        Extracts data from the api "_source.@template.accumulationDates" attribute if available.
-        Then transforms that data to be represented by AccessionsInfo.
-        The data is extracted from html tags that are stored with the 'accumulationDates' attribute.
-        These tags are fixed and only for this method.
-
-        Returns AccessionsInfo or None if data is not available.
-        """
-        accessions_info = None
-        if accumulation_dates := self.template.get("accumulationDates", ""):
-            document = pq(accumulation_dates)
-            # extract year as a list of strings
-            year_list = document.find("accessionyear").text().split()
-            accession_years = {}
-            for year in year_list:
-                # transfrom year values {year:url}
-                accession_years.update(
-                    {
-                        year: f"{TNA_URLS.get('tna_accessions')}/{year}/{year[2:]}returns/{year[2:]}ac{self.reference_number}.htm"
-                    }
-                )
-            accessions_info = AccessionsInfo(
-                accession_years=accession_years,
-            )
-        return accessions_info
-
-    @cached_property
-    def archive_repository_url(self) -> str:
-        return self.get("repository.url", "")
-
-    @cached_property
-    def alternative_names(self) -> tuple(dict):
-        alternative_names = ()
-        if names := self.get("name", ()):
-            for item in names:
-                if type := item.get("type", ""):
-                    if type in (
-                        "maiden name",
-                        "also known as",
-                        "formerly known as",
-                        "later known as",
-                        "pseudonym",
-                        "relation of",
-                        "real name",
-                        "standardised form of name according to other rules",
-                    ):
-                        alternative_names += (
-                            {
-                                "label": type.capitalize(),
-                                "value": item.get("value", ""),
-                            },
-                        )
-                    elif type == "unknown / other":
-                        alternative_names += (
-                            {"label": type.title(), "value": item.get("value", "")},
-                        )
-
-        return alternative_names
-
-    @cached_property
-    def first_name(self) -> str:
-        first_name = ""
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if first_name_list := item.get("first_name"):
-                    first_name = " ".join(first_name_list)
-        return first_name
-
-    @cached_property
-    def last_name(self) -> str:
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if last_name := item.get("last_name", ""):
-                    return last_name
-        return ""
-
-    @cached_property
-    def title_prefix(self) -> str:
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if title_prefix := item.get("title_prefix"):
-                    return title_prefix
-        return ""
-
-    @cached_property
-    def title_for_name(self) -> str:
-        if name_data := self.get("name", ()):
-            for item in name_data:
-                if title := item.get("title"):
-                    return title
-        return ""
-
-    @cached_property
-    def gender(self) -> str:
-        if gender := self.get("gender", ""):
-            if gender == "M":
-                return "Male"
-            elif gender == "F":
-                return "Female"
-            logger.debug(
-                f"Gender value={gender} could not be translated for iaid={self.iaid}"
-            )
-        return gender
-
-    @cached_property
-    def history(self) -> str:
-        if description := self.get("description", ()):
-            for item in description:
-                if item.get("type") == "history":
-                    if value := item.get("value", ""):
-                        return mark_safe(value)
-        return ""
-
-    @cached_property
-    def biography(self) -> dict:
-        if description := self.get("description", ()):
-            for item in description:
-                if item.get("type") == "biography":
-                    return {"value": item.get("value", ""), "url": item.get("url", "")}
-        return {}
-
-    @cached_property
-    def func_occup_activ(self) -> str:
-        if description := self.get("description", ()):
-            for item in description:
-                if item.get("type") == "functions, occupations and activities":
-                    if value := item.get("value", ""):
-                        document = pq(value)
-                        for tag in ("foa", "function"):
-                            if doc_value := document(tag).text():
-                                return doc_value
-                        return value
-        return ""
-
-    @cached_property
-    def places(self) -> tuple(str):
-        places = ()
-        if place := self.get("place", ()):
-            for item in place:
-                if name := item.get("name", ()):
-                    for item in name:
-                        if value := item.get("value", ""):
-                            places += (value,)
-        return places
-
-    @cached_property
-    def birth_date(self) -> str:
-        return extract(self.get("birth", {}), "date.value", default="")
-
-    @cached_property
-    def death_date(self) -> str:
-        return extract(self.get("death", {}), "date.value", default="")
-
-    @cached_property
-    def start_date(self) -> str:
-        if date := extract(self.get("start", {}), "date", default=()):
-            for item in date:
-                if value := item.get("value", ""):
-                    return value
-        return ""
-
-    @cached_property
-    def end_date(self) -> str:
-        if date := extract(self.get("end", {}), "date", default=()):
-            for item in date:
-                if value := item.get("value", ""):
-                    return value
-        return ""
-
-    @cached_property
-    def record_creators_date(self) -> str:
-        """
-        Returns dates for person, person's activity/service,  both, or any if available
-        """
-        separator = "-"
-        joiner = "; "
-        person_date = service_activity_date = ""
-        if self.birth_date and self.death_date:
-            person_date = f"{self.birth_date}{separator}{self.death_date}"
-        else:
-            person_date = self.birth_date or self.death_date
-
-        if self.start_date and self.end_date:
-            service_activity_date = f"{self.start_date}{separator}{self.end_date}"
-        else:
-            service_activity_date = self.start_date or self.end_date
-
-        # return self.birth_date or self.death_date or self.start_date or self.end_date
-        if person_date and service_activity_date:
-            return joiner.join([person_date, service_activity_date])
-
-        return person_date or service_activity_date
-
-    @cached_property
-    def name_authority_reference(self) -> str:
-        if identifier := self.get("identifier", ()):
-            for item in identifier:
-                if name_authority_reference := item.get("name_authority_reference", ""):
-                    return name_authority_reference
-        return ""
-
-    @cached_property
-    def former_name_authority_reference(self) -> str:
-        if identifier := self.get("identifier", ()):
-            for item in identifier:
-                if former_name_authority_reference := item.get(
-                    "former_name_authority_reference", ""
-                ):
-                    return former_name_authority_reference
-        return ""
 
     @cached_property
     def closure_status(self) -> str:

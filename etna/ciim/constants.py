@@ -16,10 +16,6 @@ def forTemplate(cls):
 @forTemplate
 class BucketKeys(StrEnum):
     NONTNA = "nonTna"
-    CREATOR = "creator"
-    ARCHIVE = "archive"
-    INSIGHT = "insight"
-    HIGHLIGHT = "highlight"
 
 
 @forTemplate
@@ -123,13 +119,6 @@ CATALOGUE_BUCKETS = BucketList(
             + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
-            key="digitised",
-            label="Online records at The National Archives",
-            description="Results for records available to download and held at The National Archives that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS
-            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
-        ),
-        Bucket(
             key="nonTna",
             label="Records at other UK archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
@@ -141,18 +130,6 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CATALOGUE_SOURCE,
             ],
         ),
-        Bucket(
-            key="creator",
-            label="Record creators",
-            description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TYPE, Aggregation.COUNTRY],
-        ),
-        Bucket(
-            key="archive",
-            label="Find an archive",
-            description="Results for archives in the UK and from across the world that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.LOCATION],
-        ),
     ]
 )
 
@@ -160,7 +137,6 @@ FEATURED_BUCKETS = BucketList(
     [
         Bucket(key="tna", label="Records at The National Archives"),
         Bucket(key="nonTna", label="Records at other UK archives"),
-        Bucket(key="creator", label="Record creators"),
     ]
 )
 
@@ -689,50 +665,6 @@ TNA_URLS = {
     "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
     "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
 }
-
-#  associate readable names with api identifiers
-ARCHIVE_RECORD_CREATORS_COLLECTION = [
-    {
-        "name": "business",
-        "api_links_indentifier_value": "B",
-        "display_name": "Businesses",
-        "long_display_name": "Businesses",
-    },
-    {
-        "name": "organisation",
-        "api_links_indentifier_value": "O",
-        "display_name": "Organisations",
-        "long_display_name": "Organisations",
-    },
-    {
-        "name": "person",
-        "api_links_indentifier_value": "P",
-        "display_name": "Persons",
-        "long_display_name": "Persons",
-    },
-    {
-        "name": "diary",
-        "api_links_indentifier_value": "D",
-        "display_name": "Diaries",
-        "long_display_name": "Diaries",
-    },
-    {
-        "name": "family",
-        "api_links_indentifier_value": "F",
-        "display_name": "Families",
-        "long_display_name": "Families",
-    },
-    # {"name":"manor", "api_links_indentifier_value": "M", "display_name": "Manors"}, # TODO until API response is ready
-]
-
-
-ARCHIVE_NRA_RECORDS_COLLECTION = [
-    {
-        "name": "paper_catalogue",
-        "display_name": "Paper catalogues",
-        "long_display_name": "Paper catalogues available to view at The National Archives",
-    },
-]
 
 CLOSURE_CLOSED_STATUS = [
     "Closed Or Retained Document, Closed Description",

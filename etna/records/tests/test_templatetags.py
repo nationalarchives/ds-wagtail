@@ -412,21 +412,6 @@ class TestRecordURLTag(SimpleTestCase):
 
     records_various = [
         (
-            "ARCHON",
-            Record(
-                raw_data={
-                    "source": {"value": "ARCHON"},
-                    "@template": {
-                        "details": {
-                            "iaid": "A123456789",
-                            "referenceNumber": "154",
-                        }
-                    },
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/a/A123456789",
-        ),
-        (
             "PROCAT",
             Record(
                 raw_data={
@@ -455,25 +440,6 @@ class TestRecordURLTag(SimpleTestCase):
                 }
             ),
             "https://discovery.nationalarchives.gov.uk/details/r/D1234567",
-        ),
-        (
-            "CREATORS",
-            Record(
-                raw_data={
-                    "@admin": {
-                        "id": "F123456789",
-                    },
-                    "identifier": [
-                        {
-                            "faid": "F123456789",
-                            "primary": True,
-                            "type": "faid",
-                            "value": "F123456789",
-                        },
-                    ],
-                }
-            ),
-            "https://discovery.nationalarchives.gov.uk/details/c/F123456789",
         ),
         (
             "NRA",
@@ -1024,54 +990,6 @@ class TestRecordURLTag(SimpleTestCase):
                     ),
                     expected,
                 )
-
-    def test_record_creators_for_search(self):
-        search_record, expected = (
-            Record(
-                raw_data={
-                    "@template": {
-                        "details": {
-                            "primaryIdentifier": "F288770",
-                        }
-                    },
-                }
-            ),
-            "/catalogue/id/F288770/",
-        )
-
-        self.assertEqual(
-            record_url(
-                search_record,
-                level_or_archive=search_record.level,
-                form_group="creator",
-            ),
-            expected,
-        )
-
-    def test_record_archive_for_search(self):
-        search_record, expected = (
-            Record(
-                raw_data={
-                    "@template": {
-                        "details": {
-                            "iaid": "A13531747",
-                            "referenceNumber": "262",
-                            "type": "archive",
-                        }
-                    },
-                }
-            ),
-            "/catalogue/id/A13531747/",
-        )
-
-        self.assertEqual(
-            record_url(
-                search_record,
-                level_or_archive=search_record.level,
-                form_group="creator",
-            ),
-            expected,
-        )
 
     def test_is_page_current_item_in_hierarchy(self):
         page = self.tna_long_hierarchy_record_instance

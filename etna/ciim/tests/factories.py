@@ -11,7 +11,6 @@ def create_record(
     description="description",
     earliest="1900",
     latest="2100",
-    is_digitised=False,
     media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
@@ -50,7 +49,6 @@ def create_record(
                 "value": f"{earliest}-{latest}",
             },
         },
-        "digitised": is_digitised,
         "@hierarchy": [hierarchy],
         "summary": {
             "title": summary_title,

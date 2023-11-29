@@ -64,9 +64,6 @@ def image_browse(request, iaid):
     except DoesNotExist:
         raise Http404
 
-    if not record.is_digitised:
-        raise Http404
-
     images = Image.search.filter(rid=record.media_reference_id)
     if not images:
         raise Http404
