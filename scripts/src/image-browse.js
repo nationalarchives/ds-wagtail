@@ -12,12 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
         highestScrollPercentage: get_scroll_percentage(),
     };
 
-    document.addEventListener("scroll", (e) => {
+    document.addEventListener("scroll", () => {
         const percentageIncrement = calc_scroll_percent_increment();
         scrollObj = update_scroll_obj(percentageIncrement, scrollObj);
     });
 
-    window.addEventListener("beforeunload", (e) => {
+    window.addEventListener("beforeunload", () => {
         push_to_data_layer(scrollObj);
     });
 });

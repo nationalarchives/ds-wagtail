@@ -1,3 +1,5 @@
+/* global $buttonHtml $noOfFilters */
+
 import debounce from "../debounce.js";
 
 export default function () {
