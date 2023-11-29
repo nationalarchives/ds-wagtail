@@ -704,6 +704,15 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         verbose_name=_("featured article"),
     )
 
+    api_fields = (
+        ContentWarningMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("featured_record_article"),
+            APIField("featured_article"),
+        ]
+    )
+
     class Meta:
         verbose_name = _("highlight gallery page")
         verbose_name_plural = _("highlight gallery pages")
