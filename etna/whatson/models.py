@@ -547,7 +547,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     venue_space_name = models.CharField(
         max_length=255,
         verbose_name=_("venue space name"),
-        null=True,
         blank=True,
         help_text=_("The name of the venue space."),
     )
@@ -557,7 +556,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         verbose_name=_("venue directions"),
         null=True,
         blank=True,
-        help_text=_("A link to the venue’s ‘How to find us’ page."),
+        help_text=_("A link to the venue's 'How to find us' page."),
     )
 
     video_conference_info = RichTextField(
@@ -775,9 +774,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                         "venue_address": _(
                             "The venue address is required for hybrid events."
                         ),
-                        "venue_space_name": _(
-                            "The venue space name is required for hybrid events."
-                        ),
                         "video_conference_info": _(
                             "The video conference information is required for hybrid events."
                         ),
@@ -788,9 +784,6 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                     {
                         "venue_address": _(
                             "The venue address is required for in person events."
-                        ),
-                        "venue_space_name": _(
-                            "The venue space name is required for in person events."
                         ),
                     }
                 )
