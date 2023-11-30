@@ -1,6 +1,6 @@
 {% extends 'base_page.html' %}
 
-{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags whatson_tags %}
+{% load static i18n wagtailcore_tags wagtailimages_tags wagtailmetadata_tags %}
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
@@ -16,59 +16,7 @@
     <article>
         {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
 
-        <div class="event-details-banner">
-            <div class="tna-container tna-container--align-center tna-!--padding-vertical-s">
-                <div class="tna-column tna-column--flex-1 tna-column--container">
-                    <div class="event-meta event-meta--inline">
-                        <ul class="event-meta__list event-meta__list">
-                            {% if page.start_date %}
-                                <li class="event-meta__item">
-                                    <i class="fa-regular fa-calendar event-meta__icon"></i>
-
-                                    <div class="event-meta__details">
-                                        <p>{{ page.date_time_range }}</p>
-                                    </div>
-                                </li>
-                            {% endif %}
-                            {% if page.price_range %}
-                                <li class="event-meta__item">
-                                    <i class="fa-solid fa-ticket event-meta__icon"></i>
-
-                                    <div class="event-meta__details">
-                                        {{ page.price_range }}
-                                    </div>
-                                </li>
-                            {% endif %}
-                            <li class="event-meta__item">
-                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
-
-                                <div class="event-meta__details">
-                                    {% if page.venue_type == "in_person" and page.venue_address %}
-                                        {% if page.venue_website %}
-                                            <a class="event-details-banner__link" href="{{ page.venue_website }}">
-                                        {% endif %}
-                                                <address class="event-details-banner__address">{{ page.venue_address|process_address|richtext }}</address>
-                                        {% if page.venue_website %}
-                                            </a>
-                                        {% endif %}
-                                    {% else %}
-                                        <p>{{ page.get_venue_type_display }}</p>
-                                    {% endif %}
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="tna-column tna-column--full-small tna-column--full-tiny">
-                    <a href="/" class="tna-button tna-button--dark">
-                        Book now
-
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        {% include "includes/meta-banner.html" with cta=True %}
 
         <div class="tna-container">
             <div class="tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">

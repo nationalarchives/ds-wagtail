@@ -24,7 +24,7 @@ export default function () {
         $showHideButton.innerHTML =
             'Show filters<span class="filter-indicator">' +
             $noOfFilters +
-            '<span class="sr-only"> active</span></span>';
+            '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
     }
     $showHideButton.classList.add("search-results__filter-button");
     $showHideButton.setAttribute("aria-expanded", false);
@@ -46,12 +46,13 @@ export default function () {
         $searchFilterContainer.hidden = !$searchFilterContainer.hidden;
 
         if (newAriaExpanded) {
-            $showHideButton.innerHTML = "Hide filters";
+            $showHideButton.innerHTML =
+                'Hide filters <img src="/static/images/fontawesome-svgs/chevron-up-white.svg" width="20px" height="20px" style=\'display: inline-block;margin-left: 10px;\'>';
         } else {
             $showHideButton.innerHTML =
                 'Show filters<span class="filter-indicator">' +
                 $noOfFilters +
-                '<span class="sr-only"> active</span></span>';
+                '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style=\'display: inline-block;margin-left: 10px;\'>';
         }
     });
 
