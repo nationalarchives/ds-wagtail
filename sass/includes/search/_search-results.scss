@@ -6,6 +6,9 @@
     }
 
     &__metadata {
+        border-bottom: 2px solid $color__grey-300;
+        font-size: 1rem;
+
         &-count {
             margin-bottom: 0.5rem;
 
@@ -117,7 +120,6 @@
         padding: 0;
         cursor: pointer;
         margin-top: 2rem;
-        margin-left: 4rem;
         position: relative;
         font-weight: bold;
 
@@ -128,8 +130,7 @@
         @media only screen and (max-width: $screen__xl) {
             background: $color__black;
             color: $color__white;
-            margin-left: 1.5rem;
-            width: 90%;
+            width: 100%;
             padding: 0.8rem;
         }
 

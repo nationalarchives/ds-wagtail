@@ -30,30 +30,36 @@
             {% include './blocks/catalogue_search_buckets.html' %}
         {% endif %}
 
-
         {% if buckets.current.result_count > 0 %}
-            {% include './blocks/search_sort_and_view_options.html' %}
+            <div class="tna-container">
+                <div class="tna-column tna-column--full">
+                    {% include './blocks/search_sort_and_view_options.html' %}
+                </div>
+            </div>
         {% endif %}
 
-
-
         {% if buckets.current.result_count > 0 or form.errors %}
-            <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-                <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+            <div class="tna-container tna-!--margin-top-s" data-id="catalogue-search-grid">
+                <div class="tna-column tna-column--width-1-3 tna-column--full-medium tna-column--full-small tna-column--full-tiny tna-!--margin-top-s" data-id="catalogue-search-sidebar">
                     {% include './blocks/search_filters.html' %}
                 </div>
-                <div class="catalogue-search-grid__results">
+                <div class="tna-column tna-column--width-2-3 tna-column--full-medium tna-column--full-small tna-column--full-tiny tna-!--margin-top-s">
                     {% include './blocks/search_results.html' %}
+
+                    {% if page.paginator.count %}
+                        {% include './blocks/search_pagination.html' %}
+                    {% endif %}
+
                 </div>
             </div>
         {% else %}
             {# No results were found when searching with the 'q' param value for all buckets ... #}
             {# ... or for only current bucket while some other buckets have results #}
-            {% include './blocks/no_results.html' %}
-        {% endif %}
-
-        {% if page.paginator.count %}
-            {% include './blocks/search_pagination.html' %}
+            <div class="tna-container">
+                <div class="tna-column tna-column--full">
+                    {% include './blocks/no_results.html' %}
+                </div>
+            </div>
         {% endif %}
 
         <div>

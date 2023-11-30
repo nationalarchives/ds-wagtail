@@ -13,7 +13,7 @@
         {% if paginator.count %}
             <p id="search-results-title" class="search-results__metadata-count">
                 Showing
-                {{page.start_index}}-{{page.end_index}}
+                <strong>{{page.start_index}}-{{page.end_index}}</strong>
                 (of {{ paginator.count|intcomma }}) result{{ paginator.count|pluralize}}
                 for "{{ form.q.value|default:'*' }}"
                 in "<span id="analytics-current-bucket" data-current-bucket="{{ buckets.current.label }}">{{ buckets.current.label }}</span>"
