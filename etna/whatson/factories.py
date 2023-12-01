@@ -2,6 +2,7 @@ import factory
 
 from wagtail_factories import ImageFactory
 
+from etna.authors.factories import AuthorPageFactory
 from etna.core.factories import BasePageFactory
 from etna.whatson import models as app_models
 
@@ -19,3 +20,21 @@ class EventPageFactory(BasePageFactory):
 
     class Meta:
         model = app_models.EventPage
+
+
+class AbstractEventRoleFactory(factory.django.DjangoModelFactory):
+    page = factory.SubFactory(EventPageFactory)
+    person_page = factory.SubFactory(AuthorPageFactory)
+
+    class Meta:
+        abstract = True
+
+
+class EventHostFactory(AbstractEventRoleFactory):
+    class Meta:
+        model = "whatson.EventHost"
+
+
+class EventSpeakerFactory(AbstractEventRoleFactory):
+    class Meta:
+        model = "whatson.EventSpeaker"
