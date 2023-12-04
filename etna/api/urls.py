@@ -1,5 +1,6 @@
 from django.contrib.contenttypes.models import ContentType
 
+from wagtail.api import APIField
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.documents.api.v2.views import DocumentsAPIViewSet
@@ -39,9 +40,32 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         return page
 
 
+class CustomImagesAPIViewSet(ImagesAPIViewSet):
+    body_fields = ImagesAPIViewSet.body_fields + [
+        "collection",
+        "title",
+        "file",
+        "copyright",
+        "is_sensitive",
+        "custom_sensitive_image_warning",
+        "tags",
+        "focal_point_x",
+        "focal_point_y",
+        "focal_point_width",
+        "focal_point_height",
+        "transcription_heading",
+        "transcription",
+        "translation_heading",
+        "translation",
+        "record",
+        "record_dates",
+        "description",
+    ]
+
+
 api_router = WagtailAPIRouter("wagtailapi")
 
 api_router.register_endpoint("pages", PagesAPIViewSet)
-api_router.register_endpoint("images", ImagesAPIViewSet)
+api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("documents", DocumentsAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)

@@ -163,18 +163,22 @@ class HeroImageMixin(models.Model):
             "hero_image_jpg",
             serializer=ImageRenditionField("fill-1440x500", source="hero_image"),
         ),
-        # APIField(
-        #     "hero_image_webp",
-        #     serializer=ImageRenditionField("fill-1440x500 format-webp", source="hero_image"),
-        # ),
+        APIField(
+            "hero_image_webp",
+            serializer=ImageRenditionField(
+                "fill-1440x500|format-webp", source="hero_image"
+            ),
+        ),
         APIField(
             "hero_image_jpg_small",
             serializer=ImageRenditionField("fill-390x320", source="hero_image"),
         ),
-        # APIField(
-        #     "hero_image_webp_small",
-        #     serializer=ImageRenditionField("fill-390x320 format-webp", source="hero_image"),
-        # ),
+        APIField(
+            "hero_image_webp_small",
+            serializer=ImageRenditionField(
+                "fill-390x320|format-webp", source="hero_image"
+            ),
+        ),
     ]
 
 
