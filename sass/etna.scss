@@ -67,11 +67,13 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/content-block";
 @import "includes/content-warning";
 @import "includes/quote";
+@import "includes/useful-info";
 @import "includes/event-card-listing";
-@import "includes/event-details-banner";
+@import "includes/meta-details-banner";
 @import "includes/event-hero";
 @import "includes/event-meta";
 @import "includes/event-tags";
+@import "includes/exhibition-hero";
 @import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
@@ -537,15 +539,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-useful-info component - 'Good to know' information from event page
-
-.tna-useful-info {
-    @include colour.light-accent-background;
-    color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem;
-    margin-top: 2rem;
-}
-
 .event-hero {
     .tna-breadcrumbs {
         margin-bottom: 1.5rem;
@@ -570,6 +563,30 @@ Modified to match the existing site (for now)
         color: $color--white;
         font-weight: 500;
         margin-top: 0.5rem;
+    }
+}
+
+// exhibition hero refinements
+.exhibition-hero {
+    .tna-breadcrumbs {
+        margin-bottom: 1.5rem;
+
+        @include media.on-larger-than-mobile {
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+    }
+}
+
+.exhibition-hero--light {
+    .tna-breadcrumbs__link {
+        color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &::before {
+            color: $color--white;
+        }
     }
 }
 
