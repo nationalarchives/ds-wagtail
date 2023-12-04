@@ -22,10 +22,10 @@ export default function () {
     $globalSearchComponent.id = "gs-component";
     $globalSearchComponent.classList.add("global-search");
     $globalSearchComponent.innerHTML = `<div class="global-search__container">
-        <h1 class="global-search__heading">Search</h1>
+        <h1 class="global-search__heading">Search our catalogue and website</h1>
         <form class="global-search__form" action='/search/featured/' method='GET' id='global-search-form' role='search' aria-label="Search our website">
             <label for="search_term" class="global-search__label">
-                <span class="sr-only">Enter search term.</span> For example, naturalisation or medal cards
+                <span class="sr-only">Enter search term.</span> Search by keyword, place, person, or catalogue reference
             </label>
             <input type='search' name='q' class='global-search__form-search-box' id='search_term' >
             <input type="submit" value="Search" class="global-search__form-submit">
