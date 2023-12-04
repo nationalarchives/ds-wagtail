@@ -63,6 +63,52 @@ See https://nationalarchives.github.io/ds-wagtail/developer-guide/frontend/#sett
 ## Linux / OSX
 If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
+### 6. Syncing OHOS fork from Etna from Command line
+
+```sh
+git checkout develop
+git pull
+
+git remote -v
+# should see
+# origin  git@github.com:nationalarchives/ds-ohos-wagtail.git (fetch)
+# origin  git@github.com:nationalarchives/ds-ohos-wagtail.git (push)
+# upstream        https://github.com/nationalarchives/ds-wagtail.git (fetch)
+# upstream        https://github.com/nationalarchives/ds-wagtail.git (push)
+
+# if not, then
+git remote add upstream https://github.com/nationalarchives/ds-wagtail.git
+#
+
+git remote -v
+git checkout develop
+git fetch upstream
+
+# NOTE: 
+# - Keep out non OHOS related bits- ex: whatson, collections, etc
+# - look out for any overritten bits from Etna
+# - ideally OHOS related bits should overwrite Etna bits
+git merge upstream/develop
+
+# check, fix and commit
+# run ohos local and check 
+git push
+```
+
+### 7. Feature/Fix/Chore work
+
+Create ticket branch off `ds-ohos-wagtail:develop`
+
+
+### 8. Deploy OHOS
+
+Merge PR into `ds-ohos-wagtail:develop`
+
+Merge `ds-ohos-wagtail:develop` into `ohos` - this will kickoff a CD process to deploy to OHOS
+
+
+## Linux / OSX
+If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
 ## Issues with your local environment?
 
