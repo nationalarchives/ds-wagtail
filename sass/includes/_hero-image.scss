@@ -39,8 +39,8 @@
             &__figure,
             &__picture {
                 // Added container as an @include due to @extend selectors may not be used across media queries
-                @include make-container();
-                @include make-container-max-widths();
+                @include make-container;
+                @include make-container-max-widths;
                 position: relative;
                 margin: 0 auto;
                 display: block;

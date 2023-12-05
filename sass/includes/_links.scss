@@ -21,11 +21,13 @@ a {
     &:visited {
         color: $color__black;
     }
+
     &:hover {
         outline: 0.312rem solid $color__card-hover;
         background: $color__card-hover;
         color: $color__white;
     }
+
     &:focus {
         // background: $color__navy;
         // outline: 0.313rem solid $color__navy;
@@ -35,6 +37,7 @@ a {
             text-decoration: none;
         }
     }
+
     &:hover,
     &:focus {
         color: $color__white;

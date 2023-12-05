@@ -5,8 +5,7 @@
     position: sticky;
     top: 0;
     padding: 2rem 0 0;
-    overflow-y: auto;
-    overflow-x: visible;
+    overflow: auto visible;
     -ms-overflow-style: none; /* Hide jumplinks scrollbar on Internet Explorer 10+ and Edge */
     scrollbar-width: none; /* Hide jumplinks scrollbar on Firefox */
 
