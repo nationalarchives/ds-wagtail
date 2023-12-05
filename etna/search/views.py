@@ -22,7 +22,7 @@ from wagtail.search.backends.database.postgres.postgres import PostgresSearchRes
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticleIndexPage, ArticlePage
-from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
+from ..ciim.client import Aggregation, SortBy, SortOrder, Stream
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
@@ -103,7 +103,7 @@ class BucketsMixin:
 
         # set `result_count` for each bucket
         doc_counts_by_key = {
-            group["key"]: group["doc_count"] for group in self.get_bucket_counts()
+            group["value"]: group["docCount"] for group in self.get_bucket_counts()
         }
         for bucket in bucket_list:
             bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
@@ -204,7 +204,6 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
         self.api_result = records_client.search(
-            template=Template.DETAILS,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
                 Aggregation.CLOSURE,
@@ -469,7 +468,6 @@ class BaseFilteredSearchView(BaseSearchView):
             created_end_date=form.cleaned_data.get("covering_date_to"),
             offset=(self.page_number - 1) * page_size,
             size=page_size,
-            template=Template.DETAILS,
             sort_by=form.cleaned_data.get("sort_by"),
             sort_order=form.cleaned_data.get("sort_order"),
         )
@@ -516,15 +514,16 @@ class BaseFilteredSearchView(BaseSearchView):
 
         See also: `get_api_aggregations()`.
         """
-        for key, value in api_result.aggregations.items():
+        for value in api_result.aggregations:
+            key = value.get("name")
             field_name = camelcase_to_underscore(key)
             if field_name in self.dynamic_choice_fields:
-                choice_data = value.get("buckets", ())
+                choice_data = value.get("entries", ())
                 form.fields[field_name].update_choices(
                     choice_data, selected_values=form.cleaned_data.get(field_name, ())
                 )
                 form[field_name].more_filter_options_available = bool(
-                    value.get("sum_other_doc_count", 0)
+                    value.get("docCount", 0)
                 )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:

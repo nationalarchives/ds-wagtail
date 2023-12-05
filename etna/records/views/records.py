@@ -71,7 +71,7 @@ def record_detail_view(request, iaid):
 
     try:
         # for any record
-        record = records_client.fetch(iaid=iaid, expand=True)
+        record = records_client.fetch(id=iaid)
 
         # check archive record
         if record.custom_record_type == "ARCHON":
