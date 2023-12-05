@@ -367,7 +367,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def related_records(self) -> Tuple["Record"]:
-        # return ()
         return tuple(
             Record(item)
             for item in self.get("related", default=())
@@ -376,7 +375,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def related_articles(self) -> Tuple["Record"]:
-        # return ()
         return tuple(
             Record(item)
             for item in self.get("related", default=())
