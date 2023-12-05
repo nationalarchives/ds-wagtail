@@ -335,7 +335,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
-        # return ()
         return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
