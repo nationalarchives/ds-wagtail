@@ -409,7 +409,6 @@ class FocusedArticlePage(
         + ContentWarningMixin.api_fields
         + [
             APIField("body"),
-            APIField("author"),
         ]
     )
 
