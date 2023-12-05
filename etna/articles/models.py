@@ -18,6 +18,7 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -414,6 +415,8 @@ class FocusedArticlePage(
     api_fields = (
         BasePageWithIntro.api_fields
         + ArticleTagMixin.api_fields
+        + HeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
         + [
             APIField("body"),
             APIField("author"),
@@ -660,8 +663,12 @@ class RecordArticlePage(
         + [
             APIField("about"),
             APIField("date_text"),
-            APIField("intro_image"),
+            # APIField("intro_image"),
             APIField("featured_article"),
+            APIField(
+                "intro_image_jpg",
+                serializer=ImageRenditionField("fill-512x512", source="intro_image"),
+            ),
             # APIField("gallery_items"),
             # APIField("gallery_text"),
         ]

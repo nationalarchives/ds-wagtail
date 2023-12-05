@@ -157,7 +157,7 @@ class HeroImageMixin(models.Model):
     ]
 
     api_fields = [
-        APIField("hero_image"),
+        # APIField("hero_image"),
         APIField("hero_image_caption"),
         APIField(
             "hero_image_jpg",
