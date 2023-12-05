@@ -16,8 +16,7 @@ services:
       context: .
       args:
         BASE_IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        BASE_IMAGE_TAG: latest
-    user: "${UID}:${GID}"
+        BASE_IMAGE_TAG: rooted-images # TODO: Change to latest on merge Docker to main
     volumes:
       - ./etna:/app/etna
       - ./config:/app/config
