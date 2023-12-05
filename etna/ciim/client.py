@@ -300,16 +300,16 @@ class ClientAPI:
         self,
         *,
         q: Optional[str] = None,
-        opening_start_date: Optional[Union[date, datetime]] = None,
-        opening_end_date: Optional[Union[date, datetime]] = None,
-        created_start_date: Optional[Union[date, datetime]] = None,
-        created_end_date: Optional[Union[date, datetime]] = None,
+        opening_start_date: Optional[Union[date, datetime]] = None, # TODO:Rosetta
+        opening_end_date: Optional[Union[date, datetime]] = None, # TODO:Rosetta
+        created_start_date: Optional[Union[date, datetime]] = None, # TODO:Rosetta
+        created_end_date: Optional[Union[date, datetime]] = None, # TODO:Rosetta
         stream: Optional[Stream] = None,
-        sort_by: Optional[SortBy] = None,  # TODO:
-        sort_order: Optional[SortOrder] = None,  # TODO:
-        aggregations: Optional[list[Aggregation]] = None,
-        filter_aggregations: Optional[list[str]] = None,
-        filter_keyword: Optional[str] = None,  # TODO:
+        sort_by: Optional[SortBy] = None,  # TODO:Rosetta
+        sort_order: Optional[SortOrder] = None,  # TODO:Rosetta
+        aggregations: Optional[list[Aggregation]] = None, # TODO:Rosetta
+        filter_aggregations: Optional[list[str]] = None, # TODO:Rosetta
+        filter_keyword: Optional[str] = None,  # TODO:Rosetta
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> ResultList:
