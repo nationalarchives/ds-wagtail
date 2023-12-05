@@ -6,8 +6,8 @@
     {% for active_filter in active_filters %}
       <li class="tna-filters__item tna-filters__item--active">
         <a href="{{ active_filter.remove_filter_url }}" class="tna-filters__link" aria-label="Remove {{ active_filter.label }} from search">
-	  {{ active_filter.label }}
-	  <i class="fa-solid fa-xmark"></i>
+	        {{ active_filter.label }}
+	        <i class="fa-solid fa-xmark"></i>
         </a>
       </li>
     {% endfor %}

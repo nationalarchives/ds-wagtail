@@ -8,6 +8,7 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
+from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
@@ -86,11 +87,27 @@ class AuthorPage(BasePage):
 
     @cached_property
     def authored_focused_articles(self):
+        from etna.articles.models import FocusedArticlePage
+
         return (
-            self.focused_articles.live()
+            FocusedArticlePage.objects.live()
             .public()
+            .filter(pk__in=self.related_page_pks)
             .order_by("-first_published_at")
             .select_related("teaser_image")
+        )
+
+    @cached_property
+    def related_page_pks(self):
+        """
+        Returns a list of ids of pages that have used the `AuthorTag` inline
+        to indicate a relationship with this author. The values are ordered by
+        when the page was first published ('more recently added' pages take presendence)
+        """
+        return tuple(
+            self.author_pages.values_list("page_id", flat=True).order_by(
+                "-page__first_published_at"
+            )
         )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -122,19 +139,26 @@ class AuthorPageMixin:
     in order to be associated with an author.
     """
 
+    @classmethod
+    def get_authors_inlinepanel(cls, max_num=3):
+        return InlinePanel(
+            "author_tags",
+            heading="Page author",
+            help_text="Select the author of this page.",
+            max_num=max_num,
+        )
+
     @cached_property
-    def author(self):
+    def authors(self):
         if author_item := self.author_tags.select_related("author").filter(
             author__live=True
         ):
-            return author_item[0].author
-        return None
+            return author_item
 
     @property
-    def author_name(self):
+    def author_names(self):
         """
-        Returns the title of the author to be used for indexing
+        Returns the title of the authors to be used for indexing
         """
-        if self.author:
-            return self.author.title
-        return None
+        if self.authors:
+            return ", ".join([author.author.title for author in self.authors])

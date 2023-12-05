@@ -21,7 +21,7 @@
     &__trio {
         grid-gap: 1.5rem;
         row-gap: 1.875rem;
-        padding: 0 1rem 1rem 1rem;
+        padding: 0 1rem 1rem;
 
         @media (min-width: map-get($grid-breakpoints, "sm")) {
             grid-template-columns: repeat(2, 1fr);
