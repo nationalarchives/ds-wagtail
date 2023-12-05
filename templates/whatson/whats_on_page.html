@@ -4,6 +4,10 @@
 
 {% block html_class %}tna-template--pink-accent{% endblock %}
 
+{% block header %}
+    {% include 'includes/header.html' with classes="tna-header--off-black" %}
+{% endblock %}
+
 {# Breadcrumb is included inside the header area #}
 {% block breadcrumb %}
 {% endblock %}
@@ -24,26 +28,37 @@
     <div class="tna-container">
       <div class="tna-column tna-column--full">
         <form class="filters" method="get" action="{% pageurl page %}" data-js-filters-submission>
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">When</legend>
-            <div class="filters__panel">
-              <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
-              <p class="filters__help">Format: dd/mm/yyyy</p>
-              {{ filter_form.date }}
-            </div>
-          </fieldset>
-          
-          <fieldset class="filters__fieldset">
-            <legend class="filters__super-title">{{ filter_form.event_type.label }}</legend>
-            <div class="filters__radio-list filters__panel">
-              {% for radio in filter_form.event_type %}
-                <div>
-                  {{ radio.tag }}
-                  <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        When
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__panel accordion__content" data-accordion-content>
+                    <label for="{{ filter_form.date.id_for_label }}" class="filters__label filters__label--top">{{ filter_form.date.label }}</label>
+                    {{ filter_form.date }}
                 </div>
-              {% endfor %}
-            </div>
-          </fieldset>
+            </fieldset>
+          
+            <fieldset class="filters__fieldset accordion" data-accordion>
+                <legend class="filters__super-title">
+                    <button class="filters__dropdown-toggle accordion__button" data-accordion-button type="button">
+                        {{ filter_form.event_type.label }}
+
+                        <i class="fa-solid fa-chevron-down accordion__icon"></i>
+                    </button>
+                </legend>
+                <div class="filters__radio-list filters__panel accordion__content" data-accordion-content>
+                    {% for radio in filter_form.event_type %}
+                        <div>
+                        {{ radio.tag }}
+                        <label for="{{ radio.id_for_label }}" class="filters__label">{{ radio.choice_label }}</label>
+                        </div>
+                    {% endfor %}
+                </div>
+            </fieldset>
           
           <div class="filters__toggle">
             {{ filter_form.is_online_event }}
@@ -61,94 +76,21 @@
     </div>
   </div>
 
-  {# Featured event #}
-  <div class="tna-container tna-container--offset-top tna-container--full-width-mobile event-card-listing">
-    <div class="tna-column tna-column--full">
-
-      {% include "includes/whats-on-active-filters.html" %}
-
-      {# Listing #}
-      <div data-js-whatson-listing>
-        {% include "includes/whats-on-listing.html" %}
-      </div>
-    </div>
+  {# Listing and featured event #}
+  <div data-js-whatson-listing aria-live="polite">
+    {% include "includes/whats-on-listing.html" %}
   </div>
 
-  {# Related content #}
-  <div class="section section--pink">
-    <div class="tna-container">
-        <div class="tna-column tna-column--full tna-!--margin-top-l">
-            <h2 class="tna-heading-l related-content__heading">For professionals</h2>
-        </div>
+  {% if page.promoted_links %}
+    {% include_block page.promoted_links.0 %}
+  {% endif %}
 
-        {% comment %} TODO: replace with real data and only use one card - there are duplicates for now while testing front-end {% endcomment %}
-        <ul class="card-group--list-style-none">
-          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-            {% include "../components/card.html" with title="Events for teachers" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes=" tna-card--related" %}
-          </li>
-          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-            {% include "../components/card.html" with title="Sector professional events" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes="tna-card--demo tna-card--related" %}
-          </li>
-          <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-            {% include "../components/card.html" with title="Information management" href='#' imageSrc=card_image.url imageWidth=800 imageHeight=450 headingSize="m" headingLevel=3 classes="tna-card--demo tna-card--related" %}
-          </li>
-        </ul>
+  {% if page.large_card_links %}
+    <div class="tna-!--margin-top-l tna-!--margin-bottom-l">
+      {% include_block page.large_card_links.0 %}
     </div>
-  </div>
-
-
-  {% comment %} TODO: use large_links_block.html with real data to replace hard-coded cards below {% endcomment %}
-  {% comment %} {% include "../blocks/large_links_block.html" %} {% endcomment %}
-
-  <div class="related-highlight-cards tna-!--margin-top-l tna-!--margin-bottom-l">
-    <div class="tna-container">
-      <div class="tna-column tna-column--full">
-        <h2 class="tna-heading-l card-grid__title">
-            Explore more of the National Archives
-        </h2>
-      </div>
-      <div class="tna-column tna-column--flex-1 tna-column--full-tiny" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
-        <div class="related-highlight-cards__card">
-          <a href="/" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}" tabindex="-1">
-            {% image link_page.teaser_image fill-540x350 as teaser_image %}
-            <img height="350"
-                width="540"
-                src="{{ teaser_image.url }}"
-                class="related-highlight-cards__image"
-                alt="" />
-          </a>
-          <div class="related-highlight-cards__content">
-            <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
-                  Visit
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="tna-column tna-column--flex-1 tna-column--full-tiny" data-container-name="more-ways-to-explore" id="analytics-more-ways-to-explore">
-        <div class="related-highlight-cards__card">
-          <a href="/" aria-labelledby="related-highlight-card-title-{{ forloop.counter }}" data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card image" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}" tabindex="-1">
-            {% image link_page.teaser_image fill-540x350 as teaser_image %}
-            <img height="350"
-                width="540"
-                src="{{ teaser_image.url }}"
-                class="related-highlight-cards__image"
-                alt="" />
-          </a>
-          <div class="related-highlight-cards__content">
-            <p class="related-highlight-cards__card-title" id="related-highlight-card-title-{{ forloop.counter }}">
-              <a href="/" class="related-highlight-cards__card-title-link"  data-component-name="Navigation card: {% if value.heading %}{{ value.heading }}{% else %}{{ page.title }}{% endif %}" data-link-type="Card text" data-card-position="{{ forloop.counter0 }}" data-card-title="{{ link_page.title }}">
-                  Stories
-              </a>
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  {% endif %}
 {% endblock %}
-
 
 
 {% block extra_js %}
