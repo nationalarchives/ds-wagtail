@@ -47,3 +47,13 @@ jobs:
           ssh-private-key: ${{ secrets.PLATFORM_SSH_KEY }}
           force-push: true
           environment-name: etna-rosetta
+
+  notify-slack:
+    runs-on: ubuntu-latest
+    needs: deploy
+    steps:
+    - uses: actions/checkout@v3
+    - uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        SLACK_TITLE: "A deployment to etna-rosetta is complete"
