@@ -1,8 +1,5 @@
 #!/bin/bash
 
-chmod +x -fR /home/app/.local/bin/dev
-echo "export PATH=\"/home/app/.local/bin/dev:\$PATH\"\n$(cat ~/.bashrc)" > ~/.bashrc
-
 mkdir -p /app/templates/static/assets
 cp -R /app/node_modules/@nationalarchives/frontend/nationalarchives/assets/* /app/templates/static/assets
 

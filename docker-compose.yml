@@ -28,7 +28,23 @@ services:
       - ./pyproject.toml:/app/pyproject.toml
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
-      - ./dev/bin:/home/app/.local/bin/dev
+      - ./dev/bin/build:/home/app/.local/bin/build
+      - ./dev/bin/build-css:/home/app/.local/bin/build-css
+      - ./dev/bin/build-js:/home/app/.local/bin/build-js
+      - ./dev/bin/createsuperuser:/home/app/.local/bin/createsuperuser
+      - ./dev/bin/dev:/home/app/.local/bin/dev
+      - ./dev/bin/dev-css:/home/app/.local/bin/dev-css
+      - ./dev/bin/dev-js:/home/app/.local/bin/dev-js
+      - ./dev/bin/format:/home/app/.local/bin/format
+      - ./dev/bin/help:/home/app/.local/bin/help
+      - ./dev/bin/makemigrations:/home/app/.local/bin/makemigrations
+      - ./dev/bin/manage:/home/app/.local/bin/manage
+      - ./dev/bin/pull-preview:/home/app/.local/bin/pull-preview
+      - ./dev/bin/setup-npm:/home/app/.local/bin/setup-npm
+      - ./dev/bin/tests:/home/app/.local/bin/tests
+      - ./dev/bin/update-npm:/home/app/.local/bin/update-npm
+      - ./dev/bin/update-poetry:/home/app/.local/bin/update-poetry
+      - ./dev/bin/welcome:/home/app/.local/bin/welcome
       - ./dev/run.sh:/app/run.sh
       - ./.flake8:/app/.flake8
       - media:/media
