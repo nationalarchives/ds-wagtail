@@ -274,8 +274,8 @@ class ClientAPI:
         Keyword arguments:
 
         id:
-            Generic identifier. Matches on references_number or iaid
-            Ex: returns iaid match on Information Asset Identifier - iaid (or similar primary identifier)
+            Generic identifier. Matches various id's
+            Ex: returns match on Information Asset Identifier - iaid (or similar primary identifier), creator records faid
         """
         params = {
             "id": id,

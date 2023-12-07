@@ -1,3 +1,5 @@
+import unittest
+
 from datetime import datetime
 
 from django.conf import settings
@@ -655,7 +657,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaid(self):
-        self.records_client.fetch(iaid="C198022")
+        self.records_client.fetch(id="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -663,6 +665,7 @@ class ClientFetchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C198022",
         )
 
+    @unittest.skip("TODO:Rosetta if ref not supported at this time")
     @responses.activate
     def test_with_id(self):
         self.records_client.fetch(id="ADM 223/3")

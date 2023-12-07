@@ -127,7 +127,7 @@ class RecordModelTests(SimpleTestCase):
             record.url,
             reverse(
                 "details-page-machine-readable",
-                kwargs={"iaid": record.iaid},
+                kwargs={"id": record.iaid},
             ),
         )
 
@@ -171,7 +171,7 @@ class RecordModelTests(SimpleTestCase):
             record.non_reference_number_url,
             reverse(
                 "details-page-machine-readable",
-                kwargs={"iaid": record.iaid},
+                kwargs={"id": record.iaid},
             ),
         )
 
@@ -465,7 +465,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="C123456")
+        record = self.records_client.fetch(id="C123456")
 
         self.assertEqual(record.hierarchy, ())
 
@@ -482,7 +482,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(iaid="C123456")
+        record = self.records_client.fetch(id="C123456")
 
         self.assertEqual(record.date_created, "")
 
@@ -516,7 +516,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(iaid="C123456")
+        record = self.records_client.fetch(id="C123456")
 
         # Related records with no 'identifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
@@ -557,7 +557,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(iaid="C123456")
+        record = self.records_client.fetch(id="C123456")
 
         self.assertEqual(record.related_articles, ())
 
@@ -639,7 +639,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(record.source, "ARCHON")
 
@@ -660,7 +660,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(record.archive_contact_info, None)
         self.assertEqual(record.archive_further_info, None)
@@ -690,7 +690,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(record.title, "Some title value")
 
@@ -720,7 +720,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(record.archive_contact_info.address_line1, "this is line1")
         self.assertEqual(record.archive_contact_info.address_town, "this town")
@@ -771,7 +771,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(
             record.archive_further_info.opening_hours, "this is opening hours"
@@ -890,7 +890,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(
             record.archive_collections.collection_info_list[0].name, "business"
@@ -1036,7 +1036,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(
             record.archive_collections.collection_info_list[0].name, "paper_catalogue"
@@ -1085,7 +1085,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(
             record.archive_accessions.accession_years,
@@ -1113,7 +1113,7 @@ class ArchiveRecordModelTests(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(iaid="A13532479")
+        record = self.records_client.fetch(id="A13532479")
 
         self.assertEqual(record.archive_repository_url, "http://nro.adlibhosting.com/")
 

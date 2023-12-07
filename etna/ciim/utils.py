@@ -206,8 +206,8 @@ def resolve_links(markup):
 
     def link_from_span(span):
         if link := pq(span).attr("link"):
-            if iaid := re.match(r"\$link\((?P<iaid>[C0-9]*)\)", link).group("iaid"):
-                url = reverse("details-page-machine-readable", kwargs={"iaid": iaid})
+            if id := re.match(r"\$link\((?P<id>[C0-9]*)\)", link).group("id"):
+                url = reverse("details-page-machine-readable", kwargs={"id": id})
                 return pq(f'<a href="{url}">{pq(span).text()}</a>')
         if link := pq(span).attr("href"):
             return pq(f'<a href="{link}">{pq(span).text()}</a>')
@@ -252,7 +252,7 @@ def format_link(link_html: str) -> Dict[str, str]:
     document = pq(link_html)
     id = document.attr("href")
     try:
-        href = reverse("details-page-machine-readable", kwargs={"iaid": id})
+        href = reverse("details-page-machine-readable", kwargs={"id": id})
     except NoReverseMatch:
         href = ""
     return {"href": href, "id": id, "text": document.text()}

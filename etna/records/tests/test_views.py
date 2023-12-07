@@ -782,7 +782,7 @@ class RecordDetailBackToSearchTest(TestCase):
         )
 
         self.record_detail_url = reverse(
-            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
+            "details-page-machine-readable", kwargs={"id": "C13359805"}
         )
 
         self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link" href="{back_to_search_url}" data-link-type="Link" data-link="Back to search results" data-component-name="Navigation">'

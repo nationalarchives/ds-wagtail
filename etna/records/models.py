@@ -37,7 +37,7 @@ from ..records.classes import (
     ContactInfo,
     FurtherInfo,
 )
-from .converters import IAIDConverter
+from .converters import IDConverter
 
 logger = logging.getLogger(__name__)
 
@@ -99,8 +99,8 @@ class Record(DataLayerMixin, APIModel):
         except KeyError:
             candidate = ""
 
-        if candidate and re.match(IAIDConverter.regex, candidate):
-            # value is not guaranteed to be a valid 'iaid', so we must
+        if candidate and re.match(IDConverter.regex, candidate):
+            # value is not guaranteed to be a valid 'id', so we must
             # check it before returning it as one
             return candidate
         return ""
@@ -169,7 +169,7 @@ class Record(DataLayerMixin, APIModel):
         if self.iaid:
             try:
                 return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                    "details-page-machine-readable", kwargs={"id": self.iaid}
                 )
             except NoReverseMatch:
                 pass
@@ -282,7 +282,7 @@ class Record(DataLayerMixin, APIModel):
         if self.held_by_id:
             try:
                 return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
+                    "details-page-machine-readable", kwargs={"id": self.held_by_id}
                 )
             except NoReverseMatch:
                 pass
@@ -579,7 +579,7 @@ class Record(DataLayerMixin, APIModel):
                             {
                                 "url": reverse(
                                     "details-page-machine-readable",
-                                    kwargs={"iaid": admin_id},
+                                    kwargs={"id": admin_id},
                                 )
                             }
                         )
