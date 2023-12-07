@@ -18,16 +18,7 @@ services:
         BASE_IMAGE: ghcr.io/nationalarchives/tna-python-django-root
         BASE_IMAGE_TAG: rooted-images # TODO: Change to latest on merge Docker to main
     volumes:
-      - ./etna:/app/etna
-      - ./config:/app/config
-      - ./sass:/app/sass
-      - ./scripts:/app/scripts
-      - ./static:/app/static
-      - ./templates:/app/templates
-      - ./poetry.lock:/app/poetry.lock
-      - ./pyproject.toml:/app/pyproject.toml
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
+      - .:/app
       - ./dev/bin/build:/home/app/.local/bin/build
       - ./dev/bin/build-css:/home/app/.local/bin/build-css
       - ./dev/bin/build-js:/home/app/.local/bin/build-js
@@ -45,14 +36,12 @@ services:
       - ./dev/bin/update-npm:/home/app/.local/bin/update-npm
       - ./dev/bin/update-poetry:/home/app/.local/bin/update-poetry
       - ./dev/bin/welcome:/home/app/.local/bin/welcome
-      - ./dev/run.sh:/app/run.sh
-      - ./.flake8:/app/.flake8
       - media:/media
     depends_on:
       - db
     ports:
       - 8000:8080
-    command: sh /app/run.sh
+    command: sh /app/dev/run.sh
     restart: on-failure
     init: true
     stdin_open: true

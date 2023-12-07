@@ -130,20 +130,12 @@ def sh(c):
 
 
 @task
-def dev(c):
-    """
-    Run bash in the local development helper container (with access to dependencies)
-    """
-    subprocess.run(["docker", "exec", "-it", "web", "/bin/bash"])
-
-
-@task
 def format(c):
     """
     Apply formatters to code python code
     """
-    start(c, "dev")
-    dev_exec("format")
+    start(c, "web")
+    web_exec("format")
 
 
 @task
@@ -151,7 +143,7 @@ def test(c, lint=False, parallel=False):
     """
     Run python tests in the web container
     """
-    start(c, "dev")
+    start(c, "web")
     if lint:
         print("Checking isort compliance...")
         dev_exec("isort . --check --diff")
