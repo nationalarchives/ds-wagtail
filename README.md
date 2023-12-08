@@ -96,7 +96,7 @@ dj createsuperuser
 
 ## ETNA-ROSETTA WORKFLOW
 
-- [Guide](https://nationalarchives.github.io/ds-wagtail/features/etna-rosetta/)
+- [Guide](docs/features/etna-rosetta)
 
 
 ## Issues with your local environment?
