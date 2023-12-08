@@ -67,5 +67,5 @@ api_router = WagtailAPIRouter("wagtailapi")
 
 api_router.register_endpoint("pages", PagesAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
-api_router.register_endpoint("documents", DocumentsAPIViewSet)
+# api_router.register_endpoint("documents", DocumentsAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
