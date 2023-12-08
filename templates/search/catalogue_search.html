@@ -25,8 +25,6 @@
     {% with search_tab=searchtabs.CATALOGUE.value %}
         {% include './blocks/search_results_hero.html' %}
 
-
-
         {% if buckets.current.result_count %}
 
                 {% if form.group.value == 'tna' %}
@@ -49,17 +47,13 @@
                     <p class="search-results__explainer">Archives across the UK that match your search term.</p>
                 {% endif %}
 
-
         {% endif %}
 
         {% if buckets_contain_results %}
-
             {% include './blocks/catalogue_search_buckets.html' %}
         {% endif %}
 
         {% if buckets.current.result_count > 0 %}
-                
-
             {% include './blocks/search_sort_and_view_options.html' %}
         {% endif %}
 
