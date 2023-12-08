@@ -94,6 +94,11 @@ Create a super user:
 dj createsuperuser
 ```
 
+## ETNA-ROSETTA WORKFLOW
+
+- [Guide](https://nationalarchives.github.io/ds-wagtail/features/etna-rosetta/)
+
+
 ## Issues with your local environment?
 
 Check out the [Local development gotchas](https://nationalarchives.github.io/ds-wagtail/developer-guide/local-development-gotchas/) page for solutions to common issues.
