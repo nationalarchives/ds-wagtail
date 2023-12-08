@@ -6,9 +6,8 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
-from wagtail.admin.panels import FieldPanel
-from wagtail.api import APIField
 from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
