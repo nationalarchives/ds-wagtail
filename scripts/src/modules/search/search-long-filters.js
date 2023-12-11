@@ -1,8 +1,8 @@
 export default function () {
     const $parentForm = document.querySelector('[data-id="long-filter-form"]');
 
-    const $longFiltersContainer = document.querySelector(
-        '[data-id="long-filters-container"]',
+    const $longFiltersSearchContainer = document.querySelector(
+        '[data-id="long-filters-search-container"]',
     );
 
     const $longFiltersList = document.querySelector(
@@ -21,7 +21,7 @@ export default function () {
 
     if (
         !$parentForm ||
-        !$longFiltersContainer ||
+        !$longFiltersSearchContainer ||
         !$longFiltersListItems ||
         !$longFiltersList ||
         !$longFiltersLegend ||
@@ -47,6 +47,7 @@ export default function () {
     let $searchHelperText = document.createElement("p");
     $searchHelperText.innerText =
         "Enter text to refine your filters. Already selected filters will remain active.";
+    $searchHelperText.setAttribute("class", "long-filters__helper-text");
     $searchHelperText.id = "long-filters-helper-text";
     $searchBox.setAttribute("aria-describedby", "long-filters-helper-text");
 
@@ -68,9 +69,9 @@ export default function () {
         $longFiltersFieldset.childNodes[2],
     );
 
-    $longFiltersContainer.insertBefore(
+    $longFiltersSearchContainer.insertBefore(
         $searchDiv,
-        $longFiltersContainer.childNodes[0],
+        $longFiltersSearchContainer.childNodes[0],
     );
 
     //create a const for the intro paragraph for collections
@@ -114,7 +115,7 @@ export default function () {
             );
         });
 
-        /* IE11 compatible method to remove children without affecting the JS APIs. 
+        /* IE11 compatible method to remove children without affecting the JS APIs.
            Using $longFiltersList.innerHTML = ''; causes issues on IE11.
         */
         while ($longFiltersList.firstChild) {

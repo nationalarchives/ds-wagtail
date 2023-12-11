@@ -36,56 +36,6 @@
         }
     }
 
-    &__widget-list-item {
-        input {
-            // These styles only apply to the search page items for the moment
-            // If it's identified that this style needs to be used elsewhere
-            // in future, consider moving the code in to a more reusable state
-            &[type="checkbox"] {
-                flex: none;
-                margin-right: 0.5rem;
-                appearance: none;
-                width: 1.875rem;
-                height: 1.875rem;
-                border: 2px solid $color__off-black;
-                background-color: $color__grey-200;
-                display: grid;
-                place-content: center;
-
-                &:checked {
-                    background-color: $orange;
-
-                    &::before {
-                        content: "";
-                        clip-path: polygon(
-                            85.41% 0,
-                            39.5898% 69.04%,
-                            12.5% 38.1027%,
-                            0 52.3884%,
-                            41.6602% 100%,
-                            100% 14.2857%
-                        );
-                        width: 20px;
-                        height: 18px;
-                        display: block;
-                        background-color: $color__off-black;
-                    }
-                }
-            }
-
-            &:focus {
-                outline: 5px solid $color__focus-outline-light-bg;
-            }
-        }
-
-        label {
-            cursor: pointer;
-            display: flex;
-            margin-bottom: 0.5rem;
-            max-width: 100%;
-        }
-    }
-
     &__form-block {
         margin-bottom: 1rem;
     }

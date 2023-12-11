@@ -3,7 +3,7 @@
         <ul class="search-filters__widget-list">
             {% for group, options, index in widget.optgroups %}
                 {% for option in options %}
-                    <li class="search-filters__widget-list-item">
+                    <li class="search-filters__widget-list-item ohos-checkbox-container">
                         {% include option.template_name with widget=option %}
                     </li>
                 {% endfor %}
