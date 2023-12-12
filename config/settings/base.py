@@ -397,3 +397,5 @@ FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "prod
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )
+# show pages upto the page number set by this value
+FEATURE_PAGE_LIMIT = os.getenv("FEATURE_PAGE_LIMIT", "1")

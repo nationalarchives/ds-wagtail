@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.core.paginator import Paginator
 
 
@@ -15,8 +16,13 @@ class APIPaginator(Paginator):
 
     def __init__(self, count, per_page, **kwargs):
         self._count = int(count)
+        self._page_limit = int(f"{settings.FEATURE_PAGE_LIMIT}")
         super().__init__([], per_page, **kwargs)
 
     @property
     def count(self):
         return self._count
+
+    @property
+    def page_limit(self):
+        return self._page_limit
