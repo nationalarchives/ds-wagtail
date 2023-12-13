@@ -142,6 +142,8 @@ class CustomImage(ClusterableModel, AbstractImage):
         APIField("transcription"),
         APIField("translation_heading"),
         APIField("translation"),
+        APIField("record_dates"),
+        APIField("record"),
     ]
 
     @property
