@@ -1,9 +1,16 @@
-{% load static %}
+{% load static wagtailcore_tags %}
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="tna-template tna-template--light-theme no-js" lang="en">
     <head>
         <meta charset="utf-8"/>
-        <title>Page not found - The National Archives</title>
+        <title>
+            Page not found
+
+            {% block title_suffix %}
+                {% wagtail_site as current_site %}
+                 – {{ current_site.site_name }}
+            {% endblock %}
+         </title>
         <meta name="description" content=""/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
@@ -17,11 +24,6 @@
             {% include 'includes/gtm-script.html' %}
         {% endif %}
 
-        {# Google Fonts #}
-        <!-- <link rel="preconnect" href="https://fonts.gstatic.com">
-        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap"
-            rel="stylesheet"> -->
-
         {# Adobe Fonts #}
         <link rel="preconnect" href="https://use.typekit.net">
         <link rel="stylesheet" href="https://use.typekit.net/hkj3kuz.css">
@@ -33,7 +35,7 @@
         <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
     </head>
 
-    <body class="template-404">
+    <body class="tna-template__body template-404">
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
@@ -46,27 +48,32 @@
 
         <main id="maincontent">
             <div class="generic-intro">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <h1 class="tna-heading-xl generic-intro__title">
-                                Page not found
-                            </h1>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                <div class="tna-container tna-container--centred">
+                    <div class="tna-column tna-column--width-1-2 tna-column--full-small tna-column--full-tiny tna-!--margin-vertical-l">
+                        <svg class="mx-auto" xmlns="http://www.w3.org/2000/svg" width="132" height="132" fill="none" viewBox="0 0 132 132"><path fill="#EC5855" d="M123.34 51.246c-2.209-2.309-4.494-4.687-5.356-6.78-.796-1.915-.843-5.091-.89-8.167-.088-5.719-.182-12.2-4.688-16.705-4.506-4.506-10.986-4.6-16.705-4.688-3.076-.047-6.252-.094-8.168-.89-2.086-.862-4.47-3.147-6.78-5.356C76.712 4.775 72.118.375 66 .375c-6.117 0-10.705 4.4-14.754 8.285-2.309 2.21-4.687 4.494-6.78 5.356-1.904.796-5.091.843-8.167.89-5.719.088-12.2.182-16.705 4.688-4.506 4.506-4.57 10.986-4.688 16.705-.047 3.076-.094 6.252-.89 8.168-.862 2.086-3.147 4.47-5.356 6.78C4.775 55.288.375 59.882.375 66c0 6.117 4.4 10.705 8.285 14.754 2.21 2.308 4.494 4.687 5.356 6.78.796 1.915.843 5.091.89 8.167.088 5.719.182 12.199 4.688 16.705 4.506 4.506 10.986 4.6 16.705 4.688 3.076.047 6.252.094 8.168.89 2.086.862 4.47 3.147 6.78 5.356 4.042 3.885 8.636 8.285 14.753 8.285 6.117 0 10.705-4.4 14.754-8.285 2.308-2.209 4.687-4.494 6.78-5.356 1.915-.796 5.091-.843 8.167-.89 5.719-.088 12.199-.182 16.705-4.688 4.506-4.506 4.6-10.986 4.688-16.705.047-3.076.094-6.252.89-8.168.862-2.086 3.147-4.47 5.356-6.78 3.885-4.042 8.285-8.636 8.285-14.753 0-6.117-4.4-10.705-8.285-14.754ZM66 103.5a7.028 7.028 0 0 1-6.896-8.403A7.03 7.03 0 1 1 66 103.5Zm4.688-28.547v.422a4.688 4.688 0 0 1-9.376 0v-4.688A4.688 4.688 0 0 1 66 66c7.752 0 14.063-5.273 14.063-11.719 0-6.445-6.311-11.718-14.063-11.718-7.752 0-14.063 5.273-14.063 11.718v2.344a4.688 4.688 0 0 1-9.374 0v-2.344c0-11.63 10.511-21.093 23.437-21.093 12.926 0 23.438 9.462 23.438 21.093 0 10.184-8.063 18.71-18.75 20.672Z"/></svg>
 
-            <div class="container mt-4 pb-6">
-                <div class="row">
-                    <div class="col-12">
-                        <p>Sorry, this page could not be found.</p>
+                        <h1 class="tna-heading-xl generic-intro__title text-center mt-0">
+                            Page not found
+                        </h1>
+
+                        <p>If you typed the web address, check it is correct.</p>
+
+                        <p>If you pasted the web address, check you copied the entire address.</p>
+
+                        {# @TODO: url to search will need updating when connected to Rosetta API #}
+                        <p>You can <a href="/">browse from the homepage</a> or <a href="{% url 'search-catalogue' %}">search for community-generated historical content</a>.</p>
                     </div>
                 </div>
             </div>
         </main>
 
-        {% include 'includes/footer.html' %}
+        {% block ohos_snippet %}
+            {% include 'includes/ohos_snippet.html' %}
+        {% endblock %}
+
+        {% block footer %}
+            {% include 'includes/footer.html' %}
+        {% endblock %}
 
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
