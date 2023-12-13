@@ -62,10 +62,6 @@ class NewLabelMixin(models.Model):
         null=True,
     )
 
-    api_fields = [
-        APIField("is_newly_published"),
-    ]
-
     new_label_display_for_days = 21
 
     def with_content_json(self, content):
@@ -121,6 +117,10 @@ class NewLabelMixin(models.Model):
 
     class Meta:
         abstract = True
+
+    api_fields = [
+        APIField("is_newly_published"),
+    ]
 
 
 class HeroImageMixin(models.Model):

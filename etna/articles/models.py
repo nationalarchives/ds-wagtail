@@ -1,5 +1,7 @@
 from typing import Any, Dict, List, Tuple, Union
 
+from rest_framework import serializers
+
 from django.conf import settings
 from django.db import models
 from django.http import HttpRequest
@@ -110,7 +112,9 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = []
+    api_fields = [
+        APIField("article_tag_names")
+    ]
 
 
 class ArticleIndexPage(BasePageWithIntro):
@@ -178,6 +182,17 @@ class ArticleIndexPage(BasePageWithIntro):
         "articles.FocusedArticlePage",
         "articles.RecordArticlePage",
     ]
+
+
+# TODO: Make better
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
 
 
 class ArticlePage(
@@ -253,6 +268,8 @@ class ArticlePage(
         + ArticleTagMixin.api_fields
         + [
             APIField("verbose_name_public"),
+            APIField("similar_items", serializer=PageSerializer(many=True)),
+            APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
         ]
     )
@@ -408,6 +425,7 @@ class FocusedArticlePage(
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
         + [
+        APIField("type_label"),
             APIField("body"),
         ]
     )
@@ -650,6 +668,7 @@ class RecordArticlePage(
         + NewLabelMixin.api_fields
         + ContentWarningMixin.api_fields
         + [
+        APIField("type_label"),
             APIField("about"),
             APIField("date_text"),
             # APIField("intro_image"),

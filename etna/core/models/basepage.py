@@ -64,25 +64,6 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         help_text=_("Image that will appear on thumbnails and promos around the site."),
     )
 
-    api_fields = [
-        APIField("teaser_image"),
-        APIField("teaser_text"),
-        APIField(
-            "teaser_image_jpg",
-            serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
-        ),
-        APIField(
-            "teaser_image_large_jpg",
-            serializer=ImageRenditionField("fill-1200x800", source="teaser_image"),
-        ),
-        APIField(
-            "teaser_image_webp",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-webp", source="teaser_image"
-            ),
-        ),
-    ]
-
     uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
 
     # DataLayerMixin overrides
@@ -163,6 +144,26 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         data = super().get_datalayer_data(request)
         data.update(customDimension3=self._meta.verbose_name)
         return data
+
+    api_fields = [
+        APIField("type_label"),
+        APIField("teaser_image"),
+        APIField("teaser_text"),
+        APIField(
+            "teaser_image_jpg",
+            serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
+        ),
+        APIField(
+            "teaser_image_large_jpg",
+            serializer=ImageRenditionField("fill-1200x800", source="teaser_image"),
+        ),
+        APIField(
+            "teaser_image_webp",
+            serializer=ImageRenditionField(
+                "fill-600x400|format-webp", source="teaser_image"
+            ),
+        ),
+    ]
 
 
 class BasePageWithIntro(BasePage):

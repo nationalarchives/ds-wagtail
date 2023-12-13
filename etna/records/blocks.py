@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.api import APIField
 
 from ..ciim.exceptions import ClientAPIError
 from .api import records_client
@@ -118,6 +119,13 @@ class RecordLinkBlock(blocks.StructBlock):
 
     class Meta:
         icon = "archive"
+
+    def collection(self):
+        return self.record.reference_number
+
+    api_fields = [
+        APIField("collection"),
+    ]
 
 
 class RecordLinksBlock(blocks.StructBlock):
