@@ -26,7 +26,7 @@ class BucketKeys(StrEnum):
 class SearchTabs(StrEnum):
     ALL = "All results"
     CATALOGUE = "Catalogue results"
-    WEBSITE = "Website results"
+    WEBSITE = "Our website results"
 
 
 class Aggregation(StrEnum):
