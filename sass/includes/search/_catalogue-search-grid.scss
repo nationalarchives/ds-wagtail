@@ -20,6 +20,7 @@
 
     &__sidebar {
         -ms-grid-column: 1;
+        min-width: 300px;
         @media only screen and (max-width: $screen__xl) {
             grid-column: 1 / -1;
             -ms-grid-column: 1;
