@@ -6,6 +6,7 @@ from modelcluster.models import ClusterableModel
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
+from wagtail.api import APIField
 
 from etna.records.fields import RecordField
 
@@ -133,6 +134,16 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.FilterField("is_sensitive"),
     ]
 
+    api_fields = [
+        APIField("title"),
+        APIField("copyright"),
+        APIField("description"),
+        APIField("transcription_heading"),
+        APIField("transcription"),
+        APIField("translation_heading"),
+        APIField("translation"),
+    ]
+
     @property
     def sensitive_image_warning(self):
         return (
@@ -169,3 +180,5 @@ class CustomImageRendition(AbstractRendition):
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)
+
+    api_fields = CustomImage.api_fields

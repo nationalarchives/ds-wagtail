@@ -1,3 +1,5 @@
+import mimetypes
+
 from django.conf import settings
 from django.db import models
 
@@ -34,8 +36,18 @@ class EtnaMedia(AbstractMedia):
         "tags",
     )
 
+    def mime(self):
+        return mimetypes.guess_type(self.filename)[0] or "application/octet-stream"
+
     api_fields = [
-        APIField("date"),
+        APIField("file"),
+        APIField("type"),
+        # APIField("date"),
+        # APIField("url"),
+        # APIField("sources"),
+        APIField("mime"),
+        # APIField("file_extension"),
+        # APIField("thumbnail"),
         APIField("description"),
         APIField("transcript"),
     ]
