@@ -12,13 +12,15 @@
 
     {% include "includes/records/record-cta-panel.html" %}
 
-    <div class="container">
-        {% include "includes/records/record-title.html" %}
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            {% include "includes/records/record-title.html" %}
 
-        <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
+            <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
 
-        {# If there are no related tags to display #}
-        {% include "includes/records/record-details.html" %}
+            {# If there are no related tags to display #}
+            {% include "includes/records/record-details.html" %}
+        </div>
     </div>
 
     {# If there are related tags to display #}
@@ -32,14 +34,16 @@
         </div>
     </div>
 
-    <div class="container">
-        {% if record.hierarchy %}
-            {% if record.hierarchy|length > 2 %}
-                <h2 class="tna-heading-l">This record is in the series</h2>
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            {% if record.hierarchy %}
+                {% if record.hierarchy|length > 2 %}
+                    <h2 class="tna-heading-l">This record is in the series</h2>
 
-                {% include "includes/records/record-series-panel.html" %}
+                    {% include "includes/records/record-series-panel.html" %}
+                {% endif %}
             {% endif %}
-        {% endif %}
+        </div>
     </div>
 
 {% endblock %}
