@@ -271,6 +271,9 @@ class ArticlePage(
             APIField("similar_items", serializer=PageSerializer(many=True)),
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
+            # TODO
+            # APIField("topics"),
+            # APIField("time_periods"),
         ]
     )
 
