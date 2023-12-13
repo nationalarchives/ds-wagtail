@@ -28,23 +28,33 @@
         {% comment %} {% if buckets.current.result_count %}
 
                 {% if form.group.value == 'tna' %}
+                <div class="tna-container">
                     <p class="search-results__explainer">Results for records held at The National Archives that match your search term.</p>
+                </div>
                 {% endif %}
 
                 {% if form.group.value == 'digitised' %}
-                    <p class="search-results__explainer">Results for records available to download at The National Archives that match your search term.</p>
+                    <div class="tna-container">
+                        <p class="search-results__explainer">Results for records available to download at The National Archives that match your search term.</p>
+                    </div>
                 {% endif %}
 
                 {% if form.group.value == 'nonTna' %}
-                    <p class="search-results__explainer">Records held at other UK archives that match your search term.</p>
+                    <div class="tna-container">
+                        <p class="search-results__explainer">Records held at other UK archives that match your search term.</p>
+                    </div>
                 {% endif %}
 
                 {% if form.group.value == 'creator' %}
-                    <p class="search-results__explainer">A business, family, manor, organisation or person who has created records that match your search term.</p>
+                    <div class="tna-container">
+                        <p class="search-results__explainer">A business, family, manor, organisation or person who has created records that match your search term.</p>
+                    </div>
                 {% endif %}
 
                 {% if form.group.value == 'archive' %}
-                    <p class="search-results__explainer">Archives across the UK that match your search term.</p>
+                    <div class="tna-container">
+                        <p class="search-results__explainer">Archives across the UK that match your search term.</p>
+                    </div>
                 {% endif %}
 
         {% endif %} {% endcomment %}
@@ -74,6 +84,7 @@
                     {% endif %}
 
                 </div>
+            </div>
             </div>
         {% else %}
             {# No results were found when searching with the 'q' param value for all buckets ... #}
