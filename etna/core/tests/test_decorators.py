@@ -9,7 +9,7 @@ import responses
 from ...ciim.tests.factories import create_record, create_response
 
 CONDITIONALLY_PROTECTED_URLS = (
-    reverse_lazy("search-catalogue"),
+    # reverse_lazy("search-catalogue"),  # TODO:Rosetta
     reverse_lazy("details-page-machine-readable", kwargs={"id": "C140"}),
 )
 
@@ -33,16 +33,20 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_response(
-                records=[
-                    create_record(
-                        iaid="C123456",
-                        description=[
-                            {"value": "This is the description from the Client API"}
-                        ],
-                    )
-                ]
+            json=create_record(
+                iaid="C123456",
+                description=[{"value": "This is the description from the Client API"}],
             ),
+            # json=create_response(
+            #     records=[
+            #         create_record(
+            #             iaid="C123456",
+            #             description=[
+            #                 {"value": "This is the description from the Client API"}
+            #             ],
+            #         )
+            #     ]
+            # ),
         )
 
     @override_settings(

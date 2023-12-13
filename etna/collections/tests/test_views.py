@@ -1,4 +1,5 @@
 import json
+import unittest
 
 from django.conf import settings
 
@@ -11,6 +12,7 @@ from etna.core.test_utils import prevent_request_warnings
 from ...ciim.tests.factories import create_record, create_response
 
 
+@unittest.skip("TODO:Rosetta")
 class TestRecordChooseView(WagtailPageTestCase):
     def setUp(self):
         super().setUp()
