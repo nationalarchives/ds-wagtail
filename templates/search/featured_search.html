@@ -14,9 +14,11 @@
     {% endwith  %}
 
     {% if buckets.tna.result_count > 0 or buckets.nonTna.result_count > 0 or buckets.creator.result_count > 0 %}
+<div class="tna-container">
     <p class="search-results__explainer">Results for everything across our catalogue and website that matches your search term.</p>
+</div>
 
-    <div class="container-fluid tna-!--margin-top-l">
+    <div class="container-fluid tna-!--margin-top-l tna-container">
     <section class="featured-search__website-results">
         <header class="featured-search__website-results__head">
             <h2 class="tna-heading-l featured-search__website-results__heading">Catalogue results</h2>
@@ -24,6 +26,7 @@
     </section>
     </div>
 
+    <div class="tna-container">
     <div id="search-results-title" class="featured-search__results">
 
         {% if buckets.tna.result_count > 0 %}
@@ -37,6 +40,7 @@
         {% if buckets.creator.result_count > 0 %}
             {% include './blocks/featured-search__record-creator.html' with bucket=buckets.creator %}
         {% endif %}
+    </div>
     </div>
     {% endif %}
 

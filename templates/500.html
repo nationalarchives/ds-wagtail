@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html class="no-js">
+<html class="tna-template tna-template--light-theme no-js">
     <head>
         <meta charset="utf-8"/>
         <title>Internal server error</title>
@@ -15,6 +15,9 @@
             });
         </script>
 
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
+
         {% if show_cookie_notice %}
             <link rel="stylesheet" type="text/css" href="{% static 'cookie-consent/ds-cookie-consent.css' %}">
         {% endif %}
@@ -22,6 +25,8 @@
         {% if cookies_permitted %}
             {% include 'includes/gtm-script.html' %}
         {% endif %}
+
+        <script>document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';</script>
 
         {# Adobe Fonts #}
         <link rel="preconnect" href="https://use.typekit.net">
@@ -31,7 +36,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
         <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.png' %}">
     </head>
-    <body>
+    <body class="tna-template__body template-500">
         {% if show_cookie_notice %}
             {% include 'includes/cookie-consent.html' %}
         {% endif %}
@@ -40,9 +45,33 @@
             {% include 'includes/gtm-no-script.html' %}
         {% endif %}
 
-        <h1 class="tna-heading-xl">Internal server error</h1>
+        {% include 'includes/header.html' %}
 
-        <h2 class="tna-heading-l">Sorry, there seems to be an error. Please try again soon.</h2>
+        <main id="maincontent">
+            <div class="generic-intro">
+                <div class="tna-container tna-container--centred">
+                    <div class="tna-column tna-column--width-1-2 tna-column--full-small tna-column--full-tiny tna-!--margin-vertical-l">
+                        <svg class="mx-auto" xmlns="http://www.w3.org/2000/svg" width="132" height="132" fill="none" viewBox="0 0 132 132"><path fill="#EC5855" d="M123.34 51.246c-2.209-2.309-4.494-4.687-5.356-6.78-.796-1.915-.843-5.091-.89-8.167-.088-5.719-.182-12.2-4.688-16.705-4.506-4.506-10.986-4.6-16.705-4.688-3.076-.047-6.252-.094-8.168-.89-2.086-.862-4.47-3.147-6.78-5.356C76.712 4.775 72.118.375 66 .375c-6.117 0-10.705 4.4-14.754 8.285-2.309 2.21-4.687 4.494-6.78 5.356-1.904.796-5.091.843-8.167.89-5.719.088-12.2.182-16.705 4.688-4.506 4.506-4.57 10.986-4.688 16.705-.047 3.076-.094 6.252-.89 8.168-.862 2.086-3.147 4.47-5.356 6.78C4.775 55.288.375 59.882.375 66c0 6.117 4.4 10.705 8.285 14.754 2.21 2.308 4.494 4.687 5.356 6.78.796 1.915.843 5.091.89 8.167.088 5.719.182 12.199 4.688 16.705 4.506 4.506 10.986 4.6 16.705 4.688 3.076.047 6.252.094 8.168.89 2.086.862 4.47 3.147 6.78 5.356 4.042 3.885 8.636 8.285 14.753 8.285 6.117 0 10.705-4.4 14.754-8.285 2.308-2.209 4.687-4.494 6.78-5.356 1.915-.796 5.091-.843 8.167-.89 5.719-.088 12.199-.182 16.705-4.688 4.506-4.506 4.6-10.986 4.688-16.705.047-3.076.094-6.252.89-8.168.862-2.086 3.147-4.47 5.356-6.78 3.885-4.042 8.285-8.636 8.285-14.753 0-6.117-4.4-10.705-8.285-14.754ZM66 103.5a7.028 7.028 0 0 1-6.896-8.403A7.03 7.03 0 1 1 66 103.5Zm4.688-28.547v.422a4.688 4.688 0 0 1-9.376 0v-4.688A4.688 4.688 0 0 1 66 66c7.752 0 14.063-5.273 14.063-11.719 0-6.445-6.311-11.718-14.063-11.718-7.752 0-14.063 5.273-14.063 11.718v2.344a4.688 4.688 0 0 1-9.374 0v-2.344c0-11.63 10.511-21.093 23.437-21.093 12.926 0 23.438 9.462 23.438 21.093 0 10.184-8.063 18.71-18.75 20.672Z"/></svg>
+
+                        <h1 class="tna-heading-xl generic-intro__title mt-0">
+                            Sorry, there is a problem with the service
+                        </h1>
+
+                        <p>Please try again later.</p>
+
+                        <p>For now, try <a href="/">browsing from the homepage</a> or <a href="https://ohos.ac.uk/">find out more about Our Heritage, Our Stories</a> (OHOS) on our partner website.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        {% block ohos_snippet %}
+            {% include 'includes/ohos_snippet.html' %}
+        {% endblock %}
+
+        {% block footer %}
+            {% include 'includes/footer.html' %}
+        {% endblock %}
 
         {% if show_cookie_notice %}
             <script src="{% static 'scripts/cookie_consent.js' %}"></script>
