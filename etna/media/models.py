@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.fields import RichTextField
+from wagtail.api import APIField
 
 from wagtailmedia.models import AbstractMedia
 
@@ -32,3 +33,9 @@ class EtnaMedia(AbstractMedia):
         "transcript",
         "tags",
     )
+
+    api_fields = [
+        APIField("date"),
+        APIField("description"),
+        APIField("transcript"),
+    ]
