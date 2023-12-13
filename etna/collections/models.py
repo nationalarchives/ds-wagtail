@@ -115,6 +115,10 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField("articles_title"),
+            APIField("articles_introduction"),
+            APIField("featured_article"),
+            APIField("featured_articles"),
         ]
     )
 
