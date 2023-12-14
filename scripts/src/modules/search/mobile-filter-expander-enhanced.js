@@ -23,7 +23,7 @@ export default function () {
         // no filters selected (always display number of active filters)
         $showHideButton.innerHTML =
             'Add filters' +
-            
+
             '<span class="sr-only"> active</span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
     }
     $showHideButton.classList.add("search-results__filter-button");
