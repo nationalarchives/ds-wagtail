@@ -22,9 +22,9 @@ export default function () {
     } else {
         // no filters selected (always display number of active filters)
         $showHideButton.innerHTML =
-            'Show filters<span class="filter-indicator">' +
-            $noOfFilters +
-            '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
+            'Add filters' +
+            
+            '<span class="sr-only"> active</span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
     }
     $showHideButton.classList.add("search-results__filter-button");
     $showHideButton.setAttribute("aria-expanded", false);
@@ -50,7 +50,7 @@ export default function () {
                 'Hide filters <img src="/static/images/fontawesome-svgs/chevron-up-white.svg" width="20px" height="20px" style=\'display: inline-block;margin-left: 10px;\'>';
         } else {
             $showHideButton.innerHTML =
-                'Show filters<span class="filter-indicator">' +
+                'Add filters<span class="filter-indicator">' +
                 $noOfFilters +
                 '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style=\'display: inline-block;margin-left: 10px;\'>';
         }
