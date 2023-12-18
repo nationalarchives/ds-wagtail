@@ -18,7 +18,10 @@
     <p class="search-results__explainer">Results for everything across our catalogue and website that matches your search term.</p>
 </div>
 
-    <div class="container-fluid tna-!--margin-top-l tna-container">
+
+    <div class="container-fluid tna-container">
+
+
     <section class="featured-search__website-results">
         <header class="featured-search__website-results__head">
             <h2 class="tna-heading-l featured-search__website-results__heading">Catalogue results</h2>
@@ -54,7 +57,7 @@
                 </a>
             </header>
 
-            <div class="row">
+            <div class="tna-container row">
             <ul class="featured-search__website-results-list">
                 {% for result in website_results %}
                     {% include "search/blocks/native_website_result--grid.html" with heading_tag='h3' %}
