@@ -3,10 +3,12 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
+from wagtail.admin.panels import FieldPanel
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
+from etna.core.models import BasePage
 from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
@@ -169,3 +171,15 @@ class CustomImageRendition(AbstractRendition):
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)
+
+
+class ImageViewerPage(BasePage):
+    image_collection = models.ForeignKey(
+        "wagtailcore.Collection", on_delete=models.PROTECT
+    )
+
+    content_panels = BasePage.content_panels + [FieldPanel("image_collection")]
+
+    @property
+    def iiif_manifest_id(self):
+        return f"{settings.WAGTAILADMIN_BASE_URL}/iiif/manifest/{self.image_collection_id}/"

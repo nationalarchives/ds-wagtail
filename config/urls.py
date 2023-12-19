@@ -134,7 +134,7 @@ public_urls = [
         name="search-website-long-filter-chooser",
     ),
     path(
-        r"iiif/manifest/<int:image_id>/",
+        r"iiif/manifest/<int:collection_id>/",
         images_views.iiif_manifest,
         name="iiif-manifest",
     ),

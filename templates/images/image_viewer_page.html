@@ -1,0 +1,10 @@
+{% extends "base_page.html" %}
+
+{% block content %}
+  <article class="tna-container">
+    <div class="tna-column tna-column--full">
+      <script src="https://www.unpkg.com/@samvera/clover-iiif@latest/dist/web-components/index.umd.js"></script>
+      <clover-viewer id="{{ page.iiif_manifest_id }}" />
+    </div>
+  </article>
+{% endblock content %}
