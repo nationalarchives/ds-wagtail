@@ -2,6 +2,8 @@
 
 {{ selected_filters_count|json_script:"selected_filters_count" }}
 <script>
+    
+
     $noOfFilters = JSON.parse(document.getElementById('selected_filters_count').textContent);
 
     let $buttonHtml= "";
