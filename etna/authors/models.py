@@ -13,6 +13,8 @@ from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
+from rest_framework import serializers
+
 from etna.core.models import BasePage
 
 
@@ -32,6 +34,17 @@ class AuthorIndexPage(BasePage):
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return self.get_children().type(AuthorPage).order_by("title").live().specific()
+
+
+# TODO: Make better
+class AuthorPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
 
 
 class AuthorPage(BasePage):
@@ -74,6 +87,9 @@ class AuthorPage(BasePage):
         APIField("role"),
         APIField("summary"),
         APIField("image"),
+        APIField(
+            "authored_focused_articles", serializer=AuthorPageSerializer(many=True)
+        ),
         APIField(
             "image_jpg",
             serializer=ImageRenditionField("fill-512x512", source="image"),
