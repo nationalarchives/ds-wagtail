@@ -1,7 +1,9 @@
 from django.contrib.contenttypes.models import ContentType
 
+from wagtail.api import APIField
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.views import PagesAPIViewSet
+from wagtail.images.api.fields import ImageRenditionField
 
 # from wagtail.documents.api.v2.views import DocumentsAPIViewSet
 from wagtail.images.api.v2.views import ImagesAPIViewSet
@@ -43,17 +45,17 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
 
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
     body_fields = ImagesAPIViewSet.body_fields + [
-        "collection",
+        # "collection",
         "title",
         "file",
         "copyright",
         "is_sensitive",
         "custom_sensitive_image_warning",
         "tags",
-        "focal_point_x",
-        "focal_point_y",
-        "focal_point_width",
-        "focal_point_height",
+        # "focal_point_x",
+        # "focal_point_y",
+        # "focal_point_width",
+        # "focal_point_height",
         "transcription_heading",
         "transcription",
         "translation_heading",
@@ -61,6 +63,10 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
         "record",
         "record_dates",
         "description",
+        # APIField(
+        #     "image_small_jpg",
+        #     serializer=ImageRenditionField("fill-128x128", source="file"),
+        # ),
     ]
 
 

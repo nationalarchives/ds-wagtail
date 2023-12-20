@@ -182,5 +182,3 @@ class CustomImageRendition(AbstractRendition):
 
     class Meta:
         unique_together = (("image", "filter_spec", "focal_point_key"),)
-
-    api_fields = CustomImage.api_fields
