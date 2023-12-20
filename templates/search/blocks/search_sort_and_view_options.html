@@ -5,16 +5,16 @@
 <!--    <p class="search-results__explainer">Results for everything on our website that matches your search term.</p>-->
     <form method="GET" class="search-sort-view__form search-sort-view__desktop" data-id="sort-form-desktop" id="catalogue-sort-form-desktop" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
 
-        <h2 class="tna-heading-l search-sort-view__heading">
-           <label for="id_sort_by_desktop">Sort by</label>
-        </h2>
+<!--        <h2 class="tna-heading-l search-sort-view__heading">-->
+<!--           <label for="id_sort_by_desktop">Sort byx</label>-->
+<!--        </h2>-->
 
         {{ form.sort_by.errors }}
         {% render_sort_by_input form=form id_suffix="desktop" %}
 
         {% render_fields_as_hidden form exclude='sort_by' %}
 
-        <input type="submit" value="Update" class="search-sort-view__form-submit">
+        <input type="submit" value="Sort by" class="search-sort-view__form-submit">
     </form>
 
     <h2 class="tna-heading-l search-sort-view__heading"><span class="sr-only">Display as:</span></h2>
