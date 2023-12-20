@@ -1,0 +1,41 @@
+{% comment %}
+    Commented out as discussed on https://github.com/nationalarchives/ds-ohos-wagtail/pull/26
+    This will require some additional logic once we are working with OHOS data
+    {% if record.held_by %}
+        <dt>Held by</dt>
+        <dd>{{ record.held_by }}</dd>
+    {% endif %}
+{% endcomment %}
+
+{% if record.date_created %}
+    <dt>Date</dt>
+    <dd>
+        <date>{{ record.date_created }}</date>
+    </dd>
+{% endif %}
+
+{% comment %}
+    Commented out as discussed on https://github.com/nationalarchives/ds-ohos-wagtail/pull/26
+    This will require some additional logic once we are working with OHOS data
+    {% if record.reference_number %}
+        <dt>
+            {% if form.group.value == 'archive' %}
+            Archon code
+            {% else %}
+            Reference
+            {% endif %}
+        </dt>
+        <dd>{{ record.reference_number }}</dd>
+    {% endif %}
+
+    {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
+        <dt>
+            Type
+        </dt>
+        <dd>{{ record.type }}</dd>
+    {% endif %}
+{% endcomment %}
+
+{# API data required before this can be properly connected to it #}
+<dt>Collection</dt>
+<dd>Hardcoded until API response is available</dd>
