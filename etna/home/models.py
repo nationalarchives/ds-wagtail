@@ -50,4 +50,7 @@ class HomePage(AlertMixin, BasePageWithIntro):
 
         return context
 
-    api_fields = [APIField("body")]
+    api_fields = [
+        APIField("intro"),
+        APIField("body"),
+    ]
