@@ -11,7 +11,7 @@ from ..templatetags.search_tags import (
     query_string_exclude,
     query_string_include,
     render_fields_as_hidden,
-    render_sort_by_input,
+    render_sort_input,
 )
 
 
@@ -130,8 +130,7 @@ class RenderFieldsAsHiddenTest(SimpleTestCase):
                 {
                     "q": "test",
                     "group": "tna",
-                    "sort_by": "relevance",
-                    "sort_order": "asc",
+                    "sort": "relevance",
                     "opening_start_date_0": "01",
                     "opening_start_date_1": "01",
                     "opening_start_date_2": "2000",
@@ -154,7 +153,7 @@ class RenderFieldsAsHiddenTest(SimpleTestCase):
 
     @mock.patch.object(BoundField, "as_hidden", return_value="", autospec=True)
     def test_exclude(self, mocked_as_hidden):
-        exclude_names = ("q", "group", "sort_by")
+        exclude_names = ("q", "group", "sort")
 
         # call the function under test
         render_fields_as_hidden(self.form, exclude=" ".join(exclude_names))
@@ -195,18 +194,17 @@ class RenderFieldsAsHiddenTest(SimpleTestCase):
                     mocked_as_hidden.assert_any_call(field, attrs=mock.ANY)
 
 
-class RenderSortByTest(SimpleTestCase):
+class RenderSortTest(SimpleTestCase):
     def setUp(self):
         self.form = CatalogueSearchForm(
             {
-                "group": "tna",
-                "sort_by": "relevance",
-                "sort_order": "asc",
+                "group": "community",
+                "sort": "relevance",
             }
         )
 
-    def test_render_sort_by_input_input_id(self):
-        expected_html = '<select name="sort_by" class="search-sort-view__form-select" id="id_sort_by_somevalue">'
+    def test_render_sort_input_input_id(self):
+        expected_html = '<select name="sort" class="search-sort-view__form-select" id="id_sort_somevalue">'
         self.assertIn(
-            expected_html, render_sort_by_input(self.form, id_suffix="somevalue")
+            expected_html, render_sort_input(self.form, id_suffix="somevalue")
         )

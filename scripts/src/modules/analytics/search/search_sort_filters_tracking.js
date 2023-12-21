@@ -1,20 +1,18 @@
 import push_to_data_layer from "./../push_to_data_layer";
 
-const getSortBy = () => {
+const getSort = () => {
     // get filters after DOM has loaded and they have rendered on page
     window.addEventListener("load", () => {
-        var selectElementDesktop = document.querySelector(
-            "#id_sort_by_desktop",
-        );
-        var selectElementMobile = document.querySelector("#id_sort_by_mobile");
+        var selectElementDesktop = document.querySelector("#id_sort_desktop");
+        var selectElementMobile = document.querySelector("#id_sort_mobile");
 
         if (selectElementDesktop) {
             const selectOutputDesktop =
                 selectElementDesktop.options[
                     selectElementDesktop.selectedIndex
                 ].value.trim();
-            var sortByDesktop = selectElementDesktop.parentElement;
-            sortByDesktop.setAttribute(
+            var sortDesktop = selectElementDesktop.parentElement;
+            sortDesktop.setAttribute(
                 "data-search-filter-value",
                 selectOutputDesktop,
             );
@@ -25,24 +23,24 @@ const getSortBy = () => {
                 if (selectOutputDesktop == "") {
                     selectOutputDesktop = "relevance";
                 }
-                sortByDesktop.setAttribute(
+                sortDesktop.setAttribute(
                     "data-search-filter-value",
                     selectOutputDesktop,
                 );
             };
 
             const searchTypeDesktop =
-                sortByDesktop.getAttribute("data-search-type");
+                sortDesktop.getAttribute("data-search-type");
             const searchBucketDesktop =
-                sortByDesktop.getAttribute("data-search-bucket");
+                sortDesktop.getAttribute("data-search-bucket");
 
-            sortByDesktop.addEventListener("submit", (e) => {
+            sortDesktop.addEventListener("submit", (e) => {
                 e.preventDefault();
 
-                let searchNameDesktop = sortByDesktop.getAttribute(
+                let searchNameDesktop = sortDesktop.getAttribute(
                     "data-search-filter-name",
                 );
-                let searchValueDesktop = sortByDesktop.getAttribute(
+                let searchValueDesktop = sortDesktop.getAttribute(
                     "data-search-filter-value",
                 );
 
@@ -56,7 +54,7 @@ const getSortBy = () => {
 
                 push_to_data_layer(filterDataDesktop);
 
-                sortByDesktop.submit();
+                sortDesktop.submit();
             });
         }
 
@@ -65,8 +63,8 @@ const getSortBy = () => {
                 selectElementMobile.options[
                     selectElementMobile.selectedIndex
                 ].value.trim();
-            var sortByMobile = selectElementMobile.parentElement;
-            sortByMobile.setAttribute(
+            var sortMobile = selectElementMobile.parentElement;
+            sortMobile.setAttribute(
                 "data-search-filter-value",
                 selectOutputMobile,
             );
@@ -77,24 +75,24 @@ const getSortBy = () => {
                 if (selectOutputMobile == "") {
                     selectOutputMobile = "relevance";
                 }
-                sortByMobile.setAttribute(
+                sortMobile.setAttribute(
                     "data-search-filter-value",
                     selectOutputMobile,
                 );
             };
 
             const searchTypeMobile =
-                sortByMobile.getAttribute("data-search-type");
+                sortMobile.getAttribute("data-search-type");
             const searchBucketMobile =
-                sortByMobile.getAttribute("data-search-bucket");
+                sortMobile.getAttribute("data-search-bucket");
 
-            sortByMobile.addEventListener("submit", (e) => {
+            sortMobile.addEventListener("submit", (e) => {
                 e.preventDefault();
 
-                let searchNameMobile = sortByMobile.getAttribute(
+                let searchNameMobile = sortMobile.getAttribute(
                     "data-search-filter-name",
                 );
-                let searchValueMobile = sortByMobile.getAttribute(
+                let searchValueMobile = sortMobile.getAttribute(
                     "data-search-filter-value",
                 );
 
@@ -108,14 +106,14 @@ const getSortBy = () => {
 
                 push_to_data_layer(filterDataMobile);
 
-                sortByMobile.submit();
+                sortMobile.submit();
             });
         }
     });
 };
 
 const searchSortFiltersTracking = () => {
-    getSortBy();
+    getSort();
 };
 
 export default searchSortFiltersTracking;

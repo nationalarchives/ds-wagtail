@@ -3,7 +3,6 @@ from __future__ import annotations
 import logging
 import re
 
-from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Union
 
 from django.conf import settings
@@ -24,7 +23,7 @@ from ..ciim.utils import (
     strip_html,
 )
 from ..records.classes import FurtherInfo
-from .converters import IAIDConverter
+from .converters import IDConverter
 
 logger = logging.getLogger(__name__)
 
@@ -37,9 +36,10 @@ class Record(DataLayerMixin, APIModel):
         This method recieves the raw JSON data dict recieved from
         Client API and makes it available to the instance as `self._raw`.
         """
-        self._raw = raw_data.get("_source") or raw_data
-        self.score = raw_data.get("_score")
-        self.highlights = raw_data.get("highlight") or {}
+        self._raw = raw_data.get("detail") or raw_data
+        # TODO:Rosetta
+        # self.score = raw_data.get("_score")
+        self.highlights = raw_data.get("highLight") or {}
 
     @classmethod
     def from_api_response(cls, response: dict) -> Record:
@@ -65,7 +65,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def template(self) -> Dict[str, Any]:
-        return self.get("@template.details", default=self.get("@template.results", {}))
+        return self.get("@template.details", default={})
 
     @cached_property
     def iaid(self) -> str:
@@ -76,7 +76,7 @@ class Record(DataLayerMixin, APIModel):
         try:
             candidate = self.template["iaid"]
         except KeyError:
-            candidate = self.get("@admin.id", default="")
+            candidate = self.get("id", default="")
 
         try:
             # fallback for Record Creators
@@ -85,7 +85,7 @@ class Record(DataLayerMixin, APIModel):
         except KeyError:
             candidate = ""
 
-        if candidate and re.match(IAIDConverter.regex, candidate):
+        if candidate and re.match(IDConverter.regex, candidate):
             # value is not guaranteed to be a valid 'iaid', so we must
             # check it before returning it as one
             return candidate
@@ -97,17 +97,7 @@ class Record(DataLayerMixin, APIModel):
         Return the "reference_number" value for this record, or a blank
         string if no such value can be found in the usual places.
         """
-        try:
-            return self.template["referenceNumber"]
-        except KeyError:
-            pass
-        identifiers = self.get("identifier", ())
-        for item in identifiers:
-            try:
-                return item["reference_number"]
-            except KeyError:
-                pass
-        return ""
+        return self.template.get("referenceNumber", "")
 
     def reference_prefixed_summary_title(self):
         return f"{self.reference_number or 'N/A'} - {self.summary_title}"
@@ -142,6 +132,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def summary_title(self) -> str:
+        if self.group == "community":
+            return self.summary
+        # TODO:Rosetta
         if raw := self._get_raw_summary_title():
             return mark_safe(strip_html(raw, preserve_marks=True))
         return raw
@@ -151,11 +144,7 @@ class Record(DataLayerMixin, APIModel):
             return "... ".join(self.highlights["@template.details.summaryTitle"])
         except KeyError:
             pass
-        try:
-            return self.template["summaryTitle"]
-        except KeyError:
-            pass
-        return self.get("summary.title", default="")
+        return self.template.get("summaryTitle", "")
 
     def get_url(self, use_reference_number: bool = True) -> str:
         if use_reference_number and self.reference_number:
@@ -169,7 +158,7 @@ class Record(DataLayerMixin, APIModel):
         if self.iaid:
             try:
                 return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.iaid}
+                    "details-page-machine-readable", kwargs={"id": self.iaid}
                 )
             except NoReverseMatch:
                 pass
@@ -188,40 +177,27 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def is_tna(self):
-        for item in self.get("@datatype.group", ()):
-            if item.get("value", "") == "tna":
-                return True
+        # TODO:Rosetta
+        # for item in self.get("@datatype.group", ()):
+        #     if item.get("value", "") == "tna":
+        #         return True
         return False
 
     @cached_property
-    def type(self) -> Union[str, None]:
-        try:
-            return self.template["type"]
-        except KeyError:
-            return self.get("@datatype.base", None)
+    def type(self) -> str:
+        return self.template.get("type", "")
 
     @cached_property
-    def access_condition(self) -> str:
-        try:
-            return self.template["accessCondition"]
-        except KeyError:
-            self.get("availability.access.condition.value", default="")
-        return
+    def access_conditions(self) -> str:
+        return self.template.get("accessConditions", "")
 
     @cached_property
     def arrangement(self) -> str:
-        try:
-            raw = self.template["arrangement"]
-        except KeyError:
-            raw = self.get("arrangement.value", default="")
-        return mark_safe(raw)
+        return mark_safe(self.template.get("arrangement", ""))
 
     @cached_property
     def legal_status(self) -> str:
-        try:
-            return self.template["legalStatus"]
-        except KeyError:
-            return self.get("legal.status", default="")
+        return self.template.get("legalStatus", "")
 
     @cached_property
     def availability_delivery_surrogates(self) -> str:
@@ -240,7 +216,9 @@ class Record(DataLayerMixin, APIModel):
         """
         Returns the records full description value with all HTML left intact.
         """
-        return mark_safe(self._get_raw_description())
+        # TODO:Rosetta
+        # return mark_safe(self._get_raw_description())
+        return self._get_raw_description()
 
     @cached_property
     def listing_description(self) -> str:
@@ -250,24 +228,20 @@ class Record(DataLayerMixin, APIModel):
         will be left in-tact, but and other HTML is stripped.
         """
         if raw := self._get_raw_description(use_highlights=True):
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            # TODO:Rosetta
+            # return mark_safe(strip_html(raw, preserve_marks=True))
+            return raw
         return ""
 
     def _get_raw_description(self, use_highlights: bool = False) -> str:
-        if use_highlights:
-            try:
-                return "... ".join(self.highlights["@template.details.description"])
-            except KeyError:
-                pass
-        try:
-            return self.template["description"]
-        except KeyError:
-            pass
-        description_items = self.get("description", ())
-        for item in description_items:
-            if item.get("type", "") == "description" or len(description_items) == 1:
-                return item.get("value", "")
-        return ""
+        # TODO:Rosetta
+        # if use_highlights:
+        #     try:
+        #         # TODO:Rosetta
+        #         return "... ".join(self.highlights["@template.details.description"])
+        #     except KeyError:
+        #         pass
+        return self.template.get("description", False)
 
     @cached_property
     def content(self) -> str:
@@ -293,7 +267,7 @@ class Record(DataLayerMixin, APIModel):
         if self.held_by_id:
             try:
                 return reverse(
-                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
+                    "details-page-machine-readable", kwargs={"id": self.held_by_id}
                 )
             except NoReverseMatch:
                 pass
@@ -301,6 +275,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def date_created(self) -> str:
+        # TODO:Rosetta
+        if self.group == "community":
+            return self.template.get("creationDate", "")
         return self.template.get("dateCreated", "")
 
     @cached_property
@@ -309,7 +286,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def level(self) -> str:
-        return self.get("level.value", self.template.get("level", ""))
+        return self.template.get("level", "")
 
     @cached_property
     def level_code(self) -> int:
@@ -346,23 +323,6 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def hierarchy(self) -> Tuple["Record"]:
-        # TODO Leaving this here for potential later use for testing the data for the front-end aspects.
-        # This is to create spoof data for the missing API data from K-int. Can be removed from code when
-
-        # for item in self.get("@hierarchy.0", default=()):
-        #     if not item.get("identifier"):
-        #         level = item.get("level", {})
-        #         level_code = level.get("code", "")
-        #         hierarchy = self.get("@hierarchy.0", ())
-        #         if hierarchy != () and level_code != "":
-        #             previous_level_record = hierarchy[level_code-2]
-        #             previous_level_identifier = previous_level_record.get("identifier")[0]
-        #             previous_level_reference = previous_level_identifier.get("reference_number")
-        #             if level_code == 2:
-        #                 reference_number = "Division within " + previous_level_reference
-        #             elif level_code == 4:
-        #                 reference_number = "Sub-series within " + previous_level_reference
-        #             item["identifier"] = [{'primary': True, 'reference_number': reference_number, 'type': 'reference number', 'value': reference_number}]
         return tuple(
             Record(item)
             for item in self.get("@hierarchy.0", default=())
@@ -421,6 +381,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def custom_record_type(self) -> str:
+        # TODO: Rosetta
         if source := self.source:
             return source
         return ""
@@ -494,7 +455,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def title(self) -> str:
-        return mark_safe(self.template.get("title", ""))
+        # TODO:Rosetta
+        # return mark_safe(self.template.get("title", ""))
+        return self.template.get("title", "")
 
     @cached_property
     def archive_further_info(self) -> Optional[FurtherInfo]:
@@ -599,17 +562,16 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def separated_materials(self) -> Tuple[Dict[str, Any]]:
-        return tuple(
-            dict(
-                description=item.get("description", ""),
-                links=list(format_link(val) for val in item.get("links", ())),
+        if value := self.template.get("separatedMaterials", {}):
+            value = dict(
+                description=value.get("description", ""),
+                links=list(format_link(val) for val in value.get("links", ())),
             )
-            for item in self.template.get("separatedMaterials", ())
-        )
+        return value
 
     @cached_property
     def unpublished_finding_aids(self) -> list(str):
-        return self.template.get("unpublishedFindingAids", [])
+        return self.template.get("unpublishedFindingAids", "")
 
     @cached_property
     def copies_information(self) -> list(str):
@@ -621,7 +583,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def location_of_originals(self) -> list(str):
-        return self.template.get("locationOfOriginals", [])
+        return self.template.get("locationOfOriginals", "")
 
     @cached_property
     def restrictions_on_use(self) -> str:
@@ -629,25 +591,74 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def publication_note(self) -> list(str):
-        return self.template.get("publicationNote", [])
+        return self.template.get("publicationNote", str)
 
+    @cached_property
+    def uuid(self) -> str:
+        return self.template.get("uuid", "")
 
-@dataclass
-class Image:
-    """Represents an image item returned by Client API."""
+    @cached_property
+    def ciim_id(self) -> str:
+        return self.template.get("ciimId", "")
 
-    location: str
-    # Sort position of this image. Used to create the image-viewer URL
-    # and to fetch this particular image from a series of images.
-    # sort is an str that contains an int with a leading zero if less
-    # than ten.
-    sort: str
-    thumbnail_location: str
+    @cached_property
+    def identifier(self) -> str:
+        return self.template.get("identifier", "")
 
-    @property
-    def thumbnail_url(self):
-        """Use thumbnail URL is available, otherwise fallback to image-serve."""
-        if self.thumbnail_location:
-            return f"{settings.IMAGE_PREVIEW_BASE_URL}{self.thumbnail_location}"
-        elif self.location:
-            return reverse("image-serve", kwargs={"location": self.location})
+    @cached_property
+    def group(self) -> str:
+        return self.template.get("group", "")
+
+    @cached_property
+    def collection(self) -> str:
+        return self.template.get("collection", "")
+
+    @cached_property
+    def collection_id(self) -> str:
+        return self.template.get("collectionId", "")
+
+    @cached_property
+    def location(self) -> str:
+        return self.template.get("location", "")
+
+    @cached_property
+    def format(self) -> str:
+        return self.template.get("format", "")
+
+    @cached_property
+    def summary(self) -> str:
+        return self.template.get("summary", "")
+
+    @cached_property
+    def rights(self) -> str:
+        return self.template.get("rights", "")
+
+    @cached_property
+    def subject(self) -> list(str):
+        return self.template.get("subject", [])
+
+    @cached_property
+    def get_ciim_url(self) -> str:
+        try:
+            if self.ciim_id:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"id": self.ciim_id}
+                )
+        except NoReverseMatch:
+            pass
+        return ""
+
+    @cached_property
+    def get_collection_url(self) -> str:
+        try:
+            if self.collection_id:
+                return reverse(
+                    "details-page-machine-readable", kwargs={"id": self.collection_id}
+                )
+        except NoReverseMatch:
+            pass
+        return ""
+
+    @cached_property
+    def item_url(self) -> str:
+        return self.template.get("itemURL", "")

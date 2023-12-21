@@ -17,6 +17,7 @@ def record_url(
     base_record: Record = None,
     form_group: str = "",
     use_non_reference_number_url: bool = True,
+    use_collection_id: bool = False,
 ) -> str:
     """
     Return the URL for the provided `record`, which should always be a
@@ -32,23 +33,26 @@ def record_url(
     and record is a subset of the original record along with level_or_archive
     in order to determine reference number override
 
-    form_group: use with results from search queries, value determines tna, nonTna results
+    form_group: use with results from search queries, value determines ex: community, tna, nonTna results
     """
+    if form_group == "community" or record.group == "community":
+        if use_collection_id:
+            return record.get_collection_url
+        return record.get_ciim_url
+
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
-        return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
+        return TNA_URLS.get("discovery_rec_default_fmt").format(id=record.iaid)
 
     if order_from_discovery:
-        return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
+        return TNA_URLS.get("discovery_rec_default_fmt").format(id=record.iaid)
 
     if record:
         if use_non_reference_number_url:
             return record.non_reference_number_url
 
-        if form_group in ("archive", "creator"):
-            return record.non_reference_number_url
         if form_group == "nonTna":
             is_tna = False
-        elif form_group in ("tna"):
+        elif form_group == "tna":
             is_tna = True
         else:
             is_tna = record.is_tna

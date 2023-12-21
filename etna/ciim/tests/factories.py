@@ -25,54 +25,64 @@ def create_record(
 
     Note: keys used in existing source will be overridden
     """
-    if not hierarchy:
-        hierarchy = []
+    # TODO:Rosetta
+    # if not hierarchy:
+    #     hierarchy = []
 
-    if not related:
-        related = []
+    # if not related:
+    #     related = []
 
-    source = {
-        "@admin": {
-            "id": iaid,
-            "source": admin_source,
-        },
-        "access": {"conditions": "open"},
-        "identifier": [
-            {"iaid": iaid},
-            {"reference_number": reference_number},
-        ],
-        "origination": {
-            "creator": [{"name": [{"value": "test"}]}],
-            "date": {
-                "earliest": {"from": earliest},
-                "latest": {"to": latest},
-                "value": f"{earliest}-{latest}",
-            },
-        },
-        "@hierarchy": [hierarchy],
-        "summary": {
-            "title": summary_title,
-        },
-        "multimedia": [
-            {
-                "@entity": "reference",
-                "@admin": {
-                    "id": media_reference_id,
-                },
-            }
-        ],
-        "related": related,
-        "description": [{"value": description}],
-        "legal": {"status": "Open"},
-    }
+    # source = {
+    #     "@admin": {
+    #         "id": iaid,
+    #         "source": admin_source,
+    #     },
+    #     "access": {"conditions": "open"},
+    #     "identifier": [
+    #         {"iaid": iaid},
+    #         {"reference_number": reference_number},
+    #     ],
+    #     "origination": {
+    #         "creator": [{"name": [{"value": "test"}]}],
+    #         "date": {
+    #             "earliest": {"from": earliest},
+    #             "latest": {"to": latest},
+    #             "value": f"{earliest}-{latest}",
+    #         },
+    #     },
+    #     "@hierarchy": [hierarchy],
+    #     "summary": {
+    #         "title": summary_title,
+    #     },
+    #     "multimedia": [
+    #         {
+    #             "@entity": "reference",
+    #             "@admin": {
+    #                 "id": media_reference_id,
+    #             },
+    #         }
+    #     ],
+    #     "related": related,
+    #     "description": [{"value": description}],
+    #     "legal": {"status": "Open"},
+    # }
+
+    details_kv = {}
+    details_kv.update(iaid=iaid)
+    if reference_number:
+        details_kv.update(reference_number=reference_number)
+    if description:
+        details_kv.update(description=description)
+    detail = {"id": iaid, "@template": {"details": details_kv}}
 
     # note keys used in existing source will be overridden
     if source_values:
         for source_key_value in source_values:
             for key, value in source_key_value.items():
-                source[key] = value
+                detail[key] = value
 
-    return {"_source": source}
+    # return {"_source": source}  # TODO:Rosetta
+    return {"data": detail}
 
 
 def create_media(

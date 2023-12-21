@@ -13,11 +13,10 @@ from django.views.generic import FormView, TemplateView
 from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
-from ..ciim.client import Aggregation, SortBy, SortOrder, Stream, Template
+from ..ciim.client import Aggregation, Sort, Stream
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
-    FEATURED_BUCKETS,
     Bucket,
     BucketKeys,
     BucketList,
@@ -27,7 +26,7 @@ from ..ciim.constants import (
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
 from ..records.api import records_client
-from .forms import CatalogueSearchForm, FeaturedSearchForm
+from .forms import CatalogueSearchForm
 
 logger = logging.getLogger(__name__)
 
@@ -77,7 +76,7 @@ class BucketsMixin:
 
         # set `result_count` for each bucket
         doc_counts_by_key = {
-            group["key"]: group["doc_count"] for group in self.get_bucket_counts()
+            group["value"]: group["doc_count"] for group in self.get_bucket_counts()
         }
         for bucket in bucket_list:
             bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
@@ -180,7 +179,6 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
     def get_context_data(self, **kwargs):
         # Make empty search to fetch aggregations
         self.api_result = records_client.search(
-            template=Template.DETAILS,
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
                 Aggregation.CLOSURE,
@@ -377,8 +375,7 @@ class BaseFilteredSearchView(BaseSearchView):
 
     default_group: str = ""
     default_per_page: int = 20
-    default_sort_by: str = SortBy.RELEVANCE.value
-    default_sort_order: str = SortOrder.ASC.value
+    default_sort: str = Sort.RELEVANCE.value
     default_display: str = Display.LIST.value
 
     dynamic_choice_fields = (
@@ -391,13 +388,13 @@ class BaseFilteredSearchView(BaseSearchView):
         "type",
         "country",
         "location",
+        "place",
     )
 
     def get_initial(self) -> Dict[str, Any]:
         return {
             "group": self.default_group,
-            "sort_by": self.default_sort_by,
-            "sort_order": self.default_sort_order,
+            "sort": self.default_sort,
             "per_page": self.default_per_page,
             "display": self.default_display,
         }
@@ -417,8 +414,7 @@ class BaseFilteredSearchView(BaseSearchView):
         for field_name in (
             "group",
             "per_page",
-            "sort_by",
-            "sort_order",
+            "sort",
             "display",
         ):
             if field_name in form.errors:
@@ -445,9 +441,7 @@ class BaseFilteredSearchView(BaseSearchView):
             created_end_date=form.cleaned_data.get("covering_date_to"),
             offset=(self.page_number - 1) * page_size,
             size=page_size,
-            template=Template.DETAILS,
-            sort_by=form.cleaned_data.get("sort_by"),
-            sort_order=form.cleaned_data.get("sort_order"),
+            sort=form.cleaned_data.get("sort"),
         )
 
     def get_api_aggregations(self) -> List[str]:
@@ -492,15 +486,16 @@ class BaseFilteredSearchView(BaseSearchView):
 
         See also: `get_api_aggregations()`.
         """
-        for key, value in api_result.aggregations.items():
+        for value in api_result.aggregations:
+            key = value.get("name")
             field_name = camelcase_to_underscore(key)
             if field_name in self.dynamic_choice_fields:
-                choice_data = value.get("buckets", ())
+                choice_data = value.get("entries", ())
                 form.fields[field_name].update_choices(
                     choice_data, selected_values=form.cleaned_data.get(field_name, ())
                 )
                 form[field_name].more_filter_options_available = bool(
-                    value.get("sum_other_doc_count", 0)
+                    value.get("docCount", 0)
                 )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -649,7 +644,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     bucket_list = CATALOGUE_BUCKETS
-    default_group = "tna"
+    default_group = "community"
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
     search_tab = SearchTabs.CATALOGUE.value
@@ -672,59 +667,3 @@ class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         return super().get_context_data(url_name="search-catalogue", **kwargs)
-
-
-class FeaturedSearchView(BaseSearchView):
-    api_method_name = "search_all"
-    form_class = FeaturedSearchForm
-    template_name = "search/featured_search.html"
-    search_tab = SearchTabs.ALL.value
-    featured_search_total_count = 0
-    page_type = "Featured search page"
-    page_title = "Featured search"
-
-    def setup(self, request: HttpRequest, *args: Any, **kwargs: Any) -> None:
-        super().setup(request, *args, **kwargs)
-
-    def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
-        return {
-            "q": self.query or None,
-            "filter_aggregations": [
-                f"group:{bucket.key}" for bucket in FEATURED_BUCKETS
-            ],
-            "size": 3,
-        }
-
-    def get_buckets_for_display(self) -> Dict[str, Bucket]:
-        """
-        This method is similar in principal to the `BucketMixin` version, but
-        to work for this view, returns a `dict` instead of a `BucketList`, and
-        instead of receiving additional argument values, `result_count` and
-        `results` are set on each bucket using data from `self.api_result`.
-        """
-        buckets = {}
-        for i, bucket in enumerate(copy.deepcopy(FEATURED_BUCKETS)):
-            # NOTE: The API might not have been called if the form was invalid
-            if self.api_result:
-                results_for_bucket = self.api_result[i]
-                bucket.result_count = results_for_bucket.total_count
-                bucket.results = results_for_bucket.hits
-            buckets[bucket.key] = bucket
-        return buckets
-
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        self.set_session_info()
-        return super().get_context_data(
-            buckets=self.get_buckets_for_display(),
-            **kwargs,
-        )
-
-    def get_result_count(self):
-        """
-        Overrides BaseSearchView.get_result_count() to return the combined
-        totals from all buckets.
-        """
-        total = 0
-        for bucket in self.get_buckets_for_display().values():
-            total += bucket.result_count
-        return total

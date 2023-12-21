@@ -45,7 +45,7 @@ class ClientAPIModelChooserMixinIn(ChooserMixin):
 
     def get_object(self, pk):
         """Fetch selected object"""
-        return records_client.fetch(iaid=pk)
+        return records_client.fetch(id=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.

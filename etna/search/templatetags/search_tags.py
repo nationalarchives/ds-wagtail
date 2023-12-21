@@ -117,13 +117,13 @@ def extended_in_operator(lhs_operand, *rhs_operand_list) -> bool:
 
 
 @register.simple_tag
-def render_sort_by_input(form, id_suffix) -> str:
+def render_sort_input(form, id_suffix) -> str:
     """
-    returns sort_by field with name suffixed id.
+    returns sort field with name suffixed id.
     """
     bound_field = None
     for field in form:
-        if field.name == "sort_by":
+        if field.name == "sort":
             bound_field = field
     html = ""
     if bound_field:

@@ -6,7 +6,7 @@ from django.utils.functional import cached_property
 
 from etna.core.fields import END_OF_MONTH, DateInputField
 
-from ..ciim.client import SortBy, SortOrder
+from ..ciim.client import Sort
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
@@ -48,10 +48,10 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         count = f"{data['doc_count']:,}"
         try:
             # Use a label from the configured choice values, if available
-            return f"{self.configured_choice_labels[data['key']]} ({count})"
+            return f"{self.configured_choice_labels[data['value']]} ({count})"
         except KeyError:
             # Fall back to using the key value (which is the same in most cases)
-            return f"{data['key']} ({count})"
+            return f"{data['value']} ({count})"
 
     def update_choices(
         self,
@@ -78,8 +78,8 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         choice_vals_with_hits = set()
         choices = []
         for item in choice_data:
-            choices.append((item["key"], self.choice_label_from_api_data(item)))
-            choice_vals_with_hits.add(item["key"])
+            choices.append((item["value"], self.choice_label_from_api_data(item)))
+            choice_vals_with_hits.add(item["value"])
 
         for missing_value in [
             v for v in selected_values if v not in choice_vals_with_hits
@@ -177,6 +177,10 @@ class BaseCollectionSearchForm(forms.Form):
         label="Location",
         required=False,
     )
+    place = DynamicMultipleChoiceField(
+        label="Place",
+        required=False,
+    )
     opening_start_date = DateInputField(
         label="From",
         label_suffix=":",
@@ -210,23 +214,17 @@ class BaseCollectionSearchForm(forms.Form):
         max_value=50,
         required=False,
     )
-    sort_by = forms.ChoiceField(
+    sort = forms.ChoiceField(
         label="Sort by",
         choices=[
-            (SortBy.RELEVANCE.value, "Relevance"),
-            (SortBy.DATE_CREATED.value, "Date"),
-            (SortBy.TITLE.value, "Title"),
+            (Sort.RELEVANCE.value, "Relevance"),
+            (Sort.DATE_DESC.value, "Date (newest first)"),
+            (Sort.DATE_ASC.value, "Date (oldest first)"),
+            (Sort.TITLE_ASC.value, "Title (A–Z)"),
+            (Sort.TITLE_DESC.value, "Title (Z–A)"),
         ],
         required=False,
         widget=forms.Select(attrs={"class": "search-sort-view__form-select"}),
-    )
-    sort_order = forms.ChoiceField(
-        label="Sort order",
-        choices=[
-            (SortOrder.ASC.value, "Ascending"),
-            (SortOrder.DESC.value, "Descending"),
-        ],
-        required=False,
     )
     display = forms.ChoiceField(
         choices=[

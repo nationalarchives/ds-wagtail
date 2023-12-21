@@ -32,9 +32,7 @@
     <tr>
         <th scope="row">{{ 'note'|as_label }}</th>
         <td>
-            {% for item in record.note %}
-                <p>{{ item }}</p>
-            {% endfor %}
+            {{ record.note }}
         </td>
     </tr>
 {% endif %} 
@@ -69,15 +67,11 @@
     <tr>
         <th scope="row">{{ 'separated_materials'|as_label }}</th>
         <td>
-            {% for separated_material in record.separated_materials %}
-                {% if separated_material.description %}
-                    <p>{{ separated_material.description }}</p>
-                {% endif %}
-                {% if separated_material.links %}
-                    {% for link in separated_material.links %}
-                        <p><a href="{{ link.href }}">{{ link.text }}</a></p>
-                    {% endfor %}
-                {% endif %}
+            {% if record.separated_materials.description %}
+                <p>{{ record.separated_materials.description }}</p>
+            {% endif %}
+            {% for link in record.separated_materials.links %}
+                <p><a href="{{ link.href }}">{{ link.text }}</a></p>
             {% endfor %}
         </td>
     </tr>
@@ -110,13 +104,11 @@
     </tr>
 {% endif %}
 
-{% if record.location_of_originals %}
+ {% if record.location_of_originals %}
     <tr>
         <th scope="row">{{ 'location_of_originals'|as_label }}</th>
         <td>
-        {% for item in record.location_of_originals %}
-            <p>{{ item }}</p>
-        {% endfor %}
+            {{ record.location_of_originals }}
         </td>
     </tr>
 {% endif %}

@@ -15,6 +15,8 @@ def forTemplate(cls):
 
 @forTemplate
 class BucketKeys(StrEnum):
+    COMMUNITY = "community"
+    TNA = "tna"
     NONTNA = "nonTna"
 
 
@@ -41,11 +43,12 @@ class Aggregation(StrEnum):
     TYPE = "type"
     COUNTRY = "country"
     LOCATION = "location"
+    PLACE = "place"
 
 
 DEFAULT_AGGREGATIONS = [
     Aggregation.GROUP
-    + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
+    # TODO:Rosetta + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
 ]
 
 
@@ -70,10 +73,12 @@ class Bucket:
         values = []
         for aggregation in self.aggregations:
             bits = aggregation.split(":")
-            if len(bits) == 2:
-                values.append(bits[0] + ":" + bits[1])
-            else:
-                values.append(bits[0] + ":10")
+            # TODO:Rosetta
+            values.append(bits[0])
+            # if len(bits) == 2:
+            #     values.append(bits[0] + ":" + bits[1])
+            # else:
+            #     values.append(bits[0] + ":10")
         return values
 
     def __post_init__(self):
@@ -113,6 +118,13 @@ class BucketList:
 CATALOGUE_BUCKETS = BucketList(
     [
         Bucket(
+            key="community",
+            label="Digital community content",
+            description="Results for records held at The National Archives that match your search term.",
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.COLLECTION, Aggregation.PLACE],
+        ),
+        Bucket(
             key="tna",
             label="Records at The National Archives",
             description="Results for records held at The National Archives that match your search term.",
@@ -131,13 +143,6 @@ CATALOGUE_BUCKETS = BucketList(
                 Aggregation.CATALOGUE_SOURCE,
             ],
         ),
-    ]
-)
-
-FEATURED_BUCKETS = BucketList(
-    [
-        Bucket(key="tna", label="Records at The National Archives"),
-        Bucket(key="nonTna", label="Records at other UK archives"),
     ]
 )
 
@@ -662,9 +667,9 @@ TYPE_CHOICES = tuple(
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
-    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
-    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
-    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{id}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{id}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{id}",
 }
 
 CLOSURE_CLOSED_STATUS = [

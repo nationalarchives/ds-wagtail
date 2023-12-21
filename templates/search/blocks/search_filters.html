@@ -3,13 +3,13 @@
 <div class="search-sort-view">
     <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form-mobile" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
         <h2 class="tna-heading-l search-sort-view__heading">
-            <label for="id_sort_by_mobile">Sort by</label>
+            <label for="id_sort_mobile">Sort by</label>
         </h2>
-        {{ form.sort_by.errors }}
-        {% render_sort_by_input form=form id_suffix="mobile" %}
+        {{ form.sort.errors }}
+        {% render_sort_input form=form id_suffix="mobile" %}
 
         {# render hidden inputs for fields controlled by other forms #}
-        {% render_fields_as_hidden form exclude='sort_by' %}
+        {% render_fields_as_hidden form exclude='sort' %}
 
         <input type="submit" value="Update" class="search-sort-view__form-submit">
     </form>
@@ -37,7 +37,8 @@
             {% endif %}
         {% endcomment %}
 
-        {% if form.filter_keyword %}
+        {% comment %} {% if form.filter_keyword %} {% endcomment %}
+        {% if form.group.value == bucketkeys.TNA.value or form.group.value == bucketkeys.NONTNA.value %}
             <div class="search-filters__form-block">
                 <label for="{{form.filter_keyword.id_for_label}}" class="tna-heading-s search-filters__label--block">Search within results</label>
                 {{ form.filter_keyword }}
@@ -49,7 +50,7 @@
         <div class="search-filters__form-block">
             <h3 class="tna-heading-m sr-only">Edit filters</h3>
 
-            {% if form.group.value == 'tna' or form.group.value == 'nonTna' %}
+            {% if form.group.value == 'community' or  form.group.value == 'tna' or form.group.value == 'nonTna' %}
                 <div class="search-filters__section">
                     <fieldset role="group" aria-describedby="from-date">
                         <legend>
@@ -109,7 +110,7 @@
 
             {% include "search/includes/filter.html" with field=form.closure %}
 
-
+            {% include "search/includes/filter.html" with field=form.place %}
 
             {% if form.group.value == 'tna' %}
                 <div class="search-filters__section">
@@ -170,7 +171,7 @@
         </div>
 
         {# render hidden inputs for fields controlled by other forms #}
-        {% render_fields_as_hidden form include='q group sort_by sort_order' %}
+        {% render_fields_as_hidden form include='q group sort' %}
 
         <input type="submit" value="Update" class="search-filters__submit">
 

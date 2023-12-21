@@ -24,7 +24,6 @@ INSTALLED_APPS.remove("birdbath")
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#staticfilesstorage
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 
-IMAGE_VIEWER_REQUIRE_LOGIN = False
 RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False
 
