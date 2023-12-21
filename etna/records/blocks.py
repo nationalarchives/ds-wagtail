@@ -90,11 +90,11 @@ class RecordChooserBlock(blocks.ChooserBlock):
             return value
 
         try:
-            return records_client.fetch(iaid=value)
+            return records_client.fetch(id=value)
         except ClientAPIError:
             # If there's a connection issue with Client API, return a stub Record
             # so we have something to render on the ResultsPage edit form.
-            return self.target_model(raw_data={"iaid": value})
+            return self.target_model(raw_data={"id": value})
 
     def get_form_state(self, value):
         return self.widget.get_value_data(value)

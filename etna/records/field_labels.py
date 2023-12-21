@@ -6,7 +6,7 @@ FIELD_LABELS = {
     "created_by": "Creator",
     "description": "Description",
     "date_created": "Date",
-    "access_condition": "Access conditions",
+    "access_conditions": "Access conditions",
     "held_by": "Held by",
     "parent": "This record is in",
     "hierarchy": "Where am I in the catalogue?",

@@ -239,17 +239,20 @@ class ClientAPI:
         item_type: Type = Record,
     ) -> ResultList:
         try:
-            hits = response_data["hits"]["hits"]
+            hits = response_data["metadata"]
         except KeyError:
             hits = []
         try:
-            total_count = response_data["hits"]["total"]["value"]
+            total_count = response_data["stats"]["total"]
         except KeyError:
             total_count = len(hits)
 
-        aggregations_data = response_data.get("aggregations", {})
+        aggregations_data = response_data.get("aggregations", [])
         if bucket_counts is None:
-            bucket_counts = aggregations_data.get("group", {}).get("buckets", [])
+            if not aggregations_data:
+                bucket_counts = []
+            else:
+                pass  # TODO:Rosetta
 
         return ResultList(
             hits=hits,
@@ -262,10 +265,7 @@ class ClientAPI:
     def fetch(
         self,
         *,
-        iaid: Optional[str] = None,
         id: Optional[str] = None,
-        template: Optional[Template] = None,
-        expand: Optional[bool] = None,
     ) -> Record:
         """Make request and return response for Client API's /fetch endpoint.
 
@@ -273,23 +273,12 @@ class ClientAPI:
 
         Keyword arguments:
 
-        iaid:
-            Return match on Information Asset Identifier - iaid (or similar primary identifier)
         id:
-            Generic identifier. Matches on references_number or iaid
-        template:
-            @template data to include with response
-        expand:
-            include @next and @previous record with response. Client API defaults to false
+            Generic identifier. Matches various id's
+            Ex: returns match on Information Asset Identifier - iaid (or similar primary identifier), creator records faid
         """
         params = {
-            # Yes 'metadata_id' is inconsistent with the 'iaid' argument name, but this
-            # API argument name is temporary, and 'iaid' will be replaced more broadly with
-            # something more generic soon
-            "metadataId": iaid,
             "id": id,
-            "template": template,
-            "expand": expand,
         }
 
         # Get HTTP response from the API
@@ -311,18 +300,16 @@ class ClientAPI:
         self,
         *,
         q: Optional[str] = None,
-        web_reference: Optional[str] = None,
-        opening_start_date: Optional[Union[date, datetime]] = None,
-        opening_end_date: Optional[Union[date, datetime]] = None,
-        created_start_date: Optional[Union[date, datetime]] = None,
-        created_end_date: Optional[Union[date, datetime]] = None,
+        opening_start_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
+        opening_end_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
+        created_start_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
+        created_end_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
         stream: Optional[Stream] = None,
-        sort_by: Optional[SortBy] = None,
-        sort_order: Optional[SortOrder] = None,
-        template: Optional[Template] = None,
-        aggregations: Optional[list[Aggregation]] = None,
-        filter_aggregations: Optional[list[str]] = None,
-        filter_keyword: Optional[str] = None,
+        sort_by: Optional[SortBy] = None,  # TODO:Rosetta
+        sort_order: Optional[SortOrder] = None,  # TODO:Rosetta
+        aggregations: Optional[list[Aggregation]] = None,  # TODO:Rosetta
+        filter_aggregations: Optional[list[str]] = None,  # TODO:Rosetta
+        filter_keyword: Optional[str] = None,  # TODO:Rosetta
         offset: Optional[int] = None,
         size: Optional[int] = None,
     ) -> ResultList:
@@ -337,16 +324,12 @@ class ClientAPI:
 
         q:
             String to query all indexed fields
-        web_reference:
-            Return matches on references_number
         stream:
             Restrict results to given stream
         sort_by:
             Field to sort results.
         sortOrder:
             Order of sorted results
-        template:
-            @template data to include with response
         aggregations:
             aggregations to include with response. Number returned can be set
             by optional count suffix: <aggregation>:<number-to-return>
@@ -361,37 +344,32 @@ class ClientAPI:
         """
         params = {
             "q": q,
-            "webReference": web_reference,
-            "stream": stream,
-            "sort": sort_by,
-            "sortOrder": sort_order,
-            "template": template,
-            "aggregations": aggregations,
-            "filterAggregations": prepare_filter_aggregations(filter_aggregations),
-            "filter": filter_keyword,
+            "fields": f"stream:{stream}",
+            "aggs": aggregations,
+            "filter": prepare_filter_aggregations(filter_aggregations),
             "from": offset,
             "size": size,
         }
 
-        if opening_start_date:
-            params["openingStartDate"] = self.format_datetime(
-                opening_start_date, supplementary_time=time.min
-            )
+        # if opening_start_date:
+        #     params["openingStartDate"] = self.format_datetime(
+        #         opening_start_date, supplementary_time=time.min
+        #     )
 
-        if opening_end_date:
-            params["openingEndDate"] = self.format_datetime(
-                opening_end_date, supplementary_time=time.max
-            )
+        # if opening_end_date:
+        #     params["openingEndDate"] = self.format_datetime(
+        #         opening_end_date, supplementary_time=time.max
+        #     )
 
-        if created_start_date:
-            params["createdStartDate"] = self.format_datetime(
-                created_start_date, supplementary_time=time.min
-            )
+        # if created_start_date:
+        #     params["createdStartDate"] = self.format_datetime(
+        #         created_start_date, supplementary_time=time.min
+        #     )
 
-        if created_end_date:
-            params["createdEndDate"] = self.format_datetime(
-                created_end_date, supplementary_time=time.max
-            )
+        # if created_end_date:
+        #     params["createdEndDate"] = self.format_datetime(
+        #         created_end_date, supplementary_time=time.max
+        #     )
 
         # Get HTTP response from the API
         response = self.make_request(f"{self.base_url}/search", params=params)
@@ -400,15 +378,18 @@ class ClientAPI:
         response_data = response.json()
 
         # Pull out the separate ES responses
-        bucket_counts_data, results_data = response_data["responses"]
+        bucket_counts_data = []
+        aggregations = response_data["aggregations"]
+        for aggregation in aggregations:
+            if aggregation.get("name", "") == "group":
+                bucket_counts_data = aggregation.get("entries", [])
+        results_data = response_data
 
         # Return a single ResultList, using bucket counts from the first ES response,
         # and full hit/aggregation data from the second.
         return self.resultlist_from_response(
             results_data,
-            bucket_counts=bucket_counts_data["aggregations"]
-            .get("group", {})
-            .get("buckets", ()),
+            bucket_counts=bucket_counts_data,
         )
 
     def search_all(

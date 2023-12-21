@@ -53,4 +53,4 @@ class RecordChooser(AdminChooser):
 
     def get_instance(self, pk):
         """Fetch related instance on edit form."""
-        return records_client.fetch(iaid=pk)
+        return records_client.fetch(id=pk)

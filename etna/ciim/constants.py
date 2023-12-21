@@ -49,7 +49,7 @@ class Aggregation(StrEnum):
 
 DEFAULT_AGGREGATIONS = [
     Aggregation.GROUP
-    + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
+    # TODO:Rosetta + ":30",  # Fetch more 'groups' so that we receive counts for any bucket/tab options we might be showing.
 ]
 
 
@@ -74,10 +74,12 @@ class Bucket:
         values = []
         for aggregation in self.aggregations:
             bits = aggregation.split(":")
-            if len(bits) == 2:
-                values.append(bits[0] + ":" + bits[1])
-            else:
-                values.append(bits[0] + ":10")
+            # TODO:Rosetta
+            values.append(bits[0])
+            # if len(bits) == 2:
+            #     values.append(bits[0] + ":" + bits[1])
+            # else:
+            #     values.append(bits[0] + ":10")
         return values
 
     def __post_init__(self):
@@ -719,9 +721,9 @@ TYPE_CHOICES = tuple(
 TNA_URLS = {
     "discovery_browse": "https://discovery.nationalarchives.gov.uk/browse/r/h",
     "tna_accessions": "https://www.nationalarchives.gov.uk/accessions",
-    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{iaid}",
-    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{iaid}",
-    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{iaid}",
+    "discovery_rec_default_fmt": "https://discovery.nationalarchives.gov.uk/details/r/{id}",
+    "discovery_rec_archon_fmt": "https://discovery.nationalarchives.gov.uk/details/a/{id}",
+    "discovery_rec_creators_fmt": "https://discovery.nationalarchives.gov.uk/details/c/{id}",
 }
 
 #  associate readable names with api identifiers

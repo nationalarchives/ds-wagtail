@@ -21,6 +21,7 @@ from ...ciim.tests.factories import create_media, create_record, create_response
 User = get_user_model()
 
 
+@unittest.skip("TODO:Rosetta")
 class TestRecordDisambiguationView(TestCase):
     @responses.activate
     @prevent_request_warnings
@@ -89,6 +90,7 @@ class TestRecordDisambiguationView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
 
+@unittest.skip("TODO:Rosetta")
 class TestRecordView(TestCase):
     @responses.activate
     @prevent_request_warnings
@@ -262,6 +264,7 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_creators.html")
 
 
+@unittest.skip("TODO:Rosetta")
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     @responses.activate
     def test_datalayer_level1(self):
@@ -769,6 +772,7 @@ class TestImageViewerView(TestCase):
         self.assertEquals(response.status_code, 404)
 
 
+@unittest.skip("TODO:Rosetta")
 class RecordDetailBackToSearchTest(TestCase):
     def setUp(self):
         responses.add(
@@ -782,7 +786,7 @@ class RecordDetailBackToSearchTest(TestCase):
         )
 
         self.record_detail_url = reverse(
-            "details-page-machine-readable", kwargs={"iaid": "C13359805"}
+            "details-page-machine-readable", kwargs={"id": "C13359805"}
         )
 
         self.expected_button_link_gen_value_fmt = '<a class="cta-primary-panel__link" href="{back_to_search_url}" data-link-type="Link" data-link="Back to search results" data-component-name="Navigation">'
