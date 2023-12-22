@@ -2,7 +2,7 @@
 
 <div class="search-sort-view">
     <form method="GET" class="search-sort-view__form search-sort-view__mobile" data-id="sort-form-mobile" id="catalogue-sort-form-mobile" data-search-type="{{ view.search_tab }}" data-search-bucket="{{ buckets.current.label }}" data-search-filter-name="Sort results" data-search-filter-value="">
-        <h2 class="tna-heading-l search-sort-view__heading">
+        <h2 class="tna-heading-l search-sort-view__heading sr-only">
             <label for="id_sort_mobile">Sort by</label>
         </h2>
         {{ form.sort.errors }}
@@ -11,7 +11,7 @@
         {# render hidden inputs for fields controlled by other forms #}
         {% render_fields_as_hidden form exclude='sort' %}
 
-        <input type="submit" value="Update" class="search-sort-view__form-submit">
+        <input type="submit" value="Sort by" class="search-sort-view__form-submit">
     </form>
 </div>
 
