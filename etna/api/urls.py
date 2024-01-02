@@ -14,8 +14,6 @@ from wagtailmedia.api.views import MediaAPIViewSet
 # from wagtail.images.api.fields import ImageRenditionField
 
 
-
-
 class PagePreviewAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["content_type", "token"]
