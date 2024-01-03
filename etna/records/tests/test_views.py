@@ -31,10 +31,10 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/AD/2/2/")
 
-        self.assertEquals(
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     @responses.activate
     def test_disambiguation_page_rendered_for_multiple_results(self):
@@ -51,7 +51,7 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/ADM/223/3/")
 
-        self.assertEquals(
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
         self.assertTemplateUsed(response, "records/record_disambiguation_page.html")
@@ -80,8 +80,8 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/ADM/223/3/", follow=False)
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -100,8 +100,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
 
@@ -119,8 +119,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")

@@ -71,7 +71,7 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         for url in CONDITIONALLY_PROTECTED_URLS:
             with self.subTest(f"URL: {url}"):
                 response = self.client.get(url)
-                self.assertEquals(response.status_code, 200)
+                self.assertEqual(response.status_code, 200)
 
     @responses.activate
     @override_settings(
@@ -82,4 +82,4 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         for url in CONDITIONALLY_PROTECTED_URLS:
             with self.subTest(f"URL: {url}"):
                 response = self.client.get(url)
-                self.assertEquals(response.status_code, 200)
+                self.assertEqual(response.status_code, 200)

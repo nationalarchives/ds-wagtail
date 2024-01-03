@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
-from distutils.sysconfig import get_python_lib
-from distutils.util import strtobool
+from sysconfig import get_path
 
 import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from ..versioning import get_git_sha
+from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -104,7 +104,7 @@ TEMPLATES = [
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
             os.path.join(
-                get_python_lib(), "nationalarchives-frontend-django/templates"
+                get_path("platlib"), "nationalarchives-frontend-django/templates"
             ),
         ],
         "APP_DIRS": True,
