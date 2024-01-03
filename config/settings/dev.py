@@ -1,7 +1,7 @@
 import logging
 import os
 
-from distutils.util import strtobool
+from lib.util import strtobool
 
 from .base import *  # noqa: F401
 
