@@ -590,7 +590,7 @@ class ImageTestCase(TestCase):
         images = Image.search.filter(rid="")
         image = images[0]
 
-        self.assertEquals(
+        self.assertEqual(
             image.thumbnail_url, "https://media.preview/path/to/thumbnail.jpeg"
         )
 
@@ -612,7 +612,7 @@ class ImageTestCase(TestCase):
         image = images[0]
 
         # Fallback serves image through Wagtail instead of from Client API
-        self.assertEquals(image.thumbnail_url, "/records/image/path/to/image.jpeg")
+        self.assertEqual(image.thumbnail_url, "/records/image/path/to/image.jpeg")
 
 
 @unittest.skip("TODO:Rosetta")

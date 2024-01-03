@@ -141,7 +141,7 @@ class TestMachineReadableDetailsRouteResolution(TestCase):
     def test_iaid_with_non_standard_prefix(self):
         resolver = resolve("/catalogue/id/C123456/")
 
-        self.assertEquals(resolver.view_name, "details-page-machine-readable")
+        self.assertEqual(resolver.view_name, "details-page-machine-readable")
         self.assertEqual(resolver.kwargs["id"], "C123456")
 
     def test_resolves_uuid(self):
