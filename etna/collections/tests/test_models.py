@@ -22,7 +22,7 @@ class TestTopicExplorerIndexPages(TestCase):
         root_page.add_child(instance=self.topic_explorer_index_page)
 
     def test_no_child_pages(self):
-        self.assertEquals(
+        self.assertEqual(
             self.topic_explorer_index_page.topic_explorer_pages.count(), 0
         )
 
@@ -33,7 +33,7 @@ class TestTopicExplorerIndexPages(TestCase):
         self.topic_explorer_index_page.add_child(instance=unpublished_topic_page)
         unpublished_topic_page.unpublish()
 
-        self.assertEquals(
+        self.assertEqual(
             self.topic_explorer_index_page.topic_explorer_pages.count(), 0
         )
 
@@ -47,7 +47,7 @@ class TestTopicExplorerIndexPages(TestCase):
         self.topic_explorer_index_page.add_child(instance=private_topic_page)
         PageViewRestriction.objects.create(page=private_topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.topic_explorer_index_page.topic_explorer_pages.count(), 0
         )
 
@@ -57,7 +57,7 @@ class TestTopicExplorerIndexPages(TestCase):
         )
         self.topic_explorer_index_page.add_child(instance=topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.topic_explorer_index_page.topic_explorer_pages.count(), 1
         )
 
@@ -71,7 +71,7 @@ class TestTopicExplorerIndexPages(TestCase):
         )
         self.topic_explorer_index_page.add_child(instance=topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.topic_explorer_index_page.topic_explorer_pages.count(), 0
         )
 
@@ -158,7 +158,7 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         root_page.add_child(instance=self.time_period_explorer_index_page)
 
     def test_no_child_pages(self):
-        self.assertEquals(
+        self.assertEqual(
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 0
         )
 
@@ -173,7 +173,7 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         self.time_period_explorer_index_page.add_child(instance=unpublished_topic_page)
         unpublished_topic_page.unpublish()
 
-        self.assertEquals(
+        self.assertEqual(
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 0
         )
 
@@ -191,7 +191,7 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         self.time_period_explorer_index_page.add_child(instance=private_topic_page)
         PageViewRestriction.objects.create(page=private_topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 0
         )
 
@@ -205,7 +205,7 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
         self.time_period_explorer_index_page.add_child(instance=topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 1
         )
 
@@ -215,6 +215,6 @@ class TestTimePeriodExplorerIndexPages(TestCase):
         )
         self.time_period_explorer_index_page.add_child(instance=topic_page)
 
-        self.assertEquals(
+        self.assertEqual(
             self.time_period_explorer_index_page.time_period_explorer_pages.count(), 0
         )
