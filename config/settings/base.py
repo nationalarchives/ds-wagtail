@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 import os
 
 from distutils.sysconfig import get_python_lib
-from distutils.util import strtobool
+from lib.util import strtobool
 
 import sentry_sdk
 
