@@ -1,10 +1,44 @@
 {% extends "base_page.html" %}
 
+{% load static wagtailcore_tags %}
+
 {% block content %}
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css"
+    />
+
+  <style>
+    #uv {
+        width: 100%;
+        height: 668px;
+    }
+  </style>
+
   <article class="tna-container">
     <div class="tna-column tna-column--full">
-      <script src="https://www.unpkg.com/@samvera/clover-iiif@latest/dist/web-components/index.umd.js"></script>
-      <clover-viewer id="{{ page.iiif_manifest_id }}" />
+        <h2 class="heading heading--two">
+            Clover
+        </h2>
+        <div id="clover-viewer" data-id="{{ page.iiif_manifest_id }}"></div>
     </div>
   </article>
+
+  <article class="tna-container">
+    <div class="tna-column tna-column--full">
+        <h2 class="heading heading--two">
+            Universal Viewer
+        </h2>
+        <div class="uv" id="uv" data-uv data-id="{{ page.iiif_manifest_id }}"></div>
+    </div>
+  </article>
+
 {% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'scripts/clover.js' %}"></script>
+    <script
+      type="application/javascript"
+      src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0-pre.106/dist/umd/UV.js"
+    ></script>
+{% endblock %}

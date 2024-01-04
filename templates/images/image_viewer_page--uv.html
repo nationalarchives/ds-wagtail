@@ -1,0 +1,51 @@
+{% extends "base_page.html" %}
+
+{% load static wagtailcore_tags %}
+
+{% block content %}
+
+{% comment %} <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css" />
+<script type="application/javascript" src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/umd/UV.js"></script>
+
+<style>
+    #uv {
+        width: 100%;
+        height: 50vh;
+    }
+</style> {% endcomment %}
+
+  <article class="tna-container">
+    <div class="tna-column tna-column--full">
+        <script src="https://www.unpkg.com/@samvera/clover-iiif@latest/dist/web-components/index.umd.js"></script>
+        <clover-viewer id="{{ page.iiif_manifest_id }}" />
+  
+        {% comment %} <div id="uv" class="uv"></div> {% endcomment %}
+    </div>
+  </article>
+{% endblock content %}
+
+{% block extra_js %}
+    {% comment %} <script>
+        var urlAdapter = new UV.IIIFURLAdapter();
+
+        const data = urlAdapter.getInitialData({
+            manifest: "{{ page.iiif_manifest_id }}",
+        });
+
+        uv = UV.init("uv", data);
+        urlAdapter.bindTo(uv);
+
+        // override config using an inline json object
+        uv.on("configure", function ({ config, cb }) {
+            cb({
+                options: { 
+                    footerPanelEnabled: false,
+                    headerPanelEnabled: false,
+                    leftPanelEnabled: true,
+                    useArrowKeysToNavigate: true,
+                    theme: "uv-en-GB-theme",
+                }
+            });
+        });
+    </script> {% endcomment %}
+{% endblock %}
