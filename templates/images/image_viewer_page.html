@@ -3,17 +3,10 @@
 {% load static wagtailcore_tags %}
 
 {% block content %}
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css"
-    />
-
-  <style>
-    #uv {
-        width: 100%;
-        height: 668px;
-    }
-  </style>
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css"
+  />
 
   <article class="tna-container">
     <div class="tna-column tna-column--full">
@@ -29,10 +22,9 @@
         <h2 class="heading heading--two">
             Universal Viewer
         </h2>
-        <div class="uv" id="uv" data-uv data-id="{{ page.iiif_manifest_id }}"></div>
+        <div class="uv" id="uv"></div>
     </div>
   </article>
-
 {% endblock content %}
 
 {% block extra_js %}
@@ -41,4 +33,11 @@
       type="application/javascript"
       src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0-pre.106/dist/umd/UV.js"
     ></script>
+    <script>
+        const data = {
+            manifest: "{{ page.iiif_manifest_id }}",
+          };
+    
+          uv = UV.init("uv", data);
+    </script>
 {% endblock %}
