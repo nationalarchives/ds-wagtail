@@ -1,9 +1,8 @@
 import logging
 import os
 
-from distutils.util import strtobool
-
 from .base import *  # noqa: F401
+from .util import strtobool
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = strtobool(os.getenv("DEBUG", "True"))  # noqa: F405
