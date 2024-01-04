@@ -6,6 +6,7 @@ on:
     branches:
       # - main
       - develop
+      - feature/image-viewer
     paths:
       # Host config
       - '.plaform/**'
