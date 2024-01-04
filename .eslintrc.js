@@ -5,7 +5,11 @@ module.exports = {
         jquery: true,
         jest: true,
     },
-    extends: ["eslint:recommended"],
+    plugins: ["react"],
+    extends: [
+        "eslint:recommended",
+        "plugin:react/recommended"
+    ],
     overrides: [
         {
             env: {
@@ -20,6 +24,14 @@ module.exports = {
     parserOptions: {
         ecmaVersion: "latest",
         sourceType: "module",
+        ecmaFeatures: {
+            jsx: true
+        }
     },
     rules: {},
+    settings: {
+        react: {
+            version: "detect"
+        }
+    }
 };
