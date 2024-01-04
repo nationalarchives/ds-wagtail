@@ -69,3 +69,8 @@
         @include make-container-max-widths();
     }
 }
+
+.container-fluid-grey {
+    width: 100%;
+    background: #f4f4f4;
+}
