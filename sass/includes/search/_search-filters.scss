@@ -4,7 +4,7 @@
     padding: 1rem;
 
     &__heading {
-        //font-size: 1.3em;
+        // font-size: 1.3em;
         display: none;
     }
 
@@ -165,14 +165,14 @@
     color: $color__grey-600;
 }
 
-//gov uk overrides
+// gov uk overrides
 
 .govuk-accordion__section-toggle-text,
 .govuk-accordion__section-heading-divider {
     display: none;
 }
 
-//GDS chevrons
+// GDS chevrons
 
 .govuk-accordion__show-all-text {
     margin-left: 0.5rem;
