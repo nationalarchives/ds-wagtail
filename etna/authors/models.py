@@ -7,9 +7,13 @@ from django.utils.functional import cached_property
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
+
+from rest_framework import serializers
 
 from etna.core.models import BasePage
 
@@ -30,6 +34,17 @@ class AuthorIndexPage(BasePage):
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
         return self.get_children().type(AuthorPage).order_by("title").live().specific()
+
+
+# TODO: Make better
+class AuthorPageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
 
 
 class AuthorPage(BasePage):
@@ -67,6 +82,23 @@ class AuthorPage(BasePage):
 
     parent_page_types = ["authors.AuthorIndexPage"]
     subpage_types = []
+
+    api_fields = BasePage.api_fields + [
+        APIField("role"),
+        APIField("summary"),
+        APIField("image"),
+        APIField(
+            "authored_focused_articles", serializer=AuthorPageSerializer(many=True)
+        ),
+        APIField(
+            "image_jpg",
+            serializer=ImageRenditionField("fill-512x512", source="image"),
+        ),
+        APIField(
+            "image_small_jpg",
+            serializer=ImageRenditionField("fill-128x128", source="image"),
+        ),
+    ]
 
     @cached_property
     def authored_focused_articles(self):

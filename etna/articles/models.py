@@ -15,15 +15,18 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
-from etna.authors.models import AuthorPageMixin
+from etna.authors.models import AuthorPageMixin, AuthorTag
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import (
     BasePageWithIntro,
@@ -108,6 +111,8 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
+    api_fields = [APIField("article_tag_names")]
+
 
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
@@ -133,6 +138,11 @@ class ArticleIndexPage(BasePageWithIntro):
         null=True,
         use_json_field=True,
     )
+
+    api_fields = BasePageWithIntro.api_fields + [
+        APIField("featured_article"),
+        APIField("featured_pages"),
+    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -169,6 +179,24 @@ class ArticleIndexPage(BasePageWithIntro):
         "articles.FocusedArticlePage",
         "articles.RecordArticlePage",
     ]
+
+
+# TODO: Make better
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
+
+
+# TODO: Make better
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuthorTag
+        fields = ("author",)
 
 
 class ArticlePage(
@@ -234,6 +262,22 @@ class ArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    verbose_name_public = Meta.verbose_name_public
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            APIField("verbose_name_public"),
+            APIField("similar_items", serializer=PageSerializer(many=True)),
+            APIField("latest_items", serializer=PageSerializer(many=True)),
+            APIField("body"),
+            # TODO
+            # APIField("topics"),
+            # APIField("time_periods"),
         ]
     )
 
@@ -380,6 +424,17 @@ class FocusedArticlePage(
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
             index.SearchField("author_names", boost=1),
+        ]
+    )
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + HeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("body"),
+            APIField("authors", serializer=AuthorSerializer(many=True)),
         ]
     )
 
@@ -612,6 +667,33 @@ class RecordArticlePage(
             index.SearchField("about"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
+        ]
+    )
+
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("about"),
+            APIField("date_text"),
+            APIField("about"),
+            APIField("record"),
+            APIField("gallery_heading"),
+            APIField("image_library_link"),
+            # APIField("intro_image"),
+            APIField("featured_article"),
+            APIField("promoted_links"),
+            # APIField("promote_panels"),
+            APIField(
+                "intro_image_jpg",
+                serializer=ImageRenditionField("fill-512x512", source="intro_image"),
+            ),
+            # APIField("content_panels"),
+            # APIField("gallery_items"),
+            # APIField("gallery_text"),
         ]
     )
 
