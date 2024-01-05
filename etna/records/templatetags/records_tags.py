@@ -1,7 +1,7 @@
 from django import template
 from django.conf import settings
 
-from ...ciim.constants import TNA_URLS, LevelKeys, NonTNALevelKeys
+from ...ciim.constants import TNA_URLS, BucketKeys, LevelKeys, NonTNALevelKeys
 from ..field_labels import FIELD_LABELS
 from ..models import Record
 
@@ -35,7 +35,7 @@ def record_url(
 
     form_group: use with results from search queries, value determines ex: community, tna, nonTna results
     """
-    if form_group == "community" or record.group == "community":
+    if form_group == BucketKeys.COMMUNITY or record.group == BucketKeys.COMMUNITY:
         if use_collection_id:
             return record.get_collection_url
         return record.get_ciim_url
@@ -50,9 +50,9 @@ def record_url(
         if use_non_reference_number_url:
             return record.non_reference_number_url
 
-        if form_group == "nonTna":
+        if form_group == BucketKeys.NONTNA:
             is_tna = False
-        elif form_group == "tna":
+        elif form_group == BucketKeys.TNA:
             is_tna = True
         else:
             is_tna = record.is_tna

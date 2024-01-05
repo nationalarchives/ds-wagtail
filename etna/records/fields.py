@@ -23,10 +23,10 @@ class LazyRecord(SimpleLazyObject):
     def __init__(self, id: str):
         self.__dict__["id"] = id
 
-        def _fetch_record():
-            return records_client.fetch(id=id)
+        def _get_record():
+            return records_client.get(id=id)
 
-        super().__init__(_fetch_record)
+        super().__init__(_get_record)
 
     def __getattribute__(self, name: str) -> Any:
         """
@@ -54,7 +54,7 @@ class RecordChoiceField(CharField):
         if value in self.empty_values:
             return None
         try:
-            records_client.fetch(id=value)
+            records_client.get(id=value)
         except HTTPError:
             raise ValidationError(
                 f"Record data could not be retrieved using id '{value}'.",

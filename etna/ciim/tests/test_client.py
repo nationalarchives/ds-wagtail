@@ -1,18 +1,20 @@
 import unittest
 
-from datetime import datetime
+from datetime import date, datetime
+from urllib.parse import quote
 
 from django.conf import settings
 from django.test import SimpleTestCase
 
 import responses
 
-from etna.ciim.constants import Aggregation
+from etna.ciim.constants import Aggregation, BucketKeys
 from etna.ciim.tests.factories import (
     create_record,
     create_response,
     create_search_response,
 )
+from etna.core.utils import dotdict
 from etna.records.api import get_records_client
 from etna.records.models import Record
 
@@ -27,18 +29,6 @@ from ..exceptions import (
 )
 
 
-@unittest.skip("TODO:Rosetta")
-class ClientSearchAllTest(SimpleTestCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.records_client = get_records_client()
-
-    def setUp(self):
-        responses.add(responses.GET, f"{settings.CLIENT_BASE_URL}/searchAll", json={})
-
-
-@unittest.skip("TODO:Rosetta")
 class ClientSearchTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -67,16 +57,7 @@ class ClientSearchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/search?q=Egypt",
         )
 
-    @responses.activate
-    def test_with_web_reference(self):
-        self.records_client.search(web_reference="ADM/223/3")
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?webReference=ADM%2F223%2F3",
-        )
-
+    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_with_opening_start_date(self):
         self.records_client.search(
@@ -89,6 +70,7 @@ class ClientSearchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/search?openingStartDate=1901-02-03T00%3A00%3A00",
         )
 
+    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_with_opening_end_date(self):
         self.records_client.search(opening_end_date=datetime(year=1901, month=2, day=3))
@@ -102,64 +84,77 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_created_start_date(self):
         self.records_client.search(
-            created_start_date=datetime(year=1901, month=2, day=3)
+            group=BucketKeys.COMMUNITY,
+            created_start_date=date(year=1901, month=2, day=3),
         )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?createdStartDate=1901-02-03T00%3A00%3A00",
+            f"{settings.CLIENT_BASE_URL}/search?filter={quote('fromDate:(>=1901-02-03)')}",
         )
 
     @responses.activate
     def test_with_created_end_date(self):
-        self.records_client.search(created_end_date=datetime(year=1901, month=2, day=3))
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?createdEndDate=1901-02-03T00%3A00%3A00",
+        self.records_client.search(
+            group=BucketKeys.COMMUNITY, created_end_date=date(year=1901, month=2, day=3)
         )
 
-    @responses.activate
-    def test_with_evidential_stream(self):
-        self.records_client.search(stream=Stream.EVIDENTIAL)
-
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?stream=evidential",
-        )
-
-    @responses.activate
-    def test_with_interpretive_stream(self):
-        self.records_client.search(stream=Stream.INTERPRETIVE)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?stream=interpretive",
+            f"{settings.CLIENT_BASE_URL}/search?filter={quote('toDate:(<=1901-02-03)')}",
         )
 
     @responses.activate
     def test_with_sort_title(self):
-        self.records_client.search(sort=Sort.TITLE_ASC)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?sort=title:asc",
-        )
+        for index, test_data in enumerate(
+            (
+                {
+                    "label": "title ascending",
+                    "value": Sort.TITLE_ASC,
+                    "expected": f"{settings.CLIENT_BASE_URL}/search?sort={quote('title:asc')}",
+                },
+                {
+                    "label": "title descending",
+                    "value": Sort.TITLE_DESC,
+                    "expected": f"{settings.CLIENT_BASE_URL}/search?sort={quote('title:desc')}",
+                },
+            )
+        ):
+            test_data = dotdict(test_data)
+            with self.subTest(test_data.label):
+                self.records_client.search(sort=test_data.value)
+                self.assertEqual(
+                    responses.calls[index].request.url,
+                    test_data.expected,
+                    test_data.label,
+                )
 
     @responses.activate
-    def test_with_sort_date_created(self):
-        self.records_client.search(sort=Sort.DATE_ASC)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?sort=dateCreated",
-        )
+    def test_with_sort_date(self):
+        for index, test_data in enumerate(
+            (
+                {
+                    "label": "date ascending",
+                    "value": Sort.DATE_ASC,
+                    "expected": f"{settings.CLIENT_BASE_URL}/search?sort={quote('date:asc')}",
+                },
+                {
+                    "label": "date descending",
+                    "value": Sort.DATE_DESC,
+                    "expected": f"{settings.CLIENT_BASE_URL}/search?sort={quote('date:desc')}",
+                },
+            )
+        ):
+            test_data = dotdict(test_data)
+            with self.subTest(test_data.label):
+                self.records_client.search(sort=test_data.value)
+                self.assertEqual(
+                    responses.calls[index].request.url,
+                    test_data.expected,
+                    test_data.label,
+                )
 
     @unittest.skip("TODO:Rosetta")
     @responses.activate
@@ -182,50 +177,28 @@ class ClientSearchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/search?sort=",
         )
 
-    @unittest.skip("TODO:Rosetta")
-    @responses.activate
-    def test_with_sort_order_asc(self):
-        self.records_client.search(sort_order="")
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?sortOrder=asc",
-        )
-
-    @unittest.skip("TODO:Rosetta")
-    @responses.activate
-    def test_with_sort_order_desc(self):
-        self.records_client.search(sort_order="")
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?sortOrder=desc",
-        )
-
     @responses.activate
     def test_with_aggregations(self):
         self.records_client.search(
-            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION, Aggregation.TYPE]
+            aggregations=[Aggregation.GROUP, Aggregation.COLLECTION, Aggregation.PLACE]
         )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "aggregations=level"
-            "&aggregations=collection"
-            "&aggregations=type",
+            "aggs=group"
+            "&aggs=collection"
+            "&aggs=place",
         )
 
     @responses.activate
     def test_with_filter_aggregations(self):
         self.records_client.search(
             filter_aggregations=[
-                "level:Item",
-                "topic:second world war",
-                "closure:Closed Or Retained Document, Closed Description",
+                "group:community",
+                "collection:SWOP",
+                "place:White Hart Street",
             ]
         )
 
@@ -233,23 +206,23 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filterAggregations=level%3AItem"
-            "&filterAggregations=topic%3Asecond+world+war"
-            "&filterAggregations=closure%3AClosed+Or+Retained+Document%2C+Closed+Description",
+            "filter=group%3Acommunity"
+            "&filter=collection%3ASWOP"
+            "&filter=place%3AWhite+Hart+Street",
         )
 
     @responses.activate
-    def test_with_filter_collection(self):
+    def test_with_filter_collection_multiple_values(self):
         self.records_client.search(
-            filter_aggregations=["collection:IR", "collection:PROB"]
+            filter_aggregations=["collection:value1", "collection:value2"]
         )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filterAggregations=collection%3AIR%3Aor&"
-            "filterAggregations=collection%3APROB%3Aor",
+            "filter=collection%3Avalue1%3Aor"
+            "&filter=collection%3Avalue2%3Aor",
         )
 
     @responses.activate
@@ -259,7 +232,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3ATate+Gallery+Archive",
+            f"{settings.CLIENT_BASE_URL}/search?filter=heldBy%3ATate+Gallery+Archive",
         )
 
     @responses.activate
@@ -271,7 +244,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3A1+2+3+4+5+6+7+8+9+10+11+12+",
+            f"{settings.CLIENT_BASE_URL}/search?filter=heldBy%3A1+2+3+4+5+6+7+8+9+10+11+12+",
         )
 
     @responses.activate
@@ -293,14 +266,14 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filterAggregations=heldBy%3ARolls+Royce+plc%3Aor&"
-            "filterAggregations=heldBy%3AIRIE+dance+theatre%3Aor&"
-            "filterAggregations=heldBy%3ARoyal+Yorkshire+Lodge+No+265%3Aor&"
-            "filterAggregations=heldBy%3AREWIND+Artists%27+Video+in+the+70s+80s%3Aor&"
-            "filterAggregations=heldBy%3ANational+Arts+Education+Archive+YSP%3Aor&"
-            "filterAggregations=heldBy%3AFoster+Partners%3Aor&"
-            "filterAggregations=heldBy%3ALabour+History+Archive+and+Study+Centre+People%27s+History+Museum+University+of+Central+Lancashire+%3Aor&"
-            "filterAggregations=heldBy%3ALondon+University+London+School+of+Economics+The+Women%27s+Library%3Aor",
+            "filter=heldBy%3ARolls+Royce+plc%3Aor"
+            "&filter=heldBy%3AIRIE+dance+theatre%3Aor"
+            "&filter=heldBy%3ARoyal+Yorkshire+Lodge+No+265%3Aor"
+            "&filter=heldBy%3AREWIND+Artists%27+Video+in+the+70s+80s%3Aor"
+            "&filter=heldBy%3ANational+Arts+Education+Archive+YSP%3Aor"
+            "&filter=heldBy%3AFoster+Partners%3Aor"
+            "&filter=heldBy%3ALabour+History+Archive+and+Study+Centre+People%27s+History+Museum+University+of+Central+Lancashire+%3Aor"
+            "&filter=heldBy%3ALondon+University+London+School+of+Economics+The+Women%27s+Library%3Aor",
         )
 
     @responses.activate
@@ -310,7 +283,7 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?filterAggregations=heldBy%3APeople%27s",
+            f"{settings.CLIENT_BASE_URL}/search?filter=heldBy%3APeople%27s",
         )
 
     @responses.activate
@@ -321,8 +294,8 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filterAggregations=level%3AItem%3Aor&"
-            "filterAggregations=level%3APiece%3Aor",
+            "filter=level%3AItem%3Aor"
+            "&filter=level%3APiece%3Aor",
         )
 
     @responses.activate
@@ -335,10 +308,11 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filterAggregations=type%3Aperson&"
-            "filterAggregations=type%3Aorganisation",
+            "filter=type%3Aperson&"
+            "filter=type%3Aorganisation",
         )
 
+    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_with_filter_keyword(self):
         self.records_client.search(filter_keyword="filter keyword")
@@ -521,7 +495,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.records_client.fetch()
+        self.records_client.get()
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -530,7 +504,7 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaid(self):
-        self.records_clien.fetch(id="C198022")
+        self.records_clien.get(id="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -613,7 +587,7 @@ class TestClientFetchReponse(SimpleTestCase):
             ClientAPIServiceUnavailableError,
             "failure to get a peer from the ring-balancer",
         ):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_raises_client_api_error_on_elastic_search_error(self):
@@ -637,7 +611,7 @@ class TestClientFetchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             ClientAPIServiceUnavailableError, "all shards failed"
         ):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_raises_client_api_error_on_java_error(self):
@@ -662,7 +636,7 @@ class TestClientFetchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             ClientAPIBadRequestError, "Failed to convert value of type"
         ):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_internal_server_error(self):
@@ -678,7 +652,7 @@ class TestClientFetchReponse(SimpleTestCase):
         with self.assertRaisesMessage(
             ClientAPIInternalServerError, "Internal Server Error"
         ):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_default_exception(self):
@@ -692,7 +666,7 @@ class TestClientFetchReponse(SimpleTestCase):
         )
 
         with self.assertRaisesMessage(ClientAPICommunicationError, "I'm a teapot"):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_valid_response(self):
@@ -702,7 +676,7 @@ class TestClientFetchReponse(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/get",
             json=create_response(records=[record_data]),
         )
-        result = self.records_client.fetch()
+        result = self.records_client.get()
         self.assertIsInstance(result, Record)
         self.assertEqual(
             result.reference_number,
@@ -717,7 +691,7 @@ class TestClientFetchReponse(SimpleTestCase):
             json=create_response(records=[]),
         )
         with self.assertRaises(DoesNotExist):
-            self.records_client.fetch()
+            self.records_client.get()
 
     @responses.activate
     def test_raises_multipleobjectsreturned_when_multiple_results_received(self):
@@ -727,7 +701,7 @@ class TestClientFetchReponse(SimpleTestCase):
             json=create_response(records=[create_record(), create_record()]),
         )
         with self.assertRaises(MultipleObjectsReturned):
-            self.records_client.fetch()
+            self.records_client.get()
 
 
 @unittest.skip("TODO:Rosetta")

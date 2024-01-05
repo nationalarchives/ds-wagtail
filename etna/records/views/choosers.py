@@ -44,8 +44,8 @@ class ClientAPIModelChooserMixinIn(ChooserMixin):
         return (page, paginator)
 
     def get_object(self, pk):
-        """Fetch selected object"""
-        return records_client.fetch(id=pk)
+        """Get selected object"""
+        return records_client.get(id=pk)
 
     def get_object_id(self, instance):
         """Return selected object's ID, used when resolving a link to this item.
@@ -66,7 +66,7 @@ class ClientAPIChosenView(BaseChosenView):
     """View to handle fetching a selected item."""
 
     def get(self, request, pk):
-        """Fetch selected item by its pk (in our case IAID)
+        """Get selected item by its pk (in our case IAID)
 
         Override parent to handle any errors from the Client API.
         """

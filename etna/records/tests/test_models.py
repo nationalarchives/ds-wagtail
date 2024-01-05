@@ -381,7 +381,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             ),
         )
 
-        record = self.records_client.fetch(id="C123456")
+        record = self.records_client.get(id="C123456")
 
         self.assertEqual(record.hierarchy, ())
 
@@ -398,7 +398,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(id="C123456")
+        record = self.records_client.get(id="C123456")
 
         self.assertEqual(record.date_created, "")
 
@@ -432,7 +432,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(id="C123456")
+        record = self.records_client.get(id="C123456")
 
         # Related records with no 'identifer' and therefore no
         # reference_nubmers were skipped but now we're linking to the details
@@ -473,7 +473,7 @@ class UnexpectedParsingIssueTest(SimpleTestCase):
             json=create_response(records=[record]),
         )
 
-        record = self.records_client.fetch(id="C123456")
+        record = self.records_client.get(id="C123456")
 
         self.assertEqual(record.related_articles, ())
 

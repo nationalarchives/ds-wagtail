@@ -26,7 +26,7 @@ class ClientAPIExceptionTest(SimpleTestCase):
         )
 
         with self.assertRaises(DoesNotExist):
-            self.records_client.fetch(id="C140")
+            self.records_client.get(id="C140")
 
     @responses.activate
     def test_raises_multiple_objects_returned(self):
@@ -37,7 +37,7 @@ class ClientAPIExceptionTest(SimpleTestCase):
         )
 
         with self.assertRaises(MultipleObjectsReturned):
-            self.records_client.fetch(id="C140")
+            self.records_client.get(id="C140")
 
 
 @unittest.skip("TODO:Rosetta")
@@ -96,4 +96,4 @@ class ClientExceptionTest(SimpleTestCase):
         )
 
         with self.assertRaises(ClientAPIError):
-            self.records_client.fetch(id="C140")
+            self.records_client.get(id="C140")

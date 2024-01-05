@@ -70,16 +70,11 @@ def record_detail_view(request, id):
 
     try:
         # for any record
-        record = records_client.fetch(id=id)
+        record = records_client.get(id=id)
     except DoesNotExist:
         raise Http404
 
     page_title = f"Catalogue ID: {record.iaid}"
-    image = None
-
-    # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
-    # if page.is_digitised:
-    #     image = Image.search.filter(rid=page.media_reference_id).first()
 
     # Back to search - default url
     back_to_search_url = reverse("search-catalogue")
@@ -98,7 +93,6 @@ def record_detail_view(request, id):
 
     context.update(
         record=record,
-        image=image,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
         page_type=page_type,

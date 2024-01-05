@@ -90,7 +90,7 @@ class RecordChooserBlock(blocks.ChooserBlock):
             return value
 
         try:
-            return records_client.fetch(id=value)
+            return records_client.get(id=value)
         except ClientAPIError:
             # If there's a connection issue with Client API, return a stub Record
             # so we have something to render on the ResultsPage edit form.

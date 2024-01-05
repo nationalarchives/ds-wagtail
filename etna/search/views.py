@@ -177,7 +177,7 @@ class SearchLandingView(SearchDataLayerMixin, BucketsMixin, TemplateView):
     page_title = "Search landing"
 
     def get_context_data(self, **kwargs):
-        # Make empty search to fetch aggregations
+        # Make empty search to get aggregations
         self.api_result = records_client.search(
             aggregations=[
                 Aggregation.CATALOGUE_SOURCE,
@@ -286,7 +286,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
 
     def process_valid_form(self, form: Form) -> HttpResponse:
         """
-        When the form is valid, fetch results from the API, take any actions
+        When the form is valid, get results from the API, take any actions
         based on the result, then render everything to a template.
         """
         self.api_result = self.get_api_result(form)
@@ -432,6 +432,7 @@ class BaseFilteredSearchView(BaseSearchView):
         return dict(
             stream=self.api_stream,
             q=self.query or None,
+            group=form.cleaned_data.get("group"),
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
             filter_keyword=form.cleaned_data.get("filter_keyword"),
@@ -644,7 +645,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
     bucket_list = CATALOGUE_BUCKETS
-    default_group = "community"
+    default_group = BucketKeys.COMMUNITY
     form_class = CatalogueSearchForm
     template_name = "search/catalogue_search.html"
     search_tab = SearchTabs.CATALOGUE.value
@@ -659,7 +660,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
     api_stream = Stream.EVIDENTIAL
-    default_group = "tna"
+    default_group = BucketKeys.COMMUNITY
     form_class = CatalogueSearchForm
     template_name = "search/long_filter_options.html"
     page_type = "Catalogue search long filter page"

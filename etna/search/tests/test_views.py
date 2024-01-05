@@ -13,7 +13,6 @@ import responses
 
 from etna.core.test_utils import prevent_request_warnings
 
-from ...ciim.tests.factories import create_response
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
@@ -29,21 +28,8 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
             json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/searchAll",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                ]
+                "data": [],
+                "aggregations": [],
             },
         )
 
@@ -503,61 +489,6 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
 
 
 @unittest.skip("TODO:Rosetta")
-class FeaturedSearchTestCase(SearchViewTestCase):
-    test_url = reverse_lazy("search-featured")
-
-    @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
-
-    @responses.activate
-    def test_without_search_query(self):
-        _ = self.client.get(self.test_url)
-
-        # The API should be requested without a search query
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/searchAll"
-                "?filterAggregations=group%3Atna"
-                "&filterAggregations=group%3AnonTna"
-                "&filterAggregations=group%3Acreator"
-                "&size=3"
-            ),
-        )
-
-        # The 'back_to_search_url' value should have been set for the session
-        self.assertEqual(
-            self.client.session.get("back_to_search_url"), "/search/featured/"
-        )
-
-    @responses.activate
-    def test_with_search_query(self):
-        _ = self.client.get(self.test_url, data={"q": "query"})
-
-        # The query should be passed to the search API
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/searchAll"
-                "?q=query"
-                "&filterAggregations=group%3Atna"
-                "&filterAggregations=group%3AnonTna"
-                "&filterAggregations=group%3Acreator"
-                "&size=3"
-            ),
-        )
-
-        # The 'back_to_search_url' value should have been set for the session
-        self.assertEqual(
-            self.client.session.get("back_to_search_url"),
-            "/search/featured/?q=query",
-        )
-
-
-@unittest.skip("TODO:Rosetta")
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def assertDataLayerEquals(
         self,
@@ -574,11 +505,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
-            json=json,
-        )
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/searchAll",
             json=json,
         )
 
@@ -619,68 +545,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension16": "",
                 "customDimension17": "",
                 "customMetric1": 0,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("TODO:Rosetta")
-    @responses.activate
-    def test_datalayer_featured_search(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-featured"),
-            query_data={},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "FeaturedSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "All results: none",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 10000,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("TODO:Rosetta")
-    @responses.activate
-    def test_datalayer_featured_search_query(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-featured"),
-            query_data={"q": "test search term"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search_query.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "FeaturedSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "All results: none",
-                "customDimension9": "test search term",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 11,
                 "customMetric2": 0,
             },
         )

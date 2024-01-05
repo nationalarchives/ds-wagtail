@@ -5,6 +5,8 @@ from django.forms.boundfield import BoundField
 from django.test import RequestFactory, SimpleTestCase
 from django.utils.datastructures import MultiValueDict
 
+from etna.ciim.constants import BucketKeys
+
 from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
     extended_in_operator,
@@ -198,7 +200,7 @@ class RenderSortTest(SimpleTestCase):
     def setUp(self):
         self.form = CatalogueSearchForm(
             {
-                "group": "community",
+                "group": BucketKeys.COMMUNITY,
                 "sort": "relevance",
             }
         )
