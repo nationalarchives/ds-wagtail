@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
@@ -131,6 +132,18 @@ class CustomImage(ClusterableModel, AbstractImage):
         index.SearchField("copyright"),
         index.FilterField("record"),
         index.FilterField("is_sensitive"),
+    ]
+
+    api_fields = [
+        APIField("title"),
+        APIField("copyright"),
+        APIField("description"),
+        APIField("transcription_heading"),
+        APIField("transcription"),
+        APIField("translation_heading"),
+        APIField("translation"),
+        APIField("record_dates"),
+        APIField("record"),
     ]
 
     @property

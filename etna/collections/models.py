@@ -14,10 +14,13 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
+
+from rest_framework import serializers
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -34,6 +37,44 @@ from .blocks import (
     TopicExplorerPageStreamBlock,
     TopicIndexPageStreamBlock,
 )
+
+
+class Highlight(Orderable):
+    page = ParentalKey(
+        "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
+    )
+    image = models.ForeignKey(
+        get_image_model_string(),
+        null=True,
+        on_delete=models.SET_NULL,
+        verbose_name=_("image"),
+    )
+
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        null=True,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("alt_text"),
+    ]
+
+    def clean(self) -> None:
+        if self.image:
+            if not self.image.record or not self.image.description:
+                raise ValidationError(
+                    {
+                        "image": [
+                            "Only images with a 'record' and a 'description' specified can be used for highlights."
+                        ]
+                    }
+                )
+        return super().clean()
 
 
 class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
@@ -109,6 +150,18 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
 
+    api_fields = (
+        AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+            APIField("articles_title"),
+            APIField("articles_introduction"),
+            APIField("featured_article"),
+            APIField("featured_articles"),
+        ]
+    )
+
 
 class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     """Topic explorer BasePage.
@@ -128,6 +181,14 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
 
     @cached_property
     def featured_pages(self):
@@ -228,6 +289,19 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         "collections.TopicExplorerPage",
         "collections.HighlightGalleryPage",
     ]
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+            APIField("featured_article"),
+            APIField("featured_record_article"),
+            APIField("skos_id"),
+            APIField("related_page_pks"),
+        ]
+    )
 
     def clean(self, *args, **kwargs):
         if not self.skos_id and self.title:
@@ -366,6 +440,13 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     subpage_types = [
         "collections.TimePeriodExplorerPage",
     ]
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
+        ]
+    )
 
 
 class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
@@ -415,6 +496,15 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
             FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
+        ]
+    )
+
+    api_fields = (
+        RequiredHeroImageMixin.api_fields
+        + AlertMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("body"),
         ]
     )
 
@@ -634,6 +724,16 @@ class TopicalPageMixin:
         return self.highlights.count()
 
 
+# TODO: Make better
+class HighlightSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Highlight
+        fields = (
+            "image",
+            "alt_text",
+        )
+
+
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
@@ -656,6 +756,17 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             "Select a page to display in the featured area. This can be an Article or Focused Article."
         ),
         verbose_name=_("featured article"),
+    )
+
+    api_fields = (
+        ContentWarningMixin.api_fields
+        + BasePageWithIntro.api_fields
+        + [
+            APIField("featured_record_article"),
+            APIField("featured_article"),
+            # APIField("highlights", serializer=HighlightSerializer(many=True)),
+            APIField("page_highlights", serializer=HighlightSerializer(many=True)),
+        ]
     )
 
     class Meta:
@@ -730,41 +841,3 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             customDimension7="; ".join(obj.title for obj in self.time_periods),
         )
         return data
-
-
-class Highlight(Orderable):
-    page = ParentalKey(
-        "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
-    )
-    image = models.ForeignKey(
-        get_image_model_string(),
-        null=True,
-        on_delete=models.SET_NULL,
-        verbose_name=_("image"),
-    )
-
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        null=True,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-
-    panels = [
-        FieldPanel("image"),
-        FieldPanel("alt_text"),
-    ]
-
-    def clean(self) -> None:
-        if self.image:
-            if not self.image.record or not self.image.description:
-                raise ValidationError(
-                    {
-                        "image": [
-                            "Only images with a 'record' and a 'description' specified can be used for highlights."
-                        ]
-                    }
-                )
-        return super().clean()
