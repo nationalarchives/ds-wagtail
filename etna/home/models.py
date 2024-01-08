@@ -1,4 +1,5 @@
 from wagtail.admin.panels import FieldPanel
+from wagtail.api import APIField
 from wagtail.fields import StreamField
 
 from etna.alerts.models import AlertMixin
@@ -25,3 +26,8 @@ class HomePage(AlertMixin, BasePageWithIntro):
         context["form"] = FeaturedSearchForm()
 
         return context
+
+    api_fields = [
+        APIField("intro"),
+        APIField("body"),
+    ]
