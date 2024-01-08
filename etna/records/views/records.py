@@ -56,7 +56,7 @@ def record_disambiguation_view(request, reference_number):
     )
 
 
-def record_detail_view(request, iaid):
+def record_detail_view(request, id):
     """View for rendering a record's details page.
 
     Details pages differ from all other page types within Etna in that their
@@ -70,16 +70,11 @@ def record_detail_view(request, iaid):
 
     try:
         # for any record
-        record = records_client.fetch(iaid=iaid, expand=True)
+        record = records_client.get(id=id)
     except DoesNotExist:
         raise Http404
 
     page_title = f"Catalogue ID: {record.iaid}"
-    image = None
-
-    # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
-    # if page.is_digitised:
-    #     image = Image.search.filter(rid=page.media_reference_id).first()
 
     # Back to search - default url
     back_to_search_url = reverse("search-catalogue")
@@ -98,7 +93,6 @@ def record_detail_view(request, iaid):
 
     context.update(
         record=record,
-        image=image,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
         page_type=page_type,

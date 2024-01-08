@@ -17,7 +17,12 @@
         {% for i in page_range %}
             {% if i == page.paginator.ELLIPSIS %}
             <li class="tna-pagination__item tna-pagination__item--ellipses">&ctdot;</li>
-            {% else %}
+
+            {% comment %}
+                Some APIs come with restrictions on the number of paginated pages that can be shown within a full dataset.
+                For this reason, we use a `page_limit` variable to ensure this limit is never exceeded.
+            {% endcomment %}
+            {% elif i <= page.paginator.page_limit %}
                 <li class="tna-pagination__item{% if page.number == i %} tna-pagination__item--current{% endif %}">
                     <a class="tna-button{% if page.number == i %} tna-button--accent{% endif %} tna-pagination__link" href="?{% query_string_include 'page' i %}" aria-label="Page {{ i }}" data-link-type="Pagination" data-link="{{ i }}" role="button"{% if page.number == i %} aria-current="page"{% endif %}>
                         {{ i }}
@@ -26,7 +31,11 @@
             {% endif %}
         {% endfor %}
     </ul>
-    {% if page.has_next %}
+    {% comment %}
+        Some APIs come with restrictions on the number of paginated pages that can be shown within a full dataset.
+        For this reason, we use a `page_limit` variable to ensure this limit is never exceeded.
+    {% endcomment %}
+    {% if page.has_next and page.next_page_number <= page.paginator.page_limit %}
         <div class="tna-pagination__next">
             <a class="tna-button tna-pagination__link" href="?{% query_string_include 'page' page.next_page_number %}" role="button" rel="next" data-link-type="Pagination"  data-link="Next page">
                 <span class="tna-pagination__link-title">Next</span>

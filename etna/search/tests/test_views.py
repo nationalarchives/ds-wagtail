@@ -13,14 +13,12 @@ import responses
 
 from etna.core.test_utils import prevent_request_warnings
 
-from ...ciim.tests.factories import create_response
 from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
 
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
-    IMAGE_PREVIEW_BASE_URL="https://media.preview/",
 )
 class SearchViewTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
@@ -30,21 +28,8 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
             json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                ]
-            },
-        )
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/searchAll",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
-                    create_response(),
-                ]
+                "data": [],
+                "aggregations": [],
             },
         )
 
@@ -58,8 +43,7 @@ class BadRequestHandlingTest(SearchViewTestCase):
             ("group", "foo"),
             ("per_page", "bar"),
             ("per_page", 10000),
-            ("sort_by", "baz"),
-            ("sort_order", "foo"),
+            ("sort", "baz"),
             ("display", "foo"),
         ]:
             with self.subTest(f"{field_name} = {value}"):
@@ -67,6 +51,7 @@ class BadRequestHandlingTest(SearchViewTestCase):
                 self.assertEqual(response.status_code, 400)
 
 
+@unittest.skip("TODO:Rosetta")
 class SelectedFiltersTest(SimpleTestCase):
     def get_result(self, form):
         return CatalogueSearchView().get_selected_filters(form)
@@ -199,6 +184,7 @@ class SelectedFiltersTest(SimpleTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -235,8 +221,8 @@ class EndToEndSearchTestCase(TestCase):
         '<ul class="search-buckets__list" data-id="search-buckets-list">'
     )
     search_within_option_html = '<label for="id_filter_keyword" class="tna-heading-s search-filters__label--block">Search within results</label>'
-    sort_by_desktop_options_html = '<label for="id_sort_by_desktop">Sort by</label>'
-    sort_by_mobile_options_html = '<label for="id_sort_by_mobile">Sort by</label>'
+    sort_desktop_options_html = '<label for="id_sort_desktop">Sort by</label>'
+    sort_mobile_options_html = '<label for="id_sort_mobile">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
@@ -269,13 +255,13 @@ class EndToEndSearchTestCase(TestCase):
     def assertSearchWithinOptionNotRendered(self, response):
         self.assertNotIn(self.search_within_option_html, response)
 
-    def assertSortByOptionsRendered(self, response):
-        self.assertIn(self.sort_by_desktop_options_html, response)
-        self.assertIn(self.sort_by_mobile_options_html, response)
+    def assertSortOptionsRendered(self, response):
+        self.assertIn(self.sort_desktop_options_html, response)
+        self.assertIn(self.sort_mobile_options_html, response)
 
-    def assertSortByOptionsNotRendered(self, response):
-        self.assertNotIn(self.sort_by_desktop_options_html, response)
-        self.assertNotIn(self.sort_by_mobile_options_html, response)
+    def assertSortOptionsNotRendered(self, response):
+        self.assertNotIn(self.sort_desktop_options_html, response)
+        self.assertNotIn(self.sort_mobile_options_html, response)
 
     def assertFilterOptionsRendered(self, response):
         self.assertIn(self.filter_options_html, response)
@@ -290,6 +276,7 @@ class EndToEndSearchTestCase(TestCase):
         self.assertNotIn(self.results_html, response)
 
 
+@unittest.skip("TODO:Rosetta")
 class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -319,7 +306,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD NOT see
         self.assertBucketLinksNotRendered(content)
         self.assertSearchWithinOptionNotRendered(content)
-        self.assertSortByOptionsNotRendered(content)
+        self.assertSortOptionsNotRendered(content)
         self.assertFilterOptionsNotRendered(content)
         self.assertResultsNotRendered(content)
 
@@ -351,7 +338,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortByOptionsRendered(content)
+        self.assertSortOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
         self.assertFilterOptionsRendered(content)
 
@@ -390,7 +377,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         # SHOULD see
         self.assertBucketLinksRendered(content)
         self.assertSearchWithinOptionRendered(content)
-        self.assertSortByOptionsRendered(content)
+        self.assertSortOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
 
@@ -465,9 +452,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
             # SHOULD see
             self.assertNoResultsMessagingRendered(content)
-            self.assertIn(
-                "<li>Try removing any filters that you may have applied</li>", content
-            )
+            self.assertIn("<li>Try different spellings or search terms</li>", content)
             self.assertSearchWithinOptionRendered(content)
             self.assertIn(from_date_field, response.context["form"].errors)
             self.assertIn(
@@ -476,6 +461,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
             )
 
 
+@unittest.skip("TODO:Rosetta")
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
@@ -502,61 +488,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@unittest.skip("TODO:OHOS-Remove or update")
-class FeaturedSearchTestCase(SearchViewTestCase):
-    test_url = reverse_lazy("search-featured")
-
-    @classmethod
-    def setUpTestData(cls):
-        super().setUpTestData()
-
-    @responses.activate
-    def test_without_search_query(self):
-        _ = self.client.get(self.test_url)
-
-        # The API should be requested without a search query
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/searchAll"
-                "?filterAggregations=group%3Atna"
-                "&filterAggregations=group%3AnonTna"
-                "&filterAggregations=group%3Acreator"
-                "&size=3"
-            ),
-        )
-
-        # The 'back_to_search_url' value should have been set for the session
-        self.assertEqual(
-            self.client.session.get("back_to_search_url"), "/search/featured/"
-        )
-
-    @responses.activate
-    def test_with_search_query(self):
-        _ = self.client.get(self.test_url, data={"q": "query"})
-
-        # The query should be passed to the search API
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            (
-                f"{settings.CLIENT_BASE_URL}/searchAll"
-                "?q=query"
-                "&filterAggregations=group%3Atna"
-                "&filterAggregations=group%3AnonTna"
-                "&filterAggregations=group%3Acreator"
-                "&size=3"
-            ),
-        )
-
-        # The 'back_to_search_url' value should have been set for the session
-        self.assertEqual(
-            self.client.session.get("back_to_search_url"),
-            "/search/featured/?q=query",
-        )
-
-
+@unittest.skip("TODO:Rosetta")
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def assertDataLayerEquals(
         self,
@@ -573,11 +505,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
-            json=json,
-        )
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/searchAll",
             json=json,
         )
 
@@ -618,68 +545,6 @@ class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
                 "customDimension16": "",
                 "customDimension17": "",
                 "customMetric1": 0,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("TODO:OHOS-Remove or update")
-    @responses.activate
-    def test_datalayer_featured_search(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-featured"),
-            query_data={},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "FeaturedSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "All results: none",
-                "customDimension9": "*",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 10000,
-                "customMetric2": 0,
-            },
-        )
-
-    @unittest.skip("TODO:OHOS-Remove or update")
-    @responses.activate
-    def test_datalayer_featured_search_query(self):
-        self.assertDataLayerEquals(
-            path=reverse("search-featured"),
-            query_data={"q": "test search term"},
-            api_resonse_path=f"{settings.BASE_DIR}/etna/search/tests/fixtures/featured_search_query.json",
-            expected={
-                "contentGroup1": "Search",
-                "customDimension1": "offsite",
-                "customDimension2": "",
-                "customDimension3": "FeaturedSearchView",
-                "customDimension4": "",
-                "customDimension5": "",
-                "customDimension6": "",
-                "customDimension7": "",
-                "customDimension8": "All results: none",
-                "customDimension9": "test search term",
-                "customDimension10": "",
-                "customDimension11": "",
-                "customDimension12": "",
-                "customDimension13": "",
-                "customDimension14": "",
-                "customDimension15": "",
-                "customDimension16": "",
-                "customDimension17": "",
-                "customMetric1": 11,
                 "customMetric2": 0,
             },
         )

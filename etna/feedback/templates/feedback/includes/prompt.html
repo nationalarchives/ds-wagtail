@@ -58,7 +58,7 @@ function showSuccessContent() {
     window.location.hash = successContent.id;
 }
 
-// submit via the fetch API instead
+// submit via the get API instead
 form.onsubmit = function (e) {
     e.preventDefault();
 
@@ -109,7 +109,7 @@ form.onsubmit = function (e) {
     });
 };
 
-// submit comments via the fetch API
+// submit comments via the get API
 commentForm.onsubmit = function (e) {
     e.preventDefault();
 

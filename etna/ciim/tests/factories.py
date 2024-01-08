@@ -11,7 +11,6 @@ def create_record(
     description="description",
     earliest="1900",
     latest="2100",
-    media_reference_id="0f183772-6fa7-4fb4-b608-412cf6fa8204",
     hierarchy=None,
     related=None,
     source_values: Optional[Dict[str, Any]] = None,
@@ -25,80 +24,56 @@ def create_record(
 
     Note: keys used in existing source will be overridden
     """
-    if not hierarchy:
-        hierarchy = []
+    # TODO:Rosetta
+    # if not hierarchy:
+    #     hierarchy = []
 
-    if not related:
-        related = []
+    # if not related:
+    #     related = []
 
-    source = {
-        "@admin": {
-            "id": iaid,
-            "source": admin_source,
-        },
-        "access": {"conditions": "open"},
-        "identifier": [
-            {"iaid": iaid},
-            {"reference_number": reference_number},
-        ],
-        "origination": {
-            "creator": [{"name": [{"value": "test"}]}],
-            "date": {
-                "earliest": {"from": earliest},
-                "latest": {"to": latest},
-                "value": f"{earliest}-{latest}",
-            },
-        },
-        "@hierarchy": [hierarchy],
-        "summary": {
-            "title": summary_title,
-        },
-        "multimedia": [
-            {
-                "@entity": "reference",
-                "@admin": {
-                    "id": media_reference_id,
-                },
-            }
-        ],
-        "related": related,
-        "description": [{"value": description}],
-        "legal": {"status": "Open"},
-    }
+    # source = {
+    #     "@admin": {
+    #         "id": iaid,
+    #         "source": admin_source,
+    #     },
+    #     "access": {"conditions": "open"},
+    #     "identifier": [
+    #         {"iaid": iaid},
+    #         {"reference_number": reference_number},
+    #     ],
+    #     "origination": {
+    #         "creator": [{"name": [{"value": "test"}]}],
+    #         "date": {
+    #             "earliest": {"from": earliest},
+    #             "latest": {"to": latest},
+    #             "value": f"{earliest}-{latest}",
+    #         },
+    #     },
+    #     "@hierarchy": [hierarchy],
+    #     "summary": {
+    #         "title": summary_title,
+    #     },
+    #     "related": related,
+    #     "description": [{"value": description}],
+    #     "legal": {"status": "Open"},
+    # }
+
+    details_kv = {}
+    details_kv.update(iaid=iaid)
+    if reference_number:
+        details_kv.update(reference_number=reference_number)
+    if description:
+        details_kv.update(description=description)
+    detail = {"id": iaid, "@template": {"details": details_kv}}
 
     # note keys used in existing source will be overridden
     if source_values:
         for source_key_value in source_values:
             for key, value in source_key_value.items():
-                source[key] = value
+                detail[key] = value
 
-    return {"_source": source}
-
-
-def create_media(
-    location="66/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg",
-    thumbnail_location="66/COPY/KV/2/444a48ad-f9eb-4f40-b159-396dc7fa6875.jpg",
-    sort="01",
-):
-    return {
-        "_source": {
-            "processed": {
-                "original": {
-                    "location": location,
-                    "public": True,
-                    "resizable": True,
-                    "@type": "image",
-                },
-                "preview": {
-                    "location": thumbnail_location,
-                    "public": True,
-                    "resizable": True,
-                    "@type": "image",
-                },
-            },
-            "sort": sort,
-        }
-    }
+    # return {"_source": source}  # TODO:Rosetta
+    return {"data": detail}
 
 
 def create_response(records=None, aggregations=None, total_count=None):
@@ -129,17 +104,23 @@ def create_search_response(records=None, aggregations=None, total_count=None):
     if not records:
         records = []
 
-    if not aggregations:
-        aggregations = {}
+    if aggregations:
+        aggregations_list = [aggregations]
+    else:
+        aggregations_list = []
 
     if not total_count:
         total_count = len(records)
 
     return {
-        "responses": [
+        "data": [
             create_response(aggregations=aggregations, total_count=total_count),
             create_response(records=records, total_count=total_count),
-        ]
+        ],
+        "aggregations": aggregations_list,
+        "stats": {
+            "total": total_count,
+        },
     }
 
 

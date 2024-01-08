@@ -1,0 +1,78 @@
+{% load records_tags %}
+
+{% if record.title %}
+    <tr>
+        <th scope="row">{{ 'title'|as_label }}</th>
+        <td id="analytics-record-reference">{{ record.title }}</td>
+    </tr>
+{% endif %}
+{% if record.description %}
+    <tr>
+        <th scope="row">{{ 'description'|as_label }}</th>
+        <td class="xslt_patches">{{ record.description }}</td>
+    </tr>
+{% endif %}
+{% if record.item_url %}
+    <tr>
+        <th scope="row">{{ 'item_url'|as_label }}</th>
+        <td>{{ record.item_url }}</td>
+    </tr>
+{% endif %}
+{% if record.date_created %}
+    <tr>
+        <th scope="row">{{ 'date_created'|as_label }}</th>
+        <td>{{ record.date_created }}</td>
+    </tr>
+{% endif %}
+{% if record.identifier %}
+    <tr>
+        <th scope="row">{{ 'identifier'|as_label }}</th>
+        <td>{{ record.identifier }}</td>
+    </tr>
+{% endif %}
+{% if record.collection %}
+    <tr>
+        <th scope="row">{{ 'collection'|as_label }}</th>
+        <td><a href="{% record_url record use_collection_id=True %}">{{ record.collection }}</a></td>
+    </tr>
+{% endif %}
+{% if record.rights %}
+    <tr>
+        <th scope="row">{{ 'rights'|as_label }}</th>
+        <td>{{ record.rights }}</td>
+    </tr>
+{% endif %}
+{% if record.format %}
+    <tr>
+        <th scope="row">{{ 'format'|as_label }}</th>
+        <td>{{ record.format }}</td>
+    </tr>
+{% endif %}
+{% if record.location %}
+    <tr>
+        <th scope="row">{{ 'location'|as_label }}</th>
+        <td>{{ record.location }}</td>
+    </tr>
+{% endif %}
+{% if record.subject %}
+    <tr>
+        <th scope="row">{{ 'subject'|as_label }}</th>
+        <td>
+            {% for sub in record.subject %}
+                <p>{{ sub }}</p>
+            {% endfor %}
+        </td>
+    </tr>
+{% endif %}
+{% if record.level %}
+    <tr>
+        <th scope="row">{{ 'level'|as_label }}</th>
+        <td>{{ record.level }}</td>
+    </tr>
+{% endif %}
+{% if record.type %}
+    <tr>
+        <th scope="row">{{ 'type'|as_label }}</th>
+        <td>{{ record.type }}</td>
+    </tr>
+{% endif %}

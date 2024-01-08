@@ -29,7 +29,18 @@ class ReferenceNumberConverter:
         return value.replace(" ", "/")
 
 
-class IAIDConverter(StringConverter):
+class IDConverter(StringConverter):
     """Converter used to extract an IAID from a URL."""
 
-    regex = r"([ACDFN][0-9]{1,8}|[a-f0-9]{8}-?([a-f0-9]{4}-?){3}[a-f0-9]{12}(_[1-9])?)"
+    ohos_pattern = (
+        r"media-[a-zA-Z0-9\-]{1,}"
+        r"|wmk-[a-zA-Z0-9\-]{1,}"
+        r"|swop-[a-zA-Z0-9\-]{1,}"
+        r"|pcw-[a-zA-Z0-9\-]{1,}"
+        r"|shc-[a-zA-Z0-9\-]{1,}"
+        r"|osc-[a-zA-Z0-9\-]{1,}"
+    )
+    etna_pattern = (
+        "[ACDFN][0-9]{1,8}|[a-f0-9]{8}-?([a-f0-9]{4}-?){3}[a-f0-9]{12}(_[1-9])?"
+    )
+    regex = rf"({ohos_pattern}|{etna_pattern})"

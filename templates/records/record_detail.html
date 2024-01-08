@@ -9,39 +9,51 @@
 {% endblock %}
 
 {% block content %}
-
     {% include "includes/records/record-cta-panel.html" %}
 
-    <div class="container">
-        {% include "includes/records/record-title.html" %}
+    <div class="tna-container">
+        <div class="tna-column tna-column--full">
+            {% include "includes/records/record-title.html" %}
 
-        <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
-
-        {# If there are no related tags to display #}
-        {% include "includes/records/record-details.html" %}
+            <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
+        </div>
     </div>
 
-    {# If there are related tags to display #}
     <div class="tna-container">
         <div class="tna-column tna-column--width-2-3 tna-column--width-2-3-medium tna-column--full-small tna-column--full-tiny">
-            {% include "includes/records/record-details.html" %}
+            <div class="record-details">
+                <table class="record-details__table">
+                    <tbody>
+                        {% if form.group.value == bucketkeys.COMMUNITY.value %}
+                            {% include "includes/records/record-details-community.html" %}
+                        {% else %}
+                            {% include "includes/records/record-details.html" %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <div class="tna-column tna-column--width-1-3 tna-column--width-1-3-medium tna-column--full-small tna-column--full-tiny">
-            {% include "includes/related-tags.html" %}
-        </div>
-    </div>
-
-    <div class="container">
-        {% if record.hierarchy %}
-            {% if record.hierarchy|length > 2 %}
-                <h2 class="tna-heading-l">This record is in the series</h2>
-
-                {% include "includes/records/record-series-panel.html" %}
-            {% endif %}
+        {% if form.group.value == bucketkeys.COMMUNITY.value %}
+            <div class="tna-column tna-column--width-1-3 tna-column--width-1-3-medium tna-column--full-small tna-column--full-tiny">
+                {% include "includes/related-tags.html" %}
+            </div>
         {% endif %}
     </div>
 
+    {% if form.group.value != bucketkeys.COMMUNITY.value %}
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
+                {% if record.hierarchy %}
+                    {% if record.hierarchy|length > 2 %}
+                        <h2 class="tna-heading-l">This record is in the series</h2>
+
+                        {% include "includes/records/record-series-panel.html" %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

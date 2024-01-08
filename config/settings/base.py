@@ -11,14 +11,14 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 
-from distutils.sysconfig import get_python_lib
-from distutils.util import strtobool
+from sysconfig import get_path
 
 import sentry_sdk
 
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from ..versioning import get_git_sha
+from .util import strtobool
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -104,7 +104,7 @@ TEMPLATES = [
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
             os.path.join(
-                get_python_lib(), "nationalarchives-frontend-django/templates"
+                get_path("platlib"), "nationalarchives-frontend-django/templates"
             ),
         ],
         "APP_DIRS": True,
@@ -138,7 +138,6 @@ LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # View access control
-IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
 RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
     os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
 )
@@ -279,13 +278,15 @@ PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
 
 # API Client
+API_CLIENT_NAME_PREFIX = os.getenv(
+    "API_CLIENT_NAME_PREFIX"
+)  # mandatory name to identify the client URL
 
-CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
-CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
+CLIENT_BASE_URL = os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_BASE_URL")
+CLIENT_KEY = os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_KEY")
 CLIENT_VERIFY_CERTIFICATES = strtobool(
-    os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
+    os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_VERIFY_CERTIFICATES", "True")
 )
-IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
@@ -397,3 +398,5 @@ FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "prod
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )
+# show pages upto the page number set by this value
+FEATURE_PAGE_LIMIT = os.getenv("FEATURE_PAGE_LIMIT", "1")

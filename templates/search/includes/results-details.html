@@ -1,0 +1,18 @@
+{% load records_tags %}
+
+{% if record.held_by %}
+    <dt>{{ 'held_by'|as_label }}</dt>
+    <dd>{{ record.held_by }}</dd>
+{% endif %}
+
+{% if record.date_created %}
+    <dt>{{ 'date_created'|as_label }}</dt>
+    <dd>
+        <date>{{ record.date_created }}</date>
+    </dd>
+{% endif %}
+
+{% if record.reference_number %}
+    <dt>{{ 'reference_number'|as_label }}</dt>
+    <dd>{{ record.reference_number }}</dd>
+{% endif %}
