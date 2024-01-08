@@ -11,11 +11,14 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 from wagtail.search import index
 
+from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.analytics.mixins import DataLayerMixin
@@ -37,7 +40,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, Page):
+class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -142,6 +145,42 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page):
         data.update(customDimension3=self._meta.verbose_name)
         return data
 
+    api_fields = [
+        APIField("type_label"),
+        APIField("teaser_image"),
+        APIField("teaser_text"),
+        APIField(
+            "teaser_image_jpg",
+            serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
+        ),
+        APIField(
+            "teaser_image_webp",
+            serializer=ImageRenditionField(
+                "fill-600x400|format-webp", source="teaser_image"
+            ),
+        ),
+        APIField(
+            "teaser_image_large_jpg",
+            serializer=ImageRenditionField("fill-1200x800", source="teaser_image"),
+        ),
+        APIField(
+            "teaser_image_large_webp",
+            serializer=ImageRenditionField(
+                "fill-1200x800|format-webp", source="teaser_image"
+            ),
+        ),
+        APIField(
+            "teaser_image_square_jpg",
+            serializer=ImageRenditionField("fill-512x512", source="teaser_image"),
+        ),
+        APIField(
+            "teaser_image_square_webp",
+            serializer=ImageRenditionField(
+                "fill-512x512|format-webp", source="teaser_image"
+            ),
+        ),
+    ]
+
 
 class BasePageWithIntro(BasePage):
     """
@@ -166,3 +205,5 @@ class BasePageWithIntro(BasePage):
     search_fields = BasePage.search_fields + [
         index.SearchField("intro", boost=3),
     ]
+
+    api_fields = BasePage.api_fields + [APIField("intro")]

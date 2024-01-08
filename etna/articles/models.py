@@ -9,12 +9,14 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
 from etna.core.models import (
@@ -94,6 +96,19 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
+    api_fields = [APIField("article_tag_names")]
+
+
+# TODO: Make better
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
+
 
 class ArticlePage(
     RequiredHeroImageMixin,
@@ -150,6 +165,19 @@ class ArticlePage(
         + ArticleTagMixin.search_fields
         + [
             index.SearchField("body"),
+        ]
+    )
+
+    verbose_name_public = Meta.verbose_name_public
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            APIField("verbose_name_public"),
+            APIField("similar_items", serializer=PageSerializer(many=True)),
+            APIField("latest_items", serializer=PageSerializer(many=True)),
+            APIField("body"),
         ]
     )
 

@@ -9,6 +9,7 @@ from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.documents import urls as wagtaildocs_urls
 from wagtail.utils.urlpatterns import decorate_urlpatterns
 
+from etna.api.urls import api_router
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
@@ -42,6 +43,11 @@ private_urls = [
     path("feedback/", include("etna.feedback.urls")),
     path("healthcheck/", include("etna.healthcheck.urls")),
 ]
+
+if settings.FEATURE_ENABLE_API_V2:
+    private_urls = [
+        path("api/v2/", api_router.urls),
+    ] + private_urls
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
     # url is toggled via the SENTRY_DEBUG_URL_ENABLED .env var

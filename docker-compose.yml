@@ -44,9 +44,10 @@ services:
       - DATABASE_USER=postgres
       - DJANGO_SUPERUSER_PASSWORD=admin
       - DJANGO_SUPERUSER_USERNAME=admin
-      - DJANGO_SUPERUSER_EMAIL=admin@tna-development.fake
+      - DJANGO_SUPERUSER_EMAIL=admin@tna.dev
       - FEATURE_BETA_BANNER_ENABLED=False
       - KEEP_ALIVE=30
+      - WAGTAILAPI_BASE_URL=http://host.docker.internal:8000
 
   cli:
     container_name: cli
