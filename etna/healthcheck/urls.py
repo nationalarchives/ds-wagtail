@@ -11,6 +11,9 @@ urlpatterns = [
     path(
         "",
         healthcheck,
-        name="healthcheck",
+    ),
+    path(
+        "live/",
+        healthcheck,
     ),
 ]
