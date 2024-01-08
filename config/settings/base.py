@@ -412,3 +412,6 @@ FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
 )
 # show pages upto the page number set by this value
 FEATURE_PAGE_LIMIT = os.getenv("FEATURE_PAGE_LIMIT", "1")
+
+# Not in scope for OHOS
+FEATURE_ENABLE_API_V2 = False

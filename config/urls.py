@@ -36,7 +36,6 @@ handler503 = "etna.errors.views.custom_503_error_view"
 
 # Private URLs that are not meant to be cached.
 private_urls = [
-    path("api/v2/", api_router.urls),
     path("django-admin/", admin.site.urls),
     path("admin/", include(wagtailadmin_urls)),
     path("accounts/", include("allauth.urls")),
@@ -44,6 +43,11 @@ private_urls = [
     path("feedback/", include("etna.feedback.urls")),
     path("healthcheck/", include("etna.healthcheck.urls")),
 ]
+
+if settings.FEATURE_ENABLE_API_V2:
+    private_urls = [
+        path("api/v2/", api_router.urls),
+    ] + private_urls
 
 if settings.SENTRY_DEBUG_URL_ENABLED:
     # url is toggled via the SENTRY_DEBUG_URL_ENABLED .env var
