@@ -47,7 +47,7 @@
     {% endif %}
 
     {# If possible, the 5000 count should be handled by the paginator on the backend #}
-    {% if paginator.count > 5000 %}
+    {% if paginator.count > page.paginator.record_limit %}
         <p class="tna-pagination__limit-message">Only the first 5,000 results are shown, apply filters to narrow your search.</p>
     {% endif %}
 

@@ -400,3 +400,5 @@ FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
 )
 # show pages upto the page number set by this value
 FEATURE_PAGE_LIMIT = os.getenv("FEATURE_PAGE_LIMIT", "1")
+# max number of records the API search returns
+FEATURE_RECORD_LIMIT = os.getenv("FEATURE_RECORD_LIMIT", "5000")
