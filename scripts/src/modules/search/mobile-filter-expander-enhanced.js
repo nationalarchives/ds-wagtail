@@ -34,13 +34,11 @@ export default function () {
     $showHideButton.setAttribute("data-link", "Show search filters");
     $showHideButton.hidden = true;
 
-
     //console.log($showHideButton);
     //console.log($searchGrid);
 
     //$main.insertBefore($showHideButton, $searchGrid);
     $searchGrid.after($showHideButton, $searchGrid);
-
 
     $searchFilterContainer.id = "searchFilterContainer";
 
