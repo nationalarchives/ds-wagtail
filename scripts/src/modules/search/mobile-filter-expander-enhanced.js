@@ -9,11 +9,13 @@ export default function () {
     let $searchFilterContainer = document.querySelector(
         'div[data-id="catalogue-search-sidebar"]',
     );
+
     let $main = document.querySelector("main");
 
     if (!$searchFilterContainer || !$searchGrid || !$main) {
         return;
     }
+
     //need case where validation warning is invoked
     let $showHideButton = document.createElement("button");
     //check the query string to populate the number of selected filters
@@ -31,7 +33,14 @@ export default function () {
     $showHideButton.setAttribute("data-link-type", "Mobile Button");
     $showHideButton.setAttribute("data-link", "Show search filters");
     $showHideButton.hidden = true;
-    $main.insertBefore($showHideButton, $searchGrid);
+
+
+    //console.log($showHideButton);
+    //console.log($searchGrid);
+
+    //$main.insertBefore($showHideButton, $searchGrid);
+    $searchGrid.after($showHideButton, $searchGrid);
+
 
     $searchFilterContainer.id = "searchFilterContainer";
 
