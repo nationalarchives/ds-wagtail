@@ -59,7 +59,7 @@
     {% endif %}
 
     {% if page.number >= page.paginator.page_limit %}
-        <p class="tna-pagination__limit-message">Only the first 5,000 results are shown, apply filters to narrow your search.</p>
+        <p class="tna-pagination__limit-message">Only the first {{ page.paginator.record_limit|intcomma }} results are shown, apply filters to narrow your search.</p>
     {% endif %}
 
 </nav>
