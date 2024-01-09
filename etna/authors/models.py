@@ -92,11 +92,11 @@ class AuthorPage(BasePage):
         ),
         APIField(
             "image_jpg",
-            serializer=ImageRenditionField("fill-512x512", source="image"),
+            serializer=ImageRenditionField("fill-512x512|format-jpeg|jpegquality-60", source="image"),
         ),
         APIField(
             "image_small_jpg",
-            serializer=ImageRenditionField("fill-128x128", source="image"),
+            serializer=ImageRenditionField("fill-128x128|format-jpeg|jpegquality-60", source="image"),
         ),
     ]
 
