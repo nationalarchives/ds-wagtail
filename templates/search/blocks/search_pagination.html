@@ -13,10 +13,15 @@
         </a>
     </div>
     {% endif %}
+
     <ul class="tna-pagination__list">
+
         {% for i in page_range %}
-            {% if i == page.paginator.ELLIPSIS %}
-            <li class="tna-pagination__item tna-pagination__item--ellipses">&ctdot;</li>
+
+            {% if i == page.paginator.ELLIPSIS and page.next_page_number %}
+                {% if forloop.counter <= 2 or page.next_page_number < page.paginator.page_limit %}
+                    <li class="tna-pagination__item tna-pagination__item--ellipses">&ctdot;</li>
+                {% endif %}
 
             {% comment %}
                 Some APIs come with restrictions on the number of paginated pages that can be shown within a full dataset.
@@ -26,6 +31,13 @@
                 <li class="tna-pagination__item{% if page.number == i %} tna-pagination__item--current{% endif %}">
                     <a class="tna-button{% if page.number == i %} tna-button--accent{% endif %} tna-pagination__link" href="?{% query_string_include 'page' i %}" aria-label="Page {{ i }}" data-link-type="Pagination" data-link="{{ i }}" role="button"{% if page.number == i %} aria-current="page"{% endif %}>
                         {{ i }}
+                    </a>
+                </li>
+            {# Output the maximum page number if the number of pages exceeds the limit #}
+            {% elif page.next_page_number < page.paginator.page_limit %}
+                <li class="tna-pagination__item{% if page.number == page.paginator.page_limit %} tna-pagination__item--current{% endif %}">
+                    <a class="tna-button{% if page.number == page.paginator.page_limit %} tna-button--accent{% endif %} tna-pagination__link" href="?{% query_string_include 'page' page.paginator.page_limit %}" aria-label="Page {{ page.paginator.page_limit }}" data-link-type="Pagination" data-link="{{ page.paginator.page_limit }}" role="button"{% if page.number == page.paginator.page_limit %} aria-current="page"{% endif %}>
+                        {{ page.paginator.page_limit }}
                     </a>
                 </li>
             {% endif %}
@@ -45,5 +57,10 @@
             </a>
         </div>
     {% endif %}
+
+    {% if page.number >= page.paginator.page_limit %}
+        <p class="tna-pagination__limit-message">Only the first {{ page.paginator.record_limit|intcomma }} results are shown, apply filters to narrow your search.</p>
+    {% endif %}
+
 </nav>
 {% endif %}
