@@ -689,7 +689,9 @@ class RecordArticlePage(
             # APIField("promote_panels"),
             APIField(
                 "intro_image_jpg",
-                serializer=ImageRenditionField("fill-512x512|format-jpeg|jpegquality-60", source="intro_image"),
+                serializer=ImageRenditionField(
+                    "fill-512x512|format-jpeg|jpegquality-60", source="intro_image"
+                ),
             ),
             # APIField("content_panels"),
             # APIField("gallery_items"),
