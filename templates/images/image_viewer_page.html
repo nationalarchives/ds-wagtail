@@ -5,7 +5,7 @@
 {% block content %}
   <link
     rel="stylesheet"
-    href="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0/dist/uv.css"
+    href="{% static 'uv/uv.css' %}"
   />
 
   <article class="tna-container">
@@ -29,15 +29,26 @@
 
 {% block extra_js %}
     <script src="{% static 'scripts/clover.js' %}"></script>
-    <script
-      type="application/javascript"
-      src="https://cdn.jsdelivr.net/npm/universalviewer@4.0.0-pre.106/dist/umd/UV.js"
-    ></script>
+    <script 
+        type="application/javascript"
+        src="{% static 'uv/UV.js' %}">
+    </script>
     <script>
         const data = {
             manifest: "{{ page.iiif_manifest_id }}",
-          };
+        };
     
-          uv = UV.init("uv", data);
+        uv = UV.init("uv", data);
+
+        // override config using an inline json object
+        uv.on("configure", function ({ config, cb }) {
+            cb({
+                options: { 
+                    footerPanelEnabled: true,
+                    theme: "",
+                    useArrowKeysToNavigate: true,
+                }
+            });
+        });
     </script>
 {% endblock %}
