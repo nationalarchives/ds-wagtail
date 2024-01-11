@@ -60,6 +60,7 @@ hooks:
     mkdir -p templates/static/assets
     cp -R node_modules/@nationalarchives/frontend/nationalarchives/assets/* templates/static/assets
     npm run compile
+    npm run copy
 
     poetry run python manage.py collectstatic --no-input
   deploy: |
