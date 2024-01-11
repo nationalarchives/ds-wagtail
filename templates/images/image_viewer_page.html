@@ -13,7 +13,8 @@
         <h2 class="heading heading--two">
             Clover
         </h2>
-        <div id="clover-viewer" data-id="{{ page.iiif_manifest_id }}"></div>
+        {% comment %} <div id="clover-viewer" data-id="{{ page.iiif_manifest_id }}"></div> {% endcomment %}
+        <div id="clover-viewer" data-id="https://api.dc.library.northwestern.edu/api/v2/works/8a833741-74a8-40dc-bd1d-c416a3b1bb38?as=iiif"></div>
     </div>
   </article>
 
@@ -35,7 +36,7 @@
     </script>
     <script>
         const data = {
-            manifest: "{{ page.iiif_manifest_id }}",
+            manifest: "https://api.dc.library.northwestern.edu/api/v2/works/8a833741-74a8-40dc-bd1d-c416a3b1bb38?as=iiif",
         };
     
         uv = UV.init("uv", data);
