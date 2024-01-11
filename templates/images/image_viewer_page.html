@@ -19,6 +19,14 @@
 
   <article class="tna-container">
     <div class="tna-column tna-column--full">
+        <h2>Mirador</h2>
+
+        <div id="mirador-viewer" data-id="{{ page.iiif_manifest_id }}"></div>
+    </div>
+  </article>
+
+  <article class="tna-container">
+    <div class="tna-column tna-column--full">
         <h2 class="heading heading--two">
             Universal Viewer
         </h2>
@@ -29,6 +37,7 @@
 
 {% block extra_js %}
     <script src="{% static 'scripts/clover.js' %}"></script>
+    <script src="{% static 'scripts/mirador.js' %}"></script>
     <script 
         type="application/javascript"
         src="{% static 'uv/UV.js' %}">

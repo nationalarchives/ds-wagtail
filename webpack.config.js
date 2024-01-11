@@ -10,6 +10,7 @@ module.exports = {
         gtm_script: "./scripts/src/gtm-script.js",
         image_viewer: "./scripts/src/image-viewer.js",
         home_page: "./scripts/src/home-page.js",
+        mirador: "./scripts/src/viewers/mirador.js",
         explorer: "./scripts/src/explorer.js",
         article: "./scripts/src/article.js",
         article_index_page: "./scripts/src/article-index-page.js",

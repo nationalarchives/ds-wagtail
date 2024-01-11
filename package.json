@@ -15,7 +15,7 @@
     "copy": "npm run copy-uv-dist-umd && npm run copy-uv-html && npm run copy-uv-css",
     "copy-uv-dist-umd": "cp -R node_modules/universalviewer/dist/umd 'templates/static/uv'",
     "copy-uv-html": "cp -R node_modules/universalviewer/dist/uv.html 'templates/static/uv'",
-    "copy-uv-css": "cp -R node_modules/universalviewer/dist/uv.css 'templates/static/uv'"    
+    "copy-uv-css": "cp -R node_modules/universalviewer/dist/uv.css 'templates/static/uv'"
   },
   "repository": {
     "type": "git",
@@ -38,8 +38,6 @@
     "eslint-plugin-react": "^7.33.2",
     "jest": "~29.7",
     "jest-environment-jsdom": "~29.7",
-    "less": "^4.2.0",
-    "less-loader": "^11.1.4",
     "prettier": "~3.1",
     "sass": "~1.69",
     "sass-loader": "^13.3.3",
@@ -54,6 +52,7 @@
     "@nationalarchives/frontend": "^0.1.23-prerelease",
     "@samvera/clover-iiif": "^2.2.6",
     "jquery": "~3.7",
+    "mirador": "^3.3.0",
     "openseadragon": "~4.1",
     "universalviewer": "^4.0.25"
   },
