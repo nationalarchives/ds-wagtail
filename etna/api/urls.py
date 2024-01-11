@@ -66,7 +66,7 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
         "description",
         # APIField(
         #     "image_small_jpg",
-        #     serializer=ImageRenditionField("fill-128x128", source="file"),
+        #     serializer=ImageRenditionField("fill-128x128|format-jpeg|jpegquality-60", source="file"),
         # ),
     ]
 
