@@ -8,7 +8,7 @@
             }
         }
         @media only screen and (max-width: $screen__sm) {
-            padding-left: 1rem;
+            padding-left: 0.5rem;
         }
     }
 
@@ -122,8 +122,8 @@
         @media only screen and (max-width: $screen__xl) {
             background: $color__black;
             color: $color__white;
-            margin-left: 1.5rem;
-            width: 90%;
+            margin-left: 0.5rem;
+            width: 95%;
             padding: 0.8rem;
         }
 
