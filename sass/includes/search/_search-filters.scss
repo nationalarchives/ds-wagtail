@@ -3,8 +3,21 @@
     border: 1px solid $color__grey-500;
     padding: 1rem;
 
+    &__header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-top: 1px solid black;
+
+        h2 {
+            font-size:2rem;
+        }
+    }
+
     &__heading {
         font-size: 1.3em;
+        padding-top:0;
     }
 
     &__widget-list {
@@ -38,7 +51,8 @@
     &__submit {
         @extend .search-button;
         display: block;
-        margin-top: 1.2em;
+        margin-top: 1em;
+        margin-left: auto;
     }
 
     &__label,
