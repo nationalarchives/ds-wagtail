@@ -50,11 +50,17 @@
                         <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block example-text">Search within results:</label>
                         {{ form.filter_keyword }}
                         {{ form.filter_keyword.errors }}
-                        <input type="submit" value="Search" class="search-filters__submit">
+                        <input type="submit" value="Search" class="search-filters__submitleft">
                     </div>
                     </p>
                 </div>
             </div>
+
+            <div class="search-filters__header">
+                <h2 class="tna-heading-l">Filters</h2>
+                <input type="submit" value="Update" class="search-filters__submit">
+            </div>
+
             <div class="govuk-accordion__section">
                 <div class="govuk-accordion__section-header">
                     <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
@@ -106,7 +112,7 @@
 
                                 </div>
 
-                                <input type="submit" value="Update" class="search-filters__submit">
+<!--                                <input type="submit" value="Update" class="search-filters__submit">-->
                             </fieldset>
                         </div>
                         {% endif %}
