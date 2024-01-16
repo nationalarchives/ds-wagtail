@@ -61,8 +61,6 @@ hooks:
     cp -R node_modules/@nationalarchives/frontend/nationalarchives/assets/* templates/static/assets
     npm run compile
     npm run copy
-    npm run create-tify
-    npm run copy-tify
 
     poetry run python manage.py collectstatic --no-input
   deploy: |
