@@ -130,7 +130,7 @@
                         {% if form.group.value == bucketkeys.ARCHIVE.value %}
                         {% include "search/includes/filter.html" with field=form.location %}
                         {% endif %}
-                        
+
                     </div>
                 </div>
                 <div class="govuk-accordion__section">
@@ -143,6 +143,12 @@
                     </div>
                     <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
                         {% include "search/includes/filter.html" with field=form.collection %}
+
+                        {% include "search/includes/filter.html" with field=form.time_period %}
+
+                        {% include "search/includes/filter.html" with field=form.topic %}
+
+                        {% include "search/includes/filter.html" with field=form.format %}
                     </div>
                 </div>
                 <div class="govuk-accordion__section">
