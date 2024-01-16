@@ -12,12 +12,14 @@
     "test": "jest --coverage",
     "lint": "prettier --check '{scripts,sass}/**/*.{scss,js}' && stylelint 'sass/**/*.scss' && eslint 'scripts/**/*.js'",
     "lint:fix": "prettier --write '{scripts,sass}/**/*.{scss,js}' && stylelint --fix 'sass/**/*.scss' && eslint --fix 'scripts/**/*.js'",
-    "copy": "npm run copy-uv-dist-umd && npm run copy-uv-html && npm run copy-uv-css && npm run copy-tify-js && npm run copy-tify-css",
+    "copy": "npm run copy-uv-dist-umd && npm run copy-uv-html && npm run copy-uv-css",
     "copy-uv-dist-umd": "cp -R node_modules/universalviewer/dist/umd 'templates/static/uv'",
     "copy-uv-html": "cp -R node_modules/universalviewer/dist/uv.html 'templates/static/uv'",
     "copy-uv-css": "cp -R node_modules/universalviewer/dist/uv.css 'templates/static/uv'",
-    "copy-tify-js": "cp -R node_modules/tify/dist/tify.js 'templates/static/tify/'",
-    "copy-tify-css": "cp -R node_modules/tify/dist/tify.css 'templates/static/tify/'"
+    "create-tify": "mkdir 'templates/static/tify'",
+    "copy-tify": "npm run copy-tify-js && npm run copy-tify-css",
+    "copy-tify-js": "cp -R node_modules/tify/dist/tify.js 'templates/static/tify'",
+    "copy-tify-css": "cp -R node_modules/tify/dist/tify.css 'templates/static/tify'"
   },
   "repository": {
     "type": "git",
