@@ -178,7 +178,15 @@ class ImageViewerPage(BasePage):
         "wagtailcore.Collection", on_delete=models.PROTECT
     )
 
-    content_panels = BasePage.content_panels + [FieldPanel("image_collection")]
+    content_panels = BasePage.content_panels + [
+        FieldPanel(
+            "image_collection",
+            help_text=(
+                "Select a Wagtail collection to display its constituent "
+                "images in the image viewers implemented on this page"
+            ),
+        ),
+    ]
 
     @property
     def iiif_manifest_id(self):
