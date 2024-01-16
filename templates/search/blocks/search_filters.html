@@ -36,30 +36,27 @@
         {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
         <h2 class="tna-heading search-filters__heading">Refine results:</h2>
         <div class="govuk-accordion" data-module="govuk-accordion" id="accordion-default">
-            <div class="govuk-accordion__section">
-                <div class="govuk-accordion__section-header">
-                    <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-        <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
-          Search within results
-        </span>
-                    </h2>
-                </div>
-
-                <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
-                    <p class="govuk-body">
-                        {% if form.filter_keyword %}
-                            <div class="search-filters__form-block">
-                                <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block example-text">Search within results:</label>
-                                {{ form.filter_keyword }}
-                                {{ form.filter_keyword.errors }}
+            {% if form.filter_keyword %}
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-1">
+                            Search within results
+                            </span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-1" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-1">
+                        <p class="govuk-body">
+                        <div class="search-filters__form-block">
+                            <label for="{{form.filter_keyword.id_for_label}}" class="search-filters__label--block example-text">Search within results:</label>
+                            {{ form.filter_keyword }}
+                            {{ form.filter_keyword.errors }}
                             <input type="submit" value="Search" class="search-filters__submitleft">
-                            </div>
-                        {% endif %}
-                    </p>
+                        </div>
+                        </p>
+                    </div>
                 </div>
-
-            </div>
-
+            {% endif %}
 
             <div class="search-filters__header">
                 <h2 class="tna-heading-l">Filters</h2>
@@ -78,13 +75,116 @@
                     <div class="search-filters__form-block">
                         <h3 class="tna-heading sr-only">Edit filters</h3>
 
-                        {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+                        {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
                         <div class="search-filters__accordion-section">
-                            <fieldset role="group" aria-describedby="opening-start-date">
+                            <fieldset role="group" aria-describedby="from-date">
                                 <legend>
-                                    <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                                    <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
                                 </legend>
 
+                                <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
+                                <div>{{ form.covering_date_from.label_tag }}</div>
+
+                                <div>
+
+                                    {% if form.covering_date_from.errors %}
+                                    <div
+                                            data-tracking-errors
+                                            data-filter="Dates"
+                                            data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                        {{ form.covering_date_from.errors }}
+                                    </div>
+                                    {% endif %}
+                                    {{ form.covering_date_from }}
+
+                                </div>
+
+                                <div>
+
+                                    {{ form.covering_date_to.label_tag }}
+                                    {% if form.covering_date_to.errors %}
+                                    <div
+                                            data-tracking-errors
+                                            data-filter="Dates"
+                                            data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
+                                        {{ form.covering_date_to.errors }}
+                                    </div>
+                                    {% endif %}
+                                    {{ form.covering_date_to }}
+
+                                </div>
+
+                            <!--<input type="submit" value="Update" class="search-filters__submit">-->
+                            </fieldset>
+                        </div>
+                        {% endif %}
+
+
+
+                    </div>
+                </div>
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
+                              Collections
+                            </span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
+                        {% include "search/includes/filter.html" with field=form.collection %}
+                    </div>
+                </div>
+ 
+                {% include "search/includes/filter.html" with field=form.time_period %}
+
+                {% include "search/includes/filter.html" with field=form.topic %}
+
+                {% include "search/includes/filter.html" with field=form.format %}
+
+                {% if form.group.value != bucketkeys.NONTNA.value %}
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                                <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+                                Level
+                                </span>
+                            </h2>
+                        </div>
+                        <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
+                            {% comment %} {% if form.group.value != bucketkeys.NONTNA.value %} {% endcomment %}
+                            {% include "search/includes/filter.html" with field=form.level %}
+                            {% comment %} {% endif %} {% endcomment %}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
+                              Closure status
+                            </span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-5">
+                        {% include "search/includes/filter.html" with field=form.closure %}
+
+                    </div>
+                </div>
+                {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+                    <div class="search-filters__accordion-section">
+                        <fieldset role="group" aria-describedby="opening-start-date">
+                            <legend>
+                                <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
+                            </legend>
+                            <div class="govuk-accordion__section-header">
+                                <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                                    <span class="govuk-accordion__section-button" id="accordion-default-heading-6">
+                                    Record opening date
+                                    </span>
+                                </h2>
+                            </div>
+                            <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-6">
                                 <div class="search-filters__opening-date-section">
 
                                     <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
@@ -101,116 +201,41 @@
 
                                 </div>
 
-
                                 <div class="search-filters__opening-date-section">
 
                                     {{ form.opening_end_date.label_tag }}
                                     {% if form.opening_end_date.errors %}
-                                    <div
+                                        <div
                                             data-tracking-errors
                                             data-filter="Record opening date"
                                             data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                        {{ form.opening_end_date.errors }}
-                                    </div>
+                                            {{ form.opening_end_date.errors }}
+                                        </div>
                                     {% endif %}
                                     {{ form.opening_end_date }}
 
-                                </div>
+                                </div>                               
 
-                                <!--<input type="submit" value="Update" class="search-filters__submit">-->
-                            </fieldset>
-                        </div>
-                        {% endif %}
-
-                        {% if form.group.value == bucketkeys.NONTNA.value %}
-                        {% include "search/includes/filter.html" with field=form.held_by %}
-                        {% include "search/includes/filter.html" with field=form.catalogue_source %}
-                        {% endif %}
-
-                        {% if form.group.value == bucketkeys.CREATOR.value %}
-                        {% include "search/includes/filter.html" with field=form.type %}
-                        {% include "search/includes/filter.html" with field=form.country %}
-                        {% endif %}
-
-                        {% if form.group.value == bucketkeys.ARCHIVE.value %}
-                        {% include "search/includes/filter.html" with field=form.location %}
-                        {% endif %}
-
-                    </div>
-                </div>
-                <div class="govuk-accordion__section">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                            <span class="govuk-accordion__section-button" id="accordion-default-heading-3">
-                              Collections
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-default-content-3" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-3">
-                        {% include "search/includes/filter.html" with field=form.collection %}
-
-                        {% include "search/includes/filter.html" with field=form.time_period %}
-
-                        {% include "search/includes/filter.html" with field=form.topic %}
-
-                        {% include "search/includes/filter.html" with field=form.format %}
-                    </div>
-                </div>
-                <div class="govuk-accordion__section">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                            <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
-                              Level
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
-                        {% if form.group.value != bucketkeys.NONTNA.value %}
-                        {% include "search/includes/filter.html" with field=form.level %}
-                        {% endif %}
-                    </div>
-                </div>
-                <div class="govuk-accordion__section">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                            <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
-                              Closure status
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-5">
-                        {% include "search/includes/filter.html" with field=form.closure %}
-
-                    </div>
-                </div>
-                <div class="govuk-accordion__section">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                            <span class="govuk-accordion__section-button" id="accordion-default-heading-6">
-                              Record opening date
-                            </span>
-                        </h2>
-                    </div>
-                    <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-6">
-                        <div class="search-filters__opening-date-section">
-
-                            <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
-                            {{ form.opening_start_date.label_tag }}
-                            {% if form.opening_start_date.errors %}
-                            <div
-                                    data-tracking-errors
-                                    data-filter="Record opening date"
-                                    data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                {{ form.opening_start_date.errors }}
                             </div>
-                            {% endif %}
-                            {{ form.opening_start_date }}
-
-                        </div>
-                        <input type="submit" value="Update" class="search-filters__submit">
-
+                        </fieldset>
                     </div>
-                </div>
+                {% endif %}
+
+                {% if form.group.value == bucketkeys.NONTNA.value %}
+                    {% include "search/includes/filter.html" with field=form.held_by %}
+                    {% include "search/includes/filter.html" with field=form.catalogue_source %}
+                {% endif %}
+
+                {% if form.group.value == bucketkeys.CREATOR.value %}
+                    {% include "search/includes/filter.html" with field=form.type %}
+                    {% include "search/includes/filter.html" with field=form.country %}
+                {% endif %}
+
+                {% if form.group.value == bucketkeys.ARCHIVE.value %}
+                    {% include "search/includes/filter.html" with field=form.location %}
+                {% endif %}
+
+                <input type="submit" value="Update" class="search-filters__submit">
             </div>
         </div>
 
@@ -225,6 +250,7 @@
         -->
         <!--GDS SCRIPTS-->
     </div>
+    {# render hidden inputs for fields controlled by other forms #}
+    {% render_fields_as_hidden form include='q group sort_by sort_order' %}
 </form>
 {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}
-
