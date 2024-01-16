@@ -77,7 +77,7 @@
                         <h3 class="tna-heading sr-only">Edit filters</h3>
                         {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
                             <div class="search-filters__accordion-section">
-                                <fieldset role="group" aria-describedby="from-date">
+                                <fieldset role="group" aria-describedby="record_covering_date">
                                     <legend>
                                         <h4 class="tna-heading search-filters__accordion-section-heading"
                                             id="record_covering_date">Dates</h4>
@@ -93,7 +93,7 @@
                                             </div>
                                         {% endif %}
                                         {{ form.covering_date_from }}
-                                    </div>
+                                     </div>
                                     <div>
                                         {{ form.covering_date_to.label_tag }}
                                         {% if form.covering_date_to.errors %}
@@ -157,7 +157,7 @@
                 </div>
                 {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                     <div class="search-filters__accordion-section">
-                        <fieldset role="group" aria-describedby="opening-start-date">
+                        <fieldset role="group" aria-describedby="record_opening_date">
                             <legend>
                                 <h4 class="tna-heading-s search-filters__accordion-section-heading"
                                     id="record_opening_date">Record opening date</h4>
