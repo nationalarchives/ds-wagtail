@@ -151,7 +151,9 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         APIField("teaser_text"),
         APIField(
             "teaser_image_jpg",
-            serializer=ImageRenditionField("fill-600x400", source="teaser_image"),
+            serializer=ImageRenditionField(
+                "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
+            ),
         ),
         APIField(
             "teaser_image_webp",
@@ -161,7 +163,9 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         ),
         APIField(
             "teaser_image_large_jpg",
-            serializer=ImageRenditionField("fill-1200x800", source="teaser_image"),
+            serializer=ImageRenditionField(
+                "fill-1200x800|format-jpeg|jpegquality-60", source="teaser_image"
+            ),
         ),
         APIField(
             "teaser_image_large_webp",
@@ -171,7 +175,9 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         ),
         APIField(
             "teaser_image_square_jpg",
-            serializer=ImageRenditionField("fill-512x512", source="teaser_image"),
+            serializer=ImageRenditionField(
+                "fill-512x512|format-jpeg|jpegquality-60", source="teaser_image"
+            ),
         ),
         APIField(
             "teaser_image_square_webp",
