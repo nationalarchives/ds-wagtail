@@ -73,46 +73,46 @@
                     <div class="search-filters__form-block">
                         <h3 class="tna-heading sr-only">Edit filters</h3>
 
-                        {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
+                        {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                         <div class="search-filters__accordion-section">
-                            <fieldset role="group" aria-describedby="from-date">
+                            <fieldset role="group" aria-describedby="opening-start-date">
                                 <legend>
-                                    <h4 class="tna-heading search-filters__accordion-section-heading" id="record_covering_date">Dates</h4>
+                                    <h4 class="tna-heading-s search-filters__accordion-section-heading" id="record_opening_date">Record opening date</h4>
                                 </legend>
 
-                                <span class="example-text" id="from-date">For example, 27 3 2007 or 2007</span>
-                                <div>{{ form.covering_date_from.label_tag }}</div>
+                                <div class="search-filters__opening-date-section">
 
-                                <div>
-
-                                    {% if form.covering_date_from.errors %}
+                                    <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span><br>
+                                    {{ form.opening_start_date.label_tag }}
+                                    {% if form.opening_start_date.errors %}
                                     <div
                                             data-tracking-errors
-                                            data-filter="Dates"
-                                            data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                        {{ form.covering_date_from.errors }}
+                                            data-filter="Record opening date"
+                                            data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                        {{ form.opening_start_date.errors }}
                                     </div>
                                     {% endif %}
-                                    {{ form.covering_date_from }}
+                                    {{ form.opening_start_date }}
 
                                 </div>
 
-                                <div>
 
-                                    {{ form.covering_date_to.label_tag }}
-                                    {% if form.covering_date_to.errors %}
+                                <div class="search-filters__opening-date-section">
+
+                                    {{ form.opening_end_date.label_tag }}
+                                    {% if form.opening_end_date.errors %}
                                     <div
                                             data-tracking-errors
-                                            data-filter="Dates"
-                                            data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1%} {% endif %}{% endfor %}">
-                                        {{ form.covering_date_to.errors }}
+                                            data-filter="Record opening date"
+                                            data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                        {{ form.opening_end_date.errors }}
                                     </div>
                                     {% endif %}
-                                    {{ form.covering_date_to }}
+                                    {{ form.opening_end_date }}
 
                                 </div>
 
-<!--                                <input type="submit" value="Update" class="search-filters__submit">-->
+                                <!--<input type="submit" value="Update" class="search-filters__submit">-->
                             </fieldset>
                         </div>
                         {% endif %}
