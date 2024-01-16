@@ -3,9 +3,9 @@ import Mirador from "./mirador.min.js";
 const viewer = document.getElementById("mirador-viewer");
 const manifestId = viewer.getAttribute("data-id");
 
-const miradorInstance = Mirador.viewer({
+Mirador.viewer({
     // see https://github.com/ProjectMirador/mirador/blob/5cb692ed31480c1e130f4a8715726688cb35796d/src/config/settings.js#L264 for config options
-    id: 'mirador-viewer', // id selector where Mirador should be instantiated
+    id: "mirador-viewer", // id selector where Mirador should be instantiated
     theme: {
         palette: {
             primary: {
@@ -13,27 +13,30 @@ const miradorInstance = Mirador.viewer({
             },
         },
     },
-    windows: [{
-        manifestId,
-        view: 'single',
-    }],
+    windows: [
+        {
+            manifestId,
+            view: "single",
+        },
+    ],
     window: {
         allowClose: false, // Prevent the user from closing this window
         allowMaximize: false,
         allowFullscreen: true,
-        defaultSideBarPanel: 'info',
+        defaultSideBarPanel: "info",
         sideBarOpenByDefault: false,
         highlightAllAnnotations: true,
-        views: [ // Only allow the user to select single and gallery view
-            { key: 'single' },
-            { key: 'gallery' },
-        ]
+        views: [
+            // Only allow the user to select single and gallery view
+            { key: "single" },
+            { key: "gallery" },
+        ],
     },
     thumbnailNavigation: {
-        defaultPosition: 'far-bottom',
+        defaultPosition: "far-bottom",
     },
     workspace: {
-        type: 'mosaic',
+        type: "mosaic",
         showZoomControls: true,
     },
     workspaceControlPanel: {

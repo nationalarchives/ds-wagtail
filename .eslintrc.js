@@ -33,5 +33,6 @@ module.exports = {
         react: {
             version: "detect"
         }
-    }
+    },
+    ignorePatterns: ["mirador.min.js"]
 };
