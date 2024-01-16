@@ -1,0 +1,222 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+/* stylelint-disable no-descending-specificity */
+
+.tify-header {
+    background: $header-bg;
+    box-shadow: 0 1px $border-color;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    z-index: 9;
+}
+
+.tify-header-button-group {
+    align-items: center;
+    display: flex;
+    margin: g(0.25) 0;
+    padding: 0 g(0.25);
+    position: relative;
+
+    &.-page-select {
+        align-self: center;
+        box-shadow: 0 0 0 1px $border-color inset;
+        border-radius: $br;
+        margin: 0 g(0.25);
+        padding: 0;
+
+        .tify.-small & {
+            margin: 0;
+        }
+    }
+
+    &.-pagination {
+        .tify.-small & {
+            display: none;
+        }
+
+        .tify-header-popup & {
+            box-shadow: 0 -1px $border-color;
+            display: none;
+            margin: calc(#{$br} * 2 - 1px) 0 0;
+            padding: $br 0 0;
+
+            .tify.-small & {
+                display: flex;
+            }
+        }
+    }
+
+    &.-toggle {
+        display: none;
+
+        .tify.-large & {
+            display: flex;
+        }
+
+        .tify-header-column:not(:nth-child(2)) & {
+            border-left: 1px solid $border-color;
+
+            .tify.-small & {
+                border: 0;
+            }
+        }
+    }
+
+    &.-view {
+        .tify.-large & {
+            display: block;
+            margin: 0;
+            padding: 0;
+        }
+
+        &:nth-child(n + 2),
+        .tify-header-column.-pagination ~ .tify-header-column & {
+            border-left: 1px solid $border-color;
+
+            .tify.-large & {
+                border-left: 0;
+            }
+        }
+    }
+}
+
+.tify-header-button {
+    @extend %button;
+    align-self: center;
+    background: none;
+    border-radius: $br;
+    border: 0;
+    box-shadow: none;
+    margin: 0; // Safari fix
+    min-height: g(1.5);
+    min-width: g(1.5);
+    padding: 0;
+
+    &:not(:disabled) {
+        @include hover {
+            box-shadow: 0 0 0 1px $shade-light inset;
+        }
+
+        &:active {
+            box-shadow:
+                $inset-shadow,
+                0 0 0 1px $shade-light inset;
+        }
+    }
+
+    &.-active {
+        @extend %button-active;
+    }
+
+    &.-icon-only {
+        display: block;
+        font-size: 0 !important; // Prevent label from showing
+
+        .tify.-large & {
+            font-size: inherit !important;
+        }
+    }
+
+    &.-scan {
+        display: none !important;
+
+        .tify.-medium & {
+            display: block !important;
+        }
+    }
+
+    .tify-header-button-group.-toggle & {
+        padding: g(0.375);
+
+        .tify.-tiny & {
+            margin: g(0.125) 0;
+            padding: g(0.25);
+        }
+    }
+
+    .tify-header-button-group.-view & {
+        font-size: 0.75em;
+
+        &:not(.-icon-only) {
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            font-size: $font-size-small;
+            line-height: 1;
+            min-height: g(1.75);
+            min-width: g(1.75);
+            padding: 0 0.5em 4px;
+        }
+
+        .tify.-large & {
+            align-items: flex-start; // Chrome, not working in Firefox
+            display: block;
+            font: inherit;
+            min-height: 0;
+            padding: g(0.25);
+            text-align: left; // Firefox, not working in Chrome
+            width: 100%;
+        }
+    }
+
+    .tify-page-select + & {
+        border-radius: 0 $br $br 0;
+        margin-left: -1px;
+
+        &:not(:disabled) {
+            @include hover {
+                box-shadow: 0 0 0 1px $border-color inset;
+            }
+
+            &:active {
+                box-shadow:
+                    $inset-shadow,
+                    0 0 0 1px $border-color inset;
+            }
+        }
+    }
+}
+
+.tify-header-column {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    min-width: 0;
+
+    &:first-child {
+        flex: 1;
+    }
+}
+
+.tify-header-popup {
+    display: flex;
+
+    .tify.-large & {
+        @include dropdown(right);
+        box-shadow: none;
+        display: none;
+        top: g(2);
+
+        &.-visible {
+            display: block;
+        }
+    }
+}
+
+.tify-header-title {
+    @include typography.heading-font;
+    @include typography.relative-font-size(24);
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    align-self: center;
+    display: -webkit-box;
+    font-weight: normal;
+    line-height: g();
+    overflow: hidden;
+    margin: g(0.125) g(0.5);
+    text-align: left;
+    text-overflow: ellipsis;
+}
+
+/* stylelint-enable no-descending-specificity  */

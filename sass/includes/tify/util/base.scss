@@ -1,0 +1,103 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.tify {
+    @include typography.main-font;
+    background: $main-bg;
+    box-sizing: border-box;
+    color: $text-color;
+    display: flex;
+    flex-direction: column;
+    font-size: $font-size;
+    height: 100%;
+    line-height: $line-height;
+    min-height: 240px;
+    min-width: 240px;
+    overflow: hidden;
+    position: relative;
+    -webkit-tap-highlight-color: $shade-light;
+
+    *,
+    *::before,
+    *::after {
+        box-sizing: inherit;
+    }
+
+    a {
+        @include typography.main-font;
+        color: $color__link;
+        word-wrap: break-word;
+
+        @include hover {
+            color: $link-hover-color;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $base-color-light;
+        }
+    }
+
+    h3 {
+        @include typography.heading-font;
+        @include typography.relative-font-size(24);
+        box-shadow: none;
+        font-weight: inherit;
+        letter-spacing: normal;
+        margin: 0 0 g(0.5);
+        color: $grey-dark;
+        padding: 0.5rem 0 0;
+        border: 0;
+        text-transform: none;
+    }
+
+    h4 {
+        @include typography.heading-font;
+        @include typography.relative-font-size(20);
+        font-weight: normal;
+        margin: 0 0 g(0.25) 0;
+        color: $grey;
+        padding: 0;
+
+        &:nth-of-type(n + 2) {
+            margin-top: g(0.5);
+        }
+    }
+
+    label {
+        @include typography.detail-font;
+        cursor: pointer;
+        font-size: inherit;
+        font-weight: normal;
+    }
+
+    li {
+        @include typography.main-font;
+        margin: 0;
+        padding: 0;
+    }
+
+    p {
+        @include typography.main-font;
+        margin: 0 0 g(0.5);
+        padding: 0;
+    }
+
+    ul {
+        @include typography.main-font;
+        margin: 0 0 g(0.5);
+        padding: 0 0 0 g();
+    }
+
+    [type="text"] {
+        background: $white;
+        border: 1px solid $shade;
+        border-radius: $br;
+        color: inherit;
+        font: inherit;
+        padding: calc(#{g(0.25)} - 1px) 0.5em;
+
+        &:focus {
+            border-color: $base-color;
+            outline: 2px solid $base-color-lighter;
+        }
+    }
+}

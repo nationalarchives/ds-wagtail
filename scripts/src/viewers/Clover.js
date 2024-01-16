@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Viewer from "@samvera/clover-iiif/viewer";
-import {
-    Homepage,
-    Label,
-    Metadata,
-    PartOf,
-    RequiredStatement,
-    SeeAlso,
-    Summary,
-} from "@samvera/clover-iiif/primitives";
+// import {
+//     Homepage,
+//     Label,
+//     Metadata,
+//     PartOf,
+//     RequiredStatement,
+//     SeeAlso,
+//     Summary,
+// } from "@samvera/clover-iiif/primitives";
 //import Slider from "@samvera/clover-iiif/slider";
 
 import "swiper/css";
@@ -46,7 +46,7 @@ const Clover = () => {
         // custom options
 
         informationPanel: {
-            open: false,
+            open: true,
             renderToggle: true,
         },
     };
@@ -100,7 +100,7 @@ const Clover = () => {
                 customTheme={customTheme}
                 options={options}
             />
-            <div>
+            {/* <div>
                 <Label label={manifest.label} as="h1" />
                 <Summary summary={manifest.summary} as="p" />
                 <Metadata metadata={manifest.metadata} />
@@ -110,7 +110,7 @@ const Clover = () => {
                 <PartOf partOf={manifest.partOf} />
                 <SeeAlso seeAlso={manifest.seeAlso} />
                 <Homepage homepage={manifest.homepage} />
-            </div>
+            </div> */}
             {/* Needs a specific collection to work correctly */}
             {/* <Slider iiifContent={collectionId} /> */}
         </article>

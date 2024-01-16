@@ -1,0 +1,39 @@
+.tify-loading {
+    animation:
+        fadeIn 0.5s forwards 0.5s,
+        spin 1.2s infinite ease-in-out;
+    background: $base-color-light;
+    border-radius: $br;
+    bottom: g(0.5);
+    height: g(1.5);
+    left: g(0.5);
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    width: g(1.5);
+
+    // stylelint-disable keyframes-name-pattern
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 1;
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: perspective(120px) rotateX(0deg) rotateY(0deg);
+        }
+
+        50% {
+            transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg);
+        }
+
+        100% {
+            transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg);
+        }
+    }
+}

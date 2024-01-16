@@ -1,0 +1,153 @@
+%toc-row-item {
+    background: $white;
+    position: relative;
+    z-index: 1;
+}
+
+.tify-toc {
+    @extend %panel;
+    overflow-y: auto;
+    padding: g(0.5);
+    position: relative;
+    z-index: 0;
+
+    ul {
+        margin: 0 g(-0.25) 0 g(0.25);
+        padding: 0;
+    }
+}
+
+.tify-toc-header {
+    margin: 0 g(0.25) g(0.5);
+}
+
+.tify-toc-label {
+    @extend %toc-row-item;
+    padding-right: 0.2em;
+    transition: inherit;
+}
+
+.tify-toc-link {
+    border-radius: $br;
+    color: $link-color;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    padding: g(0.25);
+    position: relative;
+    text-decoration: none;
+
+    @include hover {
+        background: $base-color-lighter;
+
+        // Element label and page number
+        > span {
+            background: $base-color-lighter;
+        }
+    }
+
+    &.-dots {
+        // Dotted line below
+        &::after {
+            bottom: calc(#{g(0.5)} - 1px);
+            content: "";
+            left: g(0.25);
+            min-width: 4em;
+            border-bottom: 1px dotted;
+            position: absolute;
+            right: g(0.25);
+        }
+    }
+}
+
+.tify-toc-list {
+    position: relative;
+    z-index: 0;
+
+    & & {
+        // Make space for vertical connector to the left
+        margin: 0 0 0 g(1.25);
+    }
+
+    a {
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+.tify-toc-page {
+    @extend %toc-row-item;
+    float: right;
+    padding-left: 0.2em;
+    transition: inherit;
+    z-index: 1;
+}
+
+.tify-toc-structure {
+    display: block;
+    position: relative;
+
+    &.-current {
+        // Bold vertical marker
+        box-shadow:
+            calc(#{g(-0.5)} + 1px) 0 $white,
+            g(-0.75) 0 $base-color-light;
+    }
+
+    &.-expanded {
+        // Vertical connector to the left
+        &::after {
+            border-left: 1px solid $base-color-light;
+            content: "";
+            left: g(0.75);
+            height: 100%;
+            position: absolute;
+            top: g(0.25);
+            z-index: -2;
+        }
+    }
+
+    & & {
+        // Horizontal connector
+        &::before {
+            border-top: 1px solid $base-color-light;
+            content: "";
+            display: block;
+            height: 100%;
+            left: g(-0.5);
+            position: absolute;
+            top: g(0.75);
+            width: g(0.5);
+        }
+
+        // Prevent vertical line from protruding at the bottom
+        &:not(.-current):last-child::before {
+            background: $white;
+        }
+    }
+}
+
+.tify-toc-toggle-all {
+    @extend %button-small;
+    margin: g(0.25);
+}
+
+.tify-toc-toggle {
+    @extend %button;
+    float: left;
+    margin: g(0.25) 0 0 g(0.25);
+    padding: 0;
+    position: relative;
+
+    // White overlay so vertical line does not touch button
+    &::after {
+        content: "";
+        border-bottom: g(0.25) solid $white;
+        bottom: g(-0.25);
+        left: g(0.5);
+        pointer-events: none;
+        position: absolute;
+        width: 1px;
+        z-index: -1;
+    }
+}

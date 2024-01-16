@@ -1,0 +1,43 @@
+// Opaque shades
+$grey: #666 !default;
+$grey-dark: #333 !default;
+$grey-light: #f5f5f5 !default;
+$white: #fff !default;
+
+// Semitransparent shades
+$shade: $gray-600 !default;
+$shade-dark: $gray-700 !default;
+$shade-darker: $gray-800 !default;
+$shade-light: $grey-light !default;
+$shine: rgba($white, 0.4) !default;
+
+// Semantic colors
+// NOTE: These colors must be solid
+$base-color: $color__navy !default;
+
+$base-color-light: #d4e5ef !default;
+$base-color-lighter: $grey-light !default;
+$border-color: $color__grey-400 !default;
+$link-color: $white !default;
+$link-hover-color: var(--tify-link-hover-color, $link-color) !default;
+$text-color: var(--tify-text-color, $grey-dark) !default;
+$text-color-muted: var(--tify-text-muted-color, $grey) !default;
+
+// Dimensions
+$br: var(--tify-border-radius, 2px) !default;
+$font-size: var(--tify-font-size, 16px) !default;
+$font-size-small: var(
+    --tify-font-size-small,
+    calc(#{$font-size} * 0.8125)
+) !default;
+$grid-base: var(--tify-grid-base, 24px) !default;
+$line-height: var(--tify-line-height, #{g()}) !default;
+$thumbnail-height: var(--tify-thumbnail-height, g(4.5)) !default;
+$thumbnail-width: var(--tify-thumbnail-width, g(4)) !default;
+
+// Combined values
+$blur: blur(2px);
+$drop-shadow: rgba($grey-dark, 0.5) !default;
+$header-bg: $white !default;
+$inset-shadow: 0 0.5px 3px $shade inset !default;
+$main-bg: $grey-dark !default; // dots pattern

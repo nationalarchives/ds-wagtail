@@ -1,0 +1,87 @@
+// Based on Styling Cross-Browser Compatible Range Inputs with Sass v1.4.1
+// Github: https://github.com/darlanrod/input-range-sass
+// Author: Darlan Rod https://github.com/darlanrod
+// MIT License
+
+// NOTE: Styles with different vendor prefixes must not be grouped
+
+$track-color: $border-color;
+$track-focus-color: null;
+
+$thumb-bg: $link-color linear-gradient(to bottom, #fff3, #fff0);
+$thumb-focus-bg: $link-color linear-gradient(to bottom, #fff1, #0002);
+
+$thumb-radius: $br;
+$thumb-height: g();
+$thumb-width: g(0.5);
+
+$track-height: g(0.25);
+
+$track-radius: $br;
+
+@mixin range-track {
+    cursor: pointer;
+    height: $track-height;
+    width: 100%;
+}
+
+@mixin range-thumb {
+    background: $thumb-bg;
+    border: 0;
+    border-radius: $thumb-radius;
+    cursor: pointer;
+    height: $thumb-height;
+    width: $thumb-width;
+}
+
+@mixin range {
+    -webkit-appearance: none;
+    margin: g(0.25) 0 g(-0.25);
+    width: 100%;
+
+    &::-webkit-slider-runnable-track {
+        @include range-track;
+        background: $track-color;
+        border-radius: $track-radius;
+        margin: 0;
+    }
+
+    &::-webkit-slider-thumb {
+        @include range-thumb;
+        -webkit-appearance: none;
+        margin-top: calc((#{$track-height} * 0.5) - (#{$thumb-height} * 0.5));
+    }
+
+    &::-moz-range-track {
+        @include range-track;
+        background: $track-color;
+        border: 0;
+        border-radius: $track-radius;
+    }
+
+    &::-moz-range-thumb {
+        @include range-thumb;
+    }
+
+    &:focus {
+        &::-webkit-slider-runnable-track {
+            background: $track-focus-color;
+            box-shadow: $inset-shadow;
+        }
+
+        &::-webkit-slider-thumb {
+            background: $thumb-focus-bg;
+            box-shadow: $inset-shadow;
+        }
+
+        &::-moz-range-track {
+            background: $track-focus-color;
+            box-shadow: $inset-shadow;
+        }
+
+        &::-moz-range-thumb {
+            background: $thumb-focus-bg;
+            box-shadow: $inset-shadow;
+        }
+    }
+}
