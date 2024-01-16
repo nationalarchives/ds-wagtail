@@ -117,8 +117,20 @@
                         </div>
                         {% endif %}
 
+                        {% if form.group.value == bucketkeys.NONTNA.value %}
+                        {% include "search/includes/filter.html" with field=form.held_by %}
+                        {% include "search/includes/filter.html" with field=form.catalogue_source %}
+                        {% endif %}
 
+                        {% if form.group.value == bucketkeys.CREATOR.value %}
+                        {% include "search/includes/filter.html" with field=form.type %}
+                        {% include "search/includes/filter.html" with field=form.country %}
+                        {% endif %}
 
+                        {% if form.group.value == bucketkeys.ARCHIVE.value %}
+                        {% include "search/includes/filter.html" with field=form.location %}
+                        {% endif %}
+                        
                     </div>
                 </div>
                 <div class="govuk-accordion__section">
