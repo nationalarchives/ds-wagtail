@@ -29,10 +29,12 @@
         {% endif %}
 
 
-
-
+        {% comment %} Image viewer stylesheets {% endcomment %}
+        <link rel="stylesheet" href="{% static 'uv/uv.css' %}" />
+        <link rel="stylesheet" href="{% static 'tify/tify.css' %}" />
 
         {# Global stylesheets #}
+        
         <link rel="stylesheet" type="text/css" href="{% static 'css/dist/etna.css' %}">
 
         {% if show_cookie_notice %}

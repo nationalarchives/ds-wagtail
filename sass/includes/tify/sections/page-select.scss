@@ -1,0 +1,111 @@
+.tify-page-select {
+    a {
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+.tify-page-select-button {
+    @extend %button;
+    background: none;
+    border-radius: $br 0 0 $br;
+    box-shadow: none;
+    display: block;
+    height: 100%;
+    max-width: g(10);
+    min-width: g(3);
+    overflow: hidden;
+    padding: g(0.25) 0.5em;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:not(:disabled) {
+        @include hover {
+            box-shadow: 0 0 0 1px $border-color inset;
+        }
+
+        &:active {
+            box-shadow:
+                $inset-shadow,
+                0 0 0 1px $border-color inset;
+        }
+    }
+
+    .tify.-medium & {
+        max-width: g(8);
+    }
+
+    .tify.-small & {
+        max-width: g(6);
+    }
+
+    .tify.-tiny & {
+        max-width: g(4);
+    }
+}
+
+.tify-page-select-dropdown {
+    @include dropdown;
+    max-width: 100%;
+    text-align: center;
+
+    .tify.-small & {
+        left: 0;
+    }
+}
+
+.tify-page-select-filter {
+    padding: $br $br calc(#{$br} * 2);
+}
+
+.tify-page-select-input {
+    width: 100%;
+}
+
+/* stylelint-disable no-descending-specificity */
+.tify-page-select-list {
+    list-style: none;
+    margin: 0;
+    max-height: g(11);
+    min-width: 100%;
+    overflow-y: scroll;
+    padding: 0;
+    position: relative;
+
+    > li {
+        margin: 0;
+        user-select: none;
+
+        + li {
+            box-shadow: 0 1px $border-color inset;
+        }
+
+        > a {
+            @include hover {
+                background: $shade-light;
+            }
+        }
+
+        &.-current > a {
+            background: $shade-light;
+        }
+
+        &.-highlighted > a {
+            background: $link-color;
+            color: $white;
+        }
+    }
+
+    a {
+        color: inherit;
+        display: block;
+        padding: g(0.125) 0.5em;
+        text-decoration: none;
+
+        @include hover {
+            color: inherit;
+        }
+    }
+}
+/* stylelint-enable no-descending-specificity */

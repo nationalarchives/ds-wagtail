@@ -148,6 +148,18 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/record-creator-collections";
 @import "includes/universal-viewer";
 
+/* 
+
+==============
+Tify Image Viewer Styles
+==============
+
+Structure & files copied from the node modules folder
+
+*/
+
+@import "includes/tify/main";
+
 /* Un-comment when front-end toolkit is fixed
 
 ==============
@@ -305,7 +317,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        @include colour.invert;
+        // @include colour.invert;
         background-color: #343338 !important;
         color: #fff !important;
 

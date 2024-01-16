@@ -1,0 +1,77 @@
+@use "sass:math";
+
+.tify-thumbnails {
+    @extend %panel;
+    min-height: 100%;
+    overflow-y: scroll; // NOTE: This is required for thumbnails to be calculated correctly
+    padding: g(0.5);
+    position: relative;
+    user-select: none;
+
+    a {
+        color: inherit;
+        border: 0;
+        box-shadow: none;
+    }
+}
+
+.tify-thumbnails-list {
+    margin: g(-0.25);
+}
+
+.tify-thumbnails-item {
+    background: currentColor;
+    border-radius: $br;
+    cursor: pointer;
+    float: left;
+    margin: g(0.25);
+    overflow: hidden;
+    padding-bottom: g();
+    position: relative;
+
+    @include hover {
+        background: currentColor;
+        filter: brightness(1.2);
+    }
+
+    img {
+        display: block;
+        height: $thumbnail-height;
+        margin: auto;
+        object-fit: contain;
+        pointer-events: none;
+        max-width: 100%;
+        width: $thumbnail-width;
+    }
+
+    &.-current {
+        outline: g(math.div(0.5, 3)) solid $base-color-light;
+    }
+}
+
+.tify-thumbnails-page {
+    bottom: 0;
+    box-shadow: 0 -1px $shine;
+    color: $white;
+    display: block;
+    font-size: $font-size-small;
+    font-weight: bold;
+    height: g();
+    overflow: hidden;
+    padding: 0 g(0.25);
+    position: absolute;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+
+    @at-root {
+        .tify-thumbnails-item {
+            &.-current {
+                .tify-thumbnails-page {
+                    background: $link-color;
+                }
+            }
+        }
+    }
+}

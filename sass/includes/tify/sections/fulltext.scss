@@ -1,0 +1,24 @@
+.tify-fulltext {
+    @extend %panel;
+    overflow-y: auto;
+    padding: g(0.5);
+}
+
+.tify-fulltext-none {
+    color: $text-color-muted;
+    font-style: italic;
+}
+
+.tify-fulltext-page {
+    margin: 0 0 g();
+}
+
+.tify-fulltext-text {
+    margin-left: 1em;
+    text-indent: -1em;
+    word-break: break-word;
+
+    p {
+        margin: 0 0 1em;
+    }
+}

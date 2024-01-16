@@ -3,22 +3,24 @@
 {% load static wagtailcore_tags %}
 
 {% block content %}
-  <link
-    rel="stylesheet"
-    href="{% static 'uv/uv.css' %}"
-  />
-
-  <article class="tna-container">
+  <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
         <h2 class="heading heading--two">
             Clover
         </h2>
-        {% comment %} <div id="clover-viewer" data-id="{{ page.iiif_manifest_id }}"></div> {% endcomment %}
         <div id="clover-viewer" data-id="https://api.dc.library.northwestern.edu/api/v2/works/71153379-4283-43be-8b0f-4e7e3bfda275?as=iiif"></div>
     </div>
   </article>
 
-  <article class="tna-container">
+  <article class="tna-container tna-!--margin-top-l">
+    <div class="tna-column tna-column--full">
+        <h2>Tify</h2>
+
+        <div id="tify-viewer" style="height: 640px" data-id="{{ page.iiif_manifest_id }}"></div>
+    </div>
+  </article>
+
+  <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
         <h2 class="heading heading--two">
             Universal Viewer
@@ -30,9 +32,16 @@
 
 {% block extra_js %}
     <script src="{% static 'scripts/clover.js' %}"></script>
-    <script 
-        type="application/javascript"
-        src="{% static 'uv/UV.js' %}">
+    {% comment %} <script src="{% static 'scripts/mirador.js' %}"></script> {% endcomment %}
+    <script src="{% static 'tify/tify.js' %}"></script>
+    <script>
+        new Tify({
+            container: '#tify-viewer',
+            manifestUrl: 'https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json',
+            urlQueryKey: '{{ page.title }}',
+        })
+    </script>
+    <script src="{% static 'uv/UV.js' %}">
     </script>
     <script>
         const data = {
@@ -46,7 +55,6 @@
             cb({
                 options: { 
                     footerPanelEnabled: true,
-                    theme: "",
                     useArrowKeysToNavigate: true,
                 }
             });

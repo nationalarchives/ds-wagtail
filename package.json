@@ -12,10 +12,12 @@
     "test": "jest --coverage",
     "lint": "prettier --check '{scripts,sass}/**/*.{scss,js}' && stylelint 'sass/**/*.scss' && eslint 'scripts/**/*.js'",
     "lint:fix": "prettier --write '{scripts,sass}/**/*.{scss,js}' && stylelint --fix 'sass/**/*.scss' && eslint --fix 'scripts/**/*.js'",
-    "copy": "npm run copy-uv-dist-umd && npm run copy-uv-html && npm run copy-uv-css",
+    "copy": "npm run copy-uv-dist-umd && npm run copy-uv-html && npm run copy-uv-css && npm run copy-tify-js && npm run copy-tify-css",
     "copy-uv-dist-umd": "cp -R node_modules/universalviewer/dist/umd 'templates/static/uv'",
     "copy-uv-html": "cp -R node_modules/universalviewer/dist/uv.html 'templates/static/uv'",
-    "copy-uv-css": "cp -R node_modules/universalviewer/dist/uv.css 'templates/static/uv'"    
+    "copy-uv-css": "cp -R node_modules/universalviewer/dist/uv.css 'templates/static/uv'",
+    "copy-tify-js": "cp -R node_modules/tify/dist/tify.js 'templates/static/tify/'",
+    "copy-tify-css": "cp -R node_modules/tify/dist/tify.css 'templates/static/tify/'"
   },
   "repository": {
     "type": "git",
@@ -38,8 +40,6 @@
     "eslint-plugin-react": "^7.33.2",
     "jest": "~29.7",
     "jest-environment-jsdom": "~29.7",
-    "less": "^4.2.0",
-    "less-loader": "^11.1.4",
     "prettier": "~3.1",
     "sass": "~1.69",
     "sass-loader": "^13.3.3",
@@ -55,6 +55,8 @@
     "@samvera/clover-iiif": "^2.2.6",
     "jquery": "~3.7",
     "openseadragon": "~4.1",
+    "react": "^18.2.0",
+    "tify": "^0.29.2",
     "universalviewer": "^4.0.25"
   },
   "jest": {
