@@ -35,7 +35,7 @@
       <h2 class="heading heading--two">
         Mirador
       </h2>
-      <div class="mirador" id="mirador-viewer" data-id="https://api.dc.library.northwestern.edu/api/v2/works/71153379-4283-43be-8b0f-4e7e3bfda275?as=iiif"></div>
+      <div class="mirador" id="mirador-viewer" data-id="https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json"></div>
     </div>
   </article>
 
@@ -56,7 +56,7 @@
     </script>
     <script>
         const data = {
-            manifest: "{{ page.iiif_manifest_id }}",
+            manifest: "https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json",
         };
     
         uv = UV.init("uv", data);
