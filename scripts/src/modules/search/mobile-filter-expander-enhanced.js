@@ -9,11 +9,13 @@ export default function () {
     let $searchFilterContainer = document.querySelector(
         'div[data-id="catalogue-search-sidebar"]',
     );
+
     let $main = document.querySelector("main");
 
     if (!$searchFilterContainer || !$searchGrid || !$main) {
         return;
     }
+
     //need case where validation warning is invoked
     let $showHideButton = document.createElement("button");
     //check the query string to populate the number of selected filters
@@ -22,9 +24,8 @@ export default function () {
     } else {
         // no filters selected (always display number of active filters)
         $showHideButton.innerHTML =
-            'Show filters<span class="filter-indicator">' +
-            $noOfFilters +
-            '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
+            "Add filters" +
+            '<span class="sr-only"> active</span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style="display:inline-block;margin-left:10px;">';
     }
     $showHideButton.classList.add("search-results__filter-button");
     $showHideButton.setAttribute("aria-expanded", false);
@@ -32,7 +33,12 @@ export default function () {
     $showHideButton.setAttribute("data-link-type", "Mobile Button");
     $showHideButton.setAttribute("data-link", "Show search filters");
     $showHideButton.hidden = true;
-    $main.insertBefore($showHideButton, $searchGrid);
+
+    //console.log($showHideButton);
+    //console.log($searchGrid);
+
+    //$main.insertBefore($showHideButton, $searchGrid);
+    $searchGrid.after($showHideButton, $searchGrid);
 
     $searchFilterContainer.id = "searchFilterContainer";
 
@@ -50,7 +56,7 @@ export default function () {
                 'Hide filters <img src="/static/images/fontawesome-svgs/chevron-up-white.svg" width="20px" height="20px" style=\'display: inline-block;margin-left: 10px;\'>';
         } else {
             $showHideButton.innerHTML =
-                'Show filters<span class="filter-indicator">' +
+                'Add filters<span class="filter-indicator">' +
                 $noOfFilters +
                 '<span class="sr-only"> active</span></span><img src="/static/images/fontawesome-svgs/chevron-down-white.svg" width="20" height="20" style=\'display: inline-block;margin-left: 10px;\'>';
         }
