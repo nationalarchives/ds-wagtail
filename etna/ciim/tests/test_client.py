@@ -221,8 +221,8 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
-            "filter=collection%3Avalue1%3Aor"
-            "&filter=collection%3Avalue2%3Aor",
+            "filter=collection%3Avalue1"
+            "&filter=collection%3Avalue2",
         )
 
     @responses.activate

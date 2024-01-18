@@ -1,6 +1,5 @@
 import json
 import logging
-import re
 
 from datetime import date, datetime, time
 from enum import StrEnum
@@ -33,6 +32,7 @@ from .exceptions import (
     DoesNotExist,
     MultipleObjectsReturned,
 )
+from .utils import prepare_filter_aggregations
 
 logger = logging.getLogger(__name__)
 
@@ -60,63 +60,6 @@ class Sort(StrEnum):
     TITLE_DESC = "title:desc"
     DATE_ASC = "date:asc"
     DATE_DESC = "date:desc"
-
-
-def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
-    """
-    Filter format in items: 'field:value', 'field:value:or'
-    Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api
-    When using filter with multiple values, specific fields require OR operator to be specified,
-    otherwise AND is used by default.
-    Example:
-    before-prepare: "heldBy:Birmingham: Archives, Heritage and Photography Service"
-    after-prepare:  "heldBy:Birmingham Archives Heritage and Photography Service"
-    before-prepare: "heldBy:Staffordshire and Stoke-on-Trent Archive Service: Staffordshire County Record Office"
-    after-prepare:  "heldBy:Staffordshire and Stoke on Trent Archive Service Staffordshire County Record Office"
-    Special char single quote i.e. ' is not prepared
-    before-prepare: "heldBy:Labour History Archive and Study Centre (People's History Museum/University of Central Lancashire)"
-    after-prepare:  "heldBy:Labour History Archive and Study Centre People's History Museum University of Central Lancashire "
-    """
-    if not items:
-        return []
-
-    regex = r"([/():,\&\-\|+@!.])"
-    subst = " "
-    field_list_to_prepare = ["heldBy"]
-    filter_prepared_list = []
-    fields_using_or_operator = ["heldBy", "collection", "level"]
-
-    for item in items:
-        field, value = item.split(":", 1)
-        if field in field_list_to_prepare:
-            # replace special chars
-            prepared_value = re.sub(regex, subst, value, 0, re.MULTILINE)
-            # replace multiple space
-            prepared_value = re.sub(" +", subst, prepared_value, 0, re.MULTILINE)
-            filter_prepared = (
-                field + ":" + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
-            )
-        else:
-            filter_prepared = field + ":" + value
-
-        filter_prepared_list.append(filter_prepared)
-
-    # if number of occurrences of field_for_or is more than 1, update add or to those values
-    # ["collection:<value1>:or", "collection:<value2>:or", "group:<value3>"]
-    for field in fields_using_or_operator:
-        # more than 1 value for the field
-        if sum((item.split(":", 1)[0].count(field) for item in items)) > 1:
-            # append or to the value for each field
-            updated_list_for_or_operator = []
-            for item in filter_prepared_list:
-                if item.split(":", 1)[0] == field:
-                    updated_list_for_or_operator.append(item + ":or")
-                else:
-                    updated_list_for_or_operator.append(item)
-
-            filter_prepared_list = updated_list_for_or_operator
-
-    return filter_prepared_list
 
 
 class ResultList:
