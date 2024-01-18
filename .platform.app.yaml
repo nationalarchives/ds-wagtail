@@ -7,7 +7,7 @@ name: app
 # in multiple versions. Check the Python documentation
 # (https://docs.platform.sh/languages/python.html#supported-versions)
 # to find the supported versions for the 'python' type.
-type: 'python:3.11'
+type: 'python:3.12'
 
 variables:
   env:
@@ -15,7 +15,7 @@ variables:
     # pip
     POETRY_VIRTUALENVS_IN_PROJECT: true
     POETRY_VIRTUALENVS_CREATE: true
-    POETRY_VERSION: 1.5.1
+    POETRY_VERSION: 1.6.1
 
 # The size of the persistent disk of the application (in MB).
 disk: 2048
@@ -35,7 +35,7 @@ hooks:
     curl -sS https://platform.sh/cli/installer | php
     
     # Download the latest version of pip
-    python3.11 -m pip install --upgrade pip
+    python3.12 -m pip install --upgrade pip
 
     # Install and configure Poetry
     # Set user to false to install Poetry globally

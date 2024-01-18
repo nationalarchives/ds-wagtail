@@ -26,40 +26,7 @@
         </p>
 
         <dl class="search-results__list-card-metadata">
-            {% if record.held_by %}
-            <dt class="search-results__list-card-metadata-item-held-by-icon">Held by:</dt>
-            <dd>{{ record.held_by }}</dd>
-            {% endif %}
-
-
-
-            {% if record.date_created %}
-            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                Date:</dt>
-            <dd>
-                <date>{{ record.date_created }}</date></dd>
-            {% endif %}
-
-            {% if record.reference_number %}
-            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
-                {% if form.group.value == 'archive' %}
-                Archon code:
-                {% else %}
-                Reference:
-                {% endif %}
-            </dt>
-            <dd>{{ record.reference_number }}
-            </dd>
-            {% endif %}
-
-            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-            <dt class="search-results__list-card-metadata-item">
-                Type:</dt>
-            <dd>{{ record.type }}
-            </dd>
-            {% endif %}
-
-
+            {% include "search/includes/results-details.html" %}
         </dl>
 
     </div>

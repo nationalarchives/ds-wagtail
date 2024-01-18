@@ -3,8 +3,21 @@
     border: 1px solid $color__grey-500;
     padding: 1rem;
 
+    &__header {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-bottom: 1rem;
+        border-top: 1px solid #8c9694;
+
+        h2 {
+            font-size: 2rem;
+        }
+    }
+
     &__heading {
         font-size: 1.3em;
+        display: none;
     }
 
     &__widget-list {
@@ -38,7 +51,15 @@
     &__submit {
         @extend .search-button;
         display: block;
-        margin-top: 1.2em;
+        margin-top: 1em;
+        margin-left: auto;
+    }
+
+    &__submitleft {
+        @extend .search-button;
+        display: block;
+        margin-top: 1em;
+        // margin-left: auto;
     }
 
     &__label,
@@ -164,20 +185,21 @@
     color: $color__grey-600;
 }
 
-//gov uk overrides
+// gov uk overrides
 
 .govuk-accordion__section-toggle-text,
 .govuk-accordion__section-heading-divider {
     display: none;
 }
 
-//GDS chevrons
+// GDS chevrons
 
 .govuk-accordion__show-all-text {
     margin-left: 0.5rem;
     margin-bottom: 0.5rem;
     display: inline-block;
 }
+
 .govuk-accordion__section-heading-text-focus {
     margin-right: 0.25rem;
 }
@@ -198,7 +220,7 @@
     vertical-align: middle;
 }
 
-.govuk-accordion-nav__chevron:after {
+.govuk-accordion-nav__chevron::after {
     content: "";
     box-sizing: border-box;
     display: block;

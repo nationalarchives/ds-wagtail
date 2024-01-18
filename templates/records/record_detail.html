@@ -19,8 +19,14 @@
 
         <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
 
-        {% include "includes/records/record-details.html" %}
-        {% include "includes/records/record-crosslink-panel.html" %}
+        <div class="record-details">
+            <table class="record-details__table">
+                <tbody>
+                    {% include "includes/records/record-details.html" %}            
+                </tbody>
+            </table>
+        </div>
+        {% include "includes/records/record-crosslink-panel.html" %}        
 
         {% if record.hierarchy %}
             {% if record.hierarchy|length > 2 %}
