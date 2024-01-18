@@ -155,6 +155,12 @@
                         {% include "search/includes/filter.html" with field=form.closure %}
                     </div>
                 </div>
+
+
+
+
+
+
                 {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
                 <div class="search-filters__accordion-section">
                     <fieldset role="group" aria-describedby="record_opening_date">
@@ -215,6 +221,8 @@
         </div>
         <!--load local accordion js -->
         {% load static %}
+
+        <script src="/static/scripts/accordion.min.js"></script>
         <!--GDS SCRIPTS-->
         <!--
         <script src="https://design-system.service.gov.uk/javascripts/govuk-frontend-069e73dfb31aacad687703e346188e8c.js"></script>

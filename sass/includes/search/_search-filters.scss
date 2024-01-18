@@ -17,7 +17,7 @@
 
     &__heading {
         font-size: 1.3em;
-        display: none;
+        // display: none;
     }
 
     &__widget-list {
@@ -233,4 +233,10 @@
     transform: rotate(-45deg);
     border-top: 0.125rem solid;
     border-right: 0.125rem solid;
+}
+
+// turniung off the show all controls
+
+.govuk-accordion__controls {
+    display:none;
 }
