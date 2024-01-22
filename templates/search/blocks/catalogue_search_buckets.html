@@ -24,21 +24,18 @@
     </div>
 </div>
 <!-- end new form element-->
-
+<div class="tna-container">
 <nav class="search-buckets" aria-label="Record categories">
-    <div class="tna-container">
-        <div class="tna-column tna-column--full">
-            <ul class="search-buckets__list" data-id="search-buckets-list">
-                {% for bucket in buckets %}
-                    {% if bucket.result_count != None %}
-                        <li class="search-buckets__list-item" data-current="{% if bucket.is_current %}true{% else %}false{% endif %}">
-                            <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{ bucket.key }}" class="search-buckets__link" aria-current="{% if bucket.is_current %}true{% else %}false{% endif %}">
-                                {{ bucket.label_with_count }}
-                            </a>
-                        </li>
-                    {%endif%}
-                {% endfor %}
-            </ul>
-        </div>
-    </div>
+    <ul class="search-buckets__list" data-id="search-buckets-list">
+        {% for bucket in buckets %}
+            {% if bucket.result_count != None %}
+                <li class="search-buckets__list-item" data-current="{% if bucket.is_current %}true{% else %}false{% endif %}">
+                    <a href="?{% if form.q.value %}q={{ form.q.value }}&{% endif %}group={{ bucket.key }}" class="search-buckets__link" aria-current="{% if bucket.is_current %}true{% else %}false{% endif %}">
+                        {{ bucket.label_with_count }}
+                    </a>
+                </li>
+            {%endif%}
+        {% endfor %}
+    </ul>
 </nav>
+</div>
