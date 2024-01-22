@@ -47,13 +47,6 @@
         margin-bottom: 1rem;
     }
 
-    &__submit {
-        @extend .search-button;
-        display: block;
-        margin-top: 1em;
-        margin-left: auto;
-    }
-
     &__submitleft {
         @extend .search-button;
         display: block;
@@ -70,6 +63,7 @@
     &__submit {
         @extend .search-button;
         display: block;
+        margin-top: 1em;
         margin-left: auto;
 
         &:not(&__heading) {
