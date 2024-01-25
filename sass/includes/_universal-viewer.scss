@@ -3,6 +3,10 @@
     height: 688px;
     font-family: $font__open-sans;
 
+    > div {
+        background-color: transparent;
+    }
+
     a {
         color: $color__navy;
         font-weight: $font-weight-bold;
@@ -12,12 +16,72 @@
         font-family: $font__supria-sans;
     }
 
+    // Buttons
+
+    .imageBtn {
+        border: 1px solid $color__black;
+        background-color: $color__grey-200;
+        border-radius: 0;
+        color: $color__black;
+        text-align: center;
+        line-height: 100%;
+
+        &.disabled {
+            opacity: 0.25;
+        }
+
+        i {
+            background-color: $color__grey-200;
+        }
+    }
+
+    .btn {
+        @include typography.relative-font-size(14);
+        box-sizing: content-box;
+        padding: 5px;
+        margin: 0 5px;
+
+        &.go {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border: 1px solid $color__black;
+            color: $color__black;
+            background-color: $color__grey-200;
+        }
+
+        &.settings,
+        &.fullScreen {
+            margin-right: 0;
+        }
+
+        &.download {
+            margin-left: 0;
+        }
+
+        &:focus {
+            outline: 0.3125rem solid $color__blue;
+            outline-offset: 0.125rem;
+
+            i {
+                outline: 0;
+            }
+        }
+    }
+
+    .btn-primary {
+        background-color: $color__navy;
+        border-color: $color__white;
+        font-family: $font__open-sans;
+    }
+
     // Header Panel (navigation)
 
     .headerPanel {
-        background-color: $color__grey-200;
+        background-color: transparent;
         height: auto;
-        padding: 1rem 0.5rem;
+        padding: 1rem 0;
 
         .search {
             margin-top: 0;
@@ -37,7 +101,7 @@
         }
 
         .options {
-            background-color: $color__grey-200;
+            background-color: transparent;
 
             .centerOptions,
             .search {
@@ -141,6 +205,8 @@
     // Center Panel (viewer)
 
     .centerPanel {
+        background-color: transparent;
+
         .content {
             padding: 0;
 
@@ -177,55 +243,31 @@
         }
     }
 
-    // Buttons
+    // Footer
 
-    .imageBtn {
-        border: 1px solid $color__black;
-        background-color: $color__grey-200;
-        border-radius: 0;
-        color: $color__black;
-        text-align: center;
-        line-height: 100%;
+    .mobileFooterPanel {
+        background-color: transparent;
+        height: auto;
+        margin-bottom: 1rem;
+        position: relative;
 
-        &.disabled {
-            opacity: 0.25;
+        .options {
+            background-color: $color__grey-200;
+            padding: 1rem 0;
+            text-align: center;
+            position: relative;
+            height: auto;
+            display: block;
         }
 
-        i {
-            background-color: $color__grey-200;
+        .imageBtn {
+            margin-bottom: 0.5rem;
         }
     }
 
-    .btn {
-        @include typography.relative-font-size(14);
-        box-sizing: content-box;
-        padding: 5px;
-        margin: 0 5px;
-
-        &.go {
-            display: inline-block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            border: 1px solid $color__black;
-            color: $color__black;
-            background-color: $color__grey-200;
-        }
-
-        &:focus {
-            outline: 0.3125rem solid $color__blue;
-            outline-offset: 0.125rem;
-
-            i {
-                outline: 0;
-            }
-        }
-    }
-
-    .btn-primary {
-        background-color: $color__navy;
-        border-color: $color__white;
-        font-family: $font__open-sans;
+    .footerPanel {
+        padding: 1rem 0;
+        margin: 0;
     }
 
     // Icons
@@ -286,15 +328,66 @@
         width: 30px;
     }
 
+    .uv-icon-download {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M480-352.923 346.461-486.462l23.308-21.769L464-414v-362h32v362l94.231-94.231 23.308 21.769L480-352.923ZM288.332-232Q264-232 248-248.15t-16-40.465v-48.923h32v48.923q0 9.23 7.692 16.923Q279.385-264 288.615-264h382.77q9.23 0 16.923-7.692Q696-279.385 696-288.615v-48.923h32v48.923q0 24.315-16.162 40.465Q695.676-232 671.344-232H288.332Z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-share {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M696.091-116q-41.63 0-70.86-29.167Q596-174.333 596-216q0-8.979 1.385-16.528 1.384-7.549 4.153-17.087L335.846-413.077q-12.692 17.539-31.508 25.308Q285.523-380 264-380q-41.667 0-70.833-29.14Q164-438.28 164-479.91q0-41.629 29.167-70.859Q222.333-580 264-580q21.231 0 40.192 8.269 18.962 8.269 31.654 24.808l265.692-163.462q-2.769-9.538-4.153-17.087Q596-735.021 596-744q0-41.667 29.14-70.833Q654.281-844 695.909-844q41.63 0 70.86 29.14Q796-785.719 796-744.091q0 41.63-29.167 70.86Q737.667-644 696-644q-21.523 0-40.339-7.769-18.815-7.769-31.507-25.308L358.462-513.615q2.769 9.538 4.154 17.033Q364-489.088 364-480.159q0 8.928-1.384 16.582-1.385 7.654-4.154 17.192l265.692 163.462q12.692-18.539 31.507-25.808Q674.477-316 696-316q41.667 0 70.833 29.14Q796-257.72 796-216.09q0 41.629-29.14 70.859Q737.719-116 696.091-116ZM696-676q28.092 0 48.046-19.954T764-744q0-28.092-19.954-48.046T696-812q-28.092 0-48.046 19.954T628-744q0 28.092 19.954 48.046T696-676ZM264-412q28.092 0 48.046-19.954T332-480q0-28.092-19.954-48.046T264-548q-28.092 0-48.046 19.954T196-480q0 28.092 19.954 48.046T264-412Zm432 264q28.092 0 48.046-19.954T764-216q0-28.092-19.954-48.046T696-284q-28.092 0-48.046 19.954T628-216q0 28.092 19.954 48.046T696-148Zm0-596ZM264-480Zm432 264Z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-fullscreen {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M184-184v-168.923h32V-216h136.923v32H184Zm423.846 0v-32h136.923v-136.923h32V-184H607.846ZM184-607.077V-776h168.923v32H216v136.923h-32Zm560.769 0V-744H607.846v-32h168.923v168.923h-32Z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-zoom-in {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M464-464H280v-32h184v-184h32v184h184v32H496v184h-32v-184Z'/%3E%3C/svg%3E") !important;
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-zoom-out {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M272-464v-32h416v32H272Z'/%3E%3C/svg%3E") !important;
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-rotate {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M516-93v-33q41-6 79-24t70-49l23.308 21.769q-34.308 35.847-79.269 56.27Q564.077-100.538 516-93Zm-72 0q-111.308-11.692-185.654-95.038Q184-271.385 184-387q0-61.539 23.038-115.231 23.039-53.692 63.539-94.192 40.5-40.5 94.192-63.039Q418.461-682 480-682h63.615L432.077-792.539l23.308-21.769L597.693-672 455.385-530.692 432.077-554l97-96H479q-110 0-186.5 76.5T216-387q0 101 64 174t164 88.538V-93Zm288.769-138.692L708-257q19-33 27.385-68.615 8.384-35.616 9.153-73.385H776q0 43.308-9.807 86.269-9.808 42.962-33.424 81.039ZM765-471h-34.462q-9.769-28.769-25.153-54.385Q690-551 667-574l21.769-22.308q26.847 26.077 46.039 57.769Q754-506.846 765-471Z'/%3E%3C/svg%3E") !important;
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-more-info {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M464-308h32v-220h-32v220Zm15.789-268.923q8.673 0 14.75-5.867 6.076-5.866 6.076-14.538t-5.866-14.749q-5.866-6.077-14.538-6.077-8.673 0-14.75 5.866-6.076 5.867-6.076 14.539T465.251-583q5.866 6.077 14.538 6.077Zm.62 440.923q-70.948 0-133.685-26.839-62.737-26.84-109.865-73.922-47.127-47.082-73.993-109.716Q136-409.111 136-480.325q0-71.214 26.839-133.451 26.84-62.237 73.922-109.365 47.082-47.127 109.716-73.993Q409.111-824 480.325-824q71.214 0 133.451 26.839 62.237 26.84 109.365 73.922 47.127 47.082 73.993 109.482Q824-551.357 824-480.409q0 70.948-26.839 133.685-26.84 62.737-73.922 109.865-47.082 47.127-109.482 73.993Q551.357-136 480.409-136ZM480-168q130 0 221-91t91-221q0-130-91-221t-221-91q-130 0-221 91t-91 221q0 130 91 221t221 91Zm0-312Z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
     // Overlay window
     .overlays {
         @include typography.relative-font-size(14);
         font-family: $font__open-sans;
-    }
-
-    // Mobile footer
-    .mobileFooterPanel {
-        height: auto;
     }
 }
 
