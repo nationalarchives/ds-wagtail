@@ -21,18 +21,7 @@
 </div>
 <!--end of sort by form-->
 <form method="GET" data-id="filters-form"  id="catalogue-filters-form">
-    {% comment %}
-    {% if form.group.value == 'tna' %}
-    <div class="search-filters__form-block">
-        TODO make this a django form element
-        <input type="checkbox" class="search-filters__checkbox" id="online-only" name="online-only">
-        <label for="online-only" class='search-filters__label'>Show online records only</label>
-        <input type="submit" value="Update" class="search-filters__submit">
-    </div>
-    {% endif %}
-    {% endcomment %}
     <div class="search-filters" data-search-filters>
-        {% comment %} Hidden on archive & creator as they currently have no filters  {% endcomment %}
         <h2 class="tna-heading search-filters__heading">Refine results:</h2>
         <div class="govuk-accordion"
              data-module="govuk-accordion"
@@ -78,7 +67,6 @@
                      aria-labelledby="accordion-default-heading-2">
                     <div class="search-filters__form-block">
                         <h3 class="tna-heading sr-only">Edit filters</h3>
-                        {% if form.group.value == 'tna' or form.group.value == 'digitised' or form.group.value == 'nonTna' %}
                             <div class="search-filters__accordion-section">
                                 <fieldset role="group" aria-describedby="record_covering_date">
                                     <legend>
@@ -90,19 +78,19 @@
                                     <div>
                                         {% if form.covering_date_from.errors %}
                                             <div data-tracking-errors
-                                                 data-filter="Dates"
-                                                 data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
+                                                    data-filter="Dates"
+                                                    data-filter-errors="{% for e in form.covering_date_from.errors.get_json_data %}{{ e.message }}{% endfor %}">
                                                 {{ form.covering_date_from.errors }}
                                             </div>
                                         {% endif %}
                                         {{ form.covering_date_from }}
-                                     </div>
+                                        </div>
                                     <div>
                                         {{ form.covering_date_to.label_tag }}
                                         {% if form.covering_date_to.errors %}
                                             <div data-tracking-errors
-                                                 data-filter="Dates"
-                                                 data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1 %} {% endif %}{% endfor %}">
+                                                    data-filter="Dates"
+                                                    data-filter-errors="{% for e in form.covering_date_to.errors.get_json_data %}{{ e.message }}{% if form.covering_date_to.errors.get_json_data|length > 1 %} {% endif %}{% endfor %}">
                                                 {{ form.covering_date_to.errors }}
                                             </div>
                                         {% endif %}
@@ -111,7 +99,6 @@
                                     <!--<input type="submit" value="Update" class="search-filters__submit">-->
                                 </fieldset>
                             </div>
-                        {% endif %}
                     </div>
                 </div>
                 <div class="govuk-accordion__section">
@@ -127,10 +114,7 @@
                         {% include "search/includes/filter.html" with field=form.collection %}
                     </div>
                 </div>
-                {% include "search/includes/filter.html" with field=form.time_period %}
-                {% include "search/includes/filter.html" with field=form.topic %}
-                {% include "search/includes/filter.html" with field=form.format %}
-                {% if form.group.value != bucketkeys.NONTNA.value %}
+                {% if form.group.value == bucketkeys.TNA.value %}
                     <div class="govuk-accordion__section">
                         <div class="govuk-accordion__section-header">
                             <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
@@ -159,7 +143,7 @@
                     </div>
                 </div>
                 {% include "search/includes/filter.html" with field=form.place %}
-                {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
+                {% if form.group.value == bucketkeys.TNA.value %}
                     <div class="search-filters__accordion-section">
                         <fieldset role="group" aria-describedby="record_opening_date">
                             <legend>
