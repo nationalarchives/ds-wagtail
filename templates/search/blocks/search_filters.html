@@ -230,23 +230,41 @@
                     </div>
                 </div>
                 </div>
-
-
                 {% endif %}
+
+
                 {% if form.group.value == bucketkeys.CREATOR.value %}
-                <h2 class="govuk-accordion__section-heading">
-                    <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
-                        Creator
-                    </span>
-                  </h2>
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button"
+                                  id="accordion-default-heading-2">Creator</span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-4"
+                    class="govuk-accordion__section-content"
+                    aria-labelledby="accordion-default-heading-5">
                 {% include "search/includes/filter.html" with field=form.type %}
-                <h2 class="govuk-accordion__section-heading">
-                    <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
-                        Location
-                    </span>
-                  </h2>
+                </div>
+                </div>
+            
+
+
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button"
+                                  id="accordion-default-heading-2">Location</span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-4"
+                    class="govuk-accordion__section-content"
+                    aria-labelledby="accordion-default-heading-5">
                 {% include "search/includes/filter.html" with field=form.country %}
                 {% endif %}
+                </div>
+                </div>
+                
                 {% if form.group.value == bucketkeys.ARCHIVE.value %}
                 {% include "search/includes/filter.html" with field=form.location %}
                 {% endif %}
