@@ -156,19 +156,18 @@
                     </div>
                 </div>
 
+                <!--new section-->
                 {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="govuk-accordion__section search-filters__accordion-section">
-                    <fieldset role="group" aria-describedby="record_opening_date">
-                        <legend>
-                            <h4 class="tna-heading-s search-filters__accordion-section-heading"
-                                id="record_opening_date">Record opening date</h4>
-                        </legend>
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                                    <span class="govuk-accordion__section-button"
-                                          id="accordion-default-heading-6">Record opening date</span>
-                            </h2>
-                        </div>
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                      <h2 class="govuk-accordion__section-heading">
+                        <span class="govuk-accordion__section-button" id="accordion-default-heading-5">
+                            Record opening date
+                        </span>
+                      </h2>
+                    </div>
+                    <div id="accordion-default-content-5" class="govuk-accordion__section-content search-filters__accordion-section" aria-labelledby="accordion-default-heading-5">
+                      <p class="govuk-body">
                         <div id="accordion-default-content-4"
                              class="govuk-accordion__section-content"
                              aria-labelledby="accordion-default-heading-6">
@@ -197,58 +196,15 @@
                                 {{ form.opening_end_date }}
                             </div>
                         </div>
-                    </fieldset>
+                      </p>
+                    </div>
                 </div>
                 {% endif %}
 
 
 
 
-
-                {% if form.group.value == 'tna' or form.group.value == 'digitised' %}
-                <div class="search-filters__accordion-section">
-                    <fieldset role="group" aria-describedby="record_opening_date">
-                        <legend>
-                            <h4 class="tna-heading-s search-filters__accordion-section-heading"
-                                id="record_opening_date">Record opening date</h4>
-                        </legend>
-                        <div class="govuk-accordion__section-header">
-                            <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                                    <span class="govuk-accordion__section-button"
-                                          id="accordion-default-heading-6">Record opening date</span>
-                            </h2>
-                        </div>
-                        <div id="accordion-default-content-4"
-                             class="govuk-accordion__section-content"
-                             aria-labelledby="accordion-default-heading-6">
-                            <div class="search-filters__opening-date-section">
-                                <span class="example-text" id="opening-start-date">For example, 27 3 2007 or 2007</span>
-                                <br>
-                                {{ form.opening_start_date.label_tag }}
-                                {% if form.opening_start_date.errors %}
-                                <div data-tracking-errors
-                                     data-filter="Record opening date"
-                                     data-filter-errors="{% for e in form.opening_start_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                    {{ form.opening_start_date.errors }}
-                                </div>
-                                {% endif %}
-                                {{ form.opening_start_date }}
-                            </div>
-                            <div class="search-filters__opening-date-section">
-                                {{ form.opening_end_date.label_tag }}
-                                {% if form.opening_end_date.errors %}
-                                <div data-tracking-errors
-                                     data-filter="Record opening date"
-                                     data-filter-errors="{% for e in form.opening_end_date.errors.get_json_data %}{{ e.message }}{% endfor %}">
-                                    {{ form.opening_end_date.errors }}
-                                </div>
-                                {% endif %}
-                                {{ form.opening_end_date }}
-                            </div>
-                        </div>
-                    </fieldset>
-                </div>
-                {% endif %}
+                
                 {% if form.group.value == bucketkeys.NONTNA.value %}
                 {% include "search/includes/filter.html" with field=form.held_by %}
                 {% include "search/includes/filter.html" with field=form.catalogue_source %}
