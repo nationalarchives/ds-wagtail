@@ -1,21 +1,28 @@
 {% if field.field.choices and field.field.choices_updated %}
-    <div class="search-filters__accordion-section">
-        <fieldset>
-            <legend><h4 class="tna-heading-s search-filters__accordion-section-heading">{{ field.label }}</h4></legend>
-            <div>
-                {{ field.errors }}
-                {{ field }}
-            </div>
-            {% if field.more_filter_options_available %}
-                {% if search_tab == searchtabs.CATALOGUE.value %}
-                    <a href="{% url 'search-catalogue-long-filter-chooser' field_name=field.name %}?{{ request.GET.urlencode }}"  aria-label='See more'>See more</a>
-                {% elif search_tab == searchtabs.WEBSITE.value %}
-                    <a href="{% url 'search-website-long-filter-chooser' field_name=field.name %}?{{ request.GET.urlencode }}"  aria-label='See more'>See more</a>
-                {% endif %}
-            {% endif %}
-<!--            <input type="submit" value="Update" class="search-filters__submit">-->
-        </fieldset>
+<div class="govuk-accordion__section">
+    <div class="govuk-accordion__section-header">
+      <h2 class="govuk-accordion__section-heading">
+        <span class="govuk-accordion__section-button" id="accordion-default-heading-4">
+            {{ field.label }}
+        </span>
+      </h2>
     </div>
+    <div id="accordion-default-content-4" class="govuk-accordion__section-content" aria-labelledby="accordion-default-heading-4">
+      <p class="govuk-body">
+        <div>
+            {{ field.errors }}
+            {{ field }}
+        </div>
+        {% if field.more_filter_options_available %}
+            {% if search_tab == searchtabs.CATALOGUE.value %}
+                <a href="{% url 'search-catalogue-long-filter-chooser' field_name=field.name %}?{{ request.GET.urlencode }}"  aria-label='See more'>See more</a>
+            {% elif search_tab == searchtabs.WEBSITE.value %}
+                <a href="{% url 'search-website-long-filter-chooser' field_name=field.name %}?{{ request.GET.urlencode }}"  aria-label='See more'>See more</a>
+            {% endif %}
+        {% endif %}
+      </p>
+    </div>
+</div>
 {% else %}
     {{ field.as_hidden }}
 {% endif %}
