@@ -64,7 +64,7 @@
                 <input type="submit" value="Update" class="search-filters__submit">
             </div>
             <div class="govuk-accordion__section">
-                <div class="govuk-accordion__section-header" id="date-section"">
+                <div class="govuk-accordion__section-header">
                     <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
                         <span class="govuk-accordion__section-button"
                               id="accordion-default-heading-2">Dates</span>
@@ -111,7 +111,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="govuk-accordion__section" id="collections-section">
+                <div class="govuk-accordion__section">
                     <div class="govuk-accordion__section-header">
                         <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
                             <span class="govuk-accordion__section-button"
@@ -128,7 +128,8 @@
                 {% include "search/includes/filter.html" with field=form.topic %}
                 {% include "search/includes/filter.html" with field=form.format %}
                 {% if form.group.value != bucketkeys.NONTNA.value %}
-                <div class="govuk-accordion__section" id="level-section">
+                
+                <div class="govuk-accordion__section">
                     <div class="govuk-accordion__section-header">
                         <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
                                 <span class="govuk-accordion__section-button"
@@ -142,7 +143,7 @@
                     </div>
                 </div>
                 {% endif %}
-                <div class="govuk-accordion__section" id="closure-status">
+                <div class="govuk-accordion__section">
                     <div class="govuk-accordion__section-header">
                         <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
                             <span class="govuk-accordion__section-button"
@@ -219,27 +220,6 @@
         {% load static %}
 
         <script src="/static/scripts/accordion.min.js"></script>
-
-        <script type="text/javascript">
-            
-            var getURL = window.location.href;
-            var subString = 'creator';
-            
-            if (getURL.includes(subString)) {
-                console.log('The URL contains the string "' + subString + '".');
-                document.getElementById("date-section").style.display = "none";
-                document.getElementById("collections-section").style.display = "none";
-                document.getElementById("level-section").style.display = "none";
-                document.getElementById("closure-status").style.display = "none";
-                
-                
-            }       
-            else {
-                console.log('The URL does NOT contain the string "' + subString + '".');
-            } 
-               
-          </script>
-
 
 
         <!--GDS SCRIPTS-->
