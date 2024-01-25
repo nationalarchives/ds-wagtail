@@ -12,13 +12,13 @@
     </div>
   </article>
 
-  <article class="tna-container tna-!--margin-top-l">
+  {% comment %} <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
         <h2>Tify</h2>
 
         <div id="tify-viewer" style="height: 640px" data-id="{{ page.iiif_manifest_id }}"></div>
     </div>
-  </article>
+  </article> {% endcomment %}
 
   <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
@@ -28,7 +28,6 @@
         <div class="uv" id="uv"></div>
     </div>
   </article>
-
 
   <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
@@ -42,18 +41,18 @@
 {% endblock content %}
 
 {% block extra_js %}
+    <script src="{% static 'uv/UV.js' %}"></script>
     <script src="{% static 'scripts/clover.js' %}"></script>
     <script src="{% static 'scripts/mirador.js' %}"></script>
-    <script src="{% static 'tify/tify.js' %}"></script>
-    <script>
+    {% comment %} <script src="{% static 'tify/tify.js' %}"></script> {% endcomment %}
+    {% comment %} <script>
         new Tify({
             container: '#tify-viewer',
             manifestUrl: 'https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json',
             urlQueryKey: '{{ page.title }}',
         })
-    </script>
-    <script src="{% static 'uv/UV.js' %}">
-    </script>
+    </script> {% endcomment %}
+    
     <script>
         const data = {
             manifest: "https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json",
@@ -65,9 +64,29 @@
         uv.on("configure", function ({ config, cb }) {
             cb({
                 options: { 
-                    footerPanelEnabled: true,
                     useArrowKeysToNavigate: true,
-                }
+                    navigatorEnabled: true,
+                    dropEnabled: true,
+                    footerPanelEnabled: true,
+                    headerPanelEnabled: true,
+                    leftPanelEnabled: false,
+                },
+                modules: {
+                    openSeadragonCenterPanel: {
+                        options: {
+                            autoHideControls: false,
+                        },
+                    },
+                    pagingHeaderPanel: {
+                        options: {
+                            autoCompleteBoxEnabled: false,
+                            galleryButtonEnabled: false,
+                            imageSelectionBoxEnabled: false,
+                            pageModeEnabled: false,
+                            pagingToggleEnabled: false,
+                        }
+                    }
+                },
             });
         });
     </script>

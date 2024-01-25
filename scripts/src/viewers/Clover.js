@@ -23,19 +23,10 @@ const Clover = () => {
     const manifestId = viewer.getAttribute("data-id");
 
     const options = {
-        // Primary title (Manifest label) for top level canvas.  Defaults to true
-        //showTitle: false,
-
-        // IIIF Badge and popover containing options.  Defaults to true
+        showTitle: false,
         showIIIFBadge: false,
-
-        // Ignore supplementing canvases by label value that are not for captioning
         ignoreCaptionLabels: ["Chapters"],
-
-        // Override canvas background color, defaults to #1a1d1e
         canvasBackgroundColor: "#f4f4f4",
-
-        // Set canvas zooming onScoll (this defaults to false)
         openSeadragon: {
             sequenceMode: true,
             gestureSettingsMouse: {
@@ -44,10 +35,9 @@ const Clover = () => {
         },
 
         // custom options
-
         informationPanel: {
-            open: true,
-            renderToggle: true,
+            open: false,
+            renderToggle: false,
         },
     };
 
