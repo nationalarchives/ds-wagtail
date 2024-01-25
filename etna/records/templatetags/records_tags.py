@@ -37,8 +37,8 @@ def record_url(
     """
     if form_group == BucketKeys.COMMUNITY or record.group == BucketKeys.COMMUNITY:
         if use_collection_id:
-            return record.get_collection_url
-        return record.get_ciim_url
+            return record.collection_url
+        return record.ciim_url
 
     if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
         return TNA_URLS.get("discovery_rec_default_fmt").format(id=record.iaid)

@@ -16,6 +16,107 @@ from ..api import get_records_client
 from ..models import Record
 
 
+class DefaultReturnsRecordModelTests(SimpleTestCase):
+    response = {"data": {"@template": {"details": {"someattribute": "somevalue"}}}}
+
+    def setUp(self):
+        self.record = Record(self.response)
+
+    def test_template_defaults_when_no_attribute_is_present(self):
+        # patch raw data
+        self.record._raw["data"]["@template"]["details"] = {}
+        self.assertEqual(self.record.description, "")
+        self.assertEqual(self.record.summary, "")
+        self.assertEqual(self.record.title, "")
+        self.assertEqual(self.record.date_created, "")
+        self.assertEqual(self.record.uuid, "")
+        self.assertEqual(self.record.group, "")
+        self.assertEqual(self.record.identifier, "")
+        self.assertEqual(self.record.ciim_id, "")
+        self.assertEqual(self.record.ciim_url, "")
+        self.assertEqual(self.record.collection, "")
+        self.assertEqual(self.record.collection_id, "")
+        self.assertEqual(self.record.collection_url, "")
+        self.assertEqual(self.record.rights, "")
+        self.assertEqual(self.record.subject, [])
+
+
+class CommunityRecordModelTests(SimpleTestCase):
+    fixture_path = f"{settings.BASE_DIR}/etna/ciim/tests/fixtures/record_community.json"
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.records_client = get_records_client()
+        with open(cls.fixture_path, "r") as f:
+            cls.fixture_contents = json.loads(f.read())
+
+    def setUp(self):
+        self.record = Record(deepcopy(self.fixture_contents["data"]))
+
+    def test_template_uses_detail_template_when_present(self):
+        self.assertIn("details", self.record._raw["@template"])
+        self.assertEqual(self.record.template, self.record._raw["@template"]["details"])
+
+    def test_template_returns_empty_dict_when_no_template_available(self):
+        # patch raw data
+        self.record._raw["@template"] = {}
+        self.assertEqual(self.record.template, {})
+
+    def test_uuid(self):
+        self.assertEqual(self.record.uuid, "f4a6014d-cf22-3a88-ba1b-765622f25319")
+
+    def test_group(self):
+        self.assertEqual(self.record.group, "community")
+
+    def test_identifier(self):
+        self.assertEqual(self.record.identifier, "data for identifier")
+
+    def test_ciim_id(self):
+        self.assertEqual(self.record.ciim_id, "pcw-12345")
+
+    def test_ciim_url(self):
+        self.assertEqual(
+            self.record.ciim_url,
+            reverse(
+                "details-page-machine-readable", kwargs={"id": self.record.ciim_id}
+            ),
+        )
+
+    def test_collection_id(self):
+        self.assertEqual(self.record.collection_id, "pcw-7890")
+
+    def test_collection_url(self):
+        self.assertEqual(
+            self.record.collection_url,
+            reverse(
+                "details-page-machine-readable",
+                kwargs={"id": self.record.collection_id},
+            ),
+        )
+
+    def test_item_url(self):
+        self.assertEqual(self.record.item_url, "https://www.test.url")
+
+    def test_location(self):
+        self.assertEqual(self.record.location, "data for location")
+
+    def test_format(self):
+        self.assertEqual(self.record.format, "data for format")
+
+    def test_rights(self):
+        self.assertEqual(self.record.rights, "data for rights")
+
+    def test_title(self):
+        self.assertEqual(self.record.title, "data for title")
+
+    def test_summary(self):
+        self.assertEqual(self.record.summary, "data for summary")
+
+    def test_summary_title(self):
+        self.assertEqual(self.record.summary_title, "data for summary")
+
+
 @unittest.skip("TODO:Rosetta")
 class RecordModelTests(SimpleTestCase):
     fixture_path = f"{settings.BASE_DIR}/etna/ciim/tests/fixtures/record.json"

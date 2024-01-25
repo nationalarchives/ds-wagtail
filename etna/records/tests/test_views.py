@@ -87,7 +87,6 @@ class TestRecordDisambiguationView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
 
-@unittest.skip("TODO:Rosetta")
 class TestRecordView(TestCase):
     @responses.activate
     @prevent_request_warnings
@@ -95,7 +94,7 @@ class TestRecordView(TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(records=[]),
+            json=create_response(status_code=404),
         )
 
         response = self.client.get("/catalogue/id/C123456/")
@@ -110,14 +109,26 @@ class TestRecordView(TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(
-                records=[
-                    create_record(iaid="C123456"),
-                ]
-            ),
+            json=create_response(record=create_record(iaid="C123456")),
         )
 
         response = self.client.get("/catalogue/id/C123456/")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.resolver_match.view_name, "details-page-machine-readable"
+        )
+        self.assertTemplateUsed(response, "records/record_detail.html")
+
+    @responses.activate
+    def test_community_record_rendered(self):
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/get",
+            json=create_response(record=create_record(group="community")),
+        )
+
+        response = self.client.get("/catalogue/id/pcw-12345/")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -309,17 +320,12 @@ class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
         self.assertIn(desired_datalayer_script_tag, html_decoded_response)
 
 
-@unittest.skip("TODO:Rosetta")
 class RecordDetailBackToSearchTest(TestCase):
     def setUp(self):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(
-                records=[
-                    create_record(iaid="C13359805"),
-                ]
-            ),
+            json=create_response(record=create_record(iaid="C13359805")),
         )
 
         self.record_detail_url = reverse(
@@ -349,12 +355,11 @@ class RecordDetailBackToSearchTest(TestCase):
         )
         self.assertContains(response, expected_button_link_gen_value)
 
-    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_back_to_search_render_with_catalogue_search_beyond_expiry(self):
         """navigation to record details from previous search (session is set since its coming from search catalogue)"""
 
-        search_url_gen_html_resp = "/search/featured/"
+        search_url_gen_html_resp = "/search/catalogue/"
 
         session = self.client.session
         session["back_to_search_url"] = search_url_gen_html_resp
@@ -371,12 +376,11 @@ class RecordDetailBackToSearchTest(TestCase):
         )
         self.assertContains(response, expected_button_link_gen_value)
 
-    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_new_search_render_without_session(self):
         """Test covers navigation to record details without a previous search (session is not set since its not coming from search)"""
 
-        new_search_url = reverse("search-featured")
+        new_search_url = reverse("search-catalogue")
 
         response = self.client.get(self.record_detail_url)
 

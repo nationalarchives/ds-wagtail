@@ -1,0 +1,36 @@
+{
+    "data": {
+        "@template": {
+            "details": {
+                "description": "data for description",
+                "summary": "data for summary",
+                "title": "data for title",
+                "itemURL": "https://www.test.url",
+                "uuid": "f4a6014d-cf22-3a88-ba1b-765622f25319",
+                "identifier": "data for identifier",
+                "creationDate": "01-Jan-2000",
+                "collection": "data for collection",
+                "collectionId": "pcw-7890",
+                "rights": "data for rights",
+                "ciimId": "pcw-12345",
+                "group": "community",
+                "location": "data for location",
+                "format": "data for format",
+                "subject": [
+                    "subject1",
+                    "subject2"
+                ]
+            }
+        }
+    },
+    "errors": [],
+    "aggregations": [],
+    "stats": {
+        "total": 1,
+        "providers": 1,
+        "transformations": 1,
+        "provider_latency": 81,
+        "transformation_latency": 3
+    },
+    "found": true
+}

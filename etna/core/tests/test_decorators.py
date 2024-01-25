@@ -1,5 +1,3 @@
-import unittest
-
 from django.conf import settings
 from django.test import TestCase, override_settings
 from django.urls import reverse_lazy
@@ -8,7 +6,11 @@ from wagtail.test.utils import WagtailTestUtils
 
 import responses
 
-from ...ciim.tests.factories import create_record, create_response
+from ...ciim.tests.factories import (
+    create_record,
+    create_response,
+    create_search_response,
+)
 
 CONDITIONALLY_PROTECTED_URLS = (
     reverse_lazy("search-catalogue"),
@@ -16,7 +18,6 @@ CONDITIONALLY_PROTECTED_URLS = (
 )
 
 
-@unittest.skip("TODO:Rosetta")
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
 )
@@ -25,26 +26,17 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
-            json={
-                "responses": [
-                    create_response(),
-                    create_response(),
+            json=create_search_response(
+                records=[
+                    create_record(group="community", ciim_id="swop-49209"),
+                    create_record(group="community", ciim_id="wmk-16758"),
                 ]
-            },
+            ),
         )
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(
-                records=[
-                    create_record(
-                        iaid="C123456",
-                        description=[
-                            {"value": "This is the description from the Client API"}
-                        ],
-                    )
-                ]
-            ),
+            json=create_response(),
         )
 
     @override_settings(

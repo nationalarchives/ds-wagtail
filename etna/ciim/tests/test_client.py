@@ -212,6 +212,16 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
+    def test_with_filter_collection_special_values(self):
+        self.records_client.search(filter_aggregations=["collection:value(1)"])
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/search?" "filter=collection%3Avalue%281%29",
+        )
+
+    @responses.activate
     def test_with_filter_collection_multiple_values(self):
         self.records_client.search(
             filter_aggregations=["collection:value1", "collection:value2"]
@@ -483,33 +493,48 @@ class ClientSearchUnifiedTest(SimpleTestCase):
         )
 
 
-@unittest.skip("TODO:Rosetta")
 class ClientFetchTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
-        responses.add(
-            responses.GET,
-            f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(records=[create_record()]),
-        )
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
-        self.records_client.get()
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/get"
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/get",
+            json=create_response(status_code=400),
         )
+        with self.assertRaises(DoesNotExist):
+            self.records_client.get()
 
     @responses.activate
     def test_with_iaid(self):
-        self.records_clien.get(id="C198022")
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/get",
+            json=create_response(record=create_record(iaid="C198022")),
+        )
+        self.records_client.get(id="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?id=C198022",
+            f"{settings.CLIENT_BASE_URL}/get?id=C198022",
+        )
+
+    @responses.activate
+    def test_with_ciim_id(self):
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/get",
+            json=create_response(record=create_record(group="community")),
+        )
+        self.records_client.get(id="swop-0000000")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/get?id=swop-0000000",
         )
 
 
@@ -569,7 +594,6 @@ class ClientFetchAllTest(SimpleTestCase):
         )
 
 
-@unittest.skip("TODO:Rosetta")
 class TestClientFetchReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -670,17 +694,21 @@ class TestClientFetchReponse(SimpleTestCase):
 
     @responses.activate
     def test_valid_response(self):
-        record_data = create_record()
+        record_data = create_record(group="community")
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(records=[record_data]),
+            json=create_response(record=record_data),
         )
         result = self.records_client.get()
         self.assertIsInstance(result, Record)
         self.assertEqual(
-            result.reference_number,
-            record_data["_source"]["identifier"][1]["reference_number"],
+            result.ciim_id,
+            record_data["@template"]["details"]["ciimId"],
+        )
+        self.assertEqual(
+            result.description,
+            record_data["@template"]["details"]["description"],
         )
 
     @responses.activate
@@ -688,7 +716,7 @@ class TestClientFetchReponse(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(records=[]),
+            json=create_response(status_code=404),
         )
         with self.assertRaises(DoesNotExist):
             self.records_client.get()
@@ -698,13 +726,12 @@ class TestClientFetchReponse(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/get",
-            json=create_response(records=[create_record(), create_record()]),
+            json=create_search_response(records=[create_record(), create_record()]),
         )
         with self.assertRaises(MultipleObjectsReturned):
             self.records_client.get()
 
 
-@unittest.skip("TODO:Rosetta")
 class TestClientSearchReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -804,49 +831,64 @@ class TestClientSearchReponse(SimpleTestCase):
             self.records_client.search()
 
     @responses.activate
-    def test_valid_response(self):
-        bucket_counts_response = {
-            "took": 85,
-            "timed_out": False,
-            "_shards": {
-                "total": 2,
-                "successful": 2,
-                "skipped": 0,
-                "failed": 0,
-            },
-            "aggregations": {"groups": {"buckets": []}},
-        }
+    def test_valid_response_multiple_records(self):
+        # TODO:Rosetta - tna, nonTna
+        # TODO:Rosetta - community bucket
+        # bucket_counts_response = {
+        #     "took": 85,
+        #     "timed_out": False,
+        #     "_shards": {
+        #         "total": 2,
+        #         "successful": 2,
+        #         "skipped": 0,
+        #         "failed": 0,
+        #     },
+        #     "aggregations": {"groups": {"buckets": []}},
+        # }
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/search",
-            json={
-                "responses": [
-                    bucket_counts_response,
-                    {
-                        "took": 85,
-                        "timed_out": False,
-                        "_shards": {
-                            "total": 2,
-                            "successful": 2,
-                            "skipped": 0,
-                            "failed": 0,
-                        },
-                        "aggregations": {},
-                        "hits": {
-                            "total": {"value": 0, "relation": "eq"},
-                            "max_score": 14.217057,
-                            "hits": [],
-                        },
-                    },
+            json=create_search_response(
+                records=[
+                    create_record(group="community", ciim_id="swop-49209"),
+                    create_record(group="community", ciim_id="wmk-16758"),
                 ]
-            },
+            ),
+            # TODO:Rosetta
+            # json={
+            #     "responses": [
+            #         bucket_counts_response,
+            #         {
+            #             "took": 85,
+            #             "timed_out": False,
+            #             "_shards": {
+            #                 "total": 2,
+            #                 "successful": 2,
+            #                 "skipped": 0,
+            #                 "failed": 0,
+            #             },
+            #             "aggregations": {},
+            #             "hits": {
+            #                 "total": {"value": 0, "relation": "eq"},
+            #                 "max_score": 14.217057,
+            #                 "hits": [],
+            #             },
+            #         },
+            #     ]
+            # },
         )
         response = self.records_client.search()
         self.assertIsInstance(response, ResultList)
-        self.assertFalse(response.bucket_counts)
-        self.assertEqual(response.hits, ())
+        # TODO:Rosetta
+        # self.assertFalse(response.bucket_counts)
+        self.assertEqual(len(response.hits), 2)
+        self.assertTrue(isinstance(response.hits[0], Record))
+        self.assertTrue(isinstance(response.hits[1], Record))
+        self.assertEqual(response.hits[0].ciim_id, "swop-49209")
+        self.assertEqual(response.hits[1].ciim_id, "wmk-16758")
 
 
+@unittest.skip("TODO:Rosetta")
 class TestClientFetchAllReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()

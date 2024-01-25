@@ -4,7 +4,9 @@ from typing import Any, Dict, Optional
 
 
 def create_record(
+    group="tna",
     iaid="C0000000",
+    ciim_id="swop-0000000",
     admin_source="mongo",
     reference_number="ADM 223/3",
     summary_title="Summary Title",
@@ -59,65 +61,59 @@ def create_record(
     # }
 
     details_kv = {}
-    details_kv.update(iaid=iaid)
+    if group == "community":
+        details_kv.update(ciimId=ciim_id)
+    else:
+        details_kv.update(iaid=iaid)
+
     if reference_number:
-        details_kv.update(reference_number=reference_number)
+        details_kv.update(referenceNumber=reference_number)
     if description:
         details_kv.update(description=description)
-    detail = {"id": iaid, "@template": {"details": details_kv}}
+
+    record = {"@template": {"details": details_kv}}
 
     # note keys used in existing source will be overridden
     if source_values:
         for source_key_value in source_values:
             for key, value in source_key_value.items():
-                detail[key] = value
+                record[key] = value
 
-    # return {"_source": source}  # TODO:Rosetta
-    return {"data": detail}
+    return record
 
 
-def create_response(records=None, aggregations=None, total_count=None):
-    """Create a sample Elasticsearch response for provided records.
+def create_response(record={}, status_code=None):
+    """ """
+    if status_code == 400:
+        return {
+            "status": "Bad Request",
+            "status_code": 400,
+            "message": "Required request parameter 'id' for method parameter type String is not present",
+        }
 
-    If testing pagination or batch fetches, the total count can be optionally
-    modified.
-    """
-    if not records:
-        records = []
-
-    if not aggregations:
-        aggregations = {}
-
-    if not total_count:
-        total_count = len(records)
+    if status_code == 404:
+        return {
+            "status": "Not Found",
+            "status_code": 404,
+            "message": "No data found with id 'VALUEDOESNOTEXIST'",
+        }
 
     return {
-        "hits": {
-            "total": {"value": total_count, "relation": "eq"},
-            "hits": [r for r in records],
+        "data": record,
+        "aggregations": [],
+        "stats": {
+            "total": 1,
         },
-        "aggregations": aggregations,
     }
 
 
-def create_search_response(records=None, aggregations=None, total_count=None):
-    if not records:
-        records = []
-
-    if aggregations:
-        aggregations_list = [aggregations]
-    else:
-        aggregations_list = []
-
+def create_search_response(records=[], aggregations=[], total_count=None):
     if not total_count:
         total_count = len(records)
 
     return {
-        "data": [
-            create_response(aggregations=aggregations, total_count=total_count),
-            create_response(records=records, total_count=total_count),
-        ],
-        "aggregations": aggregations_list,
+        "data": records,
+        "aggregations": aggregations,
         "stats": {
             "total": total_count,
         },

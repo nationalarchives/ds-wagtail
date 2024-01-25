@@ -300,19 +300,18 @@ class ClientAPI:
         # Convert the HTTP response to a Python dict
         response_data = response.json()
 
-        # Pull out the separate ES responses
+        # Pull out the separate ES responses # TODO:Rosetta for fixed counts incl when no results are returned
         bucket_counts_data = []
 
         aggregations = response_data["aggregations"]
         for aggregation in aggregations:
             if aggregation.get("name", "") == "group":
                 bucket_counts_data = aggregation.get("entries", [])
-        results_data = response_data
 
         # Return a single ResultList, using bucket counts from the first ES response,
         # and full hit/aggregation data from the second.
         return self.resultlist_from_response(
-            results_data,
+            response_data,
             bucket_counts=bucket_counts_data,
         )
 

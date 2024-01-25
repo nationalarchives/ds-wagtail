@@ -37,7 +37,7 @@ class Record(DataLayerMixin, APIModel):
         This method recieves the raw JSON data dict recieved from
         Client API and makes it available to the instance as `self._raw`.
         """
-        self._raw = raw_data.get("detail") or raw_data
+        self._raw = raw_data.get("details") or raw_data
         # TODO:Rosetta
         # self.score = raw_data.get("_score")
         self.highlights = raw_data.get("highLight") or {}
@@ -238,7 +238,7 @@ class Record(DataLayerMixin, APIModel):
         #         return "... ".join(self.highlights["@template.details.description"])
         #     except KeyError:
         #         pass
-        return self.template.get("description", False)
+        return self.template.get("description", "")
 
     @cached_property
     def content(self) -> str:
@@ -596,7 +596,12 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def ciim_id(self) -> str:
-        return self.template.get("ciimId", "")
+        ciim_id = self.template.get("ciimId", "")
+        if ciim_id and re.match(IDConverter.regex, ciim_id):
+            # value is not guaranteed to be a valid 'id', so we must
+            # check it before returning it as one
+            return ciim_id
+        return ""
 
     @cached_property
     def identifier(self) -> str:
@@ -635,7 +640,7 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("subject", [])
 
     @cached_property
-    def get_ciim_url(self) -> str:
+    def ciim_url(self) -> str:
         try:
             if self.ciim_id:
                 return reverse(
@@ -646,7 +651,7 @@ class Record(DataLayerMixin, APIModel):
         return ""
 
     @cached_property
-    def get_collection_url(self) -> str:
+    def collection_url(self) -> str:
         try:
             if self.collection_id:
                 return reverse(
