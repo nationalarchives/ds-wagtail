@@ -264,10 +264,22 @@
                 {% endif %}
                 </div>
                 </div>
-                
+
                 {% if form.group.value == bucketkeys.ARCHIVE.value %}
+                <div class="govuk-accordion__section">
+                    <div class="govuk-accordion__section-header">
+                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                            <span class="govuk-accordion__section-button"
+                                  id="accordion-default-heading-2">Location</span>
+                        </h2>
+                    </div>
+                    <div id="accordion-default-content-4"
+                    class="govuk-accordion__section-content"
+                    aria-labelledby="accordion-default-heading-5">
                 {% include "search/includes/filter.html" with field=form.location %}
                 {% endif %}
+                
+
                 <input type="submit" value="Update" class="search-filters__submit">
             </div>
         </div>
