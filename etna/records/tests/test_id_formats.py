@@ -18,6 +18,8 @@ class TestIDFormats(SimpleTestCase):
             ("iaid_N", "N14562581"),
             ("ohos-media", "media-wmk-20485"),
             ("ohos-osc", "osc-16758"),
+            ("ohos-pcw", "pcw-41083"),
+            ("ohos-pcw-2", "pcw-438573.0"),
             ("ohos-swop", "swop-49209"),
             ("ohos-wmk", "wmk-16758"),
             ("ohos-shc-1", "shc-7694-6-1-1-4"),
@@ -25,4 +27,4 @@ class TestIDFormats(SimpleTestCase):
         ):
             id_regex = re.compile(IDConverter.regex)
             with self.subTest(label):
-                self.assertTrue(id_regex.match(value))
+                self.assertTrue(id_regex.fullmatch(value))
