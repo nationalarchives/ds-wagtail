@@ -111,6 +111,12 @@
         border: 1px solid $color__black;
         border-radius: 0;
         background-color: $color__grey-300;
+        margin: 4rem 0 0;
+        z-index: 5;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     // headings
