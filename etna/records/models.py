@@ -636,8 +636,8 @@ class Record(DataLayerMixin, APIModel):
         return self.template.get("rights", "")
 
     @cached_property
-    def subject(self) -> list(str):
-        return self.template.get("subject", [])
+    def subjects(self) -> list(str):
+        return self.template.get("subjects", [])
 
     @cached_property
     def ciim_url(self) -> str:

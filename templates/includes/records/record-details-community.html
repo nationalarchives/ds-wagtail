@@ -54,12 +54,12 @@
         <td>{{ record.location }}</td>
     </tr>
 {% endif %}
-{% if record.subject %}
+{% if record.subjects %}
     <tr>
-        <th scope="row">{{ 'subject'|as_label }}</th>
+        <th scope="row">{{ 'subjects'|as_label }}</th>
         <td>
-            {% for sub in record.subject %}
-                <p>{{ sub }}</p>
+            {% for subject in record.subjects %}
+                <p>{{ subject }}</p>
             {% endfor %}
         </td>
     </tr>

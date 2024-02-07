@@ -38,7 +38,7 @@ class DefaultReturnsRecordModelTests(SimpleTestCase):
         self.assertEqual(self.record.collection_id, "")
         self.assertEqual(self.record.collection_url, "")
         self.assertEqual(self.record.rights, "")
-        self.assertEqual(self.record.subject, [])
+        self.assertEqual(self.record.subjects, [])
 
 
 class CommunityRecordModelTests(SimpleTestCase):
