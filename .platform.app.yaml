@@ -108,10 +108,10 @@ mounts:
 
 crons:
   # Publish scheduled pages once an hour
-  # https://docs.wagtail.io/en/stable/reference/management_commands.html#publish-scheduled-pages
-  publish_scheduled_pages:
+  # https://docs.wagtail.org/en/stable/reference/management_commands.html#publish-scheduled
+  publish_scheduled:
     spec: 0 * * * *
-    cmd: python manage.py publish_scheduled_pages
+    cmd: poetry run python manage.py publish_scheduled
 
   # Take snapshot at 5am every morning
   # https://docs.platform.sh/administration/snapshot-and-restore.html#automated-snapshots
