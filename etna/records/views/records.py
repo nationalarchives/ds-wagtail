@@ -1,3 +1,4 @@
+import logging
 import datetime
 
 from django.core.paginator import Page
@@ -6,10 +7,15 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
+from etna.records import iiif
+
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
+
+
+logger = logging.getLogger(__name__)
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -83,6 +89,16 @@ def record_detail_view(request, id):
             template_name = "records/record_creators.html"
     except DoesNotExist:
         raise Http404
+    
+    try:
+        iiif_manifest_url = iiif.manifest_url_for_record(record)
+    except iiif.RecordHasNoManifest:
+        pass
+    except Exception:
+        logger.warning("Unexpected error when getting the IIIF manifest URL for record: record_iaid=%s", record.iaid, exc_info=True)
+    else:
+        context.update(iiif_manifest_url=iiif_manifest_url)
+    
 
     page_title = f"Catalogue ID: {record.iaid}"
     image = None

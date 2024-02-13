@@ -1,4 +1,5 @@
 const path = require("path");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
     mode: "production",
@@ -21,11 +22,13 @@ module.exports = {
         record_article_page: "./scripts/src/record-article-page.js",
         feedback_tracking: "./scripts/src/feedback-tracking.js",
         whats_on: "./scripts/src/whats-on.js",
+        iiif_viewer: "./scripts/src/iiif-viewer.js",
     },
     output: {
         filename: "[name].js",
         path: path.resolve(__dirname, "templates/static/scripts"),
     },
+    plugins: [new MiniCssExtractPlugin()],
     module: {
         rules: [
             {
@@ -37,6 +40,11 @@ module.exports = {
                         presets: ["@babel/preset-env"],
                     },
                 },
+            },
+            // This may be not needed if we don't need original uv.css?
+            {
+                test: /\.css$/i,
+                use: [MiniCssExtractPlugin.loader, "css-loader"],
             },
         ],
     },

@@ -26,6 +26,19 @@
                 </tbody>
             </table>
         </div>
+
+        {% if iiif_manifest_url %}
+            <article class="tna-container tna-!--margin-top-l">
+                <div class="tna-column tna-column--full">
+                    <h2 class="heading heading--two">
+                        Record
+                    </h2>
+                    <div class="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
+                </div>
+            </article>
+        {% endif %}
+
+
         {% include "includes/records/record-crosslink-panel.html" %}        
 
         {% if record.hierarchy %}
@@ -40,6 +53,16 @@
 
 {% endblock %}
 
+{% block extra_before_css %}
+    {% if iiif_manifest_url %}
+        <link rel="stylesheet" type="text/css" href="{% static 'scripts/iiif_viewer.css' %}">
+    {% endif %}
+{% endblock %}
+
 {% block extra_js %}
     <script src="{% static 'scripts/details.js' %}"></script>
+
+    {% if iiif_manifest_url %}
+        <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
+    {% endif %}
 {% endblock %}
