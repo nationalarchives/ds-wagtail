@@ -60,14 +60,16 @@ public_urls = [
     path(
         r"catalogue/id/<id:id>/",
         setting_controlled_login_required(
-            records_views.RecordDetailInlineView.as_view(), "RECORD_DETAIL_REQUIRE_LOGIN"
+            records_views.RecordDetailInlineView.as_view(),
+            "RECORD_DETAIL_REQUIRE_LOGIN",
         ),
         name="details-page-machine-readable",
     ),
     path(
         r"catalogue/id/<id:id>/inline/",
         setting_controlled_login_required(
-            records_views.RecordDetailInlineView.as_view(), "RECORD_DETAIL_REQUIRE_LOGIN"
+            records_views.RecordDetailInlineView.as_view(),
+            "RECORD_DETAIL_REQUIRE_LOGIN",
         ),
         name="details-page-machine-readable-inline",
     ),

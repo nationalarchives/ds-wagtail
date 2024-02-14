@@ -1,14 +1,12 @@
-import datetime
 import logging
-
+import datetime
 from typing import Any
 
-from django import http
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
+from django import http
 from django.urls import reverse
 from django.utils import timezone
-
 from wagtail.admin.urls import TemplateView
 
 from etna.records import iiif
@@ -18,6 +16,7 @@ from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
+
 
 logger = logging.getLogger(__name__)
 
@@ -78,16 +77,19 @@ class RecordDetailView(TemplateView):
     This view can be used for the legacy functionality, but right now it's being
     subclassed by the views of the new IIIF viewer.
     """
+
     template_name = "records/record_detail.html"
     record: Record
 
-    def dispatch(self, request: http.HttpRequest, *args: Any, **kwargs: Any) -> http.response.HttpResponseBase:
+    def dispatch(
+        self, request: http.HttpRequest, *args: Any, **kwargs: Any
+    ) -> http.response.HttpResponseBase:
         self.record = self.get_record()
         return super().dispatch(request, *args, **kwargs)
 
     def get_record(self) -> Record:
         try:
-            return records_client.fetch(id=self.kwargs['id'])
+            return records_client.fetch(id=self.kwargs["id"])
         except DoesNotExist:
             raise Http404
 
@@ -130,19 +132,19 @@ class RecordDetailView(TemplateView):
                 back_to_search_url_timestamp
             )
 
-            if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
+            if timezone.now() <= (
+                back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
+            ):
                 return self.request.session.get("back_to_search_url")
 
         # Back to search - default url
         return reverse("search-featured")
 
     def get_page_type(self) -> str:
-        match self.record.custom_record_type:
-            case "ARCHON":
-                return "Archive details page"
-            case "CREATORS":
-                return "Record creators page"
-        return "Record details page"
+        return {
+            "ARCHON": "Archive details page",
+            "CREATORS": "Record creators page",
+        }.get(self.record.custom_record_type, "Record details page")
 
 
 class IIIFManifestRecordDetailView(RecordDetailView):
@@ -150,13 +152,18 @@ class IIIFManifestRecordDetailView(RecordDetailView):
     Base view for record detail views that adds plumbing required for working
     with IIIF manifests.
     """
+
     def get_iiif_manifest_url(self, record: Record) -> str | None:
         try:
             return iiif.manifest_url_for_record(record)
         except (iiif.RecordHasNoManifest, iiif.RecordManifestUnexpectedlyUnavailable):
             return None
         except Exception:
-            logger.warning("Unexpected error when getting the IIIF manifest URL for record: record_iaid=%s", record.iaid, exc_info=True)
+            logger.warning(
+                "Unexpected error when getting the IIIF manifest URL for record: record_iaid=%s",
+                record.iaid,
+                exc_info=True,
+            )
             return None
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -171,6 +178,7 @@ class RecordDetailInlineView(IIIFManifestRecordDetailView):
     """
     Record detail view that renders the inline version of the IIIF viewer.
     """
+
     template_name = "records/record_detail_inline.html"
 
 
@@ -178,4 +186,5 @@ class RecordDetailFullView(IIIFManifestRecordDetailView):
     """
     Record detail view that renders the full-width version of the IIIF viewer.
     """
+
     template_name = "records/record_detail_full.html"
