@@ -61,7 +61,6 @@ hooks:
     cp -R node_modules/@nationalarchives/frontend/nationalarchives/assets/* templates/static/assets
     npm run compile
 
-    poetry run python manage.py collectstatic --no-input
   deploy: |
     poetry run python manage.py migrate
 
