@@ -1,5 +1,6 @@
-import requests
 from urllib.parse import quote_plus
+
+import requests
 
 from etna.records.models import Record
 
