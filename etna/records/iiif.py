@@ -8,6 +8,10 @@ class RecordHasNoManifest(Exception):
     pass
 
 
+class RecordManifestUnexpectedlyUnavailable(Exception):
+    pass
+
+
 def manifest_url_for_record(record: Record) -> str:
     """
     For the demo purposes.
@@ -22,4 +26,7 @@ def manifest_url_for_record(record: Record) -> str:
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
         raise RecordHasNoManifest(iaid) from e
+    except requests.exceptions.RequestException as e:
+        raise RecordManifestUnexpectedlyUnavailable from e
     return url
+

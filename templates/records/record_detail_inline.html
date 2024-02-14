@@ -55,7 +55,7 @@
 
 {% block extra_before_css %}
     {% if iiif_manifest_url %}
-        <link rel="stylesheet" type="text/css" href="{% static 'scripts/iiif_viewer.css' %}">
+        <script src="{% static 'scripts/iiif_viewer.css' %}"></script>
     {% endif %}
 {% endblock %}
 
