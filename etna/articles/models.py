@@ -211,9 +211,7 @@ class ArticlePage(
     The ArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -371,9 +369,7 @@ class FocusedArticlePage(
     The FocusedArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"

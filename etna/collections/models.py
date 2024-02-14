@@ -478,9 +478,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(
-        TimePeriodExplorerPageStreamBlock, blank=True
-    )
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
