@@ -84,7 +84,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     explorer.
     """
 
-    body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
     articles_title = models.CharField(
         max_length=100,
@@ -115,7 +115,6 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         [("featuredarticles", FeaturedArticlesBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     content_panels = BasePageWithIntro.content_panels + [
@@ -169,7 +168,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     This page lists all child TopicExplorerPages
     """
 
-    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -250,7 +249,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
     skos_id = models.CharField(
         unique=True,
@@ -400,7 +399,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     This page lists all child TimePeriodExplorerPage
     """
 
-    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -479,9 +478,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(
-        TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
-    )
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
