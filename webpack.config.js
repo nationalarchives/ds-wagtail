@@ -41,7 +41,6 @@ module.exports = {
                     },
                 },
             },
-            // This may be not needed if we don't need original uv.css?
             {
                 test: /\.css$/i,
                 use: [MiniCssExtractPlugin.loader, "css-loader"],

@@ -1,6 +1,5 @@
-// sticking to universalviewer 4.0.22 for now because of
-// https://github.com/UniversalViewer/universalviewer/issues/957
-// import { init as uvInit } from 'universalviewer';
+// The UV reference is loaded by another script.
+// Importing the NPM version directly does not seem to work.
 import 'universalviewer/dist/uv.css';
 
 document.addEventListener("DOMContentLoaded", () => {

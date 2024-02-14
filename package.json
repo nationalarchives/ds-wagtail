@@ -46,7 +46,7 @@
     "@nationalarchives/frontend": "^0.1.23-prerelease",
     "jquery": "~3.7",
     "openseadragon": "~4.1",
-    "universalviewer": "4.0.22"
+    "universalviewer": "4.0.25"
   },
   "jest": {
     "testEnvironment": "jest-environment-jsdom"
