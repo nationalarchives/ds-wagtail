@@ -68,6 +68,16 @@ def record_disambiguation_view(request, reference_number):
 
 
 class RecordDetailView(TemplateView):
+    """
+    View for rendering a record's details page.
+    Record detail pages differ from all other page types within Etna in that their
+    data isn't fetched from the CMS but an external API. And unlike pages, this
+    view is accessible from a fixed URL.
+    Sets context for Back to search button.
+
+    This view can be used for the legacy functionality, but right now it's being
+    subclassed by the views of the new IIIF viewer.
+    """
     template_name = "records/record_detail.html"
     record: Record
 
@@ -136,6 +146,10 @@ class RecordDetailView(TemplateView):
 
     
 class IIIFManifestRecordDetailView(RecordDetailView):
+    """
+    Base view for record detail views that adds plumbing required for working
+    with IIIF manifests.
+    """
     def get_iiif_manifest_url(self, record: Record) -> str | None:
         try:
             return iiif.manifest_url_for_record(record)
@@ -143,7 +157,7 @@ class IIIFManifestRecordDetailView(RecordDetailView):
             return None
         except Exception:
             logger.warning("Unexpected error when getting the IIIF manifest URL for record: record_iaid=%s", record.iaid, exc_info=True)
-            raise
+            return None
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -154,8 +168,14 @@ class IIIFManifestRecordDetailView(RecordDetailView):
 
 
 class RecordDetailInlineView(IIIFManifestRecordDetailView):
+    """
+    Record detail view that renders the inline version of the IIIF viewer.
+    """
     template_name = "records/record_detail_inline.html"
 
 
 class RecordDetailFullView(IIIFManifestRecordDetailView):
+    """
+    Record detail view that renders the full-width version of the IIIF viewer.
+    """
     template_name = "records/record_detail_full.html"
