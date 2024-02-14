@@ -1,12 +1,14 @@
-import logging
 import datetime
+import logging
+
 from typing import Any
 
+from django import http
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
-from django import http
 from django.urls import reverse
 from django.utils import timezone
+
 from wagtail.admin.urls import TemplateView
 
 from etna.records import iiif
@@ -16,7 +18,6 @@ from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
-
 
 logger = logging.getLogger(__name__)
 
