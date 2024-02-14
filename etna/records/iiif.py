@@ -17,7 +17,7 @@ def manifest_url_for_record(record: Record) -> str:
     
     # Check if we have the demo manifest on our S3 bucket with demo records,
     # and if we want to pretend that the given record has no manifest.
-    response = requests.head(url)
+    response = requests.head(url, timeout=5)
     try:
         response.raise_for_status()
     except requests.exceptions.HTTPError as e:
