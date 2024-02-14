@@ -29,7 +29,7 @@ def manifest_url_for_record(record: Record) -> str:
     iaid = quote_plus(record.iaid, safe="")
 
     url = f"https://ds-live-temp-iiif.s3.eu-west-2.amazonaws.com/manifests/{iaid}-manifest.json"
-    
+
     # Check if we have the demo manifest on our S3 bucket with demo records,
     # and if we do not we want to pretend that the given record has no manifest.
     response = requests.head(url, timeout=5)
@@ -40,4 +40,3 @@ def manifest_url_for_record(record: Record) -> str:
     except requests.exceptions.RequestException as e:
         raise RecordManifestUnexpectedlyUnavailable(iaid) from e
     return url
-

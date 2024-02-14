@@ -22,6 +22,7 @@ services:
       - ./pyproject.toml:/app/pyproject.toml
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
+      - ./setup.cfg:/app/setup.cfg
       - media:/media
     depends_on:
       - db

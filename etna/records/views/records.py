@@ -4,7 +4,6 @@ from typing import Any
 
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
-from django.template.response import TemplateResponse
 from django import http
 from django.urls import reverse
 from django.utils import timezone
@@ -103,24 +102,24 @@ class RecordDetailView(TemplateView):
         context = super().get_context_data(**kwargs)
         context["back_to_search_url"] = self.get_back_to_search_url()
         context["discovery_browse"] = self.get_discovery_browse_url()
-        context["image"] = self.get_image() 
+        context["image"] = self.get_image()
         context["meta_title"] = self.record.summary_title
         context["page_title"] = f"Catalogue ID: {self.record.iaid}"
         context["page_type"] = self.get_page_type()
         context["record"] = self.record
         return context
-    
+
     def get_discovery_browse_url(self) -> str | None:
         if self.record.custom_record_type == "ARCHON":
             return TNA_URLS.get("discovery_browse")
         return None
-    
+
     def get_image(self) -> Image | None:
         # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
         # if page.is_digitised:
         #     image = Image.search.filter(rid=page.media_reference_id).first()
         return None
-    
+
     def get_back_to_search_url(self) -> str:
         # Back to search button - update url when timestamp is not expired
         if back_to_search_url_timestamp := self.request.session.get(
@@ -135,7 +134,7 @@ class RecordDetailView(TemplateView):
 
         # Back to search - default url
         return reverse("search-featured")
-    
+
     def get_page_type(self) -> str:
         match self.record.custom_record_type:
             case "ARCHON":
@@ -144,7 +143,7 @@ class RecordDetailView(TemplateView):
                 return "Record creators page"
         return "Record details page"
 
-    
+
 class IIIFManifestRecordDetailView(RecordDetailView):
     """
     Base view for record detail views that adds plumbing required for working

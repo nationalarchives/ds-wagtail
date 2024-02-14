@@ -3,7 +3,6 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
-from django.views.generic import RedirectView
 
 from wagtail import urls as wagtail_urls
 from wagtail.admin import urls as wagtailadmin_urls
@@ -60,7 +59,9 @@ if settings.SENTRY_DEBUG_URL_ENABLED:
 public_urls = [
     path(
         r"catalogue/id/<id:id>/",
-        RedirectView.as_view(pattern_name="details-page-machine-readable-inline"),
+        setting_controlled_login_required(
+            records_views.RecordDetailInlineView.as_view(), "RECORD_DETAIL_REQUIRE_LOGIN"
+        ),
         name="details-page-machine-readable",
     ),
     path(
