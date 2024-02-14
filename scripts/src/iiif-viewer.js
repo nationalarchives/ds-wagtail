@@ -1,8 +1,7 @@
 // sticking to universalviewer 4.0.22 for now because of
 // https://github.com/UniversalViewer/universalviewer/issues/957
-import { init as uvInit } from 'universalviewer';
+// import { init as uvInit } from 'universalviewer';
 import 'universalviewer/dist/uv.css';
-
 
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll("[data-js-iiif-viewer-manifest-url]").forEach((element) => {
@@ -14,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
             manifest: manifestUrl,
             embedded: true,
         };
-        const uv = uvInit(element, data);
+
+        uv = UV.init(element, data);
+        // const uv = uvInit(element, data);
 
         // override config using an inline json object
         uv.on("configure", function ({ cb }) {

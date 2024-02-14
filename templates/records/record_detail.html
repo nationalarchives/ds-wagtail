@@ -33,7 +33,7 @@
                     <h2 class="heading heading--two">
                         Record
                     </h2>
-                    <div class="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
+                    <div class="uv" id="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
                 </div>
             </article>
         {% endif %}
@@ -63,6 +63,7 @@
     <script src="{% static 'scripts/details.js' %}"></script>
 
     {% if iiif_manifest_url %}
+        <script src="{% static 'uv/UV.js' %}"></script>
         <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
     {% endif %}
 {% endblock %}
