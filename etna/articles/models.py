@@ -136,7 +136,6 @@ class ArticleIndexPage(BasePageWithIntro):
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     api_fields = BasePageWithIntro.api_fields + [
@@ -213,7 +212,7 @@ class ArticlePage(
     """
 
     body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
+        ArticlePageStreamBlock, blank=True, null=True
     )
 
     # DataLayerMixin overrides
@@ -373,7 +372,7 @@ class FocusedArticlePage(
     """
 
     body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
+        ArticlePageStreamBlock, blank=True, null=True
     )
 
     # DataLayerMixin overrides
@@ -595,7 +594,6 @@ class RecordArticlePage(
         max_num=1,
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     # DataLayerMixin overrides

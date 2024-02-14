@@ -113,7 +113,6 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
     )
     response_options = StreamField(
         [("option", ResponseOptionBlock())],
-        use_json_field=True,
         verbose_name=_("response options"),
     )
     thank_you_heading = models.CharField(
