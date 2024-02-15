@@ -1,8 +1,3 @@
-@use "@nationalarchives/frontend/nationalarchives/variables/assets" with (
-    $tna-font-path: "/static/assets/fonts",
-    $fa-font-path: "/static/assets/fonts"
-);
-
 @use "@nationalarchives/frontend/nationalarchives/all";
 
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
