@@ -8,13 +8,14 @@
         <!-- SHORT HIERARCHY VIEW -->
         <nav class="hierarchy-short-panel" role="navigation" aria-labelledby="short-hierarchy-title">
             <h2 class="tna-heading-l hierarchy-short-panel__heading sr-only" id="short-hierarchy-title">Catalogue location at a glance</h2>
-            <p class="hierarchy-short-panel__label">You are here:</p>
+            {% comment %} <p class="hierarchy-short-panel__label">You are here:</p> {% endcomment %}
+
+            <span class="hierarchy__record-ref">{{ record.reference_number|truncatechars:27 }}</span>
 
             <ul class="hierarchy-short-panel__list">
                 {% if record.hierarchy %}
                     {% breadcrumb_items record.hierarchy record.is_tna record as breadcrumbs %}
-
-                    
+                
                     {% if breadcrumbs|length <= 2 %}
                         <li class="hierarchy-short-panel__list-item">
                             <span class="hierarchy-short-panel__level">

@@ -1,9 +1,11 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
 .hierarchy {
+    @include colour.colour-background("accent-background-light");
+    @include colour.colour-border("accent-background-light", 3px, solid);
     position: relative;
     color: $color__black;
-    border: 3px solid $color__yellow;
     margin: 0 0 3rem;
-    background-color: $color__yellow;
     padding: 0;
 
     @media screen and (min-width: #{$screen__lg + 1px}) {
@@ -11,12 +13,13 @@
     }
 
     &__icon {
+        color: $color__grey-600;
         display: none;
-        height: 35px;
-        width: 35px;
+        height: 25px;
+        width: 25px;
         position: absolute;
         top: 10px;
-        left: 10px;
+        left: 15px;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
@@ -24,17 +27,21 @@
     }
 
     &__container {
-        background: $color__cream;
         // adds a visual separating border in high contrast mode
-        border-left: 2px solid $color__yellow;
+        @include colour.colour-border("accent-background-light", 2px, solid, left);
+        background-color: $color__white;
         overflow: auto;
         padding: 0 0 1rem;
+    }
+
+    &__record-ref {
+        @include font-size(xs);
+        font-family: $font__mono;
     }
 }
 
 .hierarchy-short-panel {
     padding: 1rem 1rem 0;
-    font-family: $font__supria-sans;
 
     &__heading {
         display: inline;
@@ -51,13 +58,10 @@
         margin: 0;
 
         button {
-            font-family: $font-_supria-sans;
-            color: $color__link-blue;
+            background-color: transparent;
             display: inline-block;
-            background: url($fa_chevron_down) no-repeat left center;
-            background-size: 10px;
             margin: 0 auto 1rem;
-            padding: 0 0 0 1.25rem;
+            padding: 0;
             border: 0;
             text-decoration: underline;
             font-size: 1.1rem;
@@ -71,16 +75,6 @@
             &:focus {
                 @include focus-default;
             }
-
-            &:visited {
-                color: $color__link-blue;
-            }
-        }
-
-        .open {
-            background: url($fa_chevron_up) no-repeat left center;
-            background-size: 10px;
-            min-width: 5rem;
         }
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
@@ -97,27 +91,28 @@
         margin: 1rem 0;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
-            margin: 1rem 0 0.25rem;
+            margin: 0 0 0.25rem;
         }
     }
 
     &__list-item {
         list-style: none;
-        background: url($fa_chevron_double_right_yellow) no-repeat left center;
-        background-size: 16px;
-        margin: 0 0.75rem 0.75rem 0;
-        padding-left: 1.8rem;
+        background: url($fa_chevron_right_light) no-repeat left center;
+        background-size: 35px;
+        font-weight: 600;
+        margin: 0 0 0.75rem 0;
+        padding-left: 2rem;
         display: block;
-        font-size: 1.1rem;
+        font-size: 1.2rem;
 
         a:visited {
             color: $color__link-blue;
         }
 
         &:first-child {
-            background: url($fa_chevron_double_right_yellow) no-repeat left
-                center;
-            padding-left: 1.8rem;
+            background: url($fa_chevron_right_light) no-repeat left center;
+            background-size: 35px;
+            padding-left: 2rem;
 
             @media screen and (min-width: #{$screen__lg + 1px}) {
                 background: transparent;
@@ -127,7 +122,7 @@
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             display: inline-block;
-            margin: 0 0.75rem 0 0;
+            margin: 0;
         }
 
         &--more::before {
@@ -160,10 +155,10 @@
     }
 
     &__bar-container-outer {
+        @include colour.colour-border("accent-background-light", 2px, solid, top);
+        @include colour.colour-background("accent-background-light");
         min-height: 60px;
         padding: 0.25rem 0 1rem;
-        border-top: 2px solid $color__yellow;
-        background: $color__yellow-dark;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             border-top: 0;
@@ -172,8 +167,8 @@
         }
 
         &--active {
-            border-bottom: 2px solid $color__yellow;
-            background: $color__yellow;
+            @include colour.colour-background("accent-background");
+            @include colour.colour-border("accent-background", 2px, solid, bottom);
 
             @media screen and (min-width: #{$screen__lg + 1px}) {
                 border-bottom: 0;
@@ -189,20 +184,20 @@
         color: $color__black;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
-            background-color: $color__yellow-dark;
+            @include colour.colour-background("accent-background-light");
+            @include colour.colour-border("accent-background-light", 2px, solid);
             padding: 0.5rem 0.75rem;
             display: inline-block;
             min-height: 75px;
-            border: 2px solid $color__yellow;
             border-left: 0;
             min-width: 10%;
         }
 
         p {
+            @include colour.colour-background("accent-background");
             margin: 0 0 0.5rem;
             display: inline-block;
             color: $color__grey-800;
-            background: $color__yellow;
             padding: 0.4rem 0.35rem;
             margin-top: 0.25rem;
             line-height: 1.2rem;
@@ -222,7 +217,7 @@
 
         &--active {
             @media screen and (min-width: #{$screen__lg + 1px}) {
-                background: $color__yellow;
+                @include colour.colour-background("accent-background");
                 border-left: 0;
             }
 

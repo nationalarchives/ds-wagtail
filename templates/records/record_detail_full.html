@@ -1,63 +1,41 @@
 {% extends "base.html" %}
 
-{% load static datalayer_tags records_tags %}
+{% load static datalayer_tags records_tags wagtailcore_tags sections_tags wagtailmetadata_tags %}
+
+{% block html_class %}tna-template--light-theme tna-template--blue-accent{% endblock %}
 
 {% block extra_gtm_js %}
     {% render_gtm_datalayer record %}
 {% endblock extra_gtm_js %}
-{% block breadcrumb %}
-{% endblock %}
 
 {% block content %}
 
-    {% include "includes/records/record-cta-panel.html" %}
-
     <div class="container">
-
         {% include "includes/records/record-title.html" %}
         {% include "includes/records/hierarchy-global.html" %}
-
-
-        {% if iiif_manifest_url %}
-            <article class="tna-container tna-!--margin-top-l">
-                <div class="tna-column tna-column--full">
-                    <h2 class="heading heading--two">
-                        Record
-                    </h2>
-                    <div class="uv" id="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
-                </div>
-            </article>
-        {% endif %}
-
-        <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
-
-        <div class="record-details">
-            <table class="record-details__table">
-                <tbody>
-                    {% include "includes/records/record-details.html" %}            
-                </tbody>
-            </table>
-        </div>
-
-
-
-        {% include "includes/records/record-crosslink-panel.html" %}        
-
-        {% if record.hierarchy %}
-            {% if record.hierarchy|length > 2 %}
-                <h2 class="tna-heading-l">This record is in the series</h2>
-
-                {% include "includes/records/record-series-panel.html" %}
-            {% endif %}
-        {% endif %}
-
     </div>
 
-{% endblock %}
-
-{% block extra_before_css %}
     {% if iiif_manifest_url %}
+        <article class="tna-container tna-!--margin-top-l">
+            <div class="tna-column tna-column--full">
+                <h2 class="heading heading--two">
+                    Record
+                </h2>
+                <div class="uv" id="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
+            </div>
+        </article>
     {% endif %}
+
+    <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
+
+    <div class="record-details">
+        <table class="record-details__table">
+            <tbody>
+                {% include "includes/records/record-details.html" %}            
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}
 
 {% block extra_js %}

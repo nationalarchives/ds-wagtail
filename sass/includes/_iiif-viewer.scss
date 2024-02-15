@@ -1,7 +1,9 @@
-.uv {
+#uv {
     width: 100%;
     height: 688px;
     font-family: $font__open-sans;
+    display: block;
+    margin-bottom: 100px;
 
     > div {
         background-color: transparent;

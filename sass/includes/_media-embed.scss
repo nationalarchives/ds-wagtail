@@ -3,7 +3,7 @@
 .media-embed {
     $root: &;
     position: relative;
-    @include colour.invert;
+    //@include colour.invert;
 
     &--transcript {
         background-position: top center;

@@ -1,6 +1,5 @@
 // The UV reference is loaded by another script.
 // Importing the NPM version directly does not seem to work.
-import "universalviewer/dist/uv.css";
 
 document.addEventListener("DOMContentLoaded", () => {
     document
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             const data = {
                 manifest: manifestUrl,
-                embedded: true,
             };
 
             const uv = window.UV.init(element, data);

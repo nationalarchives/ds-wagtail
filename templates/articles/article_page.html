@@ -2,11 +2,11 @@
 
 {% load static wagtailcore_tags sections_tags wagtailmetadata_tags %}
 
-{% block breadcrumb %}{% endblock %}
-{% block content %}
-    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
-    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
+{% block html_class %}tna-template--blue-accent{% endblock %}
 
+{% block breadcrumb %}{% endblock %}
+
+{% block content %}
     <article class="tna-container">
         <div class="tna-column tna-column--width-1-4">
             {% jumplinks page %}
@@ -26,8 +26,8 @@
         <div class="tna-container">
             {% if page.similar_items %}
                 <div class="tna-column tna-column--full">
-                <h2 class="tna-heading-l related-content__heading">You may also be interested in</h2>
-            </div>
+                    <h2 class="tna-heading-l related-content__heading">You may also be interested in</h2>
+                </div>
 
                 <ul class="card-group--list-style-none">
                     {% for item in page.similar_items %}

@@ -145,7 +145,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
-@import "includes/iiif_viewer";
+@import "includes/iiif-viewer";
 
 /* Un-comment when front-end toolkit is fixed
 
@@ -304,7 +304,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        @include colour.invert;
+        //@include colour.invert;
         background-color: #343338 !important;
         color: #fff !important;
 
