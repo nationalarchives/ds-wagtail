@@ -1,0 +1,34 @@
+.tify-error {
+    background: rgba(#d22, 0.8);
+    border-radius: 0 $br 0 0;
+    bottom: 0;
+    color: $white;
+    display: flex;
+    font-weight: bold;
+    max-height: 50%;
+    max-width: 90%;
+    position: absolute;
+
+    p {
+        margin: 0;
+    }
+}
+
+.tify-error-close {
+    align-self: flex-start;
+    background: 0;
+    border: 0;
+    color: $white;
+    cursor: pointer;
+    display: flex;
+    padding: g(0.25);
+
+    @include hover {
+        background: $shade-light;
+    }
+}
+
+.tify-error-messages {
+    overflow: auto;
+    padding: g(0.25) g(0.5) g(0.25) 0;
+}

@@ -7,9 +7,11 @@ module.exports = {
         all: "./scripts/src/all.js",
         beta_banner: "./scripts/src/beta-banner.js",
         cookie_consent: "./scripts/src/ds-cookie-consent.js",
+        clover: "./scripts/src/viewers/index.js",
         gtm_script: "./scripts/src/gtm-script.js",
         image_viewer: "./scripts/src/image-viewer.js",
         home_page: "./scripts/src/home-page.js",
+        mirador: "./scripts/src/viewers/mirador.js",
         explorer: "./scripts/src/explorer.js",
         article: "./scripts/src/article.js",
         article_index_page: "./scripts/src/article-index-page.js",
@@ -37,7 +39,10 @@ module.exports = {
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ["@babel/preset-env"],
+                        presets: [
+                            "@babel/preset-env",
+                        ],
+                        
                     },
                 },
             },

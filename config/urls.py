@@ -16,6 +16,7 @@ from etna.core.cache_control import (
 )
 from etna.core.decorators import setting_controlled_login_required
 from etna.errors import views as errors_view
+from etna.images import views as images_views
 from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
@@ -149,6 +150,21 @@ public_urls = [
             "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search-website-long-filter-chooser",
+    ),
+    path(
+        r"iiif/manifest/<int:collection_id>/",
+        images_views.iiif_manifest,
+        name="iiif-manifest",
+    ),
+    path(
+        r"iiif/image/<int:image_id>/",
+        images_views.iiif_image_info,
+        name="iiif-image-info",
+    ),
+    path(
+        r"iiif/image/<int:image_id>/<str:region>/<str:size>/<str:rotation>/<str:quality>.<str:format>",
+        images_views.iiif_image,
+        name="iiif-image",
     ),
 ]
 

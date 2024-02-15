@@ -78,3 +78,5 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
     DEBUG_TOOLBAR_CONFIG = {
         "SHOW_TOOLBAR_CALLBACK": show_toolbar,
     }
+
+WAGTAILADMIN_BASE_URL = "http://localhost:8000"

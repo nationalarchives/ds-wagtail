@@ -1,0 +1,148 @@
+.tify-scan {
+    @extend %panel;
+    background: transparent;
+    box-shadow: none;
+    flex: 3;
+    user-select: none;
+    z-index: 0;
+}
+
+.tify-scan-buttons {
+    border-radius: $br;
+    display: flex;
+    flex-direction: column;
+    left: g(0.25);
+    position: absolute;
+    top: g(0.25);
+    z-index: 9;
+}
+
+.tify-scan-button {
+    @extend %button;
+    background: none;
+    box-shadow: none;
+    color: $white;
+    height: g(1.5);
+    padding: 0;
+    position: relative;
+    width: g(1.5);
+
+    &:not(:disabled) {
+        @include hover {
+            backdrop-filter: $blur;
+            background: $shade;
+        }
+    }
+
+    &.-active {
+        // dot marker
+        &::after {
+            background: $base-color;
+            box-shadow: 0 0 g(0.25) $base-color-lighter;
+            content: "";
+            border-radius: 50%;
+            display: block;
+            height: 0.5em;
+            position: absolute;
+            right: g(0.25);
+            top: g(0.25);
+            width: 0.5em;
+        }
+    }
+
+    .tify-icon {
+        filter: drop-shadow(0 0 2px $shade) drop-shadow(0 0 1px $shade-dark);
+    }
+}
+
+.tify-scan-filters {
+    position: relative;
+}
+
+.tify-scan-filters-popup {
+    @include dropdown(left, right);
+    left: g(1.75);
+    padding: g(0.5);
+    top: g(0.75);
+    width: auto;
+
+    label {
+        // "100 %"
+        > b {
+            float: right;
+            font-size: $font-size-small;
+        }
+    }
+
+    > p {
+        margin: 0;
+
+        + p {
+            margin-top: g(0.5);
+        }
+    }
+}
+
+// NOTE: OpenSeadragon adds `position: relative`
+.tify-scan-image {
+    height: 100%;
+    white-space: nowrap;
+    width: 100%;
+
+    .openseadragon-canvas {
+        outline: 0;
+    }
+}
+
+.tify-scan-page-button {
+    @extend %button;
+    backdrop-filter: $blur;
+    background: $shine;
+    border: 0;
+    box-shadow: 0 0 1px $border-color;
+    height: g(2.5);
+    margin-top: g(-1.25);
+    padding: 0;
+    position: absolute;
+    top: 50%;
+    width: g(1.25);
+    z-index: 1;
+
+    .tify.-short & {
+        bottom: 0;
+        height: g(1.75);
+        width: g(1.75);
+        top: auto;
+    }
+
+    &.-previous {
+        border-radius: 0 g(1.25) g(1.25) 0;
+        left: 0;
+        justify-content: flex-start;
+
+        .tify.-short & {
+            border-radius: 0 g(1.75) 0 0;
+            padding: g(0.375) 0 0 g(0.25);
+        }
+    }
+
+    &.-next {
+        border-radius: g(1.25) 0 0 g(1.25);
+        right: 0;
+        justify-content: flex-end;
+
+        .tify.-short & {
+            border-radius: g(1.75) 0 0;
+            padding: g(0.375) g(0.25) 0 0;
+        }
+    }
+}
+
+.tify-scan-range {
+    @include range;
+}
+
+.tify-scan-reset {
+    @extend %button;
+    width: 100%;
+}

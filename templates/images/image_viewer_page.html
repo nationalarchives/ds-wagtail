@@ -1,0 +1,76 @@
+{% extends "base_page.html" %}
+
+{% load static wagtailcore_tags %}
+
+{% block content %}
+  {% comment %} <article class="tna-container tna-!--margin-top-l">
+    <div class="tna-column tna-column--full">
+        <h2 class="heading heading--two">
+            Clover
+        </h2>
+        {% comment %} <div id="clover-viewer" data-id="https://api.dc.library.northwestern.edu/api/v2/works/71153379-4283-43be-8b0f-4e7e3bfda275?as=iiif"></div> {% endcomment %}
+        <div id="clover-viewer" data-id="https://ds-live-temp-iiif.s3.eu-west-2.amazonaws.com/manifests/C11050044-manifest.json"></div>
+    </div>
+  </article> {% endcomment %}
+
+  <article class="tna-container tna-!--margin-top-l">
+    <div class="tna-column tna-column--full">
+        <h2 class="heading heading--two">
+            Universal Viewer
+        </h2>
+        <div class="uv" id="uv"></div>
+    </div>
+  </article>
+
+  {% comment %} <article class="tna-container tna-!--margin-top-l">
+    <div class="tna-column tna-column--full">
+      <h2 class="heading heading--two">
+        Mirador
+      </h2>
+      <div class="mirador" id="mirador-viewer" data-id="https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json"></div>
+      <div class="mirador" id="mirador-viewer" data-id="https://ds-live-temp-iiif.s3.eu-west-2.amazonaws.com/manifests/C11050044-manifest.json"></div>
+    </div>
+  </article> {% endcomment %}
+
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% static 'uv/UV.js' %}"></script>
+    {% comment %} <script src="{% static 'scripts/clover.js' %}"></script> {% endcomment %}
+    {% comment %} <script src="{% static 'scripts/mirador.js' %}"></script> {% endcomment %}
+
+    <script>
+        const data = {
+            // manifest: "https://iiif.bodleian.ox.ac.uk/iiif/manifest/60834383-7146-41ab-bfe1-48ee97bc04be.json",
+            manifest: "https://ds-live-temp-iiif.s3.eu-west-2.amazonaws.com/manifests/C11050044-manifest.json",
+        };
+    
+        uv = UV.init("uv", data);
+
+        // override config using an inline json object
+        uv.on("configure", function ({ config, cb }) {
+            cb({
+                "options": { 
+                    "useArrowKeysToNavigate": true,
+                    "navigatorEnabled": true,
+                    "footerPanelEnabled": true,
+                    "headerPanelEnabled": true,
+                    "leftPanelEnabled": true
+                },
+                "modules": {
+                    "pagingHeaderPanel": {
+                        "options": {
+                          "autoCompleteBoxEnabled": true,
+                          "autocompleteAllowWords": true,
+                          "galleryButtonEnabled": true,
+                          "imageSelectionBoxEnabled": true,
+                          "pageModeEnabled": true,
+                          "pagingToggleEnabled": true
+                        },
+                    },
+                },
+
+            });
+        });
+    </script>
+{% endblock %}

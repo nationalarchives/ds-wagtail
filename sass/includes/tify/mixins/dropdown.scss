@@ -1,0 +1,70 @@
+@use "sass:math";
+
+@mixin dropdown($position: left, $alignment: bottom) {
+    background: $white;
+    border: $br solid $white;
+    border-radius: $br;
+    filter: drop-shadow($drop-shadow);
+    min-width: 6em;
+    overflow: visible;
+    position: absolute;
+    text-shadow: none;
+    z-index: 9;
+
+    @if $alignment == bottom {
+        margin: g(0.25) 0;
+    } @else if $alignment == top {
+        margin: g(0.25) 0;
+        bottom: 100%;
+        top: auto;
+        transform: none;
+    } @else if $alignment == right {
+        transform: translateY(-50%);
+    }
+
+    @if $position == left {
+        left: 0;
+        right: auto;
+    } @else if $position == right {
+        left: auto;
+        right: g(0.25);
+    }
+
+    // Wedge
+    &::before {
+        position: absolute;
+        content: "";
+        background: $white;
+        width: g(0.5);
+        height: g(0.5);
+        transform: rotate(45deg);
+        z-index: -1;
+
+        @if $alignment == bottom {
+            bottom: auto;
+            top: calc(#{g(-0.25)} - #{$br});
+
+            @if $position == left {
+                left: g(0.5);
+                right: auto;
+            } @else if $position == right {
+                left: auto;
+                right: g(0.5);
+            }
+        } @else if $alignment == top {
+            top: auto;
+            bottom: calc(#{g(-0.25)} - #{$br});
+
+            @if $position == left {
+                left: g(0.5);
+                right: auto;
+            } @else if $position == right {
+                left: auto;
+                right: g(0.5);
+            }
+        } @else if $alignment == right {
+            left: calc(#{g(-0.25)} - #{$br});
+            top: calc(50% - #{g(0.25)});
+        }
+    }
+}

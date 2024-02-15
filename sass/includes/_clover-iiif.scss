@@ -1,0 +1,134 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.clover-viewer {
+    &-content {
+        background-color: $color__grey-200;
+        padding: 6em 2em 2em;
+    }
+
+    &-header {
+        label {
+            font-weight: $font-weight-bold;
+        }
+    }
+
+    // viewer slider / thumbnail preview container
+    .c-loOuxq {
+        padding: 4em 0 0;
+    }
+
+    // viewer control buttons
+    .c-jPOUPf {
+        right: 0;
+        top: -4em;
+    }
+
+    .c-byCwCq,
+    .c-jPOUPf {
+        background-color: $color__grey-200;
+        border: 1px solid $color__black;
+        border-radius: 0;
+        color: $color__black;
+        padding: 0.5rem;
+        filter: none;
+
+        svg {
+            fill: $color__black;
+            stroke: $color__black;
+            filter: none;
+        }
+
+        &:hover {
+            background-color: $color__white;
+        }
+
+        &:hover,
+        &:focus {
+            // override default !important
+            background-color: $color__white !important;
+        }
+    }
+
+    // image viewer controls
+    .c-fmGDRW {
+        position: relative;
+        right: 0;
+        top: -4em;
+    }
+
+    // visible viewer area with controls
+    .c-heKnQH {
+        overflow: visible;
+    }
+
+    // zoom/close button
+    .c-fXBHMl:hover .c-byCwCq:where(.c-jPOUPf) {
+        background-color: $color__white;
+    }
+
+    // next/previous pagination & search
+    .c-iZqOLP {
+        background-color: $color__grey-200;
+        box-shadow: none;
+        border-radius: 0;
+        color: $color__black;
+
+        svg {
+            background-color: $color__grey-200;
+            fill: $color__black;
+        }
+    }
+
+    .c-bwRbCV {
+        border-radius: 0;
+        border: 1px solid $color__black;
+        background-color: $color__grey-200;
+        color: $color__black;
+
+        svg {
+            background-color: $color__grey-200;
+            filter: none;
+            fill: $color__black;
+            stroke: $color__black;
+        }
+    }
+
+    // search input
+    .c-hvuDBt {
+        background-color: $color__white;
+        border: 1px solid $color__black;
+        border-radius: 0;
+        box-shadow: none;
+    }
+
+    // information panel styles
+    .c-csuXsr {
+        border-bottom-width: 1px;
+    }
+
+    // mobile styles
+    .c-crBlHK {
+        border: 1px solid $color__black;
+        border-radius: 0;
+        background-color: $color__grey-300;
+        margin: 4rem 0 0;
+        z-index: 5;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    // headings
+    .c-fhxfFQ {
+        padding: 0.5rem 0;
+
+        &::after {
+            height: 1px;
+
+            [data-state="active"] {
+                background-color: $color__black;
+            }
+        }
+    }
+}
