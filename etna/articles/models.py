@@ -38,7 +38,7 @@ from etna.core.models import (
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
-from etna.components.articles.models import featured_article_mixin
+from etna.components.articles.models import FeaturedArticle, GenericMixin
 
 from .blocks import (
     ArticlePageStreamBlock,
@@ -116,11 +116,13 @@ class ArticleTagMixin(models.Model):
     api_fields = [APIField("article_tag_names")]
 
 
-class ArticleIndexPage(BasePageWithIntro, featicle = featured_article_mixin(True)):
+class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
 
     This page lists the ArticlePage objects that are children of this page.
     """
+
+    featured_article = FeaturedArticle.get_field(null=True, blank=True)
 
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],
@@ -151,7 +153,7 @@ class ArticleIndexPage(BasePageWithIntro, featicle = featured_article_mixin(True
         return context
 
     content_panels = BasePageWithIntro.content_panels + [
-        featicle.
+        FeaturedArticle.get_chooser(field_name="featured_article"),
         FieldPanel("featured_pages"),
     ]
 
@@ -178,26 +180,43 @@ class PageSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthorTag
-        fields = ("author",)
+        fields = ("author__author_pages",)
 
+
+class BaseArticlePage(TopicalPageMixin, ArticleTagMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro):
+    """BaseArticlePage
+
+    The model to be inherited by all "Article" page types.
+    """
+
+    
+    class Meta:
+        abstract = True
+
+    content_panels = BasePageWithIntro.content_panels 
+
+    # DataLayerMixin overrides
+    gtm_content_group = "Explore the collection"
+
+    promote_panels = BasePageWithIntro.promote_panels + ArticleTagMixin.promote_panels
+
+    search_fields = BasePageWithIntro.search_fields + ArticleTagMixin.search_fields + [
+        index.SearchField("body"),
+        index.SearchField("article_tag_names", boost=1),
+    ]
+
+    api_fields = (
+        BasePageWithIntro.api_fields + ArticleTagMixin.api_fields + [APIField("body")])
 
 class ArticlePage(
-    TopicalPageMixin,
     RequiredHeroImageMixin,
-    ContentWarningMixin,
-    NewLabelMixin,
-    ArticleTagMixin,
-    BasePageWithIntro,
+    GenericMixin,
+    BaseArticlePage,
 ):
     """ArticlePage
 
     The ArticlePage model.
     """
-
-    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
-
-    # DataLayerMixin overrides
-    gtm_content_group = "Explore the collection"
 
     template = "articles/article_page.html"
 
@@ -207,19 +226,9 @@ class ArticlePage(
         verbose_name_public = _("the story of")
 
     content_panels = (
-        BasePageWithIntro.content_panels
+        BaseArticlePage.content_panels
         + RequiredHeroImageMixin.content_panels
-        + [
-            MultiFieldPanel(
-                [
-                    FieldPanel("display_content_warning"),
-                    FieldPanel("custom_warning_text"),
-                ],
-                heading="Content Warning Options",
-                classname="collapsible",
-            ),
-            FieldPanel("body"),
-        ]
+        + GenericMixin.content_panels
     )
 
     promote_panels = (

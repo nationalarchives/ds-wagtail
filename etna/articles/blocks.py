@@ -204,3 +204,25 @@ class ContentSectionBlock(SectionDepthAwareStructBlock):
 
 class ArticlePageStreamBlock(blocks.StreamBlock):
     content_section = ContentSectionBlock()
+
+
+class GenericContentBlock(blocks.StructBlock):
+    """
+    A generic content block that can be used to add a heading and a rich text field.
+    """
+    paragraph = ParagraphBlock()
+    quote = QuoteBlock()
+    sub_heading = SubHeadingBlock()
+    image = ContentImageBlock()
+    media = MediaBlock()
+    featured_record_article = FeaturedRecordArticleBlock()
+    promoted_item = PromotedItemBlock()
+    promoted_list = PromotedListBlock()
+    record_links = RecordLinksBlock()
+    content_section = ContentSectionBlock()
+
+    class Meta:
+        icon = "doc-full"
+        label = "Generic content"
+        template = "articles/blocks/generic_content.html"
+        help_text = "A simple block with a heading and rich text content"
