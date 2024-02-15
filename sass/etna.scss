@@ -47,7 +47,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/links";
 @import "includes/card-groups";
 @import "includes/footer";
-@import "includes/clover-iiif";
 @import "includes/cta-banner-newsletter";
 @import "includes/cta-banner-survey";
 @import "includes/pagination";
@@ -305,7 +304,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        //@include colour.invert;
+        // @include colour.invert;
         background-color: #343338 !important;
         color: #fff !important;
 

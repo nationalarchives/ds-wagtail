@@ -5,10 +5,8 @@ module.exports = {
         jquery: true,
         jest: true,
     },
-    plugins: ["react"],
     extends: [
         "eslint:recommended",
-        "plugin:react/recommended"
     ],
     overrides: [
         {
@@ -34,5 +32,4 @@ module.exports = {
             version: "detect"
         }
     },
-    ignorePatterns: ["mirador.min.js"]
 };

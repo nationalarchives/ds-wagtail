@@ -28,7 +28,12 @@
 
     &__container {
         // adds a visual separating border in high contrast mode
-        @include colour.colour-border("accent-background-light", 2px, solid, left);
+        @include colour.colour-border(
+            "accent-background-light",
+            2px,
+            solid,
+            left
+        );
         background-color: $color__white;
         overflow: auto;
         padding: 0 0 1rem;
@@ -100,7 +105,7 @@
         background: url($fa_chevron_right_light) no-repeat left center;
         background-size: 35px;
         font-weight: 600;
-        margin: 0 0 0.75rem 0;
+        margin: 0 0 0.75rem;
         padding-left: 2rem;
         display: block;
         font-size: 1.2rem;
@@ -155,7 +160,12 @@
     }
 
     &__bar-container-outer {
-        @include colour.colour-border("accent-background-light", 2px, solid, top);
+        @include colour.colour-border(
+            "accent-background-light",
+            2px,
+            solid,
+            top
+        );
         @include colour.colour-background("accent-background-light");
         min-height: 60px;
         padding: 0.25rem 0 1rem;
@@ -168,7 +178,12 @@
 
         &--active {
             @include colour.colour-background("accent-background");
-            @include colour.colour-border("accent-background", 2px, solid, bottom);
+            @include colour.colour-border(
+                "accent-background",
+                2px,
+                solid,
+                bottom
+            );
 
             @media screen and (min-width: #{$screen__lg + 1px}) {
                 border-bottom: 0;
@@ -185,7 +200,11 @@
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             @include colour.colour-background("accent-background-light");
-            @include colour.colour-border("accent-background-light", 2px, solid);
+            @include colour.colour-border(
+                "accent-background-light",
+                2px,
+                solid
+            );
             padding: 0.5rem 0.75rem;
             display: inline-block;
             min-height: 75px;
