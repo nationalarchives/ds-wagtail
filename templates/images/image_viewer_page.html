@@ -3,7 +3,7 @@
 {% load static wagtailcore_tags %}
 
 {% block content %}
-  <article class="tna-container tna-!--margin-top-l">
+  {% comment %} <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
         <h2 class="heading heading--two">
             Clover
@@ -11,7 +11,7 @@
         {% comment %} <div id="clover-viewer" data-id="https://api.dc.library.northwestern.edu/api/v2/works/71153379-4283-43be-8b0f-4e7e3bfda275?as=iiif"></div> {% endcomment %}
         <div id="clover-viewer" data-id="https://ds-live-temp-iiif.s3.eu-west-2.amazonaws.com/manifests/C11050044-manifest.json"></div>
     </div>
-  </article>
+  </article> {% endcomment %}
 
   <article class="tna-container tna-!--margin-top-l">
     <div class="tna-column tna-column--full">
@@ -36,7 +36,7 @@
 
 {% block extra_js %}
     <script src="{% static 'uv/UV.js' %}"></script>
-    <script src="{% static 'scripts/clover.js' %}"></script>
+    {% comment %} <script src="{% static 'scripts/clover.js' %}"></script> {% endcomment %}
     {% comment %} <script src="{% static 'scripts/mirador.js' %}"></script> {% endcomment %}
 
     <script>
