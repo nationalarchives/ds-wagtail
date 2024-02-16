@@ -213,9 +213,16 @@ class Record(DataLayerMixin, APIModel):
         """
         Returns the records full description value with all HTML left intact.
         """
-        # TODO:Rosetta
-        # return mark_safe(self._get_raw_description())
-        return self._get_raw_description()
+        if raw := self._get_raw_description():
+            if self.group == BucketKeys.COMMUNITY:
+                allow_tags = ["a", "br", "p"]
+                updated_value = raw.replace("\n", "<br />")
+                strip_html_value = strip_html(updated_value, allow_tags=allow_tags)
+                return mark_safe(strip_html_value)
+            # TODO:Rosetta
+            # return mark_safe(raw)
+            return raw
+        return ""
 
     @cached_property
     def listing_description(self) -> str:
@@ -224,10 +231,12 @@ class Record(DataLayerMixin, APIModel):
         anywhere. When highlight data is provided by the API, <mark> tags
         will be left in-tact, but and other HTML is stripped.
         """
+        if self.group == BucketKeys.COMMUNITY:
+            # TODO:Rosetta when we know about highlights, marks
+            return self.description
+        # TODO:Rosetta tna,nonTna
         if raw := self._get_raw_description(use_highlights=True):
-            # TODO:Rosetta
-            # return mark_safe(strip_html(raw, preserve_marks=True))
-            return raw
+            return mark_safe(strip_html(raw, preserve_marks=True))
         return ""
 
     def _get_raw_description(self, use_highlights: bool = False) -> str:

@@ -3,7 +3,6 @@ import re
 from typing import Any, Dict, Optional
 
 from django.urls import NoReverseMatch, reverse
-from django.utils.safestring import mark_safe
 
 import bleach
 
@@ -258,11 +257,11 @@ def format_link(link_html: str) -> Dict[str, str]:
     return {"href": href, "id": id, "text": document.text()}
 
 
-def strip_html(value: str, preserve_marks=False):
-    tags = []
+def strip_html(value: str, preserve_marks=False, allow_tags=None):
+    tags = allow_tags or []
     if preserve_marks:
         tags.append("mark")
-    return mark_safe(bleach.clean(value, tags=tags, strip=True))
+    return bleach.clean(value, tags=tags, strip=True)
 
 
 def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:

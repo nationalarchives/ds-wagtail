@@ -42,6 +42,7 @@ class DefaultReturnsRecordModelTests(SimpleTestCase):
 
 
 class CommunityRecordModelTests(SimpleTestCase):
+    maxDiff = None
     fixture_path = f"{settings.BASE_DIR}/etna/ciim/tests/fixtures/record_community.json"
 
     @classmethod
@@ -65,6 +66,20 @@ class CommunityRecordModelTests(SimpleTestCase):
 
     def test_uuid(self):
         self.assertEqual(self.record.uuid, "f4a6014d-cf22-3a88-ba1b-765622f25319")
+
+    def test_description(self):
+        self.assertEqual(self.record.description, "data for description")
+
+    def test_description_contains_html(self):
+        # patch raw data
+        value_contains_html = '<b> in bold </b> <p> in para </p><span>in span<a href="http://test.com">atag</a></span><custom>custom tag</custom>\nline2'
+        self.record._raw["@template"]["details"].update(
+            {"description": value_contains_html}
+        )
+        self.assertEqual(
+            self.record.description,
+            ' in bold  <p> in para </p>in span<a href="http://test.com">atag</a>custom tag<br>line2',
+        )
 
     def test_group(self):
         self.assertEqual(self.record.group, "community")
