@@ -23,26 +23,26 @@
 
                 <ol class="jumplinks__list">
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#h2.background" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="0" data-link="Description and record details">
+                        <a class="jumplink" href="#record-description" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="0" data-link="Description and record details">
                             Description and record details
                         </a>
                     </li>
                 
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#h2.votes-for-women" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
+                        <a class="jumplink" href="#record-viewer" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
                             Record viewer
                         </a>
                     </li>
                 
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#h2.the-representation-of-the-people-act" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="2" data-link="Series">
+                        <a class="jumplink" href="#related-records" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="2" data-link="Series">
                             Series
                         </a>
                     </li>
                 
                     <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#h2.read-more" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="3" data-link="Related records">
-                            Related records
+                        <a class="jumplink" href="#related-content" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="3" data-link="Related records">
+                            From the website
                         </a>
                     </li>
                 </ol>
@@ -50,7 +50,7 @@
         </div>
 
         <div class="record-details tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
-            <h2 id="record-details-heading" class="tna-heading-l">Description and record details</h2>
+            <h2 id="record-description" class="tna-heading-l">Description and record details</h2>
 
             <div class="record-details__content">
                 <table class="record-details__table">
@@ -61,7 +61,7 @@
             </div>
 
             {% if iiif_manifest_url %}
-                <h2 class="heading heading--two">
+                <h2 class="heading heading--two" id="record-viewer">
                     Record
                 </h2>
 
@@ -79,7 +79,7 @@
                 {% endif %} 
             {% endcomment %}
 
-            <h2 class="heading tna-heading-l">This record is in the series</h2>
+            <h2 class="heading tna-heading-l" id="record-series">This record is in the series</h2>
 
             <div class="series-panel">
                 {% include "includes/icon.html" with name="diagram-folder" classname="series-panel__icon" %}
@@ -102,7 +102,7 @@
     <div class="section tna-!--margin-top-l">
         <div class="tna-container record-links">
             <div class="tna-column">
-                <h2 class="heading tna-heading-l">Records from the same series</h2>
+                <h2 class="heading tna-heading-l" id="related-records">Records from the same series</h2>
             </div>
             <ul class="card-group--list-style-none">
                 <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
@@ -146,7 +146,7 @@
     <div class="section section--bg section--padding tna-!--margin-top-l">
         <div class="tna-container">
             <div class="tna-column">
-                <h2 class="heading tna-heading-l">Related website content</h2>
+                <h2 class="heading tna-heading-l" id="related-content">Related website content</h2>
             </div>
             <ul class="card-group--list-style-none">
                 <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
