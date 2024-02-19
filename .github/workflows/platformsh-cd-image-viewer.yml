@@ -46,7 +46,7 @@ jobs:
           cli-token: ${{ secrets.PLATFORM_CLI_TOKEN }}
           ssh-private-key: ${{ secrets.PLATFORM_SSH_KEY }}
           force-push: true
-          environment-name: exp/image-viewer
+          environment-name: expimage-viewer
 
   # notify-slack:
   #   runs-on: ubuntu-latest
@@ -56,4 +56,4 @@ jobs:
   #   - uses: rtCamp/action-slack-notify@v2
   #     env:
   #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-  #       SLACK_TITLE: "A deployment to exp/image-viewer is complete"
+  #       SLACK_TITLE: "A deployment to expimage-viewer is complete"
