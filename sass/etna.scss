@@ -432,7 +432,6 @@ Modified to match the existing site (for now)
 }
 
 // Event card overrides
-
 .tna-card {
     &__heading--has-highlight {
         max-width: calc(100% - 5.125rem);
@@ -527,7 +526,6 @@ Modified to match the existing site (for now)
 }
 
 // tna-scene-setter modifiers
-
 .tna-scene-setter {
     &--small {
         @include typography.relative-font-size(21);
