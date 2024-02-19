@@ -48,12 +48,12 @@ jobs:
           force-push: true
           environment-name: experiment/image-viewer
 
-  notify-slack:
-    runs-on: ubuntu-latest
-    needs: deploy
-    steps:
-    - uses: actions/checkout@v3
-    - uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_TITLE: "A deployment to experiment/image-viewer is complete"
+  # notify-slack:
+  #   runs-on: ubuntu-latest
+  #   needs: deploy
+  #   steps:
+  #   - uses: actions/checkout@v3
+  #   - uses: rtCamp/action-slack-notify@v2
+  #     env:
+  #       SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+  #       SLACK_TITLE: "A deployment to experiment/image-viewer is complete"
