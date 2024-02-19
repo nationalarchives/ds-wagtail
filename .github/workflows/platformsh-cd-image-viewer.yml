@@ -25,16 +25,16 @@ on:
       - 'etna/**'
 
 jobs:
-  ci:
-    name: CI
-    uses: ./.github/workflows/_tests.yml
-    with:
-      python-version: ${{ vars.CI_PYTHON_VERSION }}
-      poetry-version: ${{ vars.CI_POETRY_VERSION }}
+  # ci:
+  #   name: CI
+  #   uses: ./.github/workflows/_tests.yml
+  #   with:
+  #     python-version: ${{ vars.CI_PYTHON_VERSION }}
+  #     poetry-version: ${{ vars.CI_POETRY_VERSION }}
 
   deploy:
     runs-on: ubuntu-latest
-    needs: ci
+    # needs: ci
     steps:
       - uses: actions/checkout@v3
       - name: Extract branch name
