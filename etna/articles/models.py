@@ -180,7 +180,7 @@ class PageSerializer(serializers.ModelSerializer):
 class AuthorSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuthorTag
-        fields = ("author__author_pages",)
+        fields = ("author",)
 
 
 class BaseArticlePage(TopicalPageMixin, ArticleTagMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro):
