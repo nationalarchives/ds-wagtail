@@ -1,8 +1,4 @@
 .section {
-    &--bg {
-        @include colour.colour-background("accent-background-light");
-    }
-
     &--pink {
         background-color: $color__pink;
     }
