@@ -118,16 +118,11 @@ class ArticleTagMixin(models.Model):
 
 
 class TestSerializer(StreamFieldSerializer):
-    class Meta:
-        model = Page
-        fields = ("__all__")
-
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         
         for item in representation:
             items = item.get("value").get("items")
-            print(items)
             if items:
                 new_list = []
                 for page_id in items:
@@ -135,11 +130,6 @@ class TestSerializer(StreamFieldSerializer):
                     page_id = [page_id, page.title]
                     new_list.append(page_id)
             item["value"]["items"] = new_list
-
-        #     for page_id in item["value"]["items"]:
-        #         page = Page.objects.get(id=page_id)
-        #         page_id = [page_id, page.title]
-        #         print(page_id, page.title)
         
         return representation
 
