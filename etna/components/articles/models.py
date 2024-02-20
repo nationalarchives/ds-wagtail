@@ -35,7 +35,6 @@ class FeaturedArticle:
             on_delete=models.SET_NULL,
             related_name="+",
             verbose_name=verbose_name,
-            use_json_field=True,
         )
     
     api_fields = APIField("featured_article")
