@@ -24,6 +24,7 @@ from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
 from rest_framework import serializers
+from wagtail.api.v2.serializers import StreamField as StreamFieldSerializer
 from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin, AuthorTag
@@ -116,6 +117,33 @@ class ArticleTagMixin(models.Model):
     api_fields = [APIField("article_tag_names")]
 
 
+class TestSerializer(StreamFieldSerializer):
+    class Meta:
+        model = Page
+        fields = ("__all__")
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        
+        for item in representation:
+            items = item.get("value").get("items")
+            print(items)
+            if items:
+                new_list = []
+                for page_id in items:
+                    page = Page.objects.get(id=page_id)
+                    page_id = [page_id, page.title]
+                    new_list.append(page_id)
+            item["value"]["items"] = new_list
+
+        #     for page_id in item["value"]["items"]:
+        #         page = Page.objects.get(id=page_id)
+        #         page_id = [page_id, page.title]
+        #         print(page_id, page.title)
+        
+        return representation
+
+
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
 
@@ -132,7 +160,7 @@ class ArticleIndexPage(BasePageWithIntro):
 
     api_fields = BasePageWithIntro.api_fields + [
         APIField("featured_article"),
-        APIField("featured_pages"),
+        APIField("featured_pages", serializer=TestSerializer()),
     ]
 
     # DataLayerMixin overrides
@@ -165,6 +193,7 @@ class ArticleIndexPage(BasePageWithIntro):
     ]
 
 
+
 # TODO: Make better
 class PageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -178,9 +207,12 @@ class PageSerializer(serializers.ModelSerializer):
 
 # TODO: Make better
 class AuthorSerializer(serializers.ModelSerializer):
+    title = serializers.CharField(source="author.title")
+    role = serializers.CharField(source="author.role")
+
     class Meta:
         model = AuthorTag
-        fields = ("author",)
+        fields = ("author", "title", "role")
 
 
 class BaseArticlePage(TopicalPageMixin, ArticleTagMixin, ContentWarningMixin, NewLabelMixin, BasePageWithIntro):
