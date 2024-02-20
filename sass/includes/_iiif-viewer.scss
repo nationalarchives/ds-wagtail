@@ -1,9 +1,11 @@
 #uv {
     width: 100%;
-    height: 688px;
+    min-height: 688px;
     font-family: $font__open-sans;
     display: block;
-    margin-bottom: 100px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 3rem;
 
     > div {
         background-color: transparent;
@@ -86,8 +88,7 @@
 
     .headerPanel {
         background-color: transparent;
-        height: auto;
-        padding: 1rem 0;
+        height: 50px;
 
         .search {
             margin-top: 0;
@@ -291,7 +292,6 @@
     .mobileFooterPanel {
         background-color: transparent;
         height: auto;
-        margin-bottom: 1rem;
         position: relative;
 
         .options {
@@ -309,8 +309,8 @@
     }
 
     .footerPanel {
-        padding: 1rem 0;
-        margin: 0;
+        height: 55px;
+        margin: 0.5rem 0;
     }
 
     // Icons
@@ -389,6 +389,14 @@
 
     .uv-icon-fullscreen {
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='40' viewBox='0 -960 960 960' width='40'%3E%3Cpath d='M140.001-140.001v-185.077h50.255v134.822h134.822v50.255H140.001Zm495.306 0v-50.255h134.821v-134.822h50.255v185.077H635.307ZM140.001-634.922v-185.077h185.077v50.255H190.256v134.822h-50.255Zm630.127 0v-134.822H635.307v-50.255h185.076v185.077h-50.255Z'/%3E%3C/svg%3E");
+        background-position: center;
+        background-size: 25px 25px;
+        height: 30px;
+        width: 30px;
+    }
+
+    .uv-icon-exit-fullscreen {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='24' viewBox='0 -960 960 960' width='24'%3E%3Cpath d='M147.538-120 120-147.538 412.461-440H200v-40h280v280h-40v-212.461L147.538-120ZM480-480v-280h40v212.461L812.462-840 840-812.462 547.539-520H760v40H480Z'/%3E%3C/svg%3E");
         background-position: center;
         background-size: 25px 25px;
         height: 30px;
