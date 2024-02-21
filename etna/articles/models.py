@@ -127,7 +127,10 @@ class TestSerializer(StreamFieldSerializer):
                 new_list = []
                 for page_id in items:
                     page = Page.objects.get(id=page_id)
-                    page_id = [page_id, page.title]
+                    page_id = {
+                            "page_id": page_id,
+                            "title": page.title
+                            }
                     new_list.append(page_id)
             item["value"]["items"] = new_list
         
