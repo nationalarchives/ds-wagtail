@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% load alert_tags datalayer_tags search_tags humanize %}
 
+{% block html_class %}tna-template--light-theme tna-template--blue-accent{% endblock %}
+
 {% block extra_gtm_js %}
     {% render_gtm_datalayer view %}
 {% endblock extra_gtm_js %}
