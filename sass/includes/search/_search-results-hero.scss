@@ -1,4 +1,5 @@
 .search-results-hero {
+    background-color: $color__grey-200;
     padding: 2rem;
     padding-bottom: 0;
     width: 100%;
@@ -49,11 +50,15 @@
 
         &-list {
             padding-left: 0;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
             font-size: 1.2rem;
             margin-bottom: 0;
 
             &-item {
                 display: inline-block;
+                margin-right: 2rem;
                 font-family: $font__supria-sans;
 
                 @media only screen and (max-width: 38rem) {
@@ -87,6 +92,7 @@
                         margin-right: 0;
 
                         div {
+                            background-color: $color__white;
                             margin-right: -2rem;
                             margin-left: -2rem;
                             padding: 1rem 2rem 0 1rem;
@@ -116,8 +122,10 @@
             width: 100%;
             height: 100%;
             padding: 0.5rem;
-            margin-bottom: 0.1rem;
             text-decoration: none;
+            color: rgb(0 0 0 / 73%);
+            border-top: 0.3rem solid $color__grey-500;
+            background-color: #ffffff85;
 
             @media only screen and (max-width: 34rem) {
                 min-height: 70px;
@@ -129,15 +137,16 @@
                 padding-right: 0.5rem;
             }
 
-            // &:visited,
-            // &:hover {
-            //     color: $color__black;
-            // }
+            &:visited,
+            &:hover {
+                color: $color__black;
+            }
 
             &[aria-current="true"],
             &:hover,
             &:focus {
-                border-bottom: 0.3rem solid $color__white;
+                background-color: $color__white;
+                border-top: 0.3rem solid $color__yellow;
                 border-left: 0;
                 border-right: 0;
                 color: $color__black;
