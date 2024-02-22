@@ -160,14 +160,14 @@ class ArticleIndexPage(BasePageWithIntro):
                 Coalesce(
                     "recordarticlepage__newly_published_at",
                     "focusedarticlepage__newly_published_at",
-                    "articlepage__newly_published_at"
+                    "articlepage__newly_published_at",
                 )
             )
             .reverse()
             .specific()
         )
         return context
-    
+
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",

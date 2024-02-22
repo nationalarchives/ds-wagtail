@@ -2,6 +2,7 @@
 
 from django.db import migrations
 
+
 def set_newly_published_at(apps, schema_editor):
     models = ["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]
 
@@ -11,6 +12,7 @@ def set_newly_published_at(apps, schema_editor):
             if not page.newly_published_at:
                 page.newly_published_at = page.first_published_at
                 page.save()
+
 
 class Migration(migrations.Migration):
 
