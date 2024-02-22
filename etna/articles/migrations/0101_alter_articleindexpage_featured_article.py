@@ -3,15 +3,14 @@
 from django.db import migrations
 
 def set_newly_published_at(apps, schema_editor):
-    Page = apps.get_model("wagtailcore", "Page")
-    ArticlePage = apps.get_model("articles", "ArticlePage")
-    FocusedArticlePage = apps.get_model("articles", "FocusedArticlePage")
-    RecordArticlePage = apps.get_model("articles", "RecordArticlePage")
+    models = ["ArticlePage", "FocusedArticlePage", "RecordArticlePage"]
 
-    for page in Page.objects.exact_type(FocusedArticlePage, ArticlePage, RecordArticlePage):
-        if not page.newly_published_at:
-            page.newly_published_at = page.first_published_at
-            page.save()
+    for model_name in models:
+        Model = apps.get_model("articles", model_name)
+        for page in Model.objects.all():
+            if not page.newly_published_at:
+                page.newly_published_at = page.first_published_at
+                page.save()
 
 class Migration(migrations.Migration):
 
