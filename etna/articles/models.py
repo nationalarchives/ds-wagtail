@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
+from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
@@ -155,11 +156,18 @@ class ArticleIndexPage(BasePageWithIntro):
             self.get_children()
             .public()
             .live()
-            .order_by("-first_published_at")
+            .order_by(
+                Coalesce(
+                    "recordarticlepage__newly_published_at",
+                    "focusedarticlepage__newly_published_at",
+                    "articlepage__newly_published_at"
+                )
+            )
+            .reverse()
             .specific()
         )
         return context
-
+    
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",
