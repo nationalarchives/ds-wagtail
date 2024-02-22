@@ -39,7 +39,8 @@ from etna.core.models import (
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
-from etna.components.articles.models import FeaturedArticle, GenericMixin
+from etna.components.articles.models import GenericMixin
+from etna.components.core.models import FeaturedPage
 
 from .blocks import (
     ArticlePageStreamBlock,
@@ -143,7 +144,7 @@ class ArticleIndexPage(BasePageWithIntro):
     This page lists the ArticlePage objects that are children of this page.
     """
 
-    featured_article = FeaturedArticle.get_field(null=True, blank=True)
+    featured_article = FeaturedPage.get_field(null=True, blank=True, verbose_name="Featured article")
 
     featured_pages = StreamField(
         [("featuredpages", FeaturedCollectionBlock())],

@@ -8,6 +8,7 @@ from wagtail.admin.panels import (
 )
 from wagtail.api import APIField
 from wagtail.fields import StreamField
+from etna.components.core.models import FeaturedPage
 
 from .blocks import (
     ArticlePageStreamBlock,
@@ -23,30 +24,33 @@ from .blocks import (
 #     class Meta:
 #         abstract = True
 
-class FeaturedArticle:
-    def get_chooser(**kwargs) -> PageChooserPanel:
-        return PageChooserPanel(**kwargs)
+class ArticleBody():
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
-    def get_field(null=True, blank=True, verbose_name=_("featured article")) -> models.ForeignKey:
-        return models.ForeignKey(
-            "wagtailcore.Page",
-            null=null,
-            blank=blank,
-            on_delete=models.SET_NULL,
-            related_name="+",
-            verbose_name=verbose_name,
-        )
-    
-    api_fields = APIField("featured_article")
+    content_panels = FieldPanel("body")
+
+    api_fields = APIField("body")
+
+    class Meta:
+        abstract = True
 
 
+class ArticleBody:
+    def get_chooser(**kwargs) -> FieldPanel:
+        return FieldPanel(**kwargs)
+
+    def get_field(null: bool = True, blank: bool = True, verbose_name: str = "Body") -> StreamField:
+        return StreamField(ArticlePageStreamBlock, blank=blank, null=null, verbose_name=verbose_name)
+
+    def get_api_field(name: str = "featured_page", serializer = None) -> APIField:
+        return APIField(name=name, serializer=serializer)
 
 class GenericMixin(models.Model):
     body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
-    super_page = FeaturedArticle.get_field(null=True, blank=True)
+    super_page = FeaturedPage.get_field(null=True, blank=True)
 
-    content_panels = [MultiFieldPanel([FeaturedArticle.get_chooser(field_name="super_page",page_type=["articles.ArticlePage"]), FieldPanel("body")], heading="Title and page content",
+    content_panels = [MultiFieldPanel([FeaturedPage.get_chooser(field_name="super_page",page_type=["articles.ArticlePage"]), FieldPanel("body")], heading="Title and page content",
                 classname="collapsible",), ]
 
     class Meta:
