@@ -24,7 +24,7 @@ services:
       - ./pyproject.toml:/app/pyproject.toml
       - ./package.json:/app/package.json
       - ./package-lock.json:/app/package-lock.json
-      - media:/media
+      - ./media:/media
     depends_on:
       - db
     ports:
@@ -54,7 +54,7 @@ services:
     platform: linux/amd64
     build: platformsh-cli
     volumes:
-      - media:/app/media
+      - ./media:/media
       - ./database_dumps:/app/database_dumps
     env_file:
       - .env
@@ -86,6 +86,3 @@ services:
       - DATABASE_HOST=db
       - DATABASE_NAME=postgres
       - DATABASE_USER=postgres
-
-volumes:
-  media:
