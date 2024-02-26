@@ -30,10 +30,11 @@ def check_migration_file(file):
     with open(file) as f:
         contents = f.read()
 
-    keywords = ["DeleteModel", "AlterField"]
-    if any(keyword in contents for keyword in keywords):
-        print(f"Warning: {file} contains a migration that may cause data loss.")
-        return True
+    keywords = ["DeleteModel", "RenameModel", "RemoveField", "RenameField"]
+    for keyword in keywords:
+        if keyword in contents and f"etna:allow{keyword}" not in contents:
+            print(f"Warning: {file} contains a migration that may cause data loss.")
+            return True
 
 
 def main():
@@ -42,7 +43,8 @@ def main():
     migration_alert = False
     for file in file_diff:
         if "/migrations/" in file and file.endswith(".py"):
-            migration_alert = check_migration_file(file)
+            if check_migration_file(file):
+                migration_alert = True
     if migration_alert:
         print("Please review the migrations before pushing, to ensure no loss of data.")
         sys.exit(1)
