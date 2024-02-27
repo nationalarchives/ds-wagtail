@@ -631,28 +631,18 @@ class PageTimePeriod(Orderable):
     )
 
 
-class TopicSerializer(serializers.ModelSerializer):
+class BaseModelSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
-    teaser_image = serializers.SerializerMethodField()
-    
+    teaser_image = ImageRenditionField("fill-200x200") # TODO: Needs a proper rendition size
+
+class TopicSerializer(BaseModelSerializer):
     class Meta:
         model = PageTopic
         fields = ("id", "title", "teaser_image",)
 
-    def get_teaser_image(self, obj):
-        if obj.teaser_image:
-            return {
-                "id": obj.teaser_image.id,
-                "url": obj.teaser_image.get_rendition("fill-200x200").url,
-            }
-        return None
-
-
-class TimePeriodSerializer(serializers.ModelSerializer):
-    title = serializers.CharField()
+class TimePeriodSerializer(BaseModelSerializer):
     start_year = serializers.IntegerField()
     end_year = serializers.IntegerField()
-    teaser_image = ImageRenditionField("fill-200x200") # TODO: Needs a proper rendition size
 
     class Meta:
         model = PageTimePeriod
