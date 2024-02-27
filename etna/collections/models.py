@@ -652,7 +652,7 @@ class TimePeriodSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
     start_year = serializers.IntegerField()
     end_year = serializers.IntegerField()
-    teaser_image = ImageRenditionField("fill-200x200")
+    teaser_image = ImageRenditionField("fill-200x200") # TODO: Needs a proper rendition size
 
     class Meta:
         model = PageTimePeriod
