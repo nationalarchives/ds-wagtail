@@ -635,10 +635,12 @@ class BaseModelSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
     teaser_image = ImageRenditionField("fill-200x200") # TODO: Needs a proper rendition size
 
+
 class TopicSerializer(BaseModelSerializer):
     class Meta:
         model = PageTopic
         fields = ("id", "title", "teaser_image",)
+
 
 class TimePeriodSerializer(BaseModelSerializer):
     start_year = serializers.IntegerField()
@@ -646,7 +648,7 @@ class TimePeriodSerializer(BaseModelSerializer):
 
     class Meta:
         model = PageTimePeriod
-        fields = ("id", "title", "start_year", "end_year", "teaser_image",)
+        fields = ("id", "title", "teaser_image", "start_year", "end_year",)
 
 
 class TopicalPageMixin:
