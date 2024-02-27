@@ -630,6 +630,42 @@ class PageTimePeriod(Orderable):
     )
 
 
+class TopicSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    teaser_image = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PageTopic
+        fields = ("id", "title", "teaser_image",)
+
+    def get_teaser_image(self, obj):
+        if obj.teaser_image:
+            return {
+                "id": obj.teaser_image.id,
+                "url": obj.teaser_image.get_rendition("fill-200x200").url,
+            }
+        return None
+
+
+class TimePeriodSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    start_year = serializers.IntegerField()
+    end_year = serializers.IntegerField()
+    teaser_image = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PageTimePeriod
+        fields = ("id", "title", "start_year", "end_year", "teaser_image",)
+
+    def get_teaser_image(self, obj):
+        if obj.teaser_image:
+            return {
+                "id": obj.teaser_image.id,
+                "url": obj.teaser_image.get_rendition("fill-200x200").url,
+            }
+        return None
+
+
 class TopicalPageMixin:
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
@@ -637,6 +673,11 @@ class TopicalPageMixin:
     adds a few properies to support robust, efficient access the related topic
     and time period pages.
     """
+
+    api_fields = [
+        APIField("topics", serializer=TopicSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+    ]
 
     @classmethod
     def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
@@ -764,6 +805,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     class Meta:

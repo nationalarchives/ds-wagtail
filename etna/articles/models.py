@@ -280,10 +280,8 @@ class ArticlePage(
             APIField("similar_items", serializer=PageSerializer(many=True)),
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
-            # TODO
-            # APIField("topics"),
-            # APIField("time_periods"),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -439,6 +437,7 @@ class FocusedArticlePage(
             APIField("body"),
             APIField("authors", serializer=AuthorSerializer(many=True)),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     def save(self, *args, **kwargs):
@@ -699,6 +698,7 @@ class RecordArticlePage(
             # APIField("gallery_items"),
             # APIField("gallery_text"),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     @cached_property
