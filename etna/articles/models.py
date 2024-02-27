@@ -199,13 +199,6 @@ class PageSerializer(serializers.ModelSerializer):
         )
 
 
-# TODO: Make better
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AuthorTag
-        fields = ("author",)
-
-
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
@@ -435,9 +428,9 @@ class FocusedArticlePage(
         + [
             APIField("type_label"),
             APIField("body"),
-            APIField("authors", serializer=AuthorSerializer(many=True)),
         ]
         + TopicalPageMixin.api_fields
+        + AuthorPageMixin.api_fields
     )
 
     def save(self, *args, **kwargs):

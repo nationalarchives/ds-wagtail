@@ -152,6 +152,17 @@ class AuthorTag(models.Model):
     )
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    image = ImageRenditionField("fill-512x512|format-jpeg|jpegquality-60")
+    url_path = serializers.CharField()
+    role = serializers.CharField()
+
+    class Meta:
+        model = AuthorTag
+        fields = ("id", "title", "image", "url_path", "role",)
+
+
 class AuthorPageMixin:
     """
     A mixin for pages that uses the ``AuthorTag`` model
@@ -169,10 +180,12 @@ class AuthorPageMixin:
 
     @cached_property
     def authors(self):
-        if author_item := self.author_tags.select_related("author").filter(
-            author__live=True
-        ):
-            return author_item
+        return tuple(
+            item.author
+            for item in self.author_tags.select_related("author").filter(
+                author__live=True
+            )
+        )
 
     @property
     def author_names(self):
@@ -180,4 +193,6 @@ class AuthorPageMixin:
         Returns the title of the authors to be used for indexing
         """
         if self.authors:
-            return ", ".join([author.author.title for author in self.authors])
+            return ", ".join([author.title for author in self.authors])
+        
+    api_fields = [APIField("authors", serializer=AuthorSerializer(many=True))]
