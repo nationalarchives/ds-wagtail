@@ -161,6 +161,7 @@ class AuthorSerializer(serializers.ModelSerializer):
         "fill-400x400|format-webp|webpquality-80", source="image"
     )
     url_path = serializers.SerializerMethodField()
+    full_url = serializers.URLField()
     role = serializers.CharField()
 
     def get_url_path(self, obj):
@@ -174,6 +175,7 @@ class AuthorSerializer(serializers.ModelSerializer):
             "teaser_image_jpeg",
             "teaser_image_webp",
             "url_path",
+            "full_url",
             "role",
         )
 

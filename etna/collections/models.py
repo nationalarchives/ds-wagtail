@@ -640,6 +640,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
         "fill-600x400|format-webp|webpquality-80", source="teaser_image"
     )
     url_path = serializers.SerializerMethodField()
+    full_url = serializers.URLField()
 
     def get_url_path(self, obj):
         return obj.get_url()
@@ -648,7 +649,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
 class TopicSerializer(BaseModelSerializer):
     class Meta:
         model = PageTopic
-        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url_path")
+        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url_path", "full_url")
 
 
 class TimePeriodSerializer(BaseModelSerializer):
@@ -663,6 +664,7 @@ class TimePeriodSerializer(BaseModelSerializer):
             "teaser_image_jpeg",
             "teaser_image_webp",
             "url_path",
+            "full_url",
             "start_year",
             "end_year",
         )
