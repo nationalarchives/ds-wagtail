@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from etna.core.blocks.paragraph import APIRichTextField
 
 from wagtailmedia.models import AbstractMedia
 
@@ -15,10 +15,10 @@ class EtnaMedia(AbstractMedia):
     """
 
     date = models.DateField(blank=True, null=True)
-    description = RichTextField(
+    description = APIRichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
-    transcript = RichTextField(
+    transcript = APIRichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
 

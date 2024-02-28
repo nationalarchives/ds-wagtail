@@ -3,7 +3,7 @@ from django.db import models
 
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.snippets.models import register_snippet
 
 
@@ -37,7 +37,7 @@ class Alert(models.Model):
     ]
 
     title = models.CharField(max_length=100)
-    message = RichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
+    message = APIRichTextField(features=settings.INLINE_RICH_TEXT_FEATURES)
     active = models.BooleanField(default=False)
     cascade = models.BooleanField(
         default=False, verbose_name="Show on current and all child pages"

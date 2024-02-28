@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
@@ -67,7 +67,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         default=TranscriptionHeadingChoices.TRANSCRIPT,
     )
 
-    transcription = RichTextField(
+    transcription = APIRichTextField(
         verbose_name=_("transcript"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
@@ -85,7 +85,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    translation = RichTextField(
+    translation = APIRichTextField(
         verbose_name=_("translation"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
@@ -114,7 +114,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         help_text=_("Date(s) related to the selected record (max length: 100 chars)."),
     )
 
-    description = RichTextField(
+    description = APIRichTextField(
         verbose_name=_("description"),
         help_text=(
             "This text will appear in highlights galleries. A 100-300 word "

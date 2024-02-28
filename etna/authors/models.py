@@ -8,7 +8,7 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
@@ -56,7 +56,7 @@ class AuthorPage(BasePage):
     """
 
     role = models.CharField(blank=True, null=True, max_length=100)
-    summary = RichTextField(
+    summary = APIRichTextField(
         blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
     image = models.ForeignKey(

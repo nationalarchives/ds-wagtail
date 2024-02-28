@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -487,13 +488,13 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         editable=False,
     )
 
-    description = RichTextField(
+    description = APIRichTextField(
         verbose_name=_("description"),
         blank=True,
         help_text=_("A description of the event."),
     )
 
-    useful_info = RichTextField(
+    useful_info = APIRichTextField(
         verbose_name=_("need to know"),
         blank=True,
         help_text=_("Useful information about the event."),
@@ -514,7 +515,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("The website for need to know info."),
     )
 
-    target_audience = RichTextField(
+    target_audience = APIRichTextField(
         verbose_name=_("who it's for"),
         blank=True,
         help_text=_("Info about the target audience for the event."),
@@ -536,7 +537,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("The website for the venue."),
     )
 
-    venue_address = RichTextField(
+    venue_address = APIRichTextField(
         verbose_name=_("venue address"),
         blank=True,
         help_text=_("The address of the venue."),
@@ -557,7 +558,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         help_text=_("A link to the venue's 'How to find us' page."),
     )
 
-    video_conference_info = RichTextField(
+    video_conference_info = APIRichTextField(
         verbose_name=_("video conference info"),
         blank=True,
         help_text=_("Useful information about the video conference."),
@@ -596,14 +597,14 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     )
     # The booking info fields above will be brought in from the API when we have it.
 
-    registration_info = RichTextField(
+    registration_info = APIRichTextField(
         verbose_name=_("registration info"),
         blank=True,
         help_text=_("Additional information about how to register for the event."),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
-    contact_info = RichTextField(
+    contact_info = APIRichTextField(
         verbose_name=_("contact info"),
         blank=True,
         help_text=_("Information about who to contact regarding the event."),
@@ -1024,14 +1025,14 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     # Content
     # TODO: video = . . .
 
-    description = RichTextField(
+    description = APIRichTextField(
         verbose_name=_("description"),
         help_text=_("A description of the exhibition."),
         features=settings.EXPANDED_RICH_TEXT_FEATURES,
     )
 
     # Need to know
-    need_to_know = RichTextField(
+    need_to_know = APIRichTextField(
         verbose_name=_("need to know"),
         blank=True,
         help_text=_("Useful information about the exhibition."),

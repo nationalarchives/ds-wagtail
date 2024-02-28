@@ -12,7 +12,6 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
-from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
@@ -22,6 +21,7 @@ from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.analytics.mixins import DataLayerMixin
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
@@ -194,7 +194,7 @@ class BasePageWithIntro(BasePage):
     start with a required 'intro'.
     """
 
-    intro = RichTextField(
+    intro = APIRichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
             "1-2 sentences introducing the subject of the page, and explaining why a user should read on."

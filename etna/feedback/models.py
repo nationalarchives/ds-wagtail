@@ -15,7 +15,8 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
-from wagtail.fields import RichTextField, StreamField
+from wagtail.fields import StreamField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
@@ -121,7 +122,7 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
         default=_("Thank you for your valuable feedback"),
         help_text=_("Displayed to users after succesfully submitting feedback."),
     )
-    thank_you_message = RichTextField(
+    thank_you_message = APIRichTextField(
         max_length=200,
         verbose_name=_("thank you message"),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,

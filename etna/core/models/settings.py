@@ -3,7 +3,8 @@ from django.db import models
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
-from wagtail.fields import RichTextField
+from wagtail.fields import 
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.models import Page
 
 from etna.navigation.models import AbstractMenuItem
@@ -26,7 +27,7 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
         default="Find out more",
         verbose_name="link text",
     )
-    beta_banner_text = RichTextField(
+    beta_banner_text = APIRichTextField(
         verbose_name="text",
         default=(
             "<p>This beta site contains new services and features currently in development. Many of these features are "

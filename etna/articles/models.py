@@ -17,7 +17,8 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import RichTextField, StreamField
+from etna.core.blocks.paragraph import APIRichTextField
+from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
@@ -548,7 +549,7 @@ class RecordArticlePage(
         help_text=_("Date(s) related to the record (max. character length: 100)"),
     )
 
-    about = RichTextField(
+    about = APIRichTextField(
         verbose_name=_("why this record matters"),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
@@ -772,7 +773,7 @@ class PageGalleryImage(Orderable):
             'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
         ),
     )
-    caption = RichTextField(
+    caption = APIRichTextField(
         features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,

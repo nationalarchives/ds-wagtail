@@ -10,6 +10,12 @@ class APIRichTextBlock(blocks.RichTextBlock):
         return expand_db_html(representation)
 
 
+class APIRichTextField(blocks.RichTextField):
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        return expand_db_html(representation)
+
+
 class ParagraphBlock(blocks.StructBlock):
     text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
