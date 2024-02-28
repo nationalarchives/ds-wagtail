@@ -49,11 +49,11 @@ A service with the Platform.sh CLI, PHP and few other packages to help with copy
 
 The Etna project uses a few tools to improve the consistency and quality of Python code:
 
-- [``Black``](https://black.readthedocs.io/en/stable/): An opinionated Python formatter that takes care of code formatting (so we don't have to think about it).
-- [``isort``](https://pycqa.github.io/isort/): Ensures that import statements are ordered in a consistant way accross the project.
-- [``flake8``](https://flake8.pycqa.org/en/stable/): Catches things like unused parameters, unused imports and other non-formatting related things.
+- [`Black`](https://black.readthedocs.io/en/stable/): An opinionated Python formatter that takes care of code formatting (so we don't have to think about it).
+- [`isort`](https://pycqa.github.io/isort/): Ensures that import statements are ordered in a consistant way accross the project.
+- [`flake8`](https://flake8.pycqa.org/en/stable/): Catches things like unused parameters, unused imports and other non-formatting related things.
 
-The easiest way to ensure the code you're contributing adheres to these standards is to find and install plugins for your code editor of choice, that will check and transparently reformat your code whenever you save changes. Standard configuration files are included in the root of the repository, which *should* be picked up and respected by such plugins.
+The easiest way to ensure the code you're contributing adheres to these standards is to find and install plugins for your code editor of choice, that will check and transparently reformat your code whenever you save changes. Standard configuration files are included in the root of the repository, which _should_ be picked up and respected by such plugins.
 
 Another option is to run the `format` Fabric command from your console to apply `isort` and `Black` formatting to Python code:
 
@@ -63,7 +63,7 @@ $ fab format
 
 `flake8` will just flag things in the terminal, it will not update any code for you like `isort` or `Black`.
 
-Compliance checks are also built in to the `test` Fabric command - you just need to use the ``--lint`` option to activate them. For example:
+Compliance checks are also built in to the `test` Fabric command - you just need to use the `--lint` option to activate them. For example:
 
 ```console
 $ fab test --lint
@@ -75,7 +75,7 @@ This will be checked by CI on every commit, so it's a good idea to run this loca
 
 The Etna project uses a few tools to improve the consistency and quality of SASS/CSS and JavaScript code:
 
-- [``Prettier``](https://prettier.io/): An opinionated front-end code formatter that takes care of code formatting (so we don't have to think about it).
+- [`Prettier`](https://prettier.io/): An opinionated front-end code formatter that takes care of code formatting (so we don't have to think about it).
 
 To run `Prettier` against your code, simply run the `format` Fabric command from your console:
 
@@ -106,10 +106,10 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Branch names for releases should follow: `release/major.minor.patch`
 - Branch names for housekeeping tasks or other unticketed work should follow: `chore/short-description`
 - For example:
-    - `feature/UN-123-extra-squiggles`
-    - `fix/DF-999-image-view-error`
-    - `release/1.0.0`
-    - `chore/update-documentation`
+  - `feature/UN-123-extra-squiggles`
+  - `fix/DF-999-image-view-error`
+  - `release/1.0.0`
+  - `chore/update-documentation`
 
 ### Naming pull requests
 
@@ -117,10 +117,10 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Pull requests for release branches should be titled: `Release X.X.X into main`
 - Pull requests for housekeeping tasks or other unticketed work should be titled: `CHORE: short-description`
 - For example:
-    - `UN-123: Add extra squiggles`
-    - `DF-999: Fix image view error`
-    - `Release 1.0.0 into main`
-    - `CHORE: Update documentation`
+  - `UN-123: Add extra squiggles`
+  - `DF-999: Fix image view error`
+  - `Release 1.0.0 into main`
+  - `CHORE: Update documentation`
 
 ### Merging branches
 
@@ -129,4 +129,4 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - When merging a feature branch into `develop`, use the `Squash and merge` option to keep the commit history clean
 - When merging a release branch into `main`, use the `Merge commit` option to keep the commit history continuous from `develop`
 - When merging `main` back into `develop` (after merging a release branch into `main`), use the `Merge commit` option to prevent any conflicts when merging future releases into `main` to keep the history in sync
-    - This should be named `Release X.X.X main into develop` to make it clear what the merge is for
+  - This should be named `Release X.X.X main into develop` to make it clear what the merge is for

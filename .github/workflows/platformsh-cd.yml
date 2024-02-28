@@ -30,8 +30,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-    - uses: actions/checkout@v3
-    - uses: rtCamp/action-slack-notify@v2
-      env:
-        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
-        SLACK_TITLE: "A deployment to main is complete"
+      - uses: actions/checkout@v3
+      - uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_TITLE: "A deployment to main is complete"

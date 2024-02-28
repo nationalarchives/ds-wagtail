@@ -1,15 +1,12 @@
 import logging
 
+import django_filters
 from django.utils.translation import gettext_lazy as _
-
+from etna.feedback.constants import SentimentChoices
+from etna.feedback.models import FeedbackSubmission
 from wagtail.admin.filters import WagtailFilterSet
 from wagtail.admin.widgets import AdminDateInput
 from wagtail.snippets.views.snippets import SnippetViewSet, TitleColumn
-
-import django_filters
-
-from etna.feedback.constants import SentimentChoices
-from etna.feedback.models import FeedbackSubmission
 
 logger = logging.getLogger(__name__)
 

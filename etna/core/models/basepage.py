@@ -8,7 +8,12 @@ from django.http import HttpRequest
 from django.utils.decorators import method_decorator
 from django.utils.text import capfirst
 from django.utils.translation import gettext_lazy as _
-
+from etna.analytics.mixins import DataLayerMixin
+from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.cache_control import (
+    apply_default_cache_control,
+    apply_default_vary_headers,
+)
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
@@ -16,16 +21,8 @@ from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 from wagtail.search import index
-
 from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
-
-from etna.analytics.mixins import DataLayerMixin
-from etna.core.blocks.paragraph import APIRichTextField
-from etna.core.cache_control import (
-    apply_default_cache_control,
-    apply_default_vary_headers,
-)
 
 __all__ = [
     "BasePage",

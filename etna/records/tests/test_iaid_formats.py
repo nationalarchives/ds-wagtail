@@ -1,7 +1,6 @@
 import re
 
 from django.test import SimpleTestCase
-
 from etna.records.converters import IAIDConverter
 
 

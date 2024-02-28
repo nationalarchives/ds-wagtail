@@ -1,63 +1,55 @@
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "fab start",
-            "type": "shell",
-            "command": "fab start",
-            "presentation": {
-                "close": true
-            },
-        },
-        {
-            "label": "fab build",
-            "type": "shell",
-            "command": "fab build",
-            "presentation": {
-                "close": true
-            },
-        },
-        {
-            "label": "Pull staging",
-            "type": "shell",
-            "command": "fab pull-staging-data && fab pull-staging-media",
-            "presentation": {
-                "close": true
-            },
-        },
-        {
-            "label": "Pull production",
-            "type": "shell",
-            "command": "fab pull-production-data && fab pull-production-media",
-            "presentation": {
-                "close": true
-            }
-        },
-        {
-            "label": "Full build (staging)",
-            "type": "shell",
-            "presentation": {
-                "close": true
-            },
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "fab build",
-                "fab start",
-                "Pull staging"
-            ]
-        },
-        {
-            "label": "Full build (production)",
-            "type": "shell",
-            "presentation": {
-                "close": true
-            },
-            "dependsOrder": "sequence",
-            "dependsOn": [
-                "fab build",
-                "fab start",
-                "Pull production"
-            ]
-        },
-    ],
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "fab start",
+      "type": "shell",
+      "command": "fab start",
+      "presentation": {
+        "close": true
+      }
+    },
+    {
+      "label": "fab build",
+      "type": "shell",
+      "command": "fab build",
+      "presentation": {
+        "close": true
+      }
+    },
+    {
+      "label": "Pull staging",
+      "type": "shell",
+      "command": "fab pull-staging-data && fab pull-staging-media",
+      "presentation": {
+        "close": true
+      }
+    },
+    {
+      "label": "Pull production",
+      "type": "shell",
+      "command": "fab pull-production-data && fab pull-production-media",
+      "presentation": {
+        "close": true
+      }
+    },
+    {
+      "label": "Full build (staging)",
+      "type": "shell",
+      "presentation": {
+        "close": true
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": ["fab build", "fab start", "Pull staging"]
+    },
+    {
+      "label": "Full build (production)",
+      "type": "shell",
+      "presentation": {
+        "close": true
+      },
+      "dependsOrder": "sequence",
+      "dependsOn": ["fab build", "fab start", "Pull production"]
+    }
+  ]
 }

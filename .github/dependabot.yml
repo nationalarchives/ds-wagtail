@@ -14,7 +14,7 @@ updates:
     versioning-strategy: "increase-if-necessary"
     directory: "/"
     schedule:
-        interval: "weekly"
+      interval: "weekly"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]
@@ -22,7 +22,7 @@ updates:
     versioning-strategy: "widen"
     directory: "/"
     schedule:
-        interval: "weekly"
+      interval: "weekly"
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-patch"]

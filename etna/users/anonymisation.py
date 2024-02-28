@@ -1,8 +1,7 @@
 import uuid
 
-from django.contrib.auth.models import User
-
 from birdbath.processors import BaseModelAnonymiser
+from django.contrib.auth.models import User
 
 
 class UserAnonymiser(BaseModelAnonymiser):

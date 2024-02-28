@@ -2,12 +2,9 @@ import mimetypes
 
 from django.conf import settings
 from django.db import models
-
-from wagtail.api import APIField
-
-from wagtailmedia.models import AbstractMedia
-
 from etna.core.blocks.paragraph import APIRichTextField
+from wagtail.api import APIField
+from wagtailmedia.models import AbstractMedia
 
 
 class EtnaMedia(AbstractMedia):

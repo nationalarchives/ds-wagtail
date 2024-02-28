@@ -1,13 +1,11 @@
 import datetime
 import logging
-
 from typing import Union
 
 from django import template
 from django.forms import Form
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
-
 from etna.ciim.constants import SearchTabs
 
 register = template.Library()

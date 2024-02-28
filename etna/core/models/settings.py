@@ -1,12 +1,10 @@
 from django.db import models
-
+from etna.core.blocks.paragraph import APIRichTextField
+from etna.navigation.models import AbstractMenuItem
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.models import Page
-
-from etna.core.blocks.paragraph import APIRichTextField
-from etna.navigation.models import AbstractMenuItem
 
 __all__ = ["SiteSettings", "MainMenuItem"]
 

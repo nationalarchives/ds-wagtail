@@ -3,7 +3,6 @@
 from django.db import migrations
 from django.db.models import F
 
-
 PAGE_MODEL_NAMES = (
     "articles.ArticleIndexPage",
     "articles.ArticlePage",

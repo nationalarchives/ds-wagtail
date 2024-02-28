@@ -1,8 +1,9 @@
 import json
 
+import responses
 from django.conf import settings
 from django.urls import reverse
-
+from etna.images.models import CustomImage
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 from wagtail.test.utils.form_data import (
@@ -10,10 +11,6 @@ from wagtail.test.utils.form_data import (
     rich_text,
     streamfield,
 )
-
-import responses
-
-from etna.images.models import CustomImage
 
 from ...articles.models import ArticleIndexPage, ArticlePage
 from ...ciim.tests.factories import create_record, create_response

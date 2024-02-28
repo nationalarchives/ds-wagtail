@@ -4,7 +4,6 @@ from django.core.exceptions import ValidationError
 from django.db.models.fields import Field
 from django.forms import CharField
 from django.utils.functional import SimpleLazyObject
-
 from requests import HTTPError
 
 from .api import records_client

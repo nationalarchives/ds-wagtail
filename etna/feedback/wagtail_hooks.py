@@ -1,8 +1,7 @@
-from wagtail import hooks
-from wagtail.snippets.models import register_snippet
-
 from etna.feedback.models import FeedbackSubmission
 from etna.feedback.views import FeedbackSubmissionViewSet
+from wagtail import hooks
+from wagtail.snippets.models import register_snippet
 
 
 @hooks.register("construct_snippet_listing_buttons")

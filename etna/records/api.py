@@ -1,5 +1,4 @@
 from django.conf import settings
-
 from etna.ciim.client import ClientAPI
 
 

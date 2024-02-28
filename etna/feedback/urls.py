@@ -1,5 +1,4 @@
 from django.urls import path
-
 from etna.feedback import views
 
 app_name = "feedback"

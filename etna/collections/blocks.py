@@ -1,10 +1,9 @@
-from wagtail import blocks
-
 from etna.core.blocks import (
     LargeCardLinksBlock,
     PageListBlock,
     PromotedLinkBlock,
 )
+from wagtail import blocks
 
 
 class PromotedPagesBlock(blocks.StructBlock):

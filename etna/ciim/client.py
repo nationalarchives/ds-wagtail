@@ -1,7 +1,6 @@
 import json
 import logging
 import re
-
 from datetime import date, datetime, time
 from enum import StrEnum
 from typing import (
@@ -17,11 +16,9 @@ from typing import (
     Union,
 )
 
+import requests
 from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
-
-import requests
-
 from etna.ciim.constants import Aggregation
 from etna.records.models import Record
 

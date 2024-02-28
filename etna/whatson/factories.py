@@ -1,9 +1,7 @@
 import factory
-
-from wagtail_factories import ImageFactory
-
 from etna.core.factories import BasePageFactory
 from etna.whatson import models as app_models
+from wagtail_factories import ImageFactory
 
 
 class WhatsOnPageFactory(BasePageFactory):

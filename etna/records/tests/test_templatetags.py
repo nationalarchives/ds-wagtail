@@ -1,5 +1,4 @@
 from django.test import SimpleTestCase, override_settings
-
 from etna.records.models import Record
 from etna.records.templatetags.records_tags import (
     breadcrumb_items,

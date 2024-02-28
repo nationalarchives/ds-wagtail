@@ -1,12 +1,10 @@
 from django.forms.utils import ErrorList
 from django.utils.safestring import mark_safe
-
+from etna.core.blocks.paragraph import APIRichTextBlock
 from wagtail import blocks
 from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
-
-from etna.core.blocks.paragraph import APIRichTextBlock
 
 
 class ImageBlock(blocks.StructBlock):

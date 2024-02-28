@@ -35,7 +35,7 @@ jobs:
       - name: Create pull request
         run: gh pr create -B ${{ steps.extract_branch.outputs.BRANCH }} -H "release/v${{ steps.version-tag.outputs.CALVER }}" --title "Version ${{ steps.version-tag.outputs.CALVER }}" --body "Created by Github action https://github.com/nationalarchives/ds-wagtail/actions/runs/${{ github.run_id }}" --no-maintainer-edit
         env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # - name: Merge the pull request
       #   run: gh pr merge "release/v${{ steps.version-tag.outputs.CALVER }}" --admin --merge
       #   env:

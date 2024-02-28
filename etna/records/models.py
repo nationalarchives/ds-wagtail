@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import logging
 import re
-
 from dataclasses import dataclass
 from typing import Any, Dict, Optional, Tuple, Union
 
@@ -11,7 +10,6 @@ from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
-
 from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin

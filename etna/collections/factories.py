@@ -1,9 +1,7 @@
 import factory
-
-from wagtail_factories import ImageFactory
-
 from etna.collections import models as app_models
 from etna.core.factories import BasePageFactory
+from wagtail_factories import ImageFactory
 
 
 class ExplorerIndexPageFactory(BasePageFactory):

@@ -1,7 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse_lazy
 from django.utils.datastructures import MultiValueDict
-
 from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,

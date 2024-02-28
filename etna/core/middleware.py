@@ -1,13 +1,11 @@
 import json
 import logging
-
 from datetime import datetime
 from urllib.parse import unquote
 
 from django.conf import settings
 from django.http import HttpRequest
 from django.template.response import SimpleTemplateResponse, TemplateResponse
-
 from pytz import timezone
 
 logger = logging.getLogger(__name__)

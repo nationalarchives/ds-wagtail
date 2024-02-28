@@ -4,15 +4,13 @@ from django.contrib.auth.models import Permission
 from django.test import TestCase, override_settings
 from django.urls import reverse
 from django.utils.http import urlencode
-
-from wagtail.models import Page, Site
-from wagtail.test.utils import WagtailTestUtils
-
 from etna.core.test_utils import prevent_request_warnings
 from etna.feedback.constants import SentimentChoices
 from etna.feedback.forms import FeedbackCommentForm
 from etna.feedback.models import FeedbackPrompt, FeedbackSubmission
 from etna.feedback.utils import sign_submission_id
+from wagtail.models import Page, Site
+from wagtail.test.utils import WagtailTestUtils
 
 from .constants import VALID_URL
 

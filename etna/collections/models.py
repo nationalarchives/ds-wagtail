@@ -6,8 +6,8 @@ from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-
 from modelcluster.fields import ParentalKey
+from rest_framework import serializers
 from wagtail.admin.panels import (
     FieldPanel,
     InlinePanel,
@@ -19,8 +19,6 @@ from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable, Page
 from wagtail.search import index
-
-from rest_framework import serializers
 
 from ..alerts.models import AlertMixin
 from ..core.models import (

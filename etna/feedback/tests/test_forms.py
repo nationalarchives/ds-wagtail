@@ -1,13 +1,11 @@
 from typing import Dict, List
 
 from django.test import TestCase, override_settings
-
-from wagtail.models import Page, Site
-
 from etna.feedback.forms import FeedbackForm
 from etna.feedback.models import FeedbackPrompt
 from etna.feedback.tests import constants
 from etna.feedback.widgets import ResponseSubmitButtonList
+from wagtail.models import Page, Site
 
 
 @override_settings(ALLOWED_HOSTS=[constants.VALID_DOMAIN])

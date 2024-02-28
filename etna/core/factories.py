@@ -1,10 +1,7 @@
-from django.utils import timezone
-
 import factory
-
-from wagtail_factories import ImageFactory, PageFactory
-
+from django.utils import timezone
 from etna.core.models import BasePage
+from wagtail_factories import ImageFactory, PageFactory
 
 
 class BasePageFactory(PageFactory):

@@ -7,7 +7,6 @@
 This project contains technical documentation written in Markdown in the /docs folder. The latest build (from the `develop` branch) can be viewed online at:
 https://nationalarchives.github.io/ds-wagtail/
 
-
 You can also view it locally on http://localhost:8001/ which is booted as the `docs` container.
 
 ## Setting up a local build
@@ -71,14 +70,16 @@ Navigate to the admin URL in your browser, and sign in using the username/passwo
 <http://127.0.0.1:8000/admin/>
 
 ### 5. Compile the front-end assets
+
 See https://nationalarchives.github.io/ds-wagtail/developer-guide/frontend/#setting-up-the-front-end-development-environment
 
 ## Linux / OSX
+
 If you are running a Unix based operating system, these alias commands may be useful to you to run inside the Docker container.
 
 Running the development server:
 
-``` sh
+```sh
 djrun
 ```
 

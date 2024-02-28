@@ -1,7 +1,6 @@
+import responses
 from django.conf import settings
 from django.test import SimpleTestCase, override_settings
-
-import responses
 
 from ...records.api import get_records_client
 from ...records.models import Record

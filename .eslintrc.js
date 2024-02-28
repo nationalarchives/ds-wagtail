@@ -22,5 +22,9 @@ module.exports = {
         sourceType: "module",
     },
     rules: {},
-    ignorePatterns: ["templates/static/scripts/**/*.js", ".*.js", "*.config.js"],
+    ignorePatterns: [
+        "templates/static/scripts/**/*.js",
+        ".*.js",
+        "*.config.js",
+    ],
 };

@@ -1,11 +1,9 @@
 from django.conf import settings
 from django.db import models
-
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.snippets.models import register_snippet
-
-from etna.core.blocks.paragraph import APIRichTextField
 
 
 @register_snippet

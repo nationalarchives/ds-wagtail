@@ -1,8 +1,6 @@
 from django.utils.translation import gettext_lazy as _
-
-from wagtail import blocks
-
 from etna.feedback import constants
+from wagtail import blocks
 
 
 class ResponseOptionBlock(blocks.StructBlock):

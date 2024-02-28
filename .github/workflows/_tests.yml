@@ -76,7 +76,7 @@ jobs:
         run: poetry run coverage run manage.py test etna
       - name: Check for missing migrations
         run: poetry run python manage.py makemigrations --check --noinput
-  
+
   prettier:
     name: Prettier format
     runs-on: ubuntu-latest

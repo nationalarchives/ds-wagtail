@@ -1,7 +1,6 @@
+from etna.core.models import BasePage
 from wagtail.admin.panels import FieldPanel
 from wagtail.fields import StreamField
-
-from etna.core.models import BasePage
 
 from .blocks import GeneralPageStreamBlock
 
