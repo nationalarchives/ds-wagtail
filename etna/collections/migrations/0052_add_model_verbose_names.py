@@ -5,7 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0051_explorerindexpage_articles_introduction_and_more"),
+        (
+            "collections",
+            "0051_explorerindexpage_articles_introduction_and_more",
+        ),
     ]
 
     operations = [

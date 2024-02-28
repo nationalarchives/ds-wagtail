@@ -114,7 +114,9 @@ class Migration(migrations.Migration):
                                                         (
                                                             "caption",
                                                             wagtail.blocks.RichTextBlock(
-                                                                features=["link"],
+                                                                features=[
+                                                                    "link"
+                                                                ],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
                                                                 required=False,
@@ -259,7 +261,10 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    ("video", "Video"),
+                                                                    (
+                                                                        "video",
+                                                                        "Video",
+                                                                    ),
                                                                     (
                                                                         "video-external",
                                                                         "External video",

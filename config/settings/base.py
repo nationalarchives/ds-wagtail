@@ -120,7 +120,8 @@ TEMPLATES = [
         "DIRS": [
             os.path.join(BASE_DIR, "templates"),
             os.path.join(
-                get_path("platlib"), "nationalarchives-frontend-django/templates"
+                get_path("platlib"),
+                "nationalarchives-frontend-django/templates",
             ),
         ],
         "APP_DIRS": True,
@@ -154,11 +155,15 @@ LOGIN_URL = "/accounts/login"
 LOGIN_REDIRECT_URL = "/"
 WAGTAIL_FRONTEND_LOGIN_URL = LOGIN_URL
 # View access control
-IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True"))
+IMAGE_VIEWER_REQUIRE_LOGIN = strtobool(
+    os.getenv("IMAGE_VIEWER_REQUIRE_LOGIN", "True")
+)
 RECORD_DETAIL_REQUIRE_LOGIN = strtobool(
     os.getenv("RECORD_DETAIL_REQUIRE_LOGIN", "True")
 )
-SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True"))
+SEARCH_VIEWS_REQUIRE_LOGIN = strtobool(
+    os.getenv("SEARCH_VIEWS_REQUIRE_LOGIN", "True")
+)
 # Custom adapter to prevent self-signup
 ACCOUNT_ADAPTER = "etna.users.adapters.NoSelfSignupAccountAdapter"
 ACCOUNT_FORMS = {"login": "etna.users.forms.EtnaLoginForm"}
@@ -198,7 +203,9 @@ if SENTRY_DSN := os.getenv("SENTRY_DSN", ""):
         send_default_pii=strtobool(os.getenv("SENTRY_SEND_USER_DATA", "False")),
     )
 
-    SENTRY_DEBUG_URL_ENABLED = strtobool(os.getenv("SENTRY_DEBUG_URL_ENABLED", "False"))
+    SENTRY_DEBUG_URL_ENABLED = strtobool(
+        os.getenv("SENTRY_DEBUG_URL_ENABLED", "False")
+    )
 
 
 # Database
@@ -261,7 +268,9 @@ STATICFILES_DIRS = [
 # ManifestStaticFilesStorage is recommended in production, to prevent outdated
 # JavaScript / CSS assets being served from cache (e.g. after a Wagtail upgrade).
 # See https://docs.djangoproject.com/en/3.1/ref/contrib/staticfiles/#manifeststaticfilesstorage
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STATICFILES_STORAGE = (
+    "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 STATIC_URL = "static/"
@@ -384,7 +393,9 @@ BIRDBATH_PROCESSORS = ["etna.users.anonymisation.UserAnonymiser"]
 # See core.cache_control.get_default_cache_control_kwargs()
 # The default value is 3 hours.
 try:
-    CACHE_CONTROL_S_MAXAGE = int(os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3))
+    CACHE_CONTROL_S_MAXAGE = int(
+        os.getenv("CACHE_CONTROL_S_MAXAGE", 60 * 60 * 3)
+    )
 except ValueError:
     pass
 
@@ -400,7 +411,9 @@ CACHE_CONTROL_STALE_WHILE_REVALIDATE = int(
 
 MAINTENANCE_MODE = strtobool(os.getenv("MAINTENANCE_MODE", "False"))
 # MAINTENENCE_MODE_ALLOW_IPS="IPA1,IPA2" where IPA is IP address
-MAINTENENCE_MODE_ALLOW_IPS = os.getenv("MAINTENENCE_MODE_ALLOW_IPS", "").split(",")
+MAINTENENCE_MODE_ALLOW_IPS = os.getenv("MAINTENENCE_MODE_ALLOW_IPS", "").split(
+    ","
+)
 # datetime is iso MAINTENENCE_MODE_ENDS = "2011-11-04T00:05:23+04:00"
 MAINTENENCE_MODE_ENDS = os.getenv("MAINTENENCE_MODE_ENDS", "")
 
@@ -424,7 +437,9 @@ FEATURE_BETA_BANNER_ENABLED = strtobool(
 FEATURE_COOKIE_BANNER_ENABLED = strtobool(
     os.getenv("FEATURE_COOKIE_BANNER_ENABLED", "True")
 )
-FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv("PLATFORM_ENVIRONMENT_TYPE", "production")
+FEATURE_PLATFORM_ENVIRONMENT_TYPE = os.getenv(
+    "PLATFORM_ENVIRONMENT_TYPE", "production"
+)
 FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
     os.getenv("FEATURE_FEEDBACK_MECHANISM_ENABLED", "False")
 )

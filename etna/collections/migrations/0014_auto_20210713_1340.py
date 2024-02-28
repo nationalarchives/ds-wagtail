@@ -7,7 +7,10 @@ import wagtail.fields
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0013_timeperiodexplorerindexpage_topicexplorerindexpage"),
+        (
+            "collections",
+            "0013_timeperiodexplorerindexpage_topicexplorerindexpage",
+        ),
     ]
 
     operations = [
@@ -23,7 +26,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by time period", max_length=100
+                                        default="Explore by time period",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -44,7 +48,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by topic", max_length=100
+                                        default="Explore by topic",
+                                        max_length=100,
                                     ),
                                 ),
                                 (

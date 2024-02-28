@@ -41,7 +41,9 @@ from .blocks import (
 
 class Highlight(Orderable):
     page = ParentalKey(
-        "wagtailcore.Page", on_delete=models.CASCADE, related_name="page_highlights"
+        "wagtailcore.Page",
+        on_delete=models.CASCADE,
+        related_name="page_highlights",
     )
     image = models.ForeignKey(
         get_image_model_string(),
@@ -137,7 +139,9 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         ),
     ]
 
-    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    settings_panels = (
+        BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    )
 
     parent_page_types = ["home.HomePage"]
     subpage_types = [
@@ -246,7 +250,10 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
     )
 
     featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "articles.RecordArticlePage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
@@ -268,13 +275,17 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 "featured_article",
                 ["articles.ArticlePage", "articles.FocusedArticlePage"],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
+            FieldPanel(
+                "featured_record_article", heading=_("Featured record article")
+            ),
             FieldPanel("body"),
         ]
     )
 
     settings_panels = (
-        BasePage.settings_panels + [FieldPanel("skos_id")] + AlertMixin.settings_panels
+        BasePage.settings_panels
+        + [FieldPanel("skos_id")]
+        + AlertMixin.settings_panels
     )
 
     # DataLayerMixin overrides
@@ -353,7 +364,9 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
+        return sorted(
+            page_list, key=lambda x: x.first_published_at, reverse=True
+        )
 
     @cached_property
     def related_record_articles(self):
@@ -448,7 +461,9 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     )
 
 
-class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
+class TimePeriodExplorerPage(
+    RequiredHeroImageMixin, AlertMixin, BasePageWithIntro
+):
     """Time period BasePage.
 
     This page represents one of the many categories a user may select in the
@@ -476,7 +491,10 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     )
 
     featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
+        "articles.RecordArticlePage",
+        blank=True,
+        null=True,
+        on_delete=models.SET_NULL,
     )
     body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
@@ -489,7 +507,9 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 "featured_article",
                 ["articles.ArticlePage", "articles.FocusedArticlePage"],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
+            FieldPanel(
+                "featured_record_article", heading=_("Featured record article")
+            ),
             FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
@@ -546,7 +566,9 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
+        return sorted(
+            page_list, key=lambda x: x.first_published_at, reverse=True
+        )
 
     @cached_property
     def related_record_articles(self):
@@ -599,7 +621,9 @@ class PageTopic(Orderable):
     configuration to use it!
     """
 
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_topics")
+    page = ParentalKey(
+        Page, on_delete=models.CASCADE, related_name="page_topics"
+    )
     topic = models.ForeignKey(
         TopicExplorerPage,
         verbose_name=_("topic"),
@@ -621,7 +645,9 @@ class PageTimePeriod(Orderable):
     configuration to use it!
     """
 
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="page_time_periods")
+    page = ParentalKey(
+        Page, on_delete=models.CASCADE, related_name="page_time_periods"
+    )
     time_period = models.ForeignKey(
         TimePeriodExplorerPage,
         verbose_name=_("time period"),
@@ -639,7 +665,9 @@ class TopicalPageMixin:
     """
 
     @classmethod
-    def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
+    def get_time_periods_inlinepanel(
+        cls, max_num: Optional[int] = 4
+    ) -> InlinePanel:
         return InlinePanel(
             "page_time_periods",
             heading=_("Related time periods"),
@@ -699,9 +727,9 @@ class TopicalPageMixin:
     def time_periods(self) -> Tuple[TimePeriodExplorerPage]:
         return tuple(
             item.time_period
-            for item in self.page_time_periods.select_related("time_period").filter(
-                time_period__live=True
-            )
+            for item in self.page_time_periods.select_related(
+                "time_period"
+            ).filter(time_period__live=True)
         )
 
     @cached_property
@@ -731,7 +759,9 @@ class HighlightSerializer(serializers.ModelSerializer):
         )
 
 
-class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
+class HighlightGalleryPage(
+    TopicalPageMixin, ContentWarningMixin, BasePageWithIntro
+):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
@@ -762,7 +792,9 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             APIField("featured_record_article"),
             APIField("featured_article"),
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
-            APIField("page_highlights", serializer=HighlightSerializer(many=True)),
+            APIField(
+                "page_highlights", serializer=HighlightSerializer(many=True)
+            ),
         ]
     )
 

@@ -13,7 +13,10 @@ class Migration(migrations.Migration):
     dependencies = [
         ("wagtailcore", "0078_referenceindex"),
         ("images", "0004_remove_customimage_translation_language_and_more"),
-        ("articles", "0052_remove_pagegalleryimage_transcription_header_and_more"),
+        (
+            "articles",
+            "0052_remove_pagegalleryimage_transcription_header_and_more",
+        ),
         ("collections", "0028_swap_image_reference_fields_to_new_model"),
     ]
 

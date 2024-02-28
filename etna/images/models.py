@@ -4,15 +4,13 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.records.fields import RecordField
 
-DEFAULT_SENSITIVE_IMAGE_WARNING = (
-    "This image contains content which some people may find offensive or distressing."
-)
+DEFAULT_SENSITIVE_IMAGE_WARNING = "This image contains content which some people may find offensive or distressing."
 
 
 class TranscriptionHeadingChoices(models.TextChoices):
@@ -52,7 +50,9 @@ class CustomImage(ClusterableModel, AbstractImage):
     )
 
     custom_sensitive_image_warning = models.TextField(
-        verbose_name=_("Why might this image be considered sensitive? (optional)"),
+        verbose_name=_(
+            "Why might this image be considered sensitive? (optional)"
+        ),
         help_text=_(
             'Replaces the default warning message where the image is displayed. For example: "This image has been marked as potentially sensitive because it contains depictions of violence".'
         ),
@@ -111,7 +111,9 @@ class CustomImage(ClusterableModel, AbstractImage):
         verbose_name=_("record date(s)"),
         max_length=100,
         blank=True,
-        help_text=_("Date(s) related to the selected record (max length: 100 chars)."),
+        help_text=_(
+            "Date(s) related to the selected record (max length: 100 chars)."
+        ),
     )
 
     description = APIRichTextField(

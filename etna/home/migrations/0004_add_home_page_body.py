@@ -19,7 +19,9 @@ class Migration(migrations.Migration):
                 [
                     (
                         "featured_items",
-                        wagtail.blocks.ListBlock(etna.home.blocks.FeaturedItemBlock),
+                        wagtail.blocks.ListBlock(
+                            etna.home.blocks.FeaturedItemBlock
+                        ),
                     )
                 ],
                 blank=True,

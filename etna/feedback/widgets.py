@@ -15,7 +15,9 @@ class ResponseSubmitButtonList(forms.RadioSelect):
         self.choices = list(
             (option.id, option.value["label"]) for option in response_options
         )
-        self.icons = {option.id: option.value["icon"] for option in response_options}
+        self.icons = {
+            option.id: option.value["icon"] for option in response_options
+        }
         self.sentiments = {
             option.id: option.value["sentiment"] for option in response_options
         }

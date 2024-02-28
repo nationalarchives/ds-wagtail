@@ -28,7 +28,9 @@ class TestPages(WagtailPageTestCase):
             intro="topics",
             teaser_text="topic index",
         )
-        self.explorer_index_page.add_child(instance=self.topic_explorer_index_page)
+        self.explorer_index_page.add_child(
+            instance=self.topic_explorer_index_page
+        )
 
         self.topic_explorer_page1 = TopicExplorerPage(
             title="a Test Topic",
@@ -36,7 +38,9 @@ class TestPages(WagtailPageTestCase):
             teaser_text="test",
             intro="test",
         )
-        self.topic_explorer_index_page.add_child(instance=self.topic_explorer_page1)
+        self.topic_explorer_index_page.add_child(
+            instance=self.topic_explorer_page1
+        )
 
         self.topic_explorer_page2 = TopicExplorerPage(
             title="b Test Topic",
@@ -44,7 +48,9 @@ class TestPages(WagtailPageTestCase):
             teaser_text="test",
             intro="test",
         )
-        self.topic_explorer_index_page.add_child(instance=self.topic_explorer_page2)
+        self.topic_explorer_index_page.add_child(
+            instance=self.topic_explorer_page2
+        )
 
         self.topic_explorer_page3 = TopicExplorerPage(
             title="c Test Topic",
@@ -52,7 +58,9 @@ class TestPages(WagtailPageTestCase):
             teaser_text="test",
             intro="test",
         )
-        self.topic_explorer_index_page.add_child(instance=self.topic_explorer_page3)
+        self.topic_explorer_index_page.add_child(
+            instance=self.topic_explorer_page3
+        )
 
         self.time_period_explorer_index_page = TimePeriodExplorerIndexPage(
             title="Time Periods",
@@ -131,7 +139,9 @@ class TestPages(WagtailPageTestCase):
     def test_check_topic_featured_pages(self):
         featured_pages = self.topic_explorer_index_page.featured_pages
         children = (
-            self.topic_explorer_index_page.get_children().order_by("?").specific()
+            self.topic_explorer_index_page.get_children()
+            .order_by("?")
+            .specific()
         )
         for page in featured_pages:
             self.assertIn(page, children)
@@ -143,7 +153,9 @@ class TestPages(WagtailPageTestCase):
     def test_check_time_featured_pages(self):
         featured_pages = self.time_period_explorer_index_page.featured_pages
         children = (
-            self.time_period_explorer_index_page.get_children().order_by("?").specific()
+            self.time_period_explorer_index_page.get_children()
+            .order_by("?")
+            .specific()
         )
         for page in featured_pages:
             self.assertIn(page, children)

@@ -25,7 +25,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by time period", max_length=100
+                                        default="Explore by time period",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -53,7 +54,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by topic", max_length=100
+                                        default="Explore by topic",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -66,7 +68,9 @@ class Migration(migrations.Migration):
                                 (
                                     "page",
                                     wagtail.blocks.PageChooserBlock(
-                                        page_type=["collections.TopicExplorerIndexPage"]
+                                        page_type=[
+                                            "collections.TopicExplorerIndexPage"
+                                        ]
                                     ),
                                 ),
                             ]
@@ -89,7 +93,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by topic", max_length=100
+                                        default="Explore by topic",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -102,7 +107,9 @@ class Migration(migrations.Migration):
                                 (
                                     "page",
                                     wagtail.blocks.PageChooserBlock(
-                                        page_type=["collections.TopicExplorerIndexPage"]
+                                        page_type=[
+                                            "collections.TopicExplorerIndexPage"
+                                        ]
                                     ),
                                 ),
                             ]
@@ -125,7 +132,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Collection Highlights", max_length=100
+                                        default="Collection Highlights",
+                                        max_length=100,
                                     ),
                                 )
                             ]
@@ -135,7 +143,10 @@ class Migration(migrations.Migration):
                         "promoted_pages",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(max_length=100),
+                                ),
                                 (
                                     "sub_heading",
                                     wagtail.blocks.CharBlock(max_length=200),
@@ -168,7 +179,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Explore by time period", max_length=100
+                                        default="Explore by time period",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -206,7 +218,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="Collection Highlights", max_length=100
+                                        default="Collection Highlights",
+                                        max_length=100,
                                     ),
                                 )
                             ]
@@ -216,7 +229,10 @@ class Migration(migrations.Migration):
                         "promoted_pages",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(max_length=100),
+                                ),
                                 (
                                     "sub_heading",
                                     wagtail.blocks.CharBlock(max_length=200),

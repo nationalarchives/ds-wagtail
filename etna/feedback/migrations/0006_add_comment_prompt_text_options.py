@@ -24,8 +24,14 @@ class Migration(migrations.Migration):
                                     "icon",
                                     wagtail.blocks.ChoiceBlock(
                                         choices=[
-                                            ("images/thumb-up.png", "Thumbs up"),
-                                            ("images/thumb-down.png", "Thumbs down"),
+                                            (
+                                                "images/thumb-up.png",
+                                                "Thumbs up",
+                                            ),
+                                            (
+                                                "images/thumb-down.png",
+                                                "Thumbs down",
+                                            ),
                                         ],
                                         label="Icon",
                                         required=False,

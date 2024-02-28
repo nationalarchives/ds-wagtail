@@ -77,7 +77,9 @@ def migrate_backwards(apps, schema_editor):
     FeedbackPrompt.objects.filter(id=1).delete()
 
     # Delete any revisions for the prompt
-    content_type = ContentType.objects.get(app_label="feedback", model="feedbackprompt")
+    content_type = ContentType.objects.get(
+        app_label="feedback", model="feedbackprompt"
+    )
     Revision.objects.filter(content_type=content_type, object_id=1).delete()
 
 

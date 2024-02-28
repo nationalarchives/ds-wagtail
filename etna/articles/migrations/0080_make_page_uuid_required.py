@@ -15,21 +15,30 @@ class Migration(migrations.Migration):
             model_name="articleindexpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="articlepage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="recordarticlepage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
     ]

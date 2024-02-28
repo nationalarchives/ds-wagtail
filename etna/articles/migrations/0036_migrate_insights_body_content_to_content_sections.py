@@ -102,7 +102,9 @@ def migrate_forwards(apps, schema_editor):
 
         # Update the page's latest revision, so that changes 'stick' in the editor
         latest_revision = (
-            Revision.objects.filter(page_id=page.id).order_by("-created_at").first()
+            Revision.objects.filter(page_id=page.id)
+            .order_by("-created_at")
+            .first()
         )
         if latest_revision:
             revision_content = json.loads(latest_revision.content_json)
@@ -119,4 +121,6 @@ class Migration(migrations.Migration):
     # NOTE: This data migration can only work one way, because new content
     # options allow for layouts that aren't possible to represent with the
     # block optons available before '0035_alter_insightspage_body'
-    operations = [migrations.RunPython(migrate_forwards, migrations.RunPython.noop)]
+    operations = [
+        migrations.RunPython(migrate_forwards, migrations.RunPython.noop)
+    ]

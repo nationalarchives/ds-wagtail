@@ -61,7 +61,9 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_("Image that will appear on thumbnails and promos around the site."),
+        help_text=_(
+            "Image that will appear on thumbnails and promos around the site."
+        ),
     )
 
     uuid = models.UUIDField("UUID", unique=True, default=uuid4, editable=False)
@@ -164,7 +166,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         APIField(
             "teaser_image_large_jpg",
             serializer=ImageRenditionField(
-                "fill-1200x800|format-jpeg|jpegquality-60", source="teaser_image"
+                "fill-1200x800|format-jpeg|jpegquality-60",
+                source="teaser_image",
             ),
         ),
         APIField(

@@ -5,7 +5,10 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0038_highlightgallerypage_custom_warning_text_and_more"),
+        (
+            "collections",
+            "0038_highlightgallerypage_custom_warning_text_and_more",
+        ),
     ]
 
     operations = [

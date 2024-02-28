@@ -13,7 +13,10 @@ class Migration(migrations.Migration):
             model_name="articletag",
             name="slug",
             field=models.SlugField(
-                allow_unicode=True, max_length=100, unique=True, verbose_name="slug"
+                allow_unicode=True,
+                max_length=100,
+                unique=True,
+                verbose_name="slug",
             ),
         ),
     ]

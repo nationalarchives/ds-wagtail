@@ -15,7 +15,9 @@ class HomePage(AlertMixin, BasePageWithIntro):
         FieldPanel("body"),
     ]
 
-    settings_panels = BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    settings_panels = (
+        BasePageWithIntro.settings_panels + AlertMixin.settings_panels
+    )
 
     # DataLayerMixin overrides
     gtm_content_group = "Homepage"

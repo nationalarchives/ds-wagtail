@@ -5,7 +5,11 @@ from django.urls import reverse
 
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
-from wagtail.test.utils.form_data import nested_form_data, rich_text, streamfield
+from wagtail.test.utils.form_data import (
+    nested_form_data,
+    rich_text,
+    streamfield,
+)
 
 import responses
 
@@ -28,7 +32,9 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         super().setUp()
         self.login()
 
-        record_response = create_response(records=[create_record(**TEST_RECORD_DATA)])
+        record_response = create_response(
+            records=[create_record(**TEST_RECORD_DATA)]
+        )
 
         responses.add(
             responses.GET,
@@ -107,7 +113,8 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
         )
 
         response = self.client.post(
-            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)), data
+            reverse("wagtailadmin_pages:edit", args=(self.article_page.id,)),
+            data,
         )
         self.assertEqual(len(responses.calls), 3)
         self.assertRedirects(

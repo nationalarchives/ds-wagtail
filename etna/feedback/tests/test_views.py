@@ -103,13 +103,16 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
                 querystring = urlencode(
                     {"next": VALID_URL, "submission": submission.public_id}
                 )
-                self.assertRedirects(response, self.success_url + "?" + querystring)
+                self.assertRedirects(
+                    response, self.success_url + "?" + querystring
+                )
 
                 self.assertEqual(submission.full_url, VALID_URL)
                 self.assertEqual(submission.path, "/some-url")
                 self.assertEqual(submission.prompt, self.prompt)
                 self.assertEqual(
-                    submission.response_sentiment, response_option.value["sentiment"]
+                    submission.response_sentiment,
+                    response_option.value["sentiment"],
                 )
                 self.assertEqual(
                     submission.response_label, response_option.value["label"]
@@ -156,7 +159,8 @@ class TestFeedbackSubmitView(WagtailTestUtils, TestCase):
                 self.assertEqual(submission.path, "/some-url")
                 self.assertEqual(submission.prompt, self.prompt)
                 self.assertEqual(
-                    submission.response_sentiment, response_option.value["sentiment"]
+                    submission.response_sentiment,
+                    response_option.value["sentiment"],
                 )
                 self.assertEqual(
                     submission.response_label, response_option.value["label"]
@@ -303,7 +307,9 @@ class TestFeedbackCommentSubmitView(WagtailTestUtils, TestCase):
                 "success": False,
                 "form_data": post_data,
                 "errors": {
-                    "submission": ["“invalid-submission-id” is not a valid UUID."],
+                    "submission": [
+                        "“invalid-submission-id” is not a valid UUID."
+                    ],
                 },
             },
         )
@@ -323,7 +329,9 @@ class TestFeedbackCommentSubmitView(WagtailTestUtils, TestCase):
                 "success": False,
                 "form_data": post_data,
                 "errors": {
-                    "signature": ["Value does not match the specified submission."],
+                    "signature": [
+                        "Value does not match the specified submission."
+                    ],
                 },
             },
         )
@@ -369,13 +377,16 @@ class TestFeedbackSuccessView(TestCase):
 
     def test_golden_path(self):
         response = self.client.get(
-            self.url, {"submission": self.submission.public_id, "next": self.next_url}
+            self.url,
+            {"submission": self.submission.public_id, "next": self.next_url},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
         self.assertEqual(response.context["next_url"], self.next_url)
         self.assertContains(response, self.prompt.thank_you_heading)
-        self.assertIsInstance(response.context["comment_form"], FeedbackCommentForm)
+        self.assertIsInstance(
+            response.context["comment_form"], FeedbackCommentForm
+        )
         self.assertContains(
             response,
             f'<label for="id_comment">{self.submission.comment_prompt_text}</label>',
@@ -411,7 +422,8 @@ class TestFeedbackSuccessView(TestCase):
         invalid_submission_id = "not-a-uuid"
 
         response = self.client.get(
-            self.url, {"submission": invalid_submission_id, "next": self.next_url}
+            self.url,
+            {"submission": invalid_submission_id, "next": self.next_url},
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
@@ -424,7 +436,9 @@ class TestFeedbackSuccessView(TestCase):
         )
 
     def test_missing_next_url_substituted_with_homepage_path(self):
-        response = self.client.get(self.url, {"submission": self.submission.public_id})
+        response = self.client.get(
+            self.url, {"submission": self.submission.public_id}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["prompt"], self.prompt)
         self.assertEqual(response.context["next_url"], "/")
@@ -534,15 +548,21 @@ class TestSubmissionIndexView(WagtailTestUtils, TestCase):
                 )
 
                 # Check that the 'export' option works for this user
-                export_response = self.client.get(self.url, data={"export": "csv"})
+                export_response = self.client.get(
+                    self.url, data={"export": "csv"}
+                )
                 self.assertEqual(export_response.status_code, 200)
-                self.assertEqual(export_response.headers["Content-Type"], "text/csv")
+                self.assertEqual(
+                    export_response.headers["Content-Type"], "text/csv"
+                )
 
     @prevent_request_warnings
     def test_access_not_permitted(self):
         self.client.force_login(self.normal_user)
         response = self.client.get(self.url)
-        expected_redirect_url = self.login_url + "?" + urlencode({"next": self.url})
+        expected_redirect_url = (
+            self.login_url + "?" + urlencode({"next": self.url})
+        )
         self.assertRedirects(response, expected_redirect_url)
         export_response = self.client.get(self.url, export="csv")
         self.assertRedirects(export_response, expected_redirect_url)

@@ -56,7 +56,10 @@ class Migration(migrations.Migration):
                         "promoted_links",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(required=False)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(required=False),
+                                ),
                                 (
                                     "promoted_links",
                                     etna.core.blocks.page_list.PageListBlock(

@@ -15,7 +15,10 @@ class Migration(migrations.Migration):
             model_name="homepage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
     ]

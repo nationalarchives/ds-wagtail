@@ -9,7 +9,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import Page as PaginatorPage
 from django.db.models import Count, Q
 from django.forms import Form
-from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.http import (
+    Http404,
+    HttpRequest,
+    HttpResponse,
+    HttpResponseBadRequest,
+)
 from django.utils import timezone
 from django.utils.text import capfirst
 from django.views.generic import FormView, TemplateView
@@ -18,7 +23,9 @@ from django.views.generic.list import MultipleObjectMixin
 from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet
-from wagtail.search.backends.database.postgres.postgres import PostgresSearchResults
+from wagtail.search.backends.database.postgres.postgres import (
+    PostgresSearchResults,
+)
 
 from ..analytics.mixins import SearchDataLayerMixin
 from ..articles.models import ArticleIndexPage, ArticlePage
@@ -103,7 +110,8 @@ class BucketsMixin:
 
         # set `result_count` for each bucket
         doc_counts_by_key = {
-            group["key"]: group["doc_count"] for group in self.get_bucket_counts()
+            group["key"]: group["doc_count"]
+            for group in self.get_bucket_counts()
         }
         for bucket in bucket_list:
             bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
@@ -128,7 +136,9 @@ class BucketsMixin:
                 break
 
         return super().get_context_data(
-            buckets=buckets, buckets_contain_results=buckets_contain_results, **kwargs
+            buckets=buckets,
+            buckets_contain_results=buckets_contain_results,
+            **kwargs,
         )
 
 
@@ -180,8 +190,12 @@ class ClientAPIMixin:
         has no impact on the results that are displayed.
         """
         paginator = APIPaginator(total_count, per_page=per_page)
-        page = PaginatorPage(result_list, number=self.page_number, paginator=paginator)
-        page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
+        page = PaginatorPage(
+            result_list, number=self.page_number, paginator=paginator
+        )
+        page_range = paginator.get_elided_page_range(
+            number=self.page_number, on_ends=0
+        )
         return paginator, page, page_range
 
 
@@ -308,7 +322,9 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
         self.api_result = None
         self.current_bucket_key = self.form.cleaned_data.get("group")
         if self.current_bucket_key and getattr(self, "bucket_list", None):
-            self.current_bucket = self.bucket_list.get_bucket(self.current_bucket_key)
+            self.current_bucket = self.bucket_list.get_bucket(
+                self.current_bucket_key
+            )
 
     def process_valid_form(self, form: Form) -> HttpResponse:
         """
@@ -377,7 +393,9 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
         Sets session in order for it to be used in record details page when navigating from search results.
         """
 
-        self.request.session["back_to_search_url"] = self.request.get_full_path()
+        self.request.session["back_to_search_url"] = (
+            self.request.get_full_path()
+        )
         self.request.session["back_to_search_url_timestamp"] = (
             timezone.now().isoformat()
         )
@@ -521,7 +539,8 @@ class BaseFilteredSearchView(BaseSearchView):
             if field_name in self.dynamic_choice_fields:
                 choice_data = value.get("buckets", ())
                 form.fields[field_name].update_choices(
-                    choice_data, selected_values=form.cleaned_data.get(field_name, ())
+                    choice_data,
+                    selected_values=form.cleaned_data.get(field_name, ()),
                 )
                 form[field_name].more_filter_options_available = bool(
                     value.get("sum_other_doc_count", 0)
@@ -547,7 +566,9 @@ class BaseFilteredSearchView(BaseSearchView):
             )
         return context
 
-    def get_selected_filters(self, form: Form) -> Dict[str, List[Tuple[str, str]]]:
+    def get_selected_filters(
+        self, form: Form
+    ) -> Dict[str, List[Tuple[str, str]]]:
         """
         Returns a dictionary of selected filters, keyed by form field name.
         Each value is a series of tuples where the first item is the 'value', and
@@ -579,13 +600,16 @@ class BaseFilteredSearchView(BaseSearchView):
             ]
 
         if filter_keyword := form.cleaned_data.get("filter_keyword"):
-            return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+            return_value.update(
+                {"filter_keyword": [(filter_keyword, filter_keyword)]}
+            )
 
         if opening_start_date := form.cleaned_data.get("opening_start_date"):
             return_value["opening_start_date"] = [
                 (
                     opening_start_date,
-                    "Record opening from: " + opening_start_date.strftime("%d %m %Y"),
+                    "Record opening from: "
+                    + opening_start_date.strftime("%d %m %Y"),
                 )
             ]
 
@@ -593,7 +617,8 @@ class BaseFilteredSearchView(BaseSearchView):
             return_value["opening_end_date"] = [
                 (
                     opening_end_date,
-                    "Record opening to: " + opening_end_date.strftime("%d %m %Y"),
+                    "Record opening to: "
+                    + opening_end_date.strftime("%d %m %Y"),
                 )
             ]
 
@@ -810,7 +835,9 @@ class FeaturedSearchView(BaseSearchView):
         if isinstance(results, PageQuerySet):
             self.website_result_count = results.count()
         else:
-            self.website_result_count = results.get_queryset(for_count=True).count()
+            self.website_result_count = results.get_queryset(
+                for_count=True
+            ).count()
         self.website_result_list = [p.specific for p in results[:3]]
         return super().process_valid_form(form)
 
@@ -841,7 +868,9 @@ class FeaturedSearchView(BaseSearchView):
         return total
 
 
-class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETFormView):
+class NativeWebsiteSearchView(
+    SearchDataLayerMixin, MultipleObjectMixin, GETFormView
+):
     form_class = NativeWebsiteSearchForm
     template_name = "search/native_website_search.html"
     search_tab = SearchTabs.WEBSITE.value
@@ -860,7 +889,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         self.query = self.form.cleaned_data.get("q", "")
         self.query_normalised = normalise_native_search_query(self.query)
         self.total_count: int = 0  # populated by get_context_data()
-        self.selected_filters: Dict[str, List[str]] = {}  # populated by get_results()
+        self.selected_filters: Dict[str, List[str]] = (
+            {}
+        )  # populated by get_results()
         self.selected_filters_count: int = 0  # populated by get_results()
 
     @classmethod
@@ -911,9 +942,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         )
         if selected_topics:
             queryset = queryset.filter(
-                id__in=PageTopic.objects.filter(topic__in=selected_topics).values_list(
-                    "page_id", flat=True
-                )
+                id__in=PageTopic.objects.filter(
+                    topic__in=selected_topics
+                ).values_list("page_id", flat=True)
             )
             # Update selected_filters
             self.selected_filters["topic"] = [
@@ -922,7 +953,9 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
 
         # Filter by time period
         selected_time_periods = (
-            form.cleaned_data.get("time_period", TopicExplorerPage.objects.none())
+            form.cleaned_data.get(
+                "time_period", TopicExplorerPage.objects.none()
+            )
             .only("id", "slug", "title")
             .order_by("start_year")
         )
@@ -934,7 +967,8 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             )
             # Update selected_filters
             self.selected_filters["time_period"] = [
-                (obj.slug, f"Time period: {obj.title}") for obj in selected_time_periods
+                (obj.slug, f"Time period: {obj.title}")
+                for obj in selected_time_periods
             ]
 
         # Filter by type
@@ -1080,14 +1114,20 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
         page_type_field = self.form.fields["format"]
         replacement_choices = []
         for value, label in page_type_field.choices:
-            content_type = ContentType.objects.get_by_natural_key(*value.split("."))
+            content_type = ContentType.objects.get_by_natural_key(
+                *value.split(".")
+            )
             doc_count = 0
             for _, ct_id in self.facet_source_data:
                 if ct_id == content_type.id:
                     doc_count += 1
             if doc_count:
-                replacement_choices.append((value, capfirst(f"{label} ({doc_count})")))
-        page_type_field.choices = sorted(replacement_choices, key=lambda x: x[1])
+                replacement_choices.append(
+                    (value, capfirst(f"{label} ({doc_count})"))
+                )
+        page_type_field.choices = sorted(
+            replacement_choices, key=lambda x: x[1]
+        )
         page_type_field.choices_updated = True
 
         # Add custom variables to the return value

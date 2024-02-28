@@ -15,42 +15,60 @@ class Migration(migrations.Migration):
             model_name="explorerindexpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="highlightgallerypage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="timeperiodexplorerindexpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="timeperiodexplorerpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="topicexplorerindexpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
         migrations.AlterField(
             model_name="topicexplorerpage",
             name="uuid",
             field=models.UUIDField(
-                default=uuid.uuid4, editable=False, unique=True, verbose_name="UUID"
+                default=uuid.uuid4,
+                editable=False,
+                unique=True,
+                verbose_name="UUID",
             ),
         ),
     ]

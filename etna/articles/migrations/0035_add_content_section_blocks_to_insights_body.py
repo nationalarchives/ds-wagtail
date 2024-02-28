@@ -28,7 +28,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        label="Section heading (H2)", max_length=100
+                                        label="Section heading (H2)",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -564,7 +565,9 @@ class Migration(migrations.Migration):
                                                         (
                                                             "caption",
                                                             wagtail.blocks.RichTextBlock(
-                                                                features=["link"],
+                                                                features=[
+                                                                    "link"
+                                                                ],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
                                                                 required=False,
@@ -893,7 +896,10 @@ class Migration(migrations.Migration):
                         "featured_record",
                         wagtail.blocks.StructBlock(
                             [
-                                ("record", etna.records.blocks.RecordChooserBlock()),
+                                (
+                                    "record",
+                                    etna.records.blocks.RecordChooserBlock(),
+                                ),
                                 (
                                     "image",
                                     wagtail.blocks.StructBlock(
@@ -976,7 +982,10 @@ class Migration(migrations.Migration):
                                         help_text="A background image for the media block"
                                     ),
                                 ),
-                                ("media", etna.media.blocks.MediaChooserBlock()),
+                                (
+                                    "media",
+                                    etna.media.blocks.MediaChooserBlock(),
+                                ),
                             ]
                         ),
                     ),
@@ -1004,7 +1013,12 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"],
+                                        features=[
+                                            "bold",
+                                            "italic",
+                                            "link",
+                                            "ul",
+                                        ],
                                         required=True,
                                     ),
                                 ),

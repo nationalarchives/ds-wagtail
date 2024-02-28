@@ -11,7 +11,10 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name="articlepage",
-            options={"verbose_name": "article", "verbose_name_plural": "articles"},
+            options={
+                "verbose_name": "article",
+                "verbose_name_plural": "articles",
+            },
         ),
         migrations.AlterModelOptions(
             name="recordarticlepage",

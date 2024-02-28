@@ -19,7 +19,10 @@ class Migration(migrations.Migration):
             model_name="eventpage",
             name="eventbrite_id",
             field=models.CharField(
-                editable=False, max_length=255, null=True, verbose_name="eventbrite ID"
+                editable=False,
+                max_length=255,
+                null=True,
+                verbose_name="eventbrite ID",
             ),
         ),
         migrations.AddField(

@@ -36,12 +36,17 @@ class MaintenanceModeMiddleware:
         """
         if settings.MAINTENANCE_MODE:
             # check override maintenance mode
-            if get_client_ip(request) not in settings.MAINTENENCE_MODE_ALLOW_IPS:
+            if (
+                get_client_ip(request)
+                not in settings.MAINTENENCE_MODE_ALLOW_IPS
+            ):
                 kwargs = {"template": "503.html", "status": 503}
                 if maintenance_mode_ends := settings.MAINTENENCE_MODE_ENDS:
                     # Evaluate only if config is set
                     try:
-                        end_datetime = datetime.fromisoformat(maintenance_mode_ends)
+                        end_datetime = datetime.fromisoformat(
+                            maintenance_mode_ends
+                        )
                     except ValueError:
                         end_datetime = None
                         logger.debug(
@@ -52,10 +57,14 @@ class MaintenanceModeMiddleware:
                         # GMT is assumed for naive datetimes, but timezone-aware
                         # datetimes must be converted to GMT
                         if end_datetime.utcoffset() is not None:
-                            end_datetime = end_datetime.astimezone(timezone("GMT"))
+                            end_datetime = end_datetime.astimezone(
+                                timezone("GMT")
+                            )
 
                         kwargs["headers"] = {
-                            "Retry-After": end_datetime.strftime(HTTP_HEADER_FORMAT)
+                            "Retry-After": end_datetime.strftime(
+                                HTTP_HEADER_FORMAT
+                            )
                         }
                 return SimpleTemplateResponse(**kwargs).render()
 
@@ -95,7 +104,9 @@ class InterpretCookiesMiddleware:
         if cookies_policy := request.COOKIES.get("cookies_policy", None):
             try:
                 # Permit cookies if user has agreed
-                cookies_permitted = json.loads(unquote(cookies_policy))["usage"] is True
+                cookies_permitted = (
+                    json.loads(unquote(cookies_policy))["usage"] is True
+                )
             except (
                 json.decoder.JSONDecodeError,  # value is not valid json
                 TypeError,  # decoded json isn't a dict

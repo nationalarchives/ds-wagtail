@@ -28,21 +28,36 @@ class NativeWebsiteSearchTestCase(TestCase):
         # NOTE: These would normally be added under special 'index' pages, but that doesn't matter for
         # these tests
 
-        cls.arts = TopicPageFactory(title="Arts and culture", parent=cls.homepage)
-        cls.military = TopicPageFactory(title="Military and war", parent=cls.homepage)
-        cls.health = TopicPageFactory(title="Health and welfare", parent=cls.homepage)
+        cls.arts = TopicPageFactory(
+            title="Arts and culture", parent=cls.homepage
+        )
+        cls.military = TopicPageFactory(
+            title="Military and war", parent=cls.homepage
+        )
+        cls.health = TopicPageFactory(
+            title="Health and welfare", parent=cls.homepage
+        )
         cls.transport = TopicPageFactory(
             title="Transport and travel", parent=cls.homepage
         )
 
         cls.early_modern = TimePeriodPageFactory(
-            title="Early modern", start_year=1485, end_year=1714, parent=cls.homepage
+            title="Early modern",
+            start_year=1485,
+            end_year=1714,
+            parent=cls.homepage,
         )
         cls.georgians = TimePeriodPageFactory(
-            title="Georgians", start_year=1714, end_year=1837, parent=cls.homepage
+            title="Georgians",
+            start_year=1714,
+            end_year=1837,
+            parent=cls.homepage,
         )
         cls.interwar = TimePeriodPageFactory(
-            title="Interwar", start_year=1918, end_year=1939, parent=cls.homepage
+            title="Interwar",
+            start_year=1918,
+            end_year=1939,
+            parent=cls.homepage,
         )
         cls.postwar = TimePeriodPageFactory(
             title="Postwar", start_year=1945, end_year=2030, parent=cls.homepage
@@ -57,7 +72,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.foo_article = ArticlePageFactory(
             parent=cls.article_index,
             title="Foo article",
-            page_topics=[PageTopic(topic=cls.arts), PageTopic(topic=cls.health)],
+            page_topics=[
+                PageTopic(topic=cls.arts),
+                PageTopic(topic=cls.health),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.georgians),
@@ -66,7 +84,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.foo_focussed_article = FocusedArticlePageFactory(
             parent=cls.article_index,
             title="Foo focussed article",
-            page_topics=[PageTopic(topic=cls.arts), PageTopic(topic=cls.health)],
+            page_topics=[
+                PageTopic(topic=cls.arts),
+                PageTopic(topic=cls.health),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.georgians),
@@ -82,7 +103,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.bar_article = ArticlePageFactory(
             parent=cls.article_index,
             title="Bar article",
-            page_topics=[PageTopic(topic=cls.military), PageTopic(topic=cls.transport)],
+            page_topics=[
+                PageTopic(topic=cls.military),
+                PageTopic(topic=cls.transport),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.interwar),
                 PageTimePeriod(time_period=cls.postwar),
@@ -91,7 +115,10 @@ class NativeWebsiteSearchTestCase(TestCase):
         cls.bar_focussed_article = FocusedArticlePageFactory(
             parent=cls.article_index,
             title="Bar focussed article",
-            page_topics=[PageTopic(topic=cls.military), PageTopic(topic=cls.transport)],
+            page_topics=[
+                PageTopic(topic=cls.military),
+                PageTopic(topic=cls.transport),
+            ],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.interwar),
                 PageTimePeriod(time_period=cls.postwar),
@@ -170,7 +197,9 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # No filters are selected, so 'Selected filters' should not be present
-        self.assertNotContains(response, '<h2 class="sr-only">Selected filters</h2>')
+        self.assertNotContains(
+            response, '<h2 class="sr-only">Selected filters</h2>'
+        )
 
     def test_sorting(self):
         for sort_by, expected_results in (
@@ -180,7 +209,9 @@ class NativeWebsiteSearchTestCase(TestCase):
             ),
             (
                 "-title",
-                sorted(self.all_result_pages, key=lambda p: p.title, reverse=True),
+                sorted(
+                    self.all_result_pages, key=lambda p: p.title, reverse=True
+                ),
             ),
             (
                 "first_published_at",
@@ -199,7 +230,9 @@ class NativeWebsiteSearchTestCase(TestCase):
             ),
         ):
             with self.subTest(f"Sort by: {sort_by}"):
-                response = self.client.get(self.test_url, data={"sort_by": sort_by})
+                response = self.client.get(
+                    self.test_url, data={"sort_by": sort_by}
+                )
                 self.assertEqual(response.status_code, 200)
                 self.assertEqual(
                     [p.specific for p in response.context["page"].object_list],
@@ -255,11 +288,19 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
+        self.assertContains(
+            response, '<h2 class="sr-only">Selected filters</h2>'
+        )
         for label in ["The story of", "Record revealed"]:
             self.assertContains(response, f"Remove Format: {label} from search")
-        for label in ["In pictures", "Explore by time period", "Explore by topic"]:
-            self.assertNotContains(response, f"Remove Format: {label} from search")
+        for label in [
+            "In pictures",
+            "Explore by time period",
+            "Explore by topic",
+        ]:
+            self.assertNotContains(
+                response, f"Remove Format: {label} from search"
+            )
 
     def test_filter_by_topic(self):
         """
@@ -281,11 +322,17 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
+        self.assertContains(
+            response, '<h2 class="sr-only">Selected filters</h2>'
+        )
         for topic in [self.arts, self.health]:
-            self.assertContains(response, f"Remove Topic: {topic.title} from search")
+            self.assertContains(
+                response, f"Remove Topic: {topic.title} from search"
+            )
         for topic in [self.military, self.transport]:
-            self.assertNotContains(response, f"Remove Topic: {topic.title} from search")
+            self.assertNotContains(
+                response, f"Remove Topic: {topic.title} from search"
+            )
 
     def test_filter_by_time_period(self):
         """
@@ -308,7 +355,9 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
         # 'Selected filters' should reflect the values in GET
-        self.assertContains(response, '<h2 class="sr-only">Selected filters</h2>')
+        self.assertContains(
+            response, '<h2 class="sr-only">Selected filters</h2>'
+        )
         for time_period in [self.interwar, self.postwar]:
             self.assertContains(
                 response, f"Remove Time period: {time_period.title} from search"
@@ -335,7 +384,9 @@ class NativeWebsiteSearchTestCase(TestCase):
         )
 
     def test_search_for_foo_ordered_by_title(self):
-        response = self.client.get(self.test_url, data={"q": "foo", "sort_by": "title"})
+        response = self.client.get(
+            self.test_url, data={"q": "foo", "sort_by": "title"}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
@@ -395,7 +446,9 @@ class NativeWebsiteSearchTestCase(TestCase):
         """
         Tests the view using the 'bar' search term in isolation (without any filters)
         """
-        response = self.client.get(self.test_url, data={"q": "bar", "sort_by": "title"})
+        response = self.client.get(
+            self.test_url, data={"q": "bar", "sort_by": "title"}
+        )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             [p.specific for p in response.context["page"].object_list],
@@ -437,9 +490,12 @@ class NativeWebsiteSearchTestCase(TestCase):
             ("foo AND bar", 0),
         ):
             with self.subTest(f"Searching for: {search_terms}"):
-                response = self.client.get(self.test_url, data={"q": search_terms})
+                response = self.client.get(
+                    self.test_url, data={"q": search_terms}
+                )
                 self.assertEqual(
-                    response.context_data["paginator"].count, expected_result_count
+                    response.context_data["paginator"].count,
+                    expected_result_count,
                 )
 
     def test_no_results_search(self):
@@ -464,5 +520,7 @@ class NativeWebsiteSearchTestCase(TestCase):
             ("display", "foo"),
         ]:
             with self.subTest(f"{field_name} = {value}"):
-                response = self.client.get(self.test_url, data={field_name: value})
+                response = self.client.get(
+                    self.test_url, data={field_name: value}
+                )
                 self.assertEqual(response.status_code, 400)

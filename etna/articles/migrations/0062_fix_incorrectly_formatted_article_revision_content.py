@@ -14,7 +14,8 @@ def migrate_forwards(apps, schema_editor):
             for obj in page.page_time_periods.all()
         ]
         rev.content["page_topics"] = [
-            {"pk": obj.pk, "topic": obj.topic_id} for obj in page.page_topics.all()
+            {"pk": obj.pk, "topic": obj.topic_id}
+            for obj in page.page_topics.all()
         ]
         rev.save(update_fields=["content"])
 

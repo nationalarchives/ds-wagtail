@@ -14,7 +14,9 @@ def migrate_forwards(apps, schema_editor):
         rev = page.latest_revision
         if page.time_period_id:
             page_timeperiods_to_create.append(
-                PageTimePeriod(page_id=page.id, time_period_id=page.time_period_id)
+                PageTimePeriod(
+                    page_id=page.id, time_period_id=page.time_period_id
+                )
             )
             rev.content["page_time_periods"] = [page.time_period_id]
         if page.topic_id:

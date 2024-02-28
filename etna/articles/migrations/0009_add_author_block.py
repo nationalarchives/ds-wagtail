@@ -80,7 +80,12 @@ class Migration(migrations.Migration):
                     (
                         "featured_record",
                         wagtail.blocks.StructBlock(
-                            [("record", etna.records.blocks.RecordChooserBlock())]
+                            [
+                                (
+                                    "record",
+                                    etna.records.blocks.RecordChooserBlock(),
+                                )
+                            ]
                         ),
                     ),
                     (

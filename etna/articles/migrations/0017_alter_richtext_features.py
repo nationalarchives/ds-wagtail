@@ -34,7 +34,12 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"],
+                                        features=[
+                                            "bold",
+                                            "italic",
+                                            "link",
+                                            "ul",
+                                        ],
                                         required=True,
                                     ),
                                 ),
@@ -54,7 +59,12 @@ class Migration(migrations.Migration):
                     (
                         "featured_record",
                         wagtail.blocks.StructBlock(
-                            [("record", etna.records.blocks.RecordChooserBlock())]
+                            [
+                                (
+                                    "record",
+                                    etna.records.blocks.RecordChooserBlock(),
+                                )
+                            ]
                         ),
                     ),
                     (
@@ -92,7 +102,10 @@ class Migration(migrations.Migration):
                                         help_text="A background image for the media block"
                                     ),
                                 ),
-                                ("media", etna.media.blocks.MediaChooserBlock()),
+                                (
+                                    "media",
+                                    etna.media.blocks.MediaChooserBlock(),
+                                ),
                             ]
                         ),
                     ),
@@ -109,7 +122,12 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"],
+                                        features=[
+                                            "bold",
+                                            "italic",
+                                            "link",
+                                            "ul",
+                                        ],
                                         required=True,
                                     ),
                                 ),
@@ -133,7 +151,10 @@ class Migration(migrations.Migration):
                                         "categories.Category"
                                     ),
                                 ),
-                                ("publication_date", wagtail.blocks.DateBlock()),
+                                (
+                                    "publication_date",
+                                    wagtail.blocks.DateBlock(),
+                                ),
                                 (
                                     "url",
                                     wagtail.blocks.URLBlock(

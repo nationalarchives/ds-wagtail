@@ -17,4 +17,6 @@ class Migration(migrations.Migration):
         ("articles", "0028_migrate_image_block_values_to_new_block_structure"),
     ]
 
-    operations = [migrations.RunPython(move_alt_text, migrations.RunPython.noop)]
+    operations = [
+        migrations.RunPython(move_alt_text, migrations.RunPython.noop)
+    ]

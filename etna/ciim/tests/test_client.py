@@ -32,7 +32,9 @@ class ClientSearchAllTest(SimpleTestCase):
         cls.records_client = get_records_client()
 
     def setUp(self):
-        responses.add(responses.GET, f"{settings.CLIENT_BASE_URL}/searchAll", json={})
+        responses.add(
+            responses.GET, f"{settings.CLIENT_BASE_URL}/searchAll", json={}
+        )
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
@@ -40,7 +42,8 @@ class ClientSearchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/searchAll"
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/searchAll",
         )
 
     @responses.activate
@@ -181,7 +184,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_opening_end_date(self):
-        self.records_client.search(opening_end_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(
+            opening_end_date=datetime(year=1901, month=2, day=3)
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -203,7 +208,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_created_end_date(self):
-        self.records_client.search(created_end_date=datetime(year=1901, month=2, day=3))
+        self.records_client.search(
+            created_end_date=datetime(year=1901, month=2, day=3)
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -314,7 +321,11 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_aggregations(self):
         self.records_client.search(
-            aggregations=[Aggregation.LEVEL, Aggregation.COLLECTION, Aggregation.TYPE]
+            aggregations=[
+                Aggregation.LEVEL,
+                Aggregation.COLLECTION,
+                Aggregation.TYPE,
+            ]
         )
 
         self.assertEqual(len(responses.calls), 1)
@@ -361,7 +372,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_held_by_without_special_chars(self):
-        self.records_client.search(filter_aggregations=["heldBy:Tate Gallery Archive"])
+        self.records_client.search(
+            filter_aggregations=["heldBy:Tate Gallery Archive"]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -372,7 +385,9 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_filter_held_by_with_special_chars(self):
         self.records_client.search(
-            filter_aggregations=["heldBy:1/ 2( 3) 4: 5, 6& 7- 8| 9+ 10@ 11! 12."]
+            filter_aggregations=[
+                "heldBy:1/ 2( 3) 4: 5, 6& 7- 8| 9+ 10@ 11! 12."
+            ]
         )
 
         self.assertEqual(len(responses.calls), 1)
@@ -422,7 +437,9 @@ class ClientSearchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_filter_level(self):
-        self.records_client.search(filter_aggregations=["level:Item", "level:Piece"])
+        self.records_client.search(
+            filter_aggregations=["level:Item", "level:Piece"]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -717,7 +734,9 @@ class ClientFetchTest(SimpleTestCase):
 class ClientFetchAllTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
-        responses.add(responses.GET, f"{settings.CLIENT_BASE_URL}/fetchAll", json={})
+        responses.add(
+            responses.GET, f"{settings.CLIENT_BASE_URL}/fetchAll", json={}
+        )
 
     @responses.activate
     def test_no_arguments_makes_request_with_no_parameters(self):
@@ -725,7 +744,8 @@ class ClientFetchAllTest(SimpleTestCase):
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
-            responses.calls[0].request.url, f"{settings.CLIENT_BASE_URL}/fetchAll"
+            responses.calls[0].request.url,
+            f"{settings.CLIENT_BASE_URL}/fetchAll",
         )
 
     @responses.activate
@@ -740,7 +760,9 @@ class ClientFetchAllTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaids(self):
-        self.records_client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
+        self.records_client.fetch_all(
+            iaids=["iaid-one", "iaid-two", "iaid-three"]
+        )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
@@ -864,7 +886,9 @@ class TestClientFetchReponse(SimpleTestCase):
             status=418,
         )
 
-        with self.assertRaisesMessage(ClientAPICommunicationError, "I'm a teapot"):
+        with self.assertRaisesMessage(
+            ClientAPICommunicationError, "I'm a teapot"
+        ):
             self.records_client.fetch()
 
     @responses.activate
@@ -893,7 +917,9 @@ class TestClientFetchReponse(SimpleTestCase):
             self.records_client.fetch()
 
     @responses.activate
-    def test_raises_multipleobjectsreturned_when_multiple_results_received(self):
+    def test_raises_multipleobjectsreturned_when_multiple_results_received(
+        self,
+    ):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
@@ -998,7 +1024,9 @@ class TestClientSearchReponse(SimpleTestCase):
             status=418,
         )
 
-        with self.assertRaisesMessage(ClientAPICommunicationError, "I'm a teapot"):
+        with self.assertRaisesMessage(
+            ClientAPICommunicationError, "I'm a teapot"
+        ):
             self.records_client.search()
 
     @responses.activate
@@ -1140,7 +1168,9 @@ class TestClientFetchAllReponse(SimpleTestCase):
             status=418,
         )
 
-        with self.assertRaisesMessage(ClientAPICommunicationError, "I'm a teapot"):
+        with self.assertRaisesMessage(
+            ClientAPICommunicationError, "I'm a teapot"
+        ):
             self.records_client.fetch_all()
 
     @responses.activate
@@ -1151,7 +1181,12 @@ class TestClientFetchAllReponse(SimpleTestCase):
             json={
                 "took": 85,
                 "timed_out": False,
-                "_shards": {"total": 2, "successful": 2, "skipped": 0, "failed": 0},
+                "_shards": {
+                    "total": 2,
+                    "successful": 2,
+                    "skipped": 0,
+                    "failed": 0,
+                },
                 "hits": {
                     "total": {"value": 0, "relation": "eq"},
                     "max_score": 14.217057,

@@ -46,7 +46,12 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=["bold", "italic", "link", "ul"],
+                                        features=[
+                                            "bold",
+                                            "italic",
+                                            "link",
+                                            "ul",
+                                        ],
                                         required=True,
                                     ),
                                 ),
@@ -68,7 +73,10 @@ class Migration(migrations.Migration):
                         "featuredcollection",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(max_length=100),
+                                ),
                                 (
                                     "description",
                                     wagtail.blocks.TextBlock(max_length=200),
@@ -76,7 +84,9 @@ class Migration(migrations.Migration):
                                 (
                                     "items",
                                     etna.core.blocks.page_list.PageListBlock(
-                                        "articles.InsightsPage", max_num=9, min_num=3
+                                        "articles.InsightsPage",
+                                        max_num=9,
+                                        min_num=3,
                                     ),
                                 ),
                             ]
@@ -191,7 +201,9 @@ class Migration(migrations.Migration):
                                                         (
                                                             "caption",
                                                             wagtail.blocks.RichTextBlock(
-                                                                features=["link"],
+                                                                features=[
+                                                                    "link"
+                                                                ],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
                                                                 required=False,
@@ -320,7 +332,10 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    ("video", "Video"),
+                                                                    (
+                                                                        "video",
+                                                                        "Video",
+                                                                    ),
                                                                     (
                                                                         "video-external",
                                                                         "External video",

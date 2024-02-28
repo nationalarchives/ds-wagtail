@@ -13,7 +13,8 @@ class Migration(migrations.Migration):
             model_name="recordarticlepage",
             name="mark_new_on_next_publish",
             field=models.BooleanField(
-                default=False, verbose_name="mark this page as 'new' when published"
+                default=False,
+                verbose_name="mark this page as 'new' when published",
             ),
         ),
         migrations.AddField(

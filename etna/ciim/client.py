@@ -111,9 +111,13 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
             # replace special chars
             prepared_value = re.sub(regex, subst, value, 0, re.MULTILINE)
             # replace multiple space
-            prepared_value = re.sub(" +", subst, prepared_value, 0, re.MULTILINE)
+            prepared_value = re.sub(
+                " +", subst, prepared_value, 0, re.MULTILINE
+            )
             filter_prepared = (
-                field + ":" + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
+                field
+                + ":"
+                + re.sub(regex, subst, prepared_value, 0, re.MULTILINE)
             )
         else:
             filter_prepared = field + ":" + value
@@ -228,7 +232,9 @@ class ClientAPI:
         """
         if not isinstance(value, datetime):
             value = datetime.combine(
-                value, supplementary_time or time.min, tzinfo=get_current_timezone()
+                value,
+                supplementary_time or time.min,
+                tzinfo=get_current_timezone(),
             )
         return value.isoformat()
 
@@ -249,7 +255,9 @@ class ClientAPI:
 
         aggregations_data = response_data.get("aggregations", {})
         if bucket_counts is None:
-            bucket_counts = aggregations_data.get("group", {}).get("buckets", [])
+            bucket_counts = aggregations_data.get("group", {}).get(
+                "buckets", []
+            )
 
         return ResultList(
             hits=hits,
@@ -367,7 +375,9 @@ class ClientAPI:
             "sortOrder": sort_order,
             "template": template,
             "aggregations": aggregations,
-            "filterAggregations": prepare_filter_aggregations(filter_aggregations),
+            "filterAggregations": prepare_filter_aggregations(
+                filter_aggregations
+            ),
             "filter": filter_keyword,
             "from": offset,
             "size": size,
@@ -445,14 +455,18 @@ class ClientAPI:
         params = {
             "q": q,
             "aggregations": aggregations,
-            "filterAggregations": prepare_filter_aggregations(filter_aggregations),
+            "filterAggregations": prepare_filter_aggregations(
+                filter_aggregations
+            ),
             "template": template,
             "from": offset,
             "size": size,
         }
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/searchAll", params=params)
+        response = self.make_request(
+            f"{self.base_url}/searchAll", params=params
+        )
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()
@@ -461,7 +475,8 @@ class ClientAPI:
         # Each of these responses is converted to it's own `ResultList`, and the collective
         # `ResultList` objects returned as tuple.
         return tuple(
-            self.resultlist_from_response(r) for r in response_data.get("responses", ())
+            self.resultlist_from_response(r)
+            for r in response_data.get("responses", ())
         )
 
     def search_unified(
@@ -516,7 +531,9 @@ class ClientAPI:
         }
 
         # Get HTTP response from the API
-        response = self.make_request(f"{self.base_url}/searchUnified", params=params)
+        response = self.make_request(
+            f"{self.base_url}/searchUnified", params=params
+        )
 
         # Convert the HTTP response to a Python dict
         response_data = response.json()

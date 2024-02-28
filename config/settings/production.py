@@ -12,7 +12,9 @@ DEBUG = True
 SECRET_KEY = os.getenv("SECRET_KEY", "")
 # Need to get the IP of the load balancer or reverse proxy
 ALLOWED_HOSTS = ["*"]
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+STATICFILES_STORAGE = (
+    "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
+)
 STATIC_ROOT = "/app/static"
 
 try:

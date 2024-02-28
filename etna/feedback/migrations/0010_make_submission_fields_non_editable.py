@@ -22,7 +22,9 @@ class Migration(migrations.Migration):
             model_name="feedbacksubmission",
             name="comment_prompt_text",
             field=models.CharField(
-                editable=False, max_length=200, verbose_name="comment prompt text"
+                editable=False,
+                max_length=200,
+                verbose_name="comment prompt text",
             ),
         ),
         migrations.AlterField(
@@ -57,14 +59,19 @@ class Migration(migrations.Migration):
             model_name="feedbacksubmission",
             name="page_revision_published",
             field=models.DateTimeField(
-                editable=False, null=True, verbose_name="page revision published at"
+                editable=False,
+                null=True,
+                verbose_name="page revision published at",
             ),
         ),
         migrations.AlterField(
             model_name="feedbacksubmission",
             name="path",
             field=models.CharField(
-                db_index=True, editable=False, max_length=255, verbose_name="path"
+                db_index=True,
+                editable=False,
+                max_length=255,
+                verbose_name="path",
             ),
         ),
         migrations.AlterField(

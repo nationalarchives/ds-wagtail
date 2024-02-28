@@ -21,7 +21,10 @@ class Migration(migrations.Migration):
                         "promoted_pages",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(max_length=100),
+                                ),
                                 (
                                     "sub_heading",
                                     wagtail.blocks.CharBlock(max_length=200),
@@ -51,7 +54,10 @@ class Migration(migrations.Migration):
                         "promoted_pages",
                         wagtail.blocks.StructBlock(
                             [
-                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
+                                (
+                                    "heading",
+                                    wagtail.blocks.CharBlock(max_length=100),
+                                ),
                                 (
                                     "sub_heading",
                                     wagtail.blocks.CharBlock(max_length=200),

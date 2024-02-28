@@ -58,7 +58,9 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         label="Duration",
         help_text="Podcast or video duration.",
     )
-    url = blocks.URLBlock(label="External URL", help_text="URL for the external page")
+    url = blocks.URLBlock(
+        label="External URL", help_text="URL for the external page"
+    )
     target_blank = blocks.BooleanBlock(
         label=format_html(
             "%s <p style='font-size: 11px;'>%s</p>"
@@ -145,7 +147,9 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     teaser_image = ImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
-    url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
+    url = blocks.URLBlock(
+        label="external URL", help_text="URL for the external page"
+    )
 
     class Meta:
         icon = "external-link-alt"

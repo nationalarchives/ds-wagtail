@@ -6,7 +6,10 @@ import wagtail.fields
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("collections", "0037_timeperiodexplorerpage_featured_record_article_and_more"),
+        (
+            "collections",
+            "0037_timeperiodexplorerpage_featured_record_article_and_more",
+        ),
     ]
 
     operations = [
@@ -23,7 +26,8 @@ class Migration(migrations.Migration):
             model_name="highlightgallerypage",
             name="display_content_warning",
             field=models.BooleanField(
-                default=False, verbose_name="display a content warning on this page"
+                default=False,
+                verbose_name="display a content warning on this page",
             ),
         ),
     ]

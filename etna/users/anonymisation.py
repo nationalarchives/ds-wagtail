@@ -9,7 +9,13 @@ class UserAnonymiser(BaseModelAnonymiser):
     model = User
 
     # generate random replacement values for these fields
-    anonymise_fields = ["first_name", "last_name", "email", "password", "username"]
+    anonymise_fields = [
+        "first_name",
+        "last_name",
+        "email",
+        "password",
+        "username",
+    ]
 
     def generate_email(self, field, obj):
         # Use the fake 'first_name' and 'last_name' to create a new value

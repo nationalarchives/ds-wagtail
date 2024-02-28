@@ -55,11 +55,16 @@ class Migration(migrations.Migration):
                     "sort_order",
                     models.IntegerField(blank=True, editable=False, null=True),
                 ),
-                ("label", models.CharField(max_length=50, verbose_name="label")),
+                (
+                    "label",
+                    models.CharField(max_length=50, verbose_name="label"),
+                ),
                 (
                     "url_name",
                     models.CharField(
-                        blank=True, max_length=255, verbose_name="OR a fixed URL"
+                        blank=True,
+                        max_length=255,
+                        verbose_name="OR a fixed URL",
                     ),
                 ),
                 (

@@ -16,7 +16,10 @@ def convert_to_foreign_key(apps, schema_editor):
 class Migration(migrations.Migration):
     dependencies = [
         ("authors", "0002_authorindexpage_authorpage_authortag_delete_author"),
-        ("articles", "0097_alter_articlepage_mark_new_on_next_publish_and_more"),
+        (
+            "articles",
+            "0097_alter_articlepage_mark_new_on_next_publish_and_more",
+        ),
     ]
 
     operations = [

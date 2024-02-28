@@ -20,7 +20,9 @@ class TestWhatsOnPageEventFiltering(TestCase):
     def setUpTestData(cls):
         cls.home_page = HomePageFactory()
 
-        cls.whats_on_page = WhatsOnPageFactory(title="What's On", parent=cls.home_page)
+        cls.whats_on_page = WhatsOnPageFactory(
+            title="What's On", parent=cls.home_page
+        )
 
         cls.tour_event_type = EventType(
             name="Tour",
@@ -171,7 +173,8 @@ class TestWhatsOnPageEventFiltering(TestCase):
     def assert_filtered_event_pages_equal(self, filter_params, expected_result):
         events = self.whats_on_page.get_events_queryset()
         self.assertQuerySetEqual(
-            self.whats_on_page.filter_events(events, filter_params), expected_result
+            self.whats_on_page.filter_events(events, filter_params),
+            expected_result,
         )
 
     def test_filtered_event_pages(self):
@@ -187,7 +190,10 @@ class TestWhatsOnPageEventFiltering(TestCase):
                     self.event_page_6,
                 ],
             ),
-            ({"is_online_event": True}, [self.featured_event, self.event_page_2]),
+            (
+                {"is_online_event": True},
+                [self.featured_event, self.event_page_2],
+            ),
             (
                 {"event_type": self.talk_event_type},
                 [self.featured_event, self.event_page_2],
@@ -202,7 +208,10 @@ class TestWhatsOnPageEventFiltering(TestCase):
                 ],
             ),
             ({"family_friendly": True}, [self.event_page_2]),
-            ({"date": date(2023, 10, 20)}, [self.event_page_3, self.event_page_4]),
+            (
+                {"date": date(2023, 10, 20)},
+                [self.event_page_3, self.event_page_4],
+            ),
         )
 
         for filter_params, expected in test_cases:
@@ -222,10 +231,19 @@ class TestWhatsOnPageEventFiltering(TestCase):
 
     def test_date_time_range(self):
         test_cases = (
-            (self.event_page_3.date_time_range, "20 October 2023 to 21 October 2023"),
+            (
+                self.event_page_3.date_time_range,
+                "20 October 2023 to 21 October 2023",
+            ),
             # note this expects an en dash
-            (self.event_page_4.date_time_range, "Friday 20 October 2023, 10:30–20:30"),
-            (self.event_page_5.date_time_range, "Sunday 22 October 2023, 10:30"),
+            (
+                self.event_page_4.date_time_range,
+                "Friday 20 October 2023, 10:30–20:30",
+            ),
+            (
+                self.event_page_5.date_time_range,
+                "Sunday 22 October 2023, 10:30",
+            ),
             (self.event_page_6.date_time_range, "Sunday 22 October 2023"),
         )
 
@@ -250,7 +268,9 @@ class TestWhatsOnPageEventFiltering(TestCase):
         for field_name in query_dict.keys():
             with self.subTest(field_name=field_name):
                 url_parts = urllib.parse.urlparse(
-                    self.whats_on_page.build_unset_filter_url(request, field_name)
+                    self.whats_on_page.build_unset_filter_url(
+                        request, field_name
+                    )
                 )
                 updated_query_dict = urllib.parse.parse_qs(url_parts.query)
                 self.assertNotIn(field_name, updated_query_dict)
@@ -283,5 +303,7 @@ class TestWhatsOnPageEventFiltering(TestCase):
         """
         request = self.factory.get(self.whats_on_page.url)
         context = self.whats_on_page.get_context(request)
-        self.assertIn(self.featured_event, self.whats_on_page.get_events_queryset())
+        self.assertIn(
+            self.featured_event, self.whats_on_page.get_events_queryset()
+        )
         self.assertNotIn(self.featured_event, context["events"])

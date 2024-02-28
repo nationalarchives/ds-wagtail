@@ -63,7 +63,9 @@ class Bucket:
     results: List[Any] = None
 
     # By default, 10 items of each aggregation are requested from the API. This can be overridden by using a string in the format '{name}:{number_of_items}'
-    aggregations: List[str] = field(default_factory=lambda: DEFAULT_AGGREGATIONS)
+    aggregations: List[str] = field(
+        default_factory=lambda: DEFAULT_AGGREGATIONS
+    )
 
     @cached_property
     def aggregations_normalised(self) -> List[str]:
@@ -146,7 +148,8 @@ CATALOGUE_BUCKETS = BucketList(
             key="creator",
             label="Record creators",
             description="Results for original creators of records (for example organisations, businesses, people, diaries and manors) that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.TYPE, Aggregation.COUNTRY],
+            aggregations=DEFAULT_AGGREGATIONS
+            + [Aggregation.TYPE, Aggregation.COUNTRY],
         ),
         Bucket(
             key="archive",
@@ -654,7 +657,8 @@ COLLECTION_NAMES = {
 }
 
 COLLECTION_CHOICES = tuple(
-    (k, f"{k} - {v}") for k, v in sorted(COLLECTION_NAMES.items(), key=lambda x: x[1])
+    (k, f"{k} - {v}")
+    for k, v in sorted(COLLECTION_NAMES.items(), key=lambda x: x[1])
 )
 
 

@@ -8,13 +8,13 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
 
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.models import BasePage
 
 
@@ -33,7 +33,13 @@ class AuthorIndexPage(BasePage):
     @cached_property
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
-        return self.get_children().type(AuthorPage).order_by("title").live().specific()
+        return (
+            self.get_children()
+            .type(AuthorPage)
+            .order_by("title")
+            .live()
+            .specific()
+        )
 
 
 # TODO: Make better
@@ -88,7 +94,8 @@ class AuthorPage(BasePage):
         APIField("summary"),
         APIField("image"),
         APIField(
-            "authored_focused_articles", serializer=AuthorPageSerializer(many=True)
+            "authored_focused_articles",
+            serializer=AuthorPageSerializer(many=True),
         ),
         APIField(
             "image_jpg",
@@ -143,7 +150,9 @@ class AuthorTag(models.Model):
     for `FocusedArticlePage`) to the page's model to use this.
     """
 
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="author_tags")
+    page = ParentalKey(
+        Page, on_delete=models.CASCADE, related_name="author_tags"
+    )
     author = models.ForeignKey(
         AuthorPage,
         verbose_name="author",

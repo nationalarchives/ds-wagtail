@@ -31,7 +31,9 @@ def create_homepage(apps, schema_editor):
     )
 
     # Create a site with the new homepage set as the root
-    Site.objects.create(hostname="localhost", root_page=homepage, is_default_site=True)
+    Site.objects.create(
+        hostname="localhost", root_page=homepage, is_default_site=True
+    )
 
 
 def remove_homepage(apps, schema_editor):

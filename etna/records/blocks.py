@@ -64,7 +64,9 @@ class RecordChooserBlock(blocks.ChooserBlock):
         """
         if not values:
             return []
-        records_by_id = {r.iaid: r for r in records_client.fetch_all(iaids=values)}
+        records_by_id = {
+            r.iaid: r for r in records_client.fetch_all(iaids=values)
+        }
         return list(records_by_id.get(iaid) for iaid in values)
 
     def clean(self, value):
@@ -111,7 +113,9 @@ class RecordChooserBlock(blocks.ChooserBlock):
 
 class RecordLinkBlock(blocks.StructBlock):
     record = RecordChooserBlock(label=_("Record"))
-    descriptive_title = blocks.CharBlock(label=_("Descriptive title"), max_length=255)
+    descriptive_title = blocks.CharBlock(
+        label=_("Descriptive title"), max_length=255
+    )
     record_dates = blocks.CharBlock(label=_("Date(s)"), max_length=100)
     thumbnail_image = ImageChooserBlock(
         label=_("Thumbnail image (optional)"), required=False

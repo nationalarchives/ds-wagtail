@@ -23,7 +23,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="More to explore", max_length=100
+                                        default="More to explore",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
@@ -58,7 +59,8 @@ class Migration(migrations.Migration):
                                 (
                                     "heading",
                                     wagtail.blocks.CharBlock(
-                                        default="More to explore", max_length=100
+                                        default="More to explore",
+                                        max_length=100,
                                     ),
                                 ),
                                 (
