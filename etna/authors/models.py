@@ -14,6 +14,7 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
+from etna.core.serializers import LinkedPageSerializer
 
 from etna.core.models import BasePage
 
@@ -152,20 +153,11 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    title = serializers.CharField()
-    teaser_image_jpeg = ImageRenditionField(
-        "fill-400x400|format-jpeg|jpegquality-60", source="image"
+class AuthorSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-400x400", jpeg_quality=60, webp_quality=80, source="image"
     )
-    teaser_image_webp = ImageRenditionField(
-        "fill-400x400|format-webp|webpquality-80", source="image"
-    )
-    url_path = serializers.SerializerMethodField()
-    full_url = serializers.URLField()
     role = serializers.CharField()
-
-    def get_url_path(self, obj):
-        return obj.get_url()
 
     class Meta:
         model = AuthorTag
