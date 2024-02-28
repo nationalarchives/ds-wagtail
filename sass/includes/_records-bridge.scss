@@ -38,8 +38,9 @@
         // provides visual boundary in high contrast mode
         border: 1px solid transparent;
         background-color: $color__white;
+        // adjust flex for padding
+        flex: 1 0 calc(50% - 6rem);
         padding: 3rem 3rem 3rem 2rem;
-        width: 50%;
 
         p {
             margin-top: 1rem;
