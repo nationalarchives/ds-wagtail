@@ -75,9 +75,7 @@ class TestRecordURLTag(SimpleTestCase):
                         "@entity": "reference",
                         "level": {"code": 2},
                         "source": {"value": "CAT"},
-                        "summary": {
-                            "title": "Records of Naval Staff Departments"
-                        },
+                        "summary": {"title": "Records of Naval Staff Departments"},
                     },
                     {
                         "@admin": {
@@ -523,10 +521,7 @@ class TestRecordURLTag(SimpleTestCase):
 
     def test_default(self):
         for attribute_name, expected_result in (
-            (
-                "record_instance",
-                "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
-            ),
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -544,9 +539,7 @@ class TestRecordURLTag(SimpleTestCase):
                 )
                 # is_editorial should't make a difference unless
                 # FEATURE_RECORD_LINKS_GO_TO_DISCOVERY is True
-                self.assertEqual(
-                    record_url(source, is_editorial=True), expected_result
-                )
+                self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_discovery_links_when_is_editorial_is_true(self):
@@ -566,17 +559,12 @@ class TestRecordURLTag(SimpleTestCase):
         ):
             with self.subTest(attribute_name):
                 source = getattr(self, attribute_name)
-                self.assertEqual(
-                    record_url(source, is_editorial=True), expected_result
-                )
+                self.assertEqual(record_url(source, is_editorial=True), expected_result)
 
     @override_settings(FEATURE_RECORD_LINKS_GO_TO_DISCOVERY=True)
     def test_no_discovery_links_when_is_editorial_is_false(self):
         for attribute_name, expected_result in (
-            (
-                "record_instance",
-                "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
-            ),
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -596,8 +584,7 @@ class TestRecordURLTag(SimpleTestCase):
         for iaid_format, record, expected_result in self.records_various:
             with self.subTest(iaid_format):
                 self.assertEqual(
-                    record_url(record, order_from_discovery=True),
-                    expected_result,
+                    record_url(record, order_from_discovery=True), expected_result
                 )
 
     def test_repository_links(self):
@@ -612,10 +599,7 @@ class TestRecordURLTag(SimpleTestCase):
     def test_non_reference_number_url(self):
         # tests using raw source
         for attribute_name, expected_result in (
-            (
-                "record_instance",
-                "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
-            ),
+            ("record_instance", "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/"),
             (
                 "record_instance_no_reference",
                 "/catalogue/id/e7e92a0b-3666-4fd6-9dac-9d9530b0888c/",
@@ -729,11 +713,7 @@ class TestRecordURLTag(SimpleTestCase):
             ("record_lettercode", self.record_lettercode, "/catalogue/id/C27/"),
             ("record_division", self.record_division, "/catalogue/id/C632/"),
             ("record_series", self.record_series, "/catalogue/id/C4144/"),
-            (
-                "record_sub_series",
-                self.record_sub_series,
-                "/catalogue/id/C88345/",
-            ),
+            ("record_sub_series", self.record_sub_series, "/catalogue/id/C88345/"),
             (
                 "record_sub_sub_series",
                 self.record_sub_sub_series,
@@ -756,21 +736,9 @@ class TestRecordURLTag(SimpleTestCase):
         self.hierarchy_level_7 = self.record.hierarchy[3]
 
         for name, hierarchy_record, expected in (
-            (
-                "hierarchy_level_1",
-                self.hierarchy_level_1,
-                "/catalogue/id/C162/",
-            ),
-            (
-                "hierarchy_level_3",
-                self.hierarchy_level_3,
-                "/catalogue/id/C9685/",
-            ),
-            (
-                "hierarchy_level_6",
-                self.hierarchy_level_6,
-                "/catalogue/id/C5947536/",
-            ),
+            ("hierarchy_level_1", self.hierarchy_level_1, "/catalogue/id/C162/"),
+            ("hierarchy_level_3", self.hierarchy_level_3, "/catalogue/id/C9685/"),
+            ("hierarchy_level_6", self.hierarchy_level_6, "/catalogue/id/C5947536/"),
             (
                 "hierarchy_level_7",
                 self.hierarchy_level_7,
@@ -1116,8 +1084,7 @@ class TestRecordURLTag(SimpleTestCase):
         ):
             with self.subTest(name):
                 self.assertEqual(
-                    is_page_current_item_in_hierarchy(page, level_item),
-                    expected_result,
+                    is_page_current_item_in_hierarchy(page, level_item), expected_result
                 )
 
     def test_level_name(self):
@@ -1130,9 +1097,7 @@ class TestRecordURLTag(SimpleTestCase):
                 # and this function then retrieves the level name associated
                 # with that level code/record
                 self.assertEqual(
-                    level_name(
-                        current_record.level_code, current_record.is_tna
-                    ),
+                    level_name(current_record.level_code, current_record.is_tna),
                     expected_result,
                 )
 
@@ -1158,9 +1123,7 @@ class TestRecordURLTag(SimpleTestCase):
                 # with that hierarchy, depending on the state of is_tna
                 self.assertEqual(
                     breadcrumb_items(
-                        current_record.hierarchy,
-                        current_record.is_tna,
-                        current_record,
+                        current_record.hierarchy, current_record.is_tna, current_record
                     ),
                     expected_result,
                 )

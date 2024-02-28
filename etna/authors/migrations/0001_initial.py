@@ -26,18 +26,9 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("name", models.CharField(max_length=100)),
-                (
-                    "role",
-                    models.CharField(blank=True, max_length=100, null=True),
-                ),
-                (
-                    "summary",
-                    wagtail.fields.RichTextField(blank=True, null=True),
-                ),
-                (
-                    "bio_link",
-                    models.URLField(help_text="Link to external bio page"),
-                ),
+                ("role", models.CharField(blank=True, max_length=100, null=True)),
+                ("summary", wagtail.fields.RichTextField(blank=True, null=True)),
+                ("bio_link", models.URLField(help_text="Link to external bio page")),
                 (
                     "bio_link_label",
                     models.CharField(

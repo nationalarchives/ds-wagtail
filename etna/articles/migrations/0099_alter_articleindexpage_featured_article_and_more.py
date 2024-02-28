@@ -36,10 +36,7 @@ class Migration(migrations.Migration):
                         "featuredpages",
                         wagtail.blocks.StructBlock(
                             [
-                                (
-                                    "heading",
-                                    wagtail.blocks.CharBlock(max_length=100),
-                                ),
+                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
                                 (
                                     "description",
                                     wagtail.blocks.TextBlock(max_length=200),

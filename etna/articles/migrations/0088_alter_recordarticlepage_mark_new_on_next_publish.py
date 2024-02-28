@@ -5,10 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        (
-            "articles",
-            "0087_recordarticlepage_mark_new_on_next_publish_and_more",
-        ),
+        ("articles", "0087_recordarticlepage_mark_new_on_next_publish_and_more"),
     ]
 
     operations = [
@@ -16,8 +13,7 @@ class Migration(migrations.Migration):
             model_name="recordarticlepage",
             name="mark_new_on_next_publish",
             field=models.BooleanField(
-                default=True,
-                verbose_name="mark this page as 'new' when published",
+                default=True, verbose_name="mark this page as 'new' when published"
             ),
         ),
     ]

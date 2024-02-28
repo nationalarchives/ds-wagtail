@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import StreamField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -20,7 +21,6 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import LargeCardLinksBlock
-from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 
@@ -306,9 +306,7 @@ class WhatsOnPage(BasePageWithIntro):
         # If so, return just the event listing, not the full page
         if request.headers.get("JS-Request"):
             return render(
-                request,
-                "includes/whats-on-listing.html",
-                self.get_context(request),
+                request, "includes/whats-on-listing.html", self.get_context(request)
             )
         else:
             # Display whats on page as usual
@@ -318,12 +316,7 @@ class WhatsOnPage(BasePageWithIntro):
         """
         Returns a queryset of events that are children of this page.
         """
-        return (
-            EventPage.objects.child_of(self)
-            .live()
-            .public()
-            .order_by("start_date")
-        )
+        return EventPage.objects.child_of(self).live().public().order_by("start_date")
 
     def filter_events(self, events, filter_dict):
         """
@@ -336,9 +329,7 @@ class WhatsOnPage(BasePageWithIntro):
         if filter_dict.get("is_online_event"):
             events = events.filter(venue_type=VenueType.ONLINE)
         if filter_dict.get("family_friendly"):
-            events = events.filter(
-                event_audience_types__audience_type__slug="families"
-            )
+            events = events.filter(event_audience_types__audience_type__slug="families")
 
         return events
 
@@ -388,9 +379,7 @@ class WhatsOnPage(BasePageWithIntro):
             context["show_featured_event"],
         ) = self.exclude_featured_event_from_listing(events)
         context["filter_form"] = filter_form
-        context["active_filters"] = self.get_active_filters(
-            request, filter_form
-        )
+        context["active_filters"] = self.get_active_filters(request, filter_form)
         context["total_results_with_featured"] = events.count()
         return context
 
@@ -400,9 +389,7 @@ class WhatsOnPage(BasePageWithIntro):
             active_filters.append(
                 {
                     "label": date,
-                    "remove_filter_url": self.build_unset_filter_url(
-                        request, "date"
-                    ),
+                    "remove_filter_url": self.build_unset_filter_url(request, "date"),
                 },
             )
         if event_type := filter_form.cleaned_data.get("event_type"):
@@ -439,12 +426,8 @@ class WhatsOnPage(BasePageWithIntro):
         Build a URL that will remove the filter indicated by `field_name' from the
         request.
         """
-        params_dict = {
-            k: v for k, v in request.GET.dict().items() if k != field_name
-        }
-        return urlunparse(
-            path=request.path, query=urllib.parse.urlencode(params_dict)
-        )
+        params_dict = {k: v for k, v in request.GET.dict().items() if k != field_name}
+        return urlunparse(path=request.path, query=urllib.parse.urlencode(params_dict))
 
     # DataLayerMixin overrides
     gtm_content_group = "What's On"
@@ -617,9 +600,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
     registration_info = APIRichTextField(
         verbose_name=_("registration info"),
         blank=True,
-        help_text=_(
-            "Additional information about how to register for the event."
-        ),
+        help_text=_("Additional information about how to register for the event."),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
 
@@ -757,9 +738,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         format_day_and_date = "%A %-d %B %Y"
         # One session on one date where start and end times are the same
         # return eg. Monday 1 January 2024, 19:00
-        if (self.start_date == self.end_date) and (
-            len(self.sessions.all()) == 1
-        ):
+        if (self.start_date == self.end_date) and (len(self.sessions.all()) == 1):
             return self.start_date.strftime(format_day_date_and_time)
         # One session on one date where there are values for both start time and end time
         # eg. Monday 1 January 2024, 19:00–20:00 (note this uses an en dash)
@@ -799,10 +778,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                         ),
                     }
                 )
-            elif (
-                self.venue_type == VenueType.IN_PERSON
-                and not self.venue_address
-            ):
+            elif self.venue_type == VenueType.IN_PERSON and not self.venue_address:
                 raise ValidationError(
                     {
                         "venue_address": _(
@@ -810,10 +786,7 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
                         ),
                     }
                 )
-            elif (
-                self.venue_type == VenueType.ONLINE
-                and not self.video_conference_info
-            ):
+            elif self.venue_type == VenueType.ONLINE and not self.video_conference_info:
                 raise ValidationError(
                     {
                         "video_conference_info": _(
@@ -1228,12 +1201,8 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
             if self.start_date > self.end_date:
                 raise ValidationError(
                     {
-                        "start_date": _(
-                            "The start date must be before the end date."
-                        ),
-                        "end_date": _(
-                            "The end date must be after the start date."
-                        ),
+                        "start_date": _("The start date must be before the end date."),
+                        "end_date": _("The end date must be after the start date."),
                     }
                 )
         return super().clean()

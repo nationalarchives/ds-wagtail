@@ -49,9 +49,7 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
     def configured_choice_labels(self):
         return {value: label for value, label in self.configured_choices}
 
-    def choice_label_from_api_data(
-        self, data: Dict[str, Union[str, int]]
-    ) -> str:
+    def choice_label_from_api_data(self, data: Dict[str, Union[str, int]]) -> str:
         count = f"{data['doc_count']:,}"
         try:
             # Use a label from the configured choice values, if available
@@ -111,9 +109,7 @@ class FeaturedSearchForm(forms.Form):
     q = forms.CharField(
         label="Search here",
         required=False,
-        widget=forms.TextInput(
-            attrs={"class": "search-results-hero__form-search-box"}
-        ),
+        widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
 
 
@@ -130,9 +126,7 @@ class BaseCollectionSearchForm(forms.Form):
     q = forms.CharField(
         label="Search term",
         required=False,
-        widget=forms.TextInput(
-            attrs={"class": "search-results-hero__form-search-box"}
-        ),
+        widget=forms.TextInput(attrs={"class": "search-results-hero__form-search-box"}),
     )
     filter_keyword = forms.CharField(
         label="Search within",

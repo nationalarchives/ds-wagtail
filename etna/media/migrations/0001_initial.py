@@ -32,21 +32,12 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                (
-                    "title",
-                    models.CharField(max_length=255, verbose_name="title"),
-                ),
-                (
-                    "file",
-                    models.FileField(upload_to="media", verbose_name="file"),
-                ),
+                ("title", models.CharField(max_length=255, verbose_name="title")),
+                ("file", models.FileField(upload_to="media", verbose_name="file")),
                 (
                     "type",
                     models.CharField(
-                        choices=[
-                            ("audio", "Audio file"),
-                            ("video", "Video file"),
-                        ],
+                        choices=[("audio", "Audio file"), ("video", "Video file")],
                         max_length=255,
                     ),
                 ),
@@ -56,9 +47,7 @@ class Migration(migrations.Migration):
                         blank=True,
                         default=0,
                         help_text="Duration in seconds",
-                        validators=[
-                            django.core.validators.MinValueValidator(0)
-                        ],
+                        validators=[django.core.validators.MinValueValidator(0)],
                         verbose_name="duration",
                     ),
                 ),
@@ -84,9 +73,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "created_at",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="created at"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="created at"),
                 ),
                 ("date", models.DateField(blank=True, null=True)),
                 (

@@ -19,8 +19,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="feedbacksubmission",
             name="page_type",
-            field=models.TextField(
-                editable=False, null=True, verbose_name="page type"
-            ),
+            field=models.TextField(editable=False, null=True, verbose_name="page type"),
         ),
     ]

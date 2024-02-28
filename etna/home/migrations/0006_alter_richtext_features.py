@@ -31,12 +31,7 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     wagtail.blocks.RichTextBlock(
-                                        features=[
-                                            "bold",
-                                            "italic",
-                                            "link",
-                                            "ul",
-                                        ],
+                                        features=["bold", "italic", "link", "ul"],
                                         required=True,
                                     ),
                                 ),

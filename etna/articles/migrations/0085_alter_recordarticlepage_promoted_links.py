@@ -21,10 +21,7 @@ class Migration(migrations.Migration):
                         "promoted_link",
                         wagtail.blocks.StructBlock(
                             [
-                                (
-                                    "heading",
-                                    wagtail.blocks.CharBlock(max_length=100),
-                                ),
+                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
                                 (
                                     "promoted_items",
                                     wagtail.blocks.ListBlock(

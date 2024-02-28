@@ -15,10 +15,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        (
-            "articles",
-            "0097_alter_articlepage_mark_new_on_next_publish_and_more",
-        ),
+        ("articles", "0097_alter_articlepage_mark_new_on_next_publish_and_more"),
         ("images", "0008_alter_customimagerendition_file"),
         ("wagtailcore", "0089_log_entry_data_json_null_to_object"),
     ]
@@ -39,9 +36,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255, verbose_name="name")),
                 (
                     "slug",
-                    models.SlugField(
-                        max_length=255, unique=True, verbose_name="slug"
-                    ),
+                    models.SlugField(max_length=255, unique=True, verbose_name="slug"),
                 ),
             ],
             options={
@@ -64,9 +59,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255, verbose_name="name")),
                 (
                     "slug",
-                    models.SlugField(
-                        max_length=255, unique=True, verbose_name="slug"
-                    ),
+                    models.SlugField(max_length=255, unique=True, verbose_name="slug"),
                 ),
             ],
             options={
@@ -89,9 +82,7 @@ class Migration(migrations.Migration):
                 ("name", models.CharField(max_length=255, verbose_name="name")),
                 (
                     "slug",
-                    models.SlugField(
-                        max_length=255, unique=True, verbose_name="slug"
-                    ),
+                    models.SlugField(max_length=255, unique=True, verbose_name="slug"),
                 ),
             ],
             options={
@@ -286,10 +277,7 @@ class Migration(migrations.Migration):
                         verbose_name="introductory text",
                     ),
                 ),
-                (
-                    "article_tag_names",
-                    models.TextField(editable=False, null=True),
-                ),
+                ("article_tag_names", models.TextField(editable=False, null=True)),
                 (
                     "start_date",
                     models.DateTimeField(
@@ -376,17 +364,13 @@ class Migration(migrations.Migration):
                 (
                     "registration_url",
                     models.URLField(
-                        editable=False,
-                        max_length=255,
-                        verbose_name="registration url",
+                        editable=False, max_length=255, verbose_name="registration url"
                     ),
                 ),
                 (
                     "registration_cost",
                     models.IntegerField(
-                        editable=False,
-                        null=True,
-                        verbose_name="registration cost",
+                        editable=False, null=True, verbose_name="registration cost"
                     ),
                 ),
                 (

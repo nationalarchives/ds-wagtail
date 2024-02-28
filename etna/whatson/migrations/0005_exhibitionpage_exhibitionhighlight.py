@@ -61,10 +61,7 @@ class Migration(migrations.Migration):
                         verbose_name="introductory text",
                     ),
                 ),
-                (
-                    "article_tag_names",
-                    models.TextField(editable=False, null=True),
-                ),
+                ("article_tag_names", models.TextField(editable=False, null=True)),
                 (
                     "subtitle",
                     models.CharField(
@@ -87,21 +84,14 @@ class Migration(migrations.Migration):
                     "start_date",
                     models.DateTimeField(null=True, verbose_name="start date"),
                 ),
-                (
-                    "end_date",
-                    models.DateTimeField(null=True, verbose_name="end date"),
-                ),
+                ("end_date", models.DateTimeField(null=True, verbose_name="end date")),
                 (
                     "min_price",
-                    models.IntegerField(
-                        default=0, verbose_name="minimum price"
-                    ),
+                    models.IntegerField(default=0, verbose_name="minimum price"),
                 ),
                 (
                     "max_price",
-                    models.IntegerField(
-                        default=0, verbose_name="maximum price"
-                    ),
+                    models.IntegerField(default=0, verbose_name="maximum price"),
                 ),
                 (
                     "dwell_time",
@@ -290,10 +280,7 @@ class Migration(migrations.Migration):
                     "sort_order",
                     models.IntegerField(blank=True, editable=False, null=True),
                 ),
-                (
-                    "title",
-                    models.CharField(max_length=255, verbose_name="title"),
-                ),
+                ("title", models.CharField(max_length=255, verbose_name="title")),
                 (
                     "image",
                     models.ForeignKey(

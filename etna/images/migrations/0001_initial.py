@@ -33,10 +33,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                (
-                    "title",
-                    models.CharField(max_length=255, verbose_name="title"),
-                ),
+                ("title", models.CharField(max_length=255, verbose_name="title")),
                 (
                     "file",
                     models.ImageField(
@@ -46,30 +43,16 @@ class Migration(migrations.Migration):
                         width_field="width",
                     ),
                 ),
-                (
-                    "width",
-                    models.IntegerField(editable=False, verbose_name="width"),
-                ),
-                (
-                    "height",
-                    models.IntegerField(editable=False, verbose_name="height"),
-                ),
+                ("width", models.IntegerField(editable=False, verbose_name="width")),
+                ("height", models.IntegerField(editable=False, verbose_name="height")),
                 (
                     "created_at",
                     models.DateTimeField(
-                        auto_now_add=True,
-                        db_index=True,
-                        verbose_name="created at",
+                        auto_now_add=True, db_index=True, verbose_name="created at"
                     ),
                 ),
-                (
-                    "focal_point_x",
-                    models.PositiveIntegerField(blank=True, null=True),
-                ),
-                (
-                    "focal_point_y",
-                    models.PositiveIntegerField(blank=True, null=True),
-                ),
+                ("focal_point_x", models.PositiveIntegerField(blank=True, null=True)),
+                ("focal_point_y", models.PositiveIntegerField(blank=True, null=True)),
                 (
                     "focal_point_width",
                     models.PositiveIntegerField(blank=True, null=True),
@@ -78,10 +61,7 @@ class Migration(migrations.Migration):
                     "focal_point_height",
                     models.PositiveIntegerField(blank=True, null=True),
                 ),
-                (
-                    "file_size",
-                    models.PositiveIntegerField(editable=False, null=True),
-                ),
+                ("file_size", models.PositiveIntegerField(editable=False, null=True)),
                 (
                     "file_hash",
                     models.CharField(
@@ -185,10 +165,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                (
-                    "filter_spec",
-                    models.CharField(db_index=True, max_length=255),
-                ),
+                ("filter_spec", models.CharField(db_index=True, max_length=255)),
                 (
                     "file",
                     models.ImageField(
@@ -215,9 +192,7 @@ class Migration(migrations.Migration):
                 ),
             ],
             options={
-                "unique_together": {
-                    ("image", "filter_spec", "focal_point_key")
-                },
+                "unique_together": {("image", "filter_spec", "focal_point_key")},
             },
             bases=(wagtail.images.models.ImageFileMixin, models.Model),
         ),

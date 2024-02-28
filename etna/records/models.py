@@ -78,9 +78,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def template(self) -> Dict[str, Any]:
-        return self.get(
-            "@template.details", default=self.get("@template.results", {})
-        )
+        return self.get("@template.details", default=self.get("@template.results", {}))
 
     @cached_property
     def iaid(self) -> str:
@@ -163,9 +161,7 @@ class Record(DataLayerMixin, APIModel):
 
     def _get_raw_summary_title(self) -> str:
         try:
-            return "... ".join(
-                self.highlights["@template.details.summaryTitle"]
-            )
+            return "... ".join(self.highlights["@template.details.summaryTitle"])
         except KeyError:
             pass
         try:
@@ -242,9 +238,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def is_digitised(self) -> bool:
-        return self.get(
-            "digitised", default=self.template.get("digitised", False)
-        )
+        return self.get("digitised", default=self.template.get("digitised", False))
 
     @cached_property
     def availability_delivery_surrogates(self) -> str:
@@ -279,9 +273,7 @@ class Record(DataLayerMixin, APIModel):
     def _get_raw_description(self, use_highlights: bool = False) -> str:
         if use_highlights:
             try:
-                return "... ".join(
-                    self.highlights["@template.details.description"]
-                )
+                return "... ".join(self.highlights["@template.details.description"])
             except KeyError:
                 pass
         try:
@@ -290,10 +282,7 @@ class Record(DataLayerMixin, APIModel):
             pass
         description_items = self.get("description", ())
         for item in description_items:
-            if (
-                item.get("type", "") == "description"
-                or len(description_items) == 1
-            ):
+            if item.get("type", "") == "description" or len(description_items) == 1:
                 return item.get("value", "")
         return ""
 
@@ -321,8 +310,7 @@ class Record(DataLayerMixin, APIModel):
         if self.held_by_id:
             try:
                 return reverse(
-                    "details-page-machine-readable",
-                    kwargs={"iaid": self.held_by_id},
+                    "details-page-machine-readable", kwargs={"iaid": self.held_by_id}
                 )
             except NoReverseMatch:
                 pass
@@ -350,9 +338,7 @@ class Record(DataLayerMixin, APIModel):
 
     @property
     def availability_condition_category(self) -> str:
-        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(
-            self.delivery_option, ""
-        )
+        return settings.AVAILABILITY_CONDITION_CATEGORIES.get(self.delivery_option, "")
 
     @cached_property
     def repo_summary_title(self) -> str:
@@ -428,8 +414,7 @@ class Record(DataLayerMixin, APIModel):
         return tuple(
             Record(item)
             for item in self.get("related", default=())
-            if extract(item, "@link.relationship.value", default="")
-            == "related"
+            if extract(item, "@link.relationship.value", default="") == "related"
         )
 
     @cached_property
@@ -773,10 +758,7 @@ class Record(DataLayerMixin, APIModel):
                         )
                     elif type == "unknown / other":
                         alternative_names += (
-                            {
-                                "label": type.title(),
-                                "value": item.get("value", ""),
-                            },
+                            {"label": type.title(), "value": item.get("value", "")},
                         )
 
         return alternative_names
@@ -840,10 +822,7 @@ class Record(DataLayerMixin, APIModel):
         if description := self.get("description", ()):
             for item in description:
                 if item.get("type") == "biography":
-                    return {
-                        "value": item.get("value", ""),
-                        "url": item.get("url", ""),
-                    }
+                    return {"value": item.get("value", ""), "url": item.get("url", "")}
         return {}
 
     @cached_property
@@ -908,9 +887,7 @@ class Record(DataLayerMixin, APIModel):
             person_date = self.birth_date or self.death_date
 
         if self.start_date and self.end_date:
-            service_activity_date = (
-                f"{self.start_date}{separator}{self.end_date}"
-            )
+            service_activity_date = f"{self.start_date}{separator}{self.end_date}"
         else:
             service_activity_date = self.start_date or self.end_date
 
@@ -924,9 +901,7 @@ class Record(DataLayerMixin, APIModel):
     def name_authority_reference(self) -> str:
         if identifier := self.get("identifier", ()):
             for item in identifier:
-                if name_authority_reference := item.get(
-                    "name_authority_reference", ""
-                ):
+                if name_authority_reference := item.get("name_authority_reference", ""):
                     return name_authority_reference
         return ""
 
@@ -942,9 +917,7 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def closure_status(self) -> str:
-        return extract(
-            self.get("@template", {}), "details.closureStatus", default=""
-        )
+        return extract(self.get("@template", {}), "details.closureStatus", default="")
 
     @cached_property
     def creator(self) -> list(str):

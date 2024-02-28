@@ -17,6 +17,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
+from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
@@ -29,7 +30,6 @@ from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin, AuthorTag
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
@@ -310,9 +310,7 @@ class ArticlePage(
     @cached_property
     def similar_items(
         self,
-    ) -> Tuple[
-        Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...
-    ]:
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -337,9 +335,7 @@ class ArticlePage(
         )
 
         return tuple(
-            Page.objects.filter(id__in=related_tags).order_by(
-                "-first_published_at"
-            )[:3]
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
 
     @cached_property
@@ -469,9 +465,7 @@ class FocusedArticlePage(
     @cached_property
     def similar_items(
         self,
-    ) -> Tuple[
-        Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...
-    ]:
+    ) -> Tuple[Union["ArticlePage", "FocusedArticlePage", "RecordArticlePage"], ...]:
         """
         Returns a maximum of three ArticlePages that are tagged with at least
         one of the same ArticleTags. Items should be ordered by the number
@@ -496,9 +490,7 @@ class FocusedArticlePage(
         )
 
         return tuple(
-            Page.objects.filter(id__in=related_tags).order_by(
-                "-first_published_at"
-            )[:3]
+            Page.objects.filter(id__in=related_tags).order_by("-first_published_at")[:3]
         )
 
     @cached_property
@@ -544,9 +536,7 @@ class RecordArticlePage(
         blank=True,
         on_delete=models.SET_NULL,
         related_name="+",
-        help_text=_(
-            "Square, rotated image to display in the page introduction"
-        ),
+        help_text=_("Square, rotated image to display in the page introduction"),
         verbose_name=_("intro image"),
     )
 
@@ -556,9 +546,7 @@ class RecordArticlePage(
     date_text = models.CharField(
         verbose_name=_("date text"),
         max_length=100,
-        help_text=_(
-            "Date(s) related to the record (max. character length: 100)"
-        ),
+        help_text=_("Date(s) related to the record (max. character length: 100)"),
     )
 
     about = APIRichTextField(
@@ -705,8 +693,7 @@ class RecordArticlePage(
             APIField(
                 "intro_image_jpg",
                 serializer=ImageRenditionField(
-                    "fill-512x512|format-jpeg|jpegquality-60",
-                    source="intro_image",
+                    "fill-512x512|format-jpeg|jpegquality-60", source="intro_image"
                 ),
             ),
             # APIField("content_panels"),
@@ -738,9 +725,7 @@ class RecordArticlePage(
         for item in self.gallery_images.all():
             strings.extend([item.alt_text, item.caption])
             if item.has_transcription:
-                strings.extend(
-                    [item.transcription_header, item.transcription_text]
-                )
+                strings.extend([item.transcription_header, item.transcription_text])
             if item.has_translation:
                 strings.extend([item.translation_header, item.translation_text])
         return " ".join(strings)
@@ -777,14 +762,9 @@ class RecordArticlePage(
 
 
 class PageGalleryImage(Orderable):
-    page = ParentalKey(
-        Page, on_delete=models.CASCADE, related_name="gallery_images"
-    )
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
     image = models.ForeignKey(
-        get_image_model_string(),
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name="+",
+        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
     )
     alt_text = models.CharField(
         verbose_name=_("alternative text"),

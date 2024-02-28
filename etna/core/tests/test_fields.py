@@ -32,11 +32,7 @@ class DateFieldTest(SimpleTestCase):
         ):
             with self.subTest(label):
                 value = field.clean(
-                    [
-                        value["input_day"],
-                        value["input_month"],
-                        value["input_year"],
-                    ]
+                    [value["input_day"], value["input_month"], value["input_year"]]
                 )
                 self.assertEqual(value, expected, label)
 
@@ -74,11 +70,7 @@ class DateFieldTest(SimpleTestCase):
         ):
             with self.subTest(label):
                 value = field.clean(
-                    [
-                        value["input_day"],
-                        value["input_month"],
-                        value["input_year"],
-                    ]
+                    [value["input_day"], value["input_month"], value["input_year"]]
                 )
                 self.assertEqual(value, expected, label)
 
@@ -112,11 +104,7 @@ class DateFieldTest(SimpleTestCase):
             with self.subTest(label):
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
-                        [
-                            value["input_day"],
-                            value["input_month"],
-                            value["input_year"],
-                        ]
+                        [value["input_day"], value["input_month"], value["input_year"]]
                     )
 
     def test_date_cleaned_without_defaults_without_validators(self):
@@ -142,9 +130,5 @@ class DateFieldTest(SimpleTestCase):
             with self.subTest(label):
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
-                        [
-                            value["input_day"],
-                            value["input_month"],
-                            value["input_year"],
-                        ]
+                        [value["input_day"], value["input_month"], value["input_year"]]
                     )

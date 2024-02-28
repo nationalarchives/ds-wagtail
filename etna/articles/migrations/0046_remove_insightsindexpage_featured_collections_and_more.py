@@ -25,10 +25,7 @@ class Migration(migrations.Migration):
                         "featuredpages",
                         wagtail.blocks.StructBlock(
                             [
-                                (
-                                    "heading",
-                                    wagtail.blocks.CharBlock(max_length=100),
-                                ),
+                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
                                 (
                                     "description",
                                     wagtail.blocks.TextBlock(max_length=200),
@@ -36,9 +33,7 @@ class Migration(migrations.Migration):
                                 (
                                     "items",
                                     etna.core.blocks.page_list.PageListBlock(
-                                        "articles.InsightsPage",
-                                        max_num=9,
-                                        min_num=3,
+                                        "articles.InsightsPage", max_num=9, min_num=3
                                     ),
                                 ),
                             ]

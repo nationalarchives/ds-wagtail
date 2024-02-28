@@ -14,9 +14,7 @@ def jumplinks(page):
             sections.append(
                 {
                     "heading_text": boundblock.value["heading"],
-                    "heading_id": boundblock.block.get_heading_id(
-                        boundblock.value
-                    ),
+                    "heading_id": boundblock.block.get_heading_id(boundblock.value),
                 }
             )
     return {

@@ -16,10 +16,7 @@ class TestGeneral(TestCase):
             teaser_text="test",
             body=json.dumps(
                 [
-                    {
-                        "type": "paragraph",
-                        "value": {"text": "This is a paragraph"},
-                    },
+                    {"type": "paragraph", "value": {"text": "This is a paragraph"}},
                 ]
             ),
         )

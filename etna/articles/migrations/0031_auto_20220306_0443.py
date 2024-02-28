@@ -27,15 +27,11 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "name",
-                    models.CharField(
-                        max_length=100, unique=True, verbose_name="name"
-                    ),
+                    models.CharField(max_length=100, unique=True, verbose_name="name"),
                 ),
                 (
                     "slug",
-                    models.SlugField(
-                        max_length=100, unique=True, verbose_name="slug"
-                    ),
+                    models.SlugField(max_length=100, unique=True, verbose_name="slug"),
                 ),
             ],
             options={

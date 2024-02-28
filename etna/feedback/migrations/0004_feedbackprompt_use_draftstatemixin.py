@@ -29,10 +29,7 @@ class Migration(migrations.Migration):
             model_name="feedbackprompt",
             name="first_published_at",
             field=models.DateTimeField(
-                blank=True,
-                db_index=True,
-                null=True,
-                verbose_name="first published at",
+                blank=True, db_index=True, null=True, verbose_name="first published at"
             ),
         ),
         migrations.AddField(
@@ -46,9 +43,7 @@ class Migration(migrations.Migration):
             model_name="feedbackprompt",
             name="has_unpublished_changes",
             field=models.BooleanField(
-                default=False,
-                editable=False,
-                verbose_name="has unpublished changes",
+                default=False, editable=False, verbose_name="has unpublished changes"
             ),
         ),
         migrations.AddField(

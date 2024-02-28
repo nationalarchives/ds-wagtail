@@ -9,10 +9,7 @@ import modelcluster.fields
 class Migration(migrations.Migration):
     dependencies = [
         ("wagtailcore", "0083_workflowcontenttype"),
-        (
-            "articles",
-            "0095_alter_articlepage_body_alter_focusedarticlepage_body",
-        ),
+        ("articles", "0095_alter_articlepage_body_alter_focusedarticlepage_body"),
     ]
 
     operations = [

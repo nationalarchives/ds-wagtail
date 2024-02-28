@@ -15,8 +15,7 @@ def editor_css():
 @hooks.register("insert_editor_js")
 def editor_js():
     return format_html(
-        '<script src="{}"></script>',
-        static("admin/js/inputLengthIndicators.js"),
+        '<script src="{}"></script>', static("admin/js/inputLengthIndicators.js")
     )
 
 

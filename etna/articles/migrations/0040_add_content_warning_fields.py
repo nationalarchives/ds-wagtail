@@ -23,8 +23,7 @@ class Migration(migrations.Migration):
             model_name="insightspage",
             name="display_content_warning",
             field=models.BooleanField(
-                default=False,
-                verbose_name="display a content warning on this page",
+                default=False, verbose_name="display a content warning on this page"
             ),
         ),
     ]

@@ -30,11 +30,7 @@ class DateFieldValidatorTest(SimpleTestCase):
             with self.subTest(label):
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
-                        [
-                            value["input_day"],
-                            value["input_month"],
-                            value["input_year"],
-                        ]
+                        [value["input_day"], value["input_month"], value["input_year"]]
                     )
 
     def test_date_input_for_month_field_validator(self):
@@ -60,11 +56,7 @@ class DateFieldValidatorTest(SimpleTestCase):
             with self.subTest(label):
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
-                        [
-                            value["input_day"],
-                            value["input_month"],
-                            value["input_year"],
-                        ]
+                        [value["input_day"], value["input_month"], value["input_year"]]
                     )
 
     def test_date_input_for_year_field_validator(self):
@@ -90,9 +82,5 @@ class DateFieldValidatorTest(SimpleTestCase):
             with self.subTest(label):
                 with self.assertRaisesMessage(ValidationError, expected):
                     value = field.clean(
-                        [
-                            value["input_day"],
-                            value["input_month"],
-                            value["input_year"],
-                        ]
+                        [value["input_day"], value["input_month"], value["input_year"]]
                     )

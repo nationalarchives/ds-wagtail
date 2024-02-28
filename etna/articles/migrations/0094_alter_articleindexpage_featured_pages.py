@@ -8,10 +8,7 @@ import wagtail.fields
 
 class Migration(migrations.Migration):
     dependencies = [
-        (
-            "articles",
-            "0093_alter_articlepage_body_alter_focusedarticlepage_body",
-        ),
+        ("articles", "0093_alter_articlepage_body_alter_focusedarticlepage_body"),
     ]
 
     operations = [
@@ -24,10 +21,7 @@ class Migration(migrations.Migration):
                         "featuredpages",
                         wagtail.blocks.StructBlock(
                             [
-                                (
-                                    "heading",
-                                    wagtail.blocks.CharBlock(max_length=100),
-                                ),
+                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
                                 (
                                     "description",
                                     wagtail.blocks.TextBlock(max_length=200),

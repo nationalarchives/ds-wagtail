@@ -56,10 +56,7 @@ class Migration(migrations.Migration):
                                         "categories.Category"
                                     ),
                                 ),
-                                (
-                                    "publication_date",
-                                    wagtail.blocks.DateBlock(),
-                                ),
+                                ("publication_date", wagtail.blocks.DateBlock()),
                                 (
                                     "url",
                                     wagtail.blocks.URLBlock(
@@ -127,12 +124,7 @@ class Migration(migrations.Migration):
                     (
                         "featured_record",
                         wagtail.blocks.StructBlock(
-                            [
-                                (
-                                    "record",
-                                    etna.records.blocks.RecordChooserBlock(),
-                                )
-                            ]
+                            [("record", etna.records.blocks.RecordChooserBlock())]
                         ),
                     ),
                     (

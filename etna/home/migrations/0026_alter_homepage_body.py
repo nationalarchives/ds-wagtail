@@ -24,13 +24,7 @@ class Migration(migrations.Migration):
                                 (
                                     "text",
                                     etna.core.blocks.paragraph.APIRichTextBlock(
-                                        features=[
-                                            "bold",
-                                            "italic",
-                                            "link",
-                                            "ol",
-                                            "ul",
-                                        ]
+                                        features=["bold", "italic", "link", "ol", "ul"]
                                     ),
                                 )
                             ]
@@ -49,13 +43,7 @@ class Migration(migrations.Migration):
                                 (
                                     "paragraph",
                                     etna.core.blocks.paragraph.APIRichTextBlock(
-                                        features=[
-                                            "bold",
-                                            "italic",
-                                            "link",
-                                            "ol",
-                                            "ul",
-                                        ],
+                                        features=["bold", "italic", "link", "ol", "ul"],
                                         required=True,
                                     ),
                                 ),

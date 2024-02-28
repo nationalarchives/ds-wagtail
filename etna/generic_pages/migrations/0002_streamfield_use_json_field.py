@@ -23,13 +23,7 @@ class Migration(migrations.Migration):
                                 (
                                     "text",
                                     wagtail.blocks.RichTextBlock(
-                                        features=[
-                                            "bold",
-                                            "italic",
-                                            "link",
-                                            "ol",
-                                            "ul",
-                                        ]
+                                        features=["bold", "italic", "link", "ol", "ul"]
                                     ),
                                 )
                             ]

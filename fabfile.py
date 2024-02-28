@@ -240,9 +240,7 @@ def dump_db(c, filename):
 
 
 @task
-def restore_db(
-    c, filename, delete_dump_on_success=False, delete_dump_on_error=False
-):
+def restore_db(c, filename, delete_dump_on_success=False, delete_dump_on_error=False):
     """Restore the database from a snapshot in the db container"""
     print("Stopping 'web' to sever DB connection")
     stop(c, "web")
@@ -300,9 +298,7 @@ def pull_staging_data(c):
 def pull_staging_media(c):
     """Pull all media from the staging platform.sh env"""
     pull_media_from_platform(c, STAGING_APP_INSTANCE)
-    subprocess.run(
-        ["docker-compose", "exec", "cli", "chmod", "-fR", "777", "media"]
-    )
+    subprocess.run(["docker-compose", "exec", "cli", "chmod", "-fR", "777", "media"])
 
 
 # -----------------------------------------------------------------------------

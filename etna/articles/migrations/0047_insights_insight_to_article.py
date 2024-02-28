@@ -22,10 +22,7 @@ class Migration(migrations.Migration):
         ("home", "0015_home_insight_to_article"),
         ("wagtailimages", "0024_index_image_file_hash"),
         ("wagtailcore", "0077_alter_revision_user"),
-        (
-            "articles",
-            "0046_remove_insightsindexpage_featured_collections_and_more",
-        ),
+        ("articles", "0046_remove_insightsindexpage_featured_collections_and_more"),
     ]
 
     operations = [
@@ -43,10 +40,7 @@ class Migration(migrations.Migration):
                         "featuredpages",
                         wagtail.blocks.StructBlock(
                             [
-                                (
-                                    "heading",
-                                    wagtail.blocks.CharBlock(max_length=100),
-                                ),
+                                ("heading", wagtail.blocks.CharBlock(max_length=100)),
                                 (
                                     "description",
                                     wagtail.blocks.TextBlock(max_length=200),
@@ -54,9 +48,7 @@ class Migration(migrations.Migration):
                                 (
                                     "items",
                                     etna.core.blocks.page_list.PageListBlock(
-                                        "articles.ArticlePage",
-                                        max_num=9,
-                                        min_num=3,
+                                        "articles.ArticlePage", max_num=9, min_num=3
                                     ),
                                 ),
                             ]
@@ -218,9 +210,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "caption",
                                                             wagtail.blocks.RichTextBlock(
-                                                                features=[
-                                                                    "link"
-                                                                ],
+                                                                features=["link"],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
                                                                 required=False,
@@ -349,10 +339,7 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    (
-                                                                        "video",
-                                                                        "Video",
-                                                                    ),
+                                                                    ("video", "Video"),
                                                                     (
                                                                         "video-external",
                                                                         "External video",

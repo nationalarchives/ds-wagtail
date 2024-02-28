@@ -13,17 +13,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name="sitesettings",
             name="beta_banner_link",
-            field=models.CharField(
-                blank=True, max_length=200, verbose_name="link to"
-            ),
+            field=models.CharField(blank=True, max_length=200, verbose_name="link to"),
         ),
         migrations.AddField(
             model_name="sitesettings",
             name="beta_banner_link_text",
             field=models.CharField(
-                default="Find out more",
-                max_length=200,
-                verbose_name="link text",
+                default="Find out more", max_length=200, verbose_name="link text"
             ),
         ),
         migrations.AddField(

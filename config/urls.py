@@ -67,8 +67,7 @@ public_urls = [
     path(
         r"catalogue/ref/<reference_number:reference_number>/",
         setting_controlled_login_required(
-            records_views.record_disambiguation_view,
-            "RECORD_DETAIL_REQUIRE_LOGIN",
+            records_views.record_disambiguation_view, "RECORD_DETAIL_REQUIRE_LOGIN"
         ),
         name="details-page-human-readable",
     ),
@@ -94,32 +93,28 @@ public_urls = [
     path(
         r"search/",
         setting_controlled_login_required(
-            search_views.SearchLandingView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
+            search_views.SearchLandingView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search",
     ),
     path(
         r"search/featured/",
         setting_controlled_login_required(
-            search_views.FeaturedSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
+            search_views.FeaturedSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search-featured",
     ),
     path(
         r"search/catalogue/",
         setting_controlled_login_required(
-            search_views.CatalogueSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
+            search_views.CatalogueSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search-catalogue",
     ),
     path(
         r"search/website/",
         setting_controlled_login_required(
-            search_views.NativeWebsiteSearchView.as_view(),
-            "SEARCH_VIEWS_REQUIRE_LOGIN",
+            search_views.NativeWebsiteSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
         ),
         name="search-website",
     ),

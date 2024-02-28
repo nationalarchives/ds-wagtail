@@ -34,28 +34,16 @@ def record_url(
 
     form_group: use with results from search queries, value determines tna, nonTna results
     """
-    if (
-        is_editorial
-        and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY
-        and record.iaid
-    ):
-        return TNA_URLS.get("discovery_rec_default_fmt").format(
-            iaid=record.iaid
-        )
+    if is_editorial and settings.FEATURE_RECORD_LINKS_GO_TO_DISCOVERY and record.iaid:
+        return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if order_from_discovery:
         if record.custom_record_type == "ARCHON":
-            return TNA_URLS.get("discovery_rec_archon_fmt").format(
-                iaid=record.iaid
-            )
+            return TNA_URLS.get("discovery_rec_archon_fmt").format(iaid=record.iaid)
         elif record.custom_record_type == "CREATORS":
-            return TNA_URLS.get("discovery_rec_creators_fmt").format(
-                iaid=record.iaid
-            )
+            return TNA_URLS.get("discovery_rec_creators_fmt").format(iaid=record.iaid)
         else:
-            return TNA_URLS.get("discovery_rec_default_fmt").format(
-                iaid=record.iaid
-            )
+            return TNA_URLS.get("discovery_rec_default_fmt").format(iaid=record.iaid)
 
     if record:
         if use_non_reference_number_url:
@@ -120,9 +108,7 @@ def level_name(level_code: int, is_tna: bool) -> str:
 
 
 @register.simple_tag
-def breadcrumb_items(
-    hierarchy: list, is_tna: bool, current_record: Record
-) -> list:
+def breadcrumb_items(hierarchy: list, is_tna: bool, current_record: Record) -> list:
     """Returns breadcrumb items depending on position in hierarchy
     Update tna_breadcrumb_levels or oa_breadcrumb_levels to change the levels displayed
     """

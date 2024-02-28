@@ -190,10 +190,7 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    (
-                                                                        "video",
-                                                                        "Video",
-                                                                    ),
+                                                                    ("video", "Video"),
                                                                     (
                                                                         "video-external",
                                                                         "External video",
@@ -558,10 +555,7 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    (
-                                                                        "video",
-                                                                        "Video",
-                                                                    ),
+                                                                    ("video", "Video"),
                                                                     (
                                                                         "video-external",
                                                                         "External video",

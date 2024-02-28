@@ -112,14 +112,8 @@ class Migration(migrations.Migration):
                         verbose_name="UUID",
                     ),
                 ),
-                (
-                    "role",
-                    models.CharField(blank=True, max_length=100, null=True),
-                ),
-                (
-                    "summary",
-                    wagtail.fields.RichTextField(blank=True, null=True),
-                ),
+                ("role", models.CharField(blank=True, max_length=100, null=True)),
+                ("summary", wagtail.fields.RichTextField(blank=True, null=True)),
                 (
                     "image",
                     models.ForeignKey(

@@ -6,9 +6,7 @@ from django.db import migrations
 def migrate_forwards(apps, schema_editor):
     RecordArticlePage = apps.get_model("articles", "RecordArticlePage")
 
-    for page in RecordArticlePage.objects.all().select_related(
-        "latest_revision"
-    ):
+    for page in RecordArticlePage.objects.all().select_related("latest_revision"):
         rev = page.latest_revision
         content = rev.content
         if "intro" not in content:

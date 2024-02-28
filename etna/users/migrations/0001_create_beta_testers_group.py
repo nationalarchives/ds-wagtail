@@ -21,7 +21,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(
-            create_beta_testers_group, remove_beta_testers_group
-        ),
+        migrations.RunPython(create_beta_testers_group, remove_beta_testers_group),
     ]

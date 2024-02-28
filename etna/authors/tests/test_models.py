@@ -35,9 +35,7 @@ class TestAuthorPages(TestCase):
                 intro="Test intro",
                 teaser_text="Test teaser text",
             )
-            root.add_child(
-                instance=self.focused_articles[f"focused_article{i}"]
-            )
+            root.add_child(instance=self.focused_articles[f"focused_article{i}"])
 
             self.author_tags[f"author_tag{i}"] = AuthorTag(
                 page=self.focused_articles[f"focused_article{i}"],
@@ -61,12 +59,9 @@ class TestAuthorPages(TestCase):
     def test_focused_article_author(self):
         for i in self.focused_articles:
             self.assertEqual(
-                self.focused_articles[i].author_tags.first().author.title,
-                "John Doe",
+                self.focused_articles[i].author_tags.first().author.title, "John Doe"
             )
 
     def test_authored_focused_articles(self):
         for item in self.author_page.authored_focused_articles.all():
-            self.assertEqual(
-                item.title in [f"Test Article{i}" for i in range(4)], True
-            )
+            self.assertEqual(item.title in [f"Test Article{i}" for i in range(4)], True)

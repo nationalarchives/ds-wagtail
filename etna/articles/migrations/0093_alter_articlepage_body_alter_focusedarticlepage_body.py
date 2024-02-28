@@ -12,10 +12,7 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
     dependencies = [
-        (
-            "articles",
-            "0092_alter_articlepage_body_alter_focusedarticlepage_body",
-        ),
+        ("articles", "0092_alter_articlepage_body_alter_focusedarticlepage_body"),
     ]
 
     operations = [
@@ -275,10 +272,7 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    (
-                                                                        "video",
-                                                                        "Video",
-                                                                    ),
+                                                                    ("video", "Video"),
                                                                     (
                                                                         "video-external",
                                                                         "External video",
@@ -724,10 +718,7 @@ class Migration(migrations.Migration):
                                                                         "podcast",
                                                                         "Podcast",
                                                                     ),
-                                                                    (
-                                                                        "video",
-                                                                        "Video",
-                                                                    ),
+                                                                    ("video", "Video"),
                                                                     (
                                                                         "video-external",
                                                                         "External video",

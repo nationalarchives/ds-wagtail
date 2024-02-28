@@ -12,10 +12,7 @@ import wagtail.snippets.blocks
 
 class Migration(migrations.Migration):
     dependencies = [
-        (
-            "articles",
-            "0037_remove_top_level_content_options_from_insights_body",
-        ),
+        ("articles", "0037_remove_top_level_content_options_from_insights_body"),
     ]
 
     operations = [
@@ -131,9 +128,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "caption",
                                                             wagtail.blocks.RichTextBlock(
-                                                                features=[
-                                                                    "link"
-                                                                ],
+                                                                features=["link"],
                                                                 help_text="If provided, displays directly below the image. Can be used to specify sources, transcripts or other useful metadata.",
                                                                 label="Caption (optional)",
                                                                 required=False,

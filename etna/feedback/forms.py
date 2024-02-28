@@ -16,11 +16,7 @@ import bleach
 
 from etna.feedback import constants
 from etna.feedback.models import FeedbackSubmission
-from etna.feedback.utils import (
-    get_allowed_hosts,
-    normalize_path,
-    sign_submission_id,
-)
+from etna.feedback.utils import get_allowed_hosts, normalize_path, sign_submission_id
 from etna.feedback.widgets import ResponseSubmitButtonList
 
 
@@ -77,9 +73,7 @@ class FeedbackForm(forms.Form):
 
         # Find the relevant Site
         try:
-            site = get_site_for_hostname(
-                parse_result.hostname, parse_result.port
-            )
+            site = get_site_for_hostname(parse_result.hostname, parse_result.port)
         except Site.DoesNotExist:
             raise ValidationError(
                 "value could not be matched to a Wagtail site.",
@@ -88,8 +82,7 @@ class FeedbackForm(forms.Form):
 
         # Create dict from querystring data
         query_params = {
-            name: values
-            for name, values in QueryDict(parse_result.query).lists()
+            name: values for name, values in QueryDict(parse_result.query).lists()
         }
 
         # Add derived values to 'cleaned_data'
@@ -129,8 +122,7 @@ class FeedbackForm(forms.Form):
         # Validate the value
         if page and not revision:
             raise ValidationError(
-                "this field is required when 'page' is provided.",
-                code="required",
+                "this field is required when 'page' is provided.", code="required"
             )
         if revision and not page:
             raise ValidationError(
@@ -194,8 +186,7 @@ class FeedbackCommentForm(forms.Form):
             self.add_error(
                 "signature",
                 ValidationError(
-                    "Value does not match the specified submission.",
-                    code="invalid",
+                    "Value does not match the specified submission.", code="invalid"
                 ),
             )
         return data

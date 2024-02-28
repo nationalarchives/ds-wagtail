@@ -28,9 +28,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "received_at",
-                    models.DateTimeField(
-                        auto_now_add=True, verbose_name="received at"
-                    ),
+                    models.DateTimeField(auto_now_add=True, verbose_name="received at"),
                 ),
                 (
                     "public_id",
@@ -54,9 +52,7 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "prompt_text",
-                    models.CharField(
-                        max_length=200, verbose_name="prompt text"
-                    ),
+                    models.CharField(max_length=200, verbose_name="prompt text"),
                 ),
                 (
                     "response_sentiment",
@@ -67,9 +63,7 @@ class Migration(migrations.Migration):
                 (
                     "response_label",
                     models.CharField(
-                        db_index=True,
-                        max_length=100,
-                        verbose_name="response label",
+                        db_index=True, max_length=100, verbose_name="response label"
                     ),
                 ),
                 ("comment", models.TextField(verbose_name="comment")),

@@ -29,20 +29,14 @@ class PositiveIntegerStringValidator:
             return None
         if not value or not value.isdigit():
             raise ValidationError(
-                self.messages["invalid"],
-                code="invalid",
-                params={"value": value},
+                self.messages["invalid"], code="invalid", params={"value": value}
             )
         intval = int(value)
         if self.min is not None and intval < self.min:
             raise ValidationError(
-                self.messages["invalid"],
-                code="invalid",
-                params={"value": value},
+                self.messages["invalid"], code="invalid", params={"value": value}
             )
         if self.max is not None and intval > self.max:
             raise ValidationError(
-                self.messages["invalid"],
-                code="invalid",
-                params={"value": value},
+                self.messages["invalid"], code="invalid", params={"value": value}
             )
