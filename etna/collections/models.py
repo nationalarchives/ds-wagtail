@@ -15,9 +15,9 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
@@ -633,7 +633,9 @@ class PageTimePeriod(Orderable):
 
 class BaseModelSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
-    teaser_image = ImageRenditionField("fill-200x200") # TODO: Needs a proper rendition size
+    teaser_image = ImageRenditionField(
+        "fill-200x200"
+    )  # TODO: Needs a proper rendition size
     url_path = serializers.CharField()
 
 
@@ -649,7 +651,14 @@ class TimePeriodSerializer(BaseModelSerializer):
 
     class Meta:
         model = PageTimePeriod
-        fields = ("id", "title", "teaser_image", "url_path", "start_year", "end_year",)
+        fields = (
+            "id",
+            "title",
+            "teaser_image",
+            "url_path",
+            "start_year",
+            "end_year",
+        )
 
 
 class TopicalPageMixin:

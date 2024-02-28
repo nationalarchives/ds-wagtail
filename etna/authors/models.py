@@ -160,7 +160,13 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = AuthorTag
-        fields = ("id", "title", "image", "url_path", "role",)
+        fields = (
+            "id",
+            "title",
+            "image",
+            "url_path",
+            "role",
+        )
 
 
 class AuthorPageMixin:
@@ -194,5 +200,5 @@ class AuthorPageMixin:
         """
         if self.authors:
             return ", ".join([author.title for author in self.authors])
-        
+
     api_fields = [APIField("authors", serializer=AuthorSerializer(many=True))]
