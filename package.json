@@ -34,13 +34,15 @@
     "sass": "~1.69",
     "stylelint": "^15.10.3",
     "stylelint-config-standard-scss": "^11.0.0",
-    "stylelint-selector-bem-pattern": "^3.0.1", 
+    "stylelint-selector-bem-pattern": "^3.0.1",
     "webpack": "~5.89",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
     "@nationalarchives/frontend": "^0.1.25-prerelease",
     "jquery": "~3.7",
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
     "openseadragon": "~4.1"
   },
   "jest": {

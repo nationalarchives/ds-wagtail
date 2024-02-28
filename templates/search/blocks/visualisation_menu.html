@@ -1,16 +1,18 @@
+{% load search_tags %}
+
 <!--visualisation secondary navigation-->
 <div class="tna-container">
     <div class="tna-column tna-column--full">
         <div class="search-visualisation-nav">
             <ul class="search-visualisation-nav__list" data-id="search-visualisation-nav-list">
                 <li class="search-visualisation-nav__list-item">
-                    <a href="/" class="search-visualisation-nav__link" aria-current="true">
+                    <a href="?{% query_string_include 'views' views.LIST.value %}" class="search-visualisation-nav__link"{% if form.views.value == views.LIST.value %} aria-current="true"{% endif %}>
                         <i class="fa-solid fa-list fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">List view</span>
                     </a>
                 </li>
                 <li class="search-visualisation-nav__list-item">
-                    <a href="/" class="search-visualisation-nav__link">
+                    <a href="{{map_view_url}}" class="search-visualisation-nav__link"{% if form.views.value == views.MAP.value %} aria-current="true"{% endif %}>
                         <i class="fa-solid fa-location-dot fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">Map view</span>
                     </a>

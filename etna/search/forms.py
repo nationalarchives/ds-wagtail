@@ -233,6 +233,13 @@ class BaseCollectionSearchForm(forms.Form):
         ],
         required=False,
     )
+    views = forms.ChoiceField(
+        choices=[
+            ("list", "List"),
+            ("map", "Map"),
+        ],
+        required=False,
+    )
 
     def clean(self):
         """

@@ -4,10 +4,13 @@ import re
 
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
+from django.conf import settings
 from django.core.paginator import Page as PaginatorPage
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.urls import reverse
 from django.utils import timezone
+from django.utils.http import urlencode
 from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
@@ -22,6 +25,7 @@ from ..ciim.constants import (
     BucketList,
     Display,
     SearchTabs,
+    Views,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -341,6 +345,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             result_count=self.get_result_count(),
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            views=Views,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )
@@ -377,6 +382,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_per_page: int = 20
     default_sort: str = Sort.RELEVANCE.value
     default_display: str = Display.LIST.value
+    default_view: str = Views.LIST.value
 
     dynamic_choice_fields = (
         "collection",
@@ -397,6 +403,7 @@ class BaseFilteredSearchView(BaseSearchView):
             "sort": self.default_sort,
             "per_page": self.default_per_page,
             "display": self.default_display,
+            "view": self.default_view,
         }
 
     @property
@@ -416,6 +423,7 @@ class BaseFilteredSearchView(BaseSearchView):
             "per_page",
             "sort",
             "display",
+            "view",
         ):
             if field_name in form.errors:
                 return HttpResponseBadRequest(str(form.errors[field_name]))
@@ -654,6 +662,14 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
+        kwargs.update(
+            default_geo_data={
+                "lat": settings.FEATURE_GEO_LAT,
+                "lon": settings.FEATURE_GEO_LON,
+                "zoom": settings.FEATURE_GEO_ZOOM,
+            },
+            map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.MAP})}',
+        )
         return super().get_context_data(**kwargs)
 
 

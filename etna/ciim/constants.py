@@ -652,6 +652,14 @@ class Display(StrEnum):
     GRID = "grid"
 
 
+@forTemplate
+class Views(StrEnum):
+    """View types to support view, template."""
+
+    LIST = "list"
+    MAP = "map"
+
+
 TYPE_NAMES = {
     "business": "Business",
     "family": "Family",

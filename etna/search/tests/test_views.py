@@ -201,6 +201,23 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
     @responses.activate
+    @override_settings(
+        FEATURE_GEO_LAT=f"{12345.6789}",
+        FEATURE_GEO_LON=f"{-54321.12345}",
+        FEATURE_GEO_ZOOM=f"{3}",
+    )
+    def test_context_data(self):
+        response = self.client.get(self.test_url)
+        self.assertEqual(
+            response.context.get("default_geo_data"),
+            {
+                "lat": settings.FEATURE_GEO_LAT,
+                "lon": settings.FEATURE_GEO_LON,
+                "zoom": settings.FEATURE_GEO_ZOOM,
+            },
+        )
+
+    @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
         self.client.get(self.test_url)
 

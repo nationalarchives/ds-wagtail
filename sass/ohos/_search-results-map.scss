@@ -1,0 +1,89 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.ohos-search-results-map-container {
+    margin-bottom: 2rem;
+}
+
+.ohos-search-results-map {
+    height: 600px;
+    border: solid 1px $color__grey-500;
+    border-bottom: 0;
+
+    &__info {
+        background-color: $color__yellow;
+        border: 1px solid $color__off-black;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            @include colour.colour-font("font-dark");
+            padding-right: 0.5rem;
+        }
+    }
+}
+
+.leaflet-control-attribution {
+    font-size: 0.75rem;
+}
+
+.leaflet-container {
+    font-size: 1rem;
+}
+
+.leaflet-marker-icon {
+    &.marker-cluster {
+        background-color: #ec5855;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        font-size: 18px;
+        font-family: "Open Sans", sans-serif;
+    }
+}
+
+.ohos-popup {
+    filter: drop-shadow(4px 4px rgb(0 0 0 / 25%));
+    font-size: 1rem;
+
+    h3,
+    p {
+        &:last-child {
+            margin-bottom: 0;
+        }
+    }
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-tip {
+        box-shadow: none;
+        border-radius: 0;
+        background-color: #f4f4f4;
+        max-height: 500px;
+        overflow: auto;
+    }
+
+    .leaflet-popup-content {
+        display: flex;
+        gap: 20px;
+        border-radius: 0;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    img {
+        display: block;
+    }
+
+    &__content {
+        align-self: center;
+        word-break: break-word;
+    }
+
+    &__icon {
+        font-size: 2rem;
+        color: $color__grey-500;
+    }
+}
