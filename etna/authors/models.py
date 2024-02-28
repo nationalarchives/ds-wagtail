@@ -166,7 +166,7 @@ class AuthorSerializer(LinkedPageSerializer):
             "title",
             "teaser_image_jpeg",
             "teaser_image_webp",
-            "url_path",
+            "url",
             "full_url",
             "role",
         )

@@ -9,7 +9,7 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 
     Fields returned must be set in the `Meta.fields` attribute of the subclass.
     """
-    
+
     def teaser_images(rendition_size: str, jpeg_quality: str, webp_quality: int, source: str = "teaser_image", quality: int = 80):
         """
         This method returns a tuple of two ImageRenditionField instances for the
@@ -34,11 +34,11 @@ class LinkedPageSerializer(serializers.ModelSerializer):
         )
     
     title = serializers.CharField()
-    url_path = serializers.SerializerMethodField()
+    url = serializers.SerializerMethodField()
     full_url = serializers.URLField()
     teaser_image_jpeg, teaser_image_webp = teaser_images(rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80)
 
-    def get_url_path(self, obj):
+    def get_url(self, obj):
         return obj.get_url()
     
     

@@ -652,7 +652,7 @@ class TopicSerializer(LinkedPageSerializer):
 
     class Meta:
         model = PageTopic
-        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url_path", "full_url")
+        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url", "full_url")
 
 
 class TimePeriodSerializer(LinkedPageSerializer):
@@ -667,7 +667,7 @@ class TimePeriodSerializer(LinkedPageSerializer):
             "title",
             "teaser_image_jpeg",
             "teaser_image_webp",
-            "url_path",
+            "url",
             "full_url",
             "start_year",
             "end_year",
