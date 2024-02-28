@@ -637,7 +637,10 @@ class BaseModelSerializer(serializers.ModelSerializer):
         "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
     )
     teaser_image_webp = ImageRenditionField("fill-600x400|format-webp|webpquality-80", source="teaser_image")
-    url_path = serializers.CharField()
+    url_path = serializers.SerializerMethodField()
+
+    def get_url_path(self, obj):
+        return obj.get_url()
 
 
 class TopicSerializer(BaseModelSerializer):
