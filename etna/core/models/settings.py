@@ -3,7 +3,6 @@ from django.db import models
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
-from wagtail.fields import 
 from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.models import Page
 
