@@ -9,7 +9,9 @@ from requests import HTTPError
 
 from .api import records_client
 from .models import Record
-from .widgets import RecordChooser
+
+# Broken image upload.
+# from .widgets import RecordChooser
 
 
 class LazyRecord(SimpleLazyObject):
@@ -19,6 +21,9 @@ class LazyRecord(SimpleLazyObject):
     For example, when requesting a ``Record`` attribute value other than
     ``id``, or requesting a string representation of it.
     """
+
+    # Broken image upload.
+    # widget = RecordChooser
 
     def __init__(self, id: str):
         self.__dict__["id"] = id
@@ -46,8 +51,6 @@ class RecordChoiceField(CharField):
     by default and validates that a record can be found again from
     the selected record's ``id`` value.
     """
-
-    widget = RecordChooser
 
     def validate(self, value: Any) -> None:
         super().validate(value)

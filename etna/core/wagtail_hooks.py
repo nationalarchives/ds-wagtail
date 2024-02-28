@@ -3,6 +3,9 @@ from django.templatetags.static import static
 from django.utils.html import format_html
 
 from wagtail import hooks
+from wagtail.admin.viewsets.model import ModelViewSetGroup
+
+from etna.series.admin_views import series_viewset
 
 
 @hooks.register("insert_global_admin_css")
@@ -29,3 +32,14 @@ def global_admin_css():
     if settings.FEATURE_PLATFORM_ENVIRONMENT_TYPE != "production":
         return "<style> @media (prefers-color-scheme: light) { :root {--w-color-primary: #00623B; --w-color-primary-200: #003c1e;} } @media (prefers-color-scheme: dark) { :root {--w-color-surface-menus: #002510; --w-color-surface-menu-item-active: #001810;} }</style>"
     return ""
+
+
+class TaxonomiesAdminGroup(ModelViewSetGroup):
+    menu_label = "Taxonomies"
+    items = (series_viewset,)
+    menu_icon = "tag"
+
+
+@hooks.register("register_admin_viewset")
+def register_series_viewset():
+    return TaxonomiesAdminGroup()

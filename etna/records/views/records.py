@@ -9,8 +9,8 @@ from django.utils import timezone
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from ..api import records_client
 from .. import iiif
+from ..api import records_client
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
