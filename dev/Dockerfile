@@ -1,4 +1,4 @@
-FROM ghcr.io/nationalarchives/tna-python-django:latest
+FROM ghcr.io/nationalarchives/tna-python-django:0.2.3
 
 USER root
 
