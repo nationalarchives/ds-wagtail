@@ -9,7 +9,8 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 
     Fields returned must be set in the `Meta.fields` attribute of the subclass.
     """
-    def teaser_images(rendition_size, jpeg_quality, webp_quality, source="teaser_image", quality=80):
+    
+    def teaser_images(rendition_size: str, jpeg_quality: str, webp_quality: int, source: str = "teaser_image", quality: int = 80):
         """
         This method returns a tuple of two ImageRenditionField instances for the
         given rendition size, JPEG quality and WebP quality. The source parameter
@@ -19,6 +20,13 @@ class LinkedPageSerializer(serializers.ModelSerializer):
         override this in the subclass, following the same structure as teaser_image_jpeg
         and teaser_image_webp below. This will allow for flexibility around the
         types of images that we can supply on a case-by-case basis.
+
+        Args:
+        rendition_size: The size of the rendition to return.
+        jpeg_quality: The quality of the JPEG rendition.
+        webp_quality: The quality of the WebP rendition.
+        source: The source image field to use for the rendition - defaults to "teaser_image" if un-set.
+        quality: The quality to use for the rendition - only used if no jpeg or webp_quality is set.
         """
         return (
             ImageRenditionField(f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality or quality}", source=source),
