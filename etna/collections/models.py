@@ -633,16 +633,17 @@ class PageTimePeriod(Orderable):
 
 class BaseModelSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
-    teaser_image = ImageRenditionField(
-        "fill-600x400|format-jpeg|jpegquality-60"
-    )  # TODO: Needs a proper rendition size
+    teaser_image_jpeg = ImageRenditionField(
+        "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
+    )
+    teaser_image_webp = ImageRenditionField("fill-600x400|format-webp|webpquality-80", source="teaser_image")
     url_path = serializers.CharField()
 
 
 class TopicSerializer(BaseModelSerializer):
     class Meta:
         model = PageTopic
-        fields = ("id", "title", "teaser_image", "url_path")
+        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url_path")
 
 
 class TimePeriodSerializer(BaseModelSerializer):
@@ -654,7 +655,8 @@ class TimePeriodSerializer(BaseModelSerializer):
         fields = (
             "id",
             "title",
-            "teaser_image",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
             "url_path",
             "start_year",
             "end_year",
