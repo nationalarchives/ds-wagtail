@@ -4,9 +4,10 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 
 from wagtailmedia.models import AbstractMedia
+
+from etna.core.blocks.paragraph import APIRichTextField
 
 
 class EtnaMedia(AbstractMedia):

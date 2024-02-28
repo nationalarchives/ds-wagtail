@@ -4,10 +4,10 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (

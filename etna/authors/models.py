@@ -8,13 +8,13 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
 
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.models import BasePage
 
 

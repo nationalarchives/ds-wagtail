@@ -16,10 +16,10 @@ from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
 from wagtail.fields import StreamField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.feedback import constants
 from etna.feedback.blocks import ResponseOptionBlock
 from etna.feedback.utils import normalize_path

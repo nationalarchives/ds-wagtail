@@ -17,7 +17,6 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from etna.core.blocks.paragraph import APIRichTextField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
@@ -30,6 +29,7 @@ from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin, AuthorTag
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks.paragraph import APIRichTextField
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
