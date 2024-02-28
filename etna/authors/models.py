@@ -154,11 +154,15 @@ class AuthorTag(models.Model):
 
 class AuthorSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
-    teaser_image_jpeg = ImageRenditionField("fill-400x400|format-jpeg|jpegquality-60", source="image")
-    teaser_image_webp = ImageRenditionField("fill-400x400|format-webp|webpquality-80", source="image")
+    teaser_image_jpeg = ImageRenditionField(
+        "fill-400x400|format-jpeg|jpegquality-60", source="image"
+    )
+    teaser_image_webp = ImageRenditionField(
+        "fill-400x400|format-webp|webpquality-80", source="image"
+    )
     url_path = serializers.SerializerMethodField()
     role = serializers.CharField()
-    
+
     def get_url_path(self, obj):
         return obj.get_url()
 
