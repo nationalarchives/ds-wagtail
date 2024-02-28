@@ -634,7 +634,7 @@ class PageTimePeriod(Orderable):
 class BaseModelSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
     teaser_image = ImageRenditionField(
-        "fill-200x200"
+        "fill-600x400|format-jpeg|jpegquality-60"
     )  # TODO: Needs a proper rendition size
     url_path = serializers.CharField()
 
