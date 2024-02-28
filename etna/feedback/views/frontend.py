@@ -1,5 +1,6 @@
 import logging
 import uuid
+
 from http import HTTPStatus
 from typing import Any, Dict
 
@@ -19,10 +20,12 @@ from django.utils.decorators import method_decorator
 from django.utils.http import urlencode
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import FormView, TemplateView
+
+from wagtail.models import Revision
+
 from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
 from etna.feedback.models import FeedbackPrompt, FeedbackSubmission
 from etna.feedback.utils import sign_submission_id
-from wagtail.models import Revision
 
 logger = logging.getLogger(__name__)
 

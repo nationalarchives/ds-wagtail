@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
+
 from wagtail import blocks
 from wagtail.api import APIField
 from wagtail.images.blocks import ImageChooserBlock

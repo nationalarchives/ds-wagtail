@@ -1,4 +1,5 @@
 from django.test import TestCase
+
 from wagtail.models import Site
 
 from ...articles.models import FocusedArticlePage

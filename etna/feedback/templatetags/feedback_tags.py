@@ -2,9 +2,11 @@ from django import template
 from django.conf import settings
 from django.template.loader import get_template
 from django.utils.safestring import mark_safe
+
+from wagtail.models import Page
+
 from etna.feedback.forms import FeedbackCommentForm, FeedbackForm
 from etna.feedback.models import FeedbackPrompt
-from wagtail.models import Page
 
 register = template.Library()
 

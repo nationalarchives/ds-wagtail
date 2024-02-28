@@ -32,7 +32,7 @@ From here you have a few commands you can use:
 #### Setup
 
 1. Install [nvm](https://github.com/nvm-sh/nvm) (Node version manager)
-1. Run `nvm use` to pick up the version of NodeJS defined in `.nvmrc`. If prompted, run `nvm install` to install it first.
+1. Run `nvm use` to pick up the version of NodeJS defined in `.nvmrc`. If prompted, run  `nvm install` to install it first.
 1. Run `npm install` to install the project dependencies
 
 #### Use

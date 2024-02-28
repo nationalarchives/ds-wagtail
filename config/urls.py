@@ -3,6 +3,12 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path, register_converter
 from django.views.decorators.cache import never_cache
+
+from wagtail import urls as wagtail_urls
+from wagtail.admin import urls as wagtailadmin_urls
+from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.utils.urlpatterns import decorate_urlpatterns
+
 from etna.api.urls import api_router
 from etna.core.cache_control import (
     apply_default_cache_control,
@@ -14,10 +20,6 @@ from etna.records import converters
 from etna.records import views as records_views
 from etna.search import views as search_views
 from etna.whatson import views as whatson_views
-from wagtail import urls as wagtail_urls
-from wagtail.admin import urls as wagtailadmin_urls
-from wagtail.documents import urls as wagtaildocs_urls
-from wagtail.utils.urlpatterns import decorate_urlpatterns
 
 register_converter(converters.ReferenceNumberConverter, "reference_number")
 register_converter(converters.IAIDConverter, "iaid")

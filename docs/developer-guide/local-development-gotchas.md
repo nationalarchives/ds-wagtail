@@ -14,7 +14,6 @@ Sometimes you need to disable Django's DEBUG mode in order to test certain behav
 Guidance from Django Documentation: https://docs.djangoproject.com/en/3.2/ref/contrib/staticfiles/#cmdoption-runserver-insecure
 
 Add in `config/settings/local.py`
-
 ```console
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
 ```
@@ -31,7 +30,7 @@ If you don't need Django's debugging tools, setting `DEBUG=False` as detailed ab
 
 If you still need Django's debugging tools, but don't want to use Django Debug Toolbar for any reason, you have two options for disabling it:
 
-1. Add `DEBUG_TOOLBAR_ENABLED = False` to `config/settings/local.py`
+1. Add `DEBUG_TOOLBAR_ENABLED = False` to `config/settings/local.py` 
 2. Add `DEBUG_TOOLBAR_ENABLED=False` to your `.env` file
 
 ## I see an error when viewing the 'Explore the Collection' page on my local build

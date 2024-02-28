@@ -2,6 +2,7 @@ import datetime
 
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
+
 from etna.core.fields import END_OF_MONTH, DateInputField
 
 from ..fields import ERR_MSG_REAL_DATE

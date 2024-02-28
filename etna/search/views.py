@@ -1,6 +1,7 @@
 import copy
 import logging
 import re
+
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
@@ -18,6 +19,7 @@ from django.utils import timezone
 from django.utils.text import capfirst
 from django.views.generic import FormView, TemplateView
 from django.views.generic.list import MultipleObjectMixin
+
 from wagtail.coreutils import camelcase_to_underscore
 from wagtail.models import Page
 from wagtail.query import PageQuerySet

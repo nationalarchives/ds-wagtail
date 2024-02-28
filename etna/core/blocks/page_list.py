@@ -1,6 +1,7 @@
 from typing import Any, Optional, Sequence
 
 from django.utils.functional import cached_property
+
 from wagtail import blocks
 from wagtail.blocks.list_block import ListValue
 from wagtail.coreutils import resolve_model_string

@@ -1,4 +1,5 @@
 from django import template
+
 from wagtail.models import Page
 
 # Alert snippets

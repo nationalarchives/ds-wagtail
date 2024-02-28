@@ -1,8 +1,10 @@
 import urllib
+
 from datetime import date, datetime
 
 from django.test import RequestFactory, TestCase
 from django.utils import timezone
+
 from etna.home.factories import HomePageFactory
 
 from ..factories import EventPageFactory, WhatsOnPageFactory

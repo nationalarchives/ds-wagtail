@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.contenttypes.models import ContentType
 from django.utils.text import capfirst
+
 from wagtail.blocks import StreamValue
 from wagtail.models import Page, get_page_models
 

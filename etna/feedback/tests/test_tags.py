@@ -2,10 +2,12 @@ from django.contrib.contenttypes.models import ContentType
 from django.http import HttpRequest
 from django.test import TestCase, override_settings
 from django.urls import resolve, reverse
+
+from wagtail.models import Page
+
 from etna.feedback.models import FeedbackPrompt
 from etna.feedback.templatetags.feedback_tags import render_feedback_prompt
 from etna.home.models import HomePage
-from wagtail.models import Page
 
 
 def fake_request_context(path: str, page: Page | None = None):

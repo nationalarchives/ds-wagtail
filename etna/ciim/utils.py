@@ -1,9 +1,12 @@
 import re
+
 from typing import Any, Dict, Optional
 
-import bleach
 from django.urls import NoReverseMatch, reverse
 from django.utils.safestring import mark_safe
+
+import bleach
+
 from pyquery import PyQuery as pq
 
 

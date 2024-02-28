@@ -1,8 +1,10 @@
 from datetime import datetime
 
-import responses
 from django.conf import settings
 from django.test import SimpleTestCase
+
+import responses
+
 from etna.ciim.constants import Aggregation
 from etna.ciim.tests.factories import (
     create_record,

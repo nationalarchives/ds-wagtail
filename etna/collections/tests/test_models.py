@@ -1,6 +1,7 @@
 import unittest
 
 from django.test import TestCase
+
 from wagtail.models import PageViewRestriction, Site
 
 from ..models import (

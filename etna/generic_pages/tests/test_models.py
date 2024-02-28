@@ -1,6 +1,7 @@
 import json
 
 from django.test import TestCase
+
 from wagtail.models import Site
 
 from ..models import GeneralPage

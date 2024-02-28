@@ -1,4 +1,5 @@
 import json
+
 from urllib.parse import unquote
 
 from django.conf import settings

@@ -1,6 +1,7 @@
 from django.core.paginator import Page
 from django.shortcuts import Http404
 from django.urls import re_path
+
 from generic_chooser.views import BaseChosenView, ChooserMixin, ChooserViewSet
 
 from ...ciim.client import Stream

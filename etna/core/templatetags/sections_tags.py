@@ -1,4 +1,5 @@
 from django import template
+
 from etna.articles.blocks import ContentSectionBlock
 from etna.core.blocks import SectionBlock
 

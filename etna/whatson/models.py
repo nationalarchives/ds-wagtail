@@ -8,12 +8,7 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.translation import gettext_lazy as _
-from etna.articles.models import ArticleTagMixin
-from etna.collections.models import TopicalPageMixin
-from etna.core.blocks import LargeCardLinksBlock
-from etna.core.blocks.paragraph import APIRichTextField
-from etna.core.models import BasePageWithIntro
-from etna.core.utils import urlunparse
+
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import StreamField
@@ -21,6 +16,13 @@ from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
+
+from etna.articles.models import ArticleTagMixin
+from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import LargeCardLinksBlock
+from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.models import BasePageWithIntro
+from etna.core.utils import urlunparse
 
 from .blocks import RelatedArticlesBlock, WhatsOnPromotedLinksBlock
 from .forms import EventPageForm

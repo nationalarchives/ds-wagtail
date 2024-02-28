@@ -3,11 +3,13 @@ from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django.utils.functional import cached_property
-from etna.core.blocks.paragraph import APIRichTextField
+
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
+
+from etna.core.blocks.paragraph import APIRichTextField
 
 from .forms import RequiredHeroImagePageForm
 

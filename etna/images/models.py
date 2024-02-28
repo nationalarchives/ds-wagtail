@@ -1,12 +1,14 @@
 from django.conf import settings
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from etna.core.blocks.paragraph import APIRichTextField
-from etna.records.fields import RecordField
+
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
+
+from etna.core.blocks.paragraph import APIRichTextField
+from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = "This image contains content which some people may find offensive or distressing."
 

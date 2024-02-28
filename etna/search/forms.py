@@ -3,9 +3,11 @@ from typing import Dict, List, Optional, Union
 from django import forms
 from django.core.exceptions import ValidationError
 from django.utils.functional import cached_property
+
+from wagtail.models import get_page_models
+
 from etna.core.fields import END_OF_MONTH, DateInputField
 from etna.core.models import BasePage
-from wagtail.models import get_page_models
 
 from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (

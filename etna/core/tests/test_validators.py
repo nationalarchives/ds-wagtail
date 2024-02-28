@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase
+
 from etna.core.fields import DateInputField
 
 from ..fields import ERR_MSG_REAL_DATE

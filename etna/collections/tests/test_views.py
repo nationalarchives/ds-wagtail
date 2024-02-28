@@ -1,9 +1,12 @@
 import json
 
-import responses
 from django.conf import settings
-from etna.core.test_utils import prevent_request_warnings
+
 from wagtail.test.utils import WagtailPageTestCase
+
+import responses
+
+from etna.core.test_utils import prevent_request_warnings
 
 from ...ciim.tests.factories import create_record, create_response
 

@@ -16,7 +16,7 @@ List here any key external services this project depends. Preferably link to a s
 
 ## Updating this documentation
 
-The navigation for this this documentation is configured in [`mkdocs.yml`](https://github.com/nationalarchives/ds-wagtail/blob/main/). You can add new markdown files there to get them to appear in the navigation.
+The navigation for this this documentation is configured in [``mkdocs.yml``](https://github.com/nationalarchives/ds-wagtail/blob/main/). You can add new markdown files there to get them to appear in the navigation.
 
 You can preview changes locally via [mkdocs](https://www.mkdocs.org/) by running the following from a `web` container shell:
 
@@ -26,5 +26,6 @@ $ mkdocs serve
 
 This will make your local copy of the documentation available in your browser at:
 http://localhost:8001/
+
 
 IMPORTANT: Remember that this documentation is public. Treat any sensitive data or credentials with the same level of caution that you would on any public forum.

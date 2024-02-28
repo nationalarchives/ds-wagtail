@@ -9,7 +9,7 @@ Access the environment via SSH and run the following management commands:
 1. `python manage.py migrate` (may indicate database connection issues that need addressing)
 2. `python manage.py collectstatic` (may indicate file-system permission issues that need addressing)
 3. `python manage.py update_index` (may indicate search-backend issues that need addressing)
-4. `python manage.py createsuperuser` (remember your username and password for use in later steps)
+3. `python manage.py createsuperuser` (remember your username and password for use in later steps)
 
 Now, in your browser, visit: `/admin/`
 

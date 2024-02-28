@@ -1,11 +1,16 @@
 import json as json_module
 import unittest
+
 from typing import Any, Dict
 
-import responses
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
 from django.urls import reverse, reverse_lazy
+
+from wagtail.test.utils import WagtailTestUtils
+
+import responses
+
 from etna.ciim.constants import (
     DEFAULT_AGGREGATIONS,
     Aggregation,
@@ -13,7 +18,6 @@ from etna.ciim.constants import (
     BucketList,
 )
 from etna.core.test_utils import prevent_request_warnings
-from wagtail.test.utils import WagtailTestUtils
 
 from ...articles.factories import ArticlePageFactory
 from ...articles.models import ArticleIndexPage, ArticlePage

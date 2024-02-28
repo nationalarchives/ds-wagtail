@@ -1,8 +1,11 @@
-import magic
 from django import forms
 from django.core.exceptions import ValidationError
+
 from wagtail.admin import widgets
 from wagtail.admin.forms.collections import BaseCollectionMemberForm
+
+import magic
+
 from wagtailmedia.permissions import (
     permission_policy as media_permission_policy,
 )

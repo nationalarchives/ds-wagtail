@@ -1,5 +1,6 @@
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
+
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 
