@@ -154,7 +154,7 @@ class AuthorTag(models.Model):
 
 class AuthorSerializer(serializers.ModelSerializer):
     title = serializers.CharField()
-    image = ImageRenditionField("fill-512x512|format-jpeg|jpegquality-60")
+    image = ImageRenditionField("fill-256x256|format-jpeg|jpegquality-60")
     url_path = serializers.CharField()
     role = serializers.CharField()
 
