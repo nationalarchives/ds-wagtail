@@ -1,6 +1,6 @@
 {% load search_tags humanize %}
 
-<nav class="pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination"
+{% comment %} <nav class="pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination"
      id="analytics-disambiguation-pagination">
     {% if page.has_other_pages %}
     <ul class="pagination__list">
@@ -50,4 +50,44 @@
         {% endif %}
     </ul>
     {% endif %}
+</nav> {% endcomment %}
+
+<nav class="tna-pagination" role="navigation" aria-label="Records pagination" data-container-name="Pagination" id="analytics-disambiguation-pagination">
+    {% if page.has_previous %}
+        <div class="tna-pagination__prev">
+            <a href="?{% query_string_include 'page' page.previous_page_number %}" class="tna-button tna-button--icon-only-mobile" rel="prev" data-link-type="Pagination" data-link="Previous page">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+                Previous
+            </a>
+        </div>
+    {% endif %}
+    {% if page.has_other_pages %}
+        <ul class="tna-pagination__list">
+            {% for i in page_range %}
+                {% if page.number == i %}
+                    <li class="tna-pagination__item tna-pagination__item--current">
+                        <a class="tna-button tna-pagination__link tna-button--accent" href="?{% query_string_include 'page' i %}" aria-label="Current page, Page {{ i }}" aria-current="true" data-link-type="Pagination" data-link="{{ i }}">
+                            {{ i }}
+                        </a>
+                    </li>
+                {% elif i == page.paginator.ELLIPSIS %}
+                    <li class="tna-pagination__item tna-pagination__item--ellipses">{{ i }}</li>
+                {% else %}
+                    <li class="tna-pagination__item">
+                        <a class="tna-button tna-pagination__link" href="?{% query_string_include 'page' i %}" data-link-type="Pagination" aria-label="Go to page {{ i }}" data-link="{{ i }}">
+                            {{ i }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if page.has_next %}
+        <div class="tna-pagination__next">
+            <a href="?{% query_string_include 'page' page.next_page_number %}" class="tna-button tna-button--icon-right tna-button--icon-only-mobile" rel="next" data-link="Next page" data-link-type="Pagination"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                Next
+            </a>
+        </div>
+    {% endif %}
 </nav>
+    

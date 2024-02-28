@@ -2,6 +2,8 @@
 
 {% load humanize datalayer_tags search_tags static %}
 
+{% block html_class %}tna-template--light-theme tna-template--blue-accent{% endblock %}
+
 {% comment %} prepend number of search results to page title {% endcomment %}
 {% block prepend_title %}
     {% with count=page.paginator.count %}

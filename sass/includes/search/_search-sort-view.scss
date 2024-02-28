@@ -2,6 +2,7 @@
     $root: &;
     display: flex;
     align-items: flex-start;
+    flex: 1 0 auto;
 
     @media only screen and (max-width: $screen__md) {
         margin-left: 1rem;
@@ -10,10 +11,9 @@
     }
 
     &__heading {
-        font-size: 1rem;
-        margin: 0;
-        font-family: $font__supria-sans;
+        margin: 0 0.5rem 0 0;
         display: inline-block;
+
         @media only screen and (max-width: $screen__md) {
             display: block;
         }
@@ -29,14 +29,12 @@
         }
 
         &-select {
+            border-radius: 0;
+            border: 1px solid $color__grey-400;
             padding: 0.2rem;
             width: 10rem;
             height: 2.3rem;
             margin-bottom: 0.25rem;
-
-            &:focus {
-                outline: 5px solid $color__focus-outline-light-bg;
-            }
         }
 
         &-submit {

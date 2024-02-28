@@ -8,6 +8,7 @@
         <h2 class="tna-heading-l search-sort-view__heading">
             <label for="id-for-this-dropdown">Show results from:</label>
         </h2>
+        
         <select name="group" id="id-for-this-dropdown" class="search-sort-view__form-select">
             {% for bucket in buckets %}
                 {% if bucket.result_count != None %}

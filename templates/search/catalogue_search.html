@@ -2,6 +2,8 @@
 
 {% load humanize datalayer_tags search_tags static %}
 
+{% block html_class %}tna-template--light-theme tna-template--blue-accent{% endblock %}
+
 {% comment %} prepend number of search results to page title {% endcomment %}
 {% block prepend_title %}
     {% with count=page.paginator.count %}
@@ -25,58 +27,52 @@
     {% with search_tab=searchtabs.CATALOGUE.value %}
         {% include './blocks/search_results_hero.html' %}
 
-        {% if buckets.current.result_count %}
+        {% comment %} {% if buckets.current.result_count %}
+            {% if form.group.value == 'tna' %}
+            <div class="tna-container">
+                <p class="search-results__explainer">Results for records held at The National Archives that match your search term.</p>
+            </div>
+            {% endif %}
 
-                {% if form.group.value == 'tna' %}
+            {% if form.group.value == 'digitised' %}    
                 <div class="tna-container">
-                    <p class="search-results__explainer">Results for records held at The National Archives that match your search term.</p>
+                    <p class="search-results__explainer">Results for records available to download at The National Archives that match your search term.</p>
                 </div>
-                {% endif %}
+            {% endif %}
 
-                {% if form.group.value == 'digitised' %}
-                    <div class="tna-container">
-                        <p class="search-results__explainer">Results for records available to download at The National Archives that match your search term.</p>
-                    </div>
-                {% endif %}
+            {% if form.group.value == 'nonTna' %}
+                <div class="tna-container">
+                    <p class="search-results__explainer">Records held at other UK archives that match your search term.</p>
+                </div>
+            {% endif %}
 
-                {% if form.group.value == 'nonTna' %}
-                    <div class="tna-container">
-                        <p class="search-results__explainer">Records held at other UK archives that match your search term.</p>
-                    </div>
-                {% endif %}
+            {% if form.group.value == 'creator' %}
+                <div class="tna-container">
+                    <p class="search-results__explainer">A business, family, manor, organisation or person who has created records that match your search term.</p>
+                </div>
+            {% endif %}
 
-                {% if form.group.value == 'creator' %}
-                    <div class="tna-container">
-                        <p class="search-results__explainer">A business, family, manor, organisation or person who has created records that match your search term.</p>
-                    </div>
-                {% endif %}
+            {% if form.group.value == 'archive' %}
+                <div class="tna-container">
+                    <p class="search-results__explainer">Archives across the UK that match your search term.</p>
+                </div>
+            {% endif %}
+        {% endif %} {% endcomment %}
 
-                {% if form.group.value == 'archive' %}
-                    <div class="tna-container">
-                        <p class="search-results__explainer">Archives across the UK that match your search term.</p>
-                    </div>
-                {% endif %}
-
-        {% endif %}
-
-        {% if buckets_contain_results %}
+        {% comment %} {% if buckets_contain_results %}
             {% include './blocks/catalogue_search_buckets.html' %}
-        {% endif %}
-
-        {% if buckets.current.result_count > 0 %}
-            {% include './blocks/search_sort_and_view_options.html' %}
-        {% endif %}
+        {% endif %} {% endcomment %}
 
         {% if buckets.current.result_count > 0 or form.errors %}
             <div class="tna-container">
-            <div class="catalogue-search-grid" data-id="catalogue-search-grid">
-                <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
-                    {% include './blocks/search_filters.html' %}
+                <div class="catalogue-search-grid" data-id="catalogue-search-grid">
+                    <div class="catalogue-search-grid__sidebar" data-id="catalogue-search-sidebar">
+                        {% include './blocks/search_filters.html' %}
+                    </div>
+                    <div class="catalogue-search-grid__results">
+                        {% include './blocks/search_results.html' %}
+                    </div>
                 </div>
-                <div class="catalogue-search-grid__results">
-                    {% include './blocks/search_results.html' %}
-                </div>
-            </div>
             </div>
         {% else %}
             {# No results were found when searching with the 'q' param value for all buckets ... #}

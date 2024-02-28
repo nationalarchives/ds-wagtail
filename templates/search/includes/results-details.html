@@ -1,29 +1,32 @@
 {% if record.held_by %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
+    <dt class="search-results__list-card-metadata-item">
         Held by:
     </dt>
-    <dd>{{ record.held_by }}</dd>
+    <dd class="search-results__list-card-metadata-item">
+        {{ record.held_by }}
+    </dd>
 {% endif %}
 
 {% if record.date_created %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+    <dt class="search-results__list-card-metadata-item">
         Date:
     </dt>
-    <dd> {{ record.date_created }}</dd>
+    <dd class="search-results__list-card-metadata-item">
+        {{ record.date_created }}
+    </dd>
 {% endif %}
 
 {% if record.reference_number %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
-
+    <dt class="search-results__list-card-metadata-item">
         {% if form.group.value == 'archive' %}
-        Archon code:
+            Archon code:
         {% else %}
-        Reference:
+            Reference:
         {% endif %}
-
-
     </dt>
-    <dd>{{ record.reference_number }}</dd>
+    <dd class="search-results__list-card-metadata-item">
+        {{ record.reference_number }}
+    </dd>
 {% endif %}
 
 <!--
@@ -39,7 +42,9 @@
     <dt class="search-results__list-card-metadata-item">
         Type:
     </dt>
-    <dd>{{ record.type }}</dd>
+    <dd class="search-results__list-card-metadata-item">
+        {{ record.type }}
+    </dd>
 {% endif %}
 
 {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
