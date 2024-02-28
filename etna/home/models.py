@@ -1,4 +1,5 @@
 from wagtail.admin.panels import FieldPanel
+from wagtail.api import APIField
 from wagtail.fields import StreamField
 
 from etna.alerts.models import AlertMixin
@@ -8,7 +9,7 @@ from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, BasePageWithIntro):
-    body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
+    body = StreamField(HomePageStreamBlock, blank=True, null=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),
@@ -48,3 +49,8 @@ class HomePage(AlertMixin, BasePageWithIntro):
         ]
 
         return context
+
+    api_fields = [
+        APIField("intro"),
+        APIField("body"),
+    ]
