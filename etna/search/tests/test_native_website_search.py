@@ -212,22 +212,17 @@ class NativeWebsiteSearchTestCase(TestCase):
 
         self.assertContains(
             response,
-            '<li class="pagination__list-item"><span class="pagination__page-chevron-previous--disabled">&lt; Previous</span></li>',
+            '<li class="tna-pagination__item tna-pagination__item--current"><a class="tna-button tna-pagination__link tna-button--accent" href="?per_page=10&amp;page=1" aria-label="Current page, Page 1" aria-current="true" data-link-type="Pagination" data-link="1">1</a></li>',
             html=True,
         )
         self.assertContains(
             response,
-            '<li class="pagination__list-item"><a class="pagination__page-link-current" href="?per_page=10&amp;page=1" aria-label="Current page, Page 1" aria-current="true" data-link-type="Pagination" data-link="1"> 1 </a></li>',
+            '<li class="tna-pagination__item"><a class="tna-button tna-pagination__link" href="?per_page=10&amp;page=2" data-link-type="Pagination" aria-label="Go to page 2" data-link="2">2</a></li>',
             html=True,
         )
         self.assertContains(
             response,
-            '<li class="pagination__list-item"><a class="pagination__page-link" href="?per_page=10&amp;page=2" data-link-type="Pagination" aria-label="Go to page 2" data-link="2"> 2 </a></li>',
-            html=True,
-        )
-        self.assertContains(
-            response,
-            '<li class="pagination__list-item"><a class="pagination__page-chevron-next" href="?per_page=10&amp;page=2" data-link="Next page" data-link-type="Pagination" aria-label="Go to Next Page">Next &gt;</a></li>',
+            '<div class="tna-pagination__next"><a href="?per_page=10&amp;page=2" class="tna-button tna-button--icon-right tna-button--icon-only-mobile" rel="next" data-link="Next page" data-link-type="Pagination"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>Next</a></div>',
             html=True,
         )
 
