@@ -14,9 +14,9 @@ from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
-from etna.core.serializers import LinkedPageSerializer
 
 from etna.core.models import BasePage
+from etna.core.serializers import LinkedPageSerializer
 
 
 class AuthorIndexPage(BasePage):

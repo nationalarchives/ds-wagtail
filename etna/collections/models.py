@@ -22,6 +22,7 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from rest_framework import serializers
+
 from etna.core.serializers import LinkedPageSerializer
 
 from ..alerts.models import AlertMixin
@@ -648,15 +649,26 @@ class BaseModelSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80)
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80
+    )
 
     class Meta:
         model = PageTopic
-        fields = ("id", "title", "teaser_image_jpeg", "teaser_image_webp", "url", "full_url")
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+        )
 
 
 class TimePeriodSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80)
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80
+    )
     start_year = serializers.IntegerField()
     end_year = serializers.IntegerField()
 
