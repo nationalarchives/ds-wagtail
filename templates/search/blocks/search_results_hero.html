@@ -23,8 +23,8 @@
                                 <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.ALL.value}}</span>
                             {% else %}
                             <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.ALL.value}}</a>
-                            {% endif %} {% endcomment %}
-                        </li>
+                            {% endif %}
+                        </li> {% endcomment %}
                         <li class="search-results-hero__nav-list-item">
                             {% if url_name == 'search-catalogue' %}
                                 <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.CATALOGUE.value}}</span>
