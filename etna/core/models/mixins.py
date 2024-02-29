@@ -11,6 +11,7 @@ from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 
 from etna.core.serializers import RichTextSerializer
+
 from .forms import RequiredHeroImagePageForm
 
 __all__ = [

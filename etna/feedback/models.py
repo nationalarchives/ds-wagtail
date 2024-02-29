@@ -15,7 +15,7 @@ from django.utils.translation import gettext_lazy as _
 from modelcluster.fields import ParentalKey
 from modelcluster.models import ClusterableModel
 from wagtail.admin import panels
-from wagtail.fields import StreamField, RichTextField
+from wagtail.fields import RichTextField, StreamField
 from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
