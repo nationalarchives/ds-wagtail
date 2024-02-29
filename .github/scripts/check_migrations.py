@@ -1,15 +1,24 @@
 import subprocess
 import sys
 
+DEV_BRANCH = "develop"
+LIVE_BRANCH = "main"
+
 
 def get_diff():
+    """
+    Gets the file diff between the current branch (your branch) and the
+    develop branch. If there are no changes, it gets the diff between
+    the current branch and the main branch - this will be the case for
+    merging develop into the main branch.
+    """
     subprocess.run(
         ["git", "fetch", "origin"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL
     )
     output = [
         f"./{file_path}"
         for file_path in subprocess.check_output(
-            ["git", "diff", "--name-only", "origin/develop"]
+            ["git", "diff", "--name-only", f"origin/{DEV_BRANCH}"]
         )
         .decode()
         .splitlines()
@@ -18,7 +27,7 @@ def get_diff():
         output = [
             f"./{file_path}"
             for file_path in subprocess.check_output(
-                ["git", "diff", "--name-only", "origin/main"]
+                ["git", "diff", "--name-only", f"origin/{LIVE_BRANCH}"]
             )
             .decode()
             .splitlines()
@@ -27,10 +36,20 @@ def get_diff():
 
 
 def check_migration_file(file):
+    """
+    Checks if a migration file contains any of the keywords listed
+    in the `keywords` list that may be potentially harmful to our
+    data.
+
+    While AlterField is generally safe, it can be harmful if the
+    field is being changed to a type that does not support the
+    current data type. For example, changing a CharField to an
+    IntegerField will result in a loss of data.
+    """
     with open(file) as f:
         contents = f.read()
 
-    keywords = ["DeleteModel", "RenameModel", "RemoveField", "RenameField"]
+    keywords = ["DeleteModel", "RenameModel", "RemoveField", "AlterField"]
     for keyword in keywords:
         if keyword in contents and f"# etna:allow{keyword}" not in contents:
             print(f"Warning: {file} contains a migration that may cause data loss.")
