@@ -17,7 +17,7 @@ from wagtail.admin.panels import (
     PageChooserPanel,
 )
 from wagtail.api import APIField
-from wagtail.fields import StreamField
+from wagtail.fields import StreamField, RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
@@ -29,7 +29,7 @@ from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin, AuthorTag
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks.paragraph import RichTextField
+from etna.core.serializers import RichTextSerializer
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
@@ -680,9 +680,8 @@ class RecordArticlePage(
         + ContentWarningMixin.api_fields
         + [
             APIField("type_label"),
-            APIField("about"),
             APIField("date_text"),
-            APIField("about"),
+            APIField("about", serializer=RichTextSerializer()),
             APIField("record"),
             APIField("gallery_heading"),
             APIField("image_library_link"),

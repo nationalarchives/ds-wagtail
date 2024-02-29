@@ -12,6 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
@@ -21,7 +22,6 @@ from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.analytics.mixins import DataLayerMixin
-from etna.core.blocks.paragraph import RichTextField
 from etna.core.serializers import RichTextSerializer
 from etna.core.cache_control import (
     apply_default_cache_control,
@@ -213,4 +213,4 @@ class BasePageWithIntro(BasePage):
         index.SearchField("intro", boost=3),
     ]
 
-    api_fields = BasePage.api_fields + [APIField("intro")]
+    api_fields = BasePage.api_fields + [APIField("intro", serializer=RichTextSerializer())]

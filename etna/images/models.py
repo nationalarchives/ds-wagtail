@@ -4,10 +4,11 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.models import ClusterableModel
 from wagtail.api import APIField
+from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
-from etna.core.blocks.paragraph import RichTextField
+from etna.core.serializers import RichTextSerializer
 from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
@@ -137,11 +138,11 @@ class CustomImage(ClusterableModel, AbstractImage):
     api_fields = [
         APIField("title"),
         APIField("copyright"),
-        APIField("description"),
+        APIField("description", serializer=RichTextSerializer()),
         APIField("transcription_heading"),
-        APIField("transcription"),
+        APIField("transcription", serializer=RichTextSerializer()),
         APIField("translation_heading"),
-        APIField("translation"),
+        APIField("translation", serializer=RichTextSerializer()),
         APIField("record_dates"),
         APIField("record"),
     ]

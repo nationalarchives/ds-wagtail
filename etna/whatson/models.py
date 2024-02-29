@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
-from wagtail.fields import StreamField
+from wagtail.fields import StreamField, RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Orderable
 from wagtail.search import index
@@ -20,7 +20,6 @@ from wagtail.snippets.models import register_snippet
 from etna.articles.models import ArticleTagMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.blocks import LargeCardLinksBlock
-from etna.core.blocks.paragraph import RichTextField
 from etna.core.models import BasePageWithIntro
 from etna.core.utils import urlunparse
 

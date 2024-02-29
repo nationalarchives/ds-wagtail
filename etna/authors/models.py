@@ -8,14 +8,15 @@ from django.utils.functional import cached_property
 from modelcluster.fields import ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
 
-from etna.core.blocks.paragraph import RichTextField
 from etna.core.models import BasePage
+from etna.core.serializers import RichTextSerializer
 
 
 class AuthorIndexPage(BasePage):
@@ -85,7 +86,7 @@ class AuthorPage(BasePage):
 
     api_fields = BasePage.api_fields + [
         APIField("role"),
-        APIField("summary"),
+        APIField("summary", serializer=RichTextSerializer()),
         APIField("image"),
         APIField(
             "authored_focused_articles", serializer=AuthorPageSerializer(many=True)

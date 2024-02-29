@@ -4,10 +4,11 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.api import APIField
+from wagtail.fields import RichTextField
 
 from wagtailmedia.models import AbstractMedia
 
-from etna.core.blocks.paragraph import RichTextField
+from etna.core.serializers import RichTextSerializer
 
 
 class EtnaMedia(AbstractMedia):
@@ -49,6 +50,6 @@ class EtnaMedia(AbstractMedia):
         APIField("mime"),
         # APIField("file_extension"),
         # APIField("thumbnail"),
-        APIField("description"),
-        APIField("transcript"),
+        APIField("description", serializer=RichTextSerializer()),
+        APIField("transcript", serializer=RichTextSerializer()),
     ]

@@ -3,9 +3,9 @@ from django.db import models
 from modelcluster.models import ClusterableModel, ParentalKey
 from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+from wagtail.fields import RichTextField
 from wagtail.models import Page
 
-from etna.core.blocks.paragraph import RichTextField
 from etna.navigation.models import AbstractMenuItem
 
 __all__ = ["SiteSettings", "MainMenuItem"]

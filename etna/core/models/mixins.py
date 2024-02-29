@@ -6,11 +6,11 @@ from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
 from wagtail.api import APIField
+from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 
-from etna.core.blocks.paragraph import RichTextField
-
+from etna.core.serializers import RichTextSerializer
 from .forms import RequiredHeroImagePageForm
 
 __all__ = [
@@ -40,7 +40,7 @@ class ContentWarningMixin(models.Model):
     )
 
     api_fields = [
-        APIField("custom_warning_text"),
+        APIField("custom_warning_text", serializer=RichTextSerializer()),
     ]
 
     class Meta:
@@ -159,7 +159,7 @@ class HeroImageMixin(models.Model):
 
     api_fields = [
         # APIField("hero_image"),
-        APIField("hero_image_caption"),
+        APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image_jpg",
             serializer=ImageRenditionField(
