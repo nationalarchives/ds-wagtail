@@ -71,6 +71,11 @@ $ fab test --lint
 
 This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
+We also have CI to check Django migrations, in order to help prevent any potential data issues. The CI will only run on a pull request, if any `/migrations` folders have been changed.
+
+While this won't entirely stop potential data issues, it will help to catch any potential issues by forcing the developer to check that their migrations are sound, before they
+are deployed.
+
 ### SASS/CSS and Javascript
 
 The Etna project uses a few tools to improve the consistency and quality of SASS/CSS and JavaScript code:
