@@ -19,7 +19,7 @@ from wagtail.fields import StreamField
 from wagtail.models import DraftStateMixin, Orderable, Page, RevisionMixin
 from wagtail.snippets.models import register_snippet
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 from etna.feedback import constants
 from etna.feedback.blocks import ResponseOptionBlock
 from etna.feedback.utils import normalize_path
@@ -122,7 +122,7 @@ class FeedbackPrompt(DraftStateMixin, RevisionMixin, ClusterableModel):
         default=_("Thank you for your valuable feedback"),
         help_text=_("Displayed to users after succesfully submitting feedback."),
     )
-    thank_you_message = APIRichTextField(
+    thank_you_message = RichTextField(
         max_length=200,
         verbose_name=_("thank you message"),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,

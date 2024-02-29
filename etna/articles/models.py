@@ -29,7 +29,7 @@ from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin, AuthorTag
 from etna.collections.models import TopicalPageMixin
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
@@ -549,7 +549,7 @@ class RecordArticlePage(
         help_text=_("Date(s) related to the record (max. character length: 100)"),
     )
 
-    about = APIRichTextField(
+    about = RichTextField(
         verbose_name=_("why this record matters"),
         features=settings.RESTRICTED_RICH_TEXT_FEATURES,
     )
@@ -773,7 +773,7 @@ class PageGalleryImage(Orderable):
             'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
         ),
     )
-    caption = APIRichTextField(
+    caption = RichTextField(
         features=["bold", "italic", "link"],
         help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
         blank=True,

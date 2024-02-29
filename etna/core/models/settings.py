@@ -5,7 +5,7 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel
 from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
 from wagtail.models import Page
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 from etna.navigation.models import AbstractMenuItem
 
 __all__ = ["SiteSettings", "MainMenuItem"]
@@ -26,7 +26,7 @@ class SiteSettings(BaseSiteSetting, ClusterableModel):
         default="Find out more",
         verbose_name="link text",
     )
-    beta_banner_text = APIRichTextField(
+    beta_banner_text = RichTextField(
         verbose_name="text",
         default=(
             "<p>This beta site contains new services and features currently in development. Many of these features are "

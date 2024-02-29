@@ -7,7 +7,7 @@ from wagtail.api import APIField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
@@ -67,7 +67,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         default=TranscriptionHeadingChoices.TRANSCRIPT,
     )
 
-    transcription = APIRichTextField(
+    transcription = RichTextField(
         verbose_name=_("transcript"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
@@ -85,7 +85,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         ),
     )
 
-    translation = APIRichTextField(
+    translation = RichTextField(
         verbose_name=_("translation"),
         features=["bold", "italic", "ol", "ul"],
         blank=True,
@@ -114,7 +114,7 @@ class CustomImage(ClusterableModel, AbstractImage):
         help_text=_("Date(s) related to the selected record (max length: 100 chars)."),
     )
 
-    description = APIRichTextField(
+    description = RichTextField(
         verbose_name=_("description"),
         help_text=(
             "This text will appear in highlights galleries. A 100-300 word "

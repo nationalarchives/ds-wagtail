@@ -7,7 +7,7 @@ from wagtail.api import APIField
 
 from wagtailmedia.models import AbstractMedia
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 
 
 class EtnaMedia(AbstractMedia):
@@ -16,10 +16,10 @@ class EtnaMedia(AbstractMedia):
     """
 
     date = models.DateField(blank=True, null=True)
-    description = APIRichTextField(
+    description = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
-    transcript = APIRichTextField(
+    transcript = RichTextField(
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
 

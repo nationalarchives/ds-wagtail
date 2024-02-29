@@ -14,7 +14,7 @@ from wagtail.models import Page
 
 from rest_framework import serializers
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 from etna.core.models import BasePage
 
 
@@ -56,7 +56,7 @@ class AuthorPage(BasePage):
     """
 
     role = models.CharField(blank=True, null=True, max_length=100)
-    summary = APIRichTextField(
+    summary = RichTextField(
         blank=True, null=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
     image = models.ForeignKey(

@@ -9,7 +9,7 @@ from wagtail.api import APIField
 from wagtail.images import get_image_model_string
 from wagtail.images.api.fields import ImageRenditionField
 
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
 
 from .forms import RequiredHeroImagePageForm
 
@@ -29,7 +29,7 @@ class ContentWarningMixin(models.Model):
         default=False,
     )
 
-    custom_warning_text = APIRichTextField(
+    custom_warning_text = RichTextField(
         verbose_name="custom content warning text (optional)",
         features=["link"],
         blank=True,
@@ -135,7 +135,7 @@ class HeroImageMixin(models.Model):
         related_name="+",
     )
 
-    hero_image_caption = APIRichTextField(
+    hero_image_caption = RichTextField(
         verbose_name="hero image caption (optional)",
         features=["bold", "italic", "link"],
         blank=True,

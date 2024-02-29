@@ -21,7 +21,8 @@ from wagtail_headless_preview.models import HeadlessPreviewMixin
 from wagtailmetadata.models import MetadataPageMixin
 
 from etna.analytics.mixins import DataLayerMixin
-from etna.core.blocks.paragraph import APIRichTextField
+from etna.core.blocks.paragraph import RichTextField
+from etna.core.serializers import RichTextSerializer
 from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
@@ -194,7 +195,7 @@ class BasePageWithIntro(BasePage):
     start with a required 'intro'.
     """
 
-    intro = APIRichTextField(
+    intro = RichTextField(
         verbose_name=_("introductory text"),
         help_text=_(
             "1-2 sentences introducing the subject of the page, and explaining why a user should read on."
