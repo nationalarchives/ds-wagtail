@@ -157,14 +157,7 @@ class IIIFManifestRecordDetailView(RecordDetailView):
     def get_iiif_manifest_url(self, record: Record) -> str | None:
         try:
             return iiif.manifest_url_for_record(record)
-        except (iiif.RecordHasNoManifest, iiif.RecordManifestUnexpectedlyUnavailable):
-            return None
-        except Exception:
-            logger.warning(
-                "Unexpected error when getting the IIIF manifest URL for record: record_iaid=%s",
-                record.iaid,
-                exc_info=True,
-            )
+        except iiif.RecordHasNoManifest:
             return None
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
