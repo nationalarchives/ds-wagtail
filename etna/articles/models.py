@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
+from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
@@ -136,7 +137,6 @@ class ArticleIndexPage(BasePageWithIntro):
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     api_fields = BasePageWithIntro.api_fields + [
@@ -156,7 +156,14 @@ class ArticleIndexPage(BasePageWithIntro):
             self.get_children()
             .public()
             .live()
-            .order_by("-first_published_at")
+            .order_by(
+                Coalesce(
+                    "recordarticlepage__newly_published_at",
+                    "focusedarticlepage__newly_published_at",
+                    "articlepage__newly_published_at",
+                )
+            )
+            .reverse()
             .specific()
         )
         return context
@@ -212,9 +219,7 @@ class ArticlePage(
     The ArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -354,7 +359,7 @@ class ArticlePage(
             )
 
         return sorted(
-            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
         )[:3]
 
 
@@ -372,9 +377,7 @@ class FocusedArticlePage(
     The FocusedArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -511,7 +514,7 @@ class FocusedArticlePage(
             )
 
         return sorted(
-            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
         )[:3]
 
 
@@ -595,7 +598,6 @@ class RecordArticlePage(
         max_num=1,
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     # DataLayerMixin overrides
