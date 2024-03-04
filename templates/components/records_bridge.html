@@ -8,7 +8,18 @@
             <a href="{{ link_url }}" class="records-bridge__image-link" aria-labelledby="article-desc202" tabindex="-1">
         {% endif %}
 
-        {% picture image width-{1000,768,991,1200} sizes="(max-width: 768px),(max-width: 991px),(max-width: 1200px)" %}
+        {% if image %}
+            <picture>
+                {% image image fill-500x400-c100 as rendition %}
+                <source media="(max-width: 768px)" srcset="{{ rendition.url }}"/>
+                {% image image fill-500x500-c100 as rendition %}
+                <source media="(max-width: 991px)" srcset="{{ rendition.url }}"/>
+                {% image image fill-1000x600-c100 as rendition %}
+                <source media="(max-width: 1200px)" srcset="{{ rendition.url }}"/>
+
+                <img width="{{ rendition.width }}" height="{{ rendition.height }}" src="{{ rendition.url }}" alt="" />
+            </picture>
+        {% endif %}
 
         {% if link_url %}
             </a>
