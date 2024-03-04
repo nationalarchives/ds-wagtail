@@ -60,25 +60,9 @@ public_urls = [
     path(
         r"catalogue/id/<id:id>/",
         setting_controlled_login_required(
-            records_views.RecordDetailInlineView.as_view(),
-            "RECORD_DETAIL_REQUIRE_LOGIN",
+            records_views.record_detail_view, "RECORD_DETAIL_REQUIRE_LOGIN"
         ),
         name="details-page-machine-readable",
-    ),
-    path(
-        r"catalogue/id/<id:id>/inline/",
-        setting_controlled_login_required(
-            records_views.RecordDetailInlineView.as_view(),
-            "RECORD_DETAIL_REQUIRE_LOGIN",
-        ),
-        name="details-page-machine-readable-inline",
-    ),
-    path(
-        r"catalogue/id/<id:id>/full/",
-        setting_controlled_login_required(
-            records_views.RecordDetailFullView.as_view(), "RECORD_DETAIL_REQUIRE_LOGIN"
-        ),
-        name="details-page-machine-readable-full",
     ),
     path(
         r"catalogue/ref/<reference_number:reference_number>/",

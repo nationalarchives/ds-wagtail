@@ -1,25 +1,16 @@
 import datetime
-import logging
 
-from typing import Any
-
-from django import http
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
-
-from wagtail.admin.urls import TemplateView
-
-from etna.records import iiif
-from etna.records.models import Image, Record
 
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
-
-logger = logging.getLogger(__name__)
+from .. import iiif
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -49,10 +40,10 @@ def record_disambiguation_view(request, reference_number):
     if not result:
         raise Http404
 
-    # if the results contain a single record page, render the details page.
+    # if the results contain a single record page, redirect to the details page.
     if len(result) == 1:
         record = result.hits[0]
-        return RecordDetailInlineView.as_view()(request, record.iaid)
+        return record_detail_view(request, record.iaid)
 
     paginator = APIPaginator(result.total_count, per_page=per_page)
     page = Page(result, number=page_number, paginator=paginator)
@@ -67,118 +58,69 @@ def record_disambiguation_view(request, reference_number):
     )
 
 
-class RecordDetailView(TemplateView):
-    """
-    View for rendering a record's details page.
-    Record detail pages differ from all other page types within Etna in that their
+def record_detail_view(request, id):
+    """View for rendering a record's details page.
+
+    Details pages differ from all other page types within Etna in that their
     data isn't fetched from the CMS but an external API. And unlike pages, this
     view is accessible from a fixed URL.
     Sets context for Back to search button.
-
-    This view can be used for the legacy functionality, but right now it's being
-    subclassed by the views of the new IIIF viewer.
     """
-
     template_name = "records/record_detail.html"
-    record: Record
+    context = {}
+    page_type = "Record details page"
 
-    def dispatch(
-        self, request: http.HttpRequest, *args: Any, **kwargs: Any
-    ) -> http.response.HttpResponseBase:
-        self.record = self.get_record()
-        return super().dispatch(request, *args, **kwargs)
+    try:
+        # for any record
+        record = records_client.fetch(id=id)
 
-    def get_record(self) -> Record:
-        try:
-            return records_client.fetch(id=self.kwargs["id"])
-        except DoesNotExist:
-            raise Http404
-
-    def get_template_names(self) -> list[str]:
         # check archive record
-        if self.record.custom_record_type == "ARCHON":
-            return ["records/archive_detail.html"]
-        elif self.record.custom_record_type == "CREATORS":
-            return ["records/record_creators.html"]
-        return super().get_template_names()
+        if record.custom_record_type == "ARCHON":
+            page_type = "Archive details page"
+            template_name = "records/archive_detail.html"
+            context.update(discovery_browse=TNA_URLS.get("discovery_browse"))
+        elif record.custom_record_type == "CREATORS":
+            page_type = "Record creators page"
+            template_name = "records/record_creators.html"
+    except DoesNotExist:
+        raise Http404
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["back_to_search_url"] = self.get_back_to_search_url()
-        context["discovery_browse"] = self.get_discovery_browse_url()
-        context["image"] = self.get_image()
-        context["meta_title"] = self.record.summary_title
-        context["page_title"] = f"Catalogue ID: {self.record.iaid}"
-        context["page_type"] = self.get_page_type()
-        context["record"] = self.record
-        return context
+    page_title = f"Catalogue ID: {record.iaid}"
+    image = None
 
-    def get_discovery_browse_url(self) -> str | None:
-        if self.record.custom_record_type == "ARCHON":
-            return TNA_URLS.get("discovery_browse")
-        return None
+    try:
+        iiif_manifest_url = iiif.manifest_url_for_record(record)
+    except iiif.RecordHasNoManifest:
+        iiif_manifest_url = None
 
-    def get_image(self) -> Image | None:
-        # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
-        # if page.is_digitised:
-        #     image = Image.search.filter(rid=page.media_reference_id).first()
-        return None
+    # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
+    # if page.is_digitised:
+    #     image = Image.search.filter(rid=page.media_reference_id).first()
 
-    def get_back_to_search_url(self) -> str:
-        # Back to search button - update url when timestamp is not expired
-        if back_to_search_url_timestamp := self.request.session.get(
-            "back_to_search_url_timestamp"
-        ):
-            back_to_search_url_timestamp = datetime.datetime.fromisoformat(
-                back_to_search_url_timestamp
-            )
+    # Back to search - default url
+    back_to_search_url = reverse("search-featured")
 
-            if timezone.now() <= (
-                back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA
-            ):
-                return self.request.session.get("back_to_search_url")
+    # Back to search button - update url when timestamp is not expired
 
-        # Back to search - default url
-        return reverse("search-featured")
+    if back_to_search_url_timestamp := request.session.get(
+        "back_to_search_url_timestamp"
+    ):
+        back_to_search_url_timestamp = datetime.datetime.fromisoformat(
+            back_to_search_url_timestamp
+        )
 
-    def get_page_type(self) -> str:
-        return {
-            "ARCHON": "Archive details page",
-            "CREATORS": "Record creators page",
-        }.get(self.record.custom_record_type, "Record details page")
+        if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
+            back_to_search_url = request.session.get("back_to_search_url")
 
+    context.update(
+        record=record,
+        iiif_manifest_url=iiif_manifest_url,
+        image=image,
+        meta_title=record.summary_title,
+        back_to_search_url=back_to_search_url,
+        page_type=page_type,
+        page_title=page_title,
+    )
 
-class IIIFManifestRecordDetailView(RecordDetailView):
-    """
-    Base view for record detail views that adds plumbing required for working
-    with IIIF manifests.
-    """
-
-    def get_iiif_manifest_url(self, record: Record) -> str | None:
-        try:
-            return iiif.manifest_url_for_record(record)
-        except iiif.RecordHasNoManifest:
-            return None
-
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        iiif_manifest_url = self.get_iiif_manifest_url(self.record)
-        if iiif_manifest_url is not None:
-            context["iiif_manifest_url"] = iiif_manifest_url
-        return context
-
-
-class RecordDetailInlineView(IIIFManifestRecordDetailView):
-    """
-    Record detail view that renders the inline version of the IIIF viewer.
-    """
-
-    template_name = "records/record_detail_inline.html"
-
-
-class RecordDetailFullView(IIIFManifestRecordDetailView):
-    """
-    Record detail view that renders the full-width version of the IIIF viewer.
-    """
-
-    template_name = "records/record_detail_full.html"
+    # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
+    return TemplateResponse(request=request, template=template_name, context=context)
