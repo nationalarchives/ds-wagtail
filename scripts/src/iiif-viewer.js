@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
             const data = {
-                manifest: manifestUrl,
+                iiifManifestId: manifestUrl,
             };
 
             const uv = window.UV.init(element, data);

@@ -16,6 +16,7 @@ from typing import (
     Type,
     Union,
 )
+from urllib.parse import quote_plus
 
 from django.utils.functional import cached_property
 from django.utils.timezone import get_current_timezone
@@ -23,7 +24,7 @@ from django.utils.timezone import get_current_timezone
 import requests
 
 from etna.ciim.constants import Aggregation
-from etna.records.models import Record
+from etna.records.models import IIIFManifest, Record
 
 from .exceptions import (
     ClientAPIBadRequestError,
@@ -198,6 +199,7 @@ class ClientAPI:
 
     http_error_classes = {
         400: ClientAPIBadRequestError,
+        404: DoesNotExist,
         500: ClientAPIInternalServerError,
         503: ClientAPIServiceUnavailableError,
     }
@@ -206,11 +208,13 @@ class ClientAPI:
     def __init__(
         self,
         base_url: str,
+        iiif_manifest_base_url: str,
         api_key: str,
         verify_certificates: bool = True,
         timeout: int = 5,
     ):
         self.base_url: str = base_url
+        self.iiif_manifest_base_url: str = iiif_manifest_base_url
         self.session = requests.Session()
         self.session.headers.update({"apikey": api_key})
         self.session.verify = verify_certificates
@@ -295,6 +299,27 @@ class ClientAPI:
         if len(result_list) > 1:
             raise MultipleObjectsReturned
         return result_list.hits[0]
+
+    def fetch_iiif_manifest(
+        self,
+        *,
+        id: str,
+    ) -> IIIFManifest:
+        """Make request and return response for Client API's IIIF manifest endpoint.
+
+        Used to fetch a single item by its identifier.
+
+        Keyword arguments:
+
+        id:
+            Matches a single IAID.
+            Ex: returns match on Information Asset Identifier - iaid.
+        """
+        response = self.make_request(
+            f"{self.iiif_manifest_base_url}/manifest/{quote_plus(id)}"
+        )
+        response_data = response.json()
+        return IIIFManifest.from_api_response(response=response_data)
 
     def search(
         self,
@@ -496,10 +521,7 @@ class ClientAPI:
             "size": size,
         }
 
-        # Get HTTP response from the API
         response = self.make_request(f"{self.base_url}/searchUnified", params=params)
-
-        # Convert the HTTP response to a Python dict
         response_data = response.json()
 
         # The API returns a single ES response for this endpoint, which can be directly converted
