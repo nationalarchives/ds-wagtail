@@ -18,7 +18,7 @@ variables:
     POETRY_VERSION: 1.6.1
 
 # The size of the persistent disk of the application (in MB).
-disk: 2048
+disk: 4096
 
 # The relationships of the application with services or other applications.
 #
