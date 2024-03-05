@@ -10,7 +10,6 @@ from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
 
-
 class PagePreviewAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
         ["content_type", "token"]
