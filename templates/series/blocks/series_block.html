@@ -1,1 +1,3 @@
-{% include "components/records_bridge.html" with image=image heading=value.title strapline=category description=value.introduction|linebreaks link_url=series_url link_text="View the records" %}
+{% if record_series is not None %}
+    {% include "components/records_bridge.html" with image=record_series.image heading=record_series.title strapline="Record collection" description=record_series.introduction|linebreaks link_url=record_series_url link_text="View the records" %}
+{% endif %}

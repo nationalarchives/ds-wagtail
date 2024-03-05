@@ -15,10 +15,10 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
 )
-from etna.series.blocks import SeriesBlock
 
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordLinksBlock
+from ..recordseries.blocks import RecordSeriesBlock
 
 
 class AuthorPromotedPagesBlock(blocks.StructBlock):
@@ -192,7 +192,7 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     record_links = RecordLinksBlock()
-    series = SeriesBlock()
+    record_series = RecordSeriesBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):

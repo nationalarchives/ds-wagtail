@@ -3,7 +3,7 @@ from urllib.parse import urlencode, urlunsplit
 
 from django.urls import reverse
 
-from .models import Series
+from .models import RecordSeries
 
 
 class SeriesSearchQuery(TypedDict):
@@ -11,7 +11,7 @@ class SeriesSearchQuery(TypedDict):
 
 
 def get_series_search_results_url(
-    series: Series, *, only_digitised: bool = False
+    record_series: RecordSeries,
 ) -> str:
     search_url = reverse("search-catalogue")
     query_dict: SeriesSearchQuery = {}
@@ -19,7 +19,7 @@ def get_series_search_results_url(
     # TODO: Add a query parameter to filter by the series once that is in place.
     #       e.g.  query_dict["series"] = series.ciim_series_identifier
 
-    if only_digitised:
+    if record_series.show_only_digitised_records:
         query_dict["group"] = "digitised"
     query = urlencode(query_dict)
     return urlunsplit(
