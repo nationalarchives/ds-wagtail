@@ -23,7 +23,7 @@ class RecordSeries(LockableMixin, RevisionMixin, index.Indexed, models.Model):
     #       we should add a field that will allow identify the series
     #       in the CIIM search and on record detail pages.
 
-    revisions = GenericRelation("wagtailcore.Revision", related_query_name="advert")
+    revisions = GenericRelation("wagtailcore.Revision", related_query_name="record_series")
 
     panels = [
         FieldPanel("admin_name"),
