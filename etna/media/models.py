@@ -40,14 +40,9 @@ class EtnaMedia(AbstractMedia):
         return mimetypes.guess_type(self.filename)[0] or "application/octet-stream"
 
     api_fields = [
-        # APIField("file"),
         APIField("type"),
-        # APIField("date"),
         APIField("url"),
-        # APIField("sources"),
         APIField("mime"),
-        # APIField("file_extension"),
-        # APIField("thumbnail"),
         APIField("description"),
         APIField("transcript"),
     ]
