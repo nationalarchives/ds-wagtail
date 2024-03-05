@@ -2,6 +2,7 @@ from django.conf import settings
 from django.db import models
 
 from wagtail.admin.panels import FieldPanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.snippets.models import register_snippet
 
@@ -74,6 +75,8 @@ class AlertMixin(models.Model):
     settings_panels = [
         FieldPanel("alert"),
     ]
+
+    api_fields = [APIField("alert")]
 
     class Meta:
         abstract = True
