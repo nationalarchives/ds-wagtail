@@ -8,7 +8,7 @@ jobs:
     if: github.event.ref_type == 'branch' && startsWith(github.event.ref, 'feature/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Get tag
         id: version-tag
         uses: ./.github/actions/get-version-tag
