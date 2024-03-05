@@ -976,10 +976,6 @@ class IIIFManifest(APIModel):
     content: Mapping[str, Any]
 
     def __init__(self, *, raw_data: Mapping[str, Any]):
-        """
-        This method receives the raw JSON data dict received from
-        Client API and makes it available to the instance as `self._raw`.
-        """
         self.content = raw_data
 
     @classmethod

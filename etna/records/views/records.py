@@ -102,6 +102,10 @@ def record_detail_view(request, id):
         #       if we should load the IIIF viewer to the user. Not all records have
         #       one.
         #
+        #       We could make a HEAD request instead to check that, but it feels
+        #       short-sighted given that the progressively enhanced view will
+        #       require all this content to be fetched anyway.
+        #
         #       This information could also be returned in the fetch endpoint
         #       so we know in advance if we need to call the IIIF manifest
         #       endpoint at all. The raised ticket:
