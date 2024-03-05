@@ -20,9 +20,6 @@ class LazyRecord(SimpleLazyObject):
     ``id``, or requesting a string representation of it.
     """
 
-    # Broken image upload.
-    widget = RecordChooser
-
     def __init__(self, id: str):
         self.__dict__["id"] = id
 
