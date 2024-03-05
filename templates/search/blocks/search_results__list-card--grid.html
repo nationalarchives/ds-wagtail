@@ -36,62 +36,7 @@
             {{ record.listing_description }}
         </p>
         <dl class="search-results__list-card-metadata">
-            {% if record.held_by %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
-                    Held by:
-                </dt>
-                <dd>{{ record.held_by }}</dd>
-            {% endif %}
-
-            {% if record.date_created %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
-                    Date:
-                </dt>
-                <dd> {{ record.date_created }}</dd>
-            {% endif %}
-
-            {% if record.reference_number %}
-            <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
-
-                {% if form.group.value == 'archive' %}
-                Archon code:
-                {% else %}
-                Reference:
-                {% endif %}
-
-
-            </dt>
-            <dd>{{ record.reference_number }}</dd>
-            {% endif %}
-
-            <!--
-            {% if record.record_opening %}
-                <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-subjects-icon">
-                    Record opening date:
-                </dt>
-                <dd>{{ record.record_opening }}</dd>
-            {% endif %}
-            -->
-            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-                <dt class="search-results__list-card-metadata-item">
-                    Type:
-                </dt>
-                <dd>{{ record.type }}</dd>
-            {% endif %}
-
-            {% comment %}Debug attributes. Output to allow k-int to adjust the ES index{% endcomment %}
-            <!--
-            <dt class="search-results__list-card-metadata-item">
-                IAID:
-            </dt>
-
-            <dd>{{ record.iaid }}</dd>>
-            <dt class="search-results__list-card-metadata-item">
-                Score:
-            </dt>
-            <dd;>{{ record.score }}</dd>
-            -->
-            {% comment %}End debug attributes.{% endcomment %}
+            {% include "search/includes/results-details.html" %}
         </dl>
 
 
@@ -110,4 +55,5 @@
             </div>
         {% endif %}
     {% endif %}
+    </div>
 </li>

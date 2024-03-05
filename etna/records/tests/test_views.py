@@ -33,10 +33,10 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/AD/2/2/")
 
-        self.assertEquals(
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     @responses.activate
     def test_disambiguation_page_rendered_for_multiple_results(self):
@@ -53,7 +53,7 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/ADM/223/3/")
 
-        self.assertEquals(
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
         self.assertTemplateUsed(response, "records/record_disambiguation_page.html")
@@ -82,8 +82,8 @@ class TestRecordDisambiguationView(TestCase):
 
         response = self.client.get("/catalogue/ref/ADM/223/3/", follow=False)
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-human-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -101,8 +101,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
 
@@ -120,8 +120,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -149,8 +149,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -190,7 +190,7 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/C123456/")
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "records/record_detail.html")
         self.assertTemplateUsed(response, "includes/records/image-viewer-panel.html")
 
@@ -213,8 +213,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/A13532479/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/archive_detail.html")
@@ -255,8 +255,8 @@ class TestRecordView(TestCase):
 
         response = self.client.get("/catalogue/id/F74321/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_creators.html")
@@ -451,7 +451,7 @@ class TestImageServeView(TestCase):
     def test_no_location_404s(self):
         response = self.client.get("/records/media/")
 
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     @responses.activate
     def test_404_response_from_client_api_is_forwarded(self):
@@ -463,8 +463,8 @@ class TestImageServeView(TestCase):
 
         response = self.client.get("/records/image/missing/image.jpeg")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.url_name, "image-serve")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.resolver_match.url_name, "image-serve")
 
     @responses.activate
     def test_success(self):
@@ -478,8 +478,8 @@ class TestImageServeView(TestCase):
 
         response = self.client.get("/records/image/valid/path.jpg")
 
-        self.assertEquals(response["content-type"], "image/jpeg")
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response["content-type"], "image/jpeg")
+        self.assertEqual(response.status_code, 200)
         self.assertTrue(response.streaming)
 
 
@@ -500,8 +500,8 @@ class TestImageBrowseView(TestCase):
         )
         response = self.client.get("/records/images/C123456/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.url_name, "image-browse")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.resolver_match.url_name, "image-browse")
 
     @responses.activate
     def test_image_browse_record_with_no_media(self):
@@ -518,8 +518,8 @@ class TestImageBrowseView(TestCase):
         )
         response = self.client.get("/records/images/C123456/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.url_name, "image-browse")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.resolver_match.url_name, "image-browse")
 
     @responses.activate
     def test_success(self):
@@ -550,8 +550,8 @@ class TestImageBrowseView(TestCase):
 
         response = self.client.get("/records/images/C123456/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.url_name, "image-browse")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.url_name, "image-browse")
 
 
 @unittest.skip(
@@ -581,8 +581,8 @@ class TestImageViewerView(TestCase):
         )
         response = self.client.get("/records/images/C123456/01/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.url_name, "image-viewer")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.resolver_match.url_name, "image-viewer")
 
     @responses.activate
     def test_image_browse_record_with_no_media(self):
@@ -599,8 +599,8 @@ class TestImageViewerView(TestCase):
         )
         response = self.client.get("/records/images/C123456/01/")
 
-        self.assertEquals(response.status_code, 404)
-        self.assertEquals(response.resolver_match.url_name, "image-viewer")
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.resolver_match.url_name, "image-viewer")
 
     @responses.activate
     def test_success(self):
@@ -633,13 +633,13 @@ class TestImageViewerView(TestCase):
 
         response = self.client.get("/records/images/C123456/02/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.url_name, "image-viewer")
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.url_name, "image-viewer")
+        self.assertEqual(
             response.context["previous_image"].location, "path/to/previous-image.jpeg"
         )
-        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
-        self.assertEquals(
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEqual(
             response.context["next_image"].location, "path/to/next-image.jpeg"
         )
 
@@ -667,13 +667,13 @@ class TestImageViewerView(TestCase):
 
         response = self.client.get("/records/images/C123456/02/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.url_name, "image-viewer")
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.url_name, "image-viewer")
+        self.assertEqual(
             response.context["previous_image"].location, "path/to/previous-image.jpeg"
         )
-        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
-        self.assertEquals(response.context["next_image"], None)
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEqual(response.context["next_image"], None)
 
     @responses.activate
     def test_no_previous_image(self):
@@ -699,11 +699,11 @@ class TestImageViewerView(TestCase):
 
         response = self.client.get("/records/images/C123456/01/")
 
-        self.assertEquals(response.status_code, 200)
-        self.assertEquals(response.resolver_match.url_name, "image-viewer")
-        self.assertEquals(response.context["previous_image"], None)
-        self.assertEquals(response.context["image"].location, "path/to/image.jpeg")
-        self.assertEquals(
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.resolver_match.url_name, "image-viewer")
+        self.assertEqual(response.context["previous_image"], None)
+        self.assertEqual(response.context["image"].location, "path/to/image.jpeg")
+        self.assertEqual(
             response.context["next_image"].location, "path/to/next-image.jpeg"
         )
 
@@ -732,7 +732,7 @@ class TestImageViewerView(TestCase):
 
         response = self.client.get("/records/images/C123456/02/")
 
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
     @responses.activate
     def test_invalid_response_from_client_api_raises_404(self):
@@ -766,7 +766,7 @@ class TestImageViewerView(TestCase):
 
         response = self.client.get("/records/images/C123456/11000000000000000000/")
 
-        self.assertEquals(response.status_code, 404)
+        self.assertEqual(response.status_code, 404)
 
 
 class RecordDetailBackToSearchTest(TestCase):
@@ -796,9 +796,9 @@ class RecordDetailBackToSearchTest(TestCase):
 
         session = self.client.session
         session["back_to_search_url"] = search_url_gen_html_resp
-        session[
-            "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.isoformat()
+        session["back_to_search_url_timestamp"] = (
+            self.back_to_search_url_timestamp.isoformat()
+        )
         session.save()
 
         response = self.client.get(self.record_detail_url)
@@ -850,9 +850,9 @@ class RecordDetailBackToSearchTest(TestCase):
 
         session = self.client.session
         session["back_to_search_url"] = browser_search_url
-        session[
-            "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.isoformat()
+        session["back_to_search_url_timestamp"] = (
+            self.back_to_search_url_timestamp.isoformat()
+        )
         session.save()
 
         response = self.client.get(self.record_detail_url)

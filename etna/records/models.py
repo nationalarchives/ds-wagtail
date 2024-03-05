@@ -659,7 +659,7 @@ class Record(DataLayerMixin, APIModel):
             for item in manifestations:
                 info_list.append(
                     {
-                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
+                        "identifier_title": f'NRA {item.get("identifier", [{}])[0].get("value", "")} {item.get("title", [{}])[0].get("value", "")}',
                         "url": item.get("url", ""),
                     }
                 )
