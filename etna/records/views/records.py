@@ -2,7 +2,6 @@ import datetime
 import logging
 
 from django.core.paginator import Page
-from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.shortcuts import Http404, render
 from django.template.response import TemplateResponse
 from django.urls import reverse
@@ -11,7 +10,6 @@ from django.utils import timezone
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from .. import iiif
 from ..api import records_client
 
 logger = logging.getLogger(__name__)
@@ -100,6 +98,10 @@ def record_detail_view(request, id):
         #       Right now this is only used to establish if the record has
         #       a IIIF manifest which could use a HEAD request instead.
         #
+        #       We need to know if a record has IIIF manifest in order to establish
+        #       if we should load the IIIF viewer to the user. Not all records have
+        #       one.
+        #
         #       This information could also be returned in the fetch endpoint
         #       so we know in advance if we need to call the IIIF manifest
         #       endpoint at all. The raised ticket:
@@ -114,7 +116,7 @@ def record_detail_view(request, id):
             exc_info=True,
         )
     else:
-        iiif_manifest_url = reverse("iiif-manifest", args=[record.iaid])
+        iiif_manifest_url = records_client.get_public_iiif_manifest_url(id=record.iaid)
 
     # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
     # if page.is_digitised:
@@ -148,34 +150,3 @@ def record_detail_view(request, id):
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.
     return TemplateResponse(request=request, template=template_name, context=context)
-
-
-def record_iiif_manifest_view(
-    request: HttpRequest, id: str
-) -> JsonResponse | HttpResponse:
-    """
-    Serve the IIIF manifest view to the client.
-
-    This proxies the manifest from CIIM (Rosetta API) to the client.
-
-    This view assumes that whatever is available at the API endpoint,
-    is safe to be served to the public.
-    """
-    try:
-        # This assumes that the ID passed in the request from the Internet
-        # is safe enough to pass it directly to the IIIF manifest API.
-        iiif_manifest = records_client.fetch_iiif_manifest(id=id)
-    except DoesNotExist:
-        raise Http404(id)
-    except Exception:
-        logger.warning(
-            "Unexpected error happened when trying to fetch the IIIF manifest for a record: requested_record_id=%s",
-            id,
-            exc_info=True,
-        )
-        # Return "503 Service Unavailable" if the IIIF manifest cannot be fetched
-        # for reasons other than it does not exist.
-        return HttpResponse(status=503)
-
-    # Proxy the IIIF manifest as-is from the CIIM (Rosetta) API to the client.
-    return JsonResponse(iiif_manifest.content)

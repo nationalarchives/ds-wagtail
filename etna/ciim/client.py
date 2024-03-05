@@ -315,11 +315,21 @@ class ClientAPI:
             Matches a single IAID.
             Ex: returns match on Information Asset Identifier - iaid.
         """
-        response = self.make_request(
-            f"{self.iiif_manifest_base_url}/manifest/{quote_plus(id)}"
-        )
+        response = self.make_request(self.get_public_iiif_manifest_url(id=id))
         response_data = response.json()
         return IIIFManifest.from_api_response(response=response_data)
+
+    def get_public_iiif_manifest_url(
+        self,
+        *,
+        id: str,
+    ) -> str:
+        """
+        Generate the IIIF manifest link for a given record ID.
+
+        This URL is meant to be used by the end-users on the Internet.
+        """
+        return f"{self.iiif_manifest_base_url}/manifest/{quote_plus(id)}"
 
     def search(
         self,

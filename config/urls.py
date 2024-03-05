@@ -65,13 +65,6 @@ public_urls = [
         name="details-page-machine-readable",
     ),
     path(
-        r"catalogue/id/<id:id>/iiif-manifest/",
-        setting_controlled_login_required(
-            records_views.record_iiif_manifest_view, "RECORD_DETAIL_REQUIRE_LOGIN"
-        ),
-        name="iiif-manifest",
-    ),
-    path(
         r"catalogue/ref/<reference_number:reference_number>/",
         setting_controlled_login_required(
             records_views.record_disambiguation_view, "RECORD_DETAIL_REQUIRE_LOGIN"
