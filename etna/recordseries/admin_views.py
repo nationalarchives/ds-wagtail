@@ -5,7 +5,6 @@ from .models import RecordSeries
 
 
 class RecordSeriesSnippetViewSet(SnippetViewSet):
-    filter_list = ["category"]
     icon = "folder"
     inspect_view_enabled = True
     list_display = ["admin_name", UpdatedAtColumn()]
