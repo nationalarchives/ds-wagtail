@@ -8,6 +8,7 @@ from .models import RecordSeries
 
 class SeriesSearchQuery(TypedDict):
     group: NotRequired[Literal["digitised"]]
+    q: NotRequired[str]
 
 
 def get_series_search_results_url(
@@ -19,8 +20,12 @@ def get_series_search_results_url(
     # TODO: Add a query parameter to filter by the series once that is in place.
     #       e.g.  query_dict["series"] = series.ciim_series_identifier
 
+    if record_series.catalogue_search_query:
+        query_dict["q"] = record_series.catalogue_search_query
+
     if record_series.show_only_digitised_records:
         query_dict["group"] = "digitised"
+
     query = urlencode(query_dict)
     return urlunsplit(
         (
