@@ -167,7 +167,8 @@ Modified to match the existing site (for now)
 .tna-header__navigation-item-link {
     color: $color--white;
 
-    &:visited {
+    &:visited,
+    &:link {
         color: $color--white;
     }
 
