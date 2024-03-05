@@ -17,6 +17,6 @@ class RecordSeriesBlock(blocks.StructBlock):
         context = super().get_context(value, parent_context=parent_context)
         record_series = value.get("record_series")
         if record_series is not None:
-            context['record_series'] = record_series
+            context["record_series"] = record_series
             context["record_series_url"] = get_series_search_results_url(record_series)
         return context

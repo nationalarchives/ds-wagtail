@@ -9,7 +9,6 @@ from requests import HTTPError
 
 from .api import records_client
 from .models import Record
-
 from .widgets import RecordChooser
 
 
@@ -50,6 +49,7 @@ class RecordChoiceField(CharField):
     by default and validates that a record can be found again from
     the selected record's ``id`` value.
     """
+
     widget = RecordChooser
 
     def validate(self, value: Any) -> None:
