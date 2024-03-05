@@ -1,4 +1,5 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
 
 .record-details {
     padding: 2rem 0 0;
@@ -9,12 +10,20 @@
 
         th,
         td {
+            @include font-size(m);
+            line-height: 1.5;
             padding: 0.5em 0;
             vertical-align: top;
         }
 
         th {
             font-weight: bold;
+            width: 30%;
+            padding-right: 1rem;
+
+            @include media.on-larger-than-mobile {
+                padding-right: 2rem;
+            }
         }
     }
 }
