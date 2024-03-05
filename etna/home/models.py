@@ -10,7 +10,7 @@ from .blocks import HomePageStreamBlock
 
 
 class HomePage(AlertMixin, BasePageWithIntro):
-    body = StreamField(HomePageStreamBlock, blank=True, null=True, use_json_field=True)
+    body = StreamField(HomePageStreamBlock, blank=True, null=True)
 
     content_panels = BasePageWithIntro.content_panels + [
         FieldPanel("body"),

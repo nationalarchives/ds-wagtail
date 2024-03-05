@@ -343,9 +343,9 @@ class RecordDetailBackToSearchTest(TestCase):
 
         session = self.client.session
         session["back_to_search_url"] = search_url_gen_html_resp
-        session[
-            "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.isoformat()
+        session["back_to_search_url_timestamp"] = (
+            self.back_to_search_url_timestamp.isoformat()
+        )
         session.save()
 
         response = self.client.get(self.record_detail_url)
@@ -397,9 +397,9 @@ class RecordDetailBackToSearchTest(TestCase):
 
         session = self.client.session
         session["back_to_search_url"] = browser_search_url
-        session[
-            "back_to_search_url_timestamp"
-        ] = self.back_to_search_url_timestamp.isoformat()
+        session["back_to_search_url_timestamp"] = (
+            self.back_to_search_url_timestamp.isoformat()
+        )
         session.save()
 
         response = self.client.get(self.record_detail_url)

@@ -357,9 +357,9 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
         """
 
         self.request.session["back_to_search_url"] = self.request.get_full_path()
-        self.request.session[
-            "back_to_search_url_timestamp"
-        ] = timezone.now().isoformat()
+        self.request.session["back_to_search_url_timestamp"] = (
+            timezone.now().isoformat()
+        )
         return None
 
 
