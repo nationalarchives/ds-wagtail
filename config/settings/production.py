@@ -15,12 +15,6 @@ ALLOWED_HOSTS = ["*"]
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 STATIC_ROOT = "/app/static"
 
-WAGTAIL_HEADLESS_PREVIEW = {
-    "CLIENT_URLS": {
-        "default": "{SITE_ROOT_URL}",
-    },
-}
-
 try:
     from .local import *  # noqa: F401
 except ImportError:
