@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     "etna.navigation",
     "etna.records",
     "etna.search",
+    "etna.recordseries",
     "etna.users",
     "etna.whatson",
     "wagtail.contrib.forms",
