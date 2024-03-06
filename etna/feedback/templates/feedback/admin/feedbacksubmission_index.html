@@ -6,13 +6,7 @@
     {% fragment as report_actions %}
         <div class="report__actions">
             {% if view.list_export %}
-                {% fragment as button %}
-                    <a href="{{ view.xlsx_export_url }}" class="button bicolor button--icon">{% icon name="download" wrapped=1 %}{% trans 'Download XLSX' %}</a>
-                {% endfragment %}
-                
-                {% dropdown_button button=button toggle_icon="arrow-down" %}
-                    <a class="button bicolor button--icon" href="{{ view.csv_export_url }}">{% icon name="download" wrapped=1 %}{% trans 'Download CSV' %}</a>
-                {% enddropdown_button %}
+                {% include 'wagtailadmin/shared/export_buttons.html' %}
             {% endif %}
         </div>
     {% endfragment %}
