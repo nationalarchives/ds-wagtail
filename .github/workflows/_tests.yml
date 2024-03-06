@@ -63,7 +63,7 @@ jobs:
           virtualenvs-in-project: true
           virtualenvs-path: .venv
       - id: cached-poetry-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .venv
           key: ds-wagtail-venv-${{ runner.os }}-${{ inputs.poetry-version }}-${{ inputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
