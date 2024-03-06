@@ -458,10 +458,17 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         return dict(
             stream=self.api_stream,
-            q=self.query or None,
+            # TODO: The filter keyword is currently not working in Rosetta.
+            #       For the 7th March assessment we need the filter keyword
+            #       on the front-end to be passed to the CIIM API (Rosetta)
+            #       search.
+            q=form.cleaned_data.get("filter_keyword") or None,
+            filter_keyword=None,
+            # Original code:
+            # q=self.query or None,
+            # filter_keyword=form.cleaned_data.get("filter_keyword"),
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
-            filter_keyword=form.cleaned_data.get("filter_keyword"),
             opening_start_date=form.cleaned_data.get("opening_start_date"),
             opening_end_date=form.cleaned_data.get("opening_end_date"),
             created_start_date=form.cleaned_data.get("covering_date_from"),
