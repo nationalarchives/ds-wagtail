@@ -40,7 +40,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
