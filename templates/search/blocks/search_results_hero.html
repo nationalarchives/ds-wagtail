@@ -16,15 +16,15 @@
             </form>
 
             {% with request.resolver_match.url_name as url_name  %}
-                <nav class="search-results-hero__nav" aria-label="Search result types">
+                {% comment %} <nav class="search-results-hero__nav" aria-label="Search result types">
                     <ul class="search-results-hero__nav-list">
-                        {% comment %} <li class="search-results-hero__nav-list-item">
+                        <li class="search-results-hero__nav-list-item">
                             {% if url_name == 'search-featured' %}
                                 <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.ALL.value}}</span>
                             {% else %}
                             <a class="search-results-hero__nav-link" href="{% url 'search-featured' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.ALL.value}}</a>
                             {% endif %}
-                        </li> {% endcomment %}
+                        </li>
                         <li class="search-results-hero__nav-list-item">
                             {% if url_name == 'search-catalogue' %}
                                 <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.CATALOGUE.value}}</span>
@@ -32,7 +32,7 @@
                             <a class="search-results-hero__nav-link" href="{% url 'search-catalogue' %}{% if form.q.value %}?q={{ form.q.value }}{% endif %}">{{searchtabs.CATALOGUE.value}}</a>
                             {% endif %}
                         </li>
-                        {% comment %} <li class="search-results-hero__nav-list-item">
+                        <li class="search-results-hero__nav-list-item">
                             {% if url_name == 'search-website' %}
                                 <span aria-current="true" class="search-results-hero__nav-link">{{searchtabs.WEBSITE.value}}</span>
                             {% else %}
@@ -43,9 +43,9 @@
                             <div>
                                 <a href="/search/featured/" data-link-type="Link" data-link="Start a new search">Start new search</a>
                             </div>
-                        </li> {% endcomment %}
+                        </li>
                     </ul>
-                </nav>
+                </nav> {% endcomment %}
             {% endwith %}
         </div>
     </div>
