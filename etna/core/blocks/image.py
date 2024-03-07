@@ -6,6 +6,8 @@ from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
+from etna.core.blocks.paragraph import APIRichTextBlock
+
 
 class ImageBlock(blocks.StructBlock):
     """
@@ -38,7 +40,7 @@ class ImageBlock(blocks.StructBlock):
         required=False,
     )
 
-    caption = blocks.RichTextBlock(
+    caption = APIRichTextBlock(
         features=["bold", "italic", "link"],
         help_text=(
             "An optional caption for non-decorative images, which will be displayed directly below the image. "
@@ -105,7 +107,7 @@ class ContentImageBlock(blocks.StructBlock):
             "Check the guidance for tips on writing alt text</a>."
         ),
     )
-    caption = blocks.RichTextBlock(
+    caption = APIRichTextBlock(
         features=["bold", "italic", "link"],
         help_text=(
             "If provided, displays directly below the image. Can be used to specify sources, transcripts or "

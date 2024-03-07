@@ -36,6 +36,7 @@ from etna.core.models import (
     NewLabelMixin,
     RequiredHeroImageMixin,
 )
+from etna.core.serializers import RichTextSerializer
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
@@ -671,9 +672,8 @@ class RecordArticlePage(
         + ContentWarningMixin.api_fields
         + [
             APIField("type_label"),
-            APIField("about"),
             APIField("date_text"),
-            APIField("about"),
+            APIField("about", serializer=RichTextSerializer()),
             APIField("record"),
             APIField("gallery_heading"),
             APIField("image_library_link"),

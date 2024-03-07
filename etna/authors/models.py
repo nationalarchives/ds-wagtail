@@ -16,7 +16,7 @@ from wagtail.models import Page
 from rest_framework import serializers
 
 from etna.core.models import BasePage
-from etna.core.serializers import LinkedPageSerializer
+from etna.core.serializers import LinkedPageSerializer, RichTextSerializer
 
 
 class AuthorIndexPage(BasePage):
@@ -86,7 +86,7 @@ class AuthorPage(BasePage):
 
     api_fields = BasePage.api_fields + [
         APIField("role"),
-        APIField("summary"),
+        APIField("summary", serializer=RichTextSerializer()),
         APIField("image"),
         APIField(
             "authored_focused_articles", serializer=AuthorPageSerializer(many=True)

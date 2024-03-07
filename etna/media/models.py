@@ -8,6 +8,8 @@ from wagtail.fields import RichTextField
 
 from wagtailmedia.models import AbstractMedia
 
+from etna.core.serializers import RichTextSerializer
+
 
 class EtnaMedia(AbstractMedia):
     """
@@ -43,6 +45,6 @@ class EtnaMedia(AbstractMedia):
         APIField("type"),
         APIField("url"),
         APIField("mime"),
-        APIField("description"),
-        APIField("transcript"),
+        APIField("description", serializer=RichTextSerializer()),
+        APIField("transcript", serializer=RichTextSerializer()),
     ]
