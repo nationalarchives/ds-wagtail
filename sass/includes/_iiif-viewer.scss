@@ -4,6 +4,12 @@
     font-family: $font__open-sans;
     margin-bottom: 3rem;
 
+    .loaded {
+        &::backdrop {
+            background-color: $color--white;
+        }
+    }
+
     > div {
         background-color: transparent;
     }
