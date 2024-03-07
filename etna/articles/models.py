@@ -27,7 +27,7 @@ from wagtail.snippets.models import register_snippet
 from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
-from etna.authors.models import AuthorPageMixin, AuthorTag
+from etna.authors.models import AuthorPageMixin
 from etna.collections.models import TopicalPageMixin
 from etna.core.models import (
     BasePageWithIntro,
@@ -199,13 +199,6 @@ class PageSerializer(serializers.ModelSerializer):
         )
 
 
-# TODO: Make better
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AuthorTag
-        fields = ("author",)
-
-
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
@@ -281,6 +274,7 @@ class ArticlePage(
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
@@ -434,8 +428,9 @@ class FocusedArticlePage(
         + [
             APIField("type_label"),
             APIField("body"),
-            APIField("authors", serializer=AuthorSerializer(many=True)),
         ]
+        + TopicalPageMixin.api_fields
+        + AuthorPageMixin.api_fields
     )
 
     def save(self, *args, **kwargs):
@@ -691,6 +686,7 @@ class RecordArticlePage(
                 ),
             ),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     @cached_property
