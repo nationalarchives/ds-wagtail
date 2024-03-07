@@ -16,7 +16,7 @@ from wagtail.models import Page
 from rest_framework import serializers
 
 from etna.core.models import BasePage
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers import LinkedPageSerializer, RichTextSerializer
 
 
 class AuthorIndexPage(BasePage):
@@ -153,6 +153,25 @@ class AuthorTag(models.Model):
     )
 
 
+class AuthorSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-400x400", jpeg_quality=60, webp_quality=80, source="image"
+    )
+    role = serializers.CharField()
+
+    class Meta:
+        model = AuthorTag
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+            "role",
+        )
+
+
 class AuthorPageMixin:
     """
     A mixin for pages that uses the ``AuthorTag`` model
@@ -170,10 +189,12 @@ class AuthorPageMixin:
 
     @cached_property
     def authors(self):
-        if author_item := self.author_tags.select_related("author").filter(
-            author__live=True
-        ):
-            return author_item
+        return tuple(
+            item.author
+            for item in self.author_tags.select_related("author").filter(
+                author__live=True
+            )
+        )
 
     @property
     def author_names(self):
@@ -181,4 +202,6 @@ class AuthorPageMixin:
         Returns the title of the authors to be used for indexing
         """
         if self.authors:
-            return ", ".join([author.author.title for author in self.authors])
+            return ", ".join([author.title for author in self.authors])
+
+    api_fields = [APIField("authors", serializer=AuthorSerializer(many=True))]
