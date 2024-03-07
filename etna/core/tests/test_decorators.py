@@ -33,20 +33,20 @@ class SettingControlledLoginRequiredTest(WagtailTestUtils, TestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_record(
-                iaid="C123456",
-                description=[{"value": "This is the description from the Client API"}],
+            json=create_response(
+                records=[
+                    create_record(
+                        iaid="C123456",
+                        description=[{"value": "This is the description from the Client API"}],
+                
+                    )
+                ]
             ),
-            # json=create_response(
-            #     records=[
-            #         create_record(
-            #             iaid="C123456",
-            #             description=[
-            #                 {"value": "This is the description from the Client API"}
-            #             ],
-            #         )
-            #     ]
-            # ),
+        )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            status=404,
         )
 
     @override_settings(

@@ -28,5 +28,6 @@ IMAGE_VIEWER_REQUIRE_LOGIN = False
 RECORD_DETAIL_REQUIRE_LOGIN = False
 SEARCH_VIEWS_REQUIRE_LOGIN = False
 
-CLIENT_BASE_URL = "https://kong.test/data"
-CLIENT_MEDIA_URL = "https://kong.test/media"
+CLIENT_BASE_URL = "https://rosetta.test/data"
+CLIENT_MEDIA_URL = "https://rosetta.test/media"
+CLIENT_IIIF_MANIFEST_BASE_URL = "https://rosetta.test/iiif-manifest"

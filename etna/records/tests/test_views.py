@@ -16,7 +16,12 @@ import responses
 from etna.core.test_utils import prevent_request_warnings
 from etna.records.views.records import SEARCH_URL_RETAIN_DELTA
 
-from ...ciim.tests.factories import create_media, create_record, create_response
+from ...ciim.tests.factories import (
+    create_iiif_manifest_response,
+    create_media,
+    create_record,
+    create_response,
+)
 
 User = get_user_model()
 
@@ -51,6 +56,7 @@ class TestRecordDisambiguationView(TestCase):
                 ]
             ),
         )
+        responses.add
 
         response = self.client.get("/catalogue/ref/ADM/223/3/")
 
@@ -80,8 +86,18 @@ class TestRecordDisambiguationView(TestCase):
                 ]
             ),
         )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            json=create_iiif_manifest_response("C123456"),
+        )
 
         response = self.client.get("/catalogue/ref/ADM/223/3/", follow=False)
+
+        self.assertEqual(len(responses.calls), 3)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/searchUnified")
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[2].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -90,18 +106,21 @@ class TestRecordDisambiguationView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
 
-@unittest.skip("TODO:Rosetta")
+#@unittest.skip("TODO:Rosetta")
 class TestRecordView(TestCase):
     @responses.activate
     @prevent_request_warnings
     def test_no_matches_respond_with_404(self):
+        print(repr(responses))
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_response(records=[]),
+            json={}
         )
-
         response = self.client.get("/catalogue/id/C123456/")
+
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
 
         self.assertEqual(response.status_code, 404)
         self.assertEqual(
@@ -119,14 +138,85 @@ class TestRecordView(TestCase):
                 ]
             ),
         )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            json=create_iiif_manifest_response("C123456"),
+        )
 
         response = self.client.get("/catalogue/id/C123456/")
+
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.resolver_match.view_name, "details-page-machine-readable"
         )
         self.assertTemplateUsed(response, "records/record_detail.html")
+
+    @responses.activate
+    def test_record_rendered_for_single_result_with_iiif_manifest(self):
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456"),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            json=create_iiif_manifest_response("C123456"),
+        )
+
+        response = self.client.get("/catalogue/id/C123456/")
+
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[0].response.status_code, 200)
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
+
+        self.assertEqual(response.status_code, 200)
+
+        # IIIF viewer shown for responses with IIIF viewer.
+        self.assertTrue(response.context['show_iiif_viewer'])
+        self.assertEqual(
+            response.context['iiif_manifest_url'],
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+        )
+
+    @responses.activate
+    def test_record_rendered_for_single_result_without_iiif_manifest(self):
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_BASE_URL}/fetch",
+            json=create_response(
+                records=[
+                    create_record(iaid="C123456"),
+                ]
+            ),
+        )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            status=404,
+        )
+
+        response = self.client.get("/catalogue/id/C123456/")
+
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
+
+        self.assertEqual(response.status_code, 200)
+
+        # IIIF viewer shown for responses with IIIF viewer.
+        self.assertFalse(response.context['show_iiif_viewer'])
+        self.assertIsNone(response.context['iiif_manifest_url'])
 
     @unittest.skip(
         "Client API open beta API does not support media. Re-enable/update once media is available."
@@ -142,6 +232,11 @@ class TestRecordView(TestCase):
                 ]
             ),
         )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            json=create_iiif_manifest_response("C123456"),
+        )
 
         responses.add(
             responses.GET,
@@ -150,6 +245,11 @@ class TestRecordView(TestCase):
         )
 
         response = self.client.get("/catalogue/id/C123456/")
+
+        # TODO: Should this include assertion for the search endpoint as well?
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -172,6 +272,11 @@ class TestRecordView(TestCase):
                 ]
             ),
         )
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456",
+            json=create_iiif_manifest_response("C123456"),
+        )
 
         responses.add(
             responses.GET,
@@ -191,6 +296,13 @@ class TestRecordView(TestCase):
         )
 
         response = self.client.get("/catalogue/id/C123456/")
+
+        # TODO: Should this include assertion for the search endpoint as well?
+        # TODO: Should this include assertion for the media endpoint as well?
+        self.assertEqual(len(responses.calls), 2)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=C123456")
+        self.assertEqual(responses.calls[1].response.url, f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C123456")
+
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "records/record_detail.html")
@@ -214,6 +326,9 @@ class TestRecordView(TestCase):
         )
 
         response = self.client.get("/catalogue/id/A13532479/")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=A13532479")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -256,6 +371,9 @@ class TestRecordView(TestCase):
         )
 
         response = self.client.get("/catalogue/id/F74321/")
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(responses.calls[0].response.url, f"{settings.CLIENT_BASE_URL}/fetch?id=F74321")
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(

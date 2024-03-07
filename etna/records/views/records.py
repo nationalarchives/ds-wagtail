@@ -91,36 +91,43 @@ def record_detail_view(request, id):
     image = None
     iiif_manifest_url = None
 
-    try:
-        # TODO: Use the contents from the request below to fetch the IIIF manifest
-        #       in order to build the HTML-only view (progressive enhancement).
-        #
-        #       Right now this is only used to establish if the record has
-        #       a IIIF manifest which could use a HEAD request instead.
-        #
-        #       We need to know if a record has IIIF manifest in order to establish
-        #       if we should load the IIIF viewer to the user. Not all records have
-        #       one.
-        #
-        #       We could make a HEAD request instead to check that, but it feels
-        #       short-sighted given that the progressively enhanced view will
-        #       require all this content to be fetched anyway.
-        #
-        #       This information could also be returned in the fetch endpoint
-        #       so we know in advance if we need to call the IIIF manifest
-        #       endpoint at all. The raised ticket:
-        #       https://national-archives.atlassian.net/browse/DOR-53
-        records_client.fetch_iiif_manifest(id=record.iaid)
-    except DoesNotExist:
-        pass
-    except Exception:
-        logger.warning(
-            "Unexpected error happened when trying to fetch the IIIF manifest for a record: iaid=%s",
-            record.iaid,
-            exc_info=True,
-        )
-    else:
-        iiif_manifest_url = records_client.get_public_iiif_manifest_url(id=record.iaid)
+    # ARCHON and CREATORS record templates don't have IIIF viewer implemented.
+    if record.custom_record_type not in (
+        "ARCHON",
+        "CREATORS",
+    ):
+        try:
+            # TODO: Use the contents from the request below to fetch the IIIF manifest
+            #       in order to build the HTML-only view (progressive enhancement).
+            #
+            #       Right now this is only used to establish if the record has
+            #       a IIIF manifest which could use a HEAD request instead.
+            #
+            #       We need to know if a record has IIIF manifest in order to establish
+            #       if we should load the IIIF viewer to the user. Not all records have
+            #       one.
+            #
+            #       We could make a HEAD request instead to check that, but it feels
+            #       short-sighted given that the progressively enhanced view will
+            #       require all this content to be fetched anyway.
+            #
+            #       This information could also be returned in the fetch endpoint
+            #       so we know in advance if we need to call the IIIF manifest
+            #       endpoint at all. The raised ticket:
+            #       https://national-archives.atlassian.net/browse/DOR-53
+            records_client.fetch_iiif_manifest(id=record.iaid)
+        except DoesNotExist:
+            pass
+        except Exception:
+            logger.warning(
+                "Unexpected error happened when trying to fetch the IIIF manifest for a record: iaid=%s",
+                record.iaid,
+                exc_info=True,
+            )
+        else:
+            iiif_manifest_url = records_client.get_public_iiif_manifest_url(
+                id=record.iaid
+            )
 
     # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
     # if page.is_digitised:

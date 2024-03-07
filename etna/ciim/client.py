@@ -293,7 +293,7 @@ class ClientAPI:
 
         # Convert the Python dict to a ResultList
         result_list = self.resultlist_from_response(response_data)
-
+        
         if not result_list:
             raise DoesNotExist
         if len(result_list) > 1:
