@@ -116,6 +116,16 @@ class BucketList:
         yield from self.buckets
 
 
+_DIGITISED_BUCKET = Bucket(
+    key="digitised",
+    label="Online records at The National Archives",
+    description="Results for records available to download and held at The National Archives that match your search term.",
+    aggregations=DEFAULT_AGGREGATIONS
+    + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
+)
+
+ESCAPE_AND_EVASION_CATALOGUE_BUCKETS = BucketList([_DIGITISED_BUCKET])
+
 CATALOGUE_BUCKETS = BucketList(
     [
         Bucket(
@@ -125,13 +135,7 @@ CATALOGUE_BUCKETS = BucketList(
             aggregations=DEFAULT_AGGREGATIONS
             + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
-        Bucket(
-            key="digitised",
-            label="Online records at The National Archives",
-            description="Results for records available to download and held at The National Archives that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS
-            + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
-        ),
+        _DIGITISED_BUCKET,
         Bucket(
             key="nonTna",
             label="Records at other UK archives",

@@ -49,6 +49,7 @@ from ..home.models import HomePage
 from ..records.api import records_client
 from .forms import (
     CatalogueSearchForm,
+    EscapeAndEvasionsCatalogueSearchForm,
     FeaturedSearchForm,
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
@@ -458,17 +459,10 @@ class BaseFilteredSearchView(BaseSearchView):
         page_size = form.cleaned_data.get("per_page")
         return dict(
             stream=self.api_stream,
-            # TODO: The filter keyword is currently not working in Rosetta.
-            #       For the 7th March assessment we need the filter keyword
-            #       on the front-end to be passed to the CIIM API (Rosetta)
-            #       search.
-            q=form.cleaned_data.get("filter_keyword") or None,
-            filter_keyword=None,
-            # Original code:
-            # q=self.query or None,
-            # filter_keyword=form.cleaned_data.get("filter_keyword"),
+            q=self.query or None,
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
+            filter_keyword=form.cleaned_data.get("filter_keyword"),
             opening_start_date=form.cleaned_data.get("opening_start_date"),
             opening_end_date=form.cleaned_data.get("opening_end_date"),
             created_start_date=form.cleaned_data.get("covering_date_from"),
@@ -689,6 +683,27 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
         return super().get_context_data(**kwargs)
+
+
+class EscapeAndEvasionCatalogueSearchView(CatalogueSearchView):
+    form_class = EscapeAndEvasionsCatalogueSearchForm
+    default_group = "digitised"
+
+    def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
+        """
+        Temporarily the search query is hardcoded to "escape and evasion"
+        at Rosetta API end and we can only use one search query field
+        because of that.
+
+        https://national-archives.atlassian.net/browse/DOR-46
+        https://national-archives.atlassian.net/browse/DOR-57
+        """
+        api_kwargs = super().get_api_kwargs(form)
+        return {
+            **api_kwargs,
+            "q": form.cleaned_data.get("filter_keyword") or None,
+            "filter_keyword": None,
+        }
 
 
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
