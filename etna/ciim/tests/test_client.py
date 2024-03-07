@@ -628,7 +628,7 @@ class ClientFetchTest(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_record(iaid="C198022"),
+            json=create_response(records=[create_record(iaid="C198022")]),
         )
 
     @responses.activate

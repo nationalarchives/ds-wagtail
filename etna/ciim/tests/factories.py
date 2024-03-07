@@ -87,7 +87,7 @@ def create_record(
                 detail[key] = value
 
     # return {"_source": source}  # TODO:Rosetta
-    return {"metadata": [detail]}
+    return detail
 
 
 def create_media(
@@ -122,19 +122,19 @@ def create_response(records=None, aggregations=None, total_count=None):
     If testing pagination or batch fetches, the total count can be optionally
     modified.
     """
-    if not records:
+    if records is None:
         records = []
 
-    if not aggregations:
+    if aggregations is None:
         aggregations = {}
 
-    if not total_count:
+    if total_count is None:
         total_count = len(records)
 
     return {
-        "hits": {
+        "metadata": [r for r in records],
+        "stats": {
             "total": {"value": total_count, "relation": "eq"},
-            "hits": [r for r in records],
         },
         "aggregations": aggregations,
     }
