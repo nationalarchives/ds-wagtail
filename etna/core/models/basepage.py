@@ -26,6 +26,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
+from etna.core.serializers import RichTextSerializer
 
 __all__ = [
     "BasePage",
@@ -212,4 +213,6 @@ class BasePageWithIntro(BasePage):
         index.SearchField("intro", boost=3),
     ]
 
-    api_fields = BasePage.api_fields + [APIField("intro")]
+    api_fields = BasePage.api_fields + [
+        APIField("intro", serializer=RichTextSerializer())
+    ]

@@ -330,7 +330,7 @@ def pull_database_from_platform(c, environment_name):
         run_management_command(c, "migrate", check_returncode=True)
     except subprocess.CalledProcessError:
         print("Failed to apply migrations. Deleting database.")
-        delete_db(c)
+        # delete_db(c)
         raise
 
     try:
