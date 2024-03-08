@@ -30,3 +30,4 @@ SEARCH_VIEWS_REQUIRE_LOGIN = False
 
 CLIENT_BASE_URL = "https://kong.test/data"
 CLIENT_MEDIA_URL = "https://kong.test/media"
+CLIENT_IIIF_MANIFEST_BASE_URL = "https://rosetta.test/iiif"

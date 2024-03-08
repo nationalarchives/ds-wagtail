@@ -1,6 +1,9 @@
 import json
 
+from collections.abc import Mapping
 from typing import Any, Dict, Optional
+
+from django.conf import settings
 
 
 def create_record(
@@ -134,6 +137,56 @@ def create_response(records=None, aggregations=None, total_count=None):
             "hits": [r for r in records],
         },
         "aggregations": aggregations,
+    }
+
+
+def create_iiif_manifest_response(record_id: str) -> Mapping[str, Any]:
+    server = settings.CLIENT_IIIF_MANIFEST_BASE_URL
+    return {
+        "@context": "http://iiif.io/api/presentation/3/context.json",
+        "id": f"{server}/manifest/{record_id}",
+        "type": "Manifest",
+        "label": {"en": [f"Test label for {record_id}"]},
+        "summary": {
+            "en": [
+                f'<span class="wrapper"><span class="scopecontent"><p>Text description <a class="extref" href="{record_id}">{record_id}</a>.</p></span></span>'
+            ]
+        },
+        "items": [
+            {
+                "id": f"{server}/manifest/{record_id}/items/0",
+                "type": "Canvas",
+                "height": 200,
+                "width": 100,
+                "items": [
+                    {
+                        "id": f"{server}/manifest/{record_id}/items/0/items/0",
+                        "type": "AnnotationPage",
+                        "items": [
+                            {
+                                "id": f"{server}/manifest/{record_id}/items/0/items/0/items/0",
+                                "type": "Annotation",
+                                "body": {
+                                    "id": f"{server}/testlocation/{record_id}/full/max/0/default.jpg",
+                                    "type": "Image",
+                                    "service": [
+                                        {
+                                            "id": f"{server}/testlocation/{record_id}/info.json",
+                                            "type": "ImageService3",
+                                            "profile": "level1",
+                                        }
+                                    ],
+                                    "height": 200,
+                                    "width": 100,
+                                },
+                                "motivation": "painting",
+                                "target": f"{server}/manifest/{record_id}/items/0",
+                            }
+                        ],
+                    }
+                ],
+            },
+        ],
     }
 
 

@@ -329,6 +329,9 @@ class ClientAPI:
 
         This URL is meant to be used by the end-users on the Internet.
         """
+        id = id.strip()
+        if not id:
+            raise ValueError("id is required to generate an IIIF manifest URL.")
         return f"{self.iiif_manifest_base_url}/manifest/{quote_plus(id)}"
 
     def search(
