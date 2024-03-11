@@ -16,49 +16,7 @@
     <article>
         {% include "includes/event_hero.html" with title=page.title image=page.lead_image event_type=page.event_type access_descriptor=page.primary_access_type %}
 
-        <div class="event-details-banner">
-            <div class="tna-container tna-container--align-center tna-!--padding-vertical-s">
-                <div class="tna-column tna-column--flex-1 tna-column--container">
-                    <div class="event-meta event-meta--inline">
-                        <ul class="event-meta__list event-meta__list">
-                            {% if page.start_date %}
-                                <li class="event-meta__item">
-                                    <i class="fa-regular fa-calendar event-meta__icon"></i>
-
-                                    <div class="event-meta__details">
-                                        <p>{{ page.start_date|date:"l j F, H:i" }}</p>
-                                    </div>
-                                </li>
-                            {% endif %}
-                            {% if page.price_range %}
-                                <li class="event-meta__item">
-                                    <i class="fa-solid fa-ticket event-meta__icon"></i>
-
-                                    <div class="event-meta__details">
-                                        {{ page.price_range }}
-                                    </div>
-                                </li>
-                            {% endif %}
-                            <li class="event-meta__item">
-                                <i class="fa-solid fa-location-dot event-meta__icon"></i>
-
-                                <div class="event-meta__details">
-                                    <p>{{ page.get_venue_type_display }}</p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="tna-column tna-column--full-small tna-column--full-tiny">
-                    <a href="/" class="tna-button tna-button--dark">
-                        Book now
-
-                        <i class="fa-solid fa-chevron-right"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+        {% include "includes/meta-banner.html" with cta=True %}
 
         <div class="tna-container">
             <div class="tna-column tna-column--width-3-4 tna-column--full-small tna-column--full-tiny">
@@ -101,10 +59,25 @@
                             </h3>
 
                             <div class="event-meta__details">
-                                <p>{{ page.get_venue_type_display }}</p>
+                                {% if page.venue_type != "in_person" %} 
+                                    <p>{{ page.get_venue_type_display }}</p>
+                                {% endif %}
+
+                                {% if page.venue_space_name %}
+                                    <p>{{ page.venue_space_name }}</p>
+                                {% endif %}
 
                                 {% if page.venue_address %}
-                                    {{ page.venue_address|richtext }}
+                                    <address>{{ page.venue_address|richtext }}</address>
+                                {% endif %}
+
+                                {% if page.venue_website %}
+                                    <p>
+                                        <a class="event-meta__link" href="{{ page.venue_website }}">
+                                            <span class="event-meta__link-text">Get directions</span>
+                                            <i class="fa-solid fa-chevron-right"></i>
+                                        </a>
+                                    </p>
                                 {% endif %}
                             </div>
                         </li>
@@ -126,12 +99,12 @@
             </div>
             <div class="tna-column tna-column--width-2-3 tna-column--full-small tna-column--full-tiny">
                 {% if page.description %}
-                    <h2 class="tna-heading-l">What you'll see and do</h2>
+                    <h2 class="tna-heading-l">About this {{ page.event_type|lower }}</h2>
                     {{ page.description|richtext }}
                 {% endif %}
 
                 {% if page.target_audience %}
-                    <h2 class="tna-heading-l">Who can come</h2>
+                    <h2 class="tna-heading-l">Who it's for</h2>
                     {{ page.target_audience|richtext }}
                 {% endif %}
 

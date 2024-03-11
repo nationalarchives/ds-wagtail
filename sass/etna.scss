@@ -66,11 +66,13 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/content-block";
 @import "includes/content-warning";
 @import "includes/quote";
+@import "includes/useful-info";
 @import "includes/event-card-listing";
-@import "includes/event-details-banner";
+@import "includes/meta-details-banner";
 @import "includes/event-hero";
 @import "includes/event-meta";
 @import "includes/event-tags";
+@import "includes/exhibition-hero";
 @import "includes/featured-card";
 @import "includes/featured-link";
 @import "includes/featured-record";
@@ -153,7 +155,7 @@ Modified to match the existing site (for now)
 
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap");
+@import "https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Roboto+Mono&display=swap";
 
 .tna-template {
     overflow: initial !important;
@@ -251,6 +253,19 @@ Modified to match the existing site (for now)
             flex-direction: row-reverse;
         }
     }
+
+    // tna-container variant which is full-width at mobile - used on what's on landing page
+    &--full-width-mobile {
+        @include media.on-mobile {
+            padding-left: 0;
+            padding-right: 0;
+
+            .tna-column {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+    }
 }
 
 .tna-chip {
@@ -273,6 +288,7 @@ Modified to match the existing site (for now)
         // ELEMENT SPECIFIC TO THIS SITE
         background-color: #343338 !important;
     }
+
     .tna-breadcrumbs {
         margin-bottom: 0;
         color: #fff !important;
@@ -286,6 +302,7 @@ Modified to match the existing site (for now)
 
     .generic-intro {
         padding-bottom: 4rem;
+
         h1 {
             &:last-child {
                 padding-bottom: 2rem;
@@ -368,12 +385,10 @@ Modified to match the existing site (for now)
     }
 }
 
-.tna-container--centred {
-    justify-content: center;
-}
-
+/* stylelint-disable no-descending-specificity */
 .highlight-gallery {
     color: #fff;
+
     .tna-heading {
         color: inherit;
     }
@@ -524,21 +539,6 @@ Modified to match the existing site (for now)
     }
 }
 
-// tna-container variant which is full-width at mobile - used on what's on landing page
-.tna-container {
-    &--full-width-mobile {
-        @include media.on-mobile {
-            padding-left: 0;
-            padding-right: 0;
-
-            .tna-column {
-                padding-left: 0;
-                padding-right: 0;
-            }
-        }
-    }
-}
-
 // tna-scene-setter modifiers
 
 .tna-scene-setter {
@@ -547,17 +547,6 @@ Modified to match the existing site (for now)
         font-weight: $font-weight-light;
     }
 }
-
-// tna-useful-info component - 'Good to know' information from event page
-
-.tna-useful-info {
-    @include colour.accent-light;
-    color: colour.brand-colour("black");
-    padding: 1.5rem 2rem 2rem 2rem;
-    margin-top: 2rem;
-}
-
-//
 
 .event-hero {
     .tna-breadcrumbs {
@@ -574,7 +563,7 @@ Modified to match the existing site (for now)
     }
 
     .tna-breadcrumbs__item {
-        &:before {
+        &::before {
             color: $color--white;
         }
     }
@@ -583,6 +572,30 @@ Modified to match the existing site (for now)
         color: $color--white;
         font-weight: 500;
         margin-top: 0.5rem;
+    }
+}
+
+// exhibition hero refinements
+.exhibition-hero {
+    .tna-breadcrumbs {
+        margin-bottom: 1.5rem;
+
+        @include media.on-larger-than-mobile {
+            margin-bottom: 3rem;
+            padding-top: 3rem;
+        }
+    }
+}
+
+.exhibition-hero--light {
+    .tna-breadcrumbs__link {
+        color: $color--white;
+    }
+
+    .tna-breadcrumbs__item {
+        &::before {
+            color: $color--white;
+        }
     }
 }
 
@@ -595,7 +608,7 @@ Modified to match the existing site (for now)
     }
 
     &__item--clear-all #{&}__link {
-        @include typography.main-font-weight-bold();
+        @include typography.main-font-weight-bold;
         background: transparent;
 
         &:hover {
@@ -608,3 +621,5 @@ Modified to match the existing site (for now)
 .tna-header--off-black {
     background-color: $color--off-black;
 }
+
+/* stylelint-enable no-descending-specificity */

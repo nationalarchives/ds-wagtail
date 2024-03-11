@@ -87,10 +87,6 @@
         width: calc(100% + 4rem);
     }
 
-    &__transcript-heading {
-        margin: 0;
-    }
-
     &__details {
         display: block;
         text-align: left;
@@ -98,7 +94,7 @@
 
         &[open] {
             #{$root}__summary {
-                &:before {
+                &::before {
                     transform: rotate(180deg);
                 }
             }
@@ -137,18 +133,19 @@
             display: none; // prevent default arrow showing
         }
 
-        &:before {
+        &::before {
             display: inline-block;
             content: "";
             height: 24px;
             width: 24px;
             margin-right: 5px;
-            background-image: url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNSAyNCI+CiAgPHBhdGggZmlsbD0iI0ZDMCIgZD0ibTE3LjA5IDguNTktNC41OSA0LjU4LTQuNTktNC41OEw2LjUgMTBsNiA2IDYtNi0xLjQxLTEuNDFaIi8+Cjwvc3ZnPgo=); // Base64 downwards facing chevron, same as /images/icon/chevron-down
+            background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCAyNSAyNCI+CiAgPHBhdGggZmlsbD0iI0ZDMCIgZD0ibTE3LjA5IDguNTktNC41OSA0LjU4LTQuNTktNC41OEw2LjUgMTBsNiA2IDYtNi0xLjQxLTEuNDFaIi8+Cjwvc3ZnPgo="); // Base64 downwards facing chevron, same as /images/icon/chevron-down
             transition: transform $transition_duration ease-in;
         }
     }
 
     &__transcript-heading {
+        margin: 0;
         @include font-size(xs);
         font-weight: normal;
         font-family: $font__open-sans;

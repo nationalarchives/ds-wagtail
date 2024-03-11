@@ -234,4 +234,4 @@ class TestFeaturedRecordBlockIntegration(WagtailPageTestCase):
             reverse("wagtailadmin_pages:edit", args=(self.article_page.id,))
         )
 
-        self.assertEquals(response.status_code, 200)
+        self.assertEqual(response.status_code, 200)

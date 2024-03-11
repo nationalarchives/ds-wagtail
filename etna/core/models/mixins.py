@@ -5,8 +5,12 @@ from django.utils import timezone
 from django.utils.functional import cached_property
 
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
+
+from etna.core.serializers import RichTextSerializer
 
 from .forms import RequiredHeroImagePageForm
 
@@ -35,6 +39,10 @@ class ContentWarningMixin(models.Model):
             "Otherwise the default text will be used."
         ),
     )
+
+    api_fields = [
+        APIField("custom_warning_text", serializer=RichTextSerializer()),
+    ]
 
     class Meta:
         abstract = True
@@ -112,6 +120,10 @@ class NewLabelMixin(models.Model):
     class Meta:
         abstract = True
 
+    api_fields = [
+        APIField("is_newly_published"),
+    ]
+
 
 class HeroImageMixin(models.Model):
     """Mixin to add hero_image attribute to a Page."""
@@ -146,6 +158,35 @@ class HeroImageMixin(models.Model):
         )
     ]
 
+    api_fields = [
+        # APIField("hero_image"),
+        APIField("hero_image_caption", serializer=RichTextSerializer()),
+        APIField(
+            "hero_image_jpg",
+            serializer=ImageRenditionField(
+                "fill-1200x400|format-jpeg|jpegquality-60", source="hero_image"
+            ),
+        ),
+        APIField(
+            "hero_image_webp",
+            serializer=ImageRenditionField(
+                "fill-1200x400|format-webp", source="hero_image"
+            ),
+        ),
+        APIField(
+            "hero_image_jpg_small",
+            serializer=ImageRenditionField(
+                "fill-600x400|format-jpeg|jpegquality-60", source="hero_image"
+            ),
+        ),
+        APIField(
+            "hero_image_webp_small",
+            serializer=ImageRenditionField(
+                "fill-600x400|format-webp", source="hero_image"
+            ),
+        ),
+    ]
+
 
 class RequiredHeroImageMixin(HeroImageMixin):
     """Mixin to add hero_image attribute to a Page, and make it required."""
@@ -154,3 +195,5 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
+
+    api_fields = HeroImageMixin.api_fields + []

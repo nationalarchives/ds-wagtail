@@ -45,13 +45,16 @@
         &:visited {
             color: $color__white;
         }
+
         &:hover {
             background: $color__card-hover;
         }
+
         &:focus {
             background: $color__black;
             outline-offset: 0.2rem;
         }
+
         &:hover,
         &:focus {
             color: $color__white;

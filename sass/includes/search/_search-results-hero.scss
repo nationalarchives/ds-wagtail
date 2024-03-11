@@ -2,6 +2,7 @@
     background-color: $color__grey-200;
     padding: 2rem;
     padding-bottom: 0;
+    width: 100%;
 
     @media only screen and (max-width: $screen__md) {
         padding: 1rem;
@@ -16,6 +17,7 @@
 
     &__form {
         display: flex;
+
         &-submit {
             @extend .search-button;
             cursor: pointer;
@@ -36,6 +38,7 @@
             font-size: 1.1rem;
             margin-right: 0.2rem;
             margin-bottom: 1rem;
+
             &:focus {
                 // outline: 5px solid $color__focus-outline-light-bg;
             }
@@ -51,6 +54,8 @@
             align-items: center;
             flex-wrap: wrap;
             font-size: 1.2rem;
+            margin-bottom: 0;
+
             &-item {
                 display: inline-block;
                 margin-right: 2rem;
@@ -88,9 +93,9 @@
 
                         div {
                             background-color: $color__white;
-                            margin-right: -1rem;
-                            margin-left: -1rem;
-                            padding: 1rem 2rem 0rem 1rem;
+                            margin-right: -2rem;
+                            margin-left: -2rem;
+                            padding: 1rem 2rem 0 1rem;
                             text-align: right;
                         }
                     }
@@ -118,8 +123,7 @@
             height: 100%;
             padding: 0.5rem;
             text-decoration: none;
-            color: #000000; // IE11
-            color: #000000ba;
+            color: rgb(0 0 0 / 73%);
             border-top: 0.3rem solid $color__grey-500;
             background-color: #ffffff85;
 

@@ -2,6 +2,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 from django.conf import settings
 from django.db import models
+from django.db.models.functions import Coalesce
 from django.http import HttpRequest
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
@@ -15,12 +16,15 @@ from wagtail.admin.panels import (
     MultiFieldPanel,
     PageChooserPanel,
 )
+from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin
@@ -32,6 +36,7 @@ from etna.core.models import (
     NewLabelMixin,
     RequiredHeroImageMixin,
 )
+from etna.core.serializers import RichTextSerializer
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
@@ -108,6 +113,8 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
+    api_fields = [APIField("article_tag_names")]
+
 
 class ArticleIndexPage(BasePageWithIntro):
     """ArticleIndexPage
@@ -131,8 +138,12 @@ class ArticleIndexPage(BasePageWithIntro):
         [("featuredpages", FeaturedCollectionBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
+
+    api_fields = BasePageWithIntro.api_fields + [
+        APIField("featured_article"),
+        APIField("featured_pages"),
+    ]
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -146,7 +157,14 @@ class ArticleIndexPage(BasePageWithIntro):
             self.get_children()
             .public()
             .live()
-            .order_by("-first_published_at")
+            .order_by(
+                Coalesce(
+                    "recordarticlepage__newly_published_at",
+                    "focusedarticlepage__newly_published_at",
+                    "articlepage__newly_published_at",
+                )
+            )
+            .reverse()
             .specific()
         )
         return context
@@ -171,6 +189,17 @@ class ArticleIndexPage(BasePageWithIntro):
     ]
 
 
+# TODO: Make better
+class PageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Page
+        fields = (
+            "id",
+            "title",
+            "url_path",
+        )
+
+
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
@@ -184,9 +213,7 @@ class ArticlePage(
     The ArticlePage model.
     """
 
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -237,6 +264,20 @@ class ArticlePage(
         ]
     )
 
+    verbose_name_public = Meta.verbose_name_public
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + RequiredHeroImageMixin.api_fields
+        + ArticleTagMixin.api_fields
+        + [
+            APIField("verbose_name_public"),
+            APIField("similar_items", serializer=PageSerializer(many=True)),
+            APIField("latest_items", serializer=PageSerializer(many=True)),
+            APIField("body"),
+        ]
+        + TopicalPageMixin.api_fields
+    )
+
     def get_datalayer_data(self, request: HttpRequest) -> Dict[str, Any]:
         data = super().get_datalayer_data(request)
         data.update(
@@ -310,7 +351,7 @@ class ArticlePage(
             )
 
         return sorted(
-            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
         )[:3]
 
 
@@ -328,17 +369,7 @@ class FocusedArticlePage(
     The FocusedArticlePage model.
     """
 
-    author = models.ForeignKey(
-        "authors.AuthorPage",
-        blank=True,
-        null=True,
-        related_name="focused_articles",
-        on_delete=models.SET_NULL,
-    )
-
-    body = StreamField(
-        ArticlePageStreamBlock, blank=True, null=True, use_json_field=True
-    )
+    body = StreamField(ArticlePageStreamBlock, blank=True, null=True)
 
     # DataLayerMixin overrides
     gtm_content_group = "Explore the collection"
@@ -371,9 +402,7 @@ class FocusedArticlePage(
         + BasePageWithIntro.promote_panels
         + ArticleTagMixin.promote_panels
         + [
-            FieldPanel(
-                "author", heading="Author", help_text="Add the author of this page"
-            ),
+            AuthorPageMixin.get_authors_inlinepanel(),
             TopicalPageMixin.get_topics_inlinepanel(),
             TopicalPageMixin.get_time_periods_inlinepanel(),
         ]
@@ -389,8 +418,20 @@ class FocusedArticlePage(
             index.SearchField("body"),
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
-            index.SearchField("author_name", boost=1),
+            index.SearchField("author_names", boost=1),
         ]
+    )
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + HeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("body"),
+        ]
+        + TopicalPageMixin.api_fields
+        + AuthorPageMixin.api_fields
     )
 
     def save(self, *args, **kwargs):
@@ -466,7 +507,7 @@ class FocusedArticlePage(
             )
 
         return sorted(
-            latest_query_set, key=lambda x: x.first_published_at, reverse=True
+            latest_query_set, key=lambda x: x.newly_published_at, reverse=True
         )[:3]
 
 
@@ -550,7 +591,6 @@ class RecordArticlePage(
         max_num=1,
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     # DataLayerMixin overrides
@@ -623,6 +663,30 @@ class RecordArticlePage(
             index.SearchField("topic_names", boost=1),
             index.SearchField("time_period_names", boost=1),
         ]
+    )
+
+    api_fields = (
+        BasePageWithIntro.api_fields
+        + ArticleTagMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + [
+            APIField("type_label"),
+            APIField("date_text"),
+            APIField("about", serializer=RichTextSerializer()),
+            APIField("record"),
+            APIField("gallery_heading"),
+            APIField("image_library_link"),
+            APIField("featured_article"),
+            APIField("promoted_links"),
+            APIField(
+                "intro_image_jpg",
+                serializer=ImageRenditionField(
+                    "fill-512x512|format-jpeg|jpegquality-60", source="intro_image"
+                ),
+            ),
+        ]
+        + TopicalPageMixin.api_fields
     )
 
     @cached_property

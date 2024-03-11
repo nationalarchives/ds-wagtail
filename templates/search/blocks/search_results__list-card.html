@@ -25,36 +25,8 @@
             {{ record.listing_description }}
         </p>
 
-        <dl class="tna-dl tna-dl--plain tna-dl--icon-padding tna-!--margin-bottom-s">
-            {% if record.held_by %}
-            <dt>
-              <i class="fa-solid fa-landmark"></i>
-              Held by
-            </dt>
-            <dd>{{ record.held_by }}</dd>
-            {% endif %}
-            {% if record.date_created %}
-            <dt>
-              <i class="fa-solid fa-calendar"></i>
-              Date
-            </dt>
-            <dd>{{ record.date_created }}</dd>
-            {% endif %}
-            {% if record.reference_number %}
-            <dt>
-              <i class="fa-solid fa-database"></i>
-                {% if form.group.value == 'archive' %}
-                    Archon code
-                {% else %}
-                    Reference
-                {% endif %}
-            </dt>
-            <dd>{{ record.reference_number }}</dd>
-            {% endif %}
-            {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-            <dt>Type</dt>
-            <dd>{{ record.type }}</dd>
-            {% endif %}
+        <dl class="search-results__list-card-metadata">
+            {% include "search/includes/results-details.html" %}
         </dl>
     </div>
 
