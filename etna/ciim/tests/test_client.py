@@ -1116,7 +1116,7 @@ class TestClientFetchAllReponse(SimpleTestCase):
         self.assertEqual(response.hits, ())
 
 
-class ClientGetIIIFManifestUrl(SimpleTestCase):
+class ClientGetIIIFManifestURL(SimpleTestCase):
     def setUp(self) -> None:
         self.records_client = get_records_client()
 
