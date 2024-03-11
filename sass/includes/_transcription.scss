@@ -221,6 +221,14 @@
             outline-offset: 0.125rem;
         }
 
+        ul {
+            @extend .tna-ul;
+        }
+
+        ol {
+            @extend .tna-ol;
+        }
+
         > p,
         > ul,
         > ol {
@@ -231,14 +239,6 @@
             &:last-child {
                 // margin-bottom: 0;
             }
-        }
-
-        ul {
-            @extend .tna-ul;
-        }
-
-        ol {
-            @extend .tna-ol;
         }
     }
 
