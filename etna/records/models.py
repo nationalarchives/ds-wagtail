@@ -975,7 +975,7 @@ class Record(DataLayerMixin, APIModel):
 class IIIFManifest(APIModel):
     content: Mapping[str, Any]
 
-    def __init__(self, *, raw_data: Mapping[str, Any]):
+    def __init__(self, *, raw_data: Mapping[str, Any]) -> None:
         self.content = raw_data
 
     @classmethod
