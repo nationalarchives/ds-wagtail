@@ -13,6 +13,7 @@ from ..ciim.client import SortBy, SortOrder
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
+    ESCAPE_AND_EVASION_CATALOGUE_BUCKETS,
     LEVEL_CHOICES,
     TYPE_CHOICES,
     WEBSITE_BUCKETS,
@@ -274,6 +275,14 @@ class CatalogueSearchForm(BaseCollectionSearchForm):
     group = forms.ChoiceField(
         label="bucket",
         choices=CATALOGUE_BUCKETS.as_choices(),
+        required=False,
+    )
+
+
+class EscapeAndEvasionsCatalogueSearchForm(CatalogueSearchForm):
+    group = forms.ChoiceField(
+        label="bucket",
+        choices=ESCAPE_AND_EVASION_CATALOGUE_BUCKETS.as_choices(),
         required=False,
     )
 
