@@ -161,19 +161,19 @@ Modified to match the existing site (for now)
     overflow: initial !important;
 }
 
-.tna-header__navigation-item-link {
-    &:hover,
-    &--selected,
-    &--selected:visited {
-        background: #fff !important;
-    }
-}
+// .tna-header__navigation-item-link {
+//     &:hover,
+//     &--selected,
+//     &--selected:visited {
+//         background: #fff !important;
+//     }
+// }
 
-@include media.on-mobile {
-    .tna-header__navigation-items {
-        background: #fff !important;
-    }
-}
+// @include media.on-mobile {
+//     .tna-header__navigation-items {
+//         background: #fff !important;
+//     }
+// }
 
 .tna-breadcrumbs {
     padding-bottom: 0;
@@ -351,17 +351,17 @@ Modified to match the existing site (for now)
         }
     }
 
-    @include media.on-larger-than-mobile {
-        .tna-header__navigation-item-link:hover,
-        .tna-header__navigation-item-link:hover:link,
-        .tna-header__navigation-item-link:hover:visited,
-        .tna-header__navigation-item-link--selected,
-        .tna-header__navigation-item-link--selected:link,
-        .tna-header__navigation-item-link--selected:visited {
-            color: #fff !important;
-            background-color: #343338 !important;
-        }
-    }
+    // @include media.on-larger-than-mobile {
+    //     .tna-header__navigation-item-link:hover,
+    //     .tna-header__navigation-item-link:hover:link,
+    //     .tna-header__navigation-item-link:hover:visited,
+    //     .tna-header__navigation-item-link--selected,
+    //     .tna-header__navigation-item-link--selected:link,
+    //     .tna-header__navigation-item-link--selected:visited {
+    //         color: #fff !important;
+    //         background-color: #343338 !important;
+    //     }
+    // }
 }
 
 .block-content_section,
@@ -618,8 +618,8 @@ Modified to match the existing site (for now)
 }
 
 // off-black header
-.tna-header--off-black {
-    background-color: $color--off-black;
-}
+// .tna-header--off-black {
+//     background-color: $color--off-black;
+// }
 
 /* stylelint-enable no-descending-specificity */
