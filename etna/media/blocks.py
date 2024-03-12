@@ -23,8 +23,6 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         We use expand_db_html to get any rich text fields as useful HTML,
         rather than the raw database representation.
         """
-        super().get_api_representation(value, context)
-
         return {
             "id": value.id,
             "file": value.file.url,
