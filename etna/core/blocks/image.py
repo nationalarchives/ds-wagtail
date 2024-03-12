@@ -10,6 +10,21 @@ from etna.core.blocks.paragraph import APIRichTextBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):
+    """
+    APIImageChooserBlock inherits ImageChooserBlock and adds the ability
+    to generate different renditions for JPEG and WebP formats. Without
+    this, and the get_api_representation override, the API would return
+    the database entry - which is just an image ID. This would require
+    a second API call to get the image renditions.
+
+    rendition_size defaults to `fill-600x400`, but can be specified
+    when the block is used, e.g:
+    image = APIImageChooserBlock(rendition_size="original")
+
+    quality also defaults to 80, and can be specified in the same way
+    as rendition_size.
+    """
+
     def __init__(
         self,
         required=True,
