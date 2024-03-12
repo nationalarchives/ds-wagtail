@@ -35,7 +35,7 @@
     "stylelint": "^15.10.3",
     "stylelint-config-standard-scss": "^11.0.0",
     "stylelint-selector-bem-pattern": "^3.0.1", 
-    "webpack": "~5.89",
+    "webpack": "~5.90",
     "webpack-cli": "~5.1"
   },
   "dependencies": {
