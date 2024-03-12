@@ -6,7 +6,7 @@ from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
-from etna.core.blocks import APIRichTextBlock
+from etna.core.blocks.paragraph import APIRichTextBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):

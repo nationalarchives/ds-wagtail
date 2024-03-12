@@ -2,7 +2,7 @@ from django.conf import settings
 
 from wagtail import blocks
 
-from etna.core.blocks import APIRichTextBlock
+from etna.core.blocks.paragraph import APIRichTextBlock
 
 
 class QuoteBlock(blocks.StructBlock):

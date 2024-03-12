@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
 from wagtail.api import APIField
-from etna.core.blocks import APIImageChooserBlock
+from etna.core.blocks.image import APIImageChooserBlock
 
 from ..ciim.exceptions import ClientAPIError
 from .api import records_client
