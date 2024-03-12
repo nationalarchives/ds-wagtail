@@ -9,12 +9,40 @@ from wagtail.images.blocks import ImageChooserBlock
 from etna.core.blocks.paragraph import APIRichTextBlock
 
 
+class APIImageChooserBlock(ImageChooserBlock):
+    def __init__(self, required=True, help_text=None, rendition_size="original", quality=100, **kwargs):
+        self.quality = quality
+        self.rendition_size = rendition_size
+        super().__init__(required=required, help_text=help_text, **kwargs)
+
+    def get_api_representation(self, value, context=None):
+        jpeg_image = value.get_rendition(f"{self.rendition_size}|format-jpeg|jpegquality-{self.quality}")
+        webp_image = value.get_rendition(f"{self.rendition_size}|format-webp|webpquality-{self.quality}")
+        return {
+            "id": value.id,
+            "title": value.title,
+            "image_jpeg": {
+                "url": jpeg_image.url,
+                "full_url": jpeg_image.full_url,
+                "width": jpeg_image.width,
+                "height": jpeg_image.height,
+                "alt": jpeg_image.alt,
+            },
+            "image_webp": {
+                "url": webp_image.url,
+                "full_url": webp_image.full_url,
+                "width": webp_image.width,
+                "height": webp_image.height,
+                "alt": webp_image.alt,
+            },
+        }
+
 class ImageBlock(blocks.StructBlock):
     """
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = ImageChooserBlock(required=False)
+    image = APIImageChooserBlock(required=False)
     decorative = blocks.BooleanBlock(
         label=mark_safe(
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"
@@ -96,7 +124,7 @@ class ImageOrientationValue(StructValue):
 
 
 class ContentImageBlock(blocks.StructBlock):
-    image = ImageChooserBlock(required=False)
+    image = APIImageChooserBlock(required=False)
     alt_text = blocks.CharBlock(
         max_length=100,
         label="Alternative text",
