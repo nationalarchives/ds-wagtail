@@ -5,7 +5,7 @@
 {% trans "Choose a media item" as  choose_str %}
 {% include "wagtailadmin/shared/header.html" with title=choose_str tabbed=1 merged=1 icon="media" %}
 
-<div class="tab-content">
+<div>
     <section id="search" class="{% if not uploadforms.audio.errors and not uploadforms.video.errors %}active {% endif %}nice-padding">
         <form class="media-search search-bar" action="{% url 'wagtailmedia:chooser' %}" method="GET" novalidate id="analytics-chooser">
             <ul class="fields">
