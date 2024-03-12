@@ -38,14 +38,12 @@ class APIImageChooserBlock(ImageChooserBlock):
                 "full_url": jpeg_image.full_url,
                 "width": jpeg_image.width,
                 "height": jpeg_image.height,
-                "alt": jpeg_image.alt,
             },
             "image_webp": {
                 "url": webp_image.url,
                 "full_url": webp_image.full_url,
                 "width": webp_image.width,
                 "height": webp_image.height,
-                "alt": webp_image.alt,
             },
         }
 
