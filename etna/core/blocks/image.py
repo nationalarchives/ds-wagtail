@@ -18,6 +18,7 @@ class APIImageChooserBlock(ImageChooserBlock):
     def get_api_representation(self, value, context=None):
         jpeg_image = value.get_rendition(f"{self.rendition_size}|format-jpeg|jpegquality-{self.quality}")
         webp_image = value.get_rendition(f"{self.rendition_size}|format-webp|webpquality-{self.quality}")
+        
         return {
             "id": value.id,
             "title": value.title,
