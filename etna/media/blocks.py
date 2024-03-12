@@ -1,7 +1,8 @@
 from wagtail import blocks
-from etna.core.blocks.image import APIImageChooserBlock
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+
+from etna.core.blocks.image import APIImageChooserBlock
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):

@@ -10,15 +10,26 @@ from etna.core.blocks.paragraph import APIRichTextBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):
-    def __init__(self, required=True, help_text=None, rendition_size="fill-600x400", quality=80, **kwargs):
+    def __init__(
+        self,
+        required=True,
+        help_text=None,
+        rendition_size="fill-600x400",
+        quality=80,
+        **kwargs,
+    ):
         self.quality = quality
         self.rendition_size = rendition_size
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        jpeg_image = value.get_rendition(f"{self.rendition_size}|format-jpeg|jpegquality-{self.quality}")
-        webp_image = value.get_rendition(f"{self.rendition_size}|format-webp|webpquality-{self.quality}")
-        
+        jpeg_image = value.get_rendition(
+            f"{self.rendition_size}|format-jpeg|jpegquality-{self.quality}"
+        )
+        webp_image = value.get_rendition(
+            f"{self.rendition_size}|format-webp|webpquality-{self.quality}"
+        )
+
         return {
             "id": value.id,
             "title": value.title,
@@ -37,6 +48,7 @@ class APIImageChooserBlock(ImageChooserBlock):
                 "alt": webp_image.alt,
             },
         }
+
 
 class ImageBlock(blocks.StructBlock):
     """
