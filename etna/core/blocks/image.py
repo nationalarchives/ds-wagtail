@@ -6,11 +6,11 @@ from wagtail.blocks import StructValue
 from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
-from etna.core.blocks.paragraph import APIRichTextBlock
+from etna.core.blocks import APIRichTextBlock
 
 
 class APIImageChooserBlock(ImageChooserBlock):
-    def __init__(self, required=True, help_text=None, rendition_size="original", quality=100, **kwargs):
+    def __init__(self, required=True, help_text=None, rendition_size="fill-600x400", quality=80, **kwargs):
         self.quality = quality
         self.rendition_size = rendition_size
         super().__init__(required=required, help_text=help_text, **kwargs)

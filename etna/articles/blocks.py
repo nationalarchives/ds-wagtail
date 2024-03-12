@@ -15,7 +15,7 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
 )
-from etna.core.blocks.paragraph import APIRichTextBlock
+from etna.core.blocks import APIRichTextBlock
 
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordLinksBlock
