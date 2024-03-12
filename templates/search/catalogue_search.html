@@ -77,7 +77,11 @@
         {% else %}
             {# No results were found when searching with the 'q' param value for all buckets ... #}
             {# ... or for only current bucket while some other buckets have results #}
-            {% include './blocks/no_results.html' %}
+            <div class="tna-container">
+                <div class="tna-column tna-column--full">
+                    {% include './blocks/no_results.html' %}
+                </div>
+            </div>
         {% endif %}
 
         {% if page.paginator.count %}

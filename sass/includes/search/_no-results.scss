@@ -1,0 +1,7 @@
+.no-results {
+    margin: 1rem;
+
+    @include media.on-larger-than-mobile {
+        margin: 2rem;
+    }
+}
