@@ -1,9 +1,8 @@
 from wagtail import blocks
 from wagtail.images.blocks import ImageChooserBlock
+from wagtail.rich_text import expand_db_html
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
-
-from wagtail.rich_text import expand_db_html
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -40,7 +39,7 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "height": value.height,
             "duration": value.duration,
         }
-    
+
 
 class MediaBlock(blocks.StructBlock):
     """
