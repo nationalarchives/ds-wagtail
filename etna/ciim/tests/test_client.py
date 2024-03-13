@@ -1,5 +1,6 @@
 import unittest
 
+from collections.abc import Sequence
 from datetime import datetime
 
 from django.conf import settings
@@ -9,12 +10,13 @@ import responses
 
 from etna.ciim.constants import Aggregation
 from etna.ciim.tests.factories import (
+    create_iiif_manifest_response,
     create_record,
     create_response,
     create_search_response,
 )
 from etna.records.api import get_records_client
-from etna.records.models import Record
+from etna.records.models import IIIFManifest, Record
 
 from ..client import ResultList, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
@@ -1112,3 +1114,87 @@ class TestClientFetchAllReponse(SimpleTestCase):
         response = self.records_client.fetch_all()
         self.assertIsInstance(response, ResultList)
         self.assertEqual(response.hits, ())
+
+
+class ClientGetIIIFManifestURL(SimpleTestCase):
+    def setUp(self) -> None:
+        self.records_client = get_records_client()
+
+    @responses.activate
+    def test_success(self) -> None:
+        TEST_TABLE: Sequence[tuple[str, str]] = [
+            ("C198022", f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C198022"),
+            ("A123", f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/A123"),
+            (
+                "A123/123",
+                f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/A123%2F123",
+            ),
+            (
+                "A123 123",
+                f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/A123+123",
+            ),
+            (
+                " A123 123 ",
+                f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/A123+123",
+            ),
+        ]
+        for input_value, expected in TEST_TABLE:
+            with self.subTest(input_value=input_value):
+                url = self.records_client.get_public_iiif_manifest_url(id=input_value)
+                self.assertEqual(url, expected)
+
+        self.assertCountEqual(responses.calls, [])
+
+    @responses.activate
+    def test_empty_id(self) -> None:
+        TEST_INPUTS: Sequence[str] = ["", " ", "  ", "\t"]
+        for input_value in TEST_INPUTS:
+            with self.subTest(input_value=input_value):
+                with self.assertRaises(ValueError):
+                    self.records_client.get_public_iiif_manifest_url(id=input_value)
+
+        self.assertCountEqual(responses.calls, [])
+
+
+class ClientFetchIIIFManifest(SimpleTestCase):
+    def setUp(self) -> None:
+        self.records_client = get_records_client()
+
+    @responses.activate
+    def test_success(self) -> None:
+        manifest = create_iiif_manifest_response(record_id="C198022")
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C198022",
+            json=manifest,
+        )
+
+        result = self.records_client.fetch_iiif_manifest(id="C198022")
+
+        self.assertEqual(
+            [call.response.url for call in responses.calls],
+            [
+                f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C198022",
+            ],
+        )
+
+        self.assertIsInstance(result, IIIFManifest)
+        self.assertEqual(result.content, manifest)
+
+    @responses.activate
+    def test_not_found(self) -> None:
+        responses.add(
+            responses.GET,
+            f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C198022",
+            status=404,
+        )
+
+        with self.assertRaises(DoesNotExist):
+            self.records_client.fetch_iiif_manifest(id="C198022")
+
+        self.assertEqual(
+            [call.response.url for call in responses.calls],
+            [
+                f"{settings.CLIENT_IIIF_MANIFEST_BASE_URL}/manifest/C198022",
+            ],
+        )

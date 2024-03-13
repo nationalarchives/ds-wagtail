@@ -28,11 +28,13 @@
                         </a>
                     </li>
                 
-                    <li class="jumplinks__list-item">
-                        <a class="jumplink" href="#record-viewer" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
-                            Record viewer
-                        </a>
-                    </li>
+                    {% if show_iiif_viewer %}
+                        <li class="jumplinks__list-item">
+                            <a class="jumplink" href="#record-viewer" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
+                                Record viewer
+                            </a>
+                        </li>
+                    {% endif %}
                 
                     <li class="jumplinks__list-item">
                         <a class="jumplink" href="#related-records" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="2" data-link="Series">
@@ -60,7 +62,7 @@
                 </table>
             </div>
 
-            {% if iiif_manifest_url %}
+            {% if show_iiif_viewer %}
                 <h2 class="heading heading--two" id="record-viewer">
                     Record
                 </h2>

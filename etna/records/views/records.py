@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
@@ -9,8 +10,9 @@ from django.utils import timezone
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
-from .. import iiif
 from ..api import records_client
+
+logger = logging.getLogger(__name__)
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -88,10 +90,49 @@ def record_detail_view(request, id):
     page_title = f"Catalogue ID: {record.iaid}"
     image = None
 
-    try:
-        iiif_manifest_url = iiif.manifest_url_for_record(record)
-    except iiif.RecordHasNoManifest:
-        iiif_manifest_url = None
+    iiif_manifest_url: str | None = None
+
+    # Fetch IIIF manifest only if:
+    # - The record is digitised
+    # - The record is not ARCHON or CREATORS as those templates
+    #   don't support IIIF viewer in their templates.
+    should_fetch_iiif_manifest = (
+        record.is_digitised and record.custom_record_type not in ("ARCHON", "CREATORS")
+    )
+
+    if should_fetch_iiif_manifest:
+        try:
+            # TODO: Use the contents from the request below to fetch the IIIF manifest
+            #       in order to build the HTML-only view (progressive enhancement).
+            #
+            #       Right now this is only used to establish if the record has
+            #       a IIIF manifest which could use a HEAD request instead.
+            #
+            #       We need to know if a record has IIIF manifest in order to establish
+            #       if we should load the IIIF viewer to the user. Not all records have
+            #       one.
+            #
+            #       We could make a HEAD request instead to check that, but it feels
+            #       short-sighted given that the progressively enhanced view will
+            #       require all this content to be fetched anyway.
+            #
+            #       This information could also be returned in the fetch endpoint
+            #       so we know in advance if we need to call the IIIF manifest
+            #       endpoint at all. The raised ticket:
+            #       https://national-archives.atlassian.net/browse/DOR-53
+            records_client.fetch_iiif_manifest(id=record.iaid)
+        except DoesNotExist:
+            pass
+        except Exception:
+            logger.warning(
+                "Unexpected error happened when trying to fetch the IIIF manifest for a record: iaid=%s",
+                record.iaid,
+                exc_info=True,
+            )
+        else:
+            iiif_manifest_url = records_client.get_public_iiif_manifest_url(
+                id=record.iaid
+            )
 
     # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
     # if page.is_digitised:
@@ -113,9 +154,10 @@ def record_detail_view(request, id):
             back_to_search_url = request.session.get("back_to_search_url")
 
     context.update(
-        record=record,
         iiif_manifest_url=iiif_manifest_url,
         image=image,
+        record=record,
+        show_iiif_viewer=iiif_manifest_url is not None,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
         page_type=page_type,
