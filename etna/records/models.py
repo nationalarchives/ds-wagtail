@@ -144,6 +144,15 @@ class Record(DataLayerMixin, APIModel):
             return False
         else:
             return True
+        
+    @cached_property
+    def thumbnail(self) -> str:
+        """
+        Returns the thumbnail URL for this record, or a blank string if no
+        such URL can be found in the usual places.
+        """
+        thumbnail_url = self.template.get("thumbnailUrl")
+        return thumbnail_url.get("value", "")
 
     @cached_property
     def summary_title(self) -> str:
