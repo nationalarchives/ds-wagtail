@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         footerPanelEnabled: true,
                         headerPanelEnabled: true,
                         leftPanelEnabled: true,
+                        clickToZoomEnabled: false,
                     },
                     modules: {
                         pagingHeaderPanel: {
@@ -36,6 +37,19 @@ document.addEventListener("DOMContentLoaded", () => {
                                 imageSelectionBoxEnabled: true,
                                 pageModeEnabled: true,
                                 pagingToggleEnabled: true,
+                            },
+                        },
+                        footerPanel: {
+                            options: {
+                                downloadEnabled: false,
+                                embedEnabled: false,
+                                feedbackEnabled: false,
+                                fullscreenEnabled: true,
+                                minimiseButtons: false,
+                                moreInfoEnabled: false,
+                                openEnabled: false,
+                                printEnabled: false,
+                                shareEnabled: false,
                             },
                         },
                     },
