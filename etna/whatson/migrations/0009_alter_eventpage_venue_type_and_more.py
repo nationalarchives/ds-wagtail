@@ -25,15 +25,4 @@ class Migration(migrations.Migration):
                 verbose_name="venue type",
             ),
         ),
-        migrations.AlterField(
-            model_name="eventsession",
-            name="session_id",
-            field=models.CharField(
-                blank=True,
-                editable=False,
-                max_length=35,
-                null=True,
-                verbose_name="session ID",
-            ),
-        ),
     ]
