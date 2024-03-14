@@ -316,8 +316,6 @@ class ClientAPI:
             Ex: returns match on Information Asset Identifier - iaid.
         """
         response = requests.get(self.get_public_iiif_manifest_url(id=id))
-        print(response)
-        print(response.text)
         response_data = response.json()
         return IIIFManifest.from_api_response(response=response_data)
 
