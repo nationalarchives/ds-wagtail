@@ -144,7 +144,7 @@ class Record(DataLayerMixin, APIModel):
             return False
         else:
             return True
-        
+
     @cached_property
     def thumbnail(self) -> str:
         """
