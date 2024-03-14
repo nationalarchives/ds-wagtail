@@ -253,7 +253,7 @@ class EventSession(models.Model):
         null=True,
         blank=True,
         editable=False,
-        max_length=35
+        max_length=35,
     )
 
     start = models.DateTimeField(
