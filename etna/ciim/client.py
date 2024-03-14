@@ -315,9 +315,9 @@ class ClientAPI:
             Matches a single IAID.
             Ex: returns match on Information Asset Identifier - iaid.
         """
-        response = requests.get(self.get_public_iiif_manifest_url(id=id))
-        response_data = response.json()
-        return IIIFManifest.from_api_response(response=response_data)
+        if response := requests.get(self.get_public_iiif_manifest_url(id=id)):
+            return IIIFManifest.from_api_response(response=response.json())
+        raise DoesNotExist
 
     def get_public_iiif_manifest_url(
         self,
