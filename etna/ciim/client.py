@@ -213,12 +213,18 @@ class ClientAPI:
         verify_certificates: bool = True,
         timeout: int = 5,
     ):
+        self.timeout = timeout
+
+        # Session for making requests to the CIIM API (Rosetta, Kong)
         self.base_url: str = base_url
-        self.iiif_manifest_base_url: str = iiif_manifest_base_url
         self.session = requests.Session()
         self.session.headers.update({"apikey": api_key})
         self.session.verify = verify_certificates
-        self.timeout = timeout
+
+        # IIIF manifest session does not use API key.
+        self.iiif_manifest_base_url: str = iiif_manifest_base_url
+        self.iiif_manifest_session = requests.Session()
+        self.iiif_manifest_session.verify = verify_certificates
 
     @staticmethod
     def format_datetime(
@@ -315,9 +321,11 @@ class ClientAPI:
             Matches a single IAID.
             Ex: returns match on Information Asset Identifier - iaid.
         """
-        if response := requests.get(self.get_public_iiif_manifest_url(id=id)):
-            return IIIFManifest.from_api_response(response=response.json())
-        raise DoesNotExist
+        response = self.iiif_manifest_session.get(
+            self.get_public_iiif_manifest_url(id=id)
+        )
+        self._raise_for_status(response)
+        return IIIFManifest.from_api_response(response=response.json())
 
     def get_public_iiif_manifest_url(
         self,
