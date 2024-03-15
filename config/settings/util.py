@@ -1,5 +1,5 @@
 def strtobool(val) -> bool:
-    """Convert a string representation of truth to true (1) or false (0).
+    """Convert a string representation of truth to true or false.
     True values are 'y', 'yes', 't', 'true', 'on', and '1'; false values
     are 'n', 'no', 'f', 'false', 'off', and '0'.  Raises ValueError if
     'val' is anything else.
