@@ -369,6 +369,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             result_count=self.get_result_count(),
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )
@@ -743,6 +744,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
+        kwargs["display"] = Display
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
@@ -1104,6 +1106,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             selected_filters_count=self.selected_filters_count,
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            display=Display,
         )
 
         # Set custom attribute for use in get_datalayer_data()
