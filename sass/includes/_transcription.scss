@@ -1,7 +1,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 
 .transcription {
-    // @include colour.invert;
+    @include colour.contrast;
     $root: &;
     // provides visual boundary in high contrast mode
     border: 1px solid transparent;
@@ -221,15 +221,23 @@
             outline-offset: 0.125rem;
         }
 
+        ul {
+            @extend .tna-ul;
+        }
+
+        ol {
+            @extend .tna-ol;
+        }
+
         > p,
         > ul,
         > ol {
             // Normalise the rich-text output
-            margin-top: 0;
-            margin-bottom: 1rem;
+            // margin-top: 0;
+            // margin-bottom: 1rem;
 
             &:last-child {
-                margin-bottom: 0;
+                // margin-bottom: 0;
             }
         }
     }

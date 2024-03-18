@@ -15,7 +15,7 @@ variables:
     # pip
     POETRY_VIRTUALENVS_IN_PROJECT: true
     POETRY_VIRTUALENVS_CREATE: true
-    POETRY_VERSION: 1.6.1
+    POETRY_VERSION: 1.8.1
 
 # The size of the persistent disk of the application (in MB).
 disk: 4096

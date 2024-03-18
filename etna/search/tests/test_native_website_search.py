@@ -210,19 +210,24 @@ class NativeWebsiteSearchTestCase(TestCase):
         response = self.client.get(self.test_url, data={"per_page": 10})
         self.assertEqual(response.status_code, 200)
 
-        self.assertContains(
+        self.assertNotContains(
             response,
-            '<li class="tna-pagination__item tna-pagination__item--current"><a class="tna-button tna-pagination__link tna-button--accent" href="?per_page=10&amp;page=1" aria-label="Current page, Page 1" aria-current="true" data-link-type="Pagination" data-link="1">1</a></li>',
+            'role="button" rel="prev" data-link-type="Pagination" data-link="Previous page"',
             html=True,
         )
         self.assertContains(
             response,
-            '<li class="tna-pagination__item"><a class="tna-button tna-pagination__link" href="?per_page=10&amp;page=2" data-link-type="Pagination" aria-label="Go to page 2" data-link="2">2</a></li>',
+            '<a class="tna-button tna-button--accent tna-pagination__link" href="?per_page=10&amp;page=1" aria-label="Page 1" data-link-type="Pagination" data-link="1" role="button" aria-current="page">1</a>',
             html=True,
         )
         self.assertContains(
             response,
-            '<div class="tna-pagination__next"><a href="?per_page=10&amp;page=2" class="tna-button tna-button--icon-right tna-button--icon-only-mobile" rel="next" data-link="Next page" data-link-type="Pagination"><i class="fa-solid fa-arrow-right" aria-hidden="true"></i>Next</a></div>',
+            '<a class="tna-button tna-pagination__link" href="?per_page=10&amp;page=2" aria-label="Page 2" data-link-type="Pagination" data-link="2" role="button">2</a>',
+            html=True,
+        )
+        self.assertContains(
+            response,
+            '<a class="tna-button tna-pagination__link" href="?per_page=10&amp;page=2" role="button" rel="next" data-link-type="Pagination" data-link="Next page"><span class="tna-pagination__link-title">Next</span><svg class="tna-pagination__icon tna-pagination__icon--next" xmlns="http://www.w3.org/2000/svg" height="13" width="15" aria-hidden="true" focusable="false" viewBox="0 0 15 13"><path d="m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z"></path></svg></a>',
             html=True,
         )
 

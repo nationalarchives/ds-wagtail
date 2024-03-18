@@ -25,7 +25,7 @@
             {{ record.listing_description }}
         </p>
 
-        <dl class="search-results__list-card-metadata">
+        <dl class="tna-dl tna-dl--plain">
             {% include "search/includes/results-details.html" %}
         </dl>
     </div>
@@ -39,7 +39,7 @@
                         <img src="{{ record.thumbnail }}" class="search-results__list-card-delivery-options-img" alt="" />
                     </a>
                 
-                    {% comment %} <a href="{% record_url record %}" class="search-results__list-card-delivery-options-link">
+                    {% comment %} <a href="{% record_url record %}" class="tna-background-contrast search-results__list-card-delivery-options-link">
                         <p class="search-results__list-card-delivery-options-desc">
                             <span class="sr-only">{{ record.reference_prefixed_summary_title }} is</span>
                             Available online

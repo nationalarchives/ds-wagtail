@@ -1,5 +1,5 @@
 {% if record.held_by %}
-    <dt class="search-results__list-card-metadata-item">
+    <dt>
         Held by:
     </dt>
     <dd class="search-results__list-card-metadata-item">
@@ -8,7 +8,7 @@
 {% endif %}
 
 {% if record.date_created %}
-    <dt class="search-results__list-card-metadata-item">
+    <dt>
         Date:
     </dt>
     <dd class="search-results__list-card-metadata-item">
@@ -17,7 +17,8 @@
 {% endif %}
 
 {% if record.reference_number %}
-    <dt class="search-results__list-card-metadata-item">
+    <dt>
+
         {% if form.group.value == 'archive' %}
             Archon code:
         {% else %}
@@ -39,7 +40,7 @@
 -->
 
 {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-    <dt class="search-results__list-card-metadata-item">
+    <dt>
         Type:
     </dt>
     <dd class="search-results__list-card-metadata-item">

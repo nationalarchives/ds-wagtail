@@ -20,7 +20,7 @@
                             <ul class="tna-ul tna-ul--plain">
                                 <li>By 
                                     {% for author in page.authors %}
-                                        <a href="{% pageurl author.author %}" rel="author" data-component-name="Page header" data-link-type="Link" data-link="{{ author.author.title }}">{{ author.author.title }}</a>{% if not forloop.last %}{% if forloop.counter == page.authors|length|add:"-1" %} and {% else %}, {% endif %}{% endif %}
+                                        <a href="{% pageurl author %}" rel="author" data-component-name="Page header" data-link-type="Link" data-link="{{ author.title }}">{{ author.title }}</a>{% if not forloop.last %}{% if forloop.counter == page.authors|length|add:"-1" %} and {% else %}, {% endif %}{% endif %}
                                     {% endfor %}
                                 </li>                    
                             </ul>
@@ -57,17 +57,17 @@
                         <div class="tna-author tna-author--summary">
                             <h2 class="tna-chip tna-chip--plain">About the author{% if page.authors|length > 1 %}s{% endif %}</h2>
                                 {% for author in page.authors %}
-                                    {% image author.author.image fill-500x500 as author_img %}
+                                    {% image author.image fill-500x500 as author_img %}
                                     <div class="tna-author__image tna-author__image--small">
                                         <img src="{{ author_img.url }}" alt="{{ author_img.alt }}" width="500" height="500">
                                     </div>
                                     <p>
                                         <strong>
-                                            <a href="{% pageurl author.author %}" rel="author" data-component-name="About the author" data-link-type="Link" data-link="{{ author.author.title }}">{{ author.author.title }}</a>
+                                            <a href="{% pageurl author %}" rel="author" data-component-name="About the author" data-link-type="Link" data-link="{{ author.title }}">{{ author.title }}</a>
                                         </strong>
                                     </p>
-                                    {% if author.author.role %}
-                                        <p>{{ author.author.role }}</p>
+                                    {% if author.role %}
+                                        <p>{{ author.role }}</p>
                                     {% endif %}
                                 {% endfor %}
                             </div>
@@ -90,13 +90,14 @@
                         {% endfor %}
                     </ul>
                 {% endif %}
-
+</div>
 
                 {% if page.primary_topic or page.primary_time_period %}
                     {% include "includes/related_topic_timeline_cards.html" with topic=page.primary_topic time_period=page.primary_time_period title="Discover highlights from the collection" %}
                 {% endif %}
 
 
+                <div class="tna-container">
                 {% if page.latest_items %}
                 <div class="tna-column tna-column--full">
                     <h2 class="tna-heading-l related-content__heading">More stories</h2>
