@@ -1,5 +1,3 @@
-alert('called');
-console.log('ping');
 
     // Create an array of century labels (0 - 21)
     const centuryLabels = [];
