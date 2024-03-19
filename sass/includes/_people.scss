@@ -26,7 +26,7 @@
 
         // user icon fallback (font-awesome)
         &--default {
-            @include colour.light-accent-background;
+            @include colour.accent-light;
             display: flex;
             justify-content: center;
             align-items: center;

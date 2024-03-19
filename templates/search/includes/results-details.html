@@ -1,19 +1,19 @@
 {% if record.held_by %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-held-by-icon">
+    <dt>
         Held by:
     </dt>
     <dd>{{ record.held_by }}</dd>
 {% endif %}
 
 {% if record.date_created %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-date-icon">
+    <dt>
         Date:
     </dt>
     <dd> {{ record.date_created }}</dd>
 {% endif %}
 
 {% if record.reference_number %}
-    <dt class="search-results__list-card-metadata-item search-results__list-card-metadata-item-data-icon">
+    <dt>
 
         {% if form.group.value == 'archive' %}
         Archon code:
@@ -36,7 +36,7 @@
 -->
 
 {% if form.group.value == bucketkeys.CREATOR.value and record.type %}
-    <dt class="search-results__list-card-metadata-item">
+    <dt>
         Type:
     </dt>
     <dd>{{ record.type }}</dd>
