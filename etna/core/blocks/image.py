@@ -30,19 +30,21 @@ class APIImageChooserBlock(ImageChooserBlock):
         required=True,
         help_text=None,
         rendition_size="fill-600x400",
-        quality=80,
+        jpeg_quality=60,
+        webp_quality=80,
         **kwargs,
     ):
-        self.quality = quality
+        self.jpeg_quality = jpeg_quality
+        self.webp_quality = webp_quality
         self.rendition_size = rendition_size
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
         jpeg_image = value.get_rendition(
-            f"{self.rendition_size}|format-jpeg|jpegquality-{self.quality}"
+            f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
         )
         webp_image = value.get_rendition(
-            f"{self.rendition_size}|format-webp|webpquality-{self.quality}"
+            f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
         )
 
         return {
@@ -68,7 +70,7 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = APIImageChooserBlock(required=False)
+    image = APIImageChooserBlock(required=True)
     decorative = blocks.BooleanBlock(
         label=mark_safe(
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"
@@ -150,7 +152,7 @@ class ImageOrientationValue(StructValue):
 
 
 class ContentImageBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(required=False)
+    image = APIImageChooserBlock(required=True)
     alt_text = blocks.CharBlock(
         max_length=100,
         label="Alternative text",
