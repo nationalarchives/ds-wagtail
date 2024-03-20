@@ -12,7 +12,7 @@ from wagtail.blocks import StreamValue
 from wagtail.models import Page, Revision, Site
 from wagtail.models.sites import get_site_for_hostname
 
-import bleach
+import nh3
 
 from etna.feedback import constants
 from etna.feedback.models import FeedbackSubmission
@@ -168,7 +168,7 @@ class FeedbackCommentForm(forms.Form):
         value = self.cleaned_data.get("comment")
         if value is None:
             return ""
-        return bleach.clean(value, strip=True)
+        return nh3.clean(value)
 
     def clean(self) -> str:
         # Validate the 'signature' value against the 'id' value

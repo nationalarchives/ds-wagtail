@@ -5,7 +5,7 @@ from typing import Any, Dict, Optional
 from django.urls import NoReverseMatch, reverse
 from django.utils.safestring import mark_safe
 
-import bleach
+import nh3
 
 from pyquery import PyQuery as pq
 
@@ -259,7 +259,18 @@ def format_link(link_html: str) -> Dict[str, str]:
 
 
 def strip_html(value: str, preserve_marks=False):
-    tags = []
-    if preserve_marks:
-        tags.append("mark")
-    return mark_safe(bleach.clean(value, tags=tags, strip=True))
+    """
+    Temporary HTML sanitiser to remove unwanted tags from data.
+    K-int will eventually sanitise this at API level.
+    preserve_marks=True will keep <mark> tags in the output, otherwise they are removed.
+    
+    Replacing <span> and <p> tags is necessary to prevent bunched data,
+    "This is a<span>test</span>example" will return as "This is atestexample"
+    without the placement of the space.
+    """
+    clean_tags = {"span", "p"}
+    clean_html = nh3.clean(value, tags=clean_tags.update("mark") if preserve_marks else clean_tags)
+    for tag in clean_tags:
+        clean_html = clean_html.replace(f"<{tag}>", " ").replace(f"</{tag}>", "")
+    
+    return clean_html
