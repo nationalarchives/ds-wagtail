@@ -71,7 +71,20 @@ $ fab test --lint
 
 This will be checked by CI on every commit, so it's a good idea to run this locally before pushing your changes.
 
+### Migrations
+
 We also have CI to check Django migrations, in order to help prevent any potential data issues. The CI will only run on a pull request, if any `/migrations` folders have been changed.
+
+If a migration contains a potentially dangerous operation, the developer should check that the migration is safe to run, and verify they have checked this by adding a comment to the migration file,
+in the following format:
+
+```python
+# etna:allowDeleteModel
+```
+
+The dangerous operations that require a comment are `DeleteModel`, `RenameModel`, `RemoveField`, and `AlterField`.
+
+If the comment isn't added, the Github Action will flag that the migration is potentially dangerous, and the pull request will fail. The Github Action's log will tell you which file(s) are failing. The developer will then need to add the comment/check the migration, and push the changes to the pull request.
 
 While this won't entirely stop potential data issues, it will help to catch any potential issues by forcing the developer to check that their migrations are sound, before they
 are deployed.
