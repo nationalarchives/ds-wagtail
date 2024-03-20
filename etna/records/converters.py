@@ -39,6 +39,7 @@ class IDConverter(StringConverter):
         r"|pcw-[a-zA-Z0-9\-\.]{1,}"
         r"|shc-[a-zA-Z0-9\-\.]{1,}"
         r"|osc-[a-zA-Z0-9\-\.]{1,}"
+        r"|mpa-[0-9]{1,}"
     )
     etna_pattern = (
         "[ACDFN][0-9]{1,8}|[a-f0-9]{8}-?([a-f0-9]{4}-?){3}[a-f0-9]{12}(_[1-9])?"
