@@ -273,8 +273,8 @@ def strip_html(value: str, preserve_marks=False):
         value, tags={*clean_tags, "mark"} if preserve_marks else clean_tags
     )
     for tag in clean_tags:
-        opening_regex = fr"<{tag}[^>]*>"
-        closing_regex = fr"</{tag}>"
+        opening_regex = rf"<{tag}[^>]*>"
+        closing_regex = rf"</{tag}>"
         clean_html = re.sub(opening_regex, " ", clean_html)
         clean_html = re.sub(closing_regex, "", clean_html)
     return mark_safe(clean_html.lstrip())
