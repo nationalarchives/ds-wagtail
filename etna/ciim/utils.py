@@ -275,4 +275,4 @@ def strip_html(value: str, preserve_marks=False):
     for tag in clean_tags:
         clean_html = clean_html.replace(f"<{tag}>", " ").replace(f"</{tag}>", "")
 
-    return clean_html
+    return mark_safe(clean_html)
