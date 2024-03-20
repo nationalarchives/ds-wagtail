@@ -82,7 +82,7 @@ in the following format:
 # etna:allowDeleteModel
 ```
 
-The dangerous operations that require a comment are `DeleteModel`, `RenameModel`, `RemoveField`, and `AlterField`.
+The operations that require a comment are `DeleteModel`, `RenameModel`, `RemoveField`, and `AlterField`.
 
 If the comment isn't added, the Github Action will flag that the migration is potentially dangerous, and the pull request will fail. The Github Action's log will tell you which file(s) are failing. The developer will then need to add the comment/check the migration, and push the changes to the pull request.
 
