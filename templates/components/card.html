@@ -6,7 +6,7 @@
     {% if supertitle %}
       {% if not singleSentence %}
         <hgroup class="tna-hgroup-{{ headingSize|default:'s' }} tna-card__heading">
-          <p class="tna-hgroup__supertitle">{{ supertitle }}</p>
+          <p class="tna-hgroup__supertitle tna-hgroup__supertitle--plain">{{ supertitle }}</p>
           <h{{ headingLevel }} class="tna-hgroup__title">
           {% if href %}
             <a

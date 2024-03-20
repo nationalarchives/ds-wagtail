@@ -26,6 +26,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
+from etna.core.serializers import RichTextSerializer
 
 __all__ = [
     "BasePage",
@@ -40,7 +41,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
+class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -212,4 +213,6 @@ class BasePageWithIntro(BasePage):
         index.SearchField("intro", boost=3),
     ]
 
-    api_fields = BasePage.api_fields + [APIField("intro")]
+    api_fields = BasePage.api_fields + [
+        APIField("intro", serializer=RichTextSerializer())
+    ]

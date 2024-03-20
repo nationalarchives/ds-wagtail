@@ -13,7 +13,11 @@ class Migration(migrations.Migration):
             model_name="eventsession",
             name="session_id",
             field=models.CharField(
-                blank=True, editable=False, null=True, verbose_name="session ID"
+                blank=True,
+                editable=False,
+                max_length=35,
+                null=True,
+                verbose_name="session ID",
             ),
         ),
     ]

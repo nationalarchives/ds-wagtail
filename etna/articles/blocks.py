@@ -15,6 +15,7 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
 )
+from etna.core.blocks.paragraph import APIRichTextBlock
 
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordLinksBlock
@@ -82,7 +83,7 @@ class PromotedItemBlock(SectionDepthAwareStructBlock):
         label="Teaser image",
         template="articles/blocks/images/blog-embed__image-container.html",
     )
-    description = blocks.RichTextBlock(
+    description = APIRichTextBlock(
         features=settings.INLINE_RICH_TEXT_FEATURES,
         help_text="A description of the promoted page",
     )
@@ -105,7 +106,7 @@ class PromotedListItemBlock(SectionDepthAwareStructBlock):
         max_length=100,
         help_text="The title of the target page",
     )
-    description = blocks.RichTextBlock(
+    description = APIRichTextBlock(
         required=False,
         features=settings.INLINE_RICH_TEXT_FEATURES,
         help_text="A description of the target page",
@@ -122,7 +123,7 @@ class PromotedListBlock(blocks.StructBlock):
     """
 
     category = SnippetChooserBlock("categories.Category")
-    summary = blocks.RichTextBlock(
+    summary = APIRichTextBlock(
         required=False, features=settings.INLINE_RICH_TEXT_FEATURES
     )
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
