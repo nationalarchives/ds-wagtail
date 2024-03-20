@@ -650,7 +650,7 @@ class BaseModelSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(LinkedPageSerializer):
     teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
     )
 
     class Meta:
@@ -667,7 +667,7 @@ class TopicSerializer(LinkedPageSerializer):
 
 class TimePeriodSerializer(LinkedPageSerializer):
     teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-900x400", jpeg_quality=60, webp_quality=80
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
     )
     start_year = serializers.IntegerField()
     end_year = serializers.IntegerField()
