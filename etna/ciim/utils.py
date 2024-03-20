@@ -264,15 +264,17 @@ def strip_html(value: str, preserve_marks=False):
     K-int will eventually sanitise this at API level.
     preserve_marks=True will keep <mark> tags in the output, otherwise they are removed.
 
-    Replacing <span> and <p> tags is necessary to prevent bunched data,
+    Replacing <span> and <p> tags is necessary to prevent "bunched" data,
     "This is a<span>test</span>example" will return as "This is atestexample"
     without the placement of the space.
     """
     clean_tags = {"span", "p"}
     clean_html = nh3.clean(
-        value, tags=clean_tags.update("mark") if preserve_marks else clean_tags
+        value, tags={*clean_tags, "mark"} if preserve_marks else clean_tags
     )
     for tag in clean_tags:
-        clean_html = clean_html.replace(f"<{tag}>", " ").replace(f"</{tag}>", "")
-
-    return mark_safe(clean_html)
+        opening_regex = fr"<{tag}[^>]*>"
+        closing_regex = fr"</{tag}>"
+        clean_html = re.sub(opening_regex, " ", clean_html)
+        clean_html = re.sub(closing_regex, "", clean_html)
+    return mark_safe(clean_html.lstrip())
