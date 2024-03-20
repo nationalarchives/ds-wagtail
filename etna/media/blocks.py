@@ -25,7 +25,8 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         """
         return {
             "id": value.id,
-            "file": value.file.url,
+            "file": value.url,
+            "full_url": value.full_url,
             "type": value.type,
             "mime": value.mime(),
             "title": value.title,
