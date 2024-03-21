@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: ci
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: axelerant/platformsh-deploy-action@v1
         with:
           project-id: ${{ secrets.PLATFORM_PROJECT_ID }}
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deploy
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

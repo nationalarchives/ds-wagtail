@@ -20,6 +20,10 @@
         font-size: 1.25rem;
         margin: 0 0 0.5rem;
 
+        a {
+            color: inherit;
+        }
+
         @media only screen and (min-width: #{$screen__md + 1px}) {
             font-size: 1.3rem;
         }
