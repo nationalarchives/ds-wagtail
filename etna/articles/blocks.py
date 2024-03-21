@@ -2,7 +2,6 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
@@ -15,6 +14,7 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
 )
+from etna.core.blocks.image import APIImageChooserBlock
 from etna.core.blocks.paragraph import APIRichTextBlock
 
 from ..media.blocks import MediaBlock
@@ -143,7 +143,7 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     description = blocks.TextBlock(
         help_text="A description of the promoted page",
     )
-    teaser_image = ImageChooserBlock(
+    teaser_image = APIImageChooserBlock(
         help_text="Image that will appear on thumbnails and promos around the site."
     )
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
