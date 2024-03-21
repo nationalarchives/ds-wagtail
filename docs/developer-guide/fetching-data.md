@@ -31,7 +31,12 @@ $ fab pull-staging-data
 $ fab pull-production-data
 ```
 
-**NOTE:** Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. Also, any Django users you created locally before running the command will no longer exist. You can run `python manage.py createsuperuser` from a container shell to create yourself a new one.
+**NOTE:**
+
+- Data is automatically anonymised after downloading to protect sensitive data, so user logins from production will NOT work locally. 
+- Also, any Django users you created locally before running the command will no longer exist.
+- A superuser whose credentials are defined in the docker-compose.yml will be created. 
+- You can also run `python manage.py createsuperuser` from a container shell to create yourself a new one.
 
 ## Download environment media
 
