@@ -46,7 +46,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.black]
 line_length = 120
-target-version = ['py311']
+target-version = ['py312']
 exclude = '''
 (
   /(
