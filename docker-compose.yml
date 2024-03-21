@@ -16,7 +16,7 @@ services:
       context: .
       args:
         BASE_IMAGE: ghcr.io/nationalarchives/tna-python-django-root
-        BASE_IMAGE_TAG: rooted-images # TODO: Change to latest on merge Docker to main
+        BASE_IMAGE_TAG: latest
     volumes:
       - .:/app
       - ./dev/bin/build:/home/app/.local/bin/build
