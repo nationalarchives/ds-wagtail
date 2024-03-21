@@ -26,7 +26,9 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
 WAGTAIL_HEADLESS_PREVIEW = {
-    "CLIENT_URLS": {},  # defaults to an empty dict. You must at the very least define the default client URL.
+    "CLIENT_URLS": {
+        "default": "{SITE_ROOT_URL}",
+    },
     "SERVE_BASE_URL": None,  # can be used for HeadlessServeMixin
     "REDIRECT_ON_PREVIEW": False,  # set to True to redirect to the preview instead of using the Wagtail default mechanism
     "ENFORCE_TRAILING_SLASH": True,  # set to False in order to disable the trailing slash enforcement

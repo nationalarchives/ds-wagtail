@@ -147,7 +147,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def summary_title(self) -> str:
         if raw := self._get_raw_summary_title():
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return raw
 
     def _get_raw_summary_title(self) -> str:
@@ -246,7 +246,7 @@ class Record(DataLayerMixin, APIModel):
         will be left in-tact, but and other HTML is stripped.
         """
         if raw := self._get_raw_description(use_highlights=True):
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return ""
 
     def _get_raw_description(self, use_highlights: bool = False) -> str:
@@ -616,7 +616,7 @@ class Record(DataLayerMixin, APIModel):
             for item in manifestations:
                 info_list.append(
                     {
-                        "identifier_title": f'NRA {item.get("identifier",[{}])[0].get("value", "") } {item.get("title", [{}])[0].get("value", "")}',
+                        "identifier_title": f'NRA {item.get("identifier", [{}])[0].get("value", "")} {item.get("title", [{}])[0].get("value", "")}',
                         "url": item.get("url", ""),
                     }
                 )
