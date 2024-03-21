@@ -40,29 +40,31 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        jpeg_image = value.get_rendition(
-            f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
-        )
-        webp_image = value.get_rendition(
-            f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
-        )
+        if value:
+            jpeg_image = value.get_rendition(
+                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
+            )
+            webp_image = value.get_rendition(
+                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
+            )
 
-        return {
-            "id": value.id,
-            "title": value.title,
-            "image_jpeg": {
-                "url": jpeg_image.url,
-                "full_url": jpeg_image.full_url,
-                "width": jpeg_image.width,
-                "height": jpeg_image.height,
-            },
-            "image_webp": {
-                "url": webp_image.url,
-                "full_url": webp_image.full_url,
-                "width": webp_image.width,
-                "height": webp_image.height,
-            },
-        }
+            return {
+                "id": value.id,
+                "title": value.title,
+                "image_jpeg": {
+                    "url": jpeg_image.url,
+                    "full_url": jpeg_image.full_url,
+                    "width": jpeg_image.width,
+                    "height": jpeg_image.height,
+                },
+                "image_webp": {
+                    "url": webp_image.url,
+                    "full_url": webp_image.full_url,
+                    "width": webp_image.width,
+                    "height": webp_image.height,
+                },
+            }
+        return None
 
 
 class ImageBlock(blocks.StructBlock):
