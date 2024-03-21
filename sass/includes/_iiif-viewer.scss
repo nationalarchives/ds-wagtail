@@ -46,10 +46,20 @@
         @include typography.relative-font-size(14);
         box-sizing: content-box;
         padding: 5px;
-        margin: 0 5px;
 
         &-default {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
             border: 1px solid $color__black;
+            color: $color__black;
+            background-color: transparent;
+
+            &:focus {
+                outline: 0.3125rem solid $color__blue;
+                outline-offset: 0.125rem;
+            }
         }
 
         &.go {
@@ -57,9 +67,14 @@
             width: 30px;
             height: 30px;
             line-height: 30px;
+            margin: 0 5px;
             border: 1px solid $color__black;
             color: $color__black;
             background-color: $color__grey-200;
+        }
+
+        &.imageBtn {
+            margin: 0 5px;
         }
 
         &.settings,
@@ -69,6 +84,11 @@
 
         &.download {
             margin-left: 0;
+        }
+
+        &.size-up,
+        &.size-down {
+            margin: 7px;
         }
 
         &:focus {
@@ -88,6 +108,14 @@
     }
 
     // Header Panel (navigation)
+
+    .header {
+        height: 60px;
+
+        input[type="range"] {
+            margin-top: 25px;
+        }
+    }
 
     .headerPanel {
         background-color: transparent;
@@ -124,6 +152,8 @@
             @include typography.relative-font-size(14);
             font-family: $font__open-sans;
             margin-top: 12px;
+            width: 25px;
+            margin-right: 0;
         }
 
         .mode {
@@ -183,6 +213,10 @@
         .values,
         .value {
             color: $color__black;
+        }
+
+        .thumb {
+            margin: 7px;
         }
     }
 
@@ -255,8 +289,6 @@
         background-color: transparent;
 
         .content {
-            padding: 0;
-
             .attribution {
                 @include typography.relative-font-size(13);
                 font-family: $font__open-sans;
@@ -277,7 +309,7 @@
             }
 
             .main {
-                padding-top: 0;
+                // padding-top: 0;
             }
 
             .close {
@@ -465,9 +497,12 @@
                     border: 1px solid $color__black !important;
                     height: 30px !important;
                     width: 30px !important;
-                    margin: 0 10px 0 0 !important;
+                    margin: 7px !important;
                     padding: 5px !important;
+                    z-index: 10;
 
+                    &:target,
+                    &:active,
                     &:focus {
                         outline: 0.3125rem solid $color__blue;
                         outline-offset: 0.125rem;
@@ -502,7 +537,8 @@
                     width: 50px;
                     background-color: $color__grey-200;
                     padding: 5px;
-                    margin: 0;
+                    margin: 7px;
+                    z-index: 10;
 
                     &.disabled {
                         opacity: 0.25;
@@ -513,6 +549,10 @@
                         background-position: center center;
                         background-repeat: no-repeat;
                         background-size: 45px 45px;
+
+                        &.disabled {
+                            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='20' viewBox='0 -960 960 960' width='20'%3E%3Cpath d='M666.154-464H232v-32h434.154L457.461-704.692 480-728l248 248-248 248-22.539-23.308L666.154-464Z'/%3E%3C/svg%3E");
+                        }
                     }
 
                     &.prev {

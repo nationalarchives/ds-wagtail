@@ -27,16 +27,24 @@ document.addEventListener("DOMContentLoaded", () => {
                         headerPanelEnabled: true,
                         leftPanelEnabled: true,
                         clickToZoomEnabled: false,
+                        rightPanelEnabled: false,
                     },
                     modules: {
                         pagingHeaderPanel: {
                             options: {
-                                autoCompleteBoxEnabled: true,
-                                autocompleteAllowWords: true,
+                                autoCompleteBoxEnabled: false,
+                                autocompleteAllowWords: false,
                                 galleryButtonEnabled: true,
-                                imageSelectionBoxEnabled: true,
+                                imageSelectionBoxEnabled: false,
                                 pageModeEnabled: true,
                                 pagingToggleEnabled: true,
+                            },
+                        },
+                        headerPanel: {
+                            options: {
+                                centerOptionsEnabled: true,
+                                localeToggleEnabled: false,
+                                settingsButtonEnabled: false,
                             },
                         },
                         footerPanel: {
