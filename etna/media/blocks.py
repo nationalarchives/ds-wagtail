@@ -1,7 +1,8 @@
 from wagtail import blocks
-from wagtail.images.blocks import ImageChooserBlock
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+
+from etna.core.blocks.image import APIImageChooserBlock
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -24,7 +25,7 @@ class MediaBlock(blocks.StructBlock):
         required=True,
         help_text="A descriptive title for the media block",
     )
-    background_image = ImageChooserBlock(
+    background_image = APIImageChooserBlock(
         help_text="A background image for the media block"
     )
     media = MediaChooserBlock()
