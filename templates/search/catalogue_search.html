@@ -47,10 +47,13 @@
         {% if form.views.value == views.MAP.value %}
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
-                    {% include './blocks/search_results_map.html' %}
+                    {% include './blocks/search_results_map.html' %}                                   
                 </div>
             </div>
         {% else %}
+            {% if form.views.value == views.TIMELINE.value %}
+                {% include './blocks/search_results_timeline_century.html' %}
+            {% endif %}
             {% if buckets.current.result_count > 0 %}
                 <div class="tna-container">
                     <div class="tna-column tna-column--full">
@@ -98,6 +101,9 @@
     {% if form.views.value == views.MAP.value %}
         <script src="{% static 'scripts/search_results_map.js' %}"></script>
     {% else %}
+        {% if form.views.value == views.TIMELINE.value %}
+            <script src="{% static 'scripts/century.js' %}"></script>
+        {% endif %}
         <script src="{% static 'scripts/catalogue_search.js' %}"></script>
     {% endif %}
 {% endblock %}
