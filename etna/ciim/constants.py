@@ -658,6 +658,7 @@ class Views(StrEnum):
 
     LIST = "list"
     MAP = "map"
+    TIMELINE = "timeline"
 
 
 TYPE_NAMES = {

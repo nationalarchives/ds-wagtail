@@ -669,6 +669,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 "zoom": settings.FEATURE_GEO_ZOOM,
             },
             map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.MAP})}',
+            timeline_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.TIMELINE})}',
         )
         return super().get_context_data(**kwargs)
 

@@ -18,7 +18,7 @@
                     </a>
                 </li>
                 <li class="search-visualisation-nav__list-item">
-                    <a href="/" class="search-visualisation-nav__link">
+                    <a href="{{timeline_view_url}}" class="search-visualisation-nav__link"{% if form.views.value == views.TIMELINE.value %} aria-current="true"{% endif %}>
                         <i class="fa-sharp fa-solid fa-chart-simple fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">Timeline view</span>
                     </a>
