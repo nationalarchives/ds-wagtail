@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         },
                         footerPanel: {
                             options: {
-                                downloadEnabled: false,
+                                downloadEnabled: true,
                                 embedEnabled: false,
                                 feedbackEnabled: false,
                                 fullscreenEnabled: true,
@@ -57,7 +57,12 @@ document.addEventListener("DOMContentLoaded", () => {
                                 moreInfoEnabled: false,
                                 openEnabled: false,
                                 printEnabled: false,
-                                shareEnabled: false,
+                                shareEnabled: true,
+                            },
+                        },
+                        shareDialogue: {
+                            options: {
+                                embedEnabled: false,
                             },
                         },
                     },
