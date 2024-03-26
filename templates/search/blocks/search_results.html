@@ -54,7 +54,9 @@
         <h2 class="sr-only">Results</h2>
             <ul class="search-results__list" id="analytics-results-list">
                 {% for record in page %}
-                    {% include './search_results__list-card.html' %}
+                    {% if record.thumbnail %}
+                        {% include './search_results__list-card.html' %}
+                    {% endif %}
                 {% endfor %}
             </ul>
     {% endif %}
