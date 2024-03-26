@@ -24,7 +24,8 @@ from django.utils.timezone import get_current_timezone
 import requests
 
 from etna.ciim.constants import Aggregation
-from etna.records.models import IIIFManifest, Record
+from etna.records import iiif
+from etna.records.models import Record
 
 from .exceptions import (
     ClientAPIBadRequestError,
@@ -194,6 +195,10 @@ class ResultList:
         return f"<{self.__class__.__name} {self.hits}>"
 
 
+class ReturnedResourceIsNotIIIFManifest(Exception):
+    pass
+
+
 class ClientAPI:
     """Client used to Fetch and validate data from Client API."""
 
@@ -306,11 +311,11 @@ class ClientAPI:
             raise MultipleObjectsReturned
         return result_list.hits[0]
 
-    def fetch_iiif_manifest(
+    def fetch_iiif_resource(
         self,
         *,
         id: str,
-    ) -> IIIFManifest:
+    ) -> iiif.IIIFResource:
         """Make request and return response for Client API's IIIF manifest endpoint.
 
         Used to fetch a single item by its identifier.
@@ -325,7 +330,15 @@ class ClientAPI:
             self.get_public_iiif_manifest_url(id=id)
         )
         self._raise_for_status(response)
-        return IIIFManifest.from_api_response(response=response.json())
+        return iiif.create_resource(response.json())
+
+    def fetch_iiif_manifest(self, *, id: str) -> iiif.IIIFManifest:
+        manifest = self.fetch_iiif_resource(id=id)
+
+        if not isinstance(manifest, iiif.IIIFManifest):
+            raise ReturnedResourceIsNotIIIFManifest(type(manifest).__name__)
+
+        return manifest
 
     def get_public_iiif_manifest_url(
         self,
