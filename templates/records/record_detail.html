@@ -176,7 +176,7 @@
 {% block extra_js %}
     <script src="{% static 'scripts/details.js' %}"></script>
 
-    {% if iiif_manifest_url %}
+    {% if show_iiif_viewer %}
         <script src="{% static 'uv/UV.js' %}"></script>
         <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
     {% endif %}
