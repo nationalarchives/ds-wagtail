@@ -54,6 +54,7 @@
         <h2 class="sr-only">Results</h2>
             <ul class="search-results__list" id="analytics-results-list">
                 {% for record in page %}
+                    {% comment %} TODO: DOR-82 - Remove this if statement to show all records after user testing {% endcomment %}
                     {% if record.thumbnail %}
                         {% include './search_results__list-card.html' %}
                     {% endif %}
