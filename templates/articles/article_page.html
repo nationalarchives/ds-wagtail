@@ -7,6 +7,9 @@
 {% block breadcrumb %}{% endblock %}
 
 {% block content %}
+    {% include 'includes/generic-intro.html' with breadcrumb=True title=page.title intro=page.intro %}
+    {% include 'includes/hero-img.html' with hero_image=page.hero_image caption=page.hero_image_caption %}
+
     <article class="tna-container">
         <div class="tna-column tna-column--width-1-4">
             {% jumplinks page %}
