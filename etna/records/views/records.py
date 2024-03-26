@@ -1,15 +1,22 @@
 import datetime
 import logging
+import urllib.parse
 
+from typing import TypedDict
+
+from django import forms
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
 from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
+from etna.ciim.client import ReturnedResourceIsNotIIIFManifest
+
 from ...ciim.constants import TNA_URLS
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
+from .. import iiif
 from ..api import records_client
 
 logger = logging.getLogger(__name__)
@@ -60,6 +67,61 @@ def record_disambiguation_view(request, reference_number):
     )
 
 
+class HTMLOnlyImage(TypedDict):
+    url: str
+    width: int | None
+    height: int | None
+
+
+class HTMLOnlyIIIFViewerContext(TypedDict):
+    images: list[HTMLOnlyImage]
+    source: iiif.ManifestItem
+    current_item: int
+    item_count: int
+    next_page_url: str | None
+    prev_page_url: str | None
+
+
+def _get_html_only_iiif_viewer_context(
+    *, manifest: iiif.IIIFManifest, base_url: str, viewer_index: int
+) -> HTMLOnlyIIIFViewerContext | None:
+    next_page_url = None
+    prev_page_url = None
+    parser = iiif.ManifestParser(manifest=manifest)
+    try:
+        iiif_item = parser.get_item_at_index(viewer_index)
+    except IndexError:
+        return None
+
+    try:
+        images = parser.get_images_for_item(iiif_item)
+    except iiif.ImageNotFoundInItem:
+        images = []
+    url_parts = list(urllib.parse.urlsplit(base_url))
+    url_parts[4] = "record-viewer"
+
+    if viewer_index < parser.get_last_index():
+        url_parts[3] = urllib.parse.urlencode({"record_viewer_index": viewer_index + 1})
+        next_page_url = urllib.parse.urlunsplit(url_parts)
+
+    if viewer_index >= 1:
+        url_parts[3] = urllib.parse.urlencode({"record_viewer_index": viewer_index + 1})
+        prev_page_url = urllib.parse.urlunsplit(url_parts)
+
+    return {
+        "next_page_url": next_page_url,
+        "prev_page_url": prev_page_url,
+        "current_item": viewer_index + 1,
+        "item_count": parser.get_items_count(),
+        "source": iiif_item,
+        "images": images,
+    }
+
+
+class RecordDetailViewForm(forms.Form):
+    record_viewer_index = forms.IntegerField(required=False, min_value=0)
+
+
 def record_detail_view(request, id):
     """View for rendering a record's details page.
 
@@ -90,6 +152,7 @@ def record_detail_view(request, id):
     page_title = f"Catalogue ID: {record.iaid}"
     image = None
 
+    html_only_record_viewer = None
     iiif_manifest_url: str | None = None
 
     # Fetch IIIF manifest only if:
@@ -120,9 +183,14 @@ def record_detail_view(request, id):
             #       so we know in advance if we need to call the IIIF manifest
             #       endpoint at all. The raised ticket:
             #       https://national-archives.atlassian.net/browse/DOR-53
-            records_client.fetch_iiif_manifest(id=record.iaid)
+            iiif_manifest = records_client.fetch_iiif_manifest(id=record.iaid)
         except DoesNotExist:
             pass
+        except ReturnedResourceIsNotIIIFManifest:
+            logger.warning(
+                "Expected to fetch an IIIF manifest, but received something else.",
+                exc_info=True,
+            )
         except Exception:
             logger.warning(
                 "Unexpected error happened when trying to fetch the IIIF manifest for a record: iaid=%s",
@@ -133,10 +201,14 @@ def record_detail_view(request, id):
             iiif_manifest_url = records_client.get_public_iiif_manifest_url(
                 id=record.iaid
             )
-
-    # TODO: Client API open beta API does not support media. Re-enable/update once media is available.
-    # if page.is_digitised:
-    #     image = Image.search.filter(rid=page.media_reference_id).first()
+            view_form = RecordDetailViewForm(request.GET)
+            if view_form.is_valid():
+                viewer_index = view_form.cleaned_data["record_viewer_index"] or 0
+                html_only_record_viewer = _get_html_only_iiif_viewer_context(
+                    manifest=iiif_manifest,
+                    base_url=request.get_full_path(),
+                    viewer_index=viewer_index,
+                )
 
     # Back to search - default url
     back_to_search_url = reverse("search-featured")
@@ -154,10 +226,12 @@ def record_detail_view(request, id):
             back_to_search_url = request.session.get("back_to_search_url")
 
     context.update(
+        html_only_record_viewer=html_only_record_viewer,
         iiif_manifest_url=iiif_manifest_url,
         image=image,
         record=record,
-        show_iiif_viewer=iiif_manifest_url is not None,
+        show_record_viewer=iiif_manifest_url is not None
+        or html_only_record_viewer is not None,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
         page_type=page_type,

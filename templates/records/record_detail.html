@@ -67,11 +67,12 @@
                     </tbody>
                 </table>
             </div>
-
-            {% if show_iiif_viewer %}
+            {% if show_record_viewer %}
                 <h2 id="record-viewer" class="tna-heading-l">Record viewer</h2>
+                    Record viewer
+                </h2>
 
-                <div class="uv" id="uv" data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">Loading</div>
+                {% include "includes/records/record-viewer.html" with html_only_record_viewer=html_only_record_viewer iiif_manifest_url=iiif_manifest_url %}
             {% endif %}
 
             {% comment %}  
@@ -174,7 +175,7 @@
 {% block extra_js %}
     <script src="{% static 'scripts/details.js' %}"></script>
 
-    {% if show_iiif_viewer %}
+    {% if show_record_viewer %}
         <script src="{% static 'uv/UV.js' %}"></script>
         <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
     {% endif %}
