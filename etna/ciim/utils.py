@@ -3,7 +3,6 @@ import re
 from typing import Any, Dict, Optional
 
 from django.urls import NoReverseMatch, reverse
-from django.utils.safestring import mark_safe
 
 import nh3
 
