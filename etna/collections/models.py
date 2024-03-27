@@ -633,21 +633,6 @@ class PageTimePeriod(Orderable):
     )
 
 
-class BaseModelSerializer(serializers.ModelSerializer):
-    title = serializers.CharField()
-    teaser_image_jpeg = ImageRenditionField(
-        "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
-    )
-    teaser_image_webp = ImageRenditionField(
-        "fill-600x400|format-webp|webpquality-80", source="teaser_image"
-    )
-    url_path = serializers.SerializerMethodField()
-    full_url = serializers.URLField()
-
-    def get_url_path(self, obj):
-        return obj.get_url()
-
-
 class TopicSerializer(LinkedPageSerializer):
     teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
         rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
