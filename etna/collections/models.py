@@ -265,7 +265,11 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
             ),
             FieldPanel("body"),
         ]
@@ -337,7 +341,11 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         of the page. To add another page type, import it and add it to the list.
         """
 
-        from etna.articles.models import ArticlePage, FocusedArticlePage, RecordArticlePage
+        from etna.articles.models import (
+            ArticlePage,
+            FocusedArticlePage,
+            RecordArticlePage,
+        )
 
         page_list = []
 
@@ -469,7 +477,11 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
             ),
             FieldPanel("body"),
             FieldPanel("start_year"),
@@ -514,7 +526,11 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         of the page. To add another page type, import it and add it to the list.
         """
 
-        from etna.articles.models import ArticlePage, FocusedArticlePage, RecordArticlePage
+        from etna.articles.models import (
+            ArticlePage,
+            FocusedArticlePage,
+            RecordArticlePage,
+        )
 
         page_list = []
 
@@ -807,7 +823,11 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         ),
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
     ]
 

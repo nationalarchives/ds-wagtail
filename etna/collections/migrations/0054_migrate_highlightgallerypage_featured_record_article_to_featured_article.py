@@ -17,7 +17,6 @@ class Migration(migrations.Migration):
             if not obj.featured_article and obj.featured_record_article:
                 obj.featured_article = obj.featured_record_article
                 obj.save(update_fields=["featured_article"])
-        
 
     operations = [
         migrations.RunPython(record_article_into_article),
