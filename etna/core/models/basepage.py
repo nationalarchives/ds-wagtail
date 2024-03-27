@@ -165,13 +165,13 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         APIField(
             "teaser_image_large_jpg",
             serializer=ImageRenditionField(
-                "fill-1200x800|format-jpeg|jpegquality-60", source="teaser_image"
+                "fill-1200x480|format-jpeg|jpegquality-60", source="teaser_image"
             ),
         ),
         APIField(
             "teaser_image_large_webp",
             serializer=ImageRenditionField(
-                "fill-1200x800|format-webp", source="teaser_image"
+                "fill-1200x480|format-webp", source="teaser_image"
             ),
         ),
         APIField(
