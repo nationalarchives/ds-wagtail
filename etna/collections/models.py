@@ -248,10 +248,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         verbose_name=_("featured article"),
     )
 
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    )
-
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
     skos_id = models.CharField(
@@ -269,7 +265,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+                ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
             ),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
@@ -478,9 +474,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         verbose_name=_("featured article"),
     )
 
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    )
     body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
@@ -490,7 +483,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+                ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
             ),
             FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
