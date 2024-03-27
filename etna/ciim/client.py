@@ -2,6 +2,7 @@ import json
 import logging
 import re
 
+from collections.abc import Sequence
 from datetime import date, datetime, time
 from enum import StrEnum
 from typing import (
@@ -11,7 +12,6 @@ from typing import (
     Iterable,
     List,
     Optional,
-    Sequence,
     Tuple,
     Type,
     Union,
@@ -80,7 +80,7 @@ class Template(StrEnum):
     RESULTS = "results"
 
 
-def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
+def prepare_filter_aggregations(items: Sequence[str] | None) -> list[str] | None:
     """
     Filter format in items: 'field:value', 'field:value:or'
     Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api

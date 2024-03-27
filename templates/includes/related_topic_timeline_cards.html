@@ -1,58 +1,34 @@
 {% load static wagtailimages_tags wagtailcore_tags %}
-<div class="related-highlight-cards">
-    <div class="tna-column tna-column--full">
-        <h2 class="tna-heading-l">{{ title|default:"You may be interested in" }}</h2>
-        <div class="card-grid card-grid__duo">
+<div class="tna-section">
+    <nav class="tna-index-grid" aria-label="{{ title|default:'You may be interested in' }}">
+        <div class="tna-container">
+            <div class="tna-column tna-column--full">
+                <h2 class="tna-heading-l tna-index-grid__heading">{{ title|default:'You may be interested in' }}</h2>
+            </div>
+        </div>
+        <ul class="tna-index-grid__items tna-container">
             {% if topic %}
-                <div class="related-highlight-cards__card">
-                    <a href="{% pageurl topic %}" aria-labelledby="topic-card-title" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}" tabindex="-1">
-                        {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
-                        <img height="350"
-                            width="540"
-                            src="{{ teaser_image.url }}"
-                            class="related-highlight-cards__image"
-                            alt=""/>
-                    </a>
-                    <div class="related-highlight-cards__content">
-                        <p class="related-highlight-cards__card-title" id="topic-card-title">
-                            <a href="{% pageurl topic %}" class="related-highlight-cards__card-title-link" data-component-name="Navigation card: {{ title|default:"You may be interested in" }}" data-link-type="Card text" data-card-position="0" data-card-title="{{ topic.title }}">
-                                {{ topic.title }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
+            <li class="tna-index-grid__item-wrapper tna-column tna-column--width-1-2 tna-column--full-tiny">
+                <a href="{% pageurl topic %}" class="tna-index-grid__item" title="{{ topic.title }}" data-component-name="Navigation card: {{ title|default:'You may be interested in' }}" data-link-type="Card image" data-card-position="0" data-card-title="{{ topic.title }}">
+                    {% image topic.specific.teaser_image fill-540x350 as teaser_image %}
+                    <img src="{{ teaser_image.url }}" class="tna-index-grid__item-image" width="540" height="350" alt="" />
+                    <span class="tna-index-grid__item-content">
+                        <span class="tna-index-grid__item-title">{{ topic.title }}</span>
+                    </span>
+                </a>
+            </li>
             {% endif %}
             {% if time_period %}
-                <div class="related-highlight-cards__card">
-                    <a 
-                    href="{% pageurl time_period %}"
-                    aria-labelledby="time-period-card-title" 
-                    data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
-                    data-link-type="Card image"
-                    data-card-position="1"
-                    data-card-title="{{ time_period.title }}" tabindex="-1">
-                        {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
-                        <img height="350" 
-                            width="540"
-                            class="related-highlight-cards__image"
-                            src="{{ teaser_image.url }}"
-                            alt=""/>
-                    </a>
-                    <div class="related-highlight-cards__content">      
-                        <p class="related-highlight-cards__card-title" id="time-period-card-title">
-                            <a href="{% pageurl time_period %}" class="related-highlight-cards__card-title-link" 
-                            data-component-name="Navigation card: {{ title|default:"You may be interested in" }}"
-                            data-link-type="Card text"
-                            data-card-position="1"
-                            data-card-title="{{ time_period.title }}">
-                                {{ time_period.title }}
-                            </a>
-                        </p>
-                    </div>
-                </div>
+            <li class="tna-index-grid__item-wrapper tna-column tna-column--width-1-2 tna-column--full-tiny">
+                <a href="{% pageurl time_period %}" class="tna-index-grid__item" title="{{ time_period.title }}" data-component-name="Navigation card: {{ title|default:'You may be interested in' }}" data-link-type="Card image" data-card-position="1" data-card-title="{{ time_period.title }}">
+                    {% image time_period.specific.teaser_image fill-540x350 as teaser_image %}
+                    <img src="{{ teaser_image.url }}" class="tna-index-grid__item-image" width="540" height="350" alt="" />
+                    <span class="tna-index-grid__item-content">
+                        <span class="tna-index-grid__item-title">{{ time_period.title }}</span>
+                    </span>
+                </a>
+            </li>
             {% endif %}
-        </div>
-    </div>
+        </ul>
+    </nav>
 </div>
-
-

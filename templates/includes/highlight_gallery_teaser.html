@@ -10,7 +10,7 @@
         </h2>
         <ul class="card-grid card-grid__quint card-grid--list">
             {% for card in cards %}
-                <li class="highlight-gallery-teaser__card">
+                <li class="highlight-gallery-teaser__card tna-background-contrast">
                     <a href="{% pageurl card.page %}#highlight{{ forloop.counter0 }}"
                     data-card-position="{{ forloop.counter0 }}"
                     class="highlight-gallery-teaser__link"

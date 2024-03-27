@@ -1,23 +1,21 @@
 {% load wagtailimages_tags records_tags %}
-<div class="record-links__wrapper">
-    <ul class="record-links__list">
-        {% for item in value.items %}
-            <li>
-                <div class="record-links__item">
-                    {% if item.thumbnail_image %}
-                        <div class="record-links__item__thumbnail">
-                            {% image item.thumbnail_image fill-200x200 alt="" class="record-links__item__thumbnail-image" %}
-                        </div>
-                    {% endif %}
-                    <div class="record-links__item__text">
-                        <p class="record-links__item__reference"><span class="sr-only">Link to record </span>IN THE CATALOGUE: {{ item.record.reference_number }}</p>
-                        <h2 class="tna-heading-l record-links__item__title">
-                            <a data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}" href="{% record_url item.record is_editorial=True %}">{{ item.descriptive_title }}</a>
-                        </h2>
-                        <p class="record-links__item__dates">{{ item.record_dates }}</p>
-                    </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
+
+<ul class="tna-featured-records">
+    {% for item in value.items %}
+    <li class="tna-featured-records__item">
+        {% if item.thumbnail_image %}
+        {% image item.thumbnail_image fill-200x200 alt="" class="tna-featured-records__image" %}
+        {% endif %}
+        <dl class="tna-featured-records__details">
+            <dt class="tna-featured-records__collection-label tna-chip tna-chip--plain">From our collection</dt>
+            <dd class="tna-featured-records__collection-description tna-chip tna-chip--plain">{{ item.record.reference_number }}</dd>
+            <dt class="tna-featured-records__title-label">Title</dt>
+            <dd class="tna-featured-records__title-description">
+                <a href="{% record_url item.record is_editorial=True %}" data-component-name="{{ value.block.label }}" data-link-type="Link list" data-position="{{ forloop.counter0 }}" data-link="{{ item.descriptive_title }}">{{ item.descriptive_title }}</a>
+            </dd>
+            <dt class="tna-featured-records__date-label">Date</dt>
+            <dd class="tna-featured-records__date-description">{{ item.record_dates }}</dd>
+        </dl>
+    </li>
+    {% endfor %}
+</ul>

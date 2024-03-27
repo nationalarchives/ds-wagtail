@@ -17,10 +17,13 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from rest_framework import serializers
+
+from etna.core.serializers import LinkedPageSerializer
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -630,6 +633,59 @@ class PageTimePeriod(Orderable):
     )
 
 
+class BaseModelSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    teaser_image_jpeg = ImageRenditionField(
+        "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
+    )
+    teaser_image_webp = ImageRenditionField(
+        "fill-600x400|format-webp|webpquality-80", source="teaser_image"
+    )
+    url_path = serializers.SerializerMethodField()
+    full_url = serializers.URLField()
+
+    def get_url_path(self, obj):
+        return obj.get_url()
+
+
+class TopicSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
+    )
+
+    class Meta:
+        model = PageTopic
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+        )
+
+
+class TimePeriodSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
+    )
+    start_year = serializers.IntegerField()
+    end_year = serializers.IntegerField()
+
+    class Meta:
+        model = PageTimePeriod
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+            "start_year",
+            "end_year",
+        )
+
+
 class TopicalPageMixin:
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
@@ -637,6 +693,11 @@ class TopicalPageMixin:
     adds a few properies to support robust, efficient access the related topic
     and time period pages.
     """
+
+    api_fields = [
+        APIField("topics", serializer=TopicSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+    ]
 
     @classmethod
     def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
@@ -764,6 +825,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     class Meta:
