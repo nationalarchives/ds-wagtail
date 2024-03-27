@@ -9,15 +9,15 @@
                 <p class="transcription__image-counter">Image 1 of {{ gallery_length }}</p>
                 <picture>
                     {% with first_gallery_item=gallery.0 %}
-                        {% image first_gallery_item.image original format-webp as image_webp %}
+                        {% image first_gallery_item.image max-1024x1024 format-webp as image_webp %}
                         <source srcset="{{ image_webp.url }}"
                                 type="image/webp"
                                 {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image original as image_png %}
+                        {% image first_gallery_item.image max-1024x1024 as image_png %}
                         <source srcset="{{ image_png.url }}"
                                 type="image/png"
                                 {% if first_gallery_item.alt_text %}alt="{{ first_gallery_item.alt_text }}"{% endif %}/>
-                        {% image first_gallery_item.image original as base_img %}
+                        {% image first_gallery_item.image max-1024x1024 as base_img %}
                         <img 
                              src="{{ base_img.url }}"
                              height="{{ base_img.height }}"
