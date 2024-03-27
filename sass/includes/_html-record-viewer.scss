@@ -1,0 +1,49 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.html-record-viewer {
+    margin: 2em 0;
+    position: relative;
+
+    &__title {
+        @include typography.relative-font-size(24);
+        margin-top: 0;
+    }
+
+    &__current {
+        @include typography.relative-font-size(20);
+        margin-top: 0;
+    }
+
+    &__record {
+        @include media.on-large {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: flex-start;
+            gap: 2em;
+            margin: 1em 0;
+        }
+    }
+
+    &__record-image {
+        flex: 0 0 30%;
+        margin: 1em 0;
+    }
+
+    &__record-details {
+        flex: 1 0 0;
+
+        p {
+            @include typography.relative-font-size(16);
+            margin-top: 1rem;
+        }
+    }
+
+    &__pagination {
+        @include font-size(s);
+    }
+
+    &__pagination-page {
+        padding: 0;
+    }
+}
