@@ -3,7 +3,6 @@ import re
 from typing import Any, Dict, Optional
 
 from django.urls import NoReverseMatch, reverse
-from django.utils.safestring import mark_safe
 
 import nh3
 
@@ -277,4 +276,4 @@ def strip_html(value: str, *, preserve_marks, ensure_spaces):
         closing_regex = rf"</{tag}>"
         clean_html = re.sub(opening_regex, " ", clean_html)
         clean_html = re.sub(closing_regex, "", clean_html)
-    return mark_safe(clean_html.lstrip())
+    return clean_html.lstrip()
