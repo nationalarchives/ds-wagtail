@@ -1,10 +1,17 @@
 from django.conf import settings
 
 from wagtail import blocks
+from wagtail.rich_text import expand_db_html
+
+
+class APIRichTextBlock(blocks.RichTextBlock):
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+        return expand_db_html(representation)
 
 
 class ParagraphBlock(blocks.StructBlock):
-    text = blocks.RichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+    text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
     class Meta:
         icon = "paragraph"
@@ -18,7 +25,7 @@ class ParagraphWithHeading(blocks.StructBlock):
     """
 
     heading = blocks.CharBlock(required=True, max_length=100)
-    paragraph = blocks.RichTextBlock(
+    paragraph = APIRichTextBlock(
         required=True, features=settings.RESTRICTED_RICH_TEXT_FEATURES
     )
 

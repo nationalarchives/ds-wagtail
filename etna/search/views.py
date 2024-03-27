@@ -181,7 +181,9 @@ class ClientAPIMixin:
         """
         paginator = APIPaginator(total_count, per_page=per_page)
         page = PaginatorPage(result_list, number=self.page_number, paginator=paginator)
-        page_range = paginator.get_elided_page_range(number=self.page_number, on_ends=0)
+        page_range = paginator.get_elided_page_range(
+            number=self.page_number, on_each_side=1, on_ends=1
+        )
         return paginator, page, page_range
 
 
@@ -367,6 +369,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             result_count=self.get_result_count(),
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )
@@ -378,9 +381,9 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
         """
 
         self.request.session["back_to_search_url"] = self.request.get_full_path()
-        self.request.session[
-            "back_to_search_url_timestamp"
-        ] = timezone.now().isoformat()
+        self.request.session["back_to_search_url_timestamp"] = (
+            timezone.now().isoformat()
+        )
         return None
 
 
@@ -741,6 +744,7 @@ class WebsiteSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs):
         kwargs["bucketkeys"] = BucketKeys
+        kwargs["display"] = Display
         context = super().get_context_data(**kwargs)
         if filter_aggregation := self.request.GET.get("group", ""):
             if filter_aggregation == "insight" and "page" in context:
@@ -1102,6 +1106,7 @@ class NativeWebsiteSearchView(SearchDataLayerMixin, MultipleObjectMixin, GETForm
             selected_filters_count=self.selected_filters_count,
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
+            display=Display,
         )
 
         # Set custom attribute for use in get_datalayer_data()

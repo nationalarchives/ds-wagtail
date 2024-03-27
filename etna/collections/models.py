@@ -17,10 +17,13 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
+from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
 from rest_framework import serializers
+
+from etna.core.serializers import LinkedPageSerializer
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -84,7 +87,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
     explorer.
     """
 
-    body = StreamField(ExplorerIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(ExplorerIndexPageStreamBlock, blank=True)
 
     articles_title = models.CharField(
         max_length=100,
@@ -115,7 +118,6 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
         [("featuredarticles", FeaturedArticlesBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     content_panels = BasePageWithIntro.content_panels + [
@@ -169,7 +171,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     This page lists all child TopicExplorerPages
     """
 
-    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -250,7 +252,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
-    body = StreamField(TopicExplorerPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicExplorerPageStreamBlock, blank=True)
 
     skos_id = models.CharField(
         unique=True,
@@ -400,7 +402,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
     This page lists all child TimePeriodExplorerPage
     """
 
-    body = StreamField(TopicIndexPageStreamBlock, blank=True, use_json_field=True)
+    body = StreamField(TopicIndexPageStreamBlock, blank=True)
 
     content_panels = (
         BasePageWithIntro.content_panels
@@ -479,9 +481,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
     featured_record_article = models.ForeignKey(
         "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
-    body = StreamField(
-        TimePeriodExplorerPageStreamBlock, blank=True, use_json_field=True
-    )
+    body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
     content_panels = (
@@ -633,6 +633,59 @@ class PageTimePeriod(Orderable):
     )
 
 
+class BaseModelSerializer(serializers.ModelSerializer):
+    title = serializers.CharField()
+    teaser_image_jpeg = ImageRenditionField(
+        "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
+    )
+    teaser_image_webp = ImageRenditionField(
+        "fill-600x400|format-webp|webpquality-80", source="teaser_image"
+    )
+    url_path = serializers.SerializerMethodField()
+    full_url = serializers.URLField()
+
+    def get_url_path(self, obj):
+        return obj.get_url()
+
+
+class TopicSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
+    )
+
+    class Meta:
+        model = PageTopic
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+        )
+
+
+class TimePeriodSerializer(LinkedPageSerializer):
+    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
+    )
+    start_year = serializers.IntegerField()
+    end_year = serializers.IntegerField()
+
+    class Meta:
+        model = PageTimePeriod
+        fields = (
+            "id",
+            "title",
+            "teaser_image_jpeg",
+            "teaser_image_webp",
+            "url",
+            "full_url",
+            "start_year",
+            "end_year",
+        )
+
+
 class TopicalPageMixin:
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
@@ -640,6 +693,11 @@ class TopicalPageMixin:
     adds a few properies to support robust, efficient access the related topic
     and time period pages.
     """
+
+    api_fields = [
+        APIField("topics", serializer=TopicSerializer(many=True)),
+        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+    ]
 
     @classmethod
     def get_time_periods_inlinepanel(cls, max_num: Optional[int] = 4) -> InlinePanel:
@@ -767,6 +825,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
         ]
+        + TopicalPageMixin.api_fields
     )
 
     class Meta:

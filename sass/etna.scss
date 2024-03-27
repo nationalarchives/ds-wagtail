@@ -46,7 +46,6 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/jumplinks";
 @import "includes/links";
 @import "includes/card-groups";
-@import "includes/footer";
 @import "includes/cta-banner-newsletter";
 @import "includes/cta-banner-survey";
 @import "includes/pagination";
@@ -162,19 +161,19 @@ Modified to match the existing site (for now)
     overflow: initial !important;
 }
 
-.tna-header__navigation-item-link {
-    &:hover,
-    &--selected,
-    &--selected:visited {
-        background: #fff !important;
-    }
-}
+// .tna-header__navigation-item-link {
+//     &:hover,
+//     &--selected,
+//     &--selected:visited {
+//         background: #fff !important;
+//     }
+// }
 
-@include media.on-mobile {
-    .tna-header__navigation-items {
-        background: #fff !important;
-    }
-}
+// @include media.on-mobile {
+//     .tna-header__navigation-items {
+//         background: #fff !important;
+//     }
+// }
 
 .tna-breadcrumbs {
     padding-bottom: 0;
@@ -199,7 +198,7 @@ Modified to match the existing site (for now)
 }
 
 .tna-hero {
-    margin-top: 1rem;
+    margin-top: 2rem;
     margin-bottom: 2rem;
 
     &__figure {
@@ -218,6 +217,12 @@ Modified to match the existing site (for now)
 
     img#{&}__image {
         object-fit: cover;
+    }
+}
+
+.tna-footer {
+    .tna-ul {
+        margin-top: 0;
     }
 }
 
@@ -269,6 +274,10 @@ Modified to match the existing site (for now)
     }
 }
 
+.tna-dl dt {
+    word-wrap: normal;
+}
+
 .tna-large-paragraph {
     @include colour.colour-font("font-dark");
     @include typography.relative-font-size(22);
@@ -303,7 +312,7 @@ Modified to match the existing site (for now)
 
     .generic-intro,
     .generic-intro__meta {
-        @include colour.invert;
+        @include colour.contrast;
         background-color: #343338 !important;
         color: #fff !important;
 
@@ -342,17 +351,17 @@ Modified to match the existing site (for now)
         }
     }
 
-    @include media.on-larger-than-mobile {
-        .tna-header__navigation-item-link:hover,
-        .tna-header__navigation-item-link:hover:link,
-        .tna-header__navigation-item-link:hover:visited,
-        .tna-header__navigation-item-link--selected,
-        .tna-header__navigation-item-link--selected:link,
-        .tna-header__navigation-item-link--selected:visited {
-            color: #fff !important;
-            background-color: #343338 !important;
-        }
-    }
+    // @include media.on-larger-than-mobile {
+    //     .tna-header__navigation-item-link:hover,
+    //     .tna-header__navigation-item-link:hover:link,
+    //     .tna-header__navigation-item-link:hover:visited,
+    //     .tna-header__navigation-item-link--selected,
+    //     .tna-header__navigation-item-link--selected:link,
+    //     .tna-header__navigation-item-link--selected:visited {
+    //         color: #fff !important;
+    //         background-color: #343338 !important;
+    //     }
+    // }
 }
 
 .block-content_section,
@@ -609,8 +618,8 @@ Modified to match the existing site (for now)
 }
 
 // off-black header
-.tna-header--off-black {
-    background-color: $color--off-black;
-}
+// .tna-header--off-black {
+//     background-color: $color--off-black;
+// }
 
 /* stylelint-enable no-descending-specificity */

@@ -16,8 +16,6 @@ WAGTAIL_HEADLESS_PREVIEW = {
         "default": "http://localhost:65535/preview",
     },
     "SERVE_BASE_URL": "http://localhost:65535",
-    "REDIRECT_ON_PREVIEW": False,
-    "ENFORCE_TRAILING_SLASH": True,
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -72,7 +70,7 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 
-    def show_toolbar(request):
+    def show_toolbar(request) -> bool:
         return strtobool(os.getenv("DEBUG_TOOLBAR", "False"))
 
     DEBUG_TOOLBAR_CONFIG = {

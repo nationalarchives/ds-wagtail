@@ -253,6 +253,7 @@ class EventSession(models.Model):
         null=True,
         blank=True,
         editable=False,
+        max_length=35,
     )
 
     start = models.DateTimeField(
@@ -292,13 +293,11 @@ class WhatsOnPage(BasePageWithIntro):
         [("promoted_links", WhatsOnPromotedLinksBlock())],
         blank=True,
         max_num=1,
-        use_json_field=True,
     )
     large_card_links = StreamField(
         [("large_card_links", LargeCardLinksBlock())],
         blank=True,
         max_num=1,
-        use_json_field=True,
     )
 
     def serve(self, request):
@@ -524,11 +523,11 @@ class EventPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
 
     # Venue information
     venue_type = models.CharField(
-        max_length=15,
         verbose_name=_("venue type"),
         choices=VenueType.choices,
         default=VenueType.IN_PERSON,
         blank=True,
+        max_length=30,
     )
 
     venue_website = models.URLField(
@@ -1072,7 +1071,6 @@ class ExhibitionPage(ArticleTagMixin, TopicalPageMixin, BasePageWithIntro):
         [("relatedarticles", RelatedArticlesBlock())],
         blank=True,
         null=True,
-        use_json_field=True,
     )
 
     # Promote tab

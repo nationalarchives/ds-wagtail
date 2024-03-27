@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+
 import os
 
 from sysconfig import get_path
@@ -25,7 +26,9 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
 WAGTAIL_HEADLESS_PREVIEW = {
-    "CLIENT_URLS": {},  # defaults to an empty dict. You must at the very least define the default client URL.
+    "CLIENT_URLS": {
+        "default": "{SITE_ROOT_URL}",
+    },
     "SERVE_BASE_URL": None,  # can be used for HeadlessServeMixin
     "REDIRECT_ON_PREVIEW": False,  # set to True to redirect to the preview instead of using the Wagtail default mechanism
     "ENFORCE_TRAILING_SLASH": True,  # set to False in order to disable the trailing slash enforcement
@@ -73,7 +76,6 @@ INSTALLED_APPS = [
     "wagtailfontawesomesvg",
     "wagtailmedia",
     "wagtail.contrib.settings",
-    "wagtail.contrib.styleguide",
     "generic_chooser",
     "wagtailmetadata",
     "modelcluster",
