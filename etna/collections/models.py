@@ -17,7 +17,6 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import StreamField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 
@@ -631,21 +630,6 @@ class PageTimePeriod(Orderable):
         related_name="time_period_pages",
         on_delete=models.CASCADE,
     )
-
-
-class BaseModelSerializer(serializers.ModelSerializer):
-    title = serializers.CharField()
-    teaser_image_jpeg = ImageRenditionField(
-        "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
-    )
-    teaser_image_webp = ImageRenditionField(
-        "fill-600x400|format-webp|webpquality-80", source="teaser_image"
-    )
-    url_path = serializers.SerializerMethodField()
-    full_url = serializers.URLField()
-
-    def get_url_path(self, obj):
-        return obj.get_url()
 
 
 class TopicSerializer(LinkedPageSerializer):
