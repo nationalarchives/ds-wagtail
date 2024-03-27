@@ -267,7 +267,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 "featured_article",
                 ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
         ]
     )
@@ -295,7 +294,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + [
             APIField("body"),
             APIField("featured_article"),
-            APIField("featured_record_article"),
             APIField("skos_id"),
             APIField("related_page_pks"),
         ]
@@ -485,7 +483,6 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 "featured_article",
                 ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
