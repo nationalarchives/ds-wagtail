@@ -243,7 +243,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -455,7 +455,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -762,14 +762,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage",
-        verbose_name=_("featured record article"),
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-    )
-
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -777,7 +769,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article, or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -786,7 +778,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         ContentWarningMixin.api_fields
         + BasePageWithIntro.api_fields
         + [
-            APIField("featured_record_article"),
             APIField("featured_article"),
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
@@ -814,10 +805,9 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             label=_("Item"),
             max_num=15,
         ),
-        FieldPanel("featured_record_article"),
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            ["articles.ArticlePage", "articles.FocusedArticlePage", "articles.RecordArticlePage"],
         ),
     ]
 
