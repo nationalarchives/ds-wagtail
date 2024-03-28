@@ -11,13 +11,17 @@
         <p class="html-record-viewer__current tna-heading-s">Image {{ html_only_record_viewer.current_item }} of {{ html_only_record_viewer.item_count }}</p>
         
         <div class="html-record-viewer__record">
-            {% for image in html_only_record_viewer.images %}
-                <img src="{{ image.url }}" 
-                    alt="" 
-                    {% if image.height is not None %}height="{{ image.height }}"{% endif %}
-                    {% if image.width is not None %}width="{{ image.width }}"{% endif %}
-                    class="html-record-viewer__record-image" />
-            {% endfor %}
+            {% if html_only_record_viewer.images %}
+                <div class="html-record-viewer__record-images">
+                    {% for image in html_only_record_viewer.images %}
+                        <img src="{{ image.url }}" 
+                            alt="" 
+                            {% if image.height is not None %}height="{{ image.height }}"{% endif %}
+                            {% if image.width is not None %}width="{{ image.width }}"{% endif %}
+                            class="html-record-viewer__record-image" />
+                    {% endfor %}
+                </div>
+            {% endif %}
 
             <div class="html-record-viewer__record-details">
                 <h3 class="tna-heading-s">

@@ -25,9 +25,13 @@
         }
     }
 
+    &__record-images {
+        flex: 0 0 50%;
+    }
+
     &__record-image {
-        flex: 0 0 30%;
         margin: 1em 0;
+        max-width: 100%;
     }
 
     &__record-details {
