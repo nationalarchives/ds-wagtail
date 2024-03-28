@@ -34,7 +34,7 @@
                         </a>
                     </li>
                 
-                    {% if show_iiif_viewer %}
+                    {% if show_record_viewer %}
                         <li class="jumplinks__list-item">
                             <a class="jumplink" href="#record-viewer" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
                                 Record viewer
@@ -71,8 +71,8 @@
                 <h2 id="record-viewer" class="tna-heading-l">Record viewer</h2>
                     Record viewer
                 </h2>
-
-                {% include "includes/records/record-viewer.html" with html_only_record_viewer=html_only_record_viewer iiif_manifest_url=iiif_manifest_url %}
+                
+                {% include "includes/records/record-viewer.html" with html_only_record_viewer=html_only_record_viewer show_js_record_viewer=show_js_record_viewer iiif_manifest_url=iiif_manifest_url %}
             {% endif %}
 
             {% comment %}  
@@ -175,7 +175,7 @@
 {% block extra_js %}
     <script src="{% static 'scripts/details.js' %}"></script>
 
-    {% if show_record_viewer %}
+    {% if show_js_record_viewer %}
         <script src="{% static 'uv/UV.js' %}"></script>
         <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
     {% endif %}

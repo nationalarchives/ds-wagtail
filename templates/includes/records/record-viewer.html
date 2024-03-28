@@ -1,23 +1,32 @@
-{% if iiif_manifest_url %}
-    <div class="uv" id="uv" data-jjs-iiif-viewer-manifest-url="{{ iiif_manifest_url }}">
-        {% if html_only_record_viewer %}
-            {% if html_only_record_viewer.prev_page_url %}
-                <a href="{{ html_only_record_viewer.prev_page_url }}">
-                    Prev page
-                </a>
-            {% endif %}
-
-            {{ html_only_record_viewer.current_item }} out of {{ html_only_record_viewer.item_count }}
-
-            {% if html_only_record_viewer.next_page_url %}
-                <a href="{{ html_only_record_viewer.next_page_url }}">
-                    Next page
-                </a>
-            {% endif %}
-
-            {% for image in html_only_record_viewer.images %}
-                <img src="{{ image.url }}" alt="" />
-            {% endfor %}
-        {% endif %}
-    </div>
+{% if show_js_record_viewer %}
+    <div
+        class="uv"
+        id="uv"
+        data-js-iiif-viewer-manifest-url="{{ iiif_manifest_url }}"
+        {% if canvas_index is not None %} data-js-iiif-viewer-canvas-index="{{ canvas_index }}" {% endif %}
+    >
+{% else %}
+    <div>
 {% endif %}
+
+{% if html_only_record_viewer %}
+    {% if html_only_record_viewer.prev_page_url %}
+        <a href="{{ html_only_record_viewer.prev_page_url }}">
+            Prev page
+        </a>
+    {% endif %}
+
+    {{ html_only_record_viewer.current_item }} out of {{ html_only_record_viewer.item_count }}
+
+    {% if html_only_record_viewer.next_page_url %}
+        <a href="{{ html_only_record_viewer.next_page_url }}">
+            Next page
+        </a>
+    {% endif %}
+
+    {% for image in html_only_record_viewer.images %}
+        <img src="{{ image.url }}" alt="" />
+    {% endfor %}
+{% endif %}
+
+</div>

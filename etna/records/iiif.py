@@ -94,6 +94,7 @@ class ManifestParser:
         if item["type"] != "Canvas":
             raise InvalidManifestFormat("Item is not a canvas.")
         canvas_items = item["items"]
+        images = []
         for canvas_item in canvas_items:
             if canvas_item["type"] == "AnnotationPage":
                 for annotation_page_item in canvas_item["items"]:
@@ -105,5 +106,7 @@ class ManifestParser:
                                 "width": body.get("width"),
                                 "height": body.get("height"),
                             }
-                            return [image_dict]
-        raise ImageNotFoundInItem
+                            images.append(image_dict)
+        if not images:
+            raise ImageNotFoundInItem
+        return images

@@ -1,7 +1,9 @@
 import datetime
+import enum
 import logging
 import urllib.parse
 
+from collections.abc import Mapping
 from typing import TypedDict
 
 from django import forms
@@ -82,14 +84,42 @@ class HTMLOnlyIIIFViewerContext(TypedDict):
     prev_page_url: str | None
 
 
+class ShowRecordViewerOption(enum.Enum):
+    NO = "no"
+    HTML_ONLY = "html-only"
+    JS = "js"
+
+
 def _get_html_only_iiif_viewer_context(
-    *, manifest: iiif.IIIFManifest, base_url: str, viewer_index: int
+    *,
+    manifest: iiif.IIIFManifest,
+    base_url: str,
+    canvas_index: int,
+    query_params: Mapping[str, str] | None = None,
 ) -> HTMLOnlyIIIFViewerContext | None:
+    """
+    Get context required for the HTML-only IIIF viewer.
+    """
+    if query_params is None:
+        query_params = {}
+
+    if not isinstance(canvas_index, int):
+        raise ValueError("canvas_index should be an integer.")
+
+    if canvas_index < 0:
+        raise ValueError("canvas_index should not be a negative integer.")
+
+    parser = iiif.ManifestParser(manifest=manifest)
+
+    # If canvas_index is bigger than the last index, reset it to 0.
+    if canvas_index > parser.get_last_index():
+        canvas_index = 0
+
     next_page_url = None
     prev_page_url = None
-    parser = iiif.ManifestParser(manifest=manifest)
+
     try:
-        iiif_item = parser.get_item_at_index(viewer_index)
+        iiif_item = parser.get_item_at_index(canvas_index)
     except IndexError:
         return None
 
@@ -97,21 +127,32 @@ def _get_html_only_iiif_viewer_context(
         images = parser.get_images_for_item(iiif_item)
     except iiif.ImageNotFoundInItem:
         images = []
+
     url_parts = list(urllib.parse.urlsplit(base_url))
     url_parts[4] = "record-viewer"
 
-    if viewer_index < parser.get_last_index():
-        url_parts[3] = urllib.parse.urlencode({"record_viewer_index": viewer_index + 1})
+    if canvas_index < parser.get_last_index():
+        url_parts[3] = urllib.parse.urlencode(
+            {
+                **query_params,
+                "record_viewer_index": canvas_index + 1,
+            }
+        )
         next_page_url = urllib.parse.urlunsplit(url_parts)
 
-    if viewer_index >= 1:
-        url_parts[3] = urllib.parse.urlencode({"record_viewer_index": viewer_index + 1})
+    if canvas_index >= 1:
+        url_parts[3] = urllib.parse.urlencode(
+            {
+                **query_params,
+                "record_viewer_index": canvas_index - 1,
+            }
+        )
         prev_page_url = urllib.parse.urlunsplit(url_parts)
 
     return {
         "next_page_url": next_page_url,
         "prev_page_url": prev_page_url,
-        "current_item": viewer_index + 1,
+        "current_item": canvas_index + 1,
         "item_count": parser.get_items_count(),
         "source": iiif_item,
         "images": images,
@@ -120,6 +161,16 @@ def _get_html_only_iiif_viewer_context(
 
 class RecordDetailViewForm(forms.Form):
     record_viewer_index = forms.IntegerField(required=False, min_value=0)
+    show_record_viewer = forms.ChoiceField(
+        choices=[
+            (v, v)
+            for v in [
+                ShowRecordViewerOption.JS.value,
+                ShowRecordViewerOption.HTML_ONLY.value,
+            ]
+        ],
+        required=False,
+    )
 
 
 def record_detail_view(request, id):
@@ -152,7 +203,9 @@ def record_detail_view(request, id):
     page_title = f"Catalogue ID: {record.iaid}"
     image = None
 
+    show_record_viewer: ShowRecordViewerOption = ShowRecordViewerOption.NO
     html_only_record_viewer = None
+    viewer_index: int | None = None
     iiif_manifest_url: str | None = None
 
     # Fetch IIIF manifest only if:
@@ -201,13 +254,32 @@ def record_detail_view(request, id):
             iiif_manifest_url = records_client.get_public_iiif_manifest_url(
                 id=record.iaid
             )
+            show_record_viewer = ShowRecordViewerOption.JS
             view_form = RecordDetailViewForm(request.GET)
             if view_form.is_valid():
+                try:
+                    show_record_viewer = (
+                        ShowRecordViewerOption(
+                            view_form.cleaned_data["show_record_viewer"]
+                        )
+                        or show_record_viewer
+                    )
+                except ValueError:
+                    pass
                 viewer_index = view_form.cleaned_data["record_viewer_index"] or 0
+                query_params = {}
+                if view_form.cleaned_data["show_record_viewer"] is not None:
+                    # We only want to pass the query params that are output by application
+                    # if possible to avoid user being able to insert arbitrary data to the
+                    # template renderer.
+                    query_params["show_record_viewer"] = view_form.cleaned_data[
+                        "show_record_viewer"
+                    ]
                 html_only_record_viewer = _get_html_only_iiif_viewer_context(
                     manifest=iiif_manifest,
                     base_url=request.get_full_path(),
-                    viewer_index=viewer_index,
+                    canvas_index=viewer_index,
+                    query_params=query_params,
                 )
 
     # Back to search - default url
@@ -228,10 +300,11 @@ def record_detail_view(request, id):
     context.update(
         html_only_record_viewer=html_only_record_viewer,
         iiif_manifest_url=iiif_manifest_url,
+        canvas_index=viewer_index,
         image=image,
         record=record,
-        show_record_viewer=iiif_manifest_url is not None
-        or html_only_record_viewer is not None,
+        show_record_viewer=show_record_viewer is not ShowRecordViewerOption.NO,
+        show_js_record_viewer=show_record_viewer is ShowRecordViewerOption.JS,
         meta_title=record.summary_title,
         back_to_search_url=back_to_search_url,
         page_type=page_type,
