@@ -3,8 +3,9 @@ from __future__ import annotations
 import logging
 import re
 
+from collections.abc import Mapping
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, Optional, Self, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -143,6 +144,16 @@ class Record(DataLayerMixin, APIModel):
             return False
         else:
             return True
+
+    @cached_property
+    def thumbnail(self) -> str:
+        """
+        Returns the thumbnail URL for this record, or a blank string if no
+        such URL can be found in the usual places.
+        """
+        if thumbnail_url := self.template.get("thumbnailUrl"):
+            return thumbnail_url.get("value", "")
+        return ""
 
     @cached_property
     def summary_title(self) -> str:
@@ -969,6 +980,17 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def publication_note(self) -> str:
         return self.template.get("publicationNote", str)
+
+
+class IIIFManifest(APIModel):
+    content: Mapping[str, Any]
+
+    def __init__(self, *, raw_data: Mapping[str, Any]) -> None:
+        self.content = raw_data
+
+    @classmethod
+    def from_api_response(cls, response: Mapping[str, Any]) -> Self:
+        return cls(raw_data=response)
 
 
 @dataclass

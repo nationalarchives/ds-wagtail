@@ -49,6 +49,7 @@ from ..home.models import HomePage
 from ..records.api import records_client
 from .forms import (
     CatalogueSearchForm,
+    EscapeAndEvasionsCatalogueSearchForm,
     FeaturedSearchForm,
     NativeWebsiteSearchForm,
     WebsiteSearchForm,
@@ -684,6 +685,27 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
         return super().get_context_data(**kwargs)
+
+
+class EscapeAndEvasionCatalogueSearchView(CatalogueSearchView):
+    form_class = EscapeAndEvasionsCatalogueSearchForm
+    default_group = "digitised"
+
+    def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
+        """
+        Temporarily the search query is hardcoded to "escape and evasion"
+        at Rosetta API end and we can only use one search query field
+        because of that.
+
+        https://national-archives.atlassian.net/browse/DOR-46
+        https://national-archives.atlassian.net/browse/DOR-57
+        """
+        api_kwargs = super().get_api_kwargs(form)
+        return {
+            **api_kwargs,
+            "q": form.cleaned_data.get("filter_keyword") or None,
+            "filter_keyword": None,
+        }
 
 
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):

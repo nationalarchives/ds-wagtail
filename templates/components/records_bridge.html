@@ -1,0 +1,48 @@
+{% load wagtailimages_tags %}
+
+{% comment %} Streamfield record collection bridging component (based on article-spotlight.html) {% endcomment %}
+
+<div class="records-bridge tna-!--margin-vertical-l">
+    {% if image %}
+        {% if link_url %}
+            <a href="{{ link_url }}" class="records-bridge__image-link" aria-labelledby="article-desc202" tabindex="-1">
+        {% endif %}
+
+        {% if image %}
+            <picture>
+                {% image image fill-500x400-c100 as rendition %}
+                <source media="(max-width: 768px)" srcset="{{ rendition.url }}"/>
+                {% image image fill-500x500-c100 as rendition %}
+                <source media="(max-width: 991px)" srcset="{{ rendition.url }}"/>
+                {% image image fill-1000x600-c100 as rendition %}
+                <source media="(max-width: 1200px)" srcset="{{ rendition.url }}"/>
+
+                <img width="{{ rendition.width }}" height="{{ rendition.height }}" src="{{ rendition.url }}" alt="" />
+            </picture>
+        {% endif %}
+
+        {% if link_url %}
+            </a>
+        {% endif %}
+    {% endif %}
+
+    <div class="records-bridge__description">
+        {% if heading %}
+            <h2 class="tna-heading-l records-bridge__heading">
+                {% if strapline %}
+                    <small class="tna-chip tna-chip--plain">{{ strapline }}</small>
+                {% endif %}
+
+                {{ heading }}
+            </h2>
+        {% endif %}
+
+        {{ description }}
+        
+        {% if link_url and link_text %}
+            <div class="tna-button-group">
+                <a class="tna-button tna-button--solid-hover" href="{{ link_url }}">{{ link_text }}</a>
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -12,7 +12,7 @@
         <div class="tna-column tna-column--full">
             {% for item in page.body %}
                 {% if item.value.paragraph or item.value.text %}
-                    {{item}}
+                    {{ item }}
                 {% else %}
                     {% image item.value.page.specific.teaser_image fill-626x383 as teaser_image %}
                     <div class="col-sm-12 col-md-6">

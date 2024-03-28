@@ -6,6 +6,7 @@ import intialiseSearchResultTracking from "./modules/analytics/search/search_res
 import searchSortFiltersTracking from "./modules/analytics/search/search_sort_filters_tracking";
 import pushActiveFilterDataOnLoad from "./modules/analytics/search/search_filters_tracking";
 import pushActiveErrorsOnLoad from "./modules/analytics/search/search_errors_tracking";
+import searchSortBy from "./modules/search/search-sort-by";
 
 mobileFilterExpander();
 searchBucketsExpander();
@@ -15,3 +16,4 @@ searchSortFiltersTracking();
 pushActiveFilterDataOnLoad();
 longFiltersTracking();
 pushActiveErrorsOnLoad();
+searchSortBy();

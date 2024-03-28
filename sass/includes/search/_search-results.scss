@@ -1,4 +1,10 @@
 .search-results {
+    &__sort {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
     &__metadata {
         &-count {
             margin-bottom: 0.5rem;

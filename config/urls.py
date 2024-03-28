@@ -104,10 +104,14 @@ public_urls = [
         ),
         name="search-featured",
     ),
+    # This was originally using CatalogueSearchView instead of EscapeAndEvasionCatalogueSearchView.
+    # This is a temporary measure for the experimental Escape and Evasion search.
+    # https://national-archives.atlassian.net/browse/DOR-55
     path(
         r"search/catalogue/",
         setting_controlled_login_required(
-            search_views.CatalogueSearchView.as_view(), "SEARCH_VIEWS_REQUIRE_LOGIN"
+            search_views.EscapeAndEvasionCatalogueSearchView.as_view(),
+            "SEARCH_VIEWS_REQUIRE_LOGIN",
         ),
         name="search-catalogue",
     ),

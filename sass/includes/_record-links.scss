@@ -1,4 +1,6 @@
 .record-links {
+    $root: &;
+
     &__wrapper {
         display: flex;
         align-items: center;
@@ -27,6 +29,15 @@
         padding-top: 2rem;
         padding-bottom: 2rem;
         width: 100%;
+
+        &--card {
+            @include colour.colour-border(
+                "accent-background",
+                0.3rem,
+                solid,
+                top
+            );
+        }
 
         @media (min-width: #{$screen__lg + 1px}) {
             display: flex;

@@ -1,7 +1,6 @@
 .search-landing-hero {
-    background-color: $color__grey-100;
     padding-top: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 3rem;
     margin-bottom: 2rem;
 
     &__container {
@@ -23,7 +22,6 @@
 
     &__form {
         &-submit {
-            @extend .search-button;
             cursor: pointer;
             width: 8rem;
             font-size: 1.1rem;
@@ -32,9 +30,9 @@
         &-search-box {
             width: 100%;
             max-width: 60rem;
-            height: 3.1rem;
-            border: 1px solid $color__grey-800;
-            border-radius: 0.25rem;
+            height: 3rem;
+            border: 1px solid $color__grey-500;
+            border-radius: 0;
             padding: 1rem;
             vertical-align: top;
             font-size: 1.1rem;

@@ -1,8 +1,8 @@
 .series-panel {
+    @include colour.colour-background("accent-background-light");
+    @include colour.colour-border("accent-background-light", 3px, solid);
     position: relative;
-    border: 3px solid $color__yellow;
-    margin: 0 0 3rem;
-    background: $color__yellow;
+    margin: 2rem 0 3rem;
     padding: 0;
 
     @media screen and (min-width: #{$screen__lg + 1px}) {
@@ -11,11 +11,12 @@
 
     &__icon {
         display: none;
-        height: 35px;
-        width: 35px;
+        height: 25px;
+        width: 25px;
         position: absolute;
         top: 11px;
-        left: 12px;
+        left: 15px;
+        color: $color__grey-600;
 
         @media screen and (min-width: #{$screen__lg + 1px}) {
             display: block;
@@ -38,6 +39,7 @@
     }
 
     &__reference {
+        font-family: $font__mono;
         font-size: 1rem;
         font-weight: normal;
         margin-bottom: 0.5rem;
@@ -45,12 +47,13 @@
     }
 
     &__link {
-        color: $color__link-blue;
-        font-family: $font__supria-sans;
-        font-size: 1.2rem;
+        font-family: $font__body;
+        color: $color__black;
+        font-weight: normal;
+        text-decoration: underline;
 
         &:visited {
-            color: $color__link-blue;
+            color: $color__black;
         }
     }
 }

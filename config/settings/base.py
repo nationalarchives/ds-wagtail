@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "etna.navigation",
     "etna.records",
     "etna.search",
+    "etna.recordseries",
     "etna.users",
     "etna.whatson",
     "wagtail.contrib.forms",
@@ -316,6 +317,9 @@ API_CLIENT_NAME_PREFIX = os.getenv(
 )  # mandatory name to identify the client URL
 
 CLIENT_BASE_URL = os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_BASE_URL")
+CLIENT_IIIF_MANIFEST_BASE_URL = os.getenv(
+    f"{API_CLIENT_NAME_PREFIX}_CLIENT_IIIF_MANIFEST_BASE_URL"
+)
 CLIENT_KEY = os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_KEY")
 CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv(f"{API_CLIENT_NAME_PREFIX}_CLIENT_VERIFY_CERTIFICATES", "True")

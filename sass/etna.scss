@@ -112,6 +112,7 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/search/search-landing-buckets";
 @import "includes/search/featured-search";
 @import "includes/search/long-filters";
+@import "includes/search/no-results";
 @import "includes/section";
 @import "includes/sub-heading";
 @import "includes/cookie-consent";
@@ -144,6 +145,8 @@ These are Etna specific components, created using BEM and following our guidelin
 @import "includes/password-page";
 @import "includes/record-creator-description";
 @import "includes/record-creator-collections";
+@import "includes/iiif-viewer";
+@import "includes/records-bridge";
 
 /* Un-comment when front-end toolkit is fixed
 
@@ -161,19 +164,33 @@ Modified to match the existing site (for now)
     overflow: initial !important;
 }
 
-// .tna-header__navigation-item-link {
-//     &:hover,
-//     &--selected,
-//     &--selected:visited {
-//         background: #fff !important;
-//     }
-// }
+.tna-header__navigation-item-link {
+    color: $color--white;
 
-// @include media.on-mobile {
-//     .tna-header__navigation-items {
-//         background: #fff !important;
-//     }
-// }
+    &:visited,
+    &:link {
+        color: $color--white;
+    }
+
+    &:hover,
+    &--selected,
+    &--selected:visited {
+        background: #fff !important;
+        color: $color--off-black;
+
+        &::after {
+            display: none;
+        }
+    }
+}
+
+@include media.on-mobile {
+    .tna-header__navigation-items {
+        background: #fff !important;
+        color: $color--off-black;
+        border: 0;
+    }
+}
 
 .tna-breadcrumbs {
     padding-bottom: 0;
@@ -445,7 +462,6 @@ Modified to match the existing site (for now)
 }
 
 // Event card overrides
-
 .tna-card {
     &__heading--has-highlight {
         max-width: calc(100% - 5.125rem);
@@ -540,7 +556,6 @@ Modified to match the existing site (for now)
 }
 
 // tna-scene-setter modifiers
-
 .tna-scene-setter {
     &--small {
         @include typography.relative-font-size(21);

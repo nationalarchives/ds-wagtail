@@ -31,8 +31,9 @@
       </button>
     </div>
     {% if settings.core.SiteSettings.main_menu_items %}
-    <nav class="tna-column tna-column--flex-1 tna-column--full-small tna-column--full-tiny tna-header__navigation" id="tna-header__navigation" aria-label="Main site navigation">
-      <menu class="tna-header__navigation-items">
+    {% comment %} Removing the main nav while testing specific record user journeys {% endcomment %}
+    {% comment %} <nav class="tna-column tna-column--flex-1 tna-column--full-small tna-column--full-tiny tna-header__navigation" aria-label="Main site navigation">
+      <ul class="tna-header__navigation-items">
         {% if request.path|is_search_or_catalogue %}
           <!-- FOR PRIVATE BETA: STATIC SEARCH LINK ONLY -->
           <li class="tna-header__navigation-item">
@@ -49,8 +50,8 @@
           </li>
           {% endfor %}
         {% endif %}
-      </menu>
-    </nav>
+      </ul>
+    </nav> {% endcomment %}
     {% endif %}
   </div>
 </header>
