@@ -4,19 +4,23 @@
     font-family: $font__open-sans;
     margin-bottom: 3rem;
 
+    &.uv--html {
+        height: auto;
+    }
+
     .loaded {
         &::backdrop {
             background-color: $color--white;
+        }
+
+        a {
+            color: $color__navy;
+            font-weight: $font-weight-bold;
         }
     }
 
     > div {
         background-color: transparent;
-    }
-
-    a {
-        color: $color__navy;
-        font-weight: $font-weight-bold;
     }
 
     .title {
