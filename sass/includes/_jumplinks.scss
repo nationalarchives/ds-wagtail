@@ -16,11 +16,12 @@
     &__heading {
         @include font-size(xl);
         font-family: $font__body;
+        padding: 0 0.5rem;
         margin: 0;
     }
 
     &__list {
-        padding-right: 0.5rem;
+        padding: 0 0.5rem;
         list-style: none;
     }
 
