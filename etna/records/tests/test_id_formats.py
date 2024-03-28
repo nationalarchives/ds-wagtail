@@ -2,10 +2,10 @@ import re
 
 from django.test import SimpleTestCase
 
-from etna.records.converters import IAIDConverter
+from etna.records.converters import IDConverter
 
 
-class TestIaidFormats(SimpleTestCase):
+class TestIDFormats(SimpleTestCase):
     def test_valid_formats(self):
         for label, value in (
             ("longformat", "3717ee38900740728076a61a398fcb84"),
@@ -17,6 +17,6 @@ class TestIaidFormats(SimpleTestCase):
             ("iaid_F", "F257629"),
             ("iaid_N", "N14562581"),
         ):
-            iaid_regex = re.compile(IAIDConverter.regex)
+            id_regex = re.compile(IDConverter.regex)
             with self.subTest(label):
-                self.assertTrue(iaid_regex.match(value))
+                self.assertTrue(id_regex.match(value))

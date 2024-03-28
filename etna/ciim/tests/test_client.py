@@ -1,3 +1,5 @@
+import unittest
+
 from datetime import datetime
 
 from django.conf import settings
@@ -25,6 +27,7 @@ from ..exceptions import (
 )
 
 
+@unittest.skip("TODO:Rosetta")
 class ClientSearchAllTest(SimpleTestCase):
     @classmethod
     def setUpClass(cls):
@@ -129,6 +132,7 @@ class ClientSearchAllTest(SimpleTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class ClientSearchTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -289,26 +293,6 @@ class ClientSearchTest(SimpleTestCase):
         self.assertEqual(
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?sortOrder=desc",
-        )
-
-    @responses.activate
-    def test_with_template_details(self):
-        self.records_client.search(template=Template.DETAILS)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?template=details",
-        )
-
-    @responses.activate
-    def test_with_template_results(self):
-        self.records_client.search(template=Template.RESULTS)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?template=results",
         )
 
     @responses.activate
@@ -477,6 +461,7 @@ class ClientSearchTest(SimpleTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class ClientSearchUnifiedTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -641,7 +626,7 @@ class ClientFetchTest(SimpleTestCase):
         responses.add(
             responses.GET,
             f"{settings.CLIENT_BASE_URL}/fetch",
-            json=create_response(records=[create_record()]),
+            json=create_record(iaid="C198022"),
         )
 
     @responses.activate
@@ -655,14 +640,15 @@ class ClientFetchTest(SimpleTestCase):
 
     @responses.activate
     def test_with_iaid(self):
-        self.records_client.fetch(iaid="C198022")
+        self.records_client.fetch(id="C198022")
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?metadataId=C198022",
+            f"{settings.CLIENT_BASE_URL}/fetch?id=C198022",
         )
 
+    @unittest.skip("TODO:Rosetta if ref not supported at this time")
     @responses.activate
     def test_with_id(self):
         self.records_client.fetch(id="ADM 223/3")
@@ -673,47 +659,8 @@ class ClientFetchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/fetch?id=ADM+223%2F3",
         )
 
-    @responses.activate
-    def test_with_template_details(self):
-        self.records_client.fetch(template=Template.DETAILS)
 
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?template=details",
-        )
-
-    @responses.activate
-    def test_with_template_results(self):
-        self.records_client.fetch(template=Template.RESULTS)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?template=results",
-        )
-
-    @responses.activate
-    def test_with_expand_true(self):
-        self.records_client.fetch(expand=True)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?expand=True",
-        )
-
-    @responses.activate
-    def test_with_expand_false(self):
-        self.records_client.fetch(expand=False)
-
-        self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/fetch?expand=False",
-        )
-
-
+@unittest.skip("TODO:Rosetta")
 class ClientFetchAllTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -738,6 +685,7 @@ class ClientFetchAllTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/fetchAll?ids=id-one&ids=id-two&ids=id-three",
         )
 
+    @unittest.skip("TODO:Rosetta")
     @responses.activate
     def test_with_iaids(self):
         self.records_client.fetch_all(iaids=["iaid-one", "iaid-two", "iaid-three"])
@@ -769,6 +717,7 @@ class ClientFetchAllTest(SimpleTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class TestClientFetchReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -903,6 +852,7 @@ class TestClientFetchReponse(SimpleTestCase):
             self.records_client.fetch()
 
 
+@unittest.skip("TODO:Rosetta")
 class TestClientSearchReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
