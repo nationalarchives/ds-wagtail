@@ -34,7 +34,7 @@
                         </a>
                     </li>
                 
-                    {% if show_iiif_viewer %}
+                    {% if show_record_viewer %}
                         <li class="jumplinks__list-item">
                             <a class="jumplink" href="#record-viewer" data-component-name="Desktop in page navigation" data-link-type="Jump links" data-position="1" data-link="Record viewer">
                                 Record viewer
@@ -67,13 +67,12 @@
                     </tbody>
                 </table>
             </div>
-            
             {% if show_record_viewer %}
-                <h2 class="tna-heading-l" id="record-viewer">
+                <h2 id="record-viewer" class="tna-heading-l">Record viewer</h2>
                     Record viewer
                 </h2>
-
-                {% include "includes/records/record-viewer.html" with html_only_record_viewer=html_only_record_viewer iiif_manifest_url=iiif_manifest_url %}
+                
+                {% include "includes/records/record-viewer.html" with html_only_record_viewer=html_only_record_viewer show_js_record_viewer=show_js_record_viewer iiif_manifest_url=iiif_manifest_url %}
             {% endif %}
 
             {% comment %}  
@@ -159,13 +158,13 @@
             </div>
             <ul class="card-group--list-style-none">
                 <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-                    {% include "../components/card.html" with horizontal=true title='Great Escapes' href='#' imageSrc='https://beta.nationalarchives.gov.uk/media/images/great-escapes-artwork.original.jpg' imageWidth=800 imageHeight=450 text='Find out more about our new exhibition exploring both iconic and under-told stories of prisoners of war and civilian internees during the Second World War.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading=heading supertitle='Exhibition' %}
+                    {% include "../components/card.html" with horizontal=true title='Great Escapes' href='https://www.nationalarchives.gov.uk/great-escapes/' imageSrc='https://beta.nationalarchives.gov.uk/media/images/great-escapes-artwork.original.jpg' imageWidth=800 imageHeight=450 text='Find out more about our new exhibition exploring both iconic and under-told stories of prisoners of war and civilian internees during the Second World War.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading=heading supertitle='Exhibition' %}
                 </li>
                 <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-                    {% include "../components/card.html" with horizontal=true title='Judy, the only dog registered as a prisoner of war' href='https://beta.nationalarchives.gov.uk/explore-the-collection/stories/judy-the-only-dog-registered-as-a-prisoner-of-war/' imageSrc='https://beta.nationalarchives.gov.uk/media/images/judy-and-frank-williams-clifford-street-london-.original.jpg' imageWidth=800 imageHeight=450 text='Judys remarkable story is one of capture, survival and courage, and offers a unique tale of internment during the war.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading=heading supertitle='Story of' %}
+                    {% include "../components/card.html" with horizontal=true title='Judy, the only dog registered as a prisoner of war' href='https://expimage-viewer-w76xrki-rasrzs7pi6sd4.uk-1.platformsh.site/explore-the-collection/stories/judy-the-only-dog-registered-as-a-prisoner-of-war/' imageSrc='https://beta.nationalarchives.gov.uk/media/images/judy-and-frank-williams-clifford-street-london-.original.jpg' imageWidth=800 imageHeight=450 text='Judys remarkable story is one of capture, survival and courage, and offers a unique tale of internment during the war.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading=heading supertitle='Story of' %}
                 </li>
                 <li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-top-l">
-                    {% include "../components/card.html" with horizontal=true title='Escaping Colditz' href='#' imageSrc='https://beta.nationalarchives.gov.uk/media/images/AIR-40-230-Oflag-IVC-Colditz_Castle-photo.original.png' imageWidth=800 imageHeight=450 text='Discover how Allied prisoners of war survived and daringly tried to escape this seemingly secure fortification.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading='Highlights Gallery' supertitle='Highlights Gallery' %}
+                    {% include "../components/card.html" with horizontal=true title='Escaping Colditz' href='https://expimage-viewer-w76xrki-rasrzs7pi6sd4.uk-1.platformsh.site/explore-the-collection/explore-by-time-period/second-world-war/escaping-colditz/' imageSrc='https://beta.nationalarchives.gov.uk/media/images/AIR-40-230-Oflag-IVC-Colditz_Castle-photo.original.png' imageWidth=800 imageHeight=450 text='Discover how Allied prisoners of war survived and daringly tried to escape this seemingly secure fortification.' headingSize="s" headingLevel=3 label=link_page.is_newly_published|yesno:"New," index=forloop.counter0 heading='Highlights Gallery' supertitle='Highlights Gallery' %}
                 </li>
             </ul>
         </div>
@@ -176,7 +175,7 @@
 {% block extra_js %}
     <script src="{% static 'scripts/details.js' %}"></script>
 
-    {% if show_record_viewer %}
+    {% if show_js_record_viewer %}
         <script src="{% static 'uv/UV.js' %}"></script>
         <script src="{% static 'scripts/iiif_viewer.js' %}"></script>
     {% endif %}

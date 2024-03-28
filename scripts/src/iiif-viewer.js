@@ -5,7 +5,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document
         .querySelectorAll("[data-js-iiif-viewer-manifest-url]")
         .forEach((element) => {
-            const { jsIiifViewerManifestUrl: manifestUrl } = element.dataset;
+            const {
+                jsIiifViewerManifestUrl: manifestUrl,
+                jsIiifViewerCanvasIndex: rawCanvasIndex,
+            } = element.dataset;
             if (!manifestUrl) {
                 throw new Error(
                     "No manifest URL provided in data-js-iiif-viewer-manifest-url attribute.",
@@ -14,6 +17,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const data = {
                 iiifManifestId: manifestUrl,
             };
+
+            if (rawCanvasIndex) {
+                const parsedCanvasIndex = parseInt(rawCanvasIndex, 10);
+                if (
+                    parsedCanvasIndex !== null &&
+                    !isNaN(parsedCanvasIndex) &&
+                    parsedCanvasIndex >= 0
+                ) {
+                    data.canvasIndex = parsedCanvasIndex;
+                }
+            }
 
             const uv = window.UV.init(element, data);
 

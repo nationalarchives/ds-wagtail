@@ -156,7 +156,7 @@
             @include typography.relative-font-size(14);
             font-family: $font__open-sans;
             margin-top: 12px;
-            width: 25px;
+            width: auto;
             margin-right: 0;
         }
 
