@@ -264,7 +264,6 @@ class ArticlePage(
         ]
     )
 
-    verbose_name_public = Meta.verbose_name_public
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -272,7 +271,6 @@ class ArticlePage(
         + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
-            APIField("verbose_name_public"),
             APIField("similar_items", serializer=PageSerializer(many=True)),
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
