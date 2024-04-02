@@ -16,7 +16,8 @@ from etna.ciim.tests.factories import (
     create_search_response,
 )
 from etna.records.api import get_records_client
-from etna.records.models import IIIFManifest, Record
+from etna.records.models import Record
+from etna.records import iiif
 
 from ..client import ResultList, SortBy, SortOrder, Stream, Template
 from ..exceptions import (
@@ -1178,7 +1179,7 @@ class ClientFetchIIIFManifest(SimpleTestCase):
             ],
         )
 
-        self.assertIsInstance(result, IIIFManifest)
+        self.assertIsInstance(result, iiif.IIIFManifest)
         self.assertEqual(result.content, manifest)
 
     @responses.activate
