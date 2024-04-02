@@ -268,6 +268,7 @@ class ArticlePage(
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
             APIField("verbose_name_public"),
@@ -423,9 +424,9 @@ class FocusedArticlePage(
     )
     api_fields = (
         BasePageWithIntro.api_fields
-        + ArticleTagMixin.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
+        + ArticleTagMixin.api_fields
         + [
             APIField("type_label"),
             APIField("body"),
@@ -667,9 +668,9 @@ class RecordArticlePage(
 
     api_fields = (
         BasePageWithIntro.api_fields
-        + ArticleTagMixin.api_fields
-        + NewLabelMixin.api_fields
         + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ArticleTagMixin.api_fields
         + [
             APIField("type_label"),
             APIField("date_text"),
