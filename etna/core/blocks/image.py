@@ -63,6 +63,22 @@ class APIImageChooserBlock(ImageChooserBlock):
                     "width": webp_image.width,
                     "height": webp_image.height,
                 },
+                "transcript": (
+                    {
+                        "heading": value.get_transcription_heading_display(),
+                        "text": value.transcription,
+                    }
+                    if value.transcription
+                    else None
+                ),
+                "translation": (
+                    {
+                        "heading": value.get_translation_heading_display(),
+                        "text": value.translation,
+                    }
+                    if value.translation
+                    else None
+                ),
             }
         return None
 
