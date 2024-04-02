@@ -65,14 +65,14 @@ class APIImageChooserBlock(ImageChooserBlock):
                 },
                 "transcript": (
                     {
-                        "heading": value.transcription_heading,
+                        "heading": value.get_transcription_heading_display(),
                         "text": value.transcription,
                     }
                     if value.transcription
                     else None
                 ),
                 "translation": (
-                    {"heading": value.translation_heading, "text": value.translation}
+                    {"heading": value.get_translation_heading_display(), "text": value.translation}
                     if value.translation
                     else None
                 ),
