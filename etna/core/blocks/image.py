@@ -72,7 +72,10 @@ class APIImageChooserBlock(ImageChooserBlock):
                     else None
                 ),
                 "translation": (
-                    {"heading": value.get_translation_heading_display(), "text": value.translation}
+                    {
+                        "heading": value.get_translation_heading_display(),
+                        "text": value.translation,
+                    }
                     if value.translation
                     else None
                 ),
