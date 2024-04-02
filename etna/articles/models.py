@@ -269,6 +269,7 @@ class ArticlePage(
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
             APIField("verbose_name_public"),
@@ -426,6 +427,7 @@ class FocusedArticlePage(
         BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
             APIField("type_label"),
