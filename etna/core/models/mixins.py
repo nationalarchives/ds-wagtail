@@ -41,6 +41,7 @@ class ContentWarningMixin(models.Model):
     )
 
     api_fields = [
+        APIField("display_content_warning"),
         APIField("custom_warning_text", serializer=RichTextSerializer()),
     ]
 
