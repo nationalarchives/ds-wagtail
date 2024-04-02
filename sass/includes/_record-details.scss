@@ -2,6 +2,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
 
 .record-details {
+    $root: &;
     padding: 2rem 0 0;
 
     &__table {
