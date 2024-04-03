@@ -1,6 +1,7 @@
 from wagtail.images.api.fields import ImageRenditionField
 
 from rest_framework import serializers
+from rest_framework.fields import empty
 
 
 class LinkedPageSerializer(serializers.ModelSerializer):
@@ -56,3 +57,86 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return obj.get_url()
+
+class PageSerializer(serializers.Serializer):
+    """
+    This Serializer should be inherited as a base class for all "primary" page
+    serializers. It provides a common set of fields that are useful for
+    serializing primary pages - otherwise it only provides a page ID.
+
+    Fields returned must be set in the `Meta.fields` attribute of the subclass.
+    """
+
+    def __init__(
+        self,
+        instance=None,
+        data=empty,
+        rendition_size="fill-600x400",
+        jpeg_quality=60,
+        webp_quality=80,
+        **kwargs,
+    ):
+        self.jpeg_quality = jpeg_quality
+        self.webp_quality = webp_quality
+        self.rendition_size = rendition_size
+        super().__init__(instance=instance, data=data, **kwargs)
+
+    def to_representation(self, instance):
+        if not instance:
+            return None
+
+        specific = instance.specific
+        attributes = {
+            "teaser_image": (None, None),
+            "type_label": None,
+            "is_newly_published": None,
+        }
+
+        for attr, default in attributes.items():
+            attributes[attr] = getattr(specific, attr, default)
+
+        if attributes["teaser_image"]:
+            try:
+                jpeg_image = attributes["teaser_image"].get_rendition(
+                    f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
+                )
+                webp_image = attributes["teaser_image"].get_rendition(
+                    f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
+                )
+            except AttributeError:
+                jpeg_image = webp_image = None
+            attributes["teaser_image"] = (jpeg_image, webp_image)
+
+        return {
+            "id": specific.id,
+            "title": specific.title,
+            "teaser_image_jpeg": (
+                {
+                    "url": jpeg_image.url,
+                    "full_url": jpeg_image.full_url,
+                    "width": jpeg_image.width,
+                    "height": jpeg_image.height,
+                }
+                if jpeg_image
+                else None
+            ),
+            "teaser_image_webp": (
+                {
+                    "url": webp_image.url,
+                    "full_url": webp_image.full_url,
+                    "width": webp_image.width,
+                    "height": webp_image.height,
+                }
+                if webp_image
+                else None
+            ),
+            "type_label": attributes["type_label"](),
+            **(
+                {"is_newly_published": attributes["is_newly_published"]}
+                if attributes["is_newly_published"] is not None
+                else {}
+            ),
+            "url": specific.url,
+            "full_url": specific.full_url,
+        }
+        

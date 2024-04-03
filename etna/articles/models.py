@@ -189,16 +189,7 @@ class ArticleIndexPage(BasePageWithIntro):
     ]
 
 
-# TODO: Make better
-class PageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = (
-            "id",
-            "title",
-            "url_path",
-        )
-
+from etna.core.serializers.pages import PageSerializer
 
 class ArticlePage(
     TopicalPageMixin,
