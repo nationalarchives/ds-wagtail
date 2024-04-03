@@ -16,7 +16,7 @@ from wagtail.models import Page
 from rest_framework import serializers
 
 from etna.core.models import BasePage
-from etna.core.serializers import LinkedPageSerializer, RichTextSerializer
+from etna.core.serializers import LinkedPageSerializer, RichTextSerializer, generate_teaser_images
 
 
 class AuthorIndexPage(BasePage):
@@ -154,7 +154,7 @@ class AuthorTag(models.Model):
 
 
 class AuthorSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
+    teaser_image_jpeg, teaser_image_webp = generate_teaser_images(
         rendition_size="fill-400x400", jpeg_quality=60, webp_quality=80, source="image"
     )
     role = serializers.CharField()

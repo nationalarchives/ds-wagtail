@@ -1,7 +1,55 @@
-from wagtail.images.api.fields import ImageRenditionField
-
+from .images import generate_teaser_images
+from wagtail.models import Page
 from rest_framework import serializers
 
+def get_api_fields(value, api_fields=[], **kwargs):
+    if not value:
+        return None
+    
+    if not "teaser_image" in api_fields and (kwargs.get("rendition_size", None) or kwargs.get("jpeg_quality", None) or kwargs.get("webp_quality", None)):
+        raise ValueError("rendition_size, jpeg_quality or webp_quality, can't be set if there is no teaser_image in api_fields")
+
+    specific = value.specific
+    
+    api_field_data = {}
+    for attr in api_fields:
+        api_field_data[attr] = getattr(specific, attr, None)
+        if callable(api_field_data[attr]):
+            api_field_data[attr] = api_field_data[attr]()
+        elif isinstance(api_field_data[attr], Page):
+            api_field_data[attr] = get_api_fields(api_field_data[attr])
+        elif isinstance(api_field_data[attr], (list, tuple)):
+            api_field_data[attr] = [get_api_fields(item) for item in api_field_data[attr]]
+        print(api_field_data[attr])
+
+    if api_field_data.get("teaser_image"):
+        jpeg_image = api_field_data["teaser_image"].get_rendition(
+            f"{kwargs.get("rendition_size", None) or "fill-600x400"}|format-jpeg|jpegquality-{kwargs.get("jpeg_quality", None) or 60}"
+        )
+        webp_image = api_field_data["teaser_image"].get_rendition(
+            f"{kwargs.get("rendition_size", None) or "fill-600x400"}|format-webp|webpquality-{kwargs.get("webp_quality", None) or 80}"
+        )
+        api_field_data.pop("teaser_image")
+        api_field_data["teaser_image_jpeg"] = {
+            "url": jpeg_image.url,
+            "full_url": jpeg_image.full_url,
+            "width": jpeg_image.width,
+            "height": jpeg_image.height,
+        }
+        api_field_data["teaser_image_webp"] = {
+            "url": webp_image.url,
+            "full_url": webp_image.full_url,
+            "width": webp_image.width,
+            "height": webp_image.height,
+        }
+
+    return {
+        "id": specific.id,
+        "title": specific.title,
+        "url": specific.url,
+        "full_url": specific.full_url,
+        **api_field_data,
+    }
 
 class LinkedPageSerializer(serializers.ModelSerializer):
     """
@@ -12,45 +60,11 @@ class LinkedPageSerializer(serializers.ModelSerializer):
     Fields returned must be set in the `Meta.fields` attribute of the subclass.
     """
 
-    def teaser_images(
-        rendition_size: str,
-        jpeg_quality: str,
-        webp_quality: int,
-        source: str = "teaser_image",
-        quality: int = 80,
-    ):
-        """
-        This method returns a tuple of two ImageRenditionField instances for the
-        given rendition size, JPEG quality and WebP quality. The source parameter
-        is used to specify the source image field to use for the rendition.
-
-        To override the default rendition size, quality, or source, you should
-        override this in the subclass, following the same structure as teaser_image_jpeg
-        and teaser_image_webp below. This will allow for flexibility around the
-        types of images that we can supply on a case-by-case basis.
-
-        Args:
-        rendition_size: The size of the rendition to return.
-        jpeg_quality: The quality of the JPEG rendition.
-        webp_quality: The quality of the WebP rendition.
-        source: The source image field to use for the rendition - defaults to "teaser_image" if un-set.
-        quality: The quality to use for the rendition - only used if no jpeg or webp_quality is set.
-        """
-        return (
-            ImageRenditionField(
-                f"{rendition_size}|format-jpeg|jpegquality-{jpeg_quality or quality}",
-                source=source,
-            ),
-            ImageRenditionField(
-                f"{rendition_size}|format-webp|webpquality-{webp_quality or quality}",
-                source=source,
-            ),
-        )
 
     title = serializers.CharField()
     url = serializers.SerializerMethodField()
     full_url = serializers.URLField()
-    teaser_image_jpeg, teaser_image_webp = teaser_images(
+    teaser_image_jpeg, teaser_image_webp = generate_teaser_images(
         rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
     )
 

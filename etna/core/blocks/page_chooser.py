@@ -1,5 +1,6 @@
 from wagtail import blocks
 
+from etna.core.serializers.pages import get_api_fields
 
 class APIPageChooserBlock(blocks.PageChooserBlock):
     """
@@ -24,71 +25,14 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
         self,
         required=True,
         help_text=None,
-        rendition_size="fill-600x400",
-        jpeg_quality=60,
-        webp_quality=80,
+        api_fields=None,
         **kwargs,
     ):
-        self.jpeg_quality = jpeg_quality
-        self.webp_quality = webp_quality
-        self.rendition_size = rendition_size
+        self.rendition_size = kwargs.pop("rendition_size", None)
+        self.jpeg_quality = kwargs.pop("jpeg_quality", None)
+        self.webp_quality = kwargs.pop("webp_quality", None)
+        self.api_fields = api_fields or {}
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        if not value:
-            return None
-
-        specific = value.specific
-        attributes = {
-            "teaser_image": (None, None),
-            "type_label": None,
-            "is_newly_published": None,
-        }
-
-        for attr, default in attributes.items():
-            attributes[attr] = getattr(specific, attr, default)
-
-        if attributes["teaser_image"]:
-            try:
-                jpeg_image = attributes["teaser_image"].get_rendition(
-                    f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
-                )
-                webp_image = attributes["teaser_image"].get_rendition(
-                    f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
-                )
-            except AttributeError:
-                jpeg_image = webp_image = None
-            attributes["teaser_image"] = (jpeg_image, webp_image)
-
-        return {
-            "id": specific.id,
-            "title": specific.title,
-            "teaser_image_jpeg": (
-                {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                }
-                if jpeg_image
-                else None
-            ),
-            "teaser_image_webp": (
-                {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                }
-                if webp_image
-                else None
-            ),
-            "type_label": attributes["type_label"](),
-            **(
-                {"is_newly_published": attributes["is_newly_published"]}
-                if attributes["is_newly_published"] is not None
-                else {}
-            ),
-            "url": specific.url,
-            "full_url": specific.full_url,
-        }
+        return get_api_fields(value, api_fields=self.api_fields, rendition_size=self.rendition_size, jpeg_quality=self.jpeg_quality, webp_quality=self.webp_quality)
