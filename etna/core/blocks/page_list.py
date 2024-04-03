@@ -2,13 +2,13 @@ from typing import Any, Optional, Sequence
 
 from django.utils.functional import cached_property
 
-from etna.core.blocks.page_chooser import APIPageChooserBlock
-
 from wagtail import blocks
 from wagtail.blocks.list_block import ListValue
 from wagtail.coreutils import resolve_model_string
 from wagtail.models import Page, PageBase
 from wagtail.query import PageQuerySet
+
+from etna.core.blocks.page_chooser import APIPageChooserBlock
 
 
 class PageListBlock(blocks.ListBlock):

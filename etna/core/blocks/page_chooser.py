@@ -1,5 +1,6 @@
 from wagtail import blocks
 
+
 class APIPageChooserBlock(blocks.PageChooserBlock):
     """
     APIPageChooserBlock inherits PageChooserBlock and adds the ability
@@ -18,6 +19,7 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
     The block also allows for the rendition_size, jpeg_quality and webp_quality
     of the teaser image to be set, the same way as the APIImageChooserBlock.
     """
+
     def __init__(
         self,
         required=True,
@@ -43,37 +45,49 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
                 webp_image = specific.teaser_image.get_rendition(
                     f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
                 )
-            except:
+            except AttributeError:
                 jpeg_image = None
                 webp_image = None
-            
+
             try:
                 type_label = specific.type_label()
-            except:
+            except AttributeError:
                 type_label = None
 
             try:
                 is_newly_published = specific.is_newly_published
-            except:
+            except AttributeError:
                 is_newly_published = None
-                    
+
             return {
                 "id": specific.id,
                 "title": specific.title,
-                "teaser_image_jpeg": {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                } if jpeg_image else None,
-                "teaser_image_webp": {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                } if webp_image else None,
+                "teaser_image_jpeg": (
+                    {
+                        "url": jpeg_image.url,
+                        "full_url": jpeg_image.full_url,
+                        "width": jpeg_image.width,
+                        "height": jpeg_image.height,
+                    }
+                    if jpeg_image
+                    else None
+                ),
+                "teaser_image_webp": (
+                    {
+                        "url": webp_image.url,
+                        "full_url": webp_image.full_url,
+                        "width": webp_image.width,
+                        "height": webp_image.height,
+                    }
+                    if webp_image
+                    else None
+                ),
                 "type_label": type_label,
-                **({"is_newly_published": is_newly_published} if is_newly_published is not None else {}),
+                **(
+                    {"is_newly_published": is_newly_published}
+                    if is_newly_published is not None
+                    else {}
+                ),
                 "url": specific.url,
                 "full_url": specific.full_url,
             }
