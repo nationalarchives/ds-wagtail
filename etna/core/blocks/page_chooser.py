@@ -14,6 +14,9 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
     If we want to set wagtailcore.Page as the page_type, the Page model
     doesn't have type_label - so will throw an error otherwise (hence the
     try/except blocks).
+
+    The block also allows for the rendition_size, jpeg_quality and webp_quality
+    of the teaser image to be set, the same way as the APIImageChooserBlock.
     """
     def __init__(
         self,
@@ -50,7 +53,7 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
                 type_label = None
 
             try:
-                is_newly_published = specific.is_newly_published,
+                is_newly_published = specific.is_newly_published
             except:
                 is_newly_published = None
                     
@@ -70,7 +73,7 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
                     "height": webp_image.height,
                 } if webp_image else None,
                 "type_label": type_label,
-                **({"is_newly_published": is_newly_published} if is_newly_published else {}),
+                **({"is_newly_published": is_newly_published} if is_newly_published is not None else {}),
                 "url": specific.url,
                 "full_url": specific.full_url,
             }
