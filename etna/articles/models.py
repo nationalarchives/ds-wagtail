@@ -113,7 +113,7 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = [APIField("article_tag_names")]
+    api_fields = [APIField("tags")]
 
 
 class ArticleIndexPage(BasePageWithIntro):
