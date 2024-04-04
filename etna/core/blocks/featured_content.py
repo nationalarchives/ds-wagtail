@@ -7,7 +7,7 @@ class FeaturedRecordArticleBlock(blocks.StructBlock):
     page = APIPageChooserBlock(
         label="Page",
         page_type="wagtailcore.Page",
-        api_fields=["teaser_image", "type_label", "is_newly_published"],
+        api_fields=["teaser_image", "type_label", "is_newly_published", "highlights.image", "highlights.alt_text"],
         rendition_size="fill-500x500",
         jpeg_quality=60,
         webp_quality=80,

@@ -1,47 +1,88 @@
 from .images import generate_teaser_images
 from wagtail.models import Page
 from rest_framework import serializers
+from django.db.models import QuerySet
+from etna.images.models import CustomImage
+
+
+def generate_images(image, field_name="teaser_image", rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80):
+    """
+    Generate the fields required for an image item with the given rendition size
+    and quality settings.
+    """
+    jpeg_image = image.get_rendition(
+        f"{rendition_size or "fill-600x400"}|format-jpeg|jpegquality-{jpeg_quality or 60}"
+    )
+    webp_image = image.get_rendition(
+        f"{rendition_size or "fill-600x400"}|format-webp|webpquality-{webp_quality or 80}"
+    )
+    return {f"{field_name}_jpeg": {
+        "url": jpeg_image.url,
+        "full_url": jpeg_image.full_url,
+        "width": jpeg_image.width,
+        "height": jpeg_image.height,
+    },
+    f"{field_name}_webp": {
+        "url": webp_image.url,
+        "full_url": webp_image.full_url,
+        "width": webp_image.width,
+        "height": webp_image.height,
+    }}
+
+def get_nested_data(value, field_path):
+    attrs = field_path.split(".")
+    nested_obj = getattr(value, attrs[0], None)
+    nested_data = {attrs[0]: None}
+    if isinstance(nested_obj, (list, tuple, QuerySet)):
+        nested_list = []
+        for obj in nested_obj:
+            try:
+                specific_obj = obj.specific
+            except AttributeError:
+                specific_obj = obj
+
+            for nested_attr in attrs[1:]:
+                field_data = getattr(specific_obj, nested_attr, None)
+                if isinstance(field_data, CustomImage):
+                    field_data = generate_images(field_data, field_name=nested_attr)
+                nested_list.append({nested_attr: field_data})
+        nested_data[attrs[0]] = nested_list
+    else:
+        for nested_attr in attrs[1:]:
+            nested_data.append(getattr(nested_obj, nested_attr, None))
+    return nested_data
+
 
 def get_api_fields(value, api_fields=[], **kwargs):
     if not value:
         return None
     
-    if not "teaser_image" in api_fields and (kwargs.get("rendition_size", None) or kwargs.get("jpeg_quality", None) or kwargs.get("webp_quality", None)):
-        raise ValueError("rendition_size, jpeg_quality or webp_quality, can't be set if there is no teaser_image in api_fields")
-
     specific = value.specific
-    
     api_field_data = {}
     for attr in api_fields:
-        api_field_data[attr] = getattr(specific, attr, None)
-        if callable(api_field_data[attr]):
-            api_field_data[attr] = api_field_data[attr]()
-        elif isinstance(api_field_data[attr], Page):
-            api_field_data[attr] = get_api_fields(api_field_data[attr])
-        elif isinstance(api_field_data[attr], (list, tuple)):
-            api_field_data[attr] = [get_api_fields(item) for item in api_field_data[attr]]
-        print(api_field_data[attr])
-
-    if api_field_data.get("teaser_image"):
-        jpeg_image = api_field_data["teaser_image"].get_rendition(
-            f"{kwargs.get("rendition_size", None) or "fill-600x400"}|format-jpeg|jpegquality-{kwargs.get("jpeg_quality", None) or 60}"
-        )
-        webp_image = api_field_data["teaser_image"].get_rendition(
-            f"{kwargs.get("rendition_size", None) or "fill-600x400"}|format-webp|webpquality-{kwargs.get("webp_quality", None) or 80}"
-        )
-        api_field_data.pop("teaser_image")
-        api_field_data["teaser_image_jpeg"] = {
-            "url": jpeg_image.url,
-            "full_url": jpeg_image.full_url,
-            "width": jpeg_image.width,
-            "height": jpeg_image.height,
-        }
-        api_field_data["teaser_image_webp"] = {
-            "url": webp_image.url,
-            "full_url": webp_image.full_url,
-            "width": webp_image.width,
-            "height": webp_image.height,
-        }
+        if "." in attr:
+            if field_data := api_field_data.get(attr.split(".")[0]):
+                for index, item in enumerate(get_nested_data(specific, attr).get(attr.split(".")[0])):
+                    other_data = get_nested_data(specific, attr).get(attr.split(".")[0])[index]
+                    field_data[index].update(other_data) 
+            else:
+                api_field_data.update(get_nested_data(specific, attr))
+        else:
+            field_data = getattr(specific, attr, None)
+            if callable(field_data):
+                api_field_data[attr] = field_data()
+            elif isinstance(field_data, Page):
+                api_field_data[attr] = get_api_fields(field_data)
+            elif isinstance(field_data, (list, tuple)):
+                try:
+                    api_field_data[attr] = [get_api_fields(item) for item in field_data]
+                except AttributeError:
+                    pass
+            elif isinstance(field_data, CustomImage):
+                api_field_data.update(generate_images(image=field_data, field_name=attr, rendition_size=kwargs.get("rendition_size", None), jpeg_quality=kwargs.get("jpeg_quality", None), webp_quality=kwargs.get("webp_quality", None)))
+    
+    # Remove any None/null values from the dictionary
+    api_field_data = {key: value for key, value in api_field_data.items() if value is not None}
 
     return {
         "id": specific.id,

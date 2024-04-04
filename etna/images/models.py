@@ -8,7 +8,7 @@ from wagtail.fields import RichTextField
 from wagtail.images.models import AbstractImage, AbstractRendition
 from wagtail.search import index
 
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers.richtext import RichTextSerializer
 from etna.records.fields import RecordField
 
 DEFAULT_SENSITIVE_IMAGE_WARNING = (
