@@ -145,7 +145,15 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data = super().get_datalayer_data(request)
         data.update(customDimension3=self._meta.verbose_name)
         return data
-
+    
+    @classmethod
+    def get_api_fields(self):
+        api_fields = self.api_fields
+        field_list = []
+        for field in api_fields:
+            field_list.append(field.name) 
+        return field_list
+    
     api_fields = [
         APIField("type_label"),
         APIField("teaser_image"),
