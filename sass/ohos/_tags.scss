@@ -5,6 +5,13 @@
     overflow: hidden;
     font-size: 16px;
 
+    &,
+    &:link,
+    &:visited {
+        color: inherit;
+        text-decoration: none;
+    }
+
     &--location {
         background-color: #edae49;
     }
@@ -23,6 +30,16 @@
 
     &--other {
         background-color: #faf0ca;
+    }
+
+    &--clear {
+        background-color: $color--off-black;
+
+        &,
+        &:link,
+        &:visited {
+            color: $color--white;
+        }
     }
 
     &__inner {

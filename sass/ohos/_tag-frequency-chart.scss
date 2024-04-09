@@ -1,0 +1,60 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/colour";
+
+.tag-frequency {
+    margin-bottom: 1.5rem;
+
+    &__tags {
+        font-size: 1rem;
+        background-color: #c2c2c2;
+        padding: 0.75rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid #8a8a8a;
+
+        @media screen and (max-width: $screen__md) {
+            flex-direction: column;
+        }
+    }
+
+    &__tags-list {
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0;
+        gap: 0.75rem;
+    }
+
+    &__chart {
+        border: 1px solid #8a8a8a;
+        background-color: $color__grey-300;
+        height: 550px;
+
+        &:not(:first-child) {
+            border-top: 0;
+        }
+
+        &:not(:last-child) {
+            border-bottom: 0;
+        }
+
+        a {
+            border-radius: 50%;
+        }
+    }
+
+    &__info {
+        background-color: $color__yellow;
+        border: 1px solid $color__off-black;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+
+        &-icon {
+            @include colour.colour-font("font-dark");
+            padding-right: 0.5rem;
+        }
+    }
+}

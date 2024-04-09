@@ -237,6 +237,7 @@ class BaseCollectionSearchForm(forms.Form):
         choices=[
             ("list", "List"),
             ("map", "Map"),
+            ("tag", "Tag"),
         ],
         required=False,
     )

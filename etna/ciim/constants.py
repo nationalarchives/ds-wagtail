@@ -658,6 +658,7 @@ class Views(StrEnum):
 
     LIST = "list"
     MAP = "map"
+    TAG = "tag"
 
 
 TYPE_NAMES = {
