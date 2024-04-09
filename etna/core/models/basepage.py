@@ -149,51 +149,47 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
     @classmethod
     def get_api_fields(self):
         api_fields = self.api_fields
-        field_list = []
+        fields = {}
         for field in api_fields:
-            field_list.append(field.name) 
-        return field_list
+            fields[field.name] = field.serializer if field.serializer else None
+        return fields
     
     api_fields = [
         APIField("type_label"),
-        APIField("teaser_image"),
+        APIField("teaser_image", serializer=ImageRenditionField(
+                "fill-600x400|format-jpeg|jpegquality-60"
+            ),),
         APIField("teaser_text"),
-        APIField(
-            "teaser_image_jpg",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_webp",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-webp", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_large_jpg",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_large_webp",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-webp", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_square_jpg",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_square_webp",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-webp", source="teaser_image"
-            ),
-        ),
+        # APIField(
+        #     "teaser_image_webp",
+        #     serializer=ImageRenditionField(
+        #         "fill-600x400|format-webp", source="teaser_image"
+        #     ),
+        # ),
+        # APIField(
+        #     "teaser_image_large_jpg",
+        #     serializer=ImageRenditionField(
+        #         "fill-1200x480|format-jpeg|jpegquality-60", source="teaser_image"
+        #     ),
+        # ),
+        # APIField(
+        #     "teaser_image_large_webp",
+        #     serializer=ImageRenditionField(
+        #         "fill-1200x480|format-webp", source="teaser_image"
+        #     ),
+        # ),
+        # APIField(
+        #     "teaser_image_square_jpg",
+        #     serializer=ImageRenditionField(
+        #         "fill-512x512|format-jpeg|jpegquality-60", source="teaser_image"
+        #     ),
+        # ),
+        # APIField(
+        #     "teaser_image_square_webp",
+        #     serializer=ImageRenditionField(
+        #         "fill-512x512|format-webp", source="teaser_image"
+        #     ),
+        # ),
     ]
 
 
