@@ -10,7 +10,10 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
             for field, serializer in specific.get_api_fields().items():
                 field_data = getattr(specific, field, None)
                 if serializer:
-                    field_data = serializer.to_representation(field_data)
+                    if serializer.source:
+                        field_data = serializer.to_representation(getattr(specific, serializer.source, None))
+                    else:
+                        field_data = serializer.to_representation(field_data)
                 # try:
                 #     if callable(field_data):
                 #         field_data = field_data()
@@ -20,7 +23,8 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
                 #         field_data = serializers.serialize("json", field_data)
                 # except:
                 #     print("error")
-                print(field_data)
+                if callable(field_data):
+                    field_data = field_data()
                 api_representation[field] = field_data
         return api_representation
 
