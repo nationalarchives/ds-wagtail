@@ -36,7 +36,7 @@ from etna.core.models import (
     NewLabelMixin,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers import RichTextSerializer, TaggableSerializer
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
@@ -113,7 +113,7 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = []
+    api_fields = [APIField("tags", serializer=TaggableSerializer())]
 
 
 class ArticleIndexPage(BasePageWithIntro):
