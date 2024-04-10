@@ -146,28 +146,6 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data.update(customDimension3=self._meta.verbose_name)
         return data
     
-    @classmethod
-    def get_api_fields(self):
-        api_fields = self.api_fields
-        external_fields = self.external_api_fields
-        fields = {}
-        for field in external_fields:
-            print(field)
-            if field in api_fields:
-                fields[field] = field.serializer if field.serializer else None
-        return fields
-    
-    external_api_fields = [
-        "type_label",
-        "teaser_text",
-        "teaser_image_jpg",
-        "teaser_image_webp",
-        "teaser_image_large_jpg",
-        "teaser_image_large_webp",
-        "teaser_image_square_jpg",
-        "teaser_image_square_webp",
-    ]
-    
     api_fields = [
         APIField("type_label"),
         APIField("teaser_text"),

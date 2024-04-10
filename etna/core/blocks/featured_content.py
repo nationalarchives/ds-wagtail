@@ -2,31 +2,79 @@ from wagtail import blocks
 from etna.images.models import CustomImage
 from django.core import serializers
 
+
+def get_api_fields(object, required_api_fields:list=None):
+    """
+    Get the selected fields (required_api_fields) from the object's api_fields
+    attribute, and return them as a dictionary with the field name as the key,
+    and the serializer as the value.
+    """
+    fields = {}
+    if api_fields := object.api_fields:
+        for field in required_api_fields:
+            for api_field in api_fields:
+                if field == api_field.name:
+                    fields[field] = api_field.serializer if api_field.serializer else None
+                    break
+    return fields
+
+def get_api_data(object, required_api_fields:list=None):
+    if object:
+        api_representation = {}
+        specific = object.specific
+        for field, serializer in get_api_fields(object=specific, required_api_fields=required_api_fields).items():
+            field_data = getattr(specific, field, None)
+            if serializer:
+                if serializer.source:
+                    field_data = serializer.to_representation(getattr(specific, serializer.source, None))
+                else:
+                    field_data = serializer.to_representation(field_data)
+            if callable(field_data):
+                field_data = field_data()
+            api_representation[field] = field_data
+    return api_representation
+
 class APIPageChooserBlock(blocks.PageChooserBlock):
     def get_api_representation(self, value, context=None):
-        if value:
-            api_representation = {}
-            specific = value.specific
-            for field, serializer in specific.get_api_fields().items():
-                field_data = getattr(specific, field, None)
-                if serializer:
-                    if serializer.source:
-                        field_data = serializer.to_representation(getattr(specific, serializer.source, None))
-                    else:
-                        field_data = serializer.to_representation(field_data)
-                # try:
-                #     if callable(field_data):
-                #         field_data = field_data()
-                #     elif isinstance(field_data, CustomImage):
-                #         field_data = field_data.get_rendition("fill-200x200").url
-                #     else:
-                #         field_data = serializers.serialize("json", field_data)
-                # except:
-                #     print("error")
-                if callable(field_data):
-                    field_data = field_data()
-                api_representation[field] = field_data
-        return api_representation
+        return get_api_data(object=value.specific, required_api_fields=["type_label",
+        "teaser_image_jpg",
+        "teaser_image_webp",
+        "teaser_image_large_jpg",
+        "teaser_image_large_webp",
+        "teaser_image_square_jpg",
+        "teaser_image_square_webp",])
+    #     if value:
+    #         api_representation = {}
+    #         specific = value.specific
+    #         for field, serializer in get_api_fields(object=specific, required_api_fields = [
+    #     "type_label",
+    #     "teaser_text",
+    #     "teaser_image_jpg",
+    #     "teaser_image_webp",
+    #     "teaser_image_large_jpg",
+    #     "teaser_image_large_webp",
+    #     "teaser_image_square_jpg",
+    #     "teaser_image_square_webp",
+    # ]).items():
+    #             field_data = getattr(specific, field, None)
+    #             if serializer:
+    #                 if serializer.source:
+    #                     field_data = serializer.to_representation(getattr(specific, serializer.source, None))
+    #                 else:
+    #                     field_data = serializer.to_representation(field_data)
+    #             # try:
+    #             #     if callable(field_data):
+    #             #         field_data = field_data()
+    #             #     elif isinstance(field_data, CustomImage):
+    #             #         field_data = field_data.get_rendition("fill-200x200").url
+    #             #     else:
+    #             #         field_data = serializers.serialize("json", field_data)
+    #             # except:
+    #             #     print("error")
+    #             if callable(field_data):
+    #                 field_data = field_data()
+    #             api_representation[field] = field_data
+    #     return api_representation
 
 class FeaturedRecordArticleBlock(blocks.StructBlock):
     page = APIPageChooserBlock(
