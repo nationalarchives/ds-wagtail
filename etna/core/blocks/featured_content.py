@@ -1,6 +1,4 @@
 from wagtail import blocks
-from wagtail.api import APIField
-
 
 def get_api_fields(object, required_api_fields:list=None) -> list:
     """
@@ -17,7 +15,7 @@ def get_api_fields(object, required_api_fields:list=None) -> list:
                     break
     return fields
 
-def get_api_data(object, required_api_fields:list=None):
+def get_api_data(object, required_api_fields:list=None) -> dict:
     if object:
         api_representation = {}
         specific = object.specific
