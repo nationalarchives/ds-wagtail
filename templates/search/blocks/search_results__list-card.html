@@ -1,19 +1,10 @@
-{% load static search_tags records_tags wagtailimages_tags %}
-
-{% extended_in_operator buckets.current.key bucketkeys.INSIGHT.value bucketkeys.HIGHLIGHT.value as apply_teaser_image %}
-
-{% if apply_teaser_image %}
-    {% image record.source_page.teaser_image fill-288x172 as teaser_image_small %}
-    {% image record.source_page.teaser_image fill-328x196 as teaser_image_medium %}
-    {% image record.source_page.teaser_image fill-348x208 as teaser_image_large %}
-    {% image record.source_page.teaser_image fill-508x304 as teaser_image_extra_large %}
-{% endif %}
+{% load records_tags %}
 
 {% comment %} TODO downloadable, and record variables {% endcomment %}
 
 <li class="search-results__list-card" data-iaid="{{ record.iaid }}" data-score="{{ record.score }}">
 
-    <i class="search-results__icon fa-solid fa-file"></i>
+    <!--<i class="search-results__icon fa-solid fa-file"></i>-->
 
     <div class="search-results__list-card-details">
         <h3 class="tna-heading-m">

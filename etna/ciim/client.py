@@ -1,6 +1,7 @@
 import json
 import logging
 
+from collections.abc import Sequence
 from datetime import date, datetime, time
 from enum import StrEnum
 from typing import (
@@ -10,7 +11,6 @@ from typing import (
     Iterable,
     List,
     Optional,
-    Sequence,
     Tuple,
     Type,
     Union,

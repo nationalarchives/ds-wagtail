@@ -14,15 +14,18 @@
         <span class="tna-header__logo-strapline">Beta</span>
       </a>
     </div>
-    <div class="tna-column tna-column--flex-1- tna-header__navigation-toggle">
-      <!-- POPULATED BY JAVASCRIPT IF ENABLED -->
+    <div class="tna-column tna-header__navigation-toggle">
+      <button class="tna-header__navigation-toggle-button" type="button" aria-controls="tna-header__navigation" hidden>
+        Menu
+        <span class="tna-header__hamburger"></span>
+      </button>
     </div>
     {% if settings.core.SiteSettings.main_menu_items %}
     <nav class="tna-column tna-column--flex-1 tna-column--full-small tna-column--full-tiny tna-header__navigation" aria-label="Main site navigation">
       <ul class="tna-header__navigation-items">
         {% for item in settings.core.SiteSettings.main_menu_items %}
           <li class="tna-header__navigation-item">
-            <a href="{{ item.url }}" class="tna-header__navigation-item-link{% if item.is_active %} tna-header__navigation-item-link--selected{% endif %}">
+            <a href="{{ item.url }}" class="tna-header__navigation-item-link{% if item.is_active %} tna-header__navigation-item-link--selected{% endif %}" tabindex="0" aria-current="true">
               {{ item.label }}
             </a>
           </li>

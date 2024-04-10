@@ -1,10 +1,12 @@
 import re
 
+from builtins import set
+from collections.abc import Sequence
 from typing import Any, Dict, Optional
 
 from django.urls import NoReverseMatch, reverse
 
-import bleach
+import nh3
 
 from pyquery import PyQuery as pq
 
@@ -257,14 +259,7 @@ def format_link(link_html: str) -> Dict[str, str]:
     return {"href": href, "id": id, "text": document.text()}
 
 
-def strip_html(value: str, preserve_marks=False, allow_tags=None):
-    tags = allow_tags or []
-    if preserve_marks:
-        tags.append("mark")
-    return bleach.clean(value, tags=tags, strip=True)
-
-
-def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
+def prepare_filter_aggregations(items: Sequence[str] | None) -> list[str] | None:
     """
     Filter format in items: 'field:value', 'field:value:or'
     Prepares i.e. removes/replaces special chars from a filter fields' value to be passed to the api
@@ -319,3 +314,44 @@ def prepare_filter_aggregations(items: Optional[list]) -> Optional[str]:
             filter_prepared_list = updated_list_for_or_operator
 
     return filter_prepared_list
+
+
+def strip_html(
+    value: str,
+    *,
+    preserve_marks: bool = False,
+    ensure_spaces: bool = False,
+    allow_tags: Optional[set] = None,
+) -> str:
+    """
+    Temporary HTML sanitiser to remove unwanted tags from data.
+    TODO:this will eventually be sanitised at API level.
+
+    value:
+        the value to be sanitised
+    preserver_marks:
+        allow pre-defined tags for styling
+    ensure_spaces:
+        allow pre-defined tags and replaces them with whitespace
+    allow_tags:
+        sets the tags that are allowed
+    """
+    clean_tags = {"span", "p"} if ensure_spaces else set()
+
+    if allow_tags is None:
+        allow_tags = set()
+
+    tags = set()
+    if preserve_marks:
+        tags.add("mark")
+    tags.update(clean_tags)
+    tags.update(allow_tags)
+
+    clean_html = nh3.clean(value, tags=tags)
+
+    for tag in clean_tags:
+        opening_regex = rf"<{tag}[^>]*>"
+        closing_regex = rf"</{tag}>"
+        clean_html = re.sub(opening_regex, " ", clean_html)
+        clean_html = re.sub(closing_regex, "", clean_html)
+    return clean_html.lstrip()

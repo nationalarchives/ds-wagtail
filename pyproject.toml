@@ -1,11 +1,10 @@
 [tool.poetry]
 name = "Etna"
-version = "24.03.05.28"
+version = "24.04.03.31"
 description = ""
 authors = ["James Biggs <james.biggs@nationalarchives.gov.uk>"]
 
 [tool.poetry.dependencies]
-bleach = "~6.1"
 Django = "~5.0"
 django-allauth = "~0.61"
 django-birdbath = "~1.1"
@@ -13,6 +12,7 @@ django-redis = "~5.4"
 django-taggit = "~5.0"
 eventbrite = "~3.3"
 gunicorn = "~21.2"
+nh3 = "~0.2"
 platformshconfig = "~2.4"
 psycopg2-binary = "~2.9"
 pyquery = "~2.0"

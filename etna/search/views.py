@@ -346,6 +346,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
             views=Views,
+            display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )

@@ -22,6 +22,8 @@
         align-items: center;
         margin-bottom: 1rem;
         border-top: 1px solid #8c9694;
+        padding-bottom: 0.5em;
+        border-bottom: 1px solid #8c9694;
 
         h2 {
             font-size: 2rem;
@@ -79,7 +81,7 @@
             display: block;
             max-width: 100%;
             color: inherit;
-            @include typography.detail-font-weight-bold;
+            // @include typography.detail-font-weight-bold;
         }
     }
 
@@ -97,8 +99,9 @@
         border-bottom: 1px solid $color__off-black;
 
         &-heading {
-            @include typography.detail-font-weight-bold;
+            // @include typography.detail-font-weight-bold;
             color: inherit;
+            // border-bottom: 1px solid $color__off-black;
         }
 
         &-link {

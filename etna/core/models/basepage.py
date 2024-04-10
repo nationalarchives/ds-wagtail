@@ -26,6 +26,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
+from etna.core.serializers import RichTextSerializer
 
 __all__ = [
     "BasePage",
@@ -164,13 +165,13 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         APIField(
             "teaser_image_large_jpg",
             serializer=ImageRenditionField(
-                "fill-1200x800|format-jpeg|jpegquality-60", source="teaser_image"
+                "fill-1200x480|format-jpeg|jpegquality-60", source="teaser_image"
             ),
         ),
         APIField(
             "teaser_image_large_webp",
             serializer=ImageRenditionField(
-                "fill-1200x800|format-webp", source="teaser_image"
+                "fill-1200x480|format-webp", source="teaser_image"
             ),
         ),
         APIField(
@@ -212,4 +213,6 @@ class BasePageWithIntro(BasePage):
         index.SearchField("intro", boost=3),
     ]
 
-    api_fields = BasePage.api_fields + [APIField("intro")]
+    api_fields = BasePage.api_fields + [
+        APIField("intro", serializer=RichTextSerializer())
+    ]

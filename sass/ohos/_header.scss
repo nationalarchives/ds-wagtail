@@ -1,6 +1,7 @@
 @use "@nationalarchives/frontend/nationalarchives/tools/typography";
 @use "@nationalarchives/frontend/nationalarchives/tools/colour";
 @use "@nationalarchives/frontend/nationalarchives/tools/media";
+@use "@nationalarchives/frontend/nationalarchives/font-awesome.scss";
 
 /**
  * Specific theme and style overrides for OHOS project
@@ -12,46 +13,74 @@
     &:not(&--accent) {
         background-color: var(--contrast-background);
     }
-}
 
-.tna-header__navigation-item-link {
-    &,
-    &:visited {
-        @include media.on-larger-than-mobile {
-            @include colour.colour-font("accent");
-        }
+    &__navigation-items {
+        gap: 1rem;
     }
 
-    &:hover,
-    &--selected,
-    &--selected:visited {
-        .tna-template--light-theme & {
-            @include media.on-larger-than-mobile {
-                @include colour.colour-font("contrast-background");
-                background: var(--background-tint);
+    &__navigation-item-link {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+        color: #f1d143;
+        font-family: $font__supria-sans;
+        font-size: 1.25rem;
+        font-weight: 500;
+
+        &::after {
+            display: none;
+        }
+
+        @include media.on-larger-than-mobile {
+            &,
+            &:visited {
+                @include colour.colour-font("accent");
+            }
+
+            // &:hover,
+            &--selected,
+            &--selected:visited {
+                .tna-template--light-theme & {
+                    @include colour.colour-font("contrast-background");
+                    background: var(--background-tint);
+                }
             }
         }
     }
-}
 
-.tna-header__logo-link {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
+    &__logo-link {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+    }
 
-.tna-header__logo-label {
-    display: none;
+    &__logo-label {
+        display: none;
 
-    @include media.on-larger-than-mobile {
-        @include typography.heading-font;
-        @include typography.relative-font-size(30);
-        display: inline;
+        @include media.on-larger-than-mobile {
+            @include typography.heading-font;
+            @include typography.relative-font-size(30);
+            display: inline;
+        }
     }
 }
 
 @include media.on-mobile {
-    .tna-header__navigation-items {
-        background: #fff !important;
+    .tna-header {
+        &__navigation-items {
+            gap: 0;
+            @include colour.colour-css-vars;
+            @include colour.colour-background("page-background");
+            // background: #fff !important;
+        }
+
+        &__navigation-item-link {
+            @include colour.colour-font("font-base", true);
+            border-left: 0.5rem transparent solid;
+
+            &--selected {
+                @include colour.colour-font("font-dark", true);
+                @include colour.colour-border("font-dark");
+            }
+        }
     }
 }

@@ -137,7 +137,7 @@ class Record(DataLayerMixin, APIModel):
             return self.summary
         # TODO:Rosetta
         if raw := self._get_raw_summary_title():
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return raw
 
     def _get_raw_summary_title(self) -> str:
@@ -215,7 +215,7 @@ class Record(DataLayerMixin, APIModel):
         """
         if raw := self._get_raw_description():
             if self.group == BucketKeys.COMMUNITY:
-                allow_tags = ["a", "br", "p"]
+                allow_tags = {"a", "br", "p"}
                 updated_value = raw.replace("\n", "<br />")
                 strip_html_value = strip_html(updated_value, allow_tags=allow_tags)
                 return mark_safe(strip_html_value)
@@ -236,7 +236,7 @@ class Record(DataLayerMixin, APIModel):
             return self.description
         # TODO:Rosetta tna,nonTna
         if raw := self._get_raw_description(use_highlights=True):
-            return mark_safe(strip_html(raw, preserve_marks=True))
+            return mark_safe(strip_html(raw, preserve_marks=True, ensure_spaces=True))
         return ""
 
     def _get_raw_description(self, use_highlights: bool = False) -> str:
