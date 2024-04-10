@@ -1,20 +1,19 @@
 from wagtail import blocks
-from etna.images.models import CustomImage
-from django.core import serializers
+from wagtail.api import APIField
 
 
-def get_api_fields(object, required_api_fields:list=None):
+def get_api_fields(object, required_api_fields:list=None) -> list:
     """
     Get the selected fields (required_api_fields) from the object's api_fields
     attribute, and return them as a dictionary with the field name as the key,
     and the serializer as the value.
     """
-    fields = {}
+    fields = []
     if api_fields := object.api_fields:
         for field in required_api_fields:
             for api_field in api_fields:
                 if field == api_field.name:
-                    fields[field] = api_field.serializer if api_field.serializer else None
+                    fields.append(api_field)
                     break
     return fields
 
@@ -22,16 +21,17 @@ def get_api_data(object, required_api_fields:list=None):
     if object:
         api_representation = {}
         specific = object.specific
-        for field, serializer in get_api_fields(object=specific, required_api_fields=required_api_fields).items():
-            field_data = getattr(specific, field, None)
-            if serializer:
-                if serializer.source:
-                    field_data = serializer.to_representation(getattr(specific, serializer.source, None))
-                else:
-                    field_data = serializer.to_representation(field_data)
-            if callable(field_data):
-                field_data = field_data()
-            api_representation[field] = field_data
+        if api_fields := get_api_fields(object=specific, required_api_fields=required_api_fields):
+            for field in api_fields:
+                field_data = getattr(specific, field.name, None)
+                if serializer := field.serializer:
+                    if source := serializer.source:
+                        field_data = serializer.to_representation(getattr(specific, source, None))
+                    else:
+                        field_data = serializer.to_representation(field_data)
+                if callable(field_data):
+                    field_data = field_data()
+                api_representation[field.name] = field_data
     return api_representation
 
 class APIPageChooserBlock(blocks.PageChooserBlock):
