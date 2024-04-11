@@ -801,8 +801,8 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     )
 
     api_fields = (
-        ContentWarningMixin.api_fields
-        + BasePageWithIntro.api_fields
+        BasePageWithIntro.api_fields
+        + ContentWarningMixin.api_fields
         + [
             APIField("featured_record_article"),
             APIField("featured_article"),
