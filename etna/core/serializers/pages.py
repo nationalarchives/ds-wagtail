@@ -1,6 +1,7 @@
 from wagtail.images.api.fields import ImageRenditionField
 
 from rest_framework import serializers
+from rest_framework.fields import empty
 
 
 def get_api_fields(object, required_api_fields:list=[]) -> list:
@@ -113,3 +114,11 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return obj.get_url()
+    
+class DefaultPageSerializer(serializers.Serializer):
+    def __init__(self, instance=None, data=empty, required_api_fields=[], **kwargs):
+        self.required_api_fields = required_api_fields
+        super().__init__(**kwargs)
+
+    def to_representation(self, instance):
+        return get_api_data(instance, required_api_fields=self.required_api_fields)
