@@ -146,6 +146,11 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data.update(customDimension3=self._meta.verbose_name)
         return data
     
+    default_api_fields = [
+        APIField("id"),
+        APIField("title"),
+    ]
+    
     api_fields = [
         APIField("type_label"),
         APIField("teaser_text"),

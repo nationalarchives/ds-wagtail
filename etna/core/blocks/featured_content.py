@@ -9,14 +9,13 @@ class APIPageChooserBlock(blocks.PageChooserBlock):
         super().__init__(**kwargs)
 
     def get_api_representation(self, value, context=None):
-        return get_api_data(object=value.specific, required_api_fields=self.required_api_fields)
+        return get_api_data(object=value, required_api_fields=self.required_api_fields)
 
 class FeaturedRecordArticleBlock(blocks.StructBlock):
     page = APIPageChooserBlock(
         label="Page",
         page_type="articles.RecordArticlePage",
         required_api_fields=[
-            "title",
             "teaser_text",
             "teaser_image_jpg",
             "teaser_image_webp",
