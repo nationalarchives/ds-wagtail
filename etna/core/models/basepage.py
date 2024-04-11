@@ -149,6 +149,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
     default_api_fields = [
         APIField("id"),
         APIField("title"),
+        APIField("url"),
+        APIField("full_url"),
     ]
     
     api_fields = [

@@ -7,8 +7,10 @@ from .paragraph import ParagraphBlock, ParagraphWithHeading
 from .promoted_links import AuthorPromotedLinkBlock, PromotedLinkBlock
 from .quote import QuoteBlock
 from .section import SectionBlock
+from .page_chooser import APIPageChooserBlock
 
 __all__ = [
+    "APIPageChooserBlock",
     "ContentImageBlock",
     "FeaturedRecordArticleBlock",
     "ImageBlock",
