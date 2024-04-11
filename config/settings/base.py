@@ -290,6 +290,8 @@ WAGTAILADMIN_BASE_URL = os.getenv(
     "WAGTAILADMIN_BASE_URL", "https://nationalarchives.gov.uk"
 )
 
+CSRF_TRUSTED_ORIGINS = [WAGTAILADMIN_BASE_URL]
+
 # For search results within Wagtail itself
 WAGTAILSEARCH_BACKENDS = {
     "default": {
