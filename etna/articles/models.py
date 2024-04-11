@@ -678,7 +678,7 @@ class RecordArticlePage(
             APIField("record"),
             APIField("gallery_heading"),
             APIField("image_library_link"),
-            APIField("featured_article"),
+            APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
             APIField("promoted_links"),
             APIField(
                 "intro_image_jpg",
