@@ -23,12 +23,11 @@
                         <span class="search-visualisation-nav__link-label">Timeline view</span>
                     </a>
                 </li>
-                {# Example of disabled link (not actually a link as it doesn't have a destination) #}
-                <li class="search-visualisation-nav__list-item" aria-hidden="true">
-                    <span class="search-visualisation-nav__disabled">
+                <li class="search-visualisation-nav__list-item">
+                    <a href="{{tag_view_url}}" class="search-visualisation-nav__link"{% if form.views.value == views.TAG.value %} aria-current="true"{% endif %}>
                         <i class="fa-solid fa-circle fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">Tag view</span>
-                    </span>
+                    </a>
                 </li>
             </ul>
         </div>

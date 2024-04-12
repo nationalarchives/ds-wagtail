@@ -78,7 +78,7 @@ class CommunityRecordModelTests(SimpleTestCase):
         )
         self.assertEqual(
             self.record.description,
-            ' in bold  <p> in para </p>in span<a href="http://test.com">atag</a>custom tag<br>line2',
+            'in bold  <p> in para </p>in span<a href="http://test.com" rel="noopener noreferrer">atag</a>custom tag<br>line2',
         )
 
     def test_group(self):
@@ -308,11 +308,11 @@ class RecordModelTests(SimpleTestCase):
         self.assertEqual(
             self.record.listing_description,
             (
-                "\nThis series contains papers concering a wide variety of legal matters referred "
+                "This series contains papers concering a wide variety of legal matters referred "
                 "to the Law Officers for their advice or approval and includes applications for the "
                 "Attorney General's General Fiat for leave to appeal to the House of Lords in criminal "
-                "cases."
-                "\nAlso included are a number of opinions, more of which can be found in LO 3"
+                "cases. "
+                "Also included are a number of opinions, more of which can be found in LO 3"
             ),
         )
 

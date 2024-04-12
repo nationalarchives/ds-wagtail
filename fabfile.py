@@ -324,11 +324,17 @@ def pull_database_from_platform(c, environment_name):
         raise
 
     print("Database updated successfully")
-    print(
-        "NOTE: Any Django users you were using before will no longer exist. "
-        "You may want to run `python manage.py createsuperuser` from a container "
-        "shell to create yourself a new one."
-    )
+    print("NOTE: Any Django users you were using before will no longer exist.")
+
+    try:
+        print("Creating superuser with credentials setup from docker compose.")
+        run_management_command(c, "createsuperuser --no-input", check_returncode=True)
+    except subprocess.CalledProcessError:
+        print("*** Failed to create superuser *** ")
+        print(
+            "You may want to run `python manage.py createsuperuser` from a container "
+            "shell to create yourself a new one."
+        )
 
 
 def pull_media_from_platform(

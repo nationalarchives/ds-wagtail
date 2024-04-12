@@ -346,6 +346,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
             views=Views,
+            display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
         )
@@ -670,6 +671,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
             },
             map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.MAP})}',
             timeline_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.TIMELINE})}',
+            tag_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.TAG})}',
         )
         return super().get_context_data(**kwargs)
 

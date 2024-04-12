@@ -238,6 +238,7 @@ class BaseCollectionSearchForm(forms.Form):
             ("list", "List"),
             ("map", "Map"),
             ("timeline", "Timeline"),
+            ("tag", "Tag"),
         ],
         required=False,
     )

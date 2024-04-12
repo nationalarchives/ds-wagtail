@@ -63,7 +63,7 @@ if DEBUG and DEBUG_TOOLBAR_ENABLED:
         "debug_toolbar.middleware.DebugToolbarMiddleware",
     ]
 
-    def show_toolbar(request):
+    def show_toolbar(request) -> bool:
         return strtobool(os.getenv("DEBUG_TOOLBAR", "False"))
 
     DEBUG_TOOLBAR_CONFIG = {

@@ -96,7 +96,7 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = [APIField("article_tag_names")]
+    api_fields = [APIField("tags")]
 
 
 # TODO: Make better
@@ -166,13 +166,13 @@ class ArticlePage(
         ]
     )
 
-    verbose_name_public = Meta.verbose_name_public
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
-            APIField("verbose_name_public"),
             APIField("similar_items", serializer=PageSerializer(many=True)),
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
