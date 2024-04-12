@@ -5,7 +5,8 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
 from wagtail.api import APIField
-from wagtail.images.blocks import ImageChooserBlock
+
+from etna.core.blocks.image import APIImageChooserBlock
 
 from ..ciim.exceptions import ClientAPIError
 from .api import records_client
@@ -113,7 +114,7 @@ class RecordLinkBlock(blocks.StructBlock):
     record = RecordChooserBlock(label=_("Record"))
     descriptive_title = blocks.CharBlock(label=_("Descriptive title"), max_length=255)
     record_dates = blocks.CharBlock(label=_("Date(s)"), max_length=100)
-    thumbnail_image = ImageChooserBlock(
+    thumbnail_image = APIImageChooserBlock(
         label=_("Thumbnail image (optional)"), required=False
     )
 

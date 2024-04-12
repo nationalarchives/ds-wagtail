@@ -22,6 +22,7 @@ module.exports = {
         feedback_tracking: "./scripts/src/feedback-tracking.js",
         whats_on: "./scripts/src/whats-on.js",
         search_results_map: "./scripts/src/search-results-map.js",
+        tag_frequency_chart: "./scripts/src/modules/tag-frequency/tag-frequency-chart.js",
     },
     output: {
         filename: "[name].js",
