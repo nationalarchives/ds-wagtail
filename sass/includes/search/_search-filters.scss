@@ -81,7 +81,7 @@
             display: block;
             max-width: 100%;
             color: inherit;
-            //@include typography.detail-font-weight-bold;
+            // @include typography.detail-font-weight-bold;
         }
     }
 
@@ -99,7 +99,7 @@
         border-bottom: 1px solid $color__off-black;
 
         &-heading {
-            //@include typography.detail-font-weight-bold;
+            // @include typography.detail-font-weight-bold;
             color: inherit;
             // border-bottom: 1px solid $color__off-black;
         }
