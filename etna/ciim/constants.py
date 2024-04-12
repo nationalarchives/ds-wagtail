@@ -654,8 +654,8 @@ class Display(StrEnum):
 
 
 @forTemplate
-class Views(StrEnum):
-    """View types to support view, template."""
+class VisViews(StrEnum):
+    """Data visualisation View types to support django view, template."""
 
     LIST = "list"
     MAP = "map"
