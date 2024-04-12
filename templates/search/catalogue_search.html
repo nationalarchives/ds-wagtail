@@ -43,7 +43,7 @@
             {% include './blocks/visualisation_menu.html' %}
         {% endif %}
 
-        {% if form.views.value == views.TAG.value %}
+        {% if form.vis_view.value == vis_view.TAG.value %}
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
                     {% include './blocks/search_results_tag_frequency.html' %}
@@ -52,7 +52,7 @@
         {% endif %}
 
         {# Map view is displayed without results and filters #}
-        {% if form.views.value == views.MAP.value %}
+        {% if form.vis_view.value == vis_view.MAP.value %}
             <div class="tna-container">
                 <div class="tna-column tna-column--full">
                     {% include './blocks/search_results_map.html' %}
@@ -103,14 +103,14 @@
 {% endblock %}
 
 {% block extra_js %}
-    {% if form.views.value == views.MAP.value %}
+    {% if form.vis_view.value == vis_view.MAP.value %}
         <script src="{% static 'scripts/search_results_map.js' %}"></script>
     {% else %}
         <script src="{% static 'scripts/catalogue_search.js' %}"></script>
     {% endif %}
 
     {# Logic needs improving once all data visualisations are implemented #}
-    {% if form.views.value == views.TAG.value %}
+    {% if form.vis_view.value == vis_view.TAG.value %}
         <script src="{% static 'scripts/tag_frequency_chart.js' %}"></script>
     {% endif %}
 

@@ -25,7 +25,7 @@ from ..ciim.constants import (
     BucketList,
     Display,
     SearchTabs,
-    Views,
+    VisViews,
 )
 from ..ciim.paginator import APIPaginator
 from ..ciim.utils import underscore_to_camelcase
@@ -345,7 +345,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             result_count=self.get_result_count(),
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
-            views=Views,
+            vis_view=VisViews,
             display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
@@ -383,7 +383,7 @@ class BaseFilteredSearchView(BaseSearchView):
     default_per_page: int = 20
     default_sort: str = Sort.RELEVANCE.value
     default_display: str = Display.LIST.value
-    default_view: str = Views.LIST.value
+    default_view: str = VisViews.LIST.value
 
     dynamic_choice_fields = (
         "collection",
@@ -404,7 +404,7 @@ class BaseFilteredSearchView(BaseSearchView):
             "sort": self.default_sort,
             "per_page": self.default_per_page,
             "display": self.default_display,
-            "view": self.default_view,
+            "vis_view": self.default_view,
         }
 
     @property
@@ -669,8 +669,8 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 "lon": settings.FEATURE_GEO_LON,
                 "zoom": settings.FEATURE_GEO_ZOOM,
             },
-            map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.MAP})}',
-            tag_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "views": Views.TAG})}',
+            map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.MAP})}',
+            tag_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.TAG})}',
         )
         return super().get_context_data(**kwargs)
 

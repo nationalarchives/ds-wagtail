@@ -233,7 +233,7 @@ class BaseCollectionSearchForm(forms.Form):
         ],
         required=False,
     )
-    views = forms.ChoiceField(
+    vis_view = forms.ChoiceField(
         choices=[
             ("list", "List"),
             ("map", "Map"),

@@ -16,7 +16,7 @@
 
         {% if selected_filters or form.errors %}
             <li class="search-results__selected-filters-item-remove-all">
-                <a href="?q={{ form.cleaned_data.q|default:'' }}&group={{ form.cleaned_data.group|default:'tna' }}" class="search-results__selected-filters-item-remove-all-link" data-link-type="Search Link" data-link="Remove all filters">Remove all filters</a>
+                <a href="?q={{ form.cleaned_data.q|default:'' }}&group={{ form.cleaned_data.group|default:'tna' }}&vis_view={{ form.cleaned_data.vis_view|default:'list' }}" class="search-results__selected-filters-item-remove-all-link" data-link-type="Search Link" data-link="Remove all filters">Remove all filters</a>
             </li>
         {% endif %}
     </ul>
