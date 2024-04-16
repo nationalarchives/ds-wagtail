@@ -205,6 +205,14 @@
         <!--GDS SCRIPTS-->
     </div>
     {# render hidden inputs for fields controlled by other forms #}
-    {% render_fields_as_hidden form include='q group sort sort_order vis_view' %}
+    {% if form.group.value == bucketkeys.COMMUNITY.value %}
+        {% if form.vis_view.value == vis_view.TIMELINE %}
+            {% render_fields_as_hidden form include='q group sort vis_view timeline_type creation_date_from' %}
+        {% else %}
+            {% render_fields_as_hidden form include='q group sort vis_view' %}
+        {% endif %}
+    {% else %}
+        {% render_fields_as_hidden form include='q group sort' %}              
+    {% endif %}
 </form>
 {% comment %} {% include './search_export_and_share.html' %} {% endcomment %}

@@ -13,8 +13,13 @@
         {{ form.sort.errors }}
         {% render_sort_input form=form id_suffix="desktop" %}
 
-        {% if form.group.value == 'community' %}
-            {% render_fields_as_hidden form exclude='sort opening_start_date opening_end_date filter_keyword' %}
+        {# render hidden inputs for fields controlled by other forms #}
+        {% if form.group.value == bucketkeys.COMMUNITY.value %}
+            {% if form.vis_view.value == vis_view.TIMELINE %}
+                {% render_fields_as_hidden form exclude='sort opening_start_date opening_end_date filter_keyword' %}
+            {% else %}
+                {% render_fields_as_hidden form exclude='sort opening_start_date opening_end_date filter_keyword timeline_type creation_date_from' %}
+            {% endif %}
         {% else %}
             {% render_fields_as_hidden form exclude='sort' %}
         {% endif %}
