@@ -125,7 +125,7 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 class DefaultPageSerializer(serializers.Serializer):
     def __init__(self, instance=None, data=empty, required_api_fields=[], **kwargs):
         self.required_api_fields = required_api_fields
-        super().__init__(**kwargs)
+        super().__init__(instance=instance, data=data, **kwargs)
 
     def to_representation(self, instance):
         return get_api_data(instance, required_api_fields=self.required_api_fields)
