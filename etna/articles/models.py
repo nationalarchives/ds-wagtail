@@ -196,17 +196,6 @@ class ArticleIndexPage(BasePageWithIntro):
     ]
 
 
-# TODO: Make better
-class PageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = (
-            "id",
-            "title",
-            "url_path",
-        )
-
-
 class ArticlePage(
     TopicalPageMixin,
     RequiredHeroImageMixin,
@@ -278,9 +267,19 @@ class ArticlePage(
         + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
-            APIField("similar_items", serializer=PageSerializer(many=True)),
-            APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["newly_published_at", "type_label"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["newly_published_at", "type_label"], many=True
+                ),
+            ),
         ]
         + TopicalPageMixin.api_fields
     )
@@ -437,6 +436,18 @@ class FocusedArticlePage(
         + [
             APIField("type_label"),
             APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["newly_published_at", "type_label"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["newly_published_at", "type_label"], many=True
+                ),
+            ),
         ]
         + TopicalPageMixin.api_fields
         + AuthorPageMixin.api_fields
