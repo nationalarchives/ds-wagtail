@@ -4,7 +4,7 @@ from rest_framework import serializers
 from rest_framework.fields import empty
 
 
-def get_api_fields(object, required_api_fields:list=[]) -> list:
+def get_api_fields(object, required_api_fields: list = []) -> list:
     """
     Get the selected fields (required_api_fields) from the object's api_fields
     attribute, and return them as a list of APIField instances. APIFields are
@@ -26,9 +26,10 @@ def get_api_fields(object, required_api_fields:list=[]) -> list:
                     break
     return fields
 
+
 def get_field_data(object, field) -> any:
     """
-    This function takes an object and an APIField instance, and returns 
+    This function takes an object and an APIField instance, and returns
     the serialized data for that field from the object.
     """
     if object:
@@ -43,7 +44,8 @@ def get_field_data(object, field) -> any:
         return field_data
     return None
 
-def get_api_data(object, required_api_fields:list=[]) -> dict:
+
+def get_api_data(object, required_api_fields: list = []) -> dict:
     """
     This function takes a list of required_api_fields which are the fields
     to be passed to the `get_api_fields` function, and then uses the list
@@ -55,9 +57,13 @@ def get_api_data(object, required_api_fields:list=[]) -> dict:
     api_representation = {}
     if object:
         specific = object.specific
-        if api_fields := get_api_fields(object=specific, required_api_fields=required_api_fields):
+        if api_fields := get_api_fields(
+            object=specific, required_api_fields=required_api_fields
+        ):
             for field in api_fields:
-                api_representation[field.name] = get_field_data(object=specific, field=field)
+                api_representation[field.name] = get_field_data(
+                    object=specific, field=field
+                )
     return api_representation
 
 
@@ -114,7 +120,8 @@ class LinkedPageSerializer(serializers.ModelSerializer):
 
     def get_url(self, obj):
         return obj.get_url()
-    
+
+
 class DefaultPageSerializer(serializers.Serializer):
     def __init__(self, instance=None, data=empty, required_api_fields=[], **kwargs):
         self.required_api_fields = required_api_fields

@@ -1,8 +1,8 @@
 from wagtail import blocks
 
-from etna.core.blocks import ParagraphBlock, ParagraphWithHeading
+from etna.core.blocks import APIPageChooserBlock, ParagraphBlock, ParagraphWithHeading
 from etna.core.blocks.image import APIImageChooserBlock
-from etna.core.blocks import APIPageChooserBlock
+
 
 class FeaturedExternalPageBlock(blocks.StructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
@@ -24,7 +24,9 @@ class FeaturedPageBlock(blocks.StructBlock):
     title = blocks.CharBlock(
         max_length=100, required=False, help_text="Optionally override the page's title"
     )
-    page = APIPageChooserBlock(required_api_fields=["teaser_image", "teaser_text", "type_label"])
+    page = APIPageChooserBlock(
+        required_api_fields=["teaser_image", "teaser_text", "type_label"]
+    )
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"
     )

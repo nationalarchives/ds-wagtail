@@ -36,7 +36,11 @@ from etna.core.models import (
     NewLabelMixin,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import RichTextSerializer, TaggableSerializer, DefaultPageSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    RichTextSerializer,
+    TaggableSerializer,
+)
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
@@ -141,7 +145,10 @@ class ArticleIndexPage(BasePageWithIntro):
     )
 
     api_fields = BasePageWithIntro.api_fields + [
-        APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
+        APIField(
+            "featured_article",
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"]),
+        ),
         APIField("featured_pages"),
     ]
 
@@ -678,7 +685,12 @@ class RecordArticlePage(
             APIField("record"),
             APIField("gallery_heading"),
             APIField("image_library_link"),
-            APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image_jpg"]
+                ),
+            ),
             APIField("promoted_links"),
             APIField(
                 "intro_image_jpg",

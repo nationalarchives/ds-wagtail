@@ -22,7 +22,7 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import LinkedPageSerializer, DefaultPageSerializer
+from etna.core.serializers import DefaultPageSerializer, LinkedPageSerializer
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -158,7 +158,12 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
             APIField("body"),
             APIField("articles_title"),
             APIField("articles_introduction"),
-            APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image_jpg"]
+                ),
+            ),
             APIField("featured_articles"),
         ]
     )
@@ -297,7 +302,12 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image_jpg"]
+                ),
+            ),
             APIField("featured_record_article"),
             APIField("skos_id"),
             APIField("related_page_pks"),
@@ -805,7 +815,12 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         + ContentWarningMixin.api_fields
         + [
             APIField("featured_record_article"),
-            APIField("featured_article", serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"])),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image_jpg"]
+                ),
+            ),
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
         ]

@@ -2,13 +2,13 @@ from typing import Any, Optional, Sequence
 
 from django.utils.functional import cached_property
 
-from .page_chooser import APIPageChooserBlock
-
 from wagtail import blocks
 from wagtail.blocks.list_block import ListValue
 from wagtail.coreutils import resolve_model_string
 from wagtail.models import Page, PageBase
 from wagtail.query import PageQuerySet
+
+from .page_chooser import APIPageChooserBlock
 
 
 class PageListBlock(blocks.ListBlock):
@@ -34,7 +34,10 @@ class PageListBlock(blocks.ListBlock):
         self.prefetch_related = prefetch_related
         self.exclude_drafts = exclude_drafts
         self.exclude_private = exclude_private
-        child_block = APIPageChooserBlock(page_type=page_types, required_api_fields=["teaser_text", "type_label", "authors"])
+        child_block = APIPageChooserBlock(
+            page_type=page_types,
+            required_api_fields=["teaser_text", "type_label", "authors"],
+        )
         super().__init__(child_block, **kwargs)
 
     @cached_property

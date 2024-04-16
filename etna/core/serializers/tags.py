@@ -8,6 +8,6 @@ class TaggableSerializer(serializers.CharField):
     JSON serializable, so we need to convert it to a list of
     tag names.
     """
-    
+
     def to_representation(self, instance):
         return [tag.name for tag in instance.all()]

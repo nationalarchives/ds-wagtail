@@ -1,4 +1,4 @@
-from .pages import LinkedPageSerializer, DefaultPageSerializer
+from .pages import DefaultPageSerializer, LinkedPageSerializer
 from .richtext import RichTextSerializer
 from .tags import TaggableSerializer
 

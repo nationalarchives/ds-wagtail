@@ -145,14 +145,14 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data = super().get_datalayer_data(request)
         data.update(customDimension3=self._meta.verbose_name)
         return data
-    
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
         APIField("url"),
         APIField("full_url"),
     ]
-    
+
     api_fields = [
         APIField("type_label"),
         APIField("teaser_text"),

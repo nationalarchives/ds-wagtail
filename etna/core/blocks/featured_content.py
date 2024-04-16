@@ -1,5 +1,7 @@
 from wagtail import blocks
+
 from .page_chooser import APIPageChooserBlock
+
 
 class FeaturedRecordArticleBlock(blocks.StructBlock):
     page = APIPageChooserBlock(
