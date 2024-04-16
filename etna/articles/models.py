@@ -24,7 +24,6 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
-from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin
