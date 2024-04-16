@@ -144,7 +144,7 @@
 
                   // Display an alert with the record count
                   //alert(`You clicked on the ${centuryLabels[clickedIndex]}. There are ${recordCount} records.`);
-                  window.location = `./search_results_timeline_per_century.html?startDate=${centuryLabels[clickedIndex]}`;
+                  window.location = `./?vis_view=timeline&timeline_type=decade&creation_date_from=${centuryLabels[clickedIndex]}`;
                 }
               };
             })
