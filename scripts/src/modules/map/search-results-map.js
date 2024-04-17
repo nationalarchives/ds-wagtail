@@ -4,7 +4,6 @@
  */
 import L from "leaflet";
 
-
 /**
  * Leaflet Marker Cluster plugin
  * Docs - {@link https://github.com/Leaflet/Leaflet.markercluster}
@@ -19,7 +18,6 @@ const dataWithLatLon = data.data.filter((item) => {
     const details = item["@template"].details;
     return details.lat && details.lon;
 });
-
 
 // Convert data to GeoJSON format
 const dataToGeoJson = {

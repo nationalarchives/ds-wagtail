@@ -106,31 +106,29 @@
 
 // timeline / histogram rules
 
-
- .hist-container {
-     background:#d9d9d6;
-     padding-left:0;
-     padding-right:0;
- }
+.hist-container {
+    background: #d9d9d6;
+    padding-left: 0;
+    padding-right: 0;
+}
 
 .hist-bar {
-    min-height:50px;
-    background:teal;
+    min-height: 50px;
+    background: teal;
     // margin-bottom:20px;
-    width:100%;
+    width: 100%;
 }
 
 .disclaim {
-    background:white;
-    padding-top:10px;
-    padding-bottom:10px;
+    background: white;
+    padding-top: 10px;
+    padding-bottom: 10px;
     font-size: 14px;
-    width:100%;
-    padding-left:10px;
-    margin-top:0;
-
+    width: 100%;
+    padding-left: 10px;
+    margin-top: 0;
 }
 
 canvas {
-    background:#d9d9d6;
+    background: #d9d9d6;
 }
