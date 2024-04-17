@@ -6,7 +6,7 @@
         <div class="search-visualisation-nav">
             <ul class="search-visualisation-nav__list" data-id="search-visualisation-nav-list">
                 <li class="search-visualisation-nav__list-item">
-                    <a href="?{% query_string_include 'vis_view' vis_view.LIST.value %}" class="search-visualisation-nav__link"{% if form.vis_view.value == vis_view.LIST.value %} aria-current="true"{% endif %}>
+                    <a href="{{list_view_url}}" class="search-visualisation-nav__link"{% if form.vis_view.value == vis_view.LIST.value %} aria-current="true"{% endif %}>
                         <i class="fa-solid fa-list fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">List view</span>
                     </a>
@@ -18,7 +18,7 @@
                     </a>
                 </li>
                 <li class="search-visualisation-nav__list-item">
-                    <a href="/" class="search-visualisation-nav__link">
+                    <a href="{{timeline_view_url}}" class="search-visualisation-nav__link"{% if form.vis_view.value == vis_view.TIMELINE.value %} aria-current="true"{% endif %}>
                         <i class="fa-sharp fa-solid fa-chart-simple fa-xl"></i>
                         <span class="search-visualisation-nav__link-label">Timeline view</span>
                     </a>

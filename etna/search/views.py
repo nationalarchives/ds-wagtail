@@ -25,6 +25,7 @@ from ..ciim.constants import (
     BucketList,
     Display,
     SearchTabs,
+    TimelineTypes,
     VisViews,
 )
 from ..ciim.paginator import APIPaginator
@@ -346,6 +347,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             bucketkeys=BucketKeys,
             searchtabs=SearchTabs,
             vis_view=VisViews,
+            timeline_type=TimelineTypes,
             display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,
@@ -669,7 +671,9 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
                 "lon": settings.FEATURE_GEO_LON,
                 "zoom": settings.FEATURE_GEO_ZOOM,
             },
+            list_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.LIST})}',
             map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.MAP})}',
+            timeline_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.TIMELINE, "timeline_type": TimelineTypes.CENTURY})}',
             tag_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.TAG})}',
         )
         return super().get_context_data(**kwargs)

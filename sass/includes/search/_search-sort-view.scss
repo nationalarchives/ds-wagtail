@@ -22,6 +22,7 @@
     &__form {
         margin-left: auto;
         // width: 100%;
+        margin-top: 10px;
 
         @media only screen and (max-width: $screen__md) {
             margin-left: 0;

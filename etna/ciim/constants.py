@@ -659,7 +659,17 @@ class VisViews(StrEnum):
 
     LIST = "list"
     MAP = "map"
+    TIMELINE = "timeline"
     TAG = "tag"
+
+
+@forTemplate
+class TimelineTypes(StrEnum):
+    """The timeline view types that can be displayed"""
+
+    CENTURY = "century"  # for items distributed by century
+    DECADE = "decade"  # for items distributed by decade for a century
+    YEAR = "year"  # for items distributed by year for a decade
 
 
 TYPE_NAMES = {

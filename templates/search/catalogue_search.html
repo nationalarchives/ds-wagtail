@@ -59,6 +59,15 @@
                 </div>
             </div>
         {% else %}
+            {% if form.vis_view.value == vis_view.TIMELINE.value %}
+                {% if form.timeline_type.value == timeline_type.CENTURY.value %}
+                    {% include './blocks/search_results_timeline_century.html' %}
+                {% elif form.timeline_type.value == timeline_type.DECADE.value %}
+                    {% include './blocks/search_results_timeline_per_century.html' %}
+                {% elif form.timeline_type.value == timeline_type.YEAR.value %}
+                    {% include './blocks/search_results_timeline_single_decade.html' %}
+                {% endif %}
+            {% endif %}
             {% if buckets.current.result_count > 0 %}
                 <div class="tna-container">
                     <div class="tna-column tna-column--full">

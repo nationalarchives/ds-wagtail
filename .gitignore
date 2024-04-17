@@ -18,6 +18,9 @@ templates/static
 # Allow images within static
 !templates/static/images
 
+# Allow timeline data within static
+!templates/static/timeline
+
 #Allow cookie consent
 !templates/static/cookie-consent
 

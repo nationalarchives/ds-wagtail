@@ -237,8 +237,23 @@ class BaseCollectionSearchForm(forms.Form):
         choices=[
             ("list", "List"),
             ("map", "Map"),
+            ("timeline", "Timeline"),
             ("tag", "Tag"),
         ],
+        required=False,
+    )
+    # used for OHOS-Timeline View
+    timeline_type = forms.ChoiceField(
+        choices=[
+            ("century", "Century"),
+            ("decade", "Decade"),
+            ("year", "Year"),
+        ],
+        required=False,
+    )
+    # used for OHOS-Timeline View
+    creation_date_from = forms.CharField(
+        label="Creation from",
         required=False,
     )
 
