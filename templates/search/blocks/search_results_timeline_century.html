@@ -98,17 +98,14 @@
 
               // Add click event listener to the chart canvas
               chart.canvas.onclick = function(evt) {
-                const activePoints = chart.getElementsAtEventForMode(evt, 'nearest', false);
-
+                const activePoints = chart.getElementsAtEventForMode(evt, 'index', false);
                 if (activePoints.length > 0) {
                   // Get the clicked bar index
                   const clickedIndex = activePoints[0].index;
 
                   // Access the corresponding record count from chart data
                   const recordCount = chartData[clickedIndex];
-
-                  // Display an alert with the record count
-                  //alert(`You clicked on the ${centuryLabels[clickedIndex]}. There are ${recordCount} records.`);
+                  
                   window.location = `./?vis_view=timeline&timeline_type=decade&creation_date_from=${centuryLabels[clickedIndex]}#decade-counts-chart`;
                 }
               };
