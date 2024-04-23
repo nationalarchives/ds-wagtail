@@ -489,6 +489,37 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 content,
             )
 
+    @responses.activate
+    def test_search_results_having_enrichment_tags(self):
+
+        self.patch_search_endpoint("catalogue_search_having_enrichment_tags.json")
+
+        expected_url = "/search/catalogue/?q=swop-49008&group=community&collection=SWOP&vis_view=list"
+
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "swop-49008",
+                "group": "community",
+                "collection": [
+                    "SWOP",
+                ],
+                "vis_view": "list",
+            },
+        )
+        session = self.client.session
+        content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+        self.assertIn('<span class="ohos-tag__inner">Bourne End</span>', content)
+        self.assertIn('<span class="ohos-tag__inner">Arthur Jackson</span>', content)
+        self.assertIn(
+            '<span class="ohos-tag__inner">Upper Thames Sailing Club</span>', content
+        )
+        self.assertIn('<span class="ohos-tag__inner">Vengeance</span>', content)
+
 
 @unittest.skip("TODO:Rosetta")
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):

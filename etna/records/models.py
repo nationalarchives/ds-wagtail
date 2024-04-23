@@ -3,7 +3,7 @@ from __future__ import annotations
 import logging
 import re
 
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 from django.conf import settings
 from django.http import HttpRequest
@@ -14,7 +14,7 @@ from django.utils.safestring import mark_safe
 from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import BucketKeys
+from ..ciim.constants import BucketKeys, TagTypes
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
@@ -673,3 +673,54 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def item_url(self) -> str:
         return self.template.get("itemURL", "")
+
+    def _get_tags(self, tag_type: str) -> List[Dict]:
+        """
+        Returns the data in the value attribute for the tag type when present
+        in the enrichment otherwise empty list.
+        [{"value": <some value 1>},{"value": <some value 2>}]
+
+        tag_type:
+            values which are defined by API response @template.details.enrichment keys,
+            which are known at constants.TagTypes
+        """
+        return_value = []
+        if tag := extract(self.template, f"enrichment.{tag_type}", default=[]):
+            for item in tag:
+                data = {}
+                if value := item.get("value", ""):
+                    data.update(value=value)
+                if data:
+                    return_value.append(data)
+        return return_value
+
+    @cached_property
+    def has_enrichment(self) -> bool:
+        """
+        Returns True if the record is enriched, otherwise False.
+        Enrichment is determined if data-value,url exists for a set of tag types.
+        """
+        if (
+            self.enrichment_loc
+            or self.enrichment_per
+            or self.enrichment_org
+            or self.enrichment_misc
+        ):
+            return True
+        return False
+
+    @cached_property
+    def enrichment_loc(self) -> List[Dict]:
+        return self._get_tags(TagTypes.LOCATION)
+
+    @cached_property
+    def enrichment_per(self):
+        return self._get_tags(TagTypes.PERSON)
+
+    @cached_property
+    def enrichment_org(self):
+        return self._get_tags(TagTypes.ORGANISATION)
+
+    @cached_property
+    def enrichment_misc(self):
+        return self._get_tags(TagTypes.MISCELLANEOUS)

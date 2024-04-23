@@ -664,6 +664,16 @@ class VisViews(StrEnum):
 
 
 @forTemplate
+class TagTypes(StrEnum):
+    """Tag types values defined by @template.details.enrichment keys"""
+
+    LOCATION = "loc"
+    PERSON = "per"
+    ORGANISATION = "org"
+    MISCELLANEOUS = "misc"
+
+
+@forTemplate
 class TimelineTypes(StrEnum):
     """The timeline view types that can be displayed"""
 

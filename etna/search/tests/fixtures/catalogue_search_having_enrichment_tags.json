@@ -1,0 +1,106 @@
+{
+    "data": [
+        {
+            "@template": {
+                "details": {
+                    "level": "item",
+                    "description": "the northern bank of the river Thames, looking NE",
+                    "summary": "View of the figurehead of the Upper Thames Sailing Club, originally from the battleship 'Vengeance'. Bourne End, Wooburn. 1936",
+                    "title": "View of the figurehead of the Upper Thames Sailing Club, originally from the battleship 'Vengeance'. Bourne End, Wooburn. 1936",
+                    "uuid": "4dae30e8-9fb5-3264-955b-f50cbef2357c",
+                    "creationDateTo": "1936",
+                    "creationDateFrom": "1936",
+                    "creationDate": "1936",
+                    "collection": "SWOP",
+                    "collectionId": "swop-0",
+                    "format": "Photo Print",
+                    "ciimId": "swop-49008",
+                    "group": "community",
+                    "status": "publish",
+                    "repository": "High Wycombe Library",
+                    "enrichment": {
+                        "date": [
+                            {
+                                "from": "1936",
+                                "to": "1936",
+                                "value": "1936"
+                            },
+                            {
+                                "from": "1925",
+                                "to": "1925",
+                                "value": "1925"
+                            }
+                        ],
+                        "loc": [
+                            {
+                                "value": "Bourne End",
+                                "url": "https://www.wikidata.org/wiki/Q2059003"
+                            },
+                            {
+                                "value": "Wooburn",
+                                "url": "https://www.wikidata.org/wiki/Q2740404"
+                            },
+                            {
+                                "value": "Britannia",
+                                "url": "https://www.wikidata.org/wiki/Q138396"
+                            }
+                        ],
+                        "org": [
+                            {
+                                "value": "Upper Thames Sailing Club"
+                            }
+                        ],
+                        "per": [
+                            {
+                                "value": "Arthur Jackson"
+                            }
+                        ],
+                        "misc": [
+                            {
+                                "value": "Vengeance"
+                            }
+                        ]
+                    },
+                    "subjects": [
+                        "Monument",
+                        "Memorial",
+                        "Trophy"
+                    ]
+                }
+            }
+        }
+    ],
+    "errors": [],
+    "aggregations": [
+        {
+            "name": "collection",
+            "entries": [
+                {
+                    "value": "SWOP",
+                    "doc_count": 1
+                }
+            ]
+        },
+        {
+            "name": "place",
+            "entries": []
+        },
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "community",
+                    "doc_count": 1
+                }
+            ]
+        }
+    ],
+    "stats": {
+        "total": 1,
+        "providers": 1,
+        "transformations": 1,
+        "provider_latency": 6,
+        "transformation_latency": 3
+    },
+    "found": true
+}

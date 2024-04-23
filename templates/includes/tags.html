@@ -1,37 +1,38 @@
 {% comment %}
-    Tags are part of the search results cards. We don't have the data to display for the
-    cards yet, but mark up and styles have been created ahead of integration. These will
-    be shown conditionally when digital community content is displayed
+    NOTE: Order of the tag types is Location, Person, Organisation, Miscellaneous
 {% endcomment %}
+{% if record.has_enrichment %}
+    <ul class="search-results__tags-list">
+        {% if record.enrichment_loc.0.value %} 
+            <li>
+                <span class="ohos-tag ohos-tag--location">
+                    <span class="ohos-tag__inner">{{ record.enrichment_loc.0.value }}</span>
+                </span>
+            </li>
+        {% endif %}
 
-<ul class="search-results__tags-list">
-    <li>
-        <span class="ohos-tag ohos-tag--location">
-            <span class="ohos-tag__inner">Location</span>
-        </span>
-    </li>
+        {% if record.enrichment_per.0.value %} 
+            <li>
+                <span class="ohos-tag ohos-tag--person">
+                    <span class="ohos-tag__inner">{{ record.enrichment_per.0.value }}</span>
+                </span>
+            </li>
+        {% endif %}
 
-    <li>
-        <span class="ohos-tag ohos-tag--person">
-            <span class="ohos-tag__inner">Person</span>
-        </span>
-    </li>
+        {% if record.enrichment_org.0.value %} 
+            <li>
+                <span class="ohos-tag ohos-tag--organisation">
+                    <span class="ohos-tag__inner">{{ record.enrichment_org.0.value }}</span>
+                </span>
+            </li>
+        {% endif %}
 
-    <li>
-        <span class="ohos-tag ohos-tag--organisation">
-            <span class="ohos-tag__inner">Organisation</span>
-        </span>
-    </li>
-
-    <li>
-        <span class="ohos-tag ohos-tag--misc">
-            <span class="ohos-tag__inner">Miscellaneous</span>
-        </span>
-    </li>
-
-    <li>
-        <span class="ohos-tag ohos-tag--other">
-            <span class="ohos-tag__inner">Other</span>
-        </span>
-    </li>
-</ul>
+        {% if record.enrichment_misc.0.value %} 
+            <li>
+                <span class="ohos-tag ohos-tag--misc">
+                    <span class="ohos-tag__inner">{{ record.enrichment_misc.0.value }}</span>
+                </span>
+            </li>
+        {% endif %}
+    </ul>
+{% endif %}
