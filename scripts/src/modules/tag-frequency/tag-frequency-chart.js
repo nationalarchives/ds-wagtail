@@ -180,11 +180,25 @@ const chartForceSimulation = (data, options = {}) => {
     // Add selected icon symbol to the SVG
     svg.append("defs").html(`
       <symbol id="selected-icon" viewBox="0 0 28 28">
-        <circle cx="13.834" cy="13.833" r="13.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
-        <path fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" d="M6 6 L22 22 M22 6 L6 22" />
-      </symbol>
-
-    `);
+  <g transform="rotate(0 14 14)"> 
+    <circle cx="14.0000" cy="14.0000" r="13.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
+    <path fill="none" stroke="#FFFFFF" stroke-width="2" d="M 
+      ${14 + Math.cos(Math.PI / 4) * (13.5 - 7)}  ${
+          14 + Math.sin(Math.PI / 4) * (13.5 - 7)
+      }  L 
+      ${14 - Math.cos(Math.PI / 4) * (13.5 - 7)}  ${
+          14 - Math.sin(Math.PI / 4) * (13.5 - 7)
+      }  "/>
+    <path fill="none" stroke="#FFFFFF" stroke-width="2" d="M 
+      ${14 + Math.sin(Math.PI / 4) * (13.5 - 7)}  ${
+          14 - Math.cos(Math.PI / 4) * (13.5 - 7)
+      }  L 
+      ${14 - Math.sin(Math.PI / 4) * (13.5 - 7)}  ${
+          14 + Math.cos(Math.PI / 4) * (13.5 - 7)
+      }  "/>
+  </g>
+</symbol>
+`);
 
     // Create a group for each circle and text element
     const node = svg
