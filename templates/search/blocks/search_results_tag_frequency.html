@@ -5,39 +5,32 @@
         <p class="tag-frequency__title">Filter by:</p>
         <ul class="tag-frequency__tags-list">
             <li>
-                <a href="?{% query_string_include 'chart_data_type' 'LOC' %}" class="ohos-tag ohos-tag--location">
+                <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=LOC" class="ohos-tag ohos-tag--location">
                     <span class="ohos-tag__inner">Location</span>
                 </a>
             </li>
 
             <li>
-                <a href="?{% query_string_include 'chart_data_type' 'PER' %}" class="ohos-tag ohos-tag--person">
+                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=PER" class="ohos-tag ohos-tag--person">
                     <span class="ohos-tag__inner">Person</span>
                 </a>
             </li>
 
             <li>
-                <a href="?{% query_string_include 'chart_data_type' 'ORG' %}" class="ohos-tag ohos-tag--organisation">
+                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=ORG" class="ohos-tag ohos-tag--organisation">
                     <span class="ohos-tag__inner">Organisation</span>
                 </a>
             </li>
 
             <li>
-                <a href="?{% query_string_include 'chart_data_type' 'MISC' %}" class="ohos-tag ohos-tag--misc">
+                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=MISC" class="ohos-tag ohos-tag--misc">
                     <span class="ohos-tag__inner">Miscellaneous</span>
                 </a>
             </li>
 
             <li>
-                <a href="?{% query_string_include 'chart_data_type' 'DATE' %}" class="ohos-tag ohos-tag--other">
+                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=DATE" class="ohos-tag ohos-tag--other">
                     <span class="ohos-tag__inner">Date</span>
-                </a>
-            </li>
-
-            <li>
-                {# There may be a better way to achieve this without having to set a new param #}
-                <a href="?{% query_string_include 'chart_data_type' 'ALL' %}" class="ohos-tag ohos-tag--clear">
-                    <span class="ohos-tag__inner">Clear all</span>
                 </a>
             </li>
         </ul>

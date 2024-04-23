@@ -180,9 +180,10 @@ const chartForceSimulation = (data, options = {}) => {
     // Add selected icon symbol to the SVG
     svg.append("defs").html(`
       <symbol id="selected-icon" viewBox="0 0 28 28">
-        <circle cx="13.834" cy="13.833" r="13.5" fill="#D9D9D6"/>
-        <path fill="#1E1E1E" fill-rule="evenodd" d="M14 24.5a10.5 10.5 0 1 0 0-21 10.5 10.5 0 0 0 0 21Zm-.27-6.253 5.833-7-1.792-1.494-5.017 6.02-2.596-2.598-1.65 1.65 3.5 3.5.904.903.817-.981Z" clip-rule="evenodd"/>
+        <circle cx="13.834" cy="13.833" r="13.5" fill="#000000" stroke="#FFFFFF" stroke-width="2"/>
+        <path fill="#FFFFFF" stroke="#FFFFFF" stroke-width="2" d="M6 6 L22 22 M22 6 L6 22" />
       </symbol>
+
     `);
 
     // Create a group for each circle and text element
