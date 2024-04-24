@@ -769,7 +769,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article, Focused Article, or Record Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )

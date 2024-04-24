@@ -582,7 +582,7 @@ class RecordArticlePage(
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -639,7 +639,11 @@ class RecordArticlePage(
         FieldPanel("featured_highlight_gallery"),
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
         FieldPanel("promoted_links"),
     ]
