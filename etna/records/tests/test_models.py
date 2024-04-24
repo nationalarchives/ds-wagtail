@@ -4,6 +4,7 @@ import unittest
 from copy import deepcopy
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, override_settings
 from django.urls import reverse
 from django.utils.safestring import SafeString
@@ -130,6 +131,115 @@ class CommunityRecordModelTests(SimpleTestCase):
 
     def test_summary_title(self):
         self.assertEqual(self.record.summary_title, "data for summary")
+
+    def test_has_enrichment_true(self):
+        self.assertEqual(self.record.has_enrichment, True)
+
+    def test_has_enrichment_false(self):
+        # patch raw data
+        del self.record._raw["@template"]["details"]["enrichment"]
+        self.assertEqual(self.record.has_enrichment, False)
+
+    def test_enrichment_loc(self):
+        self.assertEqual(
+            self.record.enrichment_loc,
+            [
+                {
+                    "value": "some location value 1",
+                    "url": "https://www.wikidata.org/wiki/1",
+                },
+                {
+                    "value": "some location value 2",
+                    "url": "https://www.wikidata.org/wiki/2",
+                },
+                {
+                    "value": "some location value 3",
+                    "url": "https://www.wikidata.org/wiki/3",
+                },
+                {
+                    "value": "some location value 4",
+                    "url": "https://www.wikidata.org/wiki/4",
+                },
+                {
+                    "value": "some location value 5",
+                    "url": "https://www.wikidata.org/wiki/5",
+                },
+                {
+                    "value": "some location value 6",
+                    "url": "https://www.wikidata.org/wiki/6",
+                },
+            ],
+        )
+
+    def test_enrichment_loc_with_value_no_url_attr(self):
+        self.record._raw["@template"]["details"]["enrichment"] = {
+            "loc": [
+                {
+                    "value": "some location value without url",
+                },
+            ]
+        }
+        self.assertEqual(
+            self.record.enrichment_loc,
+            [
+                {
+                    "value": "some location value without url",
+                }
+            ],
+        )
+        self.assertIsNone(self.record.enrichment_loc[0].get("url"))
+
+    def test_enrichment_loc_not_wiki_url(self):
+        self.record._raw["@template"]["details"]["enrichment"] = {
+            "loc": [
+                {
+                    "value": "some location value with invalid url",
+                    "url": "https://www.notawiki.org/wiki/123",
+                },
+            ]
+        }
+        with self.assertRaisesMessage(
+            ValidationError,
+            "https://www.notawiki.org/wiki/123 value is not a valid wikidata URL.",
+        ):
+            _ = self.record.enrichment_loc
+
+    def test_enrichment_per(self):
+        self.assertEqual(
+            self.record.enrichment_per,
+            [
+                {
+                    "value": "some person value 1",
+                    "url": "https://www.wikidata.org/wiki/8",
+                }
+            ],
+        )
+
+    def test_enrichment_org(self):
+        self.assertEqual(
+            self.record.enrichment_org,
+            [
+                {
+                    "value": "some organisation value 1",
+                    "url": "https://www.wikidata.org/wiki/7",
+                }
+            ],
+        )
+
+    def test_enrichment_misc(self):
+        self.assertEqual(
+            self.record.enrichment_misc,
+            [{"value": "some misc value 1", "url": "https://www.wikidata.org/wiki/9"}],
+        )
+
+    def test_enrichment_date(self):
+        self.assertEqual(
+            self.record.enrichment_date,
+            [
+                {"value": "1936", "url": "https://www.wikidata.org/wiki/11"},
+                {"value": "1925", "url": "https://www.wikidata.org/wiki/12"},
+            ],
+        )
 
 
 @unittest.skip("TODO:Rosetta")

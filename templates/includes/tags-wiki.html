@@ -1,0 +1,13 @@
+{% for item in tag|slice:":5" %}
+    <dd>
+        <span class="ohos-tag ohos-tag--{{ css_extn_style }}">                
+            <span class="ohos-tag__inner">{{ item.value }}</span>
+            {% if item.url %}
+                <a href="{{ item.url }}" target="_blank" class="ohos-tag__link">
+                    Wikidata
+                    <i aria-hidden="true" class="ohos-tag__link-icon fa-solid fa-external-link"></i>
+                </a>
+            {% endif %}
+        </span>
+    </dd>
+{% endfor %}

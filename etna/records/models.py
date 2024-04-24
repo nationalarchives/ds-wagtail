@@ -4,8 +4,10 @@ import logging
 import re
 
 from typing import Any, Dict, List, Optional, Tuple, Union
+from urllib.parse import urlparse
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.http import HttpRequest
 from django.urls import NoReverseMatch, reverse
 from django.utils.functional import cached_property
@@ -678,18 +680,36 @@ class Record(DataLayerMixin, APIModel):
         """
         Returns the data in the value attribute for the tag type when present
         in the enrichment otherwise empty list.
-        [{"value": <some value 1>},{"value": <some value 2>}]
+        [{"value": "some value 1", "url":"some value 3"},{"value": "some value 2", "url":"some value 4"}]
+        Raises error if the url is not "www.wikidata.org"
 
         tag_type:
             values which are defined by API response @template.details.enrichment keys,
             which are known at constants.TagTypes
         """
         return_value = []
+
         if tag := extract(self.template, f"enrichment.{tag_type}", default=[]):
             for item in tag:
                 data = {}
                 if value := item.get("value", ""):
                     data.update(value=value)
+                if url := item.get("url", ""):
+                    try:
+                        parse_result = urlparse(url)
+                        err_msg = f"{url} value is not a valid wikidata URL."
+                        if (
+                            parse_result.scheme == "https"
+                            and parse_result.netloc == "www.wikidata.org"
+                        ):
+                            data.update(url=url)
+                        else:
+                            logger.debug(err_msg)
+                            raise ValidationError(err_msg, code="invalid-1")
+                    except ValueError:
+                        logger.debug(err_msg)
+                        raise ValidationError(err_msg, code="invalid-2")
+
                 if data:
                     return_value.append(data)
         return return_value
@@ -724,3 +744,7 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def enrichment_misc(self):
         return self._get_tags(TagTypes.MISCELLANEOUS)
+
+    @cached_property
+    def enrichment_date(self):
+        return self._get_tags(TagTypes.DATE)

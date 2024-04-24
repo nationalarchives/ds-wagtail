@@ -16,6 +16,66 @@
                 "group": "community",
                 "location": "data for location",
                 "format": "data for format",
+                "enrichment": {
+                    "date": [
+                        {
+                            "from": "1936",
+                            "to": "1936",
+                            "value": "1936",
+                            "url": "https://www.wikidata.org/wiki/11"
+                        },
+                        {
+                            "from": "1925",
+                            "to": "1925",
+                            "value": "1925",
+                            "url": "https://www.wikidata.org/wiki/12"
+                        }
+                    ],
+                    "loc": [
+                        {
+                            "value": "some location value 1",
+                            "url": "https://www.wikidata.org/wiki/1"
+                        },
+                        {
+                            "value": "some location value 2",
+                            "url": "https://www.wikidata.org/wiki/2"
+                        },
+                        {
+                            "value": "some location value 3",
+                            "url": "https://www.wikidata.org/wiki/3"
+                        },
+                        {
+                            "value": "some location value 4",
+                            "url": "https://www.wikidata.org/wiki/4"
+                        },
+                        {
+                            "value": "some location value 5",
+                            "url": "https://www.wikidata.org/wiki/5"
+                        },
+                        {
+                            "value": "some location value 6",
+                            "url": "https://www.wikidata.org/wiki/6"
+                        }
+                    ],
+                    "org": [
+                        {
+                            "value": "some organisation value 1",
+                            "url": "https://www.wikidata.org/wiki/7"
+                        }
+                    ],
+                    "per": [
+                        {
+                            "value": "some person value 1",
+                            "url": "https://www.wikidata.org/wiki/8"
+                        }
+                    ],
+                    "misc": [
+                        {
+                            "value": "some misc value 1",
+                            "url": "https://www.wikidata.org/wiki/9"
+                        }
+                    ]
+                },
                 "subject": [
                     "subject1",
                     "subject2"

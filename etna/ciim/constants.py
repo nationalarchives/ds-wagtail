@@ -671,6 +671,7 @@ class TagTypes(StrEnum):
     PERSON = "per"
     ORGANISATION = "org"
     MISCELLANEOUS = "misc"
+    DATE = "date"
 
 
 @forTemplate

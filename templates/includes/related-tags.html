@@ -1,7 +1,5 @@
 {% comment %}
-    Related tags are part of the record details page. We don't have the data to display for the
-    tags yet, but mark up and styles have been created ahead of integration. These will
-    be shown conditionally when digital community content is displayed
+    NOTE: Order of the tag types is Location, Person, Organisation, Miscellaneous, Date
 {% endcomment %}
 
 <div class="record-details__related-tags">
@@ -9,61 +7,18 @@
 
     <dl class="record-details__related-tags-list">
         <dt>Locations:</dt>
-        <dd>
-            <span class="ohos-tag ohos-tag--location">
-                <span class="ohos-tag__inner">Location</span>
-
-                <a href="https://www.wikidata.org/wiki/Q208209" target="_blank" class="ohos-tag__link">
-                    Wikidata
-                    <i aria-hidden="true" class="ohos-tag__link-icon fa-solid fa-external-link"></i>
-                </a>
-            </span>
-        </dd>
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_loc css_extn_style="location" %}
 
         <dt>People:</dt>
-        <dd>
-            <span class="ohos-tag ohos-tag--person">
-                <span class="ohos-tag__inner">Person</span>
-
-                <a href="https://www.wikidata.org/wiki/Q208209" target="_blank" class="ohos-tag__link">
-                    Wikidata
-                    <i aria-hidden="true" class="ohos-tag__link-icon fa-solid fa-external-link"></i>
-                </a>
-            </span>
-        </dd>
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_per css_extn_style="person" %}
 
         <dt>Organisations:</dt>
-        <dd>
-            <span class="ohos-tag ohos-tag--organisation">
-                <span class="ohos-tag__inner">Organisation</span>
-
-                <a href="https://www.wikidata.org/wiki/Q208209" target="_blank" class="ohos-tag__link">
-                    Wikidata
-                    <i aria-hidden="true" class="ohos-tag__link-icon fa-solid fa-external-link"></i>
-                </a>
-            </span>
-        </dd>
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_org css_extn_style="organisation" %}
 
         <dt>Miscellaneous:</dt>
-        <dd>
-            <span class="ohos-tag ohos-tag--misc">
-                <span class="ohos-tag__inner">Miscellaneous</span>
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_misc css_extn_style="misc" %}
 
-                <a href="/search/catalogue/" class="ohos-tag__link" title="See other (tag name) results in the collection">
-                    Collection
-                </a>
-            </span>
-        </dd>
-
-        <dt>Other:</dt>
-        <dd>
-            <span class="ohos-tag ohos-tag--other">
-                <span class="ohos-tag__inner">Other</span>
-
-                <a href="/search/catalogue/" class="ohos-tag__link" title="See other (tag name) results in the collection">
-                    Collection
-                </a>
-            </span>
-        </dd>
+        <dt>Date:</dt>
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_date css_extn_style="other" %}
     </dl>
 </div>
