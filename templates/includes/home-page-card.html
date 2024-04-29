@@ -1,0 +1,42 @@
+<li class="tna-column tna-column--width-1-3 tna-column--width-1-2-medium tna-column--width-1-2-small tna-column--full-tiny tna-!--margin-bottom-l">
+    <div class="tna-card" data-module="tna-card">
+        <div class="tna-card__inner">
+            <hgroup class="tna-hgroup-s tna-card__heading">
+
+                <h3 class="tna-hgroup__title">
+                    <a
+                        href="{{ vis_view_url }}"
+                        class="tna-card__heading-link"
+                        data-card-type="card-group-secondary-nav"
+                        data-component-name=""
+                        data-link-type="Card text"
+                        data-card-title=""
+                        data-card-position="0"
+                    >
+                        {{ vis_view_label }}
+                    </a>
+                </h3>
+            </hgroup>
+
+            <a
+                href="{{ vis_view_url }}"
+                class="tna-card__image-container"
+                tabindex="-1"
+                title=""
+                data-card-type="card-group-secondary-nav"
+                data-component-name=""
+                data-link-type="Card image"
+                data-card-title=""
+                data-card-position="0"
+            >
+                <picture class="tna-card__image">
+                    <img src="{{ vis_view_img }}" alt=""  />
+                </picture>
+            </a>
+
+            <div class="tna-card__body">
+                <p>{{ vis_view_desc }}</p>
+            </div>
+        </div>
+    </div>
+</li>

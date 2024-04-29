@@ -12,10 +12,11 @@
         <div class="tna-container">
             <div class="tna-column tna-column--full">
                 <div class="search-hero__container">
-                    <h1 class="tna-heading-xl search-hero__heading">Find community-generated history</h1>
+                    <h1 class="tna-heading-xl search-hero__heading">Explore UK community history</h1>
                     <form action="/search/catalogue" method="GET" class="search-hero__form" id="analytics-search-landing-hero">
                         <label for="id_q" class="search-hero__label">
-                            <span class="sr-only">Enter search term.</span> Search by keyword, person or community.
+                            <span class="sr-only">Enter search term.</span> Our Heritage, Our Stories brings together community and archive collections in one place.<br>
+                            Search by keyword, person, or location, or hit search.
                         </label>
                         {{ form.q.errors }}
                         {{ form.q }}
@@ -26,52 +27,29 @@
         </div>
     </div>
 
-    <div class="tna-section">
+    <div class="tna-section interactive-choice">
         <div class="tna-container">
             <div class="tna-column tna-column--full">
                 <h2 class="tna-heading tna-heading--l">
-                    What can you find in the Observatory?
+                    Use interactive tools to explore community collections
                 </h2>
-                <ul class="tna-columns tna-columns--3 tna-columns--2-small tna-columns--1-tiny ohos-stats tna-!--margin-top-m">
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-building-columns"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">250</span> Archives
-                        </span>
-                    </li>
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-user"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">58,679</span> People &amp; Groups
-                        </span>
-                    </li>
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-folder-open"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">64,789</span> Collections
-                        </span>
-                    </li>
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-location-dot"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">75,000</span> Locations
-                        </span>
-                    </li>
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-file"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">343,567</span> Documents
-                        </span>
-                    </li>
-                    <li class="ohos-stats__item tna-columns__block">
-                        <i class="fa-solid fa-calendar-days"></i>
-                        <span class="ohos-stats__stat">
-                        <span class="ohos-stats__number">1,577</span> Events
-                        </span>
-                    </li>
-                </ul>
+                <div class="block-featuredarticles">
+                    <div class="featured-articles">
+                        <ul class="card-group--list-style-none" data-card-position="0">
+                            
+                            {% include "includes/home-page-card.html" with vis_view_url=map_view_url vis_view_img="/static/images/ohos-homepage-maps.jpg" vis_view_label="Map" vis_view_desc="Find community history for places of interest to you across the UK and beyond." %}
+                            
+                            {% include "includes/home-page-card.html" with vis_view_url=timeline_view_url vis_view_img="/static/images/ohos-homepage-timeline.jpg" vis_view_label="Timeline" vis_view_desc="See how community history ranges across different time periods." %}
+                            
+                            {% include "includes/home-page-card.html" with vis_view_url=tag_view_url vis_view_img="/static/images/ohos-homepage-tags.jpg" vis_view_label=" Related tags" vis_view_desc="Use AI-generated tags to uncover connections to people, places and organisations of the past." %}
+
+                        </ul>
+                    </div>
+                </div>
+
             </div>
         </div>
+
     </div>
 {% endblock content %}
 

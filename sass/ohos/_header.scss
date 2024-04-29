@@ -58,7 +58,7 @@
 
         @include media.on-larger-than-mobile {
             @include typography.heading-font;
-            @include typography.relative-font-size(30);
+            @include typography.relative-font-size(25);
             display: inline;
         }
     }

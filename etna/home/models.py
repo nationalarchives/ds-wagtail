@@ -1,3 +1,5 @@
+import importlib
+
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import StreamField
@@ -24,7 +26,12 @@ class HomePage(AlertMixin, BasePageWithIntro):
     def get_context(self, request):
         context = super().get_context(request)
         context["form"] = FeaturedSearchForm()
-
+        module = importlib.import_module("etna.search.common")
+        context.update(
+            map_view_url=module.VIS_URLS.get("map"),
+            timeline_view_url=module.VIS_URLS.get("timeline"),
+            tag_view_url=module.VIS_URLS.get("tag"),
+        )
         return context
 
     api_fields = [

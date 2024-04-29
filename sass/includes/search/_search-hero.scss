@@ -20,6 +20,7 @@
     &__label {
         display: block;
         @include typography.relative-font-size(20);
+        margin-bottom: 0.8em;
     }
 
     &__form {
@@ -167,4 +168,26 @@
             }
         }
     }
+}
+
+.interactive-choice {
+    background: #8aa49d;
+
+    h2 {
+        padding-bottom: 1.3em;
+    }
+
+    img {
+        border-radius: 10px;
+        vertical-align: text-top;
+    }
+}
+
+.tna-pagination {
+    margin-bottom: 2em;
+}
+
+.tna-card__heading-link,
+.tna-card__heading-link:visited {
+    color: black;
 }

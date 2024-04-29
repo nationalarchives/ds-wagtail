@@ -1,4 +1,5 @@
 import copy
+import importlib
 import logging
 import re
 
@@ -8,9 +9,7 @@ from django.conf import settings
 from django.core.paginator import Page as PaginatorPage
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
-from django.urls import reverse
 from django.utils import timezone
-from django.utils.http import urlencode
 from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
@@ -665,16 +664,18 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
         self.set_session_info()
+        module = importlib.import_module("etna.search.common")
+
         kwargs.update(
             default_geo_data={
                 "lat": settings.FEATURE_GEO_LAT,
                 "lon": settings.FEATURE_GEO_LON,
                 "zoom": settings.FEATURE_GEO_ZOOM,
             },
-            list_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.LIST})}',
-            map_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.MAP})}',
-            timeline_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.TIMELINE, "timeline_type": TimelineTypes.CENTURY})}',
-            tag_view_url=f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.TAG})}',
+            list_view_url=module.VIS_URLS.get(VisViews.LIST.value),
+            map_view_url=module.VIS_URLS.get(VisViews.MAP.value),
+            timeline_view_url=module.VIS_URLS.get(VisViews.TIMELINE.value),
+            tag_view_url=module.VIS_URLS.get(VisViews.TAG.value),
         )
         return super().get_context_data(**kwargs)
 
