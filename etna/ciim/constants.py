@@ -118,20 +118,20 @@ CATALOGUE_BUCKETS = BucketList(
     [
         Bucket(
             key=BucketKeys.COMMUNITY,
-            label="Digital community content",
+            label="Results from community collections",
             description="Results for records held at The National Archives that match your search term.",
             aggregations=DEFAULT_AGGREGATIONS + [Aggregation.COLLECTION],
         ),
         Bucket(
             key=BucketKeys.TNA,
-            label="Records at The National Archives",
+            label="Results from The National Archives",
             description="Results for records held at The National Archives that match your search term.",
             aggregations=DEFAULT_AGGREGATIONS
             + [Aggregation.COLLECTION, Aggregation.LEVEL, Aggregation.CLOSURE],
         ),
         Bucket(
             key=BucketKeys.NONTNA,
-            label="Records at other UK archives",
+            label="Results from Other Archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
             aggregations=DEFAULT_AGGREGATIONS
             + [
