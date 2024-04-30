@@ -109,11 +109,11 @@ This will be checked by CI on every commit, so it's a good idea to run this loca
 
 We follow a loose version of the [Git flow branching model](https://nvie.com/posts/a-successful-git-branching-model/).
 
-- Changes are developed in feature branches and submitted as pull requests via Github.
+- Changes are developed in feature branches and submitted as pull requests via Github
 - Feature branches should always be based on: `develop`
 - Release branches should always be based on: `develop`
 - Release branches should be merged via PR into `main`, followed by PR to merge `main` into `develop`
-- Create a new branch if the branch for that ticket has been merged. 
+- Create a new branch if the branch for that ticket has been merged.  
 
 **See below for merging guidance**
 
