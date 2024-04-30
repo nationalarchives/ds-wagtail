@@ -396,7 +396,6 @@ class BaseFilteredSearchView(BaseSearchView):
         "type",
         "country",
         "location",
-        "place",
     )
 
     def get_initial(self) -> Dict[str, Any]:

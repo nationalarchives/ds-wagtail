@@ -43,7 +43,6 @@ class Aggregation(StrEnum):
     TYPE = "type"
     COUNTRY = "country"
     LOCATION = "location"
-    PLACE = "place"
 
 
 DEFAULT_AGGREGATIONS = [
@@ -121,8 +120,7 @@ CATALOGUE_BUCKETS = BucketList(
             key=BucketKeys.COMMUNITY,
             label="Digital community content",
             description="Results for records held at The National Archives that match your search term.",
-            aggregations=DEFAULT_AGGREGATIONS
-            + [Aggregation.COLLECTION, Aggregation.PLACE],
+            aggregations=DEFAULT_AGGREGATIONS + [Aggregation.COLLECTION],
         ),
         Bucket(
             key=BucketKeys.TNA,

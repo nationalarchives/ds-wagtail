@@ -69,7 +69,6 @@ class SelectedFiltersTest(SimpleTestCase):
                 ],
                 "country": ["England", "Yorkshire, North Riding"],
                 "location": ["Australia", "United States of America"],
-                "place": ["place 1", "place 2"],
             }
         )
 
@@ -98,10 +97,6 @@ class SelectedFiltersTest(SimpleTestCase):
                 "location": [
                     ("Australia", "Australia"),
                     ("United States of America", "United States of America"),
-                ],
-                "place": [
-                    ("place 1", "place 1"),
-                    ("place 2", "place 2"),
                 ],
             },
         )
@@ -228,7 +223,6 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
                 f"{settings.CLIENT_BASE_URL}/search"
                 "?aggs=group"
                 "&aggs=collection"
-                "&aggs=place"
                 "&filter=group%3Acommunity"
                 "&sort="
                 "&from=0"
@@ -421,7 +415,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         """
         self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
 
-        expected_url = "/search/catalogue/?q=parish&group=community&collection=SWOP&place=Church+Street&place=Oxford+Road"
+        expected_url = "/search/catalogue/?q=parish&group=community&collection=SWOP&collection=People%27s+Collection+Wales"
 
         response = self.client.get(
             self.test_url,
@@ -430,8 +424,8 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 "group": "community",
                 "collection": [
                     "SWOP",
+                    "People's Collection Wales",
                 ],
-                "place": ["Church Street", "Oxford Road"],
             },
         )
         session = self.client.session
@@ -441,12 +435,6 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="SWOP"', content)
-        self.assertIn(
-            '<input type="checkbox" name="place" value="Church Street"', content
-        )
-        self.assertIn(
-            '<input type="checkbox" name="place" value="Oxford Road"', content
-        )
 
     @responses.activate
     def test_render_invalid_date_range_message(self):

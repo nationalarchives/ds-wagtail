@@ -180,16 +180,13 @@ class ClientSearchTest(SimpleTestCase):
     @responses.activate
     def test_with_aggregations(self):
         self.records_client.search(
-            aggregations=[Aggregation.GROUP, Aggregation.COLLECTION, Aggregation.PLACE]
+            aggregations=[Aggregation.GROUP, Aggregation.COLLECTION]
         )
 
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(
             responses.calls[0].request.url,
-            f"{settings.CLIENT_BASE_URL}/search?"
-            "aggs=group"
-            "&aggs=collection"
-            "&aggs=place",
+            f"{settings.CLIENT_BASE_URL}/search?" "aggs=group" "&aggs=collection",
         )
 
     @responses.activate
@@ -198,7 +195,6 @@ class ClientSearchTest(SimpleTestCase):
             filter_aggregations=[
                 "group:community",
                 "collection:SWOP",
-                "place:White Hart Street",
             ]
         )
 
@@ -207,8 +203,7 @@ class ClientSearchTest(SimpleTestCase):
             responses.calls[0].request.url,
             f"{settings.CLIENT_BASE_URL}/search?"
             "filter=group%3Acommunity"
-            "&filter=collection%3ASWOP"
-            "&filter=place%3AWhite+Hart+Street",
+            "&filter=collection%3ASWOP",
         )
 
     @responses.activate
