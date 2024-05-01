@@ -131,7 +131,7 @@ CATALOGUE_BUCKETS = BucketList(
         ),
         Bucket(
             key=BucketKeys.NONTNA,
-            label="Results from Other Archives",
+            label="Results from other archives",
             description="Results for records held at other archives in the UK (and not at The National Archives) that match your search term.",
             aggregations=DEFAULT_AGGREGATIONS
             + [
