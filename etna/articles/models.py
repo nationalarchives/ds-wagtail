@@ -113,7 +113,7 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = [APIField("article_tag_names")]
+    api_fields = [APIField("tags")]
 
 
 class ArticleIndexPage(BasePageWithIntro):
@@ -264,13 +264,13 @@ class ArticlePage(
         ]
     )
 
-    verbose_name_public = Meta.verbose_name_public
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
+        + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
-            APIField("verbose_name_public"),
             APIField("similar_items", serializer=PageSerializer(many=True)),
             APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
@@ -423,9 +423,10 @@ class FocusedArticlePage(
     )
     api_fields = (
         BasePageWithIntro.api_fields
-        + ArticleTagMixin.api_fields
         + HeroImageMixin.api_fields
         + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ArticleTagMixin.api_fields
         + [
             APIField("type_label"),
             APIField("body"),
@@ -581,7 +582,7 @@ class RecordArticlePage(
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -638,7 +639,11 @@ class RecordArticlePage(
         FieldPanel("featured_highlight_gallery"),
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
         FieldPanel("promoted_links"),
     ]
@@ -667,9 +672,9 @@ class RecordArticlePage(
 
     api_fields = (
         BasePageWithIntro.api_fields
-        + ArticleTagMixin.api_fields
-        + NewLabelMixin.api_fields
         + ContentWarningMixin.api_fields
+        + NewLabelMixin.api_fields
+        + ArticleTagMixin.api_fields
         + [
             APIField("type_label"),
             APIField("date_text"),

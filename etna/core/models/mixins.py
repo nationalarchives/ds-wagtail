@@ -41,6 +41,7 @@ class ContentWarningMixin(models.Model):
     )
 
     api_fields = [
+        APIField("display_content_warning"),
         APIField("custom_warning_text", serializer=RichTextSerializer()),
     ]
 
@@ -164,13 +165,13 @@ class HeroImageMixin(models.Model):
         APIField(
             "hero_image_jpg",
             serializer=ImageRenditionField(
-                "fill-1200x400|format-jpeg|jpegquality-60", source="hero_image"
+                "fill-1200x480|format-jpeg|jpegquality-60", source="hero_image"
             ),
         ),
         APIField(
             "hero_image_webp",
             serializer=ImageRenditionField(
-                "fill-1200x400|format-webp", source="hero_image"
+                "fill-1200x480|format-webp", source="hero_image"
             ),
         ),
         APIField(

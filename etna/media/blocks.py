@@ -1,4 +1,5 @@
 from wagtail import blocks
+from wagtail.rich_text import expand_db_html
 
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
@@ -14,6 +15,30 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
         https://github.com/wagtail/wagtail/blob/8413d00bdd03c447900019961d604186e17d2870/wagtail/core/blocks/base.py#L206
         """
         pass
+
+    def get_api_representation(self, value, context=None):
+        """
+        Overwrite the default get_api_representation method to include
+        additional fields from the EtnaMedia model.
+
+        We use expand_db_html to get any rich text fields as useful HTML,
+        rather than the raw database representation.
+        """
+        return {
+            "id": value.id,
+            "file": value.url,
+            "full_url": value.full_url,
+            "type": value.type,
+            "mime": value.mime(),
+            "title": value.title,
+            "date": value.date,
+            "description": expand_db_html(value.description),
+            "transcript": expand_db_html(value.transcript),
+            "thumbnail": value.thumbnail or None,
+            "width": value.width,
+            "height": value.height,
+            "duration": value.duration,
+        }
 
 
 class MediaBlock(blocks.StructBlock):

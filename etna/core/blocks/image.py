@@ -21,8 +21,8 @@ class APIImageChooserBlock(ImageChooserBlock):
     when the block is used, e.g:
     image = APIImageChooserBlock(rendition_size="original")
 
-    quality also defaults to 80, and can be specified in the same way
-    as rendition_size.
+    jpeg_quality and webp_quality default to 60 and 80 respectively,
+    and can be specified in the same way as rendition_size.
     """
 
     def __init__(
@@ -63,6 +63,22 @@ class APIImageChooserBlock(ImageChooserBlock):
                     "width": webp_image.width,
                     "height": webp_image.height,
                 },
+                "transcript": (
+                    {
+                        "heading": value.get_transcription_heading_display(),
+                        "text": value.transcription,
+                    }
+                    if value.transcription
+                    else None
+                ),
+                "translation": (
+                    {
+                        "heading": value.get_translation_heading_display(),
+                        "text": value.translation,
+                    }
+                    if value.translation
+                    else None
+                ),
             }
         return None
 
@@ -154,7 +170,7 @@ class ImageOrientationValue(StructValue):
 
 
 class ContentImageBlock(blocks.StructBlock):
-    image = APIImageChooserBlock(required=True)
+    image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     alt_text = blocks.CharBlock(
         max_length=100,
         label="Alternative text",
