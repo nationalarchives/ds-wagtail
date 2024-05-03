@@ -15,7 +15,10 @@
 {% if record.item_url %}
     <tr>
         <th scope="row">{{ 'item_url'|as_label }}</th>
-        <td>{{ record.item_url }}</td>
+        <td><a href="{{ record.item_url }}"
+            target="_blank"
+            >{{ record.item_url }}</a>
+        </td>
     </tr>
 {% endif %}
 {% if record.date_created %}
