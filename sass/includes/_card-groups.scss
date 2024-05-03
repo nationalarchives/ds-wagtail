@@ -223,6 +223,9 @@
     display: none;
 }
 
-.tna-hgroup__title {
-    color: black;
+.card-group--list-style-none {
+    color:black;
+    a {
+        color:black;
+    }
 }
