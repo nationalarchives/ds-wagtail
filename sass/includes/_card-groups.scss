@@ -7,6 +7,11 @@
     &--list-style-none {
         @extend .card-group;
         list-style: none;
+        color: black;
+
+        a {
+            color: black;
+        }
     }
 
     &--no-flex {
