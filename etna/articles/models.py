@@ -691,7 +691,6 @@ class RecordArticlePage(
     default_api_fields = BasePageWithIntro.default_api_fields + [
         APIField("is_newly_published"),
     ]
-    from etna.core.serializers import ImageSerializer
 
     api_fields = (
         BasePageWithIntro.api_fields
