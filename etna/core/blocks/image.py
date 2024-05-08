@@ -7,6 +7,7 @@ from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks.paragraph import APIRichTextBlock
+from etna.core.serializers.images import ImageSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -40,47 +41,7 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        if value:
-            jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
-            )
-            webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
-            )
-
-            return {
-                "id": value.id,
-                "title": value.title,
-                "image_jpeg": {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                },
-                "image_webp": {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                },
-                "transcript": (
-                    {
-                        "heading": value.get_transcription_heading_display(),
-                        "text": value.transcription,
-                    }
-                    if value.transcription
-                    else None
-                ),
-                "translation": (
-                    {
-                        "heading": value.get_translation_heading_display(),
-                        "text": value.translation,
-                    }
-                    if value.translation
-                    else None
-                ),
-            }
-        return None
+        return ImageSerializer.to_representation(self, value)
 
 
 class ImageBlock(blocks.StructBlock):

@@ -699,7 +699,7 @@ class RecordArticlePage(
     default_api_fields = BasePageWithIntro.default_api_fields + [
         APIField("is_newly_published"),
     ]
-
+    from etna.core.serializers import ImageSerializer
     api_fields = (
         BasePageWithIntro.api_fields
         + ContentWarningMixin.api_fields
@@ -720,9 +720,9 @@ class RecordArticlePage(
             ),
             APIField("promoted_links"),
             APIField(
-                "intro_image_jpg",
-                serializer=ImageRenditionField(
-                    "fill-512x512|format-jpeg|jpegquality-60", source="intro_image"
+                "intro_image",
+                serializer=ImageSerializer(
+                    rendition_size="fill-512x512"
                 ),
             ),
         ]
