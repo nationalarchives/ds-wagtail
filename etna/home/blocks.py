@@ -25,7 +25,7 @@ class FeaturedPageBlock(blocks.StructBlock):
         max_length=100, required=False, help_text="Optionally override the page's title"
     )
     page = APIPageChooserBlock(
-        required_api_fields=["teaser_image", "teaser_text", "type_label"]
+        required_api_fields=["teaser_image"]
     )
     description = blocks.CharBlock(
         max_length=200, help_text="A description of the promoted page"

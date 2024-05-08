@@ -196,5 +196,3 @@ class RequiredHeroImageMixin(HeroImageMixin):
         abstract = True
 
     base_form_class = RequiredHeroImagePageForm
-
-    api_fields = HeroImageMixin.api_fields + []
