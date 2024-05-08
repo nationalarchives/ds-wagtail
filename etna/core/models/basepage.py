@@ -151,6 +151,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         APIField("title"),
         APIField("url"),
         APIField("full_url"),
+        APIField("type_label"),
+        APIField("teaser_text"),
     ]
 
     api_fields = [
