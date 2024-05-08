@@ -10,13 +10,12 @@ from wagtail.admin.panels import FieldPanel, InlinePanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 
 from rest_framework import serializers
 
 from etna.core.models import BasePage
-from etna.core.serializers import LinkedPageSerializer, RichTextSerializer
+from etna.core.serializers import ImageSerializer, LinkedPageSerializer, RichTextSerializer
 
 
 class AuthorIndexPage(BasePage):
@@ -87,20 +86,17 @@ class AuthorPage(BasePage):
     api_fields = BasePage.api_fields + [
         APIField("role"),
         APIField("summary", serializer=RichTextSerializer()),
-        APIField("image"),
         APIField(
             "authored_focused_articles", serializer=AuthorPageSerializer(many=True)
         ),
         APIField(
-            "image_jpg",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-jpeg|jpegquality-60", source="image"
-            ),
+            "image",
+            serializer=ImageSerializer(rendition_size="fill-512x512"),
         ),
         APIField(
-            "image_small_jpg",
-            serializer=ImageRenditionField(
-                "fill-128x128|format-jpeg|jpegquality-60", source="image"
+            "image_small",
+            serializer=ImageSerializer(
+                rendition_size="fill-128x128", source="image"
             ),
         ),
     ]

@@ -6,6 +6,18 @@ class ImageSerializer(Serializer):
     comes as part of the Wagtail API. This serializer allows us to create a 
     JPEG and WEBP rendition in one field, rather than having to have multiple fields.
     This also gives us the extra image info, such as copyright, and sensitive warnings.
+
+    rendition_size defaults to `fill-600x400`, but can be specified
+    when the serializer is used, e.g:
+    ImageSerializer(rendition_size="original")
+
+    jpeg_quality and webp_quality default to 60 and 80 respectively,
+    and can be specified in the same way as rendition_size.
+
+    The source of the image can also be set in the serializer, e.g:
+    APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
+
+    This will come back as `image_large` in the API response.
     """
 
     def __init__(self, rendition_size="fill-600x400",
