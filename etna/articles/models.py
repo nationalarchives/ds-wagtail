@@ -146,7 +146,7 @@ class ArticleIndexPage(BasePageWithIntro):
     api_fields = BasePageWithIntro.api_fields + [
         APIField(
             "featured_article",
-            serializer=DefaultPageSerializer(required_api_fields=["teaser_image_jpg"]),
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
         ),
         APIField("featured_pages"),
     ]
@@ -707,7 +707,7 @@ class RecordArticlePage(
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image_jpg"]
+                    required_api_fields=["teaser_image"]
                 ),
             ),
             APIField("promoted_links"),
