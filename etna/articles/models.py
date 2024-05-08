@@ -259,6 +259,10 @@ class ArticlePage(
         ]
     )
 
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
+
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -270,13 +274,13 @@ class ArticlePage(
             APIField(
                 "similar_items",
                 serializer=DefaultPageSerializer(
-                    required_api_fields=["newly_published_at", "type_label"], many=True
+                    many=True
                 ),
             ),
             APIField(
                 "latest_items",
                 serializer=DefaultPageSerializer(
-                    required_api_fields=["newly_published_at", "type_label"], many=True
+                    many=True
                 ),
             ),
         ]
@@ -426,6 +430,11 @@ class FocusedArticlePage(
             index.SearchField("author_names", boost=1),
         ]
     )
+
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
+
     api_fields = (
         BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
@@ -438,13 +447,13 @@ class FocusedArticlePage(
             APIField(
                 "similar_items",
                 serializer=DefaultPageSerializer(
-                    required_api_fields=["newly_published_at", "type_label"], many=True
+                    many=True
                 ),
             ),
             APIField(
                 "latest_items",
                 serializer=DefaultPageSerializer(
-                    required_api_fields=["newly_published_at", "type_label"], many=True
+                    many=True
                 ),
             ),
         ]
@@ -686,6 +695,10 @@ class RecordArticlePage(
             index.SearchField("time_period_names", boost=1),
         ]
     )
+
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
 
     api_fields = (
         BasePageWithIntro.api_fields
