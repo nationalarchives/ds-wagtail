@@ -273,15 +273,11 @@ class ArticlePage(
             APIField("body"),
             APIField(
                 "similar_items",
-                serializer=DefaultPageSerializer(
-                    many=True
-                ),
+                serializer=DefaultPageSerializer(many=True),
             ),
             APIField(
                 "latest_items",
-                serializer=DefaultPageSerializer(
-                    many=True
-                ),
+                serializer=DefaultPageSerializer(many=True),
             ),
         ]
         + TopicalPageMixin.api_fields
@@ -446,15 +442,11 @@ class FocusedArticlePage(
             APIField("body"),
             APIField(
                 "similar_items",
-                serializer=DefaultPageSerializer(
-                    many=True
-                ),
+                serializer=DefaultPageSerializer(many=True),
             ),
             APIField(
                 "latest_items",
-                serializer=DefaultPageSerializer(
-                    many=True
-                ),
+                serializer=DefaultPageSerializer(many=True),
             ),
         ]
         + TopicalPageMixin.api_fields
@@ -700,6 +692,7 @@ class RecordArticlePage(
         APIField("is_newly_published"),
     ]
     from etna.core.serializers import ImageSerializer
+
     api_fields = (
         BasePageWithIntro.api_fields
         + ContentWarningMixin.api_fields
@@ -721,9 +714,7 @@ class RecordArticlePage(
             APIField("promoted_links"),
             APIField(
                 "intro_image",
-                serializer=ImageSerializer(
-                    rendition_size="fill-512x512"
-                ),
+                serializer=ImageSerializer(rendition_size="fill-512x512"),
             ),
         ]
         + TopicalPageMixin.api_fields

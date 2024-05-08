@@ -1,9 +1,10 @@
 from rest_framework.serializers import Serializer
 
+
 class ImageSerializer(Serializer):
     """
     This ImageSerializer was created to improve the `ImageRenditionField` that
-    comes as part of the Wagtail API. This serializer allows us to create a 
+    comes as part of the Wagtail API. This serializer allows us to create a
     JPEG and WEBP rendition in one field, rather than having to have multiple fields.
     This also gives us the extra image info, such as copyright, and sensitive warnings.
 
@@ -20,10 +21,14 @@ class ImageSerializer(Serializer):
     This will come back as `image_large` in the API response.
     """
 
-    def __init__(self, rendition_size="fill-600x400",
+    def __init__(
+        self,
+        rendition_size="fill-600x400",
         jpeg_quality=60,
         webp_quality=80,
-        *args, **kwargs):
+        *args,
+        **kwargs,
+    ):
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
         self.rendition_size = rendition_size
@@ -71,6 +76,10 @@ class ImageSerializer(Serializer):
                 ),
                 "copyright": value.copyright if value.copyright else None,
                 "is_sensitive": value.is_sensitive,
-                "custom_sensitive_image_warning": value.custom_sensitive_image_warning if value.custom_sensitive_image_warning else None,
+                "custom_sensitive_image_warning": (
+                    value.custom_sensitive_image_warning
+                    if value.custom_sensitive_image_warning
+                    else None
+                ),
             }
         return None

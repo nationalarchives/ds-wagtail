@@ -15,7 +15,11 @@ from wagtail.models import Page
 from rest_framework import serializers
 
 from etna.core.models import BasePage
-from etna.core.serializers import ImageSerializer, LinkedPageSerializer, RichTextSerializer
+from etna.core.serializers import (
+    ImageSerializer,
+    LinkedPageSerializer,
+    RichTextSerializer,
+)
 
 
 class AuthorIndexPage(BasePage):
@@ -95,9 +99,7 @@ class AuthorPage(BasePage):
         ),
         APIField(
             "image_small",
-            serializer=ImageSerializer(
-                rendition_size="fill-128x128", source="image"
-            ),
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
     ]
 

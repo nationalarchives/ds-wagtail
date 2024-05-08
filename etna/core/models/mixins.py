@@ -162,15 +162,11 @@ class HeroImageMixin(models.Model):
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image",
-            serializer=ImageSerializer(
-                "fill-1200x480", source="hero_image"
-            ),
+            serializer=ImageSerializer("fill-1200x480", source="hero_image"),
         ),
         APIField(
             "hero_image_small",
-            serializer=ImageSerializer(
-                "fill-600x400", source="hero_image"
-            ),
+            serializer=ImageSerializer("fill-600x400", source="hero_image"),
         ),
     ]
 
