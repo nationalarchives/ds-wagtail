@@ -273,11 +273,11 @@ class ArticlePage(
             APIField("body"),
             APIField(
                 "similar_items",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True),
             ),
             APIField(
                 "latest_items",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True),
             ),
         ]
         + TopicalPageMixin.api_fields
@@ -442,11 +442,11 @@ class FocusedArticlePage(
             APIField("body"),
             APIField(
                 "similar_items",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True),
             ),
             APIField(
                 "latest_items",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True),
             ),
         ]
         + TopicalPageMixin.api_fields

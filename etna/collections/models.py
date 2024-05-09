@@ -678,8 +678,8 @@ class TopicalPageMixin:
     """
 
     api_fields = [
-        APIField("topics", serializer=DefaultPageSerializer(many=True)),
-        APIField("time_periods", serializer=DefaultPageSerializer(many=True)),
+        APIField("topics", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
+        APIField("time_periods", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
     ]
 
     @classmethod
