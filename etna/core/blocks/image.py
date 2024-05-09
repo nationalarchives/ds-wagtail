@@ -41,7 +41,8 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        return DetailedImageSerializer.to_representation(self, value)
+        serializer = DetailedImageSerializer()
+        return serializer.to_representation(value)
 
 
 class ImageBlock(blocks.StructBlock):
