@@ -160,9 +160,7 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
             APIField("articles_introduction"),
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("featured_articles"),
         ]
@@ -303,13 +301,14 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
             APIField("body"),
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("skos_id"),
             APIField("related_articles", serializer=DefaultPageSerializer(many=True)),
-            APIField("related_highlight_gallery_pages", serializer=DefaultPageSerializer(many=True)),
+            APIField(
+                "related_highlight_gallery_pages",
+                serializer=DefaultPageSerializer(many=True),
+            ),
         ]
     )
 
@@ -506,7 +505,10 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + [
             APIField("body"),
             APIField("related_articles", serializer=DefaultPageSerializer(many=True)),
-            APIField("related_highlight_gallery_pages", serializer=DefaultPageSerializer(many=True)),
+            APIField(
+                "related_highlight_gallery_pages",
+                serializer=DefaultPageSerializer(many=True),
+            ),
             APIField("start_year"),
             APIField("end_year"),
         ]
@@ -795,9 +797,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         + [
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),

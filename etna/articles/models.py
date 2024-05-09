@@ -706,9 +706,7 @@ class RecordArticlePage(
             APIField("image_library_link"),
             APIField(
                 "featured_article",
-                serializer=DefaultPageSerializer(
-                    required_api_fields=["teaser_image"]
-                ),
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("promoted_links"),
             APIField(
