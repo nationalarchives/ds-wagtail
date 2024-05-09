@@ -9,7 +9,7 @@ from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 
-from etna.core.serializers import ImageSerializer, RichTextSerializer
+from etna.core.serializers import DetailedImageSerializer, RichTextSerializer
 
 from .forms import RequiredHeroImagePageForm
 
@@ -162,11 +162,11 @@ class HeroImageMixin(models.Model):
         APIField("hero_image_caption", serializer=RichTextSerializer()),
         APIField(
             "hero_image",
-            serializer=ImageSerializer("fill-1200x480"),
+            serializer=DetailedImageSerializer("fill-1200x480"),
         ),
         APIField(
             "hero_image_small",
-            serializer=ImageSerializer("fill-600x400", source="hero_image"),
+            serializer=DetailedImageSerializer("fill-600x400", source="hero_image"),
         ),
     ]
 

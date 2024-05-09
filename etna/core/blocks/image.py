@@ -7,7 +7,7 @@ from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks.paragraph import APIRichTextBlock
-from etna.core.serializers.images import ImageSerializer
+from etna.core.serializers.images import DetailedImageSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -41,7 +41,7 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        return ImageSerializer.to_representation(self, value)
+        return DetailedImageSerializer.to_representation(self, value)
 
 
 class ImageBlock(blocks.StructBlock):

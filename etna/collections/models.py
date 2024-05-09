@@ -22,7 +22,7 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import DefaultPageSerializer, LinkedPageSerializer
+from etna.core.serializers import DefaultPageSerializer, HighlightImageSerializer, LinkedPageSerializer
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -767,6 +767,7 @@ class TopicalPageMixin:
 
 # TODO: Make better
 class HighlightSerializer(serializers.ModelSerializer):
+    image = HighlightImageSerializer()
     class Meta:
         model = Highlight
         fields = (
@@ -799,8 +800,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
-            # APIField("highlights", serializer=HighlightSerializer(many=True)),
-            APIField("page_highlights", serializer=HighlightSerializer(many=True)),
+            APIField("highlights", serializer=HighlightSerializer(many=True)),
         ]
         + TopicalPageMixin.api_fields
     )

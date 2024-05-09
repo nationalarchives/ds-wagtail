@@ -12,13 +12,10 @@ from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
 from wagtail.models import Page
 
-from rest_framework import serializers
-
 from etna.core.models import BasePage
 from etna.core.serializers import (
     DefaultPageSerializer,
     ImageSerializer,
-    LinkedPageSerializer,
     RichTextSerializer,
 )
 

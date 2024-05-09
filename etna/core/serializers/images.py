@@ -6,7 +6,6 @@ class ImageSerializer(Serializer):
     This ImageSerializer was created to improve the `ImageRenditionField` that
     comes as part of the Wagtail API. This serializer allows us to create a
     JPEG and WEBP rendition in one field, rather than having to have multiple fields.
-    This also gives us the extra image info, such as copyright, and sensitive warnings.
 
     rendition_size defaults to `fill-600x400`, but can be specified
     when the serializer is used, e.g:
@@ -58,28 +57,63 @@ class ImageSerializer(Serializer):
                     "width": webp_image.width,
                     "height": webp_image.height,
                 },
-                "transcript": (
-                    {
-                        "heading": value.get_transcription_heading_display(),
-                        "text": value.transcription,
-                    }
-                    if value.transcription
-                    else None
-                ),
-                "translation": (
-                    {
-                        "heading": value.get_translation_heading_display(),
-                        "text": value.translation,
-                    }
-                    if value.translation
-                    else None
-                ),
-                "copyright": value.copyright if value.copyright else None,
-                "is_sensitive": value.is_sensitive,
-                "custom_sensitive_image_warning": (
-                    value.custom_sensitive_image_warning
-                    if value.custom_sensitive_image_warning
-                    else None
-                ),
             }
         return None
+    
+class DetailedImageSerializer(ImageSerializer):
+    """
+    This serializer extends `ImageSerializer` to display extra details on an image,
+    such as copyright, and sensitive warnings.
+
+    Generally for in-page image use, rather than secondary page images.
+    """
+
+    def to_representation(self, value):
+        representation = super().to_representation(value)
+        if representation:
+            representation.update(
+                {
+                    "transcript": (
+                        {
+                            "heading": value.get_transcription_heading_display(),
+                            "text": value.transcription,
+                        }
+                        if value.transcription
+                        else None
+                    ),
+                    "translation": (
+                        {
+                            "heading": value.get_translation_heading_display(),
+                            "text": value.translation,
+                        }
+                        if value.translation
+                        else None
+                    ),
+                    "copyright": value.copyright if value.copyright else None,
+                    "is_sensitive": value.is_sensitive,
+                    "custom_sensitive_image_warning": (
+                        value.custom_sensitive_image_warning
+                        if value.custom_sensitive_image_warning
+                        else None
+                    ),
+                }
+            )
+        return representation
+
+class HighlightImageSerializer(DetailedImageSerializer):
+    """
+    This serializer extends `DetailedImageSerializer` to display details on 
+    an image that are used for `Highlights`.
+    """
+
+    def to_representation(self, value):
+        representation = super().to_representation(value)
+        if representation:
+            representation.update(
+                {
+                    "description": value.description,
+                    "record": value.record.iaid,
+                    "record_dates": value.record_dates,
+                }
+            )
+        return representation
