@@ -59,7 +59,8 @@ class ImageSerializer(Serializer):
                 },
             }
         return None
-    
+
+
 class DetailedImageSerializer(ImageSerializer):
     """
     This serializer extends `ImageSerializer` to display extra details on an image,
@@ -100,9 +101,10 @@ class DetailedImageSerializer(ImageSerializer):
             )
         return representation
 
+
 class HighlightImageSerializer(DetailedImageSerializer):
     """
-    This serializer extends `DetailedImageSerializer` to display details on 
+    This serializer extends `DetailedImageSerializer` to display details on
     an image that are used for `Highlights`.
     """
 

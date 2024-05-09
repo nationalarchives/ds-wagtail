@@ -22,7 +22,11 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import DefaultPageSerializer, HighlightImageSerializer, LinkedPageSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    LinkedPageSerializer,
+)
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -678,8 +682,18 @@ class TopicalPageMixin:
     """
 
     api_fields = [
-        APIField("topics", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
-        APIField("time_periods", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
+        APIField(
+            "topics",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
+        APIField(
+            "time_periods",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
     ]
 
     @classmethod
@@ -768,6 +782,7 @@ class TopicalPageMixin:
 # TODO: Make better
 class HighlightSerializer(serializers.ModelSerializer):
     image = HighlightImageSerializer()
+
     class Meta:
         model = Highlight
         fields = (

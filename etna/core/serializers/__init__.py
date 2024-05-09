@@ -1,4 +1,4 @@
-from .images import DetailedImageSerializer, ImageSerializer, HighlightImageSerializer
+from .images import DetailedImageSerializer, HighlightImageSerializer, ImageSerializer
 from .pages import DefaultPageSerializer, LinkedPageSerializer
 from .richtext import RichTextSerializer
 from .tags import TaggableSerializer

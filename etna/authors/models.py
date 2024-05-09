@@ -170,4 +170,9 @@ class AuthorPageMixin:
         if self.authors:
             return ", ".join([author.title for author in self.authors])
 
-    api_fields = [APIField("authors", serializer=DefaultPageSerializer(required_api_fields=["image"], many=True))]
+    api_fields = [
+        APIField(
+            "authors",
+            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
+        )
+    ]
