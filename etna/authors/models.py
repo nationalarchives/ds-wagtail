@@ -141,25 +141,6 @@ class AuthorTag(models.Model):
     )
 
 
-class AuthorSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-400x400", jpeg_quality=60, webp_quality=80, source="image"
-    )
-    role = serializers.CharField()
-
-    class Meta:
-        model = AuthorTag
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-            "role",
-        )
-
-
 class AuthorPageMixin:
     """
     A mixin for pages that uses the ``AuthorTag`` model
@@ -192,4 +173,4 @@ class AuthorPageMixin:
         if self.authors:
             return ", ".join([author.title for author in self.authors])
 
-    api_fields = [APIField("authors", serializer=AuthorSerializer(many=True))]
+    api_fields = [APIField("authors", serializer=DefaultPageSerializer(required_api_fields=["image"], many=True))]
