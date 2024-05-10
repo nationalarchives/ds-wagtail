@@ -29,6 +29,11 @@
         border: 1px solid $color__grey-500;
         padding: 1.5rem;
 
+        &-warning {
+            background: #d9d9d6;
+            padding: 1em;
+        }
+
         &-list {
             dt {
                 margin-top: 1.5rem;
