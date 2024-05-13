@@ -4,6 +4,7 @@ from wagtail.rich_text import expand_db_html
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 from etna.core.blocks.image import APIImageChooserBlock
+from etna.core.serializers import ImageSerializer
 
 
 class MediaChooserBlock(AbstractMediaChooserBlock):
@@ -34,7 +35,6 @@ class MediaChooserBlock(AbstractMediaChooserBlock):
             "date": value.date,
             "description": expand_db_html(value.description),
             "transcript": expand_db_html(value.transcript),
-            "thumbnail": value.thumbnail or None,
             "width": value.width,
             "height": value.height,
             "duration": value.duration,
