@@ -635,44 +635,6 @@ class PageTimePeriod(Orderable):
     )
 
 
-class TopicSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
-    )
-
-    class Meta:
-        model = PageTopic
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-        )
-
-
-class TimePeriodSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
-    )
-    start_year = serializers.IntegerField()
-    end_year = serializers.IntegerField()
-
-    class Meta:
-        model = PageTimePeriod
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-            "start_year",
-            "end_year",
-        )
-
-
 class TopicalPageMixin:
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
