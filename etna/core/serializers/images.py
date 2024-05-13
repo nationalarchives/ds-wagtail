@@ -45,13 +45,13 @@ class ImageSerializer(Serializer):
             return {
                 "id": value.id,
                 "title": value.title,
-                "image_jpeg": {
+                "jpeg": {
                     "url": jpeg_image.url,
                     "full_url": jpeg_image.full_url,
                     "width": jpeg_image.width,
                     "height": jpeg_image.height,
                 },
-                "image_webp": {
+                "webp": {
                     "url": webp_image.url,
                     "full_url": webp_image.full_url,
                     "width": webp_image.width,

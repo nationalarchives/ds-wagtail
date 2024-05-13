@@ -25,7 +25,6 @@ from rest_framework import serializers
 from etna.core.serializers import (
     DefaultPageSerializer,
     HighlightImageSerializer,
-    LinkedPageSerializer,
 )
 
 from ..alerts.models import AlertMixin
