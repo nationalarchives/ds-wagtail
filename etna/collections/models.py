@@ -22,10 +22,7 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import (
-    DefaultPageSerializer,
-    HighlightImageSerializer,
-)
+from etna.core.serializers import DefaultPageSerializer, HighlightImageSerializer
 
 from ..alerts.models import AlertMixin
 from ..core.models import (

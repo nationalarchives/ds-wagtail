@@ -41,7 +41,9 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        serializer = DetailedImageSerializer(self.rendition_size, self.jpeg_quality, self.webp_quality)
+        serializer = DetailedImageSerializer(
+            self.rendition_size, self.jpeg_quality, self.webp_quality
+        )
         return serializer.to_representation(value)
 
 

@@ -76,10 +76,11 @@ class AuthorPage(BasePage):
 
     default_api_fields = BasePage.default_api_fields + [
         APIField("role"),
-        APIField("image",
-            serializer=ImageSerializer(rendition_size="fill-512x512")),
-        APIField("image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image")),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
+        APIField(
+            "image_small",
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
+        ),
     ]
 
     api_fields = BasePage.api_fields + [
@@ -88,13 +89,10 @@ class AuthorPage(BasePage):
         APIField(
             "authored_focused_articles", serializer=DefaultPageSerializer(many=True)
         ),
-        APIField(
-            "image",
-            serializer=ImageSerializer(rendition_size="fill-512x512")
-        ),
+        APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
             "image_small",
-            serializer=ImageSerializer(rendition_size="fill-128x128", source="image")
+            serializer=ImageSerializer(rendition_size="fill-128x128", source="image"),
         ),
     ]
 
