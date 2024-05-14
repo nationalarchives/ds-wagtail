@@ -41,7 +41,7 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        serializer = DetailedImageSerializer()
+        serializer = DetailedImageSerializer(self.rendition_size, self.jpeg_quality, self.webp_quality)
         return serializer.to_representation(value)
 
 
@@ -50,7 +50,7 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = APIImageChooserBlock(required=True)
+    image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     decorative = blocks.BooleanBlock(
         label=mark_safe(
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"
