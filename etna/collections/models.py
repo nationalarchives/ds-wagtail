@@ -740,9 +740,8 @@ class TopicalPageMixin:
         return self.highlights.count()
 
 
-# TODO: Make better
 class HighlightSerializer(serializers.ModelSerializer):
-    image = HighlightImageSerializer()
+    image = HighlightImageSerializer(rendition_size="original")
 
     class Meta:
         model = Highlight
