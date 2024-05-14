@@ -725,6 +725,7 @@ class Record(DataLayerMixin, APIModel):
             or self.enrichment_per
             or self.enrichment_org
             or self.enrichment_misc
+            or self.enrichment_date
         ):
             return True
         return False
