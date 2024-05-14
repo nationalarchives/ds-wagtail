@@ -242,13 +242,9 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
-    )
-
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     body = StreamField(TopicExplorerPageStreamBlock, blank=True)
@@ -268,9 +264,12 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
         ]
     )
@@ -298,7 +297,6 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + [
             APIField("body"),
             APIField("featured_article"),
-            APIField("featured_record_article"),
             APIField("skos_id"),
             APIField("related_page_pks"),
         ]
@@ -337,15 +335,20 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
 
     @cached_property
     def related_articles(self):
-        """Return a list of related pages for rendering in the related articles section
+        """
+        Return a list of related pages for rendering in the related articles section
         of the page. To add another page type, import it and add it to the list.
         """
 
-        from etna.articles.models import ArticlePage, FocusedArticlePage
+        from etna.articles.models import (
+            ArticlePage,
+            FocusedArticlePage,
+            RecordArticlePage,
+        )
 
         page_list = []
 
-        for page_type in [ArticlePage, FocusedArticlePage]:
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
             page_list.extend(
                 page_type.objects.exclude(pk=self.featured_article_id)
                 .filter(pk__in=self.related_page_pks)
@@ -355,20 +358,7 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
-
-    @cached_property
-    def related_record_articles(self):
-        from etna.articles.models import RecordArticlePage
-
-        return (
-            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")[:4]
-        )
+        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):
@@ -472,14 +462,11 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
 
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage", blank=True, null=True, on_delete=models.SET_NULL
-    )
     body = StreamField(TimePeriodExplorerPageStreamBlock, blank=True)
     start_year = models.IntegerField(blank=False)
     end_year = models.IntegerField(blank=False)
@@ -489,9 +476,12 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + [
             PageChooserPanel(
                 "featured_article",
-                ["articles.ArticlePage", "articles.FocusedArticlePage"],
+                [
+                    "articles.ArticlePage",
+                    "articles.FocusedArticlePage",
+                    "articles.RecordArticlePage",
+                ],
             ),
-            FieldPanel("featured_record_article", heading=_("Featured record article")),
             FieldPanel("body"),
             FieldPanel("start_year"),
             FieldPanel("end_year"),
@@ -530,15 +520,20 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
 
     @cached_property
     def related_articles(self):
-        """Return a list of related pages for rendering in the related articles section
+        """
+        Return a list of related pages for rendering in the related articles section
         of the page. To add another page type, import it and add it to the list.
         """
 
-        from etna.articles.models import ArticlePage, FocusedArticlePage
+        from etna.articles.models import (
+            ArticlePage,
+            FocusedArticlePage,
+            RecordArticlePage,
+        )
 
         page_list = []
 
-        for page_type in [ArticlePage, FocusedArticlePage]:
+        for page_type in [ArticlePage, FocusedArticlePage, RecordArticlePage]:
             page_list.extend(
                 page_type.objects.exclude(pk=self.featured_article_id)
                 .filter(pk__in=self.related_page_pks)
@@ -548,20 +543,7 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
                 .prefetch_related("teaser_image__renditions")
             )
 
-        return sorted(page_list, key=lambda x: x.first_published_at, reverse=True)
-
-    @cached_property
-    def related_record_articles(self):
-        from etna.articles.models import RecordArticlePage
-
-        return (
-            RecordArticlePage.objects.exclude(pk=self.featured_record_article)
-            .live()
-            .public()
-            .filter(pk__in=self.related_page_pks)
-            .order_by("-first_published_at")
-            .select_related("teaser_image")[:4]
-        )
+        return sorted(page_list, key=lambda x: x.newly_published_at, reverse=True)
 
     @cached_property
     def related_highlight_gallery_pages(self):
@@ -780,14 +762,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
     subpage_types = []
 
-    featured_record_article = models.ForeignKey(
-        "articles.RecordArticlePage",
-        verbose_name=_("featured record article"),
-        blank=True,
-        null=True,
-        on_delete=models.SET_NULL,
-    )
-
     featured_article = models.ForeignKey(
         "wagtailcore.Page",
         null=True,
@@ -795,7 +769,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         on_delete=models.SET_NULL,
         related_name="+",
         help_text=_(
-            "Select a page to display in the featured area. This can be an Article or Focused Article."
+            "Select a page to display in the featured area. This can be an Article, Focused Article or Record Article."
         ),
         verbose_name=_("featured article"),
     )
@@ -804,7 +778,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         BasePageWithIntro.api_fields
         + ContentWarningMixin.api_fields
         + [
-            APIField("featured_record_article"),
             APIField("featured_article"),
             # APIField("highlights", serializer=HighlightSerializer(many=True)),
             APIField("page_highlights", serializer=HighlightSerializer(many=True)),
@@ -832,10 +805,13 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             label=_("Item"),
             max_num=15,
         ),
-        FieldPanel("featured_record_article"),
         PageChooserPanel(
             "featured_article",
-            ["articles.ArticlePage", "articles.FocusedArticlePage"],
+            [
+                "articles.ArticlePage",
+                "articles.FocusedArticlePage",
+                "articles.RecordArticlePage",
+            ],
         ),
     ]
 
