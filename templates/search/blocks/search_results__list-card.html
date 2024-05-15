@@ -9,7 +9,7 @@
     <div class="search-results__list-card-details">
         <h3 class="tna-heading-m">
             <a href="{% record_url record level_or_archive=record.level form_group=form.group.value %}" class="search-results__list-card-heading-link" data-link="{{ record.reference_prefixed_summary_title }}" data-link-type="Search results list" search-bucket="{{ buckets.current.label }}">
-                {% if form.group.value == bucketkeys.COMMUNITY.value %} 
+                {% if form.group.value == bucketkeys.COMMUNITY.value %}
                     {% if record.ciim_id %}
                         <span class="sr-only">CIIM Id {{ record.ciim_id }}: </span>
                     {% endif %}
@@ -18,7 +18,7 @@
                         <span class="sr-only">Reference number {{ record.reference_number }}: </span>
                     {% endif %}
                 {% endif %}
-                {{ record.summary_title }}
+                {{ record.summary_title|truncatechars:250 }}
             </a>
         </h3>
 
@@ -37,6 +37,6 @@
         {% if form.group.value == bucketkeys.COMMUNITY.value %}
             {% include 'includes/tags.html' %}
         {% endif %}
-        
+
     </div>
 </li>
