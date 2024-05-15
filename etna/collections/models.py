@@ -304,10 +304,17 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
             APIField("skos_id"),
-            APIField("related_articles", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
+            APIField(
+                "related_articles",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
             APIField(
                 "related_highlight_gallery_pages",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
             ),
         ]
     )
@@ -504,10 +511,17 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("related_articles", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True)),
+            APIField(
+                "related_articles",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
             APIField(
                 "related_highlight_gallery_pages",
-                serializer=DefaultPageSerializer(many=True),
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
             ),
             APIField("start_year"),
             APIField("end_year"),

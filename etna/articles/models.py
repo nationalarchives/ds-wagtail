@@ -23,6 +23,7 @@ from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
 
+from rest_framework import serializers
 from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin
@@ -36,6 +37,7 @@ from etna.core.models import (
 )
 from etna.core.serializers import (
     DefaultPageSerializer,
+    HighlightImageSerializer,
     ImageSerializer,
     RichTextSerializer,
     TaggableSerializer,
@@ -538,6 +540,48 @@ class FocusedArticlePage(
         )[:3]
 
 
+class PageGalleryImage(Orderable):
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
+    image = models.ForeignKey(
+        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+    caption = RichTextField(
+        features=["bold", "italic", "link"],
+        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
+        blank=True,
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = _("gallery image")
+        verbose_name_plural = _("gallery images")
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("alt_text"),
+        FieldPanel("caption"),
+    ]
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    image = HighlightImageSerializer(rendition_size="max-1024x1024")
+    caption = RichTextSerializer()
+
+    class Meta:
+        model = PageGalleryImage
+        fields = (
+            "image",
+            "alt_text",
+            "caption",
+        )
+
+
 class RecordArticlePage(
     TopicalPageMixin,
     ContentWarningMixin,
@@ -711,6 +755,7 @@ class RecordArticlePage(
             APIField("about", serializer=RichTextSerializer()),
             APIField("record"),
             APIField("gallery_heading"),
+            APIField("gallery_items", serializer=GallerySerializer(many=True)),
             APIField("image_library_link"),
             APIField(
                 "featured_article",
@@ -782,32 +827,3 @@ class RecordArticlePage(
         ):
             self.article_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
-
-
-class PageGalleryImage(Orderable):
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
-    image = models.ForeignKey(
-        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
-    )
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-    caption = RichTextField(
-        features=["bold", "italic", "link"],
-        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
-        blank=True,
-    )
-
-    class Meta(Orderable.Meta):
-        verbose_name = _("gallery image")
-        verbose_name_plural = _("gallery images")
-
-    panels = [
-        FieldPanel("image"),
-        FieldPanel("alt_text"),
-        FieldPanel("caption"),
-    ]

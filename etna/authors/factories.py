@@ -4,7 +4,7 @@ import factory
 
 from wagtail_factories import ImageFactory, PageFactory
 
-from etna.authors.models import AuthorPage, AuthorIndexPage
+from etna.authors.models import AuthorIndexPage, AuthorPage
 
 
 class AuthorIndexPageFactory(PageFactory):
