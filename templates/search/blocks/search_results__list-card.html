@@ -23,7 +23,7 @@
         </h3>
 
         <p class="search-results__list-card-description">
-            {{ record.listing_description }}
+            {{ record.listing_description|truncatechars_html:250 }}
         </p>
 
         <dl class="tna-dl tna-dl--plain tna-!--margin-bottom-s">
