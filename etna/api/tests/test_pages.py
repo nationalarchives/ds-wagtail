@@ -1,3 +1,8 @@
+import os
+import re
+
+from datetime import datetime, timezone
+
 from wagtail.models import Site
 from wagtail.test.utils import WagtailPageTestCase
 
@@ -7,24 +12,37 @@ from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
+    RecordArticlePageFactory,
 )
-from etna.authors.factories import AuthorPageFactory
+from etna.authors.factories import AuthorIndexPageFactory, AuthorPageFactory
 from etna.authors.models import AuthorTag
-from etna.collections.factories import TimePeriodPageFactory, TopicPageFactory
-from etna.collections.models import PageTimePeriod, PageTopic
-from etna.home.factories import HomePageFactory
+from etna.collections.factories import (
+    HighlightGalleryPageFactory,
+    TimePeriodPageFactory,
+    TopicPageFactory,
+)
+from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.media.models import EtnaMedia
 
-from datetime import datetime
-
 API_URL = "/api/v2/pages/"
+
+DEFAULT_DATE = datetime(2000, 1, 1, tzinfo=timezone.utc)
+
+FILE_PATH = os.path.join(os.path.dirname(__file__), "expected_results")
+
 
 class APIResponseTest(WagtailPageTestCase):
     @classmethod
     def setUpTestData(cls):
         cls.root_page = Site.objects.get().root_page
 
-        cls.test_image = ImageFactory()
+        cls.test_image = ImageFactory(
+            transcription="<p>Transcript</p>",
+            translation="<p>Translation</p>",
+            copyright="Copyrighted by someone",
+            description="<p>Description</p>",
+            record_dates="1900-2000",
+        )
 
         cls.test_media = EtnaMedia.objects.create(
             title="Test media",
@@ -102,7 +120,7 @@ class APIResponseTest(WagtailPageTestCase):
                                 "category": "blog",
                                 "duration": "10",
                                 "cta_label": "CTA Label",
-                                "description": '<p data-block-key="upl5w">Description</p>',
+                                "description": '<p data-block-key="upl5w">Description with <a linktype="page" id="3">a link to a page</a></p>',
                                 "target_blank": True,
                                 "publication_date": "14 April 2021",
                             },
@@ -126,87 +144,164 @@ class APIResponseTest(WagtailPageTestCase):
                                 ],
                             },
                         },
-                    # { TODO: Uncomment when we can serialize records
-                    #   "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
-                    #   "type": "record_links",
-                    #   "value": {
-                    #     "items": [
-                    #       {
-                    #         "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
-                    #         "type": "item",
-                    #         "value": {
-                    #           "record": "D7376859",
-                    #           "record_dates": "12 April 2021",
-                    #           "thumbnail_image": cls.test_image.id,
-                    #           "descriptive_title": "Record title"
-                    #         }
-                    #       }
-                    #     ]
-                    #   }
-                    # }
-                  ],
-                  "heading": "Heading text",
+                        # { TODO: Uncomment when we can serialize records
+                        #   "id": "48f967ae-4cc6-4f13-bb12-6c648e747ec3",
+                        #   "type": "record_links",
+                        #   "value": {
+                        #     "items": [
+                        #       {
+                        #         "id": "acacaa55-924f-4594-bc0b-9f5cb2303ea9",
+                        #         "type": "item",
+                        #         "value": {
+                        #           "record": "D7376859",
+                        #           "record_dates": "12 April 2021",
+                        #           "thumbnail_image": cls.test_image.id,
+                        #           "descriptive_title": "Record title"
+                        #         }
+                        #       }
+                        #     ]
+                        #   }
+                        # }
+                    ],
+                    "heading": "Heading text",
                 },
             }
         ]
 
-        cls.homepage = HomePageFactory(parent=cls.root_page)
-
-        cls.article_index = ArticleIndexPageFactory(parent=cls.homepage)
-
-        cls.arts = TopicPageFactory(title="Arts and culture", parent=cls.homepage)
+        cls.arts = TopicPageFactory(
+            title="arts",
+            parent=cls.root_page,
+            first_published_at=DEFAULT_DATE,
+        )
 
         cls.early_modern = TimePeriodPageFactory(
-            title="Early modern", start_year=1485, end_year=1714, parent=cls.homepage
+            title="early_modern",
+            start_year=1485,
+            end_year=1714,
+            parent=cls.root_page,
+            first_published_at=DEFAULT_DATE,
         )
 
         cls.postwar = TimePeriodPageFactory(
-            title="Post war", start_year=1945, end_year=2000, parent=cls.homepage
+            title="postwar",
+            start_year=1945,
+            end_year=2000,
+            parent=cls.root_page,
+            first_published_at=DEFAULT_DATE,
+        )
+
+        cls.author_index_page = AuthorIndexPageFactory(
+            parent=cls.root_page,
+            title="authors",
+            first_published_at=DEFAULT_DATE,
+        )
+
+        cls.author_page = AuthorPageFactory(
+            title="author",
+            role="Test Author",
+            summary="<p>Summary text</p>",
+            first_published_at=DEFAULT_DATE,
+            parent=cls.author_index_page,
+        )
+
+        cls.article_index = ArticleIndexPageFactory(
+            parent=cls.root_page,
+            title="article_index",
+            first_published_at=DEFAULT_DATE,
         )
 
         cls.article = ArticlePageFactory(
             parent=cls.article_index,
-            title="Article",
-            intro="This is an article",
+            title="article",
+            intro='<p>This is an article with <a linktype="page" id="3">a link to a page</a><page>',
             body=cls.BODY_JSON,
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.postwar),
             ],
-            first_published_at=datetime()
-        )
-
-        cls.author_page = AuthorPageFactory(
-            title="John Doe",
-            role="Test Author",
-            summary="<p>Summary text</p>",
+            first_published_at=DEFAULT_DATE,
         )
 
         cls.focused_article = FocusedArticlePageFactory(
             parent=cls.article_index,
-            title="Focused article",
+            title="focused_article",
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             author_tags=[AuthorTag(author=cls.author_page)],
+            first_published_at=DEFAULT_DATE,
         )
 
-    def request_api(self, path=""):
-        return self.client.get(f"{API_URL}{path}" + ("/" if path else ""), format="json")
-    
-    def get_api_data(self, path=""):
+        # cls.record_article = RecordArticlePageFactory(
+        #     parent=cls.article_index,
+        #     title="record_article",
+        #     page_topics=[PageTopic(topic=cls.arts)],
+        #     page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+        #     first_published_at=DEFAULT_DATE,
+        # )
+
+        cls.highlight_gallery = HighlightGalleryPageFactory(
+            parent=cls.arts,
+            title="highlight_gallery",
+            featured_article=cls.article,
+            page_highlights=[Highlight(image=cls.test_image, alt_text="Alt text")],
+            page_topics=[PageTopic(topic=cls.arts)],
+            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            first_published_at=DEFAULT_DATE,
+        )
+
+    def request_api(self, path: str = ""):
+        return self.client.get(
+            f"{API_URL}{path}" + ("/" if path else ""), format="json"
+        )
+
+    def get_api_data(self, path: str = "") -> str:
         if api_response := self.request_api(path):
-          if api_response.status_code == 200:
-            return api_response.content.decode("utf-8")
-          return f"Endpoint not OK (Error: {api_response.status_code})"
+            if api_response.status_code == 200:
+                return api_response.content.decode("utf-8")
+            return f"Endpoint not OK (Error: {api_response.status_code})"
         return f"Unable to request endpoint {API_URL}{path}"
+
+    def compare_json(self, path: str, json_file: str):
+        self.maxDiff = None
+
+        if api_data := self.get_api_data(path):
+            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
+                self.fail(api_data)
+            else:
+                file = os.path.join(FILE_PATH, f"{json_file}.json")
+                expected_data = open(file, "r").read()
+                # Remove random image rendition IDs
+                expected_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", expected_data)
+                api_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", api_data)
+                expected_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", expected_data)
+                api_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", api_data)
+                self.assertEqual(expected_data, api_data)
+
+    # def test_output(self):
+    #     pages = [self.author_page]
+    #     for page in pages:
+    #         if api_data := self.get_api_data(str(page.id)):
+    #             print(page.title +"\n" + api_data)
+
+    # delete when done ^
 
     def test_pages_route(self):
         if api_data := self.get_api_data():
-          print("complete")
+            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
+                self.fail(api_data)
+            else:
+                file = os.path.join(FILE_PATH, "pages.json")
+                expected_data = open(file, "r").read()
+                self.assertEqual(expected_data, api_data)
 
     def test_multiple_page_routes(self):
-        for page in (self.article, self.focused_article, self.postwar, self.arts, self.early_modern):
+        for page in (
+            self.article,
+            self.focused_article,
+            self.postwar,
+            self.arts,
+            self.early_modern,
+        ):
             with self.subTest(page.title):
-                if api_data := self.get_api_data(str(page.id)):
-                    print("complete")
+                self.compare_json(str(page.id), page.title)

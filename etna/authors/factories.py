@@ -8,6 +8,9 @@ from etna.authors.models import AuthorIndexPage, AuthorPage
 
 
 class AuthorIndexPageFactory(PageFactory):
+    teaser_text = "Teaser text"
+    teaser_image = factory.SubFactory(ImageFactory)
+
     class Meta:
         model = AuthorIndexPage
 

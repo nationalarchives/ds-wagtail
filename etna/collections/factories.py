@@ -42,3 +42,11 @@ class TimePeriodPageFactory(BasePageFactory):
 
     class Meta:
         model = app_models.TimePeriodExplorerPage
+
+
+class HighlightGalleryPageFactory(BasePageFactory):
+    teaser_text = "Teaser text"
+    teaser_image = factory.SubFactory(ImageFactory)
+
+    class Meta:
+        model = app_models.HighlightGalleryPage
