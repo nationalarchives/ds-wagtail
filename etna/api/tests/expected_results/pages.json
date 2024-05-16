@@ -1,0 +1,117 @@
+{
+    "meta": {
+        "total_count": 10
+    },
+    "items": [
+        {
+            "id": 3,
+            "meta": {
+                "type": "home.HomePage",
+                "detail_url": "/api/v2/pages/3/",
+                "html_url": "http://localhost/",
+                "slug": "home",
+                "first_published_at": null
+            },
+            "title": "Home"
+        },
+        {
+            "id": 4,
+            "meta": {
+                "type": "collections.TopicExplorerPage",
+                "detail_url": "/api/v2/pages/4/",
+                "html_url": "http://localhost/arts/",
+                "slug": "arts",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "arts"
+        },
+        {
+            "id": 12,
+            "meta": {
+                "type": "collections.HighlightGalleryPage",
+                "detail_url": "/api/v2/pages/12/",
+                "html_url": "http://localhost/arts/highlight_gallery/",
+                "slug": "highlight_gallery",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "highlight_gallery"
+        },
+        {
+            "id": 5,
+            "meta": {
+                "type": "collections.TimePeriodExplorerPage",
+                "detail_url": "/api/v2/pages/5/",
+                "html_url": "http://localhost/early_modern/",
+                "slug": "early_modern",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "early_modern"
+        },
+        {
+            "id": 6,
+            "meta": {
+                "type": "collections.TimePeriodExplorerPage",
+                "detail_url": "/api/v2/pages/6/",
+                "html_url": "http://localhost/postwar/",
+                "slug": "postwar",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "postwar"
+        },
+        {
+            "id": 7,
+            "meta": {
+                "type": "authors.AuthorIndexPage",
+                "detail_url": "/api/v2/pages/7/",
+                "html_url": "http://localhost/authors/",
+                "slug": "authors",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "authors"
+        },
+        {
+            "id": 8,
+            "meta": {
+                "type": "authors.AuthorPage",
+                "detail_url": "/api/v2/pages/8/",
+                "html_url": "http://localhost/authors/author/",
+                "slug": "author",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "author"
+        },
+        {
+            "id": 9,
+            "meta": {
+                "type": "articles.ArticleIndexPage",
+                "detail_url": "/api/v2/pages/9/",
+                "html_url": "http://localhost/article_index/",
+                "slug": "article_index",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "article_index"
+        },
+        {
+            "id": 10,
+            "meta": {
+                "type": "articles.ArticlePage",
+                "detail_url": "/api/v2/pages/10/",
+                "html_url": "http://localhost/article_index/article/",
+                "slug": "article",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "article"
+        },
+        {
+            "id": 11,
+            "meta": {
+                "type": "articles.FocusedArticlePage",
+                "detail_url": "/api/v2/pages/11/",
+                "html_url": "http://localhost/article_index/focused_article/",
+                "slug": "focused_article",
+                "first_published_at": "2000-01-01T00:00:00Z"
+            },
+            "title": "focused_article"
+        }
+    ]
+}
