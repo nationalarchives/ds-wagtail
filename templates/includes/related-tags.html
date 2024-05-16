@@ -6,20 +6,11 @@
     <h3>Related tags</h3>
 
     <dl class="record-details__related-tags-list">
-        <dt>Locations:</dt>
-        {% include 'includes/tags-wiki.html' with tag=record.enrichment_loc css_extn_style="location" %}
-
-        <dt>People:</dt>
-        {% include 'includes/tags-wiki.html' with tag=record.enrichment_per css_extn_style="person" %}
-
-        <dt>Organisations:</dt>
-        {% include 'includes/tags-wiki.html' with tag=record.enrichment_org css_extn_style="organisation" %}
-
-        <dt>Miscellaneous:</dt>
-        {% include 'includes/tags-wiki.html' with tag=record.enrichment_misc css_extn_style="misc" %}
-
-        <dt>Date:</dt>
-        {% include 'includes/tags-wiki.html' with tag=record.enrichment_date css_extn_style="other" %}
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_loc label="Locations" css_extn_style="location" %}
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_per label="People" css_extn_style="person" %}
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_org label="Organisations" css_extn_style="organisation" %}
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_misc label="Miscellaneous" css_extn_style="misc" %}
+        {% include 'includes/tags-wiki.html' with tag=record.enrichment_date label="Date" css_extn_style="other" %}
     </dl>
 
     <p class="record-details__related-tags-warning"><i class="ohos-search-results-map__info-icon fa-solid fa-circle-info fa-2xl"></i>Related tags are generated using artificial intelligence and may include errors</p>
