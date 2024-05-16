@@ -214,17 +214,25 @@ class Record(DataLayerMixin, APIModel):
     def description(self) -> str:
         """
         Returns the records full description value with all HTML left intact.
+
+        Returns other description fields for SWOP
         """
-        if raw := self._get_raw_description():
-            if self.group == BucketKeys.COMMUNITY:
-                allow_tags = {"a", "br", "p"}
-                updated_value = raw.replace("\n", "<br />")
-                strip_html_value = strip_html(updated_value, allow_tags=allow_tags)
-                return mark_safe(strip_html_value)
-            # TODO:Rosetta
-            # return mark_safe(raw)
-            return raw
-        return ""
+        raw = self._get_raw_description()
+        if self.group == BucketKeys.COMMUNITY:
+            if self._is_swop():
+                swop_description = (
+                    self._description_place() + " " + self._description_view()
+                )
+                return swop_description.strip()
+
+            allow_tags = {"a", "br", "p"}
+            updated_value = raw.replace("\n", "<br />")
+            strip_html_value = strip_html(updated_value, allow_tags=allow_tags)
+            return mark_safe(strip_html_value)
+
+        # TODO:Rosetta
+        # return mark_safe(raw)
+        return raw
 
     @cached_property
     def listing_description(self) -> str:
@@ -508,8 +516,10 @@ class Record(DataLayerMixin, APIModel):
         return extract(self.get("@template", {}), "details.closureStatus", default="")
 
     @cached_property
-    def creator(self) -> list(str):
-        return self.template.get("creator", [])
+    def creator(self) -> Tuple[str] | str:
+        if self.group == BucketKeys.COMMUNITY:
+            return self.template.get("creator", "")
+        return self.template.get("creator", ())
 
     @cached_property
     def dimensions(self) -> str:
@@ -749,3 +759,21 @@ class Record(DataLayerMixin, APIModel):
     @cached_property
     def enrichment_date(self):
         return self._get_tags(TagTypes.DATE)
+
+    @cached_property
+    def provenance(self) -> str:
+        return self.template.get("provenance", "")
+
+    def _is_swop(self) -> bool:
+        """Returns True if ciim_id identified with SWOP"""
+        return bool(self.ciim_id[:4] == "swop")
+
+    def _description_view(self) -> str:
+        return self.template.get("descriptionView", "")
+
+    def _description_place(self) -> str:
+        return self.template.get("descriptionPlace", "")
+
+    @cached_property
+    def place_of_deposit(self) -> Dict:
+        return self.template.get("place of deposit", {})

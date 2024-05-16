@@ -51,4 +51,7 @@ FIELD_LABELS = {
     "level": "Level",
     "type": "Type",
     "identifier": "Identifier",
+    "provenance": "Provenance",
+    "creator": "Creator",
+    "place_of_deposit": "Place of deposit",
 }
