@@ -321,7 +321,9 @@ class Record(DataLayerMixin, APIModel):
         return self.get("repository.summary.title", default="")
 
     @cached_property
-    def repository(self) -> Union["Record", None]:
+    def repository(self) -> str | Union["Record", None]:
+        if self.group == BucketKeys.COMMUNITY:
+            return self.template.get("repository", "")
         if repository := self.get("repository", default=None):
             return Record(repository)
 
@@ -773,7 +775,3 @@ class Record(DataLayerMixin, APIModel):
 
     def _description_place(self) -> str:
         return self.template.get("descriptionPlace", "")
-
-    @cached_property
-    def place_of_deposit(self) -> Dict:
-        return self.template.get("place of deposit", {})

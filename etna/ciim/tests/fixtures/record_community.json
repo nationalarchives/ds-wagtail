@@ -82,7 +82,7 @@
                 ],
                 "creator": "data for creator",
                 "provenance": "data for provenance",
-                "place of deposit":  {"repository": "data for repository"}
+                "repository": "data for repository"
             }
         }
     },

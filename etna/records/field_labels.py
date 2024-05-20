@@ -53,5 +53,5 @@ FIELD_LABELS = {
     "identifier": "Identifier",
     "provenance": "Provenance",
     "creator": "Creator",
-    "place_of_deposit": "Place of deposit",
+    "repository": "Repository",
 }

@@ -267,10 +267,8 @@ class CommunityRecordModelTests(SimpleTestCase):
     def test_creator(self):
         self.assertEqual(self.record.creator, "data for creator")
 
-    def test_place_of_deposit(self):
-        self.assertEqual(
-            self.record.place_of_deposit, {"repository": "data for repository"}
-        )
+    def test_repository(self):
+        self.assertEqual(self.record.repository, "data for repository")
 
 
 @unittest.skip("TODO:Rosetta")
