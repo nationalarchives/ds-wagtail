@@ -24,6 +24,11 @@ class EtnaMedia(AbstractMedia):
         blank=True, null=True, features=settings.INLINE_RICH_TEXT_FEATURES
     )
 
+    # Added full_url to be sent to the frontend via the Wagtail API
+    @property
+    def full_url(self):
+        return settings.WAGTAILADMIN_BASE_URL + self.file.url
+
     admin_form_fields = (
         "title",
         "date",

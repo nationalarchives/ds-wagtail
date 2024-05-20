@@ -10,6 +10,7 @@ from ..utils import (
     find_all,
     format_description_markup,
     pluck,
+    strip_html,
 )
 
 
@@ -370,3 +371,45 @@ class TestConvertSortKeyToIndex(SimpleTestCase):
         index = convert_sort_key_to_index(sort)
 
         self.assertEqual(index, 0)
+
+
+class TestStripHtml(SimpleTestCase):
+
+    def test_ensure_spaces_preserve_marks(self):
+
+        test_data = (
+            (
+                "test for span tag",
+                "This is a<span>test example</span>",
+                "This is a test example",
+            ),
+            (
+                "test for p tag",
+                "This is a<p>test example</p>",
+                "This is a test example",
+            ),
+            (
+                "test for unknown tag",
+                "This is a<unknown>test example</unknown>",
+                "This is atest example",
+            ),
+            (
+                "D7376859",
+                '<span class="wrapper"><span altrender="doctype" class="emph"></span><span class="persname"><span altrender="surname" class="emph">Patman</span><span altrender="forenames" class="emph">Clifford Douglas</span></span><span altrender="rank" class="emph">Armament Quarter Master Serjeant</span><span altrender="regno" class="emph">1865334</span><span class="corpname">Royal Army Ordnance Corps, 8 Hussars now Royal Electrical and Mechanical Engineers</span><span class="geogname">Escape and Evasion</span><span altrender="award" class="emph">Mentions in Despatches</span></span>',
+                "Patman Clifford Douglas Armament Quarter Master Serjeant 1865334 Royal Army Ordnance Corps, 8 Hussars now Royal Electrical and Mechanical Engineers Escape and Evasion Mentions in Despatches",
+            ),
+        )
+
+        for label, value, expected in test_data:
+            with self.subTest(label):
+                result = strip_html(value, preserve_marks=True, ensure_spaces=True)
+                self.assertEqual(result, expected)
+
+    def test_allow_tags(self):
+        value = """<a href="http://test.com">this is a test</a>"""
+        expected = (
+            """<a href="http://test.com" rel="noopener noreferrer">this is a test</a>"""
+        )
+        allow_tags = {"a", "br", "p"}
+        result = strip_html(value, allow_tags=allow_tags)
+        self.assertEqual(result, expected)
