@@ -14,6 +14,10 @@ class ImageSerializer(Serializer):
     jpeg_quality and webp_quality default to 60 and 80 respectively,
     and can be specified in the same way as rendition_size.
 
+    additional_formats is an optional list of additional formats to generate,
+    such as `png`, `gif`, etc. These will be returned in the API response
+    in the same way as the `jpeg` and `webp` renditions.
+
     The source of the image can also be set in the serializer, e.g:
     APIField("image_large", serializer=ImageSerializer(rendition_size="fill-900x900", source="image"))
 
@@ -25,12 +29,14 @@ class ImageSerializer(Serializer):
         rendition_size="fill-600x400",
         jpeg_quality=60,
         webp_quality=80,
+        additional_formats=[],
         *args,
         **kwargs,
     ):
         self.jpeg_quality = jpeg_quality
         self.webp_quality = webp_quality
         self.rendition_size = rendition_size
+        self.additional_formats = additional_formats
         super().__init__(*args, **kwargs)
 
     def to_representation(self, value):
@@ -41,6 +47,22 @@ class ImageSerializer(Serializer):
             webp_image = value.get_rendition(
                 f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
             )
+
+            additional_images = {}
+
+            if formats := self.additional_formats:
+                for format in formats:
+                    additional_image = value.get_rendition(
+                        f"{self.rendition_size}|format-{format}"
+                    )
+                    if additional_image:
+                        additional_image = {
+                            "url": additional_image.url,
+                            "full_url": additional_image.full_url,
+                            "width": additional_image.width,
+                            "height": additional_image.height,
+                        }
+                        additional_images[format] = additional_image
 
             return {
                 "id": value.id,
@@ -57,7 +79,8 @@ class ImageSerializer(Serializer):
                     "width": webp_image.width,
                     "height": webp_image.height,
                 },
-            }
+                **(additional_images),
+            } 
         return None
 
 
@@ -66,7 +89,7 @@ class DetailedImageSerializer(ImageSerializer):
     This serializer extends `ImageSerializer` to display extra details on an image,
     such as copyright, and sensitive warnings.
 
-    Generally for in-page image use, rather than secondary page images.
+    Generally for in-page image use, rather than secondary page images (teaser images).
     """
 
     def to_representation(self, value):
