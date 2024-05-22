@@ -80,7 +80,7 @@ class ImageSerializer(Serializer):
                     "height": webp_image.height,
                 },
                 **(additional_images),
-            } 
+            }
         return None
 
 

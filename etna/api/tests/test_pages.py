@@ -12,15 +12,17 @@ from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
-    RecordArticlePageFactory,
+    # RecordArticlePageFactory,
 )
 from etna.authors.factories import AuthorIndexPageFactory, AuthorPageFactory
-from etna.authors.models import AuthorTag
 from etna.collections.factories import (
     HighlightGalleryPageFactory,
     TimePeriodPageFactory,
     TopicPageFactory,
 )
+
+from etna.articles.models import ArticleTag, TaggedArticle
+from etna.authors.models import AuthorTag
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.media.models import EtnaMedia
 
@@ -168,6 +170,9 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
+
+        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
+
         cls.arts = TopicPageFactory(
             title="arts",
             parent=cls.root_page,
@@ -221,6 +226,7 @@ class APIResponseTest(WagtailPageTestCase):
                 PageTimePeriod(time_period=cls.postwar),
             ],
             first_published_at=DEFAULT_DATE,
+            tags=TaggedArticle(tag=cls.witchcraft)
         )
 
         cls.focused_article = FocusedArticlePageFactory(
@@ -231,6 +237,33 @@ class APIResponseTest(WagtailPageTestCase):
             author_tags=[AuthorTag(author=cls.author_page)],
             first_published_at=DEFAULT_DATE,
         )
+
+        cls.FEATURED_PAGES_JSON = [
+            {
+                "id": "f3544bb7-11e1-4894-9e9d-02ada7409600",
+                "type": "featuredpages",
+                "value": {
+                    "items": [
+                        {
+                            "id": "932d1336-7405-4935-bc3b-ddb8610ab9fa",
+                            "type": "item",
+                            "value": cls.article.id,
+                        },
+                        {
+                            "id": "084374fe-1405-47d0-913d-ed90c3a60b69",
+                            "type": "item",
+                            "value": cls.focused_article.id,
+                        },
+                    ],
+                    "heading": "Featured pages heading",
+                    "description": "Featured pages description",
+                },
+            }
+        ]
+
+        cls.article_index.featured_article = cls.article
+        cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
+        cls.article_index.save()
 
         # cls.record_article = RecordArticlePageFactory(
         #     parent=cls.article_index,
