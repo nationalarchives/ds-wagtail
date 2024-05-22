@@ -36,7 +36,7 @@ class PageListBlock(blocks.ListBlock):
         self.exclude_private = exclude_private
         child_block = APIPageChooserBlock(
             page_type=page_types,
-            required_api_fields=["authors"],
+            required_api_fields=["teaser_image"],
         )
         super().__init__(child_block, **kwargs)
 
