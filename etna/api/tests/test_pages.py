@@ -302,6 +302,10 @@ class APIResponseTest(WagtailPageTestCase):
             self.postwar,
             self.arts,
             self.early_modern,
+            self.author_page,
+            self.author_index_page,
+            self.article_index,
+            self.highlight_gallery,
         ):
             with self.subTest(page.title):
                 self.compare_json(str(page.id), page.title)
