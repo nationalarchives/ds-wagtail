@@ -151,7 +151,12 @@ class ArticleIndexPage(BasePageWithIntro):
             serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
         ),
         APIField("featured_pages"),
-        APIField("article_pages", serializer=DefaultPageSerializer(required_api_fields=["teaser_image"], many=True))
+        APIField(
+            "article_pages",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
     ]
 
     # DataLayerMixin overrides
@@ -162,14 +167,21 @@ class ArticleIndexPage(BasePageWithIntro):
 
     @cached_property
     def article_pages(self):
-        return self.get_children().public().live().order_by(
+        return (
+            self.get_children()
+            .public()
+            .live()
+            .order_by(
                 Coalesce(
                     "recordarticlepage__newly_published_at",
                     "focusedarticlepage__newly_published_at",
                     "articlepage__newly_published_at",
                 )
-            ).reverse().specific()
-    
+            )
+            .reverse()
+            .specific()
+        )
+
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
             "featured_article",

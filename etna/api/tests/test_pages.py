@@ -8,21 +8,19 @@ from wagtail.test.utils import WagtailPageTestCase
 
 from wagtail_factories import ImageFactory
 
-from etna.articles.factories import (
+from etna.articles.factories import (  # RecordArticlePageFactory,
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
-    # RecordArticlePageFactory,
 )
+from etna.articles.models import ArticleTag
 from etna.authors.factories import AuthorIndexPageFactory, AuthorPageFactory
+from etna.authors.models import AuthorTag
 from etna.collections.factories import (
     HighlightGalleryPageFactory,
     TimePeriodPageFactory,
     TopicPageFactory,
 )
-
-from etna.articles.models import ArticleTag
-from etna.authors.models import AuthorTag
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.media.models import EtnaMedia
 
@@ -60,6 +58,71 @@ class APIResponseTest(WagtailPageTestCase):
             thumbnail="media/test.jpg",
             description="<p>Description</p>",
             transcript="<p>Transcript</p>",
+        )
+
+        cls.arts = TopicPageFactory(
+            title="arts",
+            parent=cls.root_page,
+            first_published_at=DATE_1,
+        )
+
+        cls.early_modern = TimePeriodPageFactory(
+            title="early_modern",
+            start_year=1485,
+            end_year=1714,
+            parent=cls.root_page,
+            first_published_at=DATE_1,
+        )
+
+        cls.postwar = TimePeriodPageFactory(
+            title="postwar",
+            start_year=1945,
+            end_year=2000,
+            parent=cls.root_page,
+            first_published_at=DATE_1,
+        )
+
+        cls.author_index_page = AuthorIndexPageFactory(
+            parent=cls.root_page,
+            title="authors",
+            first_published_at=DATE_1,
+        )
+
+        cls.author_page = AuthorPageFactory(
+            title="author",
+            role="Test Author",
+            summary="<p>Summary text</p>",
+            first_published_at=DATE_1,
+            parent=cls.author_index_page,
+        )
+
+        cls.article_index = ArticleIndexPageFactory(
+            parent=cls.root_page,
+            title="article_index",
+            first_published_at=DATE_1,
+        )
+
+        cls.article = ArticlePageFactory(
+            parent=cls.article_index,
+            title="article",
+            intro='<p>This is an article with <a linktype="page" id="3">a link to a page</a><page>',
+            page_topics=[PageTopic(topic=cls.arts)],
+            page_time_periods=[
+                PageTimePeriod(time_period=cls.early_modern),
+                PageTimePeriod(time_period=cls.postwar),
+            ],
+            first_published_at=DATE_1,
+            newly_published_at=DATE_1,
+            mark_new_on_next_publish=False,
+        )
+
+        cls.focused_article = FocusedArticlePageFactory(
+            parent=cls.article_index,
+            title="focused_article",
+            page_topics=[PageTopic(topic=cls.arts)],
+            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
+            author_tags=[AuthorTag(author=cls.author_page)],
+            first_published_at=DATE_2,
         )
 
         cls.BODY_JSON = [
@@ -109,7 +172,9 @@ class APIResponseTest(WagtailPageTestCase):
                         {
                             "id": "b505f636-f3d1-4d4b-b368-69183e324e6e",
                             "type": "featured_record_article",
-                            "value": {"page": 3},
+                            "value": {
+                                "page": 3
+                            },  # TODO: Set to cls.record_article.id when we can serialize records
                         },
                         {
                             "id": "a48ac0b2-be83-4b01-ae23-4fd1fa525322",
@@ -174,82 +239,6 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
-        cls.arts = TopicPageFactory(
-            title="arts",
-            parent=cls.root_page,
-            first_published_at=DATE_1,
-        )
-
-        cls.early_modern = TimePeriodPageFactory(
-            title="early_modern",
-            start_year=1485,
-            end_year=1714,
-            parent=cls.root_page,
-            first_published_at=DATE_1,
-        )
-
-        cls.postwar = TimePeriodPageFactory(
-            title="postwar",
-            start_year=1945,
-            end_year=2000,
-            parent=cls.root_page,
-            first_published_at=DATE_1,
-        )
-
-        cls.author_index_page = AuthorIndexPageFactory(
-            parent=cls.root_page,
-            title="authors",
-            first_published_at=DATE_1,
-        )
-
-        cls.author_page = AuthorPageFactory(
-            title="author",
-            role="Test Author",
-            summary="<p>Summary text</p>",
-            first_published_at=DATE_1,
-            parent=cls.author_index_page,
-        )
-
-        cls.article_index = ArticleIndexPageFactory(
-            parent=cls.root_page,
-            title="article_index",
-            first_published_at=DATE_1,
-        )
-
-        cls.article = ArticlePageFactory(
-            parent=cls.article_index,
-            title="article",
-            intro='<p>This is an article with <a linktype="page" id="3">a link to a page</a><page>',
-            body=cls.BODY_JSON,
-            page_topics=[PageTopic(topic=cls.arts)],
-            page_time_periods=[
-                PageTimePeriod(time_period=cls.early_modern),
-                PageTimePeriod(time_period=cls.postwar),
-            ],
-            first_published_at=DATE_1,
-            newly_published_at=DATE_1,
-            mark_new_on_next_publish=False,
-        )
-
-        cls.focused_article = FocusedArticlePageFactory(
-            parent=cls.article_index,
-            title="focused_article",
-            page_topics=[PageTopic(topic=cls.arts)],
-            page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
-            author_tags=[AuthorTag(author=cls.author_page)],
-            first_published_at=DATE_2,
-        )
-
-        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
-        cls.medicine = ArticleTag.objects.get(name="Medicine")
-        cls.article.tags.add(cls.witchcraft)
-        cls.article.save()
-
-        cls.focused_article.tags.add(cls.witchcraft)
-        cls.focused_article.tags.add(cls.medicine)
-        cls.focused_article.save()
-
-
         cls.FEATURED_PAGES_JSON = [
             {
                 "id": "f3544bb7-11e1-4894-9e9d-02ada7409600",
@@ -273,6 +262,16 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
+        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
+        cls.medicine = ArticleTag.objects.get(name="Medicine")
+        cls.article.tags.add(cls.witchcraft)
+        cls.article.body = cls.BODY_JSON
+        cls.article.save()
+
+        cls.focused_article.tags.add(cls.witchcraft)
+        cls.focused_article.tags.add(cls.medicine)
+        cls.focused_article.save()
+
         cls.article_index.featured_article = cls.article
         cls.article_index.featured_pages = cls.FEATURED_PAGES_JSON
         cls.article_index.save()
@@ -283,7 +282,7 @@ class APIResponseTest(WagtailPageTestCase):
         #     page_topics=[PageTopic(topic=cls.arts)],
         #     page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
         #     first_published_at=DEFAULT_DATE,
-        # )
+        # ) TODO: Uncomment when we can serialize records
 
         cls.highlight_gallery = HighlightGalleryPageFactory(
             parent=cls.arts,

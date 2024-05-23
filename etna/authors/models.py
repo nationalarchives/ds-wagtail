@@ -32,6 +32,10 @@ class AuthorIndexPage(BasePage):
 
     parent_page_types = ["home.HomePage"]
 
+    api_fields = BasePage.api_fields + [
+        APIField("author_pages", serializer=DefaultPageSerializer(many=True))
+    ]
+
     @cached_property
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
