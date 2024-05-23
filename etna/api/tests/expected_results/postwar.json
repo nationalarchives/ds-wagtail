@@ -115,7 +115,7 @@
             "full_url": "http://localhost/article_index/article/",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
-            "is_newly_published": true,
+            "is_newly_published": false,
             "teaser_image": {
                 "id": 12,
                 "title": "An image",

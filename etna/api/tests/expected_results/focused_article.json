@@ -8,7 +8,7 @@
         "show_in_menus": false,
         "seo_title": "",
         "search_description": "",
-        "first_published_at": "2000-01-01T00:00:00Z",
+        "first_published_at": "2000-01-02T00:00:00Z",
         "alias_of": null,
         "parent": {
             "id": 9,
@@ -108,10 +108,12 @@
     "display_content_warning": false,
     "custom_warning_text": "",
     "is_newly_published": true,
-    "tags": [],
+    "tags": [
+        "Medicine",
+        "Witchcraft"
+    ],
     "body": [],
-    "similar_items": [],
-    "latest_items": [
+    "similar_items": [
         {
             "id": 10,
             "title": "article",
@@ -119,7 +121,7 @@
             "full_url": "http://localhost/article_index/article/",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
-            "is_newly_published": true,
+            "is_newly_published": false,
             "teaser_image": {
                 "id": 12,
                 "title": "An image",
@@ -138,6 +140,7 @@
             }
         }
     ],
+    "latest_items": [],
     "topics": [
         {
             "id": 4,

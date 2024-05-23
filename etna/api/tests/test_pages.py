@@ -21,14 +21,18 @@ from etna.collections.factories import (
     TopicPageFactory,
 )
 
-from etna.articles.models import ArticleTag, TaggedArticle
+from etna.articles.models import ArticleTag
 from etna.authors.models import AuthorTag
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.media.models import EtnaMedia
 
 API_URL = "/api/v2/pages/"
 
-DEFAULT_DATE = datetime(2000, 1, 1, tzinfo=timezone.utc)
+DATE_1 = datetime(2000, 1, 1, tzinfo=timezone.utc)
+
+DATE_2 = datetime(2000, 1, 2, tzinfo=timezone.utc)
+
+DATE_3 = datetime(2000, 1, 3, tzinfo=timezone.utc)
 
 FILE_PATH = os.path.join(os.path.dirname(__file__), "expected_results")
 
@@ -170,13 +174,10 @@ class APIResponseTest(WagtailPageTestCase):
             }
         ]
 
-
-        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
-
         cls.arts = TopicPageFactory(
             title="arts",
             parent=cls.root_page,
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
         )
 
         cls.early_modern = TimePeriodPageFactory(
@@ -184,7 +185,7 @@ class APIResponseTest(WagtailPageTestCase):
             start_year=1485,
             end_year=1714,
             parent=cls.root_page,
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
         )
 
         cls.postwar = TimePeriodPageFactory(
@@ -192,27 +193,27 @@ class APIResponseTest(WagtailPageTestCase):
             start_year=1945,
             end_year=2000,
             parent=cls.root_page,
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
         )
 
         cls.author_index_page = AuthorIndexPageFactory(
             parent=cls.root_page,
             title="authors",
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
         )
 
         cls.author_page = AuthorPageFactory(
             title="author",
             role="Test Author",
             summary="<p>Summary text</p>",
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
             parent=cls.author_index_page,
         )
 
         cls.article_index = ArticleIndexPageFactory(
             parent=cls.root_page,
             title="article_index",
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_1,
         )
 
         cls.article = ArticlePageFactory(
@@ -225,8 +226,9 @@ class APIResponseTest(WagtailPageTestCase):
                 PageTimePeriod(time_period=cls.early_modern),
                 PageTimePeriod(time_period=cls.postwar),
             ],
-            first_published_at=DEFAULT_DATE,
-            tags=TaggedArticle(tag=cls.witchcraft)
+            first_published_at=DATE_1,
+            newly_published_at=DATE_1,
+            mark_new_on_next_publish=False,
         )
 
         cls.focused_article = FocusedArticlePageFactory(
@@ -235,8 +237,18 @@ class APIResponseTest(WagtailPageTestCase):
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
             author_tags=[AuthorTag(author=cls.author_page)],
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_2,
         )
+
+        cls.witchcraft = ArticleTag.objects.get(name="Witchcraft")
+        cls.medicine = ArticleTag.objects.get(name="Medicine")
+        cls.article.tags.add(cls.witchcraft)
+        cls.article.save()
+
+        cls.focused_article.tags.add(cls.witchcraft)
+        cls.focused_article.tags.add(cls.medicine)
+        cls.focused_article.save()
+
 
         cls.FEATURED_PAGES_JSON = [
             {
@@ -280,7 +292,7 @@ class APIResponseTest(WagtailPageTestCase):
             page_highlights=[Highlight(image=cls.test_image, alt_text="Alt text")],
             page_topics=[PageTopic(topic=cls.arts)],
             page_time_periods=[PageTimePeriod(time_period=cls.early_modern)],
-            first_published_at=DEFAULT_DATE,
+            first_published_at=DATE_3,
         )
 
     def request_api(self, path: str = ""):
@@ -320,6 +332,7 @@ class APIResponseTest(WagtailPageTestCase):
     # delete when done ^
 
     def test_pages_route(self):
+        self.maxDiff = None
         if api_data := self.get_api_data():
             if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
                 self.fail(api_data)

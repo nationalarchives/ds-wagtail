@@ -32,7 +32,7 @@
                 "detail_url": "/api/v2/pages/12/",
                 "html_url": "http://localhost/arts/highlight_gallery/",
                 "slug": "highlight_gallery",
-                "first_published_at": "2000-01-01T00:00:00Z"
+                "first_published_at": "2000-01-03T00:00:00Z"
             },
             "title": "highlight_gallery"
         },
@@ -109,7 +109,7 @@
                 "detail_url": "/api/v2/pages/11/",
                 "html_url": "http://localhost/article_index/focused_article/",
                 "slug": "focused_article",
-                "first_published_at": "2000-01-01T00:00:00Z"
+                "first_published_at": "2000-01-02T00:00:00Z"
             },
             "title": "focused_article"
         }

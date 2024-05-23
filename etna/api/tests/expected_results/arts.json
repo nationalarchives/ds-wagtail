@@ -111,31 +111,6 @@
     "skos_id": "arts",
     "related_articles": [
         {
-            "id": 10,
-            "title": "article",
-            "url": "/article_index/article/",
-            "full_url": "http://localhost/article_index/article/",
-            "type_label": "The story of",
-            "teaser_text": "Teaser text",
-            "is_newly_published": true,
-            "teaser_image": {
-                "id": 12,
-                "title": "An image",
-                "jpeg": {
-                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
-                    "width": 100,
-                    "height": 68
-                },
-                "webp": {
-                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
-                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
-                    "width": 100,
-                    "height": 68
-                }
-            }
-        },
-        {
             "id": 11,
             "title": "focused_article",
             "url": "/article_index/focused_article/",
@@ -155,6 +130,31 @@
                 "webp": {
                     "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_moF3lTy.webp",
                     "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_moF3lTy.webp",
+                    "width": 100,
+                    "height": 68
+                }
+            }
+        },
+        {
+            "id": 10,
+            "title": "article",
+            "url": "/article_index/article/",
+            "full_url": "http://localhost/article_index/article/",
+            "type_label": "The story of",
+            "teaser_text": "Teaser text",
+            "is_newly_published": false,
+            "teaser_image": {
+                "id": 12,
+                "title": "An image",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
+                    "width": 100,
+                    "height": 68
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
                     "width": 100,
                     "height": 68
                 }

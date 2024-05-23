@@ -107,8 +107,10 @@
     },
     "display_content_warning": false,
     "custom_warning_text": "",
-    "is_newly_published": true,
-    "tags": [],
+    "is_newly_published": false,
+    "tags": [
+        "Witchcraft"
+    ],
     "body": [
         {
             "type": "content_section",
@@ -293,8 +295,7 @@
             "id": "9da308ae-afea-4177-b200-bd3d50aae884"
         }
     ],
-    "similar_items": [],
-    "latest_items": [
+    "similar_items": [
         {
             "id": 11,
             "title": "focused_article",
@@ -321,6 +322,7 @@
             }
         }
     ],
+    "latest_items": [],
     "topics": [
         {
             "id": 4,
