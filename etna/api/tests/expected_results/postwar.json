@@ -1,8 +1,8 @@
 {
-    "id": 6,
+    "id": POSTWAR_ID,
     "meta": {
         "type": "collections.TimePeriodExplorerPage",
-        "detail_url": "/api/v2/pages/6/",
+        "detail_url": "/api/v2/pages/POSTWAR_ID/",
         "html_url": "http://localhost/postwar/",
         "slug": "postwar",
         "show_in_menus": false,
@@ -109,7 +109,7 @@
     "body": [],
     "related_articles": [
         {
-            "id": 10,
+            "id": ARTICLE_ID,
             "title": "article",
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",

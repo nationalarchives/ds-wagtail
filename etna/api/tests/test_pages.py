@@ -315,12 +315,34 @@ class APIResponseTest(WagtailPageTestCase):
             else:
                 file = os.path.join(FILE_PATH, f"{json_file}.json")
                 expected_data = open(file, "r").read()
+                expected_data = self.replace_placeholders(expected_data)
+
                 # Remove random image rendition IDs
                 expected_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", expected_data)
                 api_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", api_data)
                 expected_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", expected_data)
                 api_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", api_data)
+
                 self.assertEqual(expected_data, api_data)
+
+    def replace_placeholders(self, data: str):
+        placeholder_ids = {
+            "HOME_PAGE_ID": str(self.root_page.id),
+            "ARTICLE_INDEX_ID": str(self.article_index.id),
+            "ARTICLE_ID": str(self.article.id),
+            "FOCUSED_ID": str(self.focused_article.id),
+            "ARTS_ID": str(self.arts.id),
+            "EARLY_MODERN_ID": str(self.early_modern.id),
+            "POSTWAR_ID": str(self.postwar.id),
+            "AUTHOR_INDEX_ID": str(self.author_index_page.id),
+            "AUTHOR_ID": str(self.author_page.id),
+            "HIGHLIGHT_GALLERY_ID": str(self.highlight_gallery.id),
+        }
+
+        for placeholder, id in placeholder_ids.items():
+            data = data.replace(placeholder, id)
+
+        return data
 
     # def test_output(self):
     #     pages = [self.author_page]
@@ -332,13 +354,7 @@ class APIResponseTest(WagtailPageTestCase):
 
     def test_pages_route(self):
         self.maxDiff = None
-        if api_data := self.get_api_data():
-            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
-                self.fail(api_data)
-            else:
-                file = os.path.join(FILE_PATH, "pages.json")
-                expected_data = open(file, "r").read()
-                self.assertEqual(expected_data, api_data)
+        self.compare_json("", "pages")
 
     def test_multiple_page_routes(self):
         for page in (

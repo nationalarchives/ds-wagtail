@@ -1,8 +1,8 @@
 {
-    "id": 8,
+    "id": AUTHOR_ID,
     "meta": {
         "type": "authors.AuthorPage",
-        "detail_url": "/api/v2/pages/8/",
+        "detail_url": "/api/v2/pages/AUTHOR_ID/",
         "html_url": "http://localhost/authors/author/",
         "slug": "author",
         "show_in_menus": false,
@@ -11,10 +11,10 @@
         "first_published_at": "2000-01-01T00:00:00Z",
         "alias_of": null,
         "parent": {
-            "id": 7,
+            "id": AUTHOR_INDEX_ID,
             "meta": {
                 "type": "authors.AuthorIndexPage",
-                "detail_url": "/api/v2/pages/7/",
+                "detail_url": "/api/v2/pages/AUTHOR_INDEX_ID/",
                 "html_url": "http://localhost/authors/"
             },
             "title": "authors"
@@ -75,7 +75,7 @@
     "summary": "<p>Summary text</p>",
     "authored_focused_articles": [
         {
-            "id": 11,
+            "id": FOCUSED_ID,
             "title": "focused_article",
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",

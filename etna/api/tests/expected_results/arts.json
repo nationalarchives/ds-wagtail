@@ -1,8 +1,8 @@
 {
-    "id": 4,
+    "id": ARTS_ID,
     "meta": {
         "type": "collections.TopicExplorerPage",
-        "detail_url": "/api/v2/pages/4/",
+        "detail_url": "/api/v2/pages/ARTS_ID/",
         "html_url": "http://localhost/arts/",
         "slug": "arts",
         "show_in_menus": false,
@@ -111,7 +111,7 @@
     "skos_id": "arts",
     "related_articles": [
         {
-            "id": 11,
+            "id": FOCUSED_ID,
             "title": "focused_article",
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
@@ -136,7 +136,7 @@
             }
         },
         {
-            "id": 10,
+            "id": ARTICLE_ID,
             "title": "article",
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",
@@ -163,7 +163,7 @@
     ],
     "related_highlight_gallery_pages": [
         {
-            "id": 12,
+            "id": HIGHLIGHT_GALLERY_ID,
             "title": "highlight_gallery",
             "url": "/arts/highlight_gallery/",
             "full_url": "http://localhost/arts/highlight_gallery/",

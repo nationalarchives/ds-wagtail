@@ -63,11 +63,9 @@ class TestArticleIndexPage(TestCase):
         self.article_index_page.add_child(instance=self.article_page3)
 
     def test_get_article_pages(self):
-        context = self.article_index_page.get_context(request=None)
-        self.assertEqual(len(context["article_pages"]), 3)
+        self.assertEqual(len(self.article_index_page.article_pages), 3)
 
     def test_check_article_pages(self):
-        context = self.article_index_page.get_context(request=None)
         children = self.article_index_page.get_children()
-        for i, page in enumerate(context["article_pages"]):
+        for i, page in enumerate(self.article_index_page.article_pages):
             self.assertEqual(page.title, children[i].title)

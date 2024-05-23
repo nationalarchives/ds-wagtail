@@ -1,8 +1,8 @@
 {
-    "id": 9,
+    "id": ARTICLE_INDEX_ID,
     "meta": {
         "type": "articles.ArticleIndexPage",
-        "detail_url": "/api/v2/pages/9/",
+        "detail_url": "/api/v2/pages/ARTICLE_INDEX_ID/",
         "html_url": "http://localhost/article_index/",
         "slug": "article_index",
         "show_in_menus": false,
@@ -11,10 +11,10 @@
         "first_published_at": "2000-01-01T00:00:00Z",
         "alias_of": null,
         "parent": {
-            "id": 3,
+            "id": HOME_PAGE_ID,
             "meta": {
                 "type": "home.HomePage",
-                "detail_url": "/api/v2/pages/3/",
+                "detail_url": "/api/v2/pages/HOME_PAGE_ID/",
                 "html_url": "http://localhost/"
             },
             "title": "Home"
@@ -73,7 +73,7 @@
     },
     "intro": "<p>Intro text</p>",
     "featured_article": {
-        "id": 10,
+        "id": ARTICLE_ID,
         "title": "article",
         "url": "/article_index/article/",
         "full_url": "http://localhost/article_index/article/",
@@ -105,7 +105,7 @@
                 "description": "Featured pages description",
                 "items": [
                     {
-                        "id": 10,
+                        "id": ARTICLE_ID,
                         "title": "article",
                         "url": "/article_index/article/",
                         "full_url": "http://localhost/article_index/article/",
@@ -130,7 +130,7 @@
                         }
                     },
                     {
-                        "id": 11,
+                        "id": FOCUSED_ID,
                         "title": "focused_article",
                         "url": "/article_index/focused_article/",
                         "full_url": "http://localhost/article_index/focused_article/",
@@ -161,7 +161,7 @@
     ],
     "article_pages": [
         {
-            "id": 11,
+            "id": FOCUSED_ID,
             "title": "focused_article",
             "url": "/article_index/focused_article/",
             "full_url": "http://localhost/article_index/focused_article/",
@@ -186,7 +186,7 @@
             }
         },
         {
-            "id": 10,
+            "id": ARTICLE_ID,
             "title": "article",
             "url": "/article_index/article/",
             "full_url": "http://localhost/article_index/article/",

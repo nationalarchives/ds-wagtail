@@ -1,8 +1,8 @@
 {
-    "id": 12,
+    "id": HIGHLIGHT_GALLERY_ID,
     "meta": {
         "type": "collections.HighlightGalleryPage",
-        "detail_url": "/api/v2/pages/12/",
+        "detail_url": "/api/v2/pages/HIGHLIGHT_GALLERY_ID/",
         "html_url": "http://localhost/arts/highlight_gallery/",
         "slug": "highlight_gallery",
         "show_in_menus": false,
@@ -11,10 +11,10 @@
         "first_published_at": "2000-01-03T00:00:00Z",
         "alias_of": null,
         "parent": {
-            "id": 4,
+            "id": ARTS_ID,
             "meta": {
                 "type": "collections.TopicExplorerPage",
-                "detail_url": "/api/v2/pages/4/",
+                "detail_url": "/api/v2/pages/ARTS_ID/",
                 "html_url": "http://localhost/arts/"
             },
             "title": "arts"
@@ -75,7 +75,7 @@
     "display_content_warning": false,
     "custom_warning_text": "",
     "featured_article": {
-        "id": 10,
+        "id": ARTICLE_ID,
         "title": "article",
         "url": "/article_index/article/",
         "full_url": "http://localhost/article_index/article/",
@@ -142,7 +142,7 @@
     ],
     "topics": [
         {
-            "id": 4,
+            "id": ARTS_ID,
             "title": "arts",
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
@@ -168,7 +168,7 @@
     ],
     "time_periods": [
         {
-            "id": 5,
+            "id": EARLY_MODERN_ID,
             "title": "early_modern",
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
