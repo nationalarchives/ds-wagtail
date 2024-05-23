@@ -307,7 +307,6 @@ class APIResponseTest(WagtailPageTestCase):
         return f"Unable to request endpoint {API_URL}{path}"
 
     def compare_json(self, path: str, json_file: str):
-        self.maxDiff = None
 
         if api_data := self.get_api_data(path):
             if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
@@ -344,16 +343,7 @@ class APIResponseTest(WagtailPageTestCase):
 
         return data
 
-    # def test_output(self):
-    #     pages = [self.author_page]
-    #     for page in pages:
-    #         if api_data := self.get_api_data(str(page.id)):
-    #             print(page.title +"\n" + api_data)
-
-    # delete when done ^
-
     def test_pages_route(self):
-        self.maxDiff = None
         self.compare_json("", "pages")
 
     def test_multiple_page_routes(self):
