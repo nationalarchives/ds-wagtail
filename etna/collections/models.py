@@ -191,6 +191,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField("topic_explorer_pages", serializer=DefaultPageSerializer(many=True, required_api_fields=["teaser_image"]))
         ]
     )
 
@@ -453,6 +454,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField("time_period_explorer_pages", serializer=DefaultPageSerializer(many=True, required_api_fields=["teaser_image"])),
         ]
     )
 
