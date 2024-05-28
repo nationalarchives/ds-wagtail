@@ -26,31 +26,33 @@
         <div class="govuk-accordion"
              data-module="govuk-accordion"
              id="accordion-default">
+            {# TODO: Keep, not in scope for Ohos-Etna at this time #}
+            {% comment %}
             {% if form.group.value == bucketkeys.TNA.value or form.group.value == bucketkeys.NONTNA.value %}
-            {% if form.filter_keyword %}
-                <div class="govuk-accordion__section">
-                    <div class="govuk-accordion__section-header">
-                        <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
-                            <span class="govuk-accordion__section-button"
-                                  id="accordion-default-heading-1">Search within results</span>
-                        </h2>
+                {% if form.filter_keyword %}
+                    <div class="govuk-accordion__section">
+                        <div class="govuk-accordion__section-header">
+                            <h2 class="govuk-accordion__section-heading tna-heading search-filters__heading">
+                                <span class="govuk-accordion__section-button"
+                                    id="accordion-default-heading-1">Search within results</span>
+                            </h2>
+                        </div>
+                        <div id="accordion-default-content-1"
+                            class="govuk-accordion__section-content"
+                            aria-labelledby="accordion-default-heading-1">
+                            <p class="govuk-body">
+                                <div class="search-filters__form-block">
+                                    <label for="{{ form.filter_keyword.id_for_label }}" class="search-filters__label--block example-text">Search within results:</label>
+                                    {{ form.filter_keyword }}
+                                    {{ form.filter_keyword.errors }}
+                                    <input type="submit" value="Search" class="search-filters__submitleft">
+                                </div>
+                            </p>
+                        </div>
                     </div>
-                    <div id="accordion-default-content-1"
-                         class="govuk-accordion__section-content"
-                         aria-labelledby="accordion-default-heading-1">
-                        <p class="govuk-body">
-                            <div class="search-filters__form-block">
-                                <label for="{{ form.filter_keyword.id_for_label }}" class="search-filters__label--block example-text">Search within results:</label>
-                                {{ form.filter_keyword }}
-                                {{ form.filter_keyword.errors }}
-                                <input type="submit" value="Search" class="search-filters__submitleft">
-                                {% comment %} <input type="submit" value="Search" class="tna-button"> {% endcomment %}
-                            </div>
-                        </p>
-                    </div>
-                </div>
+                {% endif %} 
             {% endif %}
-            {% endif %}
+            {% endcomment %}
             <div class="search-filters__header">
                 <h2 class="tna-heading-l">Filters</h2>
                 <input type="submit" value="Update" class="search-filters__submit">
@@ -114,6 +116,8 @@
                         {% include "search/includes/filter.html" with field=form.collection %}
                     </div>
                 </div>
+                {# TODO: Keep, not in scope for Ohos-Etna at this time #}
+                {% comment %}
                 {% if form.group.value == bucketkeys.TNA.value %}
                     <div class="govuk-accordion__section">
                         <div class="govuk-accordion__section-header">
@@ -187,6 +191,7 @@
                         </fieldset>
                     </div>
                 {% endif %}
+                {% endcomment %}
                 {% if form.group.value == bucketkeys.NONTNA.value %}
                     {% include "search/includes/filter.html" with field=form.held_by %}
                     {% include "search/includes/filter.html" with field=form.catalogue_source %}

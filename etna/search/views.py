@@ -15,7 +15,7 @@ from django.views.generic import FormView, TemplateView
 from wagtail.coreutils import camelcase_to_underscore
 
 from ..analytics.mixins import SearchDataLayerMixin
-from ..ciim.client import Aggregation, Sort, Stream
+from ..ciim.client import Aggregation, Sort
 from ..ciim.constants import (
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
@@ -79,11 +79,11 @@ class BucketsMixin:
         bucket_list = copy.deepcopy(self.bucket_list)
 
         # set `result_count` for each bucket
-        doc_counts_by_key = {
-            group["value"]: group["doc_count"] for group in self.get_bucket_counts()
+        bucket_counts_by_key = {
+            entries["value"]: entries["count"] for entries in self.get_bucket_counts()
         }
         for bucket in bucket_list:
-            bucket.result_count = doc_counts_by_key.get(bucket.key, 0)
+            bucket.result_count = bucket_counts_by_key.get(bucket.key, 0)
 
         if current := self.get_current_bucket_key():
             # set 'is_current=True' for the relevant bucket
@@ -377,7 +377,7 @@ class BaseFilteredSearchView(BaseSearchView):
         updated to reflect data in the response.
     """
 
-    api_stream: str = ""
+    # api_stream: str = ""  # TODO: Keep, not in scope for Ohos-Etna at this time
     api_method_name: str = ""
 
     default_group: str = ""
@@ -388,14 +388,15 @@ class BaseFilteredSearchView(BaseSearchView):
 
     dynamic_choice_fields = (
         "collection",
-        "level",
-        "topic",
-        "closure",
-        "held_by",
-        "catalogue_source",
-        "type",
-        "country",
-        "location",
+        # TODO: Keep, not in scope for Ohos-Etna at this time
+        # "level",
+        # "topic",
+        # "closure",
+        # "held_by",
+        # "catalogue_source",
+        # "type",
+        # "country",
+        # "location",
     )
 
     def get_initial(self) -> Dict[str, Any]:
@@ -439,16 +440,17 @@ class BaseFilteredSearchView(BaseSearchView):
     def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
         page_size = form.cleaned_data.get("per_page")
         return dict(
-            stream=self.api_stream,
+            # stream=self.api_stream,  # TODO: Keep, not in scope for Ohos-Etna at this time
             q=self.query or None,
             group=form.cleaned_data.get("group"),
             aggregations=self.get_api_aggregations(),
             filter_aggregations=self.get_api_filter_aggregations(form),
-            filter_keyword=form.cleaned_data.get("filter_keyword"),
-            opening_start_date=form.cleaned_data.get("opening_start_date"),
-            opening_end_date=form.cleaned_data.get("opening_end_date"),
-            created_start_date=form.cleaned_data.get("covering_date_from"),
-            created_end_date=form.cleaned_data.get("covering_date_to"),
+            # TODO: Keep, not in scope for Ohos-Etna at this time
+            # filter_keyword=form.cleaned_data.get("filter_keyword"),
+            # opening_start_date=form.cleaned_data.get("opening_start_date"),
+            # opening_end_date=form.cleaned_data.get("opening_end_date"),
+            covering_date_from=form.cleaned_data.get("covering_date_from"),
+            covering_date_to=form.cleaned_data.get("covering_date_to"),
             offset=(self.page_number - 1) * page_size,
             size=page_size,
             sort=form.cleaned_data.get("sort"),
@@ -559,24 +561,27 @@ class BaseFilteredSearchView(BaseSearchView):
                 for value in return_value[field_name]
             ]
 
-        if filter_keyword := form.cleaned_data.get("filter_keyword"):
-            return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
+        # TODO: Keep, not in scope for Ohos-Etna at this time
+        # if filter_keyword := form.cleaned_data.get("filter_keyword"):
+        #     return_value.update({"filter_keyword": [(filter_keyword, filter_keyword)]})
 
-        if opening_start_date := form.cleaned_data.get("opening_start_date"):
-            return_value["opening_start_date"] = [
-                (
-                    opening_start_date,
-                    "Record opening from: " + opening_start_date.strftime("%d %m %Y"),
-                )
-            ]
+        # TODO: Keep, not in scope for Ohos-Etna at this time
+        # if opening_start_date := form.cleaned_data.get("opening_start_date"):
+        #     return_value["opening_start_date"] = [
+        #         (
+        #             opening_start_date,
+        #             "Record opening from: " + opening_start_date.strftime("%d %m %Y"),
+        #         )
+        #     ]
 
-        if opening_end_date := form.cleaned_data.get("opening_end_date"):
-            return_value["opening_end_date"] = [
-                (
-                    opening_end_date,
-                    "Record opening to: " + opening_end_date.strftime("%d %m %Y"),
-                )
-            ]
+        # TODO: Keep, not in scope for Ohos-Etna at this time
+        # if opening_end_date := form.cleaned_data.get("opening_end_date"):
+        #     return_value["opening_end_date"] = [
+        #         (
+        #             opening_end_date,
+        #             "Record opening to: " + opening_end_date.strftime("%d %m %Y"),
+        #         )
+        #     ]
 
         if covering_date_from := form.cleaned_data.get("covering_date_from"):
             return_value["covering_date_from"] = [
@@ -652,7 +657,7 @@ class BaseLongFilterOptionsView(BaseFilteredSearchView):
 
 class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     api_method_name = "search"
-    api_stream = Stream.EVIDENTIAL
+    # api_stream = Stream.EVIDENTIAL  # TODO: Keep, not in scope for Ohos-Etna at this time
     bucket_list = CATALOGUE_BUCKETS
     default_group = BucketKeys.COMMUNITY
     form_class = CatalogueSearchForm
@@ -681,7 +686,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
-    api_stream = Stream.EVIDENTIAL
+    # api_stream = Stream.EVIDENTIAL  # TODO: Keep, not in scope for Ohos-Etna at this time
     default_group = BucketKeys.COMMUNITY
     form_class = CatalogueSearchForm
     template_name = "search/long_filter_options.html"

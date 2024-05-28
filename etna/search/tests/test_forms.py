@@ -57,7 +57,7 @@ class CatalogueSearchFormTest(SimpleTestCase):
 
     def test_invalid_date_range_values(self):
         for from_field_name, to_field_name in (
-            ("opening_start_date", "opening_end_date"),
+            # ("opening_start_date", "opening_end_date"), # TODO: Keep, not in scope for Ohos-Etna at this time
             ("covering_date_from", "covering_date_to"),
         ):
             for label, form_data in (

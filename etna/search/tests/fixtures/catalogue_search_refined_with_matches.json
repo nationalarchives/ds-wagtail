@@ -3,192 +3,281 @@
         {
             "@template": {
                 "details": {
-                    "level": "item",
-                    "description": "Biography of Margaret Powell outlining her contribution to Milton Keynes. Powell was a sheep farmer, and lived and worked at Tattenhoe Bare Farm. Upon her death, Powell left a two million pound legacy to be used for the enhancement of facilities and services for elderly and disabled people in the area, which was set up as The Margaret Powell Foundation. Milton Keynes Community Foundation look after the Margaret Powell Foundation Fund and, in recognition of her philanthropy, their building on Midsummer Boulevard has been renamed Margaret Powell House. The biography also goes into detail about the Electric Sheep sculpture at Milton Keynes Theatre.",
-                    "summary": "Biography of Margaret Powell (Digital Document)",
-                    "title": "Biography of Margaret Powell",
-                    "identifier": "WMK/009",
-                    "uuid": "f42b3081-0e6e-3fff-835b-56da06f1d06a",
-                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "rights": "Milton Keynes Fawcett Society Group",
-                    "ciimId": "wmk-20501",
-                    "group": "community"
-                }
-            }
-        },
-        {
-            "@template": {
-                "details": {
-                    "level": "item",
-                    "description": "Biography of Margaret Sale, detailing her involvement in the creation of the Bletchley Park Trust and the fight to preserve the wartime history of the site. The biography also includes details of her husband Tony's project to re-build the Colossus computer, and their involvement in the establishment of The National Museum of Computing.",
-                    "summary": "Biography of Margaret Sale (Digital Document)",
-                    "title": "Biography of Margaret Sale",
-                    "identifier": "WMK/011",
-                    "uuid": "78025945-c3cb-3332-81cd-77d08aadad59",
-                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "ciimId": "wmk-20508",
-                    "group": "community"
-                }
-            }
-        },
-        {
-            "@template": {
-                "details": {
-                    "level": "item",
-                    "description": "Biography of Avril Dankworth and her passion for music education, detailing her creation of the National Youth Music Camps, based at The Stables, Wavendon.",
-                    "summary": "Biography of Avril Dankworth (Digital Document)",
-                    "title": "Biography of Avril Dankworth",
-                    "identifier": "WMK/004",
-                    "uuid": "59597ddf-02d8-35f1-bbeb-4cb957f8b8d9",
-                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "rights": "Milton Keynes Fawcett Society Group",
-                    "ciimId": "wmk-20482",
-                    "group": "community"
-                }
-            }
-        },
-        {
-            "@template": {
-                "details": {
-                    "level": "item",
-                    "description": "Biography of Matilda Kessler detailing her activities and achievements in the development of Milton Keynes. These include her appointment as a Magistrate to the Fenny Stratford Bench, establishing the first Citizens Advice Bureau in Bletchley, co-founding the Milton Keynes Mental Health Association, being a member of the Open University Council and writing the publication 'The Story of the Magistrates Courts in Milton Keynes'.",
-                    "summary": "Biography of Matilda Kessler (Digital Document)",
-                    "title": "Biography of Matilda Kessler",
-                    "identifier": "WMK/007",
-                    "uuid": "17f976af-973e-3fcb-b0c2-22d11772f417",
-                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "ciimId": "wmk-20491",
-                    "group": "community"
-                }
-            }
-        },
-        {
-            "@template": {
-                "details": {
-                    "level": "item",
+                    "creator": "Barbara Mayor",
                     "description": "Biography of Teresa Collard detailing her activities related to her role as Arts and Entertainments Officer with Milton Keynes Borough Council, 1975-1984. These activities include: co-founding the Music and Arts Community Action Project (MADCAP), running February Festival of the Arts, setting up the Jennie Lee Theatre at Bletchley Leisure Centre, setting up Milton Keynes' first art gallery at Milton Keynes Central Library and helping to launch the project for a major commercial theatre to be built, which is now Milton Keynes Theatre.",
-                    "summary": "Biography of Teresa Collard (Digital Document)",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20479",
+                    "summaryTitle": "Biography of Teresa Collard (Digital Document)",
                     "title": "Biography of Teresa Collard",
+                    "type": "Digital Document",
+                    "summary": "Biography of Teresa Collard (Digital Document)",
                     "identifier": "WMK/003",
                     "uuid": "2dd0dac8-5c26-3c17-9116-74c9c4974509",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "rights": "Milton Keynes Fawcett Society Group",
+                    "location": "Central Milton Keynes",
                     "ciimId": "wmk-20479",
-                    "group": "community"
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         },
         {
             "@template": {
                 "details": {
+                    "creator": "Liz Whitelegg",
+                    "description": "Biography of Margaret Sale, detailing her involvement in the creation of the Bletchley Park Trust and the fight to preserve the wartime history of the site. The biography also includes details of her husband Tony's project to re-build the Colossus computer, and their involvement in the establishment of The National Museum of Computing.",
                     "level": "item",
-                    "description": "Biography of Margaret Durbridge detailing her activities and achievements in helping to plan Milton Keynes new town. These include being the only woman on the Board of the Milton Keynes Development Corporation, also sitting on the Transport Group, chairing the Social Policy Committee and championing the redways cycle and pedestrian system. In the community, Durbridge was governor of a number of schools and was invited to become a member of the Open University Council. She was awarded an OBE in 1977.",
-                    "summary": "Biography of Margaret Durbridge (Digital Document)",
-                    "title": "Biography of Margaret Durbridge",
-                    "identifier": "WMK/005",
-                    "uuid": "64e64938-7b5c-3ea9-ac70-04e8d14b4807",
+                    "primaryIdentifier": "wmk-20508",
+                    "summaryTitle": "Biography of Margaret Sale (Digital Document)",
+                    "title": "Biography of Margaret Sale",
+                    "type": "Digital Document",
+                    "summary": "Biography of Margaret Sale (Digital Document)",
+                    "identifier": "WMK/011",
+                    "uuid": "78025945-c3cb-3332-81cd-77d08aadad59",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "rights": "Milton Keynes Fawcett Society Group",
-                    "ciimId": "wmk-20485",
-                    "group": "community"
+                    "location": "Bletchley",
+                    "ciimId": "wmk-20508",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         },
         {
             "@template": {
                 "details": {
+                    "creator": "Gill Bryan",
+                    "description": "Biography of Margaret Powell outlining her contribution to Milton Keynes. Powell was a sheep farmer, and lived and worked at Tattenhoe Bare Farm. Upon her death, Powell left a two million pound legacy to be used for the enhancement of facilities and services for elderly and disabled people in the area, which was set up as The Margaret Powell Foundation. Milton Keynes Community Foundation look after the Margaret Powell Foundation Fund and, in recognition of her philanthropy, their building on Midsummer Boulevard has been renamed Margaret Powell House. The biography also goes into detail about the Electric Sheep sculpture at Milton Keynes Theatre.",
                     "level": "item",
-                    "description": "Biography of Liz Leyh detailing her activities and achievements in relation to Milton Keynes. These activities include being the first artist in residence of a new town, engaging residents in community art and sculpture, and creating the concrete cows.",
-                    "summary": "Biography of Liz Leyh (Digital Document)",
-                    "title": "Biography of Liz Leyh",
-                    "identifier": "WMK/008",
-                    "uuid": "86e28df5-c79f-37e5-b56a-df5cf286c572",
+                    "primaryIdentifier": "wmk-20501",
+                    "summaryTitle": "Biography of Margaret Powell (Digital Document)",
+                    "title": "Biography of Margaret Powell",
+                    "type": "Digital Document",
+                    "summary": "Biography of Margaret Powell (Digital Document)",
+                    "identifier": "WMK/009",
+                    "uuid": "f42b3081-0e6e-3fff-835b-56da06f1d06a",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "ciimId": "wmk-20495",
-                    "group": "community"
+                    "location": "Central Milton Keynes",
+                    "ciimId": "wmk-20501",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         },
         {
             "@template": {
                 "details": {
+                    "creator": "Margaret Gallagher",
+                    "description": "Biography of Avril Dankworth and her passion for music education, detailing her creation of the National Youth Music Camps, based at The Stables, Wavendon.",
                     "level": "item",
-                    "description": "Biographical notes on ten women who featured in an exhibition organised by the Milton Keynes group of the Fawcett Society, Milton Keynes Central Library, November-December 2017. Introduction to the project and women featured, August 2018.",
-                    "summary": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "title": "Biography of Women Who Made Milton Keynes",
-                    "identifier": "WMK/001",
-                    "uuid": "873c5740-a797-3c35-9582-b7caf3937de5",
+                    "primaryIdentifier": "wmk-20482",
+                    "summaryTitle": "Biography of Avril Dankworth (Digital Document)",
+                    "title": "Biography of Avril Dankworth",
+                    "type": "Digital Document",
+                    "summary": "Biography of Avril Dankworth (Digital Document)",
+                    "identifier": "WMK/004",
+                    "uuid": "59597ddf-02d8-35f1-bbeb-4cb957f8b8d9",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "ciimId": "wmk-20471",
-                    "group": "community"
+                    "ciimId": "wmk-20482",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         },
         {
             "@template": {
                 "details": {
+                    "creator": "Gill Bryan",
+                    "description": "Biography of Matilda Kessler detailing her activities and achievements in the development of Milton Keynes. These include her appointment as a Magistrate to the Fenny Stratford Bench, establishing the first Citizens Advice Bureau in Bletchley, co-founding the Milton Keynes Mental Health Association, being a member of the Open University Council and writing the publication 'The Story of the Magistrates Courts in Milton Keynes'.",
                     "level": "item",
-                    "description": "Biography of Jane Henshaw detailing her activities and achievements in relation to health, education and business development in Milton Keynes. These include serving on the Board of Trustees for the establishment of Willen Hospice, leading the project that established the MK Education Business Partnership with the Chamber of Commerce, developing the format adopted as information technology (IT) certification in schools and setting up LINKS magazine - the Education-Industry Liaison Committee Newsletter.",
-                    "summary": "Biography of Jane Henshaw (Digital Document)",
-                    "title": "Biography of Jane Henshaw",
-                    "identifier": "WMK/006",
-                    "uuid": "ee4140fe-a7a4-3e43-a5cc-66b565457b25",
+                    "primaryIdentifier": "wmk-20491",
+                    "summaryTitle": "Biography of Matilda Kessler (Digital Document)",
+                    "title": "Biography of Matilda Kessler",
+                    "type": "Digital Document",
+                    "summary": "Biography of Matilda Kessler (Digital Document)",
+                    "identifier": "WMK/007",
+                    "uuid": "17f976af-973e-3fcb-b0c2-22d11772f417",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "ciimId": "wmk-20488",
-                    "group": "community"
+                    "location": "Bletchley",
+                    "ciimId": "wmk-20491",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         },
         {
             "@template": {
                 "details": {
-                    "level": "item",
-                    "description": "Biography of Deirdre Battista detailing the activities and projects with which she has been involved in Milton Keynes. These include: co-ordinating the United Kingdom leg of the Sacred Run for Life and Land, hosting Native American lacrosse players promoting land rights, instigating the One World Quilt programme and co-ordinating the construction of a Millenium Sculpture - the Circle of Hearts Medicine Wheel at Willen Lake.",
-                    "summary": "Biography of Deirdre Battista (Digital Document)",
-                    "title": "Biography of Deirdre Battista",
-                    "identifier": "WMK/002",
-                    "uuid": "4eee74ce-dfce-33a5-9e0e-a6dfa026b429",
-                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
-                    "collectionId": "wmk-20469",
-                    "type": "Digital Document",
-                    "rights": "Milton Keynes Fawcett Society Group",
-                    "ciimId": "wmk-20476",
-                    "group": "community"
-                }
-            }
-        },
-        {
-            "@template": {
-                "details": {
-                    "level": "item",
+                    "creator": "Joan Swann",
                     "description": "Biography of Dr. Marjorie Reid, detailing her involvement in the creation of Willen Hospice. Revolutionising the provision of palliative care and medicine for the new city, Dr. Reid went on to be the Hospice's first medical director.",
-                    "summary": "Biography of Marjorie Reid (Digital Document)",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20504",
+                    "summaryTitle": "Biography of Marjorie Reid (Digital Document)",
                     "title": "Biography of Marjorie Reid",
+                    "type": "Digital Document",
+                    "summary": "Biography of Marjorie Reid (Digital Document)",
                     "identifier": "WMK/010",
                     "uuid": "bfef3b8c-1e69-398d-875a-8a91c1cba0af",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
                     "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "collectionId": "wmk-20469",
-                    "type": "Digital Document",
+                    "location": "Willen",
                     "ciimId": "wmk-20504",
-                    "group": "community"
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "creator": "Gill Kirkup",
+                    "description": "Biography of Margaret Durbridge detailing her activities and achievements in helping to plan Milton Keynes new town. These include being the only woman on the Board of the Milton Keynes Development Corporation, also sitting on the Transport Group, chairing the Social Policy Committee and championing the redways cycle and pedestrian system. In the community, Durbridge was governor of a number of schools and was invited to become a member of the Open University Council. She was awarded an OBE in 1977.",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20485",
+                    "summaryTitle": "Biography of Margaret Durbridge (Digital Document)",
+                    "title": "Biography of Margaret Durbridge",
+                    "type": "Digital Document",
+                    "summary": "Biography of Margaret Durbridge (Digital Document)",
+                    "identifier": "WMK/005",
+                    "uuid": "64e64938-7b5c-3ea9-ac70-04e8d14b4807",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "collectionId": "wmk-20469",
+                    "ciimId": "wmk-20485",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "creator": "Gill Kirkup",
+                    "description": "Biographical notes on ten women who featured in an exhibition organised by the Milton Keynes group of the Fawcett Society, Milton Keynes Central Library, November-December 2017. Introduction to the project and women featured, August 2018.",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20471",
+                    "summaryTitle": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "title": "Biography of Women Who Made Milton Keynes",
+                    "type": "Digital Document",
+                    "summary": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "identifier": "WMK/001",
+                    "uuid": "873c5740-a797-3c35-9582-b7caf3937de5",
+                    "creationDateTo": "2018",
+                    "creationDateFrom": "2018",
+                    "creationDate": "2018",
+                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "collectionId": "wmk-20469",
+                    "ciimId": "wmk-20471",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "creator": "Gill Kirkup",
+                    "description": "Biography of Liz Leyh detailing her activities and achievements in relation to Milton Keynes. These activities include being the first artist in residence of a new town, engaging residents in community art and sculpture, and creating the concrete cows.",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20495",
+                    "summaryTitle": "Biography of Liz Leyh (Digital Document)",
+                    "title": "Biography of Liz Leyh",
+                    "type": "Digital Document",
+                    "summary": "Biography of Liz Leyh (Digital Document)",
+                    "identifier": "WMK/008",
+                    "uuid": "86e28df5-c79f-37e5-b56a-df5cf286c572",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "collectionId": "wmk-20469",
+                    "ciimId": "wmk-20495",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "creator": "Gill Bryan",
+                    "description": "Biography of Jane Henshaw detailing her activities and achievements in relation to health, education and business development in Milton Keynes. These include serving on the Board of Trustees for the establishment of Willen Hospice, leading the project that established the MK Education Business Partnership with the Chamber of Commerce, developing the format adopted as information technology (IT) certification in schools and setting up LINKS magazine - the Education-Industry Liaison Committee Newsletter.",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20488",
+                    "summaryTitle": "Biography of Jane Henshaw (Digital Document)",
+                    "title": "Biography of Jane Henshaw",
+                    "type": "Digital Document",
+                    "summary": "Biography of Jane Henshaw (Digital Document)",
+                    "identifier": "WMK/006",
+                    "uuid": "ee4140fe-a7a4-3e43-a5cc-66b565457b25",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "collectionId": "wmk-20469",
+                    "ciimId": "wmk-20488",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
+                }
+            }
+        },
+        {
+            "@template": {
+                "details": {
+                    "creator": "Sheila Thornton",
+                    "description": "Biography of Deirdre Battista detailing the activities and projects with which she has been involved in Milton Keynes. These include: co-ordinating the United Kingdom leg of the Sacred Run for Life and Land, hosting Native American lacrosse players promoting land rights, instigating the One World Quilt programme and co-ordinating the construction of a Millenium Sculpture - the Circle of Hearts Medicine Wheel at Willen Lake.",
+                    "level": "item",
+                    "primaryIdentifier": "wmk-20476",
+                    "summaryTitle": "Biography of Deirdre Battista (Digital Document)",
+                    "title": "Biography of Deirdre Battista",
+                    "type": "Digital Document",
+                    "summary": "Biography of Deirdre Battista (Digital Document)",
+                    "identifier": "WMK/002",
+                    "uuid": "4eee74ce-dfce-33a5-9e0e-a6dfa026b429",
+                    "creationDateTo": "2017",
+                    "creationDateFrom": "2017",
+                    "creationDate": "2017",
+                    "collection": "Biography of Women Who Made Milton Keynes (Digital Document)",
+                    "collectionId": "wmk-20469",
+                    "location": "Willen Lake",
+                    "ciimId": "wmk-20476",
+                    "group": "community",
+                    "accessStatus": "Open",
+                    "repository": "Milton Keynes City Discovery Centre"
                 }
             }
         }
@@ -202,24 +291,80 @@
                     "value": "Biography of Women Who Made Milton Keynes (Digital Document)",
                     "doc_count": 11
                 }
-            ]
-        },
+            ],
+            "total": 0,
+            "other": 0
+        }
+    ],
+    "stats": {
+        "total": 11,
+        "results": 11,
+        "providers": 2,
+        "latency": 112.0
+    },
+    "found": false,
+    "buckets": [
         {
             "name": "group",
             "entries": [
                 {
                     "value": "community",
-                    "doc_count": 11
+                    "count": 204
                 }
-            ]
+            ],
+            "total": 204,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "nonTna",
+                    "count": 6393
+                },
+                {
+                    "value": "record",
+                    "count": 6255
+                },
+                {
+                    "value": "aggregation",
+                    "count": 690
+                },
+                {
+                    "value": "tna",
+                    "count": 558
+                },
+                {
+                    "value": "digitised",
+                    "count": 33
+                },
+                {
+                    "value": "archive",
+                    "count": 9
+                },
+                {
+                    "value": "image",
+                    "count": 8
+                },
+                {
+                    "value": "creator",
+                    "count": 6
+                },
+                {
+                    "value": "person",
+                    "count": 4
+                },
+                {
+                    "value": "business",
+                    "count": 1
+                },
+                {
+                    "value": "organisation",
+                    "count": 1
+                }
+            ],
+            "total": 13958,
+            "other": 0
         }
-    ],
-    "stats": {
-        "total": 11,
-        "providers": 1,
-        "transformations": 1,
-        "provider_latency": 7,
-        "transformation_latency": 21
-    },
-    "found": true
+    ]
 }

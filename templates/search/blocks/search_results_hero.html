@@ -13,12 +13,24 @@
                     {# render hidden inputs for fields controlled by other forms #}
                     {% if form.group.value == bucketkeys.COMMUNITY.value %}
                         {% if form.vis_view.value == vis_view.TIMELINE %}
+                            {# TODO: Keep, not in scope for Ohos-Etna at this time #}
+                            {% comment %}
                             {% render_fields_as_hidden form exclude='q opening_start_date opening_end_date filter_keyword' %}
+                            {% endcomment %}
+                            {% render_fields_as_hidden form exclude='q' %}
                         {% else %}
+                            {# TODO: Keep, not in scope for Ohos-Etna at this time #}
+                            {% comment %}
                             {% render_fields_as_hidden form exclude='q opening_start_date opening_end_date filter_keyword timeline_type creation_date_from' %}
+                            {% endcomment %}
+                            {% render_fields_as_hidden form exclude='q timeline_type creation_date_from' %}
                         {% endif %}
                     {% else %}
-                        {% render_fields_as_hidden form exclude='q' %}
+                        {# TODO: Keep, not in scope for Ohos-Etna at this time #}
+                        {% comment %}
+                        {% render_fields_as_hidden form exclude='q vis_view timeline_type creation_date_from' %}
+                        {% endcomment %}
+                        {% render_fields_as_hidden form exclude='q vis_view timeline_type creation_date_from filter_keyword opening_start_date opening_end_date' %}
                     {% endif %}
                 
 

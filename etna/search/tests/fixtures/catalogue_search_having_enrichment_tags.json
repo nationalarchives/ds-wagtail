@@ -3,68 +3,125 @@
         {
             "@template": {
                 "details": {
+                    "copiesInformation": [
+                        "1"
+                    ],
+                    "description": "The stairwell leading to the Oak Room in the Town Hall",
                     "level": "item",
-                    "description": "the northern bank of the river Thames, looking NE",
-                    "summary": "View of the figurehead of the Upper Thames Sailing Club, originally from the battleship 'Vengeance'. Bourne End, Wooburn. 1936",
-                    "title": "View of the figurehead of the Upper Thames Sailing Club, originally from the battleship 'Vengeance'. Bourne End, Wooburn. 1936",
-                    "uuid": "4dae30e8-9fb5-3264-955b-f50cbef2357c",
-                    "creationDateTo": "1936",
-                    "creationDateFrom": "1936",
-                    "creationDate": "1936",
+                    "primaryIdentifier": "swop-94010",
+                    "summaryTitle": "View of members of the H.W.Society on the occasion of their 21st birthday celebrations. Town Hall, Queen Victoria Rd, High Wycombe. October 1989.",
+                    "title": "View of members of the H.W.Society on the occasion of their 21st birthday celebrations. Town Hall, Queen Victoria Rd, High Wycombe. October 1989.",
+                    "summary": "View of members of the H.W.Society on the occasion of their 21st birthday celebrations. Town Hall, Queen Victoria Rd, High Wycombe. October 1989.",
+                    "uuid": "fc5785d9-1dc4-329e-a7fd-67a12bd526be",
+                    "creationDateTo": "1989",
+                    "creationDateFrom": "1989",
+                    "creationDate": "10.1989",
                     "collection": "SWOP",
                     "collectionId": "swop-0",
                     "format": "Photo Print",
-                    "ciimId": "swop-49008",
+                    "location": "Queen Victoria Road",
+                    "ciimId": "swop-94010",
                     "group": "community",
-                    "status": "publish",
-                    "repository": "High Wycombe Library",
+                    "status": "redact",
+                    "repository": "High Wycombe Society",
                     "enrichment": {
                         "date": [
                             {
-                                "from": "1936",
-                                "to": "1936",
-                                "value": "1936"
-                            },
-                            {
-                                "from": "1925",
-                                "to": "1925",
-                                "value": "1925"
+                                "from": "1989",
+                                "to": "1989",
+                                "value": "October 1989"
                             }
                         ],
                         "loc": [
                             {
-                                "value": "Bourne End",
-                                "url": "https://www.wikidata.org/wiki/Q2059003"
+                                "value": "Town Hall",
+                                "url": "https://www.wikidata.org/wiki/Q25550691"
                             },
                             {
-                                "value": "Wooburn",
-                                "url": "https://www.wikidata.org/wiki/Q2740404"
+                                "value": "Queen Victoria Rd"
                             },
                             {
-                                "value": "Britannia",
-                                "url": "https://www.wikidata.org/wiki/Q138396"
+                                "value": "High Wycombe",
+                                "url": "https://www.wikidata.org/wiki/Q64116"
                             }
                         ],
                         "org": [
                             {
-                                "value": "Upper Thames Sailing Club"
+                                "value": "H.W.Society"
+                            },
+                            {
+                                "value": "High Wycombe Society"
+                            },
+                            {
+                                "value": "Society"
                             }
                         ],
                         "per": [
                             {
-                                "value": "Arthur Jackson"
-                            }
-                        ],
-                        "misc": [
+                                "value": "Ray Whitney",
+                                "url": "https://www.wikidata.org/wiki/Q7298285"
+                            },
                             {
-                                "value": "Vengeance"
+                                "value": "Whitney"
+                            },
+                            {
+                                "value": "L.John"
+                            },
+                            {
+                                "value": "L.John Mayes,",
+                                "url": "https://www.wikidata.org/wiki/Q16115844"
+                            },
+                            {
+                                "value": "Ron Sims",
+                                "url": "https://www.wikidata.org/wiki/Q7364392"
+                            },
+                            {
+                                "value": "Roger Rippington"
+                            },
+                            {
+                                "value": "John Gore"
+                            },
+                            {
+                                "value": "Jim Tanner",
+                                "url": "https://www.wikidata.org/wiki/Q21063317"
+                            },
+                            {
+                                "value": "L.John Mayes"
+                            },
+                            {
+                                "value": "Myra King"
+                            },
+                            {
+                                "value": "Annie Woodward"
+                            },
+                            {
+                                "value": "Jack Scruton"
+                            },
+                            {
+                                "value": "Evelyn Roe"
+                            },
+                            {
+                                "value": "Ray Whitney"
+                            },
+                            {
+                                "value": "Mrs Whitney"
+                            },
+                            {
+                                "value": "Nick Giles"
+                            },
+                            {
+                                "value": "Kathleen Peaty"
+                            },
+                            {
+                                "value": "Roger Lawson"
                             }
                         ]
                     },
                     "subjects": [
-                        "Monument",
-                        "Memorial",
-                        "Trophy"
+                        "Celebration",
+                        "Group",
+                        "Man",
+                        "Woman"
                     ]
                 }
             }
@@ -79,24 +136,34 @@
                     "value": "SWOP",
                     "doc_count": 1
                 }
-            ]
-        },
+            ],
+            "total": 0,
+            "other": 0
+        }
+    ],
+    "stats": {
+        "total": 1,
+        "results": 1,
+        "providers": 2,
+        "latency": 0.0
+    },
+    "found": false,
+    "buckets": [
         {
             "name": "group",
             "entries": [
                 {
                     "value": "community",
-                    "doc_count": 1
+                    "count": 1
                 }
-            ]
+            ],
+            "total": 1,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "total": 0,
+            "other": 0
         }
-    ],
-    "stats": {
-        "total": 1,
-        "providers": 1,
-        "transformations": 1,
-        "provider_latency": 6,
-        "transformation_latency": 3
-    },
-    "found": true
+    ]
 }

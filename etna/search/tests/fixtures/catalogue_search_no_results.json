@@ -4,19 +4,27 @@
     "aggregations": [
         {
             "name": "collection",
-            "entries": []
-        },
-        {
-            "name": "group",
-            "entries": []
+            "total": 0,
+            "other": 0
         }
     ],
     "stats": {
         "total": 0,
-        "providers": 0,
-        "transformations": 0,
-        "provider_latency": 5,
-        "transformation_latency": 0
+        "results": 0,
+        "providers": 2,
+        "latency": 0.0
     },
-    "found": false
+    "found": false,
+    "buckets": [
+        {
+            "name": "group",
+            "total": 0,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "total": 0,
+            "other": 0
+        }
+    ]
 }

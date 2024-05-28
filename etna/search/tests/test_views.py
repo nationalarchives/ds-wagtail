@@ -60,15 +60,17 @@ class SelectedFiltersTest(SimpleTestCase):
         form = CatalogueSearchForm(
             {
                 "group": "tna",
-                "topic": ["topic-one"],
-                "level": ["Division"],
+                # TODO: Keep, not in scope for Ohos-Etna at this time
+                # "topic": ["topic-one"],
+                # "level": ["Division"],
                 "collection": [
                     "WO",
                     "AK",
                     "Biography of Women Who Made Milton Keynes (Digital Document)",
                 ],
-                "country": ["England", "Yorkshire, North Riding"],
-                "location": ["Australia", "United States of America"],
+                # TODO: Keep, not in scope for Ohos-Etna at this time
+                # "country": ["England", "Yorkshire, North Riding"],
+                # "location": ["Australia", "United States of America"],
             }
         )
 
@@ -88,19 +90,21 @@ class SelectedFiltersTest(SimpleTestCase):
                         "Biography of Women Who Made Milton Keynes (Digital Document)",
                     ),
                 ],
-                "level": [("Division", "Division")],
-                "topic": [("topic-one", "topic-one")],
-                "country": [
-                    ("England", "England"),
-                    ("Yorkshire, North Riding", "Yorkshire, North Riding"),
-                ],
-                "location": [
-                    ("Australia", "Australia"),
-                    ("United States of America", "United States of America"),
-                ],
+                # TODO: Keep, not in scope for Ohos-Etna at this time
+                # "level": [("Division", "Division")],
+                # "topic": [("topic-one", "topic-one")],
+                # "country": [
+                #     ("England", "England"),
+                #     ("Yorkshire, North Riding", "Yorkshire, North Riding"),
+                # ],
+                # "location": [
+                #     ("Australia", "Australia"),
+                #     ("United States of America", "United States of America"),
+                # ],
             },
         )
 
+    @unittest.skip("# TODO: Keep, not in scope for Ohos-Etna at this time")
     def test_counts_are_removed_from_updated_choice_labels(self):
         form = CatalogueSearchForm(
             {
@@ -141,6 +145,7 @@ class SelectedFiltersTest(SimpleTestCase):
             },
         )
 
+    @unittest.skip("# TODO: Keep, not in scope for Ohos-Etna at this time")
     def test_with_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
@@ -152,6 +157,7 @@ class SelectedFiltersTest(SimpleTestCase):
         self.assertFalse(form.is_valid())
         self.assertEqual(self.get_result(form), {})
 
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     def test_with_partially_invalid_filter_values(self):
         form = CatalogueSearchForm(
             {
@@ -221,8 +227,7 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
             responses.calls[0].request.url,
             (
                 f"{settings.CLIENT_BASE_URL}/search"
-                "?aggs=group"
-                "&aggs=collection"
+                "?aggs=collection"
                 "&filter=group%3Acommunity"
                 "&sort="
                 "&from=0"
@@ -243,6 +248,10 @@ class EndToEndSearchTestCase(TestCase):
     sort_desktop_options_html = '<label for="id_sort_desktop">Sort by</label>'
     sort_mobile_options_html = '<label for="id_sort_mobile">Sort by</label>'
     filter_options_html = '<form method="GET" data-id="filters-form"'
+    selected_bucket_html = (
+        '<option value="{group}" selected >{bucket} ({count})</option>'
+    )
+    unselected_bucket_html = '<option value="{group}"  >{bucket} ({count})</option>'
 
     def patch_api_endpoint(self, url: str, fixture_path: str):
         full_fixture_path = (
@@ -293,6 +302,21 @@ class EndToEndSearchTestCase(TestCase):
 
     def assertResultsNotRendered(self, response):
         self.assertNotIn(self.results_html, response)
+
+    def assertSelectedBucketRendered(self, group, count, bucket, response):
+        self.assertIn(
+            self.selected_bucket_html.format(group=group, count=count, bucket=bucket),
+            response,
+        )
+
+    def assertUnSelectedBucketRendered(self, group, count, bucket, response):
+        self.assertIn(
+            self.unselected_bucket_html.format(group=group, count=count, bucket=bucket),
+            response,
+        )
+
+    def assertShowingRendered(self, text, response):
+        self.assertIn(text, response)
 
 
 class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
@@ -349,19 +373,25 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.patch_search_endpoint("catalogue_search_empty_when_refined.json")
         response = self.client.get(
             self.test_url,
-            data={"q": "japan", "filter_keyword": "qwerty"},
+            data={
+                "q": "japan",
+                "covering_date_from_0": "01",
+                "covering_date_from_1": "01",
+                "covering_date_from_2": "5000",
+            },
         )
         content = str(response.content)
 
         # SHOULD see
-        # self.assertBucketLinksRendered(content) # TODO:Rosetta
-        # self.assertSearchWithinOptionRendered(content) # TODO:Rosetta
-        # self.assertSortOptionsRendered(content) # TODO:Rosetta
+        self.assertBucketLinksRendered(content)
+        # self.assertSearchWithinOptionRendered(content) # TODO: Rosetta - not for OHOS
+        self.assertSortOptionsRendered(content)
         self.assertNoResultsMessagingRendered(content)
-        # self.assertFilterOptionsRendered(content) # TODO:Rosetta
+        self.assertFilterOptionsRendered(content)
 
         # SHOULD NOT see
         self.assertResultsNotRendered(content)
+        self.assertSearchWithinOptionNotRendered(content)  # For OHOS
 
     @responses.activate
     def test_refined_search_with_matches(self):
@@ -376,6 +406,7 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         - Options to change sort order and display style of results
         - Filter options to refine the search
         - Search results
+        - Buckets rendered
 
         They SHOULD NOT see:
         -  A "No results" message.
@@ -394,13 +425,23 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         # SHOULD see
         self.assertBucketLinksRendered(content)
-        # self.assertSearchWithinOptionRendered(content) # TODO:Rosetta
+        # self.assertSearchWithinOptionRendered(content) # TODO:Rosetta - not for OHOS
         self.assertSortOptionsRendered(content)
         self.assertFilterOptionsRendered(content)
         self.assertResultsRendered(content)
+        self.assertSelectedBucketRendered(
+            "community", "204", "Results from community collections", content
+        )
+        self.assertUnSelectedBucketRendered(
+            "tna", "558", "Results from The National Archives", content
+        )
+        self.assertUnSelectedBucketRendered(
+            "nonTna", "6,393", "Results from other archives", content
+        )
 
         # SHOULD NOT see
         self.assertNoResultsMessagingNotRendered(content)
+        self.assertSearchWithinOptionNotRendered(content)  # For OHOS
 
     @responses.activate
     def test_selected_filter_options_remain_visible(self):
@@ -413,7 +454,9 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         Test covers create session info for Catalogue search with query.
         """
-        self.patch_search_endpoint("catalogue_search_with_multiple_filters.json")
+        self.patch_search_endpoint(
+            "catalogue_search_with_multiple_filters_community.json"
+        )
 
         expected_url = "/search/catalogue/?q=parish&group=community&collection=SWOP&collection=People%27s+Collection+Wales"
 
@@ -435,6 +478,25 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
         self.assertIn('<input type="checkbox" name="collection" value="SWOP"', content)
+        self.assertIn(
+            '<input type="checkbox" name="collection" value="People&#x27;s Collection Wales"',
+            content,
+        )
+        self.assertSelectedBucketRendered(
+            "community", "5,415", "Results from community collections", content
+        )
+        self.assertUnSelectedBucketRendered(
+            "tna", "286,707", "Results from The National Archives", content
+        )
+        self.assertUnSelectedBucketRendered(
+            "nonTna", "928,752", "Results from other archives", content
+        )
+        self.assertShowingRendered("(of 5,345) results", content)
+        self.assertShowingRendered('for "parish"', content)
+        self.assertShowingRendered(
+            'in "<span id="analytics-current-bucket" data-current-bucket="Results from community collections">Results from community collections</span>"',
+            content,
+        )
 
     @responses.activate
     def test_render_invalid_date_range_message(self):
@@ -482,12 +544,12 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
 
         self.patch_search_endpoint("catalogue_search_having_enrichment_tags.json")
 
-        expected_url = "/search/catalogue/?q=swop-49008&group=community&collection=SWOP&vis_view=list"
+        expected_url = "/search/catalogue/?q=swop-94010&group=community&collection=SWOP&vis_view=list"
 
         response = self.client.get(
             self.test_url,
             data={
-                "q": "swop-49008",
+                "q": "swop-94010",
                 "group": "community",
                 "collection": [
                     "SWOP",
@@ -501,15 +563,15 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertEqual(len(responses.calls), 1)
         self.assertEqual(session.get("back_to_search_url"), expected_url)
 
-        self.assertIn('<span class="ohos-tag__inner">Bourne End</span>', content)
-        self.assertIn('<span class="ohos-tag__inner">Arthur Jackson</span>', content)
-        self.assertIn(
-            '<span class="ohos-tag__inner">Upper Thames Sailing Club</span>', content
-        )
-        self.assertIn('<span class="ohos-tag__inner">Vengeance</span>', content)
+        self.assertIn('<span class="ohos-tag ohos-tag--location">', content)
+        self.assertIn('<span class="ohos-tag__inner">Town Hall</span>', content)
+        self.assertIn('<span class="ohos-tag ohos-tag--person">', content)
+        self.assertIn('<span class="ohos-tag__inner">Ray Whitney</span>', content)
+        self.assertIn('<span class="ohos-tag ohos-tag--organisation">', content)
+        self.assertIn('<span class="ohos-tag__inner">H.W.Society</span>', content)
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
@@ -536,7 +598,7 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def assertDataLayerEquals(
         self,

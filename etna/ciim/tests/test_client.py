@@ -57,7 +57,7 @@ class ClientSearchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/search?q=Egypt",
         )
 
-    @unittest.skip("TODO:Rosetta")
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     @responses.activate
     def test_with_opening_start_date(self):
         self.records_client.search(
@@ -70,7 +70,7 @@ class ClientSearchTest(SimpleTestCase):
             f"{settings.CLIENT_BASE_URL}/search?openingStartDate=1901-02-03T00%3A00%3A00",
         )
 
-    @unittest.skip("TODO:Rosetta")
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     @responses.activate
     def test_with_opening_end_date(self):
         self.records_client.search(opening_end_date=datetime(year=1901, month=2, day=3))
@@ -82,10 +82,10 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_created_start_date(self):
+    def test_with_covering_date_from(self):
         self.records_client.search(
             group=BucketKeys.COMMUNITY,
-            created_start_date=date(year=1901, month=2, day=3),
+            covering_date_from=date(year=1901, month=2, day=3),
         )
 
         self.assertEqual(len(responses.calls), 1)
@@ -95,9 +95,9 @@ class ClientSearchTest(SimpleTestCase):
         )
 
     @responses.activate
-    def test_with_created_end_date(self):
+    def test_with_covering_date_to(self):
         self.records_client.search(
-            group=BucketKeys.COMMUNITY, created_end_date=date(year=1901, month=2, day=3)
+            group=BucketKeys.COMMUNITY, covering_date_to=date(year=1901, month=2, day=3)
         )
 
         self.assertEqual(len(responses.calls), 1)
@@ -156,7 +156,7 @@ class ClientSearchTest(SimpleTestCase):
                     test_data.label,
                 )
 
-    @unittest.skip("TODO:Rosetta")
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     @responses.activate
     def test_with_sort_date_opening(self):
         self.records_client.search(sort=Sort.DATE_OPENING)
@@ -317,7 +317,7 @@ class ClientSearchTest(SimpleTestCase):
             "filter=type%3Aorganisation",
         )
 
-    @unittest.skip("TODO:Rosetta")
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     @responses.activate
     def test_with_filter_keyword(self):
         self.records_client.search(filter_keyword="filter keyword")
@@ -349,7 +349,7 @@ class ClientSearchTest(SimpleTestCase):
         )
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class ClientSearchUnifiedTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -533,7 +533,7 @@ class ClientFetchTest(SimpleTestCase):
         )
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class ClientFetchAllTest(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()
@@ -883,7 +883,7 @@ class TestClientSearchReponse(SimpleTestCase):
         self.assertEqual(response.hits[1].ciim_id, "wmk-16758")
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class TestClientFetchAllReponse(SimpleTestCase):
     def setUp(self):
         self.records_client = get_records_client()

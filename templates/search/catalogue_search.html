@@ -40,7 +40,9 @@
 
         {% if buckets_contain_results %}
             {% include './blocks/catalogue_search_buckets.html' %}
-            {% include './blocks/visualisation_menu.html' %}
+            {% if form.group.value == bucketkeys.COMMUNITY.value %}
+                {% include './blocks/visualisation_menu.html' %}
+            {% endif %}
         {% endif %}
 
         {% if form.vis_view.value == vis_view.TAG.value %}

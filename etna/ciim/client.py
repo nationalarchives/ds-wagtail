@@ -221,14 +221,14 @@ class ClientAPI:
         *,
         group: Optional[str] = None,
         q: Optional[str] = None,
-        opening_start_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
-        opening_end_date: Optional[Union[date, datetime]] = None,  # TODO:Rosetta
-        created_start_date: Optional[Union[date, datetime]] = None,
-        created_end_date: Optional[Union[date, datetime]] = None,
-        stream: Optional[Stream] = None,  # TODO:Rosetta
+        # opening_start_date: Optional[Union[date, datetime]] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
+        # opening_end_date: Optional[Union[date, datetime]] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
+        covering_date_from: Optional[Union[date, datetime]] = None,
+        covering_date_to: Optional[Union[date, datetime]] = None,
+        # stream: Optional[Stream] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
         aggregations: Optional[list[Aggregation]] = None,
         filter_aggregations: Optional[list[str]] = None,
-        filter_keyword: Optional[str] = None,  # TODO:Rosetta
+        # filter_keyword: Optional[str] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
         sort: Optional[Sort] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
@@ -259,40 +259,37 @@ class ClientAPI:
         """
         params = {
             "q": q,
-            # "fields": f"stream:{stream}",  # TODO:Rosetta
+            # "fields": f"stream:{stream}",  # TODO: Keep, not in scope for Ohos-Etna at this time
             "aggs": aggregations,
             "filter": prepare_filter_aggregations(filter_aggregations),
-            # "filter": filter_keyword,   # TODO:Rosetta
+            # "filter": filter_keyword,   # TODO: Keep, not in scope for Ohos-Etna at this time
             "sort": sort,
             "from": offset,
             "size": size,
         }
 
-        if opening_start_date:
-            params["openingStartDate"] = self.format_datetime(
-                opening_start_date, supplementary_time=time.min
-            )
+        # TODO: Keep, not in scope for Ohos-Etna at this time
+        #  if opening_start_date:
+        #     params["openingStartDate"] = self.format_datetime(
+        #         opening_start_date, supplementary_time=time.min
+        #     )
 
-        if opening_end_date:
-            params["openingEndDate"] = self.format_datetime(
-                opening_end_date, supplementary_time=time.max
-            )
+        # if opening_end_date:
+        #     params["openingEndDate"] = self.format_datetime(
+        #         opening_end_date, supplementary_time=time.max
+        #     )
 
-        if created_start_date:
+        if covering_date_from:
             if group == BucketKeys.COMMUNITY:
-                params["filter"] += [f"fromDate:(>={created_start_date})"]
+                params["filter"] += [f"fromDate:(>={covering_date_from})"]
             else:
-                params["createdStartDate"] = self.format_datetime(
-                    created_start_date, supplementary_time=time.min
-                )
+                params["filter"] += [f"coveringFromDate:(>={covering_date_from})"]
 
-        if created_end_date:
+        if covering_date_to:
             if group == BucketKeys.COMMUNITY:
-                params["filter"] += [f"toDate:(<={created_end_date})"]
+                params["filter"] += [f"toDate:(<={covering_date_to})"]
             else:
-                params["createdEndDate"] = self.format_datetime(
-                    created_end_date, supplementary_time=time.max
-                )
+                params["filter"] += [f"coveringToDate:(<={covering_date_to})"]
 
         # Get HTTP response from the API
         response = self.make_request(f"{self.base_url}/search", params=params)
@@ -300,16 +297,16 @@ class ClientAPI:
         # Convert the HTTP response to a Python dict
         response_data = response.json()
 
-        # Pull out the separate ES responses # TODO:Rosetta for fixed counts incl when no results are returned
         bucket_counts_data = []
 
-        aggregations = response_data["aggregations"]
-        for aggregation in aggregations:
-            if aggregation.get("name", "") == "group":
-                bucket_counts_data = aggregation.get("entries", [])
+        # combine enties for all groups across OHOS and TNA
+        for bucket in response_data.get("buckets", []):
+            if bucket.get("name", "") == "group":
+                for entry in bucket.get("entries", []):
+                    bucket_counts_data.append(entry)
 
-        # Return a single ResultList, using bucket counts from the first ES response,
-        # and full hit/aggregation data from the second.
+        # Return a single ResultList, using bucket counts from "buckets",
+        # and full hit/aggregation data from "data".
         return self.resultlist_from_response(
             response_data,
             bucket_counts=bucket_counts_data,

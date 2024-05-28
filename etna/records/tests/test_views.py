@@ -18,7 +18,7 @@ from ...ciim.tests.factories import create_record, create_response
 User = get_user_model()
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class TestRecordDisambiguationView(TestCase):
     @responses.activate
     @prevent_request_warnings
@@ -137,7 +137,7 @@ class TestRecordView(TestCase):
         self.assertTemplateUsed(response, "records/record_detail.html")
 
 
-@unittest.skip("TODO:Rosetta")
+@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
 class TestDataLayerRecordDetail(WagtailTestUtils, TestCase):
     @responses.activate
     def test_datalayer_level1(self):

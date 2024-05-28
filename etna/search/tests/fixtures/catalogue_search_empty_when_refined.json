@@ -4,19 +4,95 @@
     "aggregations": [
         {
             "name": "collection",
-            "entries": []
-        },
-        {
-            "name": "group",
-            "entries": []
+            "total": 0,
+            "other": 0
         }
     ],
     "stats": {
         "total": 0,
-        "providers": 0,
-        "transformations": 0,
-        "provider_latency": 5,
-        "transformation_latency": 0
+        "results": 0,
+        "providers": 2,
+        "latency": 0.0
     },
-    "found": false
+    "found": false,
+    "buckets": [
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "community",
+                    "count": 125
+                }
+            ],
+            "total": 125,
+            "other": 0
+        },
+        {
+            "name": "group",
+            "entries": [
+                {
+                    "value": "record",
+                    "count": 28290
+                },
+                {
+                    "value": "tna",
+                    "count": 24907
+                },
+                {
+                    "value": "nonTna",
+                    "count": 3811
+                },
+                {
+                    "value": "digitised",
+                    "count": 1584
+                },
+                {
+                    "value": "image",
+                    "count": 555
+                },
+                {
+                    "value": "britishWarMedal",
+                    "count": 410
+                },
+                {
+                    "value": "aggregation",
+                    "count": 376
+                },
+                {
+                    "value": "creator",
+                    "count": 52
+                },
+                {
+                    "value": "archive",
+                    "count": 31
+                },
+                {
+                    "value": "person",
+                    "count": 29
+                },
+                {
+                    "value": "organisation",
+                    "count": 20
+                },
+                {
+                    "value": "seamenRegister",
+                    "count": 13
+                },
+                {
+                    "value": "business",
+                    "count": 3
+                },
+                {
+                    "value": "will",
+                    "count": 3
+                },
+                {
+                    "value": "medalCard",
+                    "count": 1
+                }
+            ],
+            "total": 60085,
+            "other": 0
+        }
+    ]
 }

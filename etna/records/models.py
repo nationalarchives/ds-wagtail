@@ -291,10 +291,9 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def date_created(self) -> str:
-        # TODO:Rosetta
         if self.group == BucketKeys.COMMUNITY:
             return self.template.get("creationDate", "")
-        return self.template.get("dateCreated", "")
+        return self.template.get("dateCovering", "")
 
     @cached_property
     def record_opening(self) -> str:
