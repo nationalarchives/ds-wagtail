@@ -107,6 +107,7 @@
     },
     "intro": "<p>Intro text</p>",
     "body": [],
+    "featured_article": null,
     "related_articles": [
         {
             "id": FOCUSED_ID,
@@ -167,6 +168,7 @@
             "full_url": "http://localhost/arts/highlight_gallery/",
             "type_label": "In pictures",
             "teaser_text": "Teaser text",
+            "highlight_image_count": 1,
             "teaser_image": {
                 "id": 16,
                 "title": "An image",

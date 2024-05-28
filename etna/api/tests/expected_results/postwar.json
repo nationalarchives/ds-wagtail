@@ -107,6 +107,7 @@
     },
     "intro": "<p>Intro text</p>",
     "body": [],
+    "featured_article": null,
     "related_articles": [
         {
             "id": ARTICLE_ID,

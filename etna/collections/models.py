@@ -192,7 +192,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + [
             APIField("body"),
             APIField(
-                "topic_explorer_pages",
+                "explorer_pages",
                 serializer=DefaultPageSerializer(
                     many=True, required_api_fields=["teaser_image"]
                 ),
@@ -212,7 +212,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def topic_explorer_pages(self):
+    def explorer_pages(self):
         """Fetch all child TopicExplorerPages for display in list."""
         return (
             self.get_children()
@@ -439,7 +439,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def time_period_explorer_pages(self):
+    def explorer_pages(self):
         """Fetch all child TimePeriodExplorerPages for display in list."""
         return (
             self.get_children()
@@ -460,7 +460,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + [
             APIField("body"),
             APIField(
-                "time_period_explorer_pages",
+                "explorer_pages",
                 serializer=DefaultPageSerializer(
                     many=True, required_api_fields=["teaser_image"]
                 ),
