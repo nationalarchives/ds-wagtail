@@ -766,6 +766,10 @@ class RecordArticlePage(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
             ),
+            APIField(
+                "featured_highlight_gallery",
+                serializer=DefaultPageSerializer(required_api_fields=["highlights"]),
+            ),
             APIField("promoted_links"),
             APIField(
                 "intro_image",
