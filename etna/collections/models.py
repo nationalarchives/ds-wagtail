@@ -513,6 +513,8 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField("featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"])),
             APIField(
                 "related_articles",
                 serializer=DefaultPageSerializer(
