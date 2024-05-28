@@ -8,7 +8,7 @@ from wagtail.test.utils import WagtailPageTestCase
 
 from wagtail_factories import ImageFactory
 
-from etna.articles.factories import (  # RecordArticlePageFactory,
+from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
     FocusedArticlePageFactory,
@@ -36,6 +36,19 @@ FILE_PATH = os.path.join(os.path.dirname(__file__), "expected_results")
 
 
 class APIResponseTest(WagtailPageTestCase):
+    """
+    Test the API responses on the pages endpoint.
+
+    These will likely fail if any of the serializers are changed,
+    please update the expected JSON if this is the case.
+
+    If these are failing for any other reason, please investigate
+    the cause of the failure further - it may be an issue with one
+    of the serializers. Please update the serializer and the expected
+    JSON if this is the case, but we should aim to keep the output
+    as consistent as possible to avoid breaking changes on the front end.
+    """
+
     @classmethod
     def setUpTestData(cls):
         cls.root_page = Site.objects.get().root_page
@@ -306,24 +319,6 @@ class APIResponseTest(WagtailPageTestCase):
             return f"Endpoint not OK (Error: {api_response.status_code})"
         return f"Unable to request endpoint {API_URL}{path}"
 
-    def compare_json(self, path: str, json_file: str):
-
-        if api_data := self.get_api_data(path):
-            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
-                self.fail(api_data)
-            else:
-                file = os.path.join(FILE_PATH, f"{json_file}.json")
-                expected_data = open(file, "r").read()
-                expected_data = self.replace_placeholders(expected_data)
-
-                # Remove random image rendition IDs
-                expected_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", expected_data)
-                api_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", api_data)
-                expected_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", expected_data)
-                api_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", api_data)
-
-                self.assertEqual(expected_data, api_data)
-
     def replace_placeholders(self, data: str):
         placeholder_ids = {
             "HOME_PAGE_ID": str(self.root_page.id),
@@ -342,6 +337,25 @@ class APIResponseTest(WagtailPageTestCase):
             data = data.replace(placeholder, id)
 
         return data
+
+    def compare_json(self, path: str, json_file: str):
+        if api_data := self.get_api_data(path):
+            if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
+                self.fail(api_data)
+            else:
+                file = os.path.join(FILE_PATH, f"{json_file}.json")
+                expected_data = open(file, "r").read()
+
+                # Replace placeholders with actual IDs in JSON
+                expected_data = self.replace_placeholders(expected_data)
+
+                # Remove random image rendition IDs
+                expected_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", expected_data)
+                api_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", api_data)
+                expected_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", expected_data)
+                api_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", api_data)
+
+                self.assertEqual(expected_data, api_data)
 
     def test_pages_route(self):
         self.compare_json("", "pages")
