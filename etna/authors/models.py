@@ -91,7 +91,10 @@ class AuthorPage(BasePage):
         APIField("role"),
         APIField("summary", serializer=RichTextSerializer()),
         APIField(
-            "authored_focused_articles", serializer=DefaultPageSerializer(many=True)
+            "authored_focused_articles",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
         ),
         APIField("image", serializer=ImageSerializer(rendition_size="fill-512x512")),
         APIField(
@@ -183,6 +186,8 @@ class AuthorPageMixin:
     api_fields = [
         APIField(
             "authors",
-            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
+            serializer=DefaultPageSerializer(
+                required_api_fields=["image", "authored_focused_articles"], many=True
+            ),
         )
     ]
