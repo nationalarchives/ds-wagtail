@@ -191,7 +191,12 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("topic_explorer_pages", serializer=DefaultPageSerializer(many=True, required_api_fields=["teaser_image"]))
+            APIField(
+                "topic_explorer_pages",
+                serializer=DefaultPageSerializer(
+                    many=True, required_api_fields=["teaser_image"]
+                ),
+            ),
         ]
     )
 
@@ -454,7 +459,12 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("time_period_explorer_pages", serializer=DefaultPageSerializer(many=True, required_api_fields=["teaser_image"])),
+            APIField(
+                "time_period_explorer_pages",
+                serializer=DefaultPageSerializer(
+                    many=True, required_api_fields=["teaser_image"]
+                ),
+            ),
         ]
     )
 
@@ -513,8 +523,10 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("featured_article",
-                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"])),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
             APIField(
                 "related_articles",
                 serializer=DefaultPageSerializer(
@@ -825,6 +837,10 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
                 "articles.RecordArticlePage",
             ],
         ),
+    ]
+
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("highlight_image_count"),
     ]
 
     promote_panels = BasePageWithIntro.promote_panels + [

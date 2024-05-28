@@ -10,7 +10,9 @@ class LargeCardLinksBlock(blocks.StructBlock):
     page_1 = APIPageChooserBlock(
         label=_("Link one target"), required_api_fields=["teaser_image"]
     )
-    page_2 = APIPageChooserBlock(label=_("Link two target"), required_api_fields=["teaser_image"])
+    page_2 = APIPageChooserBlock(
+        label=_("Link two target"), required_api_fields=["teaser_image"]
+    )
 
     class Meta:
         template = "blocks/large_links_block.html"
