@@ -151,12 +151,12 @@ class ArticleIndexPage(BasePageWithIntro):
             serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
         ),
         APIField("featured_pages"),
-        APIField(
-            "article_pages",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["teaser_image"], many=True
-            ),
-        ),
+        # APIField( TODO: Commented out until we have a way to paginate the child pages effectively
+        #     "article_pages",
+        #     serializer=DefaultPageSerializer(
+        #         required_api_fields=["teaser_image"], many=True
+        #     ),
+        # ),
     ]
 
     # DataLayerMixin overrides
