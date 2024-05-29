@@ -762,6 +762,7 @@ class RecordArticlePage(
             APIField("gallery_heading"),
             APIField("gallery_items", serializer=GallerySerializer(many=True)),
             APIField("image_library_link"),
+            APIField("print_on_demand_link"),
             APIField(
                 "featured_article",
                 serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
