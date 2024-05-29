@@ -173,6 +173,14 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
             "teaser_image_square",
             serializer=ImageSerializer("fill-512x512", source="teaser_image"),
         ),
+        APIField(
+            "facebook_og_image",
+            serializer=ImageSerializer("fill-1200x630", source="search_image"),
+        ),
+        APIField(
+            "twitter_og_image",
+            serializer=ImageSerializer("fill-1200x600", source="search_image"),
+        ),
     ]
 
 
