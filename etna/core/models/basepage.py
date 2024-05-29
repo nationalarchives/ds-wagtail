@@ -152,6 +152,10 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         APIField("full_url"),
         APIField("type_label"),
         APIField("teaser_text"),
+        APIField(
+            "teaser_image",
+            serializer=ImageSerializer("fill-600x400"),
+        ),
     ]
 
     api_fields = [

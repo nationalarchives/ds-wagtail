@@ -1,5 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 
+from etna.core.serializers.pages import DefaultPageSerializer
+
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.images.api.v2.views import ImagesAPIViewSet
@@ -57,9 +59,13 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     ]
 
 
+class CustomPagesAPIViewSet(PagesAPIViewSet):
+    base_serializer_class = DefaultPageSerializer
+
+
 api_router = WagtailAPIRouter("wagtailapi")
 
-api_router.register_endpoint("pages", PagesAPIViewSet)
+api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
