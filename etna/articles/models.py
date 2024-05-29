@@ -768,7 +768,9 @@ class RecordArticlePage(
             ),
             APIField(
                 "featured_highlight_gallery",
-                serializer=DefaultPageSerializer(required_api_fields=["highlight_cards"]),
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["highlight_cards"]
+                ),
             ),
             APIField("promoted_links"),
             APIField(

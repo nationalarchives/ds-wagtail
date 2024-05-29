@@ -22,7 +22,11 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import DefaultPageSerializer, HighlightImageSerializer, ImageSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+)
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -769,7 +773,7 @@ class TopicalPageMixin:
 
 class HighlightSerializer(serializers.ModelSerializer):
     image = HighlightImageSerializer(
-        rendition_size="original", additional_formats=["png"]
+        rendition_size="max-1024x1024", additional_formats=["png"]
     )
 
     class Meta:
@@ -779,6 +783,7 @@ class HighlightSerializer(serializers.ModelSerializer):
             "alt_text",
         )
 
+
 class HighlightCardSerializer(serializers.Serializer):
     """
     A serializer for the HighlightGalleryPage's `highlight_cards`.
@@ -786,6 +791,7 @@ class HighlightCardSerializer(serializers.Serializer):
     This is for use in a reference to the page, to display some of the
     highlights on the page.
     """
+
     rendition_size = "fill-600x400"
     jpeg_quality = 60
     webp_quality = 80
@@ -796,6 +802,7 @@ class HighlightCardSerializer(serializers.Serializer):
             "image": ImageSerializer.to_representation(self, value.image),
             "alt_text": value.alt_text,
         }
+
 
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
     parent_page_types = [TimePeriodExplorerPage, TopicExplorerPage]
@@ -887,7 +894,7 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             .select_related("image")
             .prefetch_related("image__renditions")
         )
-    
+
     @cached_property
     def highlight_cards(self):
         """
@@ -895,7 +902,6 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         to display a portion of the highlights on this page.
         """
         return self.highlights[:5]
-        
 
     @property
     def highlights_text(self) -> str:
