@@ -794,7 +794,7 @@ class HighlightCardSerializer(serializers.Serializer):
 
     rendition_size = "fill-600x400"
     jpeg_quality = 60
-    webp_quality = 60
+    webp_quality = 80
     additional_formats = []
 
     def to_representation(self, value):
