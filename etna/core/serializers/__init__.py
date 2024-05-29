@@ -1,7 +1,13 @@
-from .pages import LinkedPageSerializer
+from .images import DetailedImageSerializer, HighlightImageSerializer, ImageSerializer
+from .pages import DefaultPageSerializer
 from .richtext import RichTextSerializer
+from .tags import TaggableSerializer
 
 __all__ = [
-    "LinkedPageSerializer",
+    "DefaultPageSerializer",
+    "DetailedImageSerializer",
+    "ImageSerializer",
+    "HighlightImageSerializer",
     "RichTextSerializer",
+    "TaggableSerializer",
 ]

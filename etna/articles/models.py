@@ -19,7 +19,6 @@ from wagtail.admin.panels import (
 from wagtail.api import APIField
 from wagtail.fields import RichTextField, StreamField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Orderable, Page
 from wagtail.search import index
 from wagtail.snippets.models import register_snippet
@@ -36,7 +35,13 @@ from etna.core.models import (
     NewLabelMixin,
     RequiredHeroImageMixin,
 )
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+    RichTextSerializer,
+    TaggableSerializer,
+)
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
@@ -113,7 +118,7 @@ class ArticleTagMixin(models.Model):
         index.SearchField("article_tag_names", boost=2),
     ]
 
-    api_fields = [APIField("tags")]
+    api_fields = [APIField("tags", serializer=TaggableSerializer())]
 
 
 class ArticleIndexPage(BasePageWithIntro):
@@ -141,8 +146,17 @@ class ArticleIndexPage(BasePageWithIntro):
     )
 
     api_fields = BasePageWithIntro.api_fields + [
-        APIField("featured_article"),
+        APIField(
+            "featured_article",
+            serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+        ),
         APIField("featured_pages"),
+        APIField(
+            "article_pages",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
     ]
 
     # DataLayerMixin overrides
@@ -151,9 +165,9 @@ class ArticleIndexPage(BasePageWithIntro):
     class Meta:
         verbose_name = _("article index page")
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        context["article_pages"] = (
+    @cached_property
+    def article_pages(self):
+        return (
             self.get_children()
             .public()
             .live()
@@ -167,7 +181,6 @@ class ArticleIndexPage(BasePageWithIntro):
             .reverse()
             .specific()
         )
-        return context
 
     content_panels = BasePageWithIntro.content_panels + [
         PageChooserPanel(
@@ -187,17 +200,6 @@ class ArticleIndexPage(BasePageWithIntro):
         "articles.FocusedArticlePage",
         "articles.RecordArticlePage",
     ]
-
-
-# TODO: Make better
-class PageSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Page
-        fields = (
-            "id",
-            "title",
-            "url_path",
-        )
 
 
 class ArticlePage(
@@ -264,6 +266,10 @@ class ArticlePage(
         ]
     )
 
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
+
     api_fields = (
         BasePageWithIntro.api_fields
         + RequiredHeroImageMixin.api_fields
@@ -271,9 +277,19 @@ class ArticlePage(
         + NewLabelMixin.api_fields
         + ArticleTagMixin.api_fields
         + [
-            APIField("similar_items", serializer=PageSerializer(many=True)),
-            APIField("latest_items", serializer=PageSerializer(many=True)),
             APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
         ]
         + TopicalPageMixin.api_fields
     )
@@ -421,6 +437,11 @@ class FocusedArticlePage(
             index.SearchField("author_names", boost=1),
         ]
     )
+
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
+
     api_fields = (
         BasePageWithIntro.api_fields
         + HeroImageMixin.api_fields
@@ -430,6 +451,18 @@ class FocusedArticlePage(
         + [
             APIField("type_label"),
             APIField("body"),
+            APIField(
+                "similar_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "latest_items",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
         ]
         + TopicalPageMixin.api_fields
         + AuthorPageMixin.api_fields
@@ -510,6 +543,48 @@ class FocusedArticlePage(
         return sorted(
             latest_query_set, key=lambda x: x.newly_published_at, reverse=True
         )[:3]
+
+
+class PageGalleryImage(Orderable):
+    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
+    image = models.ForeignKey(
+        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
+    )
+    alt_text = models.CharField(
+        verbose_name=_("alternative text"),
+        max_length=100,
+        help_text=mark_safe(
+            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
+        ),
+    )
+    caption = RichTextField(
+        features=["bold", "italic", "link"],
+        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
+        blank=True,
+    )
+
+    class Meta(Orderable.Meta):
+        verbose_name = _("gallery image")
+        verbose_name_plural = _("gallery images")
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("alt_text"),
+        FieldPanel("caption"),
+    ]
+
+
+class GallerySerializer(serializers.ModelSerializer):
+    image = HighlightImageSerializer(rendition_size="max-1024x1024")
+    caption = RichTextSerializer()
+
+    class Meta:
+        model = PageGalleryImage
+        fields = (
+            "image",
+            "alt_text",
+            "caption",
+        )
 
 
 class RecordArticlePage(
@@ -670,6 +745,10 @@ class RecordArticlePage(
         ]
     )
 
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("is_newly_published"),
+    ]
+
     api_fields = (
         BasePageWithIntro.api_fields
         + ContentWarningMixin.api_fields
@@ -681,14 +760,22 @@ class RecordArticlePage(
             APIField("about", serializer=RichTextSerializer()),
             APIField("record"),
             APIField("gallery_heading"),
+            APIField("gallery_items", serializer=GallerySerializer(many=True)),
             APIField("image_library_link"),
-            APIField("featured_article"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
+            APIField(
+                "featured_highlight_gallery",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["highlight_cards"]
+                ),
+            ),
             APIField("promoted_links"),
             APIField(
-                "intro_image_jpg",
-                serializer=ImageRenditionField(
-                    "fill-512x512|format-jpeg|jpegquality-60", source="intro_image"
-                ),
+                "intro_image",
+                serializer=ImageSerializer(rendition_size="fill-512x512"),
             ),
         ]
         + TopicalPageMixin.api_fields
@@ -751,32 +838,3 @@ class RecordArticlePage(
         ):
             self.article_tag_names = "\n".join(t.name for t in self.tags.all())
         super().save(*args, **kwargs)
-
-
-class PageGalleryImage(Orderable):
-    page = ParentalKey(Page, on_delete=models.CASCADE, related_name="gallery_images")
-    image = models.ForeignKey(
-        get_image_model_string(), on_delete=models.SET_NULL, null=True, related_name="+"
-    )
-    alt_text = models.CharField(
-        verbose_name=_("alternative text"),
-        max_length=100,
-        help_text=mark_safe(
-            'Alternative (alt) text describes images when they fail to load, and is read aloud by assistive technologies. Use a maximum of 100 characters to describe your image. <a href="https://html.spec.whatwg.org/multipage/images.html#alt" target="_blank">Check the guidance for tips on writing alt text</a>.'
-        ),
-    )
-    caption = RichTextField(
-        features=["bold", "italic", "link"],
-        help_text="An optional caption, which will be displayed directly below the image. This could be used for image sources or for other useful metadata.",
-        blank=True,
-    )
-
-    class Meta(Orderable.Meta):
-        verbose_name = _("gallery image")
-        verbose_name_plural = _("gallery images")
-
-    panels = [
-        FieldPanel("image"),
-        FieldPanel("alt_text"),
-        FieldPanel("caption"),
-    ]

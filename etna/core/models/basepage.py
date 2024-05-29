@@ -14,7 +14,6 @@ from wagtail.admin.widgets.slug import SlugInput
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
 from wagtail.images import get_image_model_string
-from wagtail.images.api.fields import ImageRenditionField
 from wagtail.models import Page
 from wagtail.search import index
 
@@ -26,7 +25,7 @@ from etna.core.cache_control import (
     apply_default_cache_control,
     apply_default_vary_headers,
 )
-from etna.core.serializers import RichTextSerializer
+from etna.core.serializers import ImageSerializer, RichTextSerializer
 
 __all__ = [
     "BasePage",
@@ -146,45 +145,29 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data.update(customDimension3=self._meta.verbose_name)
         return data
 
+    default_api_fields = [
+        APIField("id"),
+        APIField("title"),
+        APIField("url"),
+        APIField("full_url"),
+        APIField("type_label"),
+        APIField("teaser_text"),
+    ]
+
     api_fields = [
         APIField("type_label"),
-        APIField("teaser_image"),
         APIField("teaser_text"),
         APIField(
-            "teaser_image_jpg",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
+            "teaser_image",
+            serializer=ImageSerializer("fill-600x400"),
         ),
         APIField(
-            "teaser_image_webp",
-            serializer=ImageRenditionField(
-                "fill-600x400|format-webp", source="teaser_image"
-            ),
+            "teaser_image_large",
+            serializer=ImageSerializer("fill-1200x480", source="teaser_image"),
         ),
         APIField(
-            "teaser_image_large_jpg",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_large_webp",
-            serializer=ImageRenditionField(
-                "fill-1200x480|format-webp", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_square_jpg",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-jpeg|jpegquality-60", source="teaser_image"
-            ),
-        ),
-        APIField(
-            "teaser_image_square_webp",
-            serializer=ImageRenditionField(
-                "fill-512x512|format-webp", source="teaser_image"
-            ),
+            "teaser_image_square",
+            serializer=ImageSerializer("fill-512x512", source="teaser_image"),
         ),
     ]
 
