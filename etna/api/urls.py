@@ -60,7 +60,13 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    base_serializer_class = DefaultPageSerializer
+    def listing_view(self, request):
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        queryset = self.paginate_queryset(queryset)
+        serializer = DefaultPageSerializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
 
 
 api_router = WagtailAPIRouter("wagtailapi")
