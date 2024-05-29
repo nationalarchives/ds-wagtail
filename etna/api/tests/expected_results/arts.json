@@ -105,6 +105,8 @@
             "height": 100
         }
     },
+    "facebook_og_image": null,
+    "twitter_og_image": null,
     "intro": "<p>Intro text</p>",
     "body": [],
     "featured_article": null,
@@ -117,7 +119,6 @@
             "full_url": "http://localhost/article_index/focused_article/",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
-            "is_newly_published": true,
             "teaser_image": {
                 "id": 14,
                 "title": "An image",
@@ -133,7 +134,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "is_newly_published": true
         },
         {
             "id": ARTICLE_ID,
@@ -142,7 +144,6 @@
             "full_url": "http://localhost/article_index/article/",
             "type_label": "The story of",
             "teaser_text": "Teaser text",
-            "is_newly_published": false,
             "teaser_image": {
                 "id": 12,
                 "title": "An image",
@@ -158,7 +159,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "is_newly_published": false
         }
     ],
     "related_highlight_gallery_pages": [
@@ -169,7 +171,6 @@
             "full_url": "http://localhost/arts/highlight_gallery/",
             "type_label": "In pictures",
             "teaser_text": "Teaser text",
-            "highlight_image_count": 1,
             "teaser_image": {
                 "id": 16,
                 "title": "An image",
@@ -185,7 +186,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "highlight_image_count": 1
         }
     ]
 }

@@ -71,6 +71,8 @@
             "height": 100
         }
     },
+    "facebook_og_image": null,
+    "twitter_og_image": null,
     "role": "Test Author",
     "summary": "<p>Summary text</p>",
     "authored_focused_articles": [
@@ -81,7 +83,6 @@
             "full_url": "http://localhost/article_index/focused_article/",
             "type_label": "Focus on",
             "teaser_text": "Teaser text",
-            "is_newly_published": true,
             "teaser_image": {
                 "id": 14,
                 "title": "An image",
@@ -97,7 +98,8 @@
                     "width": 100,
                     "height": 68
                 }
-            }
+            },
+            "is_newly_published": true
         }
     ],
     "image": {
