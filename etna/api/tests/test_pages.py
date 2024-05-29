@@ -339,6 +339,7 @@ class APIResponseTest(WagtailPageTestCase):
         return data
 
     def compare_json(self, path: str, json_file: str):
+        self.maxDiff = None
         if api_data := self.get_api_data(path):
             if api_data.startswith("Endpoint") or api_data.startswith("Unable"):
                 self.fail(api_data)
@@ -350,10 +351,10 @@ class APIResponseTest(WagtailPageTestCase):
                 expected_data = self.replace_placeholders(expected_data)
 
                 # Remove random image rendition IDs
-                expected_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", expected_data)
-                api_data = re.sub(r"0_[a-zA-Z0-9]{7}", "0", api_data)
-                expected_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", expected_data)
-                api_data = re.sub(r"e_[a-zA-Z0-9]{7}", "e", api_data)
+                expected_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", expected_data)
+                api_data = re.sub(r"0_[a-zA-Z0-9]{6,7}", "0", api_data)
+                expected_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", expected_data)
+                api_data = re.sub(r"e_[a-zA-Z0-9]{6,7}", "e", api_data)
 
                 self.assertEqual(expected_data, api_data)
 
