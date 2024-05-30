@@ -6,6 +6,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
+from ...ciim.constants import BucketKeys
 from ...ciim.exceptions import DoesNotExist
 from ...ciim.paginator import APIPaginator
 from ..api import records_client
@@ -97,6 +98,7 @@ def record_detail_view(request, id):
         back_to_search_url=back_to_search_url,
         page_type=page_type,
         page_title=page_title,
+        bucketkeys=BucketKeys,
     )
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.

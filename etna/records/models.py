@@ -230,9 +230,7 @@ class Record(DataLayerMixin, APIModel):
             strip_html_value = strip_html(updated_value, allow_tags=allow_tags)
             return mark_safe(strip_html_value)
 
-        # TODO:Rosetta
-        # return mark_safe(raw)
-        return raw
+        return mark_safe(raw)
 
     @cached_property
     def listing_description(self) -> str:
