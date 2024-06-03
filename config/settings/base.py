@@ -305,7 +305,7 @@ WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 # Custom password template for private pages
 
-PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
+WAGTAIL_PASSWORD_REQUIRED_TEMPLATE = "password_pages/password_required.html"
 
 # Eventbrite client
 
