@@ -32,7 +32,7 @@
     "jest-environment-jsdom": "~29.7",
     "prettier": "~3.2",
     "sass": "~1.76",
-    "stylelint": "~16.5",
+    "stylelint": "~16.6",
     "stylelint-config-standard-scss": "~13.1",
     "stylelint-selector-bem-pattern": "~4.0", 
     "webpack": "~5.91",
