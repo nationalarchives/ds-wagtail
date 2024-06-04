@@ -194,7 +194,6 @@ class ContentTableBlock(SectionDepthAwareStructBlock):
     class Meta:
         icon = "table"
         label = "Table"
-        template = "articles/blocks/table.html"
 
 
 class SectionContentBlock(blocks.StreamBlock):
