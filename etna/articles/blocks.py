@@ -3,6 +3,7 @@ from django.utils.html import format_html
 
 from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
+from wagtail.contrib.table_block.blocks import TableBlock
 
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
@@ -181,6 +182,20 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
         label = "Sub-heading"
         template = "articles/blocks/sub_heading.html"
 
+class ContentTableBlock(SectionDepthAwareStructBlock):
+    title = blocks.CharBlock(
+        max_length=100,
+        help_text="Title of the table",
+        label="Title",
+        required=False,
+    )
+    table = TableBlock()
+
+    class Meta:
+        icon = "table"
+        label = "Table"
+        template = "articles/blocks/table.html"
+
 
 class SectionContentBlock(blocks.StreamBlock):
     paragraph = ParagraphBlock()
@@ -192,6 +207,7 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     record_links = RecordLinksBlock()
+    table = ContentTableBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
