@@ -2,8 +2,8 @@ from django.conf import settings
 from django.utils.html import format_html
 
 from wagtail import blocks
-from wagtail.snippets.blocks import SnippetChooserBlock
 from wagtail.contrib.table_block.blocks import TableBlock
+from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
@@ -181,6 +181,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
         icon = "heading"
         label = "Sub-heading"
         template = "articles/blocks/sub_heading.html"
+
 
 class ContentTableBlock(SectionDepthAwareStructBlock):
     title = blocks.CharBlock(
