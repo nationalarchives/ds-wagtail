@@ -1,5 +1,6 @@
 from .base import SectionDepthAwareStructBlock
 from .cta import LargeCardLinksBlock
+from .document import DocumentBlock
 from .featured_content import FeaturedRecordArticleBlock
 from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
 from .page_chooser import APIPageChooserBlock
@@ -12,6 +13,7 @@ from .section import SectionBlock
 __all__ = [
     "APIPageChooserBlock",
     "ContentImageBlock",
+    "DocumentBlock",
     "FeaturedRecordArticleBlock",
     "ImageBlock",
     "NoCaptionImageBlock",
