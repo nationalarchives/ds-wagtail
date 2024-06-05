@@ -113,6 +113,7 @@ We follow a loose version of the [Git flow branching model](https://nvie.com/pos
 - Feature branches should always be based on: `develop`
 - Release branches should always be based on: `develop`
 - Release branches should be merged via PR into `main`, followed by PR to merge `main` into `develop`
+- Create a new branch if the branch for that ticket has been merged.  
 
 **See below for merging guidance**
 
