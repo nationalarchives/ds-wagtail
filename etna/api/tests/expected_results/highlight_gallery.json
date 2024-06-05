@@ -71,6 +71,8 @@
             "height": 100
         }
     },
+    "facebook_og_image": null,
+    "twitter_og_image": null,
     "intro": "<p>Intro text</p>",
     "display_content_warning": false,
     "custom_warning_text": "",
@@ -81,7 +83,6 @@
         "full_url": "http://localhost/article_index/article/",
         "type_label": "The story of",
         "teaser_text": "Teaser text",
-        "is_newly_published": false,
         "teaser_image": {
             "id": 12,
             "title": "An image",
@@ -97,7 +98,8 @@
                 "width": 100,
                 "height": 68
             }
-        }
+        },
+        "is_newly_published": false
     },
     "highlights": [
         {
