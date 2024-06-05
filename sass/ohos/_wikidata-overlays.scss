@@ -1,0 +1,84 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.wikidata {
+    $spacer-size: 1em;
+    display: none;
+    position: absolute;
+    top: calc(100% - 1px); // Accounts for border on hover target area
+    width: 300px;
+    right: 0;
+    z-index: 10;
+    background-color: $color__grey-light;
+    margin-top: $spacer-size;
+    box-shadow: 2px 2px 4px 0 rgb(0 0 0 / 25%);
+
+    &::before {
+        content: "";
+        height: $spacer-size;
+        display: block;
+        position: absolute;
+        bottom: 100%;
+        width: 100%;
+    }
+
+    &::after {
+        content: "";
+        height: 0;
+        width: 0;
+        right: 20px;
+        position: absolute;
+        bottom: 100%;
+        border: 12px solid transparent;
+        border-top: 0;
+        border-bottom-color: var(--tag-theme-color, $color__grey-500);
+    }
+
+    &__header {
+        display: flex;
+        align-items: flex-start;
+        gap: 1em;
+        padding: 1em;
+        background-color: var(--tag-theme-color, $color__grey-500);
+    }
+
+    &__header-meta {
+        margin: 0;
+        @include typography.relative-font-size(12);
+    }
+
+    &__content {
+        padding: 1em;
+    }
+
+    &__description {
+        margin-top: 0;
+    }
+
+    &__footer {
+        @include typography.relative-font-size(12);
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        margin-top: 1em;
+
+        img {
+            margin: 0;
+        }
+    }
+
+    &__header-img {
+        background-color: rgb(0 0 0 / 10%);
+    }
+}
+
+.wikidata-container {
+    display: flex;
+
+    @media (hover: hover) {
+        &:hover {
+            .wikidata:not(:empty) {
+                display: block;
+            }
+        }
+    }
+}

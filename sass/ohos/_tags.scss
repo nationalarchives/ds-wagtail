@@ -1,3 +1,8 @@
+.ohos-tag-container {
+    position: relative;
+    display: inline-block;
+}
+
 .ohos-tag {
     display: inline-flex;
     border: 1px solid;
@@ -12,28 +17,30 @@
         text-decoration: none;
     }
 
+    background-color: var(--tag-theme-color, $color__grey-500);
+
     &--location {
-        background-color: #edae49;
+        --tag-theme-color: #edae49;
     }
 
     &--person {
-        background-color: #84a59d;
+        --tag-theme-color: #84a59d;
     }
 
     &--organisation {
-        background-color: #b5e2fa;
+        --tag-theme-color: #b5e2fa;
     }
 
     &--misc {
-        background-color: #f28482;
+        --tag-theme-color: #f28482;
     }
 
     &--other {
-        background-color: #faf0ca;
+        --tag-theme-color: #faf0ca;
     }
 
     &--clear {
-        background-color: $color--off-black;
+        --tag-theme-color: $color--off-black;
 
         &,
         &:link,

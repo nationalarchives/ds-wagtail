@@ -23,6 +23,7 @@ module.exports = {
         whats_on: "./scripts/src/whats-on.js",
         search_results_map: "./scripts/src/search-results-map.js",
         tag_frequency_chart: "./scripts/src/modules/tag-frequency/tag-frequency-chart.js",
+        wikidata_overlays: "./scripts/src/modules/wikidata-overlays/wikidata-overlays.js",
     },
     output: {
         filename: "[name].js",
