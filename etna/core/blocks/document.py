@@ -1,6 +1,7 @@
 from wagtail import blocks
 from wagtail.documents.blocks import DocumentChooserBlock
 
+
 class DocumentBlock(blocks.StructBlock):
     """
     A block for embedding a document file in a page.
