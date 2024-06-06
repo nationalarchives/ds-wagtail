@@ -29,3 +29,12 @@ class LargeCardLinksBlock(blocks.StructBlock):
             link_pages.append(page_2.specific)
         context["link_pages"] = link_pages
         return context
+
+class CallToActionBlock(blocks.StructBlock):
+    heading = blocks.CharBlock(max_length=100)
+    body = blocks.RichTextBlock()
+    page = APIPageChooserBlock()
+
+    class Meta:
+        icon = "arrow-right"
+        template = "blocks/call_to_action_block.html"
