@@ -437,3 +437,19 @@ FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
 FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
+
+if redis_url := os.getenv("REDIS_URL"):
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        },
+        "renditions": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "KEY_PREFIX": "renditions",
+        },
+    }
