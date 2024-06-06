@@ -23,9 +23,9 @@
                         </div>
                         <div id="highlight{{ forloop.counter0 }}" class="highlight-gallery__image-container">
                             <picture>
-                                {% image highlight.image original format-webp as webp_img %}
+                                {% image highlight.image max-1024x1024 format-webp as webp_img %}
                                 <source srcset="{{ webp_img.url }}" type="image/webp" />
-                                {% image highlight.image original as base_img %}
+                                {% image highlight.image max-1024x1024 as base_img %}
                                 <img src="{{ base_img.url }}"
                                     height="{{ base_img.height }}"
                                     width="{{ base_img.width }}"
