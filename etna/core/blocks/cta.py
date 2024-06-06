@@ -1,8 +1,10 @@
+from django.conf import settings
 from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
 
 from .page_chooser import APIPageChooserBlock
+from .paragraph import APIRichTextBlock
 
 
 class LargeCardLinksBlock(blocks.StructBlock):
@@ -31,9 +33,9 @@ class LargeCardLinksBlock(blocks.StructBlock):
         return context
 
 class CallToActionBlock(blocks.StructBlock):
-    heading = blocks.CharBlock(max_length=100)
-    body = blocks.RichTextBlock()
-    page = APIPageChooserBlock()
+    body = APIRichTextBlock(max_length=100, features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+    label = blocks.CharBlock()
+    link = APIPageChooserBlock()
 
     class Meta:
         icon = "arrow-right"
