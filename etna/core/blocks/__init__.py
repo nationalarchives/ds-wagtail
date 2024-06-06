@@ -1,3 +1,4 @@
+from .accordion import AccordionsBlock
 from .base import SectionDepthAwareStructBlock
 from .cta import LargeCardLinksBlock
 from .featured_content import FeaturedRecordArticleBlock
@@ -10,6 +11,7 @@ from .quote import QuoteBlock
 from .section import SectionBlock
 
 __all__ = [
+    "AccordionsBlock",
     "APIPageChooserBlock",
     "ContentImageBlock",
     "FeaturedRecordArticleBlock",

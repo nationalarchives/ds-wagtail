@@ -5,6 +5,7 @@ from wagtail import blocks
 from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
+    AccordionsBlock,
     AuthorPromotedLinkBlock,
     ContentImageBlock,
     FeaturedRecordArticleBlock,
@@ -183,6 +184,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    accordions = AccordionsBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
