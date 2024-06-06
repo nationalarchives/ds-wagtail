@@ -130,7 +130,7 @@ class PromotedListBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "external-link-alt"
+        icon = "link"
         label = "Link list"
         template = "articles/blocks/promoted_list_block.html"
 
@@ -185,15 +185,15 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
 class SectionContentBlock(blocks.StreamBlock):
     accordions = AccordionsBlock()
-    paragraph = ParagraphBlock()
-    quote = QuoteBlock()
-    sub_heading = SubHeadingBlock()
+    featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     media = MediaBlock()
-    featured_record_article = FeaturedRecordArticleBlock()
+    paragraph = ParagraphBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
+    quote = QuoteBlock()
     record_links = RecordLinksBlock()
+    sub_heading = SubHeadingBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
