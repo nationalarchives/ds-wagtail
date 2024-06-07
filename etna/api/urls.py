@@ -1,8 +1,10 @@
 from django.contrib.contenttypes.models import ContentType
-from django.urls import path
+from django.http import Http404
+from django.shortcuts import redirect
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
+from wagtail.api.v2.utils import get_object_detail_url
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
@@ -68,30 +70,13 @@ class PrivatePageAPIViewSet(PagesAPIViewSet):
         "latest_revision_created_at",
     ]
 
-    @classmethod
-    def get_urlpatterns(cls):
-        """
-        This returns a list of URL patterns for the endpoint
-        """
-        return [
-            path("<int:pk>/", cls.as_view({"get": "detail_view"}), name="detail"),
-        ]
-
     def get_base_queryset(self):
-        """
-        Returns a queryset containing all pages.
-        """
-
         queryset = Page.objects.all().live()
-
         if site := Site.find_for_request(self.request):
             base_queryset = queryset
             return base_queryset.descendant_of(site.root_page, inclusive=True)
         else:
             return queryset.none()
-
-    def listing_view(self, request):
-        return self.detail_view(request, None)
 
     def detail_view(self, request, pk):
         instance = self.get_object()
@@ -116,6 +101,30 @@ class PrivatePageAPIViewSet(PagesAPIViewSet):
         data = {"message": "Selected privacy is not compatible with this API."}
         return Response(data, status=status.HTTP_403_FORBIDDEN)
 
+    def find_view(self, request):
+        queryset = self.get_queryset()
+        try:
+            obj = self.find_object(queryset, request)
+            if obj is None:
+                raise self.model.DoesNotExist
+        except self.model.DoesNotExist:
+            raise Http404("not found")
+        url = get_object_detail_url(
+            self.request.wagtailapi_router, request, self.model, obj.pk
+        )
+        if url is None:
+            # Shouldn't happen unless this endpoint isn't actually installed in the router
+            raise Exception(
+                "Cannot generate URL to detail view. Is '{}' installed in the API router?".format(
+                    self.__class__.__name__
+                )
+            )
+        if "password" in request.GET:
+            url = f"{url}?password={request.GET["password"]}"
+        return redirect(url)
+
+    name = "private_pages"
+
 
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
     body_fields = ImagesAPIViewSet.body_fields + [
@@ -137,8 +146,8 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
 
 api_router = WagtailAPIRouter("wagtailapi")
 
+api_router.register_endpoint("private_pages", PrivatePageAPIViewSet)
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
-api_router.register_endpoint("private_page", PrivatePageAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
