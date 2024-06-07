@@ -108,12 +108,12 @@ class PrivatePageAPIViewSet(PagesAPIViewSet):
                     ):
                         return Response(data)
                     else:
-                        data = {"message": "Incorrect password"}
+                        data = {"message": "Incorrect password."}
                         return Response(data, status=status.HTTP_401_UNAUTHORIZED)
                 else:
-                    data = {"message": "Password required to view this resource"}
+                    data = {"message": "Password required to view this resource."}
                     return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-        data = {"message": "Selected privacy is not compatible with this API"}
+        data = {"message": "Selected privacy is not compatible with this API."}
         return Response(data, status=status.HTTP_403_FORBIDDEN)
 
 
