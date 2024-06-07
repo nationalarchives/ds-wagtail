@@ -18,7 +18,9 @@
                 "html_url": "http://localhost/article_index/"
             },
             "title": "article_index"
-        }
+        },
+        "privacy": "public",
+        "latest_revision_created_at": null
     },
     "title": "focused_article",
     "type_label": "Focus on",

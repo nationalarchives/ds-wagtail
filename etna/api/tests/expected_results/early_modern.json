@@ -18,7 +18,9 @@
                 "html_url": "http://localhost/"
             },
             "title": "Home"
-        }
+        },
+        "privacy": "public",
+        "latest_revision_created_at": null
     },
     "title": "early_modern",
     "hero_image_caption": "<p>Hero image caption</p>",

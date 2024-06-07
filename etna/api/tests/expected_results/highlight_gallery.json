@@ -18,7 +18,9 @@
                 "html_url": "http://localhost/arts/"
             },
             "title": "arts"
-        }
+        },
+        "privacy": "public",
+        "latest_revision_created_at": null
     },
     "title": "highlight_gallery",
     "type_label": "In pictures",

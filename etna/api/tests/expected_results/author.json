@@ -18,7 +18,9 @@
                 "html_url": "http://localhost/authors/"
             },
             "title": "authors"
-        }
+        },
+        "privacy": "public",
+        "latest_revision_created_at": null
     },
     "title": "author",
     "type_label": "Author",
