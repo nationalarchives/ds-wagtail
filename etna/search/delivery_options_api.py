@@ -12,6 +12,7 @@ from typing import (
     Type,
     Union,
 )
+
 """Although this is not a ciim specific class, use the predefined API exceptions for consistency """
 from etna.ciim.exceptions import (
     ClientAPIBadRequestError,
@@ -23,6 +24,7 @@ from etna.ciim.exceptions import (
 )
 
 import requests
+
 
 class DeliveryOptionsAPI:
     """Client used to Fetch and validate data from Client API."""
@@ -92,7 +94,7 @@ class DeliveryOptionsAPI:
     def make_request(
         self, url: str, params: Optional[dict[str, Any]] = None
     ) -> requests.Response:
-        
+
         """Make request to Client API."""
         params = self.prepare_request_params(params)
         response = self.session.get(url, params=params, timeout=self.timeout)

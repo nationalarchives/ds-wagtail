@@ -325,11 +325,10 @@ IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
 
 # Delivery Options API Client
 
-DELIVERY_OPTIONS_CLIENT_BASE_URL = os.getenv("DELIVERY_OPTIONS_CLIENT_BASE_URL",  "http://discovery-services.staging.local/DiscoveryDeliveryOptionsapi/api/DeliveryOptions")
-#DELIVERY_OPTIONS_CLIENT_KEY = os.getenv("DELIVERY_OPTIONS_CLIENT_KEY", "/home/ian/.openvpn/ijenkins.clientvpn-2023-35.london.key")
-#DELIVERY_OPTIONS_CLIENT_VERIFY_CERTIFICATES = strtobool(
-#    os.getenv("DELIVERY_OPTIONS_CLIENT_VERIFY_CERTIFICATES", "True")
-#)
+DELIVERY_OPTIONS_CLIENT_BASE_URL = os.getenv(
+    "DELIVERY_OPTIONS_CLIENT_BASE_URL",
+    "http://discovery-services.staging.local/DiscoveryDeliveryOptionsapi/api/DeliveryOptions",
+)
 
 # Delivery Options specific constants
 

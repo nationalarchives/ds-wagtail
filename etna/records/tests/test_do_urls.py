@@ -24,10 +24,11 @@ from etna.ciim.exceptions import (
     MultipleObjectsReturned,
 )
 
+
 class ClientFetchTest(SimpleTestCase):
     def setUp(self):
         self.do_record_client = get_delivery_options_client()
-        x=create_response(records=[create_record()])
+        x = create_response(records=[create_record()])
         print(x)
         responses.add(
             responses.GET,
@@ -40,9 +41,7 @@ class ClientFetchTest(SimpleTestCase):
         self.do_record_client.fetch()
 
         self.assertEqual(len(responses.calls), 1)
-        self.assertEqual(
-            responses.calls[0].request.url, settings.CLIENT_BASE_URL
-        )
+        self.assertEqual(responses.calls[0].request.url, settings.CLIENT_BASE_URL)
 
     @responses.activate
     def test_with_iaid(self):
@@ -197,4 +196,3 @@ class xTestClientFetchReponse(SimpleTestCase):
         )
         with self.assertRaises(MultipleObjectsReturned):
             self.do_record_client.fetch()
-

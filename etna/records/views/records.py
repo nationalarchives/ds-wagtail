@@ -58,6 +58,7 @@ def record_disambiguation_view(request, reference_number):
         },
     )
 
+
 def record_detail_view(request, iaid):
     """View for rendering a record's details page.
 
@@ -94,7 +95,7 @@ def record_detail_view(request, iaid):
 
     # Back to search - default url
     back_to_search_url = reverse("search-featured")
- 
+
     # Back to search button - update url when timestamp is not expired
 
     if back_to_search_url_timestamp := request.session.get(
@@ -109,12 +110,14 @@ def record_detail_view(request, iaid):
 
     # Get the delivery options for the iaid
     do_ctx = {}
-    
+
     try:
         delivery_options = delivery_options_client.fetch(iaid=iaid)
         do_ctx = construct_delivery_options(delivery_options, record)
     except:
-        do_ctx['heading'] = "Delivery Options are currently unavailable - please try again later"
+        do_ctx[
+            "heading"
+        ] = "Delivery Options are currently unavailable - please try again later"
 
     context.update(
         record=record,
