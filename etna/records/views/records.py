@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from django.core.paginator import Page
 from django.shortcuts import Http404, render
@@ -6,10 +7,11 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.utils import timezone
 
-from ...ciim.constants import TNA_URLS
-from ...ciim.exceptions import DoesNotExist
-from ...ciim.paginator import APIPaginator
-from ..api import records_client
+from etna.ciim.constants import TNA_URLS
+from etna.ciim.exceptions import DoesNotExist
+from etna.ciim.paginator import APIPaginator
+from etna.records.api import records_client, delivery_options_client
+from etna.records.delivery_options import construct_delivery_options
 
 SEARCH_URL_RETAIN_DELTA = timezone.timedelta(hours=48)
 
@@ -56,7 +58,6 @@ def record_disambiguation_view(request, reference_number):
         },
     )
 
-
 def record_detail_view(request, iaid):
     """View for rendering a record's details page.
 
@@ -93,7 +94,7 @@ def record_detail_view(request, iaid):
 
     # Back to search - default url
     back_to_search_url = reverse("search-featured")
-
+ 
     # Back to search button - update url when timestamp is not expired
 
     if back_to_search_url_timestamp := request.session.get(
@@ -106,6 +107,15 @@ def record_detail_view(request, iaid):
         if timezone.now() <= (back_to_search_url_timestamp + SEARCH_URL_RETAIN_DELTA):
             back_to_search_url = request.session.get("back_to_search_url")
 
+    # Get the delivery options for the iaid
+    do_ctx = {}
+    
+    try:
+        delivery_options = delivery_options_client.fetch(iaid=iaid)
+        do_ctx = construct_delivery_options(delivery_options, record)
+    except:
+        do_ctx['heading'] = "Delivery Options are currently unavailable - please try again later"
+
     context.update(
         record=record,
         image=image,
@@ -113,6 +123,7 @@ def record_detail_view(request, iaid):
         back_to_search_url=back_to_search_url,
         page_type=page_type,
         page_title=page_title,
+        delivery_option=do_ctx,
     )
 
     # Note: This page uses cookies to render GTM, please ensure to keep TemplateResponse or similar when changed.

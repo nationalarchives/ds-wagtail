@@ -1,12 +1,39 @@
 {% load records_tags %}
 
 <div class="crosslink-panel">
-    <h2 class="tna-heading-l">How to order/download this record</h2>
-    <ol>
-        <li>View this record page in Discovery &ndash; our catalogue</li>
-        <li>Check viewing options</li>
-        <li>Select an option and follow instructions</li>
-    </ol>
-    <p>Note: Not all documents are available and options will vary.</p>
-    <a class="crosslink-panel__link" target="_blank" href="{% record_url record order_from_discovery=True %}" data-link-type="Link" data-link="View this record page in Discovery" data-component-name="Access record">View this record page in Discovery <span class="sr-only">(link opens in a new window)</span></a>
+    {% if delivery_option.heading  %}
+        <h3 class="tna-heading-m">{{delivery_option.heading | safe }} </h3>
+    {% endif %}
+    
+    {% if delivery_option.description %}
+        {{delivery_option.description | safe }}
+    {% endif %}
+
+    {% if delivery_option.orderbuttons %}
+        {% for item in delivery_option.orderbuttons %}
+            <a class="crosslink-panel__link"
+               {% if item.target %}
+                   target={{ item.target }}
+               {% endif %}
+               href="{{ item.href }}" 
+               data-link-type="Link" 
+               data-link="View this record page in Discovery" 
+               data-component-name="Access record">{{ item.text }} <span class="sr-only">(link opens in a new window)</span></a>
+        {% endfor %}
+    {% endif %}
+
+    {% if delivery_option.supplemental %}
+    <p></p>
+        {{ delivery_option.supplemental | safe }}
+    {% endif %}
+
+    {% if delivery_option.basketlimit %}
+    <p></p>
+        {{delivery_option.basketlimit | safe }}
+    {% endif %}
+    
+    {% comment 'display the index of the delivery option for debugging' %}
+        <p>{{ delivery_option.index }}</p>
+    {% endcomment %}
+
 </div>

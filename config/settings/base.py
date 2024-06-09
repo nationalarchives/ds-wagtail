@@ -314,7 +314,7 @@ EVENTBRITE_SECRET = os.getenv("EVENTBRITE_SECRET")
 EVENTBRITE_PRIVATE_TOKEN = os.getenv("EVENTBRITE_PRIVATE_TOKEN")
 EVENTBRITE_PUBLIC_TOKEN = os.getenv("EVENTBRITE_PUBLIC_TOKEN")
 
-# API Client
+# Record search API Client
 
 CLIENT_BASE_URL = os.getenv("KONG_CLIENT_BASE_URL")
 CLIENT_KEY = os.getenv("KONG_CLIENT_KEY")
@@ -322,6 +322,20 @@ CLIENT_VERIFY_CERTIFICATES = strtobool(
     os.getenv("KONG_CLIENT_VERIFY_CERTIFICATES", "True")
 )
 IMAGE_PREVIEW_BASE_URL = os.getenv("KONG_IMAGE_PREVIEW_BASE_URL")
+
+# Delivery Options API Client
+
+DELIVERY_OPTIONS_CLIENT_BASE_URL = os.getenv("DELIVERY_OPTIONS_CLIENT_BASE_URL",  "http://discovery-services.staging.local/DiscoveryDeliveryOptionsapi/api/DeliveryOptions")
+#DELIVERY_OPTIONS_CLIENT_KEY = os.getenv("DELIVERY_OPTIONS_CLIENT_KEY", "/home/ian/.openvpn/ijenkins.clientvpn-2023-35.london.key")
+#DELIVERY_OPTIONS_CLIENT_VERIFY_CERTIFICATES = strtobool(
+#    os.getenv("DELIVERY_OPTIONS_CLIENT_VERIFY_CERTIFICATES", "True")
+#)
+
+# Delivery Options specific constants
+
+BASE_DISCOVERY_URL = "https://discovery.nationalarchives.gov.uk/"
+BASE_TNA_URL = os.getenv("BASE_TNA_URL", "https://www.nationalarchives.gov.uk")
+MAX_BASKET_ITEMS = os.getenv("MAX_BASKET_ITEMS", "10")
 
 # Rich Text Features
 # https://docs.wagtail.io/en/stable/advanced_topics/customisation/page_editing_interface.html#limiting-features-in-a-rich-text-field
