@@ -7,6 +7,7 @@ from wagtail.blocks.struct_block import StructBlockValidationError
 from wagtail.images.blocks import ImageChooserBlock
 
 from etna.core.blocks.paragraph import APIRichTextBlock
+from etna.core.serializers.images import DetailedImageSerializer
 
 
 class APIImageChooserBlock(ImageChooserBlock):
@@ -40,47 +41,10 @@ class APIImageChooserBlock(ImageChooserBlock):
         super().__init__(required=required, help_text=help_text, **kwargs)
 
     def get_api_representation(self, value, context=None):
-        if value:
-            jpeg_image = value.get_rendition(
-                f"{self.rendition_size}|format-jpeg|jpegquality-{self.jpeg_quality}"
-            )
-            webp_image = value.get_rendition(
-                f"{self.rendition_size}|format-webp|webpquality-{self.webp_quality}"
-            )
-
-            return {
-                "id": value.id,
-                "title": value.title,
-                "image_jpeg": {
-                    "url": jpeg_image.url,
-                    "full_url": jpeg_image.full_url,
-                    "width": jpeg_image.width,
-                    "height": jpeg_image.height,
-                },
-                "image_webp": {
-                    "url": webp_image.url,
-                    "full_url": webp_image.full_url,
-                    "width": webp_image.width,
-                    "height": webp_image.height,
-                },
-                "transcript": (
-                    {
-                        "heading": value.get_transcription_heading_display(),
-                        "text": value.transcription,
-                    }
-                    if value.transcription
-                    else None
-                ),
-                "translation": (
-                    {
-                        "heading": value.get_translation_heading_display(),
-                        "text": value.translation,
-                    }
-                    if value.translation
-                    else None
-                ),
-            }
-        return None
+        serializer = DetailedImageSerializer(
+            self.rendition_size, self.jpeg_quality, self.webp_quality
+        )
+        return serializer.to_representation(value)
 
 
 class ImageBlock(blocks.StructBlock):
@@ -88,7 +52,7 @@ class ImageBlock(blocks.StructBlock):
     An image block which allows editors to ensure accessibility is reflected on the page.
     """
 
-    image = APIImageChooserBlock(required=True)
+    image = APIImageChooserBlock(rendition_size="max-900x900", required=True)
     decorative = blocks.BooleanBlock(
         label=mark_safe(
             "Is this image decorative? <p class='field-title__subheading'>Tick the box if 'yes'</p>"

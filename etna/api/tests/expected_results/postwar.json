@@ -1,0 +1,143 @@
+{
+    "id": POSTWAR_ID,
+    "meta": {
+        "type": "collections.TimePeriodExplorerPage",
+        "detail_url": "/api/v2/pages/POSTWAR_ID/",
+        "html_url": "http://localhost/postwar/",
+        "slug": "postwar",
+        "show_in_menus": false,
+        "seo_title": "",
+        "search_description": "",
+        "first_published_at": "2000-01-01T00:00:00Z",
+        "alias_of": null,
+        "parent": {
+            "id": 3,
+            "meta": {
+                "type": "home.HomePage",
+                "detail_url": "/api/v2/pages/3/",
+                "html_url": "http://localhost/"
+            },
+            "title": "Home"
+        }
+    },
+    "title": "postwar",
+    "hero_image_caption": "<p>Hero image caption</p>",
+    "hero_image": {
+        "id": 7,
+        "title": "An image",
+        "jpeg": {
+            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_ydOnZpg.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_ydOnZpg.jpg",
+            "width": 100,
+            "height": 40
+        },
+        "webp": {
+            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_oHYAsUO.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_oHYAsUO.webp",
+            "width": 100,
+            "height": 40
+        }
+    },
+    "hero_image_small": {
+        "id": 7,
+        "title": "An image",
+        "jpeg": {
+            "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_qMB1itL.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_qMB1itL.jpg",
+            "width": 100,
+            "height": 68
+        },
+        "webp": {
+            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_ls5YpjY.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_ls5YpjY.webp",
+            "width": 100,
+            "height": 68
+        }
+    },
+    "alert": null,
+    "type_label": "Explore by time period",
+    "teaser_text": "Teaser text",
+    "teaser_image": {
+        "id": 6,
+        "title": "An image",
+        "jpeg": {
+            "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_EFiJD6C.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_EFiJD6C.jpg",
+            "width": 100,
+            "height": 68
+        },
+        "webp": {
+            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_yuGViLV.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_yuGViLV.webp",
+            "width": 100,
+            "height": 68
+        }
+    },
+    "teaser_image_large": {
+        "id": 6,
+        "title": "An image",
+        "jpeg": {
+            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_C6if4E3.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_C6if4E3.jpg",
+            "width": 100,
+            "height": 40
+        },
+        "webp": {
+            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_SD5KpRM.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_SD5KpRM.webp",
+            "width": 100,
+            "height": 40
+        }
+    },
+    "teaser_image_square": {
+        "id": 6,
+        "title": "An image",
+        "jpeg": {
+            "url": "/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_t3bT2Ac.jpg",
+            "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-512x512.format-jpeg.jpegquality-60_t3bT2Ac.jpg",
+            "width": 100,
+            "height": 100
+        },
+        "webp": {
+            "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-80_iXmD76N.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-80_iXmD76N.webp",
+            "width": 100,
+            "height": 100
+        }
+    },
+    "facebook_og_image": null,
+    "twitter_og_image": null,
+    "intro": "<p>Intro text</p>",
+    "body": [],
+    "featured_article": null,
+    "related_articles": [
+        {
+            "id": ARTICLE_ID,
+            "title": "article",
+            "url": "/article_index/article/",
+            "full_url": "http://localhost/article_index/article/",
+            "type_label": "The story of",
+            "teaser_text": "Teaser text",
+            "teaser_image": {
+                "id": 12,
+                "title": "An image",
+                "jpeg": {
+                    "url": "/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/example.2e16d0ba.fill-600x400.format-jpeg.jpegquality-60_HJzpFFv.jpg",
+                    "width": 100,
+                    "height": 68
+                },
+                "webp": {
+                    "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
+                    "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_q1PKELE.webp",
+                    "width": 100,
+                    "height": 68
+                }
+            },
+            "is_newly_published": false
+        }
+    ],
+    "related_highlight_gallery_pages": [],
+    "start_year": 1945,
+    "end_year": 2000
+}

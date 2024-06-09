@@ -22,7 +22,11 @@ from wagtail.search import index
 
 from rest_framework import serializers
 
-from etna.core.serializers import LinkedPageSerializer
+from etna.core.serializers import (
+    DefaultPageSerializer,
+    HighlightImageSerializer,
+    ImageSerializer,
+)
 
 from ..alerts.models import AlertMixin
 from ..core.models import (
@@ -158,7 +162,10 @@ class ExplorerIndexPage(AlertMixin, BasePageWithIntro):
             APIField("body"),
             APIField("articles_title"),
             APIField("articles_introduction"),
-            APIField("featured_article"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
             APIField("featured_articles"),
         ]
     )
@@ -188,6 +195,12 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField(
+                "explorer_pages",
+                serializer=DefaultPageSerializer(
+                    many=True, required_api_fields=["teaser_image"]
+                ),
+            ),
         ]
     )
 
@@ -203,7 +216,7 @@ class TopicExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def topic_explorer_pages(self):
+    def explorer_pages(self):
         """Fetch all child TopicExplorerPages for display in list."""
         return (
             self.get_children()
@@ -296,9 +309,23 @@ class TopicExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
-            APIField("featured_article"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
             APIField("skos_id"),
-            APIField("related_page_pks"),
+            APIField(
+                "related_articles",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "related_highlight_gallery_pages",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
         ]
     )
 
@@ -416,7 +443,7 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         )
 
     @cached_property
-    def time_period_explorer_pages(self):
+    def explorer_pages(self):
         """Fetch all child TimePeriodExplorerPages for display in list."""
         return (
             self.get_children()
@@ -436,6 +463,12 @@ class TimePeriodExplorerIndexPage(RequiredHeroImageMixin, BasePageWithIntro):
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField(
+                "explorer_pages",
+                serializer=DefaultPageSerializer(
+                    many=True, required_api_fields=["teaser_image"]
+                ),
+            ),
         ]
     )
 
@@ -494,6 +527,24 @@ class TimePeriodExplorerPage(RequiredHeroImageMixin, AlertMixin, BasePageWithInt
         + BasePageWithIntro.api_fields
         + [
             APIField("body"),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
+            APIField(
+                "related_articles",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField(
+                "related_highlight_gallery_pages",
+                serializer=DefaultPageSerializer(
+                    required_api_fields=["teaser_image"], many=True
+                ),
+            ),
+            APIField("start_year"),
+            APIField("end_year"),
         ]
     )
 
@@ -614,44 +665,6 @@ class PageTimePeriod(Orderable):
     )
 
 
-class TopicSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
-    )
-
-    class Meta:
-        model = PageTopic
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-        )
-
-
-class TimePeriodSerializer(LinkedPageSerializer):
-    teaser_image_jpeg, teaser_image_webp = LinkedPageSerializer.teaser_images(
-        rendition_size="fill-600x400", jpeg_quality=60, webp_quality=80
-    )
-    start_year = serializers.IntegerField()
-    end_year = serializers.IntegerField()
-
-    class Meta:
-        model = PageTimePeriod
-        fields = (
-            "id",
-            "title",
-            "teaser_image_jpeg",
-            "teaser_image_webp",
-            "url",
-            "full_url",
-            "start_year",
-            "end_year",
-        )
-
-
 class TopicalPageMixin:
     """
     A mixin for pages that use the ``PageTopic`` and ``PageTimePeriod`` models
@@ -661,8 +674,18 @@ class TopicalPageMixin:
     """
 
     api_fields = [
-        APIField("topics", serializer=TopicSerializer(many=True)),
-        APIField("time_periods", serializer=TimePeriodSerializer(many=True)),
+        APIField(
+            "topics",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
+        APIField(
+            "time_periods",
+            serializer=DefaultPageSerializer(
+                required_api_fields=["teaser_image"], many=True
+            ),
+        ),
     ]
 
     @classmethod
@@ -748,14 +771,37 @@ class TopicalPageMixin:
         return self.highlights.count()
 
 
-# TODO: Make better
 class HighlightSerializer(serializers.ModelSerializer):
+    image = HighlightImageSerializer(
+        rendition_size="max-1024x1024", additional_formats=["png"]
+    )
+
     class Meta:
         model = Highlight
         fields = (
             "image",
             "alt_text",
         )
+
+
+class HighlightCardSerializer(serializers.Serializer):
+    """
+    A serializer for the HighlightGalleryPage's `highlight_cards`.
+
+    This is for use in a reference to the page, to display some of the
+    highlights on the page.
+    """
+
+    rendition_size = "fill-600x400"
+    jpeg_quality = 60
+    webp_quality = 80
+    additional_formats = []
+
+    def to_representation(self, value):
+        return {
+            "image": ImageSerializer.to_representation(self, value.image),
+            "alt_text": value.alt_text,
+        }
 
 
 class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIntro):
@@ -778,9 +824,12 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         BasePageWithIntro.api_fields
         + ContentWarningMixin.api_fields
         + [
-            APIField("featured_article"),
-            # APIField("highlights", serializer=HighlightSerializer(many=True)),
-            APIField("page_highlights", serializer=HighlightSerializer(many=True)),
+            APIField(
+                "featured_article",
+                serializer=DefaultPageSerializer(required_api_fields=["teaser_image"]),
+            ),
+            APIField("highlights", serializer=HighlightSerializer(many=True)),
+            APIField("highlight_cards", serializer=HighlightCardSerializer(many=True)),
         ]
         + TopicalPageMixin.api_fields
     )
@@ -815,6 +864,10 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
         ),
     ]
 
+    default_api_fields = BasePageWithIntro.default_api_fields + [
+        APIField("highlight_image_count"),
+    ]
+
     promote_panels = BasePageWithIntro.promote_panels + [
         TopicalPageMixin.get_topics_inlinepanel(),
         TopicalPageMixin.get_time_periods_inlinepanel(),
@@ -841,6 +894,14 @@ class HighlightGalleryPage(TopicalPageMixin, ContentWarningMixin, BasePageWithIn
             .select_related("image")
             .prefetch_related("image__renditions")
         )
+
+    @cached_property
+    def highlight_cards(self):
+        """
+        Used to return a list of cards for use in a reference to the page,
+        to display a portion of the highlights on this page.
+        """
+        return self.highlights[:5]
 
     @property
     def highlights_text(self) -> str:
