@@ -1,10 +1,14 @@
+import logging
+
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.http import Http404
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
 from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
+from wagtail.contrib.redirects.models import Redirect
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
 
@@ -14,6 +18,8 @@ from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
 from etna.core.serializers.pages import DefaultPageSerializer
+
+logger = logging.getLogger(__name__)
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
@@ -125,6 +131,30 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
         "latest_revision_created_at",
         "url",
     ]
+
+    def find_object(self, queryset, request):
+        site = Site.find_for_request(request)
+        if "html_path" in request.GET and site is not None:
+            path = request.GET["html_path"]
+
+            redirect_queryset = Redirect.objects.all()
+            redirects = redirect_queryset.filter(old_path=path)
+            if redirects.exists():
+                if new_path := redirects.get().redirect_page.url:
+                    logger.info(f"Redirect detected: {path} ---> {new_path}")
+                    path = new_path
+
+            path_components = [component for component in path.split("/") if component]
+
+            try:
+                page, _, _ = site.root_page.specific.route(request, path_components)
+            except Http404:
+                return
+
+            if queryset.filter(id=page.id).exists():
+                return page
+
+        return super().find_object(queryset, request)
 
 
 class PagePreviewAPIViewSet(PagesAPIViewSet):
