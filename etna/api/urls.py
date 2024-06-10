@@ -124,6 +124,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
     meta_fields = PagesAPIViewSet.meta_fields + [
         "privacy",
         "latest_revision_created_at",
+        "url",
     ]
 
 
