@@ -1,10 +1,9 @@
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
-from django.http import Http404
-from django.shortcuts import redirect
 from django.utils.crypto import constant_time_compare
 
 from wagtail.api.v2.router import WagtailAPIRouter
-from wagtail.api.v2.utils import get_object_detail_url
+from wagtail.api.v2.utils import BadRequestError
 from wagtail.api.v2.views import PagesAPIViewSet
 from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
@@ -18,13 +17,109 @@ from etna.core.serializers.pages import DefaultPageSerializer
 
 
 class CustomPagesAPIViewSet(PagesAPIViewSet):
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password"])
+
     def listing_view(self, request):
         queryset = self.get_queryset()
+
+        # Exclude pages that the user doesn't have access to
+        restricted_pages = [
+            restriction.page
+            for restriction in PageViewRestriction.objects.all().select_related("page")
+            if not restriction.accept_request(self.request)
+        ]
+
+        # Exclude the restricted pages and their descendants from the queryset
+        for restricted_page in restricted_pages:
+            queryset = queryset.not_descendant_of(restricted_page, inclusive=True)
+
         self.check_query_parameters(queryset)
         queryset = self.filter_queryset(queryset)
         queryset = self.paginate_queryset(queryset)
         serializer = DefaultPageSerializer(queryset, many=True)
         return self.get_paginated_response(serializer.data)
+
+    def detail_view(self, request, pk):
+        instance = self.get_object()
+        restrictions = instance.get_view_restrictions()
+        serializer = self.get_serializer(instance)
+        data = serializer.data
+        if not restrictions:
+            return Response(data)
+        restricted_data = {
+            "id": data["id"],
+            "meta": {"privacy": data["meta"]["privacy"], "locked": True},
+        }
+        for restriction in restrictions:
+            if restriction.restriction_type == PageViewRestriction.PASSWORD:
+                if "password" in request.GET:
+                    if constant_time_compare(
+                        request.GET["password"], restriction.password
+                    ):
+                        return Response(data)
+                    else:
+                        data = restricted_data | {"message": "Incorrect password."}
+                        return Response(data)
+                else:
+                    data = restricted_data | {
+                        "message": "Password required to view this resource.",
+                    }
+                    return Response(data)
+        data = restricted_data | {
+            "message": "Selected privacy mode is not compatible with this API.",
+        }
+        return Response(data, status=status.HTTP_403_FORBIDDEN)
+
+    def get_base_queryset(self):
+        """
+        Returns a queryset containing all pages that can be seen by this user.
+
+        This is used as the base for get_queryset and is also used to find the
+        parent pages when using the child_of and descendant_of filters as well.
+        """
+
+        request = self.request
+
+        # Get all live pages
+        queryset = Page.objects.all().live()
+
+        # Check if we have a specific site to look for
+        if "site" in request.GET:
+            # Optionally allow querying by port
+            if ":" in request.GET["site"]:
+                (hostname, port) = request.GET["site"].split(":", 1)
+                query = {
+                    "hostname": hostname,
+                    "port": port,
+                }
+            else:
+                query = {
+                    "hostname": request.GET["site"],
+                }
+            try:
+                site = Site.objects.get(**query)
+            except Site.MultipleObjectsReturned:
+                raise BadRequestError(
+                    "Your query returned multiple sites. Try adding a port number to your site filter."
+                )
+        else:
+            # Otherwise, find the site from the request
+            site = Site.find_for_request(self.request)
+
+        if site:
+            base_queryset = queryset
+            queryset = base_queryset.descendant_of(site.root_page, inclusive=True)
+
+            # If internationalisation is enabled, include pages from other language trees
+            if getattr(settings, "WAGTAIL_I18N_ENABLED", False):
+                for translation in site.root_page.get_translations():
+                    queryset |= base_queryset.descendant_of(translation, inclusive=True)
+
+        else:
+            # No sites configured
+            queryset = queryset.none()
+
+        return queryset
 
     meta_fields = PagesAPIViewSet.meta_fields + [
         "privacy",
@@ -62,70 +157,6 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         return page
 
 
-class PrivatePageAPIViewSet(PagesAPIViewSet):
-    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password"])
-
-    meta_fields = PagesAPIViewSet.meta_fields + [
-        "privacy",
-        "latest_revision_created_at",
-    ]
-
-    def get_base_queryset(self):
-        queryset = Page.objects.all().live()
-        if site := Site.find_for_request(self.request):
-            base_queryset = queryset
-            return base_queryset.descendant_of(site.root_page, inclusive=True)
-        else:
-            return queryset.none()
-
-    def detail_view(self, request, pk):
-        instance = self.get_object()
-        restrictions = instance.get_view_restrictions()
-        serializer = self.get_serializer(instance)
-        data = serializer.data
-        if not restrictions:
-            return Response(data)
-        for restriction in restrictions:
-            if restriction.restriction_type == PageViewRestriction.PASSWORD:
-                if "password" in request.GET:
-                    if constant_time_compare(
-                        request.GET["password"], restriction.password
-                    ):
-                        return Response(data)
-                    else:
-                        data = {"message": "Incorrect password."}
-                        return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-                else:
-                    data = {"message": "Password required to view this resource."}
-                    return Response(data, status=status.HTTP_401_UNAUTHORIZED)
-        data = {"message": "Selected privacy is not compatible with this API."}
-        return Response(data, status=status.HTTP_403_FORBIDDEN)
-
-    def find_view(self, request):
-        queryset = self.get_queryset()
-        try:
-            obj = self.find_object(queryset, request)
-            if obj is None:
-                raise self.model.DoesNotExist
-        except self.model.DoesNotExist:
-            raise Http404("not found")
-        url = get_object_detail_url(
-            self.request.wagtailapi_router, request, self.model, obj.pk
-        )
-        if url is None:
-            # Shouldn't happen unless this endpoint isn't actually installed in the router
-            raise Exception(
-                "Cannot generate URL to detail view. Is '{}' installed in the API router?".format(
-                    self.__class__.__name__
-                )
-            )
-        if "password" in request.GET:
-            url = f"{url}?password={request.GET["password"]}"
-        return redirect(url)
-
-    name = "private_pages"
-
-
 class CustomImagesAPIViewSet(ImagesAPIViewSet):
     body_fields = ImagesAPIViewSet.body_fields + [
         "title",
@@ -146,7 +177,6 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
 
 api_router = WagtailAPIRouter("wagtailapi")
 
-api_router.register_endpoint("private_pages", PrivatePageAPIViewSet)
 api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
