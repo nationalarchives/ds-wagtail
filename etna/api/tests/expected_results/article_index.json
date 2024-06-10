@@ -20,7 +20,8 @@
             "title": "Home"
         },
         "privacy": "public",
-        "latest_revision_created_at": null
+        "latest_revision_created_at": null,
+        "url": "/article_index/"
     },
     "title": "article_index",
     "type_label": "Article index",

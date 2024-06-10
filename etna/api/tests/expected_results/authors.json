@@ -20,7 +20,8 @@
             "title": "Home"
         },
         "privacy": "public",
-        "latest_revision_created_at": null
+        "latest_revision_created_at": null,
+        "url": "/authors/"
     },
     "title": "authors",
     "type_label": "Author index",
