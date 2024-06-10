@@ -72,10 +72,8 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
     def get_base_queryset(self):
         """
-        Returns a queryset containing all pages that can be seen by this user.
-
-        This is used as the base for get_queryset and is also used to find the
-        parent pages when using the child_of and descendant_of filters as well.
+        Copy of https://github.com/wagtail/wagtail/blob/f5552c40442b0ed6a0316ee899c7f28a0b1ed4e5/wagtail/api/v2/views.py#L491
+        that doesn't remove restricted pages
         """
 
         request = self.request
