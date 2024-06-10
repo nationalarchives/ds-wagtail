@@ -2,6 +2,7 @@ import logging
 
 from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 from django.http import Http404
 from django.utils.crypto import constant_time_compare
 
@@ -138,7 +139,13 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
             path = request.GET["html_path"]
 
             redirect_queryset = Redirect.objects.all()
-            redirects = redirect_queryset.filter(old_path=path)
+            redirects = redirect_queryset.filter(
+                Q(old_path=path)
+                | Q(old_path=path.strip("/"))
+                | Q(old_path=f"/{path.strip('/')}")
+                | Q(old_path=f"{path.strip('/')}/")
+                | Q(old_path=f"/{path.strip('/')}/")
+            )
             if redirects.exists():
                 if new_path := redirects.get().redirect_page.url:
                     logger.info(f"Redirect detected: {path} ---> {new_path}")
