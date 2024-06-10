@@ -154,6 +154,8 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
 
     meta_fields = [
         "privacy",
+        "latest_revision_created_at",
+        "url",
     ]
 
     default_api_fields = [

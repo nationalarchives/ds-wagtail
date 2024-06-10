@@ -121,6 +121,7 @@ class CustomPagesAPIViewSet(PagesAPIViewSet):
 
         return queryset
 
+    # TODO: Why do I have to redefine these after meta_fields in etna/core/models/basepage.py?
     meta_fields = PagesAPIViewSet.meta_fields + [
         "privacy",
         "latest_revision_created_at",
