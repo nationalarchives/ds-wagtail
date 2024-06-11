@@ -2,11 +2,17 @@ from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
 
+from .page_chooser import APIPageChooserBlock
+
 
 class LargeCardLinksBlock(blocks.StructBlock):
     heading = blocks.CharBlock(max_length=100, required=False)
-    page_1 = blocks.PageChooserBlock(label=_("Link one target"))
-    page_2 = blocks.PageChooserBlock(label=_("Link two target"))
+    page_1 = APIPageChooserBlock(
+        label=_("Link one target"), required_api_fields=["teaser_image"]
+    )
+    page_2 = APIPageChooserBlock(
+        label=_("Link two target"), required_api_fields=["teaser_image"]
+    )
 
     class Meta:
         template = "blocks/large_links_block.html"

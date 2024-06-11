@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
 
+from etna.core.serializers.pages import DefaultPageSerializer
+
 
 class PagePreviewAPIViewSet(PagesAPIViewSet):
     known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
@@ -57,9 +59,19 @@ class CustomImagesAPIViewSet(ImagesAPIViewSet):
     ]
 
 
+class CustomPagesAPIViewSet(PagesAPIViewSet):
+    def listing_view(self, request):
+        queryset = self.get_queryset()
+        self.check_query_parameters(queryset)
+        queryset = self.filter_queryset(queryset)
+        queryset = self.paginate_queryset(queryset)
+        serializer = DefaultPageSerializer(queryset, many=True)
+        return self.get_paginated_response(serializer.data)
+
+
 api_router = WagtailAPIRouter("wagtailapi")
 
-api_router.register_endpoint("pages", PagesAPIViewSet)
+api_router.register_endpoint("pages", CustomPagesAPIViewSet)
 api_router.register_endpoint("images", CustomImagesAPIViewSet)
 api_router.register_endpoint("media", MediaAPIViewSet)
 api_router.register_endpoint("page_preview", PagePreviewAPIViewSet)
