@@ -38,5 +38,6 @@ class CallToActionBlock(blocks.StructBlock):
     link = APIPageChooserBlock()
 
     class Meta:
-        icon = "arrow-right"
+        icon = "link"
         template = "blocks/call_to_action_block.html"
+        label = "Call to action"
