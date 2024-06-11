@@ -21,6 +21,7 @@ module.exports = {
         record_article_page: "./scripts/src/record-article-page.js",
         feedback_tracking: "./scripts/src/feedback-tracking.js",
         whats_on: "./scripts/src/whats-on.js",
+        custom_table_block: "./scripts/src/custom_table_block.js",
     },
     output: {
         filename: "[name].js",
