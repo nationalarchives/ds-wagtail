@@ -14,7 +14,7 @@ SECRET_KEY = config.projectEntropy
 
 try:
     ALLOWED_HOSTS = [
-        urlparse(url).netloc for url in config.get_upstream_routes().keys()
+        "*"
     ]
 except BuildTimeVariableAccessException:
     # Routes aren't available during build-time. Unfortunately, this file needs
