@@ -20,7 +20,7 @@
             "title": "Home"
         },
         "privacy": "public",
-        "latest_revision_created_at": null,
+        "last_published_at": "2000-01-01T00:00:00Z",
         "url": "/early_modern/"
     },
     "title": "early_modern",
