@@ -18,7 +18,10 @@
                 "html_url": "http://localhost/article_index/"
             },
             "title": "article_index"
-        }
+        },
+        "privacy": "public",
+        "last_published_at": "2000-01-02T00:00:00Z",
+        "url": "/article_index/focused_article/"
     },
     "title": "focused_article",
     "type_label": "Focus on",

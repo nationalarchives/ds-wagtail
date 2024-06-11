@@ -145,6 +145,13 @@ class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
         data.update(customDimension3=self._meta.verbose_name)
         return data
 
+    @property
+    def privacy(self):
+        privacy = [r.restriction_type for r in self.get_view_restrictions()]
+        if privacy:
+            return privacy[0]
+        return "public"
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),

@@ -18,7 +18,10 @@
                 "html_url": "http://localhost/arts/"
             },
             "title": "arts"
-        }
+        },
+        "privacy": "public",
+        "last_published_at": "2000-01-03T00:00:00Z",
+        "url": "/arts/highlight_gallery/"
     },
     "title": "highlight_gallery",
     "type_label": "In pictures",

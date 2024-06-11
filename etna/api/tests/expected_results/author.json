@@ -18,7 +18,10 @@
                 "html_url": "http://localhost/authors/"
             },
             "title": "authors"
-        }
+        },
+        "privacy": "public",
+        "last_published_at": "2000-01-01T00:00:00Z",
+        "url": "/authors/author/"
     },
     "title": "author",
     "type_label": "Author",
