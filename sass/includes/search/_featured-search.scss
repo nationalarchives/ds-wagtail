@@ -126,19 +126,3 @@
         }
     }
 }
-
-.no-results {
-    .featured-search__heading {
-        padding: 1rem;
-
-        @media only screen and (min-width: #{$screen__md + 1px}) {
-            padding: 1rem 2rem;
-        }
-    }
-
-    ul {
-        @media only screen and (min-width: #{$screen__md + 1px}) {
-            margin-left: 1rem;
-        }
-    }
-}

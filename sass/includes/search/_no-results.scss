@@ -1,0 +1,32 @@
+@use "@nationalarchives/frontend/nationalarchives/tools/typography";
+
+.no-results {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    display: flex;
+    background-color: $color__yellow-light;
+    @include typography.relative-font-size(16);
+
+    &__icon {
+        color: $color__alert;
+        @include typography.relative-font-size(35);
+        flex: none;
+        margin-top: 0.25rem;
+        margin-right: 2rem;
+    }
+
+    &__heading {
+        @include typography.relative-font-size(24);
+        margin-bottom: 1rem;
+    }
+
+    &__explainer {
+        margin-top: 0;
+    }
+
+    &__list {
+        list-style-position: inside;
+        margin-top: 1em;
+        padding-left: 1em;
+    }
+}

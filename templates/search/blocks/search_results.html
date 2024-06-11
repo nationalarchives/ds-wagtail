@@ -2,7 +2,7 @@
 
 {{ selected_filters_count|json_script:"selected_filters_count" }}
 <script>
-    
+
 
     $noOfFilters = JSON.parse(document.getElementById('selected_filters_count').textContent);
 
@@ -43,7 +43,7 @@
         {% include './search_results__selected-filters.html' %}
 
         {% if form.errors or not paginator.count %}
-            {% include './no_results_catalogue_website.html' %}
+            {% include './no_results.html' %}
         {% endif %}
 
     </div>

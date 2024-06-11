@@ -19,6 +19,7 @@ $font__mono: $font__roboto-mono;
 $color__black: #000;
 $color__white: #fff;
 $color__yellow: #f1d143;
+$color__yellow-light: #faf0ca;
 $color__yellow-dark: #ffcc002b; // isn't part of design system
 $color__pastel-green: #dde5d5;
 $color__pastel-pink: #fad3d4;
@@ -42,7 +43,7 @@ $color__grey-900: #0f1517;
 $color__black-80pc: rgba($color__black, 0.8);
 $color__off-black: #1e1e1e;
 
-$color__alert: $color__cream;
+$color__alert: #ec5855;
 $color__success: $color__pastel-green;
 $color__error: $color__red;
 
