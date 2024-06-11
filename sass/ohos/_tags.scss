@@ -6,9 +6,8 @@
 .ohos-tag {
     display: inline-flex;
     border: 1px solid;
-    border-radius: 5px;
-    overflow: hidden;
     font-size: 16px;
+    border-radius: 5px;
 
     &,
     &:link,
@@ -62,6 +61,7 @@
         background-color: $color__grey-200;
         border-left: 1px solid $color__off-black;
         font-size: 0.9em;
+        border-radius: 0 5px 5px 0;
 
         &,
         &:link,

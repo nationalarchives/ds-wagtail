@@ -28,7 +28,9 @@ const createTemplate = (data, tagType) => {
     const countryTemplate = data.countryLabel
         ? `<p class="wikidata__header-meta">${data.countryLabel}</p>`
         : "";
-    const titleTemplate = data.label ? `<h3>${data.label}</h3>` : "";
+    const titleTemplate = data.label
+        ? `<h3 class="wikidata__label">${data.label}</h3>`
+        : "";
     const descriptionTemplate = data.description
         ? `<p>${data.description}</p>`
         : "";
@@ -107,25 +109,38 @@ const uniqueWikidataIds = [...new Set(wikidataIds)];
  * @returns {String}
  */
 const buildSparqlQuery = (ids) => `
-  # Properties that will be returned by the API
-  SELECT ?item ?label ?description ?image ?countryLabel
-  WHERE {
-    VALUES ?item { ${ids.map((id) => `wd:${id}`).join(" ")} }
+# Properties that will be returned by the API
+SELECT ?item ?finalItem ?label ?description ?image ?countryLabel
+WHERE {
+  VALUES ?item { ${ids.map((id) => `wd:${id}`).join(" ")} }
 
-    # Specific fields for each item
-    ?item rdfs:label ?label .
-    ?item schema:description ?description .
-    FILTER(LANG(?label) = "en")
-    FILTER(LANG(?description) = "en")
-
-    OPTIONAL { ?item wdt:P18 ?image . }
-
-    OPTIONAL {
-      ?item wdt:P17 ?country .
-      ?country rdfs:label ?countryLabel .
-      FILTER(LANG(?countryLabel) = "en")
-    }
+  # Handle redirects
+  OPTIONAL {
+    ?item owl:sameAs ?redirectedItem .
   }
+
+  # Use the redirected item if it exists, otherwise use the original item
+  BIND(COALESCE(?redirectedItem, ?item) AS ?finalItem)
+
+  # Specific fields for each item
+  OPTIONAL {
+    ?finalItem rdfs:label ?label .
+    FILTER(LANG(?label) = "en")
+  }
+
+  OPTIONAL {
+    ?finalItem schema:description ?description .
+    FILTER(LANG(?description) = "en")
+  }
+
+  OPTIONAL { ?finalItem wdt:P18 ?image . }
+
+  OPTIONAL {
+    ?finalItem wdt:P17 ?country .
+    ?country rdfs:label ?countryLabel .
+    FILTER(LANG(?countryLabel) = "en")
+  }
+}
 `;
 
 const executeSparqlQuery = async (query) => {
