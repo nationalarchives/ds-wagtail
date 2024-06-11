@@ -47,7 +47,6 @@ class DeliveryOptionsAPI:
 
     def fetch(
         self,
-        *,
         iaid: Optional[str] = None,
         id: Optional[str] = None,
     ) -> dict:
@@ -76,6 +75,7 @@ class DeliveryOptionsAPI:
         if not response_data:
             raise DoesNotExist
         if len(response_data) > 1:
+            #print(f"Response data is #{response_data}# and the length is #{len(response_data)}#")
             raise MultipleObjectsReturned
         return response_data
 
