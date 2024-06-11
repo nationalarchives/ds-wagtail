@@ -1,5 +1,3 @@
-from urllib.parse import urlparse
-
 from platformshconfig import Config
 from platformshconfig.config import (
     BuildTimeVariableAccessException,
