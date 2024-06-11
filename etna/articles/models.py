@@ -776,7 +776,7 @@ class RecordArticlePage(
             APIField("promoted_links"),
             APIField(
                 "intro_image",
-                serializer=ImageSerializer(rendition_size="fill-512x512"),
+                serializer=ImageSerializer(rendition_size="width-400"),
             ),
         ]
         + TopicalPageMixin.api_fields

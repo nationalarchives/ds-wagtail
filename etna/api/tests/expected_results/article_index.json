@@ -33,26 +33,10 @@
             "height": 68
         },
         "webp": {
-            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_7hLyRgB.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80_7hLyRgB.webp",
+            "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_7hLyRgB.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60_7hLyRgB.webp",
             "width": 100,
             "height": 68
-        }
-    },
-    "teaser_image_large": {
-        "id": 11,
-        "title": "An image",
-        "jpeg": {
-            "url": "/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_NwigGNI.jpg",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-1200x480.format-jpeg.jpegquality-60_NwigGNI.jpg",
-            "width": 100,
-            "height": 40
-        },
-        "webp": {
-            "url": "/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_HpAlGCn.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/examp.2e16d0ba.fill-1200x480.format-webp.webpquality-80_HpAlGCn.webp",
-            "width": 100,
-            "height": 40
         }
     },
     "teaser_image_square": {
@@ -65,8 +49,8 @@
             "height": 100
         },
         "webp": {
-            "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-80_ppQbvU2.webp",
-            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-80_ppQbvU2.webp",
+            "url": "/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_ppQbvU2.webp",
+            "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-512x512.format-webp.webpquality-60_ppQbvU2.webp",
             "width": 100,
             "height": 100
         }
@@ -91,8 +75,8 @@
                 "height": 68
             },
             "webp": {
-                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
-                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
+                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
                 "width": 100,
                 "height": 68
             }
@@ -123,8 +107,8 @@
                                 "height": 68
                             },
                             "webp": {
-                                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
-                                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
+                                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
                                 "width": 100,
                                 "height": 68
                             }
@@ -148,8 +132,8 @@
                                 "height": 68
                             },
                             "webp": {
-                                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
-                                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-80.webp",
+                                "url": "/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
+                                "full_url": "https://nationalarchives.gov.uk/media/images/exampl.2e16d0ba.fill-600x400.format-webp.webpquality-60.webp",
                                 "width": 100,
                                 "height": 68
                             }
