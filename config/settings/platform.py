@@ -13,9 +13,7 @@ config = Config()
 SECRET_KEY = config.projectEntropy
 
 try:
-    ALLOWED_HOSTS = [
-        "*"
-    ]
+    ALLOWED_HOSTS = ["*"]
 except BuildTimeVariableAccessException:
     # Routes aren't available during build-time. Unfortunately, this file needs
     # to be accessed during collectstatic
