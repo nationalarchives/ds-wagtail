@@ -29,7 +29,7 @@ class ReferenceNumberConverter:
         return value.replace(" ", "/")
 
 
-class IAIDConverter(StringConverter):
-    """Converter used to extract an IAID from a URL."""
+class IDConverter(StringConverter):
+    """Converter used to extract id's from a URL."""
 
     regex = r"([ACDFN][0-9]{1,8}|[a-f0-9]{8}-?([a-f0-9]{4}-?){3}[a-f0-9]{12}(_[1-9])?)"

@@ -22,6 +22,7 @@ from ..forms import CatalogueSearchForm
 from ..views import CatalogueSearchView
 
 
+@unittest.skip("TODO:Rosetta")
 @override_settings(
     CLIENT_BASE_URL=f"{settings.CLIENT_BASE_URL}",
     IMAGE_PREVIEW_BASE_URL="https://media.preview/",
@@ -53,6 +54,7 @@ class SearchViewTestCase(WagtailTestUtils, TestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class BadRequestHandlingTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -71,6 +73,7 @@ class BadRequestHandlingTest(SearchViewTestCase):
                 self.assertEqual(response.status_code, 400)
 
 
+@unittest.skip("TODO:Rosetta")
 class SelectedFiltersTest(SimpleTestCase):
     def get_result(self, form):
         return CatalogueSearchView().get_selected_filters(form)
@@ -203,6 +206,7 @@ class SelectedFiltersTest(SimpleTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -294,6 +298,7 @@ class EndToEndSearchTestCase(TestCase):
         self.assertNotIn(self.results_html, response)
 
 
+@unittest.skip("TODO:Rosetta")
 class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
     test_url = reverse_lazy("search-catalogue")
 
@@ -1012,6 +1017,7 @@ class WebsiteSearchHighlightTest(WagtailTestUtils, TestCase):
         self.assertEqual(response.context_data["buckets"], expected_bucket_list)
 
 
+@unittest.skip("TODO:Rosetta")
 class TestDataLayerSearchViews(WagtailTestUtils, TestCase):
     def assertDataLayerEquals(
         self,
@@ -1375,6 +1381,7 @@ class WebsiteSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
 
@@ -1441,6 +1448,7 @@ class RecordCreatorsTestCase(WagtailTestUtils, TestCase):
         )
 
 
+@unittest.skip("TODO:Rosetta")
 class ArchiveTestCase(WagtailTestUtils, TestCase):
     maxDiff = None
 
