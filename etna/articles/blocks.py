@@ -6,6 +6,7 @@ from wagtail.snippets.blocks import SnippetChooserBlock
 
 from etna.core.blocks import (
     AuthorPromotedLinkBlock,
+    ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
     FeaturedRecordArticleBlock,
@@ -184,6 +185,7 @@ class SubHeadingBlock(SectionDepthAwareStructBlock):
 
 
 class SectionContentBlock(blocks.StreamBlock):
+    button = ButtonBlock()
     cta = CallToActionBlock()
     paragraph = ParagraphBlock()
     quote = QuoteBlock()

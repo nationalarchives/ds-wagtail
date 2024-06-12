@@ -32,12 +32,22 @@ class LargeCardLinksBlock(blocks.StructBlock):
         context["link_pages"] = link_pages
         return context
 
-class CallToActionBlock(blocks.StructBlock):
-    body = APIRichTextBlock(max_length=100, features=settings.RESTRICTED_RICH_TEXT_FEATURES)
+
+class ButtonBlock(blocks.StructBlock):
     label = blocks.CharBlock()
     link = APIPageChooserBlock()
 
     class Meta:
         icon = "link"
-        template = "blocks/call_to_action_block.html"
+        label = "Button"
+
+
+class CallToActionBlock(blocks.StructBlock):
+    body = APIRichTextBlock(
+        max_length=100, features=settings.RESTRICTED_RICH_TEXT_FEATURES
+    )
+    button = ButtonBlock()
+
+    class Meta:
+        icon = "link"
         label = "Call to action"
