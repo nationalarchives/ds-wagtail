@@ -476,14 +476,41 @@ def surrogate_link_builder(surrogates: List) -> Tuple[List[Any], List[Any]]:
 
     return surrogate_list, av_media_list
 
+""" The following four functions are used to determine the reader type. These are
+to be written under ticket EDEV-115 when enough is known about the mechanism """
+
+def is_onsite() -> bool:
+    return False
+
+def is_subscribed() -> bool:
+    return True
+
+def is_staff() -> bool:
+    return False
+
+def get_reader_type() -> Reader:
+    # EDEV-115
+    # Code to determine status of reader (see enum Reader above).
+    reader = Reader.OFFSITE
+
+    if is_subscribed():
+        reader = Reader.SUBSCRIPTION
+    elif is_onsite():
+        reader = Reader.ONSITEPUBLIC
+    elif is_staff():
+        reader = Reader.STAFFIN
+
+    return reader
+
+""" End of EDEV-115 """
 
 # Main routine called from records.py
 def construct_delivery_options(doptions: list, record: dict) -> dict:
     do = {}
 
     # EDEV-115
-    reader_type = Reader.OFFSITE
-
+    reader_type = get_reader_type()
+    
     do_dict = read_delivery_options("/app/etna/records/DeliveryOptions.json")
 
     # To do: The doptions list contains zero or more dictionaries. Only 1 should be
