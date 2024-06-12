@@ -40,7 +40,7 @@ options.DEFAULT_NAMES = options.DEFAULT_NAMES + ("verbose_name_public",)
 
 @method_decorator(apply_default_vary_headers, name="serve")
 @method_decorator(apply_default_cache_control, name="serve")
-class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
+class BasePage(MetadataPageMixin, DataLayerMixin, HeadlessPreviewMixin, Page):
     """
     An abstract base model that is used for all Page models within
     the project. Any common fields, Wagtail overrides or custom
@@ -145,6 +145,13 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         data.update(customDimension3=self._meta.verbose_name)
         return data
 
+    @property
+    def privacy(self):
+        privacy = [r.restriction_type for r in self.get_view_restrictions()]
+        if privacy:
+            return privacy[0]
+        return "public"
+
     default_api_fields = [
         APIField("id"),
         APIField("title"),
@@ -164,10 +171,6 @@ class BasePage(MetadataPageMixin, DataLayerMixin, Page, HeadlessPreviewMixin):
         APIField(
             "teaser_image",
             serializer=ImageSerializer("fill-600x400"),
-        ),
-        APIField(
-            "teaser_image_large",
-            serializer=ImageSerializer("fill-1200x480", source="teaser_image"),
         ),
         APIField(
             "teaser_image_square",
