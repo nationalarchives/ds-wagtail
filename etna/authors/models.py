@@ -186,8 +186,6 @@ class AuthorPageMixin:
     api_fields = [
         APIField(
             "authors",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["image", "authored_focused_articles"], many=True
-            ),
+            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]

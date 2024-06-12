@@ -27,11 +27,15 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 WAGTAILAPI_BASE_URL = os.getenv("WAGTAILAPI_BASE_URL", "")
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": "{SITE_ROOT_URL}",
+        "default": os.getenv("WAGTAILADMIN_HEADLESS_PREVIEW_URL", "{SITE_ROOT_URL}"),
     },
-    "SERVE_BASE_URL": None,  # can be used for HeadlessServeMixin
-    "REDIRECT_ON_PREVIEW": False,  # set to True to redirect to the preview instead of using the Wagtail default mechanism
-    "ENFORCE_TRAILING_SLASH": True,  # set to False in order to disable the trailing slash enforcement
+    "SERVE_BASE_URL": os.getenv("WAGTAILADMIN_HEADLESS_BASE_URL", None),
+    "REDIRECT_ON_PREVIEW": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
+    ),
+    "ENFORCE_TRAILING_SLASH": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
+    ),
 }
 
 DEBUG = strtobool(os.getenv("DEBUG", "False"))
@@ -437,3 +441,19 @@ FEATURE_FEEDBACK_MECHANISM_ENABLED = strtobool(
 FEATURE_DISABLE_JS_WHATS_ON_LISTING = strtobool(
     os.getenv("FEATURE_DISABLE_JS_WHATS_ON_LISTING", "False")
 )
+
+if redis_url := os.getenv("REDIS_URL"):
+    CACHES = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        },
+        "renditions": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": redis_url,
+            "KEY_PREFIX": "renditions",
+        },
+    }
