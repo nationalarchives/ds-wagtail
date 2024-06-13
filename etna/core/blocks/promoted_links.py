@@ -138,6 +138,6 @@ class PromotedListBlock(blocks.StructBlock):
     promoted_items = blocks.ListBlock(PromotedListItemBlock())
 
     class Meta:
-        icon = "external-link-alt"
+        icon = "link"
         label = "Link list"
         template = "articles/blocks/promoted_list_block.html"

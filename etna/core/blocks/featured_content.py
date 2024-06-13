@@ -36,7 +36,7 @@ class RelatedItemBlock(SectionDepthAwareStructBlock):
     url = blocks.URLBlock(label="external URL", help_text="URL for the external page")
 
     class Meta:
-        icon = "external-link-alt"
+        icon = "link"
         help_text = "Block used promote an external page"
         template = "articles/blocks/related_item.html"
 
