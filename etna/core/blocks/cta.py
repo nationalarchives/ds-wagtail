@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from wagtail import blocks
@@ -35,7 +36,22 @@ class LargeCardLinksBlock(blocks.StructBlock):
 
 class ButtonBlock(blocks.StructBlock):
     label = blocks.CharBlock()
-    link = APIPageChooserBlock()
+    link = APIPageChooserBlock(required=False)
+    external_link = blocks.URLBlock(required=False)
+
+    def clean(self, value):
+        data = super().clean(value)
+
+        if data.get("link") and data.get("external_link"):
+            raise ValidationError(
+                "You must provide either a page link or an external link, not both."
+            )
+        elif not(data.get("link") or data.get("external_link")):
+            raise ValidationError(
+                "You must provide either a page link or an external link."
+            )
+        
+        return data
 
     class Meta:
         icon = "link"
