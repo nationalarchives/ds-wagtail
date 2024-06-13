@@ -12,3 +12,5 @@ class GeneralPage(BasePage):
     content_panels = BasePage.content_panels + [
         FieldPanel("body"),
     ]
+
+    api_fields = BasePage.api_fields + ["body"]
