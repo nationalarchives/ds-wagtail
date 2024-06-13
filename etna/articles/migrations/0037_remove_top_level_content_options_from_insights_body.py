@@ -522,7 +522,7 @@ class Migration(migrations.Migration):
                                                                                 (
                                                                                     "related_items",
                                                                                     wagtail.blocks.ListBlock(
-                                                                                        etna.articles.blocks.RelatedItemBlock
+                                                                                        etna.core.blocks.RelatedItemBlock
                                                                                     ),
                                                                                 ),
                                                                             ]
@@ -876,7 +876,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "related_items",
                                                             wagtail.blocks.ListBlock(
-                                                                etna.articles.blocks.RelatedItemBlock
+                                                                etna.core.blocks.RelatedItemBlock
                                                             ),
                                                         ),
                                                     ]

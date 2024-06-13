@@ -2,6 +2,7 @@
 
 from django.db import migrations
 import etna.articles.blocks
+import etna.core.blocks
 import etna.media.blocks
 import etna.records.blocks
 import wagtail.blocks
@@ -522,7 +523,7 @@ class Migration(migrations.Migration):
                                                                                 (
                                                                                     "related_items",
                                                                                     wagtail.blocks.ListBlock(
-                                                                                        etna.articles.blocks.RelatedItemBlock
+                                                                                        etna.core.blocks.RelatedItemBlock
                                                                                     ),
                                                                                 ),
                                                                             ]
@@ -876,7 +877,7 @@ class Migration(migrations.Migration):
                                                         (
                                                             "related_items",
                                                             wagtail.blocks.ListBlock(
-                                                                etna.articles.blocks.RelatedItemBlock
+                                                                etna.core.blocks.RelatedItemBlock
                                                             ),
                                                         ),
                                                     ]
@@ -1224,7 +1225,7 @@ class Migration(migrations.Migration):
                                 (
                                     "related_items",
                                     wagtail.blocks.ListBlock(
-                                        etna.articles.blocks.RelatedItemBlock
+                                        etna.core.blocks.RelatedItemBlock
                                     ),
                                 ),
                             ]
