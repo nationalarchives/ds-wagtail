@@ -53,6 +53,14 @@ class ButtonBlock(blocks.StructBlock):
 
         return data
 
+    def get_api_representation(self, value, context=None):
+        representation = {
+            "label": value["label"],
+            "href": value.get("external_link") or value["link"].full_url,
+        }
+
+        return representation
+
     class Meta:
         icon = "link"
         label = "Button"
