@@ -4,11 +4,11 @@ from etna.core.blocks import (
     ContentImageBlock,
     FeaturedRecordArticleBlock,
     ParagraphBlock,
+    PromotedItemBlock,
+    PromotedListBlock,
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
-    PromotedItemBlock,
-    PromotedListBlock,
 )
 
 from ..media.blocks import MediaBlock

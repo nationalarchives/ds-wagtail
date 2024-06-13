@@ -1,20 +1,16 @@
 from wagtail import blocks
 
-from etna.core.blocks import ParagraphBlock
-
-
-from wagtail import blocks
-
 from etna.core.blocks import (
     ContentImageBlock,
     FeaturedRecordArticleBlock,
     ParagraphBlock,
-    PromotedListBlock,
     PromotedItemBlock,
+    PromotedListBlock,
     QuoteBlock,
+    SectionDepthAwareStructBlock,
     SubHeadingBlock,
-    SectionDepthAwareStructBlock
 )
+
 from ..media.blocks import MediaBlock
 from ..records.blocks import RecordLinksBlock
 
@@ -44,4 +40,5 @@ class GeneralPageStreamBlock(blocks.StreamBlock):
     """
     A block for the GeneralPage model.
     """
+
     content_section = ContentSectionBlock()
