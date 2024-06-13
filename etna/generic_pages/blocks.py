@@ -20,15 +20,15 @@ from ..records.blocks import RecordLinksBlock
 
 
 class SectionContentBlock(blocks.StreamBlock):
-    paragraph = ParagraphBlock()
-    quote = QuoteBlock()
-    sub_heading = SubHeadingBlock()
+    featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     media = MediaBlock()
-    featured_record_article = FeaturedRecordArticleBlock()
+    paragraph = ParagraphBlock()
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
+    quote = QuoteBlock()
     record_links = RecordLinksBlock()
+    sub_heading = SubHeadingBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
