@@ -38,6 +38,11 @@ class ButtonBlock(blocks.StructBlock):
     label = blocks.CharBlock()
     link = APIPageChooserBlock(required=False)
     external_link = blocks.URLBlock(required=False)
+    accented = blocks.BooleanBlock(
+        required=False,
+        help_text="Use the accented button style",
+        label="Accented",
+    )
 
     def clean(self, value):
         data = super().clean(value)
@@ -57,6 +62,7 @@ class ButtonBlock(blocks.StructBlock):
         representation = {
             "label": value["label"],
             "href": value.get("external_link") or value["link"].full_url,
+            "accented": value.get("accented") or False,
         }
 
         return representation
