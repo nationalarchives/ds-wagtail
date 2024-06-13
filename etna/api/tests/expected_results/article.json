@@ -214,7 +214,7 @@
                     {
                         "type": "featured_record_article",
                         "value": {
-                            "page": {}
+                            "page": null
                         },
                         "id": "b505f636-f3d1-4d4b-b368-69183e324e6e"
                     },
