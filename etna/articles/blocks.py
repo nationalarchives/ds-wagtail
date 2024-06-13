@@ -8,6 +8,7 @@ from etna.core.blocks import (
     AuthorPromotedLinkBlock,
     ContentImageBlock,
     FeaturedRecordArticleBlock,
+    InsetTextBlock,
     NoCaptionImageBlock,
     PageListBlock,
     ParagraphBlock,
@@ -187,6 +188,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     sub_heading = SubHeadingBlock()
     image = ContentImageBlock()
+    inset_text = InsetTextBlock()
     media = MediaBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     promoted_item = PromotedItemBlock()
