@@ -8,12 +8,14 @@ from .paragraph import ParagraphBlock, ParagraphWithHeading
 from .promoted_links import AuthorPromotedLinkBlock, PromotedLinkBlock
 from .quote import QuoteBlock
 from .section import SectionBlock
+from .text import InsetTextBlock
 
 __all__ = [
     "APIPageChooserBlock",
     "ContentImageBlock",
     "FeaturedRecordArticleBlock",
     "ImageBlock",
+    "InsetTextBlock",
     "NoCaptionImageBlock",
     "PageListBlock",
     "ParagraphBlock",
