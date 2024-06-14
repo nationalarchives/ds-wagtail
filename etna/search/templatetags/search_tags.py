@@ -8,7 +8,7 @@ from django.forms import Form
 from django.utils.crypto import get_random_string
 from django.utils.safestring import mark_safe
 
-from etna.ciim.constants import SearchTabs
+from etna.ciim.constants import NESTED_PREFIX_AGGS_PAIRS, PARENT_AGGS, SearchTabs
 
 register = template.Library()
 logger = logging.getLogger(__name__)
@@ -56,7 +56,20 @@ def query_string_exclude(
         query_dict.pop(f"{key}_2", None)
     else:
         items = query_dict.getlist(key, [])
-        query_dict.setlist(key, [i for i in items if i != str(value)])
+
+        value = str(value)
+        if value.startswith(tuple(PARENT_AGGS)):
+            # remove parent and child aggs for that parent
+            aggs = value.split(":")[0]
+            filters = []
+            for filter in items:
+                if filter != value and not filter.startswith(
+                    NESTED_PREFIX_AGGS_PAIRS.get(aggs)
+                ):
+                    filters.append(filter)
+            query_dict.setlist(key, filters)
+        else:
+            query_dict.setlist(key, [filter for filter in items if filter != value])
 
     return query_dict.urlencode()
 

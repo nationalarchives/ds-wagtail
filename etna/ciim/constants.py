@@ -43,6 +43,7 @@ class Aggregation(StrEnum):
     TYPE = "type"
     COUNTRY = "country"
     LOCATION = "location"
+    COMMUNITY = "community"
 
 
 DEFAULT_AGGREGATIONS = [
@@ -122,7 +123,7 @@ CATALOGUE_BUCKETS = BucketList(
             description="Results for records held at The National Archives that match your search term.",
             # TODO: Keep, not in scope for Ohos-Etna at this time
             # aggregations=DEFAULT_AGGREGATIONS + [Aggregation.COLLECTION],
-            aggregations=[Aggregation.COLLECTION],
+            aggregations=[Aggregation.COMMUNITY],
         ),
         Bucket(
             key=BucketKeys.TNA,
@@ -711,3 +712,46 @@ CLOSURE_CLOSED_STATUS = [
     "Closed Or Retained Document, Closed Description",
     "Closed Or Retained Document, Open Description",
 ]
+
+
+# Checkbox attr
+COLLECTION_ATTR_FOR_ALL_BUCKETS = "collection"
+# GROUP_CHECKBOX_NAME_MAP = {BucketKeys.COMMUNITY:{COLLECTION_ATTR_FOR_ALL_BUCKETS: "community"}}
+# maps name of form checkbox attr with api aggregations name {<form attr>:<api aggregations name>}
+OHOS_CHECKBOX_AGGS_NAME_MAP = {COLLECTION_ATTR_FOR_ALL_BUCKETS: "community"}
+# maps name of form checkbox attr which is also filter attr with value to replace
+OHOS_FILTER_AGGS_NAME_MAP = {COLLECTION_ATTR_FOR_ALL_BUCKETS: "collectionOhos"}
+
+"""
+CONFIG:
+Nested/Hierarchy checkboxes
+Nesting of one level i.e. "parent" -> "child/children", others are "orphan"
+collections are checkboxes on the form.
+Nested collections - collections within a collection
+
+{checkbox value:aggregations}
+checkbox value - name of the collection
+aggregations - name of the aggregations configured in CIMM for that "value"
+"""
+NESTED_CHECKBOX_VALUES_AGGS_NAMES = {
+    "Surrey History Centre": "collectionSurrey",
+    "Morrab Photo Archive": "collectionMorrab",
+}
+
+PARENT_AGGS_ALIAS_PREFIX = "parent-"
+CHILD_AGGS_ALIAS_PREFIX = "child-"
+NESTED_CHILDREN_KEY = "children"
+AGGS_LOOKUP_KEY = "key"
+
+PARENT_AGGS = [
+    PARENT_AGGS_ALIAS_PREFIX + item
+    for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
+]
+
+NESTED_PREFIX_AGGS_PAIRS = {}
+for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values():
+    NESTED_PREFIX_AGGS_PAIRS.update(
+        {PARENT_AGGS_ALIAS_PREFIX + aggs: CHILD_AGGS_ALIAS_PREFIX + aggs}
+    )
+
+NESTED_SEE_MORE_LABEL = "See more collections"

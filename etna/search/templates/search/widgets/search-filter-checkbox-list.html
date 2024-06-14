@@ -3,9 +3,34 @@
         <ul class="search-filters__widget-list">
             {% for group, options, index in widget.optgroups %}
                 {% for option in options %}
-                    <li class="search-filters__widget-list-item ohos-checkbox-container">
-                        {% include option.template_name with widget=option %}
-                    </li>
+                    {% if group %}
+                        {# write nested level checkbox of 1 level of hierarchy parent-child #}
+                        {% if option.value != "See more collections" %}
+                            {# skip see more checkbox value #}
+                            {% if forloop.first %}
+                                <li class="search-filters__widget-list-item ohos-checkbox-container">
+                                    {% include option.template_name with widget=option %}
+                                    <ul>
+                            {% else %}
+                                <li class="search-filters__widget-list-item ohos-checkbox-container">
+                                    {% include option.template_name with widget=option %}
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        {% if forloop.last %}
+                                </ul>
+                            </li>
+                        {% endif %}
+                        {% if option.value == "See more collections" %}
+                            {# see more checkbox value as link #}
+                            <a href="" aria-label='See more'>{{ option.label }}</a>
+                        {% endif %}
+                    {% else %}
+                        {# write orphan or no level or no hierarchy checkbox #}
+                        <li class="search-filters__widget-list-item ohos-checkbox-container">
+                            {% include option.template_name with widget=option %}
+                        </li>
+                    {% endif %}
                 {% endfor %}
             {% endfor %}
         </ul>

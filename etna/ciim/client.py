@@ -32,7 +32,7 @@ from .exceptions import (
     DoesNotExist,
     MultipleObjectsReturned,
 )
-from .utils import prepare_filter_aggregations
+from .utils import prepare_filter_aggregations, prepare_ohos_params
 
 logger = logging.getLogger(__name__)
 
@@ -226,8 +226,8 @@ class ClientAPI:
         covering_date_from: Optional[Union[date, datetime]] = None,
         covering_date_to: Optional[Union[date, datetime]] = None,
         # stream: Optional[Stream] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
-        aggregations: Optional[list[Aggregation]] = None,
-        filter_aggregations: Optional[list[str]] = None,
+        aggregations: Optional[List[Aggregation]] = None,
+        filter_aggregations: Optional[List[str]] = None,
         # filter_keyword: Optional[str] = None,   # TODO: Keep, not in scope for Ohos-Etna at this time
         sort: Optional[Sort] = None,
         offset: Optional[int] = None,
@@ -257,6 +257,17 @@ class ClientAPI:
         size:
             Number of results to return
         """
+        if not aggregations:
+            aggregations = []
+
+        if not filter_aggregations:
+            filter_aggregations = []
+
+        if group == BucketKeys.COMMUNITY:
+            aggregations, filter_aggregations = prepare_ohos_params(
+                aggregations, filter_aggregations
+            )
+
         params = {
             "q": q,
             # "fields": f"stream:{stream}",  # TODO: Keep, not in scope for Ohos-Etna at this time

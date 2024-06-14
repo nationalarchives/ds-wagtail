@@ -2,13 +2,15 @@ import re
 
 from builtins import set
 from collections.abc import Sequence
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from django.urls import NoReverseMatch, reverse
 
 import nh3
 
 from pyquery import PyQuery as pq
+
+from etna.ciim.constants import NESTED_PREFIX_AGGS_PAIRS, OHOS_FILTER_AGGS_NAME_MAP
 
 
 def underscore_to_camelcase(word, lower_first=True):
@@ -355,3 +357,65 @@ def strip_html(
         clean_html = re.sub(opening_regex, " ", clean_html)
         clean_html = re.sub(closing_regex, "", clean_html)
     return clean_html.lstrip()
+
+
+def prepare_ohos_params(
+    aggregations: Optional[List] = None, filter_aggregations: Optional[List] = None
+) -> Tuple:
+    """
+    prepares params for ciim api
+    - renames form filter to comply with Ohos
+    - adds aggregations for nested filters
+    - remove parent filter if a child fiter is selected
+
+    Ex:
+    aggregations names:
+    "collectionSurrey", "collectionMorrab"
+    filters:
+    "collection:<value>" -> "collectionOhos:<value>"
+    "collection:parent-collectionSurrey:<value>" -> "collectionOhos:<value>"
+    "collection:child-collectionSurrey:<value>" -> "collectionOhos:<value>"
+    """
+    new_aggregations = []
+    new_filter_aggregations = []
+
+    selected_nested_prefix_aggs = set()
+    nested_aggs_to_add = set()
+
+    # '<filter_aggs_alias>[:<prefix-nested-filter-aggs-alias>]:<value>'
+    for index, filter in enumerate(filter_aggregations):
+        filter_aggs_name = filter.split(":")[0]
+        if filter_aggs_name in OHOS_FILTER_AGGS_NAME_MAP.keys():
+            # rename filter
+            new_filter_aggs_name = OHOS_FILTER_AGGS_NAME_MAP.get(filter_aggs_name)
+            new_filter = new_filter_aggs_name + filter.lstrip(filter_aggs_name)
+            try:
+                # nested filters
+                nested_aggs_name = filter.split(":")[1].split("-")[1]
+                nested_aggs_to_add.add(nested_aggs_name)
+                nested_prefix_aggs_name = filter.split(":")[1]
+                selected_nested_prefix_aggs.add(nested_prefix_aggs_name)
+            except IndexError:
+                # not a nested filter
+                pass
+            new_filter_aggregations.append(new_filter)
+        else:
+            new_filter_aggregations.append(filter)
+
+    new_aggregations.extend(aggregations)
+    # add nested aggregations
+    new_aggregations.extend(nested_aggs_to_add)
+
+    # remove parent filter if a child fiter is selected
+    for parent, child in NESTED_PREFIX_AGGS_PAIRS.items():
+        if {parent, child}.issubset(selected_nested_prefix_aggs):
+            for index, item in enumerate(new_filter_aggregations):
+                if parent in item:
+                    new_filter_aggregations.pop(index)
+
+        for index, agg in enumerate(new_filter_aggregations):
+            new_filter_aggregations[index] = agg.replace(parent + ":", "").replace(
+                child + ":", ""
+            )
+
+    return new_aggregations, new_filter_aggregations

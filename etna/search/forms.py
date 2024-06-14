@@ -8,8 +8,11 @@ from etna.core.fields import END_OF_MONTH, DateInputField
 
 from ..ciim.client import Sort
 from ..ciim.constants import (  # TODO: Keep, not in scope for Ohos-Etna at this time; LEVEL_CHOICES,; TYPE_CHOICES,
+    AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
     COLLECTION_CHOICES,
+    NESTED_CHILDREN_KEY,
+    BucketKeys,
 )
 
 
@@ -63,21 +66,68 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
         present in `choice_data`.
 
         Expected `choice_data` format:
+        for unnested checkbox
         [
             {
-                "key": "item",
+                "value": "People's Collection Wales",
                 "doc_count": 10
             },
             …
         ]
-        """
+        for nested checkbox
+        [
+         {'value': 'Morrab Photo Archive',
+          'doc_count': 10,
+          'key': 'parent-collectionMorrab',
+          'children': [{'value': 'Miscellaneous Photos',
+                        'doc_count': 5,
+                        'key': 'child-collectionMorrab'},
+                        ...
+                       {'value': 'See more collections',
+                        'doc_count': 879
+                      ]
+         }
+        ]
+        key -> <prefix for parent/child aggregations>-<CIIM aggregations alias name>
+               a prefixed aggregations for that collection
+               prefix indicates that value is at parent/child level
+        children -> are the collections within that parent collection
 
+        Converted choice data format
+        =[(None, [("People's Collection Wales", "People's Collection Wales (9,676)")]),
+          ('parent-collectionMorrab:Morrab Photo Archive',
+                 [('parent-collectionMorrab:Morrab Photo Archive', 'Morrab Photo Archive (10)'),
+                  ('child-collectionMorrab:Miscellaneous Photos', 'Miscellaneous Photos (5)'),
+                  ('See more collections', 'See more collections (879)')]
+
+        see more collections - will not be rendered as a checkbox, instead a link
+        """
         # Generate a new list of choices
         choice_vals_with_hits = set()
         choices = []
+
         for item in choice_data:
-            choices.append((item["value"], self.choice_label_from_api_data(item)))
-            choice_vals_with_hits.add(item["value"])
+            choice_val = item["value"]
+            if filter_aggs_alias := item.get(AGGS_LOOKUP_KEY):
+                choice_val = filter_aggs_alias + ":" + choice_val
+            children = item.get(NESTED_CHILDREN_KEY, [])
+            parent = None
+            if children:
+                parent = choice_val
+
+            # add parent or orphan choices
+            choice = (parent, [(choice_val, self.choice_label_from_api_data(item))])
+            choice_vals_with_hits.add(choice_val)
+
+            # add children choices
+            for item in children:
+                choice_val = item["value"]
+                if filter_aggs_alias := item.get(AGGS_LOOKUP_KEY):
+                    choice_val = filter_aggs_alias + ":" + choice_val
+                choice[1].append((choice_val, self.choice_label_from_api_data(item)))
+                choice_vals_with_hits.add(choice_val)
+
+            choices.append(choice)
 
         for missing_value in [
             v for v in selected_values if v not in choice_vals_with_hits
@@ -88,8 +138,9 @@ class DynamicMultipleChoiceField(forms.MultipleChoiceField):
                 label_base = missing_value
             choices.append((missing_value, f"{label_base} (0)"))
 
+        # TODO: Rosetta Etna sorts choices alphabetically
         # Order alphabetically
-        choices.sort(key=lambda x: x[1])
+        # choices.sort(key=lambda x: x[1])
 
         # Replace the field's attribute value
         self.choices = choices
@@ -142,6 +193,9 @@ class BaseCollectionSearchForm(forms.Form):
     # )
     # Choices are supplied to this field to influence labels only. The options
     # are not complete enough to be used for validation
+    #
+    # NOTE: This is the form collection attribute across all buckets for OHOS
+    #       Also used differently for OHOS
     collection = DynamicMultipleChoiceField(
         label="Collections",
         choices=COLLECTION_CHOICES,
@@ -256,6 +310,11 @@ class BaseCollectionSearchForm(forms.Form):
         label="Creation from",
         required=False,
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if kwargs and kwargs.get("data").get("group", "") == BucketKeys.COMMUNITY:
+            self.fields["collection"].label = "Community Archive"
 
     def clean(self):
         """

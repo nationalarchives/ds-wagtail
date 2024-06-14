@@ -10,6 +10,7 @@ from ..utils import (
     find_all,
     format_description_markup,
     pluck,
+    prepare_ohos_params,
     strip_html,
 )
 
@@ -413,3 +414,96 @@ class TestStripHtml(SimpleTestCase):
         allow_tags = {"a", "br", "p"}
         result = strip_html(value, allow_tags=allow_tags)
         self.assertEqual(result, expected)
+
+
+class TestPrepareOhosParam(SimpleTestCase):
+
+    def test_prepare_ohos_param(self):
+
+        test_data = (
+            (
+                "orphan selection",
+                (
+                    ["community"],
+                    ["collection:Sharing Wycombe's Old Photographs", "group:community"],
+                ),
+                (
+                    ["community"],
+                    [
+                        "collectionOhos:Sharing Wycombe's Old Photographs",
+                        "group:community",
+                    ],
+                ),
+            ),
+            (
+                "parent selection",
+                (
+                    ["community"],
+                    [
+                        "collection:parent-collectionSurrey:Surrey History Centre",
+                        "collection:parent-collectionMorrab:Morrab Photo Archive",
+                        "group:community",
+                    ],
+                ),
+                (
+                    ["community", "collectionSurrey", "collectionMorrab"],
+                    [
+                        "collectionOhos:Surrey History Centre",
+                        "collectionOhos:Morrab Photo Archive",
+                        "group:community",
+                    ],
+                ),
+            ),
+            (
+                "parent children selection",
+                (
+                    ["community"],
+                    [
+                        "collection:parent-collectionSurrey:Surrey History Centre",
+                        "collection:child-collectionSurrey:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collection:child-collectionSurrey:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collection:parent-collectionMorrab:Morrab Photo Archive",
+                        "collection:child-collectionMorrab:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+                (
+                    ["community", "collectionSurrey", "collectionMorrab"],
+                    [
+                        "collectionOhos:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collectionOhos:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collectionOhos:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+            ),
+            (
+                "children selection",
+                (
+                    ["community"],
+                    [
+                        "collection:child-collectionSurrey:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collection:child-collectionSurrey:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collection:child-collectionMorrab:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+                (
+                    ["community", "collectionSurrey", "collectionMorrab"],
+                    [
+                        "collectionOhos:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collectionOhos:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collectionOhos:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+            ),
+        )
+
+        for label, value, expected in test_data:
+            with self.subTest(label):
+                aggs, filter = prepare_ohos_params(*value)
+                aggs_equality = set(aggs).issubset(set(expected[0]))
+                filter_equality = set(filter).issubset(set(expected[1]))
+                self.assertTrue(aggs_equality)
+                self.assertTrue(filter_equality)

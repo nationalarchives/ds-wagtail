@@ -17,8 +17,16 @@ from wagtail.coreutils import camelcase_to_underscore
 from ..analytics.mixins import SearchDataLayerMixin
 from ..ciim.client import Aggregation, Sort
 from ..ciim.constants import (
+    AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
     CLOSURE_CLOSED_STATUS,
+    COLLECTION_ATTR_FOR_ALL_BUCKETS,
+    NESTED_CHECKBOX_VALUES_AGGS_NAMES,
+    NESTED_CHILDREN_KEY,
+    NESTED_PREFIX_AGGS_PAIRS,
+    NESTED_SEE_MORE_LABEL,
+    OHOS_CHECKBOX_AGGS_NAME_MAP,
+    PARENT_AGGS_ALIAS_PREFIX,
     Bucket,
     BucketKeys,
     BucketList,
@@ -491,6 +499,95 @@ class BaseFilteredSearchView(BaseSearchView):
         filter_aggregations.append(f"group:{form.cleaned_data['group']}")
         return filter_aggregations
 
+    def _transform_api_result_aggregations_for_nested_checkbox(self, api_result: Any):
+        """
+        Transforms the API aggregations for nested checkbox
+        when the "other" count is more than 0 it indicates there are more collections
+        see more is added to children - used as a url
+
+        Ex:
+        API aggregations:
+        [{'name': 'collectionSurrey',
+          'entries': [{'value': 'GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS', 'doc_count': 12}],
+           'total': 17,
+           'other': 22},
+          {'name': 'community',
+            'entries': [{'value': 'Surrey History Centre', 'doc_count': 17}],
+            'total': 0,
+            'other': 0}]
+        Transformed aggregations:
+        [{'name': 'collection',
+          'entries': [{'value': 'Surrey History Centre',
+                       'doc_count': 17,
+                       'key': 'parent-collectionSurrey',
+                       'children': [{'value': 'GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS',
+                                     'doc_count': 12,
+                                     'key': 'child-collectionSurrey'},
+                                     {'value': 'See more collections', 'doc_count': 22}]}],
+                                     'total': 0,
+                                     'other': 0}]
+        """
+        remove_aggregations = []
+        for index1, aggs_rec in enumerate(api_result.aggregations):
+            aggs_name = aggs_rec.get("name")
+            if aggs_name == OHOS_CHECKBOX_AGGS_NAME_MAP.get(
+                COLLECTION_ATTR_FOR_ALL_BUCKETS
+            ):
+                # rename the aggregation to the form element name
+                api_result.aggregations[index1].update(
+                    name=COLLECTION_ATTR_FOR_ALL_BUCKETS
+                )
+                # add key for parent collections
+                for index2, entry in enumerate(aggs_rec.get("entries", [])):
+                    if collection_name := entry.get("value"):
+                        if collection_name in NESTED_CHECKBOX_VALUES_AGGS_NAMES.keys():
+                            nested_aggs_name = NESTED_CHECKBOX_VALUES_AGGS_NAMES.get(
+                                collection_name
+                            )
+                            parent_aggs_name = (
+                                PARENT_AGGS_ALIAS_PREFIX + nested_aggs_name
+                            )
+                            # add key for parent collections
+                            api_result.aggregations[index1]["entries"][index2].update(
+                                key=parent_aggs_name
+                            )
+
+                            child_aggs_name = NESTED_PREFIX_AGGS_PAIRS.get(
+                                parent_aggs_name
+                            )
+                            children = []
+                            for aggs_rec in api_result.aggregations:
+                                if aggs_rec.get("name") == nested_aggs_name:
+                                    remove_aggregations.append(nested_aggs_name)
+                                    children = aggs_rec.get("entries")
+                                    for index, child in enumerate(children):
+                                        children[index].update(
+                                            {AGGS_LOOKUP_KEY: child_aggs_name}
+                                        )
+
+                                    # add see more
+                                    see_more_label = NESTED_SEE_MORE_LABEL
+                                    see_more_count = aggs_rec.get("other")
+                                    if see_more_count > 0:
+                                        children.append(
+                                            {
+                                                "value": see_more_label,
+                                                "doc_count": see_more_count,
+                                            }
+                                        )
+                            # update children
+                            if children:
+                                api_result.aggregations[index1]["entries"][
+                                    index2
+                                ].update({NESTED_CHILDREN_KEY: children})
+
+        new_aggregations = [
+            aggs_rec
+            for aggs_rec in api_result.aggregations
+            if aggs_rec.get("name") not in remove_aggregations
+        ]
+        api_result.aggregations = new_aggregations
+
     def process_api_result(self, form: Form, api_result: Any):
         """
         Update `choices` values on the form's `dynamic_choice_fields` to
@@ -498,6 +595,9 @@ class BaseFilteredSearchView(BaseSearchView):
 
         See also: `get_api_aggregations()`.
         """
+        if form.cleaned_data.get("group") == BucketKeys.COMMUNITY:
+            self._transform_api_result_aggregations_for_nested_checkbox(api_result)
+
         for value in api_result.aggregations:
             key = value.get("name")
             field_name = camelcase_to_underscore(key)
@@ -507,7 +607,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     choice_data, selected_values=form.cleaned_data.get(field_name, ())
                 )
                 form[field_name].more_filter_options_available = bool(
-                    value.get("docCount", 0)
+                    value.get("other", 0)
                 )
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -556,10 +656,30 @@ class BaseFilteredSearchView(BaseSearchView):
                 }
             else:
                 choice_labels = {value: label for value, label in field.choices}
-            return_value[field_name] = [
-                (value, choice_labels.get(value, value))
-                for value in return_value[field_name]
-            ]
+
+            if form.cleaned_data.get("group") == "community":
+                # trims the filter labels for nested collections
+                prefix_filter_aggs = [
+                    PARENT_AGGS_ALIAS_PREFIX + item
+                    for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
+                ] + [
+                    "child-" + item
+                    for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
+                ]
+
+                label_value_list = []
+                for value in return_value[field_name]:
+                    label = choice_labels.get(value, value)
+                    if value.startswith(tuple(prefix_filter_aggs)):
+                        label = value.split(":", 1)[1]
+                    label_value_list.append((value, label))
+
+                return_value[field_name] = label_value_list
+            else:
+                return_value[field_name] = [
+                    (value, choice_labels.get(value, value))
+                    for value in return_value[field_name]
+                ]
 
         # TODO: Keep, not in scope for Ohos-Etna at this time
         # if filter_keyword := form.cleaned_data.get("filter_keyword"):

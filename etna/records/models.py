@@ -16,7 +16,7 @@ from django.utils.safestring import mark_safe
 from pyquery import PyQuery as pq
 
 from ..analytics.mixins import DataLayerMixin
-from ..ciim.constants import BucketKeys, TagTypes
+from ..ciim.constants import CATALOGUE_BUCKETS, BucketKeys, TagTypes
 from ..ciim.models import APIModel
 from ..ciim.utils import (
     NOT_PROVIDED,
@@ -629,7 +629,19 @@ class Record(DataLayerMixin, APIModel):
 
     @cached_property
     def group(self) -> str:
-        return self.template.get("group", "")
+        group = self.template.get("group", "")
+
+        ohos_buckets_keys = [item.key for item in CATALOGUE_BUCKETS]
+
+        if group not in ohos_buckets_keys:
+            # group_array-some records have many groups attached to them
+            # indentifies the one the belongs to OHOS buckets if not found in "group" attr
+            if group_array := self.template.get("groupArray", ""):
+                groups = [item.get("value", "") for item in group_array]
+                for item in groups:
+                    if item in ohos_buckets_keys:
+                        group = item
+        return group
 
     @cached_property
     def collection(self) -> str:

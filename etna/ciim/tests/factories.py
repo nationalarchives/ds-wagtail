@@ -107,13 +107,22 @@ def create_response(record={}, status_code=None):
     }
 
 
-def create_search_response(records=[], aggregations=[], total_count=None):
+def create_search_response(
+    records=None, aggregations=None, buckets=None, total_count=None
+):
+    if not records:
+        records = []
+    if not aggregations:
+        aggregations = []
+    if not buckets:
+        buckets = []
     if not total_count:
         total_count = len(records)
 
     return {
         "data": records,
         "aggregations": aggregations,
+        "buckets": buckets,
         "stats": {
             "total": total_count,
         },
