@@ -58,7 +58,7 @@
         }
     },
     "alert": null,
-    "type_label": "Explore by time period",
+    "type_label": "Time period",
     "teaser_text": "Teaser text",
     "teaser_image": {
         "id": 4,
