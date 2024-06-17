@@ -184,6 +184,11 @@ class PagePreviewAPIViewSet(PagesAPIViewSet):
         return Response(serializer.data)
 
     def get_object(self):
+        if "content_type" not in self.request.GET:
+            raise BadRequestError("content_type not specified")
+        if "token" not in self.request.GET:
+            raise BadRequestError("token not specified")
+
         app_label, model = self.request.GET["content_type"].split(".")
         content_type = ContentType.objects.get(app_label=app_label, model=model)
 
