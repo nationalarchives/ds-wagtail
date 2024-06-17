@@ -134,4 +134,4 @@ class RecordLinksBlock(blocks.StructBlock):
 
     class Meta:
         template = "records/blocks/record_links_block.html"
-        icon = "archive"
+        icon = "box-archive"
