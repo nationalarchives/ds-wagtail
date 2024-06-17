@@ -13,9 +13,19 @@ DEBUG_TOOLBAR_ENABLED = strtobool(  # noqa: F405
 WAGTAILADMIN_BASE_URL = os.getenv("WAGTAILADMIN_BASE_URL", "http://localhost:8000")
 WAGTAIL_HEADLESS_PREVIEW = {
     "CLIENT_URLS": {
-        "default": "http://localhost:65535/preview",
+        "default": os.getenv(
+            "WAGTAILADMIN_HEADLESS_PREVIEW_URL", "http://localhost:65535/preview"
+        ),
     },
-    "SERVE_BASE_URL": "http://localhost:65535",
+    "SERVE_BASE_URL": os.getenv(
+        "WAGTAILADMIN_HEADLESS_BASE_URL", "http://localhost:65535"
+    ),
+    "REDIRECT_ON_PREVIEW": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_REDIRECT_ON_PREVIEW", "False")
+    ),
+    "ENFORCE_TRAILING_SLASH": strtobool(
+        os.getenv("WAGTAILADMIN_HEADLESS_ENFORCE_TRAILING_SLASH", "True")
+    ),
 }
 
 # SECURITY WARNING: keep the secret key used in production secret!

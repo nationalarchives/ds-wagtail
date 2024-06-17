@@ -28,6 +28,7 @@ from taggit.models import ItemBase, TagBase
 
 from etna.authors.models import AuthorPageMixin
 from etna.collections.models import TopicalPageMixin
+from etna.core.blocks import AuthorPromotedPagesBlock, FeaturedCollectionBlock
 from etna.core.models import (
     BasePageWithIntro,
     ContentWarningMixin,
@@ -45,11 +46,7 @@ from etna.core.serializers import (
 from etna.core.utils import skos_id_from_text
 from etna.records.fields import RecordField
 
-from .blocks import (
-    ArticlePageStreamBlock,
-    AuthorPromotedPagesBlock,
-    FeaturedCollectionBlock,
-)
+from .blocks import ArticlePageStreamBlock
 
 
 @register_snippet
@@ -776,7 +773,7 @@ class RecordArticlePage(
             APIField("promoted_links"),
             APIField(
                 "intro_image",
-                serializer=ImageSerializer(rendition_size="fill-512x512"),
+                serializer=ImageSerializer(rendition_size="width-400"),
             ),
         ]
         + TopicalPageMixin.api_fields
