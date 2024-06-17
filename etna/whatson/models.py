@@ -59,6 +59,7 @@ class EventType(models.Model):
     class Meta:
         verbose_name = _("event type")
         verbose_name_plural = _("event types")
+        verbose_name_public = _("event")
 
     def __str__(self):
         return self.name
