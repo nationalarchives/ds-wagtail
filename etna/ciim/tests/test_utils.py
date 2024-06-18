@@ -470,6 +470,8 @@ class TestPrepareOhosParam(SimpleTestCase):
                 (
                     ["community", "collectionSurrey", "collectionMorrab"],
                     [
+                        "collectionOhos:Surrey History Centre",
+                        "collectionOhos:Morrab Photo Archive",
                         "collectionOhos:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
                         "collectionOhos:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
                         "collectionOhos:Miscellaneous Photos",

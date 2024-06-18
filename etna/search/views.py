@@ -19,6 +19,7 @@ from ..ciim.client import Aggregation, Sort
 from ..ciim.constants import (
     AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
+    CHILD_AGGS_ALIAS_PREFIX,
     CLOSURE_CLOSED_STATUS,
     COLLECTION_ATTR_FOR_ALL_BUCKETS,
     NESTED_CHECKBOX_VALUES_AGGS_NAMES,
@@ -663,7 +664,7 @@ class BaseFilteredSearchView(BaseSearchView):
                     PARENT_AGGS_ALIAS_PREFIX + item
                     for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
                 ] + [
-                    "child-" + item
+                    CHILD_AGGS_ALIAS_PREFIX + item
                     for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
                 ]
 
