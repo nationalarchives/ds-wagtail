@@ -16,3 +16,14 @@ class DocumentBlock(blocks.StructBlock):
     class Meta:
         icon = "doc-full"
         label = "Document"
+
+class DocumentsBlock(blocks.StructBlock):
+    """
+    A block for embedding multiple document files in a page.
+    """
+
+    documents = blocks.ListBlock(DocumentBlock())
+
+    class Meta:
+        icon = "doc-full"
+        label = "Documents"

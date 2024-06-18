@@ -1,6 +1,6 @@
 from .base import SectionDepthAwareStructBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
-from .document import DocumentBlock
+from .document import DocumentsBlock
 from .featured_content import (
     FeaturedCollectionBlock,
     FeaturedRecordArticleBlock,
@@ -26,7 +26,7 @@ __all__ = [
     "ButtonBlock",
     "CallToActionBlock",
     "ContentImageBlock",
-    "DocumentBlock",
+    "DocumentsBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "ImageBlock",
