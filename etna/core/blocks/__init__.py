@@ -1,6 +1,6 @@
 from .accordion import AccordionsBlock
 from .base import SectionDepthAwareStructBlock
-from .cta import LargeCardLinksBlock
+from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .featured_content import (
     FeaturedCollectionBlock,
     FeaturedRecordArticleBlock,
@@ -24,6 +24,8 @@ __all__ = [
     "AccordionsBlock",
     "APIPageChooserBlock",
     "AuthorPromotedPagesBlock",
+    "ButtonBlock",
+    "CallToActionBlock",
     "ContentImageBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
