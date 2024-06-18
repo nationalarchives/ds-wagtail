@@ -58,7 +58,7 @@
         }
     },
     "alert": null,
-    "type_label": "Explore by topic",
+    "type_label": "Topic",
     "teaser_text": "Teaser text",
     "teaser_image": {
         "id": 2,

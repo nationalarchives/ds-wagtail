@@ -71,6 +71,7 @@ class AuthorPage(BasePage):
     class Meta:
         verbose_name = "Author page"
         verbose_name_plural = "Author pages"
+        verbose_name_public = "author"
 
     # DataLayerMixin overrides
     gtm_content_group = "Author page"
