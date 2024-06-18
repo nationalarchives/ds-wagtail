@@ -1,5 +1,5 @@
 from .base import SectionDepthAwareStructBlock
-from .cta import LargeCardLinksBlock
+from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
 from .featured_content import (
     FeaturedCollectionBlock,
     FeaturedRecordArticleBlock,
@@ -22,6 +22,8 @@ from .section import SectionBlock, SubHeadingBlock
 __all__ = [
     "APIPageChooserBlock",
     "AuthorPromotedPagesBlock",
+    "ButtonBlock",
+    "CallToActionBlock",
     "ContentImageBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
