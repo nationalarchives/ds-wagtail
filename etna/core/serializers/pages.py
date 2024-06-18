@@ -62,7 +62,7 @@ def get_api_data(object, required_api_fields: list = []) -> dict:
                 api_representation[field.name] = get_field_data(
                     object=specific, field=field
                 )
-    return api_representation
+    return api_representation or None
 
 
 class DefaultPageSerializer(serializers.Serializer):

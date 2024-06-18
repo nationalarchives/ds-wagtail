@@ -71,6 +71,7 @@ class AuthorPage(BasePage):
     class Meta:
         verbose_name = "Author page"
         verbose_name_plural = "Author pages"
+        verbose_name_public = "author"
 
     # DataLayerMixin overrides
     gtm_content_group = "Author page"
@@ -186,8 +187,6 @@ class AuthorPageMixin:
     api_fields = [
         APIField(
             "authors",
-            serializer=DefaultPageSerializer(
-                required_api_fields=["image", "authored_focused_articles"], many=True
-            ),
+            serializer=DefaultPageSerializer(required_api_fields=["image"], many=True),
         )
     ]
