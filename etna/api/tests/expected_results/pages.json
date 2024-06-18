@@ -17,7 +17,7 @@
             "title": "arts",
             "url": "/arts/",
             "full_url": "http://localhost/arts/",
-            "type_label": "Explore by topic",
+            "type_label": "Topic",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 2,
@@ -66,7 +66,7 @@
             "title": "early_modern",
             "url": "/early_modern/",
             "full_url": "http://localhost/early_modern/",
-            "type_label": "Explore by time period",
+            "type_label": "Time period",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 4,
@@ -90,7 +90,7 @@
             "title": "postwar",
             "url": "/postwar/",
             "full_url": "http://localhost/postwar/",
-            "type_label": "Explore by time period",
+            "type_label": "Time period",
             "teaser_text": "Teaser text",
             "teaser_image": {
                 "id": 6,
