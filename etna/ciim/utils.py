@@ -366,6 +366,7 @@ def prepare_ohos_params(
     prepares params for ciim api
     - renames form filter to comply with Ohos
     - adds aggregations for nested filters
+    - remove parent filter if a child fiter is selected
 
     Ex:
     aggregations names:
@@ -406,6 +407,12 @@ def prepare_ohos_params(
     new_aggregations.extend(nested_aggs_to_add)
 
     for parent, child in NESTED_PREFIX_AGGS_PAIRS.items():
+        # remove parent filter if a child fiter is selected
+        if {parent, child}.issubset(selected_nested_prefix_aggs):
+            for index, item in enumerate(new_filter_aggregations):
+                if parent in item:
+                    new_filter_aggregations.pop(index)
+
         # remove prefix aggs
         for index, agg in enumerate(new_filter_aggregations):
             new_filter_aggregations[index] = agg.replace(parent + ":", "").replace(
