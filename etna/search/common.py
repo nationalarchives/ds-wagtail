@@ -4,6 +4,7 @@ from django.utils.http import urlencode
 from etna.ciim.constants import BucketKeys, TimelineTypes, VisViews
 
 # visualisation urls
+# contains ? param, so that more params can be appended with &
 VIS_URLS = {
     VisViews.LIST.value: f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.LIST})}',
     VisViews.MAP.value: f'{reverse("search-catalogue")}?{urlencode({"group": BucketKeys.COMMUNITY, "vis_view": VisViews.MAP})}',
