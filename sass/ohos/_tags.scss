@@ -8,6 +8,7 @@
     border: 1px solid;
     font-size: 16px;
     border-radius: 5px;
+    cursor: pointer;
 
     &,
     &:link,
@@ -38,8 +39,8 @@
         --tag-theme-color: #faf0ca;
     }
 
-    &--clear {
-        --tag-theme-color: $color--off-black;
+    &--black {
+        --tag-theme-color: #{$color__off-black};
 
         &,
         &:link,

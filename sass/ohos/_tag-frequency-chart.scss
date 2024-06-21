@@ -27,6 +27,16 @@
         gap: 0.75rem;
     }
 
+    &__form {
+        position: relative;
+    }
+
+    &__form-controls {
+        position: absolute;
+        right: 0.75rem;
+        top: 0.75rem;
+    }
+
     &__chart {
         border: 1px solid #8a8a8a;
         background-color: $color__grey-300;

@@ -5,49 +5,70 @@
         <p class="tag-frequency__title">Filter by:</p>
         <ul class="tag-frequency__tags-list">
             <li>
-                <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=LOC" class="ohos-tag ohos-tag--location">
-                    <span class="ohos-tag__inner">Location</span>
+                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'LOC' %}&chart_data_type=LOC{% endif %}" class="ohos-tag ohos-tag--location">
+                    <span class="ohos-tag__inner">
+                        Location
+                        {% if form.chart_data_type.value == 'LOC' %}
+                            <i class="fa-solid fa-xmark"></i>
+                        {% endif %}
+                    </span>
                 </a>
             </li>
 
             <li>
-                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=PER" class="ohos-tag ohos-tag--person">
-                    <span class="ohos-tag__inner">Person</span>
+                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'PER' %}&chart_data_type=PER{% endif %}" class="ohos-tag ohos-tag--person">
+                    <span class="ohos-tag__inner">
+                        Person
+                        {% if form.chart_data_type.value == 'PER' %}
+                            <i class="fa-solid fa-xmark"></i>
+                        {% endif %}
+                    </span>
                 </a>
             </li>
 
             <li>
-                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=ORG" class="ohos-tag ohos-tag--organisation">
-                    <span class="ohos-tag__inner">Organisation</span>
+                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'ORG' %}&chart_data_type=ORG{% endif %}" class="ohos-tag ohos-tag--organisation">
+                    <span class="ohos-tag__inner">
+                        Organisation
+                        {% if form.chart_data_type.value == 'ORG' %}
+                            <i class="fa-solid fa-xmark"></i>
+                        {% endif %}
+                    </span>
                 </a>
             </li>
 
             <li>
-                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=MISC" class="ohos-tag ohos-tag--misc">
-                    <span class="ohos-tag__inner">Miscellaneous</span>
+                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'MISC' %}&chart_data_type=MISC{% endif %}" class="ohos-tag ohos-tag--misc">
+                    <span class="ohos-tag__inner">
+                        Miscellaneous
+                        {% if form.chart_data_type.value == 'MISC' %}
+                            <i class="fa-solid fa-xmark"></i>
+                        {% endif %}
+                    </span>
                 </a>
             </li>
-
-<!--            <li>-->
-<!--                    <a href="/search/catalogue/?group=community&vis_view=tag&chart_data_type=DATE" class="ohos-tag ohos-tag&#45;&#45;other">-->
-<!--                    <span class="ohos-tag__inner">Date</span>-->
-<!--                </a>-->
-<!--            </li>-->
-<!--            <li>-->
-<!--                {# There may be a better way to achieve this without having to set a new param #}-->
-<!--                <a href="?{% query_string_include 'chart_data_type' 'ALL' %}" class="ohos-tag ohos-tag&#45;&#45;clear">-->
-<!--                    <span class="ohos-tag__inner">Clear all</span>-->
-<!--                </a>-->
-<!--            </li>-->
         </ul>
-        <div class="clear-apply">
-            <a href="?{% query_string_include 'chart_data_type' 'ALL' %}" id="clearApply" class="ohos-tag ohos-tag--clear">
-                <span class="ohos-tag__inner">Apply Filters</span>
-            </a>
+    </div>
+
+    <form method="GET" class="tag-frequency__form" data-js-form-tag-frequency>
+
+        <div id="tag-frequency-chart" class="tag-frequency__chart"></div>
+
+        <div class="tag-frequency__form-controls">
+            {# Button is hidden by default as there is nothing to apply by default. When the state changes, the button is made visible with JS #}
+            <button type="submit" class="ohos-tag ohos-tag--black" hidden data-js-tag-frequency-apply>
+                <span class="ohos-tag__inner">Apply filters</span>
+            </button>
+
+            {# Clear filters button is made visible when there is an initial set of filters #}
+            <button type="button" class="ohos-tag ohos-tag--black" hidden data-js-tag-frequency-clear>
+                <span class="ohos-tag__inner">Clear filters</span>
+            </button>
         </div>
 
-    </div>
-    <div id="tag-frequency-chart" class="tag-frequency__chart"></div>
+    </form>
+
+
 
     <div class="tag-frequency__info">
         <i class="tag-frequency__info-icon fa-solid fa-circle-info"></i>
@@ -56,11 +77,3 @@
         </div>
     </div>
 </div>
-
-<script>
-    <!--changing button text -->
-    document.getElementById('clearApply').onclick = function(event) {
-        event.preventDefault();
-        document.getElementById('clearApply').innerHTML = '<span class="ohos-tag__inner">Clear Filters</span>';
-    }
-</script>
