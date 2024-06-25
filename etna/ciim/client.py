@@ -21,7 +21,7 @@ from django.utils.timezone import get_current_timezone
 
 import requests
 
-from etna.ciim.constants import Aggregation, BucketKeys
+from etna.ciim.constants import Aggregation, BucketKeys, VisViews
 from etna.records.models import Record
 
 from .exceptions import (
@@ -232,6 +232,7 @@ class ClientAPI:
         sort: Optional[Sort] = None,
         offset: Optional[int] = None,
         size: Optional[int] = None,
+        vis_view: Optional[str] = None,
     ) -> ResultList:
         """Make request and return response for Client API's /search endpoint.
         Search all metadata by keyword or web_reference. Results can be
@@ -256,6 +257,8 @@ class ClientAPI:
             Offset for results. Mapped to 'from' before making request
         size:
             Number of results to return
+        vis_view:
+            Name of the visualisation view defined for OHOS
         """
         if not aggregations:
             aggregations = []
@@ -265,7 +268,7 @@ class ClientAPI:
 
         if group == BucketKeys.COMMUNITY:
             aggregations, filter_aggregations = prepare_ohos_params(
-                aggregations, filter_aggregations
+                vis_view, aggregations, filter_aggregations
             )
 
         params = {
@@ -290,16 +293,19 @@ class ClientAPI:
         #         opening_end_date, supplementary_time=time.max
         #     )
 
-        if covering_date_from:
-            if group == BucketKeys.COMMUNITY:
-                params["filter"] += [f"fromDate:(>={covering_date_from})"]
-            else:
+        if group == BucketKeys.COMMUNITY:
+            if vis_view != VisViews.MAP.value:
+                # map view does not have date filters, other visual views have date filters
+                if covering_date_from:
+                    params["filter"] += [f"fromDate:(>={covering_date_from})"]
+
+                if covering_date_to:
+                    params["filter"] += [f"toDate:(<={covering_date_to})"]
+        else:
+            if covering_date_from:
                 params["filter"] += [f"coveringFromDate:(>={covering_date_from})"]
 
-        if covering_date_to:
-            if group == BucketKeys.COMMUNITY:
-                params["filter"] += [f"toDate:(<={covering_date_to})"]
-            else:
+            if covering_date_to:
                 params["filter"] += [f"coveringToDate:(<={covering_date_to})"]
 
         # Get HTTP response from the API

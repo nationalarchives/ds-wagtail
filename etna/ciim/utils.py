@@ -10,7 +10,13 @@ import nh3
 
 from pyquery import PyQuery as pq
 
-from etna.ciim.constants import NESTED_PREFIX_AGGS_PAIRS, OHOS_FILTER_AGGS_NAME_MAP
+from etna.ciim.constants import (
+    CATALOGUE_BUCKETS,
+    NESTED_PREFIX_AGGS_PAIRS,
+    OHOS_FILTER_AGGS_NAME_MAP,
+    BucketKeys,
+    VisViews,
+)
 
 
 def underscore_to_camelcase(word, lower_first=True):
@@ -360,10 +366,13 @@ def strip_html(
 
 
 def prepare_ohos_params(
-    aggregations: Optional[List] = None, filter_aggregations: Optional[List] = None
+    vis_view: Optional[str] = None,
+    aggregations: Optional[List] = None,
+    filter_aggregations: Optional[List] = None,
 ) -> Tuple:
     """
     prepares params for ciim api
+    - separate handling for Map view
     - renames form filter to comply with Ohos
     - adds aggregations for nested filters
     - remove parent filter if a child fiter is selected
@@ -379,44 +388,60 @@ def prepare_ohos_params(
     new_aggregations = []
     new_filter_aggregations = []
 
-    selected_nested_prefix_aggs = set()
-    nested_aggs_to_add = set()
+    if vis_view == VisViews.MAP.value:
+        """
+        overwrites UI params
+         - which is used to persist query string for other vis views
+         - which are not part of the interface for Map view
+         - and so that MAP view queries CIIM based its UI
+        """
+        # default aggregations
+        new_aggregations = CATALOGUE_BUCKETS.get_bucket(
+            BucketKeys.COMMUNITY.value
+        ).aggregations
+        # group filter which is added separately and does not belong to dynamic checkbox filters
+        new_filter_aggregations = [f"group:{BucketKeys.COMMUNITY.value}"]
+    else:
+        # All other vis views
 
-    # '<filter_aggs_alias>[:<prefix-nested-filter-aggs-alias>]:<value>'
-    for index, filter in enumerate(filter_aggregations):
-        filter_aggs_name = filter.split(":")[0]
-        if filter_aggs_name in OHOS_FILTER_AGGS_NAME_MAP.keys():
-            # rename filter
-            new_filter_aggs_name = OHOS_FILTER_AGGS_NAME_MAP.get(filter_aggs_name)
-            new_filter = new_filter_aggs_name + filter.lstrip(filter_aggs_name)
-            try:
-                # nested filters
-                nested_aggs_name = filter.split(":")[1].split("-")[1]
-                nested_aggs_to_add.add(nested_aggs_name)
-                nested_prefix_aggs_name = filter.split(":")[1]
-                selected_nested_prefix_aggs.add(nested_prefix_aggs_name)
-            except IndexError:
-                # not a nested filter
-                pass
-            new_filter_aggregations.append(new_filter)
-        else:
-            new_filter_aggregations.append(filter)
+        selected_nested_prefix_aggs = set()
+        nested_aggs_to_add = set()
 
-    new_aggregations.extend(aggregations)
-    # add nested aggregations
-    new_aggregations.extend(nested_aggs_to_add)
+        # '<filter_aggs_alias>[:<prefix-nested-filter-aggs-alias>]:<value>'
+        for index, filter in enumerate(filter_aggregations):
+            filter_aggs_name = filter.split(":")[0]
+            if filter_aggs_name in OHOS_FILTER_AGGS_NAME_MAP.keys():
+                # rename filter
+                new_filter_aggs_name = OHOS_FILTER_AGGS_NAME_MAP.get(filter_aggs_name)
+                new_filter = new_filter_aggs_name + filter.lstrip(filter_aggs_name)
+                try:
+                    # nested filters
+                    nested_aggs_name = filter.split(":")[1].split("-")[1]
+                    nested_aggs_to_add.add(nested_aggs_name)
+                    nested_prefix_aggs_name = filter.split(":")[1]
+                    selected_nested_prefix_aggs.add(nested_prefix_aggs_name)
+                except IndexError:
+                    # not a nested filter
+                    pass
+                new_filter_aggregations.append(new_filter)
+            else:
+                new_filter_aggregations.append(filter)
 
-    for parent, child in NESTED_PREFIX_AGGS_PAIRS.items():
-        # remove parent filter if a child fiter is selected
-        if {parent, child}.issubset(selected_nested_prefix_aggs):
-            for index, item in enumerate(new_filter_aggregations):
-                if parent in item:
-                    new_filter_aggregations.pop(index)
+        new_aggregations.extend(aggregations)
+        # add nested aggregations
+        new_aggregations.extend(nested_aggs_to_add)
 
-        # remove prefix aggs
-        for index, agg in enumerate(new_filter_aggregations):
-            new_filter_aggregations[index] = agg.replace(parent + ":", "").replace(
-                child + ":", ""
-            )
+        for parent, child in NESTED_PREFIX_AGGS_PAIRS.items():
+            # remove parent filter if a child fiter is selected
+            if {parent, child}.issubset(selected_nested_prefix_aggs):
+                for index, item in enumerate(new_filter_aggregations):
+                    if parent in item:
+                        new_filter_aggregations.pop(index)
+
+            # remove prefix aggs
+            for index, agg in enumerate(new_filter_aggregations):
+                new_filter_aggregations[index] = agg.replace(parent + ":", "").replace(
+                    child + ":", ""
+                )
 
     return new_aggregations, new_filter_aggregations

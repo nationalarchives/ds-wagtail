@@ -424,6 +424,7 @@ class TestPrepareOhosParam(SimpleTestCase):
             (
                 "orphan selection",
                 (
+                    "list",
                     ["community"],
                     ["collection:Sharing Wycombe's Old Photographs", "group:community"],
                 ),
@@ -438,6 +439,7 @@ class TestPrepareOhosParam(SimpleTestCase):
             (
                 "parent selection",
                 (
+                    "list",
                     ["community"],
                     [
                         "collection:parent-collectionSurrey:Surrey History Centre",
@@ -457,6 +459,7 @@ class TestPrepareOhosParam(SimpleTestCase):
             (
                 "parent children selection",
                 (
+                    "list",
                     ["community"],
                     [
                         "collection:parent-collectionSurrey:Surrey History Centre",
@@ -480,6 +483,7 @@ class TestPrepareOhosParam(SimpleTestCase):
             (
                 "children selection",
                 (
+                    "list",
                     ["community"],
                     [
                         "collection:child-collectionSurrey:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
@@ -498,11 +502,32 @@ class TestPrepareOhosParam(SimpleTestCase):
                     ],
                 ),
             ),
+            (
+                "parent children selection - MAP view",
+                (
+                    "map",
+                    ["community"],
+                    [
+                        "collection:parent-collectionSurrey:Surrey History Centre",
+                        "collection:child-collectionSurrey:GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS",
+                        "collection:child-collectionSurrey:LINGFIELD ORAL HISTORY PROJECT: TRANSCRIPTS",
+                        "collection:parent-collectionMorrab:Morrab Photo Archive",
+                        "collection:child-collectionMorrab:Miscellaneous Photos",
+                        "group:community",
+                    ],
+                ),
+                (
+                    ["community"],
+                    [
+                        "group:community",
+                    ],
+                ),
+            ),
         )
 
-        for label, value, expected in test_data:
+        for label, params, expected in test_data:
             with self.subTest(label):
-                aggs, filter = prepare_ohos_params(*value)
+                aggs, filter = prepare_ohos_params(*params)
                 aggs_equality = set(aggs).issubset(set(expected[0]))
                 filter_equality = set(filter).issubset(set(expected[1]))
                 self.assertTrue(aggs_equality)

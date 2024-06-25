@@ -207,7 +207,8 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
         FEATURE_GEO_LON=f"{-54321.12345}",
         FEATURE_GEO_ZOOM=f"{3}",
     )
-    def test_context_data(self):
+    def test_context_data_map_view(self):
+        self.test_url = f"{self.test_url}?vis_view=map"
         response = self.client.get(self.test_url)
         self.assertEqual(
             response.context.get("default_geo_data"),
@@ -216,6 +217,32 @@ class CatalogueSearchAPIIntegrationTest(SearchViewTestCase):
                 "lon": settings.FEATURE_GEO_LON,
                 "zoom": settings.FEATURE_GEO_ZOOM,
             },
+        )
+
+    @responses.activate
+    @override_settings(
+        FEATURE_GEO_LAT=f"{12345.6789}",
+        FEATURE_GEO_LON=f"{-54321.12345}",
+        FEATURE_GEO_ZOOM=f"{3}",
+    )
+    def test_context_data_list_view(self):
+        self.test_url = f"{self.test_url}?vis_view=list"
+        response = self.client.get(self.test_url)
+        self.assertEqual(
+            response.context.get("list_view_url"),
+            "/search/catalogue/?group=community&vis_view=list",
+        )
+        self.assertEqual(
+            response.context.get("map_view_url"),
+            "/search/catalogue/?group=community&vis_view=map",
+        )
+        self.assertEqual(
+            response.context.get("timeline_view_url"),
+            "/search/catalogue/?group=community&vis_view=timeline&timeline_type=century",
+        )
+        self.assertEqual(
+            response.context.get("tag_view_url"),
+            "/search/catalogue/?group=community&vis_view=tag",
         )
 
     @responses.activate

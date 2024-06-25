@@ -3,6 +3,7 @@ import importlib
 import logging
 import re
 
+from datetime import date
 from typing import Any, Dict, Iterator, List, Optional, Tuple, Union
 
 from django.conf import settings
@@ -10,6 +11,7 @@ from django.core.paginator import Page as PaginatorPage
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
 from django.utils import timezone
+from django.utils.http import urlencode
 from django.views.generic import FormView, TemplateView
 
 from wagtail.coreutils import camelcase_to_underscore
@@ -463,6 +465,7 @@ class BaseFilteredSearchView(BaseSearchView):
             offset=(self.page_number - 1) * page_size,
             size=page_size,
             sort=form.cleaned_data.get("sort"),
+            vis_view=form.cleaned_data.get("vis_view"),
         )
 
     def get_api_aggregations(self) -> List[str]:
@@ -787,25 +790,67 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
     page_type = "Catalogue search page"
     page_title = "Catalogue search"
 
-    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
-        self.set_session_info()
+    def _get_ohos_kwargs(self, **kwargs: Any) -> Dict[str, Any]:
+        """
+        Adds template tags for OHOS visualisation links
+        """
+        # params to append to the visual links template tags
+        _FIELDS_TO_ADD = (
+            "q",
+            "sort",
+            "collection",
+            "covering_date_from",
+            "covering_date_to",
+        )
+
         module = importlib.import_module("etna.search.common")
-        q_search_param = ""
-        if q_search_term := self.form.cleaned_data.get("q"):
-            q_search_param = "&q=" + q_search_term
+
+        vis_view = self.form.cleaned_data.get("vis_view")
+
+        if vis_view == VisViews.MAP:
+            kwargs.update(
+                default_geo_data={
+                    "lat": settings.FEATURE_GEO_LAT,
+                    "lon": settings.FEATURE_GEO_LON,
+                    "zoom": settings.FEATURE_GEO_ZOOM,
+                },
+            )
+
+        # update visualisation links with search and filters
+        add_url_params = ""
+        for field, data in self.form.cleaned_data.items():
+            if field in _FIELDS_TO_ADD and data:
+                if isinstance(data, str):
+                    add_url_params += f"&{urlencode({field:data})}"
+                elif isinstance(data, list):
+                    for item in data:
+                        add_url_params += f"&{urlencode({field:item})}"
+                elif isinstance(data, date):
+                    date_params = {
+                        f"{field}_0": str(data.day).zfill(2),
+                        f"{field}_1": str(data.month).zfill(2),
+                        f"{field}_2": str(data.year).zfill(4),
+                    }
+                    add_url_params += f"&{urlencode(date_params)}"
 
         kwargs.update(
-            default_geo_data={
-                "lat": settings.FEATURE_GEO_LAT,
-                "lon": settings.FEATURE_GEO_LON,
-                "zoom": settings.FEATURE_GEO_ZOOM,
-            },
-            list_view_url=module.VIS_URLS.get(VisViews.LIST.value) + q_search_param,
-            map_view_url=module.VIS_URLS.get(VisViews.MAP.value) + q_search_param,
+            list_view_url=module.VIS_URLS.get(VisViews.LIST.value) + add_url_params,
+            map_view_url=module.VIS_URLS.get(VisViews.MAP.value) + add_url_params,
             timeline_view_url=module.VIS_URLS.get(VisViews.TIMELINE.value)
-            + q_search_param,
-            tag_view_url=module.VIS_URLS.get(VisViews.TAG.value) + q_search_param,
+            + add_url_params,
+            tag_view_url=module.VIS_URLS.get(VisViews.TAG.value) + add_url_params,
         )
+
+        return kwargs
+
+    def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
+        self.set_session_info()
+
+        if self.current_bucket_key == BucketKeys.COMMUNITY:
+
+            add_kwargs = self._get_ohos_kwargs(**kwargs)
+            kwargs.update(add_kwargs)
+
         return super().get_context_data(**kwargs)
 
 
