@@ -1,0 +1,47 @@
+name: Build and deploy
+
+on:
+  workflow_dispatch:
+  push:
+  release:
+    types:
+      - published
+
+concurrency:
+  group: cd-${{ github.ref }}
+
+jobs:
+  test:
+    name: Tests
+    uses: ./.github/workflows/_tests.yml
+    with:
+      python-version: ${{ vars.CI_PYTHON_VERSION }}
+      poetry-version: ${{ vars.CI_POETRY_VERSION }}
+
+  version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get tag
+        id: version-tag
+        uses: nationalarchives/ds-docker-actions/.github/actions/get-version-tag@main
+    outputs:
+      version: ${{ steps.version-tag.outputs.version-tag }}
+
+  build:
+    runs-on: ubuntu-latest
+    needs:
+      - test
+      - version
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Docker image
+        uses: nationalarchives/ds-docker-actions/.github/actions/docker-build@main
+        with:
+          version: ${{ needs.version.outputs.version }}
+          latest: ${{ github.ref == 'refs/heads/main' }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          docker-image-name: ${{ vars.DOCKER_IMAGE_NAME }}
