@@ -8,6 +8,7 @@ from wagtail.test.utils import WagtailPageTestCase
 
 from wagtail_factories import ImageFactory
 
+from etna.alerts.models import Alert
 from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
@@ -23,7 +24,6 @@ from etna.collections.factories import (
 )
 from etna.collections.models import Highlight, PageTimePeriod, PageTopic
 from etna.media.models import EtnaMedia
-from etna.alerts.models import Alert
 
 API_URL = "/api/v2/pages/"
 
