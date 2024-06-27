@@ -14,6 +14,7 @@ from wagtail.images.api.v2.views import ImagesAPIViewSet
 from wagtail.models import Page, PageViewRestriction, Site
 
 from rest_framework import status
+from rest_framework.filters import BaseFilterBackend
 from rest_framework.response import Response
 from wagtail_headless_preview.models import PagePreview
 from wagtailmedia.api.views import MediaAPIViewSet
@@ -23,8 +24,40 @@ from etna.core.serializers.pages import DefaultPageSerializer
 logger = logging.getLogger(__name__)
 
 
+class SiblingOfFilter(BaseFilterBackend):
+    """
+    Implements the ?sibling_of filter used to filter the results to only
+    contain pages that are siblings of the specified page.
+    """
+
+    def filter_queryset(self, request, queryset, view):
+        if "sibling_of" in request.GET:
+            try:
+                parent_page_id = int(request.GET["sibling_of"])
+                if parent_page_id < 0:
+                    raise ValueError()
+                parent_page = view.get_base_queryset().get(id=parent_page_id)
+                grandparent_page = view.get_base_queryset().get(
+                    id=parent_page.get_parent().id
+                )
+            except ValueError:
+                if request.GET["sibling_of"] == "root":
+                    grandparent_page = view.get_root_page()
+                else:
+                    raise BadRequestError("sibling_of must be a positive integer")
+            except Page.DoesNotExist:
+                raise BadRequestError("parent page doesn't exist")
+            queryset = queryset.child_of(grandparent_page)
+            queryset._filtered_by_grandchild_of = grandparent_page
+        return queryset
+
+
 class CustomPagesAPIViewSet(PagesAPIViewSet):
-    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(["password"])
+    filter_backends = [SiblingOfFilter] + PagesAPIViewSet.filter_backends
+
+    known_query_parameters = PagesAPIViewSet.known_query_parameters.union(
+        ["password", "sibling_of"]
+    )
 
     def listing_view(self, request):
         queryset = self.get_queryset()
