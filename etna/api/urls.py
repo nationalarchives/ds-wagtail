@@ -46,7 +46,7 @@ class SiblingOfFilter(BaseFilterBackend):
                 else:
                     raise BadRequestError("sibling_of must be a positive integer")
             except Page.DoesNotExist:
-                raise BadRequestError("parent page doesn't exist")
+                raise BadRequestError("parent_page or grandparent_page page don't exist")
             queryset = queryset.child_of(grandparent_page)
             queryset._filtered_by_grandchild_of = grandparent_page
         return queryset
