@@ -18,6 +18,7 @@ from .promoted_links import (
 )
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
+from .tabs import TabsBlock
 from .text import InsetTextBlock
 
 __all__ = [
@@ -44,4 +45,5 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
+    "TabsBlock",
 ]
