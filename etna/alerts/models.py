@@ -4,7 +4,10 @@ from django.db import models
 from wagtail.admin.panels import FieldPanel
 from wagtail.api import APIField
 from wagtail.fields import RichTextField
+from wagtail.models import Page
 from wagtail.snippets.models import register_snippet
+
+from .serializers import AlertSerializer
 
 
 @register_snippet
@@ -72,11 +75,23 @@ class AlertMixin(models.Model):
         related_name="+",
     )
 
+    @property
+    def alert_check(self):
+        if self.alert and self.alert.active:
+            return self.alert
+        elif parent := self.get_parent():
+            if not isinstance(parent, Page):
+                if parent_alert := parent.specific.alert_check:
+                    print(parent_alert.cascade)
+                    if parent_alert.cascade:
+                        return parent_alert
+        return None
+
     settings_panels = [
         FieldPanel("alert"),
     ]
 
-    api_fields = [APIField("alert")]
+    api_fields = [APIField("alert_check", serializer=AlertSerializer())]
 
     class Meta:
         abstract = True
