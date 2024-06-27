@@ -82,7 +82,6 @@ class AlertMixin(models.Model):
         elif parent := self.get_parent():
             if not isinstance(parent, Page):
                 if parent_alert := parent.specific.alert_check:
-                    print(parent_alert.cascade)
                     if parent_alert.cascade:
                         return parent_alert
         return None
