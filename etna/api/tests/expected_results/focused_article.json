@@ -24,6 +24,7 @@
         "url": "/article_index/focused_article/"
     },
     "title": "focused_article",
+    "alert_check": null,
     "type_label": "Focus on",
     "teaser_text": "Teaser text",
     "teaser_image": {

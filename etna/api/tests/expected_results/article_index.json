@@ -24,6 +24,7 @@
         "url": "/article_index/"
     },
     "title": "article_index",
+    "alert_check": null,
     "type_label": "Article index",
     "teaser_text": "Teaser text",
     "teaser_image": {
