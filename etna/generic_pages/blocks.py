@@ -4,6 +4,7 @@ from etna.core.blocks import (
     ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
+    DoDontListBlock,
     FeaturedRecordArticleBlock,
     InsetTextBlock,
     ParagraphBlock,
@@ -21,6 +22,7 @@ from ..records.blocks import RecordLinksBlock
 class SectionContentBlock(blocks.StreamBlock):
     button = ButtonBlock()
     call_to_action = CallToActionBlock()
+    do_dont_list = DoDontListBlock()
     featured_record_article = FeaturedRecordArticleBlock()
     image = ContentImageBlock()
     inset_text = InsetTextBlock()
