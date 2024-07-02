@@ -7,6 +7,7 @@ from .featured_content import (
     RelatedItemBlock,
 )
 from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
+from .lists import DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
@@ -19,6 +20,7 @@ from .promoted_links import (
 )
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
+from .text import InsetTextBlock, WarningTextBlock
 
 __all__ = [
     "APIPageChooserBlock",
@@ -27,9 +29,11 @@ __all__ = [
     "CallToActionBlock",
     "ContentImageBlock",
     "DocumentsBlock",
+    "DoDontListBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "ImageBlock",
+    "InsetTextBlock",
     "NoCaptionImageBlock",
     "PageListBlock",
     "ParagraphBlock",
@@ -44,4 +48,5 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
+    "WarningTextBlock",
 ]
