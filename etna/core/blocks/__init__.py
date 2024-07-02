@@ -19,7 +19,7 @@ from .promoted_links import (
 )
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
-from .text import InsetTextBlock
+from .text import InsetTextBlock, WarningTextBlock
 
 __all__ = [
     "APIPageChooserBlock",
@@ -46,4 +46,5 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
+    "WarningTextBlock",
 ]
