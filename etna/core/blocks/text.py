@@ -12,7 +12,6 @@ class InsetTextBlock(blocks.StructBlock):
         icon = "indent"
         label = "Inset text"
 
-
 class WarningTextBlock(blocks.StructBlock):
     text = APIRichTextBlock(features=settings.RESTRICTED_RICH_TEXT_FEATURES)
 
