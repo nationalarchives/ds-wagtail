@@ -161,3 +161,13 @@ class ContentImageBlock(blocks.StructBlock):
         icon = "image"
         form_template = "form_templates/default-form-with-safe-label.html"
         value_class = ImageOrientationValue
+
+
+class ImageGalleryBlock(blocks.StructBlock):
+    title = blocks.CharBlock(required=False)
+    images = blocks.ListBlock(ContentImageBlock())
+
+    class Meta:
+        label = "Image Gallery"
+        template = "blocks/image-gallery.html"
+        icon = "image"
