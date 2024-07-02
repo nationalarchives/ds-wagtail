@@ -1,6 +1,7 @@
 from django.db import models
 
-from wagtail.documents.models import Document, AbstractDocument
+from wagtail.documents.models import AbstractDocument, Document
+
 
 class CustomDocument(AbstractDocument):
     extent = models.CharField(blank=True, null=True)

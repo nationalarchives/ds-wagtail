@@ -305,7 +305,7 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-WAGTAILDOCS_DOCUMENT_MODEL = 'core.CustomDocument'
+WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
 
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 

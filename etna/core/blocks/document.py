@@ -33,12 +33,13 @@ class DocumentBlock(blocks.StructBlock):
                 "extent": file.extent,
                 "url": file.file.url,
             }
-        
+
         return representation
-    
+
     class Meta:
         icon = "doc-full"
         label = "Document"
+
 
 class DocumentsBlock(blocks.StructBlock):
     """
