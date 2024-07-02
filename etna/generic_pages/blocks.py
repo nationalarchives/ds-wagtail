@@ -13,6 +13,7 @@ from etna.core.blocks import (
     QuoteBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
+    WarningTextBlock,
 )
 
 from ..media.blocks import MediaBlock
@@ -33,6 +34,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    warning_text = WarningTextBlock()
 
 
 class ContentSectionBlock(SectionDepthAwareStructBlock):
