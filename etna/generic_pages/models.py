@@ -14,3 +14,10 @@ class GeneralPage(BasePage):
     ]
 
     api_fields = BasePage.api_fields + ["body"]
+
+
+class HubPage(BasePage):
+
+    content_panels = BasePage.content_panels
+
+    api_fields = BasePage.api_fields
