@@ -46,5 +46,5 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
-    "WarningTextBlock"
+    "WarningTextBlock",
 ]
