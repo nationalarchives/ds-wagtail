@@ -20,9 +20,9 @@ class DocumentBlock(blocks.StructBlock):
 
         if file:
             if file.file_size >= 1000000:
-                file_size = f"{((file.file_size / 1024) / 1024):.2f}MB"
+                file_size = f"{((file.file_size / 1024) / 1024):.1f}MB"
             else:
-                file_size = f"{(file.file_size / 1024):.2f}KB"
+                file_size = f"{(file.file_size / 1024):.1f}KB"
 
             representation["file"] = {
                 "id": file.id,
