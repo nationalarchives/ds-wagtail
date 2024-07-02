@@ -8,6 +8,7 @@ from wagtail.test.utils import WagtailPageTestCase
 
 from wagtail_factories import ImageFactory
 
+from etna.alerts.models import Alert
 from etna.articles.factories import (
     ArticleIndexPageFactory,
     ArticlePageFactory,
@@ -61,6 +62,14 @@ class APIResponseTest(WagtailPageTestCase):
             record_dates="1900-2000",
         )
 
+        cls.alert = Alert.objects.create(
+            title="BETA",
+            message="<p>Message</p>",
+            active=True,
+            cascade=True,
+            alert_level="high",
+        )
+
         cls.test_media = EtnaMedia.objects.create(
             title="Test media",
             file="media/test.mp4",
@@ -99,6 +108,7 @@ class APIResponseTest(WagtailPageTestCase):
             parent=cls.root_page,
             title="authors",
             first_published_at=DATE_1,
+            alert=cls.alert,
         )
 
         cls.author_page = AuthorPageFactory(
@@ -308,6 +318,7 @@ class APIResponseTest(WagtailPageTestCase):
         )
 
     def request_api(self, path: str = ""):
+        self.maxDiff = None
         return self.client.get(
             f"{API_URL}{path}" + ("/" if path else ""), format="json"
         )
