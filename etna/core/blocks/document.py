@@ -13,6 +13,29 @@ class DocumentBlock(blocks.StructBlock):
     )
     file = DocumentChooserBlock(required=True)
 
+    def get_api_representation(self, value, context=None):
+        representation = super().get_api_representation(value, context)
+
+        file = value.get("file")
+
+        if file:
+            if file.file_size >= 1000000:
+                file_size = f"{((file.file_size/1024)/1024):.2f}MB"
+            else:
+                file_size = f"{(file.file_size/1024):.2f}KB"
+
+            representation["file"] = {
+                "id": file.id,
+                "title": file.title,
+                "description": file.description,
+                "size": file_size,
+                "type": file.file_extension,
+                "extent": file.extent,
+                "url": file.file.url,
+            }
+        
+        return representation
+    
     class Meta:
         icon = "doc-full"
         label = "Document"
