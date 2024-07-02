@@ -175,6 +175,25 @@ class Migration(migrations.Migration):
                                                 ),
                                             ),
                                             (
+                                                "inset_text",
+                                                wagtail.blocks.StructBlock(
+                                                    [
+                                                        (
+                                                            "text",
+                                                            etna.core.blocks.paragraph.APIRichTextBlock(
+                                                                features=[
+                                                                    "bold",
+                                                                    "italic",
+                                                                    "link",
+                                                                    "ol",
+                                                                    "ul",
+                                                                ]
+                                                            ),
+                                                        )
+                                                    ]
+                                                ),
+                                            ),
+                                            (
                                                 "media",
                                                 wagtail.blocks.StructBlock(
                                                     [
