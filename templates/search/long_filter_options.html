@@ -19,7 +19,7 @@
             <div class="tna-column tna-column--full">
                 <div class="long-filters__options">
                     <input type="submit" value="Apply filters" class="search-filters__submit">
-                    <a href="{% url url_name %}?{{ request.GET.urlencode }}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
+                    <a href="{% long_filter_cancel field_name=field_name %}" data-link-type="Search Link" data-link="Cancel and return to results">Cancel and return to results</a>
                 </div>
             </div>
         </div>
@@ -39,7 +39,7 @@
             </div>
 
             <div class="tna-column tna-column--full">
-                {% render_fields_as_hidden form exclude=field_name %}
+                {% render_fields_as_hidden form long_filter=True %}
 
                 <div class="long-filters__submit-section">
                     <input type="submit" value="Apply filters" class="search-filters__submit">

@@ -1,3 +1,5 @@
+{% load search_tags %}
+
 {% with id=widget.attrs.id %}
     <div{% if id %} id="{{ id }}"{% endif %} class="search-filters__widget {{ widget.attrs.class }}">
         <ul class="search-filters__widget-list">
@@ -5,7 +7,7 @@
                 {% for option in options %}
                     {% if group %}
                         {# write nested level checkbox of 1 level of hierarchy parent-child #}
-                        {% if option.value != "See more collections" %}
+                        {% if not option.value|is_see_more %}
                             {# skip see more checkbox value #}
                             {% if forloop.first %}
                                 <li class="search-filters__widget-list-item ohos-checkbox-container">
@@ -21,9 +23,9 @@
                                 </ul>
                             </li>
                         {% endif %}
-                        {% if option.value == "See more collections" %}
+                        {% if option.value|is_see_more %}
                             {# see more checkbox value as link #}
-                            <a href="" aria-label='See more'>{{ option.label }}</a>
+                            <a href="{% see_more_url option.value %}" aria-label='See more'>{{ option.label }}</a>
                         {% endif %}
                     {% else %}
                         {# write orphan or no level or no hierarchy checkbox #}

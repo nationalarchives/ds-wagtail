@@ -422,12 +422,14 @@ class TestPrepareOhosParam(SimpleTestCase):
 
         test_data = (
             (
-                "orphan selection",
+                "orphan selection",  # label
+                # params
                 (
                     "list",
                     ["community"],
                     ["collection:Sharing Wycombe's Old Photographs", "group:community"],
                 ),
+                # expected
                 (
                     ["community"],
                     [
@@ -437,7 +439,8 @@ class TestPrepareOhosParam(SimpleTestCase):
                 ),
             ),
             (
-                "parent selection",
+                "parent selection",  # label
+                # params
                 (
                     "list",
                     ["community"],
@@ -447,6 +450,7 @@ class TestPrepareOhosParam(SimpleTestCase):
                         "group:community",
                     ],
                 ),
+                # expected
                 (
                     ["community", "collectionSurrey", "collectionMorrab"],
                     [
@@ -457,7 +461,8 @@ class TestPrepareOhosParam(SimpleTestCase):
                 ),
             ),
             (
-                "parent children selection",
+                "parent children selection",  # label
+                # params
                 (
                     "list",
                     ["community"],
@@ -470,6 +475,7 @@ class TestPrepareOhosParam(SimpleTestCase):
                         "group:community",
                     ],
                 ),
+                # expected
                 (
                     ["community", "collectionSurrey", "collectionMorrab"],
                     [
@@ -481,7 +487,8 @@ class TestPrepareOhosParam(SimpleTestCase):
                 ),
             ),
             (
-                "children selection",
+                "children selection",  # label
+                # params
                 (
                     "list",
                     ["community"],
@@ -492,6 +499,7 @@ class TestPrepareOhosParam(SimpleTestCase):
                         "group:community",
                     ],
                 ),
+                # expected
                 (
                     ["community", "collectionSurrey", "collectionMorrab"],
                     [
@@ -503,7 +511,8 @@ class TestPrepareOhosParam(SimpleTestCase):
                 ),
             ),
             (
-                "parent children selection - MAP view",
+                "parent children selection - MAP view",  # label
+                # params
                 (
                     "map",
                     ["community"],
@@ -516,8 +525,33 @@ class TestPrepareOhosParam(SimpleTestCase):
                         "group:community",
                     ],
                 ),
+                # expected
                 (
                     ["community"],
+                    [
+                        "group:community",
+                    ],
+                ),
+            ),
+            (
+                "multiple parent children selection - long filter",  # label
+                # params
+                (
+                    "list",
+                    ["community"],
+                    [
+                        "collection:long-collectionMorrabAll:Morrab Photo Archive",
+                        "collection:Sharing Wycombe's Old Photographs",
+                        "collection:parent-collectionMorrab:Morrab Photo Archive",
+                        "collection:parent-collectionSurrey:Surrey History Centre",
+                        "collection:child-collectionSurrey:JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                        "group:community",
+                    ],
+                    True,
+                ),
+                # expected
+                (
+                    ["community", "collectionMorrabAll"],
                     [
                         "group:community",
                     ],
@@ -527,8 +561,8 @@ class TestPrepareOhosParam(SimpleTestCase):
 
         for label, params, expected in test_data:
             with self.subTest(label):
-                aggs, filter = prepare_ohos_params(*params)
+                aggs, filters = prepare_ohos_params(*params)
                 aggs_equality = set(aggs).issubset(set(expected[0]))
-                filter_equality = set(filter).issubset(set(expected[1]))
+                filter_equality = set(filters).issubset(set(expected[1]))
                 self.assertTrue(aggs_equality)
                 self.assertTrue(filter_equality)

@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.paginator import Page as PaginatorPage
 from django.forms import Form
 from django.http import Http404, HttpRequest, HttpResponse, HttpResponseBadRequest
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.http import urlencode
 from django.views.generic import FormView, TemplateView
@@ -21,15 +22,16 @@ from ..ciim.client import Aggregation, Sort
 from ..ciim.constants import (
     AGGS_LOOKUP_KEY,
     CATALOGUE_BUCKETS,
-    CHILD_AGGS_ALIAS_PREFIX,
+    CHILD_AGGS_PREFIX,
     CLOSURE_CLOSED_STATUS,
     COLLECTION_ATTR_FOR_ALL_BUCKETS,
-    NESTED_CHECKBOX_VALUES_AGGS_NAMES,
+    LONG_AGGS_PREFIX,
+    NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP,
     NESTED_CHILDREN_KEY,
-    NESTED_PREFIX_AGGS_PAIRS,
-    NESTED_SEE_MORE_LABEL,
     OHOS_CHECKBOX_AGGS_NAME_MAP,
-    PARENT_AGGS_ALIAS_PREFIX,
+    PARENT_AGGS_PREFIX,
+    PREFIX_AGGS_PARENT_CHILD_KV,
+    SEE_MORE_VALUE_FMT,
     Bucket,
     BucketKeys,
     BucketList,
@@ -503,7 +505,74 @@ class BaseFilteredSearchView(BaseSearchView):
         filter_aggregations.append(f"group:{form.cleaned_data['group']}")
         return filter_aggregations
 
-    def _transform_api_result_aggregations_for_nested_checkbox(self, api_result: Any):
+    def _prepare_see_more_choice(
+        self, aggs_rec: Dict[str, Any], field_name: str
+    ) -> Dict:
+        """
+        Prepares see more to be extracted as a choice and then url in template.
+        aggs_rec:
+            aggregations record in the API response ex "collectionMorrab"
+        field_name:
+            name of the checkbox field
+
+        Ex:
+        see_more_value=SEE-MORE::SEP::See more collections::SEP::
+        /search/catalogue/long-filter-chooser/collection/
+        ?collection=long-collectionMorrabAll%3AMorrab+Photo+Archive
+        &collection=parent-collectionMorrab%3AMorrab+Photo+Archive&vis_view=list&group=community
+        """
+        choice_data = {}
+        see_more_count = aggs_rec.get("other")  # attribute that determines see more
+        if see_more_count > 0:
+            long_filter_aggs = NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.get(field_name)[1]
+
+            data = f"{LONG_AGGS_PREFIX}{long_filter_aggs}:{field_name}"
+            add_url_params = f"?{urlencode({COLLECTION_ATTR_FOR_ALL_BUCKETS:data})}"
+
+            # add params to handle return to search
+            fields_to_add = (
+                "q",
+                "sort",
+                "collection",
+                "covering_date_from",
+                "covering_date_to",
+                "vis_view",
+                "group",
+            )
+            if self.form.cleaned_data.get("vis_view") == VisViews.TIMELINE:
+                fields_to_add += ("timeline_type", "creation_date_from")
+
+            for field, data in self.form.cleaned_data.items():
+                if field in fields_to_add and data:
+                    if isinstance(data, str):
+                        add_url_params += f"&{urlencode({field:data})}"
+                    elif isinstance(data, list):
+                        for filter in data:
+                            add_url_params += f"&{urlencode({field:filter})}"
+                    elif isinstance(data, date):
+                        date_params = {
+                            f"{field}_0": str(data.day).zfill(2),
+                            f"{field}_1": str(data.month).zfill(2),
+                            f"{field}_2": str(data.year).zfill(4),
+                        }
+                        add_url_params += f"&{urlencode(date_params)}"
+            url = reverse(
+                "search-catalogue-long-filter-chooser",
+                kwargs={"field_name": COLLECTION_ATTR_FOR_ALL_BUCKETS},
+            )
+            url += add_url_params
+            see_more_value = SEE_MORE_VALUE_FMT.format(url=url)
+
+            choice_data = {
+                "value": see_more_value,
+                "doc_count": see_more_count,
+            }
+
+        return choice_data
+
+    def _transform_api_result_aggregations_for_nested_checkbox_collection(
+        self, api_result: Any
+    ):
         """
         Transforms the API aggregations for nested checkbox
         when the "other" count is more than 0 it indicates there are more collections
@@ -527,6 +596,7 @@ class BaseFilteredSearchView(BaseSearchView):
                        'children': [{'value': 'GYPSY ROMA TRAVELLER HISTORY MONTH: RECORDED INTERVIEWS',
                                      'doc_count': 12,
                                      'key': 'child-collectionSurrey'},
+                                     ...
                                      {'value': 'See more collections', 'doc_count': 22}]}],
                                      'total': 0,
                                      'other': 0}]
@@ -534,6 +604,7 @@ class BaseFilteredSearchView(BaseSearchView):
         remove_aggregations = []
         for index1, aggs_rec in enumerate(api_result.aggregations):
             aggs_name = aggs_rec.get("name")
+
             if aggs_name == OHOS_CHECKBOX_AGGS_NAME_MAP.get(
                 COLLECTION_ATTR_FOR_ALL_BUCKETS
             ):
@@ -544,19 +615,22 @@ class BaseFilteredSearchView(BaseSearchView):
                 # add key for parent collections
                 for index2, entry in enumerate(aggs_rec.get("entries", [])):
                     if collection_name := entry.get("value"):
-                        if collection_name in NESTED_CHECKBOX_VALUES_AGGS_NAMES.keys():
-                            nested_aggs_name = NESTED_CHECKBOX_VALUES_AGGS_NAMES.get(
-                                collection_name
+                        if (
+                            collection_name
+                            in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.keys()
+                        ):
+                            nested_aggs_name = (
+                                NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.get(
+                                    collection_name
+                                )[0]
                             )
-                            parent_aggs_name = (
-                                PARENT_AGGS_ALIAS_PREFIX + nested_aggs_name
-                            )
+                            parent_aggs_name = PARENT_AGGS_PREFIX + nested_aggs_name
                             # add key for parent collections
                             api_result.aggregations[index1]["entries"][index2].update(
                                 key=parent_aggs_name
                             )
 
-                            child_aggs_name = NESTED_PREFIX_AGGS_PAIRS.get(
+                            child_aggs_name = PREFIX_AGGS_PARENT_CHILD_KV.get(
                                 parent_aggs_name
                             )
                             children = []
@@ -569,17 +643,12 @@ class BaseFilteredSearchView(BaseSearchView):
                                             {AGGS_LOOKUP_KEY: child_aggs_name}
                                         )
 
-                                    # add see more
-                                    see_more_label = NESTED_SEE_MORE_LABEL
-                                    see_more_count = aggs_rec.get("other")
-                                    if see_more_count > 0:
-                                        children.append(
-                                            {
-                                                "value": see_more_label,
-                                                "doc_count": see_more_count,
-                                            }
-                                        )
-                            # update children
+                                    if see_more := self._prepare_see_more_choice(
+                                        aggs_rec, collection_name
+                                    ):
+                                        children.append(see_more)
+
+                            # add children KV
                             if children:
                                 api_result.aggregations[index1]["entries"][
                                     index2
@@ -600,7 +669,9 @@ class BaseFilteredSearchView(BaseSearchView):
         See also: `get_api_aggregations()`.
         """
         if form.cleaned_data.get("group") == BucketKeys.COMMUNITY:
-            self._transform_api_result_aggregations_for_nested_checkbox(api_result)
+            self._transform_api_result_aggregations_for_nested_checkbox_collection(
+                api_result
+            )
 
         for value in api_result.aggregations:
             key = value.get("name")
@@ -664,11 +735,11 @@ class BaseFilteredSearchView(BaseSearchView):
             if form.cleaned_data.get("group") == "community":
                 # trims the filter labels for nested collections
                 prefix_filter_aggs = [
-                    PARENT_AGGS_ALIAS_PREFIX + item
-                    for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
+                    PARENT_AGGS_PREFIX + aggs[0]
+                    for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.values()
                 ] + [
-                    CHILD_AGGS_ALIAS_PREFIX + item
-                    for item in NESTED_CHECKBOX_VALUES_AGGS_NAMES.values()
+                    CHILD_AGGS_PREFIX + aggs[0]
+                    for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.values()
                 ]
 
                 label_value_list = []
@@ -755,6 +826,7 @@ class BaseLongFilterOptionsView(BaseFilteredSearchView):
                 f"'{field_name}' is not a valid field name. The value must be "
                 f"one of: {self.dynamic_choice_fields}."
             )
+
         self.field_name = field_name
         self.bound_field = form[field_name]
         self.form_field = self.bound_field.field
@@ -762,12 +834,19 @@ class BaseLongFilterOptionsView(BaseFilteredSearchView):
             return self.form_valid(form)
         return self.form_invalid(form)
 
+    def get_api_kwargs(self, form: Form) -> Dict[str, Any]:
+        kwargs = super().get_api_kwargs(form)
+        kwargs.update(long_filter=True)
+        return kwargs
+
     def get_api_aggregations(self) -> List[str]:
         """
         Overrides get_api_aggregations() to only request
         aggregations for the form field that options have been requested for.
         """
         aggregation_name = underscore_to_camelcase(self.field_name)
+        if self.form.cleaned_data.get("group") == BucketKeys.COMMUNITY.value:
+            return super().get_api_aggregations()
         return [f"{aggregation_name}:100"]
 
     def get_context_data(self, **kwargs: Any) -> Dict[str, Any]:
@@ -777,6 +856,54 @@ class BaseLongFilterOptionsView(BaseFilteredSearchView):
             field=self.form_field,
         )
         return super().get_context_data(**kwargs)
+
+    def process_api_result(self, form: Form, api_result: Any):
+
+        remove_aggregations = []
+        long_filter_aggs_map = dict(
+            [
+                (aggs[1], CHILD_AGGS_PREFIX + aggs[0])
+                for aggs in NESTED_CHECKBOX_VALUES_AGGS_NAMES_MAP.values()
+            ]
+        )
+        for index1, aggs_rec in enumerate(api_result.aggregations):
+            aggs_name = aggs_rec.get("name")
+
+            if aggs_name in long_filter_aggs_map.keys():
+                # rename the aggregation to the form element name
+                api_result.aggregations[index1].update(
+                    name=COLLECTION_ATTR_FOR_ALL_BUCKETS
+                )
+
+                # get aggs for long filter aggs
+                key = long_filter_aggs_map.get(aggs_name)
+
+                # add child key for long filter
+                for index2, _ in enumerate(aggs_rec.get("entries", [])):
+                    api_result.aggregations[index1]["entries"][index2].update(key=key)
+            else:
+                remove_aggregations.append(aggs_name)
+
+        new_aggregations = [
+            aggs_rec
+            for aggs_rec in api_result.aggregations
+            if aggs_rec.get("name") not in remove_aggregations
+        ]
+        api_result.aggregations = new_aggregations
+
+        selected_values = ()
+        for value in api_result.aggregations:
+            key = value.get("name")
+            field_name = camelcase_to_underscore(key)
+            if field_name in self.dynamic_choice_fields:
+                choice_data = value.get("entries", ())
+                form.fields[field_name].update_choices(
+                    choice_data,
+                    selected_values=selected_values,
+                )
+                form[field_name].more_filter_options_available = bool(
+                    value.get("other", 0)
+                )
 
 
 class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
@@ -795,7 +922,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         Adds template tags for OHOS visualisation links
         """
         # params to append to the visual links template tags
-        _FIELDS_TO_ADD = (
+        fields_to_add = (
             "q",
             "sort",
             "collection",
@@ -819,7 +946,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         # update visualisation links with search and filters
         add_url_params = ""
         for field, data in self.form.cleaned_data.items():
-            if field in _FIELDS_TO_ADD and data:
+            if field in fields_to_add and data:
                 if isinstance(data, str):
                     add_url_params += f"&{urlencode({field:data})}"
                 elif isinstance(data, list):
@@ -847,7 +974,6 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
         self.set_session_info()
 
         if self.current_bucket_key == BucketKeys.COMMUNITY:
-
             add_kwargs = self._get_ohos_kwargs(**kwargs)
             kwargs.update(add_kwargs)
 
@@ -857,6 +983,7 @@ class CatalogueSearchView(BucketsMixin, BaseFilteredSearchView):
 class CatalogueSearchLongFilterView(BaseLongFilterOptionsView):
     api_method_name = "search"
     # api_stream = Stream.EVIDENTIAL  # TODO: Keep, not in scope for Ohos-Etna at this time
+    bucket_list = CATALOGUE_BUCKETS
     default_group = BucketKeys.COMMUNITY.value
     form_class = CatalogueSearchForm
     template_name = "search/long_filter_options.html"

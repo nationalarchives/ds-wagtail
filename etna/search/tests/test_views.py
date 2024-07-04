@@ -597,13 +597,98 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertIn('<span class="ohos-tag ohos-tag--organisation">', content)
         self.assertIn('<span class="ohos-tag__inner">H.W.Society</span>', content)
 
+    @responses.activate
+    def test_nested_filters_see_more(self):
+        self.maxDiff = None
+        self.patch_search_endpoint("community_nested_filters.json")
 
-@unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
+        expected_url = "/search/catalogue/?q=and&group=community&collection=parent-collectionMorrab%3AMorrab+Photo+Archive&collection=parent-collectionSurrey%3ASurrey+History+Centre&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900&vis_view=list&sort=title%3Aasc"
+
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "and",
+                "group": "community",
+                "collection": [
+                    "parent-collectionMorrab:Morrab Photo Archive",
+                    "parent-collectionSurrey:Surrey History Centre",
+                    "child-collectionSurrey:JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                    "Biography of Women Who Made Milton Keynes (Digital Document)",
+                ],
+                "covering_date_from_0": "01",
+                "covering_date_from_1": "01",
+                "covering_date_from_2": "1900",
+                "vis_view": "list",
+                "sort": "title:asc",
+            },
+        )
+        session = self.client.session
+        content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+        # parent collection checked
+        self.assertIn(
+            """<input type="checkbox" name="collection" value="parent-collectionMorrab:Morrab Photo Archive" id="id_collection_0_0" checked>""",
+            content,
+        )
+        # child collection unchecked
+        self.assertIn(
+            """<label for="id_collection_0_1"><input type="checkbox" name="collection" value="child-collectionMorrab:Richards Collection" id="id_collection_0_1">""",
+            content,
+        )
+        # see more url - Note: updated \' to \\\'
+        self.assertIn(
+            """<a href="/search/catalogue/long-filter-chooser/collection/?collection=long-collectionMorrabAll%3AMorrab+Photo+Archive&amp;q=and&amp;collection=parent-collectionMorrab%3AMorrab+Photo+Archive&amp;collection=parent-collectionSurrey%3ASurrey+History+Centre&amp;collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS&amp;collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29&amp;covering_date_from_0=01&amp;covering_date_from_1=01&amp;covering_date_from_2=1900&amp;sort=title%3Aasc&amp;vis_view=list&amp;group=community" aria-label=\\\'See more\\\'>See more collections (126)</a>""",
+            content,
+        )
+        # orphan collection checked
+        self.assertIn(
+            """<input type="checkbox" name="collection" value="Biography of Women Who Made Milton Keynes (Digital Document)" id="id_collection_1_0" checked>""",
+            content,
+        )
+        # parent collection checked
+        self.assertIn(
+            """<label for="id_collection_2_0"><input type="checkbox" name="collection" value="parent-collectionSurrey:Surrey History Centre" id="id_collection_2_0" checked>""",
+            content,
+        )
+        # child collection checked
+        self.assertIn(
+            """<label for="id_collection_2_1"><input type="checkbox" name="collection" value="child-collectionSurrey:JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS" id="id_collection_2_1" checked>""",
+            content,
+        )
+
+        # using set() due to changing ordering of params when running tests
+        self.assertEqual(
+            set((responses.calls[0].request.url).split("&")),
+            set(
+                (
+                    f"{settings.CLIENT_BASE_URL}/search"
+                    "?q=and"
+                    "&aggs=community"
+                    "&aggs=collectionMorrab"
+                    "&aggs=collectionSurrey"
+                    "&filter=collectionOhos%3AMorrab+Photo+Archive"
+                    "&filter=collectionOhos%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS"
+                    "&filter=collectionOhos%3ABiography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29"
+                    "&filter=group%3Acommunity"
+                    "&filter=fromDate%3A%28%3E%3D1900-01-01%29"
+                    "&sort=title%3Aasc"
+                    "&from=0"
+                    "&size=20"
+                ).split("&")
+            ),
+        )
+
+
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
     test_url = reverse_lazy(
         "search-catalogue-long-filter-chooser", kwargs={"field_name": "collection"}
     )
 
+    @unittest.skip("TODO: Keep, not in scope for Ohos-Etna at this time")
     @responses.activate
     def test_accessing_page_with_no_params_performs_empty_search(self):
         self.client.get(self.test_url)
@@ -619,6 +704,28 @@ class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):
                 "&template=details"
                 "&aggregations=collection%3A100"
                 "&filterAggregations=group%3Atna"
+                "&from=0"
+                "&size=20"
+            ),
+        )
+
+    @responses.activate
+    def test_accessing_page_with_params(self):
+        params = "?collection=long-collectionMorrabAll%3AMorrab+Photo+Archive&q=and&collection=parent-collectionMorrab%3AMorrab+Photo+Archive&collection=parent-collectionSurrey%3ASurrey+History+Centre&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900&sort=title%3Aasc&vis_view=list&group=community"
+        test_url = f"{self.test_url}{params}"
+        self.client.get(test_url)
+
+        self.assertEqual(len(responses.calls), 1)
+        self.assertEqual(
+            responses.calls[0].request.url,
+            (
+                f"{settings.CLIENT_BASE_URL}/search"
+                "?q=and"
+                "&aggs=community"
+                "&aggs=collectionMorrabAll"
+                "&filter=group%3Acommunity"
+                "&filter=fromDate%3A%28%3E%3D1900-01-01%29"
+                "&sort=title%3Aasc"
                 "&from=0"
                 "&size=20"
             ),
