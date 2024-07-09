@@ -17,3 +17,11 @@ class QuoteBlock(blocks.StructBlock):
         icon = "openquote"
         label = "Quote"
         template = "blocks/quote.html"
+
+
+class ReferenceBlock(blocks.StructBlock):
+    body = APIRichTextBlock(required=True, features=settings.INLINE_RICH_TEXT_FEATURES)
+
+    class Meta:
+        icon = "openquote"
+        label = "Reference"

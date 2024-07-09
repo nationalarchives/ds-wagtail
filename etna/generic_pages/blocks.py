@@ -11,6 +11,7 @@ from etna.core.blocks import (
     PromotedItemBlock,
     PromotedListBlock,
     QuoteBlock,
+    ReferenceBlock,
     SectionDepthAwareStructBlock,
     SubHeadingBlock,
     WarningTextBlock,
@@ -32,6 +33,7 @@ class SectionContentBlock(blocks.StreamBlock):
     promoted_item = PromotedItemBlock()
     promoted_list = PromotedListBlock()
     quote = QuoteBlock()
+    reference = ReferenceBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
     warning_text = WarningTextBlock()

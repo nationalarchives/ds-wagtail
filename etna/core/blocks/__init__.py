@@ -17,7 +17,7 @@ from .promoted_links import (
     PromotedLinkBlock,
     PromotedListBlock,
 )
-from .quote import QuoteBlock
+from .quote import QuoteBlock, ReferenceBlock
 from .section import SectionBlock, SubHeadingBlock
 from .text import InsetTextBlock, WarningTextBlock
 
@@ -42,6 +42,7 @@ __all__ = [
     "AuthorPromotedLinkBlock",
     "LargeCardLinksBlock",
     "QuoteBlock",
+    "ReferenceBlock",
     "RelatedItemBlock",
     "SectionBlock",
     "SectionDepthAwareStructBlock",
