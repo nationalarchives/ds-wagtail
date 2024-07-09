@@ -5,7 +5,7 @@ from django.forms.boundfield import BoundField
 from django.test import RequestFactory, SimpleTestCase
 from django.utils.datastructures import MultiValueDict
 
-from etna.ciim.constants import BucketKeys
+from etna.ciim.constants import BucketKeys, TagTypes
 
 from ..forms import CatalogueSearchForm
 from ..templatetags.search_tags import (
@@ -14,6 +14,7 @@ from ..templatetags.search_tags import (
     query_string_include,
     render_fields_as_hidden,
     render_sort_input,
+    tag_type_url,
 )
 
 
@@ -210,3 +211,55 @@ class RenderSortTest(SimpleTestCase):
         self.assertIn(
             expected_html, render_sort_input(self.form, id_suffix="somevalue")
         )
+
+
+class TagTypeLinksTest(SimpleTestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_tag_type_url(self):
+
+        context = {
+            "request": self.factory.get(
+                "?group=community&vis_view=tag&chart_data_type=LOC"
+            )
+        }
+        form = CatalogueSearchForm(
+            {"group": "community", "vis_view": "tag", "chart_data_type": "LOC"}
+        )
+        form.is_valid()
+        context.update(form=form)
+
+        # previous url state without location
+        result = tag_type_url(context, TagTypes.LOCATION.value.upper())
+        self.assertEqual(
+            result,
+            "/search/catalogue/?group=community&vis_view=tag",
+        )
+
+        # link with person
+        result = tag_type_url(context, TagTypes.PERSON.value.upper())
+        self.assertEqual(
+            result,
+            "/search/catalogue/?group=community&vis_view=tag&chart_data_type=PER",
+        )
+
+        # link with organisation
+        result = tag_type_url(context, TagTypes.ORGANISATION.value.upper())
+        self.assertEqual(
+            result,
+            "/search/catalogue/?group=community&vis_view=tag&chart_data_type=ORG",
+        )
+
+        # link with miscellaneous
+        result = tag_type_url(context, TagTypes.MISCELLANEOUS.value.upper())
+        self.assertEqual(
+            result,
+            "/search/catalogue/?group=community&vis_view=tag&chart_data_type=MISC",
+        )
+
+    def test_tag_type_url_not_a_tag_view(self):
+        # timeline view
+        context = {"request": self.factory.get("?group=community&vis_view=timeline")}
+        result = tag_type_url(context)
+        self.assertEqual(result, "")

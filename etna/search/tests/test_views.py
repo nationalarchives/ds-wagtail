@@ -2,6 +2,7 @@ import json as json_module
 import unittest
 
 from typing import Any, Dict
+from unittest import mock
 
 from django.conf import settings
 from django.test import SimpleTestCase, TestCase, override_settings
@@ -597,12 +598,23 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
         self.assertIn('<span class="ohos-tag ohos-tag--organisation">', content)
         self.assertIn('<span class="ohos-tag__inner">H.W.Society</span>', content)
 
+    @mock.patch(
+        "etna.search.templatetags.search_tags.get_random_string", return_value="123"
+    )
     @responses.activate
-    def test_nested_filters_see_more(self):
+    def test_nested_filters_see_more(self, mocked_get_random_string):
         self.maxDiff = None
         self.patch_search_endpoint("community_nested_filters.json")
 
-        expected_url = "/search/catalogue/?q=and&group=community&collection=parent-collectionMorrab%3AMorrab+Photo+Archive&collection=parent-collectionSurrey%3ASurrey+History+Centre&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900&vis_view=list&sort=title%3Aasc"
+        expected_url = (
+            "/search/catalogue/?q=and&group=community"
+            "&collection=parent-collectionMorrab%3AMorrab+Photo+Archive"
+            "&collection=parent-collectionSurrey%3ASurrey+History+Centre"
+            "&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS"
+            "&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29"
+            "&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900"
+            "&vis_view=list&sort=title%3Aasc"
+        )
 
         response = self.client.get(
             self.test_url,
@@ -681,6 +693,65 @@ class CatalogueSearchEndToEndTest(EndToEndSearchTestCase):
                 ).split("&")
             ),
         )
+
+        vis_view_hidden = (
+            """<input type="hidden" name="vis_view" value="tag" id="id_vis_view_123">"""
+        )
+        self.assertContains(response, vis_view_hidden, count=0, status_code=200)
+        chart_data_type_hidden = """<input type="hidden" name="chart_data_type" value="LOC" id="id_chart_data_type_123">"""
+        self.assertContains(response, chart_data_type_hidden, count=0, status_code=200)
+
+    @mock.patch(
+        "etna.search.templatetags.search_tags.get_random_string", return_value="123"
+    )
+    @responses.activate
+    def test_tag_view(self, mocked_get_random_string):
+        self.maxDiff = None
+        self.patch_search_endpoint("community_nested_filters.json")
+
+        expected_url = (
+            "/search/catalogue/?q=and&group=community"
+            "&collection=parent-collectionMorrab%3AMorrab+Photo+Archive"
+            "&collection=parent-collectionSurrey%3ASurrey+History+Centre"
+            "&collection=child-collectionSurrey%3AJENNIFER+LOUIS+OF+WESTHUMBLE%3A+ORAL+HISTORY+RECORDINGS"
+            "&collection=Biography+of+Women+Who+Made+Milton+Keynes+%28Digital+Document%29"
+            "&covering_date_from_0=01&covering_date_from_1=01&covering_date_from_2=1900"
+            "&vis_view=tag&sort=title%3Aasc"
+            "&chart_data_type=LOC"
+        )
+
+        response = self.client.get(
+            self.test_url,
+            data={
+                "q": "and",
+                "group": "community",
+                "collection": [
+                    "parent-collectionMorrab:Morrab Photo Archive",
+                    "parent-collectionSurrey:Surrey History Centre",
+                    "child-collectionSurrey:JENNIFER LOUIS OF WESTHUMBLE: ORAL HISTORY RECORDINGS",
+                    "Biography of Women Who Made Milton Keynes (Digital Document)",
+                ],
+                "covering_date_from_0": "01",
+                "covering_date_from_1": "01",
+                "covering_date_from_2": "1900",
+                "vis_view": "tag",
+                "sort": "title:asc",
+                "chart_data_type": "LOC",
+            },
+        )
+        session = self.client.session
+        # content = str(response.content)
+
+        self.assertEqual(len(responses.calls), 1)
+
+        self.assertEqual(session.get("back_to_search_url"), expected_url)
+
+        vis_view_hidden = (
+            """<input type="hidden" name="vis_view" value="tag" id="id_vis_view_123">"""
+        )
+        self.assertContains(response, vis_view_hidden, count=4, status_code=200)
+        chart_data_type_hidden = """<input type="hidden" name="chart_data_type" value="LOC" id="id_chart_data_type_123">"""
+        self.assertContains(response, chart_data_type_hidden, count=4, status_code=200)
 
 
 class CatalogueSearchLongFilterChooserAPIIntegrationTest(SearchViewTestCase):

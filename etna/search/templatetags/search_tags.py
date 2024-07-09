@@ -18,6 +18,7 @@ from etna.ciim.constants import (
     SEPERATOR,
     BucketKeys,
     SearchTabs,
+    VisViews,
 )
 
 register = template.Library()
@@ -207,3 +208,26 @@ def long_filter_cancel(context, field_name: str = "") -> str:
         )
 
     return f'{reverse("search-catalogue")}?{query_dict.urlencode()}'
+
+
+@register.simple_tag(takes_context=True)
+def tag_type_url(context, tag_type: str | None = None) -> str:
+    """returns url link for the tag type of the tag view otherwise empty string"""
+    request = context["request"]
+
+    query_dict = request.GET.copy()
+
+    if (
+        query_dict.get("group", "") == BucketKeys.COMMUNITY
+        and query_dict.get("vis_view", "") == VisViews.TAG
+    ):
+        # reset the url to previous state - used with x on filter label
+        query_dict.pop("chart_data_type", None)
+
+        form_chart_data_type = context.get("form").cleaned_data.get("chart_data_type")
+        add_param = (
+            f"&chart_data_type={tag_type}" if tag_type != form_chart_data_type else ""
+        )
+        return f'{reverse("search-catalogue")}?{query_dict.urlencode()}{add_param}'
+
+    return ""

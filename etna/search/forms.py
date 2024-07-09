@@ -14,6 +14,7 @@ from ..ciim.constants import (  # TODO: Keep, not in scope for Ohos-Etna at this
     NESTED_CHILDREN_KEY,
     SEPERATOR,
     BucketKeys,
+    TagTypes,
 )
 from .templatetags.search_tags import is_see_more
 
@@ -322,6 +323,16 @@ class BaseCollectionSearchForm(forms.Form):
     # used for OHOS-Timeline View
     creation_date_from = forms.CharField(
         label="Creation from",
+        required=False,
+    )
+    # used for Tag View
+    chart_data_type = forms.ChoiceField(
+        choices=[
+            (TagTypes.LOCATION.value.upper(), TagTypes.LOCATION.name),
+            (TagTypes.PERSON.value.upper(), TagTypes.PERSON.name),
+            (TagTypes.ORGANISATION.value.upper(), TagTypes.ORGANISATION.name),
+            (TagTypes.MISCELLANEOUS.value.upper(), TagTypes.MISCELLANEOUS.name),
+        ],
         required=False,
     )
 

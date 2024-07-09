@@ -37,6 +37,7 @@ from ..ciim.constants import (
     BucketList,
     Display,
     SearchTabs,
+    TagTypes,
     TimelineTypes,
     VisViews,
 )
@@ -360,6 +361,7 @@ class BaseSearchView(SearchDataLayerMixin, ClientAPIMixin, GETFormView):
             searchtabs=SearchTabs,
             vis_view=VisViews,
             timeline_type=TimelineTypes,
+            tag_type=TagTypes,
             display=Display,
             closure_closed_status=CLOSURE_CLOSED_STATUS,
             **kwargs,

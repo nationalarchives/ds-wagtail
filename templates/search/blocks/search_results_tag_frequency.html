@@ -5,7 +5,7 @@
         <p class="tag-frequency__title">Filter by:</p>
         <ul class="tag-frequency__tags-list">
             <li>
-                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'LOC' %}&chart_data_type=LOC{% endif %}" class="ohos-tag ohos-tag--location">
+                <a href="{% tag_type_url tag_type=tag_type.LOCATION|upper %}" class="ohos-tag ohos-tag--location">
                     <span class="ohos-tag__inner">
                         Location
                         {% if form.chart_data_type.value == 'LOC' %}
@@ -16,7 +16,7 @@
             </li>
 
             <li>
-                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'PER' %}&chart_data_type=PER{% endif %}" class="ohos-tag ohos-tag--person">
+                <a href="{% tag_type_url tag_type=tag_type.PERSON|upper %}" class="ohos-tag ohos-tag--person">
                     <span class="ohos-tag__inner">
                         Person
                         {% if form.chart_data_type.value == 'PER' %}
@@ -27,7 +27,7 @@
             </li>
 
             <li>
-                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'ORG' %}&chart_data_type=ORG{% endif %}" class="ohos-tag ohos-tag--organisation">
+                <a href="{% tag_type_url tag_type=tag_type.ORGANISATION|upper %}" class="ohos-tag ohos-tag--organisation">
                     <span class="ohos-tag__inner">
                         Organisation
                         {% if form.chart_data_type.value == 'ORG' %}
@@ -38,7 +38,7 @@
             </li>
 
             <li>
-                <a href="/search/catalogue/?group=community&vis_view=tag{% if form.chart_data_type.value != 'MISC' %}&chart_data_type=MISC{% endif %}" class="ohos-tag ohos-tag--misc">
+                <a href="{% tag_type_url tag_type=tag_type.MISCELLANEOUS|upper %}" class="ohos-tag ohos-tag--misc">
                     <span class="ohos-tag__inner">
                         Miscellaneous
                         {% if form.chart_data_type.value == 'MISC' %}
