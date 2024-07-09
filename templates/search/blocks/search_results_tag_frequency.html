@@ -4,8 +4,10 @@
     <div class="tag-frequency__tags">
         <p class="tag-frequency__title">Filter by:</p>
         <ul class="tag-frequency__tags-list">
-            <li>
-                <a href="{% tag_type_url tag_type=tag_type.LOCATION|upper %}" class="ohos-tag ohos-tag--location">
+
+          
+                <a href="{% tag_type_url tag_type=tag_type.LOCATION|upper %}#tagTop" class="ohos-tag ohos-tag--location">
+
                     <span class="ohos-tag__inner">
                         Location
                         {% if form.chart_data_type.value == 'LOC' %}
@@ -16,7 +18,9 @@
             </li>
 
             <li>
-                <a href="{% tag_type_url tag_type=tag_type.PERSON|upper %}" class="ohos-tag ohos-tag--person">
+
+                <a href="{% tag_type_url tag_type=tag_type.PERSON|upper %}#tagTop" class="ohos-tag ohos-tag--person">
+
                     <span class="ohos-tag__inner">
                         Person
                         {% if form.chart_data_type.value == 'PER' %}
@@ -27,7 +31,9 @@
             </li>
 
             <li>
-                <a href="{% tag_type_url tag_type=tag_type.ORGANISATION|upper %}" class="ohos-tag ohos-tag--organisation">
+
+                <a href="{% tag_type_url tag_type=tag_type.ORGANISATION|upper %}#tagTop" class="ohos-tag ohos-tag--organisation">
+
                     <span class="ohos-tag__inner">
                         Organisation
                         {% if form.chart_data_type.value == 'ORG' %}
@@ -38,7 +44,9 @@
             </li>
 
             <li>
-                <a href="{% tag_type_url tag_type=tag_type.MISCELLANEOUS|upper %}" class="ohos-tag ohos-tag--misc">
+
+                <a href="{% tag_type_url tag_type=tag_type.MISCELLANEOUS|upper %}#tagTop" class="ohos-tag ohos-tag--misc">
+
                     <span class="ohos-tag__inner">
                         Miscellaneous
                         {% if form.chart_data_type.value == 'MISC' %}
