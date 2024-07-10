@@ -1,11 +1,13 @@
 from .base import SectionDepthAwareStructBlock
 from .cta import ButtonBlock, CallToActionBlock, LargeCardLinksBlock
+from .document import DocumentsBlock
 from .featured_content import (
     FeaturedCollectionBlock,
     FeaturedRecordArticleBlock,
     RelatedItemBlock,
 )
 from .image import ContentImageBlock, ImageBlock, NoCaptionImageBlock
+from .lists import DoDontListBlock
 from .page_chooser import APIPageChooserBlock
 from .page_list import PageListBlock
 from .paragraph import ParagraphBlock, ParagraphWithHeading
@@ -18,7 +20,7 @@ from .promoted_links import (
 )
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
-from .text import InsetTextBlock
+from .text import InsetTextBlock, WarningTextBlock
 
 __all__ = [
     "APIPageChooserBlock",
@@ -26,6 +28,8 @@ __all__ = [
     "ButtonBlock",
     "CallToActionBlock",
     "ContentImageBlock",
+    "DocumentsBlock",
+    "DoDontListBlock",
     "FeaturedRecordArticleBlock",
     "FeaturedCollectionBlock",
     "ImageBlock",
@@ -44,4 +48,5 @@ __all__ = [
     "SectionBlock",
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
+    "WarningTextBlock",
 ]

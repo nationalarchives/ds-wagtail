@@ -305,6 +305,8 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
+WAGTAILDOCS_DOCUMENT_MODEL = "core.CustomDocument"
+
 WAGTAILIMAGES_IMAGE_MODEL = "images.CustomImage"
 
 # Custom password template for private pages
