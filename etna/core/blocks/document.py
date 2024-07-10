@@ -7,10 +7,6 @@ class DocumentBlock(blocks.StructBlock):
     A block for embedding a document file in a page.
     """
 
-    link_text = blocks.CharBlock(
-        required=True,
-        help_text="The text to display for the link to the document",
-    )
     file = DocumentChooserBlock(required=True)
 
     def get_api_representation(self, value, context=None):
