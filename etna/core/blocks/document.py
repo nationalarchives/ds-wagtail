@@ -15,16 +15,12 @@ class DocumentBlock(blocks.StructBlock):
         file = value.get("file")
 
         if file:
-            if file.file_size >= 1000000:
-                file_size = f"{((file.file_size / 1024) / 1024):.1f}MB"
-            else:
-                file_size = f"{(file.file_size / 1024):.1f}KB"
-
             representation["file"] = {
                 "id": file.id,
                 "title": file.title,
-                "description": file.description,
-                "size": file_size,
+                "description": file.description or None,
+                "file_size": file.file_size,
+                "pretty_file_size": file.pretty_file_size,
                 "type": file.file_extension,
                 "extent": file.extent,
                 "url": file.file.url,
