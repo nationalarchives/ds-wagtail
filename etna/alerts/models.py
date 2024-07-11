@@ -77,13 +77,13 @@ class AlertMixin(models.Model):
 
     @property
     def alert_check(self):
-        if self.alert and self.alert.active:
-            return self.alert
-        elif parent := self.get_parent():
+        if parent := self.get_parent():
             if type(parent.specific) is not Page:
                 if parent_alert := parent.specific.alert_check:
                     if parent_alert.cascade:
                         return parent_alert
+        if self.alert and self.alert.active:
+            return self.alert
         return None
 
     settings_panels = [
