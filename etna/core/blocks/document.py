@@ -24,6 +24,7 @@ class DocumentBlock(blocks.StructBlock):
                 "type": file.file_extension,
                 "extent": file.extent,
                 "url": file.file.url,
+                "full_url": file.full_url,
             }
 
         return representation
