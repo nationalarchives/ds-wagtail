@@ -77,6 +77,10 @@ class AlertMixin(models.Model):
 
     @property
     def alert_check(self):
+        """
+        Retrieve the parent-most alert that is active and has cascade enabled.
+        If there is no parent alert, then return the current alert if it is active.
+        """
         if parent := self.get_parent():
             if type(parent.specific) is not Page:
                 if parent_alert := parent.specific.alert_check:
