@@ -21,6 +21,7 @@ from .promoted_links import (
 from .quote import QuoteBlock
 from .section import SectionBlock, SubHeadingBlock
 from .text import InsetTextBlock, WarningTextBlock
+from .video import YouTubeBlock
 
 __all__ = [
     "APIPageChooserBlock",
@@ -49,4 +50,5 @@ __all__ = [
     "SectionDepthAwareStructBlock",
     "SubHeadingBlock",
     "WarningTextBlock",
+    "YouTubeBlock",
 ]
