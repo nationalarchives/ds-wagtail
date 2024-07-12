@@ -17,9 +17,13 @@
                {% endif %}
                href="{{ item.href }}" 
                data-link-type="Link" 
-               data-link="View this record page in Discovery" 
                data-component-name="Access record">{{ item.text }} <span class="sr-only">(link opens in a new window)</span></a>
         {% endfor %}
+    {% endif %}
+
+    {% if delivery_option.expandlink %}
+    <p></p>
+        {{ delivery_option.expandlink}}
     {% endif %}
 
     {% if delivery_option.supplemental %}
@@ -33,7 +37,10 @@
     {% endif %}
     
     {% comment 'display the index of the delivery option for debugging' %}
-        <p>{{ delivery_option.index }}</p>
+        <p>{{ delivery_option.debug1 }}</p>
+        <p>{{ delivery_option.debug2 }}</p>
     {% endcomment %}
+
+    <p>{{ delivery_option.debug1 }}</p>
 
 </div>
