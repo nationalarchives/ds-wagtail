@@ -39,7 +39,14 @@ class AuthorIndexPage(BasePage):
     @cached_property
     def author_pages(self):
         """Return a sample of child pages for rendering in teaser."""
-        return self.get_children().type(AuthorPage).order_by("title").live().specific()
+        return (
+            self.get_children()
+            .type(AuthorPage)
+            .order_by("title")
+            .live()
+            .public()
+            .specific()
+        )
 
 
 class AuthorPage(BasePage):
@@ -71,6 +78,7 @@ class AuthorPage(BasePage):
     class Meta:
         verbose_name = "Author page"
         verbose_name_plural = "Author pages"
+        verbose_name_public = "author"
 
     # DataLayerMixin overrides
     gtm_content_group = "Author page"
