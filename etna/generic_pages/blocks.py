@@ -4,6 +4,7 @@ from etna.core.blocks import (
     ButtonBlock,
     CallToActionBlock,
     ContentImageBlock,
+    ContentTableBlock,
     DocumentsBlock,
     DoDontListBlock,
     FeaturedRecordArticleBlock,
@@ -37,6 +38,7 @@ class SectionContentBlock(blocks.StreamBlock):
     quote = QuoteBlock()
     record_links = RecordLinksBlock()
     sub_heading = SubHeadingBlock()
+    table = ContentTableBlock()
     warning_text = WarningTextBlock()
     youtube_video = YouTubeBlock()
 
