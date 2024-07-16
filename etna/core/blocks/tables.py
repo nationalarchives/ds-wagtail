@@ -3,12 +3,6 @@ from wagtail.contrib.table_block.blocks import TableBlock
 
 
 class ContentTableBlock(blocks.StructBlock):
-    title = blocks.CharBlock(
-        max_length=100,
-        help_text="Title of the table",
-        label="Title",
-        required=False,
-    )
     table = TableBlock(
         table_options={
             "contextMenu": [
